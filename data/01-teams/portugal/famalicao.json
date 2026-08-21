@@ -1,0 +1,31 @@
+{
+ "teamId": "famalicao",
+ "name": "FC Famalicao",
+ "nameZh": "法马利康",
+ "league": "portugal",
+ "lastUpdated": "2026-08-22",
+ "source": "cold-start + espn/fd recent results",
+ "standing": {
+  "pos": 11,
+  "played": 2,
+  "won": 0,
+  "drawn": 1,
+  "lost": 1,
+  "gf": 2,
+  "ga": 3,
+  "pts": 1,
+  "leagueTable": "portugal-primeira"
+ },
+ "elo": null,
+ "form": [
+  {
+   "date": "2026-08-16",
+   "opp": "Maritimo",
+   "venue": "H",
+   "score": "1-2",
+   "result": "L"
+  }
+ ],
+ "injuries": [],
+ "notes": "冷启动基础画像（积分榜），待深度采集补充"
+}

@@ -1,0 +1,44 @@
+{
+ "teamId": "go-ahead-eagles",
+ "name": "Go Ahead Eagles",
+ "nameZh": "前进之鹰",
+ "league": "netherlands-eredivisie",
+ "lastUpdated": "2026-08-22",
+ "source": "cold-start + espn/fd recent results",
+ "standing": {
+  "pos": 3,
+  "played": 2,
+  "won": 1,
+  "drawn": 1,
+  "lost": 0,
+  "gf": 6,
+  "ga": 3,
+  "pts": 4
+ },
+ "elo": null,
+ "form": [
+  {
+   "date": "08/08/2026",
+   "opp": "Willem II",
+   "venue": "H",
+   "score": "4-1",
+   "result": "W"
+  },
+  {
+   "date": "16/08/2026",
+   "opp": "Feyenoord",
+   "venue": "A",
+   "score": "2-2",
+   "result": "D"
+  },
+  {
+   "date": "2026-08-16",
+   "opp": "Feyenoord Rotterdam",
+   "venue": "A",
+   "score": "2-2",
+   "result": "D"
+  }
+ ],
+ "injuries": [],
+ "notes": "冷启动基础画像（仅积分榜），待深度采集补充"
+}

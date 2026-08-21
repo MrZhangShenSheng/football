@@ -1,0 +1,37 @@
+{
+ "teamId": "hacken",
+ "name": "BK Häcken",
+ "nameZh": "赫根",
+ "league": "sweden",
+ "lastUpdated": "2026-08-22",
+ "source": "cold-start + espn/fd recent results",
+ "standing": {
+  "pos": 3,
+  "played": 17,
+  "won": 7,
+  "drawn": 7,
+  "lost": 3,
+  "gf": 29,
+  "ga": 26,
+  "pts": 28
+ },
+ "elo": null,
+ "form": [
+  {
+   "date": "2026-08-17",
+   "opp": "Halmstads BK",
+   "venue": "H",
+   "score": "1-0",
+   "result": "W"
+  },
+  {
+   "date": "2026-08-21",
+   "opp": "IK Sirius",
+   "venue": "A",
+   "score": "0-0",
+   "result": "D"
+  }
+ ],
+ "injuries": [],
+ "notes": "冷启动基础画像（仅积分榜），待深度采集补充"
+}

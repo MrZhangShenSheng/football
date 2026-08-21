@@ -1,0 +1,31 @@
+{
+ "teamId": "racing-santander",
+ "name": "Racing Santander",
+ "nameZh": "桑坦德",
+ "league": "spain",
+ "lastUpdated": "2026-08-22",
+ "source": "cold-start + espn/fd recent results",
+ "standing": {
+  "pos": 5,
+  "played": 1,
+  "won": 0,
+  "drawn": 1,
+  "lost": 0,
+  "gf": 2,
+  "ga": 2,
+  "pts": 1,
+  "leagueTable": "spain-laliga"
+ },
+ "elo": null,
+ "form": [
+  {
+   "date": "2026-08-16",
+   "opp": "Villarreal",
+   "venue": "H",
+   "score": "2-2",
+   "result": "D"
+  }
+ ],
+ "injuries": [],
+ "notes": "冷启动基础画像（积分榜），待深度采集补充"
+}

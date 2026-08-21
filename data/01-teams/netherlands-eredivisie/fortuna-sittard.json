@@ -1,0 +1,30 @@
+{
+ "teamId": "fortuna-sittard",
+ "name": "Fortuna Sittard",
+ "nameZh": "福图纳",
+ "league": "netherlands-eredivisie",
+ "lastUpdated": "2026-08-22",
+ "source": "cold-start + espn/fd recent results",
+ "standing": {
+  "pos": 4,
+  "played": 2,
+  "won": 1,
+  "drawn": 1,
+  "lost": 0,
+  "gf": 5,
+  "ga": 3,
+  "pts": 4
+ },
+ "elo": null,
+ "form": [
+  {
+   "date": "2026-08-15",
+   "opp": "SC Cambuur",
+   "venue": "H",
+   "score": "3-1",
+   "result": "W"
+  }
+ ],
+ "injuries": [],
+ "notes": "冷启动基础画像（仅积分榜），待深度采集补充"
+}

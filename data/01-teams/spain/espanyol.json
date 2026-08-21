@@ -1,0 +1,31 @@
+{
+ "teamId": "espanyol",
+ "name": "Espanyol",
+ "nameZh": "西班牙人",
+ "league": "spain",
+ "lastUpdated": "2026-08-22",
+ "source": "cold-start + espn/fd recent results",
+ "standing": {
+  "pos": 2,
+  "played": 1,
+  "won": 1,
+  "drawn": 0,
+  "lost": 0,
+  "gf": 3,
+  "ga": 0,
+  "pts": 3,
+  "leagueTable": "spain-laliga"
+ },
+ "elo": null,
+ "form": [
+  {
+   "date": "2026-08-16",
+   "opp": "Levante",
+   "venue": "H",
+   "score": "3-0",
+   "result": "W"
+  }
+ ],
+ "injuries": [],
+ "notes": "冷启动基础画像（积分榜），待深度采集补充"
+}

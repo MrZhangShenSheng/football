@@ -1,0 +1,30 @@
+{
+ "teamId": "kashima-antlers",
+ "name": "Kashima Antlers",
+ "nameZh": "鹿岛鹿角",
+ "league": "japan",
+ "lastUpdated": "2026-08-22",
+ "source": "cold-start + espn/fd recent results",
+ "standing": {
+  "pos": 4,
+  "played": 2,
+  "won": 2,
+  "drawn": 0,
+  "lost": 0,
+  "gf": 6,
+  "ga": 4,
+  "pts": 6
+ },
+ "elo": null,
+ "form": [
+  {
+   "date": "2026-08-15",
+   "opp": "Nagoya Grampus",
+   "venue": "H",
+   "score": "2-1",
+   "result": "W"
+  }
+ ],
+ "injuries": [],
+ "notes": "冷启动基础画像（仅积分榜），待深度采集补充"
+}

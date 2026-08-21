@@ -1,0 +1,30 @@
+{
+ "teamId": "cerezo-osaka",
+ "name": "Cerezo Osaka",
+ "nameZh": "大阪樱花",
+ "league": "japan",
+ "lastUpdated": "2026-08-22",
+ "source": "cold-start + espn/fd recent results",
+ "standing": {
+  "pos": 13,
+  "played": 2,
+  "won": 1,
+  "drawn": 0,
+  "lost": 1,
+  "gf": 2,
+  "ga": 4,
+  "pts": 3
+ },
+ "elo": null,
+ "form": [
+  {
+   "date": "2026-08-15",
+   "opp": "Avispa Fukuoka",
+   "venue": "A",
+   "score": "0-3",
+   "result": "L"
+  }
+ ],
+ "injuries": [],
+ "notes": "冷启动基础画像（仅积分榜），待深度采集补充"
+}

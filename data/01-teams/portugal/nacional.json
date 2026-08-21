@@ -1,0 +1,38 @@
+{
+ "teamId": "nacional",
+ "name": "C.D. Nacional",
+ "nameZh": "葡国民",
+ "league": "portugal",
+ "lastUpdated": "2026-08-22",
+ "source": "cold-start + espn/fd recent results",
+ "standing": {
+  "pos": 4,
+  "played": 2,
+  "won": 1,
+  "drawn": 1,
+  "lost": 0,
+  "gf": 4,
+  "ga": 2,
+  "pts": 4,
+  "leagueTable": "portugal-primeira"
+ },
+ "elo": null,
+ "form": [
+  {
+   "date": "2026-08-10",
+   "opp": "Santa Clara",
+   "venue": "A",
+   "score": "2-2",
+   "result": "D"
+  },
+  {
+   "date": "2026-08-16",
+   "opp": "Estoril",
+   "venue": "H",
+   "score": "2-0",
+   "result": "W"
+  }
+ ],
+ "injuries": [],
+ "notes": "冷启动基础画像（积分榜），待深度采集补充"
+}

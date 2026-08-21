@@ -1,0 +1,30 @@
+{
+ "teamId": "den-haag",
+ "name": "ADO Den Haag",
+ "nameZh": "海牙",
+ "league": "netherlands-eredivisie",
+ "lastUpdated": "2026-08-22",
+ "source": "cold-start + espn/fd recent results",
+ "standing": {
+  "pos": 16,
+  "played": 2,
+  "won": 0,
+  "drawn": 0,
+  "lost": 2,
+  "gf": 1,
+  "ga": 6,
+  "pts": 0
+ },
+ "elo": null,
+ "form": [
+  {
+   "date": "2026-08-16",
+   "opp": "FC Groningen",
+   "venue": "H",
+   "score": "1-4",
+   "result": "L"
+  }
+ ],
+ "injuries": [],
+ "notes": "冷启动基础画像（仅积分榜），待深度采集补充"
+}

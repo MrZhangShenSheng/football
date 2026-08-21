@@ -1,0 +1,38 @@
+{
+ "teamId": "getafe",
+ "name": "Getafe",
+ "nameZh": "赫塔费",
+ "league": "spain",
+ "lastUpdated": "2026-08-22",
+ "source": "cold-start + espn/fd recent results",
+ "standing": {
+  "pos": 20,
+  "played": 1,
+  "won": 0,
+  "drawn": 0,
+  "lost": 1,
+  "gf": 0,
+  "ga": 3,
+  "pts": 0,
+  "leagueTable": "spain-laliga"
+ },
+ "elo": null,
+ "form": [
+  {
+   "date": "15/08/2026",
+   "opp": "Alaves",
+   "venue": "A",
+   "score": "0-3",
+   "result": "L"
+  },
+  {
+   "date": "2026-08-15",
+   "opp": "Alavés",
+   "venue": "A",
+   "score": "0-3",
+   "result": "L"
+  }
+ ],
+ "injuries": [],
+ "notes": "冷启动基础画像（积分榜），待深度采集补充"
+}

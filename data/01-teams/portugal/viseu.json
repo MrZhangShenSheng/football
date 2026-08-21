@@ -1,0 +1,31 @@
+{
+ "teamId": "viseu",
+ "name": "Académico de Viseu",
+ "nameZh": "维塞乌",
+ "league": "portugal",
+ "lastUpdated": "2026-08-22",
+ "source": "cold-start + espn/fd recent results",
+ "standing": {
+  "pos": 14,
+  "played": 2,
+  "won": 0,
+  "drawn": 1,
+  "lost": 1,
+  "gf": 2,
+  "ga": 3,
+  "pts": 1,
+  "leagueTable": "portugal-primeira"
+ },
+ "elo": null,
+ "form": [
+  {
+   "date": "2026-08-15",
+   "opp": "Santa Clara",
+   "venue": "H",
+   "score": "0-1",
+   "result": "L"
+  }
+ ],
+ "injuries": [],
+ "notes": "冷启动基础画像（积分榜），待深度采集补充"
+}

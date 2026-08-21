@@ -1,0 +1,31 @@
+{
+ "teamId": "arouca",
+ "name": "Arouca",
+ "nameZh": "阿罗卡",
+ "league": "portugal",
+ "lastUpdated": "2026-08-22",
+ "source": "cold-start + espn/fd recent results",
+ "standing": {
+  "pos": 1,
+  "played": 2,
+  "won": 2,
+  "drawn": 0,
+  "lost": 0,
+  "gf": 5,
+  "ga": 0,
+  "pts": 6,
+  "leagueTable": "portugal-primeira"
+ },
+ "elo": null,
+ "form": [
+  {
+   "date": "2026-08-16",
+   "opp": "Moreirense",
+   "venue": "H",
+   "score": "4-0",
+   "result": "W"
+  }
+ ],
+ "injuries": [],
+ "notes": "冷启动基础画像（积分榜），待深度采集补充"
+}

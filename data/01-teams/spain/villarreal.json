@@ -1,0 +1,38 @@
+{
+ "teamId": "villarreal",
+ "name": "Villarreal",
+ "nameZh": "比利亚雷",
+ "league": "spain",
+ "lastUpdated": "2026-08-22",
+ "source": "cold-start + espn/fd recent results",
+ "standing": {
+  "pos": 6,
+  "played": 1,
+  "won": 0,
+  "drawn": 1,
+  "lost": 0,
+  "gf": 2,
+  "ga": 2,
+  "pts": 1,
+  "leagueTable": "spain-laliga"
+ },
+ "elo": null,
+ "form": [
+  {
+   "date": "16/08/2026",
+   "opp": "Santander",
+   "venue": "A",
+   "score": "2-2",
+   "result": "D"
+  },
+  {
+   "date": "2026-08-16",
+   "opp": "Racing Santander",
+   "venue": "A",
+   "score": "2-2",
+   "result": "D"
+  }
+ ],
+ "injuries": [],
+ "notes": "冷启动基础画像（积分榜），待深度采集补充"
+}

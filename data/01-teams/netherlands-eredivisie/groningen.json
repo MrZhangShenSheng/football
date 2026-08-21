@@ -1,0 +1,30 @@
+{
+ "teamId": "groningen",
+ "name": "FC Groningen",
+ "nameZh": "格罗宁根",
+ "league": "netherlands-eredivisie",
+ "lastUpdated": "2026-08-22",
+ "source": "cold-start + espn/fd recent results",
+ "standing": {
+  "pos": 2,
+  "played": 2,
+  "won": 2,
+  "drawn": 0,
+  "lost": 0,
+  "gf": 6,
+  "ga": 2,
+  "pts": 6
+ },
+ "elo": null,
+ "form": [
+  {
+   "date": "2026-08-16",
+   "opp": "ADO Den Haag",
+   "venue": "A",
+   "score": "4-1",
+   "result": "W"
+  }
+ ],
+ "injuries": [],
+ "notes": "冷启动基础画像（仅积分榜），待深度采集补充"
+}

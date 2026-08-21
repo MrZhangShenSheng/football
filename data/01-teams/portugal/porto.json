@@ -1,0 +1,31 @@
+{
+ "teamId": "porto",
+ "name": "FC Porto",
+ "nameZh": "波尔图",
+ "league": "portugal",
+ "lastUpdated": "2026-08-22",
+ "source": "cold-start + espn/fd recent results",
+ "standing": {
+  "pos": 2,
+  "played": 2,
+  "won": 2,
+  "drawn": 0,
+  "lost": 0,
+  "gf": 4,
+  "ga": 0,
+  "pts": 6,
+  "leagueTable": "portugal-primeira"
+ },
+ "elo": null,
+ "form": [
+  {
+   "date": "2026-08-15",
+   "opp": "Rio Ave",
+   "venue": "A",
+   "score": "2-0",
+   "result": "W"
+  }
+ ],
+ "injuries": [],
+ "notes": "冷启动基础画像（积分榜），待深度采集补充"
+}

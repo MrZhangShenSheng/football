@@ -1,0 +1,52 @@
+{
+ "teamId": "dunkerque",
+ "name": "Dunkerque",
+ "nameZh": "敦刻尔克",
+ "league": "france",
+ "lastUpdated": "2026-08-22",
+ "source": "cold-start + espn/fd recent results",
+ "standing": {
+  "pos": 3,
+  "played": 2,
+  "won": 1,
+  "drawn": 1,
+  "lost": 0,
+  "gf": 7,
+  "ga": 5,
+  "pts": 4,
+  "leagueTable": "france-ligue2"
+ },
+ "elo": null,
+ "form": [
+  {
+   "date": "08/08/2026",
+   "opp": "Grenoble",
+   "venue": "H",
+   "score": "4-2",
+   "result": "W"
+  },
+  {
+   "date": "14/08/2026",
+   "opp": "Reims",
+   "venue": "A",
+   "score": "3-3",
+   "result": "D"
+  },
+  {
+   "date": "2026-08-14",
+   "opp": "Stade de Reims",
+   "venue": "A",
+   "score": "3-3",
+   "result": "D"
+  },
+  {
+   "date": "2026-08-21",
+   "opp": "Montpellier",
+   "venue": "H",
+   "score": "0-0",
+   "result": "D"
+  }
+ ],
+ "injuries": [],
+ "notes": "冷启动基础画像（积分榜），待深度采集补充"
+}

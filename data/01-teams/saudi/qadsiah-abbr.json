@@ -1,0 +1,37 @@
+{
+ "teamId": "qadsiah-abbr",
+ "name": "Al Qadsiah",
+ "nameZh": "胡巴卡德",
+ "league": "saudi",
+ "lastUpdated": "2026-08-22",
+ "source": "cold-start + espn/fd recent results",
+ "standing": {
+  "pos": 4,
+  "played": 1,
+  "won": 1,
+  "drawn": 0,
+  "lost": 0,
+  "gf": 3,
+  "ga": 1,
+  "pts": 3
+ },
+ "elo": null,
+ "form": [
+  {
+   "date": "2026-08-13",
+   "opp": "Al Shabab",
+   "venue": "A",
+   "score": "3-1",
+   "result": "W"
+  },
+  {
+   "date": "2026-08-21",
+   "opp": "Al Ittihad",
+   "venue": "H",
+   "score": "0-0",
+   "result": "D"
+  }
+ ],
+ "injuries": [],
+ "notes": "冷启动基础画像（仅积分榜），待深度采集补充"
+}

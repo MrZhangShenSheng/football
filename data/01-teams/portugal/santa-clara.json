@@ -1,0 +1,38 @@
+{
+ "teamId": "santa-clara",
+ "name": "Santa Clara",
+ "nameZh": "圣克拉拉",
+ "league": "portugal",
+ "lastUpdated": "2026-08-22",
+ "source": "cold-start + espn/fd recent results",
+ "standing": {
+  "pos": 5,
+  "played": 2,
+  "won": 1,
+  "drawn": 1,
+  "lost": 0,
+  "gf": 3,
+  "ga": 2,
+  "pts": 4,
+  "leagueTable": "portugal-primeira"
+ },
+ "elo": null,
+ "form": [
+  {
+   "date": "2026-08-10",
+   "opp": "C.D. Nacional",
+   "venue": "H",
+   "score": "2-2",
+   "result": "D"
+  },
+  {
+   "date": "2026-08-15",
+   "opp": "Académico de Viseu",
+   "venue": "A",
+   "score": "1-0",
+   "result": "W"
+  }
+ ],
+ "injuries": [],
+ "notes": "冷启动基础画像（积分榜），待深度采集补充"
+}

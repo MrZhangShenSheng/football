@@ -1,0 +1,37 @@
+{
+ "teamId": "al-riyadh",
+ "name": "Al Riyadh",
+ "nameZh": "利雅得",
+ "league": "saudi",
+ "lastUpdated": "2026-08-22",
+ "source": "cold-start + espn/fd recent results",
+ "standing": {
+  "pos": 14,
+  "played": 1,
+  "won": 0,
+  "drawn": 0,
+  "lost": 1,
+  "gf": 2,
+  "ga": 4,
+  "pts": 0
+ },
+ "elo": null,
+ "form": [
+  {
+   "date": "2026-08-14",
+   "opp": "Al Ettifaq",
+   "venue": "A",
+   "score": "2-4",
+   "result": "L"
+  },
+  {
+   "date": "2026-08-21",
+   "opp": "Al Nassr",
+   "venue": "H",
+   "score": "0-0",
+   "result": "D"
+  }
+ ],
+ "injuries": [],
+ "notes": "冷启动基础画像（仅积分榜），待深度采集补充"
+}

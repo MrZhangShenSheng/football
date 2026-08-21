@@ -1,0 +1,30 @@
+{
+ "teamId": "urawa-reds",
+ "name": "Urawa Red Diamonds",
+ "nameZh": "浦和红钻",
+ "league": "japan",
+ "lastUpdated": "2026-08-22",
+ "source": "cold-start + espn/fd recent results",
+ "standing": {
+  "pos": 19,
+  "played": 2,
+  "won": 0,
+  "drawn": 0,
+  "lost": 2,
+  "gf": 4,
+  "ga": 8,
+  "pts": 0
+ },
+ "elo": null,
+ "form": [
+  {
+   "date": "2026-08-15",
+   "opp": "Sanfrecce Hiroshima",
+   "venue": "H",
+   "score": "1-4",
+   "result": "L"
+  }
+ ],
+ "injuries": [],
+ "notes": "冷启动基础画像（仅积分榜），待深度采集补充"
+}

@@ -1,0 +1,37 @@
+{
+ "teamId": "al-nassr-abbr",
+ "name": "Al Nassr",
+ "nameZh": "利雅胜利",
+ "league": "saudi",
+ "lastUpdated": "2026-08-22",
+ "source": "cold-start + espn/fd recent results",
+ "standing": {
+  "pos": 2,
+  "played": 1,
+  "won": 1,
+  "drawn": 0,
+  "lost": 0,
+  "gf": 3,
+  "ga": 0,
+  "pts": 3
+ },
+ "elo": null,
+ "form": [
+  {
+   "date": "2026-08-15",
+   "opp": "Al Fateh",
+   "venue": "H",
+   "score": "3-0",
+   "result": "W"
+  },
+  {
+   "date": "2026-08-21",
+   "opp": "Al Riyadh",
+   "venue": "A",
+   "score": "0-0",
+   "result": "D"
+  }
+ ],
+ "injuries": [],
+ "notes": "冷启动基础画像（仅积分榜），待深度采集补充"
+}

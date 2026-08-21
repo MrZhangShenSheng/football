@@ -1,0 +1,37 @@
+{
+ "teamId": "feyenoord",
+ "name": "Feyenoord",
+ "nameZh": "费耶诺德",
+ "league": "netherlands-eredivisie",
+ "lastUpdated": "2026-08-22",
+ "source": "cold-start + espn/fd recent results",
+ "standing": {
+  "pos": 7,
+  "played": 2,
+  "won": 1,
+  "drawn": 1,
+  "lost": 0,
+  "gf": 3,
+  "ga": 2,
+  "pts": 4
+ },
+ "elo": null,
+ "form": [
+  {
+   "date": "09/08/2026",
+   "opp": "Sparta Rotterdam",
+   "venue": "A",
+   "score": "1-0",
+   "result": "W"
+  },
+  {
+   "date": "16/08/2026",
+   "opp": "Go Ahead Eagles",
+   "venue": "H",
+   "score": "2-2",
+   "result": "D"
+  }
+ ],
+ "injuries": [],
+ "notes": "冷启动基础画像（仅积分榜），待深度采集补充"
+}

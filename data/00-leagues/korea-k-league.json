@@ -2,49 +2,163 @@
  "league": "korea-k-league",
  "season": 2026,
  "generatedAt": "2026-08-21",
- "roundsPlayed": null,
+ "roundsPlayed": 23,
  "standings": [
   {
    "pos": 1,
-   "teamZh": "首尔FC",
-   "played": null,
-   "pts": null,
-   "source": "sporttery-rank"
+   "team": "FC Seoul",
+   "teamZh": "FC首尔",
+   "played": 23,
+   "won": 14,
+   "drawn": 5,
+   "lost": 4,
+   "gf": 39,
+   "ga": 19,
+   "gd": 20,
+   "pts": 47
   },
   {
    "pos": 2,
-   "teamZh": "蔚山现代",
-   "played": null,
-   "pts": null,
-   "source": "sporttery-rank"
+   "team": "Ulsan HD FC",
+   "teamZh": "蔚山HD",
+   "played": 23,
+   "won": 11,
+   "drawn": 4,
+   "lost": 8,
+   "gf": 37,
+   "ga": 33,
+   "gd": 4,
+   "pts": 37
   },
   {
    "pos": 3,
+   "team": "Gangwon FC",
    "teamZh": "江原FC",
-   "played": null,
-   "pts": null,
-   "source": "sporttery-rank"
+   "played": 22,
+   "won": 9,
+   "drawn": 8,
+   "lost": 5,
+   "gf": 28,
+   "ga": 19,
+   "gd": 9,
+   "pts": 35
   },
   {
    "pos": 4,
+   "team": "Jeonbuk Hyundai Motors",
    "teamZh": "全北现代",
-   "played": null,
-   "pts": null,
-   "source": "sporttery-rank"
+   "played": 23,
+   "won": 9,
+   "drawn": 7,
+   "lost": 7,
+   "gf": 30,
+   "ga": 22,
+   "gd": 8,
+   "pts": 34
+  },
+  {
+   "pos": 5,
+   "team": "Jeju SK FC",
+   "teamZh": "济州SK",
+   "played": 23,
+   "won": 9,
+   "drawn": 7,
+   "lost": 7,
+   "gf": 27,
+   "ga": 24,
+   "gd": 3,
+   "pts": 34
+  },
+  {
+   "pos": 6,
+   "team": "Pohang Steelers",
+   "teamZh": "浦项制铁",
+   "played": 23,
+   "won": 9,
+   "drawn": 4,
+   "lost": 10,
+   "gf": 22,
+   "ga": 25,
+   "gd": -3,
+   "pts": 31
   },
   {
    "pos": 7,
-   "teamZh": "安养FC",
-   "played": null,
-   "pts": null,
-   "source": "sporttery-rank"
+   "team": "FC Anyang",
+   "teamZh": "FC安养",
+   "played": 23,
+   "won": 7,
+   "drawn": 9,
+   "lost": 7,
+   "gf": 30,
+   "ga": 30,
+   "gd": 0,
+   "pts": 30
+  },
+  {
+   "pos": 8,
+   "team": "Incheon United",
+   "teamZh": "仁川联队",
+   "played": 22,
+   "won": 8,
+   "drawn": 6,
+   "lost": 8,
+   "gf": 29,
+   "ga": 25,
+   "gd": 4,
+   "pts": 30
+  },
+  {
+   "pos": 9,
+   "team": "Bucheon FC 1995",
+   "teamZh": "富川FC",
+   "played": 23,
+   "won": 6,
+   "drawn": 9,
+   "lost": 8,
+   "gf": 24,
+   "ga": 27,
+   "gd": -3,
+   "pts": 27
   },
   {
    "pos": 10,
+   "team": "Daejeon Citizen",
    "teamZh": "大田市民",
-   "played": null,
-   "pts": null,
-   "source": "sporttery-rank"
+   "played": 23,
+   "won": 6,
+   "drawn": 8,
+   "lost": 9,
+   "gf": 29,
+   "ga": 28,
+   "gd": 1,
+   "pts": 26
+  },
+  {
+   "pos": 11,
+   "team": "Gimcheon Sangmu FC",
+   "teamZh": "金泉尚武",
+   "played": 23,
+   "won": 4,
+   "drawn": 13,
+   "lost": 6,
+   "gf": 23,
+   "ga": 29,
+   "gd": -6,
+   "pts": 25
+  },
+  {
+   "pos": 12,
+   "team": "Gwangju Football Club",
+   "teamZh": "光州FC",
+   "played": 23,
+   "won": 1,
+   "drawn": 8,
+   "lost": 14,
+   "gf": 12,
+   "ga": 49,
+   "gd": -37,
+   "pts": 11
   }
  ],
  "leagueStats": {
@@ -53,8 +167,8 @@
  },
  "context": {},
  "freshness": {
-  "standingsSource": "sporttery",
-  "stale": false,
-  "note": "ESPN无韩职；仅官方排名"
+  "standingsSource": "titan007",
+  "fetchedAt": "2026-08-22",
+  "stale": false
  }
 }
