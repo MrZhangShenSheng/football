@@ -19,23 +19,28 @@ cmd /c mklink /J "$env:USERPROFILE\.claude\skills\football-betting-prediction" "
 python engine/scripts/run.py all
 ```
 
-## 日常操作（统一入口 run.py）
+## 日常操作（两种方式）
+
+### 方式一：对 Claude 说一句话（推荐，全流程自动）
+
+| 你说 | 系统自动走完 |
+|:---|:---|
+| **"帮我预测"** | 刷数据+联赛画像 → DC拟合+融合 → 体彩采集+本地检索+ESPN积分榜 → 战意状态机 → 分析评级 → 报告归档 → git commit |
+| **"再跑一遍"** | 临场终审：赔率复扫+三定律判定 → 更新报告 → commit |
+| **"回填赛果"** | 查赛果+命中率 → fd收盘价算CLV → 重拟合 → 复盘归档 → commit |
+| **"XX队近况？"** | 本地知识库检索直接回答 |
+| **"跑下回测"** | walk-forward 回测 + 与市场基线对比 |
+
+### 方式二：命令行（开发/调试用）
 
 ```powershell
 cd engine\scripts
-
-python run.py all                                   # 预测日开工：刷新赔率/xG + 重建索引 + 拟合（--auto 自动跳过新鲜缓存）
-python run.py update                                # 仅刷新数据缓存（fd 赔率含 Pinnacle 收盘价 + xG）
-python run.py predict spain-laliga Vallecano Alaves --market 2.05,3.4,3.9   # 单场预测+融合
-python run.py backtest spain-laliga 2526            # 回测（RPS/logloss/准确率 vs 市场）
+python run.py all                                   # 刷数据+画像+索引+拟合（--auto 跳新鲜缓存）
+python run.py update                                # 仅刷数据缓存（fd 赔率+Pinnacle收盘+xG）
+python run.py predict spain-laliga Vallecano Alaves --market 2.05,3.4,3.9
+python run.py backtest spain-laliga 2526
+python -m pytest tests -q                           # 34 用例回归（改代码必跑）
 ```
-
-| 场景 | 命令 |
-|:---|:---|
-| 预测日开工 | `run.py all` → 然后对 Claude 说"帮我预测"（触发 skill） |
-| 赛后复盘 | 对 Claude 说"回填赛果"（skill Step 8 自动查赛果+CLV） |
-| 查询球队 | 对 Claude 说"XX队近况？"（走本地知识库检索） |
-| 验证模型改动 | `run.py backtest` 对比 RPS 是否恶化 |
 
 ## 预测日全流程
 

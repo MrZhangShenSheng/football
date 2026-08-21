@@ -1,5 +1,17 @@
 # Football 足球预测知识库
 
+## 使用协议（一句话触发，全流程自动）★ v4.2
+
+| 用户说 | 系统自动走完 | 产出 |
+|:---|:---|:---|
+| **"帮我预测"** | run.py update（刷数据+联赛画像）→ dc_fit --auto → 体彩采集 → 本地检索+ESPN 实时积分榜 → DC 融合 → 战意状态机 → 分析评级 → 报告+预测JSON 归档 → git commit | 摘要卡（方案/赔率/仓位） |
+| **"再跑一遍"** | 体彩赔率复扫 → 信息边际三定律判定 → 增量更新报告 → git commit | 终审结论（维持/修订） |
+| **"回填赛果"** | 查赛果 → 回填命中率 → fd 刷收盘价 → 算 CLV → dc_fit 重拟合 → 复盘报告归档 → git commit | 复盘摘要（方向/比分/CLV/教训） |
+| **"XX队近况？"** | 本地知识库检索（00-leagues/01-teams/04-summaries）→ 直接回答 | 纯文本答案 |
+| **"跑下回测"** | run.py backtest → 与市场基线对比 | RPS 对照表 |
+
+约定：预测命令自带数据刷新（用户永远不用手动 run.py）；每次流程结束自动 commit（git 历史=预测锁定凭证）。
+
 ## 项目定位
 
 本地足球知识图谱 + Dixon-Coles/Elo 统计模型 + 检索增强预测（Agentic RAG）+ 趋势挖掘引擎。
@@ -7,6 +19,7 @@
 
 ## 目录结构（= 四层架构）
 
+- `data/00-leagues/`: 联赛画像 JSON（积分榜/场均进球/主胜率/冷门率/TOP比分/争冠保级格局；league_profile.py 自动生成，预测时 ESPN 实时覆盖）
 - `data/01-teams/`: 球队画像 JSON（Elo/xG/近况/伤停/主客场/休息天数）+ `_aliases.json` 实体映射表 + `_index.json` 路由索引
 - `data/02-results/`: 赛果回填 JSON（YYYY-MM-DD.json）+ `_h2h_index.json`（仅叙事参考）
 - `data/03-predictions/`: 预测报告 HTML（仅用户输出用 HTML+SVG）

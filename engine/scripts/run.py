@@ -44,6 +44,7 @@ def main() -> None:
         sh("odds_fetch.py", "--season", "2526", *codes)
         sh("odds_fetch.py", "--season", CURRENT_SEASON, *codes)
         sh("build_index.py")
+        sh("league_profile.py", "--all")
     elif cmd == "fit":
         if rest:
             league, season = rest[0], rest[1] if len(rest) > 1 else "2526"
@@ -63,6 +64,7 @@ def main() -> None:
         sh("odds_fetch.py", "--season", "2526", *LEAGUES)
         sh("odds_fetch.py", "--season", CURRENT_SEASON, *LEAGUES)
         sh("build_index.py")
+        sh("league_profile.py", "--all")
         for _, (league, season) in LEAGUES.items():
             sh("dc_fit.py", league, season, "--auto")
     else:
