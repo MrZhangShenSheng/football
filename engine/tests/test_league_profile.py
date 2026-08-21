@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """联赛画像测试：合成赛果 → 积分榜/统计/战意格局正确性。"""
 import json
+import tempfile
+from pathlib import Path
 
 import pytest
 
@@ -8,10 +10,9 @@ import league_profile as lp
 
 
 @pytest.fixture(scope="module")
-def profile(tmp_path_factory, monkeypatch):
-    """用合成缓存数据构造一个 4 队小联赛画像。"""
-    tmp = tmp_path_factory.mktemp("cache")
-    # A 队 2 连胜（含 1 场高赔冷门），B/C/D 常规
+def profile():
+    """合成缓存数据构造 4 队小联赛画像（直接替换模块路径，模块级共享）。"""
+    tmp = Path(tempfile.mkdtemp(prefix="lgprofile_"))
     matches = [
         {"date": "01/08/2026", "home": "A", "away": "B", "fthg": 2, "ag": 0, "pin_h": 2.5, "pin_d": 3.2, "pin_a": 2.8},
         {"date": "08/08/2026", "home": "C", "away": "D", "fthg": 1, "ag": 1, "pin_h": 2.2, "pin_d": 3.2, "pin_a": 3.3},
@@ -20,8 +21,8 @@ def profile(tmp_path_factory, monkeypatch):
     ]
     (tmp / "odds_test-league_2627.json").write_text(
         json.dumps({"matches": matches}), encoding="utf-8")
-    monkeypatch.setattr(lp, "CACHE_DIR", tmp)
-    monkeypatch.setattr(lp, "OUT_DIR", tmp)
+    lp.CACHE_DIR = tmp
+    lp.OUT_DIR = tmp
     return lp.build("test-league", ["2627"])
 
 
