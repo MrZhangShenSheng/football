@@ -1,0 +1,170 @@
+{
+  "checkedAt": "2026-08-21",
+  "leagues": {
+    "japan": {
+      "status": "stale",
+      "roundsPlayed": 2,
+      "standingsSource": "claude-manual",
+      "fdCovered": false
+    },
+    "saudi": {
+      "status": "stale",
+      "roundsPlayed": 1,
+      "standingsSource": "claude-manual",
+      "fdCovered": false
+    },
+    "finland": {
+      "status": "stale",
+      "roundsPlayed": null,
+      "standingsSource": null,
+      "fdCovered": false
+    },
+    "sweden": {
+      "status": "stale",
+      "roundsPlayed": 17,
+      "standingsSource": "claude-manual",
+      "fdCovered": false
+    },
+    "france-ligue2": {
+      "status": "ready",
+      "roundsPlayed": 13,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "netherlands": {
+      "status": "stale",
+      "roundsPlayed": 2,
+      "standingsSource": "claude-manual",
+      "fdCovered": false
+    },
+    "france-ligue1": {
+      "status": "ready",
+      "roundsPlayed": 17,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "england-premier": {
+      "status": "ready",
+      "roundsPlayed": 21,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "spain-laliga": {
+      "status": "ready",
+      "roundsPlayed": 20,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    }
+  },
+  "missingLeagues": [],
+  "staleLeagues": [
+    "japan",
+    "saudi",
+    "finland",
+    "sweden",
+    "netherlands"
+  ],
+  "missingAlias": [],
+  "notReadyTeams": [
+    {
+      "team": "柏太阳神",
+      "teamId": "kashiwa-reysol",
+      "league": "japan",
+      "status": "missing"
+    },
+    {
+      "team": "长崎航海",
+      "teamId": "v-varen-nagasaki",
+      "league": "japan",
+      "status": "missing"
+    },
+    {
+      "team": "利雅得",
+      "teamId": "al-riyadh",
+      "league": "saudi",
+      "status": "missing"
+    },
+    {
+      "team": "利雅得胜利",
+      "teamId": "al-nassr",
+      "league": "saudi",
+      "status": "missing"
+    },
+    {
+      "team": "塞伊奈约基",
+      "teamId": "sjk-seinajoki",
+      "league": "finland",
+      "status": "missing"
+    },
+    {
+      "team": "拉赫蒂",
+      "teamId": "lahti",
+      "league": "finland",
+      "status": "missing"
+    },
+    {
+      "team": "天狼星",
+      "teamId": "sirius",
+      "league": "sweden",
+      "status": "missing"
+    },
+    {
+      "team": "赫根",
+      "teamId": "hacken",
+      "league": "sweden",
+      "status": "missing"
+    },
+    {
+      "team": "敦刻尔克",
+      "teamId": "dunkerque",
+      "league": "france",
+      "status": "missing"
+    },
+    {
+      "team": "蒙彼利埃",
+      "teamId": "montpellier",
+      "league": "france",
+      "status": "missing"
+    },
+    {
+      "team": "登博思",
+      "teamId": "den-bosch",
+      "league": "netherlands",
+      "status": "missing"
+    },
+    {
+      "team": "埃因霍温FC",
+      "teamId": "fc-eindhoven",
+      "league": "netherlands",
+      "status": "missing"
+    },
+    {
+      "team": "阿森纳",
+      "teamId": "arsenal",
+      "league": "england",
+      "status": "missing"
+    },
+    {
+      "team": "考文垂",
+      "teamId": "coventry",
+      "league": "england",
+      "status": "missing"
+    },
+    {
+      "team": "贝蒂斯",
+      "teamId": "betis",
+      "league": "spain",
+      "status": "missing"
+    },
+    {
+      "team": "皇家社会",
+      "teamId": "sociedad",
+      "league": "spain",
+      "status": "missing"
+    }
+  ],
+  "readyCount": {
+    "leagues": 4,
+    "teamsKnown": 40
+  }
+}

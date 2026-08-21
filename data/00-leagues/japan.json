@@ -1,0 +1,45 @@
+{
+  "league": "japan",
+  "season": "2026",
+  "generatedAt": "2026-08-21",
+  "roundsPlayed": 2,
+  "standings": [
+    {
+      "pos": 3,
+      "team": "柏太阳神",
+      "played": 2,
+      "pts": 6,
+      "note": "部分数据"
+    },
+    {
+      "pos": 9,
+      "team": "长崎航海",
+      "played": 2,
+      "pts": 3,
+      "note": "部分数据"
+    },
+    {
+      "pos": 17,
+      "team": "东京FC",
+      "played": 2,
+      "pts": 1,
+      "note": "部分数据"
+    },
+    {
+      "pos": 20,
+      "team": "千叶市原",
+      "played": 2,
+      "pts": 0,
+      "note": "部分数据"
+    }
+  ],
+  "leagueStats": {
+    "computedFrom": "claude-manual",
+    "note": "fd不覆盖J联赛，下轮WebFetch ESPN补全积分榜"
+  },
+  "freshness": {
+    "standingsSource": "claude-manual",
+    "stale": true,
+    "note": "不完整画像，预测时需WebFetch覆盖"
+  }
+}

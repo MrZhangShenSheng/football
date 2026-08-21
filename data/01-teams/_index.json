@@ -1,8 +1,63 @@
 {
   "_meta": {
     "rebuiltAt": "2026-08-21",
-    "count": 0,
+    "count": 6,
     "note": "路由表：一行一球队，内容本体在球队文件内"
   },
-  "teams": {}
+  "teams": {
+    "marseille": {
+      "league": "france",
+      "path": "france/marseille.json",
+      "zh": "马赛",
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-21"
+    },
+    "strasbourg": {
+      "league": "france",
+      "path": "france/strasbourg.json",
+      "zh": "斯特拉斯堡",
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-21"
+    },
+    "chiba": {
+      "league": "japan",
+      "path": "japan/chiba.json",
+      "zh": "千叶市原",
+      "summary": "2场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-21"
+    },
+    "fc-tokyo": {
+      "league": "japan",
+      "path": "japan/fc-tokyo.json",
+      "zh": "东京FC",
+      "summary": "2场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-21"
+    },
+    "al-ittihad": {
+      "league": "saudi",
+      "path": "saudi/al-ittihad.json",
+      "zh": "吉达联合",
+      "summary": "1场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-21"
+    },
+    "qadsiah": {
+      "league": "saudi",
+      "path": "saudi/qadsiah.json",
+      "zh": "胡巴尔卡德西亚",
+      "summary": "1场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-21"
+    }
+  }
 }

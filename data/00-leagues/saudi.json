@@ -1,0 +1,48 @@
+{
+  "league": "saudi",
+  "season": "2026-27",
+  "generatedAt": "2026-08-21",
+  "roundsPlayed": 1,
+  "standings": [
+    {
+      "pos": null,
+      "team": "利雅得胜利",
+      "pts": 3,
+      "note": "首轮3-0"
+    },
+    {
+      "pos": null,
+      "team": "利雅得新月",
+      "pts": 3,
+      "note": "首轮4-2胜"
+    },
+    {
+      "pos": null,
+      "team": "胡巴尔卡德西亚",
+      "pts": 3,
+      "note": "首轮3-1客胜"
+    },
+    {
+      "pos": null,
+      "team": "吉达联合",
+      "pts": 1,
+      "note": "首轮1-1"
+    },
+    {
+      "pos": null,
+      "team": "利雅得",
+      "pts": 0,
+      "note": "首轮负"
+    }
+  ],
+  "leagueStats": {
+    "avgGoals": 2.6,
+    "computedFrom": "skill静态锚+首轮观察",
+    "note": "fd不覆盖沙特联"
+  },
+  "freshness": {
+    "standingsSource": "claude-manual",
+    "stale": true,
+    "note": "部分积分，预测时WebFetch覆盖"
+  }
+}
