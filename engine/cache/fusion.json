@@ -1,0 +1,6 @@
+{
+  "a": 0.4,
+  "b": 1.0,
+  "lastTuned": null,
+  "note": "log-odds 融合系数初始值（模型贡献~30%）。backtest.py 积累>=100场后最小化RPS重校；无回测数据前不得调大a"
+}
