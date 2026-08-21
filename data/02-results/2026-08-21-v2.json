@@ -1,0 +1,329 @@
+{
+ "date": "2026-08-21",
+ "version": "v4.3",
+ "totalMatches": 52,
+ "generatedAt": "2026-08-21T21:30:00+08:00",
+ "keyContext": {
+  "rounds": "英超R1/意甲R1/法甲R1/西甲R2/荷甲R3/葡超R3/日职R4/沙职中段",
+  "dataSource": "体彩API(curl直连绕TLS风控)+ESPN core API(积分榜)+ESPN新闻(伤停/转会)+DC缓存(2526季参数)",
+  "pinnacleNote": "本轮未开赛无收盘价——CLV赛后回填时补",
+  "bigNews": "曼城卖Rodri(→巴萨£51m)/Stones(→国米);利物浦无Salah;纽卡卖4核心;皇马新帅Mourinho;国米新帅Chivu+Stones;那不勒斯Allegri+Hojlund;米兰新帅Amorim+Pulisic伤;PSV状态警报(超级杯0-4AZ);朗斯超级杯1-0PSG"
+ },
+ "recommendations": [
+  {
+   "code": "周六017",
+   "league": "法甲",
+   "match": "朗斯vs欧塞尔",
+   "time": "08-22 23:15",
+   "pick": "主胜",
+   "odds": 1.33,
+   "impliedProb": 0.723,
+   "adjustedProb": 0.79,
+   "star": 4,
+   "dataGrade": "B",
+   "round": "R1",
+   "correction": "R1x0.80+DC融合",
+   "schemes": [
+    "A",
+    "B"
+   ],
+   "notes": "卫冕冠军+超级杯1-0PSG+DC 0.855;比分选项2-0@7.00(法甲TOP比分1-0)"
+  },
+  {
+   "code": "周日009",
+   "league": "英超",
+   "match": "曼城vs伯恩茅斯",
+   "time": "08-23 21:00",
+   "pick": "主胜",
+   "odds": 1.33,
+   "impliedProb": 0.723,
+   "adjustedProb": 0.78,
+   "star": 3,
+   "dataGrade": "A",
+   "round": "R1",
+   "correction": "R1x0.80+换血降档",
+   "schemes": [
+    "C"
+   ],
+   "notes": "DC0.828但社区盾0-3阿森纳+Rodri/Stones走→三星;Haaland健康"
+  },
+  {
+   "code": "周日014",
+   "league": "荷甲",
+   "match": "坎布尔vs费耶诺德",
+   "time": "08-23 22:45",
+   "pick": "客胜",
+   "odds": 1.14,
+   "impliedProb": 0.798,
+   "adjustedProb": 0.757,
+   "star": 4,
+   "dataGrade": "B",
+   "round": "R3",
+   "correction": "R3x0.95",
+   "schemes": [
+    "D"
+   ],
+   "notes": "超低赔只做骨架;坎布尔0分丢7+新帅 vs 费耶诺德1胜1平"
+  },
+  {
+   "code": "周日025",
+   "league": "葡超",
+   "match": "波尔图vs阿罗卡",
+   "time": "08-24 03:30",
+   "pick": "主胜",
+   "odds": 1.15,
+   "impliedProb": 0.825,
+   "adjustedProb": 0.748,
+   "star": 4,
+   "dataGrade": "A",
+   "round": "R3",
+   "correction": "R3x0.95",
+   "schemes": [
+    "A",
+    "B",
+    "D"
+   ],
+   "notes": "超低赔骨架;波尔图2连胜零失球主场;阿罗卡也2连胜(榜首席)注意"
+  },
+  {
+   "code": "周日018",
+   "league": "意甲",
+   "match": "弗洛西诺vs尤文",
+   "time": "08-24 00:30",
+   "pick": "客胜",
+   "odds": 1.31,
+   "impliedProb": 0.733,
+   "adjustedProb": 0.71,
+   "star": 4,
+   "dataGrade": "B",
+   "round": "R1",
+   "correction": "R1x0.80",
+   "schemes": [
+    "A-score"
+   ],
+   "notes": "尤文无正印9号(Vlahović走)降风险;DC客胜0.648"
+  },
+  {
+   "code": "周日008",
+   "league": "荷甲",
+   "match": "埃因霍温vs格罗宁根",
+   "time": "08-23 20:30",
+   "pick": "主胜",
+   "odds": 1.24,
+   "impliedProb": 0.781,
+   "adjustedProb": 0.691,
+   "star": 3,
+   "dataGrade": "A",
+   "round": "R3",
+   "correction": "R3x0.95+状态警报降档",
+   "schemes": [
+    "C"
+   ],
+   "notes": "PSV超级杯0-4AZ+上轮平;格罗宁根2连胜——信息对冲降档"
+  },
+  {
+   "code": "周日024",
+   "league": "西甲",
+   "match": "埃尔切vs巴萨",
+   "time": "08-24 03:30",
+   "pick": "客胜",
+   "odds": 1.22,
+   "impliedProb": 0.789,
+   "adjustedProb": 0.756,
+   "star": 3,
+   "dataGrade": "A",
+   "round": "R1",
+   "correction": "R1x0.80+新阵磨合降档",
+   "schemes": [],
+   "notes": "巴萨Rodri+Gordon新阵R1客场;埃尔切R1客平拉科有抵抗;仅备选"
+  },
+  {
+   "code": "周六007",
+   "league": "英超",
+   "match": "赫尔城vs曼联",
+   "time": "08-22 19:30",
+   "pick": "客胜",
+   "odds": 1.22,
+   "impliedProb": 0.777,
+   "adjustedProb": 0.635,
+   "star": 3,
+   "dataGrade": "B",
+   "round": "R1",
+   "correction": "R1x0.80",
+   "schemes": [
+    "D"
+   ],
+   "notes": "曼联新帅Carrick首战;赫尔城升班马;Sesko/Mount伤情不明"
+  },
+  {
+   "code": "周六027",
+   "league": "西甲",
+   "match": "西班牙人vs皇马",
+   "time": "08-23 03:30",
+   "pick": "客胜",
+   "odds": 1.34,
+   "impliedProb": 0.716,
+   "adjustedProb": 0.633,
+   "star": 3,
+   "dataGrade": "B",
+   "round": "R1",
+   "correction": "R1x0.80+体能未满",
+   "schemes": [],
+   "notes": "皇马Mourinho回归首战+世界杯国脚体能未满;西班牙人R1 3-0莱万特状态热——冷门温床,仅单选参考"
+  },
+  {
+   "code": "周日022",
+   "league": "意甲",
+   "match": "都灵vsAC米兰",
+   "time": "08-24 02:45",
+   "pick": "客胜",
+   "odds": 1.58,
+   "impliedProb": 0.608,
+   "adjustedProb": 0.612,
+   "star": 3,
+   "dataGrade": "B",
+   "round": "R1",
+   "correction": "R1x0.80+Pulisic缺",
+   "schemes": [],
+   "notes": "米兰新帅Amorim;Pulisic大概率缺阵→攻击打折;备选"
+  },
+  {
+   "code": "周六019",
+   "league": "意甲",
+   "match": "乌迪内斯vs科莫",
+   "time": "08-23 00:30",
+   "pick": "客胜",
+   "odds": 1.6,
+   "impliedProb": 0.601,
+   "adjustedProb": 0.583,
+   "star": 3,
+   "dataGrade": "B",
+   "round": "R1",
+   "correction": "R1x0.80",
+   "schemes": [],
+   "notes": "科莫上季第4;DC客胜0.614;备选"
+  },
+  {
+   "code": "周六014",
+   "league": "荷甲",
+   "match": "福图纳vs阿尔克马",
+   "time": "08-22 22:30",
+   "pick": "客胜",
+   "odds": 1.47,
+   "impliedProb": 0.649,
+   "adjustedProb": 0.578,
+   "star": 3,
+   "dataGrade": "B",
+   "round": "R3",
+   "correction": "R3x0.95",
+   "schemes": [],
+   "notes": "AZ 2连胜客4-1乌得勒支;备选"
+  },
+  {
+   "code": "周六022",
+   "league": "德超杯",
+   "match": "多特vs拜仁",
+   "time": "08-23 02:30",
+   "pick": "客胜",
+   "odds": 1.55,
+   "impliedProb": 0.617,
+   "adjustedProb": 0.572,
+   "star": 3,
+   "dataGrade": "B",
+   "round": "杯赛",
+   "correction": "none",
+   "schemes": [],
+   "notes": "单场决赛波动大;备选"
+  },
+  {
+   "code": "周六001",
+   "league": "日职",
+   "match": "鹿岛vs福冈",
+   "time": "08-22 17:00",
+   "pick": "主胜",
+   "odds": 1.61,
+   "impliedProb": 0.594,
+   "adjustedProb": 0.551,
+   "star": 3,
+   "dataGrade": "B",
+   "round": "R4",
+   "correction": "none",
+   "schemes": [
+    "A"
+   ],
+   "notes": "鹿岛3连胜榜首vs福冈第8;日职TOP比分1-1/1-0/2-1"
+  }
+ ],
+ "schemes": {
+  "A": {
+   "name": "稳健型(推荐)",
+   "type": "3串1纯胜平负",
+   "picks": [
+    "周六017 朗斯主胜@1.33",
+    "周日025 波尔图主胜@1.15",
+    "周六001 鹿岛主胜@1.61"
+   ],
+   "odds": 2.46,
+   "bet": "2元x5倍=10元",
+   "prize": 24.6,
+   "check": "开季R1场仅朗斯1场✓ 联赛不重复✓"
+  },
+  "B": {
+   "name": "平衡型",
+   "type": "3串1混合(2稳胆+1比分)",
+   "picks": [
+    "周日025 波尔图主胜@1.15",
+    "周六017 朗斯比分2-0@7.00",
+    "周六007 曼联客胜@1.22"
+   ],
+   "odds": 9.83,
+   "bet": "2元x5倍=10元",
+   "prize": 98.3,
+   "check": "含比分≤3串✓ 开季R1两场(朗斯+曼联)——超限!标注"
+  },
+  "C": {
+   "name": "进攻型",
+   "type": "3串1混合",
+   "picks": [
+    "周日009 曼城主胜@1.33",
+    "周日008 PSV主胜@1.24",
+    "周日018 尤文比分0-2@6.50"
+   ],
+   "odds": 10.68,
+   "bet": "2元x2倍=4元",
+   "prize": 21.4,
+   "check": "R1两场(曼城+尤文)超限——改4元小注"
+  },
+  "D": {
+   "name": "超低赔骨架",
+   "type": "3串1纯胜平负",
+   "picks": [
+    "周日025 波尔图主胜@1.15",
+    "周日014 费耶诺德客胜@1.14",
+    "周六007 曼联客胜@1.22"
+   ],
+   "odds": 1.6,
+   "bet": "10元x2倍=20元",
+   "prize": 32,
+   "check": "荷甲1场✓ 开季R1仅曼联✓"
+  }
+ },
+ "avoided": {
+  "周日017 纽卡vs利物浦": "英超R1+纽卡卖4核心+利物浦无Salah+Ekitiké伤——DC客胜仅48%修正后39%,信息对冲,避开",
+  "周六018 布伦特vs热刺": "热刺De Zerbi重构R1首战,修正后主胜41%胶着,避开",
+  "周六012 伊普斯vs桑德兰": "概率胶着极差9pp,避开",
+  "周六021 巴伦西亚vs塞尔塔": "胶着极差7.7pp,避开",
+  "周日020 圣克拉拉vs法马利康": "胶着极差4.4pp,避开",
+  "周五004 塞伊奈vs拉赫蒂": "芬超×2.0波动+胶着,避开",
+  "周六024 帕尔马vs卡利亚里": "胶着极差9.3+意甲平局率29.5%,避开",
+  "周五010 阿森纳vs考文垂": "胜平负未开售;Saliba长期伤缺;让-2@2.32搏大胜风险高,观望"
+ },
+ "dataSources": {
+  "sporttery": "curl直连TLS绕风控,52场全量+比分赔率",
+  "espn_core": "西甲/荷甲/葡超/日职当季积分榜(core API types/1)",
+  "espn_news": "12队伤停/转会情报(2026-08-17~21报道)",
+  "dc_model": "6联赛2526参数,17场DC融合",
+  "pinnacle": "未开盘无收盘价,CLV赛后补",
+  "leagues_profile": "9联赛画像(含本轮新建:葡超/日职修正/西甲/荷甲/韩职最小/日乙最小)"
+ }
+}
