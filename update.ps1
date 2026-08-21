@@ -37,3 +37,11 @@ Pop-Location
 
 Write-Host "`n=== Update done ===" -ForegroundColor Cyan
 Write-Host "Ready: tell Claude 'predict' to start"
+Write-Host ""
+Write-Host "Knowledge base freshness:" -ForegroundColor DarkGray
+$lg = Get-ChildItem "$HOME_DIR\data\00-leagues\*.json" -ErrorAction SilentlyContinue
+$fd = @($lg | Where-Object { (Get-Content $_ -Raw) -match '"computedFrom": "fd"' })
+$manual = @($lg | Where-Object { (Get-Content $_ -Raw) -match 'espn-manual|claude-manual|none' })
+Write-Host "  fd-coverage (fresh): $($fd.Count) leagues" -ForegroundColor Green
+Write-Host "  manual (check on predict): $($manual.Count) leagues" -ForegroundColor DarkYellow
+Write-Host "  -> manual leagues auto-refresh via Step 2.5 on next 'predict'" -ForegroundColor DarkGray
