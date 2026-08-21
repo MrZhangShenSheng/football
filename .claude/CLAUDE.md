@@ -38,6 +38,7 @@
 4. 融合：p_final = σ(0.4·logit(p_DC) + 1.0·logit(p_pinnacle))，系数存 engine/cache/fusion.json
 5. H2H 交锋仅叙事参考，不进预测权重（学术验证预测力垫底）
 6. 多源球队名经 `data/01-teams/_aliases.json` 规范 ID 解析；球队文件名用英文规范 ID（如 lech-poznan.json）
+6.5 HTML 文件必须含 `<meta charset="utf-8">`（开头 `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">`），否则浏览器 GBK 乱码
 7. 读取本地文件先校验 lastUpdated；过期数据刷新或在报告标注"数据截至 X 日"
 8. 索引文件只做路由表（一行一条目，不放内容本体）；索引可由 build_index.py 重建，glob 永远可兜底
 9. 内部文件 JSON/纯文本，禁止 HTML/SVG；仅用户报告用 HTML+内嵌 SVG
