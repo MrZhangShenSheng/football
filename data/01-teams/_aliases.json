@@ -12,84 +12,636 @@
     }
   },
   "saudi": {
-    "al-majmaah": {"zh": "迈季迈阿宽广", "clubelo": null, "understat": null, "espn": null},
-    "al-hilal": {"zh": "利雅得新月", "clubelo": null, "understat": null, "espn": "Al Hilal"},
-    "al-riyadh": {"zh": "利雅得", "clubelo": null, "understat": null, "espn": null},
-    "al-nassr": {"zh": "利雅得胜利", "clubelo": null, "understat": null, "espn": "Al Nassr"},
-    "qadsiah": {"zh": "胡巴尔卡德西亚", "clubelo": null, "understat": null, "espn": "Al-Qadsiah"},
-    "al-ittihad": {"zh": "吉达联合", "clubelo": null, "understat": null, "espn": "Al Ittihad"}
+    "al-majmaah": {
+      "zh": "迈季迈阿宽广",
+      "clubelo": null,
+      "understat": null,
+      "espn": null
+    },
+    "al-hilal": {
+      "zh": "利雅得新月",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Al Hilal"
+    },
+    "al-riyadh": {
+      "zh": "利雅得",
+      "clubelo": null,
+      "understat": null,
+      "espn": null
+    },
+    "al-nassr": {
+      "zh": "利雅得胜利",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Al Nassr",
+      "variants": [
+        "利雅胜利"
+      ]
+    },
+    "qadsiah": {
+      "zh": "胡巴尔卡德西亚",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Al-Qadsiah",
+      "variants": [
+        "胡巴卡德"
+      ]
+    },
+    "al-ittihad": {
+      "zh": "吉达联合",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Al Ittihad"
+    },
+    "al-nassr-abbr": {
+      "zh": "利雅胜利",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Al Nassr",
+      "variants": [
+        "利雅胜利"
+      ],
+      "aliasOf": "al-nassr"
+    },
+    "qadsiah-abbr": {
+      "zh": "胡巴卡德",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Al-Qadsiah",
+      "variants": [
+        "胡巴卡德"
+      ],
+      "aliasOf": "qadsiah"
+    }
   },
   "england": {
-    "arsenal": {"zh": "阿森纳", "clubelo": "Arsenal", "understat": "Arsenal", "espn": "Arsenal", "fd": "Arsenal"},
-    "coventry": {"zh": "考文垂", "clubelo": null, "understat": null, "espn": "Coventry City", "fd": "Coventry"}
+    "arsenal": {
+      "zh": "阿森纳",
+      "clubelo": "Arsenal",
+      "understat": "Arsenal",
+      "espn": "Arsenal",
+      "fd": "Arsenal"
+    },
+    "coventry": {
+      "zh": "考文垂",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Coventry City",
+      "fd": "Coventry"
+    },
+    "hull-city": {
+      "zh": "赫尔城"
+    },
+    "man-united": {
+      "zh": "曼联"
+    },
+    "everton": {
+      "zh": "埃弗顿"
+    },
+    "crystal-palace": {
+      "zh": "水晶宫"
+    },
+    "nottingham-forest": {
+      "zh": "诺丁汉"
+    },
+    "leeds": {
+      "zh": "利兹联"
+    },
+    "ipswich": {
+      "zh": "伊普斯"
+    },
+    "sunderland": {
+      "zh": "桑德兰"
+    },
+    "brentford": {
+      "zh": "布伦特"
+    },
+    "tottenham": {
+      "zh": "热刺"
+    },
+    "man-city": {
+      "zh": "曼城"
+    },
+    "bournemouth": {
+      "zh": "伯恩茅斯"
+    },
+    "newcastle": {
+      "zh": "纽卡斯尔"
+    },
+    "liverpool": {
+      "zh": "利物浦"
+    }
   },
   "spain": {
-    "rayo-vallecano": {"zh": "巴列卡诺", "clubelo": "Rayo Vallecano", "understat": "Rayo Vallecano", "espn": "Rayo Vallecano", "fd": "Vallecano"},
-    "alaves": {"zh": "阿拉维斯", "clubelo": "Alaves", "understat": "Alaves", "espn": "Alaves", "fd": "Alaves"},
-    "betis": {"zh": "贝蒂斯", "clubelo": "Betis", "understat": "Betis", "espn": "Real Betis", "fd": "Betis"},
-    "sociedad": {"zh": "皇家社会", "clubelo": "Sociedad", "understat": "Sociedad", "espn": "Real Sociedad", "fd": "Sociedad"}
+    "rayo-vallecano": {
+      "zh": "巴列卡诺",
+      "clubelo": "Rayo Vallecano",
+      "understat": "Rayo Vallecano",
+      "espn": "Rayo Vallecano",
+      "fd": "Vallecano"
+    },
+    "alaves": {
+      "zh": "阿拉维斯",
+      "clubelo": "Alaves",
+      "understat": "Alaves",
+      "espn": "Alaves",
+      "fd": "Alaves"
+    },
+    "betis": {
+      "zh": "贝蒂斯",
+      "clubelo": "Betis",
+      "understat": "Betis",
+      "espn": "Real Betis",
+      "fd": "Betis"
+    },
+    "sociedad": {
+      "zh": "皇家社会",
+      "clubelo": "Sociedad",
+      "understat": "Sociedad",
+      "espn": "Real Sociedad",
+      "fd": "Sociedad"
+    },
+    "athletic-bilbao": {
+      "zh": "毕尔巴鄂"
+    },
+    "sevilla": {
+      "zh": "塞维利亚"
+    },
+    "valencia": {
+      "zh": "巴伦西亚"
+    },
+    "celta": {
+      "zh": "塞尔塔"
+    },
+    "espanyol": {
+      "zh": "西班牙人"
+    },
+    "real-madrid": {
+      "zh": "皇马"
+    },
+    "atletico-madrid": {
+      "zh": "马竞"
+    },
+    "villarreal": {
+      "zh": "比利亚雷"
+    },
+    "getafe": {
+      "zh": "赫塔费"
+    },
+    "racing-santander": {
+      "zh": "桑坦德"
+    },
+    "elche": {
+      "zh": "埃尔切"
+    },
+    "barcelona": {
+      "zh": "巴萨"
+    }
   },
   "brazil": {
-    "corinthians": {"zh": "科林蒂安", "clubelo": null, "understat": null, "espn": "Corinthians"}
+    "corinthians": {
+      "zh": "科林蒂安",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Corinthians"
+    }
   },
   "argentina": {
-    "rosario-central": {"zh": "罗萨里奥中央", "clubelo": null, "understat": null, "espn": "Rosario Central"}
+    "rosario-central": {
+      "zh": "罗萨里奥中央",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Rosario Central"
+    }
   },
   "kazakhstan": {
-    "kairat-almaty": {"zh": "阿拉木图凯拉特", "clubelo": null, "understat": null, "espn": "Kairat Almaty"}
+    "kairat-almaty": {
+      "zh": "阿拉木图凯拉特",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Kairat Almaty"
+    }
   },
   "belgium": {
-    "anderlecht": {"zh": "安德莱赫特", "clubelo": "Anderlecht", "understat": null, "espn": "Anderlecht"}
+    "anderlecht": {
+      "zh": "安德莱赫特",
+      "clubelo": "Anderlecht",
+      "understat": null,
+      "espn": "Anderlecht"
+    }
   },
   "sweden": {
-    "mjallby": {"zh": "米亚尔比", "clubelo": "Mjällby", "understat": null, "espn": "Mjällby AIF"},
-    "sirius": {"zh": "天狼星", "clubelo": "Sirius", "understat": null, "espn": "IK Sirius"},
-    "hacken": {"zh": "赫根", "clubelo": "Häcken", "understat": null, "espn": "BK Häcken"}
+    "mjallby": {
+      "zh": "米亚尔比",
+      "clubelo": "Mjällby",
+      "understat": null,
+      "espn": "Mjällby AIF"
+    },
+    "sirius": {
+      "zh": "天狼星",
+      "clubelo": "Sirius",
+      "understat": null,
+      "espn": "IK Sirius"
+    },
+    "hacken": {
+      "zh": "赫根",
+      "clubelo": "Häcken",
+      "understat": null,
+      "espn": "BK Häcken"
+    }
   },
   "austria": {
-    "salzburg": {"zh": "萨尔茨堡", "clubelo": "Salzburg", "understat": null, "espn": "Red Bull Salzburg"}
+    "salzburg": {
+      "zh": "萨尔茨堡",
+      "clubelo": "Salzburg",
+      "understat": null,
+      "espn": "Red Bull Salzburg",
+      "clubeloSlug": "rbsalzburg"
+    }
   },
   "turkey": {
-    "trabzonspor": {"zh": "特拉布宗体育", "clubelo": "Trabzonspor", "understat": null, "espn": "Trabzonspor"}
+    "trabzonspor": {
+      "zh": "特拉布宗体育",
+      "clubelo": "Trabzonspor",
+      "understat": null,
+      "espn": "Trabzonspor"
+    }
   },
   "hungary": {
-    "ferencvaros": {"zh": "费伦茨瓦罗斯", "clubelo": "Ferencváros", "understat": null, "espn": "Ferencváros"}
+    "ferencvaros": {
+      "zh": "费伦茨瓦罗斯",
+      "clubelo": "Ferencváros",
+      "understat": null,
+      "espn": "Ferencváros"
+    }
   },
   "poland": {
-    "lech-poznan": {"zh": "波兹南莱赫", "clubelo": "Lech", "understat": null, "espn": "Lech Poznan"}
+    "lech-poznan": {
+      "zh": "波兹南莱赫",
+      "clubelo": "Lech",
+      "understat": null,
+      "espn": "Lech Poznan"
+    }
   },
   "switzerland": {
-    "thun": {"zh": "图恩", "clubelo": "Thun", "understat": null, "espn": "FC Thun"}
+    "thun": {
+      "zh": "图恩",
+      "clubelo": "Thun",
+      "understat": null,
+      "espn": "FC Thun"
+    }
   },
   "serbia": {
-    "crvena-zvezda": {"zh": "贝尔格莱德红星", "clubelo": "Crvena Zvezda", "understat": null, "espn": "Red Star Belgrade"}
+    "crvena-zvezda": {
+      "zh": "贝尔格莱德红星",
+      "clubelo": "Crvena Zvezda",
+      "understat": null,
+      "espn": "Red Star Belgrade"
+    }
   },
   "czechia": {
-    "plzen": {"zh": "比尔森", "clubelo": "Plzeň", "understat": null, "espn": "Viktoria Plzen"}
+    "plzen": {
+      "zh": "比尔森",
+      "clubelo": "Plzeň",
+      "understat": null,
+      "espn": "Viktoria Plzen",
+      "clubeloSlug": "ViktoriaPlzen"
+    }
   },
   "portugal": {
-    "benfica": {"zh": "本菲卡", "clubelo": "Benfica", "understat": null, "espn": "Benfica"}
+    "benfica": {
+      "zh": "本菲卡",
+      "clubelo": "Benfica",
+      "understat": null,
+      "espn": "Benfica"
+    },
+    "maritimo": {
+      "zh": "马里迪莫"
+    },
+    "viseu": {
+      "zh": "维塞乌"
+    },
+    "guimaraes": {
+      "zh": "吉马良斯"
+    },
+    "nacional": {
+      "zh": "葡国民"
+    },
+    "santa-clara": {
+      "zh": "圣克拉拉"
+    },
+    "famalicao": {
+      "zh": "法马利康"
+    },
+    "porto": {
+      "zh": "波尔图"
+    },
+    "arouca": {
+      "zh": "阿罗卡"
+    }
   },
   "denmark": {
-    "aarhus": {"zh": "奥胡斯", "clubelo": null, "understat": null, "espn": "AGF Aarhus"}
+    "aarhus": {
+      "zh": "奥胡斯",
+      "clubelo": null,
+      "understat": null,
+      "espn": "AGF Aarhus"
+    }
   },
   "japan": {
-    "kashiwa-reysol": {"zh": "柏太阳神", "clubelo": null, "understat": null, "espn": "Kashiwa Reysol"},
-    "v-varen-nagasaki": {"zh": "长崎航海", "clubelo": null, "understat": null, "espn": "V-Varen Nagasaki"},
-    "fc-tokyo": {"zh": "东京FC", "clubelo": null, "understat": null, "espn": "FC Tokyo"},
-    "chiba": {"zh": "千叶市原", "clubelo": null, "understat": null, "espn": "JEF United Chiba"}
+    "kashiwa-reysol": {
+      "zh": "柏太阳神",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Kashiwa Reysol"
+    },
+    "v-varen-nagasaki": {
+      "zh": "长崎航海",
+      "clubelo": null,
+      "understat": null,
+      "espn": "V-Varen Nagasaki"
+    },
+    "fc-tokyo": {
+      "zh": "东京FC",
+      "clubelo": null,
+      "understat": null,
+      "espn": "FC Tokyo"
+    },
+    "chiba": {
+      "zh": "千叶市原",
+      "clubelo": null,
+      "understat": null,
+      "espn": "JEF United Chiba"
+    },
+    "kashima-antlers": {
+      "zh": "鹿岛鹿角"
+    },
+    "avispa-fukuoka": {
+      "zh": "福冈黄蜂"
+    },
+    "cerezo-osaka": {
+      "zh": "大阪樱花"
+    },
+    "shimizu-s-pulse": {
+      "zh": "清水鼓动"
+    },
+    "machida-zelvia": {
+      "zh": "町田泽维"
+    },
+    "urawa-reds": {
+      "zh": "浦和红钻"
+    }
   },
   "finland": {
-    "sjk-seinajoki": {"zh": "塞伊奈约基", "clubelo": "SJK", "understat": null, "espn": "SJK Seinajoki"},
-    "lahti": {"zh": "拉赫蒂", "clubelo": "Lahti", "understat": null, "espn": "FC Lahti"}
+    "sjk-seinajoki": {
+      "zh": "塞伊奈约基",
+      "clubelo": "SJK",
+      "understat": null,
+      "espn": "SJK Seinajoki",
+      "variants": [
+        "塞伊奈"
+      ]
+    },
+    "lahti": {
+      "zh": "拉赫蒂",
+      "clubelo": "Lahti",
+      "understat": null,
+      "espn": "FC Lahti"
+    },
+    "sjk-seinajoki-abbr": {
+      "zh": "塞伊奈",
+      "clubelo": "SJK",
+      "understat": null,
+      "espn": "SJK Seinajoki",
+      "variants": [
+        "塞伊奈"
+      ],
+      "aliasOf": "sjk-seinajoki"
+    }
   },
   "france": {
-    "marseille": {"zh": "马赛", "clubelo": "Marseille", "understat": "Marseille", "espn": "Marseille", "fd": "Marseille"},    "strasbourg": {"zh": "斯特拉斯堡", "clubelo": "Strasbourg", "understat": "Strasbourg", "espn": "Strasbourg", "fd": "Strasbourg"},
-    "dunkerque": {"zh": "敦刻尔克", "clubelo": "Dunkerque", "understat": null, "espn": "Dunkerque", "fd": "Dunkerque"},
-    "montpellier": {"zh": "蒙彼利埃", "clubelo": "Montpellier", "understat": null, "espn": "Montpellier", "fd": "Montpellier"}
+    "marseille": {
+      "zh": "马赛",
+      "clubelo": "Marseille",
+      "understat": "Marseille",
+      "espn": "Marseille",
+      "fd": "Marseille"
+    },
+    "strasbourg": {
+      "zh": "斯特拉斯堡",
+      "clubelo": "Strasbourg",
+      "understat": "Strasbourg",
+      "espn": "Strasbourg",
+      "fd": "Strasbourg",
+      "variants": [
+        "斯特拉斯"
+      ]
+    },
+    "dunkerque": {
+      "zh": "敦刻尔克",
+      "clubelo": "Dunkerque",
+      "understat": null,
+      "espn": "Dunkerque",
+      "fd": "Dunkerque"
+    },
+    "montpellier": {
+      "zh": "蒙彼利埃",
+      "clubelo": "Montpellier",
+      "understat": null,
+      "espn": "Montpellier",
+      "fd": "Montpellier"
+    },
+    "lens": {
+      "zh": "朗斯"
+    },
+    "auxerre": {
+      "zh": "欧塞尔"
+    },
+    "nice": {
+      "zh": "尼斯"
+    },
+    "lorient": {
+      "zh": "洛里昂"
+    },
+    "toulouse": {
+      "zh": "图卢兹"
+    },
+    "lyon": {
+      "zh": "里昂"
+    },
+    "angers": {
+      "zh": "昂热"
+    },
+    "lille": {
+      "zh": "里尔"
+    },
+    "strasbourg-abbr": {
+      "zh": "斯特拉斯",
+      "clubelo": "Strasbourg",
+      "understat": "Strasbourg",
+      "espn": "Strasbourg",
+      "fd": "Strasbourg",
+      "variants": [
+        "斯特拉斯"
+      ],
+      "aliasOf": "strasbourg"
+    }
   },
   "netherlands": {
-    "den-bosch": {"zh": "登博思", "clubelo": "Den Bosch", "understat": null, "espn": "FC Den Bosch"},
-    "fc-eindhoven": {"zh": "埃因霍温FC", "clubelo": "Eindhoven", "understat": null, "espn": "FC Eindhoven"}
+    "den-bosch": {
+      "zh": "登博思",
+      "clubelo": "Den Bosch",
+      "understat": null,
+      "espn": "FC Den Bosch"
+    },
+    "fc-eindhoven": {
+      "zh": "埃因霍温FC",
+      "clubelo": "Eindhoven",
+      "understat": null,
+      "espn": "FC Eindhoven",
+      "variants": [
+        "埃因FC"
+      ]
+    },
+    "excelsior-rotterdam": {
+      "zh": "罗达JC"
+    },
+    "fc-eindhoven-abbr": {
+      "zh": "埃因FC",
+      "clubelo": "Eindhoven",
+      "understat": null,
+      "espn": "FC Eindhoven",
+      "variants": [
+        "埃因FC"
+      ],
+      "aliasOf": "fc-eindhoven"
+    }
+  },
+  "italy": {
+    "udinese": {
+      "zh": "乌迪内斯"
+    },
+    "como": {
+      "zh": "科莫"
+    },
+    "inter": {
+      "zh": "国际米兰"
+    },
+    "monza": {
+      "zh": "蒙扎"
+    },
+    "genoa": {
+      "zh": "热那亚"
+    },
+    "napoli": {
+      "zh": "那不勒斯"
+    },
+    "parma": {
+      "zh": "帕尔马"
+    },
+    "cagliari": {
+      "zh": "卡利亚里"
+    },
+    "frosinone": {
+      "zh": "弗洛西诺"
+    },
+    "juventus": {
+      "zh": "尤文图斯"
+    },
+    "venezia": {
+      "zh": "威尼斯"
+    },
+    "lecce": {
+      "zh": "莱切"
+    },
+    "torino": {
+      "zh": "都灵"
+    },
+    "ac-milan": {
+      "zh": "AC米兰"
+    }
+  },
+  "japan-j2": {
+    "akita-blausitz": {
+      "zh": "秋田闪电"
+    },
+    "ventforet-kofu": {
+      "zh": "甲府风林"
+    },
+    "jubilo-iwata": {
+      "zh": "磐田喜悦"
+    },
+    "tokushima-vortis": {
+      "zh": "德岛漩涡"
+    }
+  },
+  "korea-k-league": {
+    "jeonbuk": {
+      "zh": "全北现代"
+    },
+    "ulsan": {
+      "zh": "蔚山现代"
+    },
+    "anyang": {
+      "zh": "安养FC"
+    },
+    "fc-seoul": {
+      "zh": "首尔FC"
+    },
+    "daejeon": {
+      "zh": "大田市民"
+    },
+    "gangwon": {
+      "zh": "江原FC"
+    }
+  },
+  "netherlands-eredivisie": {
+    "fortuna-sittard": {
+      "zh": "福图纳"
+    },
+    "az-alkmaar": {
+      "zh": "阿尔克马"
+    },
+    "go-ahead-eagles": {
+      "zh": "前进之鹰"
+    },
+    "den-haag": {
+      "zh": "海牙"
+    },
+    "psv": {
+      "zh": "埃因霍温"
+    },
+    "groningen": {
+      "zh": "格罗宁根"
+    },
+    "cambuur": {
+      "zh": "坎布尔"
+    },
+    "feyenoord": {
+      "zh": "费耶诺德"
+    }
+  },
+  "germany-bundesliga": {
+    "dortmund": {
+      "zh": "多特蒙德"
+    },
+    "bayern": {
+      "zh": "拜仁"
+    }
+  },
+  "germany-dfb-pokal": {
+    "furth": {
+      "zh": "菲尔特"
+    },
+    "bochum": {
+      "zh": "波鸿"
+    },
+    "braunschweig": {
+      "zh": "不伦瑞克"
+    },
+    "union-berlin": {
+      "zh": "柏林联合"
+    }
   }
 }

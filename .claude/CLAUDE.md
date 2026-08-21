@@ -50,12 +50,14 @@
 |:---|:---|:---|
 | 体彩官方 API | ✅ WebFetch 可用 | 赛程 + 赔率 |
 | football-data.co.uk | ✅ requests 直连（engine/scripts/odds_fetch.py） | **Pinnacle 收盘价（PPCH/PPCD/PPCA）+ B365 收盘 + xG（HxG/AxG）+ 比分**，主流联赛当季 CSV |
-| ESPN | ✅ WebFetch 可用 | 赛果、排名 |
-| clubelo.com | ❌ 本机+服务端均不可达（elo_fetch.py 已就绪，网络恢复即用） | Elo |
+| ESPN API | ✅ requests 直连（engine/scripts/espn_fetch.py，**勿加浏览器 UA 会 403**） | 赛果（按日期）、实时积分榜；覆盖日职 jpn.1/瑞超 swe.1/挪超/丹超/沙特 ksa.1/荷甲/葡超等 fd 不含联赛 |
+| titan007（球探体育） | ✅ requests 直连（engine/scripts/cn_fetch.py，须带浏览器 UA+Referer 否则 442；国内速度快，ESPN 不可达时兜底） | 联赛积分榜（JS 数组直取）+ 中英文队名对照（teams 子命令补别名用）。ID：36英超 31西甲 8德甲 11法甲 16荷甲 23葡超 25日职 26瑞超 22挪超 7丹超 13芬超 292沙特 |
+| clubelo.com | ⚠️ api 子域被墙；主域可达（elo_fetch.py 双链路自动切换：api CSV → 主域 HTML 正则） | Elo；主域仅"近期有比赛"的活跃队有页面，休赛期队失败属正常（21/25 实测成功） |
 | understat.com | ⚠️ 2026 赛季数据未开（xg_fetch.py 备选） | xG（主链路已走 fd CSV） |
+| 500.com | ⚠️ 可达但积分榜无结构化接口（页面数据灌不进 HTML 表） | 备选参考 |
 | 搜索引擎 | ❌ 配额耗尽至 8-31 | 补充检索 |
 
-> fd CSV 覆盖：英西德意法荷比葡土希俄主流联赛；沙特/日职/北欧/南美不覆盖（此类场次预测时 Elo/xG/收盘价标锚缺失）。
+> fd CSV 覆盖：英西德意法荷比葡土希俄主流联赛；沙特/日职/北欧/南美不覆盖（此类场次预测时 Elo/xG/收盘价标锚缺失，但积分榜可用 espn_fetch/cn_fetch 直连补齐）。
 
 ## 评估铁律
 

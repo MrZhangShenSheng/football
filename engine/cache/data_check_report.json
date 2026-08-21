@@ -1,12 +1,6 @@
 {
   "checkedAt": "2026-08-21",
   "leagues": {
-    "japan": {
-      "status": "stale",
-      "roundsPlayed": 2,
-      "standingsSource": "claude-manual",
-      "fdCovered": false
-    },
     "saudi": {
       "status": "stale",
       "roundsPlayed": 1,
@@ -20,9 +14,9 @@
       "fdCovered": false
     },
     "sweden": {
-      "status": "stale",
+      "status": "ready",
       "roundsPlayed": 17,
-      "standingsSource": "claude-manual",
+      "standingsSource": "espn",
       "fdCovered": false
     },
     "france-ligue2": {
@@ -32,9 +26,9 @@
       "fdCovered": true
     },
     "netherlands": {
-      "status": "stale",
+      "status": "ready",
       "roundsPlayed": 2,
-      "standingsSource": "claude-manual",
+      "standingsSource": "espn",
       "fdCovered": false
     },
     "france-ligue1": {
@@ -51,33 +45,63 @@
     },
     "spain-laliga": {
       "status": "ready",
+      "roundsPlayed": 21,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "japan": {
+      "status": "ready",
+      "roundsPlayed": 3,
+      "standingsSource": "espn-core-api",
+      "fdCovered": false
+    },
+    "japan-j2": {
+      "status": "ready",
+      "roundsPlayed": null,
+      "standingsSource": "sporttery",
+      "fdCovered": false
+    },
+    "korea-k-league": {
+      "status": "ready",
+      "roundsPlayed": null,
+      "standingsSource": "sporttery",
+      "fdCovered": false
+    },
+    "netherlands-eredivisie": {
+      "status": "ready",
+      "roundsPlayed": 2,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "portugal-primeira": {
+      "status": "ready",
+      "roundsPlayed": 2,
+      "standingsSource": "espn-core-api",
+      "fdCovered": false
+    },
+    "italy-serie-a": {
+      "status": "ready",
       "roundsPlayed": 20,
       "standingsSource": "fd-derived",
       "fdCovered": true
+    },
+    "germany-supercup": {
+      "status": "missing"
+    },
+    "germany-dfb-pokal": {
+      "status": "missing"
     }
   },
-  "missingLeagues": [],
+  "missingLeagues": [
+    "germany-supercup",
+    "germany-dfb-pokal"
+  ],
   "staleLeagues": [
-    "japan",
     "saudi",
-    "finland",
-    "sweden",
-    "netherlands"
+    "finland"
   ],
   "missingAlias": [],
   "notReadyTeams": [
-    {
-      "team": "柏太阳神",
-      "teamId": "kashiwa-reysol",
-      "league": "japan",
-      "status": "missing"
-    },
-    {
-      "team": "长崎航海",
-      "teamId": "v-varen-nagasaki",
-      "league": "japan",
-      "status": "missing"
-    },
     {
       "team": "利雅得",
       "teamId": "al-riyadh",
@@ -85,14 +109,14 @@
       "status": "missing"
     },
     {
-      "team": "利雅得胜利",
-      "teamId": "al-nassr",
+      "team": "利雅胜利",
+      "teamId": "al-nassr-abbr",
       "league": "saudi",
       "status": "missing"
     },
     {
-      "team": "塞伊奈约基",
-      "teamId": "sjk-seinajoki",
+      "team": "塞伊奈",
+      "teamId": "sjk-seinajoki-abbr",
       "league": "finland",
       "status": "missing"
     },
@@ -115,6 +139,12 @@
       "status": "missing"
     },
     {
+      "team": "胡巴卡德",
+      "teamId": "qadsiah-abbr",
+      "league": "saudi",
+      "status": "missing"
+    },
+    {
       "team": "敦刻尔克",
       "teamId": "dunkerque",
       "league": "france",
@@ -133,9 +163,15 @@
       "status": "missing"
     },
     {
-      "team": "埃因霍温FC",
-      "teamId": "fc-eindhoven",
+      "team": "埃因FC",
+      "teamId": "fc-eindhoven-abbr",
       "league": "netherlands",
+      "status": "missing"
+    },
+    {
+      "team": "斯特拉斯",
+      "teamId": "strasbourg-abbr",
+      "league": "france",
       "status": "missing"
     },
     {
@@ -161,10 +197,526 @@
       "teamId": "sociedad",
       "league": "spain",
       "status": "missing"
+    },
+    {
+      "team": "鹿岛鹿角",
+      "teamId": "kashima-antlers",
+      "league": "japan",
+      "status": "missing"
+    },
+    {
+      "team": "福冈黄蜂",
+      "teamId": "avispa-fukuoka",
+      "league": "japan",
+      "status": "missing"
+    },
+    {
+      "team": "秋田闪电",
+      "teamId": "akita-blausitz",
+      "league": "japan-j2",
+      "status": "missing"
+    },
+    {
+      "team": "甲府风林",
+      "teamId": "ventforet-kofu",
+      "league": "japan-j2",
+      "status": "missing"
+    },
+    {
+      "team": "大阪樱花",
+      "teamId": "cerezo-osaka",
+      "league": "japan",
+      "status": "missing"
+    },
+    {
+      "team": "清水鼓动",
+      "teamId": "shimizu-s-pulse",
+      "league": "japan",
+      "status": "missing"
+    },
+    {
+      "team": "磐田喜悦",
+      "teamId": "jubilo-iwata",
+      "league": "japan-j2",
+      "status": "missing"
+    },
+    {
+      "team": "德岛漩涡",
+      "teamId": "tokushima-vortis",
+      "league": "japan-j2",
+      "status": "missing"
+    },
+    {
+      "team": "全北现代",
+      "teamId": "jeonbuk",
+      "league": "korea-k-league",
+      "status": "missing"
+    },
+    {
+      "team": "蔚山现代",
+      "teamId": "ulsan",
+      "league": "korea-k-league",
+      "status": "missing"
+    },
+    {
+      "team": "安养FC",
+      "teamId": "anyang",
+      "league": "korea-k-league",
+      "status": "missing"
+    },
+    {
+      "team": "首尔FC",
+      "teamId": "fc-seoul",
+      "league": "korea-k-league",
+      "status": "missing"
+    },
+    {
+      "team": "赫尔城",
+      "teamId": "hull-city",
+      "league": "england",
+      "status": "missing"
+    },
+    {
+      "team": "曼联",
+      "teamId": "man-united",
+      "league": "england",
+      "status": "missing"
+    },
+    {
+      "team": "埃弗顿",
+      "teamId": "everton",
+      "league": "england",
+      "status": "missing"
+    },
+    {
+      "team": "水晶宫",
+      "teamId": "crystal-palace",
+      "league": "england",
+      "status": "missing"
+    },
+    {
+      "team": "诺丁汉",
+      "teamId": "nottingham-forest",
+      "league": "england",
+      "status": "missing"
+    },
+    {
+      "team": "利兹联",
+      "teamId": "leeds",
+      "league": "england",
+      "status": "missing"
+    },
+    {
+      "team": "伊普斯",
+      "teamId": "ipswich",
+      "league": "england",
+      "status": "missing"
+    },
+    {
+      "team": "桑德兰",
+      "teamId": "sunderland",
+      "league": "england",
+      "status": "missing"
+    },
+    {
+      "team": "福图纳",
+      "teamId": "fortuna-sittard",
+      "league": "netherlands-eredivisie",
+      "status": "missing"
+    },
+    {
+      "team": "阿尔克马",
+      "teamId": "az-alkmaar",
+      "league": "netherlands-eredivisie",
+      "status": "missing"
+    },
+    {
+      "team": "马里迪莫",
+      "teamId": "maritimo",
+      "league": "portugal",
+      "status": "missing"
+    },
+    {
+      "team": "维塞乌",
+      "teamId": "viseu",
+      "league": "portugal",
+      "status": "missing"
+    },
+    {
+      "team": "毕尔巴鄂",
+      "teamId": "athletic-bilbao",
+      "league": "spain",
+      "status": "missing"
+    },
+    {
+      "team": "塞维利亚",
+      "teamId": "sevilla",
+      "league": "spain",
+      "status": "missing"
+    },
+    {
+      "team": "朗斯",
+      "teamId": "lens",
+      "league": "france",
+      "status": "missing"
+    },
+    {
+      "team": "欧塞尔",
+      "teamId": "auxerre",
+      "league": "france",
+      "status": "missing"
+    },
+    {
+      "team": "布伦特",
+      "teamId": "brentford",
+      "league": "england",
+      "status": "missing"
+    },
+    {
+      "team": "热刺",
+      "teamId": "tottenham",
+      "league": "england",
+      "status": "missing"
+    },
+    {
+      "team": "乌迪内斯",
+      "teamId": "udinese",
+      "league": "italy",
+      "status": "missing"
+    },
+    {
+      "team": "科莫",
+      "teamId": "como",
+      "league": "italy",
+      "status": "missing"
+    },
+    {
+      "team": "国际米兰",
+      "teamId": "inter",
+      "league": "italy",
+      "status": "missing"
+    },
+    {
+      "team": "蒙扎",
+      "teamId": "monza",
+      "league": "italy",
+      "status": "missing"
+    },
+    {
+      "team": "巴伦西亚",
+      "teamId": "valencia",
+      "league": "spain",
+      "status": "missing"
+    },
+    {
+      "team": "塞尔塔",
+      "teamId": "celta",
+      "league": "spain",
+      "status": "missing"
+    },
+    {
+      "team": "多特蒙德",
+      "teamId": "dortmund",
+      "league": "germany-bundesliga",
+      "status": "missing"
+    },
+    {
+      "team": "拜仁",
+      "teamId": "bayern",
+      "league": "germany-bundesliga",
+      "status": "missing"
+    },
+    {
+      "team": "热那亚",
+      "teamId": "genoa",
+      "league": "italy",
+      "status": "missing"
+    },
+    {
+      "team": "那不勒斯",
+      "teamId": "napoli",
+      "league": "italy",
+      "status": "missing"
+    },
+    {
+      "team": "帕尔马",
+      "teamId": "parma",
+      "league": "italy",
+      "status": "missing"
+    },
+    {
+      "team": "卡利亚里",
+      "teamId": "cagliari",
+      "league": "italy",
+      "status": "missing"
+    },
+    {
+      "team": "尼斯",
+      "teamId": "nice",
+      "league": "france",
+      "status": "missing"
+    },
+    {
+      "team": "洛里昂",
+      "teamId": "lorient",
+      "league": "france",
+      "status": "missing"
+    },
+    {
+      "team": "图卢兹",
+      "teamId": "toulouse",
+      "league": "france",
+      "status": "missing"
+    },
+    {
+      "team": "里昂",
+      "teamId": "lyon",
+      "league": "france",
+      "status": "missing"
+    },
+    {
+      "team": "西班牙人",
+      "teamId": "espanyol",
+      "league": "spain",
+      "status": "missing"
+    },
+    {
+      "team": "皇马",
+      "teamId": "real-madrid",
+      "league": "spain",
+      "status": "missing"
+    },
+    {
+      "team": "前进之鹰",
+      "teamId": "go-ahead-eagles",
+      "league": "netherlands-eredivisie",
+      "status": "missing"
+    },
+    {
+      "team": "海牙",
+      "teamId": "den-haag",
+      "league": "netherlands-eredivisie",
+      "status": "missing"
+    },
+    {
+      "team": "町田泽维",
+      "teamId": "machida-zelvia",
+      "league": "japan",
+      "status": "missing"
+    },
+    {
+      "team": "浦和红钻",
+      "teamId": "urawa-reds",
+      "league": "japan",
+      "status": "missing"
+    },
+    {
+      "team": "大田市民",
+      "teamId": "daejeon",
+      "league": "korea-k-league",
+      "status": "missing"
+    },
+    {
+      "team": "江原FC",
+      "teamId": "gangwon",
+      "league": "korea-k-league",
+      "status": "missing"
+    },
+    {
+      "team": "菲尔特",
+      "teamId": "furth",
+      "league": "germany-dfb-pokal",
+      "status": "missing"
+    },
+    {
+      "team": "波鸿",
+      "teamId": "bochum",
+      "league": "germany-dfb-pokal",
+      "status": "missing"
+    },
+    {
+      "team": "埃因霍温",
+      "teamId": "psv",
+      "league": "netherlands-eredivisie",
+      "status": "missing"
+    },
+    {
+      "team": "格罗宁根",
+      "teamId": "groningen",
+      "league": "netherlands-eredivisie",
+      "status": "missing"
+    },
+    {
+      "team": "曼城",
+      "teamId": "man-city",
+      "league": "england",
+      "status": "missing"
+    },
+    {
+      "team": "伯恩茅斯",
+      "teamId": "bournemouth",
+      "league": "england",
+      "status": "missing"
+    },
+    {
+      "team": "昂热",
+      "teamId": "angers",
+      "league": "france",
+      "status": "missing"
+    },
+    {
+      "team": "里尔",
+      "teamId": "lille",
+      "league": "france",
+      "status": "missing"
+    },
+    {
+      "team": "不伦瑞克",
+      "teamId": "braunschweig",
+      "league": "germany-dfb-pokal",
+      "status": "missing"
+    },
+    {
+      "team": "柏林联合",
+      "teamId": "union-berlin",
+      "league": "germany-dfb-pokal",
+      "status": "missing"
+    },
+    {
+      "team": "吉马良斯",
+      "teamId": "guimaraes",
+      "league": "portugal",
+      "status": "missing"
+    },
+    {
+      "team": "葡国民",
+      "teamId": "nacional",
+      "league": "portugal",
+      "status": "missing"
+    },
+    {
+      "team": "坎布尔",
+      "teamId": "cambuur",
+      "league": "netherlands-eredivisie",
+      "status": "missing"
+    },
+    {
+      "team": "费耶诺德",
+      "teamId": "feyenoord",
+      "league": "netherlands-eredivisie",
+      "status": "missing"
+    },
+    {
+      "team": "马竞",
+      "teamId": "atletico-madrid",
+      "league": "spain",
+      "status": "missing"
+    },
+    {
+      "team": "比利亚雷",
+      "teamId": "villarreal",
+      "league": "spain",
+      "status": "missing"
+    },
+    {
+      "team": "纽卡斯尔",
+      "teamId": "newcastle",
+      "league": "england",
+      "status": "missing"
+    },
+    {
+      "team": "利物浦",
+      "teamId": "liverpool",
+      "league": "england",
+      "status": "missing"
+    },
+    {
+      "team": "弗洛西诺",
+      "teamId": "frosinone",
+      "league": "italy",
+      "status": "missing"
+    },
+    {
+      "team": "尤文图斯",
+      "teamId": "juventus",
+      "league": "italy",
+      "status": "missing"
+    },
+    {
+      "team": "威尼斯",
+      "teamId": "venezia",
+      "league": "italy",
+      "status": "missing"
+    },
+    {
+      "team": "莱切",
+      "teamId": "lecce",
+      "league": "italy",
+      "status": "missing"
+    },
+    {
+      "team": "圣克拉拉",
+      "teamId": "santa-clara",
+      "league": "portugal",
+      "status": "missing"
+    },
+    {
+      "team": "法马利康",
+      "teamId": "famalicao",
+      "league": "portugal",
+      "status": "missing"
+    },
+    {
+      "team": "赫塔费",
+      "teamId": "getafe",
+      "league": "spain",
+      "status": "missing"
+    },
+    {
+      "team": "桑坦德",
+      "teamId": "racing-santander",
+      "league": "spain",
+      "status": "missing"
+    },
+    {
+      "team": "都灵",
+      "teamId": "torino",
+      "league": "italy",
+      "status": "missing"
+    },
+    {
+      "team": "AC米兰",
+      "teamId": "ac-milan",
+      "league": "italy",
+      "status": "missing"
+    },
+    {
+      "team": "埃尔切",
+      "teamId": "elche",
+      "league": "spain",
+      "status": "missing"
+    },
+    {
+      "team": "巴萨",
+      "teamId": "barcelona",
+      "league": "spain",
+      "status": "missing"
+    },
+    {
+      "team": "波尔图",
+      "teamId": "porto",
+      "league": "portugal",
+      "status": "missing"
+    },
+    {
+      "team": "阿罗卡",
+      "teamId": "arouca",
+      "league": "portugal",
+      "status": "missing"
     }
   ],
   "readyCount": {
-    "leagues": 4,
-    "teamsKnown": 40
+    "leagues": 12,
+    "teamsKnown": 132
   }
 }

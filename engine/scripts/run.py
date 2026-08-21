@@ -7,6 +7,8 @@
   python run.py fit [联赛] [赛季]         # DC 拟合（默认西甲 2526；--auto 新鲜度自检）
   python run.py predict 联赛 主队 客队 [--market h,d,a]   # DC 预测 + 可选融合
   python run.py backtest [联赛] [赛季]    # walk-forward 回测（RPS/logloss）
+  python run.py espn [联赛代码]           # ESPN 直连积分榜/赛果（日职/北欧等 fd 不覆盖联赛）
+  python run.py cn [联赛ID]              # titan007 国内兜底积分榜（ESPN 不可达时用）
   python run.py all                       # update + fit --auto 一条龙（预测日跑这个）
 
 联赛代码（football-data.co.uk）：SP1 西甲 F1 法甲 F2 法乙 E0 英超 D1 德甲 I1 意甲 ...
@@ -61,6 +63,12 @@ def main() -> None:
         league = rest[0] if rest else "spain-laliga"
         season = rest[1] if len(rest) > 1 else "2526"
         sh("backtest.py", league, season)
+    elif cmd == "espn":
+        # 例: python run.py espn jpn.1 / python run.py espn results esp.1 20260820
+        sh("espn_fetch.py", *rest)
+    elif cmd == "cn":
+        # 例: python run.py cn standings 25 / python run.py cn teams 13
+        sh("cn_fetch.py", *rest)
     elif cmd == "all":
         sh("odds_fetch.py", "--season", "2526", *LEAGUES)
         sh("odds_fetch.py", "--season", CURRENT_SEASON, *LEAGUES)
