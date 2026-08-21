@@ -43,6 +43,7 @@ def main() -> None:
         # 上季（拟合用）+ 当季（锚用）
         sh("odds_fetch.py", "--season", "2526", *codes)
         sh("odds_fetch.py", "--season", CURRENT_SEASON, *codes)
+        sh("sporttery_fetch.py")
         sh("build_index.py")
         sh("league_profile.py", "--all")
     elif cmd == "fit":
@@ -63,6 +64,7 @@ def main() -> None:
     elif cmd == "all":
         sh("odds_fetch.py", "--season", "2526", *LEAGUES)
         sh("odds_fetch.py", "--season", CURRENT_SEASON, *LEAGUES)
+        sh("sporttery_fetch.py")
         sh("build_index.py")
         sh("league_profile.py", "--all")
         for _, (league, season) in LEAGUES.items():
