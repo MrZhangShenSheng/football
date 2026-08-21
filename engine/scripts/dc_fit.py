@@ -55,12 +55,13 @@ def load_matches(league: str, seasons: list[str]) -> list[dict]:
 
 
 def dc_tau(x: int, y: int, lh: float, la: float, rho: float) -> float:
+    """Dixon-Coles 1997 原始定义：rho<0 时上调 0-0/1-1、下调 1-0/0-1。"""
     if x == 0 and y == 0:
         return 1.0 - lh * la * rho
     if x == 0 and y == 1:
-        return 1.0 - lh * rho
+        return 1.0 + lh * rho
     if x == 1 and y == 0:
-        return 1.0 - la * rho
+        return 1.0 + la * rho
     if x == 1 and y == 1:
         return 1.0 - rho
     return 1.0

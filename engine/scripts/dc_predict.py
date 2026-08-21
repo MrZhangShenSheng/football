@@ -21,12 +21,13 @@ FUSION = CACHE_DIR / "fusion.json"
 
 
 def dc_tau(x: int, y: int, lh: float, la: float, rho: float) -> float:
+    """Dixon-Coles 1997 原始定义：rho<0 时上调 0-0/1-1、下调 1-0/0-1。"""
     if x == 0 and y == 0:
         return 1.0 - lh * la * rho
     if x == 0 and y == 1:
-        return 1.0 - lh * rho
+        return 1.0 + lh * rho
     if x == 1 and y == 0:
-        return 1.0 - la * rho
+        return 1.0 + la * rho
     if x == 1 and y == 1:
         return 1.0 - rho
     return 1.0
@@ -58,12 +59,14 @@ def sigmoid(z: float) -> float:
 
 
 def fuse(p_dc: list[float], p_mkt: list[float], a: float, b: float) -> list[float]:
-    """log-odds 线性融合（三向归一）：p = softmax(a*log(p_dc) + b*log(p_mkt))。"""
+    """对数意见池融合：p ∝ p_dc^a' · p_mkt^b'（a',b' 归一化，保证一致不变性）。"""
+    s = a + b
+    a, b = a / s, b / s
     z = [a * math.log(max(p, 1e-12)) + b * math.log(max(m, 1e-12)) for p, m in zip(p_dc, p_mkt)]
     m = max(z)
     e = [math.exp(v - m) for v in z]
-    s = sum(e)
-    return [v / s for v in e]
+    t = sum(e)
+    return [v / t for v in e]
 
 
 def main() -> None:

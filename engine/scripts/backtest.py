@@ -20,24 +20,11 @@ import numpy as np
 
 from common import log, ROOT
 from dc_fit import load_matches, fit, dc_tau
+from dc_predict import devig, fuse
 
 CACHE_DIR = ROOT / "engine" / "cache"
 FUSION_DEFAULT = {"a": 0.4, "b": 1.0}
 REFIT_EVERY = 30  # 每 N 场重拟合一次（walk-forward 折中成本）
-
-
-def devig(odds):
-    inv = [1.0 / o for o in odds]
-    s = sum(inv)
-    return [i / s for i in inv]
-
-
-def fuse(p_dc, p_mkt, a, b):
-    z = [a * math.log(max(p, 1e-12)) + b * math.log(max(m, 1e-12)) for p, m in zip(p_dc, p_mkt)]
-    m = max(z)
-    e = [math.exp(v - m) for v in z]
-    s = sum(e)
-    return [v / s for v in e]
 
 
 def dc_three(teams_params, home_adv, rho, home, away):
