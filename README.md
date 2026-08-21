@@ -9,15 +9,21 @@
 # 1. 克隆仓库
 git clone <repo-url> football && cd football
 
-# 2. 安装依赖（Python 3.10+）
-pip install -r engine/requirements.txt
+# 2. 一键安装（装依赖 + 建 skill junction + 设 FOOTBALL_HOME + 数据初始化）
+./install.ps1        # Windows
+./install.sh         # Mac/Linux
 
-# 3. 恢复 skill 入口（junction，需管理员或开发者模式）
-cmd /c mklink /J "$env:USERPROFILE\.claude\skills\football-betting-prediction" "$PWD\skill"
-
-# 4. 拉取数据 + 拟合模型（一条龙）
-python engine/scripts/run.py all
+# 3. 重开终端，对 Claude 说"帮我预测"即可触发
 ```
+
+## 更新（日常/换机后）
+
+```powershell
+cd $FOOTBALL_HOME
+./update.ps1         # git pull + 依赖同步 + 数据刷新 + 测试回归
+```
+
+> `install` 是一次性的（建 junction/设环境变量）；`update` 是高频的（只 pull+刷数据+测试）。两个都幂等可重跑。
 
 ## 日常操作（两种方式）
 

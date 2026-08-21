@@ -12,7 +12,7 @@ description: |
 
 ## 文件存储路径 ★ v4.0 新增
 
-所有预测相关文件统一存储在 `D:\Users\shenshengzhang\football\` 项目中：
+所有预测相关文件统一存储在 `$FOOTBALL_HOME` 项目根目录中（环境变量，由 install 脚本设置；未设则用 skill 目录的父级 `../` 推导）：
 
 | 目录 | 用途 | 文件命名 |
 |:---|:---|:---|

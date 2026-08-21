@@ -507,7 +507,11 @@
       4
     ]
   },
-  "dcParams": {},
+  "dcParams": {
+    "homeAdv": 0.1168,
+    "rho": -0.0007,
+    "xi": 0.005
+  },
   "freshness": {
     "standingsSource": "fd-derived",
     "stale": false,
