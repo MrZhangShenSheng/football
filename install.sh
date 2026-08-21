@@ -36,6 +36,18 @@ python3 run.py all || echo "    run.py all 部分失败（数据源可能不可�
 
 echo ""
 echo "=== 安装完成 ==="
-echo "验证测试：cd engine/scripts; python3 -m pytest tests -q"
+echo "验证测试：cd $HOME_DIR/engine/scripts; python3 -m pytest ../tests -q"
 echo "开始使用：新终端里对 Claude 说'帮我预测'"
 echo "日常更新：cd $HOME_DIR; git pull; python3 engine/scripts/run.py all"
+
+# 5. 知识库新鲜度摘要（与 install.ps1 对齐）
+echo ""
+echo "知识库就绪度："
+cd "$HOME_DIR"
+fd_count=$(grep -l '"computedFrom": "fd"' data/00-leagues/*.json 2>/dev/null | wc -l | tr -d ' ')
+espn_count=$(grep -l '"standingsSource": "espn"' data/00-leagues/*.json 2>/dev/null | wc -l | tr -d ' ')
+cn_count=$(grep -l '"standingsSource": "titan007"' data/00-leagues/*.json 2>/dev/null | wc -l | tr -d ' ')
+echo "    fd 自动覆盖: ${fd_count} 个联赛"
+echo "    ESPN 直连: ${espn_count} 个联赛（espn_fetch.py）"
+echo "    titan007 兜底: ${cn_count} 个联赛（cn_fetch.py）"
+echo "    → 非 fd 联赛首次'预测'时经 Step 2.5 冷启动初始化"

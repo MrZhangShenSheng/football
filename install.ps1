@@ -41,14 +41,16 @@ if ($LASTEXITCODE -ne 0) { Write-Host "    run.py all partial fail (data source 
 Pop-Location
 
 Write-Host "`n=== Install done ===" -ForegroundColor Cyan
-Write-Host "Test:     cd engine\scripts; python -m pytest tests -q"
+Write-Host "Test:     cd engine\scripts; python -m pytest ..\tests -q"
 Write-Host "Use:      tell Claude 'predict' in new terminal"
 Write-Host "Update:   git pull; python engine\scripts\run.py all"
 Write-Host ""
 Write-Host "Knowledge base ready status:" -ForegroundColor DarkGray
 $lg = Get-ChildItem "$HOME_DIR\data\00-leagues\*.json" -ErrorAction SilentlyContinue
 $fd = @($lg | Where-Object { (Get-Content $_ -Raw) -match '"computedFrom": "fd"' })
-$manual = @($lg | Where-Object { (Get-Content $_ -Raw) -match 'espn-manual|claude-manual' })
+$espn = @($lg | Where-Object { (Get-Content $_ -Raw) -match '"standingsSource": "espn' })
+$cn = @($lg | Where-Object { (Get-Content $_ -Raw) -match '"standingsSource": "titan007"' })
 Write-Host "  fd-coverage (auto): $($fd.Count) leagues" -ForegroundColor Green
-Write-Host "  manual/seed (grow on use): $($manual.Count) leagues" -ForegroundColor DarkYellow
+Write-Host "  espn-fetch (auto): $($espn.Count) leagues" -ForegroundColor Green
+Write-Host "  titan007 fallback (auto): $($cn.Count) leagues" -ForegroundColor Green
 Write-Host "  -> non-fd leagues (JPN/KSA/Nordic) auto-init on first 'predict' via Step 2.5" -ForegroundColor DarkGray
