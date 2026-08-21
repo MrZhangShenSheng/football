@@ -44,3 +44,11 @@ Write-Host "`n=== Install done ===" -ForegroundColor Cyan
 Write-Host "Test:     cd engine\scripts; python -m pytest tests -q"
 Write-Host "Use:      tell Claude 'predict' in new terminal"
 Write-Host "Update:   git pull; python engine\scripts\run.py all"
+Write-Host ""
+Write-Host "Knowledge base ready status:" -ForegroundColor DarkGray
+$lg = Get-ChildItem "$HOME_DIR\data\00-leagues\*.json" -ErrorAction SilentlyContinue
+$fd = @($lg | Where-Object { (Get-Content $_ -Raw) -match '"computedFrom": "fd"' })
+$manual = @($lg | Where-Object { (Get-Content $_ -Raw) -match 'espn-manual|claude-manual' })
+Write-Host "  fd-coverage (auto): $($fd.Count) leagues" -ForegroundColor Green
+Write-Host "  manual/seed (grow on use): $($manual.Count) leagues" -ForegroundColor DarkYellow
+Write-Host "  -> non-fd leagues (JPN/KSA/Nordic) auto-init on first 'predict' via Step 2.5" -ForegroundColor DarkGray
