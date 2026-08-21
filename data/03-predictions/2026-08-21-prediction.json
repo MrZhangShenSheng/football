@@ -1,0 +1,171 @@
+{
+  "date": "2026-08-21",
+  "version": "v4.2",
+  "pinnacleStatus": "未直采，锚偏差~5pp",
+  "matches": [
+    {
+      "seq": 1, "code": "周五001", "league": "日职", "home": "柏太阳神", "away": "长崎航海",
+      "stars": 3, "grade": "C", "play": "胜平负", "pick": "主胜", "odds": 1.36,
+      "corrections": ["开季R3×0.95"], "finalProb": 0.64, "inCombo": false,
+      "excludeReason": "C级不入串",
+      "result": null, "direction": null, "score": null, "clv": null
+    },
+    {
+      "seq": 2, "code": "周五002", "league": "日职", "home": "东京FC", "away": "千叶市原",
+      "stars": 2, "grade": "C", "play": null, "pick": null, "odds": null,
+      "corrections": [], "finalProb": null, "inCombo": false,
+      "excludeReason": "J1 R3数据不足，概率胶着",
+      "result": null, "direction": null, "score": null, "clv": null
+    },
+    {
+      "seq": 3, "code": "周五003", "league": "沙职", "home": "利雅得", "away": "利雅得胜利",
+      "stars": 3, "grade": "C", "play": "胜平负", "pick": "客胜", "odds": 1.16,
+      "corrections": ["锚缺失下调一档"], "finalProb": 0.75, "inCombo": false,
+      "excludeReason": "C级不入串+沙职数据全缺",
+      "result": null, "direction": null, "score": null, "clv": null
+    },
+    {
+      "seq": 4, "code": "周五004", "league": "芬超", "home": "塞伊奈约基", "away": "拉赫蒂",
+      "stars": 0, "grade": "D", "play": null, "pick": null, "odds": null,
+      "corrections": [], "finalProb": null, "inCombo": false,
+      "excludeReason": "D级，芬超数据全缺",
+      "result": null, "direction": null, "score": null, "clv": null
+    },
+    {
+      "seq": 5, "code": "周五005", "league": "瑞超", "home": "天狼星", "away": "赫根",
+      "stars": 0, "grade": "D", "play": null, "pick": null, "odds": null,
+      "corrections": [], "finalProb": null, "inCombo": false,
+      "excludeReason": "D级，瑞超数据全缺",
+      "result": null, "direction": null, "score": null, "clv": null
+    },
+    {
+      "seq": 6, "code": "周五006", "league": "沙职", "home": "胡巴尔卡德西亚", "away": "吉达联合",
+      "stars": 0, "grade": "D", "play": null, "pick": null, "odds": null,
+      "corrections": [], "finalProb": null, "inCombo": false,
+      "excludeReason": "D级，沙职数据全缺",
+      "result": null, "direction": null, "score": null, "clv": null
+    },
+    {
+      "seq": 7, "code": "周五007", "league": "法乙", "home": "敦刻尔克", "away": "蒙彼利埃",
+      "stars": 2, "grade": "B", "play": null, "pick": null, "odds": null,
+      "corrections": [], "finalProb": 0.40, "inCombo": false,
+      "excludeReason": "概率接近(40/29/31)，法乙冷门率37.1%",
+      "result": null, "direction": null, "score": null, "clv": null
+    },
+    {
+      "seq": 8, "code": "周五008", "league": "荷乙", "home": "登博思", "away": "埃因霍温FC",
+      "stars": 0, "grade": "D", "play": null, "pick": null, "odds": null,
+      "corrections": [], "finalProb": null, "inCombo": false,
+      "excludeReason": "D级，荷乙数据全缺",
+      "result": null, "direction": null, "score": null, "clv": null
+    },
+    {
+      "seq": 9, "code": "周五009", "league": "法甲", "home": "马赛", "away": "斯特拉斯堡",
+      "stars": 4, "grade": "A", "play": "胜平负", "pick": "主胜", "odds": 1.65,
+      "corrections": ["无"], "finalProb": 0.58, "inCombo": true,
+      "comboLabel": "方案B①+方案A①+方案C①",
+      "result": null, "direction": null, "score": null, "clv": null
+    },
+    {
+      "seq": 9, "code": "周五009", "league": "法甲", "home": "马赛", "away": "斯特拉斯堡",
+      "stars": 4, "grade": "A", "play": "比分", "pick": "2-0", "odds": 6.50,
+      "corrections": ["无"], "finalProb": 0.113, "inCombo": true,
+      "comboLabel": "方案A①", "basis": "法甲TOP3+DC模型11.3%",
+      "result": null, "direction": null, "score": null, "clv": null
+    },
+    {
+      "seq": 10, "code": "周五010", "league": "英超", "home": "阿森纳", "away": "考文垂",
+      "stars": 3, "grade": "B", "play": null, "pick": null, "odds": null,
+      "corrections": ["胜平负未开售，让球反推≈51%"], "finalProb": 0.51, "inCombo": false,
+      "excludeReason": "胜平负未开售，仅让球-2",
+      "result": null, "direction": null, "score": null, "clv": null
+    },
+    {
+      "seq": 11, "code": "周五011", "league": "西甲", "home": "皇家贝蒂斯", "away": "皇家社会",
+      "stars": 3, "grade": "B", "play": "胜平负", "pick": "主胜", "odds": 1.95,
+      "corrections": ["社会客场差微调+3pp"], "finalProb": 0.47, "inCombo": true,
+      "comboLabel": "方案B③+方案A③",
+      "result": null, "direction": null, "score": null, "clv": null
+    },
+    {
+      "seq": 201, "code": "周六001", "league": "日职", "home": "鹿岛鹿角", "away": "福冈黄蜂",
+      "stars": 3, "grade": "C", "play": null, "pick": null, "odds": null,
+      "corrections": ["开季R3×0.95"], "finalProb": 0.50, "inCombo": false,
+      "excludeReason": "J1 R3，DC主胜≈50%胶着，C级不入串",
+      "result": null, "direction": null, "score": null, "clv": null
+    },
+    {
+      "seq": 202, "code": "周六002", "league": "日乙", "home": "秋田蓝色闪电", "away": "甲府风林",
+      "stars": 0, "grade": "D", "play": null, "pick": null, "odds": null,
+      "corrections": [], "finalProb": null, "inCombo": false,
+      "excludeReason": "D级，J2数据全缺",
+      "result": null, "direction": null, "score": null, "clv": null
+    },
+    {
+      "seq": 203, "code": "周六003", "league": "日职", "home": "大阪樱花", "away": "清水鼓动",
+      "stars": 2, "grade": "C", "play": null, "pick": null, "odds": null,
+      "corrections": [], "finalProb": 0.38, "inCombo": false,
+      "excludeReason": "J1 R3概率胶着(DC:40/24/36)，极差<10pp，避开",
+      "result": null, "direction": null, "score": null, "clv": null
+    },
+    {
+      "seq": 204, "code": "周六004", "league": "日乙", "home": "磐田喜悦", "away": "德岛漩涡",
+      "stars": 0, "grade": "D", "play": null, "pick": null, "odds": null,
+      "corrections": [], "finalProb": null, "inCombo": false,
+      "excludeReason": "D级，J2数据全缺",
+      "result": null, "direction": null, "score": null, "clv": null
+    },
+    {
+      "seq": 205, "code": "周六005", "league": "韩职", "home": "全北现代", "away": "蔚山现代",
+      "stars": 0, "grade": "D", "play": null, "pick": null, "odds": null,
+      "corrections": [], "finalProb": null, "inCombo": false,
+      "excludeReason": "D级，韩职数据全缺",
+      "result": null, "direction": null, "score": null, "clv": null
+    },
+    {
+      "seq": 206, "code": "周六006", "league": "韩职", "home": "安养FC", "away": "首尔FC",
+      "stars": 0, "grade": "D", "play": null, "pick": null, "odds": null,
+      "corrections": [], "finalProb": null, "inCombo": false,
+      "excludeReason": "D级，韩职数据全缺",
+      "result": null, "direction": null, "score": null, "clv": null
+    },
+    {
+      "seq": 207, "code": "周六007", "league": "英超杯", "home": "赫尔城", "away": "曼联",
+      "stars": 3, "grade": "B", "play": "胜平负", "pick": "客胜", "odds": 1.55,
+      "corrections": ["曼联客场差下调至65%"], "finalProb": 0.65, "inCombo": true,
+      "comboLabel": "方案B②+方案A②+方案C②",
+      "result": null, "direction": null, "score": null, "clv": null
+    }
+  ],
+  "combos": [
+    {
+      "label": "方案B（推荐）",
+      "type": "3串1混合过关",
+      "legs": [
+        {"code": "周五009", "play": "胜平负", "pick": "主胜", "odds": 1.65, "stars": 4, "grade": "A"},
+        {"code": "周六007", "play": "胜平负", "pick": "客胜", "odds": 1.55, "stars": 3, "grade": "B"},
+        {"code": "周五011", "play": "胜平负", "pick": "主胜", "odds": 1.95, "stars": 3, "grade": "B"}
+      ],
+      "totalOdds": 4.97, "stake": 2, "multiplier": 1, "expectedReturn": 9.94
+    },
+    {
+      "label": "方案A（进攻）",
+      "type": "3串1混合过关",
+      "legs": [
+        {"code": "周五009", "play": "比分", "pick": "2-0", "odds": 6.50, "stars": 4, "grade": "A"},
+        {"code": "周六007", "play": "胜平负", "pick": "客胜", "odds": 1.55, "stars": 3, "grade": "B"},
+        {"code": "周五011", "play": "胜平负", "pick": "主胜", "odds": 1.95, "stars": 3, "grade": "B"}
+      ],
+      "totalOdds": 19.66, "stake": 2, "multiplier": 1, "expectedReturn": 39.33
+    },
+    {
+      "label": "方案C（稳健）",
+      "type": "2串1纯胜平负",
+      "legs": [
+        {"code": "周五009", "play": "胜平负", "pick": "主胜", "odds": 1.65, "stars": 4, "grade": "A"},
+        {"code": "周六007", "play": "胜平负", "pick": "客胜", "odds": 1.55, "stars": 3, "grade": "B"}
+      ],
+      "totalOdds": 2.56, "stake": 2, "multiplier": 2, "expectedReturn": 10.24
+    }
+  ]
+}
