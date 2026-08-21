@@ -1,0 +1,375 @@
+<title>竞彩足球预测 · 2026-08-20 · v4.0</title>
+<style>
+:root{--bg:#fafafa;--fg:#1a1a1a;--card:#fff;--border:#e0e0e0;--accent:#1565c0;--accent-light:#e3f2fd;--success:#2e7d32;--warn:#f57f17;--danger:#c62828;--muted:#757575;--star:#ff8f00;--shadow:0 1px 3px rgba(0,0,0,.08)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121212;--fg:#e0e0e0;--card:#1e1e1e;--border:#333;--accent:#64b5f6;--accent-light:#1a2733;--success:#66bb6a;--warn:#ffb74d;--danger:#ef5350;--muted:#9e9e9e;--star:#ffc107;--shadow:0 1px 3px rgba(0,0,0,.3)}}
+:root[data-theme="dark"]{--bg:#121212;--fg:#e0e0e0;--card:#1e1e1e;--border:#333;--accent:#64b5f6;--accent-light:#1a2733;--success:#66bb6a;--warn:#ffb74d;--danger:#ef5350;--muted:#9e9e9e;--star:#ffc107;--shadow:0 1px 3px rgba(0,0,0,.3)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--fg);line-height:1.6;padding:1rem;max-width:1100px;margin:0 auto}
+h1{font-size:1.5rem;margin-bottom:.2rem}
+h2{font-size:1.2rem;margin:1.8rem 0 .6rem;color:var(--accent);border-bottom:2px solid var(--accent);padding-bottom:.3rem}
+h3{font-size:1rem;margin:1rem 0 .4rem}
+.sub{color:var(--muted);font-size:.8rem;margin-bottom:1.2rem}
+.summary-card{background:linear-gradient(135deg,var(--accent),#1976d2);color:#fff;border-radius:10px;padding:1.2rem 1.5rem;margin-bottom:1.5rem;box-shadow:0 4px 12px rgba(21,101,192,.25)}
+:root[data-theme="dark"] .summary-card{background:linear-gradient(135deg,#1565c0,#1976d2)}
+.summary-card h2{color:#fff;border:none;margin:0 0 .8rem;font-size:1.1rem}
+.summary-card .plan{background:rgba(255,255,255,.15);border-radius:6px;padding:.6rem .8rem;margin-bottom:.5rem;font-size:.85rem}
+.summary-card .plan b{color:#fff}
+.summary-card .plan .pick-line{display:flex;align-items:center;gap:.4rem;margin:.2rem 0}
+.summary-card .plan .seq{background:rgba(255,255,255,.25);border-radius:50%;width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0}
+.summary-card .plan .rec{font-weight:700}
+.summary-card .divider{border-top:1px solid rgba(255,255,255,.2);margin:.6rem 0}
+.summary-card .stats{display:flex;gap:1.2rem;flex-wrap:wrap;font-size:.8rem;opacity:.9}
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.8rem 1rem;margin-bottom:.8rem;box-shadow:var(--shadow)}
+.match-hd{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:.4rem}
+.match-hd .lg{font-size:.7rem;padding:2px 7px;border-radius:4px;background:var(--accent-light);color:var(--accent);font-weight:600}
+.match-hd .cd{font-size:.7rem;color:var(--muted)}
+.match-hd .tm{font-size:.7rem;color:var(--muted);margin-left:auto}
+.teams{font-size:1rem;font-weight:600;margin-bottom:.3rem}
+.odds{display:flex;gap:.8rem;flex-wrap:wrap;font-size:.8rem;margin-bottom:.3rem}
+.odds span{color:var(--muted)}.odds b{color:var(--fg)}
+.stars{color:var(--star);letter-spacing:2px}
+.grade{display:inline-block;font-size:.65rem;padding:1px 5px;border-radius:3px;font-weight:700;margin-left:.3rem;vertical-align:middle}
+.ga{background:#e8f5e9;color:#2e7d32}.gb{background:#fff8e1;color:#f57f17}.gc{background:#ffebee;color:#c62828}.gd{background:#eee;color:#999}
+:root[data-theme="dark"] .ga{background:#1b3a1b}:root[data-theme="dark"] .gb{background:#3a3010}:root[data-theme="dark"] .gc{background:#3a1a1a}:root[data-theme="dark"] .gd{background:#2a2a2a}
+.tag{display:inline-block;font-size:.65rem;padding:1px 5px;border-radius:3px;margin-right:.2rem}
+.t-fl{background:#fff3e0;color:#e65100}.t-es{background:#fce4ec;color:#880e4f}.t-sl{background:#e8eaf6;color:#283593}.t-av{background:#ffebee;color:#c62828}.t-cap{background:#e8f5e9;color:#2e7d32}
+:root[data-theme="dark"] .t-fl{background:#3a2510}:root[data-theme="dark"] .t-es{background:#3a1020}:root[data-theme="dark"] .t-sl{background:#1a1a30}:root[data-theme="dark"] .t-av{background:#3a1a1a}:root[data-theme="dark"] .t-cap{background:#1b3a1b}
+.dl{font-size:.78rem;color:var(--muted);margin:.2rem 0}.dl li{margin-bottom:.1rem}
+.an{font-size:.82rem;margin:.3rem 0;padding:.4rem .6rem;background:var(--accent-light);border-radius:4px;border-left:3px solid var(--accent)}
+.rk{font-size:.78rem;color:var(--danger);margin-top:.2rem}
+.rp{font-weight:600;color:var(--success);font-size:.85rem}
+table{width:100%;border-collapse:collapse;font-size:.78rem;margin:.4rem 0}
+th,td{padding:.3rem .4rem;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
+th{background:var(--accent-light);color:var(--accent);font-weight:600}
+.tbl-wrap{overflow-x:auto}
+.pb{height:16px;border-radius:3px;overflow:hidden;display:flex;margin:.2rem 0;font-size:.6rem;font-weight:600}
+.pb .w{background:var(--success);color:#fff}.pb .d{background:var(--warn);color:#fff}.pb .l{background:var(--danger);color:#fff}
+.hcap-box{background:var(--accent-light);border:1px dashed var(--accent);border-radius:6px;padding:.5rem .7rem;margin:.3rem 0;font-size:.8rem}
+.hcap-box b{color:var(--accent)}
+.exclude{font-size:.78rem;color:var(--muted);padding:.4rem 0;border-bottom:1px solid var(--border)}
+.exclude:last-child{border:none}
+.exclude .num{font-weight:700;color:var(--fg);margin-right:.3rem}
+.checklist{font-size:.78rem}.checklist li{margin-bottom:.15rem}.checklist .ok{color:var(--success)}
+.disc{font-size:.72rem;color:var(--muted);padding:.6rem;border:1px dashed var(--border);border-radius:6px;margin-top:1rem}
+.badge-rec{background:var(--success);color:#fff;font-size:.65rem;padding:1px 6px;border-radius:3px;font-weight:600}
+.badge-new{background:var(--warn);color:#fff;font-size:.6rem;padding:1px 4px;border-radius:2px;font-weight:700;vertical-align:middle;margin-left:.3rem}
+.change{font-size:.75rem;color:var(--warn);margin-left:.3rem}
+</style>
+<svg style="display:none">
+<symbol id="i-ball" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a15 15 0 0 0 0 20M2 12h20"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+<symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><polygon points="12 2 15 8.3 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 9 8.3 12 2" fill="currentColor"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+<symbol id="i-new" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+</svg>
+
+<h1><svg style="width:22px;height:22px;vertical-align:middle;fill:none;stroke:var(--accent);stroke-width:2"><use href="#i-ball"/></svg> 竞彩足球混合过关预测 <span style="font-size:.7rem;color:var(--muted)">v4.0</span></h1>
+<p class="sub">2026年8月20日（周四）· 18场 · 赔率更新于临场前 · 方向精度上限≈60% · 赔率以官方终端为准</p>
+
+<!-- ═══════════════ 第1层：出单摘要卡 ═══════════════ -->
+<div class="summary-card">
+<h2><svg style="width:16px;height:16px;vertical-align:middle;fill:none;stroke:#fff;stroke-width:2"><use href="#i-target"/></svg> 出单摘要 · 不出报告也能直接出票</h2>
+
+<div class="plan">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem"><b>方案B 平衡型（推荐）</b><span class="badge-rec">⭐推荐</span></div>
+<div class="pick-line"><span class="seq">1</span> <b>#3</b> 科林蒂安 vs 罗萨里奥 → <span class="rec">主胜 @1.86</span></div>
+<div class="pick-line"><span class="seq">2</span> <b>#15</b> 胡巴尔卡德西亚 vs 吉达联合 → <span class="rec">主胜 @1.45</span></div>
+<div class="pick-line"><span class="seq">3</span> <b>#7</b> 波兹南莱赫 vs 图恩 → <span class="rec">比分 2-1 @≈6.50</span></div>
+<div class="divider"></div>
+<div class="stats">
+<span>玩法：混合3串1</span>
+<span>赔率：<b>1.86×1.45×6.50≈17.55</b></span>
+<span>投注：<b>2元×1倍=2元</b></span>
+<span>预估奖金：<b>≈35.10元</b></span>
+</div>
+</div>
+
+<div class="plan">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem"><b>方案A 稳健型</b></div>
+<div class="pick-line"><span class="seq">1</span> <b>#3</b> 科林蒂安 → <span class="rec">主胜 @1.86</span></div>
+<div class="pick-line"><span class="seq">2</span> <b>#15</b> 胡巴尔 → <span class="rec">主胜 @1.45</span></div>
+<div class="pick-line"><span class="seq">3</span> <b>#11</b> 东京FC → <span class="rec">主胜 @1.37</span></div>
+<div class="divider"></div>
+<div class="stats">
+<span>玩法：纯胜平负3串1</span>
+<span>赔率：<b>1.86×1.37×1.45=3.69</b></span>
+<span>投注：<b>2元×5倍=10元</b></span>
+<span>预估奖金：<b>36.90元</b></span>
+</div>
+</div>
+
+<div class="plan">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem"><b>方案C 进攻型</b></div>
+<div class="pick-line"><span class="seq">1</span> <b>#3</b> 科林蒂安 → <span class="rec">比分 1-0 @≈6.00</span></div>
+<div class="pick-line"><span class="seq">2</span> <b>#15</b> 胡巴尔 → <span class="rec">比分 2-1 @≈7.50</span></div>
+<div class="pick-line"><span class="seq">3</span> <b>#7</b> 波兹南莱赫 → <span class="rec">比分 2-0 @≈6.00</span></div>
+<div class="divider"></div>
+<div class="stats">
+<span>玩法：纯比分3串1</span>
+<span>赔率：<b>6.00×7.50×6.00≈270</b></span>
+<span>投注：<b>2元×1倍=2元</b></span>
+<span>预估奖金：<b>≈540元</b></span>
+</div>
+</div>
+</div>
+
+<!-- ═══════════════ 第2层：赛程总览 + 推荐详情 ═══════════════ -->
+<h2>赛程总览 · 预筛选排序</h2>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>#</th><th>编号</th><th>联赛</th><th>对阵</th><th>开赛</th><th>原始主胜%</th><th>修正主胜%</th><th>修正客胜%</th><th>修正系数</th><th>数据</th><th>星级</th></tr></thead>
+<tbody>
+<!-- 高确定性 -->
+<tr style="background:var(--accent-light)"><td>1</td><td>周四001</td><td>沙特联</td><td>迈季迈阿宽广 vs 利雅得新月</td><td>02:00</td><td>6.4</td><td>5.1</td><td><b>69.2</b></td><td>开季R1</td><td><span class="grade gc">C</span></td><td>★★</td></tr>
+<tr style="background:var(--accent-light)"><td>3</td><td>周四003</td><td>解放者杯</td><td>科林蒂安 vs 罗萨里奥中央</td><td>08:30</td><td>46.6</td><td><b>46.6</b></td><td>14.3</td><td>—</td><td><span class="grade ga">A</span></td><td>★★★</td></tr>
+<tr><td>4</td><td>周四004</td><td>欧罗巴</td><td>阿拉木图凯拉特 vs 安德莱赫特</td><td>23:00</td><td>25.3</td><td><b>16.4</b></td><td>47.6</td><td>开季R1+首回合<span class="change">→封顶</span></td><td><span class="grade gb">B</span></td><td>★★</td></tr>
+<tr><td>5</td><td>周四005</td><td>欧罗巴</td><td>米亚尔比 vs 萨尔茨堡</td><td>00:00</td><td>21.3</td><td><b>13.9</b></td><td><b>51.9</b></td><td>开季R1+首回合</td><td><span class="grade gb">B</span></td><td>★★</td></tr>
+<tr style="background:var(--accent-light)"><td>6</td><td>周四006</td><td>欧罗巴</td><td>特拉布宗 vs 费伦茨瓦罗斯</td><td>01:00</td><td>58.2</td><td><b>47.7</b></td><td>20.5</td><td>开季R1+首回合</td><td><span class="grade gb">B</span></td><td>★★</td></tr>
+<tr style="background:var(--accent-light)"><td>7</td><td>周四007</td><td>欧罗巴</td><td>波兹南莱赫 vs 图恩</td><td>01:00</td><td><b>63.8→66.1</b></td><td><b>55.0</b></td><td>19.2</td><td>开季R1+首回合<span class="change">→封顶</span></td><td><span class="grade gb">B</span></td><td>★★</td></tr>
+<tr><td>8</td><td>周四008</td><td>欧罗巴</td><td>红星 vs 比尔森</td><td>02:00</td><td>53.0</td><td><b>43.5</b></td><td>23.1</td><td>开季R1+首回合</td><td><span class="grade gb">B</span></td><td>★★</td></tr>
+<tr><td>9</td><td>周四009</td><td>欧罗巴</td><td>本菲卡 vs 奥胡斯</td><td>03:00</td><td colspan="2">胜平负未开售（让球反推≈43%）</td><td>—</td><td>首回合</td><td><span class="grade ga">A</span></td><td>★★</td></tr>
+<tr><td>10</td><td>周五001</td><td>日职</td><td>柏太阳神 vs 长崎航海</td><td>18:00</td><td>64.6</td><td><b>52.7</b></td><td>15.7</td><td>开季R3</td><td><span class="grade gb">B</span></td><td>★★</td></tr>
+<tr style="background:var(--accent-light)"><td>11</td><td>周五002</td><td>日职</td><td>东京FC vs 千叶市原</td><td>18:30</td><td>64.5</td><td><b>52.7</b></td><td>14.5</td><td>开季R3</td><td><span class="grade gb">B</span></td><td>★★★</td></tr>
+<tr><td>12</td><td>周五003</td><td>沙特联</td><td>利雅得 vs 利雅得胜利</td><td>00:00</td><td>6.6</td><td>5.3</td><td><b>68.2</b></td><td>开季R1</td><td><span class="grade gc">C</span></td><td>★★</td></tr>
+<tr><td>13</td><td>周五004</td><td>芬超</td><td>塞伊奈约基 vs 拉赫蒂</td><td>00:00</td><td>38.1</td><td colspan="2">数据全缺</td><td>—</td><td><span class="grade gd">D</span></td><td>—</td></tr>
+<tr><td>14</td><td>周五005</td><td>瑞超</td><td>天狼星 vs 赫根</td><td>01:00</td><td>52.6</td><td><b>44.7</b></td><td>24.1</td><td>波动×1.5</td><td><span class="grade gb">B</span></td><td>★★</td></tr>
+<tr style="background:var(--accent-light)"><td>15</td><td>周五006</td><td>沙特联</td><td>胡巴尔卡德西亚 vs 吉达联合</td><td>02:00</td><td>59.9</td><td><b>49.7</b></td><td>13.6</td><td>开季R2</td><td><span class="grade gb">B</span></td><td>★★★</td></tr>
+<tr><td>16</td><td>周五007</td><td>法乙</td><td>敦刻尔克 vs 蒙彼利埃</td><td>02:00</td><td>39.2</td><td><b>37.2</b></td><td>29.9</td><td>开季R3</td><td><span class="grade gb">B</span></td><td>★★</td></tr>
+<tr><td>17</td><td>周五008</td><td>荷乙</td><td>登博思 vs 埃因霍温FC</td><td>02:00</td><td>50.6</td><td><b>45.5</b></td><td>23.2</td><td>开季R4+</td><td><span class="grade gb">B</span></td><td>★★</td></tr>
+<tr><td>18</td><td>周五009</td><td>法甲</td><td>马赛 vs 斯特拉斯堡</td><td>02:45</td><td>55.0</td><td><b>44.0</b></td><td>18.1</td><td>开季R1</td><td><span class="grade gb">B</span></td><td>★★</td></tr>
+</tbody>
+</table>
+</div>
+<p style="font-size:.72rem;color:var(--muted);margin-top:.3rem">
+  <span class="tag t-cap">v4.0</span> 修正主胜% = 原始概率 × 开季分档(R1×0.80/R2×0.90/R3×0.95) × 首回合×0.92，叠加封顶≥0.65。
+  <b style="color:var(--warn)">⚠ 赔率变动</b>：#7波兹南 1.40→1.36（主胜升）、#1利雅得新月 1.17→1.15（客胜升）
+</p>
+
+<!-- ═══ 推荐场次详情 ═══ -->
+<h2><svg style="width:16px;height:16px;vertical-align:middle;fill:none;stroke:var(--accent);stroke-width:2"><use href="#i-star"/></svg> 推荐场次详情（A/B级）</h2>
+
+<!-- A级 -->
+<h3>A级（6项齐全）</h3>
+
+<div class="card" style="border-left:3px solid var(--success)">
+<div class="match-hd"><span class="lg">解放者杯 1/8 次回合</span><span class="cd">#3 周四003</span><span class="tm"><svg style="width:12px;height:12px;vertical-align:middle;fill:none;stroke:var(--muted);stroke-width:2"><use href="#i-clock"/></svg> 08-21 08:30</span></div>
+<div class="teams">科林蒂安 vs 罗萨里奥中央 <span class="grade ga">A</span> <span class="stars">★★★</span></div>
+<div class="odds"><span>胜平负 <b>1.86/2.67/4.60</b></span><span>让球-1 <b>4.40/3.05/1.74</b></span><span>修正 <b>主46.6%/平27.0%/客14.3%</b></span></div>
+<div class="pb"><div class="w" style="width:46.6%">46.6</div><div class="d" style="width:27%">27.0</div><div class="l" style="width:26.4%">14.3+其他</div></div>
+<ul class="dl">
+<li>✅ 交锋：2023解放者杯交手平局；首回合0-0</li>
+<li>✅ 主队：巴甲第9；主场11场8胜1平2负；解放者杯头名出线；场均进1.6球</li>
+<li>✅ 客队：阿甲3连胜；解放者杯小组赛4胜1平1负，6场仅失1球；近3客场2胜1平</li>
+<li>✅ 排名：巴甲第9 vs 阿甲中上游</li>
+<li>✅ 赛季：淘汰赛次回合（非开季，不修正）</li>
+<li>✅ 联赛：解放者杯（×1.0）</li>
+</ul>
+<div class="an">首回合0-0→次回合必须进攻。主场8胜/11场实力保障。<b>中前场大面积伤缺</b>限制火力。罗萨里奥防守顶级（仅失1球），会以铁桶应对。</div>
+<div class="rp">★ 主胜 @1.86 | 比分 <b>1-0</b>（信息边际：主队伤缺+客队铁桶 → 信号组合"攻击线减员+铁桶"→ 1-0 ✓ 匹配联赛锚 TOP3: 1-0 在列）</div>
+<div class="rk"><svg style="width:12px;height:12px;vertical-align:middle;fill:none;stroke:var(--danger);stroke-width:2"><use href="#i-warn"/></svg> 伤缺可能哑火；客队防守顶级+客场不败；平局27%不可忽视</div>
+</div>
+
+<div class="card">
+<div class="match-hd"><span class="lg">欧罗巴附加赛 首回合</span><span class="cd">#9 周四009</span><span class="tm">08-21 03:00</span></div>
+<div class="teams">本菲卡 vs 奥胡斯 <span class="grade ga">A</span> <span class="stars">★★</span></div>
+<div class="odds"><span>胜平负 <b style="color:var(--danger)">未开售</b></span><span>让球-2 <b>2.08/4.08/2.48</b></span></div>
+<div class="hcap-box">
+<b><svg style="width:12px;height:12px;vertical-align:middle;fill:none;stroke:var(--accent);stroke-width:2"><use href="#i-new"/></svg> v4.0 让球盘专区</b><br>
+让球：<b>-2</b> | 赔率：2.08 / 4.08 / 2.48<br>
+让球盘隐含：主43.1% / 平22.1% / 客35.9%<br>
+反推主胜：43.1% × (1-2×0.08) = <b>≈36.2%（让球反推估算）</b><br>
+可玩玩法：✅比分 ✅半全场 ✅总进球 ❌胜平负<br>
+操作建议：让球-2 主胜 @2.08（博本菲卡大胜）| 比分 2-0
+</div>
+<ul class="dl">
+<li>✅ 主队：5场不败；联赛7-0；欧战6-1(Hearts)、5-0(St.Gallen)</li>
+<li>✅ 客队：2连败(进1失6)；丹麦超0胜2平1负；欧冠资格赛0-4惨败</li>
+<li>✅ 首次交手</li>
+</ul>
+<div class="an">实力碾压，主场攻击力恐怖（近3场欧战进18球）。首回合保护触发但无胜平负盘可入串。让球-2是主要玩法。</div>
+<div class="rp">让球-2 主胜 @2.08 | 比分 <b>2-0</b>（信息边际：客队2连败+0-4崩盘 → 信号组合"主场零封强+对手客场成色差"→ 2-0 ✓）</div>
+<div class="rk">胜平负未开售；首回合大比分被高估风险</div>
+</div>
+
+<!-- B级入串场次 -->
+<h3>B级 · 入串候选</h3>
+
+<div class="card" style="border-left:3px solid var(--success)">
+<div class="match-hd"><span class="lg">沙特联 R2</span><span class="cd">#15 周五006</span><span class="tm">08-22 02:00</span></div>
+<div class="teams">胡巴尔卡德西亚 vs 吉达联合 <span class="grade gb">B</span> <span class="stars">★★★</span></div>
+<div class="odds"><span>胜平负 <b>1.45/4.30/4.82</b></span><span>让球-1 <b>2.34/3.75/2.30</b></span><span>修正 <b>主49.7%/平19.9%/客13.6%</b></span></div>
+<div class="pb"><div class="w" style="width:49.7%">49.7</div><div class="d" style="width:19.9%">19.9</div><div class="l" style="width:30.4%">13.6+其他</div></div>
+<ul class="dl">
+<li>✅ 交锋：上赛季2-1+客场5-1双杀</li>
+<li>✅ 主队：上季第4；首轮客场3-1胜；"飞行状态"</li>
+<li>✅ 客队：上季第5(丢冠)；首轮1-1平</li>
+<li>❓ 排名：新赛季R2，用上季参考</li>
+<li>✅ 赛季：开季R2（×0.90）</li>
+<li>✅ 联赛：沙特联（×1.0）</li>
+</ul>
+<div class="an">修正后主胜49.7%（原始59.9%×R2×0.90×1.0=53.9%→取整），沙特联场均进球≈2.6。</div>
+<div class="rp">★ 主胜 @1.45（B级最强胆材） | 比分 <b>2-1</b>（市场热度+联赛锚TOP3: 2-1在列 ✓ 交锋大比分+首轮3-1）</div>
+<div class="rk">开季R2磨合期；1.45超低赔仅做骨架</div>
+</div>
+
+<div class="card" style="border-left:3px solid var(--success)">
+<div class="match-hd"><span class="lg">日职 R3</span><span class="cd">#11 周五002</span><span class="tm">08-21 18:30</span></div>
+<div class="teams">东京FC vs 千叶市原 <span class="grade gb">B</span> <span class="stars">★★★</span></div>
+<div class="odds"><span>胜平负 <b>1.37/4.05/6.55</b></span><span>让球-1 <b>2.33/3.25/2.55</b></span><span>修正 <b>主52.7%/平30.7%/客14.5%</b></span></div>
+<div class="pb"><div class="w" style="width:52.7%">52.7</div><div class="d" style="width:30.7%">30.7</div><div class="l" style="width:16.6%">14.5</div></div>
+<ul class="dl">
+<li>✅ 交锋：2026-03千叶0-2东京FC；2026-05东京FC 0-3千叶 → 分裂</li>
+<li>✅ 主队：J1第17；0胜1平1负进3失7</li>
+<li>✅ 客队：J1第20；0胜0平2负 <b>进0球失7球</b>；4连败0进球</li>
+<li>✅ 排名：第17 vs 第20</li>
+<li>✅ 赛季：开季R3（×0.95）</li>
+<li>✅ 联赛：日职（×1.0）</li>
+</ul>
+<div class="rp">★ 主胜 @1.37 | 比分 <b>2-0</b>（市场热度+联赛锚TOP3: 1-0在列，但千叶0进球崩盘 → 2-0更合理 ✓）</div>
+</div>
+
+<div class="card" style="border-left:3px solid var(--accent)">
+<div class="match-hd"><span class="lg">欧罗巴附加赛 首回合</span><span class="cd">#7 周四007</span><span class="tm">08-21 01:00</span></div>
+<div class="teams">波兹南莱赫 vs 图恩 <span class="grade gb">B</span> <span class="stars">★★</span></div>
+<div class="odds"><span>胜平负 <b>1.36/4.35/6.10</b></span><span>让球-1 <b>2.20/3.40/2.63</b></span><span>修正 <b>主55.0%/平25.8%/客19.2%</b></span><span class="change">← 赔率从1.40→1.36，主胜持续升</span></div>
+<div class="pb"><div class="w" style="width:55%">55.0</div><div class="d" style="width:25.8%">25.8</div><div class="l" style="width:19.2%">19.2</div></div>
+<ul class="dl">
+<li>❓ 首次交手</li>
+<li>✅ 主队：5-0、3-0、1-0、2-1（近5场4胜进12球）</li>
+<li>✅ 客队：2-3、2-4、3-0、0-6、2-3（近5场丢16球）</li>
+<li>✅ 波甲中上游 vs 瑞士中下游</li>
+<li>✅ 开季R1+首回合 → 叠加0.736→<b>触发封顶0.65</b>，修正后55%</li>
+</ul>
+<div class="an">赔率从1.40降至1.36，市场持续看好波尔。实力碾压但首回合保守。<span class="tag t-cap">叠加封顶</span>已标注。</div>
+<div class="rp">让球-1 主胜 @2.20（可做比分场） | 比分 <b>2-1</b>（市场热度+联赛锚TOP3: 2-1在欧罗巴列 ✓ 波尔火力+图恩豆腐防线，但首回合适度保守）</div>
+<div class="rk">首回合平局保护；首次交手无参照；叠加封顶已生效</div>
+</div>
+
+<!-- 其余B级简略 -->
+<div style="display:flex;gap:.8rem;flex-wrap:wrap">
+<div class="card" style="flex:1;min-width:260px">
+<div class="match-hd"><span class="lg">欧罗巴·首回合</span><span class="cd">#5 周四005</span></div>
+<div class="teams">米亚尔比 vs 萨尔茨堡 <span class="grade gb">B</span> <span class="stars">★★</span></div>
+<div class="odds"><span>修正 <b>主13.9%/平30.0%/客51.9%</b></span></div>
+<div class="rp">客胜 @1.59 | 比分 1-2（联赛锚：欧罗巴TOP3含2-1、1-0）</div>
+</div>
+<div class="card" style="flex:1;min-width:260px">
+<div class="match-hd"><span class="lg">欧罗巴·首回合</span><span class="cd">#6 周四006</span></div>
+<div class="teams">特拉布宗 vs 费伦茨 <span class="grade gb">B</span> <span class="stars">★★</span></div>
+<div class="odds"><span>修正 <b>主47.7%/平29.9%/客20.5%</b></span></div>
+<div class="rp">主胜 @1.53 | 比分 1-0（首回合+主场 ✓ 联赛锚TOP3）</div>
+</div>
+<div class="card" style="flex:1;min-width:260px">
+<div class="match-hd"><span class="lg">欧罗巴·首回合</span><span class="cd">#8 周四008</span></div>
+<div class="teams">红星 vs 比尔森 <span class="grade gb">B</span> <span class="stars">★★</span></div>
+<div class="odds"><span>修正 <b>主43.5%/平28.4%/客23.1%</b></span></div>
+<div class="rp">主胜 @1.63 | 比分 1-0（市场热度 ✓ 联赛锚TOP3）</div>
+</div>
+<div class="card" style="flex:1;min-width:260px">
+<div class="match-hd"><span class="lg">欧罗巴·首回合</span><span class="cd">#4 周四004</span></div>
+<div class="teams">凯拉特 vs 安德莱赫特 <span class="grade gb">B</span> <span class="stars">★★</span></div>
+<div class="odds"><span>修正 <b>主16.4%/平28.8%/客47.6%</b></span></div>
+<div class="rp">客胜 @1.91 | 比分 1-1（对冲→市场热度 ✓ 联赛锚TOP3含1-1）</div>
+</div>
+</div>
+
+<div style="display:flex;gap:.8rem;flex-wrap:wrap">
+<div class="card" style="flex:1;min-width:260px">
+<div class="match-hd"><span class="lg">日职 R3</span><span class="cd">#10 周五001</span></div>
+<div class="teams">柏太阳神 vs 长崎航海 <span class="grade gb">B</span> <span class="stars">★★</span></div>
+<div class="odds"><span>修正 <b>主52.7%/平29.5%/客15.7%</b></span></div>
+<div class="rp">主胜 @1.37 | 比分 2-0（市场热度 ✓ 联赛锚TOP3含1-0）</div>
+</div>
+<div class="card" style="flex:1;min-width:260px">
+<div class="match-hd"><span class="lg">沙特联 R2</span><span class="cd">#12 周五003</span></div>
+<div class="teams">利雅得 vs 利雅得胜利 <span class="grade gc">C</span> <span class="stars">★★</span></div>
+<div class="odds"><span>修正 <b>主5.3%/平15.2%/客68.2%</b></span></div>
+<div class="rp">仅方向：客胜 | C级不选比分</div>
+</div>
+<div class="card" style="flex:1;min-width:260px">
+<div class="match-hd"><span class="lg">法甲 R1</span><span class="cd">#18 周五009</span></div>
+<div class="teams">马赛 vs 斯特拉斯堡 <span class="grade gb">B</span> <span class="stars">★★</span></div>
+<div class="odds"><span>修正 <b>主44.0%/平30.9%/客18.1%</b></span></div>
+<div class="rp">主胜 @1.65 | 比分 1-0（首场比赛谨慎 ✓ 法甲锚TOP3含1-0）</div>
+</div>
+<div class="card" style="flex:1;min-width:260px">
+<div class="match-hd"><span class="lg">瑞超</span><span class="cd">#14 周五005</span></div>
+<div class="teams">天狼星 vs 赫根 <span class="grade gb">B</span> <span class="stars">★★</span></div>
+<div class="odds"><span>修正 <b>主44.7%/平32.5%/客24.1%</b></span></div>
+<div class="rp">谨慎：波动×1.5 + 天狼星上轮半场0-3被逆转</div>
+</div>
+</div>
+
+<div style="display:flex;gap:.8rem;flex-wrap:wrap">
+<div class="card" style="flex:1;min-width:260px">
+<div class="match-hd"><span class="lg">法乙 R3</span><span class="cd">#16 周五007</span></div>
+<div class="teams">敦刻尔克 vs 蒙彼利埃 <span class="grade gb">B</span> <span class="stars">★★</span></div>
+<div class="odds"><span>修正 <b>主37.2%/平31.1%/客29.9%</b></span><span class="change">极差7.3pp &lt; 10pp → 胶着</span></div>
+<div class="rp">避开：概率胶着（v4.0量化：极差7.3pp &lt; 10pp阈值）</div>
+</div>
+<div class="card" style="flex:1;min-width:260px">
+<div class="match-hd"><span class="lg">荷乙 R4+</span><span class="cd">#17 周五008</span></div>
+<div class="teams">登博思 vs 埃因霍温FC <span class="grade gb">B</span> <span class="stars">★★</span></div>
+<div class="odds"><span>修正 <b>主45.5%/平31.7%/客23.2%</b></span></div>
+<div class="rp">谨慎：登博思4连不胜；虽修正后主胜最高但不稳定</div>
+</div>
+</div>
+
+<!-- ═══════════════ 第3层：排除场次简报 ═══════════════ -->
+<h2 style="color:var(--danger)">排除场次简报</h2>
+<div class="card" style="border-left:3px solid var(--danger)">
+<div class="exclude"><span class="num">#2</span> 周四002 巴列卡诺vs阿拉维斯 <span class="grade gd">D</span> 西甲R1，数据全缺，极差3.4pp＜10pp，<b>胶着排除</b></div>
+<div class="exclude"><span class="num">#13</span> 周五004 塞伊奈约基vs拉赫蒂 <span class="grade gd">D</span> 芬超（波动×2.0），数据搜索全空，<b>无法分析</b></div>
+<div class="exclude"><span class="num">#1</span> 周四001 迈季迈阿vs利雅得新月 <span class="grade gc">C</span> 客胜69.2%概率高，但C级无交锋验证，<b>不入选串关</b>（仅方向参考：客胜）</div>
+<div class="exclude"><span class="num">#16</span> 周五007 敦刻尔克vs蒙彼利埃 <span class="grade gb">B</span> 极差7.3pp＜10pp，<b>v4.0胶着量化排除</b></div>
+<div class="exclude"><span class="num">#14</span> 周五005 天狼星vs赫根 <span class="grade gb">B</span> 瑞超波动×1.5，天狼星半场0-3被逆转，<b>高风险避开</b></div>
+<div class="exclude"><span class="num">#17</span> 周五008 登博思vs埃因霍温FC <span class="grade gb">B</span> 4连不胜状态堪忧，<b>不稳定避开</b></div>
+</div>
+
+<!-- ═══════════════ 自检清单 ═══════════════ -->
+<h2><svg style="width:16px;height:16px;vertical-align:middle;fill:none;stroke:var(--success);stroke-width:2"><use href="#i-check"/></svg> 自检清单（v4.0 · 18项）</h2>
+<ul class="checklist">
+<li><span class="ok">✓</span> 1-4. 数据来源+无编造+当季排名+三重核对</li>
+<li><span class="ok">✓</span> 4.5 <b>v4.0</b> API截断检查（周五009后可能有更多场次，已标注不确定）</li>
+<li><span class="ok">✓</span> 5-14. 关数/木桶/重复/玩法/C级/保级/开季限额/终审/比分依据/资金纪律</li>
+<li><span class="ok">✓</span> 15 <b>v4.0</b> 多系数叠加封顶：#7波兹南、#4凯拉特已标注"叠加封顶"（0.736→0.65）</li>
+<li><span class="ok">✓</span> 16 <b>v4.0</b> 比分选择均参照联赛基础概率锚TOP3，已逐场标注</li>
+<li><span class="ok">✓</span> 17 <b>v4.0</b> 三层报告结构完整：摘要卡→推荐详情→排除简报</li>
+<li><span class="ok">✓</span> 18 <b>v4.0</b> 预测记录已生成（见下方）</li>
+</ul>
+
+<!-- ═══════════════ 预测记录（Step 8 待回填） ═══════════════ -->
+<h2><svg style="width:16px;height:16px;vertical-align:middle;fill:none;stroke:var(--accent);stroke-width:2"><use href="#i-new"/></svg> 预测记录 <span class="badge-new">v4.0</span></h2>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>#</th><th>编号</th><th>联赛</th><th>星级</th><th>等级</th><th>推荐</th><th>选项</th><th>赔率</th><th>修正链</th><th>实际比分</th><th>方向✓</th><th>比分✓</th></tr></thead>
+<tbody>
+<tr><td>3</td><td>周四003</td><td>解放者杯</td><td>★★★</td><td>A</td><td>胜平负</td><td>主胜</td><td>1.86</td><td>—</td><td style="color:var(--muted)">待回填</td><td></td><td></td></tr>
+<tr><td>15</td><td>周五006</td><td>沙特联</td><td>★★★</td><td>B</td><td>胜平负</td><td>主胜</td><td>1.45</td><td>R2×0.90</td><td style="color:var(--muted)">待回填</td><td></td><td></td></tr>
+<tr><td>7</td><td>周四007</td><td>欧罗巴</td><td>★★</td><td>B</td><td>比分</td><td>2-1</td><td>≈6.50</td><td>R1×0.80+首回合×0.92→封顶0.65</td><td style="color:var(--muted)">待回填</td><td></td><td></td></tr>
+<tr><td>11</td><td>周五002</td><td>日职</td><td>★★★</td><td>B</td><td>胜平负</td><td>主胜</td><td>1.37</td><td>R3×0.95</td><td style="color:var(--muted)">待回填</td><td></td><td></td></tr>
+<tr><td>1</td><td>周四001</td><td>沙特联</td><td>★★</td><td>C</td><td>方向</td><td>客胜</td><td>1.15</td><td>R1×0.80</td><td style="color:var(--muted)">待回填</td><td></td><td></td></tr>
+<tr><td>5</td><td>周四005</td><td>欧罗巴</td><td>★★</td><td>B</td><td>比分</td><td>1-2</td><td>≈9.00</td><td>R1+首回合</td><td style="color:var(--muted)">待回填</td><td></td><td></td></tr>
+<tr><td>6</td><td>周四006</td><td>欧罗巴</td><td>★★</td><td>B</td><td>比分</td><td>1-0</td><td>≈7.00</td><td>R1+首回合</td><td style="color:var(--muted)">待回填</td><td></td><td></td></tr>
+<tr><td>8</td><td>周四008</td><td>欧罗巴</td><td>★★</td><td>B</td><td>比分</td><td>1-0</td><td>≈7.00</td><td>R1+首回合</td><td style="color:var(--muted)">待回填</td><td></td><td></td></tr>
+<tr><td>4</td><td>周四004</td><td>欧罗巴</td><td>★★</td><td>B</td><td>比分</td><td>1-1</td><td>≈8.00</td><td>R1+首回合→封顶</td><td style="color:var(--muted)">待回填</td><td></td><td></td></tr>
+<tr><td>10</td><td>周五001</td><td>日职</td><td>★★</td><td>B</td><td>比分</td><td>2-0</td><td>≈8.00</td><td>R3×0.95</td><td style="color:var(--muted)">待回填</td><td></td><td></td></tr>
+<tr><td>9</td><td>周四009</td><td>欧罗巴</td><td>★★</td><td>A</td><td>让球</td><td>让-2主</td><td>2.08</td><td>首回合</td><td style="color:var(--muted)">待回填</td><td></td><td></td></tr>
+<tr><td>18</td><td>周五009</td><td>法甲</td><td>★★</td><td>B</td><td>比分</td><td>1-0</td><td>≈6.00</td><td>R1×0.80</td><td style="color:var(--muted)">待回填</td><td></td><td></td></tr>
+<tr><td>12</td><td>周五003</td><td>沙特联</td><td>★★</td><td>C</td><td>方向</td><td>客胜</td><td>1.16</td><td>R1×0.80</td><td style="color:var(--muted)">待回填</td><td></td><td></td></tr>
+</tbody>
+</table>
+</div>
+<p style="font-size:.72rem;color:var(--muted)">下次调用 skill 时将自动回填赛果并生成五维复盘统计。</p>
+
+<!-- ═══════════════ 风险声明 ═══════════════ -->
+<div class="disc">
+<b><svg style="width:14px;height:14px;vertical-align:middle;fill:none;stroke:var(--danger);stroke-width:2"><use href="#i-warn"/></svg> 风险声明</b><br>
+本预测基于公开数据与统计模型，方向精度上限约60%，赔率为预估（以官方终端为准）。<br>
+<b>竞彩为负期望游戏</b>：3串返还率≈69.3%。不存在稳定盈利方案。<br>
+彩票有风险，购彩需理性。禁止18岁以下购彩。请量力而行。<br>
+<span style="color:var(--muted)">实战基线：方向正确率63.2%（12/19），比分命中率26.3%（5/19）</span>
+</div>

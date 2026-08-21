@@ -1,0 +1,31 @@
+{
+  "league": "spain-laliga",
+  "season": "2526",
+  "refitEvery": 30,
+  "fusion": {
+    "a": 0.4,
+    "b": 1.0
+  },
+  "ranAt": "2026-08-21",
+  "metrics": {
+    "market_only": {
+      "rps": 0.185,
+      "logloss": 0.9435,
+      "acc": 0.585,
+      "n": 159
+    },
+    "dc_only": {
+      "rps": 0.2045,
+      "logloss": 1.0133,
+      "acc": 0.509,
+      "n": 159
+    },
+    "fused": {
+      "rps": 0.1856,
+      "logloss": 0.9466,
+      "acc": 0.579,
+      "n": 159
+    }
+  },
+  "records": 159
+}

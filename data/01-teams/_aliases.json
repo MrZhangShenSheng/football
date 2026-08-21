@@ -1,0 +1,90 @@
+{
+  "_meta": {
+    "updatedAt": "2026-08-21",
+    "note": "规范ID=kebab-case英文，多数据源经此表解析。null=待对应fetch脚本首次运行时补全（勿手填猜测）。league=国内联赛目录名（杯赛参赛队挂国内联赛）。",
+    "sources": {
+      "zh": "体彩官方API中文名",
+      "clubelo": "clubelo.com 球队名",
+      "understat": "understat.com 球队名（仅六大联赛覆盖）",
+      "espn": "ESPN 球队名",
+      "fd": "football-data.co.uk CSV 命名（注意简写：Vallecano/Ath Madrid/Sociedad 等）",
+      "league": "data/01-teams/ 下联赛目录代码"
+    }
+  },
+  "saudi": {
+    "al-majmaah": {"zh": "迈季迈阿宽广", "clubelo": null, "understat": null, "espn": null},
+    "al-hilal": {"zh": "利雅得新月", "clubelo": null, "understat": null, "espn": "Al Hilal"},
+    "al-riyadh": {"zh": "利雅得", "clubelo": null, "understat": null, "espn": null},
+    "al-nassr": {"zh": "利雅得胜利", "clubelo": null, "understat": null, "espn": "Al Nassr"},
+    "qadsiah": {"zh": "胡巴尔卡德西亚", "clubelo": null, "understat": null, "espn": "Al-Qadsiah"},
+    "al-ittihad": {"zh": "吉达联合", "clubelo": null, "understat": null, "espn": "Al Ittihad"}
+  },
+  "spain": {
+    "rayo-vallecano": {"zh": "巴列卡诺", "clubelo": "Rayo Vallecano", "understat": "Rayo Vallecano", "espn": "Rayo Vallecano", "fd": "Vallecano"},
+    "alaves": {"zh": "阿拉维斯", "clubelo": "Alaves", "understat": "Alaves", "espn": "Alaves", "fd": "Alaves"}
+  },
+  "brazil": {
+    "corinthians": {"zh": "科林蒂安", "clubelo": null, "understat": null, "espn": "Corinthians"}
+  },
+  "argentina": {
+    "rosario-central": {"zh": "罗萨里奥中央", "clubelo": null, "understat": null, "espn": "Rosario Central"}
+  },
+  "kazakhstan": {
+    "kairat-almaty": {"zh": "阿拉木图凯拉特", "clubelo": null, "understat": null, "espn": "Kairat Almaty"}
+  },
+  "belgium": {
+    "anderlecht": {"zh": "安德莱赫特", "clubelo": "Anderlecht", "understat": null, "espn": "Anderlecht"}
+  },
+  "sweden": {
+    "mjallby": {"zh": "米亚尔比", "clubelo": "Mjällby", "understat": null, "espn": "Mjällby AIF"},
+    "sirius": {"zh": "天狼星", "clubelo": "Sirius", "understat": null, "espn": "IK Sirius"},
+    "hacken": {"zh": "赫根", "clubelo": "Häcken", "understat": null, "espn": "BK Häcken"}
+  },
+  "austria": {
+    "salzburg": {"zh": "萨尔茨堡", "clubelo": "Salzburg", "understat": null, "espn": "Red Bull Salzburg"}
+  },
+  "turkey": {
+    "trabzonspor": {"zh": "特拉布宗体育", "clubelo": "Trabzonspor", "understat": null, "espn": "Trabzonspor"}
+  },
+  "hungary": {
+    "ferencvaros": {"zh": "费伦茨瓦罗斯", "clubelo": "Ferencváros", "understat": null, "espn": "Ferencváros"}
+  },
+  "poland": {
+    "lech-poznan": {"zh": "波兹南莱赫", "clubelo": "Lech", "understat": null, "espn": "Lech Poznan"}
+  },
+  "switzerland": {
+    "thun": {"zh": "图恩", "clubelo": "Thun", "understat": null, "espn": "FC Thun"}
+  },
+  "serbia": {
+    "crvena-zvezda": {"zh": "贝尔格莱德红星", "clubelo": "Crvena Zvezda", "understat": null, "espn": "Red Star Belgrade"}
+  },
+  "czechia": {
+    "plzen": {"zh": "比尔森", "clubelo": "Plzeň", "understat": null, "espn": "Viktoria Plzen"}
+  },
+  "portugal": {
+    "benfica": {"zh": "本菲卡", "clubelo": "Benfica", "understat": null, "espn": "Benfica"}
+  },
+  "denmark": {
+    "aarhus": {"zh": "奥胡斯", "clubelo": null, "understat": null, "espn": "AGF Aarhus"}
+  },
+  "japan": {
+    "kashiwa-reysol": {"zh": "柏太阳神", "clubelo": null, "understat": null, "espn": "Kashiwa Reysol"},
+    "v-varen-nagasaki": {"zh": "长崎航海", "clubelo": null, "understat": null, "espn": "V-Varen Nagasaki"},
+    "fc-tokyo": {"zh": "东京FC", "clubelo": null, "understat": null, "espn": "FC Tokyo"},
+    "chiba": {"zh": "千叶市原", "clubelo": null, "understat": null, "espn": "JEF United Chiba"}
+  },
+  "finland": {
+    "sjk-seinajoki": {"zh": "塞伊奈约基", "clubelo": "SJK", "understat": null, "espn": "SJK Seinajoki"},
+    "lahti": {"zh": "拉赫蒂", "clubelo": "Lahti", "understat": null, "espn": "FC Lahti"}
+  },
+  "france": {
+    "marseille": {"zh": "马赛", "clubelo": "Marseille", "understat": "Marseille", "espn": "Marseille", "fd": "Marseille"},
+    "strasbourg": {"zh": "斯特拉斯堡", "clubelo": "Strasbourg", "understat": "Strasbourg", "espn": "Strasbourg", "fd": "Strasbourg"},
+    "dunkerque": {"zh": "敦刻尔克", "clubelo": "Dunkerque", "understat": null, "espn": "Dunkerque", "fd": "Dunkerque"},
+    "montpellier": {"zh": "蒙彼利埃", "clubelo": "Montpellier", "understat": null, "espn": "Montpellier", "fd": "Montpellier"}
+  },
+  "netherlands": {
+    "den-bosch": {"zh": "登博思", "clubelo": "Den Bosch", "understat": null, "espn": "FC Den Bosch"},
+    "fc-eindhoven": {"zh": "埃因霍温FC", "clubelo": "Eindhoven", "understat": null, "espn": "FC Eindhoven"}
+  }
+}
