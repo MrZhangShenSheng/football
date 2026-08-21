@@ -14,10 +14,10 @@ def profile():
     """合成缓存数据构造 4 队小联赛画像（直接替换模块路径，模块级共享）。"""
     tmp = Path(tempfile.mkdtemp(prefix="lgprofile_"))
     matches = [
-        {"date": "01/08/2026", "home": "A", "away": "B", "fthg": 2, "ag": 0, "pin_h": 2.5, "pin_d": 3.2, "pin_a": 2.8},
-        {"date": "08/08/2026", "home": "C", "away": "D", "fthg": 1, "ag": 1, "pin_h": 2.2, "pin_d": 3.2, "pin_a": 3.3},
-        {"date": "15/08/2026", "home": "C", "away": "A", "fthg": 0, "ag": 1, "pin_h": 2.1, "pin_d": 3.3, "pin_a": 3.6},
-        {"date": "16/08/2026", "home": "B", "away": "D", "fthg": 0, "ag": 2, "pin_h": 1.9, "pin_d": 3.4, "pin_a": 4.0},
+        {"date": "01/08/2026", "home": "A", "away": "B", "fthg": 2, "ftag": 0, "pin_h": 2.5, "pin_d": 3.2, "pin_a": 2.8},
+        {"date": "08/08/2026", "home": "C", "away": "D", "fthg": 1, "ftag": 1, "pin_h": 2.2, "pin_d": 3.2, "pin_a": 3.3},
+        {"date": "15/08/2026", "home": "C", "away": "A", "fthg": 0, "ftag": 1, "pin_h": 2.1, "pin_d": 3.3, "pin_a": 3.6},
+        {"date": "16/08/2026", "home": "B", "away": "D", "fthg": 0, "ftag": 2, "pin_h": 1.9, "pin_d": 3.4, "pin_a": 4.0},
     ]
     (tmp / "odds_test-league_2627.json").write_text(
         json.dumps({"matches": matches}), encoding="utf-8")
@@ -39,21 +39,21 @@ class TestLeagueProfile:
         assert by_team["B"]["gd"] == -4  # 0-2, 0-2
 
     def test_avg_goals_per_match(self, profile):
-        # 4 场共 9 球 → 场均 2.25（口径：每场比赛）
-        assert profile["leagueStats"]["avgGoals"] == pytest.approx(2.25)
+        # 4 场共 7 球 → 场均 1.75
+        assert profile["leagueStats"]["avgGoals"] == pytest.approx(1.75)
 
     def test_home_win_rate(self, profile):
-        # 4 场：2 主胜 1 平 1 客胜
-        assert profile["leagueStats"]["homeWinRate"] == pytest.approx(0.5)
+        # 4 场：1 主胜 1 平 2 客胜
+        assert profile["leagueStats"]["homeWinRate"] == pytest.approx(0.25)
         assert profile["leagueStats"]["drawRate"] == pytest.approx(0.25)
 
     def test_upset_rate_uses_closing_odds(self, profile):
-        # A 赢 C 时 A 收盘 3.6>2.5 → 冷门 1 场 / 有赔率场 4 场 = 0.25
-        assert profile["leagueStats"]["upsetRate"] == pytest.approx(0.25)
+        # A 客胜收盘 3.6 + D 客胜收盘 4.0 → 2 场冷门 / 4 场 = 0.5
+        assert profile["leagueStats"]["upsetRate"] == pytest.approx(0.5)
 
     def test_top_scores(self, profile):
         top = [t["score"] for t in profile["leagueStats"]["topScores"]]
-        assert top[0] == "1-0"  # 出现2次
+        assert top[0] == "2-0"  # 各1次，按插入顺序
 
     def test_context_title_race_and_relegation(self, profile):
         assert profile["context"]["titleRace"]["leader"] == "A"
