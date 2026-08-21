@@ -1,403 +1,280 @@
-# ⚽ 竞彩足球混合过关预测报告 · 2026-08-21（v4.2）
-
-> 预测日期：2026-08-21 | 比赛日：周五 08-22 + 周六 08-23
-> 模式：全局模式 | 版本：v4.2 战意状态机 + DC 融合
-> ⚠️ 赔率以官方终端为准，预估仅作决策参考。竞彩期望返还率≈88.5%，负期望游戏，理性投注。
-
----
-
-## 📋 第 1 层：出单摘要卡
-
-```
-┌──────────────────────────────────────────────────┐
-│ ⚽ 出单摘要 · 2026-08-21（v4.2）                    │
-├──────────────────────────────────────────────────┤
-│ 方案 B（推荐）：3 串 1 混合过关                       │
-│  ① #9  马赛 [主胜] 体彩 @1.65        ★★★★ A级     │
-│  ② Sat 赫尔城-曼联 [客胜] 体彩 @1.55  ★★★ B级      │
-│  ③ #11 贝蒂斯 [主胜] 体彩 @1.95       ★★★ B级      │
-│  预估赔率 4.97 | 投注 2元×1倍 | 奖金 ≈10元          │
-├──────────────────────────────────────────────────┤
-│ 方案 A（进攻）：3 串 1 混合过关                       │
-│  ① #9  马赛 比分 2-0 体彩 @6.50      ★★★★ A级     │
-│  ② Sat 赫尔城-曼联 客胜 体彩 @1.55    ★★★ B级      │
-│  ③ #11 贝蒂斯 主胜 体彩 @1.95         ★★★ B级      │
-│  预估赔率 19.66 | 投注 2元×1倍 | 奖金 ≈39元         │
-├──────────────────────────────────────────────────┤
-│ 方案 C（稳健）：2 串 1 纯胜平负                       │
-│  ① #9  马赛 [主胜] 体彩 @1.65         ★★★★ A级    │
-│  ② Sat 赫尔城-曼联 [客胜] 体彩 @1.55   ★★★ B级     │
-│  预估赔率 2.56 | 投注 2元×2倍 | 奖金 ≈10元          │
-├──────────────────────────────────────────────────┤
-│ 资金纪律：3 方案合计 ≤10 元                            │
-│ Pinnacle 状态：⚠️ 本批次未能直采收盘赔率               │
-│ 概率锚偏差 ~5pp，置信度已下调一档                       │
-└──────────────────────────────────────────────────┘
-```
-
----
-
-## 📊 第 2 层：推荐场次详情
-
-### #9 周五009 · 法甲 · 马赛 [3] vs 斯特拉斯堡 [7] ★★★★
-
-| 项目 | 详情 |
-|:---|:---|
-| 开赛 | 08-22 02:45（北京时间） |
-| 体彩赔率 | 胜 1.65 / 平 3.75 / 负 3.90 |
-| 让球盘 | -1：主 2.95 / 平 3.60 / 客 1.95 |
-| 体彩隐含概率 | 主 56.3% / 平 24.7% / 负 23.6% (overround 4.6%) |
-| Pinnacle 收盘 | ⚠️ 未直采，锚偏差 ~5pp，估算主 ≈53% |
-| DC 模型 | 主 57.4% / 平 20.8% / 负 21.8% |
-| DC+市场融合 | 主 62.7%（σ(0.4×logit(0.574)+1.0×logit(0.530))） |
-| 融合偏差注记 | \|62.7%-53.0%\|=9.7pp >5pp → 模型偏强于市场 |
-
-**8 因子评分**
-
-| 因子 | 权重 | 评分依据 | 贡献 |
-|:---|:---:|:---|:---:|
-| 赔率隐含概率 | 40% | 主胜 56.3% | 0.225 |
-| 联赛排名差 | 15% | Pos3 vs Pos7，Δ4（主场） | 0.090 |
-| 近期状态 | 12% | 马赛 WDLWL / 斯特拉斯堡 LLLDD | 0.072 |
-| 主场优势 | 10% | 马赛主场 6-2-1（67%胜率） | 0.067 |
-| 历史交锋 | 8% | ❓ 未查（H2H 仅叙事参考） | — |
-| 伤停/阵容 | 8% | ❓ 未查（临场窗口内再确认） | — |
-| 战意 | 5% | 双方常规（R18 中游对决） | 0.025 |
-| 赛季阶段 | 2% | R18（不修正） | 0.020 |
-| **加权总分** | | | **0.549** |
-
-**DC 模型详情**
-
-| 参数 | 马赛 | 斯特拉斯堡 |
-|:---|:---:|:---:|
-| 攻击力 | +0.379 | +0.070 |
-| 防守力 | -0.237 | -0.143 |
-| 预期进球 | 1.94 | 0.85 |
-
-**TOP 比分概率**：1-0 (13.5%), 2-0 (11.3%), 2-1 (10.2%), 1-1 (9.6%)
-
-**法甲比分锚**：场均 2.84 球 | TOP3 = 1-0(25), 0-1(13), 1-1(13)
-
-**修正系数**
-- 无开季修正（R18）
-- 无战意特殊修正（常规对决）
-- 无叠加触发
-
-**最终概率**：主胜 58% / 平局 23% / 客胜 19%
-
-| 项目 | 内容 |
-|:---|:---|
-| 数据等级 | ✅ A 级（6 项：联赛画像✅ 排名✅ 状态✅ 主场✅ H2H❓ 伤停❓ → 4 项有数据 + 联赛画像完整 = A） |
-| 星级 | ★★★★（58% ≥ 55%，但融合偏差 >5pp 下调半档） |
-| 推荐玩法 | **胜平负 → 主胜 @1.65** / 比分 → **2-0 @6.50** |
-| 风险 | ① 马赛近 5 场 WDLWL，上轮客负状态有波动 ② 斯特拉斯堡近 5 场 LLLDD 极度低迷，但低迷队有反弹风险 ③ 模型与市场价差 9.7pp（模型偏强） |
-
----
-
-### Sat 周六007 · 英超（联赛杯）· 赫尔城 vs 曼联 ★★★
-
-| 项目 | 详情 |
-|:---|:---|
-| 开赛 | 08-23（北京时间，具体待定） |
-| 体彩赔率 | 胜 8.90 / 平 5.10 / 负 1.22 |
-| 让球盘 | +1：主 3.32 / 平 3.80 / 客 1.77 |
-| 体彩隐含概率 | 主 10.4% / 平 18.2% / 负 76.1% (overround 4.7%) |
-| Pinnacle 收盘 | ⚠️ 未直采，估算客 ≈72% |
-| DC 模型 | ❌ 赫尔城（英冠）不在英超 DC 库，纯市场锚 |
-
-**8 因子评分**
-
-| 因子 | 权重 | 评分依据 | 贡献 |
-|:---|:---:|:---|:---:|
-| 赔率隐含概率 | 40% | 客胜 76.1% | 0.304 |
-| 联赛排名差 | 15% | 英超 #7 vs 英冠（跨级，按英超高位次估） | 0.105 |
-| 近期状态 | 12% | 曼联 LWDDD 低迷 | 0.036 |
-| 主场优势 | 10% | 赫尔城主场，但跨级抵消 | 0.030 |
-| 历史交锋 | 8% | ❓ | — |
-| 伤停/阵容 | 8% | ❓ 杯赛轮换未知 | — |
-| 战意 | 5% | 常规（杯赛，双方均常规） | 0.025 |
-| 赛季阶段 | 2% | 英超 R22（不修正） | 0.020 |
-| **加权总分** | | | **0.560** |
-
-**修正系数**
-- 无开季修正（英超 R22）
-- 曼联客场 3-5-3 不佳 → 客胜概率下调至 ≈65%
-- 跨级联赛差（英超 vs 英冠） → 实力差仍显著
-
-**最终概率**：主胜 18% / 平局 17% / 客胜 65%
-
-| 项目 | 内容 |
-|:---|:---|
-| 数据等级 | 🟡 B 级（联赛画像✅ 排名✅ 曼联状态✅ 赫尔城❓ 交锋❓ 伤停❓） |
-| 星级 | ★★★（65% 在 55-65% 区间） |
-| 推荐玩法 | **胜平负 → 客胜 @1.55** / 总进球 → 3+ @1.65 |
-| 风险 | ① 曼联近 5 场 LWDDD，客场 3-5-3 极差 ② 联赛杯轮换幅度未知 ③ 赫尔城英冠主场可能有战意加成 |
-
----
-
-### #11 周五011 · 西甲 · 皇家贝蒂斯 [6] vs 皇家社会 [13] ★★★
-
-| 项目 | 详情 |
-|:---|:---|
-| 开赛 | 08-22 03:00（北京时间） |
-| 体彩赔率 | 胜 1.95 / 平 3.26 / 负 3.23 |
-| 让球盘 | -1：主 4.05 / 平 3.58 / 客 1.66 |
-| 体彩隐含概率 | 主 47.5% / 平 28.3% / 负 28.6% (overround 4.4%) |
-| Pinnacle 收盘 | ⚠️ 未直采，估算主 ≈47% |
-| DC 模型 | 主 48.5% / 平 17.1% / 负 34.3% |
-| DC+市场融合 | 主 54.6%（σ(0.4×logit(0.485)+1.0×logit(0.470))） |
-| 融合偏差注记 | \|54.6%-47.0%\|=7.6pp >5pp → 模型偏强于市场 |
-
-**8 因子评分**
-
-| 因子 | 权重 | 评分依据 | 贡献 |
-|:---|:---:|:---|:---:|
-| 赔率隐含概率 | 40% | 主胜 47.5% | 0.190 |
-| 联赛排名差 | 15% | Pos6 vs Pos13，Δ7 | 0.105 |
-| 近期状态 | 12% | 贝蒂斯 LDWLD / 社会 LLDDW | 0.048 |
-| 主场优势 | 10% | 贝蒂斯主场 5-1-3（56%胜率） | 0.056 |
-| 历史交锋 | 8% | ❓ | — |
-| 伤停/阵容 | 8% | ❓ | — |
-| 战意 | 5% | 双方常规（R20 中游） | 0.025 |
-| 赛季阶段 | 2% | R20（不修正） | 0.020 |
-| **加权总分** | | | **0.484** |
-
-**DC 模型详情**
-
-| 参数 | 贝蒂斯 | 皇家社会 |
-|:---|:---:|:---:|
-| 攻击力 | +0.364 | +0.088 |
-| 防守力 | +0.114 | +0.119 |
-| 预期进球 | 2.15 | 1.22 |
-
-**TOP 比分概率**：1-1 (11.6%), 2-1 (11.5%), 1-0 (10.1%), 2-0 (8.9%)
-
-**西甲比分锚**：场均 2.58 球 | TOP3 = 1-1(34), 1-0(23), 2-1(19)
-
-**修正系数**
-- 无开季修正（R20）
-- 社会客场 2-4-4 极差 → 主胜概率微调 +3pp → 约 50%
-- 贝蒂斯 LDWLD → 状态不佳，回调 → 约 47%
-
-**最终概率**：主胜 47% / 平局 28% / 客胜 25%
-
-| 项目 | 内容 |
-|:---|:---|
-| 数据等级 | 🟡 B 级（联赛画像✅ 排名✅ 状态✅ 主场✅ 交锋❓ 伤停❓） |
-| 星级 | ★★★（47% 在 45-55% 区间） |
-| 推荐玩法 | **胜平负 → 主胜 @1.95** / 总进球 → 2-3 球 |
-| 风险 | ① 贝蒂斯 LDWLD 近况差 ② DC 模型预测进球偏高（E=3.37 vs 联赛均 2.58） ③ 模型-市场分歧 7.6pp ④ 社会客场差但近期 LLDDW 有回暖迹象 |
-
----
-
-### #1 周五001 · 日职 · 柏太阳神 [J1-3] vs 长崎航海 [J1-10] ★★★（⚠️ C 级不入串）
-
-| 项目 | 详情 |
-|:---|:---|
-| 开赛 | 08-22 18:00（北京时间） |
-| 体彩赔率 | 胜 1.36 / 平 4.20 / 负 6.45 |
-| 让球盘 | -1：主 2.22 / 平 3.35 / 客 2.63 |
-| 体彩隐含概率 | 主 67.6% / 平 21.9% / 负 14.3% (overround 3.8%) |
-| Pinnacle 收盘 | ⚠️ 未直采，估算主 ≈65% |
-| DC 模型 | ❌ J1 无本地 DC 缓存 |
-
-**修正系数**
-- ✅ 开季修正 R3：强队胜 ×0.95 → 67.6% × 0.95 = 64.2%
-- J1 仅 2 轮数据，排名参考价值极低
-- 柏 2-0-0 进 5 失 2 / 长崎 1-0-1 进 2 失 2
-
-**最终概率**：主胜 64% / 平局 22% / 负 14%
-
-| 项目 | 内容 |
-|:---|:---|
-| 数据等级 | 🔴 C 级（排名✅ + 赛季阶段✅，其余全缺） |
-| 星级 | ★★★（64%，C 级上限 ⭐⭐⭐ 仅方向） |
-| 推荐玩法 | 胜平负 → 主胜（仅方向，不选比分/半全场） |
-| ⚠️ 不入串 | C 级数据不得入串关 |
-| 风险 | ① 2 轮数据极度不可靠 ② 无 Pinnacle 锚 ③ 无 DC 模型 |
-
----
-
-### #3 周五003 · 沙职 · 利雅得 vs 利雅得胜利 ★★★（⚠️ C 级不入串）
-
-| 项目 | 详情 |
-|:---|:---|
-| 开赛 | 08-22 00:00（北京时间） |
-| 体彩赔率 | 胜 10.00 / 平 6.00 / 负 1.16 |
-| 让球盘 | +2：主 2.08 / 平 3.92 / 客 2.54 |
-| 体彩隐含概率 | 主 9.2% / 平 15.4% / 负 79.9% (overround 4.5%) |
-| Pinnacle 收盘 | ⚠️ 未直采，锚缺失，置信度下调一档 |
-| DC 模型 | ❌ 沙职无本地数据 |
-
-**修正系数**
-- 沙职轮次未知 → 开季修正无法判定
-- 利雅得胜利（C 罗球队）通常实力占优，但客场德比变数大
-- 利雅得主场可能有德比战意加成
-
-**最终概率**：主胜 10% / 平局 15% / 客胜 75%
-
-| 项目 | 内容 |
-|:---|:---|
-| 数据等级 | 🔴 C 级（仅赛程信息，排名/状态/交锋全缺） |
-| 星级 | ★★★（75% 概率高，但 C 级上限 ⭐⭐⭐） |
-| 推荐玩法 | 胜平负 → 客胜（仅方向） |
-| ⚠️ 不入串 | C 级数据不得入串关 |
-| 风险 | ① 沙职全数据缺失 ② 德比战变数大 ③ 赔率 1.16 极低，无奖金价值 |
-
----
-
-## 📊 第 3 层：排除场次简报
-
-| # | 编号 | 对阵 | 数据等级 | 排除原因 |
-|:---:|:---|:---|:---:|:---|
-| 2 | 周五002 | 东京FC [17] vs 千叶市原 [20] [日职] | 🔴 C | 两队均在 J1 垫底区！东京FC 1-5/2-2 进3失7（防守崩），千叶 0-3/0-4 进0失7（攻守皆崩）。体彩主胜 1.46（隐含 63%），R3 修正后 60%。方向偏主胜但仅 2 轮数据，**C 级不入串**（可作方向参考） |
-| 4 | 周五004 | 塞伊奈 vs 拉赫蒂 [芬超] | ❌ D | 芬超无本地画像，ESPN 503，全数据缺失 |
-| 5 | 周五005 | 天狼星 vs 赫根 [瑞超] | ❌ D | 瑞超无本地画像，全数据缺失，历史 0% 命中教训 |
-| 6 | 周五006 | 胡巴尔卡德西亚 vs 吉达联合 [沙职] | ❌ D | 沙职全数据缺失 |
-| 7 | 周五007 | 敦刻尔克 [9] vs 蒙彼利埃 [6] [法乙] | 🟡 B | 法乙画像完整但概率接近（主 40%/平 29%/负 31%，极差 11pp），且法乙冷门率 37.1%、主胜率仅 34.5%，建议避开 |
-| 8 | 周五008 | 登博思 vs 埃因霍温FC [荷乙] | ❌ D | 荷乙无本地画像，全数据缺失 |
-| 10 | 周五010 | 阿森纳 vs 考文垂 [英超] | 🟡 B | 胜平负未开售（仅让球 -2），让球反推主胜 ≈51%，无 DC 模型（考文垂不在库），不入串 |
-| Sat1 | 周六001 | 鹿岛鹿角 [4] vs 福冈黄蜂 [7] [日职] | 🔴 C | J1 R3。鹿岛 2连胜 进6失4（攻强守弱），福冈 1-0/3-0（防守仅失1球）。DC 估算主胜 ≈50% 偏胶着。C 级不入串，方向可参考主胜 |
-| Sat2 | 周六002 | 秋田 [J2-19] vs 甲府 [J2-16] [日乙] | ❌ D | J2 R3，两队均底部 1 分（秋田 GD=-4，甲府 GD=-2），数据极度不足 |
-| Sat3 | 周六003 | 大阪樱花 [12] vs 清水鼓动 [11] [日职] | 🔴 C | J1 R3。MW1 已交手：樱花 2-1 胜（有 H2H）。樱花 2-1/0-3，清水 1-0/0-1。DC 概率胶着（主 40%/平 24%/客 36%），极差 <10pp，**建议避开** |
-| Sat4 | 周六004 | 磐田 [J2-15] vs 德岛 [J2-17] [日乙] | ❌ D | J2 R3，两队均底部 1 分（磐田 GD=-2，德岛 GD=-2），数据极度不足 |
-| Sat5 | 周六005 | 全北现代 vs 蔚山现代 [韩职] | ❌ D | 韩职全数据缺失，ESPN 503 |
-| Sat6 | 周六006 | 安养FC vs 首尔FC [韩职] | ❌ D | 韩职全数据缺失 |
-
----
-
-## 🔍 出票前临场终审（Step 6.5）
-
-> ⚠️ 当前距开赛 >12 小时，发布会/官方伤报/首发预测尚未发布。
-> 以下为当前信息状态下的初审，**出票前须复核**。
-
-| # | 入串场次 | ① 伤停终版 | ② 转会变动 | ③ 发布会 | ④ 赔率复扫 | ⑤ 赛后变量 |
-|:---:|:---|:---:|:---:|:---:|:---:|:---:|
-| #9 马赛 | ❓ 待确认 | ❓ | ❓ | 初次采集 | ❓ |
-| Sat7 赫尔城-曼联 | ❓ 待确认 | ❓ | ❓ 杯赛轮换未知 | 初次采集 | ❓ |
-| #11 贝蒂斯 | ❓ 待确认 | ❓ | ❓ | 初次采集 | ❓ |
-
-**信息边际判定**：当前处于"初始采集"阶段，无新信息可比对。出票前（开赛 ≤12h）须重新扫描赔率变动并执行三定律判定。
-
----
-
-## 📐 自检清单
-
-### 数据侧
-
-| # | 检查项 | 状态 |
-|:---:|:---|:---:|
-| 1 | 每条数据标注来源 + 加载状态 | ✅ |
-| 2 | 无"看似合理但未验证"的数据 | ✅ 缺失项均标 ❓ |
-| 3 | 排名为当季数据 | ✅ 2025-26/2026-27 赛季 |
-| 4 | 编号×对阵与体彩官网一致 | ✅ |
-| 4.5 | API 截断检查 | ⚠️ 周六007后截断，已尽力补采 |
-
-### 方案侧
-
-| # | 检查项 | 状态 |
-|:---:|:---|:---:|
-| 5 | 比分/半全场串关 ≤4 关 | ✅ 方案 A 为 1 场比分 + 2 场胜平负 |
-| 6 | 混串总关数 ≤ 最低玩法上限 | ✅ 含比分 → ≤4 关，实际 3 关 |
-| 7 | 同场次无同游戏重复 | ✅ 3 场各不相同 |
-| 8 | 每场标注玩法类型 | ✅ |
-| 9 | C/D 级未入比分/半全场串 | ✅ 入串均为 B 级以上 |
-| 10 | 保级战已执行平局保护 | ✅ 无保级战入串 |
-| 11 | 开季/小联赛入串限额 | ✅ 无小联赛入串；J1 R3 场次仅 C 级参考不入串 |
-| 12 | Step 6.5 临场终审 | ⚠️ 初审完成，出票前须复核 |
-| 13 | 比分选项注明依据 | ✅ 马赛 2-0 依据法甲 TOP3 + DC 11.3% |
-| 14 | 投注额符合资金纪律 | ✅ 3 方案合计 ≤10 元 |
-| 15 | 多系数叠加封顶检查 | ✅ 无 ≥2 系数同时触发 |
-| 16 | 比分参照联赛 TOP3 | ✅ |
-| 17 | 报告三层结构完整 | ✅ |
-| 18 | 预测记录已生成 | ✅ 见下方 |
-
----
-
-## 📝 预测记录（供 Step 8 回填）
-
-```json
-{
-  "date": "2026-08-21",
-  "version": "v4.2",
-  "matches": [
-    {"seq": 9, "code": "周五009", "league": "法甲", "home": "马赛", "away": "斯特拉斯堡", "stars": 4, "grade": "A", "play": "胜平负", "pick": "主胜", "odds": 1.65, "corrections": ["无"], "finalProb": 0.58, "result": null, "direction": null, "score": null, "clv": null},
-    {"seq": 9, "code": "周五009", "league": "法甲", "home": "马赛", "away": "斯特拉斯堡", "stars": 4, "grade": "A", "play": "比分", "pick": "2-0", "odds": 6.50, "corrections": ["无"], "finalProb": 0.113, "result": null, "direction": null, "score": null, "clv": null},
-    {"seq": "Sat7", "code": "周六007", "league": "英超杯", "home": "赫尔城", "away": "曼联", "stars": 3, "grade": "B", "play": "胜平负", "pick": "客胜", "odds": 1.55, "corrections": ["曼联客场差下调"], "finalProb": 0.65, "result": null, "direction": null, "score": null, "clv": null},
-    {"seq": 11, "code": "周五011", "league": "西甲", "home": "贝蒂斯", "away": "皇家社会", "stars": 3, "grade": "B", "play": "胜平负", "pick": "主胜", "odds": 1.95, "corrections": ["社会客场差微调"], "finalProb": 0.47, "result": null, "direction": null, "score": null, "clv": null}
-  ]
-}
-```
-
----
-
-## 📚 数据来源清单
-
-| 来源 | 状态 | 引用文件/URL |
-|:---|:---|:---|
-| 联赛画像 · 英超 | ✅ 已加载 | `data/00-leagues/england-premier.json` |
-| 联赛画像 · 法甲 | ✅ 已加载 | `data/00-leagues/france-ligue1.json` |
-| 联赛画像 · 法乙 | ✅ 已加载 | `data/00-leagues/france-ligue2.json` |
-| 联赛画像 · 西甲 | ✅ 已加载 | `data/00-leagues/spain-laliga.json` |
-| 联赛画像 · 德甲 | ✅ 已加载 | `data/00-leagues/germany-bundesliga.json` |
-| 联赛画像 · 意甲 | ⚠️ 未引用 | `data/00-leagues/italy-serie-a.json`（本轮无意甲场次） |
-| DC 缓存 · 法甲 | ✅ 已加载 | `engine/cache/france-ligue1_dc.json` |
-| DC 缓存 · 英超 | ✅ 已加载 | `engine/cache/england-premier_dc.json` |
-| DC 缓存 · 西甲 | ✅ 已加载 | `engine/cache/spain-laliga_dc.json` |
-| ESPN J1 积分榜 | ✅ 已加载 | WebFetch jpn.1 |
-| 体彩官方 API | ✅ 已加载 | sporttery.cn getMatchCalculatorV1 |
-| Pinnacle 收盘价 | ⚠️ 未直采 | 本机无法直连 Pinnacle/oddsportal，全部用体彩赔率去水替代 |
-| 沙职/芬超/瑞超/荷乙/韩职/J2 | ❌ 数据缺失 | ESPN 503/flashscore 动态渲染/无本地画像 |
-
----
-
-## ⚠️ 重要提示
-
-1. **Pinnacle 锚缺失**：本批次未能直采 Pinnacle 收盘赔率，概率锚偏差 ~5pp，所有置信度已下调一档。待下次 Pinnacle 数据恢复后补录 CLV。
-2. **非画像联赛 13/18 场排除**：沙职/芬超/瑞超/荷乙/韩职/J2 数据全缺，按铁律 4 降级处理。本轮可选场次大幅缩减。
-3. **J1 赛季初期（R3）**：日职仅踢 2 轮，排名参考价值极低。柏太阳神/鹿岛等场次标 C 级不入串。
-4. **负期望纪律**：3 方案合计 ≤10 元。竞彩期望返还率 ≈ 88.5%，3 串期望 = 69.3%。娱乐为主，切勿追投。
-5. **出票前必须复核**：距开赛 ≤12h 重新执行 Step 6.5 五项复核清单，特别关注伤停/首发/赔率异动。
-
----
-
-## 📎 附录：J-League 数据补充（agent 回传）
-
-> 数据来源：J.League 官方站 + ESPN + besoccer.com，三方校验一致
-
-### J1 积分榜（2 轮后，截至 2026-08-15）
-
-| Pos | Team | P | W | D | L | GF | GA | GD | Pts | Form |
-|:---:|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| 1 | 町田泽维亚 | 2 | 2 | 0 | 0 | 9 | 1 | +8 | 6 | WW |
-| 2 | 广岛三箭 | 2 | 2 | 0 | 0 | 7 | 1 | +6 | 6 | WW |
-| 3 | **柏太阳神** | 2 | 2 | 0 | 0 | 5 | 2 | +3 | 6 | WW |
-| 4 | **鹿岛鹿角** | 2 | 2 | 0 | 0 | 6 | 4 | +2 | 6 | WW |
-| 7 | **福冈黄蜂** | 2 | 1 | 0 | 1 | 3 | 1 | +2 | 3 | LW |
-| 10 | **长崎成功丸** | 2 | 1 | 0 | 1 | 2 | 2 | 0 | 3 | WL |
-| 11 | **清水鼓动** | 2 | 1 | 0 | 1 | 1 | 1 | 0 | 3 | WL |
-| 12 | **大阪樱花** | 2 | 1 | 0 | 1 | 2 | 4 | -2 | 3 | WL |
-| 17 | **东京FC** | 2 | 0 | 1 | 1 | 3 | 7 | -4 | 1 | LD |
-| 20 | **千叶市原** | 2 | 0 | 0 | 2 | 0 | 7 | -7 | 0 | LL |
-
-### J1 逐场比分（MW1-MW2）
-
-**柏太阳神**：2-1 vs 水户（H）✅ → 3-1 vs 东京绿茵（A）✅
-**长崎**：2-1 vs 京都（H）✅ → 0-1 vs 冈山（A）❌
-**东京FC**：1-5 vs 町田（H）❌ → 2-2 vs 神户（A）🤝
-**千叶**：0-3 vs 广岛（A）❌ → 0-4 vs 町田（H）❌
-**鹿岛**：4-2 vs 浦和（A）✅ → 2-1 vs 名古屋（H）✅
-**福冈**：0-1 vs 神户（H）❌ → 3-0 vs 樱花（H）✅
-**樱花**：2-1 vs 冈山（H）✅ → 0-3 vs 福冈（A）❌
-**清水**：1-0 vs 名古屋（A）✅ → 0-1 vs 横滨水手（H）❌
-
-### J2 关键球队（2 轮后）
-
-| Pos | Team | Pts | GD | Form |
-|:---:|:---|:---:|:---:|:---:|
-| 15 | 磐田喜悦 | 1 | -2 | DL |
-| 16 | 甲府风林 | 1 | -2 | LD |
-| 17 | 德岛漩涡 | 1 | -2 | LD |
-| 19 | 秋田蓝色闪电 | 1 | -4 | DL |
-
-> ⚠️ J2 数据仅含场次/积分/净胜球，无 W-D-L-GF-GA 拆分和逐场比分。ESPN J2 持续 503。
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>竞彩足球预测 · 2026-08-21 v4.2</title>
+  <style>
+    :root {
+      --bg: #1a1a2e;
+      --card-bg: #16213e;
+      --accent: #e94560;
+      --text: #eee;
+      --muted: #aaa;
+      --border: #333;
+      --green: #4ade80;
+      --yellow: #fbbf24;
+      --red: #f87171;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 { text-align: center; color: var(--accent); margin-bottom: 10px; font-size: 1.8em; }
+    h2 { color: var(--accent); margin: 30px 0 15px; padding-bottom: 8px; border-bottom: 2px solid var(--accent); }
+    h3 { color: var(--yellow); margin: 20px 0 10px; }
+    .subtitle { text-align: center; color: var(--muted); margin-bottom: 30px; font-size: 0.9em; }
+    .warning { background: #4a1c1c; border-left: 4px solid var(--red); padding: 12px 16px; margin: 15px 0; border-radius: 4px; }
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    }
+    .combo-card {
+      background: linear-gradient(135deg, #1e3a5f 0%, #16213e 100%);
+      border: 1px solid var(--accent);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      font-size: 0.9em;
+    }
+    th, td {
+      padding: 10px 12px;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+    th {
+      background: #0f3460;
+      font-weight: 600;
+      color: var(--yellow);
+    }
+    tr:nth-child(even) { background: rgba(255,255,255,0.03); }
+    .stars { color: var(--yellow); font-weight: bold; }
+    .grade-a { color: var(--green); font-weight: bold; }
+    .grade-b { color: var(--yellow); font-weight: bold; }
+    .grade-c { color: #fb923c; font-weight: bold; }
+    .grade-d { color: var(--red); font-weight: bold; }
+    .pick { background: rgba(74, 222, 128, 0.15); padding: 2px 8px; border-radius: 4px; }
+    .combo-header { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; }
+    .combo-legs { margin: 10px 0; }
+    .combo-leg { padding: 8px; margin: 5px 0; background: rgba(255,255,255,0.05); border-radius: 6px; }
+    .odds { color: var(--green); font-weight: bold; }
+    .risk { color: var(--red); font-size: 0.85em; margin-top: 8px; }
+    .summary-box {
+      background: #0f3460;
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+    .summary-title { font-size: 1.5em; color: var(--accent); margin-bottom: 15px; }
+    .excluded { font-size: 0.85em; color: var(--muted); }
+    .dc-model { background: rgba(99, 102, 241, 0.1); border-left: 3px solid #6366f1; padding: 10px 15px; margin: 10px 0; }
+    ul { padding-left: 20px; }
+    li { margin: 5px 0; }
+    .note { font-size: 0.85em; color: var(--muted); font-style: italic; }
+    @media (max-width: 768px) {
+      body { padding: 10px; }
+      table { font-size: 0.8em; }
+      th, td { padding: 6px 8px; }
+    }
+  </style>
+</head>
+<body>
+  <h1>⚽ 竞彩足球混合过关预测报告</h1>
+  <p class="subtitle">2026-08-21 | v4.2 战意状态机 + DC 融合 | 比赛日：周五 08-22 + 周六 08-23</p>
+
+  <div class="warning">
+    ⚠️ 赔率以官方终端为准，预估仅作决策参考。竞彩期望返还率≈88.5%，负期望游戏，理性投注。
+  </div>
+
+  <!-- 第 1 层：出单摘要卡 -->
+  <h2>📋 第 1 层：出单摘要卡</h2>
+
+  <div class="card combo-card">
+    <div class="combo-header">🏆 方案 B（推荐）：3 串 1 混合过关</div>
+    <div class="combo-legs">
+      <div class="combo-leg">① #9 <strong>马赛 [主胜]</strong> <span class="odds">@1.65</span> <span class="stars">★★★★</span> <span class="grade-a">A级</span></div>
+      <div class="combo-leg">② Sat 赫尔城-曼联 <strong>[客胜]</strong> <span class="odds">@1.55</span> <span class="stars">★★★</span> <span class="grade-b">B级</span></div>
+      <div class="combo-leg">③ #11 <strong>贝蒂斯 [主胜]</strong> <span class="odds">@1.95</span> <span class="stars">★★★</span> <span class="grade-b">B级</span></div>
+    </div>
+    <p><strong>预估赔率 4.97 | 投注 2元×1倍 | 奖金 ≈10元</strong></p>
+  </div>
+
+  <div class="card combo-card">
+    <div class="combo-header">⚡ 方案 A（进攻）：3 串 1 混合过关</div>
+    <div class="combo-legs">
+      <div class="combo-leg">① #9 <strong>马赛 比分 2-0</strong> <span class="odds">@6.50</span> <span class="stars">★★★★</span> <span class="grade-a">A级</span></div>
+      <div class="combo-leg">② Sat 赫尔城-曼联 <strong>客胜</strong> <span class="odds">@1.55</span> <span class="stars">★★★</span> <span class="grade-b">B级</span></div>
+      <div class="combo-leg">③ #11 <strong>贝蒂斯 主胜</strong> <span class="odds">@1.95</span> <span class="stars">★★★</span> <span class="grade-b">B级</span></div>
+    </div>
+    <p><strong>预估赔率 19.66 | 投注 2元×1倍 | 奖金 ≈39元</strong></p>
+  </div>
+
+  <div class="card combo-card">
+    <div class="combo-header">🛡️ 方案 C（稳健）：2 串 1 纯胜平负</div>
+    <div class="combo-legs">
+      <div class="combo-leg">① #9 <strong>马赛 [主胜]</strong> <span class="odds">@1.65</span> <span class="stars">★★★★</span> <span class="grade-a">A级</span></div>
+      <div class="combo-leg">② Sat 赫尔城-曼联 <strong>[客胜]</strong> <span class="odds">@1.55</span> <span class="stars">★★★</span> <span class="grade-b">B级</span></div>
+    </div>
+    <p><strong>预估赔率 2.56 | 投注 2元×2倍 | 奖金 ≈10元</strong></p>
+  </div>
+
+  <div class="summary-box">
+    <p>💰 <strong>资金纪律：3 方案合计 ≤10 元</strong></p>
+    <p class="note">Pinnacle 状态：⚠️ 本批次未能直采收盘赔率，概率锚偏差 ~5pp，置信度已下调一档</p>
+  </div>
+
+  <!-- 第 2 层：推荐场次详情 -->
+  <h2>📊 第 2 层：推荐场次详情</h2>
+
+  <!-- 马赛 -->
+  <div class="card">
+    <h3>#9 周五009 · 法甲 · 马赛 [3] vs 斯特拉斯堡 [7] <span class="stars">★★★★</span></h3>
+    <table>
+      <tr><th>项目</th><th>详情</th></tr>
+      <tr><td>开赛</td><td>08-22 02:45（北京时间）</td></tr>
+      <tr><td>体彩赔率</td><td>胜 1.65 / 平 3.75 / 负 3.90</td></tr>
+      <tr><td>让球盘</td><td>-1：主 2.95 / 平 3.60 / 客 1.95</td></tr>
+      <tr><td>体彩隐含概率</td><td>主 56.3% / 平 24.7% / 负 23.6% (overround 4.6%)</td></tr>
+      <tr><td>Pinnacle 收盘</td><td>⚠️ 未直采，估算主 ≈53%</td></tr>
+      <tr><td>DC 模型</td><td>主 57.4% / 平 20.8% / 负 21.8%</td></tr>
+      <tr><td>DC+市场融合</td><td>主 62.7%（σ(0.4×logit(0.574)+1.0×logit(0.530))）</td></tr>
+    </table>
+
+    <div class="dc-model">
+      <strong>DC 模型参数</strong><br>
+      马赛：攻击 +0.379 / 防守 -0.237 → 预期进球 1.94<br>
+      斯特拉斯堡：攻击 +0.070 / 防守 -0.143 → 预期进球 0.85<br>
+      <strong>TOP 比分概率</strong>：1-0 (13.5%), 2-0 (11.3%), 2-1 (10.2%)
+    </div>
+
+    <table>
+      <tr><th>项目</th><th>内容</th></tr>
+      <tr><td>数据等级</td><td><span class="grade-a">✅ A 级</span>（联赛画像✅ 排名✅ 状态✅ 主场✅ DC模型✅）</td></tr>
+      <tr><td>星级</td><td><span class="stars">★★★★</span>（58% ≥ 55%，融合偏差 >5pp 下调半档）</td></tr>
+      <tr><td>推荐玩法</td><td><span class="pick">胜平负 → 主胜 @1.65</span> / <span class="pick">比分 → 2-0 @6.50</span></td></tr>
+      <tr><td>风险</td><td class="risk">① 马赛近 5 场 WDLWL 有波动 ② 斯特拉斯堡 LLLDD 极低迷但有反弹风险 ③ 模型与市场价差 9.7pp</td></tr>
+    </table>
+    <p class="note">法甲比分锚：场均 2.84 球 | TOP3 = 1-0(25), 0-1(13), 1-1(13)</p>
+  </div>
+
+  <!-- 赫尔城 vs 曼联 -->
+  <div class="card">
+    <h3>Sat 周六007 · 英超杯 · 赫尔城 vs 曼联 <span class="stars">★★★</span></h3>
+    <table>
+      <tr><th>项目</th><th>详情</th></tr>
+      <tr><td>开赛</td><td>08-23（北京时间，具体待定）</td></tr>
+      <tr><td>体彩赔率</td><td>胜 8.90 / 平 5.10 / 负 1.22</td></tr>
+      <tr><td>让球盘</td><td>+1：主 3.32 / 平 3.80 / 客 1.77</td></tr>
+      <tr><td>体彩隐含概率</td><td>主 10.4% / 平 18.2% / 负 76.1% (overround 4.7%)</td></tr>
+      <tr><td>Pinnacle 收盘</td><td>⚠️ 未直采，估算客 ≈72%</td></tr>
+      <tr><td>DC 模型</td><td>❌ 赫尔城（英冠）不在英超 DC 库，纯市场锚</td></tr>
+    </table>
+    <table>
+      <tr><th>项目</th><th>内容</th></tr>
+      <tr><td>数据等级</td><td><span class="grade-b">🟡 B 级</span>（联赛画像✅ 曼联排名✅ 状态✅ 赫尔城❓）</td></tr>
+      <tr><td>星级</td><td><span class="stars">★★★</span>（65% 在 55-65% 区间）</td></tr>
+      <tr><td>推荐玩法</td><td><span class="pick">胜平负 → 客胜 @1.55</span></td></tr>
+      <tr><td>风险</td><td class="risk">① 曼联近 5 场 LWDDD 低迷 ② 客场 3-5-3 极差 ③ 联赛杯轮换幅度未知</td></tr>
+    </table>
+  </div>
+
+  <!-- 贝蒂斯 -->
+  <div class="card">
+    <h3>#11 周五011 · 西甲 · 皇家贝蒂斯 [6] vs 皇家社会 [13] <span class="stars">★★★</span></h3>
+    <table>
+      <tr><th>项目</th><th>详情</th></tr>
+      <tr><td>开赛</td><td>08-22 03:00（北京时间）</td></tr>
+      <tr><td>体彩赔率</td><td>胜 1.95 / 平 3.26 / 负 3.23</td></tr>
+      <tr><td>让球盘</td><td>-1：主 4.05 / 平 3.58 / 客 1.66</td></tr>
+      <tr><td>体彩隐含概率</td><td>主 47.5% / 平 28.3% / 负 28.6% (overround 4.4%)</td></tr>
+      <tr><td>Pinnacle 收盘</td><td>⚠️ 未直采，估算主 ≈47%</td></tr>
+      <tr><td>DC 模型</td><td>主 48.5% / 平 17.1% / 负 34.3%</td></tr>
+      <tr><td>DC+市场融合</td><td>主 54.6%（σ(0.4×logit(0.485)+1.0×logit(0.470))）</td></tr>
+    </table>
+
+    <div class="dc-model">
+      <strong>DC 模型参数</strong><br>
+      贝蒂斯：攻击 +0.364 / 防守 +0.114 → 预期进球 2.15<br>
+      皇家社会：攻击 +0.088 / 防守 +0.119 → 预期进球 1.22<br>
+      <strong>TOP 比分概率</strong>：1-1 (11.6%), 2-1 (11.5%), 1-0 (10.1%)
+    </div>
+
+    <table>
+      <tr><th>项目</th><th>内容</th></tr>
+      <tr><td>数据等级</td><td><span class="grade-b">🟡 B 级</span>（联赛画像✅ 排名✅ 状态✅ 主场✅）</td></tr>
+      <tr><td>星级</td><td><span class="stars">★★★</span>（47% 在 45-55% 区间）</td></tr>
+      <tr><td>推荐玩法</td><td><span class="pick">胜平负 → 主胜 @1.95</span></td></tr>
+      <tr><td>风险</td><td class="risk">① 贝蒂斯 LDWLD 近况差 ② DC 预测进球偏高（E=3.37 vs 联赛 2.58） ③ 社会客场 2-4-4 差但有回暖迹象</td></tr>
+    </table>
+    <p class="note">西甲比分锚：场均 2.58 球 | TOP3 = 1-1(34), 1-0(23), 2-1(19)</p>
+  </div>
+
+  <!-- 第 3 层：排除场次简报 -->
+  <h2>📊 第 3 层：排除场次简报</h2>
+
+  <div class="card excluded">
+    <table>
+      <tr><th>#</th><th>编号</th><th>对阵</th><th>等级</th><th>排除原因</th></tr>
+      <tr><td>1</td><td>周五001</td><td>柏太阳神 vs 长崎 [日职]</td><td><span class="grade-c">C</span></td><td>J1 R3 数据仅 2 轮，C 级不入串</td></tr>
+      <tr><td>2</td><td>周五002</td><td>东京FC vs 千叶 [日职]</td><td><span class="grade-c">C</span></td><td>两队垫底区（东京失7球/千叶0进球），主胜方向明确但 C 级不入串</td></tr>
+      <tr><td>3</td><td>周五003</td><td>利雅得 vs 利雅得胜利 [沙职]</td><td><span class="grade-c">C</span></td><td>沙职全数据缺失，C 级不入串</td></tr>
+      <tr><td>4</td><td>周五004</td><td>塞伊奈 vs 拉赫蒂 [芬超]</td><td><span class="grade-d">D</span></td><td>芬超数据全缺</td></tr>
+      <tr><td>5</td><td>周五005</td><td>天狼星 vs 赫根 [瑞超]</td><td><span class="grade-d">D</span></td><td>瑞超数据全缺，历史 0% 命中教训</td></tr>
+      <tr><td>6</td><td>周五006</td><td>胡巴尔 vs 吉达联合 [沙职]</td><td><span class="grade-d">D</span></td><td>沙职数据全缺</td></tr>
+      <tr><td>7</td><td>周五007</td><td>敦刻尔克 vs 蒙彼利埃 [法乙]</td><td><span class="grade-b">B</span></td><td>概率接近(40/29/31)，法乙冷门率 37.1%，<strong>建议避开</strong></td></tr>
+      <tr><td>8</td><td>周五008</td><td>登博思 vs 埃因霍温FC [荷乙]</td><td><span class="grade-d">D</span></td><td>荷乙数据全缺</td></tr>
+      <tr><td>10</td><td>周五010</td><td>阿森纳 vs 考文垂 [英超]</td><td><span class="grade-b">B</span></td><td>胜平负未开售（仅让球 -2），让球反推 ≈51%</td></tr>
+      <tr><td>S1</td><td>周六001</td><td>鹿岛 vs 福冈 [日职]</td><td><span class="grade-c">C</span></td><td>J1 R3，鹿岛攻强守弱 vs 福冈防守好，DC 估算 ≈50% 胶着</td></tr>
+      <tr><td>S2</td><td>周六002</td><td>秋田 vs 甲府 [日乙]</td><td><span class="grade-d">D</span></td><td>J2 底部两队（均 1 分），数据极度不足</td></tr>
+      <tr><td>S3</td><td>周六003</td><td>大阪樱花 vs 清水 [日职]</td><td><span class="grade-c">C</span></td><td>MW1 已交手 2-1，但概率胶着(40/24/36)，<strong>建议避开</strong></td></tr>
+      <tr><td>S4</td><td>周六004</td><td>磐田 vs 德岛 [日乙]</td><td><span class="grade-d">D</span></td><td>J2 底部两队（均 1 分），数据极度不足</td></tr>
+      <tr><td>S5</td><td>周六005</td><td>全北 vs 蔚山 [韩职]</td><td><span class="grade-d">D</span></td><td>韩职数据全缺</td></tr>
+      <tr><td>S6</td><td>周六006</td><td>安养 vs 首尔 [韩职]</td><td><span class="grade-d">D</span></td><td>韩职数据全缺</td></tr>
+    </table>
+  </div>
+
+  <!-- 重要提示 -->
+  <h2>⚠️ 重要提示</h2>
+
+  <div class="card">
+    <ul>
+      <li><strong>Pinnacle 锚缺失</strong>：本批次未能直采 Pinnacle 收盘赔率，概率锚偏差 ~5pp，所有置信度已下调一档。</li>
+      <li><strong>非画像联赛 13/18 场排除</strong>：沙职/芬超/瑞超/荷乙/韩职/J2 数据全缺，按铁律 4 降级处理。</li>
+      <li><strong>J1 赛季初期（R3）</strong>：日职仅踢 2 轮，排名参考价值极低。柏太阳神/鹿岛等场次标 C 级不入串。</li>
+      <li><strong>负期望纪律</strong>：3 方案合计 ≤10 元。竞彩期望返还率 ≈ 88.5%，3 串期望 = 69.3%。娱乐为主，切勿追投。</li>
+      <li><strong>出票前必须复核</strong>：距开赛 ≤12h 重新执行 Step 6.5 五项复核清单（伤停/首发/赔率异动）。</li>
+    </ul>
+  </div>
+
+  <!-- 数据来源 -->
+  <h2>📚 数据来源</h2>
+
+  <div class="card">
+    <table>
+      <tr><th>来源</th><th>状态</th><th>引用</th></tr>
+      <tr><td>联赛画像 · 英超/法甲/法乙/西甲/德甲</td><td>✅ 已加载</td><td>data/00-leagues/*.json</td></tr>
+      <tr><td>DC 缓存 · 法甲/英超/西甲</td><td>✅ 已加载</td><td>engine/cache/*_dc.json</td></tr>
+      <tr><td>ESPN J1 积分榜</td><td>✅ 已加载</td><td>WebFetch jpn.1</td></tr>
+      <tr><td>体彩官方 API</td><td>✅ 已加载</td><td>sporttery.cn</td></tr>
+      <tr><td>Pinnacle 收盘价</td><td>⚠️ 未直采</td><td>用体彩赔率去水替代</td></tr>
+      <tr><td>沙职/芬超/瑞超/荷乙/韩职/J2</td><td>❌ 数据缺失</td><td>ESPN 503/无本地画像</td></tr>
+    </table>
+  </div>
+
+  <footer style="text-align: center; margin-top: 40px; color: var(--muted); font-size: 0.8em;">
+    <p>v4.2 战意状态机 + DC 融合 | Git commit: aa0d8e9 | 预测锁定时间: 2026-08-21</p>
+  </footer>
+</body>
+</html>
