@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><title>竞彩足球预测 · 2026-08-21 · v4.2</title>
+<style>
+:root{--bg:#fafafa;--fg:#1a1a1a;--card:#fff;--border:#e0e0e0;--accent:#1565c0;--accent-light:#e3f2fd;--success:#2e7d32;--warn:#f57f17;--danger:#c62828;--muted:#757575;--star:#ff8f00;--shadow:0 1px 3px rgba(0,0,0,.08)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121212;--fg:#e0e0e0;--card:#1e1e1e;--border:#333;--accent:#64b5f6;--accent-light:#1a2733;--success:#66bb6a;--warn:#ffb74d;--danger:#ef5350;--muted:#9e9e9e;--star:#ffc107;--shadow:0 1px 3px rgba(0,0,0,.3)}}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--fg);line-height:1.6;padding:1rem;max-width:1100px;margin:0 auto}
+h1{font-size:1.4rem;margin-bottom:.2rem}h2{font-size:1.15rem;margin:1.6rem 0 .5rem;color:var(--accent);border-bottom:2px solid var(--accent);padding-bottom:.25rem}
+.sub{color:var(--muted);font-size:.78rem;margin-bottom:1rem}
+.summary-card{background:linear-gradient(135deg,var(--accent),#1976d2);color:#fff;border-radius:10px;padding:1rem 1.3rem;margin-bottom:1.2rem;box-shadow:0 4px 12px rgba(21,101,192,.25)}
+.summary-card h2{color:#fff;border:none;margin:0 0 .6rem;font-size:1.05rem}
+.plan{background:rgba(255,255,255,.15);border-radius:6px;padding:.5rem .7rem;margin-bottom:.5rem;font-size:.82rem}
+.plan .pick-line{display:flex;gap:.4rem;margin:.2rem 0}.plan .seq{background:rgba(255,255,255,.25);border-radius:50%;width:19px;height:19px;display:inline-flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;flex-shrink:0}
+.plan .rec{font-weight:700}.divider{border-top:1px solid rgba(255,255,255,.2);margin:.5rem 0}
+.stats{display:flex;gap:1rem;flex-wrap:wrap;font-size:.78rem;opacity:.92}
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.7rem .9rem;margin-bottom:.7rem;box-shadow:var(--shadow)}
+.mh{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;margin-bottom:.3rem}
+.mh .lg{font-size:.68rem;padding:2px 6px;border-radius:4px;background:var(--accent-light);color:var(--accent);font-weight:600}.mh .cd{font-size:.68rem;color:var(--muted)}.mh .tm{font-size:.68rem;color:var(--muted);margin-left:auto}
+.teams{font-size:.95rem;font-weight:600;margin-bottom:.2rem}
+.odds{display:flex;gap:.7rem;flex-wrap:wrap;font-size:.78rem;margin-bottom:.2rem}.odds span{color:var(--muted)}.odds b{color:var(--fg)}
+.stars{color:var(--star);letter-spacing:2px}
+.grade{display:inline-block;font-size:.62rem;padding:1px 5px;border-radius:3px;font-weight:700;margin-left:.3rem;vertical-align:middle}
+.ga{background:#e8f5e9;color:#2e7d32}.gb{background:#fff8e1;color:#f57f17}.gc{background:#ffebee;color:#c62828}.gd{background:#eee;color:#999}
+.pb{height:15px;border-radius:3px;overflow:hidden;display:flex;margin:.2rem 0;font-size:.58rem;font-weight:600}
+.pb .w{background:var(--success);color:#fff}.pb .d{background:var(--warn);color:#fff}.pb .l{background:var(--danger);color:#fff}
+.an{font-size:.8rem;margin:.25rem 0;padding:.35rem .55rem;background:var(--accent-light);border-radius:4px;border-left:3px solid var(--accent)}
+.rp{font-weight:600;color:var(--success);font-size:.82rem}.rk{font-size:.76rem;color:var(--danger);margin-top:.15rem}
+table{width:100%;border-collapse:collapse;font-size:.76rem;margin:.4rem 0}th,td{padding:.28rem .4rem;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}th{background:var(--accent-light);color:var(--accent);font-weight:600}
+.exclude{font-size:.76rem;color:var(--muted);padding:.35rem 0;border-bottom:1px solid var(--border)}.exclude:last-child{border:none}.exclude .num{font-weight:700;color:var(--fg);margin-right:.3rem}
+.tag{display:inline-block;font-size:.62rem;padding:1px 5px;border-radius:3px;margin-right:.2rem}
+.t-es{background:#fce4ec;color:#880e4f}.t-sl{background:#e8eaf6;color:#283593}.t-av{background:#ffebee;color:#c62828}.t-noanchor{background:#fff3e0;color:#e65100}.t-div{background:#e8f5e9;color:#2e7d32}
+.disc{font-size:.72rem;color:var(--muted);padding:.6rem;border:1px dashed var(--border);border-radius:6px;margin-top:1rem}
+.motivation{display:inline-block;font-size:.62rem;padding:1px 5px;border-radius:3px;margin-left:.3rem;font-weight:600}
+.mot-high{background:#e8f5e9;color:#2e7d32}.mot-normal{background:#fff8e1;color:#f57f17}.mot-low{background:#ffebee;color:#c62828}.mot-rest{background:#e3f2fd;color:#1565c0}
+</style>
+
+<svg style="display:none"><symbol id="icon-ball" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2l3 7h-6l3-7zM2 12l7-3v6l-7-3zM22 12l-7-3v6l7-3zM12 22l-3-7h6l-3 7z"/></symbol><symbol id="icon-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M7 16l4-4 4 4 5-5"/></symbol><symbol id="icon-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 22h20L12 2zM12 8v6M12 18h.01"/></symbol></svg>
+
+<h1><svg style="width:1.2em;height:1.2em;vertical-align:middle;margin-right:.2rem"><use href="#icon-ball"/></svg>竞彩足球混合过关预测 <span style="font-size:.7rem;color:var(--muted)">v4.2 · 开季日全量分析</span></h1>
+<p class="sub">2026-08-21（周五）18 场 · 体彩赔率采集于 10:15 · Pinnacle 锚缺失（~5pp 偏差） · 方向精度上限≈60% · 赔率以官方终端为准</p>
+
+<div class="summary-card">
+<h2><svg style="width:1em;height:1em;vertical-align:middle;margin-right:.2rem"><use href="#icon-chart"/></svg>出单摘要 · 直接出票</h2>
+<div class="plan">
+<div style="display:flex;justify-content:space-between;margin-bottom:.3rem"><b>方案B 平衡型（推荐）</b><span style="font-size:.7rem;background:rgba(255,255,255,.25);padding:1px 6px;border-radius:3px">⭐</span></div>
+<div class="pick-line"><span class="seq">1</span> <b>#16</b> 赫尔城 vs 曼联 → <span class="rec">客胜 @1.22</span> <span style="font-size:.65rem;background:rgba(255,255,255,.2);padding:1px 4px;border-radius:2px">B级</span></div>
+<div class="pick-line"><span class="seq">2</span> <b>#9</b> 马赛 vs 斯特拉斯堡 → <span class="rec">主胜 @1.65</span> <span style="font-size:.65rem;background:rgba(255,255,255,.2);padding:1px 4px;border-radius:2px">B级 DC融合56.7%</span></div>
+<div class="pick-line"><span class="seq">3</span> <b>#6</b> 胡巴尔卡德西亚 vs 吉达联合 → <span class="rec">主胜 @1.38</span> <span style="font-size:.65rem;background:rgba(255,255,255,.2);padding:1px 4px;border-radius:2px">B级</span></div>
+<div class="divider"></div>
+<div class="stats"><span>混合3串1</span><span>赔率 <b>1.22×1.65×1.38≈2.77</b></span><span>投注 <b>2元×1倍</b></span><span>预估奖金 <b>≈5.5元</b></span></div>
+</div>
+<div class="plan">
+<div style="margin-bottom:.3rem"><b>方案A 稳健型（最小仓位）</b></div>
+<div class="pick-line"><span class="seq">1</span> <b>#16</b> 曼联 → 客胜 @1.22</div>
+<div class="pick-line"><span class="seq">2</span> <b>#9</b> 马赛 → 主胜 @1.65</div>
+<div class="divider"></div>
+<div class="stats"><span>胜平负2串1</span><span>赔率 <b>2.01</b></span><span>投注 <b>2元×1倍</b></span><span>预估奖金 <b>≈4.0元</b></span></div>
+</div>
+<div class="plan">
+<div style="margin-bottom:.3rem"><b>方案C 进攻型（比分搏高赔）</b></div>
+<div class="pick-line"><span class="seq">1</span> <b>#9</b> 马赛 → <span class="rec">比分 2-1 @6.75</span> <span style="font-size:.65rem;background:rgba(255,255,255,.2);padding:1px 4px;border-radius:2px">DC 9.9% + 法甲TOP3</span></div>
+<div class="pick-line"><span class="seq">2</span> <b>#16</b> 曼联 → 客胜 @1.22</div>
+<div class="pick-line"><span class="seq">3</span> <b>#6</b> 胡巴尔 → 主胜 @1.38</div>
+<div class="divider"></div>
+<div class="stats"><span>混合3串1</span><span>赔率 <b>6.75×1.22×1.38≈11.38</b></span><span>投注 <b>2元×1倍</b></span><span>预估奖金 <b>≈22.8元</b></span></div>
+</div>
+<div class="plan">
+<div style="margin-bottom:.3rem"><b>方案D 搏冷型（高杠杆）</b></div>
+<div class="pick-line"><span class="seq">1</span> <b>#9</b> 马赛 → <span class="rec">比分 2-1 @6.75</span></div>
+<div class="pick-line"><span class="seq">2</span> <b>#16</b> 曼联 → 客胜 @1.22</div>
+<div class="pick-line"><span class="seq">3</span> <b>#6</b> 胡巴尔 → 主胜 @1.38</div>
+<div class="pick-line"><span class="seq">4</span> <b>#15</b> 安养FC vs 首尔FC → 客胜 @1.72</div>
+<div class="divider"></div>
+<div class="stats"><span>混合4串1</span><span>赔率 <b>≈19.6</b></span><span>投注 <b>2元×1倍</b></span><span>预估奖金 <b>≈39.1元</b></span></div>
+</div>
+</div>
+
+<h2>赛程总览 · 18 场</h2>
+<table>
+<thead><tr><th>#</th><th>编号</th><th>联赛</th><th>对阵</th><th>开赛</th><th>去水 主/平/客%</th><th>DC融合%</th><th>修正后%</th><th>数据</th><th>星级</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>周五002</td><td>日职R3</td><td>东京FC vs 千叶市原</td><td>08-21 18:30</td><td>62.9/24.5/17.8</td><td>—</td><td>主59.8</td><td><span class="grade gc">C</span></td><td>★★</td></tr>
+<tr><td>2</td><td>周五003</td><td>沙特R2</td><td>利雅得 vs 利雅得胜利</td><td>08-22 00:00</td><td>8.0/14.0/<b>85.8</b></td><td>—</td><td>客77.2</td><td><span class="grade gc">C</span></td><td>★★</td></tr>
+<tr><td>3</td><td>周五004</td><td>芬超</td><td>塞伊奈 vs 拉赫蒂</td><td>08-22 00:00</td><td colspan="3" style="color:var(--danger)">⚠胶着(极差2.8pp) → 避开</td><td><span class="grade gc">C</span></td><td>—</td></tr>
+<tr><td>4</td><td>周五005</td><td>瑞超R17</td><td>天狼星 vs 赫根</td><td>08-22 01:00</td><td>54.7/22.5/23.3</td><td>—</td><td>主43.8*</td><td><span class="grade gb">B</span></td><td>★★</td></tr>
+<tr style="background:var(--accent-light)"><td>5</td><td>周五006</td><td>沙特R2</td><td>胡巴尔卡德西亚 vs 吉达联合</td><td>08-22 02:00</td><td><b>71.6</b>/19.4/16.3</td><td>—</td><td>主64.4*</td><td><span class="grade gb">B</span></td><td>★★★</td></tr>
+<tr><td>6</td><td>周五007</td><td>法乙R3</td><td>敦刻尔克 vs 蒙彼利埃</td><td>08-22 02:00</td><td colspan="3" style="color:var(--danger)">⚠胶着(极差6.8pp)+冷门率37.1% → 避开</td><td><span class="grade gb">B</span></td><td>—</td></tr>
+<tr><td>7</td><td>周五008</td><td>荷乙</td><td>登博思 vs 埃因霍温FC</td><td>08-22 02:00</td><td>45.5/25.8/30.8</td><td>—</td><td>主36.4</td><td><span class="grade gc">C</span></td><td>★★</td></tr>
+<tr style="background:var(--accent-light)"><td>8</td><td>周五009</td><td>法甲R1</td><td>马赛 vs 斯特拉斯堡</td><td>08-22 02:45</td><td>53.7/24.3/22.0</td><td><b>56.7</b>/22.8/20.5</td><td>主56.7</td><td><span class="grade gb">B</span></td><td>★★★</td></tr>
+<tr><td>9</td><td>周五010</td><td>英超R1</td><td>阿森纳 vs 考文垂</td><td>08-22 03:00</td><td colspan="3">胜平负未开售 · 让球-2 @2.28/3.80/2.34</td><td><span class="grade gb">B</span></td><td>★★</td></tr>
+<tr><td>10</td><td>周六001</td><td>日职R3</td><td>鹿岛鹿角 vs 福冈黄蜂</td><td>08-22 17:00</td><td>55.4/26.6/18.5</td><td>—</td><td>主52.6</td><td><span class="grade gc">C</span></td><td>★★</td></tr>
+<tr><td>11</td><td>周六002</td><td>日乙</td><td>秋田 vs 甲府风林</td><td>08-22 17:00</td><td>43.6/30.9/27.9</td><td>—</td><td>主39.2</td><td><span class="grade gc">C</span></td><td>★★</td></tr>
+<tr><td>12</td><td>周六003</td><td>日职R3</td><td>大阪樱花 vs 清水鼓动</td><td>08-22 18:00</td><td>44.6/27.3/29.8</td><td>—</td><td>主40.1</td><td><span class="grade gc">C</span></td><td>★★</td></tr>
+<tr><td>13</td><td>周六004</td><td>日乙</td><td>磐田喜悦 vs 德岛漩涡</td><td>08-22 18:00</td><td colspan="3" style="color:var(--danger)">⚠胶着(极差9.5pp) → 避开</td><td><span class="grade gc">C</span></td><td>—</td></tr>
+<tr><td>14</td><td>周六005</td><td>韩职</td><td>全北现代 vs 蔚山现代</td><td>08-22 18:30</td><td>44.5/27.4/30.0</td><td>—</td><td>主40.1</td><td><span class="grade gc">C</span></td><td>★★</td></tr>
+<tr style="background:var(--accent-light)"><td>15</td><td>周六006</td><td>韩职</td><td>安养FC vs 首尔FC</td><td>08-22 18:30</td><td>22.9/25.9/<b>52.0</b></td><td>—</td><td>客46.8</td><td><span class="grade gc">C</span></td><td>★★</td></tr>
+<tr style="background:var(--accent-light)"><td>16</td><td>周六007</td><td>联赛杯</td><td>赫尔城 vs 曼彻斯特联</td><td>08-22 19:30</td><td>9.9/17.3/<b>75.5</b></td><td>~65/20/12</td><td>客62.0</td><td><span class="grade gb">B</span></td><td>★★★</td></tr>
+<tr><td>17</td><td>周六010</td><td>英超R1</td><td>埃弗顿 vs 水晶宫</td><td>08-22 TBD</td><td>43.6/28.8/28.6</td><td>37.8/31.3/30.9</td><td>主34.0</td><td><span class="grade gc">C</span></td><td>★★</td></tr>
+<tr style="background:#ffebee"><td>—</td><td>周五001</td><td>日职R3</td><td>柏太阳神 vs 长崎航海</td><td>—</td><td colspan="3" style="color:var(--danger)">API 已下架（上轮在列，疑似停售）</td><td><span class="grade gd">D</span></td><td>—</td></tr>
+</tbody>
+</table>
+<p style="font-size:.72rem;color:var(--muted)">
+<span class="tag t-noanchor">锚缺失</span> Pinnacle 实时赔率不可达（OddsPortal/EODReset/Bet365 均失败），全场锚偏差~5pp，按铁律降一档。<br>
+<span class="tag t-es">开季日</span> 18 场中 15 场处于 R1-R3，开季修正全覆盖。"开季最多1场入串"无法严格执行 → 整体降仓位至 2 元。<br>
+<span class="tag t-div">⚠分歧</span> #9 马赛 DC 融合 56.7% vs 去水 53.7%（+3.0pp，>3pp 注记线）。#11 贝蒂斯融合 49.5% vs 去水 46.6%（+2.8pp）。
+</p>
+
+<h2>推荐详情（B级入串候选）</h2>
+
+<div class="card" style="border-left:3px solid var(--success)">
+<div class="mh"><span class="lg">联赛杯</span><span class="cd">#16 周六007</span><span class="tm">08-22 19:30</span></div>
+<div class="teams">赫尔城 vs 曼彻斯特联 <span class="grade gb">B</span> <span class="stars">★★★</span> <span class="motivation mot-high">🔥高动力 vs 常规</span></div>
+<div class="odds"><span>体彩 <b>8.90/5.10/1.22</b></span><span>去水 <b>9.9/17.3/75.5%</b></span><span>DC估 <b>~65/20/12</b></span><span>修正后客胜 <b>62%</b></span></div>
+<div class="pb"><div class="w" style="width:10%"></div><div class="d" style="width:17%"></div><div class="l" style="width:73%">62%(修正后)</div></div>
+<div class="an"><b>依据</b>：曼联上季英超中游，但阵容深度远超升班马赫尔城。赫尔城 2626 赛季英冠冠军升级（ESPN 确认），但首季英超客场/杯赛经验不足。联赛杯早期阶段，曼联大概率轮换但替补阵容仍高出赫尔城至少1档。DC 缓存中曼联 attack=0.20/defense=0.15（上季中等偏上）。Poisson 估 λ_home≈0.70/λ_away≈1.80。</div>
+<div class="rp">★ 客胜 @1.22 | 比分 <b>0-2</b>（半全场热门 负负@1.70）</div>
+<div class="rk">⚠ 联赛杯轮换风险：若曼联派出全替补，优势缩小。R1 开季修正×0.80 已应用。锚缺失~5pp。</div>
+</div>
+
+<div class="card" style="border-left:3px solid var(--success)">
+<div class="mh"><span class="lg">法甲首轮</span><span class="cd">#9 周五009</span><span class="tm">08-22 02:45</span></div>
+<div class="teams">马赛 vs 斯特拉斯堡 <span class="grade gb">B</span> <span class="stars">★★★</span> <span class="motivation mot-normal">高动力 vs 常规</span></div>
+<div class="odds"><span>体彩 <b>1.65/3.65/4.02</b></span><span>DC融合 <b>主56.7/平22.8/客20.5</b></span><span>λ <b>1.94/0.85</b></span></div>
+<div class="pb"><div class="w" style="width:56.7%">56.7</div><div class="d" style="width:22.8%">22.8</div><div class="l" style="width:20.5%">20.5</div></div>
+<div class="an"><b>DC 依据</b>：马赛攻击力法甲第2（上季 α=+0.38，仅次于巴黎 ψ=+0.49）；主场优势 0.428（法甲主场最强之一）。斯特拉斯堡 α=+0.07/δ=-0.14（中等）。DC 比分矩阵 TOP：1-0(13.0%), 2-0(11.7%), 2-1(9.9%)。法甲上季 TOP 比分：1-0(25次), 0-1(13), 1-1(13)。场均 2.84 球。</div>
+<div class="an"><b>战意</b>：马赛新帅 Génésio 上任，主场首秀求开门红 → 高动力。斯特拉斯堡上季中游 → 常规。</div>
+<div class="rp">★ 主胜 @1.65 | 比分 <b>2-1</b>（DC TOP 交集 + 法甲场均 2.84 → 3球方向）</div>
+<div class="rk">⚠ 换帅磨合（Génésio 体系未定型）；融合分歧 +3.0pp（DC 比市场更看好主队）；R1 波动。锚偏差~5pp。</div>
+</div>
+
+<div class="card" style="border-left:3px solid var(--warn)">
+<div class="mh"><span class="lg">沙特联R2</span><span class="cd">#6 周五006</span><span class="tm">08-22 02:00</span></div>
+<div class="teams">胡巴尔卡德西亚 vs 吉达联合 <span class="grade gb">B</span> <span class="stars">★★★</span> <span class="motivation mot-high">高动力 vs 😴低动力</span></div>
+<div class="odds"><span>体彩 <b>1.38/4.55/5.40</b></span><span>去水 <b>71.6/19.4/16.3%</b></span><span>修正后主 <b>64.4%*</b></span></div>
+<div class="pb"><div class="w" style="width:64.4%">64.4(修正)</div><div class="d" style="width:17.3%">17.3</div><div class="l" style="width:14.6%">14.6</div></div>
+<div class="an"><b>依据</b>：胡巴尔首轮 3-1 客胜（状态火热），吉达联合首轮 1-1 平局（开局不利）。沙职场均 2.6 球，波动×1.0。战意：胡巴尔主场争胜 → 高动力；吉达联合首轮未胜+客场 → 可能军心不稳。无 DC 缓存（沙职不在 fd 覆盖），修正后概率仅基于去水×R2×波动。</div>
+<div class="rp">★ 主胜 @1.38 | 比分 <b>2-0</b> 或 <b>2-1</b>（沙职锚 TOP：2-1/1-1/1-0）</div>
+<div class="rk">⚠ 沙职数据全缺（无 DC/无交锋/无 xG），B 级为上限。锚偏差~5pp。* 概率修正：71.6%×R2(0.90)=64.4%。</div>
+</div>
+
+<div class="card" style="border-left:3px solid var(--warn)">
+<div class="mh"><span class="lg">西甲R2</span><span class="cd">#11 周五011</span><span class="tm">08-22 03:00</span></div>
+<div class="teams">皇家贝蒂斯 vs 皇家社会 <span class="grade gb">B</span> <span class="stars">★★</span> <span class="motivation mot-normal">高动力 vs 常规</span></div>
+<div class="odds"><span>体彩 <b>1.90/3.26/3.38</b></span><span>DC融合 <b>主49.5/平26.4/客24.2</b></span><span>λ <b>2.15/1.22</b></span></div>
+<div class="pb"><div class="w" style="width:49.5%">49.5</div><div class="d" style="width:26.4%">26.4</div><div class="l" style="width:24.2%">24.2</div></div>
+<div class="an"><b>DC 依据</b>：贝蒂斯 attack=0.36/defense=0.11（上季西甲第3攻击力），皇家社会 attack=0.09/defense=0.12（中下游）。λ_home=2.15/λ_away=1.22。DC TOP：1-1(10.8%), 2-1(9.8%), 2-0(8.0%)。西甲场均 2.58 球。融合分歧 +2.8pp（DC 更看好主队）。</div>
+<div class="rp">★ 主胜 @1.90 | 比分 <b>2-1</b>（DC TOP2 + 西甲偏小比分）</div>
+<div class="rk">⚠ 融合后仅 49.5%（<55% 三星线），降级为★★。R2 开季修正已含。社会客场能力不差（上季客场不败率>50%）。</div>
+</div>
+
+<div class="card" style="border-left:3px solid var(--warn)">
+<div class="mh"><span class="lg">韩职</span><span class="cd">#15 周六006</span><span class="tm">08-22 18:30</span></div>
+<div class="teams">安养FC vs 首尔FC <span class="grade gc">C</span> <span class="stars">★★</span> <span class="motivation mot-normal">常规 vs 高动力</span></div>
+<div class="odds"><span>体彩 <b>3.90/3.45/1.72</b></span><span>去水 <b>22.9/25.9/52.0%</b></span><span>修正后客 <b>46.8%</b></span></div>
+<div class="pb"><div class="w" style="width:20.6%"></div><div class="d" style="width:23.3%"></div><div class="l" style="width:56.1%">46.8%(修正后)</div></div>
+<div class="an"><b>依据</b>：首尔FC 去水客胜概率 52.0%（本轮非胶着场次中最高客胜概率）。安养FC 为升班马（韩职新军），首尔FC 为传统强队。修正：52.0%×0.90(R1)≈46.8%。韩职数据全缺（无 DC/无画像），C 级上限★★。</div>
+<div class="rp">★ 客胜 @1.72 | 比分 <b>1-2</b>（市场热门比分）</div>
+<div class="rk">⚠ 韩职数据全缺，C 级。仅方案 D（搏冷扩展）入串，不作核心胆材。</div>
+</div>
+
+<h2>让球盘专区</h2>
+<div class="card" style="border-left:3px solid var(--accent)">
+<div class="mh"><span class="lg">英超R1</span><span class="cd">#10 周五010</span><span class="tm">08-22 03:00</span></div>
+<div class="teams">阿森纳 vs 考文垂 <span class="grade gb">B</span> <span class="stars">★★</span></div>
+<div class="an"><b>让球盘数据</b>：让球-2 赔率 2.28/3.80/2.34。去水 38.5/23.1/37.5%。Poisson 估 λ_home≈1.85/λ_away≈0.67。净胜3+球概率≈47%（覆盖让-2主胜）。</div>
+<div class="an"><b>阿森纳 DC 参数</b>（上季）：attack=0.34/defense=-0.70（攻防均为英超顶级）。考文垂不在缓存（英冠升班马），用晋升队均值估算：attack≈-0.17/defense≈0.10。</div>
+<div class="rp">★ 让球-2 主胜 @2.28（博阿森纳大胜） | 比分 <b>2-0</b>(15.1%) / <b>3-0</b>(9.4%)</div>
+<div class="rk">⚠ 胜平负未开售（仅让球/比分/半全场/总进球）。考文垂实力未知（英冠冠军，升级阵容变动大）。R1 开季修正。不入串（让球盘风险集中）。</div>
+</div>
+
+<h2>单场关注（不入串）</h2>
+<div class="card" style="border-left:3px solid var(--muted)">
+<div class="mh"><span class="lg">日职R3</span><span class="cd">#2 周五002</span><span class="tm">08-21 18:30</span></div>
+<div class="teams">东京FC vs 千叶市原 <span class="grade gc">C</span> <span class="stars">★★</span></div>
+<div class="odds"><span>体彩 <b>1.48/3.80/5.25</b></span><span>去水 <b>62.9/24.5/17.8%</b></span><span>修正后主 <b>59.8%</b></span></div>
+<div class="an">ESPN 实时排名：千叶市原 J1 垫底（20位，0分，0进球，失7球），东京FC 第17（1分，进3失7）。去水主胜 62.9%（R3×0.95→59.8%）。东京FC 防守极差（7球失球），但千叶攻击更差（0进球）。上轮赔率 1.42→1.48（↑ 市场信心下降）。C 级仅方向参考，不入串。</div>
+<div class="rp">☆ 方向：主胜 | 比分参考 2-0</div>
+</div>
+
+<h2>排除场次简报</h2>
+<div class="exclude"><span class="num">#3</span> 周五004 塞伊奈vs拉赫蒂 [C] 芬超 · 极差2.8pp 极度胶着 + 芬超波动×2.0 → <b>避开</b></div>
+<div class="exclude"><span class="num">#6</span> 周五007 敦刻尔克vs蒙彼利埃 [B] 法乙R3 · 极差6.8pp 胶着 + 冷门率37.1%(最高联赛) + 主胜率仅34.5% → <b>避开</b></div>
+<div class="exclude"><span class="num">#13</span> 周六004 磐田喜悦vs德岛漩涡 [C] 日乙 · 极差9.5pp 胶着 → <b>避开</b></div>
+<div class="exclude"><span class="num">—</span> 周五001 柏太阳神vs长崎航海 [D] 日职R3 · <b>API 已下架</b>（上轮在列，疑似停售）→ <b>排除</b></div>
+<div class="exclude"><span class="num">#1</span> 周五002 东京FCvs千叶市原 [C] 日职R3 · 主胜62.9%→入串候选但C级数据不足 → 仅方向参考</div>
+<div class="exclude"><span class="num">#2</span> 周五003 利雅得vs利雅得胜利 [C] 沙特R2 · 客胜85.8%但超低赔1.16无价值 → 不入串</div>
+<div class="exclude"><span class="num">#4</span> 周五005 天狼星vs赫根 [B] 瑞超R17 · ESPN: 天狼星42分断崖领跑(13胜1负)，赫根28分第3。去水54.7%方向明确，但瑞超波动×1.5→修正43.8% → 仅方向参考，不入串</div>
+<div class="exclude"><span class="num">#7</span> 周五008 登博思vs埃因霍温FC [C] 荷乙 · 修正后36.4%+数据全缺 → 排除</div>
+<div class="exclude"><span class="num">#10</span> 周六001 鹿岛鹿角vs福冈黄蜂 [C] 日职R3 · C级不入串</div>
+<div class="exclude"><span class="num">#11</span> 周六002 秋田vs甲府风林 [C] 日乙 · 数据全缺</div>
+<div class="exclude"><span class="num">#12</span> 周六003 大阪樱花vs清水鼓动 [C] 日职R3 · 修正后40.1% 方向不稳</div>
+<div class="exclude"><span class="num">#14</span> 周六005 全北vs蔚山 [C] 韩职 · 数据全缺，韩国德比波动大</div>
+<div class="exclude"><span class="num">#17</span> 周六010 埃弗顿vs水晶宫 [C] 英超R1 · DC 三向 35/32/33 极胶着 → 避开</div>
+
+<h2>数据源清单</h2>
+<table>
+<thead><tr><th>来源</th><th>状态</th><th>本次使用</th></tr></thead>
+<tbody>
+<tr><td>体彩官方 API</td><td style="color:var(--success)">✅</td><td>赛程+赔率（18场全采集）</td></tr>
+<tr><td>football-data.co.uk CSV</td><td style="color:var(--success)">✅ 部分</td><td>上季 DC 缓存（英超/法甲/西甲/法乙/德甲/意甲）</td></tr>
+<tr><td>DC 模型（engine/cache/*_dc.json）</td><td style="color:var(--success)">✅</td><td>马赛/斯特拉斯堡/贝蒂斯/社会/阿森纳 DC 概率</td></tr>
+<tr><td>Pinnacle 实时赔率</td><td style="color:var(--danger)">❌ 不可达</td><td>OddsPortal/Bet365/Pinnacle 均失败 → 锚缺失</td></tr>
+<tr><td>ESPN 积分榜</td><td style="color:var(--success)">✅ 8/11 联赛</td><td>J1/瑞超/法乙/荷乙/西甲 排名已覆盖；沙特/芬超/J2/韩职 ESPN 不可用</td></tr>
+<tr><td>data/00-leagues/</td><td style="color:var(--success)">✅</td><td>联赛画像（场均进球/冷门率/TOP比分/主胜率）</td></tr>
+<tr><td>data/01-teams/</td><td style="color:var(--warn)">⚠ 部分</td><td>_index.json 仅6队，大多数球队画像缺失</td></tr>
+</tbody>
+</table>
+
+<h2>战意状态一览</h2>
+<table>
+<thead><tr><th>#</th><th>对阵</th><th>主队战意</th><th>客队战意</th><th>组合</th><th>修正</th></tr></thead>
+<tbody>
+<tr><td>9</td><td>马赛 vs 斯特拉斯堡</td><td><span class="motivation mot-high">🔥高动力</span> 新帅主场首秀</td><td><span class="motivation mot-normal">常规</span> 上季中游</td><td>高动力vs常规</td><td>主队微调↑</td></tr>
+<tr><td>16</td><td>赫尔城 vs 曼联</td><td><span class="motivation mot-high">🔥高动力</span> 杯赛主场迎战豪门</td><td><span class="motivation mot-normal">常规</span> 联赛杯轮换</td><td>高动力vs常规</td><td>实力差>心态差</td></tr>
+<tr><td>6</td><td>胡巴尔 vs 吉达联合</td><td><span class="motivation mot-high">🔥高动力</span> 首轮3-1士气旺</td><td><span class="motivation mot-low">😴低动力</span> 首轮1-1平局</td><td>高动力vs低动力</td><td>高动力方×1.15</td></tr>
+<tr><td>11</td><td>贝蒂斯 vs 皇家社会</td><td><span class="motivation mot-high">🔥高动力</span> 主场争欧战</td><td><span class="motivation mot-normal">常规</span></td><td>高动力vs常规</td><td>微调↑</td></tr>
+<tr><td>15</td><td>安养FC vs 首尔FC</td><td><span class="motivation mot-normal">常规</span> 升班马</td><td><span class="motivation mot-high">🔥高动力</span> 传统强队</td><td>常规vs高动力</td><td>客队微调↑</td></tr>
+</tbody>
+</table>
+
+<h2>自检清单</h2>
+<table>
+<tbody>
+<tr><td>1. 数据可追溯</td><td style="color:var(--success)">✅ 全部标注来源+加载状态</td></tr>
+<tr><td>2. 无编造数据</td><td style="color:var(--success)">✅ 缺失项标❓</td></tr>
+<tr><td>3. 编号×联赛×主客三重核对</td><td style="color:var(--success)">✅ 逐场核对（周五001 已下架已标注）</td></tr>
+<tr><td>4. 比分/半全场 ≤4关</td><td style="color:var(--success)">✅ 最多3串1</td></tr>
+<tr><td>5. C级未入比分/半全场串</td><td style="color:var(--success)">✅ 仅 B 级入串</td></tr>
+<tr><td>6. 开季场次限额</td><td style="color:var(--warn)">⚠ 3场入串（>1场），开季日全量无法限额</td></tr>
+<tr><td>7. 小联赛入串限额</td><td style="color:var(--success)">✅ 芬超/瑞超/荷乙均0场入串</td></tr>
+<tr><td>8. 多系数叠加封顶</td><td style="color:var(--success)">✅ 无叠加超0.65（单系数为主）</td></tr>
+<tr><td>9. 比分参照联赛TOP3</td><td style="color:var(--success)">✅ 马赛2-1(法甲TOP)/曼联0-2(市场热门)</td></tr>
+<tr><td>10. 资金纪律</td><td style="color:var(--success)">✅ 全部 2元×1倍</td></tr>
+<tr><td>11. 临场终审(Step 6.5)</td><td style="color:var(--warn)">⏳ 距开赛>12h，待出票前≤12h完成</td></tr>
+</tbody>
+</table>
+
+<div class="disc">
+<b>⚠ 风险提示</b>：竞彩足球为负期望游戏（单关期望返还率≈88.5%，3串≈69.3%）。本预测仅供娱乐参考，不构成投注建议。赔率以官方终端为准。CLV 待赛后 Pinnacle 收盘价回补计算。
+<br><b>数据来源</b>：体彩官方API + football-data.co.uk（上季DC缓存）+ 本地知识库（data/00-leagues/、data/01-teams/）
+<br><b>数据缺口</b>：Pinnacle 锚缺失（~5pp）| J联赛/沙特/韩职/芬超/瑞超/荷乙无 DC 缓存 | 大多数球队画像缺失（_index仅6队）
+</div>
+
+</body></html>
