@@ -1,0 +1,168 @@
+<title>Football RAG 知识库 · 设计文档 v2</title>
+<style>
+:root{--bg:#fafafa;--fg:#1a1a1a;--card:#fff;--border:#e0e0e0;--accent:#1565c0;--accent-light:#e3f2fd;--success:#2e7d32;--warn:#f57f17;--danger:#c62828;--muted:#757575}
+@media(prefers-color-scheme:dark){:root{--bg:#121212;--fg:#e0e0e0;--card:#1e1e1e;--border:#333;--accent:#64b5f6;--accent-light:#1a2733;--success:#66bb6a;--warn:#ffb74d;--danger:#ef5350;--muted:#9e9e9e}}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--fg);line-height:1.7;padding:1.5rem;max-width:1000px;margin:0 auto;font-size:15px}
+h1{font-size:1.5rem;margin-bottom:.2rem}
+h2{font-size:1.15rem;margin:1.8rem 0 .6rem;color:var(--accent);border-bottom:2px solid var(--accent);padding-bottom:.25rem}
+h3{font-size:1rem;margin:1rem 0 .4rem}
+.sub{color:var(--muted);font-size:.82rem;margin-bottom:1rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1rem}
+code,pre{font-family:Consolas,Menlo,monospace;font-size:.85rem;background:var(--accent-light);border-radius:4px}
+code{padding:1px 5px}
+pre{padding:.8rem;overflow-x:auto;margin:.5rem 0;line-height:1.5}
+table{width:100%;border-collapse:collapse;font-size:.82rem;margin:.5rem 0}
+th,td{padding:.35rem .5rem;text-align:left;border-bottom:1px solid var(--border)}
+th{background:var(--accent-light);color:var(--accent);font-weight:600}
+.tag{display:inline-block;font-size:.68rem;padding:1px 6px;border-radius:3px;margin-right:.25rem;font-weight:600}
+.t-hot{background:#ffebee;color:#c62828}.t-mid{background:#fff8e1;color:#f57f17}.t-ok{background:#e8f5e9;color:#2e7d32}
+ul{padding-left:1.2rem}.li-tight li{margin-bottom:.2rem}
+</style>
+
+<h1>Football RAG 知识库 · 设计文档 v2</h1>
+<p class="sub">2026-08-21 · 基于实战教训（v3.x）+ 全网方案调研 + 学术文献 review 三轮迭代定稿</p>
+
+<h2>〇、项目定位</h2>
+<div class="card">
+<b>本地足球知识图谱 + Dixon-Coles/Elo 统计模型 + 检索增强预测 + 趋势挖掘引擎</b>
+<ul class="li-tight">
+<li>预测时：本地知识库优先检索，只搜缺口数据 → 模型算概率 → 与市场融合 → Claude 推理出报告</li>
+<li>查询时：grep/index 检索本地数据 → Claude 组织回答（纯文本）</li>
+<li>趋势时：统计索引 + 时序变化点检测 → 自动发现规律</li>
+</ul>
+</div>
+
+<h2>一、四层架构</h2>
+<div class="card">
+<pre>
+┌──────────────────────────────────────────────────────────┐
+│  football/  本地足球知识库（git 管理，预测快照可锁定验证）    │
+├──────────────────────────────────────────────────────────┤
+│  ① 数据层（JSON 纯数据，Claude 读写）                      │
+│  ├ 01-teams/     球队画像 + Elo + xG                       │
+│  ├ 02-results/   赛果回填 + 交锋索引（低权重）+ DC 历史输入  │
+│  ├ 03-predictions/ 预测报告 HTML（仅用户输出用 HTML+SVG）    │
+│  ├ 04-summaries/ 五维统计 JSON + 复盘 HTML                   │
+│  ├ 05-trends/    趋势发现 JSON                              │
+│  └ models/       Python 脚本 + DC 参数缓存 + 融合系数 + 回测 │
+│                                                          │
+│  ② 计算层（Python 脚本，Claude 调用）                       │
+│  ├ dc_fit.py      拟合 DC 参数（ξ 默认 0.005，支持扫描）     │
+│  ├ dc_predict.py  比分概率矩阵 + 三向概率                    │
+│  ├ elo_fetch.py   抓 clubelo.com                            │
+│  ├ xg_fetch.py    抓 Understat（xG 与进球 30-50% 混合）      │
+│  ├ odds_fetch.py  双锚采集：Pinnacle 收盘价 + 体彩赔率       │
+│  ├ backtest.py    walk-forward 验证 + RPS/log-loss + CLV    │
+│  └ calibrate.py   概率校准（每赛季可靠性图）                 │
+│                                                          │
+│  ③ 检索/生成层（Claude = RAG 引擎）                          │
+│  └ 预测：本地索引 → DC 概率 → logit 融合 → 推理 → 报告       │
+│                                                          │
+│  ④ 记忆层                                                   │
+│  └ .claude/CLAUDE.md  项目级记忆                             │
+└──────────────────────────────────────────────────────────┘
+</pre>
+</div>
+
+<h2>二、学术 Review 修正（v2 核心变更）</h2>
+<div class="card">
+<h3><span class="tag t-hot">P0</span>修正 1 · 双锚制：概率锚与可买性分离</h3>
+<table>
+<tr><th></th><th>Pinnacle 收盘价（概率锚）</th><th>体彩官方赔率（可买性）</th></tr>
+<tr><td>用途</td><td>去水得真实市场概率，参与融合</td><td>判断能不能买、算奖金、算 CLV</td></tr>
+<tr><td>毛利</td><td>~2.5%</td><td>&gt;7%</td></tr>
+<tr><td>来源</td><td>oddsportal 存档 / Pinnacle 数据</td><td>体彩官方 API（已有）</td></tr>
+</table>
+<p><b>原因</b>：体彩毛利 7% 本身引入 ~5pp 偏差，与原"偏差>5pp 告警"同量级，信号被噪声淹没。</p>
+
+<h3><span class="tag t-hot">P0</span>修正 2 · 对比告警 → logit 融合</h3>
+<pre>p_final = σ(a·logit(p_DC) + b·logit(p_pinnacle))   a≈0.3-0.5，回测校准，存 models/fusion.json</pre>
+<p><b>原因</b>：文献结论"模型与市场正常分歧 &lt;3pp，&gt;5pp 多半是模型错"。融合比告警更有效利用模型增量。融合前后偏差 &gt;3pp 仍输出注记（但不再是主信号）。</p>
+
+<h3><span class="tag t-hot">P0</span>修正 3 · 回测基建（一切验证的地基）</h3>
+<ul class="li-tight">
+<li>walk-forward 逐轮前推验证（防数据泄漏）</li>
+<li>评估指标：<b>RPS（主）+ log loss（辅）+ CLV（盈利性）</b>；命中率仅作展示</li>
+<li>回测成交一律按 Pinnacle 收盘价计</li>
+</ul>
+
+<h3><span class="tag t-mid">P1</span>修正 4-9</h3>
+<table>
+<tr><th>#</th><th>修正</th><th>说明</th></tr>
+<tr><td>4</td><td>ξ 默认 0.005（原 0.018 为文献 3-10 倍）</td><td>dc_fit 支持扫描 ξ∈[0.001,0.02] 按对数损失选优</td></tr>
+<tr><td>5</td><td>修正系数消融清单</td><td>开季/首回合/保级保护等逐条 on/off 回测，无正增益即删；"欧战首回合平局保护"证据最薄弱，第一批验证</td></tr>
+<tr><td>6</td><td>升班马/大转会强度平移</td><td>开季参数先验注入 ~0.5 球级（Rue &amp; Salvesen 2000）</td></tr>
+<tr><td>7</td><td>home_adv 重校准</td><td>剔除/降权 2020 空场数据（疫后未完全回落）</td></tr>
+<tr><td>8</td><td>xG 与进球 30-50% 混合</td><td>不直接替换；口径不一致时混合更稳</td></tr>
+<tr><td>9</td><td>H2H 降权</td><td>学术验证预测力垫底；02-results 保留存储但检索层标注"仅叙事参考，不进权重"</td></tr>
+</table>
+</div>
+
+<h2>三、数据层模型</h2>
+<div class="card">
+<h3>01-teams/{league}/{team}.json</h3>
+<pre>
+{
+  "team": "波兹南莱赫", "league": "欧罗巴", "season": "2026", "lastUpdated": "2026-08-20",
+  "elo": {"rating": 1485, "rank": 120, "source": "clubelo.com", "fetchedAt": "..."},
+  "dcParams": {"attack": 1.45, "defense": 0.82, "lastFit": "..."},
+  "xg": {"for": 1.8, "against": 1.1, "mixed": 1.75, "source": "understat", "overperformance": 0.2},
+  "recentForm": [
+    {"date":"...","opp":"xxx","venue":"H","gf":5,"ga":0,"xgf":3.2,"xga":0.5,"pts":3,"restDays":7}
+  ],
+  "homeRecord": {"p":11,"w":8,"d":1,"l":2}, "awayRecord": {"p":10,"w":3,"d":4,"l":3},
+  "avgGf": 1.6, "avgGa": 0.9, "restDays": 7,
+  "injuries": [{"player":"xxx","type":"膝伤","status":"out","importance":"core"}],
+  "travel": {"distanceKm": 0, "timezoneDiff": 0}
+}
+</pre>
+<h3>models/ 结构</h3>
+<pre>
+models/
+├── dc_fit.py / dc_predict.py / elo_fetch.py / xg_fetch.py
+├── odds_fetch.py        ← 双锚：Pinnacle 收盘 + 体彩
+├── backtest.py          ← walk-forward + RPS + log-loss + CLV
+├── calibrate.py         ← 可靠性图
+├── requirements.txt     ← scipy, requests, numpy
+├── fusion.json          ← {"a":0.4,"b":1.0,"lastTuned":"..."}
+└── cache/{league}_dc.json  ← ξ=0.005 默认拟合结果
+</pre>
+</div>
+
+<h2>四、检索与预测流程</h2>
+<div class="card">
+<pre>
+Step 0   模式判定（全局 / 快速）
+Step 1   体彩 API 抓赛程（可买性）+ odds_fetch 抓 Pinnacle 收盘价（概率锚）
+Step 1.5 预筛选快排
+Step 2   检索本地：_index → 球队画像 → DC 缓存新鲜度检查 → 只搜缺口
+Step 3   计算：dc_predict → 7x7 矩阵 → 三向概率；elo/xg 过期则先 fetch
+Step 3.5 融合：p_final = σ(a·logit(p_DC) + b·logit(p_pin))；偏差>3pp 注记
+Step 4-6 Claude 推理：修正系数（消融清单内）→ 星级 → 串关
+Step 7   报告 HTML → 03-predictions/；预测 JSON → 02-results/
+Step 8   赛果回填 → 五维统计（含 CLV 逐场计算）
+</pre>
+<p><b>CLV 定义</b>：出票赔率 vs Pinnacle 收盘赔率的收益率。打平收盘 ≈ 零期望；稳定打赢 1.5-2% ≈ 长期盈利代理。每单必记录，复盘以 CLV 为主指标。</p>
+</div>
+
+<h2>五、实施顺序</h2>
+<div class="card">
+<table>
+<tr><th>阶段</th><th>内容</th><th>交付</th></tr>
+<tr><td><b>P0-a</b></td><td>项目骨架 + .claude/CLAUDE.md + SKILL.md v4.1（双锚/融合/ξ/消融写入 skill）</td><td>本设计落地</td></tr>
+<tr><td><b>P0-b</b></td><td>backtest.py 回测基建（先建，后改模型才有验证手段）</td><td>walk-forward + RPS/CLV</td></tr>
+<tr><td><b>P1</b></td><td>dc_fit（ξ=0.005）+ dc_predict + fusion.json + calibrate</td><td>模型管线</td></tr>
+<tr><td><b>P2</b></td><td>elo_fetch + xg_fetch + odds_fetch 双锚</td><td>数据采集管线</td></tr>
+<tr><td><b>P3</b></td><td>历史数据回填（足彩过往轮次 + oddsportal 存档）→ 消融实验逐条跑</td><td>修正系数去留结论</td></tr>
+</table>
+</div>
+
+<h2>六、置信度声明</h2>
+<div class="card">
+<ul class="li-tight">
+<li>学术结论来源：Dixon &amp; Coles 1997 / Karlis &amp; Ntzoufras 2003 / Rue &amp; Salvesen 2000 / Hubáček 2019 / Groll 2018 等领域高被引文献</li>
+<li>个别年份/期刊细节为文献知识库输出（调研工具配额耗尽未能在线核验），落地引用前建议抽查原文</li>
+<li>核心方向（市场效率、ξ 范围、H2H 弱预测力、融合优于对比）为该领域共识，可信度高</li>
+</ul>
+</div>
