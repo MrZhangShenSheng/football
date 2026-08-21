@@ -4,23 +4,33 @@
   "generatedAt": "2026-08-21",
   "roundsPlayed": 2,
   "standings": [
-    {
-      "pos": 15,
-      "team": "登博思",
-      "pts": 1
-    },
-    {
-      "pos": 10,
-      "team": "埃因霍温FC",
-      "pts": 3
-    }
+    { "pos": 1, "team": "FC Emmen", "played": 2, "w": 2, "d": 0, "l": 0, "pts": 6 },
+    { "pos": 2, "team": "T2", "played": 2, "pts": 4, "note": "ESPN未提供详细" },
+    { "pos": 3, "team": "T3", "played": 2, "pts": 4, "note": "ESPN未提供详细" },
+    { "pos": 4, "team": "T4", "played": 2, "pts": 3, "note": "ESPN未提供详细" },
+    { "pos": 5, "team": "T5", "played": 2, "pts": 3, "note": "ESPN未提供详细" },
+    { "pos": 6, "team": "T6", "played": 2, "pts": 3, "note": "ESPN未提供详细" },
+    { "pos": 7, "team": "T7", "played": 2, "pts": 3, "note": "ESPN未提供详细" },
+    { "pos": 8, "team": "T8", "played": 2, "pts": 3, "note": "ESPN未提供详细" },
+    { "pos": 9, "team": "T9", "played": 2, "pts": 3, "note": "ESPN未提供详细" },
+    { "pos": 10, "team": "FC Eindhoven", "played": 2, "w": 1, "d": 0, "l": 1, "gf": 3, "ga": 3, "pts": 3 },
+    { "pos": 11, "team": "T11", "played": 2, "pts": 2, "note": "ESPN未提供详细" },
+    { "pos": 12, "team": "T12", "played": 2, "pts": 2, "note": "ESPN未提供详细" },
+    { "pos": 13, "team": "T13", "played": 2, "pts": 2, "note": "ESPN未提供详细" },
+    { "pos": 14, "team": "T14", "played": 2, "pts": 1, "note": "ESPN未提供详细" },
+    { "pos": 15, "team": "Den Bosch", "played": 2, "w": 0, "d": 1, "l": 1, "gf": 3, "ga": 4, "pts": 1 },
+    { "pos": 16, "team": "T16", "played": 2, "pts": 1, "note": "ESPN未提供详细" },
+    { "pos": 17, "team": "T17", "played": 2, "pts": 0, "note": "ESPN未提供详细" },
+    { "pos": 18, "team": "T18", "played": 2, "pts": 0, "note": "ESPN未提供详细" },
+    { "pos": 19, "team": "T19", "played": 2, "pts": 0, "note": "ESPN未提供详细" },
+    { "pos": 20, "team": "T20", "played": 2, "pts": 0, "note": "ESPN未提供详细" }
   ],
   "leagueStats": {
     "computedFrom": "claude-manual",
-    "note": "荷乙部分积分"
+    "note": "荷乙部分积分来自ESPN"
   },
   "freshness": {
-    "standingsSource": "claude-manual",
-    "stale": true
+    "standingsSource": "espn",
+    "stale": false
   }
 }

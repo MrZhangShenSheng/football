@@ -4,25 +4,29 @@
   "generatedAt": "2026-08-21",
   "roundsPlayed": 17,
   "standings": [
-    {
-      "pos": 1,
-      "team": "天狼星",
-      "pts": 42,
-      "note": "13胜3平1负"
-    },
-    {
-      "pos": 3,
-      "team": "赫根",
-      "pts": null,
-      "note": "第3-4位"
-    }
+    { "pos": 1, "team": "IK Sirius", "played": 17, "w": 13, "d": 3, "l": 1, "gf": 47, "ga": 23, "pts": 42 },
+    { "pos": 2, "team": "Hammarby", "played": 17, "w": 10, "d": 3, "l": 4, "gf": 40, "ga": 15, "pts": 33 },
+    { "pos": 3, "team": "BK Häcken", "played": 17, "w": 7, "d": 7, "l": 3, "gf": 29, "ga": 26, "pts": 28 },
+    { "pos": 4, "team": "AIK", "played": 17, "pts": 28, "note": "详细WDL ESPN未提供" },
+    { "pos": 5, "team": "T5", "played": 17, "pts": 27, "note": "ESPN未提供详细" },
+    { "pos": 6, "team": "T6", "played": 17, "pts": 27, "note": "ESPN未提供详细" },
+    { "pos": 7, "team": "Malmö", "played": 17, "pts": 26, "note": "详细WDL ESPN未提供" },
+    { "pos": 8, "team": "T8", "played": 17, "pts": 24, "note": "ESPN未提供详细" },
+    { "pos": 9, "team": "T9", "played": 17, "pts": 22, "note": "ESPN未提供详细" },
+    { "pos": 10, "team": "T10", "played": 17, "pts": 20, "note": "ESPN未提供详细" },
+    { "pos": 11, "team": "T11", "played": 17, "pts": 18, "note": "ESPN未提供详细" },
+    { "pos": 12, "team": "T12", "played": 17, "pts": 16, "note": "ESPN未提供详细" },
+    { "pos": 13, "team": "T13", "played": 17, "pts": 14, "note": "ESPN未提供详细" },
+    { "pos": 14, "team": "T14", "played": 17, "pts": 12, "note": "ESPN未提供详细" },
+    { "pos": 15, "team": "T15", "played": 17, "pts": 9, "note": "ESPN未提供详细" },
+    { "pos": 16, "team": "Halmstad", "played": 17, "w": 1, "d": 4, "l": 12, "pts": 7, "note": "降级区" }
   ],
   "leagueStats": {
     "computedFrom": "claude-manual",
-    "note": "部分积分榜"
+    "note": "部分积分榜来自ESPN"
   },
   "freshness": {
-    "standingsSource": "claude-manual",
-    "stale": true
+    "standingsSource": "espn",
+    "stale": false
   }
 }
