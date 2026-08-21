@@ -165,11 +165,23 @@ def holdout_logloss(matches, xi, split=0.8):
 def main() -> None:
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     scan = "--scan" in sys.argv
+    auto = "--auto" in sys.argv
     if not args:
-        log("dc_fit", "用法: python dc_fit.py <league> <season[,season2...]> [--scan]")
+        log("dc_fit", "用法: python dc_fit.py <league> <season[,season2...]> [--scan] [--auto]")
         return
     league = args[0]
     seasons = args[1].split(",") if len(args) > 1 else ["2627"]
+
+    # --auto：缓存新鲜则跳过（新增场次 <5）
+    dest = CACHE_DIR / f"{league}_dc.json"
+    if auto and dest.exists():
+        cached = json.loads(dest.read_text(encoding="utf-8"))
+        n_now = len(load_matches(league, seasons))
+        n_used = cached.get("matchesUsed", 0)
+        if cached.get("seasons") == seasons and n_now - n_used < 5:
+            log("dc_fit", f"缓存新鲜（{n_used}→{n_now} 场，新增 <5），跳过拟合 → {dest.name}")
+            return
+
     matches = load_matches(league, seasons)
     if len(matches) < 30:
         log("dc_fit", f"仅 {len(matches)} 场（<30），不足以拟合")
@@ -191,7 +203,7 @@ def main() -> None:
 
     teams, attack, defense, home_adv, rho, fun = fit(matches, xi)
     out = {
-        "league": league, "xi": xi, "homeAdv": round(home_adv, 4), "rho": round(rho, 4),
+        "league": league, "seasons": seasons, "xi": xi, "homeAdv": round(home_adv, 4), "rho": round(rho, 4),
         "matchesUsed": len(matches),
         "dateRange": [str(matches[0]["date"]), str(matches[-1]["date"])],
         "lastFit": date.today().isoformat(),

@@ -2,8 +2,14 @@
 # -*- coding: utf-8 -*-
 """采集脚本公共工具：别名表加载 + 球队画像文件读写骨架。"""
 import json
+import sys
 from datetime import date
 from pathlib import Path
+
+# Windows 控制台中文乱码：统一强制 UTF-8 输出（Python 3.7+）
+for _stream in (sys.stdout, sys.stderr):
+    if hasattr(_stream, "reconfigure"):
+        _stream.reconfigure(encoding="utf-8")
 
 ROOT = Path(__file__).resolve().parents[2]
 TEAMS_DIR = ROOT / "data" / "01-teams"
