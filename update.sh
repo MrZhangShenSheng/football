@@ -12,45 +12,53 @@ echo "项目根: $HOME_DIR"
 echo ""
 
 # 1. git pull（skill + scripts + tests 可能有更新）
-echo "[1/5] git pull..."
+echo "[1/7] git pull..."
 cd "$HOME_DIR"
 git pull --ff-only || echo "    git pull 失败（检查本地改动）"
 
 # 2. Python 依赖同步
-echo "[2/5] 同步 Python 依赖..."
+echo "[2/7] 同步 Python 依赖..."
 python3 -m pip install -r "$HOME_DIR/engine/requirements.txt" --quiet
 echo "    OK"
 
 # 3. 数据刷新（赔率 + 联赛画像 + DC 重拟合 --auto）
-echo "[3/5] 数据刷新（run.py all）..."
+echo "[3/7] 数据刷新（run.py all）..."
 cd "$HOME_DIR/engine/scripts"
 python3 run.py all || echo "    run.py all 部分失败（数据源可能不可达，稍后重试）"
 
 # 4. 体彩五池采集（v4.5：赛程 + crs/ttg/hafu 赔率 + 单关资格）
-echo "[4/6] 体彩五池采集（sporttery_fetch.py）..."
+echo "[4/7] 体彩五池采集（sporttery_fetch.py）..."
 python3 sporttery_fetch.py || echo "    sporttery_fetch 失败（体彩 API 可能限流，预测时自动重试）"
 
 # 5. 闭环学习（v4.5.1：非fd联赛 espn 增量采集 → 本地拟合 → 版本发布）
-echo "[5/6] 闭环学习（run.py learn）..."
+echo "[5/7] 闭环学习（run.py learn）..."
 python3 run.py learn || echo "    learn 部分失败（ESPN 可能不可达，下次 update 重试）"
 
-# 6. 测试回归（验证代码改动没破坏任何东西）
-echo "[6/6] 测试回归..."
+# 6. 胜率趋势报告（v4.5.2：语料重算 + trend.html 刷新，纯本地计算）
+echo "[6/7] 胜率趋势报告（run.py corpus）..."
+python3 run.py corpus || echo "    corpus/trend 部分失败（纯本地，重跑即可）"
+
+# 7. 测试回归（验证代码改动没破坏任何东西）
+echo "[7/7] 测试回归..."
 cd "$HOME_DIR/engine"
 python3 -m pytest tests -q || echo "    ❌ 测试失败——先检查改动再预测"
 
 echo ""
 echo "=== 更新完成 ==="
 echo "就绪：对 Claude 说'帮我预测'即可"
-# 学习语料就绪度（v4.5.1）
+# 学习语料就绪度 + 胜率摘要（v4.5.1/v4.5.2）
 if [ -f "$HOME_DIR/data/04-summaries/corpus.json" ]; then
     python3 - "$HOME_DIR/data/04-summaries/corpus.json" << 'PYEOF'
 import json, sys
 c = json.load(open(sys.argv[1]))
 rd = c["readiness"]
-print(f"    学习语料: {c['n_total']} 条（已回填 {rd['n_result']} · CLV {rd['n_clv']}）"
+print(f"    学习语料: {c['n_total']} 条 / {c.get('n_rounds', '?')} 轮（已回填 {rd['n_result']} · CLV {rd['n_clv']}）"
       f" | 融合重校 {'✅' if rd['calibrateReady'] else '差' + str(rd['calibrateGap']) + '条'}"
       f" | 系数消融 {'✅' if rd['ablateReady'] else '观察中'}")
+# 方案层摘要（trend.html 的核心数字）
+plans = c.get("plans", {})
+n_plans = sum(1 for v in plans.values() if isinstance(v, list))
+print(f"    出票方案: {n_plans} 个已记录 → 详情见 data/04-summaries/trend.html（①logloss ②命中率 ③CLV ④校准 ⑤分桶 ⑥方案准确率）")
 PYEOF
 fi
 

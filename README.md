@@ -20,8 +20,8 @@ git clone <repo-url> football && cd football
 
 ```bash
 cd $FOOTBALL_HOME
-./update.sh          # Mac/Linux：git pull + 依赖同步 + 数据刷新 + 测试回归
-./update.ps1         # Windows：同上
+./update.sh          # Mac/Linux：git pull + 依赖同步 + 数据刷新 + 闭环学习 + 趋势报告 + 测试回归
+./update.ps1         # Windows：同上（7 步）
 ```
 
 > `install` 是一次性的（建 junction/设环境变量）；`update` 是高频的（只 pull+刷数据+测试）。两个都幂等可重跑。
@@ -34,7 +34,7 @@ cd $FOOTBALL_HOME
 |:---|:---|
 | **"帮我预测"** | 刷数据+联赛画像 → DC拟合+融合 → 体彩采集+本地检索+ESPN积分榜 → 战意状态机 → 分析评级 → 报告归档 → git commit |
 | **"再跑一遍"** | 临场终审：赔率复扫+三定律判定 → 更新报告 → commit |
-| **"回填赛果"** | 查赛果+命中率 → fd收盘价算CLV → **corpus语料汇总 → learn非fd联赛增量拟合+版本发布** → 复盘归档 → commit |
+| **"回填赛果"** | 查赛果+命中率 → fd收盘价算CLV → **corpus语料汇总+trend趋势报告 → learn非fd联赛增量拟合+版本发布** → 复盘归档 → commit |
 | **"XX队近况？"** | 本地知识库检索直接回答 |
 | **"跑下回测"** | walk-forward 回测 + 与市场基线对比 |
 
@@ -49,7 +49,7 @@ python3 run.py corpus                               # ★学习语料汇总+就�
 python3 run.py predict spain-laliga Vallecano Alaves --market 2.05,3.4,3.9
 python3 run.py predict japan kashima-antlers avispa-fukuoka   # 日职/沙特/瑞超本地模型也可用
 python3 run.py backtest spain-laliga 2526
-python -m pytest tests -q                           # 47 用例回归（改代码必跑）
+python -m pytest tests -q                           # 55 用例回归（改代码必跑）
 ```
 
 ## 预测日全流程

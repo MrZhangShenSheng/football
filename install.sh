@@ -77,7 +77,7 @@ PYEOF
 else
     echo "    体彩五池: 未采集（sporttery_matches.json 缺失，预测时 sporttery_fetch.py 自动补）"
 fi
-# 模型版本存档（v4.5.1 闭环学习）
+# 模型版本存档（v4.5.1 闭环学习）+ 胜率趋势（v4.5.2）
 if [ -f "$HOME_DIR/engine/cache/models/latest.json" ]; then
     python3 - "$HOME_DIR" << 'PYEOF'
 import json, sys, pathlib
@@ -93,3 +93,6 @@ PYEOF
 else
     echo "    本地DC模型: 未发布（install 步骤4的 espn history 回填可重试）"
 fi
+# 首次生成趋势报告（语料重算 + trend.html；换机后语料随 git 历史就位）
+cd "$HOME_DIR/engine/scripts" && python3 corpus.py >/dev/null 2>&1 && python3 trend_report.py >/dev/null 2>&1
+[ -f "$HOME_DIR/data/04-summaries/trend.html" ] && echo "    胜率趋势: data/04-summaries/trend.html 已生成（回填赛果后自动更新）" || echo "    胜率趋势: 生成失败（run.py corpus 可重跑）"
