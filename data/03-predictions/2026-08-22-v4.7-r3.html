@@ -38,6 +38,8 @@
 
 <div class="warn"><svg class="icon"><use href="#i-warn"/></svg> 本轮概率锚说明：fd 2627 赛季 CSV 未发布（英超/德甲/意甲/法甲 HTTP 300），Pinnacle 收盘锚缺失 → 以<b>体彩 HAD 去水为锚（偏差 ~5pp，置信度降档）</b>。搜索引擎配额耗尽（至 8-31），伤停/发布会深度信息不可得，多数场次 B 级。赔率以官方终端为准（铁律 3 出票前实盘核对）。</div>
 
+<div class="warn" style="border-color:#ff6b6b;background:rgba(255,107,107,.15)"><svg class="icon"><use href="#i-warn"/></svg> <b>⚠️ 勘误（2026-08-22 19:4x，用户终端核价发现）</b>：搏奖档注②"周日024 半全场 客/客@15.0"系 <b>HAFU 键位语义错误</b>——体彩 <code>hh</code> = 埃尔切<b>主/主</b>（爆冷双胜）@15.00；巴萨<b>客/客 = aa @1.70</b>（用户终端实测 1.75）。DC 同口径：aa 44.4% / hh 9.5%。原"p8% EV+20%"实为埃尔切爆冷票的价值（r2 标注错误被本轮数值复用）。巴萨客/客真实 p≈47%，<b>EV -17.8%，不合格已剔除方案</b>。用户已按"客/客"出票入 4串11 实票（详见 02-results r3.json 🎫条目：全中 3222 元 / 有回报 23% / 期望返还 81.2%）。教训：HAFU/CRS 键位 h=主队 a=客队，方向必须在对阵上独立验证。</div>
+
 <!-- ═══════════ 第 1 层：摘要卡 ═══════════ -->
 <div class="card">
 <h2><svg class="icon" style="color:var(--gold)"><use href="#i-ball"/></svg>第 1 层 · 出单摘要卡（不读详情可直接出票）</h2>
@@ -47,7 +49,7 @@
 <table>
 <tr><th>注</th><th>场次</th><th>玩法/选项</th><th>p_model</th><th>赔率</th><th>EV</th><th>命中→</th></tr>
 <tr><td>①</td><td>#1 周六024 · 08-23 02:45</td><td>总进球 0 球（帕尔马vs卡利亚里）</td><td>16.0%</td><td>7.50</td><td class="pos">+20.0%</td><td>15 元</td></tr>
-<tr><td>②</td><td>#2 周日024 · 08-24 03:30</td><td>半全场 客/客（埃尔切vs巴萨）</td><td>8.0%</td><td>15.0</td><td class="pos">+20.0%</td><td>30 元</td></tr>
+<tr><td>②</td><td>#2 周日024 · 08-24 03:30</td><td><s>半全场 客/客</s> →<b style="color:var(--red)">勘误作废</b>（客/客=aa@1.75 p47% EV-17.8% 不合格；hh@15=埃尔切爆冷非本意）</td><td>—</td><td>—</td><td class="neg">剔除</td><td>—</td></tr>
 <tr><td>③</td><td>#3 周日002 · 08-23 18:30</td><td>比分 2-0（町田泽维vs浦和红钻）</td><td>12.5%</td><td>9.0</td><td class="pos">+12.6%</td><td>18 元</td></tr>
 <tr><td>④</td><td>#4 周六009 · 08-22 21:00</td><td>半全场 平/平（厄格里特vs哈尔姆斯）</td><td>20.0%</td><td>6.0</td><td class="pos">+20.0%</td><td>12 元</td></tr>
 </table>
@@ -81,9 +83,9 @@
 <div>TTG 分布 DC：0球 16.0% / 1球 29.3% / 2球 26.9% —— 0-2 球合计 72%；市场 0 球隐含 ~11%，相对分歧 1.44× 合格</div>
 <div><b>推荐：TTG 0球 @7.50</b>（p16% EV+20%）｜修正链：意甲 R1 平局上调（0-0 为平局子集）｜r2 复核维持</div></div>
 
-<div class="detail"><h4>#2 周日024 · 08-24 03:30 西甲R3 · 埃尔切 vs 巴萨 <span class="tag b">B级</span><span class="tag">⭐⭐</span></h4>
-<div>体彩 8.25/5.30/1.22 · 融合 12.0/17.8/70.2 · HAFU hh DC 9.5% 市场隐含 ~5.5%</div>
-<div><b>推荐：HAFU 客/客 @15.0</b>（p8% EV+20%）｜r2 终审信息边际：巴萨无正印9号 + 埃尔切升班马韧性，hh 需上半场即领先——p 从 DC 9.5% 压至 8% 保守口径｜修正链：西甲R3×0.95</div></div>
+<div class="detail"><h4>#2 周日024 · 08-24 03:30 西甲R3 · 埃尔切 vs 巴萨 <span class="tag b">B级</span><span class="tag">⭐⭐</span> <b style="color:var(--red)">【勘误作废】</b></h4>
+<div>体彩 8.25/5.30/1.22 · 融合 12.0/17.8/70.2 · HAFU 九组合：aa(客/客) 44.4% @1.70 ｜ da 17.2% @4.15 ｜ hh(埃尔切爆冷) 9.5% @15.00</div>
+<div><b style="color:var(--red)">原推荐作废</b>：报告初版把 hh@15 误标"客/客"。巴萨客/客=aa@1.75（终端），p≈47%（市场 48.9%×DC 44.4%），EV -17.8% 不合格。埃尔切 hh@15 DC 9.5% EV 虽正但语义为爆冷票非本意，且 2 场样本联赛波动大，不推荐。本场<b>无合格高赔选项，跳过</b>（用户实票已按客/客 aa 出票，见 🎫 条目）</div></div>
 
 <div class="detail"><h4>#3/#5 周日002 · 08-23 18:30 日职R3 · 町田泽维 vs 浦和红钻 <span class="tag b">B级</span><span class="tag">⭐⭐⭐</span></h4>
 <div>体彩 1.77/3.25/3.90 · DC 66.9/19.0/14.1 · 融合 55.1/24.9/20.1（DC/市场分歧 17pp 已按纪律压向市场）</div>
