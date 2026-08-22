@@ -105,7 +105,7 @@ def build() -> dict:
         by_league[lg] += 1
         if r.get("stars"):
             by_star[r["stars"]] += 1
-        if r.get("result"):
+        if r.get("result") and r.get("result") != "不可得":  # "不可得"=查询过但无数据源，非已回填
             n_result += 1
         if r.get("clv") is not None or r.get("clv_approx_dk") is not None:
             n_clv += 1
