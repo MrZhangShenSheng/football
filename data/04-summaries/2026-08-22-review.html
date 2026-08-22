@@ -19,7 +19,7 @@ th{background:#eef4ee;color:var(--c2);font-weight:600}
 <body>
 
 <h1>📊 阶段复盘 · 2026-08-22（8/21 夜场次先行回填）</h1>
-<div class="sub">52 场中 9 场已完赛（8/21 夜~8/22 凌晨），其余 43 场未开赛 —— 本页为<b>阶段复盘</b>，完整复盘待 8/24 全部完赛后补跑</div>
+<div class="sub">52 场中 8 场已完赛（8/21 夜~8/22 凌晨，8/22 上午复核无新增），其余 44 场未开赛 —— 本页为<b>阶段复盘</b>（8/22 11:30 二次复核：CLV 补近似值），完整复盘待 8/24 全部完赛后补跑</div>
 
 <div class="card">
 <h2>命中概况</h2>
@@ -47,7 +47,7 @@ th{background:#eef4ee;color:var(--c2);font-weight:600}
 <tr><td>星级</td><td>四星 1/1 ✓；二星以下 3/6</td><td>四星胆逻辑继续成立（利雅胜利 0-4 大胜）</td></tr>
 <tr><td>开季修正</td><td>R1-R3 场 4/6 命中</td><td>两场开季冷门（沙职客胜、法乙客胜）被"避开"提前规避</td></tr>
 <tr><td>避开决策</td><td>4 场避开：3 正确 1 过保守（75%）</td><td>处于 60~80% 区间 → 维持纪律持续观察</td></tr>
-<tr><td>CLV</td><td class="warn">待补</td><td>fd 2627 CSV 尚未收录 8/21 场次（英超/法甲 CSV 未发布）→ 全部 CLV 暂 null，8/24 复盘补算</td></tr>
+<tr><td>CLV</td><td class="warn">近似场均 -5.8%（DK 参考基准）</td><td>fd 2627 未收录 8/21 场次 → 改用 ESPN summary 的 DraftKings 赛前价近似：7 单全部负值，其中天狼星 -13.8%/贝蒂斯 -13.0% 显著买贵；结构性原因=体彩毛利 >7% 天然负 CLV，非选单偏差；Pinnacle 正式 CLV 待 fd 更新后补算</td></tr>
 </table>
 </div>
 
@@ -74,9 +74,10 @@ th{background:#eef4ee;color:var(--c2);font-weight:600}
 <h2>数据链路缺口记录</h2>
 <div class="note">
 · 芬超赛果：ESPN fin.1 scoreboard 空 / titan007 联赛页 JS 渲染 —— 需补 espn_fetch.py 的 fin.1 覆盖或 titan007 赛果接口<br>
-· fd 2627 CSV 延迟：8/21 场次未收录，英超/法甲 CSV 未发布 —— CLV 全部待补<br>
+· fd 2627 CSV 延迟：8/21 场次未收录，英超/法甲 CSV 未发布 —— 正式 Pinnacle CLV 待 fd 更新补算；本轮已用 ESPN summary 的 DraftKings 赛前价算近似 CLV（7 单：-0.9% ~ -13.8%，场均 -5.8%，体彩高毛利结构性负值）<br>
 · 体彩 API 反爬升级：需完整浏览器头（Referer+Origin），sporttery_fetch.py 待修复<br>
-· 预测记录：data/02-results/2026-08-22.json（43 场 pending，8/24 后完整回填）
+· 预测记录：data/02-results/2026-08-22.json（44 场 pending，8/24 后完整回填）<br>
+· 8/22 11:30 二次复核：ESPN 全量扫 8/21-25，8/22 白天 0 场完赛（日职 17:00 未到）——确认无漏填
 </div>
 </div>
 
