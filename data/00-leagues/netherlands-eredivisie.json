@@ -222,39 +222,40 @@
     }
   ],
   "leagueStats": {
-    "avgGoals": 3.5,
-    "homeWinRate": 0.333,
-    "drawRate": 0.167,
-    "upsetRate": 0.222,
+    "avgGoals": 3.294,
+    "homeWinRate": 0.431,
+    "drawRate": 0.244,
+    "upsetRate": 0.212,
     "topScores": [
       {
         "score": "2-2",
-        "count": 3
+        "count": 21
       },
       {
-        "score": "1-4",
-        "count": 3
+        "score": "2-1",
+        "count": 14
       },
       {
-        "score": "1-2",
-        "count": 2
+        "score": "1-1",
+        "count": 13
       }
     ],
     "computedFrom": "fd",
-    "matchesUsed": 18,
+    "matchesUsed": 160,
     "seasonsMerged": [
+      "2526",
       "2627"
     ]
   },
   "context": {
     "titleRace": {
-      "leader": "AZ Alkmaar",
-      "gap": 0
+      "leader": "PSV Eindhoven",
+      "gap": 10
     },
     "relegationZone": [
-      16,
-      17,
-      18
+      19,
+      20,
+      21
     ],
     "europeZone": [
       1,
@@ -263,7 +264,11 @@
       4
     ]
   },
-  "dcParams": {},
+  "dcParams": {
+    "homeAdv": 0.208,
+    "rho": 0.1,
+    "xi": 0.005
+  },
   "freshness": {
     "standingsSource": "espn",
     "stale": false,

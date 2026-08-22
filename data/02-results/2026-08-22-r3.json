@@ -1,0 +1,217 @@
+{
+  "date": "2026-08-22",
+  "version": "v4.7-r3",
+  "note": "全局重预测第3轮（周六晚-周一批次58场）。锚说明：fd 2627 收盘价未发布（E0/D1/I1/F1 HTTP 300），本轮概率锚=体彩HAD去水，锚偏差~5pp已降档标注。dc_fit --auto：2627数据<30场均跳过，沿用2526/两季拟合缓存。别名修复：瑞超5队variants+73条fd字段+ac-milan/bayern。data_check.py新增variants拍平支持。",
+  "plans": [
+    {
+      "plan": "🚀搏奖",
+      "type": "高赔单关组",
+      "stake": "8元(2元×4注)",
+      "legs": [
+        "周六024 TTG 0球@7.50 p16% EV+20.0%",
+        "周日024 HAFU hh(客/客)@15.0 p8.0% EV+20.0%",
+        "周日002 CRS 2-0@9.0 p12.5% EV+12.6%",
+        "周六009 HAFU dd(平/平)@6.0 p20.0% EV+20.0%"
+      ],
+      "odds": null,
+      "evEach": true,
+      "hitAtLeastOne": 0.437,
+      "theoreticalMax": 75.0
+    },
+    {
+      "plan": "⚖️平衡",
+      "type": "骨架串+平局尾巴",
+      "stake": "6元(4元主线串+2元尾巴)",
+      "legs": [
+        "周日002×周日014 HAD 2串1 主胜×客胜 @1.77×1.14=2.02 p47% EV-5.1%",
+        "周六009 HAD 平@3.52 p33.5% EV+17.9%"
+      ],
+      "odds": 2.02,
+      "evEach": false,
+      "hitAtLeastOne": 0.652,
+      "theoreticalMax": 15.12
+    },
+    {
+      "plan": "🛡️保本",
+      "type": "容错串",
+      "stake": "0元",
+      "legs": [],
+      "odds": null,
+      "evEach": true,
+      "note": "A/B级高确定性场次不足（伤停/发布会信息链缺失，搜索引擎配额耗尽），本轮不开"
+    }
+  ],
+  "matches": [
+    {
+      "idx": 1, "code": "周六024", "league": "意甲(R1)", "match": "帕尔马 vs 卡利亚里",
+      "pick": "TTG 0球", "odds": 7.5, "star": 3, "grade": "B",
+      "dc": [0.3556, 0.3253, 0.3191], "fused": [0.372, 0.326, 0.302],
+      "final": 0.16, "chain": ["意甲R1平局上调", "DCttg16%对市场11%分歧1.44x合格"],
+      "ev": 0.2, "inPlan": "🚀搏奖", "result": null
+    },
+    {
+      "idx": 2, "code": "周日024", "league": "西甲(R3)", "match": "埃尔切 vs 巴萨",
+      "pick": "HAFU hh(客/客)", "odds": 15.0, "star": 2, "grade": "B",
+      "dc": [0.1562, 0.2046, 0.6392], "fused": [0.12, 0.178, 0.702],
+      "final": 0.08, "chain": ["西甲R3×0.95", "r2终审信息边际:巴萨无9号+埃尔切韧性"],
+      "ev": 0.2, "inPlan": "🚀搏奖", "result": null
+    },
+    {
+      "idx": 3, "code": "周日002", "league": "日职(R3)", "match": "町田泽维 vs 浦和红钻",
+      "pick": "CRS 2-0", "odds": 9.0, "star": 3, "grade": "B",
+      "dc": [0.6691, 0.1897, 0.1411], "fused": [0.551, 0.249, 0.201],
+      "final": 0.125, "chain": ["日职R3×0.95", "DC当季:町田2连胜9进1失/浦和2连败失8"],
+      "ev": 0.126, "inPlan": "🚀搏奖", "result": null,
+      "note": "同场HAD主胜进平衡档主线串（同场次不同票不同池，合规）"
+    },
+    {
+      "idx": 4, "code": "周六009", "league": "瑞超(18轮)", "match": "厄格里特 vs 哈尔姆斯",
+      "pick": "HAFU dd(平/平)", "odds": 6.0, "star": 2, "grade": "B",
+      "dc": [0.5892, 0.2669, 0.1439], "fused": [0.517, 0.258, 0.224],
+      "final": 0.2, "chain": ["保级六分战:15名vs垫底", "生死战vs生死战平局×1.30(系数8🧪)"],
+      "ev": 0.2, "inPlan": "🚀搏奖", "result": null,
+      "note": "保守口径:DC dd 17.2% EV+3.2%；修正后p20% EV+20%"
+    },
+    {
+      "idx": 5, "code": "周日002", "league": "日职(R3)", "match": "町田泽维 vs 浦和红钻",
+      "pick": "HAD 主胜", "odds": 1.77, "star": 3, "grade": "B",
+      "dc": [0.6691, 0.1897, 0.1411], "fused": [0.551, 0.249, 0.201],
+      "final": 0.56, "chain": ["日职R3×0.95", "DC/市场分歧17pp已压向市场", "状态边际+3pp:浦和防线崩盘"],
+      "ev": -0.009, "inPlan": "⚖️平衡", "result": null
+    },
+    {
+      "idx": 6, "code": "周日014", "league": "荷甲(R3)", "match": "坎布尔 vs 费耶诺德",
+      "pick": "HAD 客胜", "odds": 1.14, "star": 4, "grade": "B",
+      "dc": [0.0023, 0.0185, 0.9792], "fused": [0.032, 0.083, 0.885],
+      "final": 0.841, "chain": ["荷甲R3×0.95", "坎布尔升班马2轮1分(当季)","超低赔1.14仅做串关骨架"],
+      "ev": -0.041, "inPlan": "⚖️平衡", "result": null
+    },
+    {
+      "idx": 7, "code": "周六009", "league": "瑞超(18轮)", "match": "厄格里特 vs 哈尔姆斯",
+      "pick": "HAD 平", "odds": 3.52, "star": 2, "grade": "B",
+      "dc": [0.5892, 0.2669, 0.1439], "fused": [0.517, 0.258, 0.224],
+      "final": 0.335, "chain": ["保级六分战", "生死战平局×1.30→25.8%×1.30=33.5%"],
+      "ev": 0.179, "inPlan": "⚖️平衡", "result": null,
+      "note": "r1教训:瑞超方向判断0/3,平局结构性支撑(系数3/8)"
+    },
+    {
+      "idx": 8, "code": "周日013", "league": "瑞超(18轮)", "match": "哈马比 vs 盖斯",
+      "pick": "HAD 主胜", "odds": 1.3, "star": 3, "grade": "B",
+      "dc": [0.6172, 0.2663, 0.1165], "fused": [0.665, 0.207, 0.128],
+      "final": 0.63, "chain": ["争冠第2高动力vs第9常规", "瑞超波动×1.5教训压置信"],
+      "ev": -0.181, "inPlan": null, "result": null,
+      "note": "r2平衡档成员,本轮被町田×费耶诺德(EV-5.1%>-21.6%)替代;留力风险:欧协联资格赛❓未确认"
+    },
+    {
+      "idx": 9, "code": "周六027", "league": "西甲(R2)", "match": "西班牙人 vs 皇马",
+      "pick": "HAD 客胜(方向维持,方案外)", "odds": 1.3, "star": 3, "grade": "B",
+      "dc": [0.232, 0.3118, 0.4563], "fused": [0.154, 0.226, 0.621],
+      "final": 0.6, "chain": ["西甲R2×0.95", "DC/市场分歧22pp信市场"],
+      "ev": -0.22, "inPlan": null, "result": null,
+      "note": "r2终审维持方案外,本轮复核EV-22%一致"
+    },
+    {
+      "idx": 10, "code": "周日009", "league": "英超(R2)", "match": "曼城 vs 伯恩茅斯",
+      "pick": "HAD 主胜(方向维持,方案外)", "odds": 1.33, "star": 3, "grade": "B",
+      "dc": [0.8276, 0.1206, 0.0518], "fused": [0.721, 0.166, 0.113],
+      "final": 0.65, "chain": ["英超R2×0.90", "DC/市场分歧16pp信市场"],
+      "ev": -0.135, "inPlan": null, "result": null,
+      "note": "CRS 4-0@17相对分歧2x剔除(防模型自大)"
+    },
+    {
+      "idx": 11, "code": "周六017", "league": "法甲(R2)", "match": "朗斯 vs 欧塞尔",
+      "pick": "HAD 主胜(方案外)", "odds": 1.33, "star": 3, "grade": "B",
+      "dc": [0.8553, 0.1074, 0.0373], "fused": [0.733, 0.171, 0.096],
+      "final": 0.66, "chain": ["法甲R2×0.90", "DC/市场分歧18pp信市场"],
+      "ev": -0.122, "inPlan": null, "result": null
+    },
+    {
+      "idx": 12, "code": "周六022", "league": "德超杯", "match": "多特蒙德 vs 拜仁",
+      "pick": "HAD 客胜(方案外)", "odds": 1.51, "star": 3, "grade": "C",
+      "dc": [0.2606, 0.3175, 0.4219], "fused": [0.226, 0.234, 0.54],
+      "final": 0.513, "chain": ["杯赛决赛高动力vs高动力(非保级谨慎型)", "DC/市场分歧15pp信市场,DC衍生玩法全跳过"],
+      "ev": -0.225, "inPlan": null, "result": null
+    },
+    {
+      "idx": 13, "code": "周日025", "league": "葡超(R3)", "match": "波尔图 vs 阿罗卡",
+      "pick": "HAD 主胜(方案外,避高)", "odds": 1.15, "star": 3, "grade": "B",
+      "dc": [0.9553, 0.0401, 0.0046], "fused": [0.855, 0.11, 0.035],
+      "final": 0.73, "chain": ["葡超R2-3×0.95", "ESPN:阿罗卡当季2连胜6分榜首,DC2526参数过时信市场"],
+      "ev": -0.16, "inPlan": null, "result": null
+    },
+    {
+      "idx": 14, "code": "周日014", "league": "荷甲(R3)", "match": "前进之鹰 vs 海牙",
+      "pick": "HAD 主胜(避开)", "odds": 1.68, "star": 2, "grade": "B",
+      "dc": [0.9088, 0.0782, 0.013], "fused": [0.692, 0.192, 0.117],
+      "final": 0.527, "chain": ["DC/市场分歧38pp超纪律,市场锚优先", "海牙升班马2场样本噪声"],
+      "ev": -0.115, "inPlan": null, "result": null,
+      "note": "避开决策追踪:★★避开场次"
+    },
+    {
+      "idx": 15, "code": "周六028", "league": "美职", "match": "温哥华 vs 达拉斯",
+      "pick": "HAD 主胜(终审剔除)", "odds": 1.39, "star": 2, "grade": "B",
+      "dc": null, "fused": null,
+      "final": 0.51, "chain": ["r2终审剔除:周三主负+达拉斯客两连胜6球"],
+      "ev": -0.291, "inPlan": null, "result": null,
+      "note": "ESPN复核:温哥华第2(37分)vs达拉斯第5(33分)西区强强,剔除维持"
+    },
+    {
+      "idx": 16, "code": "周日008", "league": "荷甲(R3)", "match": "埃因霍温 vs 格罗宁根",
+      "pick": "HAD 主胜(方案外)", "odds": 1.24, "star": 4, "grade": "B",
+      "dc": [0.5877, 0.1852, 0.2271], "fused": [0.681, 0.171, 0.148],
+      "final": 0.647, "chain": ["荷甲R3×0.95", "DC/市场分歧11pp压向市场"],
+      "ev": -0.198, "inPlan": null, "result": null
+    },
+    {
+      "idx": 17, "code": "周日022", "league": "意甲(R1)", "match": "都灵 vs AC米兰",
+      "pick": "HAD 客胜(方案外)", "odds": 1.58, "star": 3, "grade": "B",
+      "dc": [0.1351, 0.2059, 0.659], "fused": [0.178, 0.233, 0.59],
+      "final": 0.472, "chain": ["意甲R1×0.80"],
+      "ev": -0.254, "inPlan": null, "result": null
+    },
+    {
+      "idx": 18, "code": "周日018", "league": "意甲(R1)", "match": "弗洛西诺 vs 尤文图斯",
+      "pick": "HAD 客胜(方案外)", "odds": 1.31, "star": 3, "grade": "B",
+      "dc": null, "fused": null,
+      "final": 0.54, "chain": ["意甲R1×0.80", "弗洛西诺升班马无参数纯市场锚"],
+      "ev": -0.292, "inPlan": null, "result": null
+    },
+    {
+      "idx": 19, "code": "周一006", "league": "意甲(R1)", "match": "罗马 vs 佛罗伦萨",
+      "pick": "HAD 主胜(方案外)", "odds": 1.52, "star": 3, "grade": "B",
+      "dc": [0.6338, 0.2434, 0.1228], "fused": [0.598, 0.246, 0.156],
+      "final": 0.478, "chain": ["意甲R1×0.80"],
+      "ev": -0.273, "inPlan": null, "result": null
+    },
+    {
+      "idx": 20, "code": "周一008", "league": "英超(R2)", "match": "富勒姆 vs 切尔西",
+      "pick": "HAD 客胜(方案外)", "odds": 1.78, "star": 3, "grade": "B",
+      "dc": [0.3653, 0.313, 0.3218], "fused": [0.282, 0.272, 0.446],
+      "final": 0.448, "chain": ["英超R2×0.90", "DC/市场分歧17pp信市场", "TTG 0球EV+57%相对分歧1.9x剔除"],
+      "ev": -0.202, "inPlan": null, "result": null
+    },
+    {
+      "idx": 21, "code": "周六020", "league": "意甲(R1)", "match": "国际米兰 vs 蒙扎",
+      "pick": "HHAD -2(不推荐)", "odds": null, "star": 2, "grade": "C",
+      "dc": null, "fused": null,
+      "final": null, "chain": ["HAD未开售仅hhad-2", "蒙扎升班马无参数", "hhad去水:国米净胜3+38.5%/恰2球25.3%"],
+      "ev": null, "inPlan": null, "result": null,
+      "note": "CRS 2-0/3-0@6.0市场锚无边际(三定律3无边际禁选),R1修正深,跳过"
+    },
+    {
+      "idx": 22, "code": "周六007", "league": "英超(R2)", "match": "赫尔城 vs 曼联",
+      "pick": "HAD 客胜(临场不推荐)", "odds": 1.21, "star": 3, "grade": "C",
+      "dc": null, "fused": null,
+      "final": 0.732, "chain": ["19:30开赛距预测<25分钟"],
+      "ev": -0.115, "inPlan": null, "result": null
+    },
+    {
+      "idx": 23, "code": "周一003", "league": "瑞超(18轮)", "match": "马尔默 vs 佐加顿斯",
+      "pick": "HAD (避开)", "odds": 2.07, "star": 2, "grade": "B",
+      "dc": [0.3885, 0.2548, 0.3567], "fused": [0.345, 0.247, 0.408],
+      "final": 0.408, "chain": ["26分vs26分同分德比极差16pp胶着"],
+      "ev": -0.153, "inPlan": null, "result": null,
+      "note": "避开决策追踪"
+    }
+  ]
+}

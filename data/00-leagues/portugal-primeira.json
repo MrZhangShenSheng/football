@@ -1,7 +1,7 @@
 {
   "league": "portugal-primeira",
-  "season": 2026,
-  "generatedAt": "2026-08-21",
+  "season": "2025-26",
+  "generatedAt": "2026-08-22",
   "roundsPlayed": 2,
   "standings": [
     {
@@ -222,13 +222,55 @@
     }
   ],
   "leagueStats": {
-    "computedFrom": "espn-manual",
-    "note": "type1总表"
+    "avgGoals": 2.725,
+    "homeWinRate": 0.379,
+    "drawRate": 0.275,
+    "upsetRate": 0.19,
+    "topScores": [
+      {
+        "score": "1-1",
+        "count": 17
+      },
+      {
+        "score": "0-1",
+        "count": 14
+      },
+      {
+        "score": "2-2",
+        "count": 12
+      }
+    ],
+    "computedFrom": "fd",
+    "matchesUsed": 153,
+    "seasonsMerged": [
+      "2526"
+    ]
   },
-  "context": {},
+  "context": {
+    "titleRace": {
+      "leader": "Porto",
+      "gap": 7
+    },
+    "relegationZone": [
+      16,
+      17,
+      18
+    ],
+    "europeZone": [
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "dcParams": {
+    "homeAdv": 0.1833,
+    "rho": -0.0415,
+    "xi": 0.005
+  },
   "freshness": {
     "standingsSource": "espn",
     "stale": false,
-    "note": "Claude Step2.5 冷启动写入（core.api types/4/groups/1/standings/0）"
+    "note": "Claude 预测时 WebFetch ESPN 实时积分榜覆盖 standings 并改 standingsSource=espn"
   }
 }

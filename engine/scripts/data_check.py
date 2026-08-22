@@ -33,6 +33,8 @@ def load_aliases_zh() -> dict[str, tuple[str, str]]:
         for team_id, srcs in teams.items():
             if srcs.get("zh"):
                 out[srcs["zh"]] = (team_id, league)
+            for v in srcs.get("variants") or []:
+                out.setdefault(v, (team_id, league))
     return out
 
 
