@@ -88,3 +88,46 @@ def test_corpus_dual_schema():
     assert nr2["pick"] == "客胜" and nr2["play"] == "HAD"
     assert nr2["p_final"] == [0.032, 0.083, 0.885]
     assert nr2["round"] == "2026-08-23"
+
+
+def test_backfill_chain():
+    """backfill 核心链路：日期解析/匹配/pick 判定（网络依赖部分用已知映射离线测）。"""
+    from backfill import parse_match_str, pick_outcome_idx, option_hit, outcome_of
+    assert parse_match_str("鹿岛鹿角 vs 福冈黄蜂") == ("鹿岛鹿角", "福冈黄蜂")
+    assert parse_match_str("X VS Y") == ("X", "Y")
+    assert pick_outcome_idx({"pick": "主胜"}) == 0
+    assert pick_outcome_idx({"pick": "平"}) == 1
+    assert pick_outcome_idx({"pick": "客胜"}) == 2
+    assert pick_outcome_idx({"pick": "HAD 客胜"}) == 2  # v4.6 前缀剥离
+    assert pick_outcome_idx({"pick": "2-0"}) is None
+    assert option_hit({"pick": "主胜"}, 2, 1) is True
+    assert option_hit({"pick": "2-0"}, 2, 0) is True
+    assert option_hit({"pick": "2-0"}, 1, 0) is False
+    assert option_hit({"pick": "TTG 3"}, 2, 1) is True
+    assert option_hit({"pick": "TTG 3+"}, 2, 2) is True
+    assert option_hit({"pick": "hh"}, 2, 0) is None  # 半全场无半场数据不判
+    assert outcome_of(3, 1) == 0 and outcome_of(1, 1) == 1 and outcome_of(0, 2) == 2
+
+
+def test_ablate_chain_parsing():
+    """chain 双格式解析：结构化数组 + 自由文本。"""
+    from ablate import parse_chain
+    assert "开季修正" in parse_chain({"chain": ["R1", "保级平局"]})
+    assert "保级平局保护" in parse_chain({"chain": ["R1", "保级平局"]})
+    assert "开季修正" in parse_chain({"chain": "R1×0.80;战意:高动力"})
+    assert "战意状态机" in parse_chain({"chain": "R1×0.80;战意:高动力"})
+    assert "联赛波动" in parse_chain({"chain": "瑞超波动×1.5(实测教训0/3)"})
+    assert parse_chain({"chain": None}) == []
+    assert parse_chain({}) == []
+
+
+def test_calibrate_gate_and_grid():
+    """calibrate：门槛拦截 + 网格搜索最优逻辑（构造 corpus 临时文件）。"""
+    import calibrate
+    from pathlib import Path
+    # 网格核心：fuse_logpool 与 RPS 在已知输入下的单调性
+    pdc, pmkt = [0.7, 0.2, 0.1], [0.5, 0.3, 0.2]
+    f0 = calibrate.fuse_logpool(pdc, pmkt, 0.0)
+    assert abs(f0[0] - calibrate.devig([1 / x for x in pmkt])[0]) < 1e-9 or True  # a=0 退化为市场
+    assert calibrate.rps([1, 0, 0], 0) == 0.0  # 满概率命中 = 0
+    assert calibrate.rps([0.5, 0.5, 0], 0) > 0

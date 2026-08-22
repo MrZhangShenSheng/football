@@ -109,3 +109,28 @@ def test_plan_old_dict_format_skipped():
     plans = {"2026-08-20:A": {"type": "胜平负3串1", "picks": ["#3主胜@1.86"]}}
     rows = build_plans(plans, [])
     assert rows == []
+
+
+def test_assertions_trigger_and_skip():
+    """A1校准/A2星级断言：样本足够触发、不足静默。"""
+    from trend_report import build_assertions, build_calibration, build_buckets, build_series
+    # 构造 20 条：70%+ 桶系统性高估（预测 0.85 实际全 miss）+ 四星命中率 40%
+    recs = []
+    for i in range(20):
+        recs.append(_rec(code=f"S{i:02d}", stars=4, p_final=[0.85, 0.08, 0.07],
+                         result="0-2", directionHit=False))
+    s = build_series(recs)
+    cal = build_calibration(s["filled"])
+    buckets = build_buckets(s["filled"])
+    asserts = build_assertions(s, cal, buckets)
+    by_name = {a["name"]: a for a in asserts}
+    a1 = by_name.get("A1校准·70%~101%")
+    assert a1 and a1["triggered"], "校准断言应触发"
+    assert "高估" in a1["conclusion"]
+    a2 = by_name.get("A2星级·四星")
+    assert a2 and a2["triggered"], "四星 40% vs 预期65% 偏离25pp 应触发"
+    # 样本不足：3 条 → 静默
+    recs_small = [_rec(code=f"T{i}", stars=4, p_final=[0.85, 0.08, 0.07], result="0-2", directionHit=False) for i in range(3)]
+    s2 = build_series(recs_small)
+    a2s = build_assertions(s2, build_calibration(s2["filled"]), build_buckets(s2["filled"]))
+    assert all(not a["triggered"] for a in a2s), "n<15 应全部静默"

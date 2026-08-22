@@ -9,8 +9,9 @@
   python run.py backtest [联赛] [赛季]    # walk-forward 回测（RPS/logloss）
   python run.py espn [联赛代码]           # ESPN 直连积分榜/赛果（日职/北欧等 fd 不覆盖联赛）
   python run.py cn [联赛ID]              # titan007 国内兜底积分榜（ESPN 不可达时用）
-  python run.py corpus                    # 学习语料汇总 + 门槛就绪度（回填赛果后跑）
-  python run.py trend                     # 胜率趋势报告（4折线图+校准图+方案准确率 → 04-summaries/trend.html）
+  python run.py backfill [日期]           # 赛果自动回填（ESPN按日+别名匹配；无覆盖联赛标不可得）
+  python run.py corpus                    # 学习语料汇总 + 趋势报告（回填后跑）
+  python run.py verify                    # 回归验证闭环：backfill→corpus→trend(断言)→calibrate→ablate
   python run.py learn [联赛...]           # 本地赛果联赛增量采集+拟合+版本发布（日职/沙特/瑞超）
   python run.py all                       # update + fit --auto + learn 一条龙（预测日跑这个）
 
@@ -82,6 +83,15 @@ def main() -> None:
     elif cmd == "corpus":
         sh("corpus.py")
         sh("trend_report.py")
+    elif cmd == "backfill":
+        sh("backfill.py", *rest)
+    elif cmd == "verify":
+        # 回归验证闭环：回填 → 语料+趋势(断言A1-A4) → 融合重校(门槛自动跳过) → 系数消融(人审)
+        sh("backfill.py", *rest)
+        sh("corpus.py")
+        sh("trend_report.py")
+        sh("calibrate.py")
+        sh("ablate.py")
     elif cmd == "learn":
         # 非fd联赛闭环：当年 espn history 增量采集 → --source local 拟合 → 版本发布
         # 例: python run.py learn / python run.py learn japan

@@ -84,5 +84,13 @@ td{padding:5px 8px;border-bottom:1px solid #202a40}
 → 落差 0%（正值=修正系数乐观偏差 / 负值=保守中意外之喜）。仅统计已出票方案（旧格式 dict 方案待格式统一后纳入）。</div>
 </div>
 
+<h2>⑦ 回归断言（验证结论 → 触发提升动作）★ v4.7</h2>
+<div class="card">
+<table><tr><th>断言</th><th>状态</th><th>n</th><th>结论</th><th>建议动作</th></tr>
+<tr><td colspan="5" class="note">暂无断言数据</td></tr>
+</table>
+<div class="note">样本门槛 n≥15/断言（不足跳过防噪声）。触发的断言对应提升动作：A1/A4→calibrate.py 重校融合系数（自动，n≥100）；A2/A3→ablate.py 系数消融（人审 diff）。四项全静默 = 模型健康或样本不足。</div>
+</div>
+
 <div class="sub" style="margin-top:36px">sszhang pipeline · 回填赛果后自动更新 · 主指标依据 arXiv:1908.08980（log loss）/ arXiv:2008.03033（校准图）</div>
 </div></body></html>

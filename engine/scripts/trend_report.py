@@ -231,6 +231,71 @@ def plan_summary(plan_rows: list[dict], series: dict) -> dict:
     }
 
 
+ASSERT_MIN_N = 15  # 单断言最小样本（低于则跳过该断言）
+
+
+def build_assertions(series: dict, cal: list[dict], buckets: dict) -> list[dict]:
+    """回归断言 A1~A4：每条输出 结论+置信度n+建议动作。样本不足自动跳过（防小样本噪声）。"""
+    filled = series["filled"]
+    asserts = []
+
+    def add(name, cond, conclusion_txt, n, action):
+        asserts.append({"name": name, "triggered": bool(cond and n >= ASSERT_MIN_N),
+                        "n": n, "conclusion": conclusion_txt if cond and n >= ASSERT_MIN_N else None,
+                        "action": action if cond and n >= ASSERT_MIN_N else None})
+
+    # A1 校准断言：任一桶 |obs-pred|>12pp
+    for c in cal:
+        if c["n"] >= 8 and c["obs"] is not None and abs(c["obs"] - c["pred"]) > 0.12:
+            gap = c["obs"] - c["pred"]
+            tag = "低估" if gap > 0 else "高估"
+            add(f"A1校准·{c['bin']}", True,
+                f"实际 {c['obs']:.0%} vs 预测 {c['pred']:.0%}（系统性{tag} {abs(gap):.0%}）",
+                c["n"], "该概率档的修正系数方向检查；持续触发则重校融合权重")
+
+    # A2 星级断言：★★★★ 实际 vs 预期 65%
+    four = next((x for x in buckets["star"] if x["key"] == "★★★★"), None)
+    if four and four["n"] >= ASSERT_MIN_N:
+        dev = four["rate"] - 0.65
+        add("A2星级·四星", abs(dev) > 0.15,
+            f"四星实际 {four['rate']:.0%} vs 阈值预期 65%（偏离 {dev:+.0%}）",
+            four["n"], "偏离>15pp：升星阈值该校准（偏高→收紧，偏低→放宽）")
+
+    # A3 系数断言：chain 有/无 触发场命中率对比（chain 结构化数组或文本）
+    def has_chain(r):
+        ch = r.get("chain")
+        return bool(ch) and str(ch) not in ("[]", "None", "")
+    with_c = [r for r in filled if has_chain(r)]
+    without = [r for r in filled if not has_chain(r)]
+    if len(with_c) >= ASSERT_MIN_N and len(without) >= ASSERT_MIN_N:
+        hw = sum(1 for r in with_c if r.get("directionHit")) / len(with_c)
+        ho = sum(1 for r in without if r.get("directionHit")) / len(without)
+        add("A3系数·整体", abs(hw - ho) > 0.15,
+            f"系数触发场 {hw:.0%}(n={len(with_c)}) vs 未触发 {ho:.0%}(n={len(without)})",
+            len(with_c) + len(without), "触发场命中率显著更低→逐系数消融（ablate.py）排查负增益项")
+
+    # A4 模型断言：dc_used true/false 的 log loss 对比
+    def dc_flag(r):
+        return r.get("dc_used") or r.get("dc")
+    dc_t = [r for r in filled if dc_flag(r) and r.get("p_final")]
+    dc_f = [r for r in filled if not dc_flag(r) and r.get("p_final")]
+
+    def mean_ll(recs):
+        lls = []
+        for r in recs:
+            oi = outcome_idx(r)
+            if oi is not None:
+                lls.append(logloss(r["p_final"], oi))
+        return (sum(lls) / len(lls)) if lls else None
+    ll_t, ll_f = mean_ll(dc_t), mean_ll(dc_f)
+    if ll_t and ll_f and len(dc_t) >= ASSERT_MIN_N and len(dc_f) >= ASSERT_MIN_N:
+        add("A4模型·DC价值", abs(ll_t - ll_f) > 0.05,
+            f"DC场 log loss {ll_t:.4f}(n={len(dc_t)}) vs 纯市场场 {ll_f:.4f}(n={len(dc_f)})",
+            len(dc_t) + len(dc_f),
+            "DC场显著更差→该批联赛模型重拟合或降 DC 权重；更优→可提 a（calibrate 校验）")
+    return asserts
+
+
 def conclusion(series: dict, cal: list[dict]) -> str:
     filled = series["filled"]
     n = len(filled)
@@ -407,6 +472,12 @@ def render(series: dict, cal: list[dict], buckets: dict, concl: str, meta: dict,
         f'<td>{", ".join(p["breaks"]) or "—"}</td></tr>'
         for p in plan_rows) or '<tr><td colspan="6" class="note">暂无出票方案记录</td></tr>'
 
+    asserts = build_assertions(series, cal, buckets)
+    assert_trs = "".join(
+        f'<tr><td>{a["name"]}</td><td>{"⚠️ 触发" if a["triggered"] else "静默"}</td><td>{a["n"]}</td>'
+        f'<td>{a["conclusion"] or "—"}</td><td>{a["action"] or "—"}</td></tr>'
+        for a in asserts) or '<tr><td colspan="5" class="note">暂无断言数据</td></tr>'
+
     return f"""<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>胜率趋势 · {meta['generatedAt']}</title><style>{STYLE}</style></head>
@@ -462,6 +533,14 @@ def render(series: dict, cal: list[dict], buckets: dict, concl: str, meta: dict,
 </table>
 <div class="note">串关惩罚：实测全中率 {fmt_pct(plan_sum['actual_rate'])} vs 理论（单场 {fmt_pct(plan_sum['single_rate'])} 连乘 ×{plan_sum['avg_legs']}关 = {fmt_pct(plan_sum['theory_rate'])}）
 → 落差 {fmt_pct(plan_sum['punishment'])}（正值=修正系数乐观偏差 / 负值=保守中意外之喜）。仅统计已出票方案（旧格式 dict 方案待格式统一后纳入）。</div>
+</div>
+
+<h2>⑦ 回归断言（验证结论 → 触发提升动作）★ v4.7</h2>
+<div class="card">
+<table><tr><th>断言</th><th>状态</th><th>n</th><th>结论</th><th>建议动作</th></tr>
+{assert_trs}
+</table>
+<div class="note">样本门槛 n≥{ASSERT_MIN_N}/断言（不足跳过防噪声）。触发的断言对应提升动作：A1/A4→calibrate.py 重校融合系数（自动，n≥100）；A2/A3→ablate.py 系数消融（人审 diff）。四项全静默 = 模型健康或样本不足。</div>
 </div>
 
 <div class="sub" style="margin-top:36px">sszhang pipeline · 回填赛果后自动更新 · 主指标依据 arXiv:1908.08980（log loss）/ arXiv:2008.03033（校准图）</div>
