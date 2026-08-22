@@ -12,6 +12,9 @@
   python espn_fetch.py standings <联赛代码> [--season 2025]   # 积分榜 → engine/cache/espn_standings_{code}.json
   python espn_fetch.py results <联赛代码> <YYYYMMDD>          # 单日赛果 → 打印 + 缓存
   python espn_fetch.py results <联赛代码> <起> <止>            # 日期区间赛果
+  python espn_fetch.py history <联赛代码> <起始年> [结束年]    # ★历史赛季回填（limit=500 整季一次拉）
+                                                            #   → data/02-results/league/{league}_matches.json
+                                                            #   队名经 _aliases.json espn 字段映射到规范ID，映射不上即丢弃计数
 
 联赛代码（ESPN → 本项目联赛名）：
   esp.1 西甲 gbr.1 英超 ger.1 德甲 ita.1 意甲 fra.1 法甲 ned.1 荷甲 por.1 葡超
@@ -24,12 +27,13 @@ from pathlib import Path
 
 import requests
 
-from common import log, ROOT
+from common import load_aliases, log, ROOT
 
 API_BASE = "https://site.api.espn.com"
 STANDINGS_URL = API_BASE + "/apis/v2/sports/soccer/{}/standings"
 SCOREBOARD_URL = API_BASE + "/apis/site/v2/sports/soccer/{}/scoreboard"
 CACHE_DIR = ROOT / "engine" / "cache"
+LEAGUE_RESULTS_DIR = ROOT / "data" / "02-results" / "league"
 
 # ESPN 联赛代码 → 本项目 data/00-leagues 目录名（与现有文件对齐：日职/瑞超等用短名）
 ESPN_LEAGUES = {
@@ -145,6 +149,82 @@ def cmd_results(code: str, d1: str, d2: str | None) -> None:
     log("espn", f"{code} {start}~{end} 共 {len(all_rows)} 场 → {out.name}")
 
 
+def espn_name_map() -> dict[str, str]:
+    """别名表 espn 字段 → 规范ID（映射不上的 ESPN 队名将被丢弃）。"""
+    out = {}
+    for team_id, srcs in load_aliases().items():
+        espn = srcs.get("espn")
+        if espn:
+            out[espn] = team_id
+    return out
+
+
+def cmd_history(code: str, y1: str, y2: str | None) -> None:
+    """历史赛季回填：scoreboard dates={y1}0201-{y2}1231 limit=500 → 本地 matches 格式（供 dc_fit --source local）。
+
+    只入库 STATUS_FULL_TIME 且双方分数齐全的场次；队名映射不上即丢弃并计数（宁缺毋滥）。
+    """
+    y2 = y2 or y1
+    start, end = f"{y1}0201", f"{y2}1231"
+    league = ESPN_LEAGUES.get(code)
+    if not league:
+        log("espn", f"{code} 不在 ESPN_LEAGUES 映射内")
+        return
+    data = get_json(SCOREBOARD_URL.format(code), {"dates": f"{start}-{end}", "limit": 500})
+    if not data or not data.get("events"):
+        log("espn", f"{code} {y1}~{y2} 无数据（ESPN 不覆盖该联赛该时段？）")
+        return
+    name_map = espn_name_map()
+    rows, dropped = [], []
+    for ev in data.get("events", []):
+        comp = ev.get("competitions", [{}])[0]
+        if comp.get("status", {}).get("type", {}).get("name") != "STATUS_FULL_TIME":
+            continue
+        try:
+            d = datetime.strptime(ev.get("date", "")[:10], "%Y-%m-%d").date()
+        except ValueError:
+            continue
+        home = away = None
+        hg = ag = None
+        for c in comp.get("competitors", []):
+            name = c["team"]["displayName"]
+            score = c.get("score")
+            if score is None:
+                home = away = None
+                break
+            if c.get("homeAway") == "home":
+                if name not in name_map:
+                    dropped.append(name)
+                home, hg = name_map.get(name), int(float(score))
+            else:
+                if name not in name_map:
+                    dropped.append(name)
+                away, ag = name_map.get(name), int(float(score))
+        if home and away and hg is not None and ag is not None:
+            rows.append({"date": d.isoformat(), "home": home, "away": away, "hg": hg, "ag": ag})
+    # 合并入库（追加去重：同 date+home+away）
+    LEAGUE_RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+    out_path = LEAGUE_RESULTS_DIR / f"{league}_matches.json"
+    existing = {}
+    if out_path.exists():
+        for m in json.loads(out_path.read_text(encoding="utf-8")).get("matches", []):
+            existing[(m["date"], m["home"], m["away"])] = m
+    for r in rows:
+        existing[(r["date"], r["home"], r["away"])] = r
+    merged = sorted(existing.values(), key=lambda m: m["date"])
+    payload = {
+        "league": league, "source": "espn-history", "seasons": [y1, y2],
+        "fetchedAt": date.today().isoformat(),
+        "droppedUnmapped": len(dropped), "matches": merged,
+    }
+    out_path.write_text(json.dumps(payload, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    log("espn", f"{code} {y1}~{y2}: 入库 {len(rows)} 场（未映射丢弃 {len(dropped)}）→ {out_path.relative_to(ROOT)}")
+    if dropped:
+        from collections import Counter
+        top = Counter(dropped).most_common(5)
+        log("espn", "丢弃样本（补 _aliases.json espn 字段可恢复）: " + ", ".join(f"{k}×{v}" for k, v in top))
+
+
 def main() -> None:
     args = sys.argv[1:]
     if not args:
@@ -157,6 +237,8 @@ def main() -> None:
         cmd_standings(code, season)
     elif cmd == "results" and len(args) >= 3:
         cmd_results(args[1], args[2], args[3] if len(args) >= 4 else None)
+    elif cmd == "history" and len(args) >= 3:
+        cmd_history(args[1], args[2], args[3] if len(args) >= 4 else None)
     else:
         print(__doc__)
 

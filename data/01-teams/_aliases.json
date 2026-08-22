@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "updatedAt": "2026-08-21",
+    "updatedAt": "2026-08-22",
     "note": "规范ID=kebab-case英文，多数据源经此表解析。null=待对应fetch脚本首次运行时补全（勿手填猜测）。league=国内联赛目录名（杯赛参赛队挂国内联赛）。",
     "sources": {
       "zh": "体彩官方API中文名",
@@ -28,7 +28,7 @@
       "zh": "利雅得",
       "clubelo": null,
       "understat": null,
-      "espn": null
+      "espn": "Al Riyadh"
     },
     "al-nassr": {
       "zh": "利雅得胜利",
@@ -43,7 +43,7 @@
       "zh": "胡巴尔卡德西亚",
       "clubelo": null,
       "understat": null,
-      "espn": "Al-Qadsiah",
+      "espn": "Al Qadsiah",
       "variants": [
         "胡巴卡德"
       ]
@@ -54,25 +54,119 @@
       "understat": null,
       "espn": "Al Ittihad"
     },
-    "al-nassr-abbr": {
-      "zh": "利雅胜利",
+    "al-ahli": {
+      "zh": "吉达国民",
       "clubelo": null,
       "understat": null,
-      "espn": "Al Nassr",
-      "variants": [
-        "利雅胜利"
-      ],
-      "aliasOf": "al-nassr"
+      "espn": "Al Ahli"
     },
-    "qadsiah-abbr": {
-      "zh": "胡巴卡德",
+    "al-taawoun": {
+      "zh": "布赖代合作",
       "clubelo": null,
       "understat": null,
-      "espn": "Al-Qadsiah",
-      "variants": [
-        "胡巴卡德"
-      ],
-      "aliasOf": "qadsiah"
+      "espn": "Al Taawoun"
+    },
+    "al-ettifaq": {
+      "zh": "达曼协作",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Al Ettifaq"
+    },
+    "neom-sc": {
+      "zh": "新未来城",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Neom SC"
+    },
+    "al-hazem": {
+      "zh": "哈泽姆",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Al Hazem"
+    },
+    "al-fayha": {
+      "zh": "费哈",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Al Fayha"
+    },
+    "al-fateh": {
+      "zh": "法特赫",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Al Fateh"
+    },
+    "al-khaleej": {
+      "zh": "卡利杰",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Al Khaleej"
+    },
+    "al-shabab": {
+      "zh": "利雅得青年",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Al Shabab"
+    },
+    "al-kholood": {
+      "zh": "胡卢德",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Al Kholood"
+    },
+    "damac": {
+      "zh": "达马克",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Damac"
+    },
+    "al-okhdood": {
+      "zh": "奥克杜德",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Al Okhdood"
+    },
+    "al-najma": {
+      "zh": "纳吉玛",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Al Najma"
+    },
+    "al-raed": {
+      "zh": "莱德",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Al Raed"
+    },
+    "al-orobah": {
+      "zh": "奥鲁巴",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Al Orobah"
+    },
+    "al-wehda": {
+      "zh": "麦加统一",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Al Wehda"
+    },
+    "al-diriyah": {
+      "zh": "德拉伊耶",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Al Diriyah"
+    },
+    "al-faisaly": {
+      "zh": "费萨里",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Al-Faisaly"
+    },
+    "abha": {
+      "zh": "艾卜哈",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Abha"
     }
   },
   "england": {
@@ -249,6 +343,102 @@
       "clubelo": "Häcken",
       "understat": null,
       "espn": "BK Häcken"
+    },
+    "hammarby": {
+      "zh": "哈马比",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Hammarby IF"
+    },
+    "gais": {
+      "zh": "加尔斯",
+      "clubelo": null,
+      "understat": null,
+      "espn": "GAIS"
+    },
+    "ifk-goteborg": {
+      "zh": "哥德堡",
+      "clubelo": null,
+      "understat": null,
+      "espn": "IFK Göteborg"
+    },
+    "djurgarden": {
+      "zh": "尤尔加登",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Djurgården"
+    },
+    "malmo-ff": {
+      "zh": "马尔默",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Malmö FF"
+    },
+    "aik": {
+      "zh": "索尔纳",
+      "clubelo": null,
+      "understat": null,
+      "espn": "AIK"
+    },
+    "if-elfsborg": {
+      "zh": "埃尔夫斯堡",
+      "clubelo": null,
+      "understat": null,
+      "espn": "IF Elfsborg"
+    },
+    "halmstads-bk": {
+      "zh": "哈尔姆斯塔德",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Halmstads BK"
+    },
+    "brommapojkarna": {
+      "zh": "布洛马波卡纳",
+      "clubelo": null,
+      "understat": null,
+      "espn": "IF Brommapojkarna"
+    },
+    "degerfors-if": {
+      "zh": "德格尔福什",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Degerfors IF"
+    },
+    "ifk-norrkoping": {
+      "zh": "北雪平",
+      "clubelo": null,
+      "understat": null,
+      "espn": "IFK Norrköping"
+    },
+    "osters-if": {
+      "zh": "奥斯特斯",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Östers IF"
+    },
+    "ifk-varnamo": {
+      "zh": "韦纳穆",
+      "clubelo": null,
+      "understat": null,
+      "espn": "IFK Värnamo"
+    },
+    "kalmar-ff": {
+      "zh": "卡尔马",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Kalmar FF"
+    },
+    "vasteras-sk": {
+      "zh": "韦斯特罗斯",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Västerås SK"
+    },
+    "orgryte-is": {
+      "zh": "奥格里蒂",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Örgryte IS"
     }
   },
   "austria": {
@@ -375,22 +565,112 @@
       "espn": "JEF United Chiba"
     },
     "kashima-antlers": {
-      "zh": "鹿岛鹿角"
+      "zh": "鹿岛鹿角",
+      "espn": "Kashima Antlers"
     },
     "avispa-fukuoka": {
-      "zh": "福冈黄蜂"
+      "zh": "福冈黄蜂",
+      "espn": "Avispa Fukuoka"
     },
     "cerezo-osaka": {
-      "zh": "大阪樱花"
+      "zh": "大阪樱花",
+      "espn": "Cerezo Osaka"
     },
     "shimizu-s-pulse": {
-      "zh": "清水鼓动"
+      "zh": "清水鼓动",
+      "espn": "Shimizu S-Pulse"
     },
     "machida-zelvia": {
-      "zh": "町田泽维"
+      "zh": "町田泽维",
+      "espn": "Machida Zelvia"
     },
     "urawa-reds": {
-      "zh": "浦和红钻"
+      "zh": "浦和红钻",
+      "espn": "Urawa Red Diamonds"
+    },
+    "sanfrecce-hiroshima": {
+      "zh": "广岛三箭",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Sanfrecce Hiroshima"
+    },
+    "gamba-osaka": {
+      "zh": "大阪钢巴",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Gamba Osaka"
+    },
+    "vissel-kobe": {
+      "zh": "神户胜利",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Vissel Kobe"
+    },
+    "yokohama-f-marinos": {
+      "zh": "横滨水手",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Yokohama F. Marinos"
+    },
+    "fagiano-okayama": {
+      "zh": "冈山绿雉",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Fagiano Okayama"
+    },
+    "kawasaki-frontale": {
+      "zh": "川崎前锋",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Kawasaki Frontale"
+    },
+    "kyoto-sanga": {
+      "zh": "京都不死鸟",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Kyoto Sanga"
+    },
+    "mito-hollyhock": {
+      "zh": "水户蜀葵",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Mito Hollyhock"
+    },
+    "tokyo-verdy": {
+      "zh": "东京绿茵",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Tokyo Verdy 1969"
+    },
+    "nagoya-grampus": {
+      "zh": "名古屋鲸",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Nagoya Grampus"
+    },
+    "albirex-niigata": {
+      "zh": "新潟天鹅",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Albirex Niigata"
+    },
+    "yokohama-fc": {
+      "zh": "横滨FC",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Yokohama FC"
+    },
+    "shonan-bellmare": {
+      "zh": "湘南海洋",
+      "clubelo": null,
+      "understat": null,
+      "espn": "Shonan Bellmare"
+    },
+    "jef-united-chiba": {
+      "zh": "千叶市原",
+      "clubelo": null,
+      "understat": null,
+      "espn": "JEF United Ichihara-Chiba"
     }
   },
   "finland": {

@@ -9,10 +9,13 @@
   python run.py backtest [联赛] [赛季]    # walk-forward 回测（RPS/logloss）
   python run.py espn [联赛代码]           # ESPN 直连积分榜/赛果（日职/北欧等 fd 不覆盖联赛）
   python run.py cn [联赛ID]              # titan007 国内兜底积分榜（ESPN 不可达时用）
-  python run.py all                       # update + fit --auto 一条龙（预测日跑这个）
+  python run.py corpus                    # 学习语料汇总 + 门槛就绪度（回填赛果后跑）
+  python run.py learn [联赛...]           # 本地赛果联赛增量采集+拟合+版本发布（日职/沙特/瑞超）
+  python run.py all                       # update + fit --auto + learn 一条龙（预测日跑这个）
 
 联赛代码（football-data.co.uk）：SP1 西甲 F1 法甲 F2 法乙 E0 英超 D1 德甲 I1 意甲 ...
 fit/predict/backtest 用联赛全名：spain-laliga / france-ligue1 / france-ligue2 ...
+本地赛果联赛（espn history 回填）：japan / saudi / sweden（韩职 ESPN 无数据，来源待补）
 """
 import subprocess
 import sys
@@ -27,6 +30,12 @@ LEAGUES = {
     "E0": ("england-premier", "2526"),
     "D1": ("germany-bundesliga", "2526"),
     "I1": ("italy-serie-a", "2526"),
+}
+# 非fd联赛：espn_code → 本地联赛名（history 回填 + --source local 拟合）
+LOCAL_LEAGUES = {
+    "jpn.1": "japan",
+    "ksa.1": "saudi",
+    "swe.1": "sweden",
 }
 CURRENT_SEASON = "2627"
 
@@ -69,6 +78,22 @@ def main() -> None:
     elif cmd == "cn":
         # 例: python run.py cn standings 25 / python run.py cn teams 13
         sh("cn_fetch.py", *rest)
+    elif cmd == "corpus":
+        sh("corpus.py")
+    elif cmd == "learn":
+        # 非fd联赛闭环：当年 espn history 增量采集 → --source local 拟合 → 版本发布
+        # 例: python run.py learn / python run.py learn japan
+        from datetime import date as _date
+        year = str(_date.today().year)
+        targets = rest or list(LOCAL_LEAGUES.values())
+        by_name = {v: k for k, v in LOCAL_LEAGUES.items()}
+        for league in targets:
+            code = by_name.get(league)
+            if not code:
+                log("run", f"未知本地联赛 {league}（可用: {', '.join(LOCAL_LEAGUES.values())}）")
+                continue
+            sh("espn_fetch.py", "history", code, year)
+            sh("dc_fit.py", league, "--source", "local", "--publish")
     elif cmd == "all":
         sh("odds_fetch.py", "--season", "2526", *LEAGUES)
         sh("odds_fetch.py", "--season", CURRENT_SEASON, *LEAGUES)
@@ -77,6 +102,9 @@ def main() -> None:
         sh("league_profile.py", "--all")
         for _, (league, season) in LEAGUES.items():
             sh("dc_fit.py", league, season, "--auto")
+        for code, league in LOCAL_LEAGUES.items():
+            sh("espn_fetch.py", "history", code, str(int(CURRENT_SEASON[:2]) + 2000))
+            sh("dc_fit.py", league, "--source", "local", "--publish")
     else:
         print(__doc__)
 
