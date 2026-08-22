@@ -32,7 +32,7 @@ td{padding:5px 8px;border-bottom:1px solid #202a40}
 </style></head>
 <body><div class="wrap">
 <h1>胜率趋势分析</h1>
-<div class="sub">生成 2026-08-22 · 语料 52 条 / 已回填 8 / 1 轮 · 数据源 corpus.json（纯 records 口径）</div>
+<div class="sub">生成 2026-08-22 · 语料 79 条 / 已回填 8 / 3 轮 · 数据源 corpus.json（纯 records 口径）</div>
 <div class="concl">数据积累期：已回填 8/30 场，样本不足不出结论（防小样本噪声）</div>
 
 <h2>① 累计 log loss（评估主指标）vs 市场基线</h2>
@@ -51,7 +51,7 @@ td{padding:5px 8px;border-bottom:1px solid #202a40}
 
 <h2>③ CLV 均值走势</h2>
 <div class="card">
-<svg viewBox="0 0 860 240" class="chart"><line x1="56" y1="206.0" x2="844" y2="206.0" class="grid"/><text x="50" y="209.0" class="tick" text-anchor="end">-6.54</text><line x1="56" y1="159.0" x2="844" y2="159.0" class="grid"/><text x="50" y="162.0" class="tick" text-anchor="end">-4.73</text><line x1="56" y1="112.0" x2="844" y2="112.0" class="grid"/><text x="50" y="115.0" class="tick" text-anchor="end">-2.92</text><line x1="56" y1="65.0" x2="844" y2="65.0" class="grid"/><text x="50" y="68.0" class="tick" text-anchor="end">-1.11</text><line x1="56" y1="18.0" x2="844" y2="18.0" class="grid"/><text x="50" y="21.0" class="tick" text-anchor="end">0.70</text><line x1="56" y1="36.2" x2="844" y2="36.2" class="ref"/><polyline points="56.0,187.8" class="main"/><circle cx="56.0" cy="187.8" r="3" class="pt"/><text x="56.0" y="230" class="tick" text-anchor="middle">08-22</text><text x="56" y="12" class="ylab">CLV 均值（DK近似口径）%</text></svg>
+<svg viewBox="0 0 860 240" class="chart"><line x1="56" y1="206.0" x2="844" y2="206.0" class="grid"/><text x="50" y="209.0" class="tick" text-anchor="end">-6.54</text><line x1="56" y1="159.0" x2="844" y2="159.0" class="grid"/><text x="50" y="162.0" class="tick" text-anchor="end">-4.73</text><line x1="56" y1="112.0" x2="844" y2="112.0" class="grid"/><text x="50" y="115.0" class="tick" text-anchor="end">-2.92</text><line x1="56" y1="65.0" x2="844" y2="65.0" class="grid"/><text x="50" y="68.0" class="tick" text-anchor="end">-1.11</text><line x1="56" y1="18.0" x2="844" y2="18.0" class="grid"/><text x="50" y="21.0" class="tick" text-anchor="end">0.70</text><line x1="56" y1="36.2" x2="844" y2="36.2" class="ref"/><polyline points="56.0,187.8" class="main"/><circle cx="56.0" cy="187.8" r="3" class="pt"/><text x="56.0" y="230" class="tick" text-anchor="middle">08-22-r1</text><text x="56" y="12" class="ylab">CLV 均值（DK近似口径）%</text></svg>
 <div class="note">DK 近似口径（体彩 vs DraftKings 收盘）。体彩 12.9% 抽水 → 结构性负值正常，看趋势方向：持续下探 = 选单系统性买贵。</div>
 </div>
 
@@ -78,7 +78,7 @@ td{padding:5px 8px;border-bottom:1px solid #202a40}
 <h2>⑥ 方案准确率（串关层：全中才算赢）</h2>
 <div class="card">
 <table><tr><th>轮次</th><th>方案</th><th>关数</th><th>各关状态</th><th>结果</th><th>断关</th></tr>
-<tr><td>08-22</td><td>方案A</td><td>3串</td><td>待回填待回填待回填</td><td>待回填</td><td>—</td></tr><tr><td>08-22</td><td>方案B</td><td>3串</td><td>待回填待回填待回填</td><td>待回填</td><td>—</td></tr><tr><td>08-22</td><td>方案C</td><td>4串</td><td>待回填待回填待回填✓</td><td>待回填</td><td>—</td></tr>
+<tr><td>08-22-r1</td><td>方案A</td><td>3串</td><td>待回填待回填待回填</td><td>待回填</td><td>—</td></tr><tr><td>08-22-r1</td><td>方案B</td><td>3串</td><td>待回填待回填待回填</td><td>待回填</td><td>—</td></tr><tr><td>08-22-r1</td><td>方案C</td><td>4串</td><td>待回填待回填待回填✓</td><td>待回填</td><td>—</td></tr>
 </table>
 <div class="note">串关惩罚：实测全中率 — vs 理论（单场 50% 连乘 ×0关 = 0%）
 → 落差 0%（正值=修正系数乐观偏差 / 负值=保守中意外之喜）。仅统计已出票方案（旧格式 dict 方案待格式统一后纳入）。</div>

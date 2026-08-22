@@ -70,3 +70,21 @@ def test_publish_meta_chain(tmp_path, monkeypatch):
     assert meta1["replacedBy"] == 2
     assert meta2["replacedVersion"] == 1
     assert meta2["createdBy"] == "sszhang pipeline"
+
+
+def test_corpus_dual_schema():
+    """v4.6 双 schema：records[]（老）与 matches[]（新，grade字母/pick带玩法前缀）都能进语料。"""
+    from corpus import normalize_record
+    old = {"date": "2026-08-22", "code": "周六001", "league": "日职", "stars": 3, "grade": 3,
+           "pick": "主胜", "p_final": [0.6, 0.25, 0.15]}
+    nr = normalize_record(old, "2026-08-22")
+    assert nr["round"] == "2026-08-22" and nr["pick"] == "主胜"
+    new = {"code": "周日014", "league": "荷甲(R3)", "match": "坎布尔 vs 费耶诺德",
+           "pick": "HAD 客胜", "odds": 1.14, "star": 4, "grade": "A",
+           "fused": [0.032, 0.083, 0.885], "final": 0.841, "ev": -0.031, "inPlan": "B"}
+    nr2 = normalize_record(new, "2026-08-23")
+    assert nr2["league"] == "荷甲"
+    assert nr2["grade"] == 4
+    assert nr2["pick"] == "客胜" and nr2["play"] == "HAD"
+    assert nr2["p_final"] == [0.032, 0.083, 0.885]
+    assert nr2["round"] == "2026-08-23"

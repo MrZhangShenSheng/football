@@ -26,6 +26,38 @@ ABLATE_MIN_N = 50
 FIT_MIN_N = 30
 
 
+def normalize_record(r: dict, round_id: str) -> dict | None:
+    """双 schema 归一：
+    - v4.5 records[]：date/code/league/match/stars/grade(数字)/pick/odds/p_final/result/...
+    - v4.6 matches[]：code/league/match/pick(带玩法前缀)/odds/star/grade(字母)/dc/fused/final/ev/inPlan...
+    统一输出内部标准 record（后者赛果字段待回填流程补齐后也能进统计）。
+    """
+    code = r.get("code")
+    if not code:
+        return None
+    if "p_final" in r or "result" in r or "date" in r:  # 老 schema
+        out = dict(r)
+        out.setdefault("date", round_id[:10])
+    else:  # 新 schema（v4.6 matches[]）
+        grade_map = {"A": 4, "B": 3, "C": 2, "D": 1}
+        pick = str(r.get("pick") or "")
+        out = {
+            "date": round_id[:10], "code": code,
+            "league": str(r.get("league") or "").split("(")[0],  # "荷甲(R3)" → "荷甲"
+            "match": r.get("match"),
+            "stars": r.get("star"), "grade": grade_map.get(r.get("grade")),
+            "pick": pick.split(" ", 1)[1] if " " in pick else pick,  # "HAD 客胜" → "客胜"
+            "play": pick.split(" ", 1)[0] if " " in pick else None,  # 玩法代码（HAD/TTG/HAFU/CRS）
+            "odds": r.get("odds"),
+            "p_final": r.get("fused") or r.get("dc"),
+            "ev": r.get("ev"),
+            "in_plan": r.get("inPlan"),
+            "chain": r.get("chain"),
+        }
+    out["round"] = round_id
+    return out
+
+
 def build() -> dict:
     records = {}
     for p in sorted(RESULTS_DIR.glob("*.json")):
@@ -36,15 +68,19 @@ def build() -> dict:
         except json.JSONDecodeError:
             log("corpus", f"跳过坏文件 {p.name}")
             continue
-        round_id = p.stem  # 轮次标识（来源文件名，如 2026-08-22 / 2026-08-21-v2）
-        for r in data.get("records", []):
-            key = (r.get("date"), r.get("code"))
-            if not key[0] or not key[1]:
+        round_id = p.stem  # 轮次标识（来源文件名，如 2026-08-22 / 2026-08-22-r1）
+        raw = data.get("records") or data.get("matches") or []
+        for r in raw:
+            nr = normalize_record(r, round_id)
+            if not nr:
                 continue
-            records[key] = {**r, "round": round_id}  # 后写覆盖（同场重扫以最新为准）
+            key = (nr.get("date"), nr.get("code"))
+            if not key[0]:
+                continue
+            records[key] = nr  # 后写覆盖（同场重扫以最新为准）
 
     rows = sorted(records.values(), key=lambda r: (r.get("date") or "", r.get("code") or ""))
-    # 方案层（02-results 顶层 plans：方案名 → 场次编号列表）
+    # 方案层（02-results 顶层 plans：老格式 dict{方案名: [编号]}；新格式 list[{plan, legs:[描述串]}]）
     plans = {}
     for p in sorted(RESULTS_DIR.glob("*.json")):
         if p.name.startswith("_"):
@@ -53,9 +89,14 @@ def build() -> dict:
             data = json.loads(p.read_text(encoding="utf-8"))
         except json.JSONDecodeError:
             continue
-        if isinstance(data.get("plans"), dict):
-            for name, codes in data["plans"].items():
+        raw_plans = data.get("plans")
+        if isinstance(raw_plans, dict):
+            for name, codes in raw_plans.items():
                 plans[f"{p.stem}:{name}"] = codes
+        elif isinstance(raw_plans, list):
+            for pl in raw_plans:
+                if isinstance(pl, dict) and pl.get("plan"):
+                    plans[f"{p.stem}:{pl['plan']}"] = pl  # 保留完整 dict（legs 含玩法+赔率描述）
     # 就绪度统计
     by_league, by_star = Counter(), Counter()
     n_result = n_clv = n_pfinal = 0
@@ -83,7 +124,7 @@ def build() -> dict:
             "calibrateGap": max(0, CALIBRATE_MIN_N - n_result),
             "ablateReady": n_result >= ABLATE_MIN_N,
             "by_league": dict(by_league.most_common()),
-            "by_star": {str(k): v for k, v in sorted(by_star.items())},
+            "by_star": {str(k): v for k, v in sorted(by_star.items(), key=lambda kv: str(kv[0]))},
         },
         "records": rows,
         "plans": plans,
