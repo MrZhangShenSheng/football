@@ -18,9 +18,10 @@ git clone <repo-url> football && cd football
 
 ## 更新（日常/换机后）
 
-```powershell
+```bash
 cd $FOOTBALL_HOME
-./update.ps1         # git pull + 依赖同步 + 数据刷新 + 测试回归
+./update.sh          # Mac/Linux：git pull + 依赖同步 + 数据刷新 + 测试回归
+./update.ps1         # Windows：同上
 ```
 
 > `install` 是一次性的（建 junction/设环境变量）；`update` 是高频的（只 pull+刷数据+测试）。两个都幂等可重跑。
@@ -39,26 +40,40 @@ cd $FOOTBALL_HOME
 
 ### 方式二：命令行（开发/调试用）
 
-```powershell
-cd engine\scripts
-python run.py all                                   # 刷数据+画像+索引+拟合（--auto 跳新鲜缓存）
-python run.py update                                # 仅刷数据缓存（fd 赔率+Pinnacle收盘+xG）
-python run.py predict spain-laliga Vallecano Alaves --market 2.05,3.4,3.9
-python run.py backtest spain-laliga 2526
-python -m pytest tests -q                           # 34 用例回归（改代码必跑）
+```bash
+cd engine/scripts
+python3 run.py all                                  # 刷数据+画像+索引+拟合（--auto 跳新鲜缓存）
+python3 run.py update                               # 仅刷数据缓存（fd 赔率+Pinnacle收盘+xG）
+python3 run.py predict spain-laliga Vallecano Alaves --market 2.05,3.4,3.9
+python3 run.py backtest spain-laliga 2526
+python -m pytest tests -q                           # 42 用例回归（改代码必跑）
 ```
 
 ## 预测日全流程
 
 ```
-1. python run.py all                      # 数据+模型就绪
+1. python3 run.py all                     # 数据+模型就绪
 2. 触发 /football-betting-prediction       # Claude 走 skill：
-   体彩API(赛程/可买性) + fd缓存(Pinnacle锚) + 本地球队画像
-   → dc_predict 概率 → logit融合 → 修正系数 → 报告(03-predictions/)
+   体彩API(赛程/五池赔率/单关资格) + fd缓存(Pinnacle锚) + 本地球队画像
+   → dc_predict 概率(含 ttg总进球/hafu半全场) → logit融合 → EV比选 → 修正系数 → 报告(03-predictions/)
 3. 出票前 skill 自动走 Step 6.5 临场终审
 4. 赛果出来后"回填赛果" → 02-results/ + CLV → 04-summaries/
 5. git commit（预测与赛果入库 = 可验证历史）
 ```
+
+## 玩法体系（v4.5 官方规则实锤）
+
+| 玩法 | 关数上限 | 池抽水率* | 单关资格* | 推荐用法 |
+|:---|:---:|:---:|:---|:---|
+| 胜平负 HAD | 8 | 12.9% | 部分场次 | **长串骨架唯一材料** |
+| 让球 HHAD | 8 | 12.9% | ❌ 永不单关 | 长串骨架 |
+| 总进球 TTG | 6 | 20.4% | ✅ 全场次 | 单关/2串小关（EV>0才买） |
+| 半全场 HAFU | 4 | 20.4% | ✅ 全场次 | 单关（剧本极清晰时） |
+| 比分 CRS | 4 | 33.9% | ✅ 全场次 | **只做单关**（4串期望返还仅19%） |
+
+> *实测 2026-08-22（64 场均值）。核心纪律：**同场次不同玩法不可混串**（官方规则第七条）；抽水率=期望亏损率，串N关期望=(1-抽水)^N——高抽水池玩法串越长亏越快。
+
+数据落盘：`engine/cache/sporttery_matches.json` 每场含 `crs`(31选项)/`ttg`(8档)/`hafu`(9组合) 全赔率 + `poolSingle` 单关资格；`dc_predict.py` 输出模型侧 ttg/hafu 概率，skill 用 `EV = p_model×体彩赔率 - 1` 比选（与市场分歧>5pp 弃选）。
 
 ## 目录结构（= 四层架构）
 
@@ -72,21 +87,22 @@ football/
 │   ├── 04-summaries/      #    五维统计 + 回测结果
 │   └── 05-trends/         #    趋势发现
 ├── engine/                ← ② 计算层
-│   ├── scripts/           #    run.py(入口) / dc_fit / dc_predict / backtest / odds_fetch / elo_fetch / xg_fetch / build_index
-│   └── cache/             #    DC 参数 / fusion.json / fd 赔率缓存（Pinnacle 收盘价 + xG）
-├── skill/                 ← ③ 检索入口：SKILL.md v4.1
+│   ├── scripts/           #    run.py(入口) / dc_fit / dc_predict / backtest / odds_fetch / elo_fetch / xg_fetch / espn_fetch / cn_fetch / sporttery_fetch / build_index
+│   └── cache/             #    DC 参数 / fusion.json / fd 赔率缓存 / sporttery_matches.json(五池+单关资格)
+├── skill/                 ← ③ 检索入口：SKILL.md v4.5
 └── docs/                  #    设计文档
 ```
 
-## 数据源（2026-08-21 实测）
+## 数据源（2026-08-22 实测）
 
 | 源 | 状态 | 用途 |
 |:---|:---|:---|
-| 体彩官方 API | ✅ | 赛程 + 赔率（可买性） |
+| 体彩官方 API | ✅ | 赛程 + **五池赔率（胜平负/让球/比分31/总进球8/半全场9）+ 单关资格**（sporttery_fetch.py） |
 | football-data.co.uk | ✅ | **Pinnacle 收盘价（概率锚）+ xG + 比分**，主流联赛 |
-| ESPN | ✅ | 赛果、排名 |
-| clubelo.com | ❌ 当前网络不可达 | Elo（elo_fetch.py 就绪，恢复即用） |
-| 搜索引擎 | ⏳ 配额 8-31 恢复 | 补充检索 |
+| ESPN | ✅ | 赛果、排名（espn_fetch.py 直连） |
+| titan007 | ✅ | 积分榜国内兜底 + 中英队名对照（cn_fetch.py） |
+| clubelo.com | ⚠️ api 被墙，主域 HTML 兜底 | Elo（elo_fetch.py 双链路自动切换） |
+| 搜索引擎 | ⏳ 配额 8-25 恢复 | 补充检索 |
 
 ## 核心约定（详见 .claude/CLAUDE.md）
 

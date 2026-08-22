@@ -34,16 +34,18 @@ Write-Host "[3/4] Setting FOOTBALL_HOME..." -ForegroundColor Yellow
 Write-Host "    OK (reopen terminal)" -ForegroundColor Green
 
 # 4. Data init
-Write-Host "[4/4] Data init (run.py all)..." -ForegroundColor Yellow
+Write-Host "[4/4] Data init (run.py all + sporttery 5-pool)..." -ForegroundColor Yellow
 Push-Location "$HOME_DIR\engine\scripts"
 python run.py all
 if ($LASTEXITCODE -ne 0) { Write-Host "    run.py all partial fail (data source may be down, retry later)" -ForegroundColor DarkYellow }
+python sporttery_fetch.py
+if ($LASTEXITCODE -ne 0) { Write-Host "    sporttery_fetch fail (API may throttle, auto-retry on predict)" -ForegroundColor DarkYellow }
 Pop-Location
 
 Write-Host "`n=== Install done ===" -ForegroundColor Cyan
 Write-Host "Test:     cd engine\scripts; python -m pytest ..\tests -q"
 Write-Host "Use:      tell Claude 'predict' in new terminal"
-Write-Host "Update:   git pull; python engine\scripts\run.py all"
+Write-Host "Update:   ./update.ps1"
 Write-Host ""
 Write-Host "Knowledge base ready status:" -ForegroundColor DarkGray
 $lg = Get-ChildItem "$HOME_DIR\data\00-leagues\*.json" -ErrorAction SilentlyContinue
@@ -54,3 +56,20 @@ Write-Host "  fd-coverage (auto): $($fd.Count) leagues" -ForegroundColor Green
 Write-Host "  espn-fetch (auto): $($espn.Count) leagues" -ForegroundColor Green
 Write-Host "  titan007 fallback (auto): $($cn.Count) leagues" -ForegroundColor Green
 Write-Host "  -> non-fd leagues (JPN/KSA/Nordic) auto-init on first 'predict' via Step 2.5" -ForegroundColor DarkGray
+# sporttery 5-pool check (v4.5: crs/ttg/hafu odds + poolSingle)
+$sm = "$HOME_DIR\engine\cache\sporttery_matches.json"
+if (Test-Path $sm) {
+    $smd = Get-Content $sm -Raw | ConvertFrom-Json
+    $pools = @{}
+    foreach ($m in $smd.matches) {
+        foreach ($p in $m.poolSingle.PSObject.Properties) {
+            if (-not $pools[$p.Name]) { $pools[$p.Name] = @{ sell = 0; single = 0 } }
+            $pools[$p.Name].sell++
+            if ("$($p.Value)" -eq "1") { $pools[$p.Name].single++ }
+        }
+    }
+    $poolStr = ($pools.GetEnumerator() | Sort-Object Name | ForEach-Object { "$($_.Name) sell$($_.Value.sell)/single$($_.Value.single)" }) -join ", "
+    Write-Host "  sporttery 5-pool: $($smd.count) matches, $poolStr" -ForegroundColor Green
+} else {
+    Write-Host "  sporttery 5-pool: not fetched (sporttery_fetch.py runs on predict)" -ForegroundColor DarkYellow
+}
