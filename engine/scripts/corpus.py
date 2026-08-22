@@ -36,13 +36,26 @@ def build() -> dict:
         except json.JSONDecodeError:
             log("corpus", f"跳过坏文件 {p.name}")
             continue
+        round_id = p.stem  # 轮次标识（来源文件名，如 2026-08-22 / 2026-08-21-v2）
         for r in data.get("records", []):
             key = (r.get("date"), r.get("code"))
             if not key[0] or not key[1]:
                 continue
-            records[key] = r  # 后写覆盖（同场重扫以最新为准）
+            records[key] = {**r, "round": round_id}  # 后写覆盖（同场重扫以最新为准）
 
     rows = sorted(records.values(), key=lambda r: (r.get("date") or "", r.get("code") or ""))
+    # 方案层（02-results 顶层 plans：方案名 → 场次编号列表）
+    plans = {}
+    for p in sorted(RESULTS_DIR.glob("*.json")):
+        if p.name.startswith("_"):
+            continue
+        try:
+            data = json.loads(p.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            continue
+        if isinstance(data.get("plans"), dict):
+            for name, codes in data["plans"].items():
+                plans[f"{p.stem}:{name}"] = codes
     # 就绪度统计
     by_league, by_star = Counter(), Counter()
     n_result = n_clv = n_pfinal = 0
@@ -61,6 +74,7 @@ def build() -> dict:
     corpus = {
         "generatedAt": date.today().isoformat(),
         "n_total": len(rows),
+        "n_rounds": len({r.get("round") for r in rows}),
         "readiness": {
             "n_result": n_result,
             "n_clv": n_clv,
@@ -72,6 +86,7 @@ def build() -> dict:
             "by_star": {str(k): v for k, v in sorted(by_star.items())},
         },
         "records": rows,
+        "plans": plans,
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(corpus, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")

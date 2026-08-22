@@ -45,7 +45,7 @@ cd engine/scripts
 python3 run.py all                                  # 刷数据+画像+索引+拟合+非fd联赛学习（--auto 跳新鲜缓存）
 python3 run.py update                               # 仅刷数据缓存（fd 赔率+Pinnacle收盘+xG+体彩五池）
 python3 run.py learn                                # ★闭环学习：非fd联赛ESPN增量采集→本地拟合→版本发布
-python3 run.py corpus                               # ★学习语料汇总+就绪度（距重校/消融门槛还差几条）
+python3 run.py corpus                               # ★学习语料汇总+就绪度+趋势报告（trend.html：4折线/校准图/方案准确率）
 python3 run.py predict spain-laliga Vallecano Alaves --market 2.05,3.4,3.9
 python3 run.py predict japan kashima-antlers avispa-fukuoka   # 日职/沙特/瑞超本地模型也可用
 python3 run.py backtest spain-laliga 2526
@@ -74,6 +74,7 @@ python -m pytest tests -q                           # 47 用例回归（改代�
 
 - **非 fd 联赛 DC 模型已上线**：日职/沙特/瑞超从纯市场锚升级为模型+市场融合（此前 31% 场次无模型）
 - **模型版本存档**：`engine/cache/models/{league}_dc_v{n}.json + .meta.json + latest.json`，每次升级可对比可回滚
+- **胜率趋势报告**（v4.5.2，`data/04-summaries/trend.html`）：累计 log loss vs 市场基线 / 方向命中率+滚动20场 / CLV 走势 / 校准图 / 五维分桶 / **方案准确率**（全中/断关/串关惩罚量化——单场概率层与出票方案层双层统计，文献依据 arXiv:1908.08980 + 2008.03033）
 - **P2 自动触发**：语料就绪度达标后实现 calibrate.py（融合重校 a≤0.6）/ablate.py（系数消融人审）——当前已回填 8/100
 - 韩职 ESPN 无数据源（缺口已登记，找到源补映射即入 learn 链）
 

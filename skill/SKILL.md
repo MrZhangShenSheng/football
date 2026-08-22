@@ -5,9 +5,9 @@ description: |
   Triggers: "预测足彩", "竞彩", "足球预测", "足球比赛结果", "胜平负", "让球", "比分预测", "总进球", "半全场", "串关", "过关", "胆材", "混合过关", "投注方案", "临场复核", "出票前确认", "sporttery", "体彩".
 ---
 
-# 竞彩足球混合过关预测 v4.5.1
+# 竞彩足球混合过关预测 v4.5.2
 
-> 更新日期：2026-08-22（v4.5.1 闭环学习 P1：corpus 语料+ESPN 历史回填+本地 DC 拟合+模型版本存档；v4.5 玩法体系五池重构；v4.4 数据源网络加固）
+> 更新日期：2026-08-22（v4.5.2 胜率趋势报告：4折线+校准图+方案准确率双层统计；v4.5.1 闭环学习 P1；v4.5 玩法体系五池重构）
 > 实战基线：方向正确率 63.2%（12/19），比分命中率 26.3%（5/19）；CLV 记录自 v4.1 起
 
 ## 文件存储路径 ★ v4.0 新增
@@ -669,11 +669,15 @@ C/D 级场次，每场一行：
 回填完成后自动执行（已接线 run.py）：
 
 ```
-1. python run.py corpus    # 语料汇总 → data/04-summaries/corpus.json
+1. python run.py corpus    # 语料汇总 → data/04-summaries/corpus.json + trend.html 胜率趋势报告
                           # 输出就绪度：距融合重校(n≥100) / 系数消融(n≥50) 还差几条
+                          # trend.html 六区块：①累计logloss vs 市场基线 ②累计方向命中率+滚动20场
+                          # ③CLV走势 ④校准图(预测概率vs实际胜率) ⑤五维分桶下钻 ⑥方案准确率(串关层)
 2. python run.py learn     # 非fd联赛（日职/沙特/瑞超）当年 espn 增量采集
                           # → dc_fit --source local 拟合 → models/ 版本发布（holdout 门槛）
 ```
+
+**方案层准确率要点**（trend ⑥）：串关全中才算赢；统计各方案全中/断关/最弱环节 + **串关惩罚量化**（实测全中率 vs 单场命中率连乘理论值的落差——落差持续为正 = 修正系数系统性乐观，入串筛选该收紧）。单场准确率看 ①②④（概率层），方案准确率看 ⑥（出票层），两层不能互替。
 
 - **模型版本存档**：`engine/cache/models/{league}_dc_v{n}.json + .meta.json`，`latest.json` 路由；发布门槛=holdout 不劣于当前版 2%+
 - **本地赛果联赛**：日职/沙特/瑞超已回填 2025+2026 两季（日职550场/沙特404/瑞超376），DC 首版已发布；韩职 ESPN 无数据（来源待补）
@@ -864,4 +868,5 @@ CLV = (出票赔率 / Pinnacle收盘赔率 - 1) × 100%
 | **v4.3** | **2026-08-21** | **Step 2.5 数据就绪检查+冷启动初始化：data_check.py 体检（联赛画像/球队画像/别名三类缺口清单）→ fd 覆盖联赛全自动初始化 / 非fd 联赛 Claude WebFetch 结构化入库 → 初始化落盘沉淀（下轮直接命中，知识库越用越厚）。首次实战：11 场体检发现 7 联赛缺画像+22 队缺画像+4 队缺别名 → 冷启动后别名 36→40、6 关键队画像+5 联赛画像入库** |
 | **v4.4** | **2026-08-21** | **数据源网络加固（实测逐源验证）：①新增 espn_fetch.py（ESPN API 直连，standings 积分榜+results 按日期赛果；关键：requests 默认 UA 可达，浏览器 UA 反而 403；覆盖日职/瑞超/挪超/丹超/沙特/荷甲/葡超等 fd 不含联赛）②新增 cn_fetch.py（titan007 国内兜底：联赛 JS 数组直取积分榜+中英队名对照；须浏览器 UA+Referer；totalScore 字段语义对照英超 25/26 逐队验证；全 0 榜防污染跳过）③elo_fetch.py 双链路（api.clubelo 被墙自动切主域 HTML 正则，18/25 队实测恢复）④run.py 接线 espn/cn 子命令** |
 | **v4.5** | **2026-08-22** | **玩法体系官方规则实锤重构：①sporttery_fetch.py 五池全采（had/hhad/crs 31选项/ttg 8档/hafu 9组合）+ poolSingle 单关资格字段 + 完整浏览器头+重试（修 567）②dc_predict.py 新增 ttg 总进球分布（7×7矩阵聚合）+ hafu 半全场 9 组合概率（半场λ×0.45 独立泊松枚举）③官方规则硬约束修正：同场次不同游戏**不可**混串（第七条原文，纠正 v4.4 错误）、倍数 2~50、单票 ≤6000 元、奖金限额表 ④抽水率分级实测（HAD 12.9%/TTG·HAFU 20.4%/CRS 33.9%）→ 高抽水池玩法限单关/2串、长串骨架仅 HAD/HHAD ⑤玩法决策树 + 模板 D 总分小串 ⑥EV 比选法（p_model×体彩赔率-1，分歧>5pp 弃选）⑦预测记录加 EV 字段，五维复盘扩到五池 |
-| **v4.5.1** | **2026-08-22** | **闭环学习 P1 落地（设计文档 docs/2026-08-22-learning-loop-design.html）：①corpus.py 学习语料汇总（02-results 合并去重+就绪度门槛：重校 n≥100/消融 n≥50/拟合 n≥30）②espn_fetch.py history 子命令：ESPN 整季赛果回填（limit=500 一次拉），队名经 _aliases espn 字段映射规范ID，未映射丢弃计数 ③dc_fit.py --source local + --publish：本地赛果拟合 + models/ 版本化存档（{league}_dc_v{n}+.meta+latest 路由，holdout 劣化>2% 拒发）④别名大补：日职21/沙特25/瑞超16 队 espn 映射，删 abbr 冗余条目（防同队分裂参数）⑤run.py 接线 corpus/learn/all ⑥实测回填：日职550场/沙特404/瑞超376（25+26季），三联赛 DC v1 已发布，日职 dc_predict 端到端验证 OK。韩职 ESPN 无数据（缺口待补源）** |
+| **v4.5.1** | **2026-08-22** | **闭环学习 P1 落地（设计文档 docs/2026-08-22-learning-loop-design.html）：①corpus.py 学习语料汇总（02-results 合并去重+就绪度门槛：重校 n≥100/消融 n≥50/拟合 n≥30）②espn_fetch.py history 子命令：ESPN 整季赛果回填（limit=500 一次拉），队名经 _aliases espn 字段映射规范ID，未映射丢弃计数 ③dc_fit.py --source local + --publish：本地赛果拟合 + models/ 版本化存档（{league}_dc_v{n}+.meta+latest 路由，holdout 劣化>2% 拒发）④别名大补：日职21/沙特25/瑞超16 队 espn 映射，删 abbr 冗余条目（防同队分裂参数）⑤run.py 接线 corpus/learn/all ⑥实测回填：日职550场/沙特404/瑞超376（25+26季），三联赛 DC v1 已发布，日职 dc_predict 端到端验证 OK。韩职 ESPN 无数据（缺口待补源） |
+| **v4.5.2** | **2026-08-22** | **胜率趋势报告 trend_report.py（run.py corpus 自动跑 → trend.html）：①累计 log loss 主曲线 vs 市场基线对照（arXiv:1908.08980 log loss 实证优于 RPS）②累计方向命中率+滚动20场副线（regime change 捕捉）③CLV 走势（DK近似口径）④校准图 p_final 分桶 vs 实际胜率（arXiv:2008.03033 CORP 简化版）⑤五维分桶下钻（联赛/星级/等级/pick类型/入串，in_plan 归一化）⑥方案准确率双层：全中/断关/最弱环节+串关惩罚量化（实测全中率 vs 单场连乘理论落差）；corpus 补 round 轮次字段+plans 提取；自动结论 n≥30 硬门槛防小样本噪声；8 测试** |

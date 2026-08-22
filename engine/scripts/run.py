@@ -10,6 +10,7 @@
   python run.py espn [联赛代码]           # ESPN 直连积分榜/赛果（日职/北欧等 fd 不覆盖联赛）
   python run.py cn [联赛ID]              # titan007 国内兜底积分榜（ESPN 不可达时用）
   python run.py corpus                    # 学习语料汇总 + 门槛就绪度（回填赛果后跑）
+  python run.py trend                     # 胜率趋势报告（4折线图+校准图+方案准确率 → 04-summaries/trend.html）
   python run.py learn [联赛...]           # 本地赛果联赛增量采集+拟合+版本发布（日职/沙特/瑞超）
   python run.py all                       # update + fit --auto + learn 一条龙（预测日跑这个）
 
@@ -80,6 +81,7 @@ def main() -> None:
         sh("cn_fetch.py", *rest)
     elif cmd == "corpus":
         sh("corpus.py")
+        sh("trend_report.py")
     elif cmd == "learn":
         # 非fd联赛闭环：当年 espn history 增量采集 → --source local 拟合 → 版本发布
         # 例: python run.py learn / python run.py learn japan
