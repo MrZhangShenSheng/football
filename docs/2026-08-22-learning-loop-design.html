@@ -1,0 +1,275 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>闭环学习系统设计 v1.0 — 2026-08-22</title>
+<style>
+:root{
+  --bg:#0f1420;--panel:#171e2e;--panel2:#1d2638;--line:#2a3650;
+  --txt:#dde4f0;--dim:#8b97ad;--acc:#4da3ff;--ok:#3ecf8e;--warn:#f5b041;--bad:#ef6b73;--purple:#a78bfa;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font:15px/1.75 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;padding:32px 20px 80px}
+.wrap{max-width:980px;margin:0 auto}
+h1{font-size:26px;margin:8px 0 4px}
+h2{font-size:19px;margin:44px 0 14px;color:var(--acc);border-bottom:1px solid var(--line);padding-bottom:8px}
+h3{font-size:16px;margin:26px 0 10px;color:var(--purple)}
+.sub{color:var(--dim);font-size:13px;margin-bottom:24px}
+.tag{display:inline-block;font-size:12px;padding:1px 10px;border-radius:10px;margin-left:8px;vertical-align:2px}
+.t-red{background:#3d1f24;color:var(--bad);border:1px solid #5c2c33}
+.t-green{background:#12331f;color:var(--ok);border:1px solid #1f5c3a}
+.t-amber{background:#3a2c10;color:var(--warn);border:1px solid #5c4619}
+.t-blue{background:#12293f;color:var(--acc);border:1px solid #1e4a73}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 24px;margin:16px 0}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:1fr 1fr 1fr}
+@media(max-width:760px){.g2,.g3{grid-template-columns:1fr}}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0}
+th{color:var(--dim);font-weight:600;text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:7px 10px;border-bottom:1px solid #202a40;vertical-align:top}
+td.num{text-align:center;white-space:nowrap}
+code{background:#101726;border:1px solid var(--line);border-radius:4px;padding:1px 6px;font-size:12.5px;color:#9ecbff;font-family:"SF Mono",Consolas,monospace}
+.path{font-family:"SF Mono",Consolas,monospace;font-size:12.5px;color:#9ecbff}
+ul,ol{padding-left:22px;margin:8px 0}
+li{margin:4px 0}
+.kpi{display:flex;gap:10px;align-items:baseline}
+.kpi b{font-size:30px;color:var(--warn)}
+.kpi span{color:var(--dim);font-size:13px}
+.ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}.dim{color:var(--dim)}
+.note{background:#141b2b;border-left:3px solid var(--acc);padding:10px 14px;border-radius:0 8px 8px 0;font-size:13.5px;color:var(--dim);margin:12px 0}
+.warnbox{background:#2b2415;border-left:3px solid var(--warn);padding:10px 14px;border-radius:0 8px 8px 0;font-size:13.5px;margin:12px 0}
+svg{display:block;margin:14px auto;max-width:100%}
+.flow-arrow{stroke:var(--acc);stroke-width:1.6;fill:none;marker-end:url(#arr)}
+.box{fill:var(--panel2);stroke:var(--line);rx:8}
+.box-t{font-size:13px;font-weight:600;fill:var(--txt)}
+.box-d{font-size:10.5px;fill:var(--dim)}
+.lbl{font-size:10.5px;fill:var(--acc)}
+.step-lbl{font-size:11px;fill:var(--warn);font-weight:600}
+</style>
+</head>
+<body><div class="wrap">
+
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="i-db" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M12 3c4.4 0 8 1.3 8 3s-3.6 3-8 3-8-1.3-8-3 3.6-3 8-3zM4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm8-3a8 8 0 0 0-.2-1.7l2-1.5-2-3.5-2.4 1a8 8 0 0 0-2.9-1.7L14 2h-4l-.5 2.6a8 8 0 0 0-2.9 1.7l-2.4-1-2 3.5 2 1.5A8 8 0 0 0 4 12c0 .6.1 1.1.2 1.7l-2 1.5 2 3.5 2.4-1a8 8 0 0 0 2.9 1.7L10 22h4l.5-2.6a8 8 0 0 0 2.9-1.7l2.4 1 2-3.5-2-1.5c.1-.6.2-1.1.2-1.7z"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M12 19V5m-7 7 7-7 7 7"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" d="m4 12.5 5 5L20 6.5"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M12 3 2 21h20L12 3zm0 8v4m0 3v.5"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M6 2h9l5 5v15H6V2zm9 0v5h5M9 13h6M9 17h6"/></symbol>
+  <symbol id="i-loop" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M17 2l4 4-4 4M3 12v-1a5 5 0 0 1 5-5h13M7 22l-4-4 4-4m14-2v1a5 5 0 0 1-5 5H3"/></symbol>
+  <symbol id="i-arch" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M3 21h18M5 21V8h14v13M3 8l9-5 9 5M9 21v-6h6v6"/></symbol>
+</symbol>
+</svg>
+
+<h1>闭环学习系统设计 <span class="tag t-blue">v1.0 草案 · 供评审</span></h1>
+<div class="sub">Football 知识库 · 2026-08-22 · 状态：设计稿（未实现）· 前置调研：backtest/calibrate/fusion/02-results 实测扫描</div>
+
+<h2>〇、问题定义（第一性原理）</h2>
+<div class="card">
+<p><b>目标</b>：让"回填赛果 → 模型升级"成为自动化闭环，持续提高预测准确率（RPS/CLV），且每次升级<b>可验证、可回滚、可归因</b>。</p>
+<div class="warnbox">
+<b>先管理预期</b>：回测实证<b>纯市场（Pinnacle 收盘）RPS 0.1850 是最强基线</b>。击败市场的历史数据极难，本系统的目标不是"打败市场"，而是：
+① 消除已知盲区（31% 场次无模型覆盖）② 删除负增益的手工系数 ③ 让融合权重由数据而非拍脑袋决定。
+方向正确率的现实上限 ≈ 市场本身（~58%）± 2pp，杠杆主要在<b>覆盖面和纪律</b>，不在算法魔法。
+</div>
+<div class="grid g3" style="margin-top:14px">
+<div><div class="kpi"><b>31%</b><span>本轮 52 场中非 fd 联赛（日职/韩职/沙特/北欧…）</span></div></div>
+<div><div class="kpi"><b>44%</b><span>场次真正用了 DC 模型（23/52），其余纯市场锚</span></div></div>
+<div><div class="kpi"><b>-5.8%</b><span>7 单 CLV 均值（体彩 12.9% 抽水的结构性负值）</span></div></div>
+</div>
+</div>
+
+<h2>一、现状体检：闭环断在哪</h2>
+<div class="card">
+<table>
+<tr><th>#</th><th>缺口</th><th>现状证据</th><th>后果</th></tr>
+<tr><td class="num bad">1</td><td><b>calibrate.py 不存在</b></td><td>fusion.json 写着"backtest ≥100 场后重校"，SKILL.md 提及，脚本从未实现</td><td>融合系数永远停在初始 0.4/1.0</td></tr>
+<tr><td class="num bad">2</td><td><b>无汇总语料层</b></td><td>records 散在 4 个日期文件（52 条/8 回填），无合并去重视图</td><td>每次分析重扫全目录；跨轮统计无基础</td></tr>
+<tr><td class="num bad">3</td><td><b>非 fd 联赛无反馈回路</b></td><td>dc_fit 只吃 fd CSV；日职/韩职/沙特场次 <code>dc_used:false</code> 占 56%</td><td>最大准确率杠杆完全未开发</td></tr>
+<tr><td class="num bad">4</td><td><b>无模型版本存档</b></td><td>{league}_dc.json 直接覆盖；fusion.json 无历史</td><td>升级前后不可对比，坏了无法回滚</td></tr>
+<tr><td class="num bad">5</td><td><b>手工系数零验证</b></td><td>8 个修正系数全部标"🧪待消融"（首回合保护 n=4 即入正册）</td><td>负增益系数可能持续伤害命中率</td></tr>
+<tr><td class="num warn">6</td><td><b>回填覆盖率低</b></td><td>8/52 已回填（15%）</td><td>一切统计验证的前提，管道先于数据</td></tr>
+</table>
+<p class="dim" style="font-size:13px">数据来源：data/02-results/ 四文件实测扫描 + engine/scripts 全量审读 + engine/cache/fusion.json（2026-08-22）</p>
+</div>
+
+<h2>二、总体架构：五件套闭环</h2>
+<div class="card">
+<svg viewBox="0 0 920 400" width="920">
+<defs>
+  <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#4da3ff"/></marker>
+</defs>
+<!-- 顶部输入 -->
+<rect class="box" x="330" y="10" width="260" height="46" rx="8"/>
+<text class="box-t" x="460" y="30" text-anchor="middle">回填赛果（Step 8）</text>
+<text class="box-d" x="460" y="46" text-anchor="middle">data/02-results/*.json · ESPN 按日拉赛果</text>
+
+<path class="flow-arrow" d="M460 56 V 84"/>
+<!-- ① corpus -->
+<rect class="box" x="290" y="86" width="340" height="52" rx="8" style="stroke:#3ecf8e"/>
+<text class="step-lbl" x="310" y="107">① corpus.py（数据底座）</text>
+<text class="box-d" x="310" y="126">合并去重全量 records → data/04-summaries/corpus.json</text>
+
+<path class="flow-arrow" d="M630 112 H 700 V 160"/>
+<path class="flow-arrow" d="M290 112 H 190 V 160"/>
+<path class="flow-arrow" d="M460 138 V 160"/>
+<!-- 三个分析器 -->
+<rect class="box" x="60" y="162" width="260" height="64" rx="8"/>
+<text class="step-lbl" x="80" y="183">② calibrate.py（融合重校）</text>
+<text class="box-d" x="80" y="200">网格搜 a/b 最小化 RPS</text>
+<text class="box-d" x="80" y="216">门槛 n≥100 · 改善&lt;1% 不动 · 有版本史</text>
+
+<rect class="box" x="330" y="162" width="260" height="64" rx="8"/>
+<text class="step-lbl" x="350" y="183">③ ablate.py（系数消融）</text>
+<text class="box-d" x="350" y="200">8 个手工系数逐个 on/off</text>
+<text class="box-d" x="350" y="216">门槛 n≥50 · 负增益即降级/删除</text>
+
+<rect class="box" x="600" y="162" width="260" height="64" rx="8"/>
+<text class="step-lbl" x="620" y="183">④ 非fd赛果入库（最大杠杆）</text>
+<text class="box-d" x="620" y="200">espn_fetch 赛果 → matches 格式</text>
+<text class="box-d" x="620" y="216">日职/韩职/沙特 dc_fit 拟合</text>
+
+<path class="flow-arrow" d="M190 226 V 262"/>
+<path class="flow-arrow" d="M460 226 V 262"/>
+<path class="flow-arrow" d="M730 226 V 262"/>
+<!-- ⑤ 存档 -->
+<rect class="box" x="200" y="264" width="520" height="56" rx="8" style="stroke:#a78bfa"/>
+<text class="step-lbl" x="222" y="286" style="fill:#a78bfa">⑤ 模型版本存档（engine/cache/models/）</text>
+<text class="box-d" x="222" y="304">{league}_dc_v{n}.json + metadata（训练集/RPS/依据）· fusion_history.json · 升级即 git commit</text>
+
+<path class="flow-arrow" d="M200 292 H 120 V 330 H 350" opacity="0"/>
+<!-- 回路 -->
+<path class="flow-arrow" d="M460 320 V 352" stroke-dasharray="5 4"/>
+<text class="lbl" x="470" y="350">下一轮预测用新模型/新系数（Step 3.5 读 models/ 最新版）</text>
+<path class="flow-arrow" d="M830 194 C 880 194 880 60 700 33" stroke-dasharray="5 4"/>
+<text class="lbl" x="845" y="120">预测 → 赛果 → 再回填（循环）</text>
+</svg>
+<p class="dim" style="font-size:13px;text-align:center">虚线 = 跨轮循环；实现顺序 = ①⑤（底座）→ ④（杠杆）→ ②③（攒数据后自动可跑）</p>
+</div>
+
+<h2>三、模块详细设计</h2>
+
+<h3>① corpus.py — 学习语料汇总（数据底座，最先做）</h3>
+<div class="card">
+<table>
+<tr><th>项</th><th>设计</th></tr>
+<tr><td>输入</td><td><span class="path">data/02-results/*.json</span>（跳过 _h2h_index）+ 联赛画像</td></tr>
+<tr><td>输出</td><td><span class="path">data/04-summaries/corpus.json</span>：<b>全量 records 合并视图</b>（按 code+date 去重，后写覆盖）+ 就绪度统计</td></tr>
+<tr><td>就绪度字段</td><td><code>n_total / n_result(已回填) / n_clv / n_pfinal / by_league / by_star / by_grade</code> 分桶计数 —— ②③④ 的门槛判断都读这里</td></tr>
+<tr><td>触发</td><td>每次"回填赛果"后自动跑；输出一行就绪度摘要（如 <code>语料 52 条 · 已回填 8 · CLV 7 · 距校准门槛还差 92</code>）</td></tr>
+<tr><td>成本</td><td>~60 行纯本地合并，零网络</td></tr>
+</table>
+<p class="note">为什么先做它：所有下游分析都消费同一份语料，先统一数据源避免各脚本各扫各的、口径不一。</p>
+</div>
+
+<h3>② calibrate.py — 融合系数重校（攒够数据自动可跑）</h3>
+<div class="card">
+<table>
+<tr><th>项</th><th>设计</th></tr>
+<tr><td>算法</td><td>corpus 中含 p_final(=市场锚) 与赛果的场次 → 网格搜索 <code>a∈[0,0.8]×0.05, b=1 固定</code>，最小化平均 RPS（复用 backtest.py 的 rps()，不重写）</td></tr>
+<tr><td>门槛</td><td><b>n ≥ 100 场已回填</b>（fusion.json 原有约定）</td></tr>
+<tr><td>护栏</td><td>① 新 RPS 改善 &lt; 1% → 不升级，只记录 ② 新 a &gt; 旧 a × 1.5 → 拒绝（防小样本把模型权重顶上天）③ 同时输出按联赛分层的样本量警告</td></tr>
+<tr><td>写回</td><td>fusion.json 更新 a/b + lastTuned + tunedN + 依据；<b>旧值进 fusion_history.json</b></td></tr>
+<tr><td>校验</td><td>升级后在<b>下一个回测周期</b>对比新旧系数 RPS——变差即回滚（history 里有旧值）</td></tr>
+</table>
+</div>
+
+<h3>③ ablate.py — 修正系数消融（纪律执行器）</h3>
+<div class="card">
+<table>
+<tr><th>项</th><th>设计</th></tr>
+<tr><td>对象</td><td>8 个手工系数：开季分档 / 波动系数 / 保级平局保护 / 用户反馈 / 首回合保护 / 让球反推 / 叠加封顶 / 战意状态机</td></tr>
+<tr><td>方法</td><td>corpus 每条 record 已存 <code>p_final（修正前）与 p_adj（修正后）</code> → 按系数触发与否分桶，对比两列的 RPS/Brier：修正后 ≤ 修正前 = 正增益</td></tr>
+<tr><td>门槛</td><td>每系数触发样本 <b>n ≥ 50</b> 才下结论；不足的标"观察中"继续攒</td></tr>
+<tr><td>动作</td><td>正增益 → SKILL.md 系数标 ✅已验证；负增益 → 标 ⚠️删除或降参考；<b>输出 diff 建议，人审后改 SKILL.md</b>（不自动改文档）</td></tr>
+<tr><td>巧点</td><td>p_final/p_adj 双列留痕是 v4.1 就有的设计，消融器几乎零额外采集成本——这个设计已经在赚钱了</td></tr>
+</table>
+</div>
+
+<h3>④ 非fd联赛赛果入库 — 最大准确率杠杆（大哥已定高优先）</h3>
+<div class="card">
+<p><b>现状</b>：本轮 52 场，非 fd 联赛 16 场（31%）：日职 3 / 韩职 3 / 沙职 2 / 日乙 2 / 德国杯 2 / 芬超 1 / 瑞超 1 / 荷乙 1 / 德超杯 1。这些场次 <code>dc_used:false</code>，预测纯靠市场锚+手工修正，<b>赛果也不进任何模型</b>。</p>
+<table>
+<tr><th>项</th><th>设计</th></tr>
+<tr><td>数据链</td><td>ESPN 按日赛果（已实测：<code>espn_fetch.py results jpn.1 20260820 20260821</code> ✅）→ 转成 dc_fit 的 matches 格式（date/home/away/hg/ag，队名经 _aliases.json 规范）</td></tr>
+<tr><td>存储</td><td><span class="path">data/02-results/league/{league}_matches.json</span> 累计追加（与按日期文件并存，专供拟合）</td></tr>
+<tr><td>拟合</td><td>攒到 <b>每联赛 ≥30 场</b>（约一轮全联赛 5~8 场 × 4~6 轮）→ dc_fit 扩展 <code>--source local</code> 拟合 <code>{league}_dc.json</code>；60 场后参与 normal 服务</td></tr>
+<tr><td>冷启动</td><td>ESPN 还能拉<b>历史赛季</b>赛果（2025 赛季整季 ~340 场/联赛）→ 一次性回填去年整季，<b>第一轮就能出模型</b>，不等几周攒数据</td></tr>
+<tr><td>队名映射</td><td>复用 <span class="path">data/01-teams/_aliases.json</span> + cn_fetch teams 子命令补中英对照；映射不上的场次丢弃并记日志（宁缺毋滥）</td></tr>
+<tr><td>防污染</td><td>杯赛（德国杯/德超杯）单场淘汰制不拟合（战意/轮换噪声大），只入库联赛</td></tr>
+</table>
+<div class="note">优先级顺序：日职（3场/轮，稳定）→ 韩职（3场/轮）→ 沙特（2场/轮）→ 北欧四联赛（体彩上架时才有）。历史赛季回填优先于增量攒。</div>
+</div>
+
+<h3>⑤ 模型版本存档 — 升级可验证/可回滚/可归因</h3>
+<div class="card">
+<svg viewBox="0 0 860 150" width="860">
+<rect class="box" x="20" y="20" width="380" height="110" rx="8"/>
+<text class="box-t" x="40" y="45">engine/cache/models/（新增目录）</text>
+<text class="box-d" x="40" y="68">japan_dc_v1.json   ← 参数本体</text>
+<text class="box-d" x="40" y="86">japan_dc_v1.meta.json ← n_train/时间窗/holdout RPS/数据来源</text>
+<text class="box-d" x="40" y="104">latest.json ← 路由表：各联赛当前生效版本号</text>
+<text class="box-d" x="40" y="122">升级规则：新版本 holdout RPS 更差 → 拒绝发布</text>
+
+<rect class="box" x="460" y="20" width="380" height="110" rx="8"/>
+<text class="box-t" x="480" y="45">engine/cache/fusion_history.json（新增）</text>
+<text class="box-d" x="480" y="68">[{date, a_old, a_new, n, rps_old, rps_new, reason}]</text>
+<text class="box-d" x="480" y="86">dc_predict.py 读 models/latest.json 选版本</text>
+<text class="box-d" x="480" y="104">版本不变 = 文件锁（并发防写坏）</text>
+<text class="box-d" x="480" y="122">每次升级 = 一次 git commit（diff 即归因）</text>
+</svg>
+<table>
+<tr><th>元数据字段（.meta.json）</th><th>用途</th></tr>
+<tr><td><code>n_train / date_range / source(fd|local-espn)</code></td><td>训练集归因：什么数据练的</td></tr>
+<tr><td><code>holdout_logloss / rps_baseline(市场)</code></td><td>发布门槛：不优于当前版+市场基线 → 不发布</td></tr>
+<tr><td><code>replaced_version / replaced_by / reason</code></td><td>版本链：谁替谁、为什么</td></tr>
+<tr><td><code>createdBy</code> = sszhang pipeline</td><td>责任人约定</td></tr>
+</table>
+<p class="note">版本策略取<b>最简</b>：不搞自动 ML 流水线，快照 + latest 路由 + git diff 足够。500 文件迁移 SQLite 前不动这套。</p>
+</div>
+
+<h2>四、数据流与触发时机（谁在什么时候跑什么）</h2>
+<div class="card">
+<table>
+<tr><th>触发</th><th>自动执行</th><th>产出</th></tr>
+<tr><td>"回填赛果"</td><td>①espn 赛果回填 → ②corpus.py 重算 → ③就绪度一行摘要</td><td>corpus.json 更新</td></tr>
+<tr><td>corpus 就绪度达标（n≥30）</td><td>提示"日职/韩职可拟合"→ dc_fit --source local</td><td>新 {league}_dc_v1 + meta</td></tr>
+<tr><td>corpus n≥100</td><td>calibrate.py 自动跑（有护栏）</td><td>fusion.json 或"不动"结论</td></tr>
+<tr><td>每系数触发 n≥50</td><td>ablate.py 分桶报告（人审）</td><td>SKILL.md 修订建议 diff</td></tr>
+<tr><td>每次升级（②④产出新版本）</td><td>快照 models/ + git commit</td><td>可回滚版本链</td></tr>
+</table>
+</div>
+
+<h2>五、实施排期（建议两批）</h2>
+<div class="card">
+<table>
+<tr><th>批次</th><th>内容</th><th>规模</th><th>验收标准</th></tr>
+<tr><td><b>P1 底座+杠杆</b><br><span class="dim">约 1 次会话</span></td><td>①corpus.py + ⑤models 存档机制 + ④ESPN 历史赛季回填（日职/韩职/沙特）+ dc_fit --source local</td><td>~250 行 + 测试</td><td>日职/韩职/沙特各产出 _dc_v1 + meta；corpus 就绪度摘要正确；42 测试不破</td></tr>
+<tr><td><b>P2 分析器</b><br><span class="dim">数据攒够后</span></td><td>②calibrate.py + ③ablate.py（挂 corpus 门槛，未达标自动跳过并提示）</td><td>~180 行 + 测试</td><td>未达门槛正确跳过；护栏三件套生效；history 正确记录</td></tr>
+</table>
+<p class="note">P1/P2 分批原因：②③现在没有足够数据验证收益，先建管道攒数据；④是唯一"今天做下周就见效"的项（历史赛季回填当轮生效）。</p>
+</div>
+
+<h2>六、风险与对策</h2>
+<div class="card">
+<table>
+<tr><th>风险</th><th>对策</th></tr>
+<tr><td class="bad">小样本过拟合（n&lt;100 就调参）</td><td>硬门槛写死在代码里（不靠自觉）；护栏三件套；改善&lt;1% 不动</td></tr>
+<tr><td class="bad">ESPN 队名与体彩/别名对不上，脏数据进模型</td><td>映射失败即丢弃+日志计数；拟合前 sanity check（场次数/进球范围）</td></tr>
+<tr><td class="bad">版本膨胀（models/ 无限增长）</td><td>每联赛保留最近 3 版 + 被替代版标记；git 历史兜底全量</td></tr>
+<tr><td class="warn">CLV 均值 -5.8% 引发"模型没用"误读</td><td>报告固定口径：体彩抽水结构性负值，评价用 DK 近似 CLV 的<b>相对排序</b>而非绝对值</td></tr>
+<tr><td class="warn">杯赛数据污染联赛模型</td><td>④明确只入库联赛赛果，杯赛场次标记排除</td></tr>
+</table>
+</div>
+
+<h2>七、待大哥拍板的细节</h2>
+<div class="card">
+<ol>
+<li><b>ESPN 历史赛季回填深度</b>：只拉 2025 一季（~340场/联赛，当天可完成）vs 拉 2024+2025 两季（样本翻倍，2024 队伍换血对当前参数贡献存疑）？<span class="dim">建议：2025 一季起步，ξ 时间衰减会让老数据权重自然归零</span></li>
+<li><b>calibrate 的 a 上限</b>：护栏拒绝 a&gt;0.6（现初始 0.4）还是更保守 a&gt;0.5？<span class="dim">建议 0.6，留出验证空间但封顶过拟合</span></li>
+<li><b>ablate 人审 vs 自动改 SKILL.md</b>：<span class="dim">建议人审——系数规则是文档语言不是代码，diff 给大哥过目再改</span></li>
+<li><b>corpus.json 是否进 git</b>：<span class="dim">建议进——它是"学习进度"的凭证，与预测记录同等待遇</span></li>
+</ol>
+</div>
+
+<div class="sub" style="margin-top:40px">作者 sszhang · 本文档为设计草案，评审通过后按 P1→P2 实施 · 数据截至 2026-08-22</div>
+</div></body></html>
