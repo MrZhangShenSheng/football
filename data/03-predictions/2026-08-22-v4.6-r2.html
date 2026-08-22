@@ -1,0 +1,122 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>竞彩终审报告 v4.6-r2 · 2026-08-22</title>
+<style>
+:root{--ink:#1a2332;--sub:#5a6b85;--line:#dde4ee;--bg:#f6f8fc;--card:#ffffff;
+--gold:#b8860b;--red:#c0392b;--green:#1e8e5a;--blue:#2563eb;--amber:#d97706;--gray:#8a94a6}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font:15px/1.65 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--bg);padding:24px}
+.wrap{max-width:960px;margin:0 auto}
+h1{font-size:22px;margin-bottom:4px}h2{font-size:17px;margin:26px 0 10px;padding-left:10px;border-left:4px solid var(--blue)}
+.meta{color:var(--sub);font-size:13px;margin-bottom:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:14px}
+.summary{border:2px solid var(--gold);box-shadow:0 2px 12px rgba(184,134,11,.12)}
+.tier{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700;margin-bottom:10px}
+.bet{display:grid;grid-template-columns:24px 1fr auto;gap:4px 10px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;margin-bottom:8px;font-size:14px}
+.bet .no{font-weight:700;color:var(--gray)}
+.bet .pick{font-weight:600}
+.kv{color:var(--sub);font-size:12.5px;grid-column:2/4}
+.tag{display:inline-block;padding:1px 8px;border-radius:10px;font-size:12px;font-weight:600}
+.t-ev{background:#e7f6ee;color:var(--green)}.t-bad{background:#fdeaea;color:var(--red)}
+.t-rev{background:#fff4e0;color:var(--amber)}.t-ok{background:#e8f0fe;color:var(--blue)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--card)}
+th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+th{background:#eef2f9;font-size:12.5px;color:var(--sub)}
+.rev{border-left:4px solid var(--amber)}
+.rev h3{font-size:15px;margin-bottom:6px}
+.basis{background:#fffaf0;border:1px dashed #e8c98a;border-radius:8px;padding:10px 14px;font-size:13.5px;margin:8px 0;color:#6b5312}
+.li{margin:4px 0 4px 18px}
+.exclude td{font-size:12.5px;color:var(--sub)}
+.foot{color:var(--sub);font-size:12.5px;margin-top:22px;border-top:1px solid var(--line);padding-top:12px}
+.num{font-variant-numeric:tabular-nums}
+.pill{font-weight:700}
+svg.ic{width:18px;height:18px;vertical-align:-4px}
+</style></head><body><div class="wrap">
+<svg style="display:none"><symbol id="i-ball" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2v20M2 12h20M5 5l14 14M19 5L5 19"/></symbol><symbol id="i-rocket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></symbol><symbol id="i-scale" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1zM2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1zM7 21h10M12 3v18M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></symbol><symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></symbol></svg>
+
+<h1><svg class="ic" style="color:var(--gold)"><use href="#i-ball"/></svg> 出单摘要 · 终审增量报告 v4.6-r2</h1>
+<div class="meta">2026-08-22 17:40 · 同批次（周六001~周一011 共64场）临场终审轮 · 基线：同日13:46 v4.5.2 归档 · 总仓位 10/30 元</div>
+
+<div class="card summary">
+<div style="font-size:13px;color:var(--sub);margin-bottom:10px">本轮为<b>出票前临场终审</b>（Step 6.5）：体彩赔率复扫 64 场 73 处异动 + 8 个入串场次五项复核 + 信息边际三定律判定 → <b style="color:var(--amber)">2 场真边际修订 + 2 项合规清理</b>（EV门槛/等级矩阵）。方案按 v4.6 风险三档重构。</div>
+
+<div class="tier"><svg class="ic" style="color:var(--red)"><use href="#i-rocket"/></svg>🚀 搏奖档 · 4元（2元×2注）· 至少中一注概率 ≈ 22.3% · 全中理论 45元</div>
+<div class="bet"><span class="no">①</span><span class="pick">周六024 · 08-23 02:45 · 意甲R1 · 帕尔马 vs 卡利亚里 · <b>总进球 0球</b></span><span class="pill num">@7.5</span>
+<span></span><span class="kv">p_model=<b>16.0%</b>（市场11.1%，分歧4.9pp✓边界）· EV <span class="tag t-ev">+20.2%</span> · 命中→15元 · 依据：意甲平局率0.295+R1保守；ESPN O/U 2.5 低球线增强</span></div>
+<div class="bet"><span class="no">②</span><span class="pick">周日024 · 08-24 03:30 · 西甲R2 · 埃尔切 vs 巴萨 · <b>半全场 客/客(hh)</b> <span class="tag t-rev">终审降星</span></span><span class="pill num">@15</span>
+<span></span><span class="kv">p_model=<b>7.5%</b>（市场5.5%，分歧2pp✓；终审 9.5%→7.5%）· EV <span class="tag t-ev">+12.5%</span> · 命中→30元 · 依据：R2压制剧本；<b>下修原因见修订②</b></span></div>
+
+<div class="tier"><svg class="ic" style="color:var(--blue)"><use href="#i-scale"/></svg>⚖️ 平衡档 · 6元（2元×3倍）· 命中概率 ≈ 49.6% · 全中 8.9元</div>
+<div class="bet"><span class="no">④</span><span class="pick">2串1 HAD：周日014 费耶诺德<b>客胜</b> × 周日013 哈马比<b>主胜</b></span><span class="pill num">@1.482</span>
+<span></span><span class="kv">周日014 坎布尔vs费耶诺德 08-23 22:45 · p=84.1% @1.14（四星A·超低赔骨架胆）· 坎布尔3连败0分垫底（上轮客1-3）<br>
+周日013 哈马比vs盖斯 08-23 22:30 · p=59.0% @1.30（三星B）· <b>#2争冠[高动力]vs#9中游[常规]</b>，上轮客4-0大胜正向边际<br>
+串关 EV <span class="tag t-bad">-26.5%</span>（体彩12.9%结构性抽水×2，选全池最高概率组合如实标注负值）</span></div>
+
+<div class="tier"><svg class="ic" style="color:var(--gray)"><use href="#i-shield"/></svg>🛡️ 保本档 · 本轮不开</div>
+<div style="font-size:13.5px;color:var(--sub)">方向胆合格仅 2 场（费耶诺德/哈马比），3串4 容错结构不可行；温哥华剔除后无合规替补（非开季联赛 ≥55% 胆材仅哈马比自身）。</div>
+<div style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);font-size:13px">
+<b>资金合计：10元</b>（搏奖4 + 平衡6）≤ 档内上限（10/15）≤ 总仓位30元 ✓ · 至少中一注概率（全部3注）：1−(0.84×0.925×0.504) ≈ <b>60.8%</b> · 全部命中理论奖金 <b>53.9元</b>
+</div>
+</div>
+
+<h2>修订详情（信息边际三定律判定）</h2>
+
+<div class="card rev">
+<h3>修订① 周六028 温哥华主胜@1.39 → 剔除出全部方案 <span class="tag t-rev">定律1 真边际</span></h3>
+<div class="basis">新事实（48h内）+ 赔率未动 = 市场未消化的边际：温哥华<b>周三主场 0-1 负 Houston</b>（美职 08-20）；对手达拉斯<b>客场两连胜进6球</b>（2-1 Austin / 4-3 RSL）。体彩赔率 1.39 未调整（美职小市场调价滞后）。主胜 p 0.58→0.51，跌破三星线55%。</div>
+<ul class="li">连带结构：方案B 3串1@2.06 → 2串1@1.482；方案A 2串1 取消（温哥华剔除后哈马比无合规单关资格——瑞超 HAD poolSingle=0）</li>
+<ul class="li">替补排查：非开季联赛 ≥55% 胆材全池仅 3 个（温哥华自己/芬超赫尔辛基/哈马比），芬超受"小联赛最多1场"限额（瑞超哈马比已占）→ 无合规替代，方案做减法</ul>
+</div>
+
+<div class="card rev">
+<h3>修订② 周日024 巴萨半全场 hh@15 → 降星保留（p 9.5%→7.5%） <span class="tag t-rev">定律1 真边际</span></h3>
+<div class="basis">ESPN 08-20/22 持续报道<b>巴萨无正印9号</b>（"Will Barcelona's lack of a number 9 affect their season?"），攻坚慢热风险；埃尔切 R1 客场 1-1 平 Deportivo 显示韧性。hh（半场客胜+全场客胜）依赖快速破门，逻辑被削弱。赔率未动 → 边际成立。EV +42.5%→+12.5%（仍&gt;0 保留，三星降二星）。</div>
+</div>
+
+<div class="card rev">
+<h3>修订③ 曼城@1.33 / 皇马@1.30 → 方向维持，按 v4.6 EV 门槛剔出方案 <span class="tag t-rev">规范升级</span></h3>
+<div class="basis">v4.5.2 旧规范 S 组单关5注无 EV 门槛；v4.6 起搏奖档唯一入选门槛 EV&gt;0。曼城 EV-23.3%（Foden 状态低迷为当日新闻小噪音，方向判断不变，ESPN -210 实力差大）；皇马 EV-27.8%（西班牙人 R1 主场 3-0 与穆里尼奥新帅磨合对冲→定律2跟随市场，赔率 1.31→1.30 微调噪声级）。</div>
+</div>
+
+<div class="card rev">
+<h3>修订④ 周六009 厄格里特 HAFU dd@6.0 → 剔除（存量违规清理） <span class="tag t-rev">合规修复</span></h3>
+<div class="basis">玩法×数据等级矩阵（v4.5 起规范）：<b>B 级（4项数据）× 半全场 = ❌不选</b>——半全场 9 组合需 A 级数据支撑。v4.5.2 将该场误入 S 组（当时自检第 9 项漏检），本轮清理。其保级六分战平局逻辑（#15 vs #16 双生死战、主队上轮 1-3 惨败）转为<b>纯方向注记</b>（HAD 主胜规避），EV+3.3% 亦为搏奖档三注中最弱——宁缺毋滥。</div>
+</div>
+
+<h2>维持场次一览（五项复核通过）</h2>
+<table>
+<tr><th>场次</th><th>选项</th><th>复核要点（①伤停②转会③发布会④赔率⑤上轮）</th><th>判定</th></tr>
+<tr><td>#9 周六009 瑞超R17<br>厄格里特 vs 哈尔姆斯</td><td>方向注记（方案外）</td><td>④未动；⑤主队上轮<b>客1-3惨败 Brommapojkarna</b>（下游互咬惨败）、哈尔姆斯客0-1小负哈肯；战意 #15vs#16 双生死战（平局×1.30）→HAD主胜规避</td><td><span class="tag t-rev">修订④剔除</span></td></tr>
+<tr><td>#24 周六024 意甲R1<br>帕尔马 vs 卡利亚里</td><td>TTG 0球 @7.5</td><td>④未动；⑤意甲新赛季揭幕无上轮变量；ESPN O/U 2.5 低球线；HAD胶着(38.5/32/29.5)平局高发场</td><td><span class="tag t-ok">维持·锚增强</span></td></tr>
+<tr><td>#13 周日013 瑞超R17<br>哈马比 vs 盖斯</td><td>HAD 主胜 @1.30</td><td>④未动；⑤<b>哈马比客4-0大胜Kalmar</b>↑、盖斯主0-1负马尔默↓；战意 #2争冠33分[高动力] vs #9中游23分[常规]→高动力×1.15</td><td><span class="tag t-ok">维持·正向边际</span></td></tr>
+<tr><td>#42 周日014 荷甲R3<br>坎布尔 vs 费耶诺德</td><td>HAD 客胜 @1.14</td><td>④未动；⑤坎布尔0分垫底三连败（客1-3负Fortuna）、费耶诺德主2-2平GAE微减；战意 费耶[高动力争冠] vs 坎布尔[常规]</td><td><span class="tag t-ok">维持四星骨架</span></td></tr>
+<tr><td>#37 周日009 英超R1<br>曼城 vs 伯恩茅斯</td><td>方向主胜（方案外）</td><td>④未动；①Foden状态低迷但 Maresca 发布会力挺（08-22）；②转会窗末段无曼城主力异动官宣</td><td><span class="tag t-ok">方向维持</span></td></tr>
+<tr><td>#27 周六027 西甲R2<br>西班牙人 vs 皇马</td><td>方向客胜（方案外）</td><td>④1.31→1.30微调；⑤西班牙人R1主3-0（负向）vs 穆帅新帅+Rodri话题（正向）→对冲</td><td><span class="tag t-ok">定律2跟随市场</span></td></tr>
+</table>
+
+<h2>排除场次（53 场，沿用 v4.5.2 基线 + 本轮新增）</h2>
+<div class="card">
+<div style="font-size:13.5px;margin-bottom:8px">v4.5.2 报告的 52 场排除清单（数据分级/胶着/韩职缺口/开季限额等）经复核全部继续有效，详见 <b>data/03-predictions/2026-08-22-v4.5.2.html</b>。本轮变动：</div>
+<table class="exclude">
+<tr><th>新增/变动</th><th>原因</th></tr>
+<tr><td>#28 周六028 温哥华 vs 达拉斯 [B→方案外]</td><td>终审剔除（修订①）：周三主负+达拉斯客场两连胜6球，p 0.58→0.51 破三星线</td></tr>
+<tr><td>#37 周日009 曼城 / #27 周六027 皇马</td><td>方向维持三星但 EV 深负（-23%/-28%），v4.6 规范下不出票</td></tr>
+<tr><td>#53 周日025 波尔图 vs 阿罗卡</td><td>结构性排除维持：poolSingle=0 + 开季限额（费耶诺德已占）+ 对手阿罗卡榜首2连胜（6分）分歧+8.5pp</td></tr>
+</table>
+</div>
+
+<h2>附录 A · 联赛画像脏数据事故（已处置）</h2>
+<div class="card" style="font-size:13.5px">
+<b>事故</b>：同日早些时候 run.py update 触发 league_profile.py 用 football-data.co.uk CSV 重生成联赛画像，将 espn 实时新赛季积分榜覆盖为 <b>2025-26 上赛季半程旧数据</b>（西甲标"2026-27 rounds 21 巴萨49分"实为上赛季半程、荷甲 PSV 18轮47分与坎布尔 2 场 0 分混季拼接），并产生重复文件 portugal-liga.json。<br>
+<b>处置</b>：5 个联赛画像已回滚 git HEAD 正确版本（荷甲 2026-27 R2 / 葡超 Arouca 6分榜首——与 v4.5.2 判断依据吻合），portugal-liga.json 已删除。本轮终审在<b>干净底座</b>上完成。<br>
+<b>遗留</b>：odds_fetch/league_profile 的"当季"赛季解析缺陷（fd 新赛季 CSV 未出时误用旧赛季文件+混季拼接）待修复——下轮 run.py update 前先修，否则会复发。
+</div>
+
+<h2>附录 B · 数据来源清单（忠实度抽查用）</h2>
+<div class="card" style="font-size:13px;color:var(--sub)">
+体彩官方API（curl TLS降级链，64场五池+73处赔率异动对比）· ESPN API（英超/西甲新闻15+15条、scoreboard赔率预览、瑞超/西甲/美职/荷甲上轮赛果、意甲空=新赛季揭幕确认）· 本地知识库（data/00-leagues/sweden.json 2026赛季17-18轮积分榜、netherlands-eredivisie.json 2026-27 R2、data/02-results/2026-08-22.json v4.5.2基线）· 上轮报告 2026-08-22-v4.5.2.html（52场排除清单）<br>
+<b>已知缺口</b>：Pinnacle 收盘价不可得（锚偏差~5pp 已降档）；周五004 芬超塞伊奈vs拉赫蒂赛果六源穷尽未回填（C级避开场，不影响方案，搜索配额 8-25 恢复后补）；韩职3场 C级数据缺口沿用。
+</div>
+
+<div class="foot">竞彩足球预测 v4.6 · 终审增量轮 r2 · 模型方向精度实测 60~65%（基线63.2%），模型≠必中，出票以官方终端实盘为准 · 预测记录：data/02-results/2026-08-22-r2.json（铁律7不覆盖旧轮）· 回填口径：方向/比分/CLV 五维</div>
+</div></body></html>
