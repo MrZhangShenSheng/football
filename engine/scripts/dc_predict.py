@@ -5,7 +5,7 @@ r"""Dixon-Coles 预测：读拟合参数输出 7x7 比分概率矩阵 + 三向�
 用法：
   python dc_predict.py spain-laliga "Rayo Vallecano" "Alaves"
   python dc_predict.py spain-laliga Rayo Alaves --market 2.05,3.4,3.9   # Pinnacle 三向
-输出：stdout JSON（比分矩阵、三向概率、TOP 比分、融合概率）
+输出：stdout JSON（比分矩阵、三向概率、TOP 比分、融合概率、总进球分布 ttg、半全场近似 hafu ★v4.5）
 """
 import json
 import math
@@ -56,6 +56,47 @@ def logit(p: float) -> float:
 
 def sigmoid(z: float) -> float:
     return 1.0 / (1.0 + math.exp(-z))
+
+
+HALF_LAMBDA_SHARE = 0.45  # 半场进球占全场期望比例（足球统计常识值 0.44~0.46）
+SCORE_RANGE = range(6)    # 半场/下半场单边枚举 0~5 球（概率截断忽略）
+
+
+def ttg_dist(p: np.ndarray) -> list[float]:
+    """7x7 比分矩阵 → 竞彩 ttg 8 档分布（0~6 各一档，≥7 合并末档）。"""
+    dist = [0.0] * 8
+    for i in range(7):
+        for j in range(7):
+            dist[min(i + j, 7)] += float(p[i, j])
+    return dist
+
+
+def hafu_approx(lh: float, la: float) -> dict[str, float]:
+    """半全场 9 组合近似：半场 λ=全场×0.45、下半场 ×0.55，两段独立泊松精确枚举聚合。
+
+    P(HT=x, 2nd=u) 独立 → FT=(x+u, y+v)；HT/FT 各自三向符号组合成 9 键（hh..aa）。
+    """
+    lh1, la1 = lh * HALF_LAMBDA_SHARE, la * HALF_LAMBDA_SHARE
+    lh2, la2 = lh - lh1, la - la1
+
+    def pois(k: int, lam: float) -> float:
+        return math.exp(-lam) * lam ** k / math.factorial(k)
+
+    out = {a + b: 0.0 for a in "hda" for b in "hda"}
+    for x in SCORE_RANGE:
+        for y in SCORE_RANGE:
+            p1 = pois(x, lh1) * pois(y, la1)
+            if p1 < 1e-12:
+                continue
+            ht = "h" if x > y else ("d" if x == y else "a")
+            for u in SCORE_RANGE:
+                for v in SCORE_RANGE:
+                    p2 = pois(u, lh2) * pois(v, la2)
+                    fx, fy = x + u, y + v
+                    ft = "h" if fx > fy else ("d" if fx == fy else "a")
+                    out[ht + ft] += p1 * p2
+    total = sum(out.values()) or 1.0
+    return {k: v / total for k, v in out.items()}
 
 
 def fuse(p_dc: list[float], p_mkt: list[float], a: float, b: float) -> list[float]:
@@ -112,6 +153,8 @@ def main() -> None:
         "lambdaHome": round(lh, 3), "lambdaAway": round(la, 3),
         "p_dc": [round(v, 4) for v in three],
         "top_scores": [],
+        "ttg": [round(v, 4) for v in ttg_dist(p)],
+        "hafu": {k: round(v, 4) for k, v in sorted(hafu_approx(lh, la).items())},
         "market": None, "p_fused": None,
         "fusion": {"a": None, "b": None, "source": "engine/cache/fusion.json"},
     }
