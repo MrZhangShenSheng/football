@@ -1,7 +1,7 @@
 {
   "_meta": {
     "rebuiltAt": "2026-08-22",
-    "count": 120,
+    "count": 124,
     "note": "路由表：一行一球队，内容本体在球队文件内"
   },
   "teams": {
@@ -1040,9 +1040,27 @@
       "hasXg": false,
       "lastUpdated": "2026-08-22"
     },
+    "gais": {
+      "league": "sweden",
+      "path": "sweden/gais.json",
+      "zh": null,
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-22"
+    },
     "hacken": {
       "league": "sweden",
       "path": "sweden/hacken.json",
+      "zh": null,
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-22"
+    },
+    "hammarby": {
+      "league": "sweden",
+      "path": "sweden/hammarby.json",
       "zh": null,
       "summary": "0场近况 · Elo — · 无xG",
       "hasElo": false,
@@ -1084,6 +1102,24 @@
       "hasElo": true,
       "hasXg": false,
       "lastUpdated": "2026-08-21"
+    },
+    "dallas": {
+      "league": "usa",
+      "path": "usa/dallas.json",
+      "zh": null,
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-22"
+    },
+    "vancouver-whitecaps": {
+      "league": "usa",
+      "path": "usa/vancouver-whitecaps.json",
+      "zh": null,
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-22"
     }
   }
 }

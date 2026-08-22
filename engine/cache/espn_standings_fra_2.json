@@ -1,11 +1,23 @@
 {
- "fetchedAt": "2026-08-21",
+ "fetchedAt": "2026-08-22",
  "source": "espn",
  "leagueCode": "fra.2",
  "season": "2026",
  "standings": [
   {
    "pos": 1,
+   "team": "Montpellier",
+   "played": 3,
+   "won": 2,
+   "drawn": 1,
+   "lost": 0,
+   "gf": 3,
+   "ga": 1,
+   "gd": 2,
+   "pts": 7
+  },
+  {
+   "pos": 2,
    "team": "Saint-Étienne",
    "played": 2,
    "won": 2,
@@ -17,7 +29,7 @@
    "pts": 6
   },
   {
-   "pos": 2,
+   "pos": 3,
    "team": "Annecy",
    "played": 2,
    "won": 2,
@@ -29,31 +41,31 @@
    "pts": 6
   },
   {
-   "pos": 3,
-   "team": "Dunkerque",
-   "played": 2,
-   "won": 1,
-   "drawn": 1,
-   "lost": 0,
-   "gf": 7,
-   "ga": 5,
-   "gd": 2,
-   "pts": 4
-  },
-  {
    "pos": 4,
-   "team": "Montpellier",
-   "played": 2,
+   "team": "Red Star FC 93",
+   "played": 3,
    "won": 1,
-   "drawn": 1,
+   "drawn": 2,
    "lost": 0,
    "gf": 2,
    "ga": 1,
    "gd": 1,
-   "pts": 4
+   "pts": 5
   },
   {
    "pos": 5,
+   "team": "Dunkerque",
+   "played": 3,
+   "won": 1,
+   "drawn": 1,
+   "lost": 1,
+   "gf": 7,
+   "ga": 6,
+   "gd": 1,
+   "pts": 4
+  },
+  {
+   "pos": 6,
    "team": "Metz",
    "played": 2,
    "won": 1,
@@ -65,19 +77,31 @@
    "pts": 4
   },
   {
-   "pos": 6,
-   "team": "Red Star FC 93",
-   "played": 2,
+   "pos": 7,
+   "team": "AS Nancy Lorraine",
+   "played": 3,
    "won": 1,
    "drawn": 1,
-   "lost": 0,
+   "lost": 1,
    "gf": 1,
-   "ga": 0,
-   "gd": 1,
+   "ga": 1,
+   "gd": 0,
    "pts": 4
   },
   {
-   "pos": 7,
+   "pos": 8,
+   "team": "Sochaux",
+   "played": 3,
+   "won": 1,
+   "drawn": 1,
+   "lost": 1,
+   "gf": 1,
+   "ga": 3,
+   "gd": -2,
+   "pts": 4
+  },
+  {
+   "pos": 9,
    "team": "Rodez Aveyron",
    "played": 2,
    "won": 1,
@@ -85,30 +109,6 @@
    "lost": 1,
    "gf": 3,
    "ga": 3,
-   "gd": 0,
-   "pts": 3
-  },
-  {
-   "pos": 8,
-   "team": "Guingamp",
-   "played": 2,
-   "won": 1,
-   "drawn": 0,
-   "lost": 1,
-   "gf": 2,
-   "ga": 2,
-   "gd": 0,
-   "pts": 3
-  },
-  {
-   "pos": 9,
-   "team": "Pau",
-   "played": 2,
-   "won": 1,
-   "drawn": 0,
-   "lost": 1,
-   "gf": 1,
-   "ga": 1,
    "gd": 0,
    "pts": 3
   },
@@ -126,6 +126,30 @@
   },
   {
    "pos": 11,
+   "team": "Guingamp",
+   "played": 3,
+   "won": 1,
+   "drawn": 0,
+   "lost": 2,
+   "gf": 2,
+   "ga": 3,
+   "gd": -1,
+   "pts": 3
+  },
+  {
+   "pos": 12,
+   "team": "Pau",
+   "played": 3,
+   "won": 1,
+   "drawn": 0,
+   "lost": 2,
+   "gf": 1,
+   "ga": 2,
+   "gd": -1,
+   "pts": 3
+  },
+  {
+   "pos": 13,
    "team": "Stade de Reims",
    "played": 2,
    "won": 0,
@@ -137,43 +161,43 @@
    "pts": 2
   },
   {
-   "pos": 12,
+   "pos": 14,
    "team": "Dijon FCO",
-   "played": 2,
+   "played": 3,
    "won": 0,
-   "drawn": 1,
+   "drawn": 2,
+   "lost": 1,
+   "gf": 2,
+   "ga": 3,
+   "gd": -1,
+   "pts": 2
+  },
+  {
+   "pos": 15,
+   "team": "Boulogne",
+   "played": 3,
+   "won": 0,
+   "drawn": 2,
    "lost": 1,
    "gf": 1,
    "ga": 2,
    "gd": -1,
-   "pts": 1
+   "pts": 2
   },
   {
-   "pos": 13,
-   "team": "AS Nancy Lorraine",
-   "played": 2,
+   "pos": 16,
+   "team": "Clermont Foot",
+   "played": 3,
    "won": 0,
-   "drawn": 1,
+   "drawn": 2,
    "lost": 1,
-   "gf": 0,
-   "ga": 1,
-   "gd": -1,
-   "pts": 1
+   "gf": 2,
+   "ga": 4,
+   "gd": -2,
+   "pts": 2
   },
   {
-   "pos": 14,
-   "team": "Boulogne",
-   "played": 2,
-   "won": 0,
-   "drawn": 1,
-   "lost": 1,
-   "gf": 0,
-   "ga": 1,
-   "gd": -1,
-   "pts": 1
-  },
-  {
-   "pos": 15,
+   "pos": 17,
    "team": "Grenoble",
    "played": 2,
    "won": 0,
@@ -182,30 +206,6 @@
    "gf": 2,
    "ga": 4,
    "gd": -2,
-   "pts": 1
-  },
-  {
-   "pos": 16,
-   "team": "Clermont Foot",
-   "played": 2,
-   "won": 0,
-   "drawn": 1,
-   "lost": 1,
-   "gf": 1,
-   "ga": 3,
-   "gd": -2,
-   "pts": 1
-  },
-  {
-   "pos": 17,
-   "team": "Sochaux",
-   "played": 2,
-   "won": 0,
-   "drawn": 1,
-   "lost": 1,
-   "gf": 0,
-   "ga": 3,
-   "gd": -3,
    "pts": 1
   },
   {
