@@ -98,13 +98,12 @@ if (Test-Path $modelsLatest) {
 } else {
     Write-Host "  local DC models: none published (retry step 4 espn history)" -ForegroundColor DarkYellow
 }
-# first-run trend report (v4.5.2: corpus + trend.html; corpus history arrives via git)
+# first-run verify loop (v4.7: backfill + corpus + trend; corpus history arrives via git)
 Push-Location "$HOME_DIR\engine\scripts"
-python corpus.py | Out-Null
-python trend_report.py | Out-Null
+python run.py verify | Out-Null
 Pop-Location
 if (Test-Path "$HOME_DIR\data\04-summaries\trend.html") {
-    Write-Host "  trend report: data\04-summaries\trend.html ready (auto-refreshes on result backfill)" -ForegroundColor Green
+    Write-Host "  verify loop: trend.html ready (run.py verify wired: backfill->assertions->calibrate->ablate)" -ForegroundColor Green
 } else {
-    Write-Host "  trend report: generation failed (re-run: run.py corpus)" -ForegroundColor DarkYellow
+    Write-Host "  verify loop: generation failed (re-run: run.py verify)" -ForegroundColor DarkYellow
 }

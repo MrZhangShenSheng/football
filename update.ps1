@@ -42,11 +42,11 @@ python run.py learn
 if ($LASTEXITCODE -ne 0) { Write-Host "    learn partial fail (ESPN may be down, retry next update)" -ForegroundColor DarkYellow }
 Pop-Location
 
-# 6. Trend report (v4.5.2: corpus rebuild + trend.html refresh, local-only)
-Write-Host "[6/7] Trend report (run.py corpus)..." -ForegroundColor Yellow
+# 6. Verify loop (v4.7: auto-backfill -> corpus+assertions -> calibrate -> ablate, gates auto-skip)
+Write-Host "[6/7] Verify loop (run.py verify)..." -ForegroundColor Yellow
 Push-Location "$HOME_DIR\engine\scripts"
-python run.py corpus
-if ($LASTEXITCODE -ne 0) { Write-Host "    corpus/trend partial fail (local-only, just re-run)" -ForegroundColor DarkYellow }
+python run.py verify
+if ($LASTEXITCODE -ne 0) { Write-Host "    verify partial fail (ESPN cache lag common, next update retries)" -ForegroundColor DarkYellow }
 Pop-Location
 
 # 7. Test regression (verify code changes didn't break anything)

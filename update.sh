@@ -34,9 +34,9 @@ python3 sporttery_fetch.py || echo "    sporttery_fetch 失败（体彩 API 可�
 echo "[5/7] 闭环学习（run.py learn）..."
 python3 run.py learn || echo "    learn 部分失败（ESPN 可能不可达，下次 update 重试）"
 
-# 6. 胜率趋势报告（v4.5.2：语料重算 + trend.html 刷新，纯本地计算）
-echo "[6/7] 胜率趋势报告（run.py corpus）..."
-python3 run.py corpus || echo "    corpus/trend 部分失败（纯本地，重跑即可）"
+# 6. 回归验证闭环（v4.7：自动回填→语料+断言→重校→消融，门槛自检跳过）
+echo "[6/7] 回归验证闭环（run.py verify）..."
+python3 run.py verify || echo "    verify 部分失败（ESPN 缓存延迟常见，下轮 update 自动补）"
 
 # 7. 测试回归（验证代码改动没破坏任何东西）
 echo "[7/7] 测试回归..."
@@ -46,7 +46,7 @@ python3 -m pytest tests -q || echo "    ❌ 测试失败——先检查改动再
 echo ""
 echo "=== 更新完成 ==="
 echo "就绪：对 Claude 说'帮我预测'即可"
-# 学习语料就绪度 + 胜率摘要（v4.5.1/v4.5.2）
+# 学习语料就绪度 + 胜率摘要（v4.5.1/v4.7）
 if [ -f "$HOME_DIR/data/04-summaries/corpus.json" ]; then
     python3 - "$HOME_DIR/data/04-summaries/corpus.json" << 'PYEOF'
 import json, sys
@@ -57,8 +57,8 @@ print(f"    学习语料: {c['n_total']} 条 / {c.get('n_rounds', '?')} 轮（�
       f" | 系数消融 {'✅' if rd['ablateReady'] else '观察中'}")
 # 方案层摘要（trend.html 的核心数字）
 plans = c.get("plans", {})
-n_plans = sum(1 for v in plans.values() if isinstance(v, list))
-print(f"    出票方案: {n_plans} 个已记录 → 详情见 data/04-summaries/trend.html（①logloss ②命中率 ③CLV ④校准 ⑤分桶 ⑥方案准确率）")
+n_plans = sum(1 for v in plans.values() if isinstance(v, (list, dict)))
+print(f"    出票方案: {n_plans} 个已记录 → 详情见 data/04-summaries/trend.html（①logloss ②命中率 ③CLV ④校准 ⑤分桶 ⑥方案准确率 ⑦回归断言）")
 PYEOF
 fi
 
