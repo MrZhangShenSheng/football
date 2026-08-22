@@ -27,17 +27,32 @@ cd "$HOME_DIR/engine/scripts"
 python3 run.py all || echo "    run.py all 部分失败（数据源可能不可达，稍后重试）"
 
 # 4. 体彩五池采集（v4.5：赛程 + crs/ttg/hafu 赔率 + 单关资格）
-echo "[4/5] 体彩五池采集（sporttery_fetch.py）..."
+echo "[4/6] 体彩五池采集（sporttery_fetch.py）..."
 python3 sporttery_fetch.py || echo "    sporttery_fetch 失败（体彩 API 可能限流，预测时自动重试）"
 
-# 5. 测试回归（验证代码改动没破坏任何东西）
-echo "[5/5] 测试回归..."
+# 5. 闭环学习（v4.5.1：非fd联赛 espn 增量采集 → 本地拟合 → 版本发布）
+echo "[5/6] 闭环学习（run.py learn）..."
+python3 run.py learn || echo "    learn 部分失败（ESPN 可能不可达，下次 update 重试）"
+
+# 6. 测试回归（验证代码改动没破坏任何东西）
+echo "[6/6] 测试回归..."
 cd "$HOME_DIR/engine"
 python3 -m pytest tests -q || echo "    ❌ 测试失败——先检查改动再预测"
 
 echo ""
 echo "=== 更新完成 ==="
 echo "就绪：对 Claude 说'帮我预测'即可"
+# 学习语料就绪度（v4.5.1）
+if [ -f "$HOME_DIR/data/04-summaries/corpus.json" ]; then
+    python3 - "$HOME_DIR/data/04-summaries/corpus.json" << 'PYEOF'
+import json, sys
+c = json.load(open(sys.argv[1]))
+rd = c["readiness"]
+print(f"    学习语料: {c['n_total']} 条（已回填 {rd['n_result']} · CLV {rd['n_clv']}）"
+      f" | 融合重校 {'✅' if rd['calibrateReady'] else '差' + str(rd['calibrateGap']) + '条'}"
+      f" | 系数消融 {'✅' if rd['ablateReady'] else '观察中'}")
+PYEOF
+fi
 
 # 知识库新鲜度摘要（与 update.ps1 对齐）
 echo ""
@@ -62,5 +77,19 @@ for m in d.get("matches", []):
             st[1] += 1
 print(f"    体彩五池: {d.get('count', 0)} 场在售, " + ", ".join(
     f"{p} 售{v[0]}/单关{v[1]}" for p, v in sorted(pools.items())))
+PYEOF
+fi
+# 模型版本存档摘要（v4.5.1）
+if [ -f "$HOME_DIR/engine/cache/models/latest.json" ]; then
+    python3 - "$HOME_DIR" << 'PYEOF'
+import json, sys, pathlib
+root = pathlib.Path(sys.argv[1])
+latest = json.load(open(root / "engine/cache/models/latest.json"))
+parts = []
+for lg, ver in sorted(latest.items()):
+    mp = root / f"engine/cache/models/{lg}_dc_v{ver}.meta.json"
+    n = json.load(open(mp))["nTrain"] if mp.exists() else "?"
+    parts.append(f"{lg} v{ver}({n}场)")
+print("    本地DC模型: " + ", ".join(parts))
 PYEOF
 fi

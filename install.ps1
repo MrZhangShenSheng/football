@@ -34,12 +34,22 @@ Write-Host "[3/4] Setting FOOTBALL_HOME..." -ForegroundColor Yellow
 Write-Host "    OK (reopen terminal)" -ForegroundColor Green
 
 # 4. Data init
-Write-Host "[4/4] Data init (run.py all + sporttery 5-pool)..." -ForegroundColor Yellow
+Write-Host "[4/4] Data init (run.py all + sporttery 5-pool + ESPN history)..." -ForegroundColor Yellow
 Push-Location "$HOME_DIR\engine\scripts"
 python run.py all
 if ($LASTEXITCODE -ne 0) { Write-Host "    run.py all partial fail (data source may be down, retry later)" -ForegroundColor DarkYellow }
 python sporttery_fetch.py
 if ($LASTEXITCODE -ne 0) { Write-Host "    sporttery_fetch fail (API may throttle, auto-retry on predict)" -ForegroundColor DarkYellow }
+# non-fd leagues: ESPN history backfill + local DC fit (idempotent via models/ gate)
+python espn_fetch.py history jpn.1 2025
+if ($LASTEXITCODE -ne 0) { Write-Host "    jpn history fail (retry: run.py learn)" -ForegroundColor DarkYellow }
+python espn_fetch.py history ksa.1 2025
+if ($LASTEXITCODE -ne 0) { Write-Host "    ksa history fail" -ForegroundColor DarkYellow }
+python espn_fetch.py history swe.1 2025
+if ($LASTEXITCODE -ne 0) { Write-Host "    swe history fail" -ForegroundColor DarkYellow }
+python dc_fit.py japan --source local --publish
+python dc_fit.py saudi --source local --publish
+python dc_fit.py sweden --source local --publish
 Pop-Location
 
 Write-Host "`n=== Install done ===" -ForegroundColor Cyan
@@ -72,4 +82,19 @@ if (Test-Path $sm) {
     Write-Host "  sporttery 5-pool: $($smd.count) matches, $poolStr" -ForegroundColor Green
 } else {
     Write-Host "  sporttery 5-pool: not fetched (sporttery_fetch.py runs on predict)" -ForegroundColor DarkYellow
+}
+# local DC model versions (v4.5.1 learning loop)
+$modelsLatest = "$HOME_DIR\engine\cache\models\latest.json"
+if (Test-Path $modelsLatest) {
+    $lv = Get-Content $modelsLatest -Raw | ConvertFrom-Json
+    $parts = @()
+    foreach ($prop in $lv.PSObject.Properties) {
+        $lg = $prop.Name; $ver = $prop.Value
+        $mp = "$HOME_DIR\engine\cache\models\${lg}_dc_v${ver}.meta.json"
+        $n = if (Test-Path $mp) { (Get-Content $mp -Raw | ConvertFrom-Json).nTrain } else { "?" }
+        $parts += "$lg v$ver($n matches)"
+    }
+    Write-Host "  local DC models: $($parts -join ', ')" -ForegroundColor Green
+} else {
+    Write-Host "  local DC models: none published (retry step 4 espn history)" -ForegroundColor DarkYellow
 }

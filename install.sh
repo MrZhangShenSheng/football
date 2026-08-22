@@ -30,10 +30,17 @@ grep -q "FOOTBALL_HOME=" "$SHELL_RC" 2>/dev/null || echo "export FOOTBALL_HOME=\
 echo "    OK（重开终端或 source $SHELL_RC 生效）"
 
 # 4. 数据初始化
-echo "[4/4] 数据初始化（run.py all + 体彩五池采集）..."
+echo "[4/4] 数据初始化（run.py all + 体彩五池 + 非fd联赛历史回填）..."
 cd "$HOME_DIR/engine/scripts"
 python3 run.py all || echo "    run.py all 部分失败（数据源可能不可达，稍后重试）"
 python3 sporttery_fetch.py || echo "    sporttery_fetch 失败（体彩 API 可能限流，预测时自动重试）"
+# 非fd联赛 ESPN 历史回填 + 本地 DC 拟合（幂等：models/ 已有版本则按门槛跳过）
+python3 espn_fetch.py history jpn.1 2025 || echo "    日职历史回填失败（可稍后 run.py learn 重试）"
+python3 espn_fetch.py history ksa.1 2025 || echo "    沙特历史回填失败"
+python3 espn_fetch.py history swe.1 2025 || echo "    瑞超历史回填失败"
+python3 dc_fit.py japan --source local --publish || echo "    日职本地拟合失败"
+python3 dc_fit.py saudi --source local --publish || echo "    沙特本地拟合失败"
+python3 dc_fit.py sweden --source local --publish || echo "    瑞超本地拟合失败"
 
 echo ""
 echo "=== 安装完成 ==="
@@ -69,4 +76,20 @@ print(f"    体彩五池: {d.get('count', 0)} 场在售, " + ", ".join(
 PYEOF
 else
     echo "    体彩五池: 未采集（sporttery_matches.json 缺失，预测时 sporttery_fetch.py 自动补）"
+fi
+# 模型版本存档（v4.5.1 闭环学习）
+if [ -f "$HOME_DIR/engine/cache/models/latest.json" ]; then
+    python3 - "$HOME_DIR" << 'PYEOF'
+import json, sys, pathlib
+root = pathlib.Path(sys.argv[1])
+latest = json.load(open(root / "engine/cache/models/latest.json"))
+parts = []
+for lg, ver in sorted(latest.items()):
+    mp = root / f"engine/cache/models/{lg}_dc_v{ver}.meta.json"
+    n = json.load(open(mp))["nTrain"] if mp.exists() else "?"
+    parts.append(f"{lg} v{ver}({n}场)")
+print("    本地DC模型: " + ", ".join(parts))
+PYEOF
+else
+    echo "    本地DC模型: 未发布（install 步骤4的 espn history 回填可重试）"
 fi
