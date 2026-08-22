@@ -11,6 +11,7 @@
   python corpus.py            # 重建语料 + 打印就绪度一行摘要
 """
 import json
+import re
 from collections import Counter
 from datetime import date
 from pathlib import Path
@@ -19,6 +20,15 @@ from common import log, ROOT
 
 RESULTS_DIR = ROOT / "data" / "02-results"
 OUT = ROOT / "data" / "04-summaries" / "corpus.json"
+
+# 轮次后缀（-r1/-r2/-v2）：字典序会把 无后缀 排最后（"." > "-"）且 r10<r2，
+# 后写覆盖顺序就反了（首轮覆盖终审修订轮）→ 按数值轮次排序
+_ROUND_SUFFIX = re.compile(r"^(.+)-(?:r|v)(\d+)$")
+
+
+def round_sort_key(p: Path) -> tuple[str, int]:
+    m = _ROUND_SUFFIX.match(p.stem)
+    return (m.group(1), int(m.group(2))) if m else (p.stem, 0)
 
 # 门槛常量（与设计文档 §四 对齐；calibrate/ablate 复用 import）
 CALIBRATE_MIN_N = 100
@@ -60,7 +70,7 @@ def normalize_record(r: dict, round_id: str) -> dict | None:
 
 def build() -> dict:
     records = {}
-    for p in sorted(RESULTS_DIR.glob("*.json")):
+    for p in sorted(RESULTS_DIR.glob("*.json"), key=round_sort_key):
         if p.name.startswith("_"):
             continue
         try:

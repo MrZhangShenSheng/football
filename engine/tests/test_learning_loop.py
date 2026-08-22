@@ -25,6 +25,20 @@ def test_corpus_build_real(tmp_path):
     assert len(keys) == c["n_total"]
 
 
+def test_corpus_round_sort_numeric(tmp_path, monkeypatch):
+    """轮次排序：-r10 须排在 -r2 之后（字典序 r10<r2 是坑），后写覆盖以数值轮次为准。"""
+    import corpus
+    monkeypatch.setattr(corpus, "RESULTS_DIR", tmp_path)
+    monkeypatch.setattr(corpus, "OUT", tmp_path / "corpus.json")
+    rec = {"code": "001", "date": "2026-08-22", "pick": "主胜", "p_final": 0.5}
+    for stem in ("2026-08-22", "2026-08-22-r2", "2026-08-22-r10"):
+        (tmp_path / f"{stem}.json").write_text(
+            json.dumps({"records": [dict(rec, match=stem)]}, ensure_ascii=False), encoding="utf-8")
+    c = build()
+    assert c["n_total"] == 1  # 同 (date, code) 去重
+    assert c["records"][0]["match"] == "2026-08-22-r10"  # 最新轮胜出
+
+
 def test_load_local_matches_japan():
     """本地赛果加载：日职回填库可读，字段与 dc_fit matches 格式对齐。"""
     ms = load_local_matches("japan")
