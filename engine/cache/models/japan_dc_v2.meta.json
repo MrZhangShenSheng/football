@@ -1,17 +1,17 @@
 {
   "league": "japan",
-  "version": 1,
+  "version": 2,
   "source": "local",
-  "nTrain": 550,
+  "nTrain": 551,
   "dateRange": [
     "2025-02-14",
-    "2026-08-21"
+    "2026-08-22"
   ],
   "xi": 0.005,
-  "holdoutLogloss": 0.9509,
-  "replacedVersion": null,
-  "replacedBy": 2,
-  "reason": "550场 local 源拟合",
+  "holdoutLogloss": 0.9448,
+  "replacedVersion": 1,
+  "replacedBy": null,
+  "reason": "551场 local 源拟合",
   "createdBy": "sszhang pipeline",
   "createdAt": "2026-08-22"
 }
