@@ -20,8 +20,8 @@ def test_corpus_build_real(tmp_path):
     rd = c["readiness"]
     for key in ("n_result", "n_clv", "n_pfinal", "calibrateReady", "calibrateGap", "by_league", "by_star"):
         assert key in rd
-    # 去重生效：总条数 = 唯一 (date, code) 数
-    keys = {(r.get("date"), r.get("code")) for r in c["records"]}
+    # 去重生效：总条数 = 唯一 (date, code, play) 数（同场不同玩法各留一条，同场同玩法重扫覆盖）
+    keys = {(r.get("date"), r.get("code"), r.get("play")) for r in c["records"]}
     assert len(keys) == c["n_total"]
 
 

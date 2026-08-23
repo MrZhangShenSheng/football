@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>胜率趋势 · 2026-08-22</title><style>
+<title>胜率趋势 · 2026-08-23</title><style>
 :root{--bg:#0f1420;--panel:#171e2e;--line:#2a3650;--txt:#dde4f0;--dim:#8b97ad;--acc:#4da3ff;--ok:#3ecf8e;--warn:#f5b041;--bad:#ef6b73;--purple:#a78bfa}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--txt);font:15px/1.7 -apple-system,"PingFang SC",sans-serif;padding:28px 20px 70px}
@@ -32,20 +32,20 @@ td{padding:5px 8px;border-bottom:1px solid #202a40}
 </style></head>
 <body><div class="wrap">
 <h1>胜率趋势分析</h1>
-<div class="sub">生成 2026-08-22 · 语料 79 条 / 已回填 8 / 3 轮 · 数据源 corpus.json（纯 records 口径）</div>
-<div class="concl">数据积累期：已回填 8/30 场，样本不足不出结论（防小样本噪声）</div>
+<div class="sub">生成 2026-08-23 · 语料 92 条 / 已回填 31 / 3 轮 · 数据源 corpus.json（纯 records 口径）</div>
+<div class="concl">n=31：各项指标在正常区间，暂无触发告警规则</div>
 
 <h2>① 累计 log loss（评估主指标）vs 市场基线</h2>
 <div class="card">
 <div class="legend"><span><i class="lg-main"></i>模型累计 log loss</span><span><i class="lg-sub"></i>市场基线（p_final 纯市场锚口径）</span></div>
-<svg viewBox="0 0 860 240" class="chart"><line x1="56" y1="206.0" x2="844" y2="206.0" class="grid"/><text x="50" y="209.0" class="tick" text-anchor="end">0.82</text><line x1="56" y1="159.0" x2="844" y2="159.0" class="grid"/><text x="50" y="162.0" class="tick" text-anchor="end">0.85</text><line x1="56" y1="112.0" x2="844" y2="112.0" class="grid"/><text x="50" y="115.0" class="tick" text-anchor="end">0.88</text><line x1="56" y1="65.0" x2="844" y2="65.0" class="grid"/><text x="50" y="68.0" class="tick" text-anchor="end">0.91</text><line x1="56" y1="18.0" x2="844" y2="18.0" class="grid"/><text x="50" y="21.0" class="tick" text-anchor="end">0.94</text><polyline points="56.0,187.8" class="main"/><circle cx="56.0" cy="187.8" r="3" class="pt"/><polyline points="56.0,187.8" class="sub"/><text x="56" y="12" class="ylab">累计 log loss（低=好）</text></svg>
+<svg viewBox="0 0 860 240" class="chart"><line x1="56" y1="206.0" x2="844" y2="206.0" class="grid"/><text x="50" y="209.0" class="tick" text-anchor="end">0.84</text><line x1="56" y1="159.0" x2="844" y2="159.0" class="grid"/><text x="50" y="162.0" class="tick" text-anchor="end">0.87</text><line x1="56" y1="112.0" x2="844" y2="112.0" class="grid"/><text x="50" y="115.0" class="tick" text-anchor="end">0.89</text><line x1="56" y1="65.0" x2="844" y2="65.0" class="grid"/><text x="50" y="68.0" class="tick" text-anchor="end">0.91</text><line x1="56" y1="18.0" x2="844" y2="18.0" class="grid"/><text x="50" y="21.0" class="tick" text-anchor="end">0.93</text><polyline points="56.0,36.2 844.0,187.8" class="main"/><circle cx="56.0" cy="36.2" r="3" class="pt"/><circle cx="844.0" cy="187.8" r="3" class="pt"/><polyline points="56.0,36.2 844.0,187.8" class="sub"/><text x="56" y="12" class="ylab">累计 log loss（低=好）</text></svg>
 <div class="note">低=好。模型线在市场线下方 = 跑赢市场（文献基准：纯市场是最强基线）。dc_used=true 场次 p_final 含模型贡献，市场线为混合口径，解读需谨慎。</div>
 </div>
 
 <h2>② 累计方向命中率 + 滚动 20 场</h2>
 <div class="card">
 <div class="legend"><span><i class="lg-main"></i>累计命中率</span><span><i class="lg-sub"></i>滚动20场</span><span><i class="lg-ref"></i>50% 参考线</span></div>
-<svg viewBox="0 0 860 240" class="chart"><line x1="56" y1="206.0" x2="844" y2="206.0" class="grid"/><text x="50" y="209.0" class="tick" text-anchor="end">0.16</text><line x1="56" y1="159.0" x2="844" y2="159.0" class="grid"/><text x="50" y="162.0" class="tick" text-anchor="end">0.39</text><line x1="56" y1="112.0" x2="844" y2="112.0" class="grid"/><text x="50" y="115.0" class="tick" text-anchor="end">0.62</text><line x1="56" y1="65.0" x2="844" y2="65.0" class="grid"/><text x="50" y="68.0" class="tick" text-anchor="end">0.86</text><line x1="56" y1="18.0" x2="844" y2="18.0" class="grid"/><text x="50" y="21.0" class="tick" text-anchor="end">1.09</text><line x1="56" y1="137.3" x2="844" y2="137.3" class="ref"/><polyline points="56.0,137.3" class="main"/><circle cx="56.0" cy="137.3" r="3" class="pt"/><polyline points="56.0,36.2 168.6,137.3 281.1,171.0 393.7,187.8 506.3,157.5 618.9,137.3 731.4,151.7 844.0,137.3" class="sub"/><text x="56" y="12" class="ylab">累计方向命中率</text></svg>
+<svg viewBox="0 0 860 240" class="chart"><line x1="56" y1="206.0" x2="844" y2="206.0" class="grid"/><text x="50" y="209.0" class="tick" text-anchor="end">0.16</text><line x1="56" y1="159.0" x2="844" y2="159.0" class="grid"/><text x="50" y="162.0" class="tick" text-anchor="end">0.39</text><line x1="56" y1="112.0" x2="844" y2="112.0" class="grid"/><text x="50" y="115.0" class="tick" text-anchor="end">0.62</text><line x1="56" y1="65.0" x2="844" y2="65.0" class="grid"/><text x="50" y="68.0" class="tick" text-anchor="end">0.86</text><line x1="56" y1="18.0" x2="844" y2="18.0" class="grid"/><text x="50" y="21.0" class="tick" text-anchor="end">1.09</text><line x1="56" y1="137.3" x2="844" y2="137.3" class="ref"/><polyline points="56.0,132.9 82.3,127.5" class="main"/><circle cx="56.0" cy="132.9" r="3" class="pt"/><circle cx="82.3" cy="127.5" r="3" class="pt"/><polyline points="56.0,36.2 82.3,137.3 108.5,171.0 134.8,187.8 161.1,157.5 187.3,137.3 213.6,151.7 239.9,137.3 266.1,126.0 292.4,117.1 318.7,128.1 344.9,137.3 371.2,129.5 397.5,137.3 423.7,130.5 450.0,137.3 476.3,143.2 502.5,137.3 528.8,132.0 555.1,127.2 581.3,127.2 607.6,127.2 633.9,117.1 660.1,117.1 686.4,127.2 712.7,137.3 738.9,127.2 765.2,127.2 791.5,137.3 817.7,137.3 844.0,127.2" class="sub"/><text x="56" y="12" class="ylab">累计方向命中率</text></svg>
 <div class="note">累计线看长期水平；滚动线捕捉近期 regime change（如系数失效、开季噪声）。命中率仅展示口径，评估看图①。</div>
 </div>
 
@@ -57,10 +57,10 @@ td{padding:5px 8px;border-bottom:1px solid #202a40}
 
 <h2>④ 校准图（预测概率 vs 实际胜率）</h2>
 <div class="grid2">
-<div class="card"><svg viewBox="0 0 420 300" class="chart"><line x1="46" y1="254" x2="374" y2="254" class="grid"/><line x1="46" y1="150.0" x2="374" y2="150.0" class="grid"/><line x1="46" y1="254" x2="374" y2="46" class="ref"/><text x="42" y="270" class="tick" text-anchor="middle">0%</text><text x="38" y="257.0" class="tick" text-anchor="end">0%</text><text x="124" y="270" class="tick" text-anchor="middle">25%</text><text x="38" y="205.0" class="tick" text-anchor="end">25%</text><text x="206" y="270" class="tick" text-anchor="middle">50%</text><text x="38" y="153.0" class="tick" text-anchor="end">50%</text><text x="288" y="270" class="tick" text-anchor="middle">75%</text><text x="38" y="101.0" class="tick" text-anchor="end">75%</text><text x="370" y="270" class="tick" text-anchor="middle">100%</text><text x="38" y="49.0" class="tick" text-anchor="end">100%</text><circle cx="190.5" cy="150.0" r="5" class="calpt"><title>40%~55% n=2 预测44% 实际50%</title></circle><circle cx="250.1" cy="150.0" r="5" class="calpt"><title>55%~70% n=4 预测62% 实际50%</title></circle><circle cx="296.6" cy="46.0" r="5" class="calpt"><title>70%~101% n=1 预测76% 实际100%</title></circle><text x="210.0" y="294" class="tick" text-anchor="middle">预测概率 →</text><text x="12" y="150.0" class="tick" transform="rotate(-90 12 150.0)" text-anchor="middle">实际胜率 →</text></svg></div>
+<div class="card"><svg viewBox="0 0 420 300" class="chart"><line x1="46" y1="254" x2="374" y2="254" class="grid"/><line x1="46" y1="150.0" x2="374" y2="150.0" class="grid"/><line x1="46" y1="254" x2="374" y2="46" class="ref"/><text x="42" y="270" class="tick" text-anchor="middle">0%</text><text x="38" y="257.0" class="tick" text-anchor="end">0%</text><text x="124" y="270" class="tick" text-anchor="middle">25%</text><text x="38" y="205.0" class="tick" text-anchor="end">25%</text><text x="206" y="270" class="tick" text-anchor="middle">50%</text><text x="38" y="153.0" class="tick" text-anchor="end">50%</text><text x="288" y="270" class="tick" text-anchor="middle">75%</text><text x="38" y="101.0" class="tick" text-anchor="end">75%</text><text x="370" y="270" class="tick" text-anchor="middle">100%</text><text x="38" y="49.0" class="tick" text-anchor="end">100%</text><circle cx="172.4" cy="202.0" r="5" class="calpt"><title>0%~40% n=4 预测39% 实际25%</title></circle><circle cx="202.6" cy="140.5" r="5" class="calpt"><title>40%~55% n=11 预测48% 实际55%</title></circle><circle cx="248.9" cy="138.4" r="5" class="calpt"><title>55%~70% n=9 预测62% 实际56%</title></circle><circle cx="296.3" cy="46.0" r="5" class="calpt"><title>70%~101% n=4 预测76% 实际100%</title></circle><text x="210.0" y="294" class="tick" text-anchor="middle">预测概率 →</text><text x="12" y="150.0" class="tick" transform="rotate(-90 12 150.0)" text-anchor="middle">实际胜率 →</text></svg></div>
 <div class="card">
 <table><tr><th>概率桶</th><th>n</th><th>预测均值</th><th>实际胜率</th></tr>
-<tr><td>0%~40%</td><td>0</td><td>—</td><td>—</td></tr><tr><td>40%~55%</td><td>2</td><td>44%</td><td>50%</td></tr><tr><td>55%~70%</td><td>4</td><td>62%</td><td>50%</td></tr><tr><td>70%~101%</td><td>1</td><td>76%</td><td>100%</td></tr>
+<tr><td>0%~40%</td><td>4</td><td>39%</td><td>25%</td></tr><tr><td>40%~55%</td><td>11</td><td>48%</td><td>55%</td></tr><tr><td>55%~70%</td><td>9</td><td>62%</td><td>56%</td></tr><tr><td>70%~101%</td><td>4</td><td>76%</td><td>100%</td></tr>
 </table>
 <div class="note">点在对角线上方=该档系统性低估自身；下方=高估。n&lt;8 的桶仅供观察。分桶简化版（CORP 保序回归待样本充足升级）。</div>
 </div>
@@ -68,20 +68,20 @@ td{padding:5px 8px;border-bottom:1px solid #202a40}
 
 <h2>⑤ 分桶下钻（方向命中率）</h2>
 <div class="grid2">
-<div class="card"><table><tr><th>联赛</th><th>场次</th><th>命中</th><th>命中率</th></tr><tr><td>沙职</td><td>2</td><td>1</td><td>50%</td></tr><tr><td>瑞超</td><td>1</td><td>0</td><td>0%</td></tr><tr><td>法乙</td><td>1</td><td>0</td><td>0%</td></tr><tr><td>荷乙</td><td>1</td><td>1</td><td>100%</td></tr><tr><td>法甲</td><td>1</td><td>1</td><td>100%</td></tr><tr><td>英超</td><td>1</td><td>0</td><td>0%</td></tr><tr><td>西甲</td><td>1</td><td>1</td><td>100%</td></tr></table></div>
-<div class="card"><table><tr><th>星级</th><th>场次</th><th>命中</th><th>命中率</th></tr><tr><td>★★</td><td>4</td><td>2</td><td>50%</td></tr><tr><td>★</td><td>2</td><td>1</td><td>50%</td></tr><tr><td>★★★★</td><td>1</td><td>1</td><td>100%</td></tr><tr><td>无</td><td>1</td><td>0</td><td>0%</td></tr></table></div>
-<div class="card"><table><tr><th>数据等级</th><th>场次</th><th>命中</th><th>命中率</th></tr><tr><td>B级</td><td>6</td><td>2</td><td>33%</td></tr><tr><td>D级</td><td>1</td><td>1</td><td>100%</td></tr><tr><td>C级</td><td>1</td><td>1</td><td>100%</td></tr></table></div>
-<div class="card"><table><tr><th>pick 类型</th><th>场次</th><th>命中</th><th>命中率</th></tr><tr><td>方向</td><td>8</td><td>4</td><td>50%</td></tr></table></div>
+<div class="card"><table><tr><th>联赛</th><th>场次</th><th>命中</th><th>命中率</th></tr><tr><td>英超</td><td>6</td><td>1</td><td>17%</td></tr><tr><td>法甲</td><td>5</td><td>4</td><td>80%</td></tr><tr><td>西甲</td><td>5</td><td>3</td><td>60%</td></tr><tr><td>意甲</td><td>5</td><td>3</td><td>60%</td></tr><tr><td>瑞超</td><td>3</td><td>1</td><td>33%</td></tr><tr><td>沙职</td><td>2</td><td>1</td><td>50%</td></tr><tr><td>日职</td><td>2</td><td>2</td><td>100%</td></tr><tr><td>法乙</td><td>1</td><td>0</td><td>0%</td></tr><tr><td>荷乙</td><td>1</td><td>1</td><td>100%</td></tr><tr><td>德超杯</td><td>1</td><td>1</td><td>100%</td></tr></table></div>
+<div class="card"><table><tr><th>星级</th><th>场次</th><th>命中</th><th>命中率</th></tr><tr><td>★★</td><td>11</td><td>5</td><td>45%</td></tr><tr><td>★</td><td>8</td><td>4</td><td>50%</td></tr><tr><td>★★★</td><td>6</td><td>4</td><td>67%</td></tr><tr><td>★★★★</td><td>5</td><td>4</td><td>80%</td></tr><tr><td>无</td><td>1</td><td>0</td><td>0%</td></tr></table></div>
+<div class="card"><table><tr><th>数据等级</th><th>场次</th><th>命中</th><th>命中率</th></tr><tr><td>C级</td><td>19</td><td>10</td><td>53%</td></tr><tr><td>B级</td><td>9</td><td>4</td><td>44%</td></tr><tr><td>D级</td><td>3</td><td>3</td><td>100%</td></tr></table></div>
+<div class="card"><table><tr><th>pick 类型</th><th>场次</th><th>命中</th><th>命中率</th></tr><tr><td>方向</td><td>30</td><td>16</td><td>53%</td></tr><tr><td>比分</td><td>1</td><td>1</td><td>100%</td></tr></table></div>
 </div>
-<div class="card"><table><tr><th>入串方案</th><th>场次</th><th>命中</th><th>命中率</th></tr><tr><td>未入串</td><td>7</td><td>3</td><td>43%</td></tr><tr><td>入串C</td><td>1</td><td>1</td><td>100%</td></tr></table></div>
+<div class="card"><table><tr><th>入串方案</th><th>场次</th><th>命中</th><th>命中率</th></tr><tr><td>未入串</td><td>28</td><td>14</td><td>50%</td></tr><tr><td>入串C</td><td>2</td><td>2</td><td>100%</td></tr><tr><td>入串B</td><td>1</td><td>1</td><td>100%</td></tr></table></div>
 
 <h2>⑥ 方案准确率（串关层：全中才算赢）</h2>
 <div class="card">
 <table><tr><th>轮次</th><th>方案</th><th>关数</th><th>各关状态</th><th>结果</th><th>断关</th></tr>
-<tr><td>08-22-r1</td><td>方案A</td><td>3串</td><td>待回填待回填待回填</td><td>待回填</td><td>—</td></tr><tr><td>08-22-r1</td><td>方案B</td><td>3串</td><td>待回填待回填待回填</td><td>待回填</td><td>—</td></tr><tr><td>08-22-r1</td><td>方案C</td><td>4串</td><td>待回填待回填待回填✓</td><td>待回填</td><td>—</td></tr>
+<tr><td>08-22-r1</td><td>方案A</td><td>3串</td><td>✓待回填待回填</td><td>待回填</td><td>—</td></tr><tr><td>08-22-r1</td><td>方案B</td><td>3串</td><td>✓✗✓</td><td>断1关</td><td>周六022</td></tr><tr><td>08-22-r1</td><td>方案C</td><td>4串</td><td>✓待回填待回填✓</td><td>待回填</td><td>—</td></tr>
 </table>
-<div class="note">串关惩罚：实测全中率 — vs 理论（单场 50% 连乘 ×0关 = 0%）
-→ 落差 0%（正值=修正系数乐观偏差 / 负值=保守中意外之喜）。仅统计已出票方案（旧格式 dict 方案待格式统一后纳入）。</div>
+<div class="note">串关惩罚：实测全中率 0% vs 理论（单场 55% 连乘 ×3.0关 = 16%）
+→ 落差 16%（正值=修正系数乐观偏差 / 负值=保守中意外之喜）。仅统计已出票方案（旧格式 dict 方案待格式统一后纳入）。</div>
 </div>
 
 <h2>⑦ 回归断言（验证结论 → 触发提升动作）★ v4.7</h2>

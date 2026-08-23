@@ -45,10 +45,12 @@ def normalize_record(r: dict, round_id: str) -> dict | None:
     code = r.get("code")
     if not code:
         return None
-    if "p_final" in r or "result" in r or "date" in r:  # 老 schema
+    new_schema = "fused" in r or "final" in r or "inPlan" in r  # v4.6 matches[]（result:null 预置不算老特征）
+    old_schema = "p_final" in r or ("result" in r and r.get("result")) or "date" in r
+    if not new_schema and old_schema:  # 老 schema 原样
         out = dict(r)
         out.setdefault("date", round_id[:10])
-    else:  # 新 schema（v4.6 matches[]）
+    else:  # 新 schema（v4.6 matches[]）归一
         grade_map = {"A": 4, "B": 3, "C": 2, "D": 1}
         pick = str(r.get("pick") or "")
         out = {
@@ -63,6 +65,12 @@ def normalize_record(r: dict, round_id: str) -> dict | None:
             "ev": r.get("ev"),
             "in_plan": r.get("inPlan"),
             "chain": r.get("chain"),
+            # 回填字段透传（新 schema 预置 result:null，回填后此处同步）
+            "result": r.get("result"),
+            "directionHit": r.get("directionHit"),
+            "scoreHit": r.get("scoreHit"),
+            "clv": r.get("clv"),
+            "clv_note": r.get("clv_note"),
         }
     out["round"] = round_id
     return out
@@ -84,10 +92,10 @@ def build() -> dict:
             nr = normalize_record(r, round_id)
             if not nr:
                 continue
-            key = (nr.get("date"), nr.get("code"))
+            key = (nr.get("date"), nr.get("code"), nr.get("play"))
             if not key[0]:
                 continue
-            records[key] = nr  # 后写覆盖（同场重扫以最新为准）
+            records[key] = nr  # 后写覆盖（同场同玩法重扫以最新为准；同场不同玩法各留一条——v4.6 同场次多票合规结构）
 
     rows = sorted(records.values(), key=lambda r: (r.get("date") or "", r.get("code") or ""))
     # 方案层（02-results 顶层 plans：老格式 dict{方案名: [编号]}；新格式 list[{plan, legs:[描述串]}]）

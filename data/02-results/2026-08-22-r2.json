@@ -89,7 +89,10 @@
    "ev": 0.202,
    "inPlan": "🚀搏奖",
    "note": "分歧4.9pp边界内;终审维持",
-   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
+   "backfillNote": "ESPN scoreboard 2026-08-23 手动回填(backfill.py zh→espn映射缺口期)",
+   "result": "0-1",
+   "directionHit": null,
+   "scoreHit": false
   },
   {
    "idx": 9,
@@ -107,7 +110,10 @@
    "ev": 0.033,
    "inPlan": null,
    "note": "B级×HAFU违规(v4.5矩阵)清理出方案;HAD主胜亦规避;纯观察场",
-   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
+   "backfillNote": "ESPN scoreboard 2026-08-23 手动回填(backfill.py zh→espn映射缺口期)",
+   "result": "1-1",
+   "directionHit": null,
+   "scoreHit": true
   },
   {
    "idx": 52,
@@ -237,7 +243,10 @@
    "ev": -0.278,
    "inPlan": null,
    "note": "定律2对冲(西班牙人R1主3-0vs穆帅新帅磨合)→跟随市场;赔率1.31→1.30微降",
-   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
+   "backfillNote": "ESPN scoreboard 2026-08-23 手动回填(backfill.py zh→espn映射缺口期)",
+   "result": "1-2",
+   "directionHit": true,
+   "scoreHit": null
   }
  ]
 }
