@@ -123,6 +123,74 @@ def test_backfill_chain():
     assert outcome_of(3, 1) == 0 and outcome_of(1, 1) == 1 and outcome_of(0, 2) == 2
 
 
+def test_backfill_sporttery_fallback(tmp_path, monkeypatch):
+    """体彩 fallback（P0 回填断链）：ESPN 停摆时按场次编号对票回填；'不可得'可救回；半全场可判定。"""
+    import backfill
+    monkeypatch.setattr(backfill, "RESULTS_DIR", tmp_path)
+    monkeypatch.setattr(backfill, "fetch_espn_results", lambda code, d: [])
+    pool = {"2026-08-23": {
+        "周日002": {"score": "2:1", "halfScore": "1:0", "matchDate": "2026-08-23", "status": "Played"},
+        "周日014": {"score": "0:4", "halfScore": "0:2", "matchDate": "2026-08-23", "status": "Played"},
+        "周日020": {"score": None, "halfScore": None, "matchDate": "2026-08-23", "status": "Fixture"},
+    }, "2026-08-22": {
+        # 跨日完赛：预测日 8-20 的周五场 8-22 凌晨完赛（matchDate=完赛自然日，d+2）
+        "周五003": {"score": "1:2", "halfScore": "0:1", "matchDate": "2026-08-22", "status": "Played"},
+    }}
+    monkeypatch.setattr(backfill, "fetch_sporttery_day", lambda d: pool.get(d, {}))
+    monkeypatch.setattr(backfill, "load_kickoffs",
+                        lambda: {"周日020": "2099-01-01 00:00:00",  # 在售但远未开赛
+                                 "周日024": "2099-01-02 00:00:00",  # 不在 zqsgkj 返回（未完赛）但在售
+                                 "周日010": "2099-01-03 00:00:00"})  # 误标'不可得'但在售未开赛 → 清标
+    recs = [
+        {"code": "周日002", "league": "日职(R3)", "match": "町田泽维 vs 浦和红钻",
+         "pick": "HAD 主胜", "result": None},                  # ESPN 缓存延迟场 → 体彩救回
+        {"code": "周日014", "league": "美职", "match": "A vs B",
+         "pick": "HAFU aa", "result": "不可得",
+         "backfillNote": "美职 ESPN 无赛果接口"},               # '不可得'重试 → 体彩救回
+        {"code": "周日020", "league": "西甲(R3)", "match": "C vs D",
+         "pick": "HAD 客胜", "result": None},                  # 票池 Fixture（边缘态）→ 跳过
+        {"code": "周日024", "league": "美职", "match": "E vs F",
+         "pick": "HAD 客胜", "result": None},                  # zqsgkj 只返回已完赛 → 不在票池，但在售未开赛 → 跳过
+        {"code": "周日010", "league": "瑞超", "match": "G vs H",
+         "pick": "HAD 客胜", "result": "不可得",
+         "backfillNote": "瑞超 体彩/ESPN 均无赛果"},           # 误标'不可得'但在售未开赛 → 清标跳过
+    ]
+    (tmp_path / "2026-08-23.json").write_text(
+        json.dumps({"date": "2026-08-23", "matches": recs}, ensure_ascii=False), encoding="utf-8")
+    # 独立文件：预测日 8-20 的周五场，完赛日在 d+2（matchDate=完赛自然日，窗口须 ≥ d+2）
+    (tmp_path / "2026-08-20.json").write_text(json.dumps(
+        {"date": "2026-08-20", "matches": [
+            {"code": "周五003", "league": "沙特联", "match": "I vs J", "pick": "HAD 客胜", "result": None}]},
+        ensure_ascii=False), encoding="utf-8")
+    res = backfill.backfill()
+    assert res["filled"] == 3
+    data = json.loads((tmp_path / "2026-08-23.json").read_text(encoding="utf-8"))
+    m0, m1, m2, m3, m4 = data["matches"]
+    assert m0["result"] == "2-1" and m0["directionHit"] is True   # 冒号比分 → 横杠统一 + 主胜命中
+    assert m1["result"] == "0-4" and m1["scoreHit"] is True       # hafu aa（客/客）半场 0:2 判定
+    assert "backfillNote" not in m1                               # 旧'不可得'标注清除
+    assert m2["result"] is None and "backfillNote" not in m2      # 未开赛：不标'不可得'不标'缓存延迟'
+    assert m3["result"] is None and "backfillNote" not in m3      # 未开赛（票池查不到）：同样跳过
+    assert m4["result"] is None and "backfillNote" not in m4      # 误标'不可得'被清，恢复待回填态
+    d20 = json.loads((tmp_path / "2026-08-20.json").read_text(encoding="utf-8"))
+    assert d20["matches"][0]["result"] == "1-2"                   # 跨日完赛（d+2）窗口覆盖 → 回填
+
+
+def test_parse_score_and_play_prefix():
+    """体彩比分解析（冒号/横杠）+ pick 玩法前缀剥离 + 半全场判定（有/无半场数据）。"""
+    from backfill import parse_score, option_hit, pick_outcome_idx
+    assert parse_score("2:1") == (2, 1)
+    assert parse_score("2-1") == (2, 1)
+    assert parse_score(None) is None and parse_score("") is None
+    assert option_hit({"pick": "dh"}, 2, 1, 1, 1) is True     # 半场平/全场主胜
+    assert option_hit({"pick": "dh"}, 2, 1, 1, 0) is False
+    assert option_hit({"pick": "HAFU aa"}, 0, 4, 0, 2) is True  # 带前缀半全场
+    assert option_hit({"pick": "hh"}, 2, 0) is None           # 无半场数据不判
+    assert option_hit({"pick": "CRS 2-0"}, 2, 0) is True      # 带前缀比分
+    assert option_hit({"pick": "TTG 3"}, 2, 1) is True        # 带前缀总进球（原行为保持）
+    assert pick_outcome_idx({"pick": "HAFU aa"}) is None
+
+
 def test_ablate_chain_parsing():
     """chain 双格式解析：结构化数组 + 自由文本。"""
     from ablate import parse_chain
