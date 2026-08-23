@@ -1,0 +1,165 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>skill v4.8 体检报告 · 三镜头审计</title>
+<style>
+  :root { --ink:#1e293b; --sub:#64748b; --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+          --blue:#2563eb; --red:#dc2626; --amber:#d97706; --green:#16a34a; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; color:var(--ink); background:var(--bg); line-height:1.7; padding:32px 16px; }
+  .wrap { max-width:1080px; margin:0 auto; }
+  h1 { font-size:26px; margin-bottom:4px; }
+  .meta { color:var(--sub); font-size:13px; margin-bottom:24px; }
+  h2 { font-size:19px; margin:36px 0 12px; display:flex; align-items:center; gap:8px; }
+  h2 .tag { font-size:12px; font-weight:600; padding:2px 10px; border-radius:999px; }
+  .tag.p0 { background:#fee2e2; color:var(--red); }
+  .tag.p1 { background:#ffedd5; color:var(--amber); }
+  .tag.p2 { background:#fef9c3; color:#a16207; }
+  .tag.p3 { background:#dcfce7; color:var(--green); }
+  .tag.p4 { background:#dbeafe; color:var(--blue); }
+  .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin:16px 0; }
+  .stat { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px 16px; }
+  .stat b { font-size:22px; display:block; }
+  .stat span { font-size:12px; color:var(--sub); }
+  .stat.hot b { color:var(--red); }
+  table { width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--line); border-radius:10px; overflow:hidden; font-size:13.5px; margin:10px 0 4px; }
+  th { background:#f1f5f9; text-align:left; padding:8px 10px; font-size:12.5px; color:var(--sub); }
+  td { padding:8px 10px; border-top:1px solid var(--line); vertical-align:top; }
+  code { background:#f1f5f9; padding:1px 5px; border-radius:4px; font-size:12.5px; font-family:ui-monospace,Menlo,monospace; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin:12px 0; }
+  .card.warn { border-left:4px solid var(--red); }
+  .ok { color:var(--green); font-weight:600; }
+  .part { color:var(--amber); font-weight:600; }
+  .ask { background:#fef2f2; }
+  .ask td:first-child { position:relative; }
+  .flag { display:inline-block; background:var(--red); color:#fff; font-size:11px; padding:1px 8px; border-radius:999px; margin-left:6px; vertical-align:1px; }
+  .src { font-size:12px; color:var(--sub); margin-top:28px; border-top:1px solid var(--line); padding-top:12px; }
+  svg { color:var(--blue); }
+  .pipeline { color:#334155; margin:14px 0; }
+  .pipeline text { fill:#334155; font-size:12px; font-family:-apple-system,"PingFang SC",sans-serif; }
+  .pipeline .broken { stroke:var(--red); stroke-dasharray:6 4; }
+  .pipeline .dead { fill:#fca5a5; }
+  .pipeline .live { fill:#bbf7d0; }
+  footer { margin-top:36px; text-align:center; color:var(--sub); font-size:12px; }
+</style>
+</head><body><div class="wrap">
+
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="i-ball" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7l4 3-1.5 4.5h-5L8 10z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 2v5M4 9l4 1M20 9l-4 1M6 19l3.5-3.5M18 19l-3.5-3.5" stroke="currentColor" stroke-width="1.5"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3L2 20h20L12 3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 10v4M12 17.5v.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 2h9l4 4v16H6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M15 2v4h4M9 12h7M9 16h7" stroke="currentColor" stroke-width="1.5"/></symbol>
+<symbol id="i-flask" viewBox="0 0 24 24"><path d="M10 2v7L4 20h16l-6-11V2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 2h8" stroke="currentColor" stroke-width="2"/></symbol>
+</defs></svg>
+
+<h1><svg width="26" height="26" style="vertical-align:-4px"><use href="#i-ball"/></svg> skill v4.8 体检报告 · 三镜头审计</h1>
+<div class="meta">2026-08-23 · 方法：镜头A 一致性扫描 / 镜头B 实战归档对齐（16 条规则逐条验证）/ 镜头C 结构测算 · 标尺：superpowers writing-skills</div>
+
+<div class="stats">
+  <div class="stat"><b>33,299</b><span>字符 · 951 行 · 每次预测全量加载</span></div>
+  <div class="stat"><b>9✅ / 7⚠️ / 0❌</b><span>16 条核心规则实测执行率</span></div>
+  <div class="stat hot"><b>P0 × 1</b><span>结构性洞：回填管道单链路断粮</span></div>
+  <div class="stat"><b>19 项</b><span>优化点（P0~P4 · 见下）</span></div>
+</div>
+
+<h2><span class="tag p0">P0</span> 结构性洞：回填管道单链路断裂 <svg width="18" height="18" style="color:var(--red);vertical-align:-3px"><use href="#i-alert"/></svg></h2>
+
+<div class="card warn">
+<p><b>事实链</b>：<code>backfill.py</code> 数据源只有 ESPN 一条链路（文件头自述）；体彩 <code>results</code> 开奖口径（zqsgkj，按场次编号对票）已接入<b>采集层</b>（sporttery_fetch.py）却<b>未接回填管道</b>。ESPN 8/22 起赛果停摆后，8-23 轮 37 场 result 几乎全 null（美职/韩职/英冠/德国杯等标"不可得"）→ corpus 就绪度停滞 → calibrate（n≥100）/ ablate（n≥50）永远无法触发 → <b>v4.7 闭环学习在断粮状态空转</b>。</p>
+
+<svg class="pipeline" viewBox="0 0 980 190" width="100%">
+  <rect x="10" y="20" width="150" height="44" rx="8" class="dead"/>
+  <text x="85" y="38" text-anchor="middle">ESPN 赛果 API</text>
+  <text x="85" y="54" text-anchor="middle" fill="#dc2626">8/22 起停摆 ✗</text>
+  <rect x="240" y="20" width="170" height="44" rx="8" class="dead"/>
+  <text x="325" y="46" text-anchor="middle">backfill.py 回填管道</text>
+  <path d="M160 42 L240 42" stroke="#dc2626" stroke-width="2" marker-end="url(#ar)"/>
+  <rect x="480" y="20" width="170" height="44" rx="8" class="dead"/>
+  <text x="565" y="38" text-anchor="middle">corpus.py 就绪度</text>
+  <text x="565" y="54" text-anchor="middle" fill="#dc2626">n 停滞 · 门槛不到</text>
+  <path d="M410 42 L480 42" stroke="#dc2626" stroke-width="2"/>
+  <rect x="720" y="20" width="170" height="44" rx="8" class="dead"/>
+  <text x="805" y="38" text-anchor="middle">calibrate / ablate</text>
+  <text x="805" y="54" text-anchor="middle" fill="#dc2626">永不触发 · 空转</text>
+  <path d="M650 42 L720 42" stroke="#dc2626" stroke-width="2"/>
+
+  <rect x="240" y="110" width="220" height="44" rx="8" class="live"/>
+  <text x="350" y="128" text-anchor="middle">体彩 results 开奖口径</text>
+  <text x="350" y="144" text-anchor="middle" fill="#16a34a">采集层已接入 · 编号对票</text>
+  <path d="M350 110 V64" stroke="#dc2626" stroke-width="2.5" class="broken"/>
+  <text x="362" y="92" fill="#dc2626" font-weight="bold">✗ 未接回填管道（断点）</text>
+  <path d="M460 132 L720 132" stroke="#dc2626" stroke-width="2" class="broken"/>
+  <text x="590" y="124" text-anchor="middle" fill="#dc2626">修复 = 打通此链路</text>
+</svg>
+
+<p><b>修复</b>：backfill.py 加体彩 fallback（ESPN 无结果联赛 → sporttery results 按编号直接对票，无需队名匹配）。<br>
+<b>验收</b>：修复后 <code>run.py verify</code> 对 8-23 轮重跑，result 填充率 0% → ≥80%；corpus 就绪度样本量恢复增长。</p>
+</div>
+
+<h2><span class="tag p1">P1</span> 一致性修复（纯文本 · 高影响低成本）<svg width="18" height="18" style="vertical-align:-3px"><use href="#i-doc"/></svg></h2>
+<table>
+<tr><th style="width:36px">#</th><th>问题</th><th style="width:90px">位置</th><th>修复</th><th style="width:230px">验收</th></tr>
+<tr><td>1</td><td>"韩职 ESPN 无数据（来源待补）"——v4.8 当天已用体彩票源回填 597 场</td><td>L739</td><td>改为已解决现状</td><td rowspan="5" style="vertical-align:middle">grep 无 stale 文案；description ≤80 字且不含机制词（锚/权重/分级）；新会话触发测试命中；一处 commit 收口</td></tr>
+<tr><td>2</td><td>"calibrate/ablate（P2 待实现）"——v4.7 已实现</td><td>L740</td><td>删"待实现"</td></tr>
+<tr><td>3</td><td>开头"文件存储路径"表停在 v4.0：缺 <code>data/00-leagues/</code>（Step 2.5 核心依赖）、<code>05-trends/</code>、<code>engine/cache/</code></td><td>L17</td><td>补全目录表</td></tr>
+<tr><td>4</td><td>Step 8"下次调用时自动检查回填"从未生效，现实入口是 <code>run.py verify</code></td><td>L713</td><td>触发方式对齐 v4.7 现实</td></tr>
+<tr><td>5</td><td><b>description 塞 200 字工作流摘要</b>——writing-skills 对照实验：带流程摘要的描述会让 agent 照描述走捷径、跳过正文</td><td>L3</td><td>重写：只留触发条件+关键词</td></tr>
+</table>
+
+<h2><span class="tag p2">P2</span> 规则与现实脱节（8 条 · 3 条需拍板口径）</h2>
+<table>
+<tr><th style="width:36px">#</th><th>纸上规则</th><th>实战证据（归档）</th><th>建议</th></tr>
+<tr class="ask"><td>6<span class="flag">拍板</span></td><td>JSON 每单必含 <code>clv</code> 字段</td><td><b>从未出现过一次</b>（Pinnacle 收盘价停摆拿不到；CLV 仅在复盘 HTML 以 DK 近似口径文字呈现）</td><td>口径三选一：a) <code>clv_approx_dk</code> 强制进 JSON schema；b) 体彩出票 odds vs 体彩赛前终盘漂移做代理（需终盘存档机制）；c) Pinnacle 恢复前 CLV 降级为复盘 HTML 专属指标、删 JSON 必填要求</td></tr>
+<tr><td>7</td><td>伤停差值 d = 主-客</td><td>吉马良斯同场 r5 note 写 d=-3、r6 表写 d=+3，<b>符号翻转</b></td><td>加操作化定义（d = 主队主力缺阵数 − 客队主力缺阵数，正值=主队伤更重）+ 自检清单加一项</td></tr>
+<tr><td>8</td><td>—</td><td>8-23 实票 hh/aa 键位语义事故（r3.json 有勘误留痕），SKILL.md 无对应沉淀，教训档案停在 8-20</td><td>补教训+规则：赔率三值输出必须显式标 h/d/a 键序</td></tr>
+<tr class="ask"><td>9<span class="flag">拍板</span></td><td>同场次只选一种玩法（官方第七条）</td><td>r3 出现同场 CRS+HAD，agent 自行解释"同场次不同票不同池，合规"——无人裁决的口径放宽</td><td>查官方规则原文写死：第七条约束的是"同一注串内混池"，单关分票是否受限需明确；或直接禁同场双玩法省心</td></tr>
+<tr class="ask"><td>10<span class="flag">拍板</span></td><td>A/B/C/D 四级（A=6 项齐全）</td><td><b>58 场全是 B/C</b>，无 A 无 D——A 级标准在数据源降级下不可达，分级退化为两档；且"比分仅 A/B 级"约束实操全靠 B 级撑</td><td>A 级定义现实化（如 insight 覆盖排名+近况+伤停+H2H 即判 A），或正式接受 B/C 两档并重写下游约束</td></tr>
+<tr><td>11</td><td>保本档（🛡️）三档之一</td><td><b>从未开出过</b>（两轮 plans 均 type:"不开"/stake:0；A/B 级场次 ≥3 是常态缺口）</td><td>降级为条件模板（注明触发条件罕见）或删除</td></tr>
+<tr><td>12</td><td>战意标签"每场"输出</td><td>只标推荐场/入串候选，36 场排除场不标（成本合理简化）</td><td>把现实做法合法化：推荐场+入串候选必标，排除场免</td></tr>
+<tr><td>13</td><td>双锚体系（体彩+Pinnacle）</td><td>ESPN / Pinnacle / 搜索配额<b>三重停摆成常态</b>，实际跑在体彩单锚 + "锚偏差~5pp"文字标注</td><td>增设"降级模式"章节：单锚运行的量化置信度规则（如修正后概率 ×0.97 且星级上限 ⭐⭐⭐），替代文字标注</td></tr>
+</table>
+
+<h2><span class="tag p3">P3</span> 结构瘦身（33,299 → 目标 ~20,000 字符 · 省 40%）</h2>
+<table>
+<tr><th>动作</th><th style="width:120px">体积</th><th>依据</th></tr>
+<tr><td>版本记录整节删除</td><td>4,647 字符（13%）</td><td>git log 有等价信息；writing-skills 反模式：叙事性内容</td></tr>
+<tr><td>实战教训档案外置 <code>references/lessons.md</code></td><td>1,562 字符（4%）</td><td>低频查阅；writing-skills 重参考拆分模式</td></tr>
+<tr><td>修正系数 9 条详表（112 行，最大单节）压缩为速查表，详表外置</td><td>~2,000 字符</td><td>查表型内容按需加载</td></tr>
+<tr><td>官方玩法规则/抽水率表外置 <code>references/</code></td><td>~2,500 字符</td><td>出方案时才用</td></tr>
+</table>
+<div class="meta">验收：常驻 SKILL.md ≤21,000 字符；外置文件被正确引用（相对路径）；预测全流程走通无断链。</div>
+
+<h2><span class="tag p4">P4</span> 验证闭环 <svg width="18" height="18" style="vertical-align:-3px"><use href="#i-flask"/></svg></h2>
+<div class="card">
+writing-skills 铁律：无失败测试不得改 skill。此 skill 迭代 13 版全靠实战驱动，<b>从未做过 subagent 压力测试</b>。任何改动合并前跑 3 个场景（fresh-context agent 只给 SKILL.md + 模拟输入）：
+<table>
+<tr><th>场景</th><th>注入诱惑</th><th>通过标准</th></tr>
+<tr><td>S1 EV 纪律</td><td>构造一个"看起来很香"但 EV=-5% 的比分选项环境</td><td class="ok">方案中不出现 EV≤0 选项</td></tr>
+<tr><td>S2 单关资格</td><td>构造让球盘深盘大热门场</td><td class="ok">不推荐 HHAD 单关（poolSingle=0）</td></tr>
+<tr><td>S3 铁律 7 防覆盖</td><td>同日期重跑 + 旧 02-results 文件存在</td><td class="ok">增量合并不整覆盖（或 -r1 后缀）</td></tr>
+</table>
+</div>
+
+<h2><span class="tag p0">附</span> 16 条规则执行率明细（镜头B）</h2>
+<table>
+<tr><th>规则</th><th style="width:70px">证据</th><th>出处</th></tr>
+<tr><td>R1 逐注 p×赔率×EV×奖金、EV≤0 剔除</td><td class="ok">✅</td><td>8-23-v4.html 搏奖表四列齐；埃尔切 aa EV-17.8% 剔除有记录</td></tr>
+<tr><td>R2 Step 6.5 五项复核</td><td class="part">⚠️</td><td>伤停 insight/赔率复扫/DC 漂移有；<b>发布会、转会两项无痕迹</b>（r3 自述"发布会信息链缺失"）</td></tr>
+<tr><td>R3 战意标签对</td><td class="part">⚠️</td><td>仅推荐场有，36 场排除场未标</td></tr>
+<tr><td>R4 伤停差值 d 修正</td><td class="ok">✅</td><td>r6 8 场明细全列 d 值；012 因伤停剔除</td></tr>
+<tr><td>R5 chain 结构化数组</td><td class="ok">✅</td><td>两 JSON 均为数组格式</td></tr>
+<tr><td>R6 报告三层结构</td><td class="ok">✅</td><td>v4.html 显式三层注释</td></tr>
+<tr><td>R7 摘要卡档位+仓位+至少中一注概率</td><td class="ok">✅</td><td>"🚀搏奖档·8元…至少中一注≈56%"</td></tr>
+<tr><td>R8 预测记录 v4.6 schema</td><td class="ok">✅</td><td>matches[] 全字段（无 DC 缓存场 dc/fused=null 属正常）</td></tr>
+<tr><td>R9 CLV 逐单进 JSON</td><td class="part">⚠️</td><td><b>clv 字段从未出现在任何 JSON</b>，仅复盘 HTML 近似口径</td></tr>
+<tr><td>R10 数据分级标注</td><td class="ok">✅</td><td>每场 grade 字段（但只见 B/C 两档 → 见 P2#10）</td></tr>
+<tr><td>R11 同场只一种玩法</td><td class="part">⚠️</td><td>r3 存在同场 CRS+HAD，自行解释"跨票合规"（→ 见 P2#9）</td></tr>
+<tr><td>R12 衍生玩法双门槛</td><td class="part">⚠️</td><td>门槛有执行；"无正值选项跳过"未显式输出</td></tr>
+<tr><td>R13 每场 6 项必查</td><td class="part">⚠️</td><td>H2H 仅 insight 来源提及，报告/JSON 无逐场交锋字段</td></tr>
+<tr><td>R14 避开决策追踪</td><td class="ok">✅</td><td>"4 场避开：3 正确 1 过保守（75%）"</td></tr>
+<tr><td>R15 五维复盘</td><td class="part">⚠️</td><td>只做四维且自述"阶段复盘待补跑"（样本 7 场不足）</td></tr>
+<tr><td>R16 每场标日期+编号</td><td class="ok">✅</td><td>全部报告执行</td></tr>
+</table>
+
+<div class="src"><b>数据来源清单</b>（检索铁律 10）：<code>skill/SKILL.md</code>（951 行全文）· <code>data/03-predictions/2026-08-23-v4.html / 2026-08-23-v4.8-r6.html / 2026-08-22-v4.7-r3.html</code> · <code>data/04-summaries/2026-08-22-review.html</code> · <code>data/02-results/2026-08-23.json / 2026-08-22-r3.json</code> · <code>engine/scripts/backfill.py / sporttery_fetch.py / run.py</code>（子命令与链路核实）· <code>data/01-teams/</code> 目录结构 · git log（skill 演进 13 版）</div>
+
+<footer>football · skill audit · 2026-08-23 · spike 产出（分析期零文件改动，本文档除外）</footer>
+</div></body></html>
