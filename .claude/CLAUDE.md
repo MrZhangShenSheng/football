@@ -27,7 +27,7 @@
 - `data/05-trends/`: 趋势发现 JSON
 - `engine/scripts/`: Python 脚本（dc_fit/dc_predict/elo_fetch/xg_fetch/odds_fetch/backtest/calibrate/build_index）
 - `engine/cache/`: DC 参数缓存（{league}_dc.json）+ `models/` 版本化存档（{league}_dc_v{n}.json+.meta+latest.json，holdout 门槛发布）+ fusion.json 融合系数
-- `skill/SKILL.md`: 预测 skill v4.1（junction 到 ~/.claude/skills/）
+- `skill/SKILL.md`: 预测 skill v4.9（junction 到 ~/.claude/skills/）+ `skill/references/` 外置参考（系数详表/官方玩法规则/教训档案，skill 正文按需加载）
 - `docs/`: 设计文档
 
 ## 检索铁律
@@ -50,7 +50,7 @@
 |:---|:---|:---|
 | 体彩官方 API | ✅ WebFetch 可用 | 赛程 + 赔率 + **赛果**（sporttery_fetch.py：`league-results` 联赛历史=zqlszl 口径 90天分段；`results` 开奖口径=zqsgkj 按场次编号"周六028"对票，ESPN 互备；含韩职 korea=86 等 fd/ESPN 缺失联赛）+ **单场情报 `insight <matchId>`**（zqdz 口径：伤停/近10场/即时排名/H2H/射手，伤停首选源免搜索配额） |
 | football-data.co.uk | ✅ requests 直连（engine/scripts/odds_fetch.py） | **Pinnacle 收盘价（PPCH/PPCD/PPCA）+ B365 收盘 + xG（HxG/AxG）+ 比分**，主流联赛当季 CSV |
-| ESPN API | ✅ requests 直连（engine/scripts/espn_fetch.py，**勿加浏览器 UA 会 403**） | 赛果（按日期）、实时积分榜；覆盖日职 jpn.1/瑞超 swe.1/挪超/丹超/沙特 ksa.1/荷甲/葡超等 fd 不含联赛 |
+| ESPN API | ⚠️ 赛果接口 2026-08-22 起停摆（backfill 已切体彩编号对票主链路，恢复后 ESPN 自动回为兜底）；requests 直连（engine/scripts/espn_fetch.py，**勿加浏览器 UA 会 403**） | 赛果（按日期）、实时积分榜；覆盖日职 jpn.1/瑞超 swe.1/挪超/丹超/沙特 ksa.1/荷甲/葡超等 fd 不含联赛 |
 | titan007（球探体育） | ✅ requests 直连（engine/scripts/cn_fetch.py，须带浏览器 UA+Referer 否则 442；国内速度快，ESPN 不可达时兜底） | 联赛积分榜（JS 数组直取）+ 中英文队名对照（teams 子命令补别名用）。ID：36英超 31西甲 8德甲 11法甲 16荷甲 23葡超 25日职 26瑞超 22挪超 7丹超 13芬超 292沙特 |
 | clubelo.com | ⚠️ api 子域被墙；主域可达（elo_fetch.py 双链路自动切换：api CSV → 主域 HTML 正则） | Elo；主域仅"近期有比赛"的活跃队有页面，休赛期队失败属正常（21/25 实测成功） |
 | understat.com | ⚠️ 2026 赛季数据未开（xg_fetch.py 备选） | xG（主链路已走 fd CSV） |

@@ -47,9 +47,13 @@ python espn_fetch.py history ksa.1 2025
 if ($LASTEXITCODE -ne 0) { Write-Host "    ksa history fail" -ForegroundColor DarkYellow }
 python espn_fetch.py history swe.1 2025
 if ($LASTEXITCODE -ne 0) { Write-Host "    swe history fail" -ForegroundColor DarkYellow }
+# K-League via sporttery league-results (v4.8; ESPN has no K-League data)
+python sporttery_fetch.py league-results korea
+if ($LASTEXITCODE -ne 0) { Write-Host "    korea history fail (re-run anytime)" -ForegroundColor DarkYellow }
 python dc_fit.py japan --source local --publish
 python dc_fit.py saudi --source local --publish
 python dc_fit.py sweden --source local --publish
+python dc_fit.py korea --source local --publish
 Pop-Location
 
 Write-Host "`n=== Install done ===" -ForegroundColor Cyan

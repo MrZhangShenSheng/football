@@ -38,9 +38,12 @@ python3 sporttery_fetch.py || echo "    sporttery_fetch 失败（体彩 API 可�
 python3 espn_fetch.py history jpn.1 2025 || echo "    日职历史回填失败（可稍后 run.py learn 重试）"
 python3 espn_fetch.py history ksa.1 2025 || echo "    沙特历史回填失败"
 python3 espn_fetch.py history swe.1 2025 || echo "    瑞超历史回填失败"
+# 韩职走体彩 league-results 口径（v4.8 接入；ESPN 无此联赛数据）
+python3 sporttery_fetch.py league-results korea || echo "    韩职历史回填失败（可稍后重跑）"
 python3 dc_fit.py japan --source local --publish || echo "    日职本地拟合失败"
 python3 dc_fit.py saudi --source local --publish || echo "    沙特本地拟合失败"
 python3 dc_fit.py sweden --source local --publish || echo "    瑞超本地拟合失败"
+python3 dc_fit.py korea --source local --publish || echo "    韩职本地拟合失败"
 
 echo ""
 echo "=== 安装完成 ==="
