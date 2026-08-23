@@ -248,6 +248,9 @@ def cmd_league_results(league_key: str, year: str | None) -> None:
                "fetchedAt": date.today().isoformat(), "droppedUnmapped": len(dropped), "matches": merged}
     out_path.write_text(json.dumps(payload, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     log("sporttery", f"{league_key} {season_name}: 入库 {len(rows)} 场（未映射丢弃 {len(dropped)}，库存累计 {len(merged)}）→ {out_path.relative_to(ROOT)}")
+    # 赛果入库后自动重建球队路由索引（2026-08-23 教训：建队画像漏跑 build_index 致新队检索不到）
+    from build_index import main as rebuild_index
+    rebuild_index()
     if dropped:
         from collections import Counter
         top = Counter(dropped).most_common(8)
