@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>r4 终审维持 · 2026-08-23（周日-周一批次）</title>
+<style>
+  :root{--bg:#0f1420;--card:#171e2e;--line:#28324a;--txt:#dde5f5;--sub:#8fa0c0;--gold:#f0b429;--green:#3ddc84;--red:#ff6b6b;--blue:#5aa7ff}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--txt);font:14px/1.65 -apple-system,"PingFang SC",sans-serif;padding:24px}
+  .wrap{max-width:980px;margin:0 auto}
+  h1{font-size:19px;margin-bottom:4px}
+  .sub{color:var(--sub);font-size:12px;margin-bottom:16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:14px}
+  h2{font-size:15px;margin-bottom:10px}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+  th{color:var(--sub);text-align:left;font-weight:500;padding:6px 8px;border-bottom:1px solid var(--line)}
+  td{padding:7px 8px;border-bottom:1px solid var(--line)}
+  .pos{color:var(--green)} .neg{color:var(--red)} .gold{color:var(--gold)} .blue{color:var(--blue)}
+  .note{font-size:12px;color:var(--sub);margin-top:6px}
+  .icon{width:18px;height:18px;color:currentColor;vertical-align:-3px}
+  .warn{background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.3);border-radius:8px;padding:10px 14px;font-size:12px;color:#ffb4a8;margin-top:12px}
+  .ok{background:rgba(61,220,132,.07);border:1px solid rgba(61,220,132,.25);border-radius:8px;padding:10px 14px;font-size:12px;color:#a8e6c3;margin-top:12px}
+</style></head><body>
+<svg style="display:none"><symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></symbol></svg>
+
+<div class="wrap">
+<h1>🛡️ r4 终审维持 · 2026-08-23 10:30（周日-周一批次 36 场）</h1>
+<div class="sub">性质：r3 方案临场终审（≤12h 窗口）· 结论：<b class="gold">零信息边际 → 全部维持，不建议追加新注</b> · <a href="../../data/02-results/2026-08-23.json" style="color:var(--blue)">记录 JSON</a></div>
+
+<div class="card">
+<h2>终审依据（信息边际三定律）</h2>
+<table>
+<tr><th>复核项</th><th>结果</th></tr>
+<tr><td>赔率异动扫描（36 场，昨 19:05 → 今 10:24）</td><td class="pos">仅周日025 波尔图平局 5.70→5.95（+4.4%，r3 已排除场）——实质零异动</td></tr>
+<tr><td>当日新信息（发布会/伤停）</td><td class="neg">无源（搜索配额耗尽至 8-31，铁律 4 降级运行）</td></tr>
+<tr><td>判定</td><td><b>定律 3（无边际 → 禁止调换）</b>：r3 全部选项、方案、实票建议维持原状</td></tr>
+</table>
+<div class="note">基建修复：体彩 API 单关字段无声迁移（single 废弃恒 0 → bettingSingle），已修复 sporttery_fetch.py。修复后分布与历史实测一致（HAD 13/36 可单关 / HHAD 0 / CRS·TTG·HAFU 36/36），对方案无影响。</div>
+</div>
+
+<div class="card">
+<h2><svg class="icon" style="color:var(--gold)"><use href="#i-shield"/></svg>存续敞口（你已持有的票）</h2>
+<table>
+<tr><th>票</th><th>内容</th><th>状态</th><th>下一节点</th></tr>
+<tr><td>🎫 4串11（22元）</td><td>dd ✅ + 帕尔马 ❌ + <b>町田 2-0</b> + <b>巴萨客/客</b></td><td>存活 4 注 / 上限 349.5 元</td><td><svg class="icon"><use href="#i-clock"/></svg> 町田今晚 18:30 → 巴萨明晚 03:30</td></tr>
+<tr><td>⚖️ 平衡尾巴（2元）</td><td>厄格里特平 @3.52</td><td class="pos">✅ 已中落袋 7.04 元</td><td>已结</td></tr>
+</table>
+<div class="ok">最现实路径：巴萨客/客兑现（47%）→ dd+巴萨 @10.5 → <b>21 元</b>；町田若 2-0（12.5%）→ 108 元起。</div>
+</div>
+
+<div class="card">
+<h2>可选项：平衡档主线串（r3 推荐，如未购）</h2>
+<table>
+<tr><th>注</th><th>结构</th><th>p</th><th>赔率</th><th>EV</th><th>窗口</th></tr>
+<tr><td>2串1 × 2倍（4元）</td><td>周日002 町田主胜 @1.77 × 周日014 费耶诺德客胜 @1.14</td><td>47%</td><td>2.02</td><td class="neg">-5.1%</td><td>今晚 18:30 前</td></tr>
+</table>
+<div class="note">与 4串11 的町田 2-0 是<b>分散不是重复</b>：町田赢但非 2-0 时主线串活、4串11 町田腿断；町田恰 2-0 时双中。仓位核算：已投 22 + 主线 4 = 26/30 元，红线内。若不追加，总敞口 22 元（已回收 7.04）。</div>
+</div>
+
+<div class="warn">模型 ≠ 必中（方向基线 60~65%）。本轮零边际为"维持"的技术性表述——巴萨客/客 47% 意味着约一半概率明晚断票，属正常方差，非复盘依据。温哥华 vs 达拉斯（周六028）回填时进行中，赛果待补后并入语料。</div>
+</div>
+</body></html>

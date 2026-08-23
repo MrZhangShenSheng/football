@@ -45,10 +45,12 @@ def fetch() -> dict:
 
 
 def pool_singles(m: dict) -> dict:
-    """poolList → {poolCode: single(0/1)}，池在售才有键。"""
+    """poolList → {poolCode: single(0/1)}，池在售才有键。
+    2026-08-23 实测：体彩 API 将 single 字段废弃（恒 0），单关资格迁移至 bettingSingle
+    （分布与 08-22 实测一致：HAD 13/36 可单关、HHAD 全 0、CRS/TTG/HAFU 全场单关）。"""
     out = {}
     for p in m.get("poolList") or []:
-        out[p.get("poolCode")] = p.get("single")
+        out[p.get("poolCode")] = p.get("bettingSingle", p.get("single"))
     return out
 
 
