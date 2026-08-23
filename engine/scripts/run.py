@@ -17,7 +17,7 @@
 
 联赛代码（football-data.co.uk）：SP1 西甲 F1 法甲 F2 法乙 E0 英超 D1 德甲 I1 意甲 ...
 fit/predict/backtest 用联赛全名：spain-laliga / france-ligue1 / france-ligue2 ...
-本地赛果联赛（espn history 回填）：japan / saudi / sweden（韩职 ESPN 无数据，来源待补）
+本地赛果联赛（espn history 回填）：japan / saudi / sweden；体彩源（sporttery league-results 回填）：korea
 """
 import subprocess
 import sys
@@ -39,6 +39,8 @@ LOCAL_LEAGUES = {
     "ksa.1": "saudi",
     "swe.1": "sweden",
 }
+# 体彩源联赛（ESPN 不覆盖；sporttery_fetch.py league-results 回填，2026-08-23 韩职接入）
+SPORTTERY_LEAGUES = ("korea",)
 CURRENT_SEASON = "2627"
 
 
@@ -100,9 +102,13 @@ def main() -> None:
         targets = rest or list(LOCAL_LEAGUES.values())
         by_name = {v: k for k, v in LOCAL_LEAGUES.items()}
         for league in targets:
+            if league in SPORTTERY_LEAGUES:
+                sh("sporttery_fetch.py", "league-results", league, year)
+                sh("dc_fit.py", league, "--source", "local", "--publish")
+                continue
             code = by_name.get(league)
             if not code:
-                log("run", f"未知本地联赛 {league}（可用: {', '.join(LOCAL_LEAGUES.values())}）")
+                log("run", f"未知本地联赛 {league}（可用: {', '.join(LOCAL_LEAGUES.values()) + ', ' + ', '.join(SPORTTERY_LEAGUES)}）")
                 continue
             sh("espn_fetch.py", "history", code, year)
             sh("dc_fit.py", league, "--source", "local", "--publish")
@@ -116,6 +122,9 @@ def main() -> None:
             sh("dc_fit.py", league, season, "--auto")
         for code, league in LOCAL_LEAGUES.items():
             sh("espn_fetch.py", "history", code, str(int(CURRENT_SEASON[:2]) + 2000))
+            sh("dc_fit.py", league, "--source", "local", "--publish")
+        for league in SPORTTERY_LEAGUES:
+            sh("sporttery_fetch.py", "league-results", league, str(int(CURRENT_SEASON[:2]) + 2000))
             sh("dc_fit.py", league, "--source", "local", "--publish")
     else:
         print(__doc__)

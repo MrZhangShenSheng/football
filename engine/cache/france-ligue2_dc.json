@@ -1,89 +1,106 @@
 {
   "league": "france-ligue2",
   "seasons": [
-    "2526"
+    "2526",
+    "2627"
   ],
   "xi": 0.005,
-  "homeAdv": 0.1236,
+  "homeAdv": 0.0,
   "rho": 0.1,
-  "matchesUsed": 98,
+  "matchesUsed": 116,
   "dateRange": [
     "2025-08-09",
-    "2025-11-25"
+    "2026-08-14"
   ],
-  "lastFit": "2026-08-22",
+  "lastFit": "2026-08-23",
   "teams": {
     "Amiens": {
-      "attack": 0.0696,
-      "defense": 0.095
+      "attack": 0.2846,
+      "defense": 0.1273
     },
     "Annecy": {
-      "attack": 0.147,
-      "defense": -0.2551
+      "attack": 0.3185,
+      "defense": -0.7481
     },
     "Bastia": {
-      "attack": -1.4818,
-      "defense": -0.0033
+      "attack": -0.8811,
+      "defense": 0.0247
     },
     "Boulogne": {
-      "attack": -0.2689,
-      "defense": 0.1265
+      "attack": -0.7455,
+      "defense": -0.1396
     },
     "Clermont": {
-      "attack": -0.3668,
-      "defense": -0.0929
+      "attack": -0.4457,
+      "defense": -0.1931
+    },
+    "Dijon": {
+      "attack": -0.1375,
+      "defense": 0.0071
     },
     "Dunkerque": {
-      "attack": 0.441,
-      "defense": 0.0884
+      "attack": 0.9826,
+      "defense": 0.5096
     },
     "Grenoble": {
-      "attack": -0.1007,
-      "defense": -0.0501
+      "attack": 0.0394,
+      "defense": 0.0761
     },
     "Guingamp": {
-      "attack": 0.3877,
-      "defense": 0.5002
+      "attack": 0.5158,
+      "defense": 0.4954
     },
     "Laval": {
-      "attack": -0.3723,
-      "defense": -0.1111
+      "attack": -0.0026,
+      "defense": 0.3987
     },
     "Le Mans": {
-      "attack": 0.1279,
-      "defense": 0.0003
+      "attack": 0.3303,
+      "defense": 0.0206
+    },
+    "Metz": {
+      "attack": -0.1655,
+      "defense": -0.7237
     },
     "Montpellier": {
-      "attack": -0.0055,
-      "defense": -0.253
+      "attack": 0.1047,
+      "defense": -0.2229
     },
     "Nancy": {
-      "attack": -0.1672,
-      "defense": 0.0998
+      "attack": -0.4262,
+      "defense": 0.0112
+    },
+    "Nantes": {
+      "attack": -0.4005,
+      "defense": 0.5655
     },
     "Pau FC": {
-      "attack": 0.3079,
-      "defense": 0.0704
+      "attack": 0.222,
+      "defense": -0.1743
     },
     "Red Star": {
-      "attack": 0.2752,
-      "defense": -0.4456
+      "attack": -0.0729,
+      "defense": -0.4589
     },
     "Reims": {
-      "attack": 0.1779,
-      "defense": 0.0496
+      "attack": 0.2988,
+      "defense": -0.004
     },
     "Rodez": {
-      "attack": -0.1392,
-      "defense": 0.2083
+      "attack": 0.3017,
+      "defense": 0.3037
+    },
+    "Sochaux": {
+      "attack": -1.763,
+      "defense": -0.0663
     },
     "St Etienne": {
-      "attack": 0.4988,
-      "defense": 0.4278
+      "attack": 0.9738,
+      "defense": 0.4096
     },
     "Troyes": {
-      "attack": 0.4693,
-      "defense": -0.4551
+      "attack": 0.6682,
+      "defense": -0.2186
     }
   }
 }

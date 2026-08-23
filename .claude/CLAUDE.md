@@ -48,7 +48,7 @@
 
 | 源 | 状态 | 用途 |
 |:---|:---|:---|
-| 体彩官方 API | ✅ WebFetch 可用 | 赛程 + 赔率 |
+| 体彩官方 API | ✅ WebFetch 可用 | 赛程 + 赔率 + **赛果**（sporttery_fetch.py：`league-results` 联赛历史=zqlszl 口径 90天分段；`results` 开奖口径=zqsgkj 按场次编号"周六028"对票，ESPN 互备；含韩职 korea=86 等 fd/ESPN 缺失联赛） |
 | football-data.co.uk | ✅ requests 直连（engine/scripts/odds_fetch.py） | **Pinnacle 收盘价（PPCH/PPCD/PPCA）+ B365 收盘 + xG（HxG/AxG）+ 比分**，主流联赛当季 CSV |
 | ESPN API | ✅ requests 直连（engine/scripts/espn_fetch.py，**勿加浏览器 UA 会 403**） | 赛果（按日期）、实时积分榜；覆盖日职 jpn.1/瑞超 swe.1/挪超/丹超/沙特 ksa.1/荷甲/葡超等 fd 不含联赛 |
 | titan007（球探体育） | ✅ requests 直连（engine/scripts/cn_fetch.py，须带浏览器 UA+Referer 否则 442；国内速度快，ESPN 不可达时兜底） | 联赛积分榜（JS 数组直取）+ 中英文队名对照（teams 子命令补别名用）。ID：36英超 31西甲 8德甲 11法甲 16荷甲 23葡超 25日职 26瑞超 22挪超 7丹超 13芬超 292沙特 |
@@ -70,4 +70,4 @@
 
 - `data/02-results/` 超 500 个日期文件（约两赛季）→ 迁移 SQLite FTS5（队名+日期索引），其余目录保持文件
 - corpus 就绪度 n≥100（已回填赛果）→ 实现 P2 calibrate.py 融合重校（a≤0.6 护栏）；n≥50 → ablate.py 系数消融（人审 diff）——门槛读 data/04-summaries/corpus.json readiness
-- 韩职历史赛果无 ESPN 数据源 → 找到源后：补 _aliases espn 字段 → run.py learn 加 kor 映射
+- ~~韩职历史赛果无 ESPN 数据源~~ ✅ 2026-08-23 已解决：体彩票源接入（sporttery_fetch.py league-results korea，597 场三季回填 + dc_fit 发布 v1）

@@ -1,24 +1,26 @@
 {
   "league": "netherlands-eredivisie",
   "season": "2026-27",
-  "generatedAt": "2026-08-22",
-  "roundsPlayed": 2,
+  "generatedAt": "2026-08-23",
+  "roundsPlayed": 3,
   "standings": [
     {
       "pos": 1,
       "team": "AZ Alkmaar",
-      "played": 2,
-      "won": 2,
+      "teamZh": "阿尔克马尔",
+      "played": 3,
+      "won": 3,
       "drawn": 0,
       "lost": 0,
-      "gf": 6,
+      "gf": 8,
       "ga": 1,
-      "gd": 5,
-      "pts": 6
+      "gd": 7,
+      "pts": 9
     },
     {
       "pos": 2,
-      "team": "FC Groningen",
+      "team": "Groningen",
+      "teamZh": "格罗宁根",
       "played": 2,
       "won": 2,
       "drawn": 0,
@@ -31,6 +33,7 @@
     {
       "pos": 3,
       "team": "Go Ahead Eagles",
+      "teamZh": "前进之鹰",
       "played": 2,
       "won": 1,
       "drawn": 1,
@@ -42,19 +45,8 @@
     },
     {
       "pos": 4,
-      "team": "Fortuna Sittard",
-      "played": 2,
-      "won": 1,
-      "drawn": 1,
-      "lost": 0,
-      "gf": 5,
-      "ga": 3,
-      "gd": 2,
-      "pts": 4
-    },
-    {
-      "pos": 5,
-      "team": "Ajax Amsterdam",
+      "team": "AFC Ajax",
+      "teamZh": "阿贾克斯",
       "played": 2,
       "won": 1,
       "drawn": 1,
@@ -65,8 +57,22 @@
       "pts": 4
     },
     {
+      "pos": 5,
+      "team": "Sparta Rotterdam",
+      "teamZh": "鹿特丹斯巴达",
+      "played": 3,
+      "won": 1,
+      "drawn": 1,
+      "lost": 1,
+      "gf": 6,
+      "ga": 5,
+      "gd": 1,
+      "pts": 4
+    },
+    {
       "pos": 6,
       "team": "PSV Eindhoven",
+      "teamZh": "埃因霍温",
       "played": 2,
       "won": 1,
       "drawn": 1,
@@ -78,7 +84,8 @@
     },
     {
       "pos": 7,
-      "team": "Feyenoord Rotterdam",
+      "team": "Feyenoord",
+      "teamZh": "费耶诺德",
       "played": 2,
       "won": 1,
       "drawn": 1,
@@ -90,19 +97,34 @@
     },
     {
       "pos": 8,
-      "team": "Heerenveen",
-      "played": 2,
+      "team": "Fortuna Sittard",
+      "teamZh": "福图纳锡塔德",
+      "played": 3,
       "won": 1,
       "drawn": 1,
-      "lost": 0,
-      "gf": 3,
-      "ga": 2,
-      "gd": 1,
+      "lost": 1,
+      "gf": 5,
+      "ga": 5,
+      "gd": 0,
       "pts": 4
     },
     {
       "pos": 9,
-      "team": "Excelsior",
+      "team": "SC Heerenveen",
+      "teamZh": "海伦芬",
+      "played": 3,
+      "won": 1,
+      "drawn": 1,
+      "lost": 1,
+      "gf": 3,
+      "ga": 4,
+      "gd": -1,
+      "pts": 4
+    },
+    {
+      "pos": 10,
+      "team": "Excelsior SBV",
+      "teamZh": "SBV精英",
       "played": 2,
       "won": 1,
       "drawn": 0,
@@ -113,8 +135,9 @@
       "pts": 3
     },
     {
-      "pos": 10,
+      "pos": 11,
       "team": "NEC Nijmegen",
+      "teamZh": "奈梅亨",
       "played": 2,
       "won": 1,
       "drawn": 0,
@@ -125,20 +148,9 @@
       "pts": 3
     },
     {
-      "pos": 11,
-      "team": "Sparta Rotterdam",
-      "played": 2,
-      "won": 1,
-      "drawn": 0,
-      "lost": 1,
-      "gf": 3,
-      "ga": 2,
-      "gd": 1,
-      "pts": 3
-    },
-    {
       "pos": 12,
-      "team": "FC Twente",
+      "team": "FC Twente Enschede",
+      "teamZh": "特温特",
       "played": 2,
       "won": 1,
       "drawn": 0,
@@ -150,7 +162,8 @@
     },
     {
       "pos": 13,
-      "team": "Telstar",
+      "team": "SC Telstar",
+      "teamZh": "特尔斯达",
       "played": 2,
       "won": 1,
       "drawn": 0,
@@ -162,31 +175,34 @@
     },
     {
       "pos": 14,
-      "team": "FC Utrecht",
-      "played": 2,
-      "won": 0,
+      "team": "PEC Zwolle",
+      "teamZh": "兹沃勒",
+      "played": 3,
+      "won": 1,
       "drawn": 0,
       "lost": 2,
-      "gf": 2,
-      "ga": 6,
-      "gd": -4,
-      "pts": 0
+      "gf": 3,
+      "ga": 5,
+      "gd": -2,
+      "pts": 3
     },
     {
       "pos": 15,
-      "team": "PEC Zwolle",
-      "played": 2,
+      "team": "FC Utrecht",
+      "teamZh": "乌德勒支",
+      "played": 3,
       "won": 0,
-      "drawn": 0,
+      "drawn": 1,
       "lost": 2,
-      "gf": 1,
-      "ga": 5,
+      "gf": 5,
+      "ga": 9,
       "gd": -4,
-      "pts": 0
+      "pts": 1
     },
     {
       "pos": 16,
       "team": "ADO Den Haag",
+      "teamZh": "海牙",
       "played": 2,
       "won": 0,
       "drawn": 0,
@@ -199,6 +215,7 @@
     {
       "pos": 17,
       "team": "Willem II",
+      "teamZh": "威廉二世",
       "played": 2,
       "won": 0,
       "drawn": 0,
@@ -211,6 +228,7 @@
     {
       "pos": 18,
       "team": "SC Cambuur",
+      "teamZh": "坎布尔",
       "played": 2,
       "won": 0,
       "drawn": 0,
@@ -270,7 +288,7 @@
     "xi": 0.005
   },
   "freshness": {
-    "standingsSource": "espn",
+    "standingsSource": "titan007",
     "stale": false,
     "note": "Claude 预测时 WebFetch ESPN 实时积分榜覆盖 standings 并改 standingsSource=espn"
   }
