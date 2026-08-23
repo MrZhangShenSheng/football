@@ -1,18 +1,18 @@
 {
  "generatedAt": "2026-08-23",
- "n_total": 129,
- "n_rounds": 4,
+ "n_total": 130,
+ "n_rounds": 5,
  "readiness": {
   "n_result": 55,
   "n_clv": 7,
-  "n_pfinal": 95,
+  "n_pfinal": 96,
   "calibrateReady": false,
   "calibrateGap": 45,
   "ablateReady": true,
   "by_league": {
    "意甲": 18,
    "西甲": 15,
-   "英超": 14,
+   "英超": 15,
    "瑞超": 9,
    "法甲": 9,
    "荷甲": 9,
@@ -34,7 +34,7 @@
    "英冠": 1
   },
   "by_star": {
-   "1": 11,
+   "1": 12,
    "2": 53,
    "3": 28,
    "4": 17,
@@ -1408,7 +1408,7 @@
     "r2终审剔除:周三主负+达拉斯客两连胜6球"
    ],
    "result": "5-0",
-   "directionHit": null,
+   "directionHit": true,
    "scoreHit": null,
    "clv": null,
    "clv_note": null,
@@ -2238,7 +2238,7 @@
     "r2终审剔除维持"
    ],
    "result": "5-0",
-   "directionHit": null,
+   "directionHit": true,
    "scoreHit": null,
    "clv": null,
    "clv_note": null,
@@ -2337,27 +2337,24 @@
    "league": "日职",
    "match": "町田泽维 vs 浦和红钻",
    "stars": 3,
-   "grade": 3,
-   "pick": "主胜+CRS 2-0维持",
+   "grade": 4,
+   "pick": "主胜（+实票CRS 2-0@9.0存续）",
    "play": "HAD",
    "odds": 1.73,
    "p_final": [
-    0.558,
-    0.246,
-    0.196
+    0.668,
+    0.194,
+    0.138
    ],
-   "ev": -0.009,
-   "in_plan": "维持",
-   "chain": [
-    "r4终审:零边际维持r3",
-    "r5:赔率1.77→1.73(-2.3%)异动,定律3禁止调换,维持"
-   ],
+   "ev": -0.151,
+   "in_plan": "⚖️平衡+用户实票",
+   "chain": "R3×0.95/1.10（保守修正链口径；r5未应用=0.56）",
    "result": null,
    "directionHit": null,
    "scoreHit": null,
    "clv": null,
    "clv_note": null,
-   "round": "2026-08-23"
+   "round": "2026-08-23-r7"
   },
   {
    "date": "2026-08-23",
@@ -2583,31 +2580,25 @@
    "code": "周日008",
    "league": "荷甲",
    "match": "埃因霍温 vs 格罗宁根",
-   "stars": 3,
-   "grade": 3,
-   "pick": "aa(客/客)",
+   "stars": 2,
+   "grade": 4,
+   "pick": "aa 撤销",
    "play": "HAFU",
-   "odds": 12.0,
+   "odds": 12.5,
    "p_final": [
-    0.681,
-    0.171,
-    0.148
+    0.816,
+    0.121,
+    0.063
    ],
-   "ev": 0.489,
-   "in_plan": "🚀搏奖",
-   "chain": [
-    "格罗宁根2-0-0荷甲第2(4-1客胜海牙)",
-    "PSV 1-1-0",
-    "DC客胜0.227>市场0.123分歧内",
-    "HAD主胜EV-15%不入",
-    "终审:伤停d=-1(格罗宁根van Bergen)→aa 12.4%→12.0%,EV+44.5%仍过门槛,维持"
-   ],
+   "ev": 0.551,
+   "in_plan": null,
+   "chain": "★撤销：DC λ结构失真（主胜58.8% vs 市场73%，分歧14pp>5pp线）——荷甲DC混入2627三轮小样本，埃因霍温λ被拉低至2.21",
    "result": null,
    "directionHit": null,
    "scoreHit": null,
    "clv": null,
    "clv_note": null,
-   "round": "2026-08-23"
+   "round": "2026-08-23-r7"
   },
   {
    "date": "2026-08-23",
@@ -2668,6 +2659,31 @@
    "clv": null,
    "clv_note": null,
    "round": "2026-08-23"
+  },
+  {
+   "date": "2026-08-23",
+   "code": "周日009",
+   "league": "英超",
+   "match": "曼城 vs 伯恩茅斯",
+   "stars": 3,
+   "grade": 4,
+   "pick": "4-0",
+   "play": "CRS",
+   "odds": 17.0,
+   "p_final": [
+    0.847,
+    0.097,
+    0.056
+   ],
+   "ev": 0.419,
+   "in_plan": "🚀搏奖",
+   "chain": "同上",
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_note": null,
+   "round": "2026-08-23-r7"
   },
   {
    "date": "2026-08-23",
@@ -2906,26 +2922,24 @@
    "league": "荷甲",
    "match": "坎布尔 vs 费耶诺德",
    "stars": 4,
-   "grade": 3,
-   "pick": "客胜维持",
+   "grade": 4,
+   "pick": "客胜",
    "play": "HAD",
    "odds": 1.14,
    "p_final": [
-    0.032,
-    0.083,
-    0.885
+    0.013,
+    0.045,
+    0.942
    ],
-   "ev": -0.041,
-   "in_plan": "维持",
-   "chain": [
-    "r4终审:零边际维持r3"
-   ],
+   "ev": -0.151,
+   "in_plan": "⚖️平衡",
+   "chain": "R3×0.95+伤停d=-6（客×1.04）；DCλ失真已回退市场锚（分歧18pp）；近10场8胜2平0负情报支撑",
    "result": null,
    "directionHit": null,
    "scoreHit": null,
    "clv": null,
    "clv_note": null,
-   "round": "2026-08-23"
+   "round": "2026-08-23-r7"
   },
   {
    "date": "2026-08-23",
@@ -2991,31 +3005,25 @@
    "code": "周日016",
    "league": "法甲",
    "match": "勒阿弗尔 vs 摩纳哥",
-   "stars": 2,
+   "stars": 1,
    "grade": 3,
-   "pick": "主胜",
+   "pick": "主胜 @3.60",
    "play": "HAD",
    "odds": 3.6,
    "p_final": [
-    0.289,
-    0.259,
-    0.453
+    0.261,
+    0.245,
+    0.494
    ],
-   "ev": 0.041,
-   "in_plan": "🚀搏奖",
-   "chain": [
-    "法甲R1冷门regime",
-    "DC主胜0.408/市场0.246分歧4.3pp内",
-    "勒阿弗尔2526主场强",
-    "两队均0场首秀",
-    "HAD单关资格✓"
-   ],
+   "ev": -0.171,
+   "in_plan": null,
+   "chain": "R1×0.80/1.35足额修正；r5的EV+4.1%（final 0.289）系修正未足额",
    "result": null,
    "directionHit": null,
    "scoreHit": null,
    "clv": null,
    "clv_note": null,
-   "round": "2026-08-23"
+   "round": "2026-08-23-r7"
   },
   {
    "date": "2026-08-23",
@@ -3052,29 +3060,24 @@
    "league": "英超",
    "match": "纽卡斯尔 vs 利物浦",
    "stars": 2,
-   "grade": 3,
-   "pick": "dd(平/平)",
+   "grade": 4,
+   "pick": "dd（半平/全平）",
    "play": "HAFU",
    "odds": 7.5,
    "p_final": [
-    0.316,
-    0.258,
-    0.426
+    0.349,
+    0.266,
+    0.385
    ],
    "ev": 0.097,
    "in_plan": "🚀搏奖",
-   "chain": [
-    "英超R1勘误×0.80",
-    "DC纽卡主0.448高估(分歧18pp弃)",
-    "利物浦客胜EV-40%",
-    "终审补位:伤停d=0干净+英超R1首秀互探+分歧3.5pp+EV+9.7%"
-   ],
+   "chain": "R1×0.80/1.35+伤停d=-5（方向层分歧4pp融合锚）；dd为DC直出",
    "result": null,
    "directionHit": null,
    "scoreHit": null,
    "clv": null,
    "clv_note": null,
-   "round": "2026-08-23"
+   "round": "2026-08-23-r7"
   },
   {
    "date": "2026-08-23",
@@ -3220,29 +3223,24 @@
    "league": "意甲",
    "match": "亚特兰大 vs 萨索洛",
    "stars": 3,
-   "grade": 3,
-   "pick": "dd(平/平)",
+   "grade": 4,
+   "pick": "dd（半平/全平）",
    "play": "HAFU",
    "odds": 6.5,
    "p_final": [
-    0.596,
-    0.233,
-    0.171
+    0.585,
+    0.261,
+    0.155
    ],
    "ev": 0.209,
    "in_plan": "🚀搏奖",
-   "chain": [
-    "意甲R1平局regime",
-    "意甲平局率0.295/TOP比分1-1锚",
-    "dd模型18.6%≈联赛锚一致性✓",
-    "HAD主胜EV-32%不入"
-   ],
+   "chain": "伤停d=+1；dd为DC hafu直出（λ1.41/0.80低进球结构）",
    "result": null,
    "directionHit": null,
    "scoreHit": null,
    "clv": null,
    "clv_note": null,
-   "round": "2026-08-23"
+   "round": "2026-08-23-r7"
   },
   {
    "date": "2026-08-23",
@@ -3250,26 +3248,24 @@
    "league": "西甲",
    "match": "埃尔切 vs 巴萨",
    "stars": 2,
-   "grade": 3,
-   "pick": "aa(客/客)维持",
+   "grade": 4,
+   "pick": "aa（半客/全客）（用户实票@1.70存续）",
    "play": "HAFU",
    "odds": 1.7,
    "p_final": [
-    0.118,
-    0.177,
-    0.705
+    0.066,
+    0.117,
+    0.817
    ],
    "ev": -0.201,
    "in_plan": "用户实票",
-   "chain": [
-    "r4终审:零边际维持r3(勘误后口径)"
-   ],
+   "chain": "R2×0.90/1.20+伤停d=-1；aa概率=DC hafu直出（巴萨客胜结构）",
    "result": null,
    "directionHit": null,
    "scoreHit": null,
    "clv": null,
    "clv_note": null,
-   "round": "2026-08-23"
+   "round": "2026-08-23-r7"
   },
   {
    "date": "2026-08-23",
@@ -3718,6 +3714,45 @@
     "周六009 HAFU dd@6.0",
     "周日024 HAFU hh(客/客)@15"
    ]
+  },
+  "2026-08-23-r7:🚀搏奖": {
+   "plan": "🚀搏奖",
+   "type": "高赔单关组（EV>0+分歧<5pp+结构性分歧剔除三门槛）",
+   "stake": "8元(2元×4注)",
+   "legs": [
+    "周日023 HAFU dd（半平/全平）@6.50 p18.6% EV+20.9% 【维持r5】",
+    "周日017 HAFU dd（半平/全平）@7.50 p14.6% EV+9.7% 【维持r5】",
+    "周日009 CRS 曼城 3-0 @11.00 p9.8% EV+7.8% 分歧0.7pp 【新增r7】",
+    "周日009 CRS 曼城 4-0 @17.00 p8.3% EV+41.9% 分歧2.4pp 【新增r7】"
+   ],
+   "odds": null,
+   "evEach": true,
+   "revoked": [
+    "周日008 HAFU aa @12.50 【撤销】荷甲DC重拟合暴露λ结构失真：DC主胜58.8% vs 市场73%（方向分歧14pp>5pp纪律线），衍生品hafu不可信",
+    "周日016 HAD 主胜 @3.60 【撤销】r5的EV+4.1%系R1修正未足额（final 0.289）；足额修正链（R1×0.80+伤停d=0）后p=23%，EV=-17%"
+   ],
+   "optional": "周日002 CRS 町田 3-0 @16.00 p8.5% EV+35.2% 分歧2.2pp（资金充裕可+2元，与实票2-0跨票分池合规）",
+   "atLeastOne": 0.425
+  },
+  "2026-08-23-r7:⚖️平衡": {
+   "plan": "⚖️平衡",
+   "type": "2串1延伸票（维持r5，如未购18:30前可出）",
+   "stake": "4元(2元×2注)",
+   "legs": [
+    "周日002 HAD 主胜@1.73 × 周日014 HAD 客胜@1.14 = 复合1.97（r5口径p≈49%；r7保守修正链口径p≈37%）"
+   ],
+   "odds": 1.97,
+   "evEach": false,
+   "note": "两口径差异：町田场R3修正应用与否（日职新赛季3轮样本）。EV-2.7%（r5）~-27%（r7保守），负期望常态"
+  },
+  "2026-08-23-r7:🛡️保本": {
+   "plan": "🛡️保本",
+   "type": "不开",
+   "stake": "0元",
+   "legs": [],
+   "odds": null,
+   "evEach": false,
+   "note": "36场方向EV全负（体彩12.9%抽水+Pinnacle停摆单锚模式）；维持r5结论"
   },
   "2026-08-23:维持r3": {
    "plan": "维持r3",
