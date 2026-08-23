@@ -189,10 +189,10 @@ p_i = (1/o_i) / Σ(1/o)      ← 对 Pinnacle 收盘价计算（概率基准）
 | 🥇 | 本地知识库（football/） | 球队画像、Elo、xG、交锋索引、DC 缓存 —— 零成本 |
 | 🥈 | `espn_fetch.py`（ESPN API 直连） | 实时积分榜 + 按日期赛果，覆盖日职/瑞超/挪超/丹超/沙特/荷甲/葡超等 fd 不含联赛（**脚本直连勿用 WebFetch：浏览器 UA 会 403**） |
 | 🥉 | `cn_fetch.py`（titan007 国内源） | 积分榜兜底（ESPN 不可达时）+ `teams` 子命令出中英文队名对照补 `_aliases.json`；须带浏览器 UA+Referer |
-| 4 | 体彩官方 API | 赛程 + 赔率 |
+| 4 | 体彩官方 API（sporttery_fetch.py） | 赛程 + 赔率 + 赛果（`league-results` 联赛历史 / `results` 开奖口径按编号对票）+ **单场情报 `insight <matchId>`**（伤停名单+近10场+即时排名+H2H；matchId 见 sporttery_matches.json，免搜索配额，韩职等冷联赛同样覆盖） |
 | 5 | clubelo.com | Elo 评级（elo_fetch.py 双链路：api 子域被墙自动切主域 HTML，仅活跃队有效） |
 | 6 | Understat | xG/xGA（六大联赛） |
-| 7 | Transfermarkt / flashscore | 交锋、近期战绩、伤停 |
+| 7 | Transfermarkt / flashscore | 交锋、近期战绩、伤停（**体彩 insight 未覆盖的才用**——insight 优先，免配额） |
 | 8 | Google 搜索 | 快速验证特定信息 |
 
 agent 可灵活替换等效数据源；执行铁律 4 的失败降级。
@@ -557,7 +557,7 @@ D 级(0项)     ❌       ❌       ❌       ❌
 
 | # | 复核项 | 关注点 |
 |:--:|:---|:---|
-| ① | 伤停 / 停赛终版 | 官方医疗公告、欧战/杯赛停赛（如红牌跨赛事停赛）、训练伤退 |
+| ① | 伤停 / 停赛终版 | **先跑 `sporttery_fetch.py insight <matchId>`（结构化伤停名单，含出场/首发数）**；再补官方医疗公告、欧战/杯赛停赛（如红牌跨赛事停赛）、训练伤退 |
 | ② | 转会窗末段变动 | 核心球员离队官宣、新援注册资格、压哨交易风波（要求离队=军心变量） |
 | ③ | 赛前发布会口径 | 主帅对首发/伤病/新援的表态（当日发布会信息最新鲜） |
 | ④ | 官方赔率复扫 | 与上轮采集对比：**零异动+当日新消息=信息边际**；**赔率异动=市场已知消息** |

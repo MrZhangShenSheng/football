@@ -12,6 +12,8 @@ v4.5：五池全采——had 胜平负 / hhad 让球 / crs 比分(31选项) / tt
                                                           # 90天分段（超限报20008），队名经 _aliases zh 字段映射
   python sporttery_fetch.py results <YYYY-MM-DD> [止日期] # 体彩开奖口径赛果 → engine/cache/sporttery_results_*.json
                                                           # 含场次编号(周六028)+比分+体彩赔率，供回填流程对票
+  python sporttery_fetch.py insight <matchId>             # 单场情报（zqdz 口径）→ engine/cache/sporttery_insight_{matchId}.json
+                                                          # 伤停+近10场+即时排名+H2H+射手，供预测分析评级阶段补伤停（免搜索配额）
 """
 import json
 import sys
@@ -23,9 +25,53 @@ import requests
 
 from common import load_aliases, log, ROOT
 
-URL = "https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?channel=c"
+API_BASE = "https://webapi.sporttery.cn/gateway/uniform/football"
+URL = API_BASE + "/getMatchCalculatorV1.qry"
 OUT = ROOT / "engine" / "cache" / "sporttery_matches.json"
 CACHE_DIR = ROOT / "engine" / "cache"
+def cmd_insight(mid: str) -> None:
+    """zqdz 单场情报：伤停+近10场+即时排名+H2H+射手 → engine/cache/sporttery_insight_{matchId}.json（精简字段落盘）。"""
+    q = f"sportteryMatchId={mid}"
+    head = get_json(HEAD_URL + "?source=web&" + q).get("value") or {}
+    if not head.get("matchNum"):
+        log("sporttery", f"matchId={mid} 无效（getMatchHeadV1 空）")
+        return
+    inj_raw = get_json(INJURY_URL + "?" + q).get("value") or {}
+    feature = get_json(FEATURE_URL + "?termLimits=10&" + q).get("value") or {}
+    h2h = get_json(H2H_URL + "?" + q + "&termLimits=10&tournamentFlag=0&homeAwayFlag=0").get("value") or {}
+    scorers = get_json(PLAYER_URL + "?" + q + "&termLimits=3").get("value") or {}
+
+    def slim_injury(lst):
+        return [{"name": x.get("personName"), "pos": x.get("playerPositionDesc"), "no": x.get("uniformNo"),
+                 "injury": x.get("injuryFlag"), "suspension": x.get("suspensionFlag"),
+                 "apps": x.get("appearanceCnt"), "starts": x.get("startedMatchCnt")}
+                for x in (lst or [])]
+
+    payload = {
+        "fetchedAt": date.today().isoformat(), "source": "sporttery", "matchId": int(mid),
+        "match": {"code": head.get("matchNum"), "league": head.get("tournamentCnShortName"),
+                  "gameweek": head.get("gameweek"), "season": head.get("seasonName"),
+                  "home": head.get("homeTeamShortName"), "away": head.get("awayTeamShortName"),
+                  "kickoff": head.get("matchDateTime"), "uniformMatchId": head.get("uniformMatchId")},
+        "standing": head.get("wbsjStats") or None,
+        "injuries": {"home": slim_injury((inj_raw.get("home") or {}).get("injuriesAndSuspensionsList")),
+                     "away": slim_injury((inj_raw.get("away") or {}).get("injuriesAndSuspensionsList"))},
+        "form": {"goalAvg": feature.get("goalAvg"), "last10": feature.get("eachHomeAway"),
+                 "last10HomeAway": feature.get("eachSameHomeAway")} if feature else None,
+        "h2h": {"statistics": h2h.get("statistics"),
+                "matches": [{"date": m.get("matchDate"), "home": m.get("homeTeamShortName"),
+                             "score": m.get("fullCourtGoal"), "ht": m.get("halfTimeGoal"),
+                             "away": m.get("awayTeamShortName"), "winner": m.get("homeMatchResult")}
+                            for m in (h2h.get("matchList") or [])]} if h2h else None,
+        "scorers": scorers or None,
+    }
+    out = CACHE_DIR / f"sporttery_insight_{mid}.json"
+    out.write_text(json.dumps(payload, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    inj_h, inj_a = payload["injuries"]["home"], payload["injuries"]["away"]
+    log("sporttery", f"{payload['match']['code']} {payload['match']['league']} "
+                     f"{payload['match']['home']} vs {payload['match']['away']} → {out.name}")
+    log("sporttery", f"伤停: 主 {len(inj_h)} 人 / 客 {len(inj_a)} 人; H2H {len(payload['h2h']['matches'] or []) if payload['h2h'] else 0} 场"
+                     f"; 排名 主{payload['standing']['home']['ranking'] if payload['standing'] else '-'}/客{payload['standing']['away']['ranking'] if payload['standing'] else '-'}")
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     "Accept": "application/json, text/plain, */*",
@@ -41,7 +87,7 @@ def fetch() -> dict:
     last_err = None
     for attempt in range(1, RETRIES + 1):
         try:
-            resp = requests.get(URL, headers=HEADERS, timeout=30)
+            resp = requests.get(URL, headers=HEADERS, params={"channel": "c"}, timeout=30)
             resp.raise_for_status()
             return resp.json()
         except Exception as e:
@@ -77,9 +123,14 @@ SPORTTERY_LEAGUES = {
     "finland": 1073,
     "usa": 40,
 }
-LEAGUE_LIST_URL = URL.replace("getMatchCalculatorV1", "league/getLeagueListV1")
-LEAGUE_RESULT_URL = URL.replace("getMatchCalculatorV1", "league/getMatchResultV1")
-DRAW_RESULT_URL = URL.replace("getMatchCalculatorV1", "getUniformMatchResultV1")
+LEAGUE_LIST_URL = API_BASE + "/league/getLeagueListV1.qry"
+LEAGUE_RESULT_URL = API_BASE + "/league/getMatchResultV1.qry"
+DRAW_RESULT_URL = API_BASE + "/getUniformMatchResultV1.qry"
+HEAD_URL = API_BASE + "/getMatchHeadV1.qry"
+INJURY_URL = API_BASE + "/getInjurySuspensionV1.qry"
+FEATURE_URL = API_BASE + "/getMatchFeatureV1.qry"
+H2H_URL = API_BASE + "/getResultHistoryV1.qry"
+PLAYER_URL = API_BASE + "/getMatchPlayerV1.qry"
 LEAGUE_RESULTS_DIR = ROOT / "data" / "02-results" / "league"
 SEGMENT_DAYS = 90  # 实测上限：91 天报 errorCode 20008
 
@@ -255,6 +306,12 @@ def main() -> None:
             return
         cmd_results(args[1], args[2] if len(args) > 2 else None)
         return
+    if args and args[0] == "insight":
+        if len(args) < 2:
+            log("sporttery", "用法: python sporttery_fetch.py insight <matchId>（sporttery_matches.json 的 matchId）")
+            return
+        cmd_insight(args[1])
+        return
     try:
         data = fetch()
     except Exception as e:
@@ -281,6 +338,7 @@ def main() -> None:
             hafu = m.get("hafu") or {}
             out_matches.append({
                 "code": num,
+                "matchId": m.get("matchId"),
                 "league": m.get("leagueAbbName") or m.get("leagueName"),
                 "home": home_name,
                 "away": away_name,
