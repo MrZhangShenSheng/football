@@ -1,0 +1,122 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>临场终审 r6 · 2026-08-23 · v4.8</title>
+<style>
+:root{--bg:#0f1420;--card:#171e2e;--card2:#1d2536;--line:#2a3550;--txt:#e8ecf5;--sub:#9aa7c0;--gold:#f0b429;--green:#3dd68c;--red:#ff6b6b;--blue:#5aa7ff;--purple:#b48ef0}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);font:15px/1.65 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;padding:24px;max-width:1080px;margin:0 auto}
+h1{font-size:22px;letter-spacing:.5px;display:flex;align-items:center;gap:10px}
+h1 .ver{font-size:12px;color:var(--gold);border:1px solid var(--gold);border-radius:4px;padding:1px 8px}
+.meta{color:var(--sub);font-size:13px;margin:6px 0 20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:16px}
+.card h2{font-size:16px;margin-bottom:12px;display:flex;align-items:center;gap:8px;color:var(--gold)}
+.tag{display:inline-block;font-size:12px;padding:2px 10px;border-radius:10px;margin-left:8px;font-weight:400}
+.tag.ok{background:rgba(61,214,140,.15);color:var(--green)}
+.tag.warn{background:rgba(240,180,41,.15);color:var(--gold)}
+.tag.bad{background:rgba(255,107,107,.15);color:var(--red)}
+.tag.info{background:rgba(90,167,255,.15);color:var(--blue)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{color:var(--sub);font-weight:600;text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:8px 10px;border-bottom:1px solid rgba(42,53,80,.5);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.num{font-variant-numeric:tabular-nums}
+.green{color:var(--green)}.red{color:var(--red)}.gold{color:var(--gold)}.blue{color:var(--blue)}.sub{color:var(--sub)}
+.big{font-size:17px;font-weight:700}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:6px 14px;font-size:14px}
+.kv b{color:var(--sub);font-weight:400}
+.tl{display:flex;gap:0;margin:14px 0 6px;flex-wrap:wrap}
+.tl .step{flex:1;min-width:130px;text-align:center;position:relative;padding:10px 6px;background:var(--card2);border:1px solid var(--line);margin-right:-1px}
+.tl .step:first-child{border-radius:8px 0 0 8px}.tl .step:last-child{border-radius:0 8px 8px 0;margin-right:0}
+.tl .t{font-size:12px;color:var(--sub)}.tl .n{font-size:14px;font-weight:600}
+.legs{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.leg{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.leg .odds{font-size:20px;font-weight:700;color:var(--gold)}
+.leg .p{font-size:12px;color:var(--sub)}
+.note{background:var(--card2);border-left:3px solid var(--blue);padding:10px 14px;border-radius:0 8px 8px 0;font-size:13.5px;color:var(--sub);margin-top:12px}
+.footer{color:var(--sub);font-size:12px;margin-top:20px;line-height:1.8}
+svg.ic{width:18px;height:18px;vertical-align:-3px}
+</style></head><body>
+
+<svg style="display:none"><symbol id="i-ball" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v6m0 0l5.5 4m-5.5-4l-5.5 4M12 21v-6m0 0l5.5-4m-5.5 4l-5.5-4M3.5 8.5L9 12m6 0l5.5-3.5M3.5 15.5L9 12m6 0l5.5 3.5"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 3v6c0 4.5-3.5 7.5-8 9-4.5-1.5-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></symbol>
+<symbol id="i-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></symbol>
+<symbol id="i-med" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v6m0 0H8m4 0h4m-4 0v12M7 9v10M17 9v10M5 9h14"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V4m0 16h16M8 16v-5m4 5V8m4 8v-3"/></symbol></svg>
+
+<h1><svg class="ic"><use href="#i-ball"/></svg> 临场终审 r6 <span class="ver">v4.8</span></h1>
+<div class="meta">2026-08-23 12:50 复核 · 对象：今晚+明晚 36 场（与凌晨 r5 完全重叠，无新开售）· 定位：Step 6.5 出票前终审（距最早开赛 5.5h，≤12h 高价值窗口）</div>
+
+<div class="card">
+<h2><svg class="ic"><use href="#i-shield"/></svg> 终审总判定<span class="tag ok">全部维持 · 零修订</span></h2>
+<div class="kv">
+<b>三定律判定</b><span>赔率零异动（8 场出票关联场）+ 伤停终值与凌晨一致 + DC 概率漂移 &lt;0.2pp → <b class="green">无边际，禁止调换（定律 3）</b></span>
+<b>町田 cache 漂移</b><span>今晨 learn 后 japan_dc 缓存被本次 --auto 重拟合覆盖（attack 0.366 vs v2 0.3623），验证 p_dc 漂移 &lt;0.2pp、2-0 仍为 TOP2 比分 → 结论不受影响</span>
+<b>明晚交接</b><span>周一 8 场全部方案外/避开，无出票关联，明晚开赛前下轮终审</span>
+</div>
+</div>
+
+<div class="card">
+<h2><svg class="ic"><use href="#i-clock"/></svg> 实票存续状态（4串11 · 已锁不可改）</h2>
+<div class="tl">
+<div class="step"><div class="t">周六 已完赛</div><div class="n green">厄格里特 dd @6.0 ✅</div></div>
+<div class="step"><div class="t">周六 已完赛</div><div class="n red">帕尔马 0球 @7.50 ❌断(0-1)</div></div>
+<div class="step"><div class="t">今晚 18:30</div><div class="n gold">町田 CRS 2-0 @9.0</div></div>
+<div class="step"><div class="t">明晚 03:30</div><div class="n gold">巴萨 aa @1.70</div></div>
+</div>
+<table style="margin-top:10px">
+<tr><th>分支</th><th>条件</th><th>概率</th><th>赔付</th></tr>
+<tr><td>两关全中</td><td>町田 2-0 且 巴萨 aa</td><td class="num">≈6.2%</td><td class="num gold big">3162.60</td></tr>
+<tr><td>仅町田中</td><td>2-0 兑现、巴萨断</td><td class="num">≈7.0%</td><td class="num">仅注1（厄×町 积54.0）</td></tr>
+<tr><td>仅巴萨中</td><td>aa 兑现、町田断</td><td class="num">≈40.8%</td><td class="num">仅注2（厄×萨 积10.2）</td></tr>
+<tr><td>皆失</td><td>—</td><td class="num">≈46%</td><td class="num red">0</td></tr>
+</table>
+<div class="note">厄格里特 dd@6.0 单关不兑钱（4串11 无单关口径，大哥纠正后锁定）；r3 平衡档厄格里特平 @3.52 ×2元 独立小注如已购已中 +7.04，与实票无关。</div>
+</div>
+
+<div class="card">
+<h2><svg class="ic"><use href="#i-chart"/></svg> 今晚可出票方案复核（未购部分）</h2>
+<h2 style="font-size:14px;color:var(--txt)">🚀 搏奖档 4 注维持 <span class="tag ok">全部 EV&gt;0 · 8元</span></h2>
+<div class="legs">
+<div class="leg"><div>#1 周日023 亚特兰大vs萨索洛 · 08-24 02:45</div><div class="odds">dd(平/平) @6.50</div><div class="p">p=18.6% · EV+20.9% · 命中→13元<br>伤停复核 d=0 维持（两队各5-6人缺阵均 apps=0 轮换口径）</div></div>
+<div class="leg"><div>#2 周日017 纽卡vs利物浦 · 08-23 23:30</div><div class="odds">dd(平/平) @7.50</div><div class="p">p=14.6% · EV+9.7% · 命中→15元<br>伤停复核 d=0 维持（利物浦 6 缺阵全为 apps=0 新援/替补口径）</div></div>
+<div class="leg"><div>#3 周日008 PSVvs格罗宁根 · 08-23 20:30</div><div class="odds">aa(客/客) @12.0</div><div class="p">p=12.0% · EV+44.5% · 命中→24元<br>伤停复核 d=-1 维持（客 van Bergen 1 主力）</div></div>
+<div class="leg"><div>#4 周日016 勒阿弗尔vs摩纳哥 · 08-23 23:15</div><div class="odds">HAD 主胜 @3.60</div><div class="p">p=28.9% · EV+4.1% · 命中→7.2元（单关资格✓）<br>伤停复核 d=0 维持（双方缺阵均 apps=0）</div></div>
+</div>
+<div style="margin-top:10px;font-size:13.5px" class="num">
+档内：投入 8 元 · 理论全中 59.2 元 · <b>至少中一注概率 ≈56.5%</b>（1-0.814×0.854×0.88×0.711）· 期望返还 79.6%（HAFU 池）
+</div>
+<div class="note" style="border-left-color:var(--gold)">⚖️ 平衡档延续票（002町田主胜×014费耶诺德客胜，4元）：<b>不推荐新增购买</b>——当前赔率复合 1.70×1.14=1.94，按 r5 修正后概率 0.56×0.841 复合 EV ≈ <b class="red">-8.7%</b>（负期望）；如凌晨已购则持有不动。012 吉马良斯剔除维持（国民 3 主力缺阵 d=+3 复核一致）。</div>
+</div>
+
+<div class="card">
+<h2><svg class="ic"><use href="#i-med"/></svg> 8 场出票关联场终审明细</h2>
+<table>
+<tr><th>编号·时间</th><th>对阵</th><th>赔率异动</th><th>伤停终值（insight 12:45）</th><th>边际判定</th></tr>
+<tr><td>周日002 · 18:30</td><td>町田泽维 vs 浦和红钻</td><td class="num">主胜 1.73→1.70（收水）</td><td>主0/客0，d=0</td><td class="green">零边际·维持</td></tr>
+<tr><td>周日008 · 20:30</td><td>埃因霍温 vs 格罗宁根</td><td class="num">aa 12.00 不变</td><td>客1主力(van Bergen)，d=-1</td><td class="green">零边际·维持</td></tr>
+<tr><td>周日012 · 22:30</td><td>吉马良斯 vs 葡国民</td><td class="num">aa 8.50 不变</td><td>客3主力缺阵，d=+3</td><td class="green">剔除维持</td></tr>
+<tr><td>周日014 · 22:45</td><td>坎布尔 vs 费耶诺德</td><td class="num">客胜 1.14 不变</td><td>客1主力(G.Read)，d=-1</td><td class="green">零边际·维持</td></tr>
+<tr><td>周日016 · 23:15</td><td>勒阿弗尔 vs 摩纳哥</td><td class="num">主胜 3.60 不变</td><td>双方各1缺阵均轮换，d=0</td><td class="green">零边际·维持</td></tr>
+<tr><td>周日017 · 23:30</td><td>纽卡斯尔 vs 利物浦</td><td class="num">dd 7.50 不变</td><td>主0/客6全轮换口径，d=0</td><td class="green">零边际·维持</td></tr>
+<tr><td>周日023 · 02:45</td><td>亚特兰大 vs 萨索洛</td><td class="num">dd 6.50 不变</td><td>主6/客5全轮换口径，d=0</td><td class="green">零边际·维持</td></tr>
+<tr><td>周日024 · 03:30</td><td>埃尔切 vs 巴萨</td><td class="num">aa 1.70 不变</td><td>主0/客3全轮换口径，d=0</td><td class="green">零边际·维持</td></tr>
+</table>
+<div class="note">⚠️ 口径盲区标注：023 亚特兰大 6 缺阵含科拉西纳奇/德凯特莱尔/Scalvini 等主力级名字，但 insight apps=0（意甲 R1 未开赛口径）不判主力——按系数 9 口径 d=0 维持；主队攻击线若实际减员，对 dd(平/平) 剧本中性偏正（主队火力降→平局概率升），不构成修订理由。</div>
+</div>
+
+<div class="card">
+<h2><svg class="ic"><use href="#i-clock"/></svg> 明晚场次交接（周一 8 场 · 无出票关联）</h2>
+<table>
+<tr><th>编号</th><th>对阵</th><th>r5 判定</th><th>编号</th><th>对阵</th><th>r5 判定</th></tr>
+<tr><td>周一001 08-25 00:30</td><td>博洛尼亚 vs 拉齐奥</td><td class="sub">避开</td><td>周一006 02:45</td><td>罗马 vs 佛罗伦萨</td><td class="sub">方案外 主胜</td></tr>
+<tr><td>周一003 01:00</td><td>马尔默 vs 佐加顿斯</td><td class="sub">避开</td><td>周一007 02:45</td><td>兰斯 vs 阿纳西</td><td class="sub">避开(分歧标注)</td></tr>
+<tr><td>周一004 01:30</td><td>奥萨苏纳 vs 莱万特</td><td class="sub">方案外 主胜</td><td>周一008 03:00</td><td>富勒姆 vs 切尔西</td><td class="sub">方案外 客胜</td></tr>
+<tr><td colspan="6" class="sub">周一009 吉维森特 主胜(方案外) · 周一010 马拉加vs拉科 避开 · 周一011 博塔弗戈vs巴竞技 避开 —— 全部继承 r5，明晚开赛前跑下轮终审（insight+赔率复扫）</td></tr>
+</table>
+</div>
+
+<div class="footer">
+<b>数据来源</b>：engine/cache/sporttery_matches.json（12:44 复扫 36 场五池）· sporttery_insight_20410{02,08,12,14,16,17,23,24}.json（12:45 伤停/排名/H2H）· data/02-results/2026-08-23.json（r5 锁定赔率与概率）· engine/cache/japan_dc.json（重拟合后验证）· dc_predict machida-zelvia vs urawa-reds（2-0 p=13.1%）<br>
+<b>检查链</b>：update（fd 2526 六联赛+联赛画像）→ dc_fit --auto（fd 六联赛缓存新鲜跳过；日职/沙特/瑞超/韩职本地源重拟合）→ data_check（别名 227 队全覆盖，联赛名中文映射差异非真缺）→ 赔率异动对比（8 场零异动）→ insight 伤停 8 场（全一致）→ DC 漂移验证（&lt;0.2pp）→ 三定律判定（定律 3：无边际禁止调换）
+</div>
+</body></html>

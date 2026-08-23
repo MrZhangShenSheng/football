@@ -86,7 +86,8 @@
    "ev": -0.009,
    "inPlan": "维持",
    "result": null,
-   "note": "实票4串11存活腿+平衡档主线串骨架;18:30开赛;r5刷新:町田2-0-0(第4)vs浦和0-0-2(第19)状态支撑"
+   "note": "实票4串11存活腿+平衡档主线串骨架;18:30开赛;r5刷新:町田2-0-0(第4)vs浦和0-0-2(第19)状态支撑",
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
   },
   {
    "idx": 2,
@@ -114,7 +115,8 @@
    "ev": -0.041,
    "inPlan": "维持",
    "result": null,
-   "note": "平衡档主线串骨架;22:45开赛;r5终审:费耶诺德缺1主力(d=-1客胜×0.97),延续票EV恶化至-5.6%"
+   "note": "平衡档主线串骨架;22:45开赛;r5终审:费耶诺德缺1主力(d=-1客胜×0.97),延续票EV恶化至-5.6%",
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
   },
   {
    "idx": 3,
@@ -142,7 +144,8 @@
    "ev": -0.201,
    "inPlan": "用户实票",
    "result": null,
-   "note": "实票4串11最后一腿;明晚03:30;r5刷新:巴萨0场首秀(西甲唯一未赛队),埃尔切R1 1-1拉科"
+   "note": "实票4串11最后一腿;明晚03:30;r5刷新:巴萨0场首秀(西甲唯一未赛队),埃尔切R1 1-1拉科",
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
   },
   {
    "idx": 4,
@@ -161,8 +164,9 @@
    ],
    "ev": -0.291,
    "inPlan": null,
-   "result": null,
-   "backfillNote": "UTC03:28 比分5-0 STATUS_SECOND_HALF(未完赛不回填,完赛后核销); 温哥华主胜已数学锁定,r2/r3终审剔除事后看错方向(EV纪律无错)"
+   "result": "不可得",
+   "backfillNote": "美职 ESPN 无赛果接口",
+   "directionHit": null
   },
   {
    "idx": 5,
@@ -190,7 +194,8 @@
     "海牙0-0-2垫底/前进之鹰1-1-0第3"
    ],
    "ev": -0.115,
-   "inPlan": null
+   "inPlan": null,
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
   },
   {
    "idx": 6,
@@ -217,7 +222,10 @@
     "三项极差3.2pp胶着"
    ],
    "ev": null,
-   "inPlan": null
+   "inPlan": null,
+   "result": "不可得",
+   "directionHit": null,
+   "backfillNote": "韩职 ESPN 无赛果接口"
   },
   {
    "idx": 7,
@@ -238,7 +246,10 @@
     "概率胶着"
    ],
    "ev": null,
-   "inPlan": null
+   "inPlan": null,
+   "result": "不可得",
+   "directionHit": null,
+   "backfillNote": "英冠 ESPN 无赛果接口"
   },
   {
    "idx": 8,
@@ -258,7 +269,10 @@
     "两2.BL队无DC"
    ],
    "ev": null,
-   "inPlan": null
+   "inPlan": null,
+   "result": "不可得",
+   "directionHit": null,
+   "backfillNote": "德国杯 ESPN 无赛果接口"
   },
   {
    "idx": 9,
@@ -287,7 +301,8 @@
     "v1教训瑞超0/3"
    ],
    "ev": null,
-   "inPlan": null
+   "inPlan": null,
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
   },
   {
    "idx": 10,
@@ -307,7 +322,10 @@
     "小联赛数据薄"
    ],
    "ev": null,
-   "inPlan": null
+   "inPlan": null,
+   "result": "不可得",
+   "directionHit": null,
+   "backfillNote": "芬超 ESPN 无赛果接口"
   },
   {
    "idx": 11,
@@ -338,7 +356,8 @@
    ],
    "ev": 0.489,
    "inPlan": "🚀搏奖",
-   "note": "方向层HAD主胜0.681仍方案外;此注为半全场客/客爆冷尾巴"
+   "note": "方向层HAD主胜0.681仍方案外;此注为半全场客/客爆冷尾巴",
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
   },
   {
    "idx": 12,
@@ -368,7 +387,8 @@
     "EV-23%不入"
    ],
    "ev": -0.23,
-   "inPlan": null
+   "inPlan": null,
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
   },
   {
    "idx": 13,
@@ -396,7 +416,8 @@
     "里尔客胜EV-37%"
    ],
    "ev": -0.37,
-   "inPlan": null
+   "inPlan": null,
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
   },
   {
    "idx": 14,
@@ -416,7 +437,10 @@
     "不伦瑞克德乙5th"
    ],
    "ev": null,
-   "inPlan": null
+   "inPlan": null,
+   "result": "不可得",
+   "directionHit": null,
+   "backfillNote": "德国杯 ESPN 无赛果接口"
   },
   {
    "idx": 15,
@@ -448,7 +472,8 @@
    ],
    "ev": 0.419,
    "inPlan": null,
-   "note": "r5终审:系数9伤停差值修正后剔除(宁缺毋滥)"
+   "note": "r5终审:系数9伤停差值修正后剔除(宁缺毋滥)",
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
   },
   {
    "idx": 16,
@@ -477,7 +502,8 @@
     "EV-18%不入"
    ],
    "ev": -0.181,
-   "inPlan": null
+   "inPlan": null,
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
   },
   {
    "idx": 17,
@@ -506,7 +532,8 @@
     "EV-20%不入"
    ],
    "ev": -0.198,
-   "inPlan": null
+   "inPlan": null,
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
   },
   {
    "idx": 18,
@@ -536,7 +563,8 @@
     "HAD单关资格✓"
    ],
    "ev": 0.041,
-   "inPlan": "🚀搏奖"
+   "inPlan": "🚀搏奖",
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
   },
   {
    "idx": 19,
@@ -566,7 +594,8 @@
    ],
    "ev": 0.097,
    "inPlan": "🚀搏奖",
-   "note": "替换周日012(伤停剔除);HAD客胜方向仍方案外"
+   "note": "替换周日012(伤停剔除);HAD客胜方向仍方案外",
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
   },
   {
    "idx": 20,
@@ -586,7 +615,8 @@
     "市场锚"
    ],
    "ev": -0.292,
-   "inPlan": null
+   "inPlan": null,
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
   },
   {
    "idx": 21,
@@ -606,7 +636,8 @@
     "EV负"
    ],
    "ev": null,
-   "inPlan": null
+   "inPlan": null,
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
   },
   {
    "idx": 22,
@@ -633,7 +664,8 @@
     "圣克拉拉1-1-0/法马利康0-1-1"
    ],
    "ev": null,
-   "inPlan": null
+   "inPlan": null,
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
   },
   {
    "idx": 23,
@@ -662,7 +694,8 @@
     "融合后胶着"
    ],
    "ev": null,
-   "inPlan": null
+   "inPlan": null,
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
   },
   {
    "idx": 24,
@@ -691,7 +724,8 @@
     "EV-25%不入"
    ],
    "ev": -0.254,
-   "inPlan": null
+   "inPlan": null,
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
   },
   {
    "idx": 25,
@@ -720,7 +754,8 @@
     "HAD主胜EV-32%不入"
    ],
    "ev": 0.209,
-   "inPlan": "🚀搏奖"
+   "inPlan": "🚀搏奖",
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
   },
   {
    "idx": 26,
@@ -749,7 +784,8 @@
     "EV-7%"
    ],
    "ev": -0.07,
-   "inPlan": null
+   "inPlan": null,
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
   },
   {
    "idx": 27,
@@ -769,7 +805,10 @@
     "凌晨场"
    ],
    "ev": null,
-   "inPlan": null
+   "inPlan": null,
+   "result": "不可得",
+   "directionHit": null,
+   "backfillNote": "美职 ESPN 无赛果接口"
   },
   {
    "idx": 28,
@@ -790,7 +829,10 @@
     "市场锚EV-11%"
    ],
    "ev": -0.114,
-   "inPlan": null
+   "inPlan": null,
+   "result": "不可得",
+   "directionHit": null,
+   "backfillNote": "巴甲 ESPN 无赛果接口"
   },
   {
    "idx": 29,
@@ -818,7 +860,8 @@
     "两队均0场首秀"
    ],
    "ev": null,
-   "inPlan": null
+   "inPlan": null,
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
   },
   {
    "idx": 30,
@@ -846,7 +889,8 @@
     "瑞超×1.5胶着"
    ],
    "ev": null,
-   "inPlan": null
+   "inPlan": null,
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
   },
   {
    "idx": 31,
@@ -874,7 +918,8 @@
     "EV-21%不入"
    ],
    "ev": -0.208,
-   "inPlan": null
+   "inPlan": null,
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
   },
   {
    "idx": 32,
@@ -902,7 +947,8 @@
     "EV-27%不入"
    ],
    "ev": -0.273,
-   "inPlan": null
+   "inPlan": null,
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
   },
   {
    "idx": 33,
@@ -931,7 +977,10 @@
     "分歧>5pp纪律→不选(遗憾标记)"
    ],
    "ev": null,
-   "inPlan": null
+   "inPlan": null,
+   "result": "不可得",
+   "directionHit": null,
+   "backfillNote": "法乙 ESPN 无赛果接口"
   },
   {
    "idx": 34,
@@ -959,7 +1008,8 @@
     "EV-36%不入"
    ],
    "ev": -0.36,
-   "inPlan": null
+   "inPlan": null,
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
   },
   {
    "idx": 35,
@@ -987,7 +1037,8 @@
     "EV-11%不入"
    ],
    "ev": -0.111,
-   "inPlan": null
+   "inPlan": null,
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
   },
   {
    "idx": 36,
@@ -1015,7 +1066,8 @@
     "两队R1均不胜"
    ],
    "ev": null,
-   "inPlan": null
+   "inPlan": null,
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
   },
   {
    "idx": 37,
@@ -1036,7 +1088,10 @@
     "积分榜截至08-22"
    ],
    "ev": null,
-   "inPlan": null
+   "inPlan": null,
+   "result": "不可得",
+   "directionHit": null,
+   "backfillNote": "巴甲 ESPN 无赛果接口"
   }
  ],
  "sources": [
@@ -1046,5 +1101,24 @@
   "engine/cache/espn_results_{bra,usa,esp,ita,fra,eng,ned,por}_1_2026-08-15_2026-08-23.json",
   "engine/cache/{27联赛}_dc.json(DC参数,日职v2发布版)",
   "data/00-leagues/{11联赛}.json画像(league_profile 2526锚+titan007 standings)"
- ]
+ ],
+ "finalReview": {
+  "reviewRound": "r6",
+  "reviewedAt": "2026-08-23T12:50",
+  "version": "v4.8",
+  "verdict": "全部维持·零修订（三定律3：无边际禁止调换）",
+  "scope": "36场与r5完全重叠，无新开售；出票关联8场全审",
+  "checks": {
+   "oddsDrift": "出票8场零异动（002町田主胜1.73→1.70收水微调，不影响）",
+   "injuries": "8场insight全与凌晨一致：002 d=0/008 d=-1/012 d=+3剔除维持/014 d=-1/016 d=0/017 d=0/023 d=0/024 d=0",
+   "dcDrift": "japan_dc重拟合后machida参数微漂(attack 0.366 vs v2 0.3623)，p_dc漂移<0.2pp，2-0仍TOP2比分(13.1%)"
+  },
+  "actions": [
+   "实票4串11存续（厄✅/帕尔马❌/町田2-0今晚18:30/巴萨aa明晚03:30）",
+   "搏奖4注维持可出票：023dd@6.50/017dd@7.50/008aa@12.0/016主@3.60，至少中一注≈56.5%",
+   "平衡延续票不推荐新增购买（当前复合1.94，EV≈-8.7%）；已购持有",
+   "周一8场继承r5，明晚下轮终审"
+  ],
+  "report": "data/03-predictions/2026-08-23-v4.8-r6.html"
+ }
 }
