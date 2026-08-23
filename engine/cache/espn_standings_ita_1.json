@@ -1,11 +1,71 @@
 {
- "fetchedAt": "2026-08-22",
+ "fetchedAt": "2026-08-23",
  "source": "espn",
  "leagueCode": "ita.1",
- "season": null,
+ "season": "2026",
  "standings": [
   {
    "pos": 1,
+   "team": "Internazionale",
+   "played": 1,
+   "won": 1,
+   "drawn": 0,
+   "lost": 0,
+   "gf": 4,
+   "ga": 1,
+   "gd": 3,
+   "pts": 3
+  },
+  {
+   "pos": 2,
+   "team": "Napoli",
+   "played": 1,
+   "won": 1,
+   "drawn": 0,
+   "lost": 0,
+   "gf": 2,
+   "ga": 0,
+   "gd": 2,
+   "pts": 3
+  },
+  {
+   "pos": 3,
+   "team": "Cagliari",
+   "played": 1,
+   "won": 1,
+   "drawn": 0,
+   "lost": 0,
+   "gf": 1,
+   "ga": 0,
+   "gd": 1,
+   "pts": 3
+  },
+  {
+   "pos": 4,
+   "team": "Como",
+   "played": 1,
+   "won": 0,
+   "drawn": 1,
+   "lost": 0,
+   "gf": 1,
+   "ga": 1,
+   "gd": 0,
+   "pts": 1
+  },
+  {
+   "pos": 5,
+   "team": "Udinese",
+   "played": 1,
+   "won": 0,
+   "drawn": 1,
+   "lost": 0,
+   "gf": 1,
+   "ga": 1,
+   "gd": 0,
+   "pts": 1
+  },
+  {
+   "pos": 6,
    "team": "AC Milan",
    "played": 0,
    "won": 0,
@@ -17,7 +77,7 @@
    "pts": 0
   },
   {
-   "pos": 2,
+   "pos": 7,
    "team": "Atalanta",
    "played": 0,
    "won": 0,
@@ -29,7 +89,7 @@
    "pts": 0
   },
   {
-   "pos": 3,
+   "pos": 8,
    "team": "Bologna",
    "played": 0,
    "won": 0,
@@ -41,31 +101,7 @@
    "pts": 0
   },
   {
-   "pos": 4,
-   "team": "Cagliari",
-   "played": 0,
-   "won": 0,
-   "drawn": 0,
-   "lost": 0,
-   "gf": 0,
-   "ga": 0,
-   "gd": 0,
-   "pts": 0
-  },
-  {
-   "pos": 5,
-   "team": "Como",
-   "played": 0,
-   "won": 0,
-   "drawn": 0,
-   "lost": 0,
-   "gf": 0,
-   "ga": 0,
-   "gd": 0,
-   "pts": 0
-  },
-  {
-   "pos": 6,
+   "pos": 9,
    "team": "Fiorentina",
    "played": 0,
    "won": 0,
@@ -77,7 +113,7 @@
    "pts": 0
   },
   {
-   "pos": 7,
+   "pos": 10,
    "team": "Frosinone",
    "played": 0,
    "won": 0,
@@ -89,31 +125,7 @@
    "pts": 0
   },
   {
-   "pos": 8,
-   "team": "Genoa",
-   "played": 0,
-   "won": 0,
-   "drawn": 0,
-   "lost": 0,
-   "gf": 0,
-   "ga": 0,
-   "gd": 0,
-   "pts": 0
-  },
-  {
-   "pos": 9,
-   "team": "Internazionale",
-   "played": 0,
-   "won": 0,
-   "drawn": 0,
-   "lost": 0,
-   "gf": 0,
-   "ga": 0,
-   "gd": 0,
-   "pts": 0
-  },
-  {
-   "pos": 10,
+   "pos": 11,
    "team": "Juventus",
    "played": 0,
    "won": 0,
@@ -125,7 +137,7 @@
    "pts": 0
   },
   {
-   "pos": 11,
+   "pos": 12,
    "team": "Lazio",
    "played": 0,
    "won": 0,
@@ -137,7 +149,7 @@
    "pts": 0
   },
   {
-   "pos": 12,
+   "pos": 13,
    "team": "Lecce",
    "played": 0,
    "won": 0,
@@ -149,43 +161,7 @@
    "pts": 0
   },
   {
-   "pos": 13,
-   "team": "Monza",
-   "played": 0,
-   "won": 0,
-   "drawn": 0,
-   "lost": 0,
-   "gf": 0,
-   "ga": 0,
-   "gd": 0,
-   "pts": 0
-  },
-  {
    "pos": 14,
-   "team": "Napoli",
-   "played": 0,
-   "won": 0,
-   "drawn": 0,
-   "lost": 0,
-   "gf": 0,
-   "ga": 0,
-   "gd": 0,
-   "pts": 0
-  },
-  {
-   "pos": 15,
-   "team": "Parma",
-   "played": 0,
-   "won": 0,
-   "drawn": 0,
-   "lost": 0,
-   "gf": 0,
-   "ga": 0,
-   "gd": 0,
-   "pts": 0
-  },
-  {
-   "pos": 16,
    "team": "AS Roma",
    "played": 0,
    "won": 0,
@@ -197,7 +173,7 @@
    "pts": 0
   },
   {
-   "pos": 17,
+   "pos": 15,
    "team": "Sassuolo",
    "played": 0,
    "won": 0,
@@ -209,7 +185,7 @@
    "pts": 0
   },
   {
-   "pos": 18,
+   "pos": 16,
    "team": "Torino",
    "played": 0,
    "won": 0,
@@ -221,8 +197,8 @@
    "pts": 0
   },
   {
-   "pos": 19,
-   "team": "Udinese",
+   "pos": 17,
+   "team": "Venezia",
    "played": 0,
    "won": 0,
    "drawn": 0,
@@ -233,15 +209,39 @@
    "pts": 0
   },
   {
-   "pos": 20,
-   "team": "Venezia",
-   "played": 0,
+   "pos": 18,
+   "team": "Parma",
+   "played": 1,
    "won": 0,
    "drawn": 0,
-   "lost": 0,
+   "lost": 1,
    "gf": 0,
-   "ga": 0,
-   "gd": 0,
+   "ga": 1,
+   "gd": -1,
+   "pts": 0
+  },
+  {
+   "pos": 19,
+   "team": "Genoa",
+   "played": 1,
+   "won": 0,
+   "drawn": 0,
+   "lost": 1,
+   "gf": 0,
+   "ga": 2,
+   "gd": -2,
+   "pts": 0
+  },
+  {
+   "pos": 20,
+   "team": "Monza",
+   "played": 1,
+   "won": 0,
+   "drawn": 0,
+   "lost": 1,
+   "gf": 1,
+   "ga": 4,
+   "gd": -3,
    "pts": 0
   }
  ]

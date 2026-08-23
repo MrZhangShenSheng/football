@@ -1,0 +1,326 @@
+{
+ "fetchedAt": "2026-08-23",
+ "source": "sporttery",
+ "matchId": 2041025,
+ "match": {
+  "code": "周日025",
+  "league": "葡超",
+  "gameweek": "3",
+  "season": "2026/2027",
+  "home": "波尔图",
+  "away": "阿罗卡",
+  "kickoff": "2026-08-24 03:30",
+  "uniformMatchId": 2498252
+ },
+ "standing": {
+  "away": {
+   "groupName": "",
+   "phaseName": "Regular Season",
+   "ranking": "3",
+   "sAwayDrawMatchCnt": "0",
+   "sAwayLossGoalMatchCnt": "0",
+   "sAwayWinGoalMatchCnt": "1",
+   "sDrawMatchCnt": "0",
+   "sLossGoalMatchCnt": "0",
+   "sWinGoalMatchCnt": "2",
+   "seasonName": "2026/2027"
+  },
+  "home": {
+   "groupName": "",
+   "phaseName": "Regular Season",
+   "ranking": "4",
+   "sDrawMatchCnt": "0",
+   "sHomeDrawMatchCnt": "0",
+   "sHomeLossGoalMatchCnt": "0",
+   "sHomeWinGoalMatchCnt": "1",
+   "sLossGoalMatchCnt": "0",
+   "sWinGoalMatchCnt": "2",
+   "seasonName": "2026/2027"
+  }
+ },
+ "injuries": {
+  "home": [
+   {
+    "name": "Martim Fernandes",
+    "pos": "后卫",
+    "no": "52",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 1,
+    "starts": 1
+   },
+   {
+    "name": "Samu Omorodion",
+    "pos": "前锋",
+    "no": "9",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 0,
+    "starts": 0
+   }
+  ],
+  "away": []
+ },
+ "form": {
+  "goalAvg": {
+   "awayGoalAvgCnt": "1.7",
+   "awayGoalAvgCntRatio": "56.7",
+   "homeGoalAvgCnt": "1.3",
+   "homeGoalAvgCntRatio": "43.3",
+   "totalLegCnt": 10
+  },
+  "last10": {
+   "awayDrawMatchCnt": 3,
+   "awayLossGoalMatchCnt": 2,
+   "awayScoreRatio": "60",
+   "awayWinGoalMatchCnt": 5,
+   "homeDrawMatchCnt": 1,
+   "homeLossGoalMatchCnt": 2,
+   "homeScoreRatio": "73",
+   "homeWinGoalMatchCnt": 7,
+   "totalLegCnt": 10
+  },
+  "last10HomeAway": {
+   "awayDrawMatchCnt": 2,
+   "awayLossGoalMatchCnt": 5,
+   "awayScoreRatio": "37",
+   "awayWinGoalMatchCnt": 3,
+   "homeDrawMatchCnt": 4,
+   "homeLossGoalMatchCnt": 0,
+   "homeScoreRatio": "73",
+   "homeWinGoalMatchCnt": 6,
+   "totalLegCnt": 10
+  }
+ },
+ "h2h": {
+  "statistics": {
+   "drawMatchCnt": 1,
+   "drawProbability": "10%",
+   "goalCnt": 0,
+   "lossGoalCnt": 0,
+   "lossGoalMatchCnt": 1,
+   "lossProbability": "10%",
+   "netGoal": 0,
+   "sportteryTeamId": 0,
+   "teamId": 0,
+   "teamShortName": "波尔图",
+   "totalLegCnt": 10,
+   "winGoalMatchCnt": 8,
+   "winProbability": "80%"
+  },
+  "matches": [
+   {
+    "date": "2026-02-28",
+    "home": "波尔图",
+    "score": "3:1",
+    "ht": "1:0",
+    "away": "阿罗卡",
+    "winner": "home"
+   },
+   {
+    "date": "2025-09-30",
+    "home": "阿罗卡",
+    "score": "0:4",
+    "ht": "0:1",
+    "away": "波尔图",
+    "winner": "home"
+   },
+   {
+    "date": "2025-03-02",
+    "home": "阿罗卡",
+    "score": "0:2",
+    "ht": "0:1",
+    "away": "波尔图",
+    "winner": "home"
+   },
+   {
+    "date": "2024-09-30",
+    "home": "波尔图",
+    "score": "4:0",
+    "ht": "0:0",
+    "away": "阿罗卡",
+    "winner": "home"
+   },
+   {
+    "date": "2024-02-13",
+    "home": "阿罗卡",
+    "score": "3:2",
+    "ht": "2:1",
+    "away": "波尔图",
+    "winner": "away"
+   },
+   {
+    "date": "2023-09-04",
+    "home": "波尔图",
+    "score": "1:1",
+    "ht": "0:0",
+    "away": "阿罗卡",
+    "winner": "draw"
+   },
+   {
+    "date": "2023-05-09",
+    "home": "阿罗卡",
+    "score": "0:1",
+    "ht": "0:1",
+    "away": "波尔图",
+    "winner": "home"
+   },
+   {
+    "date": "2023-01-12",
+    "home": "波尔图",
+    "score": "4:0",
+    "ht": "1:0",
+    "away": "阿罗卡",
+    "winner": "home"
+   },
+   {
+    "date": "2022-12-29",
+    "home": "波尔图",
+    "score": "5:1",
+    "ht": "3:0",
+    "away": "阿罗卡",
+    "winner": "home"
+   },
+   {
+    "date": "2022-02-07",
+    "home": "阿罗卡",
+    "score": "0:2",
+    "ht": "0:0",
+    "away": "波尔图",
+    "winner": "home"
+   }
+  ]
+ },
+ "scorers": {
+  "away": {
+   "playerList": [
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "1.0",
+     "goalCnt": 2,
+     "goalProbability": "50%",
+     "injuryFlag": 0,
+     "personId": 489095,
+     "personName": "巴贝罗",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 2,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "17"
+    },
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "25%",
+     "injuryFlag": 0,
+     "personId": 765320,
+     "personName": "D. Nandín",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 0,
+     "substituteMatchCnt": 2,
+     "suspensionFlag": 0,
+     "uniformNo": "23"
+    },
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "25%",
+     "injuryFlag": 0,
+     "personId": 560269,
+     "personName": "José Fontán",
+     "playerPositionCode": "Defender",
+     "playerPositionDesc": "后卫",
+     "startedMatchCnt": 2,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "3"
+    }
+   ],
+   "sportteryTeamId": 1498,
+   "teamId": 11611,
+   "teamShortName": "阿罗卡",
+   "uniformTeamId": 1510
+  },
+  "home": {
+   "playerList": [
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0.5",
+     "assistCnt": 1,
+     "assistProbability": "50%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "25%",
+     "injuryFlag": 0,
+     "personId": 627646,
+     "personName": "加布里 维加",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 2,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "10"
+    },
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "25%",
+     "injuryFlag": 0,
+     "personId": 585861,
+     "personName": "博尔哈 塞恩斯",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 0,
+     "substituteMatchCnt": 2,
+     "suspensionFlag": 0,
+     "uniformNo": "17"
+    },
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "25%",
+     "injuryFlag": 0,
+     "personId": 475796,
+     "personName": "N. Pérez",
+     "playerPositionCode": "Defender",
+     "playerPositionDesc": "后卫",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 1,
+     "suspensionFlag": 0,
+     "uniformNo": "18"
+    }
+   ],
+   "sportteryTeamId": 937,
+   "teamId": 1678,
+   "teamShortName": "波尔图",
+   "uniformTeamId": 141
+  },
+  "seasonId": 15243,
+  "seasonName": "2026/2027",
+  "tournamentId": 140,
+  "tournamentShortName": "葡超",
+  "uniformLeagueId": 78,
+  "uniformMatchId": 2498252
+ }
+}

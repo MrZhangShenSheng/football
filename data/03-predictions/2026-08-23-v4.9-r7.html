@@ -1,0 +1,139 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>竞彩预测 2026-08-23 v4.9-r7 · 增量修订</title>
+<style>
+:root{--bg:#0f1420;--card:#171e2e;--card2:#1d2740;--tx:#e8ecf4;--tx2:#9aa7bd;--line:#2a3654;
+--gold:#f5c451;--up:#4ade80;--down:#f87171;--blue:#60a5fa;--purple:#c084fc;--warn:#fb923c}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font:14px/1.65 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;padding:24px}
+.wrap{max-width:1080px;margin:0 auto}
+h1{font-size:20px;margin-bottom:4px} .sub{color:var(--tx2);font-size:12px;margin-bottom:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px}
+.card h2{font-size:15px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.card h2 svg{color:var(--gold)}
+.tag{display:inline-block;font-size:11px;padding:1px 8px;border-radius:10px;border:1px solid var(--line);color:var(--tx2);margin-left:8px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{color:var(--tx2);text-align:left;font-weight:500;padding:6px 8px;border-bottom:1px solid var(--line)}
+td{padding:7px 8px;border-bottom:1px solid var(--line)}
+tr:last-child td{border-bottom:none}
+.ev+{color:var(--up)} .ev-{color:var(--down)}
+.up{color:var(--up)} .dn{color:var(--down)} .mut{color:var(--tx2)}
+.revoked td{opacity:.45;text-decoration:line-through}
+.new td{background:rgba(74,222,128,.05)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.small{font-size:12px;color:var(--tx2)}
+.warnbox{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.3);border-radius:8px;padding:10px 14px;font-size:12.5px;margin-top:12px}
+.okbox{background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.25);border-radius:8px;padding:10px 14px;font-size:12.5px}
+.bigticket{background:linear-gradient(135deg,#1d2740,#232f52);border:1px solid #35466f;border-radius:12px;padding:16px;margin-bottom:14px}
+.bigticket .tt{color:var(--gold);font-weight:600;margin-bottom:8px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin:10px 0;font-size:12px;color:var(--tx2)}
+kbd{background:var(--card2);border:1px solid var(--line);border-radius:4px;padding:0 5px;font-size:11.5px}
+.excl td{font-size:12.5px;color:var(--tx2)}
+</style></head><body><div class="wrap">
+<svg style="display:none"><symbol id="i-rocket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></symbol><symbol id="i-scale" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></symbol><symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></symbol><symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol><symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></symbol><symbol id="i-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></symbol><symbol id="i-ticket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></symbol><symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol></symbol></svg>
+
+<h1>竞彩预测 · 2026-08-23（周日）v4.9-r7 增量修订</h1>
+<div class="sub">生成 16:35 · 首场 18:15 开赛 · 38 场（周日001-027 + 周一001-011）· 单锚模式（Pinnacle 停摆，市场锚=体彩去水×0.97）</div>
+
+<div class="bigticket">
+  <div class="tt"><svg width="16" height="16" style="vertical-align:-3px"><use href="#i-ticket"/></svg> 用户实票 4串11 存续（不动）</div>
+  <div>四关：厄格里特 dd <span class="up">✅ 已中</span> · 帕尔马 TTG 0球 <span class="dn">❌ 已断(0-1)</span> · <b>町田 CRS 2-0 @9.0（今晚 18:30）</b> · <b>巴萨 aa（半客/全客）@1.70（明晚 03:30）</b></div>
+  <div class="small" style="margin-top:6px">存活 4 注（全含厄✅）：两关全中≈6.2% → 3162.60 元 · 仅町田≈7.0% · 仅巴萨≈40.8% · 皆失≈46% → 0</div>
+</div>
+
+<div class="card">
+<h2><svg width="16" height="16"><use href="#i-rocket"/></svg>🚀 搏奖档（8 元 · 2元×4注 · 至少中一注概率 ≈42.5%）<span class="tag">EV&gt;0+分歧&lt;5pp+结构剔除</span></h2>
+<table>
+<tr><th>注</th><th>场次</th><th>玩法/选项</th><th>p_model</th><th>赔率</th><th>EV</th><th>2元→</th><th>状态</th></tr>
+<tr class="new"><td>①</td><td>周日009 08-23 21:00 曼城vs伯恩茅斯</td><td>CRS 3-0</td><td>9.8%</td><td>@11.00</td><td class="up">+7.8%</td><td>22元</td><td><span class="up">新增r7</span> 分歧仅0.7pp</td></tr>
+<tr class="new"><td>②</td><td>周日009 08-23 21:00 曼城vs伯恩茅斯</td><td>CRS 4-0</td><td>8.3%</td><td>@17.00</td><td class="up">+41.9%</td><td>34元</td><td><span class="up">新增r7</span> 分歧2.4pp</td></tr>
+<tr><td>③</td><td>周日023 08-24 02:45 亚特兰大vs萨索洛</td><td>HAFU dd（半平/全平）</td><td>18.6%</td><td>@6.50</td><td class="up">+20.9%</td><td>13元</td><td>维持r5</td></tr>
+<tr><td>④</td><td>周日017 08-23 23:30 纽卡斯尔vs利物浦</td><td>HAFU dd（半平/全平）</td><td>14.6%</td><td>@7.50</td><td class="up">+9.7%</td><td>15元</td><td>维持r5</td></tr>
+<tr class="revoked"><td>✗</td><td>周日008 埃因霍温vs格罗宁根</td><td>HAFU aa（半客/全客）</td><td>12.4%</td><td>@12.50</td><td>+55.1%?</td><td>—</td><td><span class="dn">撤销</span> λ失真</td></tr>
+<tr class="revoked"><td>✗</td><td>周日016 勒阿弗尔vs摩纳哥</td><td>HAD 主胜</td><td>23%</td><td>@3.60</td><td>-17.1%</td><td>—</td><td><span class="dn">撤销</span> R1修正足额后EV转负</td></tr>
+</table>
+<div class="warnbox"><svg width="13" height="13" style="vertical-align:-2px"><use href="#i-alert"/></svg> <b>撤销依据（定律1·数据纠错通道）</b>：①荷甲 DC 本轮重拟合后埃因霍温场方向概率 58.8% vs 市场 73%（分歧 14pp&gt;5pp 纪律线）——λ 被 2627 三轮小样本拉失真，衍生品 hafu 不可信；②勒阿弗尔场 r5 的 EV+4.1% 系 R1 开季修正未足额（final 0.289），足额修正后 p=23%、EV=-17%。</div>
+<div class="small" style="margin-top:8px">可选第⑤注：周日002 町田 CRS 3-0 @16.00 p8.5% EV+35.2% 分歧2.2pp（与实票 2-0 同池跨票合规，资金充裕可 +2 元）。曼城大比分依据：DC 攻击力全联赛第一（+0.45）+伯恩茅斯伤 9 人（布鲁克斯/亚当斯/Kroupi）+主场 λ3.41；风险：R1 开季体能未开+曼城休赛阵容变动未逐项核验。</div>
+</div>
+
+<div class="card">
+<h2><svg width="16" height="16"><use href="#i-scale"/></svg>⚖️ 平衡档（4 元 · 维持 r5，18:30 前可出）</h2>
+<table>
+<tr><th>注</th><th>方案</th><th>复合</th><th>p</th><th>EV</th><th>2元→</th></tr>
+<tr><td>①</td><td>周日002 町田主胜 @1.73 × 周日014 费耶诺德客胜 @1.14</td><td>1.97</td><td>37~49%（两修正口径）</td><td>-2.7%~-27%</td><td>3.94元</td></tr>
+</table>
+<div class="small">口径说明：町田场 R3 修正（日职新赛季 3 轮）应用与否导致 p 差 7pp——r7 保守口径 37%（足额修正），r5 口径 49%。负期望为体彩抽水常态，串关看全中率不看 EV 转正。</div>
+</div>
+
+<div class="card">
+<h2><svg width="16" height="16"><use href="#i-shield"/></svg>🛡️ 保本档：不开</h2>
+<div class="small">36 场方向 EV 全负（体彩 12.9% 抽水 + Pinnacle 停摆单锚）+ 开季 R1/R2 波动，容错串加深抽水。维持 r5 结论。</div>
+<div class="legend"><span>总仓位：<b style="color:var(--gold)">12 元</b>（搏奖8+平衡4）✓ 10~30元区间</span><span>串关纪律：CRS 全单关 ✓ HAD 2串 ✓ 小联赛入串 0 场 ✓</span></div>
+</div>
+
+<div class="card">
+<h2><svg width="16" height="16"><use href="#i-check"/></svg>推荐场详情（A 级 8 场）</h2>
+<table>
+<tr><th>场次</th><th>数据</th><th>分析要点</th><th>最终概率(主/平/客)</th><th>星</th></tr>
+<tr><td><b>周日009</b> 08-23 21:00<br>曼城 vs 伯恩茅斯 [13 vs 8]</td><td>伤停 主4(多库/萨维奥/努内斯)/客9(布鲁克斯/亚当斯停克里斯蒂/Kroupi)<br>近10: 5胜3平2负 / 5胜4平1负</td><td>英超R1曼城首战；DC攻击力第一+0.45、λ3.41/0.86；伤停差 d=-5 客重；R1修正×0.80压级。比分层：3-0分歧0.7pp全场最小</td><td>61 / 27 / 12</td><td>★★★</td></tr>
+<tr><td><b>周日014</b> 08-23 22:45<br>坎布尔 vs 费耶诺德 [18 vs 6]</td><td>伤停 主0/客6<br>近10: 2胜0平8负 / 8胜2平0负</td><td>荷甲R3；升班马vs争冠级；DC λ失真已回退市场锚；近10场8胜2平情报强支撑；超低赔@1.14只做串关骨架</td><td>9 / 17 / 74</td><td>★★★★</td></tr>
+<tr><td><b>周日024</b> 08-24 03:30<br>埃尔切 vs 巴萨 [10 vs 14*]</td><td>伤停 主2/客3<br>近10: 3胜6平1负 / 7胜1平2负</td><td>西甲R2；巴萨客胜结构（实票aa存续）；R2修正×0.90后68%</td><td>10 / 22 / 68</td><td>★★★★</td></tr>
+<tr><td><b>周日008</b> 08-23 20:30<br>埃因霍温 vs 格罗宁根 [5 vs 2]</td><td>伤停 主4/客5<br>近10: 5胜3平2负 / 4胜1平5负</td><td>荷甲R3；市场锚72%四星可入串；<span class="dn">DC衍生品（hafu/比分）因λ失真全弃</span></td><td>72 / 17 / 11</td><td>★★★★</td></tr>
+<tr><td><b>周日025</b> 08-24 03:30<br>波尔图 vs 阿罗卡 [4 vs 3]</td><td>伤停 主2/客0<br>近10: 7胜1平2负 / 5胜3平2负</td><td>葡超R3；主场强势；超低赔@1.14只做骨架；方向EV-15%不单关</td><td>74 / 18 / 8</td><td>★★★★</td></tr>
+<tr><td><b>周日002</b> 08-23 18:30<br>町田泽维 vs 浦和红钻 [4 vs 19]</td><td>伤停 主0/客0<br>近10: 5胜5平0负 / 3胜3平4负</td><td>日职R3；町田近10不败+浦和客场4负；复扫客胜赔率上调（4.02→4.08）确认主胜方向</td><td>49 / 30 / 21</td><td>★★★</td></tr>
+<tr><td><b>周日023</b> 08-24 02:45<br>亚特兰大 vs 萨索洛 [7 vs 15]</td><td>伤停 主6/客5<br>近10: 4胜3平3负 / 4胜1平5负</td><td>意甲R1；双方伤停重（d=+1）；λ1.41/0.80低进球结构支撑dd；R1修正后主胜54%二星——方向不入串，只搏dd</td><td>54 / 32 / 14</td><td>★★</td></tr>
+<tr><td><b>周日017</b> 08-23 23:30<br>纽卡斯尔 vs 利物浦 [14 vs 12]</td><td>伤停 主1/客6<br>近10: 3胜3平4负 / 3胜3平4负</td><td>英超R1；利物浦客胜市场49%但R1修正压至40%；客伤6人vs主伤1；dd为dd剧本（双方近况平平+利物浦伤病）</td><td>27 / 32 / 40</td><td>★</td></tr>
+</table>
+<div class="small">*排名来自体彩 insight 即时榜（新赛季 R0-R2 早期排名，参考性有限）。四星场埃因霍温/波尔图/费耶诺德均超低赔（≤1.25），只做串关骨架不做单关。</div>
+</div>
+
+<div class="card">
+<h2>第 3 层 · 排除与观察简报（其余 30 场）</h2>
+<table class="excl">
+<tr><th>场次</th><th>判定</th></tr>
+<tr><td>#1 周日001 前进之鹰vs海牙</td><td>[B] 荷甲R3+主伤7人，修正后53%二星，避开</td></tr>
+<tr><td>#3 周日003 大田vs江原</td><td>[B] 胶着(36/30/34)+保级vs争冠互掐战意，避开</td></tr>
+<tr><td>#4 周日004 西布罗姆vs伯恩利</td><td>[C] 胶着(34/29/37)+英冠无DC，避开</td></tr>
+<tr><td>#5 周日005 菲尔特vs波鸿</td><td>[C] 德国杯R1杯赛无画像无DC，排除</td></tr>
+<tr><td>#6 周日006 哥德堡vs埃夫斯堡</td><td>[B] 瑞超中游互咬+波动×1.5，平局EV+26%系修正链膨胀不采信，避开</td></tr>
+<tr><td>#7 周日007 赫尔辛基vs赫尔火花</td><td>[B] 芬超无DC+波动×2.0压级，观察（争冠动力有但数据薄）</td></tr>
+<tr><td>#10 周日010 昂热vs里尔</td><td>[B] 里尔R1修正后51%二星边缘，方向参考不入串</td></tr>
+<tr><td>#11 周日011 不伦瑞克vs柏林联合</td><td>[C] 德国杯，排除</td></tr>
+<tr><td>#12 周日012 吉马良斯vs葡国民</td><td>[B] 葡超R3，HAFU aa分歧卡线+伤停情报矛盾，放弃</td></tr>
+<tr><td>#13 周日013 哈马比vs盖斯</td><td>[A] 瑞超争冠高动力60%三星——瑞超小联赛限额内可换入，本轮不入（已满）</td></tr>
+<tr><td>#15 周日015 马竞vs比利亚雷</td><td>[A] 西甲R2修正后47%二星；近10场5胜0平5负起伏大，避开</td></tr>
+<tr><td>#16 周日016 勒阿弗尔vs摩纳哥</td><td>[B] R1修正足额后主胜23%，撤销推荐</td></tr>
+<tr><td>#18 周日018 弗洛西诺vs尤文</td><td>[A] 尤文R1修正后58%三星；意甲R1+升班马主场，观察（可做备选骨架）</td></tr>
+<tr><td>#19 周日019 威尼斯vs莱切</td><td>[C] 意甲R1+升班马威尼斯无DC，避开</td></tr>
+<tr><td>#20 周日020 圣克拉拉vs法马利康</td><td>[B] 胶着(36/31/33)葡超R3，避开</td></tr>
+<tr><td>#21 周日021 赫塔费vs桑坦德</td><td>[C] 升班马桑坦德无DC，避开</td></tr>
+<tr><td>#22 周日022 都灵vsAC米兰</td><td>[A] 米兰R1修正后47%；主伤4人（d=+2），观察</td></tr>
+<tr><td>#26 周日026 新英格兰vs纽约城</td><td>[C] 美职无DC+波动×1.3，排除</td></tr>
+<tr><td>#27 周日027 桑托斯vs米拉索尔</td><td>[C] 巴甲无DC+波动×1.3，排除</td></tr>
+<tr><td>#28 周一001 博洛尼亚vs拉齐奥</td><td>[B] 意甲R1修正后平局40%膨胀，避开</td></tr>
+<tr><td>#29 周一002 新未来SCvs胡巴卡德</td><td>[C] 沙特R2，DC 0球档EV+139%系泊松尾部症状，弃</td></tr>
+<tr><td>#30 周一003 马尔默vs佐加顿斯</td><td>[B] 瑞超双强胶着+波动×1.5，避开</td></tr>
+<tr><td>#31 周一004 奥萨苏纳vs莱万特</td><td>[B] 西甲R2修正后50%，观察</td></tr>
+<tr><td>#32 周一005 吉达联合vs拉斯决心</td><td>[B] 沙特R2+波动×1.3压级54%，观察</td></tr>
+<tr><td>#33 周一006 罗马vs佛罗伦萨</td><td>[A] 意甲R1修正后50%二星；罗马近10场6胜2平，观察（明晚场）</td></tr>
+<tr><td>#34 周一007 兰斯vs阿纳西</td><td>[C] 法乙新赛季轮次未确认❓，排除</td></tr>
+<tr><td>#35 周一008 富勒姆vs切尔西</td><td>[A] 切尔西R1修正后44%；伦敦德比，观察</td></tr>
+<tr><td>#36 周一009 吉维森特vs卡萨皮亚</td><td>[B] 葡超R3修正后56%三星（明晚场，可做明日方案骨架）</td></tr>
+<tr><td>#37 周一010 马拉加vs拉科</td><td>[C] 胶着(38/32/30)+双升班马无DC，避开</td></tr>
+<tr><td>#38 周一011 博塔弗戈vs巴竞技</td><td>[C] 巴甲无DC，排除</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h2>本轮方法论备注（供复盘）</h2>
+<div class="small">
+①<b>分歧&gt;5pp 回退市场锚</b>：本轮 12 场触发（前进之鹰28pp/坎布尔18pp/波尔图17pp/曼城18pp等）——荷甲 DC 混入 2627 三轮小样本是主因（坎布尔/海牙参数过拟合），英超 DC 为 2526 半季 210 场。<br>
+②<b>0球/0-0 档系统性高估</b>：EV 扫描合格区 30 项中 ⅔ 集中 0 球档且全部同向（DC&gt;市场）——判定为泊松尾部模型症状而非信息边际，全部剔除未采信。<br>
+③<b>修正链平局膨胀</b>：R1×1.35 使多场平局概率推至 27~40%，由此产生的"平局 EV+"（西布罗姆+17.9%/哥德堡+26.3%等）系系数自我强化，未经消融验证，一律不采信——已列为消融清单候选项。<br>
+④<b>开季多场入串披露</b>：今晚欧洲主流联赛全部处于 R1-R3，「开季场≤1 场入串」字面纪律不可满足；已用修正链足额降级（R1×0.80/R2×0.90/R3×0.95）+控制串长 2 关+双线分散对冲。<br>
+⑤<b>数据来源</b>：体彩五池（16:04 采集+16:30 复扫）· DC 12 联赛缓存（本轮重拟合英超/荷甲）· insight 15 场 · ESPN 积分榜 8 联赛 · titan007 英超兜底 · 联赛画像 13/16 就绪。
+</div>
+</div>
+
+<div class="okbox"><svg width="13" height="13" style="vertical-align:-2px"><use href="#i-check"/></svg> 出票前核对：编号×联赛×主客三重验证（终端实盘为准）· 半全场选项已标键序全称 dd（半平/全平）/aa（半客/全客）· 2 元/注 · 总投入 12 元 · 负期望娱乐仓位。</div>
+<div class="small" style="margin-top:12px;text-align:center">预测锁定凭证=git commit · 回填说「回填赛果」· 复盘跑 run.py verify</div>
+</div></body></html>

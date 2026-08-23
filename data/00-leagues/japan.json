@@ -7,7 +7,6 @@
     {
       "pos": 1,
       "team": "Kashiwa Reysol",
-      "teamZh": "柏太阳神",
       "played": 3,
       "won": 3,
       "drawn": 0,
@@ -20,7 +19,6 @@
     {
       "pos": 2,
       "team": "Kashima Antlers",
-      "teamZh": "鹿岛鹿角",
       "played": 3,
       "won": 3,
       "drawn": 0,
@@ -32,8 +30,7 @@
     },
     {
       "pos": 3,
-      "team": "Hiroshima Sanfrecce",
-      "teamZh": "广岛三箭",
+      "team": "Sanfrecce Hiroshima",
       "played": 3,
       "won": 2,
       "drawn": 1,
@@ -46,7 +43,6 @@
     {
       "pos": 4,
       "team": "Machida Zelvia",
-      "teamZh": "町田泽维亚",
       "played": 2,
       "won": 2,
       "drawn": 0,
@@ -58,8 +54,7 @@
     },
     {
       "pos": 5,
-      "team": "Yokohama Marinos",
-      "teamZh": "横滨水手",
+      "team": "Yokohama F. Marinos",
       "played": 3,
       "won": 2,
       "drawn": 0,
@@ -72,7 +67,6 @@
     {
       "pos": 6,
       "team": "Cerezo Osaka",
-      "teamZh": "大阪樱花",
       "played": 3,
       "won": 2,
       "drawn": 0,
@@ -85,7 +79,6 @@
     {
       "pos": 7,
       "team": "Mito Hollyhock",
-      "teamZh": "水户蜀葵",
       "played": 3,
       "won": 1,
       "drawn": 1,
@@ -98,7 +91,6 @@
     {
       "pos": 8,
       "team": "Vissel Kobe",
-      "teamZh": "神户胜利船",
       "played": 3,
       "won": 1,
       "drawn": 1,
@@ -111,7 +103,6 @@
     {
       "pos": 9,
       "team": "Fagiano Okayama",
-      "teamZh": "冈山绿雉",
       "played": 3,
       "won": 1,
       "drawn": 1,
@@ -124,7 +115,6 @@
     {
       "pos": 10,
       "team": "Gamba Osaka",
-      "teamZh": "大阪钢巴",
       "played": 3,
       "won": 1,
       "drawn": 1,
@@ -137,7 +127,6 @@
     {
       "pos": 11,
       "team": "FC Tokyo",
-      "teamZh": "FC东京",
       "played": 3,
       "won": 1,
       "drawn": 1,
@@ -150,7 +139,6 @@
     {
       "pos": 12,
       "team": "Avispa Fukuoka",
-      "teamZh": "福冈黄蜂",
       "played": 3,
       "won": 1,
       "drawn": 0,
@@ -162,21 +150,7 @@
     },
     {
       "pos": 13,
-      "team": "Nagoya Grampus",
-      "teamZh": "名古屋鲸八",
-      "played": 3,
-      "won": 1,
-      "drawn": 0,
-      "lost": 2,
-      "gf": 4,
-      "ga": 4,
-      "gd": 0,
-      "pts": 3
-    },
-    {
-      "pos": 14,
       "team": "Kawasaki Frontale",
-      "teamZh": "川崎前锋",
       "played": 3,
       "won": 0,
       "drawn": 3,
@@ -187,9 +161,20 @@
       "pts": 3
     },
     {
+      "pos": 14,
+      "team": "Nagoya Grampus",
+      "played": 3,
+      "won": 1,
+      "drawn": 0,
+      "lost": 2,
+      "gf": 4,
+      "ga": 4,
+      "gd": 0,
+      "pts": 3
+    },
+    {
       "pos": 15,
       "team": "Shimizu S-Pulse",
-      "teamZh": "清水鼓动",
       "played": 3,
       "won": 1,
       "drawn": 0,
@@ -202,7 +187,6 @@
     {
       "pos": 16,
       "team": "V-Varen Nagasaki",
-      "teamZh": "长崎成功丸",
       "played": 3,
       "won": 1,
       "drawn": 0,
@@ -214,8 +198,7 @@
     },
     {
       "pos": 17,
-      "team": "Tokyo Verdy",
-      "teamZh": "东京绿茵",
+      "team": "Tokyo Verdy 1969",
       "played": 3,
       "won": 0,
       "drawn": 2,
@@ -228,7 +211,6 @@
     {
       "pos": 18,
       "team": "Kyoto Sanga",
-      "teamZh": "京都不死鸟",
       "played": 3,
       "won": 0,
       "drawn": 1,
@@ -241,7 +223,6 @@
     {
       "pos": 19,
       "team": "Urawa Red Diamonds",
-      "teamZh": "浦和红钻",
       "played": 2,
       "won": 0,
       "drawn": 0,
@@ -253,8 +234,7 @@
     },
     {
       "pos": 20,
-      "team": "JEF United Ichihara Chiba",
-      "teamZh": "千叶市原",
+      "team": "JEF United Ichihara-Chiba",
       "played": 3,
       "won": 0,
       "drawn": 0,
@@ -271,7 +251,7 @@
   },
   "context": {},
   "freshness": {
-    "standingsSource": "titan007",
+    "standingsSource": "espn",
     "stale": false,
     "note": "Claude Step2.5 冷启动写入（core.api types/4/groups/1/standings/0）"
   }

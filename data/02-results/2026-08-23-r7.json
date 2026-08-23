@@ -1,0 +1,151 @@
+{
+  "date": "2026-08-23",
+  "version": "v4.9-r7",
+  "note": "同日重跑增量修订（16:04-16:35）。v4.7-r5/r6 存档于 2026-08-23.json 不动；本轮 3 处修订：撤008aa（DC λ失真）/新增曼城比分×2/降级警示016。实票4串11存续不动。",
+  "plans": [
+    {
+      "plan": "🚀搏奖",
+      "type": "高赔单关组（EV>0+分歧<5pp+结构性分歧剔除三门槛）",
+      "stake": "8元(2元×4注)",
+      "legs": [
+        "周日023 HAFU dd（半平/全平）@6.50 p18.6% EV+20.9% 【维持r5】",
+        "周日017 HAFU dd（半平/全平）@7.50 p14.6% EV+9.7% 【维持r5】",
+        "周日009 CRS 曼城 3-0 @11.00 p9.8% EV+7.8% 分歧0.7pp 【新增r7】",
+        "周日009 CRS 曼城 4-0 @17.00 p8.3% EV+41.9% 分歧2.4pp 【新增r7】"
+      ],
+      "odds": null,
+      "evEach": true,
+      "revoked": [
+        "周日008 HAFU aa @12.50 【撤销】荷甲DC重拟合暴露λ结构失真：DC主胜58.8% vs 市场73%（方向分歧14pp>5pp纪律线），衍生品hafu不可信",
+        "周日016 HAD 主胜 @3.60 【撤销】r5的EV+4.1%系R1修正未足额（final 0.289）；足额修正链（R1×0.80+伤停d=0）后p=23%，EV=-17%"
+      ],
+      "optional": "周日002 CRS 町田 3-0 @16.00 p8.5% EV+35.2% 分歧2.2pp（资金充裕可+2元，与实票2-0跨票分池合规）",
+      "atLeastOne": 0.425
+    },
+    {
+      "plan": "⚖️平衡",
+      "type": "2串1延伸票（维持r5，如未购18:30前可出）",
+      "stake": "4元(2元×2注)",
+      "legs": [
+        "周日002 HAD 主胜@1.73 × 周日014 HAD 客胜@1.14 = 复合1.97（r5口径p≈49%；r7保守修正链口径p≈37%）"
+      ],
+      "odds": 1.97,
+      "evEach": false,
+      "note": "两口径差异：町田场R3修正应用与否（日职新赛季3轮样本）。EV-2.7%（r5）~-27%（r7保守），负期望常态"
+    },
+    {
+      "plan": "🛡️保本",
+      "type": "不开",
+      "stake": "0元",
+      "legs": [],
+      "odds": null,
+      "evEach": false,
+      "note": "36场方向EV全负（体彩12.9%抽水+Pinnacle停摆单锚模式）；维持r5结论"
+    }
+  ],
+  "matches": [
+    {
+      "idx": 9, "code": "周日009", "league": "英超(R1)",
+      "match": "曼城 vs 伯恩茅斯",
+      "pick": "CRS 3-0", "odds": 11.00, "star": 3, "grade": "A",
+      "dc": [0.828, 0.121, 0.052], "fused": [0.847, 0.097, 0.056],
+      "final": 0.098, "chain": "R1×0.80/1.35+伤停d=-5（方向层）；比分层用DC直出（λ3.41/0.86，攻击力全联赛第一+0.45）",
+      "ev": 0.078, "inPlan": "🚀搏奖",
+      "result": null, "directionHit": null, "scoreHit": null, "clv": null, "clv_approx_dk": null, "clv_note": "Pinnacle停摆，回填时算DK近似"
+    },
+    {
+      "idx": 9, "code": "周日009", "league": "英超(R1)",
+      "match": "曼城 vs 伯恩茅斯",
+      "pick": "CRS 4-0", "odds": 17.00, "star": 3, "grade": "A",
+      "dc": [0.828, 0.121, 0.052], "fused": [0.847, 0.097, 0.056],
+      "final": 0.083, "chain": "同上",
+      "ev": 0.419, "inPlan": "🚀搏奖",
+      "result": null, "directionHit": null, "scoreHit": null, "clv": null, "clv_approx_dk": null
+    },
+    {
+      "idx": 23, "code": "周日023", "league": "意甲(R1)",
+      "match": "亚特兰大 vs 萨索洛",
+      "pick": "HAFU dd（半平/全平）", "odds": 6.50, "star": 3, "grade": "A",
+      "dc": [0.515, 0.273, 0.212], "fused": [0.585, 0.261, 0.155],
+      "final": 0.186, "chain": "伤停d=+1；dd为DC hafu直出（λ1.41/0.80低进球结构）",
+      "ev": 0.209, "inPlan": "🚀搏奖",
+      "result": null, "directionHit": null, "scoreHit": null, "clv": null, "clv_approx_dk": null
+    },
+    {
+      "idx": 17, "code": "周日017", "league": "英超(R1)",
+      "match": "纽卡斯尔 vs 利物浦",
+      "pick": "HAFU dd（半平/全平）", "odds": 7.50, "star": 2, "grade": "A",
+      "dc": [0.448, 0.295, 0.257], "fused": [0.349, 0.266, 0.385],
+      "final": 0.146, "chain": "R1×0.80/1.35+伤停d=-5（方向层分歧4pp融合锚）；dd为DC直出",
+      "ev": 0.097, "inPlan": "🚀搏奖",
+      "result": null, "directionHit": null, "scoreHit": null, "clv": null, "clv_approx_dk": null
+    },
+    {
+      "idx": 2, "code": "周日002", "league": "日职(R3)",
+      "match": "町田泽维 vs 浦和红钻",
+      "pick": "HAD 主胜（+实票CRS 2-0@9.0存续）", "odds": 1.73, "star": 3, "grade": "A",
+      "dc": [0.667, 0.190, 0.143], "fused": [0.668, 0.194, 0.138],
+      "final": 0.49, "chain": "R3×0.95/1.10（保守修正链口径；r5未应用=0.56）",
+      "ev": -0.151, "inPlan": "⚖️平衡+用户实票",
+      "result": null, "directionHit": null, "scoreHit": null, "clv": null, "clv_approx_dk": null
+    },
+    {
+      "idx": 14, "code": "周日014", "league": "荷甲(R3)",
+      "match": "坎布尔 vs 费耶诺德",
+      "pick": "HAD 客胜", "odds": 1.14, "star": 4, "grade": "A",
+      "dc": [0.010, 0.030, 0.960], "fused": [0.013, 0.045, 0.942],
+      "final": 0.74, "chain": "R3×0.95+伤停d=-6（客×1.04）；DCλ失真已回退市场锚（分歧18pp）；近10场8胜2平0负情报支撑",
+      "ev": -0.151, "inPlan": "⚖️平衡",
+      "result": null, "directionHit": null, "scoreHit": null, "clv": null, "clv_approx_dk": null
+    },
+    {
+      "idx": 24, "code": "周日024", "league": "西甲(R2)",
+      "match": "埃尔切 vs 巴萨",
+      "pick": "HAFU aa（半客/全客）（用户实票@1.70存续）", "odds": 1.70, "star": 2, "grade": "A",
+      "dc": [0.062, 0.108, 0.830], "fused": [0.066, 0.117, 0.817],
+      "final": 0.47, "chain": "R2×0.90/1.20+伤停d=-1；aa概率=DC hafu直出（巴萨客胜结构）",
+      "ev": -0.201, "inPlan": "用户实票",
+      "result": null, "directionHit": null, "scoreHit": null, "clv": null, "clv_approx_dk": null
+    },
+    {
+      "idx": 16, "code": "周日016", "league": "法甲(R1)",
+      "match": "勒阿弗尔 vs 摩纳哥",
+      "pick": "HAD 主胜 @3.60", "odds": 3.60, "star": 1, "grade": "B",
+      "dc": [0.279, 0.264, 0.457], "fused": [0.261, 0.245, 0.494],
+      "final": 0.23, "chain": "R1×0.80/1.35足额修正；r5的EV+4.1%（final 0.289）系修正未足额",
+      "ev": -0.171, "inPlan": null,
+      "result": null, "directionHit": null, "scoreHit": null, "clv": null, "clv_approx_dk": null,
+      "note": "★r7撤销r5的搏奖推荐；如已购不追加"
+    },
+    {
+      "idx": 8, "code": "周日008", "league": "荷甲(R3)",
+      "match": "埃因霍温 vs 格罗宁根",
+      "pick": "HAFU aa 撤销", "odds": 12.50, "star": 2, "grade": "A",
+      "dc": [0.588, 0.185, 0.227], "fused": [0.816, 0.121, 0.063],
+      "final": 0.124, "chain": "★撤销：DC λ结构失真（主胜58.8% vs 市场73%，分歧14pp>5pp线）——荷甲DC混入2627三轮小样本，埃因霍温λ被拉低至2.21",
+      "ev": 0.551, "inPlan": null,
+      "result": null, "directionHit": null, "scoreHit": null, "clv": null, "clv_approx_dk": null,
+      "note": "★r7撤销r5推荐（EV+44.5%系失真λ产物）；方向层主胜72%（市场锚+修正链）四星可另行入串"
+    }
+  ],
+  "sources": {
+    "odds": "engine/cache/sporttery_matches.json（16:04采集+16:30复扫，异动6处均≤0.12微调）",
+    "dc": "engine/cache/tonight_dc.json（27场DC+融合；荷甲/英超本轮重拟合）",
+    "analysis": "engine/cache/tonight_analysis.json（38场修正链+星级）",
+    "insight": "sporttery_insight_2041001/2/8/9/13/14/15/17/18/22/23/24/25/33/35（15场A级情报）",
+    "standings": "espn（西甲/意甲/法甲/荷甲/葡超/日职/美职/巴甲）+titan007（英超）+本地画像（瑞超/韩超/芬超/沙特）",
+    "mode": "单锚模式（Pinnacle停摆；市场锚=体彩去水×0.97，星级上限⭐⭐⭐⭐内不受限因四星均为修正链足额压级后）"
+  },
+  "finalReview": {
+    "reviewRound": "r7",
+    "reviewedAt": "2026-08-23T16:35",
+    "version": "v4.9",
+    "verdict": "增量修订：撤2增2维持4（定律1数据纠错通道：DC重拟合暴露λ失真属'复核项⑤数据纠错'，非市场信息边际）",
+    "checks": {
+      "oddsDrift": "16:04→16:30 复扫6处微调（002平3.30→3.35/客4.02→4.08/002让球主3.38→3.32/022平3.48→3.39/027让球双调），无方向性大异动",
+      "injuries": "15场insight伤停与r5/r6终审一致（009客伤9人含布鲁克斯/亚当斯/Kroupi为新增确认权重）",
+      "motivation": "哈马比33分第2争冠高动力✓/大田保级vs江原争冠互掐（避开确认）/赫尔辛基34分第3争冠（波动×2.0维持二星）"
+    },
+    "liveTicket": "实票4串11存续：厄格里特dd✅/帕尔马TTG0球❌断/町田CRS2-0@9.0今晚18:30/巴萨aa@1.70明晚03:30；存活4注全含厄✅"
+  }
+}
