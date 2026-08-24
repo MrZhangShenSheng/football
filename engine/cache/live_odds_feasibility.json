@@ -1,0 +1,19 @@
+{
+ "ranAt": "2026-08-24",
+ "results": [
+  {
+   "source": "the-odds-api",
+   "ok": false,
+   "detail": "无 ODDS_API_KEY 环境变量（免费注册 the-odds-api.com，500次/月）",
+   "probedAt": "2026-08-24T23:22:09"
+  },
+  {
+   "source": "pinnacle直连",
+   "ok": false,
+   "detail": "ConnectTimeout: HTTPSConnectionPool(host='api.pinnacle.com', port=443): Max retries exceeded with url: /papi/1.0/fixtures?sportId=1 (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.pinnacle.com', port=443) at 0x104fb7210>, 'Connection to api.pinnacle.com timed out. (connect timeout=10)'))",
+   "probedAt": "2026-08-24T23:22:29"
+  }
+ ],
+ "verdict": "layer1_prior",
+ "usage": "layer1_live → 层1 用临场价；layer1_prior → 层1 降级为上轮收盘先验"
+}
