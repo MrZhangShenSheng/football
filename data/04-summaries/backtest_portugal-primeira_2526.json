@@ -1,0 +1,31 @@
+{
+  "league": "portugal-primeira",
+  "season": "2526",
+  "refitEvery": 30,
+  "fusion": {
+    "a": 0.4,
+    "b": 1.0
+  },
+  "ranAt": "2026-08-24",
+  "metrics": {
+    "market_only": {
+      "rps": 0.1702,
+      "logloss": 0.9093,
+      "acc": 0.569,
+      "n": 123
+    },
+    "dc_only": {
+      "rps": 0.1892,
+      "logloss": 0.9802,
+      "acc": 0.528,
+      "n": 123
+    },
+    "fused": {
+      "rps": 0.1667,
+      "logloss": 0.8882,
+      "acc": 0.577,
+      "n": 123
+    }
+  },
+  "records": 123
+}

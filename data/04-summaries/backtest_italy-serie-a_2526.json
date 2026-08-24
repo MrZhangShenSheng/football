@@ -1,0 +1,31 @@
+{
+  "league": "italy-serie-a",
+  "season": "2526",
+  "refitEvery": 30,
+  "fusion": {
+    "a": 0.4,
+    "b": 1.0
+  },
+  "ranAt": "2026-08-24",
+  "metrics": {
+    "market_only": {
+      "rps": 0.1902,
+      "logloss": 0.984,
+      "acc": 0.506,
+      "n": 170
+    },
+    "dc_only": {
+      "rps": 0.2328,
+      "logloss": 1.1434,
+      "acc": 0.418,
+      "n": 170
+    },
+    "fused": {
+      "rps": 0.1985,
+      "logloss": 1.0075,
+      "acc": 0.476,
+      "n": 170
+    }
+  },
+  "records": 170
+}
