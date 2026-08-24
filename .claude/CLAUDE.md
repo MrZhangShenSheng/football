@@ -25,7 +25,7 @@
 - `data/03-predictions/`: 预测报告 HTML（仅用户输出用 HTML+SVG）
 - `data/04-summaries/`: 五维统计 `_stats.json` + 复盘 HTML
 - `data/05-trends/`: 趋势发现 JSON
-- `engine/scripts/`: Python 脚本（dc_fit/dc_predict/elo_fetch/xg_fetch/odds_fetch/backtest/calibrate/build_index/band_calibration 概率带校准/score_ev 比分EV审计/live_odds_probe 临场价源探测）
+- `engine/scripts/`: Python 脚本（dc_fit/dc_predict/elo_fetch/xg_fetch/odds_fetch/backtest/calibrate/build_index/band_calibration 概率带校准/score_ev 比分EV审计/live_odds_probe 临场价源探测/boldplay 阶梯出票卡(三档/限额反算/月封顶240,settle 回填判定)）
 - `engine/cache/`: DC 参数缓存（{league}_dc.json）+ `models/` 版本化存档（{league}_dc_v{n}.json+.meta+latest.json，holdout 门槛发布）+ fusion.json 融合系数 + `score_odds/` 体彩全玩法赔率日存档 + live_odds_feasibility.json 临场价源结论（2026-08-24 探测：pinnacle 直连被墙/the-odds-api 需 key → 层1 降级上轮收盘先验）
 - `skill/SKILL.md`: 预测 skill v4.9（junction 到 ~/.claude/skills/）+ `skill/references/` 外置参考（系数详表/官方玩法规则/教训档案，skill 正文按需加载）
 - `docs/`: 设计文档
