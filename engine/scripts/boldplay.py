@@ -104,7 +104,72 @@ def build_ticket(odds_day: dict, freq_table: dict, seq: int) -> dict:
         "postTaxNote": "单注奖金超1万部分税20%;4串单注限额50万已反算倍数",
     }
 
+def _direction(score: str) -> str:
+    h, a = (int(x) for x in score.split(":"))
+    return "主胜" if h > a else ("平" if h == a else "客胜")
+
+def settle(ticket: dict, results: dict) -> dict:
+    """逐 leg 判定。results: matchNumStr → 实际比分 'h:a'；had pick 由比分方向推导。开发者 sszhang"""
+    leg_hits = {}
+    for tier, blob in ticket.get("tiers", {}).items():
+        raw = blob.get("legs") or []
+        groups = raw if (raw and isinstance(raw[0], list)) else [raw]
+        tier_groups = []
+        for legs in groups:
+            hits = []
+            for leg in legs:
+                sc = results.get(leg["matchNumStr"])
+                if sc is None:
+                    hits.append(None); continue
+                ok = (leg["pick"] == sc) if leg["play"] == "crs" else (leg["pick"] == _direction(sc))
+                hits.append(ok)
+            tier_groups.append(hits)
+        leg_hits[tier] = tier_groups
+    u = ticket.get("tiers", {}).get("upset", {})
+    upset_hit = bool(u) and all(h is True for g in leg_hits.get("upset", []) for h in g)
+    payout = 0.0
+    if upset_hit:
+        payout = 2 * u.get("multiplier", 1)
+        for leg in u["legs"]:
+            payout *= leg["odds"]
+    return {"legHits": leg_hits, "upsetHit": upset_hit, "payout": payout,
+            "densityRecovered": round(payout / ticket.get("totalCost", 1), 4)}
+
+def _settle_cli() -> None:
+    """settle 子命令：最新出票 + 同日期赛果 → 逐 leg 判定写回。开发者 sszhang"""
+    tickets = sorted(glob.glob("data/03-predictions/*-boldplay.json"))
+    if not tickets:
+        print("[boldplay] 无出票记录"); return
+    path = tickets[-1]
+    ticket = json.load(open(path, encoding="utf-8"))
+    res_path = f"data/02-results/{ticket['date']}.json"
+    try:
+        day = json.load(open(res_path, encoding="utf-8"))
+    except FileNotFoundError:
+        print(f"[boldplay] 赛果未回填: {res_path}"); return
+    # 实测口径（2026-08-24 查 data/02-results/*.json）：编号字段是 code（如"周一001"），
+    # 比分字段是 result、横杠分隔（如"2-5"），且未完赛场缺 result → 转 "h:a" 冒号口径
+    results = {}
+    for m in day.get("matches", []):
+        r = str(m.get("result", "")).strip()
+        if r and ":" in r:
+            results[m.get("code")] = r
+        elif r and "-" in r:
+            results[m.get("code")] = r.replace("-", ":")
+    if not results:
+        print(f"[boldplay] 赛果未回填: {res_path}"); return
+    res = settle(ticket, results)
+    ticket["settle"] = res
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(ticket, f, ensure_ascii=False, indent=1)
+    hits = res["legHits"].get("upset", [[]])[0] if res["legHits"].get("upset") else []
+    print(f"[boldplay-settle] upset {sum(1 for h in hits if h is True)}/{len(hits)} 命中"
+          f" · 中奖 {'是' if res['upsetHit'] else '否'} · 派彩 {res['payout']:.0f} → 写回 {path}")
+
 def main() -> None:
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] == "settle":
+        _settle_cli(); return
     latest = sorted(glob.glob("engine/cache/score_odds/*.json"))[-1]
     odds = json.load(open(latest, encoding="utf-8"))
     table = build_freq_table()
