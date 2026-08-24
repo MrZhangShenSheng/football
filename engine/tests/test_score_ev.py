@@ -27,3 +27,16 @@ def test_map_league_known():
 
 def test_map_league_unknown_returns_none():
     assert map_league("欧冠") is None and map_league("巴甲") is None
+
+def test_build_freq_table_reads_league_dict_structure(monkeypatch, tmp_path):
+    import json as _json
+    from score_ev import build_freq_table
+    monkeypatch.setattr("score_ev.fetch_rows", lambda *a, **k: [])
+    lib = tmp_path / "korea_matches.json"
+    lib.write_text(_json.dumps({"league": "korea", "source": "espn-history",
+                                "seasons": ["2025"], "fetchedAt": "x", "matches": [
+        {"date": "2025-03-01", "home": "a", "away": "b", "hg": 1, "ag": 0},
+        {"date": "2025-03-02", "home": "c", "away": "d", "hg": 2, "ag": 2}]}), encoding="utf-8")
+    monkeypatch.setattr("glob.glob", lambda p: [str(lib)] if "league" in p else [])
+    table = build_freq_table()
+    assert table["korea"]["__n"] == 2 and table["korea"]["1:0"] == 1 and table["korea"]["2:2"] == 1

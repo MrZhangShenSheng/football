@@ -3,10 +3,22 @@
  "oddsArchive": "engine/cache/score_odds/2026-08-24.json",
  "source": "fd多季+league库频率(Beta收缩50) × sporttery当轮赔率",
  "n_scanned": 364,
- "n_positive": 108,
- "n_positive_league_backed": 60,
- "n_positive_prior_only": 48,
+ "n_positive": 111,
+ "n_positive_league_backed": 92,
+ "n_positive_prior_only": 19,
  "positive_top": [
+  {
+   "matchNumStr": "周一005",
+   "match": "吉达联合-拉斯决心",
+   "league": "沙职",
+   "leagueId": "saudi",
+   "score": "0:5",
+   "odds": 900.0,
+   "q": 0.0135,
+   "n": 408,
+   "ev": 11.1575,
+   "directionBand": ">=0.60"
+  },
   {
    "matchNumStr": "周一009",
    "match": "吉维森特-卡萨皮亚",
@@ -16,32 +28,8 @@
    "odds": 550.0,
    "q": 0.0113,
    "n": 1224,
-   "ev": 5.2321,
+   "ev": 5.2288,
    "directionBand": "0.45-0.60"
-  },
-  {
-   "matchNumStr": "周一002",
-   "match": "新未来SC-胡巴卡德",
-   "league": "沙职",
-   "leagueId": "saudi",
-   "score": "5:0",
-   "odds": 700.0,
-   "q": 0.0077,
-   "n": 0,
-   "ev": 4.3945,
-   "directionBand": ">=0.60"
-  },
-  {
-   "matchNumStr": "周一002",
-   "match": "新未来SC-胡巴卡德",
-   "league": "沙职",
-   "leagueId": "saudi",
-   "score": "4:0",
-   "odds": 250.0,
-   "q": 0.0187,
-   "n": 0,
-   "ev": 3.6789,
-   "directionBand": ">=0.60"
   },
   {
    "matchNumStr": "周一009",
@@ -52,8 +40,20 @@
    "odds": 400.0,
    "q": 0.0114,
    "n": 1224,
-   "ev": 3.5656,
+   "ev": 3.5594,
    "directionBand": "0.45-0.60"
+  },
+  {
+   "matchNumStr": "周一002",
+   "match": "新未来SC-胡巴卡德",
+   "league": "沙职",
+   "leagueId": "saudi",
+   "score": "4:0",
+   "odds": 250.0,
+   "q": 0.0173,
+   "n": 408,
+   "ev": 3.316,
+   "directionBand": ">=0.60"
   },
   {
    "matchNumStr": "周一008",
@@ -64,8 +64,20 @@
    "odds": 500.0,
    "q": 0.0085,
    "n": 1520,
-   "ev": 3.2628,
+   "ev": 3.2517,
    "directionBand": "0.45-0.60"
+  },
+  {
+   "matchNumStr": "周一002",
+   "match": "新未来SC-胡巴卡德",
+   "league": "沙职",
+   "leagueId": "saudi",
+   "score": "5:1",
+   "odds": 350.0,
+   "q": 0.0117,
+   "n": 408,
+   "ev": 3.0946,
+   "directionBand": ">=0.60"
   },
   {
    "matchNumStr": "周一009",
@@ -74,21 +86,33 @@
    "leagueId": "portugal-primeira",
    "score": "0:3",
    "odds": 120.0,
-   "q": 0.0325,
+   "q": 0.0324,
    "n": 1224,
-   "ev": 2.8956,
+   "ev": 2.8919,
    "directionBand": "0.45-0.60"
   },
   {
-   "matchNumStr": "周一002",
-   "match": "新未来SC-胡巴卡德",
+   "matchNumStr": "周一005",
+   "match": "吉达联合-拉斯决心",
    "league": "沙职",
    "leagueId": "saudi",
-   "score": "3:0",
-   "odds": 80.0,
-   "q": 0.0411,
-   "n": 0,
-   "ev": 2.2881,
+   "score": "1:5",
+   "odds": 550.0,
+   "q": 0.0069,
+   "n": 408,
+   "ev": 2.7943,
+   "directionBand": ">=0.60"
+  },
+  {
+   "matchNumStr": "周一005",
+   "match": "吉达联合-拉斯决心",
+   "league": "沙职",
+   "leagueId": "saudi",
+   "score": "2:5",
+   "odds": 550.0,
+   "q": 0.0068,
+   "n": 408,
+   "ev": 2.7195,
    "directionBand": ">=0.60"
   },
   {
@@ -100,7 +124,7 @@
    "odds": 1000.0,
    "q": 0.0033,
    "n": 1224,
-   "ev": 2.2729,
+   "ev": 2.2864,
    "directionBand": "0.45-0.60"
   },
   {
@@ -112,32 +136,8 @@
    "odds": 350.0,
    "q": 0.0092,
    "n": 1520,
-   "ev": 2.2182,
+   "ev": 2.2165,
    "directionBand": "0.45-0.60"
-  },
-  {
-   "matchNumStr": "周一005",
-   "match": "吉达联合-拉斯决心",
-   "league": "沙职",
-   "leagueId": "saudi",
-   "score": "0:5",
-   "odds": 900.0,
-   "q": 0.0034,
-   "n": 0,
-   "ev": 2.055,
-   "directionBand": ">=0.60"
-  },
-  {
-   "matchNumStr": "周一005",
-   "match": "吉达联合-拉斯决心",
-   "league": "沙职",
-   "leagueId": "saudi",
-   "score": "0:4",
-   "odds": 350.0,
-   "q": 0.0087,
-   "n": 0,
-   "ev": 2.0505,
-   "directionBand": ">=0.60"
   },
   {
    "matchNumStr": "周一008",
@@ -148,7 +148,7 @@
    "odds": 60.0,
    "q": 0.0465,
    "n": 1520,
-   "ev": 1.7919,
+   "ev": 1.7903,
    "directionBand": "0.45-0.60"
   },
   {
@@ -158,9 +158,9 @@
    "leagueId": "spain-laliga",
    "score": "5:1",
    "odds": 300.0,
-   "q": 0.0092,
+   "q": 0.0091,
    "n": 1520,
-   "ev": 1.7462,
+   "ev": 1.7436,
    "directionBand": "0.30-0.45"
   },
   {
@@ -172,19 +172,43 @@
    "odds": 800.0,
    "q": 0.0033,
    "n": 1520,
-   "ev": 1.6343,
+   "ev": 1.643,
    "directionBand": "0.45-0.60"
+  },
+  {
+   "matchNumStr": "周一005",
+   "match": "吉达联合-拉斯决心",
+   "league": "沙职",
+   "leagueId": "saudi",
+   "score": "0:4",
+   "odds": 350.0,
+   "q": 0.0075,
+   "n": 408,
+   "ev": 1.6198,
+   "directionBand": ">=0.60"
   },
   {
    "matchNumStr": "周一002",
    "match": "新未来SC-胡巴卡德",
    "league": "沙职",
    "leagueId": "saudi",
-   "score": "5:1",
-   "odds": 350.0,
-   "q": 0.0074,
-   "n": 0,
-   "ev": 1.6009,
+   "score": "3:0",
+   "odds": 80.0,
+   "q": 0.0306,
+   "n": 408,
+   "ev": 1.4476,
+   "directionBand": ">=0.60"
+  },
+  {
+   "matchNumStr": "周一002",
+   "match": "新未来SC-胡巴卡德",
+   "league": "沙职",
+   "leagueId": "saudi",
+   "score": "2:0",
+   "odds": 32.0,
+   "q": 0.0752,
+   "n": 408,
+   "ev": 1.405,
    "directionBand": ">=0.60"
   },
   {
@@ -196,7 +220,7 @@
    "odds": 90.0,
    "q": 0.0263,
    "n": 1520,
-   "ev": 1.3708,
+   "ev": 1.3686,
    "directionBand": "0.45-0.60"
   },
   {
@@ -204,11 +228,23 @@
    "match": "吉达联合-拉斯决心",
    "league": "沙职",
    "leagueId": "saudi",
-   "score": "0:3",
-   "odds": 85.0,
-   "q": 0.0272,
-   "n": 0,
-   "ev": 1.3083,
+   "score": "1:3",
+   "odds": 50.0,
+   "q": 0.0467,
+   "n": 408,
+   "ev": 1.3351,
+   "directionBand": ">=0.60"
+  },
+  {
+   "matchNumStr": "周一005",
+   "match": "吉达联合-拉斯决心",
+   "league": "沙职",
+   "leagueId": "saudi",
+   "score": "0:2",
+   "odds": 40.0,
+   "q": 0.0577,
+   "n": 408,
+   "ev": 1.3095,
    "directionBand": ">=0.60"
   },
   {
@@ -220,7 +256,7 @@
    "odds": 150.0,
    "q": 0.0152,
    "n": 1520,
-   "ev": 1.2869,
+   "ev": 1.2841,
    "directionBand": "0.45-0.60"
   },
   {
@@ -232,7 +268,7 @@
    "odds": 100.0,
    "q": 0.0228,
    "n": 1520,
-   "ev": 1.2804,
+   "ev": 1.2776,
    "directionBand": "0.45-0.60"
   },
   {
@@ -240,11 +276,23 @@
    "match": "新未来SC-胡巴卡德",
    "league": "沙职",
    "leagueId": "saudi",
-   "score": "2:0",
-   "odds": 32.0,
-   "q": 0.0667,
-   "n": 0,
-   "ev": 1.1343,
+   "score": "4:1",
+   "odds": 100.0,
+   "q": 0.0213,
+   "n": 408,
+   "ev": 1.1308,
+   "directionBand": ">=0.60"
+  },
+  {
+   "matchNumStr": "周一005",
+   "match": "吉达联合-拉斯决心",
+   "league": "沙职",
+   "leagueId": "saudi",
+   "score": "1:4",
+   "odds": 175.0,
+   "q": 0.0121,
+   "n": 408,
+   "ev": 1.1098,
    "directionBand": ">=0.60"
   },
   {
@@ -256,7 +304,7 @@
    "odds": 850.0,
    "q": 0.0025,
    "n": 1224,
-   "ev": 1.1026,
+   "ev": 1.108,
    "directionBand": "0.45-0.60"
   },
   {
@@ -268,8 +316,20 @@
    "odds": 350.0,
    "q": 0.006,
    "n": 1520,
-   "ev": 1.0892,
+   "ev": 1.0862,
    "directionBand": "0.45-0.60"
+  },
+  {
+   "matchNumStr": "周一002",
+   "match": "新未来SC-胡巴卡德",
+   "league": "沙职",
+   "leagueId": "saudi",
+   "score": "5:0",
+   "odds": 700.0,
+   "q": 0.0029,
+   "n": 408,
+   "ev": 1.0638,
+   "directionBand": ">=0.60"
   },
   {
    "matchNumStr": "周一007",
@@ -280,20 +340,8 @@
    "odds": 75.0,
    "q": 0.027,
    "n": 1370,
-   "ev": 1.0259,
+   "ev": 1.0239,
    "directionBand": "0.45-0.60"
-  },
-  {
-   "matchNumStr": "周一005",
-   "match": "吉达联合-拉斯决心",
-   "league": "沙职",
-   "leagueId": "saudi",
-   "score": "0:2",
-   "odds": 40.0,
-   "q": 0.0501,
-   "n": 0,
-   "ev": 1.0037,
-   "directionBand": ">=0.60"
   },
   {
    "matchNumStr": "周一004",
@@ -304,7 +352,7 @@
    "odds": 300.0,
    "q": 0.0066,
    "n": 1520,
-   "ev": 0.9941,
+   "ev": 0.9926,
    "directionBand": "0.45-0.60"
   },
   {
@@ -316,44 +364,8 @@
    "odds": 400.0,
    "q": 0.0049,
    "n": 1224,
-   "ev": 0.9774,
+   "ev": 0.9792,
    "directionBand": "0.45-0.60"
-  },
-  {
-   "matchNumStr": "周一003",
-   "match": "马尔默-佐加顿斯",
-   "league": "瑞超",
-   "leagueId": "sweden",
-   "score": "5:0",
-   "odds": 250.0,
-   "q": 0.0077,
-   "n": 0,
-   "ev": 0.9266,
-   "directionBand": "0.30-0.45"
-  },
-  {
-   "matchNumStr": "周一005",
-   "match": "吉达联合-拉斯决心",
-   "league": "沙职",
-   "leagueId": "saudi",
-   "score": "1:4",
-   "odds": 175.0,
-   "q": 0.0108,
-   "n": 0,
-   "ev": 0.8945,
-   "directionBand": ">=0.60"
-  },
-  {
-   "matchNumStr": "周一002",
-   "match": "新未来SC-胡巴卡德",
-   "league": "沙职",
-   "leagueId": "saudi",
-   "score": "1:0",
-   "odds": 19.0,
-   "q": 0.0982,
-   "n": 0,
-   "ev": 0.8651,
-   "directionBand": ">=0.60"
   },
   {
    "matchNumStr": "周一006",
@@ -364,7 +376,7 @@
    "odds": 700.0,
    "q": 0.0026,
    "n": 1520,
-   "ev": 0.8509,
+   "ev": 0.8546,
    "directionBand": "0.45-0.60"
   },
   {
@@ -374,9 +386,9 @@
    "leagueId": "england-premier",
    "score": "3:1",
    "odds": 35.0,
-   "q": 0.0524,
+   "q": 0.0523,
    "n": 1520,
-   "ev": 0.8336,
+   "ev": 0.832,
    "directionBand": "0.45-0.60"
   },
   {
@@ -384,11 +396,11 @@
    "match": "新未来SC-胡巴卡德",
    "league": "沙职",
    "leagueId": "saudi",
-   "score": "3:1",
-   "odds": 40.0,
-   "q": 0.045,
-   "n": 0,
-   "ev": 0.8018,
+   "score": "1:0",
+   "odds": 19.0,
+   "q": 0.0894,
+   "n": 408,
+   "ev": 0.6992,
    "directionBand": ">=0.60"
   },
   {
@@ -400,8 +412,44 @@
    "odds": 80.0,
    "q": 0.0212,
    "n": 1520,
-   "ev": 0.6998,
+   "ev": 0.6978,
    "directionBand": "0.45-0.60"
+  },
+  {
+   "matchNumStr": "周一003",
+   "match": "马尔默-佐加顿斯",
+   "league": "瑞超",
+   "leagueId": "sweden",
+   "score": "2:0",
+   "odds": 19.0,
+   "q": 0.0891,
+   "n": 381,
+   "ev": 0.6937,
+   "directionBand": "0.30-0.45"
+  },
+  {
+   "matchNumStr": "周一005",
+   "match": "吉达联合-拉斯决心",
+   "league": "沙职",
+   "leagueId": "saudi",
+   "score": "2:3",
+   "odds": 45.0,
+   "q": 0.0373,
+   "n": 408,
+   "ev": 0.6772,
+   "directionBand": ">=0.60"
+  },
+  {
+   "matchNumStr": "周一002",
+   "match": "新未来SC-胡巴卡德",
+   "league": "沙职",
+   "leagueId": "saudi",
+   "score": "3:1",
+   "odds": 40.0,
+   "q": 0.0419,
+   "n": 408,
+   "ev": 0.6751,
+   "directionBand": ">=0.60"
   },
   {
    "matchNumStr": "周一009",
@@ -410,22 +458,10 @@
    "leagueId": "portugal-primeira",
    "score": "1:3",
    "odds": 70.0,
-   "q": 0.0238,
+   "q": 0.0239,
    "n": 1224,
-   "ev": 0.666,
+   "ev": 0.6698,
    "directionBand": "0.45-0.60"
-  },
-  {
-   "matchNumStr": "周一005",
-   "match": "吉达联合-拉斯决心",
-   "league": "沙职",
-   "leagueId": "saudi",
-   "score": "1:5",
-   "odds": 550.0,
-   "q": 0.003,
-   "n": 0,
-   "ev": 0.6651,
-   "directionBand": ">=0.60"
   },
   {
    "matchNumStr": "周一006",
@@ -434,9 +470,9 @@
    "leagueId": "italy-serie-a",
    "score": "0:2",
    "odds": 27.0,
-   "q": 0.0615,
+   "q": 0.0614,
    "n": 1520,
-   "ev": 0.6596,
+   "ev": 0.6586,
    "directionBand": "0.45-0.60"
   },
   {
@@ -448,47 +484,23 @@
    "odds": 500.0,
    "q": 0.0033,
    "n": 1520,
-   "ev": 0.6464,
+   "ev": 0.6519,
    "directionBand": "0.30-0.45"
-  },
-  {
-   "matchNumStr": "周一008",
-   "match": "富勒姆-切尔西",
-   "league": "英超",
-   "leagueId": "england-premier",
-   "score": "2:0",
-   "odds": 25.0,
-   "q": 0.0658,
-   "n": 1520,
-   "ev": 0.6455,
-   "directionBand": "0.45-0.60"
-  },
-  {
-   "matchNumStr": "周一007",
-   "match": "兰斯-阿纳西",
-   "league": "法乙",
-   "leagueId": "france-ligue2",
-   "score": "1:4",
-   "odds": 150.0,
-   "q": 0.0109,
-   "n": 1370,
-   "ev": 0.6417,
-   "directionBand": "0.45-0.60"
-  },
-  {
-   "matchNumStr": "周一002",
-   "match": "新未来SC-胡巴卡德",
-   "league": "沙职",
-   "leagueId": "saudi",
-   "score": "0:0",
-   "odds": 25.0,
-   "q": 0.065,
-   "n": 0,
-   "ev": 0.6239,
-   "directionBand": ">=0.60"
   }
  ],
  "all_top30": [
+  {
+   "matchNumStr": "周一005",
+   "match": "吉达联合-拉斯决心",
+   "league": "沙职",
+   "leagueId": "saudi",
+   "score": "0:5",
+   "odds": 900.0,
+   "q": 0.0135,
+   "n": 408,
+   "ev": 11.1575,
+   "directionBand": ">=0.60"
+  },
   {
    "matchNumStr": "周一009",
    "match": "吉维森特-卡萨皮亚",
@@ -498,32 +510,8 @@
    "odds": 550.0,
    "q": 0.0113,
    "n": 1224,
-   "ev": 5.2321,
+   "ev": 5.2288,
    "directionBand": "0.45-0.60"
-  },
-  {
-   "matchNumStr": "周一002",
-   "match": "新未来SC-胡巴卡德",
-   "league": "沙职",
-   "leagueId": "saudi",
-   "score": "5:0",
-   "odds": 700.0,
-   "q": 0.0077,
-   "n": 0,
-   "ev": 4.3945,
-   "directionBand": ">=0.60"
-  },
-  {
-   "matchNumStr": "周一002",
-   "match": "新未来SC-胡巴卡德",
-   "league": "沙职",
-   "leagueId": "saudi",
-   "score": "4:0",
-   "odds": 250.0,
-   "q": 0.0187,
-   "n": 0,
-   "ev": 3.6789,
-   "directionBand": ">=0.60"
   },
   {
    "matchNumStr": "周一009",
@@ -534,8 +522,20 @@
    "odds": 400.0,
    "q": 0.0114,
    "n": 1224,
-   "ev": 3.5656,
+   "ev": 3.5594,
    "directionBand": "0.45-0.60"
+  },
+  {
+   "matchNumStr": "周一002",
+   "match": "新未来SC-胡巴卡德",
+   "league": "沙职",
+   "leagueId": "saudi",
+   "score": "4:0",
+   "odds": 250.0,
+   "q": 0.0173,
+   "n": 408,
+   "ev": 3.316,
+   "directionBand": ">=0.60"
   },
   {
    "matchNumStr": "周一008",
@@ -546,8 +546,20 @@
    "odds": 500.0,
    "q": 0.0085,
    "n": 1520,
-   "ev": 3.2628,
+   "ev": 3.2517,
    "directionBand": "0.45-0.60"
+  },
+  {
+   "matchNumStr": "周一002",
+   "match": "新未来SC-胡巴卡德",
+   "league": "沙职",
+   "leagueId": "saudi",
+   "score": "5:1",
+   "odds": 350.0,
+   "q": 0.0117,
+   "n": 408,
+   "ev": 3.0946,
+   "directionBand": ">=0.60"
   },
   {
    "matchNumStr": "周一009",
@@ -556,21 +568,33 @@
    "leagueId": "portugal-primeira",
    "score": "0:3",
    "odds": 120.0,
-   "q": 0.0325,
+   "q": 0.0324,
    "n": 1224,
-   "ev": 2.8956,
+   "ev": 2.8919,
    "directionBand": "0.45-0.60"
   },
   {
-   "matchNumStr": "周一002",
-   "match": "新未来SC-胡巴卡德",
+   "matchNumStr": "周一005",
+   "match": "吉达联合-拉斯决心",
    "league": "沙职",
    "leagueId": "saudi",
-   "score": "3:0",
-   "odds": 80.0,
-   "q": 0.0411,
-   "n": 0,
-   "ev": 2.2881,
+   "score": "1:5",
+   "odds": 550.0,
+   "q": 0.0069,
+   "n": 408,
+   "ev": 2.7943,
+   "directionBand": ">=0.60"
+  },
+  {
+   "matchNumStr": "周一005",
+   "match": "吉达联合-拉斯决心",
+   "league": "沙职",
+   "leagueId": "saudi",
+   "score": "2:5",
+   "odds": 550.0,
+   "q": 0.0068,
+   "n": 408,
+   "ev": 2.7195,
    "directionBand": ">=0.60"
   },
   {
@@ -582,7 +606,7 @@
    "odds": 1000.0,
    "q": 0.0033,
    "n": 1224,
-   "ev": 2.2729,
+   "ev": 2.2864,
    "directionBand": "0.45-0.60"
   },
   {
@@ -594,32 +618,8 @@
    "odds": 350.0,
    "q": 0.0092,
    "n": 1520,
-   "ev": 2.2182,
+   "ev": 2.2165,
    "directionBand": "0.45-0.60"
-  },
-  {
-   "matchNumStr": "周一005",
-   "match": "吉达联合-拉斯决心",
-   "league": "沙职",
-   "leagueId": "saudi",
-   "score": "0:5",
-   "odds": 900.0,
-   "q": 0.0034,
-   "n": 0,
-   "ev": 2.055,
-   "directionBand": ">=0.60"
-  },
-  {
-   "matchNumStr": "周一005",
-   "match": "吉达联合-拉斯决心",
-   "league": "沙职",
-   "leagueId": "saudi",
-   "score": "0:4",
-   "odds": 350.0,
-   "q": 0.0087,
-   "n": 0,
-   "ev": 2.0505,
-   "directionBand": ">=0.60"
   },
   {
    "matchNumStr": "周一008",
@@ -630,7 +630,7 @@
    "odds": 60.0,
    "q": 0.0465,
    "n": 1520,
-   "ev": 1.7919,
+   "ev": 1.7903,
    "directionBand": "0.45-0.60"
   },
   {
@@ -640,9 +640,9 @@
    "leagueId": "spain-laliga",
    "score": "5:1",
    "odds": 300.0,
-   "q": 0.0092,
+   "q": 0.0091,
    "n": 1520,
-   "ev": 1.7462,
+   "ev": 1.7436,
    "directionBand": "0.30-0.45"
   },
   {
@@ -654,19 +654,43 @@
    "odds": 800.0,
    "q": 0.0033,
    "n": 1520,
-   "ev": 1.6343,
+   "ev": 1.643,
    "directionBand": "0.45-0.60"
+  },
+  {
+   "matchNumStr": "周一005",
+   "match": "吉达联合-拉斯决心",
+   "league": "沙职",
+   "leagueId": "saudi",
+   "score": "0:4",
+   "odds": 350.0,
+   "q": 0.0075,
+   "n": 408,
+   "ev": 1.6198,
+   "directionBand": ">=0.60"
   },
   {
    "matchNumStr": "周一002",
    "match": "新未来SC-胡巴卡德",
    "league": "沙职",
    "leagueId": "saudi",
-   "score": "5:1",
-   "odds": 350.0,
-   "q": 0.0074,
-   "n": 0,
-   "ev": 1.6009,
+   "score": "3:0",
+   "odds": 80.0,
+   "q": 0.0306,
+   "n": 408,
+   "ev": 1.4476,
+   "directionBand": ">=0.60"
+  },
+  {
+   "matchNumStr": "周一002",
+   "match": "新未来SC-胡巴卡德",
+   "league": "沙职",
+   "leagueId": "saudi",
+   "score": "2:0",
+   "odds": 32.0,
+   "q": 0.0752,
+   "n": 408,
+   "ev": 1.405,
    "directionBand": ">=0.60"
   },
   {
@@ -678,7 +702,7 @@
    "odds": 90.0,
    "q": 0.0263,
    "n": 1520,
-   "ev": 1.3708,
+   "ev": 1.3686,
    "directionBand": "0.45-0.60"
   },
   {
@@ -686,11 +710,23 @@
    "match": "吉达联合-拉斯决心",
    "league": "沙职",
    "leagueId": "saudi",
-   "score": "0:3",
-   "odds": 85.0,
-   "q": 0.0272,
-   "n": 0,
-   "ev": 1.3083,
+   "score": "1:3",
+   "odds": 50.0,
+   "q": 0.0467,
+   "n": 408,
+   "ev": 1.3351,
+   "directionBand": ">=0.60"
+  },
+  {
+   "matchNumStr": "周一005",
+   "match": "吉达联合-拉斯决心",
+   "league": "沙职",
+   "leagueId": "saudi",
+   "score": "0:2",
+   "odds": 40.0,
+   "q": 0.0577,
+   "n": 408,
+   "ev": 1.3095,
    "directionBand": ">=0.60"
   },
   {
@@ -702,7 +738,7 @@
    "odds": 150.0,
    "q": 0.0152,
    "n": 1520,
-   "ev": 1.2869,
+   "ev": 1.2841,
    "directionBand": "0.45-0.60"
   },
   {
@@ -714,7 +750,7 @@
    "odds": 100.0,
    "q": 0.0228,
    "n": 1520,
-   "ev": 1.2804,
+   "ev": 1.2776,
    "directionBand": "0.45-0.60"
   },
   {
@@ -722,11 +758,23 @@
    "match": "新未来SC-胡巴卡德",
    "league": "沙职",
    "leagueId": "saudi",
-   "score": "2:0",
-   "odds": 32.0,
-   "q": 0.0667,
-   "n": 0,
-   "ev": 1.1343,
+   "score": "4:1",
+   "odds": 100.0,
+   "q": 0.0213,
+   "n": 408,
+   "ev": 1.1308,
+   "directionBand": ">=0.60"
+  },
+  {
+   "matchNumStr": "周一005",
+   "match": "吉达联合-拉斯决心",
+   "league": "沙职",
+   "leagueId": "saudi",
+   "score": "1:4",
+   "odds": 175.0,
+   "q": 0.0121,
+   "n": 408,
+   "ev": 1.1098,
    "directionBand": ">=0.60"
   },
   {
@@ -738,7 +786,7 @@
    "odds": 850.0,
    "q": 0.0025,
    "n": 1224,
-   "ev": 1.1026,
+   "ev": 1.108,
    "directionBand": "0.45-0.60"
   },
   {
@@ -750,8 +798,20 @@
    "odds": 350.0,
    "q": 0.006,
    "n": 1520,
-   "ev": 1.0892,
+   "ev": 1.0862,
    "directionBand": "0.45-0.60"
+  },
+  {
+   "matchNumStr": "周一002",
+   "match": "新未来SC-胡巴卡德",
+   "league": "沙职",
+   "leagueId": "saudi",
+   "score": "5:0",
+   "odds": 700.0,
+   "q": 0.0029,
+   "n": 408,
+   "ev": 1.0638,
+   "directionBand": ">=0.60"
   },
   {
    "matchNumStr": "周一007",
@@ -762,20 +822,8 @@
    "odds": 75.0,
    "q": 0.027,
    "n": 1370,
-   "ev": 1.0259,
+   "ev": 1.0239,
    "directionBand": "0.45-0.60"
-  },
-  {
-   "matchNumStr": "周一005",
-   "match": "吉达联合-拉斯决心",
-   "league": "沙职",
-   "leagueId": "saudi",
-   "score": "0:2",
-   "odds": 40.0,
-   "q": 0.0501,
-   "n": 0,
-   "ev": 1.0037,
-   "directionBand": ">=0.60"
   },
   {
    "matchNumStr": "周一004",
@@ -786,7 +834,7 @@
    "odds": 300.0,
    "q": 0.0066,
    "n": 1520,
-   "ev": 0.9941,
+   "ev": 0.9926,
    "directionBand": "0.45-0.60"
   },
   {
@@ -798,55 +846,7 @@
    "odds": 400.0,
    "q": 0.0049,
    "n": 1224,
-   "ev": 0.9774,
-   "directionBand": "0.45-0.60"
-  },
-  {
-   "matchNumStr": "周一003",
-   "match": "马尔默-佐加顿斯",
-   "league": "瑞超",
-   "leagueId": "sweden",
-   "score": "5:0",
-   "odds": 250.0,
-   "q": 0.0077,
-   "n": 0,
-   "ev": 0.9266,
-   "directionBand": "0.30-0.45"
-  },
-  {
-   "matchNumStr": "周一005",
-   "match": "吉达联合-拉斯决心",
-   "league": "沙职",
-   "leagueId": "saudi",
-   "score": "1:4",
-   "odds": 175.0,
-   "q": 0.0108,
-   "n": 0,
-   "ev": 0.8945,
-   "directionBand": ">=0.60"
-  },
-  {
-   "matchNumStr": "周一002",
-   "match": "新未来SC-胡巴卡德",
-   "league": "沙职",
-   "leagueId": "saudi",
-   "score": "1:0",
-   "odds": 19.0,
-   "q": 0.0982,
-   "n": 0,
-   "ev": 0.8651,
-   "directionBand": ">=0.60"
-  },
-  {
-   "matchNumStr": "周一006",
-   "match": "罗马-佛罗伦萨",
-   "league": "意甲",
-   "leagueId": "italy-serie-a",
-   "score": "1:5",
-   "odds": 700.0,
-   "q": 0.0026,
-   "n": 1520,
-   "ev": 0.8509,
+   "ev": 0.9792,
    "directionBand": "0.45-0.60"
   }
  ]

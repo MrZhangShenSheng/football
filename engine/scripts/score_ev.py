@@ -37,7 +37,9 @@ def build_freq_table() -> dict:
         key = path.split("/")[-1].replace("_matches.json", "")
         if key not in ("japan", "korea", "sweden", "saudi"): continue
         blob = table.setdefault(key, Counter())
-        for m in json.load(open(path, encoding="utf-8")) or []:
+        data = json.load(open(path, encoding="utf-8"))
+        rows = data.get("matches", []) if isinstance(data, dict) else (data or [])
+        for m in rows:
             try:
                 blob[norm_score(m["hg"], m["ag"])] += 1; blob["__n"] += 1
             except (KeyError, ValueError, TypeError): continue
