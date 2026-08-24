@@ -29,12 +29,13 @@ def budget_gate(spend: float, cap: float = MONTHLY_CAP, round_cost: float = ROUN
     return spend + round_cost <= cap
 
 def pick_upset_legs(rows: list, shape: str) -> list:
-    """形状赔率带 + n>0（先验噪声永不入选）+ 每场最多 1 比分，按 ev 降序取 4。"""
+    """形状赔率带 + n>0（先验噪声永不入选）+ 正 EV（负期望永不入选）+ 每场最多 1 比分，按 ev 降序取 4。"""
     lo, hi = SHAPES[shape]["band"]
     picked, seen = [], set()
     for r in rows:
         mid = r["matchNumStr"]
-        if r.get("n", 0) <= 0 or mid in seen or not (lo <= r["odds"] <= hi):
+        if (r.get("n", 0) <= 0 or mid in seen or not (lo <= r["odds"] <= hi)
+                or r.get("ev") is None or r["ev"] <= 0):
             continue
         seen.add(mid); picked.append(r)
         if len(picked) == 4:
@@ -66,24 +67,26 @@ def build_ticket(odds_day: dict, freq_table: dict, seq: int) -> dict:
     cost = min(SHAPES[shape]["cost"], 2 * mult) if upset else 0
     had_pool = [m for m in odds_day.get("matches", [])
                 if m.get("had") and 1.55 <= min(m["had"].values())]
-    def had_legs(n_matches, n_notes):
-        legs = []
-        for m in had_pool[:n_matches]:
-            h = m["had"]
-            pick = min(h, key=h.get)
-            legs.append({"matchNumStr": m["matchNumStr"], "match": f'{m.get("home")}-{m.get("away")}',
-                         "play": "had", "pick": {"h": "主胜", "d": "平", "a": "客胜"}[pick], "odds": h[pick]})
-        if n_notes == 1 or len(legs) < 2:
-            return [legs]
-        half = (len(legs) + 1) // 2
-        return [legs[:half], legs[half:]]
-    base_notes = [g for g in had_legs(4, 2) if g]          # 非空注组
-    base_cost = 2 * min(len(base_notes), 2)
-    mid_legs = had_legs(5, 1)
-    mid_cost = 2 if mid_legs[0] else 0
+    def had_leg(m):
+        h = m["had"]
+        pick = min(h, key=h.get)
+        return {"matchNumStr": m["matchNumStr"], "match": f'{m.get("home")}-{m.get("away")}',
+                "play": "had", "pick": {"h": "主胜", "d": "平", "a": "客胜"}[pick], "odds": h[pick]}
+    legs_pool = [had_leg(m) for m in had_pool]
+    # base：两条 4 串注，共享 pool[2:4] 共 2 场（池≥6 满配；池≥4 单注降级；空池 0 注）
+    if len(legs_pool) >= 6:
+        base_notes = [legs_pool[0:4], legs_pool[2:6]]
+    elif legs_pool:
+        base_notes = [legs_pool[:4]]
+    else:
+        base_notes = []
+    base_cost = 2 * len(base_notes)
+    mid_legs = [legs_pool[:5]]
+    MID_MULT = 3
+    mid_cost = 2 * MID_MULT if mid_legs[0] else 0
     tiers = {
-        "base": {"cost": base_cost, "legs": base_notes, "play": "had-4串1", "note": "2注互补"},
-        "mid": {"cost": mid_cost, "legs": mid_legs, "play": "had-5串1", "note": "默认HAD"},
+        "base": {"cost": base_cost, "legs": base_notes, "play": "had-4串1", "note": "×2注互补(共享≤2场)"},
+        "mid": {"cost": mid_cost, "legs": mid_legs, "multiplier": MID_MULT, "play": "had-5串1×3倍", "note": "默认HAD"},
         "upset": {"cost": cost, "multiplier": mult, "legs": upset, "play": "crs-4串1",
                   "expOdds": round(total_odds, 1) if upset else 0,
                   "winIfHit": round(2 * total_odds * mult, 0) if upset else 0,
@@ -164,7 +167,7 @@ def _settle_cli() -> None:
         json.dump(ticket, f, ensure_ascii=False, indent=1)
     hits = res["legHits"].get("upset", [[]])[0] if res["legHits"].get("upset") else []
     print(f"[boldplay-settle] upset {sum(1 for h in hits if h is True)}/{len(hits)} 命中"
-          f" · 中奖 {'是' if res['upsetHit'] else '否'} · 派彩 {res['payout']:.0f} → 写回 {path}")
+          f" · 中奖 {'是' if res['upsetHit'] else '否'} · 派彩(税前) {res['payout']:.0f} → 写回 {path}")
 
 def main() -> None:
     import sys
