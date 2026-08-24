@@ -1,9 +1,9 @@
 {
- "generatedAt": "2026-08-24",
+ "generatedAt": "2026-08-25",
  "n_total": 143,
  "n_rounds": 6,
  "readiness": {
-  "n_result": 112,
+  "n_result": 125,
   "n_clv": 7,
   "n_pfinal": 105,
   "calibrateReady": true,
@@ -1713,7 +1713,7 @@
     "意甲R1",
     "两队均0场首秀"
    ],
-   "result": null,
+   "result": "0-1",
    "directionHit": null,
    "scoreHit": null,
    "clv": null,
@@ -1742,7 +1742,7 @@
     "马尔默7th/佐加顿斯6th",
     "瑞超×1.5胶着"
    ],
-   "result": null,
+   "result": "0-3",
    "directionHit": null,
    "scoreHit": null,
    "clv": null,
@@ -1771,9 +1771,9 @@
     "奥萨苏纳0场首秀/莱万特0-3败",
     "EV-21%不入"
    ],
-   "result": null,
-   "directionHit": null,
-   "scoreHit": null,
+   "result": "0-0",
+   "directionHit": false,
+   "scoreHit": false,
    "clv": null,
    "clv_note": null,
    "round": "2026-08-23"
@@ -1800,9 +1800,9 @@
     "意甲R1×0.80",
     "EV-27%不入"
    ],
-   "result": null,
-   "directionHit": null,
-   "scoreHit": null,
+   "result": "4-0",
+   "directionHit": true,
+   "scoreHit": true,
    "clv": null,
    "clv_note": null,
    "round": "2026-08-23"
@@ -1830,7 +1830,7 @@
     "法乙主胜率0.345全联赛最低",
     "分歧>5pp纪律→不选(遗憾标记)"
    ],
-   "result": null,
+   "result": "不可得",
    "directionHit": null,
    "scoreHit": null,
    "clv": null,
@@ -1859,9 +1859,9 @@
     "伦敦德比",
     "EV-36%不入"
    ],
-   "result": null,
-   "directionHit": null,
-   "scoreHit": null,
+   "result": "2-3",
+   "directionHit": true,
+   "scoreHit": true,
    "clv": null,
    "clv_note": null,
    "round": "2026-08-23"
@@ -1888,9 +1888,9 @@
     "卡萨比亚0-0-2垫底(0-7本菲卡)",
     "EV-11%不入"
    ],
-   "result": null,
-   "directionHit": null,
-   "scoreHit": null,
+   "result": "2-0",
+   "directionHit": true,
+   "scoreHit": true,
    "clv": null,
    "clv_note": null,
    "round": "2026-08-23"
@@ -1917,7 +1917,7 @@
     "DC平局0.512异常高(意平联赛?)",
     "两队R1均不胜"
    ],
-   "result": null,
+   "result": "1-1",
    "directionHit": null,
    "scoreHit": null,
    "clv": null,
@@ -3397,7 +3397,7 @@
     "开季R3",
     "伤停差值"
    ],
-   "result": null,
+   "result": "0-2",
    "directionHit": null,
    "scoreHit": null,
    "clv": null,
@@ -3461,7 +3461,7 @@
     "开季R2",
     "保级平局"
    ],
-   "result": null,
+   "result": "0-0",
    "directionHit": null,
    "scoreHit": null,
    "clv": null,
@@ -3479,7 +3479,7 @@
    "play": "HAD",
    "odds": {
     "h": 1.37,
-    "d": 4.3,
+    "d": 4.45,
     "a": 6.0
    },
    "p_final": [
@@ -3493,9 +3493,9 @@
     "开季R3",
     "伤停差值"
    ],
-   "result": null,
-   "directionHit": null,
-   "scoreHit": null,
+   "result": "3-2",
+   "directionHit": false,
+   "scoreHit": false,
    "clv": null,
    "clv_note": null,
    "round": "2026-08-24"
@@ -3525,7 +3525,7 @@
     "开季R1",
     "伤停差值"
    ],
-   "result": null,
+   "result": "4-0",
    "directionHit": null,
    "scoreHit": null,
    "clv": null,
@@ -3575,7 +3575,7 @@
    "pick": "主胜 + CRS 1-0",
    "play": "HAD",
    "odds": {
-    "h": 4.05,
+    "h": 3.9,
     "d": 3.75,
     "a": 1.63
    },
@@ -3589,7 +3589,7 @@
    "chain": [
     "开季R1"
    ],
-   "result": null,
+   "result": "2-3",
    "directionHit": null,
    "scoreHit": null,
    "clv": null,
@@ -3621,9 +3621,9 @@
     "开季R3",
     "伤停差值"
    ],
-   "result": null,
+   "result": "2-0",
    "directionHit": null,
-   "scoreHit": null,
+   "scoreHit": true,
    "clv": null,
    "clv_note": null,
    "round": "2026-08-24"
@@ -4196,41 +4196,43 @@
   },
   "2026-08-24:🚀搏奖": {
    "plan": "🚀搏奖",
-   "type": "高赔单关组",
-   "stake": "10元(2元×5注)",
+   "type": "高赔单关组(r2修订)",
+   "stake": "8元(2元×4注)",
    "legs": [
-    "周一009 CRS 2-0@6.50 p16.0% EV+4.1%",
-    "周一008 HAD 主胜@4.05 p26.0% EV+5.4%",
     "周一002 HAFU dd(半平/全平)@8.35 p14.6% EV+21.9%",
-    "周一004 TTG 0球@10.50 p12.5% EV+31.4%",
-    "周一002 CRS 1-1@9.00 p12.9% EV+15.7%"
+    "周一002 CRS 1-1@9.00 p12.9% EV+15.7%",
+    "周一004 TTG 0球@10.50 p11.9% EV+24.9% ⚠️泊松尾部风险",
+    "周一008 HAD 主胜@3.90 p26.0% EV+1.4% 赔率4.05→3.90异动后仍微正"
    ],
    "odds": null,
    "evEach": true,
-   "totalStake": 10,
-   "fullWin": 76.8,
-   "atLeastOne": 0.5
+   "totalStake": 8,
+   "fullWin": 63.5,
+   "atLeastOne": 0.515,
+   "revoked": [
+    "周一009 CRS 2-0@6.50 (模型重拟合后DC-市场分歧19.4pp,EV信号不可信)"
+   ]
   },
   "2026-08-24:⚖️平衡": {
    "plan": "⚖️平衡",
-   "type": "2串主方案+尾巴",
+   "type": "2串主方案+尾巴(r2微调)",
    "stake": "8元(6元2串3倍+2元单关)",
    "legs": [
-    "周一008 HAD 主胜@4.05 + 周一005 HAD 平@4.30 2串1×3倍 复合17.42 p6.3% EV+10.4%",
+    "周一008 HAD 主胜@3.90 × 周一005 HAD 平@4.45 2串1×3倍 复合17.36 p6.3% EV+9.4%",
     "周一006 HAFU dd(半平/全平)@5.80 p17.7% EV+2.8%"
    ],
-   "odds": 17.42,
+   "odds": 17.36,
    "evEach": true,
    "totalStake": 8,
-   "fullWin": 63.8,
-   "atLeastOne": 0.23
+   "fullWin": 46.3,
+   "atLeastOne": 0.22
   },
   "2026-08-24:🛡️保本": {
    "plan": "🛡️保本",
    "type": "不开",
    "stake": "0元",
    "legs": [],
-   "reason": "无≥3场A/B级低赔(1.4-2.0倍)HAD正EV候选,体彩抽水致全部低赔负EV,常态不开"
+   "reason": "无≥3场A/B级低赔HAD正EV候选,常态不开"
   }
  }
 }

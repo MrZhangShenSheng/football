@@ -42,13 +42,17 @@ TODAY = date.today().isoformat()
 
 
 def zh_to_espn_map() -> dict[str, str]:
-    """中文名 → ESPN 名（经 _aliases zh 字段反查）。"""
+    """中文名 → ESPN 名（经 _aliases zh 字段反查）。variants 一并收录
+    （体彩译名 '新未来SC'/'胡巴卡德'/'拉斯决心' 等只存在于 variants）。"""
     out = {}
     for tid, srcs in load_aliases().items():
-        zh = srcs.get("zh")
         espn = srcs.get("espn")
-        if zh and espn:
-            out[zh] = espn
+        if not espn:
+            continue
+        if srcs.get("zh"):
+            out[srcs["zh"]] = espn
+        for v in srcs.get("variants") or []:
+            out.setdefault(v, espn)
     return out
 
 
@@ -162,10 +166,12 @@ def parse_score(s: str | None) -> tuple[int, int] | None:
 
 
 def parse_match_str(match: str) -> tuple[str, str]:
-    """'鹿岛鹿角 vs 福冈黄蜂' → (主中文名, 客中文名)。"""
+    """'鹿岛鹿角 vs 福冈黄蜂' → (主中文名, 客中文名)。剥 '[排名]' 等方括号后缀
+    （2026-08-24 r2 记录起 match 带 '[10]' 排名，不剥则 zh_map 全查空）。"""
     parts = re.split(r"\s+vs\s+| VS | 对 ", str(match or ""))
     if len(parts) == 2:
-        return parts[0].strip(), parts[1].strip()
+        strip = lambda s: re.sub(r"\[[^\]]*\]", "", s).strip()
+        return strip(parts[0]), strip(parts[1])
     return "", ""
 
 

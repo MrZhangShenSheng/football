@@ -93,7 +93,9 @@
     "h": 2,
     "a": 8
    },
-   "excludeReason": "客伤8人致修正后平局40.9%但与市场30.3%分歧10.6pp超5pp,HAD无正EV,CRS边际不入选"
+   "excludeReason": "客伤8人致修正后平局40.9%但与市场30.3%分歧10.6pp超5pp,HAD无正EV,CRS边际不入选",
+   "result": "0-1",
+   "backfillNote": "ESPN手动补填(避开场无pick,backfill跳过;供避开决策追踪)"
   },
   {
    "idx": 2,
@@ -199,7 +201,11 @@
      "gapPp": 4.4,
      "canSingle": false
     }
-   ]
+   ],
+   "result": "0-2",
+   "directionHit": null,
+   "scoreHit": false,
+   "judgeNote": "CRS 1-1❌(实际0-2) + HAFU dd❌(半场0-1客胜非平)——两注皆负"
   },
   {
    "idx": 3,
@@ -244,7 +250,9 @@
     "h": 1,
     "a": 0
    },
-   "excludeReason": "瑞超×1.5波动修正后极差9.2pp<10pp胶着★★避开"
+   "excludeReason": "瑞超×1.5波动修正后极差9.2pp<10pp胶着★★避开",
+   "result": "0-3",
+   "backfillNote": "ESPN手动补填(避开场无pick,backfill跳过;供避开决策追踪)"
   },
   {
    "idx": 4,
@@ -310,7 +318,11 @@
      "warning": "泊松尾部高估风险",
      "r2Note": "λ修正(homeAdv键名bug)后0-0概率11.9%,EV自+31.4%下修为+24.9%,分歧4.0pp合规"
     }
-   ]
+   ],
+   "result": "0-0",
+   "directionHit": null,
+   "scoreHit": true,
+   "judgeNote": "TTG 0球✅(0-0总进球0)——EV+24.9%命中@10.50"
   },
   {
    "idx": 5,
@@ -369,7 +381,11 @@
    ],
    "revisionNotes": [
     "r2:平赔率4.30→4.45"
-   ]
+   ],
+   "result": "3-2",
+   "directionHit": false,
+   "scoreHit": false,
+   "judgeNote": "HAD 平❌(3-2主胜,5球大战)——backfill已判False"
   },
   {
    "idx": 6,
@@ -428,7 +444,11 @@
      "ev": 0.028,
      "gapPp": 3.4
     }
-   ]
+   ],
+   "result": "4-0",
+   "directionHit": false,
+   "scoreHit": false,
+   "judgeNote": "HAFU dd❌(4-0全场主胜,dd要求全场平必负)"
   },
   {
    "idx": 7,
@@ -479,7 +499,9 @@
     "h": 2,
     "a": 1
    },
-   "excludeReason": "DC与市场分歧diff_pp=[-5.8,+0.5,+5.3]主胜客胜均超5pp警戒,模型可能错"
+   "excludeReason": "DC与市场分歧diff_pp=[-5.8,+0.5,+5.3]主胜客胜均超5pp警戒,模型可能错",
+   "result": "3-1",
+   "backfillNote": "ESPN手动补填(避开场无pick,backfill跳过;供避开决策追踪)"
   },
   {
    "idx": 8,
@@ -560,7 +582,11 @@
    ],
    "revisionNotes": [
     "r2:HAD主胜赔率4.05→3.90"
-   ]
+   ],
+   "result": "2-3",
+   "directionHit": false,
+   "scoreHit": false,
+   "judgeNote": "HAD 主胜❌(2-3客胜)+CRS 1-0❌"
   },
   {
    "idx": 9,
@@ -645,7 +671,11 @@
    ],
    "revisionNotes": [
     "r2撤销CRS选项"
-   ]
+   ],
+   "result": "2-0",
+   "directionHit": null,
+   "scoreHit": true,
+   "judgeNote": "CRS 2-0✅(2-0)——r2撤销的选项实际命中@6.50,教训档案"
   },
   {
    "idx": 10,
@@ -682,7 +712,9 @@
     "h": 7,
     "a": 1
    },
-   "excludeReason": "主伤7人后防主力,无DC(升班马),市场锚修正后平局分歧5.9pp超限,HAD不可单关(poolSingle=0),全池无正EV"
+   "excludeReason": "主伤7人后防主力,无DC(升班马),市场锚修正后平局分歧5.9pp超限,HAD不可单关(poolSingle=0),全池无正EV",
+   "result": "1-1",
+   "backfillNote": "ESPN手动补填(避开场无pick,backfill跳过;供避开决策追踪)"
   },
   {
    "idx": 11,
