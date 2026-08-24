@@ -63,9 +63,9 @@ Write-Host "Update:   ./update.ps1"
 Write-Host ""
 Write-Host "Knowledge base ready status:" -ForegroundColor DarkGray
 $lg = Get-ChildItem "$HOME_DIR\data\00-leagues\*.json" -ErrorAction SilentlyContinue
-$fd = @($lg | Where-Object { (Get-Content $_ -Raw) -match '"computedFrom": "fd"' })
-$espn = @($lg | Where-Object { (Get-Content $_ -Raw) -match '"standingsSource": "espn' })
-$cn = @($lg | Where-Object { (Get-Content $_ -Raw) -match '"standingsSource": "titan007"' })
+$fd = @($lg | Where-Object { ([System.IO.File]::ReadAllText($_.FullName, [System.Text.Encoding]::UTF8)) -match '"computedFrom": "fd"' })
+$espn = @($lg | Where-Object { ([System.IO.File]::ReadAllText($_.FullName, [System.Text.Encoding]::UTF8)) -match '"standingsSource": "espn' })
+$cn = @($lg | Where-Object { ([System.IO.File]::ReadAllText($_.FullName, [System.Text.Encoding]::UTF8)) -match '"standingsSource": "titan007"' })
 Write-Host "  fd-coverage (auto): $($fd.Count) leagues" -ForegroundColor Green
 Write-Host "  espn-fetch (auto): $($espn.Count) leagues" -ForegroundColor Green
 Write-Host "  titan007 fallback (auto): $($cn.Count) leagues" -ForegroundColor Green
@@ -73,7 +73,7 @@ Write-Host "  -> non-fd leagues (JPN/KSA/Nordic) auto-init on first 'predict' vi
 # sporttery 5-pool check (v4.5: crs/ttg/hafu odds + poolSingle)
 $sm = "$HOME_DIR\engine\cache\sporttery_matches.json"
 if (Test-Path $sm) {
-    $smd = Get-Content $sm -Raw | ConvertFrom-Json
+    $smd = [System.IO.File]::ReadAllText($sm, [System.Text.Encoding]::UTF8) | ConvertFrom-Json
     $pools = @{}
     foreach ($m in $smd.matches) {
         foreach ($p in $m.poolSingle.PSObject.Properties) {
@@ -90,12 +90,12 @@ if (Test-Path $sm) {
 # local DC model versions (v4.5.1 learning loop)
 $modelsLatest = "$HOME_DIR\engine\cache\models\latest.json"
 if (Test-Path $modelsLatest) {
-    $lv = Get-Content $modelsLatest -Raw | ConvertFrom-Json
+    $lv = [System.IO.File]::ReadAllText($modelsLatest, [System.Text.Encoding]::UTF8) | ConvertFrom-Json
     $parts = @()
     foreach ($prop in $lv.PSObject.Properties) {
         $lg = $prop.Name; $ver = $prop.Value
         $mp = "$HOME_DIR\engine\cache\models\${lg}_dc_v${ver}.meta.json"
-        $n = if (Test-Path $mp) { (Get-Content $mp -Raw | ConvertFrom-Json).nTrain } else { "?" }
+        $n = if (Test-Path $mp) { ([System.IO.File]::ReadAllText($mp, [System.Text.Encoding]::UTF8) | ConvertFrom-Json).nTrain } else { "?" }
         $parts += "$lg v$ver($n matches)"
     }
     Write-Host "  local DC models: $($parts -join ', ')" -ForegroundColor Green

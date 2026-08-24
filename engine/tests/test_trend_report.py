@@ -2,7 +2,7 @@
 """trend_report 测试：轮次聚合 / 累计 log loss / 校准分桶 / in_plan 归一化 / 方案层统计。"""
 from trend_report import (
     build_series, build_calibration, build_plans, plan_summary,
-    normalize_in_plan, pick_type, outcome_idx, logloss,
+    normalize_in_plan, normalize_grade, pick_type, outcome_idx, logloss,
 )
 
 
@@ -75,6 +75,15 @@ def test_pick_type():
     assert pick_type("主胜") == "方向"
     assert pick_type("2-0") == "比分"
     assert pick_type(None) == "方向"
+
+
+def test_normalize_grade_mixed_schema():
+    assert normalize_grade(4) == "D级"
+    assert normalize_grade("3") == "C级"
+    assert normalize_grade("A") == "D级"
+    assert normalize_grade("B") == "C级"
+    assert normalize_grade("S") == "?"
+    assert normalize_grade(None) == "?"
 
 
 def test_plan_layer_all_hit_and_break():
