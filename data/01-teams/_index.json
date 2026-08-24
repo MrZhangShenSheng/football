@@ -1,10 +1,19 @@
 {
   "_meta": {
     "rebuiltAt": "2026-08-24",
-    "count": 130,
+    "count": 154,
     "note": "路由表：一行一球队，内容本体在球队文件内"
   },
   "teams": {
+    "lask": {
+      "league": "austria",
+      "path": "austria/lask.json",
+      "zh": "LASK林茨",
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-24"
+    },
     "salzburg": {
       "league": "austria",
       "path": "austria/salzburg.json",
@@ -22,6 +31,24 @@
       "hasElo": true,
       "hasXg": false,
       "lastUpdated": "2026-08-21"
+    },
+    "athletico-paranaense": {
+      "league": "brazil",
+      "path": "brazil/athletico-paranaense.json",
+      "zh": "巴竞技",
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-24"
+    },
+    "botafogo": {
+      "league": "brazil",
+      "path": "brazil/botafogo.json",
+      "zh": "博塔弗戈",
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-24"
     },
     "plzen": {
       "league": "czechia",
@@ -59,6 +86,15 @@
       "hasXg": false,
       "lastUpdated": "2026-08-22"
     },
+    "chelsea": {
+      "league": "england",
+      "path": "england/chelsea.json",
+      "zh": "切尔西",
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-24"
+    },
     "coventry": {
       "league": "england",
       "path": "england/coventry.json",
@@ -85,6 +121,15 @@
       "hasElo": false,
       "hasXg": false,
       "lastUpdated": "2026-08-22"
+    },
+    "fulham": {
+      "league": "england",
+      "path": "england/fulham.json",
+      "zh": "富勒姆",
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-24"
     },
     "hull-city": {
       "league": "england",
@@ -203,6 +248,15 @@
       "hasXg": false,
       "lastUpdated": "2026-08-22"
     },
+    "annecy": {
+      "league": "france",
+      "path": "france/annecy.json",
+      "zh": "阿纳西",
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-24"
+    },
     "auxerre": {
       "league": "france",
       "path": "france/auxerre.json",
@@ -283,6 +337,15 @@
       "hasElo": false,
       "hasXg": false,
       "lastUpdated": "2026-08-22"
+    },
+    "reims": {
+      "league": "france",
+      "path": "france/reims.json",
+      "zh": "兰斯",
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-24"
     },
     "strasbourg-abbr": {
       "league": "france",
@@ -383,6 +446,15 @@
       "hasXg": false,
       "lastUpdated": "2026-08-22"
     },
+    "bologna": {
+      "league": "italy",
+      "path": "italy/bologna.json",
+      "zh": "博洛尼亚",
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-24"
+    },
     "cagliari": {
       "league": "italy",
       "path": "italy/cagliari.json",
@@ -400,6 +472,15 @@
       "hasElo": false,
       "hasXg": false,
       "lastUpdated": "2026-08-22"
+    },
+    "fiorentina": {
+      "league": "italy",
+      "path": "italy/fiorentina.json",
+      "zh": "佛罗伦萨",
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-24"
     },
     "frosinone": {
       "league": "italy",
@@ -437,6 +518,15 @@
       "hasXg": false,
       "lastUpdated": "2026-08-22"
     },
+    "lazio": {
+      "league": "italy",
+      "path": "italy/lazio.json",
+      "zh": "拉齐奥",
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-24"
+    },
     "lecce": {
       "league": "italy",
       "path": "italy/lecce.json",
@@ -472,6 +562,15 @@
       "hasElo": false,
       "hasXg": false,
       "lastUpdated": "2026-08-22"
+    },
+    "roma": {
+      "league": "italy",
+      "path": "italy/roma.json",
+      "zh": "罗马",
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-24"
     },
     "torino": {
       "league": "italy",
@@ -734,6 +833,15 @@
       "hasXg": false,
       "lastUpdated": "2026-08-22"
     },
+    "nec-nijmegen": {
+      "league": "netherlands",
+      "path": "netherlands/nec-nijmegen.json",
+      "zh": "奈梅亨",
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-24"
+    },
     "az-alkmaar": {
       "league": "netherlands-eredivisie",
       "path": "netherlands-eredivisie/az-alkmaar.json",
@@ -806,6 +914,15 @@
       "hasXg": false,
       "lastUpdated": "2026-08-22"
     },
+    "bodo-glimt": {
+      "league": "norway",
+      "path": "norway/bodo-glimt.json",
+      "zh": "博德闪耀",
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-24"
+    },
     "lech-poznan": {
       "league": "poland",
       "path": "poland/lech-poznan.json",
@@ -833,6 +950,15 @@
       "hasXg": false,
       "lastUpdated": "2026-08-21"
     },
+    "casa-pia": {
+      "league": "portugal",
+      "path": "portugal/casa-pia.json",
+      "zh": "卡萨皮亚",
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-24"
+    },
     "famalicao": {
       "league": "portugal",
       "path": "portugal/famalicao.json",
@@ -841,6 +967,15 @@
       "hasElo": false,
       "hasXg": false,
       "lastUpdated": "2026-08-22"
+    },
+    "gil-vicente": {
+      "league": "portugal",
+      "path": "portugal/gil-vicente.json",
+      "zh": "吉维森特",
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-24"
     },
     "guimaraes": {
       "league": "portugal",
@@ -896,14 +1031,23 @@
       "hasXg": false,
       "lastUpdated": "2026-08-22"
     },
+    "al-hazem": {
+      "league": "saudi",
+      "path": "saudi/al-hazem.json",
+      "zh": "拉斯决心",
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-24"
+    },
     "al-ittihad": {
       "league": "saudi",
       "path": "saudi/al-ittihad.json",
       "zh": "吉达联合",
-      "summary": "1场近况 · Elo — · 无xG",
+      "summary": "0场近况 · Elo — · 无xG",
       "hasElo": false,
       "hasXg": false,
-      "lastUpdated": "2026-08-21"
+      "lastUpdated": "2026-08-24"
     },
     "al-nassr-abbr": {
       "league": "saudi",
@@ -923,6 +1067,15 @@
       "hasXg": false,
       "lastUpdated": "2026-08-22"
     },
+    "neom-sc": {
+      "league": "saudi",
+      "path": "saudi/neom-sc.json",
+      "zh": "新未来SC",
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-24"
+    },
     "qadsiah-abbr": {
       "league": "saudi",
       "path": "saudi/qadsiah-abbr.json",
@@ -935,11 +1088,20 @@
     "qadsiah": {
       "league": "saudi",
       "path": "saudi/qadsiah.json",
-      "zh": "胡巴尔卡德西亚",
-      "summary": "1场近况 · Elo — · 无xG",
+      "zh": "胡巴卡德",
+      "summary": "0场近况 · Elo — · 无xG",
       "hasElo": false,
       "hasXg": false,
-      "lastUpdated": "2026-08-21"
+      "lastUpdated": "2026-08-24"
+    },
+    "celtic": {
+      "league": "scotland",
+      "path": "scotland/celtic.json",
+      "zh": "凯尔特人",
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-24"
     },
     "crvena-zvezda": {
       "league": "serbia",
@@ -1004,6 +1166,15 @@
       "hasXg": false,
       "lastUpdated": "2026-08-22"
     },
+    "deportivo": {
+      "league": "spain",
+      "path": "spain/deportivo.json",
+      "zh": "拉科",
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-24"
+    },
     "elche": {
       "league": "spain",
       "path": "spain/elche.json",
@@ -1030,6 +1201,33 @@
       "hasElo": false,
       "hasXg": false,
       "lastUpdated": "2026-08-22"
+    },
+    "levante": {
+      "league": "spain",
+      "path": "spain/levante.json",
+      "zh": "莱万特",
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-24"
+    },
+    "malaga": {
+      "league": "spain",
+      "path": "spain/malaga.json",
+      "zh": "马拉加",
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-24"
+    },
+    "osasuna": {
+      "league": "spain",
+      "path": "spain/osasuna.json",
+      "zh": "奥萨苏纳",
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-24"
     },
     "racing-santander": {
       "league": "spain",
@@ -1094,6 +1292,15 @@
       "hasXg": false,
       "lastUpdated": "2026-08-22"
     },
+    "djurgarden": {
+      "league": "sweden",
+      "path": "sweden/djurgarden.json",
+      "zh": "佐加顿斯",
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-24"
+    },
     "gais": {
       "league": "sweden",
       "path": "sweden/gais.json",
@@ -1120,6 +1327,15 @@
       "hasElo": false,
       "hasXg": false,
       "lastUpdated": "2026-08-22"
+    },
+    "malmo-ff": {
+      "league": "sweden",
+      "path": "sweden/malmo-ff.json",
+      "zh": "马尔默",
+      "summary": "0场近况 · Elo — · 无xG",
+      "hasElo": false,
+      "hasXg": false,
+      "lastUpdated": "2026-08-24"
     },
     "mjallby": {
       "league": "sweden",
