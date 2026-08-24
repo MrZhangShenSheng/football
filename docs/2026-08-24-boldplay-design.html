@@ -127,7 +127,28 @@ sup{color:var(--muted)}
 <div class="figcap">图 1 · 阶梯三档：越往上杠杆越高、密度越低——「牺牲一点总密度换中奖分布的层次感」（用户拍板）</div>
 <p>双形状轮换规则（轮次序号按预测报告递增编号）：<b>奇数轮桂林形状</b>（场均 ≈14 倍比分，合赔 ≈3.6 万倍 × 4 倍投 = 8 元，命中 29 万级，结余 2 元并入进阶档）；<b>偶数轮梅州形状</b>（场均 ≈22 倍比分，合赔 ≈25 万倍 × 5 倍投 = 10 元，命中 250 万级）。两注均单选、同倍投结构，仅比分赔率带不同。若当轮合赔偏离目标带 ±30%，按最接近形状归档并在报告标注。翻身档预算上限 10 元，档内不超支。</p>
 
-<h2>五、新组件：比分 EV 审计（engine/scripts/score_ev.py）</h2>
+<h2>五、冷门场景识别：四层锚（前三层零积累依赖）</h2>
+<p class="lede">设计评审提出的缺口：体彩历史赔率无留存、预测积累刚开始——「体彩哪里定错过」无法回测。解法不是等积累，是换锚。且 fd 多赛季数据给出了直接实证。</p>
+<pre>层1 当轮横向锚：体彩价 vs Pinnacle 收盘去水价同场对比（零历史依赖，每轮可用）
+     反常交叉 = 体彩某项给价 ≥ Pinnacle 公平价 → 当场出手信号
+层2 历史纵向锚：概率带过滤（下表实证）+ B365 开→收移动回测（1,710 场有 &gt;3% 移动）
+层3 场景条件锚：分联赛 × 场景（周中/欧战后/赛季段）冷门率条件表
+     data/00-leagues 已有骨架（upsetRate 29.2%），多赛季赛果升级——只作过滤器，不作概率锚
+层4 积累回路：体彩赔率存档从本轮滚动（见下节）</pre>
+<h3>概率带实证：方向冷门是毒药，均势与大热才可买（2 季 × 5 联赛 7,948 项，Pinnacle 收盘价）</h3>
+<table>
+<thead><tr><th>方向概率档</th><th>n</th><th>回报率</th><th>判定</th></tr></thead>
+<tbody>
+<tr><td>深冷门 &lt;15%</td><td>751</td><td class="neg">0.681</td><td class="neg">排除——favourite-longshot bias，全市场最差</td></tr>
+<tr><td>次冷 15-30%</td><td>3,566</td><td class="neg">0.957</td><td>正常负期望</td></tr>
+<tr><td>均势 30-45%</td><td>1,889</td><td class="pos">1.004</td><td class="pos">可买带 A</td></tr>
+<tr><td>热门 45-60%</td><td>1,026</td><td class="neg">0.964</td><td>正常负期望</td></tr>
+<tr class="tot"><td>大热 &gt;60%</td><td>718</td><td class="pos">1.001</td><td class="pos">可买带 B</td></tr>
+</tbody>
+</table>
+<p><b>核心区分：「博冷门」≠「以小博大」</b>。深冷方向（&lt;15%）回报率 0.68——彩民集体高估冷门，市场把高赔压得最狠。而桂林/梅州案例的场均 13.8~22.4 倍比分，其<b>方向</b>大多落在大热/均势带（强队赢，押具体比分）——高赔来自玩法结构（比分盘），不是方向冷门。因此：翻身档选场先过概率带过滤（方向 ∈ 可买带），三档全部排除深冷方向。微正带（1.004/1.001）在 Pinnacle 口径下 ≈ 零成本，落到体彩票上仍须满足层1（体彩价 ≥ Pinnacle 去水公平价）才构成出手。</p>
+
+<h2>六、新组件：比分 EV 审计（engine/scripts/score_ev.py）</h2>
 <svg class="pathmap" viewBox="0 0 840 300" role="img" aria-label="比分EV审计数据流">
 <style>
 .nd{fill:var(--card);stroke:var(--border);stroke-width:1.2}
@@ -172,57 +193,74 @@ sup{color:var(--muted)}
 <div class="figcap">图 2 · score_ev.py 数据流：经验频率 × 当轮体彩赔率 → 正 EV 清单；虚线为回填积累回路</div>
 <p>现状约束（已验证）：体彩比分<b>历史</b>赔率无留存（预测 JSON 仅存 pick 赔率），故 v1 审计口径 =「分联赛经验频率 × 当轮赔率」静态扫描；从部署轮起全量存档，回填后形成实测库，逐步从先验过渡到实测。比分盘非全场次开售：缺盘场次降级——翻身档从开售场次中选，不足 4 场时该轮翻身档关闭、预算并入进阶档（不硬凑）。</p>
 
-<h2>六、翻身档比分选法决策树</h2>
-<svg class="pathmap" viewBox="0 0 840 230" role="img" aria-label="比分选法决策树">
+<h2>七、翻身档比分选法决策树</h2>
+<svg class="pathmap" viewBox="0 0 840 320" role="img" aria-label="比分选法决策树">
 <style>
 .dq{fill:var(--warn-soft);stroke:var(--warn);stroke-width:1.2}
 .dn{fill:var(--card);stroke:var(--border);stroke-width:1.2}
+.dg{fill:var(--card);stroke:var(--danger);stroke-width:1.2}
 .dt{font:600 12.5px -apple-system,system-ui;fill:var(--ink);text-anchor:middle}
 .ds{font:400 10.5px -apple-system,system-ui;fill:var(--muted);text-anchor:middle}
 .de{stroke:currentColor;stroke-width:1.3;fill:none;marker-end:url(#arr)}
 .dl{font:600 10.5px -apple-system,system-ui;fill:var(--accent)}
+.dr{font:600 10.5px -apple-system,system-ui;fill:var(--danger)}
 </style>
-<rect class="dq" x="310" y="14" width="220" height="46" rx="20"/>
-<text class="dt" x="420" y="33">正 EV 比分 ≥ 4 个？</text>
-<text class="ds" x="420" y="49">（按轮换形状筛选赔率带）</text>
-<rect class="dn" x="30" y="100" width="250" height="62" rx="7"/>
-<text class="dt" x="155" y="122">是 → 取 EV 最高 4 个</text>
-<text class="ds" x="155" y="138">合赔落形状目标带（±30% 校验）</text>
-<text class="ds" x="155" y="152">DC top5 交集 = 叙事加分（不进权重）</text>
-<rect class="dn" x="560" y="100" width="250" height="62" rx="7"/>
-<text class="dt" x="685" y="122">否 → 退经验频率 top 比分</text>
-<text class="ds" x="685" y="138">1-1 / 1-0 / 2-1（合赔 4~6 千倍）</text>
-<text class="ds" x="685" y="152">报告标注「无正EV·频率退路」</text>
-<rect class="dn" x="310" y="182" width="220" height="40" rx="7"/>
-<text class="dt" x="420" y="200">开售场次 &lt; 4 → 关档并预算</text>
-<text class="ds" x="420" y="214">并入进阶档，不硬凑</text>
-<path class="de" d="M360,60 L220,100"/>
-<text class="dl" x="255" y="86">是</text>
-<path class="de" d="M480,60 L630,100"/>
-<text class="dl" x="540" y="86">否</text>
-<path class="de" d="M420,162 L420,182"/>
+<rect class="dn" x="310" y="10" width="220" height="42" rx="7"/>
+<text class="dt" x="420" y="28">选场池：当轮开售比分盘场次</text>
+<text class="ds" x="420" y="44">体彩 insight + 赛程交叉</text>
+<rect class="dq" x="310" y="76" width="220" height="46" rx="20"/>
+<text class="dt" x="420" y="95">① 方向 ∈ 可买带？</text>
+<text class="ds" x="420" y="111">均势 30-45% / 大热 &gt;60%（层2 实证）</text>
+<rect class="dg" x="590" y="76" width="220" height="46" rx="7"/>
+<text class="dt" x="700" y="94">否 → 整场排除</text>
+<text class="ds" x="700" y="110">深冷 &lt;15% 是毒药（回报率 0.68）</text>
+<rect class="dq" x="310" y="152" width="220" height="46" rx="20"/>
+<text class="dt" x="420" y="171">② 正 EV 比分 ≥ 4 个？</text>
+<text class="ds" x="420" y="187">按轮换形状筛赔率带 + 层1 横向锚</text>
+<rect class="dn" x="30" y="152" width="240" height="62" rx="7"/>
+<text class="dt" x="150" y="174">是 → 取 EV 最高 4 个</text>
+<text class="ds" x="150" y="190">合赔落形状目标带（±30% 校验）</text>
+<text class="ds" x="150" y="204">DC top5 交集 = 叙事加分（不进权重）</text>
+<rect class="dn" x="310" y="224" width="240" height="62" rx="7"/>
+<text class="dt" x="430" y="246">否 → 退经验频率 top 比分</text>
+<text class="ds" x="430" y="262">1-1 / 1-0 / 2-1（合赔 4~6 千倍）</text>
+<text class="ds" x="430" y="276">报告标注「无正EV·频率退路」</text>
+<rect class="dn" x="590" y="224" width="220" height="46" rx="7"/>
+<text class="dt" x="700" y="242">可买带场次 &lt; 4 → 关档并预算</text>
+<text class="ds" x="700" y="258">并入进阶档，不硬凑</text>
+<path class="de" d="M420,52 L420,76"/>
+<path class="de" d="M530,99 L590,99"/>
+<text class="dr" x="550" y="92">否</text>
+<path class="de" d="M420,122 L420,152"/>
+<text class="dl" x="428" y="142">是</text>
+<path class="de" d="M310,175 L270,183"/>
+<text class="dl" x="282" y="170">是</text>
+<path class="de" d="M420,198 L420,224"/>
+<text class="dl" x="428" y="218">否</text>
 </svg>
-<div class="figcap">图 3 · 决策树：正 EV 优先 → 经验频率退路 → 关档保护。DC 仅作叙事校验（遵守审计结论）</div>
+<div class="figcap">图 3 · 决策树：选场 → 概率带过滤 → 正 EV 优先 → 经验频率退路 → 关档保护。DC 仅作叙事校验（遵守审计结论）</div>
 
-<h2>七、skill 流程整合</h2>
+<h2>八、skill 流程整合</h2>
 <pre>「帮我预测」 → 报告末尾追加：阶梯出票卡
                （三档：预算/场次/比分/倍数/合赔/中奖额/密度表 + 税后额标注）
 「再跑一遍」 → 复扫含体彩比分赔率二次采集（赔率变动即 EV 变动）
 「回填赛果」 → 新增比分 EV 回测：所存赔率 vs 实际赛果，正 EV 清单迭代
                （复用现有闭环，零额外流程负担）</pre>
 
-<h2>八、评估与风险边界</h2>
+<h2>九、评估与风险边界</h2>
 <div class="card">
 <p><b>评估</b>：轮次级「累计密度消耗 vs 实际命中」两条曲线（trend.html 扩展）。翻身档命中率参考量级 1/5,000~1/50,000——<b>不设命中率 KPI</b>，防止用低档命中自我安慰。预算封顶即止损：单轮固定 20 元，不追加、不亏损加码。</p>
 <p><b>风险与边界</b>：① 大奖超 1 万部分征 20% 偶然所得税，出票卡一律标税后额；② 比分频率联赛特异性强（英超 1-1 ≠ 葡超 1-1），频率表必须分联赛；③ Beta 收缩防小样本过拟合（某比分 n&lt;30 时向全局均值收缩）；④ 负期望本质写入每期报告脚注——本系统优化的是<b>逼近密度上限</b>，不改变 EV 为负的事实；⑤ 经验频率是「过去 5 季」的先验，实测库积累前存在漂移风险，靠积累回路收敛。</p>
 </div>
 
-<h2>九、落地计划（审计先行 · 两阶段）</h2>
-<pre>阶段一（审计）  score_ev.py：频率表构建 + 当轮体彩比分赔率采集存档
-                产出：历史扫描正 EV 比分清单（分联赛 × 比分 × EV）
-决策门          清单存在稳定正 EV 比分（≥3 联赛 × ≥2 比分）？
-                ├─ 是 → 阶段二
-                └─ 否 → 翻身档长期走经验频率退路，本设计照常落地（形状不依赖正EV）
+<h2>十、落地计划（审计先行 · 两阶段）</h2>
+<pre>阶段一（审计）  a. 概率带校准扫描（多季 × 8 联赛，验证可买带稳健性，分联赛细分）
+                b. B365 开→收移动回测（聪明钱方向 vs 结果，1,710+ 场可测）
+                c. score_ev.py：频率表构建 + 当轮体彩比分赔率采集存档
+                产出：可买带清单（分联赛）+ 正 EV 比分清单（分联赛 × 比分 × EV）
+决策门          ① 可买带在分联赛下稳健？② 清单存在稳定正 EV 比分（≥3 联赛 × ≥2 比分）？
+                ├─ 是 → 阶段二（概率带过滤 + 正EV选比分）
+                └─ 否 → 翻身档长期走经验频率退路（概率带过滤仍启用，形状不依赖正EV）
 阶段二（落地）  skill 方案生成改造 + 出票卡 + 回填回测 + trend 密度曲线</pre>
 
 <div class="src"><b>数据与案例来源</b><br>
@@ -232,5 +270,6 @@ sup{color:var(--muted)}
 · 任九对照：新浪竞技风暴历史案例集（单注上限 259 万 · 2014-07 大冷期；1458 元 3胆6包复式 / 8 元小复式两极）<br>
 · 密度数学：Dubins–Savage《How to Gamble If You Must》subfair game 的 bold play 最优性<br>
 · 本地数据：fd CSV（odds_fetch.py 可拉 8 联赛 5 季含比分）· data/02-results/league/（1,948 场）· data/04-summaries/dc_score_backtest.json（经验频率 1-1 121 场 / top1 11.47% / top3 28.91%）<br>
+· 概率带实证：本设计日即时扫描（football-data.co.uk 2425+2526 × 英西德意法，7,948 项 Pinnacle 收盘口径；深冷&lt;15% 回报率 0.681 / 均势 30-45% 1.004 / 大热&gt;60% 1.001；B365 开收移动 &gt;3% 共 1,710 场）<br>
 · 开发者：sszhang</div>
 </body></html>
