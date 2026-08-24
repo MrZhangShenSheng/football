@@ -280,6 +280,22 @@ sup{color:var(--muted)}
 阶段二（落地）  skill 方案生成改造（替换旧三段式，保留修正链）+ 出票卡
                 + 回填回测（逐 leg 判定）+ trend 密度曲线 + 月度封顶执行器</pre>
 
+
+<h2>十一、阶段一执行结论（2026-08-24 当日落地）</h2>
+<pre>Gate0 开售规模  ✅ 13 场全开售比分盘、每场 31 项赔率（28 比分 + 3 其他）+ 调价时间戳
+                → 翻身档供给充足（存档器 dump-odds 已常态化，engine/cache/score_odds/）
+Gate1 临场价源  ⚠ verdict=layer1_prior —— pinnacle 直连超时（疑被墙）、the-odds-api 可达但需 ODDS_API_KEY
+                → 层1 降级「上轮收盘先验」（预埋路径），注册 key（免费 500 次/月）可升级
+Gate2 概率带    baseline=0.9449；&lt;0.15 八联赛全「排除带」（毒药分联赛稳健）
+                可买带仅 &gt;=0.60 档 3 联赛（意甲/葡超/西甲）+ 葡超 0.45-0.60 档；
+                0.30-0.45 均势带 0 联赛达标——总体 1.004 确系 data snooping 噪声（第五节预判证实）
+Gate4 比分 EV   n_scanned=364；n_positive=122 但全部 n=0（极端长打×全局池先验噪声，
+                联赛中文名↔fd 英文 id 不匹配全线回退全局池）→ 可信正 EV=0，
+                翻身档走经验频率退路（预埋路径，形状不变）
+阶段二首任务    ① 联赛中文名→fd id 映射 ② score_ev 摘要拆 n_positive_league_backed/prior_only
+                ③ 重跑 score_ev（终审裁定：消费 score_ev.json 前必须完成，否则 122 噪声被当信号）
+全量回归        pytest 75 passed；四任务审查全 Approved；终审 ready for phase-2</pre>
+
 <div class="src"><b>数据与案例来源</b><br>
 · 上游审计：<code>docs/2026-08-24-model-audit-design.html</code>（1055 场 walk-forward，四路验证收敛）<br>
 · 桂林案例：广西体彩 2026-07-02 官方披露（新浪新闻 sina.cn/news/detail/5316241172728905.html · 腾讯新闻 new.qq.com/rain/a/20260702V06CM900）<br>
