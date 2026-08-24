@@ -6,6 +6,17 @@ from band_calibration import DIVS, SEASONS, fetch_rows, devid, band_of
 
 PRIOR_STRENGTH = 50          # 收缩先验强度(场)
 
+LEAGUE_MAP = {          # 体彩中文缩写 → fd 英文 id（2026-08-24 存档实测）
+    "英超": "england-premier", "西甲": "spain-laliga", "德甲": "germany-bundesliga",
+    "意甲": "italy-serie-a", "法甲": "france-ligue1", "法乙": "france-ligue2",
+    "荷甲": "netherlands-eredivisie", "葡超": "portugal-primeira",
+    "沙职": "saudi", "瑞超": "sweden", "日职": "japan", "韩职": "korea",
+}                       # 巴甲/欧冠等无对应 → None → 全局池（设计内）
+
+def map_league(name: str):
+    """体彩中文联赛名 → fd id；无映射返回 None（调用方落全局池）。"""
+    return LEAGUE_MAP.get(name)
+
 def shrink(freq: float, n: int, prior: float, strength: int = PRIOR_STRENGTH) -> float:
     return (freq * n + prior * strength) / (n + strength)
 
@@ -57,9 +68,10 @@ def ev_scan(odds_day: dict, freq_table: dict) -> list:
         direction_band = band_of(max(probs))
         for score, o in (m.get("crs") or {}).items():
             if score in ("胜其他", "平其他", "负其他"): continue
-            q, n = freq_for(freq_table, m.get("league", ""), score)
+            q, n = freq_for(freq_table, map_league(m.get("league", "")) or m.get("league", ""), score)
             rows.append({"matchNumStr": m["matchNumStr"], "match": f'{m.get("home")}-{m.get("away")}',
-                         "league": m.get("league"), "score": score, "odds": o,
+                         "league": m.get("league"), "leagueId": map_league(m.get("league", "")),
+                         "score": score, "odds": o,
                          "q": round(q, 4), "n": n, "ev": round(q * o - 1, 4),
                          "directionBand": direction_band})
     return sorted(rows, key=lambda r: r["ev"], reverse=True)
@@ -72,9 +84,12 @@ def main() -> None:
     for day in odds.get("matchDays", []):
         rows += ev_scan(day, table)
     positive = [r for r in rows if r["ev"] > 0]
+    backed = [r for r in positive if r.get("n", 0) > 0]
     out = {"ranAt": str(date.today()), "oddsArchive": latest,
            "source": "fd多季+league库频率(Beta收缩50) × sporttery当轮赔率",
            "n_scanned": len(rows), "n_positive": len(positive),
+           "n_positive_league_backed": len(backed),
+           "n_positive_prior_only": len(positive) - len(backed),
            "positive_top": positive[:40], "all_top30": rows[:30]}
     with open("data/04-summaries/score_ev.json", "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=1)

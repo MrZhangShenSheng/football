@@ -1,4 +1,4 @@
-from score_ev import shrink, ev_scan, norm_score
+from score_ev import shrink, ev_scan, norm_score, map_league
 
 def test_shrink_pulls_small_n_to_prior():
     assert abs(shrink(0.20, n=10, prior=0.10) - (0.2*10 + 0.1*50)/60) < 1e-9
@@ -19,3 +19,11 @@ def test_ev_scan_ranking():
     # 单一联赛时 prior=全局=0.115, shrink(0.115,1000,0.115)=0.115 → ev=0.115*6.5-1
     assert abs(top["ev"] - (0.115 * 6.5 - 1)) < 1e-9
     assert all(rows[i]["ev"] >= rows[i+1]["ev"] for i in range(len(rows)-1))   # 降序
+
+def test_map_league_known():
+    assert map_league("意甲") == "italy-serie-a"
+    assert map_league("英超") == "england-premier"
+    assert map_league("沙职") == "saudi" and map_league("瑞超") == "sweden"
+
+def test_map_league_unknown_returns_none():
+    assert map_league("欧冠") is None and map_league("巴甲") is None
