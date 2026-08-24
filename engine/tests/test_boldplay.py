@@ -39,7 +39,39 @@ def test_build_ticket_structure():
     t = build_ticket(odds_day, {"italy-serie-a": {"__n": 1000, "2:0": 90, "3:1": 30, "1:1": 115, "1:0": 98, "2:1": 86}}, seq=1)
     assert t["seq"] == 1 and t["shape"] == "guilin"   # 奇数轮桂林
     assert t["tiers"]["base"]["cost"] == 4 and len(t["tiers"]["base"]["legs"]) == 2
-    assert t["tiers"]["mid"]["cost"] == 6
+    assert "degraded" not in t["tiers"]["base"]      # 2 非空注组 = 设计满配
+    assert t["tiers"]["mid"]["cost"] == 2            # 池仅 4 场 <5 腿 → 单注 2 元（真实成本）
+    assert t["tiers"]["mid"]["degraded"] is True
     assert 1 <= t["tiers"]["upset"]["multiplier"] <= 4
     assert t["tiers"]["upset"]["cost"] <= 10 and len(t["tiers"]["upset"]["legs"]) <= 4
-    assert t["totalCost"] <= 20 and "postTaxNote" in t and "densityNote" in t
+    assert t["totalCost"] == sum(v["cost"] for v in t["tiers"].values()) <= 20
+    assert "postTaxNote" in t and "densityNote" in t
+
+def test_upset_legs_schema():
+    """Task 6 settle() 接口：每条翻身腿必须有 play=crs + pick=比分串（两条路径都覆盖）。"""
+    odds_day = {"matches": [
+        {"matchNumStr": f"周一00{i}", "league": "意甲", "home": f"H{i}", "away": f"A{i}",
+         "had": {"h": 1.6, "d": 4.0, "a": 6.0},
+         "crs": {"2:0": 9.0, "3:1": 22.0, "1:1": 5.8, "1:0": 6.5, "2:1": 8.0}} for i in (1, 2, 3, 4)]}
+    t = build_ticket(odds_day, {"italy-serie-a": {"__n": 1000, "2:0": 90, "3:1": 30, "1:1": 115, "1:0": 98, "2:1": 86}}, seq=1)
+    assert all(l["play"] == "crs" and l["pick"] == l.get("score") for l in t["tiers"]["upset"]["legs"])
+    # pick_upset_legs 直取路径（带内 12.0）
+    rows = [{"matchNumStr": "周一001", "leagueId": "italy-serie-a", "n": 400, "score": "2:0", "odds": 12.0, "ev": -0.1}]
+    t2 = build_ticket({"matches": odds_day["matches"][:1] + [
+        {"matchNumStr": f"周一00{i}", "league": "意甲", "home": f"H{i}", "away": f"A{i}",
+         "had": {"h": 1.6, "d": 4.0, "a": 6.0}, "crs": {"2:0": 12.0, "1:1": 5.8}} for i in (2, 3, 4)]}, {}, seq=3)
+    # freq_table 为空 → ev_scan 无带内行 → 走 fallback；断言兜底路径同样规范
+    assert all(l["play"] == "crs" and l["pick"] == l.get("score") for l in t2["tiers"]["upset"]["legs"])
+    for l in pick_upset_legs(rows, "guilin"):
+        assert l["score"] == "2:0"  # 原始字段保留，规范化在 build_ticket 完成
+
+def test_thin_pool_costs_truthful():
+    """池薄时成本真实化 + degraded 标注（实跑 1 腿场景）。"""
+    odds_day = {"matches": [
+        {"matchNumStr": "周二005", "league": "欧冠", "home": "LASK", "away": "凯尔特人",
+         "had": {"h": 2.5, "d": 3.2, "a": 2.7}, "crs": {"1:0": 11.0, "1:1": 6.0}}]}
+    t = build_ticket(odds_day, {}, seq=1)
+    assert t["tiers"]["base"]["cost"] == 2 and t["tiers"]["base"]["degraded"] is True   # 仅 1 非空注组
+    assert t["tiers"]["mid"]["cost"] == 2 and t["tiers"]["mid"]["degraded"] is True    # 1 腿 <5
+    assert len(t["tiers"]["upset"]["legs"]) == 1 and t["tiers"]["upset"]["degraded"] is True  # 1 腿 <4
+    assert t["totalCost"] == t["tiers"]["base"]["cost"] + t["tiers"]["mid"]["cost"] + t["tiers"]["upset"]["cost"]

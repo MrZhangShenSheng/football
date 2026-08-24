@@ -58,6 +58,7 @@ def build_ticket(odds_day: dict, freq_table: dict, seq: int) -> dict:
     shape = "guilin" if seq % 2 == 1 else "meizhou"
     rows = ev_scan(odds_day, freq_table)
     upset = pick_upset_legs(rows, shape) or _fallback_upset(odds_day)
+    upset = [dict(l, play="crs", pick=l.get("pick", l["score"])) for l in upset]  # Task 6 settle() schema
     total_odds = 1.0
     for l in upset:
         total_odds *= l["odds"]
@@ -76,18 +77,29 @@ def build_ticket(odds_day: dict, freq_table: dict, seq: int) -> dict:
             return [legs]
         half = (len(legs) + 1) // 2
         return [legs[:half], legs[half:]]
+    base_notes = [g for g in had_legs(4, 2) if g]          # 非空注组
+    base_cost = 2 * min(len(base_notes), 2)
+    mid_legs = had_legs(5, 1)
+    mid_cost = 2 if mid_legs[0] else 0
+    tiers = {
+        "base": {"cost": base_cost, "legs": base_notes, "play": "had-4串1", "note": "2注互补"},
+        "mid": {"cost": mid_cost, "legs": mid_legs, "play": "had-5串1", "note": "默认HAD"},
+        "upset": {"cost": cost, "multiplier": mult, "legs": upset, "play": "crs-4串1",
+                  "expOdds": round(total_odds, 1) if upset else 0,
+                  "winIfHit": round(2 * total_odds * mult, 0) if upset else 0,
+                  "note": f"{shape}形状 带宽{SHAPES[shape]['band']}"
+                          + (" · 频率退路" if upset and upset[0].get("fallback") else "")},
+    }
+    if len(base_notes) < 2:                                 # 设计 2 非空注组
+        tiers["base"]["degraded"] = True
+    if len(mid_legs[0]) < 5:                                # 设计 5 串
+        tiers["mid"]["degraded"] = True
+    if len(upset) < 4:                                      # 设计 4 串
+        tiers["upset"]["degraded"] = True
     return {
         "date": str(date.today()), "seq": seq, "shape": shape,
-        "tiers": {
-            "base": {"cost": 4, "legs": had_legs(4, 2), "play": "had-4串1", "note": "2注互补"},
-            "mid": {"cost": 6, "legs": had_legs(5, 1), "play": "had-5串1", "note": "默认HAD"},
-            "upset": {"cost": cost, "multiplier": mult, "legs": upset, "play": "crs-4串1",
-                      "expOdds": round(total_odds, 1) if upset else 0,
-                      "winIfHit": round(2 * total_odds * mult, 0) if upset else 0,
-                      "note": f"{shape}形状 带宽{SHAPES[shape]['band']}"
-                              + (" · 频率退路" if upset and upset[0].get("fallback") else "")},
-        },
-        "totalCost": 4 + 6 + cost,
+        "tiers": tiers,
+        "totalCost": min(20, base_cost + mid_cost + cost),
         "densityNote": f"CRS 4串期望返还 ≈ 0.661^4 = {0.661**4:.1%}(体彩真实池水,非Pinnacle口径)",
         "postTaxNote": "单注奖金超1万部分税20%;4串单注限额50万已反算倍数",
     }
@@ -102,7 +114,10 @@ def main() -> None:
     if not budget_gate(spend):
         print(f"[boldplay] 月封顶触及: 本月已花 {spend:.0f}/{MONTHLY_CAP:.0f} 元, 本轮停")
         return
-    out = build_ticket(odds["matchDays"][-1], table, seq)
+    day = max(odds["matchDays"], key=lambda d: len(d.get("matches", [])))  # 选场次最多的天次
+    if len(day.get("matches", [])) < 4:
+        print(f"[boldplay] 降级: 当轮仅 {len(day.get('matches', []))} 场 (<4)")
+    out = build_ticket(day, table, seq)
     out["ranAt"] = str(date.today())
     path = f"data/03-predictions/{date.today()}-boldplay.json"
     with open(path, "w", encoding="utf-8") as f:
