@@ -1,0 +1,109 @@
+{
+  "season": "2526",
+  "fusion": {
+    "a": 0.4,
+    "b": 1.0
+  },
+  "c_grid": [
+    -1.0,
+    1.0
+  ],
+  "note": "best_c 为 in-sample 网格优（乐观上界），过线需再 walk-forward 估 c 去过拟合",
+  "rows": [
+    {
+      "league": "england-premier",
+      "n": 180,
+      "elo_miss": 0,
+      "rps_mkt": 0.1958,
+      "rps_fused": 0.2008,
+      "rps_elo": 0.2008,
+      "best_c": 0.0,
+      "delta_elo_vs_mkt": 0.005,
+      "delta_elo_vs_fused": 0.0
+    },
+    {
+      "league": "spain-laliga",
+      "n": 159,
+      "elo_miss": 0,
+      "rps_mkt": 0.185,
+      "rps_fused": 0.1871,
+      "rps_elo": 0.1871,
+      "best_c": 0.0,
+      "delta_elo_vs_mkt": 0.0021,
+      "delta_elo_vs_fused": 0.0
+    },
+    {
+      "league": "germany-bundesliga",
+      "n": 120,
+      "elo_miss": 0,
+      "rps_mkt": 0.1803,
+      "rps_fused": 0.1905,
+      "rps_elo": 0.1905,
+      "best_c": 0.0,
+      "delta_elo_vs_mkt": 0.0102,
+      "delta_elo_vs_fused": 0.0
+    },
+    {
+      "league": "italy-serie-a",
+      "n": 170,
+      "elo_miss": 0,
+      "rps_mkt": 0.1902,
+      "rps_fused": 0.1985,
+      "rps_elo": 0.1985,
+      "best_c": 0.0,
+      "delta_elo_vs_mkt": 0.0082,
+      "delta_elo_vs_fused": 0.0
+    },
+    {
+      "league": "france-ligue1",
+      "n": 123,
+      "elo_miss": 0,
+      "rps_mkt": 0.2056,
+      "rps_fused": 0.2153,
+      "rps_elo": 0.2139,
+      "best_c": -0.2,
+      "delta_elo_vs_mkt": 0.0082,
+      "delta_elo_vs_fused": -0.0015
+    },
+    {
+      "league": "france-ligue2",
+      "n": 68,
+      "elo_miss": 0,
+      "rps_mkt": 0.2462,
+      "rps_fused": 0.2481,
+      "rps_elo": 0.2447,
+      "best_c": -0.4,
+      "delta_elo_vs_mkt": -0.0015,
+      "delta_elo_vs_fused": -0.0033
+    },
+    {
+      "league": "netherlands-eredivisie",
+      "n": 112,
+      "elo_miss": 0,
+      "rps_mkt": 0.1834,
+      "rps_fused": 0.2098,
+      "rps_elo": 0.2092,
+      "best_c": -0.1,
+      "delta_elo_vs_mkt": 0.0258,
+      "delta_elo_vs_fused": -0.0007
+    },
+    {
+      "league": "portugal-primeira",
+      "n": 123,
+      "elo_miss": 0,
+      "rps_mkt": 0.1702,
+      "rps_fused": 0.1667,
+      "rps_elo": 0.1667,
+      "best_c": 0.0,
+      "delta_elo_vs_mkt": -0.0035,
+      "delta_elo_vs_fused": 0.0
+    }
+  ],
+  "summary": {
+    "elo_beats_market": "2/8",
+    "elo_beats_orig_fused": "3/8",
+    "best_c_median": 0.0,
+    "verdict": "未达标(2/8)"
+  },
+  "ranAt": "2026-08-24"
+}

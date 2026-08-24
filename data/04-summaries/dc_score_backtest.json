@@ -1,0 +1,113 @@
+{
+  "season": "2526",
+  "fusion": {
+    "a": 0.4,
+    "b": 1.0
+  },
+  "total": 1055,
+  "ranAt": "2026-08-24",
+  "by_league": [
+    {
+      "league": "england-premier",
+      "n": 180,
+      "dc_top1": 0.0889,
+      "dc_top3": 0.25,
+      "avg_top1_prob": 0.1617,
+      "avg_top3_cov": 0.4052
+    },
+    {
+      "league": "spain-laliga",
+      "n": 159,
+      "dc_top1": 0.1384,
+      "dc_top3": 0.3459,
+      "avg_top1_prob": 0.1603,
+      "avg_top3_cov": 0.4021
+    },
+    {
+      "league": "germany-bundesliga",
+      "n": 120,
+      "dc_top1": 0.1083,
+      "dc_top3": 0.2417,
+      "avg_top1_prob": 0.1412,
+      "avg_top3_cov": 0.3725
+    },
+    {
+      "league": "italy-serie-a",
+      "n": 170,
+      "dc_top1": 0.1,
+      "dc_top3": 0.2824,
+      "avg_top1_prob": 0.1794,
+      "avg_top3_cov": 0.4351
+    },
+    {
+      "league": "france-ligue1",
+      "n": 123,
+      "dc_top1": 0.0813,
+      "dc_top3": 0.252,
+      "avg_top1_prob": 0.1633,
+      "avg_top3_cov": 0.3969
+    },
+    {
+      "league": "france-ligue2",
+      "n": 68,
+      "dc_top1": 0.0882,
+      "dc_top3": 0.2647,
+      "avg_top1_prob": 0.22,
+      "avg_top3_cov": 0.4787
+    },
+    {
+      "league": "netherlands-eredivisie",
+      "n": 112,
+      "dc_top1": 0.0625,
+      "dc_top3": 0.2589,
+      "avg_top1_prob": 0.1458,
+      "avg_top3_cov": 0.3794
+    },
+    {
+      "league": "portugal-primeira",
+      "n": 123,
+      "dc_top1": 0.0732,
+      "dc_top3": 0.3008,
+      "avg_top1_prob": 0.1781,
+      "avg_top3_cov": 0.4409
+    }
+  ],
+  "overall": {
+    "dc_top1": 0.0948,
+    "dc_top3": 0.2768,
+    "rand_top1": 0.0204,
+    "rand_top3": 0.0612,
+    "emp_top1": 0.1147,
+    "emp_top3": 0.2891,
+    "delta_vs_emp_top1": -0.0199,
+    "delta_vs_emp_top3": -0.0123,
+    "top_freq_scores": [
+      {
+        "score": "1-1",
+        "count": 121
+      },
+      {
+        "score": "1-0",
+        "count": 98
+      },
+      {
+        "score": "2-1",
+        "count": 86
+      },
+      {
+        "score": "0-1",
+        "count": 84
+      },
+      {
+        "score": "2-2",
+        "count": 76
+      }
+    ],
+    "calibration": {
+      "top1_pred": 0.1662,
+      "top1_hit": 0.0948,
+      "top3_pred": 0.411,
+      "top3_hit": 0.2768
+    }
+  }
+}

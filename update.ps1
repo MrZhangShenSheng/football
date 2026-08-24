@@ -61,15 +61,15 @@ Write-Host "Ready: tell Claude 'predict' to start"
 Write-Host ""
 Write-Host "Knowledge base freshness:" -ForegroundColor DarkGray
 $lg = Get-ChildItem "$HOME_DIR\data\00-leagues\*.json" -ErrorAction SilentlyContinue
-$fd = @($lg | Where-Object { (Get-Content $_ -Raw) -match '"computedFrom": "fd"' })
-$manual = @($lg | Where-Object { (Get-Content $_ -Raw) -match 'espn-manual|claude-manual|none' })
+$fd = @($lg | Where-Object { ([System.IO.File]::ReadAllText($_.FullName, [System.Text.Encoding]::UTF8)) -match '"computedFrom": "fd"' })
+$manual = @($lg | Where-Object { ([System.IO.File]::ReadAllText($_.FullName, [System.Text.Encoding]::UTF8)) -match 'espn-manual|claude-manual|none' })
 Write-Host "  fd-coverage (fresh): $($fd.Count) leagues" -ForegroundColor Green
 Write-Host "  manual (check on predict): $($manual.Count) leagues" -ForegroundColor DarkYellow
 Write-Host "  -> manual leagues auto-refresh via Step 2.5 on next 'predict'" -ForegroundColor DarkGray
 # sporttery 5-pool summary (v4.5)
 $sm = "$HOME_DIR\engine\cache\sporttery_matches.json"
 if (Test-Path $sm) {
-    $smd = Get-Content $sm -Raw | ConvertFrom-Json
+    $smd = [System.IO.File]::ReadAllText($sm, [System.Text.Encoding]::UTF8) | ConvertFrom-Json
     $pools = @{}
     foreach ($m in $smd.matches) {
         foreach ($p in $m.poolSingle.PSObject.Properties) {
@@ -84,7 +84,7 @@ if (Test-Path $sm) {
 # learning corpus readiness + model versions (v4.5.1) + trend (v4.5.2)
 $corpusPath = "$HOME_DIR\data\04-summaries\corpus.json"
 if (Test-Path $corpusPath) {
-    $cp = Get-Content $corpusPath -Raw | ConvertFrom-Json
+    $cp = [System.IO.File]::ReadAllText($corpusPath, [System.Text.Encoding]::UTF8) | ConvertFrom-Json
     $cal = if ($cp.readiness.calibrateReady) { "ready" } else { "gap $($cp.readiness.calibrateGap)" }
     $abl = if ($cp.readiness.ablateReady) { "ready" } else { "waiting" }
     Write-Host "  corpus: $($cp.n_total) records / $($cp.n_rounds) rounds (filled $($cp.readiness.n_result) / CLV $($cp.readiness.n_clv)) | calibrate $cal | ablate $abl" -ForegroundColor Green
@@ -94,12 +94,12 @@ if (Test-Path $corpusPath) {
 }
 $ml = "$HOME_DIR\engine\cache\models\latest.json"
 if (Test-Path $ml) {
-    $lv = Get-Content $ml -Raw | ConvertFrom-Json
+    $lv = [System.IO.File]::ReadAllText($ml, [System.Text.Encoding]::UTF8) | ConvertFrom-Json
     $parts = @()
     foreach ($prop in $lv.PSObject.Properties) {
         $lg = $prop.Name; $ver = $prop.Value
         $mp = "$HOME_DIR\engine\cache\models\${lg}_dc_v${ver}.meta.json"
-        $n = if (Test-Path $mp) { (Get-Content $mp -Raw | ConvertFrom-Json).nTrain } else { "?" }
+        $n = if (Test-Path $mp) { ([System.IO.File]::ReadAllText($mp, [System.Text.Encoding]::UTF8) | ConvertFrom-Json).nTrain } else { "?" }
         $parts += "$lg v$ver($n)"
     }
     Write-Host "  local DC models: $($parts -join ', ')" -ForegroundColor Green

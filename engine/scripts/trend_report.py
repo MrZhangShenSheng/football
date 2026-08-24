@@ -64,9 +64,16 @@ def pick_type(pick) -> str:
     return "方向"
 
 
-def grade_label(g) -> str:
-    """grade 显示兼容：数字 1~4 → A~D（v4.5）；字母原样（v4.6 经 corpus 归一仍可能透传字母）。"""
-    return chr(64 + g) if isinstance(g, int) and 1 <= g <= 4 else str(g)
+def normalize_grade(value) -> str:
+    """等级归一化：兼容数字等级与 A/B/C/D 字母等级。"""
+    grade_map = {"A": 4, "B": 3, "C": 2, "D": 1}
+    if isinstance(value, str):
+        value = grade_map.get(value.strip().upper(), value.strip())
+    try:
+        grade = int(value)
+    except (TypeError, ValueError):
+        return "?"
+    return f"{chr(64 + grade)}级" if 1 <= grade <= 4 else "?"
 
 
 def build_series(records: list[dict]) -> dict:
@@ -159,7 +166,7 @@ def build_buckets(filled: list[dict]) -> dict[str, list]:
     """五维下钻：联赛/星级/等级/pick类型/入串。"""
     dims = {"league": lambda r: r.get("league") or "?",
             "star": lambda r: f"{'★' * r['stars']}" if r.get("stars") else "无",
-            "grade": lambda r: f"{grade_label(r['grade'])}级" if r.get("grade") else "?",
+            "grade": lambda r: normalize_grade(r.get("grade")),
             "pick_type": lambda r: pick_type(r.get("pick")),
             "plan": lambda r: normalize_in_plan(r.get("in_plan"))}
     out = {}
@@ -319,7 +326,7 @@ def conclusion(series: dict, cal: list[dict]) -> str:
             gap = c["obs"] - c["pred"]
             if abs(gap) > 0.12:
                 tag = "低估" if gap > 0 else "高估"
-                parts.append(f"⚠️ 校准：{c['bin']} 桶实际 {c['obs']:.0%} vs 预测 {c['pred']:.0%}（系统性{tag} {abs(gap):.0%}）")
+                parts.append(f"⚠️ 校准：{c['bin']} 桶实际 {c['obs']:.0%} vs 预测 {c['pred']:.0%}（系统性{tag} {abs(gap) * 100:.0f}pp）")
     # 模型 vs 市场
     rows = series["rounds"]
     if rows:

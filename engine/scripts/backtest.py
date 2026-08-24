@@ -42,7 +42,7 @@ def dc_three(teams_params, home_adv, rho, home, away):
     p /= p.sum()
     ph = float(sum(p[i, j] for i in range(7) for j in range(7) if i > j))
     pd = float(np.trace(p))
-    return [ph, pd, 1 - ph - pd]
+    return [ph, pd, 1 - ph - pd], p  # 三向概率 + 7x7 比分矩阵（供比分命中率回测）
 
 
 def rps(probs, outcome_idx):
@@ -55,13 +55,13 @@ def logloss(probs, outcome_idx):
     return -math.log(max(probs[outcome_idx], 1e-12))
 
 
-def walk_forward(matches, market_by_match, a, b):
+def walk_forward(matches, market_by_match, a, b, use_xg=False):
     """逐段重拟合，段内逐场预测。返回逐场记录列表。"""
     records = []
     last_fit_idx = 0
     while last_fit_idx + REFIT_EVERY < len(matches):
         train = matches[:last_fit_idx + REFIT_EVERY]
-        teams, attack, defense, home_adv, rho, _ = fit(train, 0.005)
+        teams, attack, defense, home_adv, rho, _ = fit(train, 0.005, use_xg)
         idx = {t: i for i, t in enumerate(teams)}
         params = {t: {"attack": float(attack[i]), "defense": float(defense[i])} for t, i in idx.items()}
         # 预测下一段
@@ -69,16 +69,20 @@ def walk_forward(matches, market_by_match, a, b):
             mkt = market_by_match.get((m["date"].isoformat(), m["home"], m["away"]))
             if not mkt:
                 continue
-            p_dc = dc_three(params, home_adv, rho, m["home"], m["away"])
-            if p_dc is None:
+            res = dc_three(params, home_adv, rho, m["home"], m["away"])
+            if res is None:
                 continue
+            p_dc, matrix = res
             p_mkt = devig(mkt)
             p_fused = fuse(p_dc, p_mkt, a, b)
             outcome = 0 if m["hg"] > m["ag"] else (1 if m["hg"] == m["ag"] else 2)
+            flat = [(f"{i}-{j}", float(matrix[i, j])) for i in range(7) for j in range(7)]
+            top = sorted(flat, key=lambda kv: -kv[1])[:5]
             records.append({
                 "date": m["date"].isoformat(), "home": m["home"], "away": m["away"],
                 "hg": m["hg"], "ag": m["ag"], "outcome": outcome,
                 "p_mkt": p_mkt, "p_dc": p_dc, "p_fused": p_fused,
+                "top_scores": [{"score": s, "prob": round(pr, 4)} for s, pr in top],
             })
         last_fit_idx += REFIT_EVERY
     return records

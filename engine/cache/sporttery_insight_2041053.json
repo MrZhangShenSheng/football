@@ -1,0 +1,162 @@
+{
+ "fetchedAt": "2026-08-24",
+ "source": "sporttery",
+ "matchId": 2041053,
+ "match": {
+  "code": "周二005",
+  "league": "欧冠",
+  "gameweek": "",
+  "season": "2026/2027",
+  "home": "LASK林茨",
+  "away": "凯尔特人",
+  "kickoff": "2026-08-26 03:00",
+  "uniformMatchId": 2500039
+ },
+ "standing": {
+  "away": {
+   "groupName": "",
+   "phaseName": "",
+   "ranking": "",
+   "sAwayDrawMatchCnt": "",
+   "sAwayLossGoalMatchCnt": "",
+   "sAwayWinGoalMatchCnt": "",
+   "sDrawMatchCnt": "",
+   "sLossGoalMatchCnt": "",
+   "sWinGoalMatchCnt": "",
+   "seasonName": ""
+  },
+  "home": {
+   "groupName": "",
+   "phaseName": "",
+   "ranking": "",
+   "sDrawMatchCnt": "",
+   "sHomeDrawMatchCnt": "",
+   "sHomeLossGoalMatchCnt": "",
+   "sHomeWinGoalMatchCnt": "",
+   "sLossGoalMatchCnt": "",
+   "sWinGoalMatchCnt": "",
+   "seasonName": ""
+  }
+ },
+ "injuries": {
+  "home": [],
+  "away": []
+ },
+ "form": {
+  "goalAvg": {
+   "awayGoalAvgCnt": "2.4",
+   "awayGoalAvgCntRatio": "49.0",
+   "homeGoalAvgCnt": "2.5",
+   "homeGoalAvgCntRatio": "51.0",
+   "totalLegCnt": 10
+  },
+  "last10": {
+   "awayDrawMatchCnt": 3,
+   "awayLossGoalMatchCnt": 1,
+   "awayScoreRatio": "70",
+   "awayWinGoalMatchCnt": 6,
+   "homeDrawMatchCnt": 0,
+   "homeLossGoalMatchCnt": 4,
+   "homeScoreRatio": "60",
+   "homeWinGoalMatchCnt": 6,
+   "totalLegCnt": 10
+  },
+  "last10HomeAway": {
+   "awayDrawMatchCnt": 2,
+   "awayLossGoalMatchCnt": 2,
+   "awayScoreRatio": "67",
+   "awayWinGoalMatchCnt": 6,
+   "homeDrawMatchCnt": 2,
+   "homeLossGoalMatchCnt": 2,
+   "homeScoreRatio": "67",
+   "homeWinGoalMatchCnt": 6,
+   "totalLegCnt": 10
+  }
+ },
+ "h2h": {
+  "statistics": {
+   "drawMatchCnt": 0,
+   "drawProbability": "0%",
+   "goalCnt": 0,
+   "lossGoalCnt": 0,
+   "lossGoalMatchCnt": 1,
+   "lossProbability": "100%",
+   "netGoal": 0,
+   "sportteryTeamId": 0,
+   "teamId": 0,
+   "teamShortName": "LASK林茨",
+   "totalLegCnt": 1,
+   "winGoalMatchCnt": 0,
+   "winProbability": "0%"
+  },
+  "matches": [
+   {
+    "date": "2026-08-20",
+    "home": "凯尔特人",
+    "score": "3:0",
+    "ht": "2:0",
+    "away": "LASK林茨",
+    "winner": "away"
+   }
+  ]
+ },
+ "scorers": {
+  "away": {
+   "playerList": [
+    {
+     "appearanceCnt": 1,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "2.0",
+     "goalCnt": 2,
+     "goalProbability": "67%",
+     "injuryFlag": 0,
+     "personId": 805640,
+     "personName": "C. Durán",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "11"
+    },
+    {
+     "appearanceCnt": 1,
+     "assistAvgCnt": "1.0",
+     "assistCnt": 1,
+     "assistProbability": "100%",
+     "goalAvgCnt": "1.0",
+     "goalCnt": 1,
+     "goalProbability": "33%",
+     "injuryFlag": 0,
+     "personId": 517071,
+     "personName": "B·尼格伦",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "8"
+    }
+   ],
+   "sportteryTeamId": 211,
+   "teamId": 1898,
+   "teamShortName": "凯尔特人",
+   "uniformTeamId": 55
+  },
+  "home": {
+   "playerList": [],
+   "sportteryTeamId": 1128,
+   "teamId": 176,
+   "teamShortName": "LASK林茨",
+   "uniformTeamId": 42
+  },
+  "seasonId": 15574,
+  "seasonName": "2026/2027",
+  "tournamentId": 1096,
+  "tournamentShortName": "欧冠",
+  "uniformLeagueId": 30,
+  "uniformMatchId": 2500039
+ }
+}

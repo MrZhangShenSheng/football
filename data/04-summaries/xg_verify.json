@@ -1,0 +1,111 @@
+{
+  "season": "2526",
+  "fusion": {
+    "a": 0.4,
+    "b": 1.0
+  },
+  "rows": [
+    {
+      "league": "england-premier",
+      "n": 180,
+      "xg_coverage": 0.0,
+      "rps_mkt": 0.1958,
+      "rps_dc": 0.2285,
+      "rps_xg": 0.2285,
+      "rps_fused_dc": 0.2008,
+      "rps_fused_xg": 0.2008,
+      "delta_xg_vs_dc": 0.0,
+      "delta_fused_xg_vs_mkt": 0.005
+    },
+    {
+      "league": "spain-laliga",
+      "n": 159,
+      "xg_coverage": 0.0,
+      "rps_mkt": 0.185,
+      "rps_dc": 0.2059,
+      "rps_xg": 0.2059,
+      "rps_fused_dc": 0.1871,
+      "rps_fused_xg": 0.1871,
+      "delta_xg_vs_dc": 0.0,
+      "delta_fused_xg_vs_mkt": 0.0021
+    },
+    {
+      "league": "germany-bundesliga",
+      "n": 120,
+      "xg_coverage": 0.0,
+      "rps_mkt": 0.1803,
+      "rps_dc": 0.2337,
+      "rps_xg": 0.2337,
+      "rps_fused_dc": 0.1905,
+      "rps_fused_xg": 0.1905,
+      "delta_xg_vs_dc": 0.0,
+      "delta_fused_xg_vs_mkt": 0.0102
+    },
+    {
+      "league": "italy-serie-a",
+      "n": 170,
+      "xg_coverage": 0.0,
+      "rps_mkt": 0.1902,
+      "rps_dc": 0.2328,
+      "rps_xg": 0.2328,
+      "rps_fused_dc": 0.1985,
+      "rps_fused_xg": 0.1985,
+      "delta_xg_vs_dc": 0.0,
+      "delta_fused_xg_vs_mkt": 0.0083
+    },
+    {
+      "league": "france-ligue1",
+      "n": 123,
+      "xg_coverage": 0.0,
+      "rps_mkt": 0.2056,
+      "rps_dc": 0.2481,
+      "rps_xg": 0.2481,
+      "rps_fused_dc": 0.2153,
+      "rps_fused_xg": 0.2153,
+      "delta_xg_vs_dc": 0.0,
+      "delta_fused_xg_vs_mkt": 0.0097
+    },
+    {
+      "league": "france-ligue2",
+      "n": 68,
+      "xg_coverage": 0.0,
+      "rps_mkt": 0.2462,
+      "rps_dc": 0.2826,
+      "rps_xg": 0.2826,
+      "rps_fused_dc": 0.2481,
+      "rps_fused_xg": 0.2481,
+      "delta_xg_vs_dc": 0.0,
+      "delta_fused_xg_vs_mkt": 0.0019
+    },
+    {
+      "league": "netherlands-eredivisie",
+      "n": 112,
+      "xg_coverage": 0.0,
+      "rps_mkt": 0.1834,
+      "rps_dc": 0.2694,
+      "rps_xg": 0.2694,
+      "rps_fused_dc": 0.2098,
+      "rps_fused_xg": 0.2098,
+      "delta_xg_vs_dc": 0.0,
+      "delta_fused_xg_vs_mkt": 0.0264
+    },
+    {
+      "league": "portugal-primeira",
+      "n": 123,
+      "xg_coverage": 0.0,
+      "rps_mkt": 0.1702,
+      "rps_dc": 0.1892,
+      "rps_xg": 0.1892,
+      "rps_fused_dc": 0.1667,
+      "rps_fused_xg": 0.1667,
+      "delta_xg_vs_dc": 0.0,
+      "delta_fused_xg_vs_mkt": -0.0035
+    }
+  ],
+  "summary": {
+    "xg_dc_beats_orig_dc": "0/8",
+    "fused_xg_beats_market": "1/8",
+    "verdict": "未达标(1/8)"
+  },
+  "ranAt": "2026-08-24"
+}
