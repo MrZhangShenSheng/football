@@ -29,6 +29,7 @@ API_BASE = "https://webapi.sporttery.cn/gateway/uniform/football"
 URL = API_BASE + "/getMatchCalculatorV1.qry"
 OUT = ROOT / "engine" / "cache" / "sporttery_matches.json"
 CACHE_DIR = ROOT / "engine" / "cache"
+CRS_OTHER = {"s1sh": "胜其他", "s1sd": "平其他", "s1sa": "负其他"}
 def cmd_insight(mid: str) -> None:
     """zqdz 单场情报：伤停+近10场+即时排名+H2H+射手 → engine/cache/sporttery_insight_{matchId}.json（精简字段落盘）。"""
     q = f"sportteryMatchId={mid}"
@@ -298,8 +299,57 @@ def cmd_results(d1: str, d2: str | None) -> None:
         log("sporttery", f"  {m['code']} {m['league']} {m['home']} {m['score'] or '未开'} {m['away']}")
 
 
+def extract_odds(m: dict) -> dict:
+    """subMatch → 规范赔率 dict。crs key: s01s00→'1:0'，s1sh→'胜其他'；f 后缀字段丢弃。开发者 sszhang"""
+    def slim(play: dict | None, mapper=None) -> dict:
+        out = {}
+        for k, v in (play or {}).items():
+            if k.endswith("f") or k in ("goalLine", "goalLineValue", "updateDate", "updateTime"):
+                continue
+            try:
+                out[mapper(k) if mapper else k] = float(v)
+            except (TypeError, ValueError):
+                continue
+        return out
+
+    def crs_key(raw: str) -> str:
+        if raw in CRS_OTHER:
+            return CRS_OTHER[raw]
+        return f"{int(raw[1:3])}:{int(raw[4:6])}"          # s01s00 → 1:0
+
+    crs_raw = m.get("crs") or {}
+    return {
+        "matchNumStr": m.get("matchNumStr"), "league": m.get("leagueAbbName"),
+        "home": m.get("homeTeamAbbName"), "away": m.get("awayTeamAbbName"),
+        "matchTime": m.get("matchTime"), "sellStatus": m.get("sellStatus"),
+        "had": slim(m.get("had")), "crs": slim(crs_raw, crs_key), "ttg": slim(m.get("ttg")),
+        "oddsUpdatedAt": f"{crs_raw.get('updateDate','')} {crs_raw.get('updateTime','')}".strip(),
+    }
+
+
+def cmd_dump_odds(outdir: str = "engine/cache/score_odds") -> str:
+    """拉当轮全场次赔率存档（had/crs/ttg 全玩法）。返回落盘路径。"""
+    data = fetch()                                        # 复用现有 fetch()
+    days = []
+    for day in data.get("value", {}).get("matchInfoList", []):
+        days.append({"businessDate": day.get("businessDate"),
+                     "matches": [extract_odds(m) for m in day.get("subMatchList", [])]})
+    out = {"fetchedAt": str(date.today()), "source": "sporttery getMatchCalculatorV1",
+           "matchDays": days}
+    Path(outdir).mkdir(parents=True, exist_ok=True)
+    path = f"{outdir}/{date.today()}.json"
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(out, f, ensure_ascii=False, indent=1)
+    n = sum(len(d["matches"]) for d in days)
+    log("sporttery", f"[dump-odds] {n} 场存档 → {path}")
+    return path
+
+
 def main() -> None:
     args = sys.argv[1:]
+    if args and args[0] == "dump-odds":
+        cmd_dump_odds()
+        return
     if args and args[0] == "league-results":
         cmd_league_results(args[1], args[2] if len(args) > 2 else None)
         return
