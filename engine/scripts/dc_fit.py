@@ -54,8 +54,12 @@ def load_matches(league: str, seasons: list[str]) -> list[dict]:
                 continue
             try:
                 d = datetime.strptime(m["date"], "%d/%m/%Y").date()
+                hxg = m.get("hxg")
+                axg = m.get("axg")
                 matches.append({"date": d, "home": m["home"], "away": m["away"],
-                                "hg": int(m["fthg"]), "ag": int(m["ftag"])})
+                                "hg": int(m["fthg"]), "ag": int(m["ftag"]),
+                                "hxg": float(hxg) if hxg is not None else None,
+                                "axg": float(axg) if axg is not None else None})
             except (ValueError, TypeError):
                 continue
     matches.sort(key=lambda m: m["date"])
@@ -93,7 +97,7 @@ def dc_tau(x: int, y: int, lh: float, la: float, rho: float) -> float:
     return 1.0
 
 
-def make_neg_ll(matches, teams, idx, weights, ref_date):
+def make_neg_ll(matches, teams, idx, weights, ref_date, use_xg=False):
     n = len(teams)
 
     def neg_ll(params):
@@ -104,12 +108,19 @@ def make_neg_ll(matches, teams, idx, weights, ref_date):
         for m, w in zip(matches, weights):
             lh = math.exp(attack[idx[m["home"]]] + defense[idx[m["away"]]] + home_adv)
             la = math.exp(attack[idx[m["away"]]] + defense[idx[m["home"]]])
-            x, y = m["hg"], m["ag"]
-            tau = dc_tau(x, y, lh, la, rho)
+            # rho 修正始终按实际比分格子（rho 修的是 0-0/1-1 实际低分相关性，不可按 xG 算）
+            tau = dc_tau(m["hg"], m["ag"], lh, la, rho)
             if tau <= 0:
                 tau = 1e-10
-            ll = (math.log(tau) + x * math.log(lh) - lh - math.lgamma(x + 1)
-                  + y * math.log(la) - la - math.lgamma(y + 1))
+            if use_xg:
+                # xG 作连续泊松软观测（期望进球速率）；lgamma 不依赖参数故省略，缺 xG 则 fallback 实际进球
+                xo = m["hxg"] if m.get("hxg") is not None else float(m["hg"])
+                yo = m["axg"] if m.get("axg") is not None else float(m["ag"])
+                ll = math.log(tau) + xo * math.log(lh) - lh + yo * math.log(la) - la
+            else:
+                x, y = m["hg"], m["ag"]
+                ll = (math.log(tau) + x * math.log(lh) - lh - math.lgamma(x + 1)
+                      + y * math.log(la) - la - math.lgamma(y + 1))
             total += w * ll
         # 软约束：sum(attack)=sum(defense)=0
         total -= 10.0 * (attack.sum() ** 2 + defense.sum() ** 2)
@@ -118,7 +129,7 @@ def make_neg_ll(matches, teams, idx, weights, ref_date):
     return neg_ll
 
 
-def fit(matches: list[dict], xi: float):
+def fit(matches: list[dict], xi: float, use_xg: bool = False):
     teams = sorted({m["home"] for m in matches} | {m["away"] for m in matches})
     idx = {t: i for i, t in enumerate(teams)}
     n = len(teams)
@@ -132,10 +143,13 @@ def fit(matches: list[dict], xi: float):
     ga = {t: 0.0 for t in teams}
     wsum = {t: 0.0 for t in teams}
     for m, w in zip(matches, weights):
-        gf[m["home"]] += w * m["hg"]
-        gf[m["away"]] += w * m["ag"]
-        ga[m["home"]] += w * m["ag"]
-        ga[m["away"]] += w * m["hg"]
+        # xG 模式用期望进球初始化（更稳的进球能力代理），缺 xG 则 fallback 实际进球
+        gh = m["hxg"] if (use_xg and m.get("hxg") is not None) else float(m["hg"])
+        gam = m["axg"] if (use_xg and m.get("axg") is not None) else float(m["ag"])
+        gf[m["home"]] += w * gh
+        gf[m["away"]] += w * gam
+        ga[m["home"]] += w * gam
+        ga[m["away"]] += w * gh
         wsum[m["home"]] += w
         wsum[m["away"]] += w
     lg = sum(w for _, w in zip(matches, weights)) and math.log(
@@ -146,7 +160,7 @@ def fit(matches: list[dict], xi: float):
     params0[:n] -= params0[:n].mean()
     params0[n:2 * n] -= params0[n:2 * n].mean()
 
-    neg_ll = make_neg_ll(matches, teams, idx, weights, ref)
+    neg_ll = make_neg_ll(matches, teams, idx, weights, ref, use_xg)
     bounds = [(None, None)] * (2 * n) + [(0.0, 0.8), (-0.2, 0.1)]
     res = minimize(neg_ll, params0, method="L-BFGS-B", bounds=bounds,
                    options={"maxiter": 500, "maxfun": 20000})

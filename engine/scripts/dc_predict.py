@@ -99,11 +99,20 @@ def hafu_approx(lh: float, la: float) -> dict[str, float]:
     return {k: v / total for k, v in out.items()}
 
 
-def fuse(p_dc: list[float], p_mkt: list[float], a: float, b: float) -> list[float]:
-    """对数意见池融合：p ∝ p_dc^a' · p_mkt^b'（a',b' 归一化，保证一致不变性）。"""
+def fuse(p_dc: list[float], p_mkt: list[float], a: float, b: float,
+         elo_diff: float | None = None, c: float = 0.0) -> list[float]:
+    """对数意见池融合：p ∝ p_dc^a' · p_mkt^b'（a',b' 归一化，保证一致不变性）。
+
+    可选 Elo 修正（elo_diff/c 非 None/0）：在 log 空间给主胜加偏置、客胜减等量偏置、
+    平局不修——主队实力强(elo_diff>0)抬主胜压客胜。softmax 归一保证三向和=1。
+    """
     s = a + b
     a, b = a / s, b / s
     z = [a * math.log(max(p, 1e-12)) + b * math.log(max(m, 1e-12)) for p, m in zip(p_dc, p_mkt)]
+    if elo_diff is not None and c != 0.0:
+        adj = c * (elo_diff / 100.0)
+        z[0] += adj
+        z[2] -= adj
     m = max(z)
     e = [math.exp(v - m) for v in z]
     t = sum(e)
