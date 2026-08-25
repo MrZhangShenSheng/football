@@ -26,17 +26,33 @@ def test_corpus_build_real(tmp_path):
 
 
 def test_corpus_round_sort_numeric(tmp_path, monkeypatch):
-    """轮次排序：-r10 须排在 -r2 之后（字典序 r10<r2 是坑），后写覆盖以数值轮次为准。"""
+    """r 快照间排序：-r10 须排在 -r2 之后（字典序 r10<r2 是坑），同 key 后写覆盖以数值轮次为准。
+    （主文件 vs r 快照的覆盖方向另见 test_corpus_main_file_overrides_r_snapshots。）"""
     import corpus
     monkeypatch.setattr(corpus, "RESULTS_DIR", tmp_path)
     monkeypatch.setattr(corpus, "OUT", tmp_path / "corpus.json")
     rec = {"code": "001", "date": "2026-08-22", "pick": "主胜", "p_final": 0.5}
-    for stem in ("2026-08-22", "2026-08-22-r2", "2026-08-22-r10"):
+    for stem in ("2026-08-22-r2", "2026-08-22-r10"):
         (tmp_path / f"{stem}.json").write_text(
             json.dumps({"records": [dict(rec, match=stem)]}, ensure_ascii=False), encoding="utf-8")
     c = build()
     assert c["n_total"] == 1  # 同 (date, code) 去重
-    assert c["records"][0]["match"] == "2026-08-22-r10"  # 最新轮胜出
+    assert c["records"][0]["match"] == "2026-08-22-r10"  # 快照间最新轮胜出
+
+
+def test_corpus_main_file_overrides_r_snapshots(tmp_path, monkeypatch):
+    """主文件（无后缀=终审+回填结算版）必须最后读覆盖 r 快照——修复前 r3 旧快照
+    反向顶掉主文件（2026-08-22 主 9 场在语料中 0 条的根因）。"""
+    import corpus
+    monkeypatch.setattr(corpus, "RESULTS_DIR", tmp_path)
+    monkeypatch.setattr(corpus, "OUT", tmp_path / "corpus.json")
+    rec = {"code": "001", "date": "2026-08-22", "pick": "主胜", "p_final": 0.5}
+    for stem in ("2026-08-22-r3", "2026-08-22", "2026-08-22-r1"):
+        (tmp_path / f"{stem}.json").write_text(
+            json.dumps({"records": [dict(rec, match=stem)]}, ensure_ascii=False), encoding="utf-8")
+    c = build()
+    assert c["n_total"] == 1
+    assert c["records"][0]["match"] == "2026-08-22"  # 终审版胜出，非旧快照
 
 
 def test_load_local_matches_japan():

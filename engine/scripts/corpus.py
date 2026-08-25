@@ -27,8 +27,9 @@ _ROUND_SUFFIX = re.compile(r"^(.+)-(?:r|v)(\d+)$")
 
 
 def round_sort_key(p: Path) -> tuple[str, int]:
+    # 主文件（无 -rN 后缀 = 终审+回填结算版）排最后：后写覆盖使其胜出一切 r 快照
     m = _ROUND_SUFFIX.match(p.stem)
-    return (m.group(1), int(m.group(2))) if m else (p.stem, 0)
+    return (m.group(1), int(m.group(2))) if m else (p.stem, 999)
 
 # 门槛常量（与设计文档 §四 对齐；calibrate/ablate 复用 import）
 CALIBRATE_MIN_N = 100
