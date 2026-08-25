@@ -1,32 +1,35 @@
 {
  "generatedAt": "2026-08-25",
- "n_total": 143,
- "n_rounds": 6,
+ "n_total": 163,
+ "n_rounds": 8,
  "readiness": {
   "n_result": 130,
   "n_clv": 7,
-  "n_pfinal": 105,
+  "n_pfinal": 125,
   "calibrateReady": true,
   "calibrateGap": 0,
   "ablateReady": true,
   "by_league": {
    "意甲": 20,
-   "西甲": 17,
+   "西甲": 19,
    "英超": 16,
    "瑞超": 10,
    "葡超": 10,
    "法甲": 9,
+   "韩职": 9,
    "荷甲": 9,
    "日职": 8,
    "欧罗巴": 6,
+   "欧冠": 6,
+   "沙职": 5,
    "法乙": 4,
-   "沙职": 4,
-   "韩职": 4,
    "德国杯": 4,
    "沙特联": 3,
    "芬超": 3,
    "美职": 3,
    "巴甲": 3,
+   "欧冠资格赛": 3,
+   "英联赛杯": 3,
    "荷乙": 2,
    "日乙": 2,
    "德超杯": 2,
@@ -35,10 +38,10 @@
    "英冠": 1
   },
   "by_star": {
-   "1": 13,
-   "2": 57,
-   "3": 31,
-   "4": 17,
+   "1": 20,
+   "2": 66,
+   "3": 33,
+   "4": 19,
    "—": 2,
    "★★": 3
   }
@@ -3929,6 +3932,561 @@
    "directionHit": true,
    "scoreHit": true,
    "clv": null
+  },
+  {
+   "date": "2026-08-25",
+   "code": "周三001",
+   "league": "韩职",
+   "match": "大田市民 vs 蔚山现代",
+   "stars": 2,
+   "grade": 4,
+   "pick": "避开",
+   "play": null,
+   "odds": 2.09,
+   "p_final": [
+    0.497,
+    0.236,
+    0.267
+   ],
+   "ev": 0.009,
+   "in_plan": null,
+   "chain": [
+    "单锚×0.97"
+   ],
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_note": null,
+   "round": "2026-08-25-r1"
+  },
+  {
+   "date": "2026-08-25",
+   "code": "周三002",
+   "league": "韩职",
+   "match": "安养FC vs 仁川联",
+   "stars": 2,
+   "grade": 4,
+   "pick": "客胜",
+   "play": "HAD",
+   "odds": 2.16,
+   "p_final": [
+    0.254,
+    0.275,
+    0.441
+   ],
+   "ev": -0.05,
+   "in_plan": null,
+   "chain": [
+    "单锚×0.97"
+   ],
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_note": null,
+   "round": "2026-08-25"
+  },
+  {
+   "date": "2026-08-25",
+   "code": "周三002",
+   "league": "韩职",
+   "match": "安养FC vs 仁川联",
+   "stars": 2,
+   "grade": 4,
+   "pick": "0:0",
+   "play": "CRS",
+   "odds": 10.0,
+   "p_final": [
+    0.262,
+    0.283,
+    0.455
+   ],
+   "ev": 0.172,
+   "in_plan": "尾巴",
+   "chain": [
+    "平局×1.15",
+    "单锚×0.97"
+   ],
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_note": null,
+   "round": "2026-08-25-r1"
+  },
+  {
+   "date": "2026-08-25",
+   "code": "周三005",
+   "league": "欧冠",
+   "match": "雅典AEK vs 索列夫",
+   "stars": 3,
+   "grade": 3,
+   "pick": "主胜",
+   "play": "HAD",
+   "odds": 1.42,
+   "p_final": [
+    0.557,
+    0.226,
+    0.138
+   ],
+   "ev": -0.209,
+   "in_plan": "主线",
+   "chain": [
+    "首回合平保护主胜×0.92",
+    "单锚×0.97"
+   ],
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_note": null,
+   "round": "2026-08-25-r1"
+  },
+  {
+   "date": "2026-08-25",
+   "code": "周三006",
+   "league": "欧冠资格赛",
+   "match": "采列 vs 布拉迪斯",
+   "stars": 2,
+   "grade": 3,
+   "pick": "平局",
+   "play": "HAD",
+   "odds": 3.2,
+   "p_final": [
+    0.346,
+    0.349,
+    0.275
+   ],
+   "ev": 0.12,
+   "in_plan": "翻身②",
+   "chain": [
+    "生死战平×1.30",
+    "单锚×0.97"
+   ],
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_note": null,
+   "round": "2026-08-25"
+  },
+  {
+   "date": "2026-08-25",
+   "code": "周三006",
+   "league": "欧冠",
+   "match": "采列 vs 布拉迪斯",
+   "stars": 1,
+   "grade": 3,
+   "pick": "避开",
+   "play": null,
+   "odds": 2.2,
+   "p_final": [
+    0.36,
+    0.269,
+    0.31
+   ],
+   "ev": -0.208,
+   "in_plan": null,
+   "chain": [
+    "首回合平保护主胜×0.92",
+    "单锚×0.97"
+   ],
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_note": null,
+   "round": "2026-08-25-r1"
+  },
+  {
+   "date": "2026-08-25",
+   "code": "周三007",
+   "league": "欧冠资格赛",
+   "match": "维京 vs 萨迪纳摩",
+   "stars": 2,
+   "grade": 3,
+   "pick": "平局",
+   "play": "HAD",
+   "odds": 3.35,
+   "p_final": [
+    0.333,
+    0.334,
+    0.303
+   ],
+   "ev": 0.12,
+   "in_plan": "翻身①",
+   "chain": [
+    "生死战平×1.30",
+    "单锚×0.97"
+   ],
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_note": null,
+   "round": "2026-08-25"
+  },
+  {
+   "date": "2026-08-25",
+   "code": "周三007",
+   "league": "欧冠",
+   "match": "维京 vs 萨迪纳摩",
+   "stars": 1,
+   "grade": 3,
+   "pick": "避开",
+   "play": null,
+   "odds": 2.3,
+   "p_final": [
+    0.344,
+    0.257,
+    0.34
+   ],
+   "ev": -0.208,
+   "in_plan": null,
+   "chain": [
+    "首回合平保护主胜×0.92",
+    "单锚×0.97"
+   ],
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_note": null,
+   "round": "2026-08-25-r1"
+  },
+  {
+   "date": "2026-08-25",
+   "code": "周三008",
+   "league": "欧冠资格赛",
+   "match": "里昂 vs 费内巴切",
+   "stars": 2,
+   "grade": 3,
+   "pick": "平局",
+   "play": "HAD",
+   "odds": 3.35,
+   "p_final": [
+    0.41,
+    0.334,
+    0.226
+   ],
+   "ev": 0.12,
+   "in_plan": "翻身①",
+   "chain": [
+    "生死战平×1.30",
+    "单锚×0.97"
+   ],
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_note": null,
+   "round": "2026-08-25"
+  },
+  {
+   "date": "2026-08-25",
+   "code": "周三008",
+   "league": "欧冠",
+   "match": "里昂 vs 费内巴切",
+   "stars": 1,
+   "grade": 3,
+   "pick": "避开",
+   "play": null,
+   "odds": 1.87,
+   "p_final": [
+    0.423,
+    0.257,
+    0.253
+   ],
+   "ev": -0.208,
+   "in_plan": null,
+   "chain": [
+    "首回合平保护主胜×0.92",
+    "单锚×0.97"
+   ],
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_note": null,
+   "round": "2026-08-25-r1"
+  },
+  {
+   "date": "2026-08-25",
+   "code": "周三010",
+   "league": "西甲",
+   "match": "皇马 vs 皇家社会",
+   "stars": 4,
+   "grade": 4,
+   "pick": "主胜",
+   "play": "HAD",
+   "odds": 1.22,
+   "p_final": [
+    0.855,
+    0.099,
+    0.046
+   ],
+   "ev": -0.039,
+   "in_plan": "主线+尾巴(CRS 0:0)",
+   "chain": [
+    "R3强队胜×0.95",
+    "单锚×0.97"
+   ],
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_note": null,
+   "round": "2026-08-25-r1"
+  },
+  {
+   "date": "2026-08-25",
+   "code": "周二001",
+   "league": "韩职",
+   "match": "金泉尚武 vs 全北现代",
+   "stars": 2,
+   "grade": 4,
+   "pick": "客胜",
+   "play": "HAD",
+   "odds": 2.13,
+   "p_final": [
+    0.256,
+    0.273,
+    0.44
+   ],
+   "ev": -0.06,
+   "in_plan": null,
+   "chain": [
+    "单锚×0.97"
+   ],
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_note": null,
+   "round": "2026-08-25"
+  },
+  {
+   "date": "2026-08-25",
+   "code": "周二002",
+   "league": "韩职",
+   "match": "济州SK vs 浦项制铁",
+   "stars": 2,
+   "grade": 4,
+   "pick": "主胜",
+   "play": "HAD",
+   "odds": 2.18,
+   "p_final": [
+    0.443,
+    0.292,
+    0.234
+   ],
+   "ev": -0.03,
+   "in_plan": "8串B",
+   "chain": [
+    "单锚×0.97"
+   ],
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_note": null,
+   "round": "2026-08-25"
+  },
+  {
+   "date": "2026-08-25",
+   "code": "周二003",
+   "league": "沙职",
+   "match": "达曼协定 vs 利雅胜利",
+   "stars": 4,
+   "grade": 4,
+   "pick": "客胜",
+   "play": "HAD",
+   "odds": 1.15,
+   "p_final": [
+    0.041,
+    0.084,
+    0.875
+   ],
+   "ev": -0.035,
+   "in_plan": "主线+尾巴(CRS 1:1)",
+   "chain": [
+    "R3强队胜×0.95",
+    "伤停d+1主×0.97",
+    "单锚×0.97"
+   ],
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_note": null,
+   "round": "2026-08-25-r1"
+  },
+  {
+   "date": "2026-08-25",
+   "code": "周二004",
+   "league": "英联赛杯",
+   "match": "斯托克城 vs 赫尔城",
+   "stars": 1,
+   "grade": 2,
+   "pick": "避开",
+   "play": null,
+   "odds": 2.22,
+   "p_final": [
+    0.306,
+    0.277,
+    0.387
+   ],
+   "ev": -0.141,
+   "in_plan": null,
+   "chain": [
+    "单锚×0.97"
+   ],
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_note": null,
+   "round": "2026-08-25-r1"
+  },
+  {
+   "date": "2026-08-25",
+   "code": "周二005",
+   "league": "欧冠",
+   "match": "LASK林茨 vs 凯尔特人",
+   "stars": 1,
+   "grade": 3,
+   "pick": "避开",
+   "play": null,
+   "odds": 1.82,
+   "p_final": [
+    0.434,
+    0.226,
+    0.272
+   ],
+   "ev": -0.21,
+   "in_plan": null,
+   "chain": [
+    "首回合平保护主胜×0.92",
+    "单锚×0.97"
+   ],
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_note": null,
+   "round": "2026-08-25-r1"
+  },
+  {
+   "date": "2026-08-25",
+   "code": "周二006",
+   "league": "欧冠",
+   "match": "博德闪耀 vs 奈梅亨",
+   "stars": 3,
+   "grade": 3,
+   "pick": "主胜",
+   "play": "HAD",
+   "odds": 1.39,
+   "p_final": [
+    0.643,
+    0.185,
+    0.155
+   ],
+   "ev": -0.177,
+   "in_plan": null,
+   "chain": [
+    "伤停d-3客伤重主×1.04",
+    "首回合平保护主胜×0.92",
+    "单锚×0.97"
+   ],
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_note": null,
+   "round": "2026-08-25-r1"
+  },
+  {
+   "date": "2026-08-25",
+   "code": "周二007",
+   "league": "英联赛杯",
+   "match": "诺丁汉 vs 利兹联",
+   "stars": 1,
+   "grade": 2,
+   "pick": "避开",
+   "play": null,
+   "odds": 2.0,
+   "p_final": [
+    0.43,
+    0.273,
+    0.268
+   ],
+   "ev": -0.14,
+   "in_plan": null,
+   "chain": [
+    "单锚×0.97"
+   ],
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_note": null,
+   "round": "2026-08-25-r1"
+  },
+  {
+   "date": "2026-08-25",
+   "code": "周二008",
+   "league": "英联赛杯",
+   "match": "伯明翰 vs 布伦特",
+   "stars": 2,
+   "grade": 2,
+   "pick": "避开",
+   "play": null,
+   "odds": 1.62,
+   "p_final": [
+    0.207,
+    0.232,
+    0.531
+   ],
+   "ev": -0.14,
+   "in_plan": null,
+   "chain": [
+    "单锚×0.97"
+   ],
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_note": null,
+   "round": "2026-08-25-r1"
+  },
+  {
+   "date": "2026-08-25",
+   "code": "周二009",
+   "league": "西甲",
+   "match": "巴伦西亚 vs 贝蒂斯",
+   "stars": 1,
+   "grade": 3,
+   "pick": "避开",
+   "play": null,
+   "odds": 2.38,
+   "p_final": [
+    0.286,
+    0.261,
+    0.452
+   ],
+   "ev": -0.008,
+   "in_plan": null,
+   "chain": [
+    "R3强队胜×0.95",
+    "单锚×0.97"
+   ],
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_note": null,
+   "round": "2026-08-25-r1"
   }
  ],
  "plans": {
@@ -4267,6 +4825,147 @@
      "未开"
     ]
    }
+  },
+  "2026-08-25-r1:⚖️主线3串1": {
+   "plan": "⚖️主线3串1",
+   "type": "HAD 3串1",
+   "stake": "2元(2元×1倍)",
+   "legs": [
+    "周二003 HAD 客胜@1.15 p83.9% EV-3.5%",
+    "周三010 HAD 主胜@1.22 p78.8% EV-3.9%",
+    "周三005 HAD 主胜@1.42 p55.7% EV-20.9%"
+   ],
+   "odds": 1.993,
+   "p": 0.368,
+   "evEach": false,
+   "note": "回血主线（抽水内负EV为设计代价）；雅典三星单选风险已标注"
+  },
+  "2026-08-25-r1:🚀尾巴A-MIX": {
+   "plan": "🚀尾巴A-MIX",
+   "type": "CRS 3串1 ×1倍",
+   "stake": "2元(2元×1倍)",
+   "legs": [
+    "周三002 CRS 0:0@10 p_dc11.7% EV+17.2%",
+    "周二003 CRS 1:1@14 p_dc8.2% EV+14.5%",
+    "周三010 CRS 0:0@26 p_dc4.1% EV+7.0%"
+   ],
+   "odds": 3640.0,
+   "p": 0.000393,
+   "evEach": true,
+   "note": "合赔3640 中7280(<1万免税)；⚠️3腿全低分平局向同向（ρ系统性偏差风险最高形态，8-24教训），DC口径EV+43%/市场口径-49%，回填验证前×1倍慎跟；与主线票共享皇马场但玩法互斥（跨票分池合规）"
+  },
+  "2026-08-25:🛡️保底4": {
+   "plan": "🛡️保底4",
+   "type": "HAD 2串1×2注",
+   "stake": "4元(2元×2注)",
+   "legs": [
+    "周三010 HAD h主胜@1.22 × 周二003 HAD a客胜@1.15 → @1.403 p=69.0% EV-3.3%",
+    "周三010 HAD h主胜@1.22 × 周二006 HAD h主胜@1.41 → @1.720 p=50.5% EV-13.2%"
+   ],
+   "odds": [
+    1.403,
+    1.72
+   ],
+   "evEach": [
+    -0.033,
+    -0.132
+   ]
+  },
+  "2026-08-25:⚖️进阶6": {
+   "plan": "⚖️进阶6",
+   "type": "HAD 3串1×3倍",
+   "stake": "6元(2元×3倍)",
+   "legs": [
+    "周三010 h@1.22 × 周二003 a@1.15 × 周二006 h@1.41 → @1.978 p=42.6% EV-15.7% 中=11.9元"
+   ],
+   "odds": [
+    1.978
+   ],
+   "evEach": [
+    -0.157
+   ]
+  },
+  "2026-08-25:🚀翻身4": {
+   "plan": "🚀翻身4",
+   "type": "HAD 2串1×2注(生死战平局,系数8)",
+   "stake": "4元(2元×2注)",
+   "legs": [
+    "周三008 d平@3.35 × 周三007 d平@3.35 → @11.22 p=11.2% EV+25.0%",
+    "周三005 d平@3.80 × 周三006 d平@3.20 → @12.16 p=10.3% EV+24.8%"
+   ],
+   "odds": [
+    11.22,
+    12.16
+   ],
+   "evEach": [
+    0.25,
+    0.248
+   ],
+   "note": "系数8(生死战互掐平×1.30)驱动;与市场分歧6.9-7.2pp超5pp纪律线,消融验证中,最小暴露4元"
+  },
+  "2026-08-25:🎰桂林A混串": {
+   "plan": "🎰桂林A混串",
+   "type": "混合过关 TTG×CRS 2串1 ×4倍(规则修正版)",
+   "stake": "8元(2元×4倍)",
+   "legs": [
+    "周三010 皇马 TTG 2球@4.70(EV+3.9%,容错2-0/1-1/0-2三比分) × 周二003 利雅胜利 CRS 0-1@12.00(EV+2.0%,客胜方向唯一正值项) → 合赔56.4 全中p≈1.88% 中≈451元",
+    "混串规则修正(用户纠正):同场限一玩法,不同场可混玩法→皇马腿从CRS2-0(EV+2.4%容错1比分)升级TTG2球;vs CRS版EV+4.4%→+5.9%,概率1.09%→1.88%(+72%)"
+   ],
+   "odds": [
+    56.4
+   ],
+   "evEach": [
+    0.0595
+   ],
+   "note": "合规:2关≤min(TTG上限6,CRS上限4)=4 ✓;CRS版(皇马2-0×利雅0-1@96中768)保留对照,容错偏好弃用"
+  },
+  "2026-08-25:🎰桂林A4(备选)": {
+   "plan": "🎰桂林A4(备选)",
+   "type": "CRS 4串1 ×4倍(原始桂林版)",
+   "stake": "8元(2元×4倍)",
+   "legs": [
+    "周三010 皇马 2-0@8.00(EV+2.5%✅A) × 周二003 利雅 0-2@8.50(EV-6.9%❌A) × 周二006 博德 2-1@7.75(无DC⚠️B) × 周三005 AEK 1-0@6.00(无DC⚠️B) → 合赔3162 全中p≈0.015% 中≈25296元(税后22237)",
+    "彩票定位:33倍奖/73分之一概率,期望亏4.12元=梦想税;合规腿仅2/4"
+   ],
+   "odds": [
+    3162
+   ],
+   "evEach": [
+    -0.515
+   ],
+   "note": "默认不采用;与A2合规版供比较:A2 EV+4.4%正期望 vs A4 EV-51.5%;数学A2完胜,A4价值在娱乐性"
+  },
+  "2026-08-25:🎯HAFU补扫": {
+   "plan": "🎯HAFU补扫",
+   "type": "HAFU 单关 ×1注(终审补扫)",
+   "stake": "2元(2元×1倍)",
+   "legs": [
+    "周二001 金泉尚武 vs 全北现代 HAFU dd(半平/全平)@4.75 p=22.2% EV+5.5% 分歧+4.7pp → 2元 中9.5元",
+    "依据:金泉主场1胜7平3负平局率70%(硬数据)+DC hafu dd 22.2%;上午'平局暗线'的正确变现工具(HAD平@3.15 EV-14%不合规);与上轮验证打法同款"
+   ],
+   "odds": [
+    4.75
+   ],
+   "evEach": [
+    0.055
+   ],
+   "note": "终审补扫TTG56项+HAFU63项共9正值项,仅收1:TTG0球4项(4/4同向偏差疑DC低分ρ修正系统性偏高,8-24已败一例)不收/巴伦da(用被否决DC)不收/济州hh(与8串B强相关)不收;总仓位24+2=26元"
+  },
+  "2026-08-25:🎰8串B": {
+   "plan": "🎰8串B",
+   "type": "HAD 8串1 ×1倍(广西买法合8串)",
+   "stake": "2元(2元×1倍)",
+   "legs": [
+    "皇马h@1.22 × 利雅胜利a@1.15 × 博德h@1.41 × AEK h@1.42 × 济州h@2.18 × 里昂d@3.35 × 维京d@3.35 × 采列d@3.20 → 合赔219.9 全中p≈0.405% 中≈439.8元",
+    "3平局腿=系数8驱动;系数8成立EV-11%/证伪EV-55%;⚠️里昂/维京/采列平局与翻身档重复押注,纯平局敞口=翻身4元(8串B的2元是全中敞口非纯平局)"
+   ],
+   "odds": [
+    219.9
+   ],
+   "evEach": [
+    -0.109
+   ],
+   "note": "CRS池4串上限+禁混串→8串1唯一合规池=HAD;与翻身档平局敞口叠加,系数8总敞口6元"
   }
  }
 }

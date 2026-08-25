@@ -64,9 +64,17 @@ def _fallback_upset(odds_day: dict) -> list:
     return picked
 
 def _zh_map() -> dict:
-    """_aliases.json → {中文队名: 规范tid}（common.load_aliases 平铺口径）。"""
-    return {srcs.get("zh"): tid for tid, srcs in load_aliases().items()
-            if isinstance(srcs, dict) and srcs.get("zh")}
+    """_aliases.json → {中文队名: 规范tid}（common.load_aliases 平铺口径）。
+    variants 一并展开（2026-08-25 修复：体彩票面译名'利雅胜利'在 variants 里但主名映射不命中）。"""
+    out = {}
+    for tid, srcs in load_aliases().items():
+        if not isinstance(srcs, dict):
+            continue
+        for v in srcs.get("variants") or []:
+            out[v] = tid
+        if srcs.get("zh"):
+            out[srcs["zh"]] = tid   # 主名后写，冲突时优先
+    return out
 
 
 def _hafu_odds() -> dict:
@@ -78,8 +86,9 @@ def _hafu_odds() -> dict:
         return out
     for m in d.get("matches") or []:
         hf = m.get("hafu")
-        if hf and m.get("matchNumStr"):
-            out[m["matchNumStr"]] = {k: float(v) for k, v in hf.items()}
+        mid = m.get("matchNumStr") or m.get("code")  # 存档键 matchNumStr / 实时文件键 code
+        if hf and mid:
+            out[mid] = {k: float(v) for k, v in hf.items()}
     return out
 
 
@@ -327,7 +336,9 @@ def main() -> None:
     if not budget_gate(spend):
         print(f"[boldplay] 月封顶触及: 本月已花 {spend:.0f}/{MONTHLY_CAP:.0f} 元, 本轮停")
         return
-    out = build_ticket(odds["matchDays"][-1], table, seq)
+    # 当轮=全部在售比赛日合并（2026-08-25 修复：原 matchDays[-1] 漏掉当晚场次）
+    all_days = {"matches": [m for d in odds.get("matchDays", []) for m in d.get("matches", [])]}
+    out = build_ticket(all_days, table, seq)
     out["ranAt"] = str(date.today())
     path = f"data/03-predictions/{date.today()}-boldplay.json"
     with open(path, "w", encoding="utf-8") as f:
