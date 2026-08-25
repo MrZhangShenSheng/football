@@ -1,0 +1,125 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>实票账本设计（tickets ledger）</title>
+<style>
+  :root{--ink:#1c2733;--sub:#5b6b7a;--line:#d8e0e8;--bg:#f6f8fa;--accent:#0f6b4f;--accent2:#b4540a;--bad:#a12734;--good:#0f6b4f;--card:#fff}
+  @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#dbe4ec;--sub:#8fa1b3;--line:#2c3947;--bg:#101822;--accent:#4fc49b;--accent2:#e8a04c;--bad:#e2717e;--good:#4fc49b;--card:#18222e}}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.75 "Segoe UI","Microsoft YaHei",sans-serif}
+  main{max-width:920px;margin:0 auto;padding:32px 28px 72px}
+  h1{font-size:24px;margin:0 0 4px}h2{font-size:18px;margin:40px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+  .sub{color:var(--sub);font-size:13px}
+  code,pre{font-family:Consolas,"JetBrains Mono",monospace;font-size:13px}
+  code{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+  pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;overflow-x:auto;line-height:1.55}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:14px;background:var(--card)}
+  th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+  th{background:var(--bg);font-weight:600}
+  .good{color:var(--good);font-weight:600}.bad{color:var(--bad);font-weight:600}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin:14px 0}
+  .icon{width:18px;height:18px;vertical-align:-4px;margin-right:6px;color:var(--accent)}
+</head>
+<body><main>
+<h1><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1a2 2 0 0 0 0 4v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1a2 2 0 0 0 0-4V9z"/><path d="M13 7v10" stroke-dasharray="2 3"/></svg>实票账本设计（tickets ledger）</h1>
+<p class="sub">2026-08-25 · 作者 sszhang · 状态：设计已确认，待实施 · 前置：boldplay 形状学（docs/2026-08-24-boldplay-design.html）</p>
+
+<h2>1. 问题</h2>
+<p>实票（真实购买）与方案推荐（推演）无结构化区分：实票信息散落在 <code>data/02-results/</code> 日期 JSON 的自由文本 note/stake 字段里，结算字段 8-24 才引入，历史票要靠人读 JSON 拼凑。8-24 账面"按v1含009出票"与"r2四注结算+13"两处记录互相矛盾，且 8-23 票的 -1.6 结算账面从未记录——票面事实不冻结，两天后就拼不回来。</p>
+
+<h2>2. 底账规则（已确认）</h2>
+<div class="card">
+<b>实票 = 有结算记录的票；其余全是方案推演。</b>每轮出票强制登记结算，不靠记忆。回灌后的完整底账（三张票，同形状 4串11 容错，22元/张）：
+<table>
+<tr><th>票</th><th>出票</th><th>四关</th><th>结算</th><th>净利</th></tr>
+<tr><td>T001</td><td>8-23</td><td>厄dd@6.0✅ / 帕尔马TTG0球@7.50❌ / 町田CRS2-0@9.0❌(赛果3-1) / 巴萨aa@1.70✅</td><td>中2关，回1注2串1（厄×萨=10.2×2元=20.4）</td><td class="bad">-1.6</td></tr>
+<tr><td>T002</td><td>8-24</td><td>009 CRS2-0@6.50✅ / 008主@4.05❌ / 004 TTG0球@10.50✅ / 002 CRS1-1@9.00❌</td><td>中2关，回1注2串1@68.25×2元=136.5</td><td class="good">+114.5</td></tr>
+<tr><td>T003</td><td>8-24</td><td>009✅ / 008❌ / 004✅ / 002 HAFU平/平@8.35❌</td><td>同上</td><td class="good">+114.5</td></tr>
+</table>
+<p><b>合计：本金66元，派彩293.4，净+227.4</b>（与 8-24 账面 +229 及 8-23 票 -1.6 对平）。8-24 搏奖(+13)/平衡(-8)确认未购，归方案侧，作纪律对照组。</p>
+</div>
+
+<h2>3. 分析目标（三层，分先后）</h2>
+<table>
+<tr><th>层</th><th>回答什么</th><th>数据源</th></tr>
+<tr><td>A 账本（地基）</td><td>到底赚没赚、靠什么赚（资金曲线/玩法分解）</td><td>tickets.json</td></tr>
+<tr><td>B 纪律对照</td><td>临场干预（改单/撤单）是正贡献还是负贡献</td><td>tickets.json × corpus.json 同日方案虚拟结算</td></tr>
+<tr><td>C 策略归因</td><td>哪个方案档位/容错形状在贡献利润，反哺出票策略</td><td>接 boldplay 形状学</td></tr>
+</table>
+
+<h2>4. 架构：独立账本 + 日期指针 + 回填结算钩子</h2>
+<p>票是顶层实体，<b>不按日期切分</b>（票生命周期 = 出票→跨日存续→结算，与赛日不同构）。新增 <code>data/06-tickets/</code> 目录，日期 JSON 只留一行指针（守检索铁律8：索引只做路由）。</p>
+<pre>{
+  "tickets": [{
+    "id": "T002",
+    "source": "manual",                  // manual=自组建档 | promoted=方案转正
+    "backfilled": true,                  // 历史回灌标记（出票时间推定）
+    "placedAt": "2026-08-24 20:10",      // 出票时间戳（票面事实冻结点）
+    "matchDays": ["2026-08-24"],         // 跨日票为多赛日
+    "shape": "4串11容错",                 // 形状名，接 boldplay 形状学
+    "shapeDetail": "6×2串1+4×3串1+1×4串1",
+    "stake": 22, "unitStake": 2, "units": 11,
+    "legs": [{
+      "code": "周一009", "league": "沙特",
+      "market": "CRS",                   // HAD/CRS/TTG/HAFU
+      "pick": "2-0", "odds": 6.5,        // 出票赔率（冻结，撤单不改）
+      "revoked": false,
+      "result": "hit",                   // pending → hit/miss
+      "actual": "2-0"
+    }],
+    "settled": {
+      "status": "settled",               // pending | settled
+      "hits": 2, "payout": 136.5, "net": 114.5,
+      "settledAt": "2026-08-25 10:00"
+    },
+    "budget": {"redline": 30}
+  }],
+  "meta": {"lastUpdated": "...", "totalStake": 66, "totalNet": 227.4}
+}</pre>
+<p>关键设计：</p>
+<ul>
+<li><b>派彩按形状算</b>，不是简单倍乘——4串11 中2关只回 2串1 一注（"误写@3.52落袋7.04"教训的根治）。</li>
+<li><b>撤销/改单腿</b>：<code>revoked: true</code> 标记，票面保留原样，纪律对照靠它。</li>
+<li><b>日期JSON指针</b>：<code>data/02-results/2026-08-24.json</code> 加 <code>"tickets": ["T002","T003"]</code>。</li>
+</ul>
+
+<h2>5. 登记与结算流程</h2>
+<p><b>入口① 方案转正</b>（预测轮）：用户一句"买了搏奖+平衡"/"买了r2版但去掉009"——从当轮方案复制 legs、冻结赔率、打时间戳、写账本、日期 JSON 挂指针、git commit（git 历史 = 出票凭证）。改单：复制票面 + 腿标 <code>revoked</code>。</p>
+<p><b>入口② 手动建档</b>（自组票）：用户报票面（场次/玩法/选项/赔率/倍数），从零建档。历史回灌走此通道。</p>
+<p><b>结算链</b>：挂现有"回填赛果"命令链尾部加一步"票务结算"：</p>
+<pre>查赛果 → 回填命中率 → fd收盘 → CLV → 【新增:票务结算】→ corpus → learn → dc_fit → 复盘 → commit</pre>
+<p>逻辑：扫账本 <code>status: pending</code> 票 → 每腿按场次编号对赛果 → 更新 result → 全腿终态后按形状算派彩（形状计算器：4串11 展开为 11 注组合，中 X 关回对应注）→ 写 settled → 重刷 tickets.html → commit。</p>
+<p>CLAUDE.md 协议表新增触发词：<b>"我买了/出票了"→ 转正或建档 + commit</b>。</p>
+
+<h2>6. 报告：data/06-tickets/tickets.html（结算时重刷）</h2>
+<table>
+<tr><th>区块</th><th>内容</th></tr>
+<tr><td>① 资金曲线</td><td>SVG 折线：X=票（按结算时序），Y=累计净利；叠加当期红线参考线；逐票生长</td></tr>
+<tr><td>② 票务清单表</td><td>每票：ID/形状/出票日/跨日标记/本金/命中注÷总注/派彩/净利/ROI/来源；撤销腿灰显+删除线</td></tr>
+<tr><td>③ 玩法分解</td><td>SVG 条形图：按 HAD/CRS/TTG/HAFU 聚合盈亏。<b>归因规则</b>：串关票派彩按实际命中的注拆到腿（4串11 的 136.5 来自 CRS×TTG 2串1，本金口径各记一半）</td></tr>
+<tr><td>④ 纪律对照表</td><td>每行一个决策事件，三列：实票净利 / 不撤单净利 / 纪律代价（首例数据点：8-24 若不撤009，+13→+24，纪律代价-11）</td></tr>
+</table>
+<p>trend.html 头部加一行摘要（票数/本金/净利/ROI），保持其为模型校准主题。报告尾部附数据来源清单（铁律10）。</p>
+
+<h2>7. 边界规则</h2>
+<ul>
+<li>部分结算：跨日票腿各自更新，票级 pending 保持到全腿终态。</li>
+<li>体彩出票后不可撤单：方案层撤销只影响方案，票面事实永不改写。</li>
+<li>登记以用户宣告为准（"买了"即转正）；事后发现记错，修 tickets.json 并在 note 说明，不删 git 历史。</li>
+</ul>
+
+<h2>8. 实施顺序（一次做完，量小）</h2>
+<ol>
+<li>建 <code>data/06-tickets/tickets.json</code>，手写回灌 T001/T002/T003（不写迁移脚本——3 张票，脚本属过度设计）。</li>
+<li><code>engine/scripts/backfill.py</code> 加票务结算步骤。</li>
+<li>新建 <code>engine/scripts/ticket_report.py</code> 渲染 tickets.html（dataviz 规范配色）。</li>
+<li>CLAUDE.md 协议表 + skill/SKILL.md 加"我买了"触发词。</li>
+<li>日期 JSON（8-23/8-24）挂 tickets 指针。</li>
+<li>git commit。</li>
+</ol>
+
+<h2>9. 数据来源</h2>
+<ul>
+<li>data/02-results/2026-08-23.json（实票4串11 四关/赔率/存活注推演）</li>
+<li>data/02-results/2026-08-24.json（actualTicket 字段：T002/T003 票面与结算）</li>
+<li>data/04-summaries/corpus.json 4045行起（2026-08-22-r3:🎫用户实票条目）</li>
+<li>用户口述确认（2026-08-25）：三张实票/44元版本正确/搏奖平衡未购</li>
+</ul>
+</main></body></html>

@@ -297,6 +297,30 @@ Gate4 比分 EV   n_scanned=364；n_positive=122 但全部 n=0（极端长打×�
                 ③ 重跑 score_ev（终审裁定：消费 score_ev.json 前必须完成，否则 122 噪声被当信号）
 全量回归        pytest 75 passed；四任务审查全 Approved；终审 ready for phase-2</pre>
 
+<h2>十二、实战案例回灌（2026-08-24 实票 · 容错形状首证）</h2>
+<pre>出票结构     4串11 × 2票 = 22注 × 2元 = 44元（6×2串1 + 4×3串1 + 1×4串1）
+公共三关     009 CRS 2-0@6.50 + 008 HAD 主胜@4.05 + 004 TTG 0球@10.50
+区分关       票A=002 CRS 1-1@9.00 / 票B=002 HAFU 平平@8.35（分票消同场相关）
+赛果         009 ✅ 2-0 · 004 ✅ 0-0 · 008 ❌ 2-3 · 002 ❌ 0-2 —— 中 2 关/票
+兑付         两票各回 1 注 2串1（6.50×10.50=68.25）= 136.5×2 = 273 元，净 +229（ROI +520.5%）
+赛前定价     全亏概率 84%（五选项 p：26/16/14.6/12.9/12.5%）—— +229 属该分布的一次右尾实现</pre>
+<table>
+<thead><tr><th>形状</th><th>结构</th><th>场均比分赔率</th><th>顶部合赔</th><th>回血层</th><th>实证结果</th></tr></thead>
+<tbody>
+<tr><td>桂林 2026-06-26</td><td>比分 4串1 单选 × 25 倍</td><td>≈13.8</td><td>36,540</td><td>无（全或无）</td><td class="pos">182.7 万</td></tr>
+<tr><td>梅州 2023-02-25</td><td>比分 4串1 单选 × 20 倍</td><td>≈22.4</td><td>250,000</td><td>无（全或无）</td><td class="pos">1,000 万</td></tr>
+<tr class="tot"><td>8-24 实票（容错形状）</td><td>4串11 × 2票（公共 3 关 + 区分 1 关）</td><td>≈7.5</td><td>8,078~8,643</td><td>中 2 关回 1 注 2串1 ≈3.1 倍票面</td><td class="pos">273 元（回血层 100% 贡献）</td></tr>
+</tbody>
+</table>
+<pre>审计结论（回灌 boldplay 形状池的三条纪律）
+① 回血层实证：本次奖金 100% 由 2串1 层贡献（顶部 4串1 未触发）——容错层回血路径走通，
+   但单轮样本不构成期望证据（84% 全亏分布的一次右尾抽样，勿当形状优势）
+② 仓位超纲：44 元 = 阶梯设计 20 元/轮上限的 2.2 倍——形状可取、金额违规；
+   回灌密度计算按 20 元口径折算：+229×(20/44) ≈ +104，密度结论不受影响
+③ 形状池候选：容错形状（场均 ≈7.5 倍，牺牲顶部杠杆换中 2 关回血）列为翻身档
+   低频第三形状候选，与桂林/梅州轮换互斥；入池前置条件 = score_ev 映射修复
+   （阶段二首任务③）后对该票 5 选项回验 league_backed EV，正 EV ≥2 项才可入池</pre>
+
 <div class="src"><b>数据与案例来源</b><br>
 · 上游审计：<code>docs/2026-08-24-model-audit-design.html</code>（1055 场 walk-forward，四路验证收敛）<br>
 · 桂林案例：广西体彩 2026-07-02 官方披露（新浪新闻 sina.cn/news/detail/5316241172728905.html · 腾讯新闻 new.qq.com/rain/a/20260702V06CM900）<br>
@@ -305,5 +329,6 @@ Gate4 比分 EV   n_scanned=364；n_positive=122 但全部 n=0（极端长打×�
 · 密度数学：Dubins–Savage《How to Gamble If You Must》subfair game 的 bold play 最优性<br>
 · 本地数据：fd CSV（odds_fetch.py 可拉 8 联赛 5 季含比分）· data/02-results/league/（1,948 场）· data/04-summaries/dc_score_backtest.json（经验频率 1-1 121 场 / top1 11.47% / top3 28.91%）<br>
 · 概率带实证：本设计日即时扫描（football-data.co.uk 2425+2526 × 英西德意法，7,948 项 Pinnacle 收盘口径；深冷&lt;15% 回报率 0.681 / 均势 30-45% 1.004 / 大热&gt;60% 1.001；B365 开收移动 &gt;3% 共 1,710 场）<br>
+· 8-24 实票：data/02-results/2026-08-24.json actualTicket 字段（4串11×2 结算与 r2 终审撤销时间线）· data/04-summaries/2026-08-24-review.html（泊松尾部检验与五维复盘）<br>
 · 开发者：sszhang</div>
 </body></html>

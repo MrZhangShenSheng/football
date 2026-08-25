@@ -23,6 +23,7 @@ import requests
 from common import load_aliases, log, ROOT
 
 RESULTS_DIR = ROOT / "data" / "02-results"
+TICKETS_FILE = ROOT / "data" / "06-tickets" / "tickets.json"  # 实票账本（票务结算）
 SALES_CACHE = ROOT / "engine" / "cache" / "sporttery_matches.json"  # 在售缓存（预测 Step 1 必存）
 SCOREBOARD = "https://site.api.espn.com/apis/site/v2/sports/soccer/{}/scoreboard"
 UNAVAILABLE_MARK = "不可得"  # 双链路均无赛果时的 result 标记（重跑时会重试）
@@ -328,7 +329,105 @@ def backfill(day_limit: str | None = None) -> dict:
         if id(data) not in written and data.pop("_dirty", False):
             p.write_text(json.dumps(data, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
             written.add(id(data))
-    return {"filled": n_fill, "sporttery": n_sp, "missed": n_miss, "fixed": n_fix}
+    tick = settle_tickets(sp_cache)
+    return {"filled": n_fill, "sporttery": n_sp, "missed": n_miss, "fixed": n_fix, "tickets": tick}
+
+
+def leg_hit(leg: dict, score: tuple[int, int], half: tuple[int | None, int | None]) -> bool | None:
+    """票腿命中判定（复用 option_hit）：market 前缀 + 去'球'尾字后走同一套文本判定。"""
+    pick = str(leg.get("pick") or "").replace("球", "").strip()
+    rec = {"pick": f'{leg.get("market")} {pick}'}
+    return option_hit(rec, score[0], score[1], half[0], half[1])
+
+
+def expand_combos(n: int) -> list[tuple[int, ...]]:
+    """M串N容错形状展开：大小≥2 的腿组合各一注（4串11=6×2串1+4×3串1+1×4串1）。"""
+    from itertools import combinations
+    return [c for size in range(2, n + 1) for c in combinations(range(n), size)]
+
+
+def settle_payout(ticket: dict) -> dict:
+    """按形状算派彩：命中注=子集腿全 hit，派彩=Σ(unitStake×Π子集赔率)。
+
+    票面腿一律参与结算（体彩出票不可撤，revoked 仅作纪律对照展示）。
+    """
+    legs, unit = ticket["legs"], ticket["unitStake"]
+    payout, win_units = 0.0, 0
+    for combo in expand_combos(len(legs)):
+        if all(legs[i].get("result") == "hit" for i in combo):
+            odds = 1.0
+            for i in combo:
+                odds *= legs[i]["odds"]
+            payout += unit * odds
+            win_units += 1
+    stake = ticket["stake"]
+    return {"hits": sum(1 for l in legs if l.get("result") == "hit"),
+            "winUnits": win_units, "payout": round(payout, 2),
+            "net": round(payout - stake, 2),
+            "roi": round((payout - stake) / stake * 100, 1) if stake else None}
+
+
+def recalc_meta(data: dict) -> None:
+    """按已结算票重算账本 meta 汇总。"""
+    done = [t for t in data.get("tickets", []) if t.get("settled", {}).get("status") == "settled"]
+    data["meta"].update({
+        "totalTickets": len(data.get("tickets", [])),
+        "totalStake": sum(t["stake"] for t in done),
+        "totalPayout": round(sum(t["settled"]["payout"] for t in done), 2),
+        "totalNet": round(sum(t["settled"]["net"] for t in done), 2),
+        "lastUpdated": TODAY,
+    })
+
+
+def settle_tickets(sp_cache: dict[str, dict[str, dict]]) -> dict:
+    """票务结算（回填链尾部）：扫 pending 票 → 编号对票更新腿 → 全腿终态按形状算派彩。
+
+    腿未完赛/无半场数据（HAFU）保持 pending；票级 settled 只在全腿终态后落。
+    结算有变化时重刷 tickets.html（ticket_report 缺失不阻断回填主链）。
+    """
+    if not TICKETS_FILE.exists():
+        return {"legs": 0, "tickets": 0}
+    data = json.loads(TICKETS_FILE.read_text(encoding="utf-8"))
+    n_legs = n_tickets = 0
+    for t in data.get("tickets", []):
+        if t.get("settled", {}).get("status") != "pending":
+            continue
+        all_final = True
+        for leg in t["legs"]:
+            if leg.get("result") not in (None, "pending"):
+                continue
+            sp = None
+            for d in t["matchDays"]:  # 编号对票扫各赛日（跨日票腿分属不同销售日）
+                sp = match_sporttery(leg["code"], d, sp_cache)
+                if sp and sp.get("score"):
+                    break
+            score = parse_score(sp.get("score")) if sp else None
+            if not score:
+                all_final = False
+                continue
+            hh, ha = parse_score(sp.get("halfScore")) or (None, None)
+            hit = leg_hit(leg, score, (hh, ha))
+            if hit is None:
+                all_final = False
+                continue
+            leg["result"] = "hit" if hit else "miss"
+            leg["actual"] = sp["score"] + (f"(半{sp['halfScore']})" if sp.get("halfScore") else "")
+            n_legs += 1
+        if not all_final:
+            continue
+        t["settled"] = {"status": "settled", **settle_payout(t),
+                        "settledAt": datetime.now().strftime("%Y-%m-%d %H:%M")}
+        n_tickets += 1
+    if n_legs or n_tickets:
+        recalc_meta(data)
+        TICKETS_FILE.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        log("settle_tickets", f"票务结算 {n_tickets} 票/{n_legs} 腿")
+        try:
+            from ticket_report import render_report
+            render_report()
+        except ImportError:
+            log("settle_tickets", "ticket_report 未安装，跳过报告重刷")
+    return {"legs": n_legs, "tickets": n_tickets}
 
 
 def main() -> None:
@@ -336,7 +435,8 @@ def main() -> None:
     res = backfill(day_limit)
     log("backfill", f"回填 {res['filled']} 场（体彩对票 {res['sporttery']}）· 无匹配 {res['missed']} 场"
                    f"（体彩/ESPN 均无 → 标不可得；ESPN 缓存延迟 → 稍后重跑）"
-                   f" · 补算方向 {res['fixed']} 条（带注释 pick 旧漏判）")
+                   f" · 补算方向 {res['fixed']} 条（带注释 pick 旧漏判）"
+                   f" · 票务结算 {res['tickets']['tickets']} 票/{res['tickets']['legs']} 腿")
     log("backfill", "回填后跑 run.py corpus 刷新语料+趋势报告")
 
 

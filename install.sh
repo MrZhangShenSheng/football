@@ -49,6 +49,7 @@ echo ""
 echo "=== 安装完成 ==="
 echo "验证测试：cd $HOME_DIR/engine/scripts; python3 -m pytest ../tests -q"
 echo "开始使用：新终端里对 Claude 说'帮我预测'"
+echo "出票登记：买完票说'我买了' → 实票账本（data/06-tickets/，git 历史=出票凭证）"
 echo "日常更新：cd $HOME_DIR; ./update.sh"
 
 # 5. 知识库新鲜度摘要（与 install.ps1 对齐）
@@ -96,6 +97,17 @@ PYEOF
 else
     echo "    本地DC模型: 未发布（install 步骤4的 espn history 回填可重试）"
 fi
-# 首次跑回归验证闭环（自动回填 + 语料 + 趋势报告；换机后语料随 git 历史就位）
+# 首次跑回归验证闭环（自动回填 + 票务结算 + 语料 + 趋势报告；换机后语料/实票随 git 历史就位）
 cd "$HOME_DIR/engine/scripts" && python3 run.py verify >/dev/null 2>&1
 [ -f "$HOME_DIR/data/04-summaries/trend.html" ] && echo "    胜率趋势: data/04-summaries/trend.html 已生成（run.py verify 全链路就绪）" || echo "    胜率趋势: 生成失败（run.py verify 可重跑）"
+# 实票账本摘要（v4.10：实票随 git 历史就位）
+if [ -f "$HOME_DIR/data/06-tickets/tickets.json" ]; then
+    python3 - "$HOME_DIR/data/06-tickets/tickets.json" << 'PYEOF'
+import json, sys
+d = json.load(open(sys.argv[1], encoding="utf-8"))
+m, ts = d.get("meta", {}), d.get("tickets", [])
+n_pending = sum(1 for t in ts if t.get("settled", {}).get("status") == "pending")
+print(f"    实票账本: {len(ts)} 张（待结算 {n_pending}）· 本金 {m.get('totalStake', 0):.0f} 元"
+      f" · 净利 {m.get('totalNet', 0):+.1f} 元 → data/06-tickets/tickets.html")
+PYEOF
+fi

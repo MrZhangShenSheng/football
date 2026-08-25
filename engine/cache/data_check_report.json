@@ -1,48 +1,90 @@
 {
-  "checkedAt": "2026-08-24",
+  "checkedAt": "2026-08-25",
   "leagues": {
-    "意甲": {
-      "status": "missing"
-    },
     "沙职": {
       "status": "missing"
     },
-    "瑞超": {
+    "英联赛杯": {
+      "status": "missing"
+    },
+    "欧冠": {
       "status": "missing"
     },
     "西甲": {
       "status": "missing"
     },
-    "法乙": {
-      "status": "missing"
-    },
-    "英超": {
-      "status": "missing"
-    },
-    "葡超": {
-      "status": "missing"
-    },
-    "巴甲": {
-      "status": "missing"
-    },
-    "欧冠": {
+    "韩职": {
       "status": "missing"
     }
   },
   "missingLeagues": [
-    "意甲",
     "沙职",
-    "瑞超",
+    "英联赛杯",
+    "欧冠",
     "西甲",
-    "法乙",
-    "英超",
-    "葡超",
-    "巴甲",
-    "欧冠"
+    "韩职"
   ],
   "staleLeagues": [],
-  "missingAlias": [],
-  "notReadyTeams": [],
+  "missingAlias": [
+    {
+      "team": "达曼协定",
+      "league": "沙职",
+      "match": "达曼协定 vs 利雅胜利"
+    },
+    {
+      "team": "斯托克城",
+      "league": "英联赛杯",
+      "match": "斯托克城 vs 赫尔城"
+    },
+    {
+      "team": "伯明翰",
+      "league": "英联赛杯",
+      "match": "伯明翰 vs 布伦特"
+    },
+    {
+      "team": "雅典AEK",
+      "league": "欧冠",
+      "match": "雅典AEK vs 索列夫"
+    },
+    {
+      "team": "索列夫",
+      "league": "欧冠",
+      "match": "雅典AEK vs 索列夫"
+    },
+    {
+      "team": "采列",
+      "league": "欧冠",
+      "match": "采列 vs 布拉迪斯"
+    },
+    {
+      "team": "布拉迪斯",
+      "league": "欧冠",
+      "match": "采列 vs 布拉迪斯"
+    },
+    {
+      "team": "维京",
+      "league": "欧冠",
+      "match": "维京 vs 萨迪纳摩"
+    },
+    {
+      "team": "萨迪纳摩",
+      "league": "欧冠",
+      "match": "维京 vs 萨迪纳摩"
+    },
+    {
+      "team": "费内巴切",
+      "league": "欧冠",
+      "match": "里昂 vs 费内巴切"
+    }
+  ],
+  "notReadyTeams": [
+    {
+      "team": "利雅胜利",
+      "teamId": "al-nassr",
+      "league": "saudi",
+      "status": "missing"
+    }
+  ],
   "readyCount": {
     "leagues": 0,
     "teamsKnown": 233

@@ -6,7 +6,8 @@
 |:---|:---|:---|
 | **"帮我预测"** | run.py update（刷数据+联赛画像）→ **data_check 体检+冷启动初始化（缺联赛/球队画像先补）** → dc_fit --auto → 体彩采集 → 本地检索+ESPN 实时积分榜 → DC 融合 → 战意状态机 → 分析评级 → 报告+预测JSON 归档 → git commit | 摘要卡（方案/赔率/仓位） |
 | **"再跑一遍"** | 体彩赔率复扫 → 信息边际三定律判定 → 增量更新报告 → git commit | 终审结论（维持/修订） |
-| **"回填赛果"** | 查赛果 → 回填命中率 → fd 刷收盘价 → 算 CLV → **run.py corpus（语料+就绪度+趋势报告）→ run.py learn（非fd联赛增量拟合+版本发布）** → dc_fit 重拟合 → 复盘报告归档 → git commit | 复盘摘要（方向/比分/CLV/教训+学习就绪度）+ trend.html 胜率趋势（4折线+校准图+方案准确率） |
+| **"回填赛果"** | 查赛果 → 回填命中率 → fd 刷收盘价 → 算 CLV → **票务结算（backfill.settle_tickets：pending票对赛果→按形状算派彩→重刷 tickets.html）** → **run.py corpus（语料+就绪度+趋势报告）→ run.py learn（非fd联赛增量拟合+版本发布）** → dc_fit 重拟合 → 复盘报告归档 → git commit | 复盘摘要（方向/比分/CLV/教训+学习就绪度）+ tickets.html 实票账本（资金曲线/玩法分解）+ trend.html 胜率趋势（4折线+校准图+方案准确率） |
+| **"我买了/出票了"** | 方案转正（复制当轮方案legs冻结赔率+时间戳）或手动建档（自组票报票面）→ 写 `data/06-tickets/tickets.json` + 日期JSON挂指针 → git commit（**git 历史=出票凭证**；体彩出票后票面不可改写） | 实票登记确认 |
 | **"XX队近况？"** | 本地知识库检索（00-leagues/01-teams/04-summaries）→ 直接回答 | 纯文本答案 |
 | **"跑下回测"** | run.py backtest → 与市场基线对比 | RPS 对照表 |
 
@@ -25,9 +26,10 @@
 - `data/03-predictions/`: 预测报告 HTML（仅用户输出用 HTML+SVG）
 - `data/04-summaries/`: 五维统计 `_stats.json` + 复盘 HTML
 - `data/05-trends/`: 趋势发现 JSON
-- `engine/scripts/`: Python 脚本（dc_fit/dc_predict/elo_fetch/xg_fetch/odds_fetch/backtest/calibrate/build_index/band_calibration 概率带校准/score_ev 比分EV审计/live_odds_probe 临场价源探测/boldplay 阶梯出票卡(三档/限额反算/月封顶240,settle 回填判定)）
+- `data/06-tickets/`: 实票账本 `tickets.json`（票=顶层实体不按日切：形状/腿/出票赔率冻结/结算/纪律事件；**实票=有结算记录的票，其余全是方案推演**；派彩按形状算，4串11中2关只回1注2串1）+ `tickets.html` 报告（结算时重刷：资金曲线/票务清单/玩法分解/纪律对照；设计=docs/2026-08-25-tickets-design.html）
+- `engine/scripts/`: Python 脚本（dc_fit/dc_predict/elo_fetch/xg_fetch/odds_fetch/backtest/calibrate/build_index/band_calibration 概率带校准/score_ev 比分EV审计/live_odds_probe 临场价源探测/boldplay 阶梯出票卡生成+settle推演结算/ticket_report 实票报告）
 - `engine/cache/`: DC 参数缓存（{league}_dc.json）+ `models/` 版本化存档（{league}_dc_v{n}.json+.meta+latest.json，holdout 门槛发布）+ fusion.json 融合系数 + `score_odds/` 体彩全玩法赔率日存档 + live_odds_feasibility.json 临场价源结论（2026-08-24 探测：pinnacle 直连被墙/the-odds-api 需 key → 层1 降级上轮收盘先验）
-- `skill/SKILL.md`: 预测 skill v4.9（junction 到 ~/.claude/skills/）+ `skill/references/` 外置参考（系数详表/官方玩法规则/教训档案，skill 正文按需加载）
+- `skill/SKILL.md`: 预测 skill v5.1（junction 到 ~/.claude/skills/）+ `skill/references/` 外置参考（系数详表/官方玩法规则/教训档案，skill 正文按需加载）
 - `docs/`: 设计文档
 
 ## 检索铁律

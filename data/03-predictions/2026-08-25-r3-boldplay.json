@@ -1,0 +1,189 @@
+{
+ "date": "2026-08-25",
+ "seq": 3,
+ "shape": "guilin",
+ "tiers": {
+  "base": {
+   "cost": 4,
+   "legs": [
+    [
+     {
+      "matchNumStr": "周一001",
+      "match": "博洛尼亚-拉齐奥",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 2.08
+     },
+     {
+      "matchNumStr": "周一003",
+      "match": "马尔默-佐加顿斯",
+      "play": "had",
+      "pick": "客胜",
+      "odds": 2.2
+     },
+     {
+      "matchNumStr": "周一004",
+      "match": "奥萨苏纳-莱万特",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 1.62
+     },
+     {
+      "matchNumStr": "周一006",
+      "match": "罗马-佛罗伦萨",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 1.56
+     }
+    ],
+    [
+     {
+      "matchNumStr": "周一004",
+      "match": "奥萨苏纳-莱万特",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 1.62
+     },
+     {
+      "matchNumStr": "周一006",
+      "match": "罗马-佛罗伦萨",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 1.56
+     },
+     {
+      "matchNumStr": "周一007",
+      "match": "兰斯-阿纳西",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 1.62
+     },
+     {
+      "matchNumStr": "周一008",
+      "match": "富勒姆-切尔西",
+      "play": "had",
+      "pick": "客胜",
+      "odds": 1.69
+     }
+    ]
+   ],
+   "play": "had-4串1",
+   "note": "×2注互补(共享≤2场)"
+  },
+  "mid": {
+   "cost": 6,
+   "legs": [
+    [
+     {
+      "matchNumStr": "周一001",
+      "match": "博洛尼亚-拉齐奥",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 2.08
+     },
+     {
+      "matchNumStr": "周一003",
+      "match": "马尔默-佐加顿斯",
+      "play": "had",
+      "pick": "客胜",
+      "odds": 2.2
+     },
+     {
+      "matchNumStr": "周一004",
+      "match": "奥萨苏纳-莱万特",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 1.62
+     },
+     {
+      "matchNumStr": "周一006",
+      "match": "罗马-佛罗伦萨",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 1.56
+     },
+     {
+      "matchNumStr": "周一007",
+      "match": "兰斯-阿纳西",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 1.62
+     }
+    ]
+   ],
+   "multiplier": 3,
+   "play": "had-5串1×3倍",
+   "note": "默认HAD"
+  },
+  "upset": {
+   "cost": 8,
+   "multiplier": 4,
+   "legs": [
+    {
+     "matchNumStr": "周一002",
+     "match": "新未来SC-胡巴卡德",
+     "league": "沙职",
+     "leagueId": "saudi",
+     "score": "2:1",
+     "odds": 15.5,
+     "q": 0.0834,
+     "n": 408,
+     "ev": 0.2924,
+     "directionBand": ">=0.60",
+     "play": "crs",
+     "pick": "2:1"
+    },
+    {
+     "matchNumStr": "周一007",
+     "match": "兰斯-阿纳西",
+     "league": "法乙",
+     "leagueId": "france-ligue2",
+     "score": "0:1",
+     "odds": 13.0,
+     "q": 0.0942,
+     "n": 1370,
+     "ev": 0.2251,
+     "directionBand": "0.45-0.60",
+     "play": "crs",
+     "pick": "0:1"
+    },
+    {
+     "matchNumStr": "周一006",
+     "match": "罗马-佛罗伦萨",
+     "league": "意甲",
+     "leagueId": "italy-serie-a",
+     "score": "0:1",
+     "odds": 14.0,
+     "q": 0.0846,
+     "n": 1520,
+     "ev": 0.1844,
+     "directionBand": "0.45-0.60",
+     "play": "crs",
+     "pick": "0:1"
+    },
+    {
+     "matchNumStr": "周一008",
+     "match": "富勒姆-切尔西",
+     "league": "英超",
+     "leagueId": "england-premier",
+     "score": "1:0",
+     "odds": 15.0,
+     "q": 0.079,
+     "n": 1520,
+     "ev": 0.1843,
+     "directionBand": "0.45-0.60",
+     "play": "crs",
+     "pick": "1:0"
+    }
+   ],
+   "play": "crs-4串1",
+   "expOdds": 42315.0,
+   "winIfHit": 338520.0,
+   "note": "guilin形状 带宽(10.0, 17.0)"
+  }
+ },
+ "totalCost": 18,
+ "densityNote": "CRS 4串期望返还 ≈ 0.661^4 = 19.1%(体彩真实池水,非Pinnacle口径)",
+ "postTaxNote": "单注奖金超1万部分税20%;4串单注限额50万已反算倍数",
+ "ranAt": "2026-08-25"
+}

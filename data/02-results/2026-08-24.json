@@ -1,7 +1,12 @@
 {
  "date": "2026-08-24",
+ "tickets": [
+  "T001",
+  "T002",
+  "T003"
+ ],
  "version": "v4.6",
- "note": "13场·单锚模式(Pinnacle缺失,概率锚=体彩去水,修正×0.97内含)·fd2627 CSV未发布用2526缓存·9场DC融合+4场纯市场锚·搜索配额耗尽临场终审基于insight四要素",
+ "note": "13场·单锚模式(Pinnacle缺失,概率锚=体彩去水,修正×0.97内含)·fd2627 CSV未发布用2526缓存·9场DC融合+4场纯市场锚·搜索配额耗尽临场终审基于insight四要素 | 融合:本地结算(8-25)+远程r2终审(23:56撤009)",
  "anchorMode": "singleAnchor_sportteryDevig",
  "plans": [
   {
@@ -21,7 +26,21 @@
    "atLeastOne": 0.515,
    "revoked": [
     "周一009 CRS 2-0@6.50 (模型重拟合后DC-市场分歧19.4pp,EV信号不可信)"
-   ]
+   ],
+   "settled": {
+    "hits": 1,
+    "payout": 21.0,
+    "stake": 8,
+    "net": 13.0,
+    "roi": 162.5,
+    "detail": [
+     "002 HAFU 平/平 ❌(0-2)",
+     "002 CRS 1-1 ❌(0-2)",
+     "004 TTG 0球 ✅ +21",
+     "008 HAD 主胜 ❌(2-3)"
+    ],
+    "note": "r2版(23:56撤009 CRS 2-0后)4注结算净+13;若按v1 5注版(含009@6.50)净+24——被撤销项恰命中,纪律与结果的经典分野"
+   }
   },
   {
    "plan": "⚖️平衡",
@@ -35,14 +54,34 @@
    "evEach": true,
    "totalStake": 8,
    "fullWin": 46.3,
-   "atLeastOne": 0.22
+   "atLeastOne": 0.22,
+   "settled": {
+    "hits": 0,
+    "payout": 0,
+    "stake": 8,
+    "net": -8,
+    "roi": -100.0,
+    "detail": [
+     "008主胜×005平 2串1×3倍 ❌(008挂2-3)",
+     "006 HAFU dd ❌(4-0)"
+    ]
+   }
   },
   {
    "plan": "🛡️保本",
    "type": "不开",
    "stake": "0元",
    "legs": [],
-   "reason": "无≥3场A/B级低赔HAD正EV候选,常态不开"
+   "reason": "无≥3场A/B级低赔HAD正EV候选,常态不开",
+   "settled": {
+    "hits": 0,
+    "payout": 0,
+    "stake": 0,
+    "net": 0,
+    "detail": [
+     "未开"
+    ]
+   }
   }
  ],
  "matches": [
@@ -182,7 +221,8 @@
      "pModel": 0.1286,
      "odds": 9.0,
      "ev": 0.157,
-     "gapPp": 4.6
+     "gapPp": 4.6,
+     "hit": false
     },
     {
      "pool": "HAFU",
@@ -190,7 +230,8 @@
      "pModel": 0.146,
      "odds": 8.35,
      "ev": 0.219,
-     "gapPp": 4.7
+     "gapPp": 4.7,
+     "hit": false
     },
     {
      "pool": "HAD",
@@ -199,13 +240,14 @@
      "odds": 4.5,
      "ev": 0.085,
      "gapPp": 4.4,
-     "canSingle": false
+     "canSingle": false,
+     "hit": false
     }
    ],
-   "result": "0-2",
-   "directionHit": null,
-   "scoreHit": false,
-   "judgeNote": "CRS 1-1❌(实际0-2) + HAFU dd❌(半场0-1客胜非平)——两注皆负"
+   "resultScore": "0-2",
+   "resultOutcome": "a",
+   "directionHit": true,
+   "result": "0-2"
   },
   {
    "idx": 3,
@@ -316,13 +358,14 @@
      "ev": 0.249,
      "gapPp": 4.6,
      "warning": "泊松尾部高估风险",
-     "r2Note": "λ修正(homeAdv键名bug)后0-0概率11.9%,EV自+31.4%下修为+24.9%,分歧4.0pp合规"
+     "r2Note": "λ修正(homeAdv键名bug)后0-0概率11.9%,EV自+31.4%下修为+24.9%,分歧4.0pp合规",
+     "hit": true
     }
    ],
-   "result": "0-0",
-   "directionHit": null,
-   "scoreHit": true,
-   "judgeNote": "TTG 0球✅(0-0总进球0)——EV+24.9%命中@10.50"
+   "resultScore": "0-0",
+   "resultOutcome": "d",
+   "directionHit": false,
+   "result": "0-0"
   },
   {
    "idx": 5,
@@ -376,16 +419,17 @@
      "ev": 0.086,
      "gapPp": 3.8,
      "canSingle": false,
-     "r2Note": "平赔率4.30→4.45微升,EV+4.9%→+8.6%"
+     "r2Note": "平赔率4.30→4.45微升,EV+4.9%→+8.6%",
+     "hit": false
     }
    ],
    "revisionNotes": [
     "r2:平赔率4.30→4.45"
    ],
-   "result": "3-2",
-   "directionHit": false,
-   "scoreHit": false,
-   "judgeNote": "HAD 平❌(3-2主胜,5球大战)——backfill已判False"
+   "resultScore": "3-2",
+   "resultOutcome": "h",
+   "directionHit": true,
+   "result": "3-2"
   },
   {
    "idx": 6,
@@ -442,13 +486,14 @@
      "pModel": 0.1772,
      "odds": 5.8,
      "ev": 0.028,
-     "gapPp": 3.4
+     "gapPp": 3.4,
+     "hit": false
     }
    ],
-   "result": "4-0",
-   "directionHit": false,
-   "scoreHit": false,
-   "judgeNote": "HAFU dd❌(4-0全场主胜,dd要求全场平必负)"
+   "resultScore": "4-0",
+   "resultOutcome": "h",
+   "directionHit": true,
+   "result": "4-0"
   },
   {
    "idx": 7,
@@ -568,7 +613,8 @@
      "ev": 0.014,
      "gapPp": 4.1,
      "canSingle": true,
-     "r2Note": "赔率异动4.05→3.90(市场消化切尔西7伤),EV+5.4%→+1.4%仍微正,维持"
+     "r2Note": "赔率异动4.05→3.90(市场消化切尔西7伤),EV+5.4%→+1.4%仍微正,维持",
+     "hit": false
     },
     {
      "pool": "CRS",
@@ -577,16 +623,17 @@
      "odds": 15.0,
      "ev": 0.113,
      "gapPp": 2.4,
-     "canSingle": true
+     "canSingle": true,
+     "hit": false
     }
    ],
    "revisionNotes": [
     "r2:HAD主胜赔率4.05→3.90"
    ],
-   "result": "2-3",
-   "directionHit": false,
-   "scoreHit": false,
-   "judgeNote": "HAD 主胜❌(2-3客胜)+CRS 1-0❌"
+   "resultScore": "2-3",
+   "resultOutcome": "a",
+   "directionHit": true,
+   "result": "2-3"
   },
   {
    "idx": 9,
@@ -655,7 +702,8 @@
      "gapPp": 4.5,
      "canSingle": true,
      "revoked": true,
-     "revokeReason": "r2: portugal-liga重拟合(2526+2627)后DC三向分歧19.4pp(主胜77.3%vs市场57.9%),模型失准,EV信号不可信;比分回归市场锚"
+     "revokeReason": "r2: portugal-liga重拟合(2526+2627)后DC三向分歧19.4pp(主胜77.3%vs市场57.9%),模型失准,EV信号不可信;比分回归市场锚",
+     "hit": true
     },
     {
      "pool": "CRS",
@@ -666,16 +714,17 @@
      "gapPp": 3.5,
      "canSingle": true,
      "revoked": true,
-     "revokeReason": "r2: portugal-liga重拟合(2526+2627)后DC三向分歧19.4pp(主胜77.3%vs市场57.9%),模型失准,EV信号不可信;比分回归市场锚"
+     "revokeReason": "r2: portugal-liga重拟合(2526+2627)后DC三向分歧19.4pp(主胜77.3%vs市场57.9%),模型失准,EV信号不可信;比分回归市场锚",
+     "hit": false
     }
    ],
    "revisionNotes": [
     "r2撤销CRS选项"
    ],
-   "result": "2-0",
-   "directionHit": null,
-   "scoreHit": true,
-   "judgeNote": "CRS 2-0✅(2-0)——r2撤销的选项实际命中@6.50,教训档案"
+   "resultScore": "2-0",
+   "resultOutcome": "h",
+   "directionHit": true,
+   "result": "2-0"
   },
   {
    "idx": 10,
@@ -848,5 +897,30 @@
   ]
  },
  "revision": "r2",
- "revisionNote": "23:56 增量终审:learn重拟合(saudi/sweden DC更新)+全池EV重算(修复homeAdv键名bug致λ低估)+赔率异动复扫;撤销009 CRS 2-0(新模型三向分歧19.4pp失准),004/008 EV下修,其余维持;欧冠两场确认为次回合(08-20首回合:凯尔特人3-0 LASK/博德闪耀3-1奈梅亨),旧记录判定正确"
+ "revisionNote": "23:56 增量终审:learn重拟合(saudi/sweden DC更新)+全池EV重算(修复homeAdv键名bug致λ低估)+赔率异动复扫;撤销009 CRS 2-0(新模型三向分歧19.4pp失准),004/008 EV下修,其余维持;欧冠两场确认为次回合(08-20首回合:凯尔特人3-0 LASK/博德闪耀3-1奈梅亨),旧记录判定正确",
+ "actualTicket": {
+  "structure": "4串11(6×2串1+4×3串1+1×4串1)×2票,每票11注×2元=44元",
+  "ticketA": {
+   "legs": {
+    "周一009 CRS 2-0@6.50": true,
+    "周一008 HAD 主胜@4.05": false,
+    "周一004 TTG 0球@10.50": true,
+    "周一002 CRS 1-1@9.00": false
+   }
+  },
+  "ticketB": {
+   "legs": {
+    "周一009 CRS 2-0@6.50": true,
+    "周一008 HAD 主胜@4.05": false,
+    "周一004 TTG 0球@10.50": true,
+    "周一002 HAFU 平/平@8.35": false
+   }
+  },
+  "hits": "两票各中2关(009+004),各回1注2串1@68.25",
+  "payout": 273.0,
+  "stake": 44,
+  "net": 229.0,
+  "roi": 520.5,
+  "note": "实票按v1方案20:xx出票(含009 CRS 2-0);r2终审23:56撤销009在出票之后,不影响实票"
+ }
 }

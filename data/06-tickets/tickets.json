@@ -1,0 +1,111 @@
+{
+  "meta": {
+    "lastUpdated": "2026-08-25",
+    "note": "实票账本:票=顶层实体(不按日期切分);实票=有结算记录的票,其余全是方案推演;出票后票面事实永不改写;派彩按形状算(4串11中2关只回1注2串1)",
+    "totalTickets": 3,
+    "totalStake": 66,
+    "totalPayout": 293.4,
+    "totalNet": 227.4,
+    "disciplineEvents": [
+      {
+        "date": "2026-08-24",
+        "event": "r2终审23:56撤009 CRS 2-0（模型三向分歧19.4pp），但双票已按v1于20:xx出票含009——票面事实优先",
+        "actualNet": 229.0,
+        "counterfactualNet": -44.0,
+        "verdict": "009命中2-0,含它的2串1回273;若等r2重出票(无009变3关),两票仅中1关(004)全灭-44。本次未听模型多赚273,但单果不证明流程错——EV决策以长期论"
+      }
+    ]
+  },
+  "tickets": [
+    {
+      "id": "T001",
+      "source": "manual",
+      "backfilled": true,
+      "placedAt": "2026-08-22 20:30",
+      "placedAtNote": "出票时间推定(r3时段,厄格里特21:00开赛前)",
+      "matchDays": ["2026-08-22", "2026-08-23", "2026-08-24"],
+      "shape": "4串11容错",
+      "shapeDetail": "6×2串1+4×3串1+1×4串1",
+      "stake": 22,
+      "unitStake": 2,
+      "units": 11,
+      "legs": [
+        { "code": "周六009", "league": "瑞超", "match": "厄格里特 vs 哈尔姆斯", "market": "HAFU", "pick": "dd(平/平)", "odds": 6.0, "revoked": false, "result": "hit", "actual": "平/平" },
+        { "code": "周六024", "league": "意甲", "match": "帕尔马 vs 卡利亚里", "market": "TTG", "pick": "0球", "odds": 7.5, "revoked": false, "result": "miss", "actual": "0-1(1球)" },
+        { "code": "周日002", "league": "日职", "match": "町田泽维 vs 浦和红钻", "market": "CRS", "pick": "2-0", "odds": 9.0, "revoked": false, "result": "miss", "actual": "3-1" },
+        { "code": "周日024", "league": "西甲", "match": "埃尔切 vs 巴萨", "market": "HAFU", "pick": "aa(客/客)", "odds": 1.7, "revoked": false, "result": "hit", "actual": "0-5(客/客)" }
+      ],
+      "settled": {
+        "status": "settled",
+        "hits": 2,
+        "payout": 20.4,
+        "net": -1.6,
+        "roi": -7.3,
+        "settledAt": "2026-08-24 06:00",
+        "detail": "中2关(厄✅+萨✅)回1注2串1:6.0×1.70=10.2×2元=20.4;町田3-1断CRS腿后4串1/含町田注全灭;此结算账面8-23/8-24均未记,2026-08-25回灌补算"
+      },
+      "budget": { "redline": 30 },
+      "note": "用户自组票(非系统方案转正);奖金引擎=帕尔马0球+町田2-0两条高赔腿,巴萨aa@1.70单独中不派奖;来源:corpus.json 2026-08-22-r3:🎫用户实票"
+    },
+    {
+      "id": "T002",
+      "source": "manual",
+      "backfilled": true,
+      "placedAt": "2026-08-24 20:10",
+      "placedAtNote": "出票时间推定(v1方案20:xx出票,含009)",
+      "matchDays": ["2026-08-24"],
+      "shape": "4串11容错",
+      "shapeDetail": "6×2串1+4×3串1+1×4串1",
+      "stake": 22,
+      "unitStake": 2,
+      "units": 11,
+      "legs": [
+        { "code": "周一009", "league": "葡超", "match": "吉维森特 vs 卡萨皮亚", "market": "CRS", "pick": "2-0", "odds": 6.5, "revoked": false, "result": "hit", "actual": "2-0" },
+        { "code": "周一008", "league": "英超", "match": "富勒姆 vs 切尔西", "market": "HAD", "pick": "主胜", "odds": 4.05, "revoked": false, "result": "miss", "actual": "2-3" },
+        { "code": "周一004", "league": "西甲", "match": "奥萨苏纳 vs 莱万特", "market": "TTG", "pick": "0球", "odds": 10.5, "revoked": false, "result": "hit", "actual": "0-0" },
+        { "code": "周一002", "league": "沙职", "match": "新未来SC vs 胡巴卡德", "market": "CRS", "pick": "1-1", "odds": 9.0, "revoked": false, "result": "miss", "actual": "0-2" }
+      ],
+      "settled": {
+        "status": "settled",
+        "hits": 2,
+        "payout": 136.5,
+        "net": 114.5,
+        "roi": 520.5,
+        "settledAt": "2026-08-25 10:00",
+        "detail": "中2关(009 CRS 2-0✅+004 TTG 0球✅)回1注2串1:6.50×10.50=68.25×2元=136.5"
+      },
+      "budget": { "redline": 30 },
+      "note": "双票之一(T002/T003第4关不同);出票含009,r2终审23:56撤009在出票后不影响票面;来源:2026-08-24.json actualTicket.ticketA"
+    },
+    {
+      "id": "T003",
+      "source": "manual",
+      "backfilled": true,
+      "placedAt": "2026-08-24 20:10",
+      "placedAtNote": "出票时间推定(与T002同时出票)",
+      "matchDays": ["2026-08-24"],
+      "shape": "4串11容错",
+      "shapeDetail": "6×2串1+4×3串1+1×4串1",
+      "stake": 22,
+      "unitStake": 2,
+      "units": 11,
+      "legs": [
+        { "code": "周一009", "league": "葡超", "match": "吉维森特 vs 卡萨皮亚", "market": "CRS", "pick": "2-0", "odds": 6.5, "revoked": false, "result": "hit", "actual": "2-0" },
+        { "code": "周一008", "league": "英超", "match": "富勒姆 vs 切尔西", "market": "HAD", "pick": "主胜", "odds": 4.05, "revoked": false, "result": "miss", "actual": "2-3" },
+        { "code": "周一004", "league": "西甲", "match": "奥萨苏纳 vs 莱万特", "market": "TTG", "pick": "0球", "odds": 10.5, "revoked": false, "result": "hit", "actual": "0-0" },
+        { "code": "周一002", "league": "沙职", "match": "新未来SC vs 胡巴卡德", "market": "HAFU", "pick": "dd(平/平)", "odds": 8.35, "revoked": false, "result": "miss", "actual": "0-2" }
+      ],
+      "settled": {
+        "status": "settled",
+        "hits": 2,
+        "payout": 136.5,
+        "net": 114.5,
+        "roi": 520.5,
+        "settledAt": "2026-08-25 10:00",
+        "detail": "中2关(009+004)回1注2串1@68.25×2元=136.5;与T002仅第4关不同(002 HAFU dd vs 002 CRS 1-1),两关同断"
+      },
+      "budget": { "redline": 30 },
+      "note": "双票之二;来源:2026-08-24.json actualTicket.ticketB"
+    }
+  ]
+}

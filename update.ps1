@@ -42,11 +42,12 @@ python run.py learn
 if ($LASTEXITCODE -ne 0) { Write-Host "    learn partial fail (ESPN may be down, retry next update)" -ForegroundColor DarkYellow }
 Pop-Location
 
-# 6. Verify loop (v4.7: auto-backfill -> corpus+assertions -> calibrate -> ablate, gates auto-skip)
-Write-Host "[6/7] Verify loop (run.py verify)..." -ForegroundColor Yellow
+# 6. Verify loop (v4.7: auto-backfill -> corpus+assertions -> calibrate -> ablate, gates auto-skip; v4.10 ticket settle included)
+Write-Host "[6/7] Verify loop (run.py verify + boldplay settle)..." -ForegroundColor Yellow
 Push-Location "$HOME_DIR\engine\scripts"
 python run.py verify
 if ($LASTEXITCODE -ne 0) { Write-Host "    verify partial fail (ESPN cache lag common, next update retries)" -ForegroundColor DarkYellow }
+python boldplay.py settle   # v5.1 A-MIX ladder-card settle (quiet no-op: no ticket / not played / already settled)
 Pop-Location
 
 # 7. Test regression (verify code changes didn't break anything)
@@ -91,6 +92,14 @@ if (Test-Path $corpusPath) {
     $nPlans = @($cp.plans.PSObject.Properties | Where-Object { $_.Value -is [array] }).Count
     $trendExists = if (Test-Path "$HOME_DIR\data\04-summaries\trend.html") { "yes" } else { "no" }
     Write-Host "  plans tracked: $nPlans | trend.html: $trendExists (logloss/hit-rate/CLV/calibration/buckets/plan-accuracy)" -ForegroundColor Green
+}
+# ticket ledger summary (v4.10: real-money tickets; a ticket without settlement record is a plan, not a purchase)
+$tk = "$HOME_DIR\data\06-tickets\tickets.json"
+if (Test-Path $tk) {
+    $td = [System.IO.File]::ReadAllText($tk, [System.Text.Encoding]::UTF8) | ConvertFrom-Json
+    $pending = @($td.tickets | Where-Object { $_.settled.status -eq "pending" }).Count
+    $net = "{0:+0.0;-0.0}" -f $td.meta.totalNet
+    Write-Host "  ticket ledger: $($td.tickets.Count) tickets ($pending pending) | stake $($td.meta.totalStake) | net $net -> data/06-tickets/tickets.html" -ForegroundColor Green
 }
 $ml = "$HOME_DIR\engine\cache\models\latest.json"
 if (Test-Path $ml) {
