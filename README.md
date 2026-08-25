@@ -34,7 +34,8 @@ cd $FOOTBALL_HOME
 |:---|:---|
 | **"帮我预测"** | 刷数据+联赛画像 → DC拟合+融合 → 体彩采集+本地检索+ESPN积分榜 → 战意状态机 → 分析评级 → 报告归档 → git commit |
 | **"再跑一遍"** | 临场终审：赔率复扫+三定律判定 → 更新报告 → commit |
-| **"回填赛果"** | **run.py verify 一键闭环：backfill自动回填 → corpus语料+trend断言 → calibrate重校(门槛自检) → ablate消融(人审)** → learn非fd联赛拟合+版本发布 → 复盘归档 → commit |
+| **"回填赛果"** | **run.py verify 一键闭环：backfill自动回填 → 票务结算(实票账本+boldplay推演) → corpus语料+trend断言 → calibrate重校(门槛自检) → ablate消融(人审)** → learn非fd联赛拟合+版本发布 → 复盘归档 → commit |
+| **"我买了/出票了"** | **实票登记**：方案转正(冻结赔率+时间戳)或自组票手动建档 → `data/06-tickets/tickets.json` + git commit（git历史=出票凭证）→ 回填时自动结算 → tickets.html 资金曲线/玩法分解/纪律对照 |
 | **"XX队近况？"** | 本地知识库检索直接回答 |
 | **"跑下回测"** | walk-forward 回测 + 与市场基线对比 |
 
@@ -51,7 +52,10 @@ python3 run.py corpus                               # ★学习语料汇总+就�
 python3 run.py predict spain-laliga Vallecano Alaves --market 2.05,3.4,3.9
 python3 run.py predict japan kashima-antlers avispa-fukuoka   # 日职/沙特/瑞超本地模型也可用
 python3 run.py backtest spain-laliga 2526
-python -m pytest tests -q                           # 63 用例回归（改代码必跑）
+python3 boldplay.py                                 # ★v5.0 阶梯出票卡（保底4/进阶6/翻身档，桂林/梅州形状轮换，月封顶240自动gate）
+python3 boldplay.py settle                          # 阶梯卡推演结算：逐leg判定，legHits入层4实测库（实票走"我买了"登记账本）
+python3 ticket_report.py                            # 实票账本报告（资金曲线/票务清单/玩法分解/纪律对照）
+python -m pytest tests -q                           # 88 用例回归（改代码必跑）
 ```
 
 ## 预测日全流程
@@ -61,7 +65,8 @@ python -m pytest tests -q                           # 63 用例回归（改代�
 2. 触发 /football-betting-prediction       # Claude 走 skill：
    体彩API(赛程/五池赔率/单关资格) + fd缓存(Pinnacle锚) + 本地球队画像
    → dc_predict 概率(含 ttg总进球/hafu半全场) → logit融合 → EV比选 → 修正系数 → 报告(03-predictions/)
-3. 出票前 skill 自动走 Step 6.5 临场终审
+3. 出票前 skill 自动走 Step 6.5 临场终审；v5.0 起默认输出 boldplay 阶梯出票卡（保底4/进阶6/翻身档，替换旧🚀/⚖️/🛡️三段式）
+3.5 实际出票后说"我买了" → 实票登记入账本（git 历史=出票凭证），回填时自动结算
 4. 赛果出来后"回填赛果" → run.py verify 一键闭环（回填→语料+断言→重校→消融）→ learn版本发布 → 04-summaries/
 5. git commit（预测与赛果入库 = 可验证历史）
 ```
@@ -70,6 +75,7 @@ python -m pytest tests -q                           # 63 用例回归（改代�
 
 ```
 回填赛果 → ① backfill.py 自动回填（v4.9 双链路：体彩编号对票主链路+ESPN 兜底；未开赛场自动跳过，完赛重跑即回填）
+         → ①.5 票务结算（v4.10/v5.0：settle_tickets 实票账本按形状算派彩+重刷tickets.html；boldplay settle 阶梯卡推演legHits入层4实测库）
          → ② corpus.py 语料汇总（门槛：融合重校 n≥100 / 消融 n≥50 / 断言 n≥15）
          → ③ trend_report ⑦回归断言（A1校准/A2星级/A3系数/A4 DC价值——触发即出结论+动作）
          → ④ calibrate.py 融合重校（自动：网格 a∈[0.05,0.6] 最小RPS；护栏改善<1%不动+历史可回滚）
@@ -107,11 +113,12 @@ football/
 │   ├── 02-results/        #    赛果回填（YYYY-MM-DD.json，含 CLV）+ league/ 本地赛果库（ESPN回填）
 │   ├── 03-predictions/    #    预测报告 HTML（仅用户输出用 HTML+SVG）
 │   ├── 04-summaries/      #    五维统计 + 回测结果 + corpus.json 学习语料
-│   └── 05-trends/         #    趋势发现
+│   ├── 05-trends/         #    趋势发现
+│   └── 06-tickets/        #    ★实票账本（票=顶层实体：形状/腿/赔率冻结/结算/纪律事件 + tickets.html 报告）——实票=有结算记录的票，其余全是方案推演
 ├── engine/                ← ② 计算层
 │   ├── scripts/           #    run.py(入口) / dc_fit / dc_predict / backtest / corpus / trend_report / backfill / calibrate / ablate / odds_fetch / elo_fetch / xg_fetch / espn_fetch / cn_fetch / sporttery_fetch / band_calibration / score_ev / live_odds_probe / build_index / boldplay(阶梯出票卡+settle) / ticket_report(实票账本报告)
 │   └── cache/             #    DC 参数 / models/ 版本化存档 / fusion.json / fd 赔率缓存 / sporttery_matches.json(五池+单关资格) / score_odds(体彩全玩法赔率日存档) / live_odds_feasibility.json
-├── skill/                 ← ③ 检索入口：SKILL.md v4.9 + references/ 外置参考（系数详表/官方规则/教训档案，按需加载）
+├── skill/                 ← ③ 检索入口：SKILL.md v5.0（阶梯出票卡为默认输出）+ references/ 外置参考（系数详表/官方规则/教训档案，按需加载）
 └── docs/                  #    设计文档
 ```
 

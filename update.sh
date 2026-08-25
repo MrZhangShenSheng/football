@@ -34,9 +34,10 @@ python3 sporttery_fetch.py || echo "    sporttery_fetch 失败（体彩 API 可�
 echo "[5/7] 闭环学习（run.py learn）..."
 python3 run.py learn || echo "    learn 部分失败（ESPN 可能不可达，下次 update 重试）"
 
-# 6. 回归验证闭环（v4.7：自动回填→语料+断言→重校→消融，门槛自检跳过）
-echo "[6/7] 回归验证闭环（run.py verify）..."
+# 6. 回归验证闭环（v4.7：自动回填→语料+断言→重校→消融，门槛自检跳过；v4.10 起含实票账本票务结算）
+echo "[6/7] 回归验证闭环（run.py verify + boldplay settle）..."
 python3 run.py verify || echo "    verify 部分失败（ESPN 缓存延迟常见，下轮 update 自动补）"
+python3 boldplay.py settle || true   # v5.0 阶梯卡推演结算（无出票/未完赛/已结算均安静跳过）
 
 # 7. 测试回归（验证代码改动没破坏任何东西）
 echo "[7/7] 测试回归..."
@@ -88,6 +89,17 @@ print(f"    体彩五池: {d.get('count', 0)} 场在售, " + ", ".join(
 PYEOF
 fi
 # 模型版本存档摘要（v4.5.1）
+# 实票账本摘要（v4.10：票数/本金/净利，实票=有结算记录的票）
+if [ -f "$HOME_DIR/data/06-tickets/tickets.json" ]; then
+    python3 - "$HOME_DIR/data/06-tickets/tickets.json" << 'PYEOF'
+import json, sys
+d = json.load(open(sys.argv[1], encoding="utf-8"))
+m, ts = d.get("meta", {}), d.get("tickets", [])
+n_pending = sum(1 for t in ts if t.get("settled", {}).get("status") == "pending")
+print(f"    实票账本: {len(ts)} 张（待结算 {n_pending}）· 本金 {m.get('totalStake', 0):.0f} 元"
+      f" · 净利 {m.get('totalNet', 0):+.1f} 元 → data/06-tickets/tickets.html")
+PYEOF
+fi
 if [ -f "$HOME_DIR/engine/cache/models/latest.json" ]; then
     python3 - "$HOME_DIR" << 'PYEOF'
 import json, sys, pathlib
