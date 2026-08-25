@@ -27,11 +27,6 @@
   "staleLeagues": [],
   "missingAlias": [
     {
-      "team": "达曼协定",
-      "league": "沙职",
-      "match": "达曼协定 vs 利雅胜利"
-    },
-    {
       "team": "斯托克城",
       "league": "英联赛杯",
       "match": "斯托克城 vs 赫尔城"
@@ -79,6 +74,12 @@
   ],
   "notReadyTeams": [
     {
+      "team": "达曼协定",
+      "teamId": "al-ettifaq",
+      "league": "saudi",
+      "status": "missing"
+    },
+    {
       "team": "利雅胜利",
       "teamId": "al-nassr",
       "league": "saudi",
@@ -87,6 +88,6 @@
   ],
   "readyCount": {
     "leagues": 0,
-    "teamsKnown": 233
+    "teamsKnown": 234
   }
 }

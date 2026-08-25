@@ -1,6 +1,6 @@
 {
  "date": "2026-08-25",
- "seq": 2,
+ "seq": 4,
  "shape": "meizhou",
  "tiers": {
   "base": {
@@ -12,7 +12,7 @@
       "match": "斯托克城-赫尔城",
       "play": "had",
       "pick": "客胜",
-      "odds": 2.22
+      "odds": 2.3
      },
      {
       "matchNumStr": "周二005",
@@ -20,6 +20,20 @@
       "play": "had",
       "pick": "主胜",
       "odds": 1.82
+     },
+     {
+      "matchNumStr": "周二007",
+      "match": "诺丁汉-利兹联",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 2.0
+     },
+     {
+      "matchNumStr": "周二008",
+      "match": "伯明翰-布伦特",
+      "play": "had",
+      "pick": "客胜",
+      "odds": 1.56
      }
     ],
     [
@@ -35,12 +49,26 @@
       "match": "伯明翰-布伦特",
       "play": "had",
       "pick": "客胜",
-      "odds": 1.62
+      "odds": 1.56
+     },
+     {
+      "matchNumStr": "周二009",
+      "match": "巴伦西亚-贝蒂斯",
+      "play": "had",
+      "pick": "客胜",
+      "odds": 2.34
+     },
+     {
+      "matchNumStr": "周三001",
+      "match": "大田市民-蔚山现代",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 2.09
      }
     ]
    ],
    "play": "had-4串1",
-   "note": "2注互补"
+   "note": "×2注互补(共享≤2场)"
   },
   "mid": {
    "cost": 6,
@@ -51,7 +79,7 @@
       "match": "斯托克城-赫尔城",
       "play": "had",
       "pick": "客胜",
-      "odds": 2.22
+      "odds": 2.3
      },
      {
       "matchNumStr": "周二005",
@@ -72,18 +100,19 @@
       "match": "伯明翰-布伦特",
       "play": "had",
       "pick": "客胜",
-      "odds": 1.62
+      "odds": 1.56
      },
      {
       "matchNumStr": "周二009",
       "match": "巴伦西亚-贝蒂斯",
       "play": "had",
       "pick": "客胜",
-      "odds": 2.38
+      "odds": 2.34
      }
     ]
    ],
-   "play": "had-5串1",
+   "multiplier": 3,
+   "play": "had-5串1×3倍",
    "note": "默认HAD"
   },
   "upset": {
@@ -106,7 +135,7 @@
      "source": "dc",
      "matchNumStr": "周三002",
      "match": "安养FC-仁川联",
-     "ev": 0.172
+     "ev": 0.1721
     },
     {
      "play": "crs",
@@ -115,7 +144,7 @@
      "source": "dc",
      "matchNumStr": "周二003",
      "match": "达曼协定-利雅胜利",
-     "ev": 0.1445
+     "ev": 0.144
     },
     {
      "play": "crs",
