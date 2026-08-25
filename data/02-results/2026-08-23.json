@@ -1,6 +1,8 @@
 {
  "date": "2026-08-23",
- "tickets": ["T001"],
+ "tickets": [
+  "T001"
+ ],
  "version": "v4.7-r5",
  "note": "r5全局预测轮(36场全量分析,12场r3继承+24场新增)。数据环境:ESPN standings API停摆(400)→titan007全量补(11联赛+德乙)+意甲34/英冠37新接入;Pinnacle本周末线缺失→市场锚=体彩去水(锚偏差标注);搜索引擎配额耗尽。轮次勘误:英超=本周R1(r3误标R2,证据:8/15-20无英超+阿森纳周五首秀+伯恩茅斯0场),意甲R1/西甲R2/法甲R1/荷甲葡超日职英冠R3维持。日职DC恢复v2发布版(今晨learn新拟合holdout劣化被拒)。HAD单关=13/36(bettingSingle口径,poolSingle键大写)。 终审增量:系数9伤停差值(insight接口)全量过审——012剔除(d=-3国民3主力)/017补位(d=0)/008维持(d=-1)/016·023·002无修正(d=0)/014费耶诺德d=-1延续票EV-5.6%。 实票结构口径修正(用户纠正):4串11=6×2串1+4×3串1+1×4串1无单关,厄格里特dd@6.0单关不兑钱,帕尔马0球@7.50已断,存活4注结构如plans。",
  "plans": [
@@ -962,7 +964,7 @@
    "ev": -0.208,
    "inPlan": null,
    "result": "0-0",
-   "directionHit": null,
+   "directionHit": false,
    "scoreHit": null
   },
   {
@@ -993,7 +995,7 @@
    "ev": -0.273,
    "inPlan": null,
    "result": "4-0",
-   "directionHit": null,
+   "directionHit": true,
    "scoreHit": null
   },
   {
@@ -1056,7 +1058,7 @@
    "ev": -0.36,
    "inPlan": null,
    "result": "2-3",
-   "directionHit": null,
+   "directionHit": true,
    "scoreHit": null
   },
   {
@@ -1087,7 +1089,7 @@
    "ev": -0.111,
    "inPlan": null,
    "result": "2-0",
-   "directionHit": null,
+   "directionHit": true,
    "scoreHit": null
   },
   {
@@ -1141,8 +1143,9 @@
    ],
    "ev": null,
    "inPlan": null,
-   "result": null,
-   "directionHit": null
+   "result": "2-3",
+   "directionHit": null,
+   "scoreHit": null
   }
  ],
  "sources": [

@@ -1,7 +1,7 @@
 {
   "league": "portugal-liga",
   "season": "2026-27",
-  "generatedAt": "2026-08-24",
+  "generatedAt": "2026-08-25",
   "roundsPlayed": 19,
   "standings": [
     {
@@ -508,7 +508,11 @@
       4
     ]
   },
-  "dcParams": {},
+  "dcParams": {
+    "homeAdv": 0.1515,
+    "rho": 0.0745,
+    "xi": 0.005
+  },
   "freshness": {
     "standingsSource": "fd-derived",
     "stale": false,
