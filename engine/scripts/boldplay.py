@@ -1,13 +1,21 @@
-"""Bold Play 阶梯出票卡生成器：三档组装/限额反算/月封顶/settle 回填。开发者 sszhang
-密度口径（体彩真实池水，skill v4.9 实测）：HAD 0.871^串 / CRS 0.661^串；4串单注限额50万。"""
-import glob, json, sys
+"""Bold Play 阶梯出票卡生成器：三档组装/限额反算/月封顶/settle 回填/A-MIX 跨池选腿。开发者 sszhang
+密度口径（体彩真实池水，skill v4.9 实测）：HAD 0.871^串 / CRS 0.661^串；4串单注限额50万。
+A-MIX（★ v5.1 混串合法后新默认）：每场 CRS/TTG/HAFU 三池全量 EV 扫描（铁律 8）取 EV 最优合规腿
+（EV>0 且 |p_model-p市场|<5pp），跨池组串 2~4 关；纯 CRS 形状带版退居 fallback。"""
+import glob, json, math, sys
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from band_calibration import devid
-from score_ev import build_freq_table, ev_scan
+from common import load_aliases
+from dc_predict import score_matrix, ttg_dist, hafu_approx, devig as devig_n
+from score_ev import build_freq_table, ev_scan, map_league
 
 SHAPES = {"guilin": {"band": (10.0, 17.0), "multiplier": 4, "cost": 8},
           "meizhou": {"band": (18.0, 28.0), "multiplier": 5, "cost": 10}}
+CACHE_DIR = Path("engine/cache")
+DIVERGENCE_LIMIT = 0.05   # |p_model - p市场| 合规线（skill 铁律 8 / 8-25 会话口径）
+ODDS_RANGE = (2.0, 40.0)  # A-MIX 单腿赔率合理域：排除 550 级长尾（经验频率/DC 尾部噪声 × 绝对pp分歧=假阳性，2026-08-25 探针实测 4:0@550 EV+845% 被放行）
+POOL_KEEP = {"had": 0.871, "hhad": 0.871, "ttg": 0.796, "hafu": 0.796, "crs": 0.661}  # 体彩池水期望返还（skill v4.9 实测）
 SINGLE_LIMIT = 500_000.0        # 4-5 串单注奖金限额（官方规则）
 MONTHLY_CAP = 240.0
 ROUND_COST = 20.0
@@ -55,10 +63,133 @@ def _fallback_upset(odds_day: dict) -> list:
             break
     return picked
 
+def _zh_map() -> dict:
+    """_aliases.json → {中文队名: 规范tid}（common.load_aliases 平铺口径）。"""
+    return {srcs.get("zh"): tid for tid, srcs in load_aliases().items()
+            if isinstance(srcs, dict) and srcs.get("zh")}
+
+
+def _hafu_odds() -> dict:
+    """sporttery_matches.json → {场次编号: {hh..aa: 赔率float}}（score_odds 存档无 hafu）。"""
+    out = {}
+    try:
+        d = json.loads((CACHE_DIR / "sporttery_matches.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return out
+    for m in d.get("matches") or []:
+        hf = m.get("hafu")
+        if hf and m.get("matchNumStr"):
+            out[m["matchNumStr"]] = {k: float(v) for k, v in hf.items()}
+    return out
+
+
+def _dc_params(m: dict, zh: dict, cache_dir: Path = CACHE_DIR):
+    """体彩场次 → (lh, la, rho) | None。中文→tid→DC缓存宽松匹配（去连字符/空格小写比较，
+    兼容本地库规范ID键'al-ahli'与fd原始名键'Aston Villa'两种缓存）。"""
+    lg = map_league(m.get("league", ""))
+    if not lg:
+        return None
+    p = cache_dir / f"{lg}_dc.json"
+    if not p.exists():
+        return None
+    dc = json.loads(p.read_text(encoding="utf-8"))
+    norm = lambda s: str(s).lower().replace("-", "").replace(" ", "")
+
+    def find(zh_name):
+        tid = zh.get(zh_name)
+        if not tid:
+            return None
+        nt = norm(tid)
+        for t in dc["teams"]:
+            if norm(t) == nt:
+                return t
+        return None
+
+    h, a = find(m.get("home")), find(m.get("away"))
+    if not h or not a:
+        return None
+    th, ta = dc["teams"][h], dc["teams"][a]
+    lh = math.exp(th["attack"] + ta["defense"] + dc["homeAdv"])
+    la = math.exp(ta["attack"] + th["defense"])
+    return lh, la, dc["rho"]
+
+
+def mix_candidates(odds_day: dict, freq_table: dict, zh: dict, hafu: dict, dc_params_fn=_dc_params) -> list:
+    """A-MIX 候选腿：每场 CRS/TTG/HAFU 三池 EV 最优合规项，按 EV 降序。
+
+    概率源统一 DC 模型（score_matrix 49 比分 + ttg_dist/hafu_approx 聚合）——8-25 会话
+    验证口径；合规三门槛：EV>0 且 |p_dc−p市场(去水)|<5pp 且单腿赔率∈ODDS_RANGE。
+    经验频率只服务 fallback 链（pick_upset_legs），不进 A-MIX（尾部噪声假阳性）。
+    freq_table 仅保留签名兼容。
+    """
+    legs = []
+    for m in odds_day.get("matches", []):
+        mid = m["matchNumStr"]
+        params = dc_params_fn(m, zh)
+        if not params:
+            continue  # 无 DC 缓存/队名未入库 → 该场不入 A-MIX
+        lh, la, rho = params
+        best = None  # (ev, leg)
+
+        def offer(ev, leg):
+            nonlocal best
+            if ev > 0 and (best is None or ev > best[0]):
+                best = (ev, leg)
+
+        matrix = score_matrix(lh, la, rho)
+        crs = {k: float(v) for k, v in (m.get("crs") or {}).items() if ":" in k}
+        if crs:
+            inv = sum(1.0 / o for o in crs.values())
+            for k, o in crs.items():
+                if not (ODDS_RANGE[0] <= o <= ODDS_RANGE[1]):
+                    continue
+                x, y = (int(t) for t in k.split(":"))
+                p_mkt = (1.0 / o) / inv
+                if abs(float(matrix[x, y]) - p_mkt) < DIVERGENCE_LIMIT:
+                    offer(float(matrix[x, y]) * o - 1, {"play": "crs", "pick": k, "odds": o, "source": "dc"})
+        ttg_o = m.get("ttg") or {}
+        if len(ttg_o) == 8:
+            p_mkt = devig_n([float(ttg_o[f"s{i}"]) for i in range(8)])
+            p_dc = ttg_dist(matrix)
+            for i in range(8):
+                o = float(ttg_o[f"s{i}"])
+                if ODDS_RANGE[0] <= o <= ODDS_RANGE[1] and abs(p_dc[i] - p_mkt[i]) < DIVERGENCE_LIMIT:
+                    offer(p_dc[i] * o - 1,
+                          {"play": "ttg", "pick": f"{i}球" if i < 7 else "7+球", "odds": o, "source": "dc"})
+        hf = hafu.get(mid) or {}
+        if len(hf) == 9:
+            keys = [a + b for a in "hda" for b in "hda"]
+            p_mkt = devig_n([hf[k] for k in keys])
+            p_dc = hafu_approx(lh, la)
+            for k in keys:
+                if ODDS_RANGE[0] <= hf[k] <= ODDS_RANGE[1] and abs(p_dc[k] - p_mkt[keys.index(k)]) < DIVERGENCE_LIMIT:
+                    offer(p_dc[k] * hf[k] - 1, {"play": "hafu", "pick": k, "odds": hf[k], "source": "dc"})
+        if best:
+            ev, leg = best
+            legs.append({**leg, "matchNumStr": mid, "match": f'{m.get("home")}-{m.get("away")}',
+                         "ev": round(ev, 4)})
+    legs.sort(key=lambda l: -l["ev"])
+    return legs
+
+
 def build_ticket(odds_day: dict, freq_table: dict, seq: int) -> dict:
     shape = "guilin" if seq % 2 == 1 else "meizhou"
     rows = ev_scan(odds_day, freq_table)
-    upset = pick_upset_legs(rows, shape) or _fallback_upset(odds_day)
+    # upset 腿三链：A-MIX（v5.1 新默认）→ CRS 形状带 → 经验频率退路
+    mix = mix_candidates(odds_day, freq_table, _zh_map(), _hafu_odds())
+    if len(mix) >= 2:
+        upset = mix[:4]
+        play = f"mix-{len(upset)}串1"
+        upset_note = f"A-MIX 跨池EV最优{len(upset)}腿（{','.join(l['play'] for l in upset)}）"
+        low_cnt = sum(1 for l in upset
+                      if (l["play"] == "crs" and l["pick"] in ("0:0", "0:1", "1:0", "1:1", "0:2", "2:0", "1:2", "2:1", "0:3", "3:0", "1:3", "3:1", "2:2") and sum(int(t) for t in l["pick"].split(":")) <= 2)
+                      or (l["play"] == "ttg" and l["pick"] in ("0球", "1球")))
+        if low_cnt >= 3:
+            upset_note += f" ⚠️{low_cnt}/{len(upset)}腿低分同向,警惕ρ低分修正系统性偏差(8-25 TTG0球拒收教训,回填验证前慎跟)"
+    else:
+        upset = pick_upset_legs(rows, shape) or _fallback_upset(odds_day)
+        play = "crs-4串1"
+        upset_note = f"{shape}形状 带宽{SHAPES[shape]['band']}"
     total_odds = 1.0
     for l in upset:
         total_odds *= l["odds"]
@@ -82,14 +213,16 @@ def build_ticket(odds_day: dict, freq_table: dict, seq: int) -> dict:
         "tiers": {
             "base": {"cost": 4, "legs": had_legs(4, 2), "play": "had-4串1", "note": "2注互补"},
             "mid": {"cost": 6, "legs": had_legs(5, 1), "play": "had-5串1", "note": "默认HAD"},
-            "upset": {"cost": cost, "multiplier": mult, "legs": upset, "play": "crs-4串1",
+            "upset": {"cost": cost, "multiplier": mult, "legs": upset, "play": play,
                       "expOdds": round(total_odds, 1) if upset else 0,
                       "winIfHit": round(2 * total_odds * mult, 0) if upset else 0,
-                      "note": f"{shape}形状 带宽{SHAPES[shape]['band']}"
+                      "note": upset_note
                               + (" · 频率退路" if upset and upset[0].get("fallback") else "")},
         },
         "totalCost": 4 + 6 + cost,
-        "densityNote": f"CRS 4串期望返还 ≈ 0.661^4 = {0.661**4:.1%}(体彩真实池水,非Pinnacle口径)",
+        "densityNote": "期望返还 ≈ " + (f"{math.prod(POOL_KEEP.get(l.get('play', 'crs'), 0.8) for l in upset):.1%}"
+                                        + "（各腿池水连乘" + "/".join(sorted({l.get('play', 'crs') for l in upset})) + "）" if upset
+                                        else "无腿"),
         "postTaxNote": "单注奖金超1万部分税20%;4串单注限额50万已反算倍数",
     }
 
@@ -118,6 +251,12 @@ def settle(ticket: dict, results: dict) -> dict:
                     hits.append(None); continue      # 赛果缺失
                 if leg["play"] == "crs":
                     ok = (leg.get("pick") or leg.get("score")) == sc
+                elif leg["play"] == "ttg":
+                    h_, a_ = (int(x) for x in sc.split(":"))
+                    want = str(leg.get("pick") or leg.get("score")).replace("球", "").replace("+", "")
+                    ok = (h_ + a_ >= 7 and want == "7") if "7" in want and int(want) == 7 else (h_ + a_ == int(want))
+                elif leg["play"] == "hafu":
+                    hits.append(None); continue      # HAFU 需半场比分（02-results 无半场字段），人工判
                 else:
                     ok = leg["pick"] == _direction(sc)
                 hits.append(ok)

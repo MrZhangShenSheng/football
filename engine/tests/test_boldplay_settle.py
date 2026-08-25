@@ -54,3 +54,21 @@ def test_settle_had_direction_from_score():
         "base": {"cost": 4, "legs": [[{"matchNumStr": "001", "play": "had", "pick": "客胜", "odds": 2.1}]]}}}
     assert settle(had, {"001": "0:2"})["legHits"]["base"] == [[True]]
     assert settle(had, {"001": "1:1"})["legHits"]["base"] == [[False]]
+
+
+def test_settle_ttg_leg():
+    """A-MIX TTG 腿：总进球判定（含 7+ 档）。"""
+    tk = {"totalCost": 8, "tiers": {"upset": {"cost": 8, "multiplier": 2, "legs": [
+        {"matchNumStr": "001", "play": "ttg", "pick": "2球", "odds": 4.25},
+        {"matchNumStr": "002", "play": "ttg", "pick": "7+球", "odds": 16.0}]}}}
+    assert settle(tk, {"001": "2:0", "002": "4:3"})["legHits"]["upset"] == [[True, True]]
+    assert settle(tk, {"001": "1:0", "002": "5:1"})["legHits"]["upset"] == [[False, False]]  # 1球≠2球;6球<7
+    assert settle(tk, {"001": "2:0", "002": "2:1"})["legHits"]["upset"] == [[True, False]]
+
+
+def test_settle_hafu_leg_needs_half():
+    """A-MIX HAFU 腿：02-results 无半场比分 → None 待人工（诚实口径，不自动判）。"""
+    tk = {"totalCost": 8, "tiers": {"upset": {"cost": 8, "multiplier": 2, "legs": [
+        {"matchNumStr": "001", "play": "hafu", "pick": "dd", "odds": 4.75}]}}}
+    res = settle(tk, {"001": "1:1"})
+    assert res["legHits"]["upset"] == [[None]] and res["upsetHit"] is False and res["payout"] == 0.0
