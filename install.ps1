@@ -59,6 +59,7 @@ Pop-Location
 Write-Host "`n=== Install done ===" -ForegroundColor Cyan
 Write-Host "Test:     cd engine\scripts; python -m pytest ..\tests -q"
 Write-Host "Use:      tell Claude 'predict' in new terminal"
+Write-Host "          after buying tickets, say 'wo mai le' (我买了) -> ticket ledger (data/06-tickets/, git = proof)"
 Write-Host "Update:   ./update.ps1"
 Write-Host ""
 Write-Host "Knowledge base ready status:" -ForegroundColor DarkGray
@@ -102,12 +103,20 @@ if (Test-Path $modelsLatest) {
 } else {
     Write-Host "  local DC models: none published (retry step 4 espn history)" -ForegroundColor DarkYellow
 }
-# first-run verify loop (v4.7: backfill + corpus + trend; corpus history arrives via git)
+# first-run verify loop (v4.7: backfill + corpus + trend; corpus history arrives via git; v4.10 ticket settle included)
 Push-Location "$HOME_DIR\engine\scripts"
 python run.py verify | Out-Null
 Pop-Location
 if (Test-Path "$HOME_DIR\data\04-summaries\trend.html") {
-    Write-Host "  verify loop: trend.html ready (run.py verify wired: backfill->assertions->calibrate->ablate)" -ForegroundColor Green
+    Write-Host "  verify loop: trend.html ready (run.py verify wired: backfill->ticket settle->assertions->calibrate->ablate)" -ForegroundColor Green
 } else {
     Write-Host "  verify loop: generation failed (re-run: run.py verify)" -ForegroundColor DarkYellow
+}
+# ticket ledger summary (v4.10: real-money tickets arrive via git history)
+$tkInstall = "$HOME_DIR\data\06-tickets\tickets.json"
+if (Test-Path $tkInstall) {
+    $tkd = [System.IO.File]::ReadAllText($tkInstall, [System.Text.Encoding]::UTF8) | ConvertFrom-Json
+    $pendingI = @($tkd.tickets | Where-Object { $_.settled.status -eq "pending" }).Count
+    $netI = "{0:+0.0;-0.0}" -f $tkd.meta.totalNet
+    Write-Host "  ticket ledger: $($tkd.tickets.Count) tickets ($pendingI pending) | stake $($tkd.meta.totalStake) | net $netI -> data/06-tickets/tickets.html" -ForegroundColor Green
 }

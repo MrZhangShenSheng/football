@@ -52,8 +52,8 @@ python3 run.py corpus                               # ★学习语料汇总+就�
 python3 run.py predict spain-laliga Vallecano Alaves --market 2.05,3.4,3.9
 python3 run.py predict japan kashima-antlers avispa-fukuoka   # 日职/沙特/瑞超本地模型也可用
 python3 run.py backtest spain-laliga 2526
-python3 boldplay.py                                 # ★v5.0 阶梯出票卡（保底4/进阶6/翻身档，桂林/梅州形状轮换，月封顶240自动gate）
-python3 boldplay.py settle                          # 阶梯卡推演结算：逐leg判定，legHits入层4实测库（实票走"我买了"登记账本）
+python3 boldplay.py                                 # ★v5.1 阶梯出票卡（保底4/进阶6/翻身档；upset=A-MIX跨池选腿:CRS31/TTG8/HAFU9三池DC概率EV最优+赔率域[2,40]过滤，月封顶240自动gate）
+python3 boldplay.py settle                          # 阶梯卡推演结算：逐leg判定（CRS/TTG自动判，HAFU待半场数据），legHits入层4实测库（实票走"我买了"登记账本）
 python3 ticket_report.py                            # 实票账本报告（资金曲线/票务清单/玩法分解/纪律对照）
 python -m pytest tests -q                           # 88 用例回归（改代码必跑）
 ```

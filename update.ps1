@@ -47,7 +47,7 @@ Write-Host "[6/7] Verify loop (run.py verify + boldplay settle)..." -ForegroundC
 Push-Location "$HOME_DIR\engine\scripts"
 python run.py verify
 if ($LASTEXITCODE -ne 0) { Write-Host "    verify partial fail (ESPN cache lag common, next update retries)" -ForegroundColor DarkYellow }
-python boldplay.py settle   # v5.0 ladder-card settle (quiet no-op: no ticket / not played / already settled)
+python boldplay.py settle   # v5.1 A-MIX ladder-card settle (quiet no-op: no ticket / not played / already settled)
 Pop-Location
 
 # 7. Test regression (verify code changes didn't break anything)
