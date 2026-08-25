@@ -61,6 +61,48 @@
   "totalCost": 14,
   "hitAtLeastOne": 0.93,
   "fullWinTotal": 61.4,
+  "customGuilin8": {
+    "requestedBy": "用户点名'广西彩民买法合8串1'",
+    "note": "CRS池官方上限4串且禁与HAD混串→拆两案:案一=桂林本体(比分4串1高倍),案二=8串1唯一合规池(HAD)",
+    "planA": {
+      "name": "桂林·比分4串1 ×4倍(8元)",
+      "play": "crs-4串1",
+      "legs": [
+        {"matchNumStr": "周三010", "matchDate": "2026-08-27", "match": "皇马-皇家社会", "score": "2-0", "odds": 8.0, "basis": "DC TOP1 12.8%(205场矩阵)"},
+        {"matchNumStr": "周二003", "matchDate": "2026-08-26", "match": "达曼协定-利雅胜利", "score": "0-2", "odds": 8.5, "basis": "DC TOP1 10.9%(410场矩阵)"},
+        {"matchNumStr": "周二006", "matchDate": "2026-08-26", "match": "博德闪耀-奈梅亨", "score": "2-1", "odds": 7.75, "basis": "市场热度:博德2.7球/场+奈梅亨首回合客场进1"},
+        {"matchNumStr": "周三005", "matchDate": "2026-08-27", "match": "雅典AEK-索列夫", "score": "1-0", "odds": 6.0, "basis": "市场热度:生死战主胜经典剧本+首回合0:0低进球"}
+      ],
+      "expOdds": 3162,
+      "hitProb": 0.000153,
+      "winIfHit": 25296,
+      "winIfHitAfterTax": 22237,
+      "ev": -0.52,
+      "note": "方向全大热(81.7%/84.4%/61.8%/55.1%)-高赔来自比分盘结构;单腿带宽6-12.5偏离桂林band(10-17),本轮大热场比分价带偏低所致;期望返还≈48%(优于CRS池理论19%,仍深负)"
+    },
+    "planB": {
+      "name": "8串1·HAD ×1倍(2元)",
+      "play": "had-8串1",
+      "legs": [
+        {"matchNumStr": "周三010", "matchDate": "2026-08-27", "match": "皇马-皇家社会", "pick": "h(主胜)", "odds": 1.22, "p": 0.817},
+        {"matchNumStr": "周二003", "matchDate": "2026-08-26", "match": "达曼协定-利雅胜利", "pick": "a(客胜)", "odds": 1.15, "p": 0.844},
+        {"matchNumStr": "周二006", "matchDate": "2026-08-26", "match": "博德闪耀-奈梅亨", "pick": "h(主胜)", "odds": 1.41, "p": 0.618},
+        {"matchNumStr": "周三005", "matchDate": "2026-08-27", "match": "雅典AEK-索列夫", "pick": "h(主胜)", "odds": 1.42, "p": 0.551},
+        {"matchNumStr": "周二002", "matchDate": "2026-08-25", "match": "济州SK-浦项制铁", "pick": "h(主胜)", "odds": 2.18, "p": 0.443},
+        {"matchNumStr": "周三008", "matchDate": "2026-08-27", "match": "里昂-费内巴切", "pick": "d(平局,90分钟;首回合1:1生死战)", "odds": 3.35, "p": 0.334},
+        {"matchNumStr": "周三007", "matchDate": "2026-08-27", "match": "维京-萨迪纳摩", "pick": "d(平局,90分钟;首回合2:2生死战)", "odds": 3.35, "p": 0.334},
+        {"matchNumStr": "周三006", "matchDate": "2026-08-27", "match": "采列-布拉迪斯", "pick": "d(平局,90分钟;首回合1:1生死战)", "odds": 3.2, "p": 0.349}
+      ],
+      "expOdds": 219.9,
+      "hitProb": 0.00405,
+      "winIfHit": 439.8,
+      "ev": -0.109,
+      "evIfCoeff8Falsified": -0.555,
+      "note": "3条平局腿=系数8驱动(修正后单腿p×odds≈1.12);系数8成立EV-11%/证伪EV-55%,中枢深负;与翻身档平局敞口叠加,系数8总敞口6元"
+    },
+    "combinedCost": 10,
+    "monthlyBudgetNote": "本轮累计14+10=24元,月封顶240元内"
+  },
   "densityNote": "全HAD材料:2串期望返还≈0.759/3串≈0.661(池水12.9%/串);翻身档平局串为系数8系统性修正的复合",
   "postTaxNote": "2-3串单注限额20万;本轮无税触线风险",
   "ranAt": "2026-08-25"
