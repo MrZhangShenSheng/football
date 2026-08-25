@@ -53,9 +53,9 @@ python3 run.py predict spain-laliga Vallecano Alaves --market 2.05,3.4,3.9
 python3 run.py predict japan kashima-antlers avispa-fukuoka   # 日职/沙特/瑞超本地模型也可用
 python3 run.py backtest spain-laliga 2526
 python3 boldplay.py                                 # ★v5.1 阶梯出票卡（保底4/进阶6/翻身档；upset=A-MIX跨池选腿:CRS31/TTG8/HAFU9三池DC概率EV最优+赔率域[2,40]过滤，月封顶240自动gate）
-python3 boldplay.py settle                          # 阶梯卡推演结算：逐leg判定（CRS/TTG自动判，HAFU待半场数据），legHits入层4实测库（实票走"我买了"登记账本）
+python3 boldplay.py settle                          # 阶梯卡推演结算：逐leg判定（CRS/TTG/HAFU自动判,HAFU需backfill落盘半场;无半场旧档仍人工），legHits入层4实测库（实票走"我买了"登记账本）
 python3 ticket_report.py                            # 实票账本报告（资金曲线/票务清单/玩法分解/纪律对照）
-python -m pytest tests -q                           # 88 用例回归（改代码必跑）
+python -m pytest tests -q                           # 100 用例回归（改代码必跑）
 ```
 
 ## 预测日全流程
@@ -116,9 +116,9 @@ football/
 │   ├── 05-trends/         #    趋势发现
 │   └── 06-tickets/        #    ★实票账本（票=顶层实体：形状/腿/赔率冻结/结算/纪律事件 + tickets.html 报告）——实票=有结算记录的票，其余全是方案推演
 ├── engine/                ← ② 计算层
-│   ├── scripts/           #    run.py(入口) / dc_fit / dc_predict / backtest / corpus / trend_report / backfill / calibrate / ablate / odds_fetch / elo_fetch / xg_fetch / espn_fetch / cn_fetch / sporttery_fetch / band_calibration / score_ev / live_odds_probe / build_index / boldplay(阶梯出票卡+settle) / ticket_report(实票账本报告)
+│   ├── scripts/           #    run.py(入口) / dc_fit / dc_predict / backtest / corpus / trend_report / backfill / calibrate / ablate / odds_fetch / elo_fetch / xg_fetch / espn_fetch / cn_fetch / sporttery_fetch / band_calibration / score_ev / live_odds_probe / build_index / boldplay(阶梯出票卡+settle) / ticket_report(实票账本报告) / research/(一次性研究脚本归档)
 │   └── cache/             #    DC 参数 / models/ 版本化存档 / fusion.json / fd 赔率缓存 / sporttery_matches.json(五池+单关资格) / score_odds(体彩全玩法赔率日存档) / live_odds_feasibility.json
-├── skill/                 ← ③ 检索入口：SKILL.md v5.0（阶梯出票卡为默认输出）+ references/ 外置参考（系数详表/官方规则/教训档案，按需加载）
+├── skill/                 ← ③ 检索入口：SKILL.md v5.1（阶梯出票卡为默认输出）+ references/ 外置参考（系数详表/官方规则/教训档案，按需加载）
 └── docs/                  #    设计文档
 ```
 

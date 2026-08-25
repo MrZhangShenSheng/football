@@ -35,9 +35,9 @@ echo "[5/7] 闭环学习（run.py learn）..."
 python3 run.py learn || echo "    learn 部分失败（ESPN 可能不可达，下次 update 重试）"
 
 # 6. 回归验证闭环（v4.7：自动回填→语料+断言→重校→消融，门槛自检跳过；v4.10 起含实票账本票务结算）
-echo "[6/7] 回归验证闭环（run.py verify + boldplay settle）..."
+#    v5.1 起 boldplay settle 已入 run.py verify 编排（幂等安静），无需单独补跑
+echo "[6/7] 回归验证闭环（run.py verify，含票务结算+阶梯卡settle）..."
 python3 run.py verify || echo "    verify 部分失败（ESPN 缓存延迟常见，下轮 update 自动补）"
-python3 boldplay.py settle || true   # v5.1 阶梯卡推演结算（无出票/未完赛/已结算均安静跳过）
 
 # 7. 测试回归（验证代码改动没破坏任何东西）
 echo "[7/7] 测试回归..."

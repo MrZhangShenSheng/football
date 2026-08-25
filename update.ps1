@@ -43,11 +43,11 @@ if ($LASTEXITCODE -ne 0) { Write-Host "    learn partial fail (ESPN may be down,
 Pop-Location
 
 # 6. Verify loop (v4.7: auto-backfill -> corpus+assertions -> calibrate -> ablate, gates auto-skip; v4.10 ticket settle included)
-Write-Host "[6/7] Verify loop (run.py verify + boldplay settle)..." -ForegroundColor Yellow
+#    v5.1+: boldplay settle is inside run.py verify (idempotent quiet) - no separate call needed
+Write-Host "[6/7] Verify loop (run.py verify, incl. ticket settle + ladder-card settle)..." -ForegroundColor Yellow
 Push-Location "$HOME_DIR\engine\scripts"
 python run.py verify
 if ($LASTEXITCODE -ne 0) { Write-Host "    verify partial fail (ESPN cache lag common, next update retries)" -ForegroundColor DarkYellow }
-python boldplay.py settle   # v5.1 A-MIX ladder-card settle (quiet no-op: no ticket / not played / already settled)
 Pop-Location
 
 # 7. Test regression (verify code changes didn't break anything)

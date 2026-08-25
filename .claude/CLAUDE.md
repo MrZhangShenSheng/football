@@ -23,7 +23,7 @@
 
 - `data/00-leagues/`: 联赛画像 JSON（积分榜/场均进球/主胜率/冷门率/TOP比分/争冠保级格局；league_profile.py 自动生成，预测时 ESPN 实时覆盖）
 - `data/01-teams/`: 球队画像 JSON（Elo/xG/近况/伤停/主客场/休息天数）+ `_aliases.json` 实体映射表 + `_index.json` 路由索引
-- `data/02-results/`: 赛果回填 JSON（YYYY-MM-DD.json）+ `league/` 本地赛果库（espn history 回填，供非fd联赛 DC 拟合）+ `_h2h_index.json`（仅叙事参考）
+- `data/02-results/`: 赛果回填 JSON（**主文件=出票冻结终审版，`-rN`=过程快照，corpus 同场覆盖以主文件为准**；`_archive/` 空壳归档）+ `league/` 本地赛果库（espn history 回填，供非fd联赛 DC 拟合；韩职走体彩 league-results）+ `_h2h_index.json`（仅叙事参考）
 - `data/03-predictions/`: 预测报告 HTML（仅用户输出用 HTML+SVG）
 - `data/04-summaries/`: 五维统计 `_stats.json` + 复盘 HTML
 - `data/05-trends/`: 趋势发现 JSON
