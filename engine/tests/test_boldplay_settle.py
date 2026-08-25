@@ -72,3 +72,32 @@ def test_settle_hafu_leg_needs_half():
         {"matchNumStr": "001", "play": "hafu", "pick": "dd", "odds": 4.75}]}}}
     res = settle(tk, {"001": "1:1"})
     assert res["legHits"]["upset"] == [[None]] and res["upsetHit"] is False and res["payout"] == 0.0
+
+
+def test_settle_hafu_with_half_auto_judged():
+    """HAFU 腿 + dict 赛果带 half（backfill 落盘半场）→ 自动判定，闭环不再人工。"""
+    tk = {"totalCost": 8, "tiers": {"upset": {"cost": 8, "multiplier": 2, "legs": [
+        {"matchNumStr": "001", "play": "hafu", "pick": "dd", "odds": 4.75}]}}}
+    res = settle(tk, {"001": {"score": "1:1", "half": "0:0"}})      # 半平+全平 = dd
+    assert res["legHits"]["upset"] == [[True]]
+    res = settle(tk, {"001": {"score": "2:1", "half": "1:0"}})      # 半主胜+全主胜 = hh ≠ dd
+    assert res["legHits"]["upset"] == [[False]]
+    tk_dh = {"totalCost": 8, "tiers": {"upset": {"cost": 8, "multiplier": 2, "legs": [
+        {"matchNumStr": "001", "play": "hafu", "pick": "dh", "odds": 15.0}]}}}
+    assert settle(tk_dh, {"001": {"score": "2:1", "half": "0:0"}})["legHits"]["upset"] == [[True]]  # 半0:0=平(d)+全2:1=胜(h)=dh
+
+
+def test_load_results_reads_half_from_disk(tmp_path, monkeypatch):
+    """02-results 落盘 half（backfill 体彩链路）→ _load_results 读出冒号口径，HAFU 闭环数据流。"""
+    import json as _json
+    day = tmp_path / "data" / "02-results"
+    day.mkdir(parents=True)
+    (day / "2026-08-24.json").write_text(_json.dumps({
+        "date": "2026-08-24",
+        "matches": [{"code": "周一001", "result": "2-1", "half": "1-0"},
+                    {"code": "周一002", "result": "0-0"}]}), encoding="utf-8")
+    monkeypatch.chdir(tmp_path)
+    from boldplay import _load_results
+    res = _load_results("2026-08-24")
+    assert res["周一001"] == {"score": "2:1", "half": "1:0"}   # half 转冒号
+    assert res["周一002"] == {"score": "0:0", "half": None}    # 无 half（ESPN 链路）→ None

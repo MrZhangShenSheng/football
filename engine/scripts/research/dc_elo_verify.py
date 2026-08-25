@@ -9,6 +9,10 @@ r"""Elo 修正项验证：logit 融合加 +c·g(elo_diff)，walk-forward 网格�
 则 Elo 无信号、铁证纯跟盘；若上界能过，再升级 walk-forward 估 c 去过拟合。
 Elo 来源：elo_build.py 自建赛前 Elo（fd 比分序贯，walk-forward 严格、零外部依赖）。
 """
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))  # 归档后仍可直跑：scripts/ 入 path
+
 import json
 from datetime import date, datetime
 

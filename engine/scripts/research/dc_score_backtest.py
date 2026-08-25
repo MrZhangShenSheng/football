@@ -11,6 +11,10 @@ r"""DC 比分 top1/top3 命中率回测：walk-forward 逐场算 7x7 比分矩�
 DC top3 若持平/略超经验频率基线 → DC 比分排序无增量（与三向结论一致：实力信号已被市场定价）。
 矩阵截断 7x7：实际比分≥7球（如7-0）不在任何 top 比分内，top1/top3 均判 miss——反映 DC 对极端比分无能为力。
 """
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))  # 归档后仍可直跑：scripts/ 入 path
+
 import json
 from collections import Counter
 from datetime import date, datetime

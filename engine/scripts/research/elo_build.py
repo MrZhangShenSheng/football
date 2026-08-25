@@ -13,6 +13,10 @@ r"""自建 Elo 序贯引擎：从 fd 历史比分重建每场赛前 Elo。
 
 用法：python elo_build.py [season]   默认 2526，全部 fd 联赛
 """
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))  # 归档后仍可直跑：scripts/ 入 path
+
 import json
 import sys
 from datetime import date

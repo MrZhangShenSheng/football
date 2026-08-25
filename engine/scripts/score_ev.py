@@ -1,4 +1,4 @@
-"""比分 EV 审计：分联赛经验频率(Beta收缩) × 当轮体彩赔率 → 正EV清单。开发者 sszhang"""
+"""比分 EV 审计（v5.1 起为 fallback 口径，主链=boldplay A-MIX DC 概率）：分联赛经验频率(Beta收缩) × 当轮体彩赔率 → 正EV清单。开发者 sszhang"""
 import glob, json
 from collections import Counter
 from datetime import date

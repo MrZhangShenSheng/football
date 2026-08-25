@@ -7,6 +7,10 @@ r"""P0 验证：xG 接入 λ 的 walk-forward RPS 对比。
 验收（goal-driven）：xG-DC 融合在 >4/8 联赛 RPS 优于纯市场 = 模型增强成功。
 同时统计各联赛 xG 覆盖率（缺 xG 场 fallback 实际进球，覆盖率低则结果≈原 DC）。
 """
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))  # 归档后仍可直跑：scripts/ 入 path
+
 import json
 from datetime import date, datetime
 

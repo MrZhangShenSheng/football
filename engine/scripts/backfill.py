@@ -283,6 +283,8 @@ def backfill(day_limit: str | None = None) -> dict:
             hg, ag = sp_score
             hh, ha = parse_score(sp.get("halfScore")) or (None, None)
             rec["result"] = f"{hg}-{ag}"
+            if sp.get("halfScore"):
+                rec["half"] = str(sp["halfScore"])    # 半场比分落盘（boldplay settle 判 HAFU 用）
             oi = pick_outcome_idx(rec)
             rec["directionHit"] = (outcome_of(hg, ag) == oi) if oi is not None else None
             oh = option_hit(rec, hg, ag, hh, ha)

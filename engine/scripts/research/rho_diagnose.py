@@ -9,6 +9,10 @@ r"""ρ 分诊：用 walk-forward 逐场数据算 DC-市场 误差共变 + 概率
 复用 backtest.walk_forward 的忠实 walk-forward 逐场 records（每 REFIT_EVERY 场重拟合，
 只用该场之前数据，防泄漏）。门槛来自 fusion-architecture 调研的 Bates-Granger 推论。
 """
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))  # 归档后仍可直跑：scripts/ 入 path
+
 import json
 from datetime import date, datetime
 

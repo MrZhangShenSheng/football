@@ -255,11 +255,14 @@ def _direction(score: str) -> str:
     return "主胜" if h > a else ("平" if h == a else "客胜")
 
 
+HAFU_DIR = {"h": "主胜", "d": "平", "a": "客胜"}   # HAFU 两字母键 → 方向中文（首=半场 次=全场）
+
 def settle(ticket: dict, results: dict) -> dict:
-    """逐 leg 判定（phase2 任务6）。results: matchNumStr → 实际比分 'h:a'。
+    """逐 leg 判定（phase2 任务6）。results: matchNumStr → 'h:a' 或 {'score':'h:a','half':'h:a'}。
 
     HAD pick 由比分方向推导；CRS 精确比对（选项兼容 pick/score 两键——
-    计划口径用 pick，真实出票 JSON 的 upset 腿用 score）。payout 只算
+    计划口径用 pick，真实出票 JSON 的 upset 腿用 score）；HAFU 需 half
+    （backfill 体彩链路落盘，ESPN 链路无半场 → None 待人工）。payout 只算
     upset 档全中（合赔×2×倍数，推演库口径；实票结算走 tickets.json 账本）。
     """
     leg_hits, payout = {}, 0.0
@@ -270,9 +273,13 @@ def settle(ticket: dict, results: dict) -> dict:
         for note_legs in notes:
             hits = []
             for leg in note_legs:
-                sc = results.get(leg["matchNumStr"])
-                if sc is None:
+                ent = results.get(leg["matchNumStr"])
+                if ent is None:
                     hits.append(None); continue      # 赛果缺失
+                sc = ent.get("score") if isinstance(ent, dict) else ent
+                half = ent.get("half") if isinstance(ent, dict) else None
+                if sc is None:
+                    hits.append(None); continue
                 if leg["play"] == "crs":
                     ok = (leg.get("pick") or leg.get("score")) == sc
                 elif leg["play"] == "ttg":
@@ -280,7 +287,12 @@ def settle(ticket: dict, results: dict) -> dict:
                     want = str(leg.get("pick") or leg.get("score")).replace("球", "").replace("+", "")
                     ok = (h_ + a_ >= 7 and want == "7") if "7" in want and int(want) == 7 else (h_ + a_ == int(want))
                 elif leg["play"] == "hafu":
-                    hits.append(None); continue      # HAFU 需半场比分（02-results 无半场字段），人工判
+                    if not half:
+                        hits.append(None); continue  # 无半场比分（ESPN 链路/旧档），人工判
+                    pick = str(leg.get("pick") or leg.get("score"))
+                    ok = (pick[:1] in HAFU_DIR and pick[1:] in HAFU_DIR
+                          and _direction(half) == HAFU_DIR[pick[:1]]
+                          and _direction(sc) == HAFU_DIR[pick[1:]])
                 else:
                     ok = leg["pick"] == _direction(sc)
                 hits.append(ok)
@@ -297,7 +309,7 @@ def settle(ticket: dict, results: dict) -> dict:
 
 
 def _load_results(d: str) -> dict:
-    """出票日 d~d+2 三天赛果 → {场次编号: 'h:a'}（02-results 的 result 为 'h-a' 需转冒号）。"""
+    """出票日 d~d+2 三天赛果 → {场次编号: {'score':'h:a','half':'h:a'|None}}（result/half 为 'h-a' 需转冒号）。"""
     out = {}
     try:
         base = datetime.strptime(d, "%Y-%m-%d").date()
@@ -310,7 +322,8 @@ def _load_results(d: str) -> dict:
         data = json.loads(p.read_text(encoding="utf-8"))
         for rec in data.get("matches") or []:
             if rec.get("code") and rec.get("result") and rec["result"] != "不可得":
-                out[rec["code"]] = str(rec["result"]).replace("-", ":")
+                out[rec["code"]] = {"score": str(rec["result"]).replace("-", ":"),
+                                    "half": str(rec["half"]).replace("-", ":") if rec.get("half") else None}
     return out
 
 

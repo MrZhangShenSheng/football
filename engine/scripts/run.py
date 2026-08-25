@@ -88,8 +88,9 @@ def main() -> None:
     elif cmd == "backfill":
         sh("backfill.py", *rest)
     elif cmd == "verify":
-        # 回归验证闭环：回填 → 语料+趋势(断言A1-A4) → 融合重校(门槛自动跳过) → 系数消融(人审)
+        # 回归验证闭环：回填 → 票务结算(backfill内) → 阶梯卡settle → 语料+趋势(断言A1-A4) → 融合重校(门槛自动跳过) → 系数消融(人审)
         sh("backfill.py", *rest)
+        sh("boldplay.py", "settle")     # 阶梯卡推演结算（幂等安静：无出票/未完赛/已结算均跳过）
         sh("corpus.py")
         sh("trend_report.py")
         sh("calibrate.py")

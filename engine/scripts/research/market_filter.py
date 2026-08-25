@@ -6,6 +6,10 @@ r"""胜平负串关筛选分析：按 Pinnacle 收盘价隐含概率分桶，看
 n 串全中期望 = Π(1/overround) 递减。筛选高概率场提高命中率体验，但不改变负期望——
 要正收益必须 CLV > overround-1（出票赔率超收盘价的幅度 > 毛利）。
 """
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))  # 归档后仍可直跑：scripts/ 入 path
+
 import json
 
 import numpy as np

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""胜率趋势报告：回填赛果后自动跑，产出 4 张 SVG 折线图 + 分桶胜率表 → data/04-summaries/trend.html。
+"""胜率趋势报告：回填赛果后自动跑，产出七区块（①logloss vs 市场 ②命中率+滚动20场 ③CLV ④校准图 ⑤分桶下钻 ⑥方案准确率 ⑦回归断言）→ data/04-summaries/trend.html。
 
 设计依据（docs/2026-08-22-learning-loop-design.html + 文献调研 2026-08-22）：
 - 主曲线 = 累计 log loss（arXiv:1908.08980：Ignorance/log-loss 实证优于 RPS/Brier）+ 市场基线对照线
