@@ -27,9 +27,9 @@
 - `data/04-summaries/`: 五维统计 `_stats.json` + 复盘 HTML
 - `data/05-trends/`: 趋势发现 JSON
 - `data/06-tickets/`: 实票账本 `tickets.json`（票=顶层实体不按日切：形状/腿/出票赔率冻结/结算/纪律事件；**实票=有结算记录的票，其余全是方案推演**；派彩按形状算，4串11中2关只回1注2串1）+ `tickets.html` 报告（结算时重刷：资金曲线/票务清单/玩法分解/纪律对照；设计=docs/2026-08-25-tickets-design.html）
-- `engine/scripts/`: Python 脚本（dc_fit/dc_predict/elo_fetch/xg_fetch/odds_fetch/backtest/calibrate/build_index/band_calibration 概率带校准/score_ev 比分EV审计/live_odds_probe 临场价源探测）
+- `engine/scripts/`: Python 脚本（dc_fit/dc_predict/elo_fetch/xg_fetch/odds_fetch/backtest/calibrate/build_index/band_calibration 概率带校准/score_ev 比分EV审计/live_odds_probe 临场价源探测/boldplay 阶梯出票卡生成+settle推演结算/ticket_report 实票报告）
 - `engine/cache/`: DC 参数缓存（{league}_dc.json）+ `models/` 版本化存档（{league}_dc_v{n}.json+.meta+latest.json，holdout 门槛发布）+ fusion.json 融合系数 + `score_odds/` 体彩全玩法赔率日存档 + live_odds_feasibility.json 临场价源结论（2026-08-24 探测：pinnacle 直连被墙/the-odds-api 需 key → 层1 降级上轮收盘先验）
-- `skill/SKILL.md`: 预测 skill v4.10（junction 到 ~/.claude/skills/）+ `skill/references/` 外置参考（系数详表/官方玩法规则/教训档案，skill 正文按需加载）
+- `skill/SKILL.md`: 预测 skill v5.0（junction 到 ~/.claude/skills/）+ `skill/references/` 外置参考（系数详表/官方玩法规则/教训档案，skill 正文按需加载）
 - `docs/`: 设计文档
 
 ## 检索铁律

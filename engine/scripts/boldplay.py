@@ -1,7 +1,8 @@
-"""Bold Play 阶梯出票卡生成器：三档组装/限额反算/月封顶。开发者 sszhang
+"""Bold Play 阶梯出票卡生成器：三档组装/限额反算/月封顶/settle 回填。开发者 sszhang
 密度口径（体彩真实池水，skill v4.9 实测）：HAD 0.871^串 / CRS 0.661^串；4串单注限额50万。"""
-import glob, json
-from datetime import date
+import glob, json, sys
+from datetime import date, datetime, timedelta
+from pathlib import Path
 from band_calibration import devid
 from score_ev import build_freq_table, ev_scan
 
@@ -92,7 +93,92 @@ def build_ticket(odds_day: dict, freq_table: dict, seq: int) -> dict:
         "postTaxNote": "单注奖金超1万部分税20%;4串单注限额50万已反算倍数",
     }
 
+def _direction(score: str) -> str:
+    h, a = (int(x) for x in score.split(":"))
+    return "主胜" if h > a else ("平" if h == a else "客胜")
+
+
+def settle(ticket: dict, results: dict) -> dict:
+    """逐 leg 判定（phase2 任务6）。results: matchNumStr → 实际比分 'h:a'。
+
+    HAD pick 由比分方向推导；CRS 精确比对（选项兼容 pick/score 两键——
+    计划口径用 pick，真实出票 JSON 的 upset 腿用 score）。payout 只算
+    upset 档全中（合赔×2×倍数，推演库口径；实票结算走 tickets.json 账本）。
+    """
+    leg_hits, payout = {}, 0.0
+    for tier, blob in ticket.get("tiers", {}).items():
+        leg_hits[tier] = []
+        raw_legs = blob.get("legs") or []
+        notes = raw_legs if raw_legs and isinstance(raw_legs[0], list) else [raw_legs]
+        for note_legs in notes:
+            hits = []
+            for leg in note_legs:
+                sc = results.get(leg["matchNumStr"])
+                if sc is None:
+                    hits.append(None); continue      # 赛果缺失
+                if leg["play"] == "crs":
+                    ok = (leg.get("pick") or leg.get("score")) == sc
+                else:
+                    ok = leg["pick"] == _direction(sc)
+                hits.append(ok)
+            leg_hits[tier].append(hits)
+    u = ticket["tiers"].get("upset", {})
+    upset_hit = bool(u) and all(h is True for h in leg_hits.get("upset", [[]])[0])
+    if upset_hit:
+        raw = 2 * u["multiplier"]
+        for leg in u["legs"]:
+            raw *= leg["odds"]
+        payout = raw
+    return {"legHits": leg_hits, "upsetHit": upset_hit, "payout": payout,
+            "densityRecovered": round(payout / ticket.get("totalCost", 1), 4)}
+
+
+def _load_results(d: str) -> dict:
+    """出票日 d~d+2 三天赛果 → {场次编号: 'h:a'}（02-results 的 result 为 'h-a' 需转冒号）。"""
+    out = {}
+    try:
+        base = datetime.strptime(d, "%Y-%m-%d").date()
+    except ValueError:
+        return out
+    for delta in (0, 1, 2):
+        p = Path(f"data/02-results/{base + timedelta(days=delta)}.json")
+        if not p.exists():
+            continue
+        data = json.loads(p.read_text(encoding="utf-8"))
+        for rec in data.get("matches") or []:
+            if rec.get("code") and rec.get("result") and rec["result"] != "不可得":
+                out[rec["code"]] = str(rec["result"]).replace("-", ":")
+    return out
+
+
+def cmd_settle() -> None:
+    paths = sorted(glob.glob("data/03-predictions/*-boldplay.json"))
+    if not paths:
+        print("[boldplay] 无出票 JSON"); return
+    p = Path(paths[-1])
+    ticket = json.loads(p.read_text(encoding="utf-8"))
+    if ticket.get("settle"):
+        print(f"[boldplay] {p.name} 已结算(payout={ticket['settle']['payout']:.0f})，跳过"); return
+    results = _load_results(ticket["date"])
+    codes = set()
+    for tier in ticket["tiers"].values():
+        legs = tier.get("legs") or []
+        for note in (legs if legs and isinstance(legs[0], list) else [legs]):
+            codes.update(l["matchNumStr"] for l in note)
+    missing = sorted(c for c in codes if c not in results)
+    if missing:
+        print(f"[boldplay] 赛果未回填: {', '.join(missing)}（完赛后重跑）"); return
+    res = settle(ticket, results)
+    ticket["settle"] = {**res, "settledAt": str(date.today())}
+    p.write_text(json.dumps(ticket, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    u = res["legHits"].get("upset", [[]])[0]
+    print(f"[boldplay] settle {p.name}: upset {sum(1 for h in u if h)}/{len(u)}关 "
+          f"全中={res['upsetHit']} payout={res['payout']:.0f} 密度回收={res['densityRecovered']} → 已写回 settle 字段")
+
+
 def main() -> None:
+    if len(sys.argv) > 1 and sys.argv[1] == "settle":
+        return cmd_settle()
     latest = sorted(glob.glob("engine/cache/score_odds/*.json"))[-1]
     odds = json.load(open(latest, encoding="utf-8"))
     table = build_freq_table()

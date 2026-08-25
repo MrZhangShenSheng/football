@@ -34,7 +34,7 @@ def build_freq_table() -> dict:
                     blob[norm_score(r["FTHG"], r["FTAG"])] += 1; blob["__n"] += 1
                 except (KeyError, ValueError, TypeError): continue
     for path in glob.glob("data/02-results/league/*_matches.json"):
-        key = path.split("/")[-1].replace("_matches.json", "")
+        key = path.replace("\\", "/").split("/")[-1].replace("_matches.json", "")  # Windows glob 返回反斜杠，先归一再取文件名（2026-08-25 本地1948场静默丢失修复）
         if key not in ("japan", "korea", "sweden", "saudi"): continue
         blob = table.setdefault(key, Counter())
         data = json.load(open(path, encoding="utf-8"))
