@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bold Play 阶梯出票系统设计</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,700&display=swap">
+<style>
+:root{
+  --bg:#f4f2ec;--fg:#1a1d1a;--card:#fbfaf6;--border:#d8d3c4;
+  --accent:#2f6b3e;--accent-soft:#e6efd9;
+  --success:#2f6b3e;--warn:#b07a12;--warn-soft:#f4e9cf;--danger:#a3322b;--danger-soft:#f3dedc;
+  --muted:#6b6b5e;--ink:#14161a
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){
+  --bg:#14161a;--fg:#d8d4c8;--card:#1d2024;--border:#2e3236;
+  --accent:#6fae7a;--accent-soft:#1f2a22;
+  --success:#6fae7a;--warn:#cda43f;--warn-soft:#2a2418;--danger:#d96a5e;--danger-soft:#2a1a1a;
+  --muted:#8a8a7c;--ink:#d8d4c8
+}}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--fg);line-height:1.72;padding:2rem 1.25rem 4rem;max-width:880px;margin:0 auto;font-size:15px;font-variant-numeric:tabular-nums}
+h1,h2,.thesis{font-family:"Newsreader",Georgia,serif}
+h1{font-size:2rem;font-weight:700;letter-spacing:-.01em;text-wrap:balance;line-height:1.2}
+h2{font-size:1.28rem;font-weight:700;color:var(--accent);margin:2.4rem 0 .7rem;padding-bottom:.3rem;border-bottom:1.5px solid var(--border);text-wrap:balance}
+h3{font-size:1.02rem;font-weight:600;margin:1.1rem 0 .4rem}
+.sub{color:var(--muted);font-size:.82rem;margin:.4rem 0 1.4rem}
+.thesis{font-size:1.18rem;line-height:1.6;margin:1.2rem 0 .4rem;padding:1.1rem 1.2rem;background:var(--accent-soft);border-left:3px solid var(--accent);border-radius:0 6px 6px 0;text-wrap:balance}
+.thesis b{color:var(--accent)}
+.verdicts{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.4rem 0}
+.v{display:flex;align-items:center;gap:.4rem;font-size:.78rem;padding:.3rem .65rem;border-radius:20px;border:1px solid var(--border);background:var(--card)}
+.v::before{content:"";width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.v-ok{color:var(--success);background:var(--accent-soft);border-color:var(--accent)}
+.v-ok::before{background:var(--accent)}
+.v-warn{color:var(--warn);background:var(--warn-soft);border-color:var(--warn)}
+.v-warn::before{background:var(--warn)}
+.v-bad{color:var(--danger);background:var(--danger-soft);border-color:var(--danger)}
+.v-bad::before{background:var(--danger)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1rem}
+.card p{margin:.4rem 0}
+.lede{color:var(--muted);font-size:.92rem;margin:.3rem 0 .8rem}
+code,pre,.mono{font-family:Consolas,Menlo,"Liberation Mono",monospace}
+code{font-size:.84rem;background:var(--accent-soft);padding:1px 5px;border-radius:3px;color:var(--fg)}
+pre{font-size:.8rem;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:.8rem 1rem;overflow-x:auto;margin:.6rem 0;line-height:1.55;color:var(--fg)}
+table{width:100%;border-collapse:collapse;font-size:.8rem;margin:.6rem 0}
+th,td{padding:.38rem .55rem;text-align:right;border-bottom:1px solid var(--border);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{background:var(--accent-soft);color:var(--accent);font-weight:600}
+tr.tot td{font-weight:700;border-top:1.5px solid var(--accent);color:var(--accent)}
+.neg{color:var(--danger)}.pos{color:var(--success)}.mut{color:var(--muted)}
+.pathmap{width:100%;height:auto;display:block;margin:1.2rem 0;overflow:visible}
+.figcap{font-size:.78rem;color:var(--muted);text-align:center;margin:.2rem 0 1.4rem}
+.src{font-size:.76rem;color:var(--muted);border-top:1px dashed var(--border);margin-top:2.4rem;padding-top:.8rem;line-height:1.9}
+.src code{font-size:.72rem}
+sup{color:var(--muted)}
+</style>
+</head><body>
+<h1>Bold Play 阶梯出票系统</h1>
+<div class="sub">2026-08-24 · 桂林形状 · 三档阶梯 · 审计先行 —— 从「模型无增量」到「负期望下的密度最优」</div>
+
+<div class="thesis">审计证明市场打不败，但没证明「以小博大」无解。结果 = EV × 杠杆：EV 维度已封死（CLV&gt;4.5% 唯一出路），杠杆维度从未被审计。本设计在<b>接受负期望</b>的前提下，用 bold play 定理与两例千万实证，把 20 元预算的「翻身概率密度」压到数学允许的上限。</div>
+
+<div class="verdicts">
+<span class="v v-ok">目标：一把翻身 · 阶梯多档</span>
+<span class="v v-ok">预算：20 元/比赛日轮 · 月封顶 240 元</span>
+<span class="v v-warn">翻身档：比分 4串1 双形状轮换</span>
+<span class="v v-ok">节奏：假设验证先行（接口→价源→校准→脚本）</span>
+<span class="v v-bad">边界：优化密度 ≠ 把负变正</span>
+</div>
+
+<h2>一、背景：审计封死了什么，没封死什么</h2>
+<p class="lede">上游结论：<code>docs/2026-08-24-model-audit-design.html</code> —— 四路验证（xG / Elo / 纯跟盘 / DC 比分）全部收敛于「市场定价充分，DC 三向 RPS 与比分命中率均无市场增量」。</p>
+<p>把「以小博大」拆成两个独立变量：<b>期望值（EV）× 杠杆（方差）</b>。审计封死的是 EV 维度——三向市场任何模型打不过 Pinnacle 收盘价，每关期望恒 ≈0.95，筛选与串关均不改变负期望。但审计<b>从未触及杠杆维度</b>：在给定负期望下，如何最大化「小本金达到目标金额」的概率，这在数学上有精确答案（Dubins–Savage bold play 定理），在现实中有两例千万级实证（下节）。两者形状完全一致，且与直觉相反：<b>不是分散风险，而是极少数高杠杆单选</b>。</p>
+
+<h2>二、实证：两例千万大奖是同一种形状</h2>
+<table>
+<thead><tr><th>案例</th><th>出票</th><th>玩法</th><th>投入</th><th>奖金</th><th>合赔</th><th>场均比分赔率</th></tr></thead>
+<tbody>
+<tr><td>桂林 2026-06-26</td><td>世界杯 4 场</td><td>比分 4串1 单选 × 25 倍</td><td>50 元</td><td class="pos">182.7 万</td><td>36,540 倍</td><td>≈13.8</td></tr>
+<tr><td>梅州 2023-02-25</td><td>足球 4 场</td><td>比分 4串1 单选 × 20 倍</td><td>40 元</td><td class="pos">1,000 万</td><td>250,000 倍</td><td>≈22.4</td></tr>
+<tr class="tot"><td>共性</td><td>—</td><td>单选 · 不复式 · 倍投</td><td>≤50 元</td><td>百万~千万</td><td>万~十万倍</td><td>中高赔带</td></tr>
+</tbody>
+</table>
+<p>三个结构细节构成「桂林形状」：①<b>单选不复式</b>——复式把概率质量摊到冗余组合，密度被稀释；②<b>倍投 20~25 倍</b>——倍投不改变中奖概率，只把奖金放大到翻身档（单倍 2 元即使命中也只 7~50 万）；③<b>场均 14~22 倍的中高赔比分</b>——不用最稳的 1-1，用小概率换大杠杆。对照组：任九历史单注上限 259 万（池子玩法封顶），复式大票才能触及；竞彩比分串杠杆高出一个数量级，是千万级大奖的唯一实证通道<sup>（来源见文末）</sup>。</p>
+
+<h2>三、数学：每元密度框架</h2>
+<pre>目标中 M 倍 → 每元暴富密度 = (1+EV) / o    （o=合成赔率含本金）
+推论①  赔率恰卡目标：o &gt; M 的超出 = 浪费的概率质量
+推论②  EV 是唯一优化变量：正 CLV 场次密度线性提升
+推论③  串内 EV 乘积关系：0.95⁸=−34%（胜平负8串） vs 0.95⁴≈−19%（比分4串）
+体彩池水修正(skill v4.9实测): CRS 4串期望返还 0.661⁴≈19.1% / HAD 8串 0.871⁸≈33% —— 0.95/关系Pinnacle口径不适用体彩池;百万级通道唯一性不变,期望损耗按此标注
+                 ↑ 同为千倍级杠杆，比分 4 串密度 81% &gt; 胜平负 8 串 66%
+上限：密度 ≤ 1/M（公平赌局才取到）。10 元博万倍的概率上限 0.1%，
+     负期望+抽水实际约 0.06~0.08% —— 优化的是逼近上限，不是突破它。</pre>
+<p>这就是「为什么历史大奖全是比分 4串1 而不是胜平负 8串」的数学解释：同杠杆下 EV 损耗少一半。本设计所有档位选择均由此密度公式驱动。</p>
+
+<h2>四、阶梯三档结构（20 元/轮）</h2>
+<svg class="pathmap" viewBox="0 0 840 250" role="img" aria-label="三档阶梯结构图">
+<defs><marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs>
+<style>
+.lvbox{fill:var(--card);stroke:var(--border);stroke-width:1.2;rx:8}
+.lvtitle{font:600 15px -apple-system,system-ui;fill:var(--accent)}
+.lvsub{font:400 11.5px -apple-system,system-ui;fill:var(--muted)}
+.lvbig{font:700 20px "Newsreader",Georgia,serif;fill:var(--ink)}
+.lvline{stroke:var(--border);stroke-width:1}
+.lvflow{stroke:currentColor;stroke-width:1.4;fill:none;marker-end:url(#arr)}
+.lvnote{font:italic 400 11px -apple-system,system-ui;fill:var(--muted)}
+</style>
+<rect class="lvbox" x="20" y="150" width="250" height="88" rx="8"/>
+<text class="lvtitle" x="36" y="174">保底档 · 4 元</text>
+<text class="lvbig" x="36" y="200">≈50 倍</text>
+<text class="lvsub" x="36" y="222">胜平负 4串1 × 2 注（互补覆盖）</text>
+<rect class="lvbox" x="296" y="82" width="250" height="88" rx="8"/>
+<text class="lvtitle" x="312" y="106">进阶档 · 6 元</text>
+<text class="lvbig" x="312" y="132">≈200 倍</text>
+<text class="lvsub" x="312" y="154">胜平负 5串1 / 比分 3串1</text>
+<rect class="lvbox" x="572" y="14" width="248" height="88" rx="8"/>
+<text class="lvtitle" x="588" y="38">翻身档 · 10 元 ★</text>
+<text class="lvbig" x="588" y="64">2.5万~25万倍</text>
+<text class="lvsub" x="588" y="86">比分 4串1 单选 × 4~5 倍 · 双形状轮换</text>
+<path class="lvflow" d="M270,194 L296,128"/>
+<path class="lvflow" d="M546,126 L572,60"/>
+<text class="lvnote" x="30" y="120">中奖额：100 元级 · 命中频率 1~3%/轮（体验层）</text>
+<text class="lvnote" x="306" y="52">中奖额：1,200 元级 · ~0.5%/轮（中间层）</text>
+<text class="lvnote" x="560" y="128">中奖额：桂林形状 30~180 万 / 梅州形状 250 万级</text>
+<text class="lvnote" x="560" y="146">命中 ~1/5,000（桂林）· ~1/50,000（梅州）</text>
+</svg>
+<div class="figcap">图 1 · 阶梯三档：越往上杠杆越高、密度越低——「牺牲一点总密度换中奖分布的层次感」（用户拍板）</div>
+<p>双形状轮换规则（轮次序号按预测报告递增编号）：<b>奇数轮桂林形状</b>（场均 ≈14 倍比分，合赔 ≈3.6 万倍 × 4 倍投 = 8 元，命中 29 万级，结余 2 元并入进阶档）；<b>偶数轮梅州形状</b>（场均 ≈22 倍比分，合赔 ≈25 万倍 × 5 倍投 = 10 元，命中 250 万级）。两注均单选、同倍投结构，仅比分赔率带不同。若当轮合赔偏离目标带 ±30%，按最接近形状归档并在报告标注。翻身档预算上限 10 元，档内不超支；倍数须过<b>封顶反算</b>：单注奖金 = 合赔 × 2 元，超 4 串档 50 万限额则倍数 = ⌊50万/单注⌋（官方分档限额，非 500 万）。</p>
+<p><b>档内规则（评审补齐）</b>：保底档「2 注互补」定义为<b>共享场次 ≤2</b>（相关性控制，两注在错开的关键场次上取不同方向）；进阶档默认胜平负 5串1，仅当比分盘开售 ≥4 场且正 EV 比分 ≥3 时切换比分 3串1；进阶/保底档的场次与翻身档可复用（同场不同玩法），但同一场在同一档内不重复。</p>
+
+<h2>五、冷门场景识别：四层锚（前三层零积累依赖）</h2>
+<p class="lede">设计评审提出的缺口：体彩历史赔率无留存、预测积累刚开始——「体彩哪里定错过」无法回测。解法不是等积累，是换锚。且 fd 多赛季数据给出了直接实证。</p>
+<pre>层1 当轮横向锚：体彩价 vs Pinnacle<b>临场</b>去水价同场对比 → 反常交叉 = 出手信号
+     ⚠ 前提依赖：临场价源未解决（fd CSV 只有已完赛收盘价）——阶段一任务1 验证
+     候选：the-odds-api(500次/月免费) / Pinnacle 镜像站 / B365 即时价抓取
+     全部不可达 → 层1 降级为「上轮收盘价作下轮先验」，v1 以层2/3 起步
+层2 历史纵向锚：概率带过滤（下表实证）+ B365 开→收移动回测（1,710 场有 &gt;3% 移动）
+层3 场景条件锚：分联赛 × 场景（周中/欧战后/赛季段）冷门率条件表
+     data/00-leagues 已有骨架（upsetRate 29.2%），多赛季赛果升级——只作过滤器，不作概率锚
+层4 积累回路：体彩赔率存档从本轮滚动（见下节）</pre>
+<h3>概率带实证：深冷确定是毒药，均势与大热仅为「不差带」（2 季 × 5 联赛 7,948 项，Pinnacle 收盘价）</h3>
+<table>
+<thead><tr><th>方向概率档</th><th>n</th><th>回报率</th><th>判定</th></tr></thead>
+<tbody>
+<tr><td>深冷门 &lt;15%</td><td>751</td><td class="neg">0.681</td><td class="neg"><b>排除带</b>——FLB，全市场最差（0.68 远超噪声带）</td></tr>
+<tr><td>次冷 15-30%</td><td>3,566</td><td class="neg">0.957</td><td>正常负期望，无理由偏好</td></tr>
+<tr><td>均势 30-45%</td><td>1,889</td><td>1.004</td><td>不差带 A（微正未证显著，勿当正EV）</td></tr>
+<tr><td>热门 45-60%</td><td>1,026</td><td class="neg">0.964</td><td>正常负期望</td></tr>
+<tr class="tot"><td>大热 &gt;60%</td><td>718</td><td>1.001</td><td>不差带 B（同上，待分联赛校准）</td></tr>
+</tbody>
+</table>
+<p><b>统计纪律</b>：1.004/1.001 的点估计在高赔回报率的大方差下置信区间宽（±0.03~0.05），且五桶挑二正本身是选择偏差（data snooping）——「不差带」仅表示<b>排除依据</b>（不比别处差）而非<b>买入依据</b>；升级为「可买带」须阶段一 bootstrap 分联赛校准通过。落到体彩票上仍须满足层1（体彩价 ≥ 临场锚公平价）才构成出手。</p>
+<p><b>核心区分：「博冷门」≠「以小博大」</b>。深冷方向（&lt;15%）回报率 0.68——彩民集体高估冷门，市场把高赔压得最狠。而桂林/梅州案例的场均 13.8~22.4 倍比分，其<b>方向</b>大多落在大热/均势带（强队赢，押具体比分）——高赔来自玩法结构（比分盘），不是方向冷门。因此：三档全部排除深冷方向，翻身档选场偏好不差带。</p>
+<p><b>已知逻辑跳跃（须承认）</b>：上表实证的是<b>三向盘</b>回报率，而翻身档买的是<b>比分盘</b>——比分盘自身抽水结构未知（通常高于三向，可能 15~20%），「方向合理」≠「该场比分定价合理」。此跳跃无法用三向数据闭合，唯一闭环路径是 score_ev.py 的比分专项审计 + 层4 积累回路实测。</p>
+
+<h2>六、新组件：比分 EV 审计（engine/scripts/score_ev.py）</h2>
+<svg class="pathmap" viewBox="0 0 840 300" role="img" aria-label="比分EV审计数据流">
+<style>
+.nd{fill:var(--card);stroke:var(--border);stroke-width:1.2}
+.ndt{font:600 13px -apple-system,system-ui;fill:var(--ink);text-anchor:middle}
+.nds{font:400 10.5px -apple-system,system-ui;fill:var(--muted);text-anchor:middle}
+.ed{stroke:currentColor;stroke-width:1.4;fill:none;marker-end:url(#arr)}
+.edlab{font:400 10.5px -apple-system,system-ui;fill:var(--muted)}
+.acc{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.4;stroke-dasharray:5 4}
+</style>
+<rect class="nd" x="20" y="20" width="170" height="58" rx="7"/>
+<text class="ndt" x="105" y="44">fd CSV 历史赛季</text>
+<text class="nds" x="105" y="60">8 联赛 · 5 季 · 全比分</text>
+<rect class="nd" x="20" y="100" width="170" height="58" rx="7"/>
+<text class="ndt" x="105" y="124">league 本地库</text>
+<text class="nds" x="105" y="140">日韩瑞沙 1,948 场比分</text>
+<rect class="nd" x="20" y="180" width="170" height="58" rx="7"/>
+<text class="ndt" x="105" y="204">体彩当轮比分赔率</text>
+<text class="nds" x="105" y="220">sporttery_fetch 扩展采集</text>
+<rect class="nd" x="262" y="92" width="180" height="64" rx="7"/>
+<text class="ndt" x="352" y="114">分联赛比分频率表</text>
+<text class="nds" x="352" y="130">Beta 收缩估计</text>
+<text class="nds" x="352" y="144">（小样本防过拟合）</text>
+<rect class="nd" x="262" y="192" width="180" height="56" rx="7"/>
+<text class="ndt" x="352" y="214">赔率存档</text>
+<text class="nds" x="352" y="230">engine/cache/score_odds/</text>
+<rect class="nd" x="514" y="140" width="180" height="64" rx="7"/>
+<text class="ndt" x="604" y="162">正 EV 比分清单</text>
+<text class="nds" x="604" y="178">EV = q_league × o − 1</text>
+<text class="nds" x="604" y="192">按 EV 降序 · data/04-summaries/</text>
+<rect class="acc" x="514" y="232" width="306" height="56" rx="7"/>
+<text class="ndt" x="667" y="254">积累回路：存档 → 回填赛果 → 实测库</text>
+<text class="nds" x="667" y="270">每轮滚动变强的资产（体彩比分 EV 直接验证）</text>
+<path class="ed" d="M190,49 L262,110"/>
+<path class="ed" d="M190,129 L262,124"/>
+<path class="ed" d="M190,209 L262,214"/>
+<path class="ed" d="M442,124 L514,164"/>
+<path class="ed" d="M442,220 L514,180"/>
+<path class="ed" d="M694,204 L694,232"/>
+<path class="ed" d="M820,260 L832,260 Q838,260 838,254 L838,60 Q838,52 830,52 L196,40" stroke-dasharray="5 4"/>
+<text class="edlab" x="700" y="30">回填闭环反哺频率/实测</text>
+</svg>
+<div class="figcap">图 2 · score_ev.py 数据流：经验频率 × 当轮体彩赔率 → 正 EV 清单；虚线为回填积累回路</div>
+<p>现状约束（已验证）：体彩比分<b>历史</b>赔率无留存（预测 JSON 仅存 pick 赔率），故 v1 审计口径 =「分联赛经验频率 × 当轮赔率」静态扫描；从部署轮起全量存档，回填后形成实测库，逐步从先验过渡到实测。比分盘非全场次开售：缺盘场次降级——翻身档从开售场次中选，不足 4 场时该轮翻身档关闭、预算并入进阶档（不硬凑）。</p>
+
+<h2>七、翻身档比分选法决策树</h2>
+<svg class="pathmap" viewBox="0 0 840 320" role="img" aria-label="比分选法决策树">
+<style>
+.dq{fill:var(--warn-soft);stroke:var(--warn);stroke-width:1.2}
+.dn{fill:var(--card);stroke:var(--border);stroke-width:1.2}
+.dg{fill:var(--card);stroke:var(--danger);stroke-width:1.2}
+.dt{font:600 12.5px -apple-system,system-ui;fill:var(--ink);text-anchor:middle}
+.ds{font:400 10.5px -apple-system,system-ui;fill:var(--muted);text-anchor:middle}
+.de{stroke:currentColor;stroke-width:1.3;fill:none;marker-end:url(#arr)}
+.dl{font:600 10.5px -apple-system,system-ui;fill:var(--accent)}
+.dr{font:600 10.5px -apple-system,system-ui;fill:var(--danger)}
+</style>
+<rect class="dn" x="310" y="10" width="220" height="42" rx="7"/>
+<text class="dt" x="420" y="28">选场池：当轮开售比分盘场次</text>
+<text class="ds" x="420" y="44">体彩 insight + 赛程交叉</text>
+<rect class="dq" x="310" y="76" width="220" height="46" rx="20"/>
+<text class="dt" x="420" y="95">① 方向过带过滤？</text>
+<text class="ds" x="420" y="111">排除 &lt;15%；偏好 30-45% / &gt;60%（不差带）</text>
+<rect class="dg" x="590" y="76" width="220" height="46" rx="7"/>
+<text class="dt" x="700" y="94">否 → 整场排除</text>
+<text class="ds" x="700" y="110">深冷 &lt;15% 是毒药（回报率 0.68）</text>
+<rect class="dq" x="310" y="152" width="220" height="46" rx="20"/>
+<text class="dt" x="420" y="171">② 正 EV 比分 ≥ 4 个？</text>
+<text class="ds" x="420" y="187">按轮换形状筛赔率带 + 层1 横向锚</text>
+<rect class="dn" x="30" y="152" width="240" height="62" rx="7"/>
+<text class="dt" x="150" y="174">是 → 取 EV 最高 4 个</text>
+<text class="ds" x="150" y="190">合赔落形状目标带（±30% 校验）</text>
+<text class="ds" x="150" y="204">DC top5 交集 = 叙事加分（不进权重）</text>
+<rect class="dn" x="310" y="224" width="240" height="62" rx="7"/>
+<text class="dt" x="430" y="246">否 → 退经验频率 top 比分</text>
+<text class="ds" x="430" y="262">1-1 / 1-0 / 2-1（合赔 4~6 千倍）</text>
+<text class="ds" x="430" y="276">报告标注「无正EV·频率退路」</text>
+<rect class="dn" x="590" y="224" width="220" height="46" rx="7"/>
+<text class="dt" x="700" y="242">可买带场次 &lt; 4 → 关档并预算</text>
+<text class="ds" x="700" y="258">并入进阶档，不硬凑</text>
+<path class="de" d="M420,52 L420,76"/>
+<path class="de" d="M530,99 L590,99"/>
+<text class="dr" x="550" y="92">否</text>
+<path class="de" d="M420,122 L420,152"/>
+<text class="dl" x="428" y="142">是</text>
+<path class="de" d="M310,175 L270,183"/>
+<text class="dl" x="282" y="170">是</text>
+<path class="de" d="M420,198 L420,224"/>
+<text class="dl" x="428" y="218">否</text>
+</svg>
+<div class="figcap">图 3 · 决策树：选场 → 带过滤（排除为实、偏好待校准）→ 正 EV 优先 → 经验频率退路 → 关档保护。DC 仅作叙事校验（遵守审计结论）</div>
+
+<h2>八、skill 流程整合</h2>
+<pre>「帮我预测」 → 报告末尾追加：阶梯出票卡（替换旧「搏奖/平衡/保本」三段式方案）
+               （三档：预算/场次/比分/倍数/合赔/中奖额/密度表 + 税后额标注）
+               旧修正链保留并作用于三档选场：EV 转负剔除 / R1 修正 / λ 失真撤单
+「再跑一遍」 → 复扫含体彩比分赔率二次采集（赔率变动即 EV 变动）
+「回填赛果」 → 新增比分 EV 回测：所存赔率 vs 实际赛果，正 EV 清单迭代
+               逐场判定部分命中（比分 4串 对 3/4 场 = 频率验证数据点）</pre>
+<h3>出票时点与对账（评审补齐）</h3>
+<p>用户已确认<b>可临场出票</b>（APP/实体店）：出票时点 = 首发公布后 30~60 分钟（层1 CLV 窗口有效）；提前出的票在出票卡标注「无临场锚·按层2/3 出手」。出票 JSON 结构：<code>{tier, legs:[{match, play, pick, odds}], multiplier, cost, expOdds}</code>——回填时按 leg 逐场判定，部分命中写入 <code>legHits</code>，为层4 实测库供数。</p>
+
+<h2>九、评估与风险边界</h2>
+<div class="card">
+<p><b>资金管理（评审补齐，用户拍板）</b>：轮 = <b>比赛日轮</b>（体彩周几编号口径，每周约 5-7 轮）；单轮 20 元固定，<b>月度封顶 240 元</b>（约 8-10 个有效比赛日轮 + 缓冲），触及即当月停——由 run.py 按月累计出票 JSON 成本自动执行。连续运行 26 轮（半年）无任何档位命中时强制复盘一次：验证层4 实测 EV 是否与先验一致，决定继续/调整/终止。</p>
+<p><b>评估</b>：轮次级「累计密度消耗 vs 实际命中」两条曲线（trend.html 扩展）。密度消耗曲线的用途是<b>验证层4 实测 EV</b>（实测密度回收率 vs 先验密度），不是验证运气——实际命中偏低属期望内，不构成「系统失灵」信号。翻身档命中率参考量级 1/5,000~1/50,000——<b>不设命中率 KPI</b>，防止用低档命中自我安慰。</p>
+<p><b>风险与边界</b>：① 大奖超 1 万部分征 20% 偶然所得税，出票卡一律标税后额；② 竞彩<b>单注奖金封顶 500 万</b>——倍数须封顶反算（见档内规则），合赔飙高的轮不浪费密度；③ 比分频率联赛特异性强（英超 1-1 ≠ 葡超 1-1），频率表必须分联赛；④ Beta 收缩防小样本过拟合（某比分 n&lt;30 时向全局均值收缩）；⑤ 负期望本质写入每期报告脚注——本系统优化的是<b>逼近密度上限</b>，不改变 EV 为负的事实；⑥ 经验频率是「过去 5 季」的先验，实测库积累前存在漂移风险，靠积累回路收敛；⑦ 「不差带」未经 bootstrap 分联赛校准前仅作排除依据，不作买入依据（统计纪律见第五节）。</p>
+</div>
+
+<h2>十、落地计划（假设验证先行 · 两阶段）</h2>
+<pre>阶段一（验证→审计，按依赖排序）
+  任务0 接口实测  sporttery_fetch 扩展拉体彩比分赔率（格式/字段/覆盖率）
+                 + 统计近 30 天比分盘开售场次规模 → 决定翻身档成色
+  任务1 价源验证  临场价候选逐一实测：the-odds-api(500次/月) / 镜像站 / B365 即时价
+                 可达 → 层1 v1 启用；全灭 → 层1 降级上轮收盘先验
+  任务2 带校准    概率带 bootstrap 分联赛校准（置信区间），通过 → 「不差带」升「可买带」
+                 + B365 开→收移动回测（聪明钱方向，1,710+ 场）
+  任务3 score_ev  频率表构建 + 当轮体彩比分赔率采集存档 + 正 EV 清单产出
+  产出：接口可行性报告 + 价源结论 + 可买带清单（分联赛）+ 正 EV 比分清单
+决策门（每任务独立 gate，失败不阻塞后续降级路径）
+  ① 比分开售常态 ≥4 场/轮？ ├─ 否 → 翻身档常态关档，预算并进阶档（设计仍成立）
+  ② 临场价源可达？          ├─ 否 → 层1 降级，v1 以层2/3 起步
+  ③ 可买带分联赛稳健？      ├─ 否 → 带过滤只用「排除带」，不偏好
+  ④ 正 EV 比分 ≥3联赛×2比分？├─ 否 → 翻身档走经验频率退路（形状不依赖正EV）
+阶段二（落地）  skill 方案生成改造（替换旧三段式，保留修正链）+ 出票卡
+                + 回填回测（逐 leg 判定）+ trend 密度曲线 + 月度封顶执行器</pre>
+
+
+<h2>十一、阶段一执行结论（2026-08-24 当日落地）</h2>
+<pre>Gate0 开售规模  ✅ 13 场全开售比分盘、每场 31 项赔率（28 比分 + 3 其他）+ 调价时间戳
+                → 翻身档供给充足（存档器 dump-odds 已常态化，engine/cache/score_odds/）
+Gate1 临场价源  ⚠ verdict=layer1_prior —— pinnacle 直连超时（疑被墙）、the-odds-api 可达但需 ODDS_API_KEY
+                → 层1 降级「上轮收盘先验」（预埋路径），注册 key（免费 500 次/月）可升级
+Gate2 概率带    baseline=0.9449；&lt;0.15 八联赛全「排除带」（毒药分联赛稳健）
+                可买带仅 &gt;=0.60 档 3 联赛（意甲/葡超/西甲）+ 葡超 0.45-0.60 档；
+                0.30-0.45 均势带 0 联赛达标——总体 1.004 确系 data snooping 噪声（第五节预判证实）
+Gate4 比分 EV   n_scanned=364；n_positive=122 但全部 n=0（极端长打×全局池先验噪声，
+                联赛中文名↔fd 英文 id 不匹配全线回退全局池）→ 可信正 EV=0，
+                翻身档走经验频率退路（预埋路径，形状不变）
+阶段二首任务    ① 联赛中文名→fd id 映射 ② score_ev 摘要拆 n_positive_league_backed/prior_only
+                ③ 重跑 score_ev（终审裁定：消费 score_ev.json 前必须完成，否则 122 噪声被当信号）
+全量回归        pytest 75 passed；四任务审查全 Approved；终审 ready for phase-2</pre>
+
+<div class="src"><b>数据与案例来源</b><br>
+· 上游审计：<code>docs/2026-08-24-model-audit-design.html</code>（1055 场 walk-forward，四路验证收敛）<br>
+· 桂林案例：广西体彩 2026-07-02 官方披露（新浪新闻 sina.cn/news/detail/5316241172728905.html · 腾讯新闻 new.qq.com/rain/a/20260702V06CM900）<br>
+· 梅州案例：2023-02-25 出票，梅州体彩庆贺仪式报道（28 岁小伙比分 4串1 × 20 倍 = 40 元 → 1,000 万）<br>
+· 任九对照：新浪竞技风暴历史案例集（单注上限 259 万 · 2014-07 大冷期；1458 元 3胆6包复式 / 8 元小复式两极）<br>
+· 密度数学：Dubins–Savage《How to Gamble If You Must》subfair game 的 bold play 最优性<br>
+· 本地数据：fd CSV（odds_fetch.py 可拉 8 联赛 5 季含比分）· data/02-results/league/（1,948 场）· data/04-summaries/dc_score_backtest.json（经验频率 1-1 121 场 / top1 11.47% / top3 28.91%）<br>
+· 概率带实证：本设计日即时扫描（football-data.co.uk 2425+2526 × 英西德意法，7,948 项 Pinnacle 收盘口径；深冷&lt;15% 回报率 0.681 / 均势 30-45% 1.004 / 大热&gt;60% 1.001；B365 开收移动 &gt;3% 共 1,710 场）<br>
+· 开发者：sszhang</div>
+</body></html>

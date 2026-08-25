@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bold Play 阶段一实现计划</title>
+<style>
+:root{--bg:#f4f2ec;--fg:#1a1d1a;--card:#fbfaf6;--border:#d8d3c4;--accent:#2f6b3e;--accent-soft:#e6efd9;--warn:#b07a12;--warn-soft:#f4e9cf;--danger:#a3322b;--muted:#6b6b5e}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#14161a;--fg:#d8d4c8;--card:#1d2024;--border:#2e3236;--accent:#6fae7a;--accent-soft:#1f2a22;--warn:#cda43f;--warn-soft:#2a2418;--danger:#d96a5e;--muted:#8a8a7c}}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--fg);line-height:1.7;padding:2rem 1.25rem 4rem;max-width:920px;margin:0 auto;font-size:15px}
+h1{font-size:1.7rem;font-weight:700;letter-spacing:-.01em;line-height:1.25}
+h2{font-size:1.2rem;color:var(--accent);margin:2.2rem 0 .6rem;padding-bottom:.3rem;border-bottom:1.5px solid var(--border)}
+h3{font-size:1rem;margin:1.2rem 0 .4rem}
+.sub{color:var(--muted);font-size:.82rem;margin:.4rem 0 1.2rem}
+.meta{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;font-size:.88rem}
+.meta b{color:var(--accent)}
+.task{background:var(--card);border:1.5px solid var(--accent);border-radius:10px;padding:1.2rem 1.4rem;margin:1.6rem 0}
+.task>h3{color:var(--accent);font-size:1.08rem;margin-top:0}
+.files,.iface{font-size:.82rem;background:var(--bg);border:1px dashed var(--border);border-radius:6px;padding:.6rem .8rem;margin:.6rem 0}
+.files b,.iface b{color:var(--accent)}
+code,pre{font-family:Consolas,Menlo,"Liberation Mono",monospace}
+code{font-size:.84rem;background:var(--accent-soft);padding:1px 5px;border-radius:3px}
+pre{font-size:.78rem;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:.8rem 1rem;overflow-x:auto;margin:.6rem 0;line-height:1.5}
+.step{display:flex;gap:.5rem;align-items:flex-start;margin:.55rem 0;font-size:.9rem}
+.step input[type=checkbox]{margin-top:.4rem;flex-shrink:0;accent-color:var(--accent)}
+.step .body{flex:1}
+.warn{color:var(--warn);background:var(--warn-soft);border:1px solid var(--warn);border-radius:6px;padding:.5rem .8rem;font-size:.82rem;margin:.6rem 0}
+.note{color:var(--muted);font-size:.8rem}
+ul{margin:.3rem 0 .3rem 1.2rem}
+</style>
+</head><body>
+<h1>Bold Play 阶段一实现计划（任务 0-3）</h1>
+<div class="sub">2026-08-24 · 对执行者：本计划用 superpowers:subagent-driven-development（推荐）或 superpowers:executing-plans 逐任务执行，checkbox 跟踪进度</div>
+
+<div class="meta">
+<b>Goal:</b> 验证 Bold Play v1 的三条腿（体彩比分赔率接口 / 临场价源 / 概率带校准）并产出正 EV 比分清单<br>
+<b>Architecture:</b> 四个独立脚本按依赖排序（0→3），每个脚本一个职责、一个 JSON 产物、独立 gate——失败不阻塞后续任务的降级路径。全部放 engine/scripts/，产物分别落 engine/cache/ 与 data/04-summaries/<br>
+<b>Tech Stack:</b> Python 3 + requests（项目唯一网络库）+ pytest（engine/tests/conftest.py 已注入 scripts 路径）<br>
+<b>Spec:</b> docs/2026-08-24-boldplay-design.html（本计划从属该设计，执行者须同时读spec第十节）
+</div>
+
+<h2>全局约束</h2>
+<ul>
+<li>体彩 API：webapi.sporttery.cn，必须带 <code>Referer: https://www.sporttery.cn/</code> 头，UA 用普通浏览器串——已实测可用（2026-08-24）</li>
+<li>fd CSV：football-data.co.uk，requests 直连，UA 同上；<b>禁止</b> urllib（本机 SSL 证书链失败，已实测）</li>
+<li>网络脚本必须可离线测试：解析/计算函数与网络函数分离，测试只测纯函数（项目 test_unit.py 惯例："纯计算，零网络依赖"）</li>
+<li>内部产物一律 JSON（检索铁律 9：内部文件禁止 HTML）；写入 data/04-summaries/ 的 JSON 顶层必须含 <code>ranAt</code>（ISO 日期）与数据来源字段</li>
+<li>开发者署名 sszhang；commit 信息中文、格式对齐 git log 现有风格（"prefix: 摘要——细节"）</li>
+<li>比分 key 规范格式：<code>"h:a"</code>（如 "1:0"、"2:1"）；体彩原始 key 形如 <code>s01s00</code>=主1客0，另有 <code>s1sh/s1sd/s1sa</code>=胜其他/平其他/负其他</li>
+<li>概率带五档定义（与 spec 第五节一致）：<code>&lt;0.15 / 0.15-0.30 / 0.30-0.45 / 0.45-0.60 / &gt;=0.60</code>（Pinnacle 收盘去水概率）</li>
+</ul>
+
+<h2>任务 0：体彩赔率存档器（sporttery_fetch.py 扩展）</h2>
+<div class="task">
+<h3>Task 0 · dump-odds 子命令</h3>
+<div class="files"><b>Files:</b><br>
+Modify: <code>engine/scripts/sporttery_fetch.py</code>（文末追加子命令，argparse 注册处加一行）<br>
+Test: <code>engine/tests/test_odds_dump.py</code>（新建）<br>
+产物: <code>engine/cache/score_odds/YYYY-MM-DD.json</code>（目录随首次运行创建）</div>
+<div class="iface"><b>Interfaces:</b><br>
+Produces: <code>extract_odds(m: dict) -&gt; dict</code>（subMatch → 规范赔率 dict）；<code>cmd_dump_odds(outdir: str) -&gt; str</code>（返回落盘路径）。Task 3 的 score_ev.py 直接读本产物 JSON。</div>
+
+<div class="step"><input type="checkbox"><div class="body"><b>Step 0.1 写失败测试</b>（fixture 用真实响应片段，2026-08-24 实测拉齐奥场）：
+<pre>import pytest
+from sporttery_fetch import extract_odds
+
+def test_extract_odds_keys():
+    m = {"matchNumStr": "周一001", "homeTeamAbbName": "博洛尼亚", "awayTeamAbbName": "拉齐奥",
+         "leagueAbbName": "意甲", "matchTime": "2026-08-25 02:45", "sellStatus": 2,
+         "had": {"h": "2.15", "d": "3.10", "a": "3.36"},
+         "crs": {"s01s00": "6.50", "s01s01": "5.75", "s00s02": "17.00", "s1sh": "100.0",
+                 "s1sd": "350.0", "s1sa": "200.0", "updateDate": "2026-08-24", "updateTime": "17:26:45"},
+         "ttg": {"s0": "10.0", "s1": "4.5"}}
+    out = extract_odds(m)
+    assert out["crs"]["1:0"] == 6.5 and out["crs"]["1:1"] == 5.75
+    assert out["crs"]["胜其他"] == 100.0          # s1sh 映射
+    assert out["had"]["d"] == 3.10
+    assert out["oddsUpdatedAt"] == "2026-08-24 17:26:45"
+    assert out["matchNumStr"] == "周一001"
+
+def test_extract_odds_none_safe():
+    assert extract_odds({"crs": None, "had": None}).get("crs") == {}   # 停售场不崩</pre></div></div>
+
+<div class="step"><input type="checkbox"><div class="body"><b>Step 0.2 跑测试确认失败</b>： <code>python -m pytest engine/tests/test_odds_dump.py -v</code> → FAIL（ImportError: extract_odds）</div></div>
+
+<div class="step"><input type="checkbox"><div class="body"><b>Step 0.3 实现</b>（sporttery_fetch.py 追加；<code>CRS_OTHER</code> 放模块级常量区，紧邻现有 URL 常量）：
+<pre>CRS_OTHER = {"s1sh": "胜其他", "s1sd": "平其他", "s1sa": "负其他"}
+
+def extract_odds(m: dict) -> dict:
+    """subMatch → 规范赔率 dict。crs key: s01s00→'1:0'，s1sh→'胜其他'；f 后缀字段丢弃。"""
+    def slim(play: dict | None, mapper=None) -> dict:
+        out = {}
+        for k, v in (play or {}).items():
+            if k.endswith("f") or k in ("goalLine", "goalLineValue", "updateDate", "updateTime"):
+                continue
+            try:
+                out[mapper(k) if mapper else k] = float(v)
+            except (TypeError, ValueError):
+                continue
+        return out
+
+    def crs_key(raw: str) -> str:
+        if raw in CRS_OTHER:
+            return CRS_OTHER[raw]
+        return f"{int(raw[1:3])}:{int(raw[3:6])}"          # s01s00 → 1:0
+
+    crs_raw = m.get("crs") or {}
+    return {
+        "matchNumStr": m.get("matchNumStr"), "league": m.get("leagueAbbName"),
+        "home": m.get("homeTeamAbbName"), "away": m.get("awayTeamAbbName"),
+        "matchTime": m.get("matchTime"), "sellStatus": m.get("sellStatus"),
+        "had": slim(m.get("had")), "crs": slim(crs_raw, crs_key), "ttg": slim(m.get("ttg")),
+        "oddsUpdatedAt": f"{crs_raw.get('updateDate','')} {crs_raw.get('updateTime','')}".strip(),
+    }
+
+def cmd_dump_odds(outdir: str = "engine/cache/score_odds") -> str:
+    """拉当轮全场次赔率存档。返回落盘路径。"""
+    from datetime import date
+    data = fetch()                                        # 复用现有 fetch()
+    days = []
+    for day in data.get("value", {}).get("matchInfoList", []):
+        days.append({"businessDate": day.get("businessDate"),
+                     "matches": [extract_odds(m) for m in day.get("subMatchList", [])]})
+    out = {"fetchedAt": str(date.today()), "source": "sporttery getMatchCalculatorV1",
+           "matchDays": days}
+    import json, os
+    os.makedirs(outdir, exist_ok=True)
+    path = f"{outdir}/{date.today()}.json"
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(out, f, ensure_ascii=False, indent=1)
+    n = sum(len(d["matches"]) for d in days)
+    print(f"[dump-odds] {n} 场存档 → {path}")
+    return path</pre>
+argparse 注册处（现有 subparsers 模式）加：<code>p.add_parser("dump-odds")</code> 并在 dispatch 调 <code>cmd_dump_odds()</code>。</div></div>
+
+<div class="step"><input type="checkbox"><div class="body"><b>Step 0.4 跑测试通过</b>：<code>python -m pytest engine/tests/test_odds_dump.py -v</code> → 2 passed</div></div>
+
+<div class="step"><input type="checkbox"><div class="body"><b>Step 0.5 实网验证</b>：<code>python engine/scripts/sporttery_fetch.py dump-odds</code> → 预期打印"13 场存档"上下（当日实况），抽查 JSON 中 crs 有 28 项、had 三项、oddsUpdatedAt 非空</div></div>
+
+<div class="step"><input type="checkbox"><div class="body"><b>Step 0.6 Commit</b>：<code>git add engine/scripts/sporttery_fetch.py engine/tests/test_odds_dump.py engine/cache/score_odds/ && git commit -m "feat: 体彩全玩法赔率存档器 dump-odds——had/crs/ttg+调价时间戳,翻身档数据底座"</code></div></div>
+
+<div class="warn"><b>Gate 0 结论记录</b>：Step 0.5 输出的开售场数写入 commit message。侦察已证常态 ≥4 场（今日 13 场全开售、每场 28 项），gate 通过几成定局；若某日 &lt;4 场属轮次波动，由 Task 3 关档逻辑处理，不阻塞本计划。</div>
+</div>
+
+<h2>任务 1：临场价源探测（live_odds_probe.py）</h2>
+<div class="task">
+<h3>Task 1 · 三候选源连通性探测</h3>
+<div class="files"><b>Files:</b><br>
+Create: <code>engine/scripts/live_odds_probe.py</code><br>
+Test: <code>engine/tests/test_live_probe.py</code>（新建，纯函数）<br>
+产物: <code>engine/cache/live_odds_feasibility.json</code></div>
+<div class="iface"><b>Interfaces:</b><br>
+Produces: <code>probe_result(source: str, ok: bool, detail: str) -&gt; dict</code>；<code>verdict(results: list[dict]) -&gt; str</code> 返回 <code>"layer1_live" | "layer1_prior"</code>（层1 启用/降级）。结论供 spec 层1 路径选择，后续 CLV 引擎（P2）复用本探测。</div>
+
+<div class="step"><input type="checkbox"><div class="body"><b>Step 1.1 写失败测试</b>：
+<pre>from live_odds_probe import verdict
+
+def test_verdict_any_ok():
+    rs = [{"source": "the-odds-api", "ok": True}, {"source": "pinnacle", "ok": False}]
+    assert verdict(rs) == "layer1_live"
+
+def test_verdict_all_fail():
+    rs = [{"source": "the-odds-api", "ok": False}, {"source": "pinnacle", "ok": False}]
+    assert verdict(rs) == "layer1_prior"</pre></div></div>
+
+<div class="step"><input type="checkbox"><div class="body"><b>Step 1.2 确认失败</b>：<code>python -m pytest engine/tests/test_live_probe.py -v</code> → FAIL（ModuleNotFoundError）</div></div>
+
+<div class="step"><input type="checkbox"><div class="body"><b>Step 1.3 实现</b>：
+<pre>"""临场价源探测：the-odds-api(读 ODDS_API_KEY) / Pinnacle 直连 / oddsportal 页面。产出 feasibility JSON。开发者 sszhang"""
+import json, os, time
+from datetime import date, datetime
+import requests
+
+UA = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"}
+
+def probe_result(source: str, ok: bool, detail: str) -> dict:
+    return {"source": source, "ok": ok, "detail": detail, "probedAt": datetime.now().isoformat(timespec="seconds")}
+
+def verdict(results: list) -> str:
+    return "layer1_live" if any(r["ok"] for r in results) else "layer1_prior"
+
+def probe_odds_api() -> dict:
+    key = os.environ.get("ODDS_API_KEY", "")
+    if not key:
+        return probe_result("the-odds-api", False, "无 ODDS_API_KEY 环境变量（免费注册 the-odds-api.com，500次/月）")
+    try:
+        r = requests.get("https://api.the-odds-api.com/v4/sports/soccer_epl/odds/",
+                         params={"apiKey": key, "regions": "eu", "markets": "h2h"}, headers=UA, timeout=15)
+        n = len(r.json()) if r.ok else 0
+        return probe_result("the-odds-api", r.ok and n > 0, f"HTTP {r.status_code} 场次数 {n}")
+    except Exception as e:
+        return probe_result("the-odds-api", False, f"{type(e).__name__}: {e}")
+
+def probe_pinnacle() -> dict:
+    try:
+        r = requests.get("https://api.pinnacle.com/papi/1.0/fixtures?sportId=1",
+                         headers=UA, timeout=10)
+        return probe_result("pinnacle直连", r.ok, f"HTTP {r.status_code}（预期401/403=可达未授权，200=通）")
+    except Exception as e:
+        return probe_result("pinnacle直连", False, f"{type(e).__name__}: {e}")
+
+def main() -> None:
+    results = [probe_odds_api(), probe_pinnacle()]
+    out = {"ranAt": str(date.today()), "results": results, "verdict": verdict(results),
+           "usage": "layer1_live → 层1 用临场价；layer1_prior → 层1 降级为上轮收盘先验"}
+    with open("engine/cache/live_odds_feasibility.json", "w", encoding="utf-8") as f:
+        json.dump(out, f, ensure_ascii=False, indent=1)
+    print(json.dumps(out, ensure_ascii=False, indent=1))
+
+if __name__ == "__main__":
+    main()</pre></div></div>
+
+<div class="step"><input type="checkbox"><div class="body"><b>Step 1.4 测试通过</b>：<code>python -m pytest engine/tests/test_live_probe.py -v</code> → 2 passed</div></div>
+
+<div class="step"><input type="checkbox"><div class="body"><b>Step 1.5 实网跑</b>：<code>python engine/scripts/live_odds_probe.py</code>（无 key 也能跑，the-odds-api 记 False 并在 detail 提示注册；想验证全链路：<code>! export ODDS_API_KEY=xxx</code> 后重跑）。产物 JSON 落盘即 Gate 1。</div></div>
+
+<div class="step"><input type="checkbox"><div class="body"><b>Step 1.6 Commit</b>：<code>git add engine/scripts/live_odds_probe.py engine/tests/test_live_probe.py engine/cache/live_odds_feasibility.json && git commit -m "feat: 临场价源三候选探测——层1 live/prior 判定器(ODDS_API_KEY注入,无key不阻塞)"</code></div></div>
+</div>
+
+<h2>任务 2：概率带 bootstrap 分联赛校准（band_calibration.py）</h2>
+<div class="task">
+<h3>Task 2 · 五带回报率 × 分联赛 × bootstrap CI</h3>
+<div class="files"><b>Files:</b><br>
+Create: <code>engine/scripts/band_calibration.py</code><br>
+Test: <code>engine/tests/test_band_calibration.py</code>（新建）<br>
+产物: <code>data/04-summaries/band_calibration.json</code></div>
+<div class="iface"><b>Interfaces:</b><br>
+Produces: <code>devid(h, d, a) -&gt; tuple[float,float,float]</code>（比例法去水）；<code>band_of(p: float) -&gt; str</code>（五档带名）；<code>bootstrap_ci(rets: list[float], n: int = 1000) -&gt; tuple[float, float]</code>；<code>judge(band: str, ci_lo: float, baseline: float) -&gt; str</code> 返回 <code>"可买带"|"不差带"|"排除带"</code>。Task 3 与阶段二选场直接 import band_of/judge。</div>
+
+<div class="step"><input type="checkbox"><div class="body"><b>Step 2.1 写失败测试</b>：
+<pre>from band_calibration import devid, band_of, bootstrap_ci, judge
+
+def test_devid_sums_to_one():
+    ph, pd_, pa = devid(2.0, 3.5, 4.0)
+    assert abs(ph + pd_ + pa - 1.0) &lt; 1e-9 and ph &gt; pd_ &gt; pa
+
+def test_band_of_boundaries():
+    assert band_of(0.14) == "&lt;0.15" and band_of(0.15) == "0.15-0.30"
+    assert band_of(0.30) == "0.30-0.45" and band_of(0.45) == "0.45-0.60"
+    assert band_of(0.60) == "&gt;=0.60" and band_of(0.9) == "&gt;=0.60"
+
+def test_bootstrap_ci_deterministic_and_reasonable():
+    rets = [0.0] * 60 + [8.0] * 5                      # 均值 0.615
+    lo, hi = bootstrap_ci(rets, n=200)
+    assert lo &lt;= 0.615 &lt;= hi and 0 &lt;= lo &lt; 1.5       # 粗界内
+
+def test_judge_rules():
+    assert judge("0.30-0.45", 0.97, 0.95) == "可买带"   # 下界超全带基线
+    assert judge("0.30-0.45", 0.90, 0.95) == "不差带"   # 未超但不毒
+    assert judge("&lt;0.15", 0.70, 0.95) == "排除带"       # 点估计毒药档</pre></div></div>
+
+<div class="step"><input type="checkbox"><div class="body"><b>Step 2.2 确认失败</b>：<code>python -m pytest engine/tests/test_band_calibration.py -v</code> → FAIL</div></div>
+
+<div class="step"><input type="checkbox"><div class="body"><b>Step 2.3 实现</b>：
+<pre>"""概率带分联赛校准：fd 多季×8联赛，五带回报率 bootstrap CI。开发者 sszhang"""
+import csv, io, random
+from collections import defaultdict
+from datetime import date
+import requests
+
+UA = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"}
+FD_URL = "https://www.football-data.co.uk/mmz4281/{season}/{div}.csv"
+DIVS = {"E0": "england-premier", "SP1": "spain-laliga", "D1": "germany-bundesliga",
+        "I1": "italy-serie-a", "F1": "france-ligue1", "N1": "netherlands-eredivisie",
+        "P1": "portugal-primeira", "F2": "france-ligue2"}
+SEASONS = ["2223", "2324", "2425", "2526"]
+
+def devid(oh, od_, oa):
+    s = 1/oh + 1/od_ + 1/oa
+    return (1/oh)/s, (1/od_)/s, (1/oa)/s
+
+def band_of(p: float) -> str:
+    if p &lt; 0.15: return "&lt;0.15"
+    if p &lt; 0.30: return "0.15-0.30"
+    if p &lt; 0.45: return "0.30-0.45"
+    if p &lt; 0.60: return "0.45-0.60"
+    return "&gt;=0.60"
+
+def bootstrap_ci(rets: list, n: int = 1000, seed: int = 42) -> tuple:
+    rng = random.Random(seed)
+    means = sorted(sum(rng.choices(rets, k=len(rets))) / len(rets) for _ in range(n))
+    return means[int(0.025*n)], means[int(0.975*n)]
+
+def judge(band: str, ci_lo: float, baseline: float) -> str:
+    if band == "&lt;0.15": return "排除带"
+    return "可买带" if ci_lo &gt; baseline else "不差带"
+
+def fetch_rows(season: str, div: str) -> list:
+    try:
+        txt = requests.get(FD_URL.format(season=season, div=div), headers=UA, timeout=20).text
+        return list(csv.DictReader(io.StringIO(txt)))
+    except Exception:
+        return []
+
+def main() -> None:
+    import json
+    cells = defaultdict(list)               # (league, band) -> [(p, ret)]
+    for season in SEASONS:
+        for div, league in DIVS.items():
+            for r in fetch_rows(season, div):
+                try:
+                    oh, od_, oa = float(r["PSCH"]), float(r["PSCD"]), float(r["PSCA"])
+                    ftr = r.get("FTR")
+                    if not all([oh, od_, oa]) or ftr not in ("H", "D", "A"): continue
+                    for p, o, side in zip(devid(oh, od_, oa), (oh, od_, oa), ("H", "D", "A")):
+                        cells[(league, band_of(p))].append(o if ftr == side else 0.0)
+                except (KeyError, ValueError): continue
+    overall = [v for k in cells for v in cells[k]]
+    baseline = sum(overall) / len(overall)          # 全带平均回报率(≈抽水)
+    out = {"ranAt": str(date.today()), "source": "fd CSV 2223-2526 ×8联赛 Pinnacle收盘",
+           "baseline": round(baseline, 4), "by_league": {}}
+    leagues = sorted({k[0] for k in cells})
+    for lg in leagues:
+        blob = {}
+        for band in ["&lt;0.15", "0.15-0.30", "0.30-0.45", "0.45-0.60", "&gt;=0.60"]:
+            rets = cells.get((lg, band), [])
+            if len(rets) &lt; 50: continue             # 小样本不校准
+            mean = sum(rets)/len(rets); lo, hi = bootstrap_ci(rets)
+            blob[band] = {"n": len(rets), "ret": round(mean, 4),
+                          "ci95": [round(lo, 4), round(hi, 4)], "verdict": judge(band, lo, baseline)}
+        out["by_league"][lg] = blob
+    with open("data/04-summaries/band_calibration.json", "w", encoding="utf-8") as f:
+        json.dump(out, f, ensure_ascii=False, indent=1)
+    print(f"[band-calibration] baseline={baseline:.4f} → data/04-summaries/band_calibration.json")
+
+if __name__ == "__main__":
+    main()</pre></div></div>
+
+<div class="step"><input type="checkbox"><div class="body"><b>Step 2.4 测试通过</b>：<code>python -m pytest engine/tests/test_band_calibration.py -v</code> → 4 passed</div></div>
+
+<div class="step"><input type="checkbox"><div class="body"><b>Step 2.5 实网跑</b>：<code>python engine/scripts/band_calibration.py</code> → 产物 JSON；检查"0.30-0.45"与"&gt;=0.60"各联赛 verdict 分布，"<code>&lt;0.15</code>"应为"排除带"（点估计 ~0.68）。此即 Gate 2/③：某带 ≥3 联赛"可买带"才写入阶段二选场偏好，否则只用排除带。</div></div>
+
+<div class="step"><input type="checkbox"><div class="body"><b>Step 2.6 Commit</b>：<code>git add engine/scripts/band_calibration.py engine/tests/test_band_calibration.py data/04-summaries/band_calibration.json && git commit -m "feat: 概率带bootstrap分联赛校准——可买带升级判定(CI下界超基线,五桶snooping修正)"</code></div></div>
+</div>
+
+<h2>任务 3：比分 EV 审计（score_ev.py）</h2>
+<div class="task">
+<h3>Task 3 · 频率表 × 当轮体彩赔率 → 正 EV 清单</h3>
+<div class="files"><b>Files:</b><br>
+Create: <code>engine/scripts/score_ev.py</code><br>
+Test: <code>engine/tests/test_score_ev.py</code>（新建）<br>
+依赖: Task 0 的 score_odds 存档 JSON；fd CSV（同 Task 2 拉法）+ data/02-results/league/*.json</div>
+<div class="iface"><b>Interfaces:</b><br>
+Consumes: <code>band_calibration.band_of/devid</code>（import 复用）；Task 0 存档 <code>engine/cache/score_odds/*.json</code><br>
+Produces: <code>shrink(freq: float, n: int, prior: float, strength: int = 50) -&gt; float</code>（Beta 收缩）；<code>ev_scan(odds_day: dict, freq_table: dict) -&gt; list[dict]</code>。产物 <code>data/04-summaries/score_ev.json</code> 供阶段二翻身档选比分。</div>
+
+<div class="step"><input type="checkbox"><div class="body"><b>Step 3.1 写失败测试</b>：
+<pre>from score_ev import shrink, ev_scan, norm_score
+
+def test_shrink_pulls_small_n_to_prior():
+    assert abs(shrink(0.20, n=10, prior=0.10) - (0.2*10 + 0.1*50)/60) &lt; 1e-9
+    assert abs(shrink(0.20, n=1000, prior=0.10) - 0.20) &lt; 1e-3   # 大样本几乎不收缩
+
+def test_norm_score():
+    assert norm_score("1", "0") == "1:0" and norm_score("2", "1") == "2:1"
+
+def test_ev_scan_ranking():
+    day = {"matches": [{"matchNumStr": "周一001", "league": "意甲", "home": "A", "away": "B",
+                        "had": {"h": 1.5, "d": 4.0, "a": 6.0},
+                        "crs": {"1:0": 6.5, "1:1": 5.75, "0:2": 17.0}}]}
+    freq = {"意甲": {"1:0": 0.115, "1:1": 0.115, "0:2": 0.02}}
+    rows = ev_scan(day, freq)
+    top = rows[0]
+    assert top["matchNumStr"] == "周一001" and top["score"] == "1:0"
+    assert abs(top["ev"] - (0.115 * 6.5 - 1)) &lt; 1e-9           # EV = q*o-1 = -0.2525
+    assert all(r["ev"] &gt;= rows[-1]["ev"] for r in rows)        # 降序</pre></div></div>
+
+<div class="step"><input type="checkbox"><div class="body"><b>Step 3.2 确认失败</b>：<code>python -m pytest engine/tests/test_score_ev.py -v</code> → FAIL</div></div>
+
+<div class="step"><input type="checkbox"><div class="body"><b>Step 3.3 实现</b>：
+<pre>"""比分 EV 审计：分联赛经验频率(Beta收缩) × 当轮体彩赔率 → 正EV清单。开发者 sszhang"""
+import csv, glob, io, json
+from collections import Counter
+from datetime import date
+import requests
+from band_calibration import DIVS, SEASONS, UA, FD_URL, fetch_rows, devid, band_of
+
+PRIOR_STRENGTH = 50          # 收缩先验强度(场)
+
+def shrink(freq: float, n: int, prior: float, strength: int = PRIOR_STRENGTH) -> float:
+    return (freq * n + prior * strength) / (n + strength)
+
+def norm_score(hg, ag) -> str:
+    return f"{int(hg)}:{int(ag)}"
+
+def build_freq_table() -> dict:
+    """fd 8联赛多季 + league库(日韩瑞沙) → {league: {'__n': 总场, '1:0': 场次, ...}}"""
+    table = {}
+    for season in SEASONS:
+        for div, league in DIVS.items():
+            blob = table.setdefault(league, Counter())
+            for r in fetch_rows(season, div):
+                try:
+                    fthg, ftag = int(r["FTHG"]), int(r["FTAG"])
+                    blob[norm_score(fthg, ftag)] += 1; blob["__n"] += 1
+                except (KeyError, ValueError): continue
+    alias = {"japan": "japan", "korea": "korea", "sweden": "sweden", "saudi": "saudi"}
+    for path in glob.glob("data/02-results/league/*_matches.json"):
+        key = path.split("/")[-1].replace("_matches.json", "")
+        if key not in alias: continue
+        blob = table.setdefault(key, Counter())
+        for m in json.load(open(path, encoding="utf-8")) or []:
+            blob[norm_score(m["hg"], m["ag"])] += 1; blob["__n"] += 1
+    return table
+
+def freq_for(table: dict, league: str, score: str) -> tuple:
+    """返回 (收缩后q, n)。联赛缺失→全局池；比分缺失→该联赛全局先验。"""
+    glob_n = sum(v for k, v in table.items() if k != "__n" for v in [table[k]["__n"]]) or 1
+    def league_blob(name):
+        return table.get(name) if table.get(name, Counter())["__n"] else None
+    blob = league_blob(league) or {}
+    n_all = blob.get("__n", 0) or 0
+    prior = blob.get(score, 0) / n_all if n_all else (
+        sum(t[score] for t in table.values()) / glob_n)
+    n, c = blob.get("__n", 0), blob.get(score, 0)
+    q = shrink(c / n if n else prior, n, prior)
+    return q, n
+
+def ev_scan(odds_day: dict, freq_table: dict) -> list:
+    rows = []
+    for m in odds_day.get("matches", []):
+        had = m.get("had") or {}
+        try:
+            ph = devid(had["h"], had["d"], had["a"])[0]
+        except (KeyError, TypeError, ZeroDivisionError):
+            continue
+        direction_band = band_of(max(devid(had["h"], had["d"], had["a"])))   # 主方向带(近似)
+        for score, o in (m.get("crs") or {}).items():
+            if score in ("胜其他", "平其他", "负其他"): continue
+            q, n = freq_for(freq_table, m.get("league", ""), score)
+            rows.append({"matchNumStr": m["matchNumStr"], "match": f'{m.get("home")}-{m.get("away")}',
+                         "league": m.get("league"), "score": score, "odds": o,
+                         "q": round(q, 4), "n": n, "ev": round(q * o - 1, 4),
+                         "directionBand": direction_band})
+    return sorted(rows, key=lambda r: r["ev"], reverse=True)
+
+def main() -> None:
+    table = build_freq_table()
+    latest = sorted(glob.glob("engine/cache/score_odds/*.json"))[-1]
+    odds = json.load(open(latest, encoding="utf-8"))
+    rows = []
+    for day in odds.get("matchDays", []):
+        rows += ev_scan(day, table)
+    positive = [r for r in rows if r["ev"] &gt; 0]
+    out = {"ranAt": str(date.today()), "oddsArchive": latest,
+           "source": "fd多季+league库频率(Beta收缩50) × sporttery当轮赔率",
+           "n_scanned": len(rows), "n_positive": len(positive),
+           "positive_top": positive[:40], "all_top30": rows[:30]}
+    with open("data/04-summaries/score_ev.json", "w", encoding="utf-8") as f:
+        json.dump(out, f, ensure_ascii=False, indent=1)
+    print(f"[score-ev] 扫描 {len(rows)} 项, 正EV {len(positive)} 项 → data/04-summaries/score_ev.json")
+
+if __name__ == "__main__":
+    main()</pre></div></div>
+
+<div class="step"><input type="checkbox"><div class="body"><b>Step 3.4 测试通过</b>：<code>python -m pytest engine/tests/test_score_ev.py -v</code> → 3 passed</div></div>
+
+<div class="step"><input type="checkbox"><div class="body"><b>Step 3.5 全链路跑</b>：先 <code>python engine/scripts/sporttery_fetch.py dump-odds</code> 再 <code>python engine/scripts/score_ev.py</code> → 产物 score_ev.json。Gate 4/④ 判定：<code>n_positive</code> 中按"≥3 联赛 × ≥2 比分"查——满足则阶段二翻身档用正 EV 选比分，否则走经验频率退路（形状不变）。<b>预期警告</b>：体彩比分抽水重（样例 1-1@5.75 vs 经验 ~11.5% → EV≈-0.34），n_positive 很可能为 0——这是审计的真实答案而非脚本失败，照常落盘并在 commit 注明。</div></div>
+
+<div class="step"><input type="checkbox"><div class="body"><b>Step 3.6 Commit</b>：<code>git add engine/scripts/score_ev.py engine/tests/test_score_ev.py data/04-summaries/score_ev.json && git commit -m "feat: 比分EV审计 score_ev——频率表Beta收缩×体彩当轮赔率,正EV清单+Gate④结论"</code></div></div>
+</div>
+
+<h2>收尾：阶段一总结归档</h2>
+<div class="task">
+<div class="step"><input type="checkbox"><div class="body"><b>Step F.1 全测试回归</b>：<code>python -m pytest engine/tests/ -v</code> → 全绿（新旧测试都过）</div></div>
+<div class="step"><input type="checkbox"><div class="body"><b>Step F.2 四 gate 结论写 commit</b>：把 Gate0(开售规模)/Gate1(live|prior)/Gate2(可买带分布)/Gate4(n_positive) 四个结论汇总成一条 commit message 归档，供阶段二（skill 改造）取参。</div></div>
+</div>
+
+<div class="note">自审记录：spec 十节中 1-4/7-9 为数学与叙事（无实现项）；第五节四层锚 → Task1/2/3 覆盖层1/2；第六节 → Task0+3；第十节任务0-3 → 一一对应；阶段二（skill 改造）不在本计划。类型一致性：band_of/judge/devid 在 Task2 定义、Task3 import；extract_odds 在 Task0 定义、Task3 消费其产物 JSON；无 placeholder。</div>
+<div class="note">开发者 sszhang · 2026-08-24 · spec: docs/2026-08-24-boldplay-design.html</div>
+</body></html>

@@ -109,8 +109,8 @@ football/
 │   ├── 04-summaries/      #    五维统计 + 回测结果 + corpus.json 学习语料
 │   └── 05-trends/         #    趋势发现
 ├── engine/                ← ② 计算层
-│   ├── scripts/           #    run.py(入口) / dc_fit / dc_predict / backtest / corpus / trend_report / backfill / calibrate / ablate / odds_fetch / elo_fetch / xg_fetch / espn_fetch / cn_fetch / sporttery_fetch / build_index
-│   └── cache/             #    DC 参数 / models/ 版本化存档 / fusion.json / fd 赔率缓存 / sporttery_matches.json(五池+单关资格)
+│   ├── scripts/           #    run.py(入口) / dc_fit / dc_predict / backtest / corpus / trend_report / backfill / calibrate / ablate / odds_fetch / elo_fetch / xg_fetch / espn_fetch / cn_fetch / sporttery_fetch / band_calibration / score_ev / live_odds_probe / build_index
+│   └── cache/             #    DC 参数 / models/ 版本化存档 / fusion.json / fd 赔率缓存 / sporttery_matches.json(五池+单关资格) / score_odds(体彩全玩法赔率日存档) / live_odds_feasibility.json
 ├── skill/                 ← ③ 检索入口：SKILL.md v4.9 + references/ 外置参考（系数详表/官方规则/教训档案，按需加载）
 └── docs/                  #    设计文档
 ```

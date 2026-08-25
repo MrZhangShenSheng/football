@@ -1,0 +1,71 @@
+{
+ "date": "2026-08-24",
+ "seq": 1,
+ "shape": "guilin",
+ "tiers": {
+  "base": {
+   "cost": 4,
+   "legs": [
+    [
+     {
+      "matchNumStr": "周二005",
+      "match": "LASK林茨-凯尔特人",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 1.8
+     }
+    ]
+   ],
+   "play": "had-4串1",
+   "note": "2注互补"
+  },
+  "mid": {
+   "cost": 6,
+   "legs": [
+    [
+     {
+      "matchNumStr": "周二005",
+      "match": "LASK林茨-凯尔特人",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 1.8
+     }
+    ]
+   ],
+   "play": "had-5串1",
+   "note": "默认HAD"
+  },
+  "upset": {
+   "cost": 8,
+   "multiplier": 4,
+   "legs": [
+    {
+     "matchNumStr": "周二005",
+     "match": "LASK林茨-凯尔特人",
+     "score": "1:0",
+     "odds": 11.0,
+     "n": -1,
+     "ev": null,
+     "fallback": true
+    },
+    {
+     "matchNumStr": "周二006",
+     "match": "博德闪耀-奈梅亨",
+     "score": "1:0",
+     "odds": 13.0,
+     "n": -1,
+     "ev": null,
+     "fallback": true
+    }
+   ],
+   "play": "crs-4串1",
+   "expOdds": 143.0,
+   "winIfHit": 1144.0,
+   "note": "guilin形状 带宽(10.0, 17.0) · 频率退路"
+  }
+ },
+ "totalCost": 18,
+ "densityNote": "CRS 4串期望返还 ≈ 0.661^4 = 19.1%(体彩真实池水,非Pinnacle口径)",
+ "postTaxNote": "单注奖金超1万部分税20%;4串单注限额50万已反算倍数",
+ "ranAt": "2026-08-24"
+}

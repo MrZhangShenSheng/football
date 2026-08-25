@@ -1,198 +1,50 @@
 {
   "checkedAt": "2026-08-24",
   "leagues": {
-    "italy": {
+    "意甲": {
       "status": "missing"
     },
-    "saudi": {
-      "status": "ready",
-      "roundsPlayed": 2,
-      "standingsSource": "espn",
-      "fdCovered": false
-    },
-    "sweden": {
-      "status": "ready",
-      "roundsPlayed": 18,
-      "standingsSource": "titan007",
-      "fdCovered": false
-    },
-    "spain": {
+    "沙职": {
       "status": "missing"
     },
-    "france": {
+    "瑞超": {
       "status": "missing"
     },
-    "england": {
+    "西甲": {
       "status": "missing"
     },
-    "portugal": {
+    "法乙": {
       "status": "missing"
     },
-    "brazil": {
+    "英超": {
       "status": "missing"
     },
-    "austria": {
+    "葡超": {
       "status": "missing"
     },
-    "norway": {
+    "巴甲": {
+      "status": "missing"
+    },
+    "欧冠": {
       "status": "missing"
     }
   },
   "missingLeagues": [
-    "italy",
-    "spain",
-    "france",
-    "england",
-    "portugal",
-    "brazil",
-    "austria",
-    "norway"
+    "意甲",
+    "沙职",
+    "瑞超",
+    "西甲",
+    "法乙",
+    "英超",
+    "葡超",
+    "巴甲",
+    "欧冠"
   ],
   "staleLeagues": [],
-  "missingAlias": [
-    {
-      "team": "新未来SC",
-      "league": "saudi",
-      "match": "新未来SC vs 胡巴卡德"
-    },
-    {
-      "team": "拉斯决心",
-      "league": "saudi",
-      "match": "吉达联合 vs 拉斯决心"
-    },
-    {
-      "team": "LASK林茨",
-      "league": "austria",
-      "match": "LASK林茨 vs 凯尔特人"
-    },
-    {
-      "team": "凯尔特人",
-      "league": "austria",
-      "match": "LASK林茨 vs 凯尔特人"
-    },
-    {
-      "team": "博德闪耀",
-      "league": "norway",
-      "match": "博德闪耀 vs 奈梅亨"
-    },
-    {
-      "team": "奈梅亨",
-      "league": "norway",
-      "match": "博德闪耀 vs 奈梅亨"
-    }
-  ],
-  "notReadyTeams": [
-    {
-      "team": "博洛尼亚",
-      "teamId": "bologna",
-      "league": "italy",
-      "status": "missing"
-    },
-    {
-      "team": "拉齐奥",
-      "teamId": "lazio",
-      "league": "italy",
-      "status": "missing"
-    },
-    {
-      "team": "马尔默",
-      "teamId": "malmo-ff",
-      "league": "sweden",
-      "status": "missing"
-    },
-    {
-      "team": "佐加顿斯",
-      "teamId": "djurgarden",
-      "league": "sweden",
-      "status": "missing"
-    },
-    {
-      "team": "奥萨苏纳",
-      "teamId": "osasuna",
-      "league": "spain",
-      "status": "missing"
-    },
-    {
-      "team": "莱万特",
-      "teamId": "levante",
-      "league": "spain",
-      "status": "missing"
-    },
-    {
-      "team": "罗马",
-      "teamId": "roma",
-      "league": "italy",
-      "status": "missing"
-    },
-    {
-      "team": "佛罗伦萨",
-      "teamId": "fiorentina",
-      "league": "italy",
-      "status": "missing"
-    },
-    {
-      "team": "兰斯",
-      "teamId": "reims",
-      "league": "france",
-      "status": "missing"
-    },
-    {
-      "team": "阿纳西",
-      "teamId": "annecy",
-      "league": "france",
-      "status": "missing"
-    },
-    {
-      "team": "富勒姆",
-      "teamId": "fulham",
-      "league": "england",
-      "status": "missing"
-    },
-    {
-      "team": "切尔西",
-      "teamId": "chelsea",
-      "league": "england",
-      "status": "missing"
-    },
-    {
-      "team": "吉维森特",
-      "teamId": "gil-vicente",
-      "league": "portugal",
-      "status": "missing"
-    },
-    {
-      "team": "卡萨皮亚",
-      "teamId": "casa-pia",
-      "league": "portugal",
-      "status": "missing"
-    },
-    {
-      "team": "马拉加",
-      "teamId": "malaga",
-      "league": "spain",
-      "status": "missing"
-    },
-    {
-      "team": "拉科",
-      "teamId": "deportivo",
-      "league": "spain",
-      "status": "missing"
-    },
-    {
-      "team": "博塔弗戈",
-      "teamId": "botafogo",
-      "league": "brazil",
-      "status": "missing"
-    },
-    {
-      "team": "巴竞技",
-      "teamId": "athletico-paranaense",
-      "league": "brazil",
-      "status": "missing"
-    }
-  ],
+  "missingAlias": [],
+  "notReadyTeams": [],
   "readyCount": {
-    "leagues": 2,
-    "teamsKnown": 227
+    "leagues": 0,
+    "teamsKnown": 233
   }
 }

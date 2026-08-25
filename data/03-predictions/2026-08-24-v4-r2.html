@@ -1,0 +1,136 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>预测 r2 增量终审 · 2026-08-24 23:56</title>
+<style>
+:root{--bg:#101418;--card:#1a2028;--line:#2a323d;--txt:#e8ecf1;--sub:#9aa7b5;--gold:#f0b429;--green:#4ade80;--red:#f87171;--blue:#60a5fa;--purple:#c084fc}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);font:15px/1.7 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;padding:20px;max-width:1080px;margin:0 auto}
+h1{font-size:22px;margin-bottom:4px}h2{font-size:18px;margin:26px 0 12px;color:var(--gold);border-left:4px solid var(--gold);padding-left:10px}
+.sub{color:var(--sub);font-size:13px;margin-bottom:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px}
+.plan{border-left:4px solid var(--gold)}
+.plan.balance{border-left-color:var(--blue)}
+.tag{display:inline-block;padding:1px 8px;border-radius:10px;font-size:12px;margin-right:6px;vertical-align:2px}
+.t-rocket{background:#3b2f0b;color:var(--gold)}.t-balance{background:#0b2a3b;color:var(--blue)}.t-shield{background:#1b2b1b;color:var(--green)}
+.t-red{background:#3b0b0b;color:var(--red)}.t-green{background:#0b2b1b;color:var(--green)}.t-warn{background:#33200b;color:#fbbf24}.t-gray{background:#222a33;color:var(--sub)}
+table{width:100%;border-collapse:collapse;font-size:14px;margin:8px 0}
+th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:left}
+th{color:var(--sub);font-weight:500;font-size:13px}
+.ev-pos{color:var(--green);font-weight:600}.ev-neg{color:var(--red)}
+.warn{background:#2d2410;border:1px solid #5a4a1a;color:#fbbf24;border-radius:8px;padding:10px 14px;margin:10px 0;font-size:14px}
+.diff{background:#101a26;border:1px solid #1e3a5a;color:var(--blue);border-radius:8px;padding:10px 14px;margin:10px 0;font-size:14px}
+.foot{color:var(--sub);font-size:12px;margin-top:30px;border-top:1px solid var(--line);padding-top:12px}
+.mcard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:12px}
+.mcard h3{font-size:16px;margin-bottom:6px}
+.mcard .row{display:flex;gap:8px;flex-wrap:wrap;font-size:13px;color:var(--sub);margin-top:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
+.mini{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:13.5px}
+svg.ic{width:1em;height:1em;vertical-align:-0.12em;margin-right:4px;color:currentColor}
+.kbd{background:#0b0f13;border:1px solid var(--line);border-radius:6px;padding:2px 7px;font-family:ui-monospace,monospace;font-size:13px}
+.revoked{text-decoration:line-through;opacity:.55}
+</style></head><body>
+
+<svg style="display:none"><symbol id="i-rocket" viewBox="0 0 24 24"><path fill="currentColor" d="M9 19c-1 0-2 .5-3-1l2.5-2.5L4 12l3-1 2 2c2-2 4-5 4-9 0 0 5 2 6 7 .8 3.2-.5 6.5-3 8-1 .6-2.3 1-3 1l-2-2c0 0-.5 1-2 1zm-2 3c-1 0-2-1-2-2l3 .5L8 22z"/></symbol><symbol id="i-scale" viewBox="0 0 24 24"><path fill="currentColor" d="M12 3v3l-6 2-3 6h6l3-1.5V21h2v-4.5L17 14h6l-3-6-6-2V3h-2zM5 14l1.5-3L8 13l-1 1H5zm14 0h-2l-1-1 1.5-2L19 14z"/></symbol><symbol id="i-shield" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2l8 3v6c0 5-3.5 9.3-8 11-4.5-1.7-8-6-8-11V5l8-3zm0 4L7 7.5v3.7c0 3.4 2.1 6.5 5 7.8 2.9-1.3 5-4.4 5-7.8V7.5L12 6z"/></symbol><symbol id="i-warn" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2L1 21h22L12 2zm0 5l7.5 12.9h-15L12 7zm-1 4v5h2v-5h-2zm0 6v2h2v-2h-2z"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 2a8 8 0 110 16 8 8 0 010-16zm-1 3v6l5 3 1-1.7-4-2.4V7h-2z"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path fill="currentColor" d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path fill="currentColor" d="M19 6.4L17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12 19 6.4z"/></symbol></svg>
+
+<h1>⚽ 竞彩预测 r2 · 增量终审</h1>
+<div class="sub">2026-08-24 23:56 · 13 场（周一001~011 + 周二005~006）· 单锚模式（Pinnacle 缺失，概率锚=体彩去水）· 基于 20:00 终审版增量修订</div>
+
+<div class="diff"><svg class="ic"><use href="#i-clock"/></svg><b>r2 触发原因</b>：① 20:00 终审后 <code class="kbd">run.py learn</code> 重拟合了 saudi/sweden DC 参数；② 本轮复算发现 EV 扫描脚本 <code class="kbd">homeAdv</code> 键名 bug（此前 λ 系统性低估，全池 EV 已全部重算）；③ 体彩赔率出现小幅异动。按信息边际定律 2（赔率异动=市场已知消息，跟随不追）+ 模型版本更替（我方信息增强，允许模型驱动选项修订）执行增量修订。</div>
+
+<h2>🚀 第一层 · 出单摘要卡</h2>
+
+<div class="card plan">
+  <span class="tag t-rocket"><svg class="ic"><use href="#i-rocket"/></svg>搏奖档（r2 修订）</span><b>8 元 = 2 元 × 4 注 · 至少中一注概率 ≈ 51.5%</b>
+  <table>
+    <tr><th>注</th><th>场次</th><th>玩法 · 选项</th><th>p_model</th><th>赔率</th><th>EV</th><th>命中→奖金</th></tr>
+    <tr><td>①</td><td>周一002 · 08-25 00:40 ⚠️临场</td><td>HAFU · dd（半平/全平）</td><td>14.6%</td><td>8.35</td><td class="ev-pos">+21.9%</td><td>2元→16.7元</td></tr>
+    <tr><td>②</td><td>周一002 · 08-25 00:40 ⚠️临场</td><td>CRS · 1-1</td><td>12.9%</td><td>9.00</td><td class="ev-pos">+15.7%</td><td>2元→18.0元</td></tr>
+    <tr><td>③</td><td>周一004 · 08-25 01:30</td><td>TTG · 总进球 0（0-0）</td><td>11.9%</td><td>10.50</td><td class="ev-pos">+24.9%</td><td>2元→21.0元</td></tr>
+    <tr><td>④</td><td>周一008 · 08-25 03:00</td><td>HAD · 主胜（富勒姆）</td><td>26.0%</td><td>3.90</td><td class="ev-pos">+1.4%</td><td>2元→7.8元</td></tr>
+    <tr class="revoked"><td>✕</td><td>周一009（已撤销）</td><td>CRS · 2-0</td><td>—</td><td>6.50</td><td class="ev-neg">信号失效</td><td>r2 撤销</td></tr>
+  </table>
+  <div class="sub">全中理论 63.5 元 · 撤销依据：葡超 DC 重拟合后三向分歧 19.4pp（模型 77% vs 市场 58%）→ 模型失准，比分回归市场锚，EV 不可信</div>
+</div>
+
+<div class="card plan balance">
+  <span class="tag t-balance"><svg class="ic"><use href="#i-scale"/></svg>平衡档（r2 微调）</span><b>8 元 = 2串1×3倍（6元）+ 尾巴单关 2 元</b>
+  <table>
+    <tr><th>注</th><th>场次</th><th>玩法 · 选项</th><th>p_model</th><th>赔率</th><th>EV</th><th>命中→奖金</th></tr>
+    <tr><td>主线</td><td>周一008 × 周一005</td><td>HAD 2串1 · 富勒姆胜 × 吉达联合平</td><td>6.3%</td><td>复合 17.36</td><td class="ev-pos">+9.4%</td><td>6元→104.2元</td></tr>
+    <tr><td>尾巴</td><td>周一006 · 08-25 02:45</td><td>HAFU · dd（半平/全平）</td><td>17.7%</td><td>5.80</td><td class="ev-pos">+2.8%</td><td>2元→11.6元</td></tr>
+  </table>
+  <div class="sub">005 平赔率 4.30→4.45 微升（EV +4.9%→+8.6%）；008 赔率异动 4.05→3.90（EV +5.4%→+1.4%，市场在消化切尔西伤情）</div>
+</div>
+
+<div class="card">
+  <span class="tag t-shield"><svg class="ic"><use href="#i-shield"/></svg>保本档</span><b>不开</b>
+  <span class="sub">— 无 ≥3 场 A/B 级低赔 HAD 正 EV 候选，体彩 12.9% 抽水下全部低赔负 EV（常态不开）</span>
+</div>
+
+<div class="card">
+  <b>总投入 16 元（搏奖 8 + 平衡 8）· 理论全中 179.3 元 · 至少中一注 ≈ 63%</b>
+  <div class="sub">档内预算：搏奖 8≤10 ✅ 平衡 8≤15 ✅ 总仓位 16≤30 ✅ · 全部 EV&gt;0 选项 · 键序全称标注（dd=半场平/全场平）</div>
+</div>
+
+<div class="warn"><svg class="ic"><use href="#i-warn"/></svg><b>出票紧急提示</b>：周一002（00:40 开赛）距终审不足 45 分钟，①②注如无法及时出票则放弃（宁缺毋滥）；004（01:30）/003（01:00）次之。005/006/008/009/010 时间充裕。比分/总进球选项风险提示：③ 注 0-0 依赖泊松低尾（开季 λ 小样本），单注仅 2 元控制损失。</div>
+
+<h2>📋 第二层 · 修订对照与推荐详情</h2>
+
+<div class="card">
+  <h3 style="margin-bottom:8px">r2 修订清单（每处：项 · 旧→新 · 依据）</h3>
+  <table>
+    <tr><th>修订项</th><th>旧 → 新</th><th>依据</th></tr>
+    <tr><td>周一009 CRS 2-0</td><td><span class="ev-neg">入选</span> → <b class="ev-neg">撤销</b></td><td>portugal-liga 重拟合（2526+2627 合并 170 场）后 DC 主胜 77.3% vs 市场 57.9%，分歧 19.4pp &gt;5pp 纪律线 → 模型失准，EV+4.1% 信号不可信</td></tr>
+    <tr><td>周一004 TTG 0球 EV</td><td>+31.4% → <b>+24.9%</b></td><td>homeAdv bug 修复后 λh 1.17→1.56，0-0 概率 12.5%→11.9%（维持入选，分歧 4.0pp 合规）</td></tr>
+    <tr><td>周一008 HAD 主胜赔率</td><td>4.05 → <b>3.90</b>（EV +5.4%→+1.4%）</td><td>市场异动（切尔西 7 伤发酵），定律 2 跟随市场；EV 仍微正维持</td></tr>
+    <tr><td>周一005 HAD 平赔率</td><td>4.30 → <b>4.45</b>（EV +4.9%→+8.6%）</td><td>赔率微升利好，H2H 上季两回合哈泽姆 1-1 逼平吉达联合，R3 平局叙事成立</td></tr>
+    <tr><td>欧冠两场性质确认</td><td>次回合（维持排除）</td><td>08-20 首回合核实：凯尔特人 3-0 LASK / 博德闪耀 3-1 奈梅亨——双低动力/管理比赛场，20:00 版判定正确</td></tr>
+  </table>
+</div>
+
+<div class="grid">
+<div class="mcard"><h3>#2 周一002 沙职R3 · 08-25 00:40</h3><b>新未来SC[5] vs 胡巴卡德=卡迪西亚[8]</b>（λ 0.98/1.71）
+<div class="row"><span>等级 A</span><span>⭐⭐⭐ 客胜 57.6%（修正后）</span><span>d=+1 主主力后卫缺阵</span></div>
+<div>客胜方向卡迪西亚近 10 场 7 胜 1 平 2 负、客场 6-2-2 极强；但体彩 1.42 EV 为负（0.576×1.42-1=-18%），方向不出票。低进球剧本：新未来场均 1.2 球 + 主力后卫缺阵 → <b>1-1 @9.00</b>（DC top1 比分）与 <b>dd（半平/全平）@8.35</b> 为本档 EV 双核心。</div></div>
+
+<div class="mcard"><h3>#4 周一004 西甲R2 · 08-25 01:30</h3><b>奥萨苏纳[16] vs 莱万特[20]</b>（λ 1.56/0.79）
+<div class="row"><span>等级 A</span><span>⭐⭐ 修正后主胜 47%</span><span>d=0（双方门将/后卫非主力口径缺阵）</span></div>
+<div>R2 开季修正后主胜不足 50% 不入串；低进球剧本：双方近 10 场均进 1.2/1.5 球 + 莱万特开局两连败零进球倾向 → <b>TTG 0 球 @10.50</b>（=CRS 0-0，同赔率选 TTG 池）。⚠️ 泊松低尾风险：λ 小样本下 0-0 概率或高估，2 元小注。</div></div>
+
+<div class="mcard"><h3>#8 周一008 英超R1 · 08-25 03:00</h3><b>富勒姆[12] vs 切尔西[11]</b>（λ 1.35/1.26）
+<div class="row"><span>等级 A</span><span>⭐⭐ 修正后平局 36.5% 贴身客胜 37%</span><span>d=0（切尔西 7 伤为叙事风险）</span></div>
+<div>切尔西伤 7 人（凯塞多/W·福法纳停）+ 英超 R1 强队折扣（客胜×0.80）→ 修正后三项 26/37/37 胶着。富勒姆主场近 10 场 5 胜 0 平 5 负"无平体质" + 主胜 4.05→3.90 市场同向 → <b>HAD 主胜 @3.90</b> 搏奖单关（HAD 单关资格 ✅）+ 入平衡串主线。</div></div>
+
+<div class="mcard"><h3>#5 周一005 沙职R3 · 08-25 02:00</h3><b>吉达联合[7] vs 拉斯决心=哈泽姆[9]</b>（λ 1.68/0.92）
+<div class="row"><span>等级 A</span><span>⭐⭐⭐ 主胜 59.7%</span><span>d=0</span></div>
+<div>主胜方向 EV 负（0.597×1.35-1=-19%）不出票；平局 24.4% × 4.45 = <b>EV+8.6%</b>（分歧 4.5pp 合规）：哈泽姆上季两回合 1-0/1-1 对吉达联合不落下风 + R3 开季平局×1.10 → 入平衡串主线第二腿。</div></div>
+
+<div class="mcard"><h3>#6 周一006 意甲R1 · 08-25 02:45</h3><b>罗马[13] vs 佛罗伦萨[11]</b>（λ 1.60/0.54）
+<div class="row"><span>等级 A</span><span>⭐⭐ R1 修正后主胜 44%</span><span>d=0（客 2 伤非主力口径）</span></div>
+<div>罗马主场近 10 场 6 胜 4 平 0 负堡垒，但 R1 强队折扣（主胜×0.80）后 44% 不足三星 → 方向不出票。dd（半平/全平）17.7% @5.80 = <b>EV+2.8%</b> 作平衡档尾巴：意甲揭幕战慢热剧本（意甲 R1 历史平局率 35%+，联赛 TOP 比分 1-1 居首）。</div></div>
+</div>
+
+<h2>🚫 第三层 · 排除场次简报（r2 维持）</h2>
+<div class="card"><table>
+<tr><td>#1 周一001 博洛尼亚vs拉齐奥 [B]</td><td>R1 修正后 37/38/25 主平对开，拉齐奥伤 8 人叙事噪音大，避开</td></tr>
+<tr><td>#3 周一003 马尔默vs佐加顿斯 [B]</td><td>瑞超×1.5 波动 + 修正后极差 &lt;10pp 胶着 ⭐⭐ 避开（马尔默主场近10 4胜1平5负）</td></tr>
+<tr><td>#7 周一007 兰斯vs阿纳西 [B]</td><td>DC 与市场分歧 36pp（兰斯为法甲降级队，法乙缓存参数失真）→ 市场锚 + d=+2 两主力缺阵 + 法乙冷门率 37% 全联赛最高，避开</td></tr>
+<tr><td>#9 周一009 吉维森特vs卡萨皮亚 [A]</td><td>方向主胜 55.4% ⭐⭐⭐ 但 EV-17% 无出票价值；<b>比分选项 r2 全撤</b>（模型分歧 19.4pp）</td></tr>
+<tr><td>#10 周一010 马拉加vs拉科 [C]</td><td>无可靠 DC（升班马）+ 主伤 7 人 + 修正后平局 37% 与市场分歧 5.9pp 超限，避开</td></tr>
+<tr><td>#11 周一011 博塔弗戈vs巴竞技 [C]</td><td>巴甲×1.3 波动 + 修正后极差 9.5pp 胶着 ⭐⭐ 避开（主主力前锋亚瑟停赛 d=+1）</td></tr>
+<tr><td>#12 周二005 LASK林茨vs凯尔特人 [C]</td><td><b>次回合</b>（首回合 0-3）双低动力/凯尔特人轮换练兵，单场结果不可测，避开</td></tr>
+<tr><td>#13 周二006 博德闪耀vs奈梅亨 [C]</td><td><b>次回合</b>（首回合 3-1）博德管理比赛 + 奈梅亨背水一战，战意错位，避开</td></tr>
+</table></div>
+
+<h2>⚠️ 局限与数据来源</h2>
+<div class="card"><div class="sub">
+<b>单锚模式</b>：Pinnacle 收盘价全缺（2026-08 实测停摆常态），概率锚=体彩去水（毛利~13%），星级上限 ⭐⭐⭐ ·
+<b>搜索配额耗尽</b>：临场终审降级为 insight 四要素 + 赔率零异动判定 ·
+<b>fd 2627 CSV 未发布</b>：意甲/英超用 2526 缓存拟合 ·
+<b>修正链</b>：开季 R1(×0.80/×1.35)/R2(×0.90/×1.20)/R3(×0.95/×1.10) + 伤停差值 d（v4.9 主力口径 starts/apps≥0.7 且 apps≥2）
+</div>
+<div class="foot">
+来源清单：engine/cache/sporttery_matches.json（13场五池赔率+poolSingle）· sporttery_insight_2041028~2041054.json（排名/伤停/近10/H2H）· {italy-serie-a,saudi,sweden,spain-laliga,france-ligue2,england-premier,portugal-liga}_dc.json（ξ=0.005）· data/00-leagues/*.json（联赛画像）· engine/cache/score_odds/2026-08-24.json（赔率快照）· data/02-results/2026-08-24.json（预测记录 r2）
+</div></div>
+
+</body></html>

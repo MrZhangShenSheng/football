@@ -144,9 +144,15 @@ def load_kickoffs() -> dict[str, str]:
 
 
 def strip_play(pick: str) -> str:
-    """剥 v4.6 玩法前缀：'HAFU aa' → 'aa'（无前缀原样返回）。"""
+    """剥 v4.6 玩法前缀 + 括号注释 + 状态尾词：'HAFU dd(平/平)(方案外)' → 'dd'。
+
+    pick 常带人工注释（"(终审剔除)"/"（用户实票@1.70存续）"/"...维持"），不清掉会导致
+    directionHit 判 None（2026-08-23 周六028 5-0 主胜漏判事故）。
+    """
     parts = pick.split(" ", 1)
-    return parts[1].strip() if parts[0] in PLAY_PREFIXES and len(parts) == 2 else pick
+    body = parts[1].strip() if parts[0] in PLAY_PREFIXES and len(parts) == 2 else pick
+    body = re.sub(r"[（(][^（）()]*[)）]", " ", body)
+    return body.replace("维持", "").replace("存续", "").strip()
 
 
 def parse_score(s: str | None) -> tuple[int, int] | None:
@@ -207,6 +213,7 @@ def backfill(day_limit: str | None = None) -> dict:
     zh_map = zh_to_espn_map()
     # 收集未回填记录（result 为空或'不可得'均重试——'不可得'曾因 ESPN 单链路断粮，体彩可救回）
     targets = []  # (path, data, rec, date, espn_code, league)
+    n_fix = 0
     for p in sorted(RESULTS_DIR.glob("*.json")):
         if p.name.startswith("_"):
             continue
@@ -216,7 +223,16 @@ def backfill(day_limit: str | None = None) -> dict:
             continue
         recs = data.get("records") or data.get("matches") or []
         for rec in recs:
-            if rec.get("result") not in (None, UNAVAILABLE_MARK) or not rec.get("pick"):
+            if not rec.get("pick"):
+                continue
+            if rec.get("result") not in (None, UNAVAILABLE_MARK):
+                # 已回填但方向未判（旧版 strip_play 判不出带注释 pick）→ 纯本地补算，不重查网络
+                sc = parse_score(rec.get("result"))
+                oi = pick_outcome_idx(rec)
+                if sc and oi is not None and rec.get("directionHit") is None:
+                    rec["directionHit"] = outcome_of(*sc) == oi
+                    data["_dirty"] = True
+                    n_fix += 1
                 continue
             d = rec.get("date") or data.get("date")
             if not d or d > TODAY:
@@ -306,14 +322,15 @@ def backfill(day_limit: str | None = None) -> dict:
         if id(data) not in written and data.pop("_dirty", False):
             p.write_text(json.dumps(data, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
             written.add(id(data))
-    return {"filled": n_fill, "sporttery": n_sp, "missed": n_miss}
+    return {"filled": n_fill, "sporttery": n_sp, "missed": n_miss, "fixed": n_fix}
 
 
 def main() -> None:
     day_limit = sys.argv[1] if len(sys.argv) > 1 else None
     res = backfill(day_limit)
     log("backfill", f"回填 {res['filled']} 场（体彩对票 {res['sporttery']}）· 无匹配 {res['missed']} 场"
-                   f"（体彩/ESPN 均无 → 标不可得；ESPN 缓存延迟 → 稍后重跑）")
+                   f"（体彩/ESPN 均无 → 标不可得；ESPN 缓存延迟 → 稍后重跑）"
+                   f" · 补算方向 {res['fixed']} 条（带注释 pick 旧漏判）")
     log("backfill", "回填后跑 run.py corpus 刷新语料+趋势报告")
 
 
