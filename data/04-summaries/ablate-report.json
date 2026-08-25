@@ -1,13 +1,17 @@
 {
-  "generatedAt": "2026-08-24",
-  "n_filled": 63,
+  "generatedAt": "2026-08-25",
+  "n_filled": 64,
   "gateReady": true,
   "humanReview": true,
   "report": [
     {
       "coeff": "开季修正",
-      "n_trigger": 4,
-      "status": "样本不足（<5 触发场），继续观察"
+      "n_trigger": 5,
+      "n_base": 59,
+      "hit_trigger": 0.8,
+      "hit_base": 0.695,
+      "status": "✅ 建议标已验证：触发场 80% ≥ 对照 69%",
+      "diff": "SKILL.md 修正系数『开季修正』标注 ✅已验证（正增益 +11%）"
     },
     {
       "coeff": "联赛波动",
@@ -36,7 +40,7 @@
     },
     {
       "coeff": "伤停差值",
-      "n_trigger": 0,
+      "n_trigger": 1,
       "status": "样本不足（<5 触发场），继续观察"
     }
   ]
