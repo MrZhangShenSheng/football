@@ -1,0 +1,60 @@
+{
+ "meta": {
+  "priorGoals": 200,
+  "sClamp": [
+   0.3,
+   0.6
+  ],
+  "rhoClamp": [
+   -0.2,
+   0.2
+  ]
+ },
+ "global": {
+  "s": 0.4446,
+  "rho_half": 0.0162,
+  "n": 10898
+ },
+ "leagues": {
+  "england-premier": {
+   "s": 0.4431,
+   "rho_half": 0.0905,
+   "n": 1520
+  },
+  "france-ligue1": {
+   "s": 0.4471,
+   "rho_half": 0.0397,
+   "n": 1298
+  },
+  "france-ligue2": {
+   "s": 0.4456,
+   "rho_half": -0.0586,
+   "n": 1369
+  },
+  "germany-bundesliga": {
+   "s": 0.4621,
+   "rho_half": 0.0151,
+   "n": 1223
+  },
+  "italy-serie-a": {
+   "s": 0.4376,
+   "rho_half": 0.1182,
+   "n": 1520
+  },
+  "netherlands-eredivisie": {
+   "s": 0.4373,
+   "rho_half": 0.0183,
+   "n": 1224
+  },
+  "portugal-primeira": {
+   "s": 0.4427,
+   "rho_half": -0.0094,
+   "n": 1224
+  },
+  "spain-laliga": {
+   "s": 0.4412,
+   "rho_half": -0.0241,
+   "n": 1520
+  }
+ }
+}
