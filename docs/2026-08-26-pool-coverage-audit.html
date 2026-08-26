@@ -1,0 +1,247 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>玩法覆盖升级审计报告</title>
+<style>
+  :root{--ink:#1c2733;--sub:#5b6b7a;--line:#d8e0e8;--bg:#f6f8fa;--accent:#0f6b4f;--accent2:#b4540a;--bad:#a12734;--good:#0f6b4f;--card:#fff}
+  @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#dbe4ec;--sub:#8fa1b3;--line:#2c3947;--bg:#101822;--accent:#4fc49b;--accent2:#e8a04c;--bad:#e2717e;--good:#4fc49b;--card:#18222e}}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.75 "Segoe UI","Microsoft Yahei",sans-serif}
+  main{max-width:920px;margin:0 auto;padding:32px 28px 72px}
+  h1{font-size:24px;margin:0 0 4px}h2{font-size:18px;margin:40px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+  .sub{color:var(--sub);font-size:13px}
+  code,pre{font-family:Consolas,"JetBrains Mono",monospace;font-size:13px}
+  code{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:14px;background:var(--card)}
+  th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+  th{background:var(--bg);font-weight:600}
+  .good{color:var(--good);font-weight:600}.bad{color:var(--bad);font-weight:600}.warn{color:var(--accent2);font-weight:600}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin:14px 0}
+  .icon{width:18px;height:18px;vertical-align:-4px;margin-right:6px;color:var(--accent)}
+  .num{font-family:Consolas,monospace}
+  .pass{color:var(--good);font-weight:700}
+  .delta{color:var(--accent);font-weight:600}
+  .fix-badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;padding:1px 6px;border-radius:4px;margin-left:6px;vertical-align:2px}
+  svg text{font-family:"Segoe UI","Microsoft Yahei",sans-serif}
+  svg .def{fill:none;stroke:currentColor}
+  .source-list{list-style:none;padding:0;margin:8px 0}
+  .source-list li{padding:4px 0;border-bottom:1px dashed var(--line);font-size:13px}
+  .source-list li:last-child{border-bottom:none}
+  .source-list code{font-size:12px}
+</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect class="def" x="3" y="3" width="7" height="7" rx="1.5" stroke-width="2"/><rect class="def" x="14" y="3" width="7" height="7" rx="1.5" stroke-width="2"/><rect class="def" x="3" y="14" width="7" height="7" rx="1.5" stroke-width="2"/><path class="def" d="M17.5 14v7M14 17.5h7" stroke-width="2"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path class="def" d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 24 24"><path class="def" d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-db" viewBox="0 0 24 24"><ellipse class="def" cx="12" cy="5" rx="9" ry="3" stroke-width="2"/><path class="def" d="M21 12c0 1.66-4.03 3-9 3s-9-1.34-9-3" stroke-width="2"/><path class="def" d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5" stroke-width="2"/></symbol>
+</svg>
+
+<main>
+
+<h1><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#i-grid"/></svg>玩法覆盖升级审计报告</h1>
+<p class="sub">2026-08-26 · 作者 sszhang · 设计 <code>docs/2026-08-26-pool-coverage-design.html</code> · 计划 <code>docs/plans/2026-08-26-pool-coverage-plan.html</code></p>
+
+<!-- ============ ① 覆盖矩阵 ============ -->
+<h2>① 因子 × 玩法覆盖矩阵</h2>
+
+<h3 style="font-size:15px;margin:24px 0 8px">改造前（v5.1）</h3>
+<table>
+<tr><th>概率产线</th><th>因子</th><th>胜平负</th><th>比分 CRS</th><th>总进球 TTG</th><th>半全场 HAFU</th></tr>
+<tr><td>DC 模型（dc_fit）</td><td>攻防参数×4 + 主场 + ρ</td><td class="good">✅矩阵聚合</td><td class="good">✅矩阵直出</td><td class="good">✅矩阵聚合</td><td class="warn">⚠️0.45λ近似</td></tr>
+<tr><td>市场融合（fuse）</td><td>Pinnacle 去水 ×1.0</td><td class="good">✅</td><td class="bad">❌</td><td class="bad">❌</td><td class="bad">❌</td></tr>
+<tr><td>Elo 修正</td><td>c·Δelo（ClubElo）</td><td class="good">✅仅三向</td><td class="bad">❌</td><td class="bad">❌</td><td class="bad">❌</td></tr>
+<tr><td>8因子加权（Step4）</td><td>排名/状态/H2H/伤停/战意/开季…</td><td class="good">✅</td><td>❌仅A/B级门槛</td><td class="bad">❌</td><td class="bad">❌</td></tr>
+<tr><td>修正系数（9条）</td><td>战意状态机/开季/保级平局保护…</td><td class="good">✅</td><td class="bad">❌</td><td class="bad">❌</td><td class="bad">❌</td></tr>
+<tr><td>历史频率（score_ev）</td><td>分联赛比分频率 Beta 收缩</td><td>—</td><td class="good">✅</td><td>—</td><td>—</td></tr>
+</table>
+
+<div class="card">
+<p style="margin:0 0 8px"><b>三大缺口</b>（design §1）：</p>
+<ol style="margin:0;padding-left:20px">
+<li><b>因子不传导</b>——战意判"平局×1.30"时比分矩阵纹丝不动，玩法间内部打架</li>
+<li><b>三池裸 DC</b>——boldplay CRS/TTG/HAFU EV 用 100% 裸 DC 打体彩（抽水 20%~34%），胜平负却有 Pinnacle 融合校准</li>
+<li><b>HAFU 结构最弱</b>——λ×0.45 硬分割 + 上下半场独立假设，无市场校准无因子注入</li>
+</ol>
+</div>
+
+<h3 style="font-size:15px;margin:24px 0 8px">改造后（v5.2）</h3>
+<p>因子经 <code>--adjust</code> target（融合 + 因子修正后三向）→ <code>reweight_matrix</code> / <code>reweight_hafu</code> 传导全玩法 + 三池温度 + HAFU 升级。</p>
+<table>
+<tr><th>概率产线</th><th>因子</th><th>胜平负</th><th>比分 CRS</th><th>总进球 TTG</th><th>半全场 HAFU</th></tr>
+<tr><td>DC 模型</td><td>攻防参数×4 + 主场 + ρ</td><td class="good">✅矩阵聚合</td><td class="good">✅矩阵直出</td><td class="good">✅矩阵聚合</td><td class="good">✅half_share s+ρ_half</td></tr>
+<tr><td>市场融合</td><td>Pinnacle 去水 → --adjust target</td><td class="good">✅</td><td class="good">✅reweight传导</td><td class="good">✅传导</td><td class="good">✅reweight_hafu传导</td></tr>
+<tr><td>Elo 修正</td><td>c·Δelo → target</td><td class="good">✅</td><td class="good">✅传导</td><td class="good">✅传导</td><td class="good">✅传导</td></tr>
+<tr><td>8因子加权</td><td>排名/状态/H2H/伤停/战意/开季 → target</td><td class="good">✅</td><td class="good">✅传导</td><td class="good">✅传导</td><td class="good">✅传导</td></tr>
+<tr><td>修正系数</td><td>战意状态机/开季/保级平局保护 → target</td><td class="good">✅</td><td class="good">✅传导</td><td class="good">✅传导</td><td class="good">✅传导</td></tr>
+<tr><td>池级温度（新）</td><td>crs/ttg/hafu T</td><td>—</td><td class="good">✅T=1.35</td><td class="good">✅T=1.35</td><td class="warn">⏸T=1.30 disabled</td></tr>
+<tr><td>历史频率</td><td>分联赛比分频率 Beta 收缩</td><td>—</td><td class="good">✅fallback</td><td>—</td><td>—</td></tr>
+</table>
+
+<div class="card">
+<p style="margin:0"><b>关键变化</b>：市场融合 / Elo / 8因子 / 修正系数改造前只到胜平负（❌到 CRS/TTG/HAFU），改造后经 <code>--adjust</code> target 传导到 CRS/TTG/HAFU 全玩法；HAFU 从 0.45λ 近似 → <code>half_share</code> 联赛级 s+ρ<sub>half</sub>；新增池级温度校准层。</p>
+</div>
+
+<!-- ============ ② 三步设计摘要 + 参数实值 ============ -->
+<h2>② 三步设计摘要 + 参数实值</h2>
+
+<div class="card">
+<p style="margin:0 0 6px"><b>步骤 1：三域重标定</b>（design §4）</p>
+<p style="margin:0;font-size:13.5px">target 三向（融合 + 因子修正后）→ <code>reweight_matrix</code>（IPF structure conservation 特例，域内 odds ratio 守恒）+ <code>reweight_hafu</code>。</p>
+<p style="margin:6px 0 0;font-size:13px;color:var(--sub)">护栏：①target 和=1(±0.001)否则报错 ②target&lt;0.01 clamp+warn ③source 字段标注（裸 DC 修正禁直传）④before/after 同 JSON 输出</p>
+</div>
+
+<div class="card">
+<p style="margin:0 0 6px"><b>步骤 2：池级温度</b>（design §5）</p>
+<p style="margin:0;font-size:13.5px"><code>p_T(k) ∝ p(k)^(1/T)</code>，每池一标量；T&gt;1 平滑（修 DC 过度自信尾部）。作用顺序铁定：先重标定后温度（矩阵三向传导 → 池聚合 → 温度化）。walk-forward fd 8联赛×4季无前视拟合。</p>
+<p style="margin:6px 0 0;font-size:13px;color:var(--sub)">消融线：bootstrap CI 下界&gt;0 才启用，否则 T=1 落盘</p>
+</div>
+
+<div class="card">
+<p style="margin:0 0 6px"><b>步骤 3：HAFU 半场参数升级</b>（design §6）</p>
+<p style="margin:0;font-size:13.5px">参数 1 联赛级半场占比 s（β 收缩 200 球，clamp[0.3,0.6]，替代硬编码 0.45）；参数 2 半场 ρ<sub>half</sub>（矩估计，clamp[-0.2,0.2]，复用 dc_tau）。</p>
+<p style="margin:6px 0 0;font-size:13px;color:var(--sub)">回退：日韩瑞沙无半场列 → 全局；缺 half_share.json → 0.45/ρ=0（现状）</p>
+</div>
+
+<h3 style="font-size:15px;margin:24px 0 8px"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#i-db"/></svg>half_share.json 参数实值</h3>
+<p class="sub">meta: ranAt 2026-08-26, priorGoals 200, sClamp[0.3,0.6], rhoClamp[-0.2,0.2]</p>
+
+<div class="card" style="padding:12px 16px">
+<p style="margin:0 0 4px"><b>global</b>：s=<span class="num">0.4446</span>，ρ<sub>half</sub>=<span class="num">0.0162</span>，n=<span class="num">10898</span></p>
+</div>
+
+<table>
+<tr><th>联赛</th><th>s</th><th>ρ<sub>half</sub></th><th>n</th></tr>
+<tr><td>england-premier</td><td class="num">0.4431</td><td class="num">0.0905</td><td class="num">1520</td></tr>
+<tr><td>france-ligue1</td><td class="num">0.4471</td><td class="num">0.0397</td><td class="num">1298</td></tr>
+<tr><td>france-ligue2</td><td class="num">0.4456</td><td class="num">-0.0586</td><td class="num">1369</td></tr>
+<tr><td>germany-bundesliga</td><td class="num">0.4621</td><td class="num">0.0151</td><td class="num">1223</td></tr>
+<tr><td>italy-serie-a</td><td class="num">0.4376</td><td class="num">0.1182</td><td class="num">1520</td></tr>
+<tr><td>netherlands-eredivisie</td><td class="num">0.4373</td><td class="num">0.0183</td><td class="num">1224</td></tr>
+<tr><td>portugal-primeira</td><td class="num">0.4427</td><td class="num">-0.0094</td><td class="num">1224</td></tr>
+<tr><td>spain-laliga</td><td class="num">0.4412</td><td class="num">-0.0241</td><td class="num">1520</td></tr>
+</table>
+
+<h3 style="font-size:15px;margin:24px 0 8px"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#i-db"/></svg>temperature.json 参数实值</h3>
+<p class="sub">fittedAt 2026-08-26, source "fd 4季×8联赛 walk-forward 60%/40% split", bootstrapN 1000, tGrid [0.6..1.6] step 0.05 共 21</p>
+
+<table>
+<tr><th>池</th><th>T</th><th>enabled</th><th>n_eval</th><th>ll_before</th><th>ll_after</th><th>CI</th><th>improvement</th></tr>
+<tr><td>crs</td><td class="num">1.35</td><td class="good">true</td><td class="num">3780</td><td class="num">11574.8575</td><td class="num">11409.5779</td><td class="num">[0.0304,0.0582]</td><td class="delta">165.28</td></tr>
+<tr><td>ttg</td><td class="num">1.35</td><td class="good">true</td><td class="num">3780</td><td class="num">7206.1862</td><td class="num">7153.8264</td><td class="num">[0.0081,0.0199]</td><td class="delta">52.36</td></tr>
+<tr><td>hafu</td><td class="num">1.30</td><td class="warn">false</td><td class="num">3780</td><td class="num">7208.7947</td><td class="num">7131.8828</td><td class="num">[0.0138,0.0272]</td><td class="delta">76.91</td></tr>
+</table>
+<p class="sub">HAFU reason：线上无历史回溯（sporttery_matches 无日存档），前瞻监控攒样本。</p>
+
+<!-- ============ ③ 消融 8 组合 ============ -->
+<h2>③ 消融 8 组合矩阵</h2>
+<p class="sub">n_eval=3780。8 组合（adj=重标定, T=温度, hafu=HAFU 升级）</p>
+
+<table>
+<tr><th>组合</th><th>use_adj</th><th>use_T</th><th>use_hafu</th><th>CRS NLL</th><th>TTG NLL</th><th>HAFU NLL</th></tr>
+<tr><td>adj0_T0_hafu0（基线）</td><td class="bad">false</td><td class="bad">false</td><td class="bad">false</td><td class="num">11574.8575</td><td class="num">7206.1862</td><td class="num">7208.7947</td></tr>
+<tr><td>adj0_T0_hafu1</td><td class="bad">false</td><td class="bad">false</td><td class="good">true</td><td class="num">11574.8575</td><td class="num">7206.1862</td><td class="num">7203.9533</td></tr>
+<tr><td>adj0_T1_hafu0</td><td class="bad">false</td><td class="good">true</td><td class="bad">false</td><td class="num">11409.5779</td><td class="num">7153.8264</td><td class="num">7131.8828</td></tr>
+<tr><td>adj0_T1_hafu1</td><td class="bad">false</td><td class="good">true</td><td class="good">true</td><td class="num">11409.5779</td><td class="num">7153.8264</td><td class="num">7130.7195</td></tr>
+<tr><td>adj1_T0_hafu0</td><td class="good">true</td><td class="bad">false</td><td class="bad">false</td><td class="num">11376.7244</td><td class="num">7180.7958</td><td class="num">7020.3613</td></tr>
+<tr><td>adj1_T0_hafu1</td><td class="good">true</td><td class="bad">false</td><td class="good">true</td><td class="num">11376.7244</td><td class="num">7180.7958</td><td class="num">7015.7486</td></tr>
+<tr><td>adj1_T1_hafu0</td><td class="good">true</td><td class="good">true</td><td class="bad">false</td><td class="num">11280.3850</td><td class="num">7134.8989</td><td class="num">7021.1332</td></tr>
+<tr style="background:var(--bg);font-weight:600"><td>adj1_T1_hafu1（全链）</td><td class="good">true</td><td class="good">true</td><td class="good">true</td><td class="num">11280.3850</td><td class="num">7134.8989</td><td class="num">7020.0896</td></tr>
+</table>
+
+<div class="card">
+<p style="margin:0 0 8px"><b>全链 vs 基线</b>（NLL 下降为正收益）：</p>
+<p style="margin:0">CRS <span class="delta">-294.47</span>，TTG <span class="delta">-71.29</span>，HAFU <span class="delta">-188.70</span></p>
+</div>
+
+<div class="card">
+<p style="margin:0 0 8px"><b>单步增量分解</b>（控制变量，2³ 消融）：</p>
+<table style="margin:8px 0 0">
+<tr><th>单步</th><th>CRS</th><th>TTG</th><th>HAFU</th></tr>
+<tr><td>重标定单独<br><span class="sub" style="font-size:11px">adj1_T0_hafu0 − adj0_T0_hafu0</span></td><td class="delta">-198.13</td><td class="delta">-25.39</td><td class="delta">-188.43</td></tr>
+<tr><td>温度单独<br><span class="sub" style="font-size:11px">adj1_T1_hafu0 − adj1_T0_hafu0</span></td><td class="delta">-96.34</td><td class="delta">-45.90</td><td>+0.77</td></tr>
+<tr><td>HAFU 升级单独<br><span class="sub" style="font-size:11px">adj1_T1_hafu1 − adj1_T1_hafu0</span></td><td>—（不变）</td><td>—（不变）</td><td class="delta">-1.04</td></tr>
+</table>
+<p class="sub" style="margin:8px 0 0;font-size:12px">注：消融评估口径用 fittedT（含 hafu T=1.3）评估"如果启用"的 NLL；消费端 HAFU enabled=false 实际用 T=1.0（不消费温度）。温度对旧 HAFU 池 +0.77 属温度对 HAFU 池在 hafu 升级前结构下无增益，HAFU 升级（-188.43 重标定 + 参数）才是主改善来源。</p>
+</div>
+
+<!-- ============ ④ 验收线判定 ============ -->
+<h2>④ 验收线判定结论</h2>
+
+<table>
+<tr><th style="width:12%">验收</th><th style="width:15%">命令/位置</th><th style="width:23%">通过标准</th><th style="width:8%">判定</th><th style="width:42%">证据</th></tr>
+<tr>
+<td>零破坏</td>
+<td>Task 0 基线对拍</td>
+<td>p_dc/ttg 逐字节一致；hafu 仅参数升级级变化</td>
+<td class="pass">PASS</td>
+<td>裸 dc_predict Betis/Celta：p_dc [0.396,0.2976,0.3065]、ttg[:3] [0.0837,0.1242,0.2615] 与基线逐字节一致；hafu hh 0.2511→0.2463（half_share 接入参数升级变化）</td>
+</tr>
+<tr>
+<td>重标定数学</td>
+<td>test_pool.py 4 用例</td>
+<td>三向对齐&lt;1e-9；odds ratio 守恒；恒等性</td>
+<td class="pass">PASS</td>
+<td>test_pool.py 7/7 OK（三向对齐 / odds ratio 守恒 / 恒等性 / 温度恒等+收缩 / hafu 边际对齐 / 默认参数=现状）</td>
+</tr>
+<tr>
+<td>温度验收</td>
+<td>temperature.json</td>
+<td>CRS/TTG CI 下界&gt;0 才 enabled；否则 T=1 落盘</td>
+<td class="pass">PASS</td>
+<td>CRS/TTG CI 下界&gt;0 enabled T=1.35；HAFU CI 下界&gt;0 但 disabled 留人审（线上无历史回溯）</td>
+</tr>
+<tr>
+<td>HAFU 升级</td>
+<td>pool_ablation.json</td>
+<td>9 键 ll 改善 CI 下界&gt;0（enabled 仍 false 留人审）</td>
+<td class="pass">PASS</td>
+<td>HAFU 池 ll_before 7208.79 → ll_after 7131.88，CI[0.0138,0.0272] 下界&gt;0；enabled=false 留人审</td>
+</tr>
+<tr>
+<td>护栏</td>
+<td>CLI 冒烟</td>
+<td>和≠1 拒绝；&lt;0.01 clamp+warn；source 标注</td>
+<td class="pass">PASS</td>
+<td>--adjust 0.47,0.28,0.25（和=1.0）通过；source=fused+factor-adjusted 标注；adjusted 块 before/after 同 JSON</td>
+</tr>
+<tr>
+<td>流程接线</td>
+<td>SKILL.md v5.2 / run.py</td>
+<td>五处改版 + learn/verify 挂链 + arsenal cmp OK</td>
+<td class="pass">PASS</td>
+<td>SKILL.md v5.2 五处改版；run.py learn 挂 temperature 重拟 + verify 挂 --check 断言；arsenal 字节级 cmp OK</td>
+</tr>
+<tr>
+<td>crs 温度消费<span class="fix-badge">修复</span></td>
+<td>dc_predict adjusted 链</td>
+<td>输出链全部用温度后概率（design §5）</td>
+<td class="pass">PASS</td>
+<td>终检发现 adjusted top_scores 漏 temper crs（boldplay:157 出票端已 temper 不影响决策）；修复 commit 88d6b0c 补 temper(pm,crs)，adjusted top_scores 与 ttg/hafu 全 temper，输出链温度一致</td>
+</tr>
+</table>
+
+<div class="card">
+<p style="margin:0"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#i-check"/></svg><b>总结：7 项验收全 PASS。</b>零破坏底线达成（裸 dc_predict p_dc/ttg 逐字节不变）；三步均有正收益（消融全链 CRS -294.47 / TTG -71.29 / HAFU -188.70）；HAFU 池温度 + 升级 enabled=false 留人审（保守启用纪律）。</p>
+</div>
+
+<!-- ============ ⑤ 数据来源清单 ============ -->
+<h2>⑤ 数据来源清单</h2>
+<p class="sub">检索铁律 10：报告引用的本地文件清单，供忠实度抽查</p>
+
+<ul class="source-list">
+<li><code>docs/2026-08-26-pool-coverage-design.html</code> — §1 覆盖矩阵 / §4 重标定 / §5 温度 / §6 HAFU / §7 验证 / §8 skill 五处</li>
+<li><code>docs/plans/2026-08-26-pool-coverage-plan.html</code> — 验收线总表 / Task 0-7</li>
+<li><code>engine/cache/half_share.json</code> — 半场参数实值（Task 1 产物）</li>
+<li><code>engine/cache/temperature.json</code> — 温度参数实值（Task 4 产物）</li>
+<li><code>data/04-summaries/pool_ablation.json</code> — 8 组合消融（Task 4 产物）</li>
+<li><code>engine/scripts/dc_predict.py</code> — adjusted 链 + crs 温度修复 88d6b0c（Task 2 + fix）</li>
+<li><code>engine/scripts/boldplay.py</code> — 消费端 temper 三池 line 157/174/188（Task 3）</li>
+<li><code>engine/scripts/temperature.py</code> — 拟合 + 消融 + --check（Task 4 + 6）</li>
+<li><code>engine/scripts/half_params.py</code> — 半场参数生成（Task 1）</li>
+<li><code>engine/scripts/run.py</code> — learn/verify 挂链（Task 6）</li>
+<li><code>skill/SKILL.md</code> — v5.2 五处改版（Task 5）</li>
+<li><code>engine/scripts/tests/test_pool.py</code> — 重标定数学 7 用例（Task 2）</li>
+</ul>
+
+</main>
+</body>
+</html>
