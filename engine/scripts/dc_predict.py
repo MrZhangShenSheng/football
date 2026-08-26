@@ -270,15 +270,17 @@ def main() -> None:
     result["temperature"] = tpool
     if adjust:
         pm = reweight_matrix(p, adjust)
+        # crs 池温度（设计 §5：输出链全部用温度后概率；与 boldplay.py:157 消费端一致）
+        pm_t = np.array(temper([float(pm[i, j]) for i in range(7) for j in range(7)], tpool["crs"])).reshape(7, 7)
         hf = reweight_hafu(hafu_approx(lh, la, s_lg, rho_h), adjust)
         hft = temper(list(hf.values()), tpool["hafu"])
         result["adjusted"] = {
             "source": "fused+factor-adjusted" if market else "raw+manual-adjusted",
             "target": adjust,
             "p_three": [round(v, 4) for v in adjust],
-            "top_scores": [{"score": f"{i}-{j}", "prob": round(float(pm[i, j]), 4)}
+            "top_scores": [{"score": f"{i}-{j}", "prob": round(float(pm_t[i, j]), 4)}
                            for i, j in sorted(((i, j) for i in range(7) for j in range(7)),
-                                               key=lambda t: -pm[t])[:5]],
+                                               key=lambda t: -pm_t[t])[:5]],
             "ttg": [round(v, 4) for v in temper(ttg_dist(pm), tpool["ttg"])],
             "hafu": {k: round(v, 4) for k, v in sorted(zip(hf.keys(), hft))},
         }
