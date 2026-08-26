@@ -1,122 +1,474 @@
 {
-  "date": "2026-08-25",
-  "version": "v5.1",
-  "mode": "global-r1",
-  "note": "同日第二轮（晚间复核轮）：白轮 v5.0 16场预测已锁定于 2026-08-25.json（git=凭证），本轮独立重算当前在售 14 场（周二001/002 已开赛下架）。结论与白轮高度一致，修正链更严（博德补欧冠首回合平保护）。",
-  "plans": [
-    {"plan": "⚖️主线3串1", "type": "HAD 3串1", "stake": "2元(2元×1倍)",
-     "legs": ["周二003 HAD 客胜@1.15 p83.9% EV-3.5%", "周三010 HAD 主胜@1.22 p78.8% EV-3.9%", "周三005 HAD 主胜@1.42 p55.7% EV-20.9%"],
-     "odds": 1.993, "p": 0.368, "evEach": false, "note": "回血主线（抽水内负EV为设计代价）；雅典三星单选风险已标注"},
-    {"plan": "🚀尾巴A-MIX", "type": "CRS 3串1 ×1倍", "stake": "2元(2元×1倍)",
-     "legs": ["周三002 CRS 0:0@10 p_dc11.7% EV+17.2%", "周二003 CRS 1:1@14 p_dc8.2% EV+14.5%", "周三010 CRS 0:0@26 p_dc4.1% EV+7.0%"],
-     "odds": 3640.0, "p": 0.000393, "evEach": true, "note": "合赔3640 中7280(<1万免税)；⚠️3腿全低分平局向同向（ρ系统性偏差风险最高形态，8-24教训），DC口径EV+43%/市场口径-49%，回填验证前×1倍慎跟；与主线票共享皇马场但玩法互斥（跨票分池合规）"}
-  ],
-  "matches": [
-    {"idx": 1, "code": "周二003", "league": "沙职(R3)", "match": "达曼协定 vs 利雅胜利",
-     "pick": "HAD 客胜", "odds": 1.15, "star": 4, "grade": "A",
-     "dc": [0.094, 0.175, 0.731], "fused": [0.041, 0.084, 0.875], "final": 0.839,
-     "chain": ["R3强队胜×0.95", "伤停d+1主×0.97", "单锚×0.97"],
-     "ev": -0.035, "inPlan": "主线+尾巴(CRS 1:1)",
-     "clv": null, "clv_approx_dk": null},
-    {"idx": 2, "code": "周二004", "league": "英联赛杯(R1)", "match": "斯托克城 vs 赫尔城",
-     "pick": "避开", "odds": 2.22, "star": 1, "grade": "C",
-     "dc": null, "fused": [0.306, 0.277, 0.387], "final": 0.387,
-     "chain": ["单锚×0.97"], "ev": -0.141, "inPlan": null,
-     "clv": null, "clv_approx_dk": null},
-    {"idx": 3, "code": "周二005", "league": "欧冠(附加赛首回合)", "match": "LASK林茨 vs 凯尔特人",
-     "pick": "避开", "odds": 1.82, "star": 1, "grade": "B",
-     "dc": null, "fused": [0.434, 0.226, 0.272], "final": 0.434,
-     "chain": ["首回合平保护主胜×0.92", "单锚×0.97"], "ev": -0.210, "inPlan": null,
-     "clv": null, "clv_approx_dk": null},
-    {"idx": 4, "code": "周二006", "league": "欧冠(附加赛首回合)", "match": "博德闪耀 vs 奈梅亨",
-     "pick": "HAD 主胜", "odds": 1.39, "star": 3, "grade": "B",
-     "dc": null, "fused": [0.643, 0.185, 0.155], "final": 0.592,
-     "chain": ["伤停d-3客伤重主×1.04", "首回合平保护主胜×0.92", "单锚×0.97"],
-     "ev": -0.177, "inPlan": null,
-     "note": "平保护后<60%不得作胆，仅单选参考；博德近10场8胜2平0负+奈梅亨3主力伤",
-     "clv": null, "clv_approx_dk": null},
-    {"idx": 5, "code": "周二007", "league": "英联赛杯(R1)", "match": "诺丁汉 vs 利兹联",
-     "pick": "避开", "odds": 2.00, "star": 1, "grade": "C",
-     "dc": null, "fused": [0.430, 0.273, 0.268], "final": 0.430,
-     "chain": ["单锚×0.97"], "ev": -0.140, "inPlan": null,
-     "clv": null, "clv_approx_dk": null},
-    {"idx": 6, "code": "周二008", "league": "英联赛杯(R1)", "match": "伯明翰 vs 布伦特",
-     "pick": "避开", "odds": 1.62, "star": 2, "grade": "C",
-     "dc": null, "fused": [0.207, 0.232, 0.531], "final": 0.531,
-     "chain": ["单锚×0.97"], "ev": -0.140, "inPlan": null,
-     "note": "杯赛轮换不可测，客胜54.7%不足三星",
-     "clv": null, "clv_approx_dk": null},
-    {"idx": 7, "code": "周二009", "league": "西甲(R3)", "match": "巴伦西亚 vs 贝蒂斯",
-     "pick": "避开", "odds": 2.38, "star": 1, "grade": "B",
-     "dc": [0.223, 0.271, 0.505], "fused": [0.286, 0.261, 0.452], "final": 0.417,
-     "chain": ["R3强队胜×0.95", "单锚×0.97"], "ev": -0.008, "inPlan": null,
-     "note": "三项极差15.3pp修正后仍胶着带；A-MIX的TTG6球@30(DC尾部高估)与CRS1:3@24人工拒收",
-     "clv": null, "clv_approx_dk": null},
-    {"idx": 8, "code": "周三001", "league": "韩职(R25)", "match": "大田市民 vs 蔚山现代",
-     "pick": "避开", "odds": 2.09, "star": 2, "grade": "A",
-     "dc": [0.478, 0.270, 0.252], "fused": [0.497, 0.236, 0.267], "final": 0.482,
-     "chain": ["单锚×0.97"], "ev": 0.009, "inPlan": null,
-     "note": "蔚山近10场3胜2平5负状态差 vs 争冠动力，大田主场稳但伤停名单4人(严元相/迪奥戈非主力口径)",
-     "clv": null, "clv_approx_dk": null},
-    {"idx": 9, "code": "周三002", "league": "韩职(R25)", "match": "安养FC vs 仁川联",
-     "pick": "CRS 0:0", "odds": 10.0, "star": 2, "grade": "A",
-     "dc": [0.265, 0.317, 0.418], "fused": [0.262, 0.283, 0.455], "final": 0.117,
-     "chain": ["平局×1.15", "单锚×0.97"], "ev": 0.172, "inPlan": "尾巴",
-     "note": "安养主场10场4平+双方场均1.4/1.3低进球+DC平31.7%；分歧4.1pp贴线",
-     "clv": null, "clv_approx_dk": null},
-    {"idx": 10, "code": "周三005", "league": "欧冠(附加赛首回合)", "match": "雅典AEK vs 索列夫",
-     "pick": "HAD 主胜", "odds": 1.42, "star": 3, "grade": "B",
-     "dc": null, "fused": [0.557, 0.226, 0.138], "final": 0.557,
-     "chain": ["首回合平保护主胜×0.92", "单锚×0.97"], "ev": -0.209, "inPlan": "主线",
-     "note": "市场锚场；雅典魔鬼主场，客队近10场8胜2平0负不可小视（分歧提示）",
-     "clv": null, "clv_approx_dk": null},
-    {"idx": 11, "code": "周三006", "league": "欧冠(附加赛首回合)", "match": "采列 vs 布拉迪斯",
-     "pick": "避开", "odds": 2.20, "star": 1, "grade": "B",
-     "dc": null, "fused": [0.360, 0.269, 0.310], "final": 0.360,
-     "chain": ["首回合平保护主胜×0.92", "单锚×0.97"], "ev": -0.208, "inPlan": null,
-     "note": "修正后极差9.1pp胶着⚠️；主队近6平 vs 客队8胜2平状态反差，模型与市场分歧大",
-     "clv": null, "clv_approx_dk": null},
-    {"idx": 12, "code": "周三007", "league": "欧冠(附加赛首回合)", "match": "维京 vs 萨迪纳摩",
-     "pick": "避开", "odds": 2.30, "star": 1, "grade": "B",
-     "dc": null, "fused": [0.344, 0.257, 0.340], "final": 0.344,
-     "chain": ["首回合平保护主胜×0.92", "单锚×0.97"], "ev": -0.208, "inPlan": null,
-     "note": "修正后极差8.7pp胶着⚠️；维京主场9胜0平1负 vs 迪纳摩客场9胜1平0负双龙互咬",
-     "clv": null, "clv_approx_dk": null},
-    {"idx": 13, "code": "周三008", "league": "欧冠(附加赛首回合)", "match": "里昂 vs 费内巴切",
-     "pick": "避开", "odds": 1.87, "star": 1, "grade": "B",
-     "dc": null, "fused": [0.423, 0.257, 0.253], "final": 0.423,
-     "chain": ["首回合平保护主胜×0.92", "单锚×0.97"], "ev": -0.208, "inPlan": null,
-     "note": "两强首轮对话平保护后不足三星；里昂主场7胜0平3负 vs 费内巴切7胜2平1负",
-     "clv": null, "clv_approx_dk": null},
-    {"idx": 14, "code": "周三010", "league": "西甲(R3)", "match": "皇马 vs 皇家社会",
-     "pick": "HAD 主胜", "odds": 1.22, "star": 4, "grade": "A",
-     "dc": [0.758, 0.166, 0.075], "fused": [0.855, 0.099, 0.046], "final": 0.788,
-     "chain": ["R3强队胜×0.95", "单锚×0.97"], "ev": -0.039, "inPlan": "主线+尾巴(CRS 0:0)",
-     "note": "超低赔胆仅作串关骨架(≤1.25不单关)；近10场8胜1平1负 vs 社会近10场2胜2平6负",
-     "clv": null, "clv_approx_dk": null}
-  ],
-  "evScan": {
-    "dcCovered": ["周二003", "周二009", "周三001", "周三002", "周三010"],
-    "crs": "31×5场=155选项 → 4合规(周二003 1:1@14 / 周二009 1:3@24拒收尾部 / 周三002 0:0@10 / 周三010 0:0@26)",
-    "ttg": "8×5场=40选项 → 3合规(周二009 6球@30拒收DC尾部高估 / 周三002 0球@10同0:0 / 周三010 0球@26同0:0)",
-    "hafu": "9×5场=45选项 → 1合规(周二003 dd@12 EV+4.5%，与1:1同剧本同场互斥，保EV高的CRS 1:1)",
-    "noDc": "欧冠6场+英联杯3场=9场市场锚，无DC概率不做EV扫描(设计内)"
+ "date": "2026-08-25",
+ "version": "v5.1",
+ "mode": "global-r1",
+ "note": "同日第二轮（晚间复核轮）：白轮 v5.0 16场预测已锁定于 2026-08-25.json（git=凭证），本轮独立重算当前在售 14 场（周二001/002 已开赛下架）。结论与白轮高度一致，修正链更严（博德补欧冠首回合平保护）。",
+ "plans": [
+  {
+   "plan": "⚖️主线3串1",
+   "type": "HAD 3串1",
+   "stake": "2元(2元×1倍)",
+   "legs": [
+    "周二003 HAD 客胜@1.15 p83.9% EV-3.5%",
+    "周三010 HAD 主胜@1.22 p78.8% EV-3.9%",
+    "周三005 HAD 主胜@1.42 p55.7% EV-20.9%"
+   ],
+   "odds": 1.993,
+   "p": 0.368,
+   "evEach": false,
+   "note": "回血主线（抽水内负EV为设计代价）；雅典三星单选风险已标注"
   },
-  "finalReview": {
-    "at": "2026-08-25 20:30",
-    "injurySource": "insight 8-25 12:23/17:28 双时点缓存(新鲜)",
-    "transferWindow": "❓8-31关窗前无官宣信息可用",
-    "presser": "❓周二场02:00开球发布会窗口未覆盖",
-    "oddsDrift": "首轮采集无限比(白轮未存全量赔率)，按信息边际定律3无边际禁止调换",
-    "law": "定律3(无边际)：方案按当前数据出，不加主观调换"
+  {
+   "plan": "🚀尾巴A-MIX",
+   "type": "CRS 3串1 ×1倍",
+   "stake": "2元(2元×1倍)",
+   "legs": [
+    "周三002 CRS 0:0@10 p_dc11.7% EV+17.2%",
+    "周二003 CRS 1:1@14 p_dc8.2% EV+14.5%",
+    "周三010 CRS 0:0@26 p_dc4.1% EV+7.0%"
+   ],
+   "odds": 3640.0,
+   "p": 0.000393,
+   "evEach": true,
+   "note": "合赔3640 中7280(<1万免税)；⚠️3腿全低分平局向同向（ρ系统性偏差风险最高形态，8-24教训），DC口径EV+43%/市场口径-49%，回填验证前×1倍慎跟；与主线票共享皇马场但玩法互斥（跨票分池合规）"
+  }
+ ],
+ "matches": [
+  {
+   "idx": 1,
+   "code": "周二003",
+   "league": "沙职(R3)",
+   "match": "达曼协定 vs 利雅胜利",
+   "pick": "HAD 客胜",
+   "odds": 1.15,
+   "star": 4,
+   "grade": "A",
+   "dc": [
+    0.094,
+    0.175,
+    0.731
+   ],
+   "fused": [
+    0.041,
+    0.084,
+    0.875
+   ],
+   "final": 0.839,
+   "chain": [
+    "R3强队胜×0.95",
+    "伤停d+1主×0.97",
+    "单锚×0.97"
+   ],
+   "ev": -0.035,
+   "inPlan": "主线+尾巴(CRS 1:1)",
+   "clv": null,
+   "clv_approx_dk": null,
+   "result": "2-3",
+   "half": "2:0",
+   "directionHit": true,
+   "scoreHit": true
   },
-  "sources": [
-    "engine/cache/sporttery_matches.json (8-25 20:02 刷新,14场五池)",
-    "engine/cache/score_odds/2026-08-25.json (dump-odds 存档)",
-    "engine/cache/sporttery_insight_2041051~67 (8-25 双时点)",
-    "engine/cache/saudi_dc.json / spain-laliga_dc.json / korea_dc.json (8-25 19:53-19:54 重拟合)",
-    "engine/cache/odds_spain-laliga_2627.json (fd, R1+R2 已赛16场→轮次核实R3)",
-    "data/00-leagues/saudi.json / korea-k-league.json / spain-laliga.json / EC0.json",
-    "engine/cache/fusion.json (a=0.4 b=1.0)"
-  ]
+  {
+   "idx": 2,
+   "code": "周二004",
+   "league": "英联赛杯(R1)",
+   "match": "斯托克城 vs 赫尔城",
+   "pick": "避开",
+   "odds": 2.22,
+   "star": 1,
+   "grade": "C",
+   "dc": null,
+   "fused": [
+    0.306,
+    0.277,
+    0.387
+   ],
+   "final": 0.387,
+   "chain": [
+    "单锚×0.97"
+   ],
+   "ev": -0.141,
+   "inPlan": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "result": "1-1",
+   "half": "1:1",
+   "directionHit": null,
+   "scoreHit": null
+  },
+  {
+   "idx": 3,
+   "code": "周二005",
+   "league": "欧冠(附加赛首回合)",
+   "match": "LASK林茨 vs 凯尔特人",
+   "pick": "避开",
+   "odds": 1.82,
+   "star": 1,
+   "grade": "B",
+   "dc": null,
+   "fused": [
+    0.434,
+    0.226,
+    0.272
+   ],
+   "final": 0.434,
+   "chain": [
+    "首回合平保护主胜×0.92",
+    "单锚×0.97"
+   ],
+   "ev": -0.21,
+   "inPlan": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "result": "4-1",
+   "half": "1:1",
+   "directionHit": null,
+   "scoreHit": null
+  },
+  {
+   "idx": 4,
+   "code": "周二006",
+   "league": "欧冠(附加赛首回合)",
+   "match": "博德闪耀 vs 奈梅亨",
+   "pick": "HAD 主胜",
+   "odds": 1.39,
+   "star": 3,
+   "grade": "B",
+   "dc": null,
+   "fused": [
+    0.643,
+    0.185,
+    0.155
+   ],
+   "final": 0.592,
+   "chain": [
+    "伤停d-3客伤重主×1.04",
+    "首回合平保护主胜×0.92",
+    "单锚×0.97"
+   ],
+   "ev": -0.177,
+   "inPlan": null,
+   "note": "平保护后<60%不得作胆，仅单选参考；博德近10场8胜2平0负+奈梅亨3主力伤",
+   "clv": null,
+   "clv_approx_dk": null,
+   "result": "3-0",
+   "half": "2:0",
+   "directionHit": true,
+   "scoreHit": true
+  },
+  {
+   "idx": 5,
+   "code": "周二007",
+   "league": "英联赛杯(R1)",
+   "match": "诺丁汉 vs 利兹联",
+   "pick": "避开",
+   "odds": 2.0,
+   "star": 1,
+   "grade": "C",
+   "dc": null,
+   "fused": [
+    0.43,
+    0.273,
+    0.268
+   ],
+   "final": 0.43,
+   "chain": [
+    "单锚×0.97"
+   ],
+   "ev": -0.14,
+   "inPlan": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "result": "0-2",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": null
+  },
+  {
+   "idx": 6,
+   "code": "周二008",
+   "league": "英联赛杯(R1)",
+   "match": "伯明翰 vs 布伦特",
+   "pick": "避开",
+   "odds": 1.62,
+   "star": 2,
+   "grade": "C",
+   "dc": null,
+   "fused": [
+    0.207,
+    0.232,
+    0.531
+   ],
+   "final": 0.531,
+   "chain": [
+    "单锚×0.97"
+   ],
+   "ev": -0.14,
+   "inPlan": null,
+   "note": "杯赛轮换不可测，客胜54.7%不足三星",
+   "clv": null,
+   "clv_approx_dk": null,
+   "result": "1-6",
+   "half": "1:3",
+   "directionHit": null,
+   "scoreHit": null
+  },
+  {
+   "idx": 7,
+   "code": "周二009",
+   "league": "西甲(R3)",
+   "match": "巴伦西亚 vs 贝蒂斯",
+   "pick": "避开",
+   "odds": 2.38,
+   "star": 1,
+   "grade": "B",
+   "dc": [
+    0.223,
+    0.271,
+    0.505
+   ],
+   "fused": [
+    0.286,
+    0.261,
+    0.452
+   ],
+   "final": 0.417,
+   "chain": [
+    "R3强队胜×0.95",
+    "单锚×0.97"
+   ],
+   "ev": -0.008,
+   "inPlan": null,
+   "note": "三项极差15.3pp修正后仍胶着带；A-MIX的TTG6球@30(DC尾部高估)与CRS1:3@24人工拒收",
+   "clv": null,
+   "clv_approx_dk": null,
+   "result": "0-1",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": null
+  },
+  {
+   "idx": 8,
+   "code": "周三001",
+   "league": "韩职(R25)",
+   "match": "大田市民 vs 蔚山现代",
+   "pick": "避开",
+   "odds": 2.09,
+   "star": 2,
+   "grade": "A",
+   "dc": [
+    0.478,
+    0.27,
+    0.252
+   ],
+   "fused": [
+    0.497,
+    0.236,
+    0.267
+   ],
+   "final": 0.482,
+   "chain": [
+    "单锚×0.97"
+   ],
+   "ev": 0.009,
+   "inPlan": null,
+   "note": "蔚山近10场3胜2平5负状态差 vs 争冠动力，大田主场稳但伤停名单4人(严元相/迪奥戈非主力口径)",
+   "clv": null,
+   "clv_approx_dk": null
+  },
+  {
+   "idx": 9,
+   "code": "周三002",
+   "league": "韩职(R25)",
+   "match": "安养FC vs 仁川联",
+   "pick": "CRS 0:0",
+   "odds": 10.0,
+   "star": 2,
+   "grade": "A",
+   "dc": [
+    0.265,
+    0.317,
+    0.418
+   ],
+   "fused": [
+    0.262,
+    0.283,
+    0.455
+   ],
+   "final": 0.117,
+   "chain": [
+    "平局×1.15",
+    "单锚×0.97"
+   ],
+   "ev": 0.172,
+   "inPlan": "尾巴",
+   "note": "安养主场10场4平+双方场均1.4/1.3低进球+DC平31.7%；分歧4.1pp贴线",
+   "clv": null,
+   "clv_approx_dk": null
+  },
+  {
+   "idx": 10,
+   "code": "周三005",
+   "league": "欧冠(附加赛首回合)",
+   "match": "雅典AEK vs 索列夫",
+   "pick": "HAD 主胜",
+   "odds": 1.42,
+   "star": 3,
+   "grade": "B",
+   "dc": null,
+   "fused": [
+    0.557,
+    0.226,
+    0.138
+   ],
+   "final": 0.557,
+   "chain": [
+    "首回合平保护主胜×0.92",
+    "单锚×0.97"
+   ],
+   "ev": -0.209,
+   "inPlan": "主线",
+   "note": "市场锚场；雅典魔鬼主场，客队近10场8胜2平0负不可小视（分歧提示）",
+   "clv": null,
+   "clv_approx_dk": null
+  },
+  {
+   "idx": 11,
+   "code": "周三006",
+   "league": "欧冠(附加赛首回合)",
+   "match": "采列 vs 布拉迪斯",
+   "pick": "避开",
+   "odds": 2.2,
+   "star": 1,
+   "grade": "B",
+   "dc": null,
+   "fused": [
+    0.36,
+    0.269,
+    0.31
+   ],
+   "final": 0.36,
+   "chain": [
+    "首回合平保护主胜×0.92",
+    "单锚×0.97"
+   ],
+   "ev": -0.208,
+   "inPlan": null,
+   "note": "修正后极差9.1pp胶着⚠️；主队近6平 vs 客队8胜2平状态反差，模型与市场分歧大",
+   "clv": null,
+   "clv_approx_dk": null
+  },
+  {
+   "idx": 12,
+   "code": "周三007",
+   "league": "欧冠(附加赛首回合)",
+   "match": "维京 vs 萨迪纳摩",
+   "pick": "避开",
+   "odds": 2.3,
+   "star": 1,
+   "grade": "B",
+   "dc": null,
+   "fused": [
+    0.344,
+    0.257,
+    0.34
+   ],
+   "final": 0.344,
+   "chain": [
+    "首回合平保护主胜×0.92",
+    "单锚×0.97"
+   ],
+   "ev": -0.208,
+   "inPlan": null,
+   "note": "修正后极差8.7pp胶着⚠️；维京主场9胜0平1负 vs 迪纳摩客场9胜1平0负双龙互咬",
+   "clv": null,
+   "clv_approx_dk": null
+  },
+  {
+   "idx": 13,
+   "code": "周三008",
+   "league": "欧冠(附加赛首回合)",
+   "match": "里昂 vs 费内巴切",
+   "pick": "避开",
+   "odds": 1.87,
+   "star": 1,
+   "grade": "B",
+   "dc": null,
+   "fused": [
+    0.423,
+    0.257,
+    0.253
+   ],
+   "final": 0.423,
+   "chain": [
+    "首回合平保护主胜×0.92",
+    "单锚×0.97"
+   ],
+   "ev": -0.208,
+   "inPlan": null,
+   "note": "两强首轮对话平保护后不足三星；里昂主场7胜0平3负 vs 费内巴切7胜2平1负",
+   "clv": null,
+   "clv_approx_dk": null
+  },
+  {
+   "idx": 14,
+   "code": "周三010",
+   "league": "西甲(R3)",
+   "match": "皇马 vs 皇家社会",
+   "pick": "HAD 主胜",
+   "odds": 1.22,
+   "star": 4,
+   "grade": "A",
+   "dc": [
+    0.758,
+    0.166,
+    0.075
+   ],
+   "fused": [
+    0.855,
+    0.099,
+    0.046
+   ],
+   "final": 0.788,
+   "chain": [
+    "R3强队胜×0.95",
+    "单锚×0.97"
+   ],
+   "ev": -0.039,
+   "inPlan": "主线+尾巴(CRS 0:0)",
+   "note": "超低赔胆仅作串关骨架(≤1.25不单关)；近10场8胜1平1负 vs 社会近10场2胜2平6负",
+   "clv": null,
+   "clv_approx_dk": null
+  }
+ ],
+ "evScan": {
+  "dcCovered": [
+   "周二003",
+   "周二009",
+   "周三001",
+   "周三002",
+   "周三010"
+  ],
+  "crs": "31×5场=155选项 → 4合规(周二003 1:1@14 / 周二009 1:3@24拒收尾部 / 周三002 0:0@10 / 周三010 0:0@26)",
+  "ttg": "8×5场=40选项 → 3合规(周二009 6球@30拒收DC尾部高估 / 周三002 0球@10同0:0 / 周三010 0球@26同0:0)",
+  "hafu": "9×5场=45选项 → 1合规(周二003 dd@12 EV+4.5%，与1:1同剧本同场互斥，保EV高的CRS 1:1)",
+  "noDc": "欧冠6场+英联杯3场=9场市场锚，无DC概率不做EV扫描(设计内)"
+ },
+ "finalReview": {
+  "at": "2026-08-25 20:30",
+  "injurySource": "insight 8-25 12:23/17:28 双时点缓存(新鲜)",
+  "transferWindow": "❓8-31关窗前无官宣信息可用",
+  "presser": "❓周二场02:00开球发布会窗口未覆盖",
+  "oddsDrift": "首轮采集无限比(白轮未存全量赔率)，按信息边际定律3无边际禁止调换",
+  "law": "定律3(无边际)：方案按当前数据出，不加主观调换"
+ },
+ "sources": [
+  "engine/cache/sporttery_matches.json (8-25 20:02 刷新,14场五池)",
+  "engine/cache/score_odds/2026-08-25.json (dump-odds 存档)",
+  "engine/cache/sporttery_insight_2041051~67 (8-25 双时点)",
+  "engine/cache/saudi_dc.json / spain-laliga_dc.json / korea_dc.json (8-25 19:53-19:54 重拟合)",
+  "engine/cache/odds_spain-laliga_2627.json (fd, R1+R2 已赛16场→轮次核实R3)",
+  "data/00-leagues/saudi.json / korea-k-league.json / spain-laliga.json / EC0.json",
+  "engine/cache/fusion.json (a=0.4 b=1.0)"
+ ]
 }
