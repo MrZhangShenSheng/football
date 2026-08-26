@@ -8,6 +8,7 @@
 import json
 import math
 from collections import Counter
+from datetime import date
 from pathlib import Path
 
 from band_calibration import DIVS, SEASONS, fetch_rows
@@ -18,6 +19,8 @@ PRIOR_GOALS = 200          # β收缩先验强度（球）
 S_CLAMP = (0.3, 0.6)
 RHO_CLAMP = (-0.2, 0.2)
 S_FALLBACK = 0.45
+S_SANITY = (0.40, 0.50)    # global s 自检区间（足球统计常识 0.44~0.47）
+MIN_GLOBAL_N = 8000        # global 最小样本（8联赛×4季）
 
 
 def league_rows(league: str) -> list:
@@ -75,6 +78,8 @@ def rho_half(stats: dict) -> float:
 
 def main() -> None:
     all_rows = {lg: league_rows(lg) for lg in sorted(set(DIVS.values()))}
+    for lg, rows in all_rows.items():
+        print(f"  {lg}: rows={len(rows)}")
     st = {lg: half_stats(rows) for lg, rows in all_rows.items()}
     tot_ht = sum(v["hth"] + v["hta"] for v in st.values())
     tot_ft = sum(v["ft"] for v in st.values())
@@ -86,20 +91,23 @@ def main() -> None:
     for v in st.values():
         g_stats["sc"].update(v["sc"])
     out = {
-        "meta": {"priorGoals": PRIOR_GOALS, "sClamp": list(S_CLAMP), "rhoClamp": list(RHO_CLAMP)},
+        "meta": {"ranAt": str(date.today()), "priorGoals": PRIOR_GOALS,
+                 "sClamp": list(S_CLAMP), "rhoClamp": list(RHO_CLAMP)},
         "global": {"s": round(shrink_s(g_stats, prior_s), 4),
                    "rho_half": round(rho_half(g_stats), 4), "n": g_stats["n"]},
         "leagues": {lg: {"s": round(shrink_s(v, prior_s), 4),
                          "rho_half": round(rho_half(v), 4), "n": v["n"]}
                     for lg, v in st.items() if v["n"] > 0},
     }
+    # 自检断言（TDD 验收线）：校验通过才写 cache，网络全挂不覆盖上一份好 cache
+    assert S_SANITY[0] <= out["global"]["s"] <= S_SANITY[1], \
+        f"global s={out['global']['s']} 越界（足球统计常识 0.44~0.47）"
+    assert out["global"]["n"] > MIN_GLOBAL_N, \
+        f"样本 {out['global']['n']} 异常（8联赛×4季应 >{MIN_GLOBAL_N}）"
     CACHE.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"[half-params] global s={out['global']['s']} rho={out['global']['rho_half']} n={out['global']['n']}")
     for lg, v in out["leagues"].items():
         print(f"  {lg}: s={v['s']} rho_half={v['rho_half']} n={v['n']}")
-    # 自检断言（TDD 验收线）
-    assert 0.40 <= out["global"]["s"] <= 0.50, f"global s={out['global']['s']} 越界（足球统计常识 0.44~0.47）"
-    assert out["global"]["n"] > 8000, f"样本 {out['global']['n']} 异常（8联赛×4季应 >8000）"
     print("[half-params] 自检通过 → engine/cache/half_share.json")
 
 
