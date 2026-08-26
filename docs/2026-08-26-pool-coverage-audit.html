@@ -3,7 +3,7 @@
 <style>
   :root{--ink:#1c2733;--sub:#5b6b7a;--line:#d8e0e8;--bg:#f6f8fa;--accent:#0f6b4f;--accent2:#b4540a;--bad:#a12734;--good:#0f6b4f;--card:#fff}
   @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#dbe4ec;--sub:#8fa1b3;--line:#2c3947;--bg:#101822;--accent:#4fc49b;--accent2:#e8a04c;--bad:#e2717e;--good:#4fc49b;--card:#18222e}}
-  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.75 "Segoe UI","Microsoft Yahei",sans-serif}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.75 "Segoe UI","Microsoft YaHei",sans-serif}
   main{max-width:920px;margin:0 auto;padding:32px 28px 72px}
   h1{font-size:24px;margin:0 0 4px}h2{font-size:18px;margin:40px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--line)}
   .sub{color:var(--sub);font-size:13px}
@@ -18,8 +18,9 @@
   .num{font-family:Consolas,monospace}
   .pass{color:var(--good);font-weight:700}
   .delta{color:var(--accent);font-weight:600}
+  .h3{font-size:15px;margin:24px 0 8px}
   .fix-badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;padding:1px 6px;border-radius:4px;margin-left:6px;vertical-align:2px}
-  svg text{font-family:"Segoe UI","Microsoft Yahei",sans-serif}
+  svg text{font-family:"Segoe UI","Microsoft YaHei",sans-serif}
   svg .def{fill:none;stroke:currentColor}
   .source-list{list-style:none;padding:0;margin:8px 0}
   .source-list li{padding:4px 0;border-bottom:1px dashed var(--line);font-size:13px}
@@ -43,7 +44,7 @@
 <!-- ============ ① 覆盖矩阵 ============ -->
 <h2>① 因子 × 玩法覆盖矩阵</h2>
 
-<h3 style="font-size:15px;margin:24px 0 8px">改造前（v5.1）</h3>
+<h3 class="h3">改造前（v5.1）</h3>
 <table>
 <tr><th>概率产线</th><th>因子</th><th>胜平负</th><th>比分 CRS</th><th>总进球 TTG</th><th>半全场 HAFU</th></tr>
 <tr><td>DC 模型（dc_fit）</td><td>攻防参数×4 + 主场 + ρ</td><td class="good">✅矩阵聚合</td><td class="good">✅矩阵直出</td><td class="good">✅矩阵聚合</td><td class="warn">⚠️0.45λ近似</td></tr>
@@ -63,7 +64,7 @@
 </ol>
 </div>
 
-<h3 style="font-size:15px;margin:24px 0 8px">改造后（v5.2）</h3>
+<h3 class="h3">改造后（v5.2）</h3>
 <p>因子经 <code>--adjust</code> target（融合 + 因子修正后三向）→ <code>reweight_matrix</code> / <code>reweight_hafu</code> 传导全玩法 + 三池温度 + HAFU 升级。</p>
 <table>
 <tr><th>概率产线</th><th>因子</th><th>胜平负</th><th>比分 CRS</th><th>总进球 TTG</th><th>半全场 HAFU</th></tr>
@@ -101,7 +102,7 @@
 <p style="margin:6px 0 0;font-size:13px;color:var(--sub)">回退：日韩瑞沙无半场列 → 全局；缺 half_share.json → 0.45/ρ=0（现状）</p>
 </div>
 
-<h3 style="font-size:15px;margin:24px 0 8px"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#i-db"/></svg>half_share.json 参数实值</h3>
+<h3 class="h3"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#i-db"/></svg>half_share.json 参数实值</h3>
 <p class="sub">meta: ranAt 2026-08-26, priorGoals 200, sClamp[0.3,0.6], rhoClamp[-0.2,0.2]</p>
 
 <div class="card" style="padding:12px 16px">
@@ -120,7 +121,7 @@
 <tr><td>spain-laliga</td><td class="num">0.4412</td><td class="num">-0.0241</td><td class="num">1520</td></tr>
 </table>
 
-<h3 style="font-size:15px;margin:24px 0 8px"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#i-db"/></svg>temperature.json 参数实值</h3>
+<h3 class="h3"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#i-db"/></svg>temperature.json 参数实值</h3>
 <p class="sub">fittedAt 2026-08-26, source "fd 4季×8联赛 walk-forward 60%/40% split", bootstrapN 1000, tGrid [0.6..1.6] step 0.05 共 21</p>
 
 <table>
