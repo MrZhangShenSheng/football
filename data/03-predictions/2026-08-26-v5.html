@@ -124,6 +124,7 @@ table.plan tr:last-child td{border-bottom:none}
 .tier-foot .item.pos b{color:var(--good)}
 .tier-foot .item.neg b{color:var(--bad)}
 .note-line{padding:.5rem 1.1rem .7rem;font-size:.78rem;color:var(--ink-3);font-style:italic;line-height:1.5}
+.sub-note td{background:var(--surface-2);font-size:.78rem;color:var(--ink-2);font-weight:700;letter-spacing:.04em;font-family:"JetBrains Mono",monospace}
 .match-card{
   background:var(--surface); border:1px solid var(--line); border-radius:6px;
   margin-bottom:.7rem; padding:.85rem 1rem;
@@ -200,14 +201,14 @@ footer.page{margin-top:2.6rem;padding-top:1.2rem;border-top:1px solid var(--line
     </thead>
     <tbody>
       <tr>
-        <td class="code">① 周四008</td>
+        <td class="code">周四008</td>
         <td>巴萨 vs 毕尔巴鄂</td>
         <td>08-28 03:00</td>
         <td class="result">TTG 5球 <span class="odds-tag">@7.0 EV+8.6%</span></td>
         <td class="basis">DC λ_主2.75/客0.83，巴萨主场进攻强；5球档 p_dc=15.5% vs 市场11.9%，分歧3.6pp&lt;5pp合规。温度T=1.35校准后长尾略抬，属 walk-forward 验证范围内</td>
       </tr>
       <tr>
-        <td class="code">② 周四007</td>
+        <td class="code">周四007</td>
         <td>塞尔塔 vs 奥萨苏纳</td>
         <td>08-28 02:30</td>
         <td class="result">CRS 2-0 <span class="odds-tag">@7.75 EV+4.5%</span></td>
@@ -238,21 +239,21 @@ footer.page{margin-top:2.6rem;padding-top:1.2rem;border-top:1px solid var(--line
     </thead>
     <tbody>
       <tr>
-        <td class="code">① 周四008</td>
+        <td class="code">周四008</td>
         <td>巴萨 vs 毕尔巴鄂</td>
         <td>08-28 03:00</td>
         <td class="result">HAD 主胜 <span class="odds-tag">@1.20 EV+1.2%</span></td>
         <td class="basis">DC p=84.3%（西甲R3修正后），唯一正向 EV 的 HAD 选项。巴萨主场对毕尔巴鄂（第20），实力差明确</td>
       </tr>
       <tr>
-        <td class="code">② 周三010</td>
+        <td class="code">周三010</td>
         <td>皇马 vs 皇家社会</td>
         <td>08-27 03:00</td>
         <td class="result">HAD 主胜 <span class="odds-tag neg">@1.14 EV-16.1%</span></td>
-        <td class="basis">同方案①（巴萨腿）。皇马8胜1平1负榜首 vs 皇家社会2胜2平6负第19，超低赔胆材仅作串关骨架，单关无价值（赔率≤1.25）</td>
+        <td class="basis">同方案巴萨腿。皇马8胜1平1负榜首 vs 皇家社会2胜2平6负第19，超低赔胆材仅作串关骨架，单关无价值（赔率≤1.25）</td>
       </tr>
       <tr>
-        <td class="code">③ 周三003</td>
+        <td class="code">周三003</td>
         <td>热刺 vs 查尔顿</td>
         <td>08-27 02:45</td>
         <td class="result">HAD 主胜 <span class="odds-tag neg">@1.12 EV-16.6%</span></td>
@@ -282,19 +283,63 @@ footer.page{margin-top:2.6rem;padding-top:1.2rem;border-top:1px solid var(--line
       <tr><th>场次编号</th><th>场次名称</th><th>比赛时间</th><th>预测结果</th><th>预测依据</th></tr>
     </thead>
     <tbody>
+      <tr class="sub-note"><td colspan="5">注1（4串1 · 合赔2.74 · 2元→中即5.5元 · 概率23.3%）</td></tr>
       <tr>
-        <td class="code">注1 ①②③④</td>
-        <td>巴萨+皇马+热刺+塞尔塔</td>
-        <td>08-27~28</td>
-        <td class="result">HAD 4主胜 <span class="odds-tag neg">合赔2.74</span></td>
-        <td class="basis">同翻身/进阶①②③腿 + 塞尔塔主胜（1星胶着，degraded）。4串1全中才赢，2元→中即5.5元，概率23.3%</td>
+        <td class="code">周三003</td>
+        <td>热刺 vs 查尔顿</td>
+        <td>08-27 02:45</td>
+        <td class="result">HAD 主胜 <span class="odds-tag neg">@1.12</span></td>
+        <td class="basis">同进阶档③。英超vs英甲鸿沟，杯赛留力×0.75修正后74.4%</td>
       </tr>
       <tr>
-        <td class="code">注2 ①②⑤⑥</td>
-        <td>巴萨+皇马+纽卡+帕梅</td>
-        <td>08-27~28</td>
-        <td class="result">HAD 4主胜 <span class="odds-tag neg">合赔2.46</span></td>
-        <td class="basis">同注1①② + 纽卡主胜（72.5%，英超对英冠）+ 帕梅拉斯主场（巴冷门×0.9）。4串1，2元→中即4.9元，概率25.2%</td>
+        <td class="code">周三010</td>
+        <td>皇马 vs 皇家社会</td>
+        <td>08-27 03:00</td>
+        <td class="result">HAD 主胜 <span class="odds-tag neg">@1.14</span></td>
+        <td class="basis">同进阶档②。超低赔骨架腿</td>
+      </tr>
+      <tr>
+        <td class="code">周四007</td>
+        <td>塞尔塔 vs 奥萨苏纳</td>
+        <td>08-28 02:30</td>
+        <td class="result">HAD 主胜 <span class="odds-tag neg">@1.78</span></td>
+        <td class="basis">1星胶着（极差36.3pp），degraded。与翻身档②同场不同玩法分票合规</td>
+      </tr>
+      <tr>
+        <td class="code">周四008</td>
+        <td>巴萨 vs 毕尔巴鄂</td>
+        <td>08-28 03:00</td>
+        <td class="result">HAD 主胜 <span class="odds-tag">@1.20</span></td>
+        <td class="basis">同进阶档①。唯一正向EV胆材，共享腿</td>
+      </tr>
+      <tr class="sub-note"><td colspan="5">注2（4串1 · 合赔2.46 · 2元→中即4.9元 · 概率25.2%）</td></tr>
+      <tr>
+        <td class="code">周三004</td>
+        <td>纽卡斯尔 vs 西布罗姆</td>
+        <td>08-27 02:45</td>
+        <td class="result">HAD 主胜 <span class="odds-tag neg">@1.23</span></td>
+        <td class="basis">英超vs英冠，72.5%。西布罗姆近8胜1平1负但跨级</td>
+      </tr>
+      <tr>
+        <td class="code">周三010</td>
+        <td>皇马 vs 皇家社会</td>
+        <td>08-27 03:00</td>
+        <td class="result">HAD 主胜 <span class="odds-tag neg">@1.14</span></td>
+        <td class="basis">同注1。共享胆材</td>
+      </tr>
+      <tr>
+        <td class="code">周三011</td>
+        <td>帕梅拉斯 vs 桑托斯</td>
+        <td>08-27 08:30</td>
+        <td class="result">HAD 主胜 <span class="odds-tag neg">@1.46</span></td>
+        <td class="basis">巴西杯主场，巴冷门×0.9修正后55.9%</td>
+      </tr>
+      <tr>
+        <td class="code">周四008</td>
+        <td>巴萨 vs 毕尔巴鄂</td>
+        <td>08-28 03:00</td>
+        <td class="result">HAD 主胜 <span class="odds-tag">@1.20</span></td>
+        <td class="basis">同注1。共享胆材</td>
       </tr>
     </tbody>
   </table>
