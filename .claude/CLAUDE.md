@@ -12,6 +12,7 @@
 | **"跑下回测"** | run.py backtest → 与市场基线对比 | RPS 对照表 |
 
 约定：预测命令自带数据刷新（用户永远不用手动 run.py）；每次流程结束自动 commit（git 历史=预测锁定凭证）。
+**命令路径铁律**：run.py 不在仓库根目录，主入口一律 `python engine/scripts/run.py <子命令>`（update/verify/corpus/learn/backtest）；其余脚本同在 `engine/scripts/`。
 **单写会话纪律（2026-08-25 两次 21 提交大冲突教训 47e1f87/8f481c5）**：预测/回填写会话开始先 `git pull`；同一时间只开一个写会话，开新会话前确认旧会话已 commit。
 
 ## 项目定位
@@ -28,7 +29,7 @@
 - `data/04-summaries/`: 五维统计 `_stats.json` + 复盘 HTML
 - `data/05-trends/`: 趋势发现 JSON
 - `data/06-tickets/`: 实票账本 `tickets.json`（票=顶层实体不按日切：形状/腿/出票赔率冻结/结算/纪律事件；**实票=有结算记录的票，其余全是方案推演**；派彩按形状算，4串11中2关只回1注2串1）+ `tickets.html` 报告（结算时重刷：资金曲线/票务清单/玩法分解/纪律对照；设计=docs/2026-08-25-tickets-design.html）
-- `engine/scripts/`: Python 脚本（dc_fit/dc_predict/elo_fetch/xg_fetch/odds_fetch/backtest/calibrate/build_index/band_calibration 概率带校准/score_ev 比分EV审计/live_odds_probe 临场价源探测/boldplay 阶梯出票卡生成+settle推演结算/ticket_report 实票报告）+ `research/` 一次性研究脚本归档（ρ分诊/Elo与xG验证/市场筛选等，2026-08-25 审计归档）
+- `engine/scripts/`: Python 脚本（**run.py 主入口**：update/verify/corpus/learn/backtest 一键子命令；dc_fit/dc_predict/elo_fetch/xg_fetch/odds_fetch/backtest/calibrate/build_index/band_calibration 概率带校准/score_ev 比分EV审计/live_odds_probe 临场价源探测/boldplay 阶梯出票卡生成+settle推演结算/ticket_report 实票报告）+ `research/` 一次性研究脚本归档（ρ分诊/Elo与xG验证/市场筛选等，2026-08-25 审计归档）
 - `engine/cache/`: DC 参数缓存（{league}_dc.json）+ `models/` 版本化存档（{league}_dc_v{n}.json+.meta+latest.json，holdout 门槛发布）+ fusion.json 融合系数 + `score_odds/` 体彩全玩法赔率日存档 + live_odds_feasibility.json 临场价源结论（2026-08-24 探测：pinnacle 直连被墙/the-odds-api 需 key → 层1 降级上轮收盘先验）
 - `skill/SKILL.md`: 预测 skill v5.1（junction 到 ~/.claude/skills/）+ `skill/references/` 外置参考（系数详表/官方玩法规则/教训档案，skill 正文按需加载）
 - `docs/`: 设计文档

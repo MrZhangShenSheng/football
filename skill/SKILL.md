@@ -149,7 +149,7 @@ p_i = (1/o_i) / Σ(1/o)      ← 对 Pinnacle 收盘价计算（概率基准）
 
 预测前对每场检查三类数据，缺的先初始化再分析（RAG 冷启动闭环：初始化落盘，下轮同联赛/球队直接命中）：
 
-1. **联赛画像** `data/00-leagues/{league}.json`：missing/stale → fd 覆盖联赛跑 `run.py update`；不覆盖（日职/沙特/北欧/南美）WebFetch ESPN 积分榜结构化写入（standingsSource=espn-manual）
+1. **联赛画像** `data/00-leagues/{league}.json`：missing/stale → fd 覆盖联赛跑 `engine/scripts/run.py update`；不覆盖（日职/沙特/北欧/南美）WebFetch ESPN 积分榜结构化写入（standingsSource=espn-manual）
 2. **球队画像** `data/01-teams/{league}/{teamId}.json`：lastUpdated >7 天或缺失 → 联赛分组搜索提取近5场/排名/伤停/主客战绩，按规范 JSON 写入（含 source）
 3. **别名覆盖** `data/01-teams/_aliases.json`：中文名查不到 → 先补别名（规范 ID+zh+league）再走 ②
 
@@ -165,7 +165,7 @@ p_i = (1/o_i) / Σ(1/o)      ← 对 Pinnacle 收盘价计算（概率基准）
 
 ```
 1. 读 data/00-leagues/{league}.json → 联赛画像（积分榜/统计/争冠保级格局）
-   ├─ fd 推导版由 league_profile.py 生成（run.py update 自动）
+   ├─ fd 推导版由 league_profile.py 生成（engine/scripts/run.py update 自动）
    └─ 预测时 WebFetch ESPN 实时积分榜覆盖 standings（改 freshness.standingsSource=espn；轮次不一致标 stale）
 2. 读 data/01-teams/_index.json → 哪些球队有本地画像？
 3. 读 data/01-teams/{league}/{team}.json → Elo/xG/近况/伤停（新鲜则直接用）
@@ -576,15 +576,15 @@ C/D 级场次，每场一行：
 
 ### 触发方式
 
-- **一键闭环**：`python run.py verify`（backfill 双链路回填 → corpus → trend → calibrate → ablate 全自动；体彩编号对票为主链路，ESPN 兜底，未开赛场自动跳过、完赛后重跑即回填）
+- **一键闭环**：`python engine/scripts/run.py verify`（backfill 双链路回填 → corpus → trend → calibrate → ablate 全自动；体彩编号对票为主链路，ESPN 兜底，未开赛场自动跳过、完赛后重跑即回填）
 - **手动触发**：用户说"回填赛果" / "复盘上一轮"
 
 回填后跑 `python3 engine/scripts/boldplay.py settle` 逐 leg 判定（比分 4串 部分命中 legHits 是层4实测库数据点），结果写回出票 JSON 的 settle 字段。
 
 ### 闭环学习接线 ★ v4.7 全链路（回填 → 验证 → 提升自动化）
 
-- `python run.py verify` 一键闭环：**backfill.py**（体彩编号对票主链路+ESPN 兜底，v4.9 双链路；未开赛自动跳过）→ **settle_tickets**（v4.10 票务结算：pending 实票对赛果→按形状算派彩→重刷 tickets.html）→ **boldplay.py settle**（v5.0 阶梯卡推演结算：逐 leg 判定，legHits 入层4实测库）→ **corpus.py**（语料+就绪度：重校 n≥100 / 消融 n≥50 / 断言 n≥15）→ **trend_report.py**（趋势 ①~⑥ + ⑦回归断言 A1 校准/A2 星级/A3 系数/A4 DC 价值，静默=健康）→ **calibrate.py**（n≥100 网格搜 a∈[0.05,0.6] 最小 RPS；护栏：改善<1% 不动 / a 封顶 0.6）→ **ablate.py**（chain 触发 vs 未触发命中率；负增益>10pp 出 diff 建议人审，不自动改 SKILL.md）
-- `python run.py learn`：非fd联赛当年增量采集 → dc_fit --source local → models/ 版本发布（holdout 门槛）
+- `python engine/scripts/run.py verify` 一键闭环：**backfill.py**（体彩编号对票主链路+ESPN 兜底，v4.9 双链路；未开赛自动跳过）→ **settle_tickets**（v4.10 票务结算：pending 实票对赛果→按形状算派彩→重刷 tickets.html）→ **boldplay.py settle**（v5.0 阶梯卡推演结算：逐 leg 判定，legHits 入层4实测库）→ **corpus.py**（语料+就绪度：重校 n≥100 / 消融 n≥50 / 断言 n≥15）→ **trend_report.py**（趋势 ①~⑥ + ⑦回归断言 A1 校准/A2 星级/A3 系数/A4 DC 价值，静默=健康）→ **calibrate.py**（n≥100 网格搜 a∈[0.05,0.6] 最小 RPS；护栏：改善<1% 不动 / a 封顶 0.6）→ **ablate.py**（chain 触发 vs 未触发命中率；负增益>10pp 出 diff 建议人审，不自动改 SKILL.md）
+- `python engine/scripts/run.py learn`：非fd联赛当年增量采集 → dc_fit --source local → models/ 版本发布（holdout 门槛）
 
 **chain 字段格式约定 ★ v4.7**：新轮预测必须存**结构化数组**（如 `["R1","保级平局"]`，消融器按关键词分桶），自由文本仅进 note——否则 A3 断言与 ablate 永远无法自动化。系数关键词映射见 ablate.py COEFF_PATTERNS。
 
@@ -596,7 +596,7 @@ C/D 级场次，每场一行：
 
 ### 自动查赛果流程
 
-`run.py verify` 的 backfill 已自动化（体彩编号对票+ESPN 兜底，无需手工搜索）；手工兜底才走：从预测记录提取编号+对阵 → 批量搜索"编号 联赛 比分"→ 回填。
+`engine/scripts/run.py verify` 的 backfill 已自动化（体彩编号对票+ESPN 兜底，无需手工搜索）；手工兜底才走：从预测记录提取编号+对阵 → 批量搜索"编号 联赛 比分"→ 回填。
 
 ### 预测记录格式 ★ v4.6 schema（唯一标准，corpus.py 双格式兼容但新轮必须用本格式）
 
