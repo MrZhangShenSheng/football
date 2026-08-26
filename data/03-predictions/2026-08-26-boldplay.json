@@ -1,7 +1,7 @@
 {
  "date": "2026-08-26",
- "seq": 4,
- "shape": "meizhou",
+ "seq": 5,
+ "shape": "guilin",
  "tiers": {
   "base": {
    "cost": 2,
@@ -87,8 +87,8 @@
    "note": "默认HAD"
   },
   "upset": {
-   "cost": 10,
-   "multiplier": 5,
+   "cost": 8,
+   "multiplier": 4,
    "legs": [
     {
      "play": "ttg",
@@ -111,12 +111,12 @@
    ],
    "play": "mix-2串1",
    "expOdds": 240.0,
-   "winIfHit": 2400.0,
+   "winIfHit": 1920.0,
    "note": "A-MIX 跨池EV最优2腿（ttg,crs）",
    "degraded": true
   }
  },
- "totalCost": 18,
+ "totalCost": 16,
  "densityNote": "期望返还 ≈ 52.6%（各腿池水连乘crs/ttg）",
  "postTaxNote": "单注奖金超1万部分税20%;4串单注限额50万已反算倍数",
  "ranAt": "2026-08-26"
