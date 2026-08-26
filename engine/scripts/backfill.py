@@ -392,7 +392,8 @@ def settle_tickets(sp_cache: dict[str, dict[str, dict]]) -> dict:
     data = json.loads(TICKETS_FILE.read_text(encoding="utf-8"))
     n_legs = n_tickets = 0
     for t in data.get("tickets", []):
-        if t.get("settled", {}).get("status") != "pending":
+        st = (t.get("settled") or {}).get("status")
+        if st not in (None, "pending"):  # 缺 settled/status 视为 pending（T004 手动建档漏字段被静默跳过教训）
             continue
         all_final = True
         for leg in t["legs"]:

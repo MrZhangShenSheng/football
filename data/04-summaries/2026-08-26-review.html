@@ -1,0 +1,95 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>回填复盘 2026-08-26 · T004 中场结算</title>
+<style>
+:root{--bg:#fafafa;--card:#fff;--ink:#1a1a1a;--sub:#666;--line:#e3e3e3;--accent:#0a5;--warn:#c60;--neg:#c33;--pos:#2a2;--chip:#f0f0f0}
+@media(prefers-color-scheme:dark){:root{--bg:#141414;--card:#1e1e1e;--ink:#e8e8e8;--sub:#999;--line:#333;--chip:#2a2a2a}}
+body{margin:0;padding:24px;background:var(--bg);color:var(--ink);font:14px/1.65 "Segoe UI",system-ui,sans-serif}
+.wrap{max-width:920px;margin:0 auto}
+h1{font-size:20px;margin:0 0 4px}h2{font-size:16px;margin:28px 0 10px;color:var(--accent)}
+.meta{color:var(--sub);font-size:12px;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
+th{color:var(--sub);font-weight:600;white-space:nowrap}
+.hit{color:var(--pos);font-weight:600}.miss{color:var(--neg);font-weight:600}.pend{color:var(--warn)}
+.tag{display:inline-block;background:var(--chip);border-radius:4px;padding:1px 7px;font-size:12px;margin:0 3px 3px 0}
+svg{color:var(--accent)}
+.note{color:var(--sub);font-size:12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kpi{font-size:22px;font-weight:700}
+footer{margin-top:24px;color:var(--sub);font-size:11px;border-top:1px solid var(--line);padding-top:10px}
+</style></head><body><div class="wrap">
+<h1>回填复盘 · 2026-08-26（周三）上午</h1>
+<div class="meta">生成 2026-08-26 10:15 · 覆盖：8-25 预测轮（r1+r2）体彩周二场次 · T004 实票中场结算 · 链路缺陷修复 ×2</div>
+
+<h2>一、赛果回填总览</h2>
+<div class="card"><table>
+<tr><th>场次</th><th>对阵</th><th>玩法@赔率</th><th>赛果(半场)</th><th>判定</th></tr>
+<tr><td>周二003</td><td>达曼协定 vs 利雅胜利（沙职R3）</td><td>HAD 客胜@1.15 / <b>票CRS 0-1@13.50</b></td><td>2:3（2:0）</td><td>方向 <span class="hit">✅ 客胜</span> · 票CRS <span class="miss">miss</span></td></tr>
+<tr><td>周二006</td><td>博德闪耀 vs 奈梅亨（欧冠资格次回）</td><td>HAD 主胜@1.41 / <b>票CRS 2-1@7.75</b></td><td>3:0（2:0）</td><td>方向 <span class="hit">✅ 主胜</span> · 票CRS <span class="miss">miss</span></td></tr>
+<tr><td>周三005</td><td>雅典AEK vs 索列夫</td><td>票CRS 1-0@6.00</td><td>8-27 03:00 未开赛</td><td><span class="pend">pending</span></td></tr>
+<tr><td>周三010</td><td>皇马 vs 皇家社会</td><td>票CRS 2-0@8.00</td><td>8-27 03:00 未开赛</td><td><span class="pend">pending</span></td></tr>
+</table>
+<div class="note">两场方向全中（模型层 ✅），两场 CRS 比分腿全断（票层 miss）——方向对比分的梯度再次得到体现：周二003 半场 2:0 被逆转 2:3，属尾部剧本；周二006 3:0 净胜两球，2-1 差一球。CLV：两场均非 fd 覆盖联赛（沙特联/欧冠资格赛），收盘价锚缺失，<code>clv</code> 留空（v4.9 口径：锚缺失不硬算）。</div></div>
+
+<h2>二、T004 实票中场推演（4串11 · 22元 · 已沉没 20 元）</h2>
+<div class="card">
+<svg viewBox="0 0 860 150" width="100%" style="color:#0a5" role="img" aria-label="T004组合存活图">
+<defs><style>.dead{fill:var(--neg);opacity:.45}.alive{fill:var(--warn)}.b{font:11px system-ui;fill:var(--sub)}.t{font:12px system-ui;fill:var(--ink)}</style></defs>
+<!-- 6×2串1 -->
+<rect x="10" y="18" width="120" height="20" rx="4" class="dead"/><text x="70" y="32" text-anchor="middle" class="t">003+006</text>
+<rect x="10" y="44" width="120" height="20" rx="4" class="dead"/><text x="70" y="58" text-anchor="middle" class="t">003+005</text>
+<rect x="10" y="70" width="120" height="20" rx="4" class="dead"/><text x="70" y="84" text-anchor="middle" class="t">003+010</text>
+<rect x="10" y="96" width="120" height="20" rx="4" class="dead"/><text x="70" y="110" text-anchor="middle" class="t">006+005</text>
+<rect x="10" y="122" width="120" height="20" rx="4" class="dead"/><text x="70" y="136" text-anchor="middle" class="t">006+010</text>
+<rect x="150" y="18" width="120" height="20" rx="4" class="alive"/><text x="210" y="32" text-anchor="middle" class="t">005+010 ★唯一活口</text>
+<text x="10" y="10" class="b">6×2串1</text>
+<!-- 4×3串1 -->
+<rect x="310" y="18" width="110" height="20" rx="4" class="dead"/><text x="365" y="32" text-anchor="middle" class="t">003+006+005</text>
+<rect x="310" y="44" width="110" height="20" rx="4" class="dead"/><text x="365" y="58" text-anchor="middle" class="t">003+006+010</text>
+<rect x="310" y="70" width="110" height="20" rx="4" class="dead"/><text x="365" y="84" text-anchor="middle" class="t">003+005+010</text>
+<rect x="310" y="96" width="110" height="20" rx="4" class="dead"/><text x="365" y="110" text-anchor="middle" class="t">006+005+010</text>
+<text x="310" y="10" class="b">4×3串1（全灭：每组含断腿）</text>
+<rect x="310" y="122" width="110" height="20" rx="4" class="dead"/><text x="365" y="136" text-anchor="middle" class="t">—</text>
+<!-- 4串1 -->
+<rect x="460" y="18" width="120" height="20" rx="4" class="dead"/><text x="520" y="32" text-anchor="middle" class="t">4串1 合赔5022</text>
+<text x="460" y="10" class="b">4串1（灭）</text>
+<!-- 结算路径 -->
+<text x="620" y="30" class="t">活口注：005+010 2串1</text>
+<text x="620" y="52" class="t">@6.00×8.00=48.00 → 中=96元</text>
+<text x="620" y="74" class="t">路径概率 p≈12.8%×16.7%≈2.1%</text>
+<text x="620" y="96" class="b">（p 取出票时 EV 口径反推）</text>
+<text x="620" y="120" class="t">8-27 凌晨完赛 → 重跑回填自动结算</text>
+</svg>
+<div class="note">腿1/腿2 已 miss → 11 注灭 10 注。剩 (005,010) 2串1 一条活路：AEK 1-0 且 皇马 2-0 同现才回 96 元（净 +74）；任一不中即 22 元全损（净 −22）。剩余期望 ≈ 96×2.1% ≈ 2.0 元。</div></div>
+
+<h2>三、链路缺陷修复（铁律 8 案例：静默失败追查）</h2>
+<div class="card"><table>
+<tr><th>#</th><th>缺陷</th><th>表现</th><th>修复</th></tr>
+<tr><td>1</td><td>T004 建档字段名误写 <code>settle: null</code>（结算链找 <code>settled.status</code>）</td><td>settle_tickets 整票静默跳过，verify 报"0 票/0 腿"但无告警</td><td>数据补 <code>settled:{status:pending}</code>；backfill.py 加兜底：缺 settled/status 视为 pending</td></tr>
+<tr><td>2</td><td>ticket_report.py 硬取 <code>t["source"]</code>，T004 漏建档 source 字段</td><td>两腿结算落盘后渲染崩溃 KeyError，tickets.html 刷不出</td><td>改 <code>.get()</code> 容错 + T004 补 <code>source: manual</code></td></tr>
+</table>
+<div class="note">两处同根：手动建档无 schema 校验，字段缺失在结算/渲染两端各自静默。已按最小改动修兜底；若再犯第三次，值得上建档校验器（缺 id/legs/settled/source 即拒绝写盘）。教训已记 lessons.md。</div></div>
+
+<h2>四、闭环学习状态（本轮回填后）</h2>
+<div class="card"><div class="grid">
+<div><div class="kpi">163 <span class="note">条语料</span></div><div class="note">已回填 143 · 9 轮 · CLV 7 条 · p_final 122</div></div>
+<div><div class="kpi">✅ <span class="note">双门槛全开</span></div><div class="note">可校准(n≥100) · 可消融(n≥50)</div></div>
+</div>
+<table style="margin-top:8px">
+<tr><th>链路</th><th>结果</th></tr>
+<tr><td>ablate 消融</td><td>开季修正 触发 87% ≥ 对照 69%（<b>+18pp，建议标已验证</b>，待人审改 SKILL.md）；战意状态机 80% ≥ 73%（+7pp，同待审）；其余系数样本 &lt;5 继续观察</td></tr>
+<tr><td>calibrate 重校</td><td>跳过——含 p_dc+p_final 双列的已回填仅 0 场（旧记录缺 p_dc 列；新轮预测起补采，口径已在 v4.6 schema）</td></tr>
+<tr><td>learn 链</td><td>上会话已完成：korea_dc_v3 + saudi_dc_v4 发布（v4 = 414 场，holdout 0.9503）；周二003 仅 +1 场 &lt;5 场门槛，不重拟合</td></tr>
+<tr><td>trend 趋势</td><td>n=143 各项指标正常区间，无告警规则触发</td></tr>
+</table></div>
+
+<h2>五、本轮教训与沉淀建议</h2>
+<div class="card">
+<span class="tag">票层 vs 模型层再度分离</span>方向 2/2 全中、CRS 0/2 全断——4串11 全 CRS 票型对"差一球/被逆转"零容错。混串版（A-MIX 口径）当时若按 TTG 替换 CRS 腿可提升容错，但本周两场方向腿（1.15/1.41）本就不是 CRS 池的正值最优；结论维持：CRS 高赔票=彩票形状，接受 2.1% 活口概率，不因单票改池。<br>
+<span class="tag">待办（8-27 凌晨后）</span>重跑"回填赛果"→ T004 自动终结算 → tickets.html/trend.html 重刷。<br>
+<span class="tag">人审项</span>开季修正 + 战意状态机两系数消融达标，是否在 SKILL.md 标 ✅已验证由大哥拍板。
+</div>
+
+<footer>数据来源：data/02-results/2026-08-25.json（周二003/006 回填记录）· data/06-tickets/tickets.json（T004 票面+两腿结算）· data/04-summaries/corpus.json + ablate-report.json（闭环学习）· engine/cache/models/saudi_dc_v4.meta.json · 体彩 zqsgkj 开奖接口（赛果主链路，10:05 实测周二003=2:3/周二006=3:0）</footer>
+</div></body></html>

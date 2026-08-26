@@ -154,7 +154,7 @@ def ticket_rows(tickets: list) -> str:
         rows.append(
             f'<tr><td>{t["id"]}</td><td>{t["shape"]}{f"<br><span class=sub>{cross}</span>" if cross else ""}</td>'
             f'<td>{t["placedAt"][:16]}</td><td>{t["stake"]}</td><td class="legs">{legs}</td>'
-            f'<td>{res}</td><td>{"补录" if t.get("backfilled") else ("转正" if t["source"] == "promoted" else "手动")}</td></tr>')
+            f'<td>{res}</td><td>{"补录" if t.get("backfilled") else ("转正" if t.get("source") == "promoted" else "手动")}</td></tr>')
     return "".join(rows)
 
 
