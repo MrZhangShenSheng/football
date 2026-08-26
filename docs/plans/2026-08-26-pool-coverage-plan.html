@@ -1,0 +1,540 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>玩法覆盖升级实施计划（pool coverage plan）</title>
+<style>
+  :root{--ink:#1c2733;--sub:#5b6b7a;--line:#d8e0e8;--bg:#f6f8fa;--accent:#0f6b4f;--accent2:#b4540a;--bad:#a12734;--good:#0f6b4f;--card:#fff}
+  @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#dbe4ec;--sub:#8fa1b3;--line:#2c3947;--bg:#101822;--accent:#4fc49b;--accent2:#e8a04c;--bad:#e2717e;--good:#4fc49b;--card:#18222e}}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.75 "Segoe UI","Microsoft YaHei",sans-serif}
+  main{max-width:960px;margin:0 auto;padding:32px 28px 72px}
+  h1{font-size:24px;margin:0 0 4px}h2{font-size:19px;margin:44px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+  h3{font-size:15.5px;margin:24px 0 8px;color:var(--accent)}
+  .sub{color:var(--sub);font-size:13px}
+  code,pre{font-family:Consolas,"JetBrains Mono",monospace;font-size:13px}
+  code{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+  pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;overflow-x:auto;line-height:1.55}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:14px;background:var(--card)}
+  th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+  th{background:var(--bg);font-weight:600}
+  .good{color:var(--good);font-weight:600}.bad{color:var(--bad);font-weight:600}
+  .warn{color:var(--accent2);font-weight:600}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin:14px 0}
+  .icon{width:18px;height:18px;vertical-align:-4px;margin-right:6px;color:var(--accent)}
+  .step{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;padding:12px 16px;margin:10px 0}
+  .step b.sn{color:var(--accent)}
+</style>
+</head>
+<body><main>
+<h1><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4h6a2 2 0 0 1 2 2v14H7V6a2 2 0 0 1 2-2z"/><path d="M9 11h6M9 15h4"/></svg>玩法覆盖升级实施计划（pool coverage plan）</h1>
+<p class="sub">2026-08-26 · 作者 sszhang · 状态：待执行 · 设计文档：<a href="../2026-08-26-pool-coverage-design.html">docs/2026-08-26-pool-coverage-design.html</a>（唯一权威，本计划任务编号引用其 §）</p>
+
+<div class="card">
+<b>执行须知（每会话开头重读）</b>
+<ul>
+<li><b>单写会话纪律</b>：开始先 <code>git pull --ff-only</code>；全程只开这一个写会话。</li>
+<li><b>命令路径铁律</b>：脚本一律从仓库根跑 <code>python engine/scripts/xxx.py</code>（run.py 不在根目录）。</li>
+<li><b>内部文件 JSON/纯文本</b>；仅最终审计报告用 HTML（Task 7）。</li>
+<li><b>测试基建</b>：项目无 pytest，用标准库 unittest（零安装）。测试文件 <code>engine/scripts/tests/test_pool.py</code>。</li>
+<li><b>TDD 循环</b>：每任务 = 写失败断言 → 跑出失败 → 最小实现 → 跑过 → commit。禁止跳步直接写实现。</li>
+<li><b>零破坏底线</b>：任一任务结束时，不传新参数的旧行为必须与 Task 0 基线逐字节等价。</li>
+</ul>
+</div>
+
+<h2>Task 0：改动前基线快照</h2>
+<p><b>Files：</b>无改动，纯执行。</p>
+<div class="step"><b class="sn">Step 0.1</b> 冒烟 dc_predict（西甲，两队名取自缓存）：<pre>python engine/scripts/dc_predict.py spain-laliga "Rayo Vallecano" "Alaves" --market 2.05,3.4,3.9 > $env:TEMP\baseline_dc.json
+python -c "import json;d=json.load(open(r'$env:TEMP\baseline_dc.json',encoding='utf-8'));print(d['p_dc'],d['ttg'][:3],d['hafu']['hh'])"</pre>
+预期：打印三向/TTG 前3档/hh 概率，无报错。<b>保存此输出——后续任务的对拍基准。</b></div>
+<div class="step"><b class="sn">Step 0.2</b> 冒烟 boldplay 候选链（不写文件，import 级）：<pre>python -c "import sys;sys.path.insert(0,r'engine/scripts');from boldplay import _zh_map,_hafu_odds;from score_ev import build_freq_table;import json,glob;odds=json.load(open(sorted(glob.glob('engine/cache/score_odds/*.json'))[-1],encoding='utf-8'));from boldplay import mix_candidates;legs=mix_candidates(odds['matchDays'][0],build_freq_table(),_zh_map(),_hafu_odds());print(len(legs),'legs; top:',legs[0] if legs else None)"</pre>
+预期：打印候选腿数量（0 也正常——当日无正值项）。记录输出为基线。</div>
+<div class="step"><b class="sn">Step 0.3</b> commit 基线无产物（跳过 commit，仅记录）。</div>
+
+<h2>Task 1：half_params.py → half_share.json（设计 §6）</h2>
+<p><b>Files：</b>Create <code>engine/scripts/half_params.py</code>；产物 <code>engine/cache/half_share.json</code>（脚本生成，不手写）。</p>
+<div class="step"><b class="sn">Step 1.1</b> 写失败断言（临时，验证后并入脚本自检）：新建 <code>engine/scripts/half_params.py</code> 仅含骨架 + main 打印占位，先跑：<pre>python engine/scripts/half_params.py</pre>
+预期：FAIL/ModuleNotFoundError 或空输出（尚未实现）。</div>
+<div class="step"><b class="sn">Step 1.2</b> 完整实现：
+<pre>#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""半场参数生成：fd 多季 HTHG/HTAG → 联赛级半场占比 s（β收缩200球,clamp[0.3,0.6]）
++ 半场 rho_half（0-0/1-1 两格矩估计加权平均,clamp[-0.2,0.2]）。
+产出 engine/cache/half_share.json。开发者 sszhang
+设计: docs/2026-08-26-pool-coverage-design.html §6
+"""
+import json
+import math
+from collections import Counter
+from pathlib import Path
+
+from band_calibration import DIVS, SEASONS, fetch_rows
+from common import ROOT
+
+CACHE = ROOT / "engine" / "cache" / "half_share.json"
+PRIOR_GOALS = 200          # β收缩先验强度（球）
+S_CLAMP = (0.3, 0.6)
+RHO_CLAMP = (-0.2, 0.2)
+S_FALLBACK = 0.45
+
+
+def league_rows(league: str) -> list:
+    rows = []
+    for season in SEASONS:
+        for div, name in DIVS.items():
+            if name == league:
+                rows += fetch_rows(season, div)
+    return rows
+
+
+def half_stats(rows: list) -> dict:
+    \"\"\"返回半场统计：分主客半场球、全场球、半场比分Counter、场数（缺列场跳过计数）。\"\"\"
+    hth_s = hta_s = ft_s = n = 0
+    sc = Counter()
+    for r in rows:
+        try:
+            hth, hta = int(r["HTHG"]), int(r["HTAG"])
+            fth, fta = int(r["FTHG"]), int(r["FTAG"])
+        except (KeyError, ValueError, TypeError):
+            continue
+        hth_s += hth; hta_s += hta; ft_s += fth + fta; n += 1
+        sc[(hth, hta)] += 1
+    return {"hth": hth_s, "hta": hta_s, "ft": ft_s, "sc": sc, "n": n}
+
+
+def shrink_s(stats: dict, prior_s: float) -> float:
+    ht_sum = stats["hth"] + stats["hta"]
+    s = (ht_sum + PRIOR_GOALS * prior_s) / (stats["ft"] + PRIOR_GOALS)
+    return max(S_CLAMP[0], min(S_CLAMP[1], s))
+
+
+def rho_half(stats: dict) -> float:
+    \"\"\"矩估计：obs00=p00*(1-lh*la*rho) → r00=(1-obs00/p00)/(lh*la)；
+    obs11=p11_pois*(1-rho) → r11=1-obs11/p11；按格频数加权平均。\"\"\"
+    n = stats["n"]
+    if n == 0:
+        return 0.0
+    lh = stats["hth"] / n
+    la = stats["hta"] / n
+    base = math.exp(-lh - la)
+    est = wsum = 0.0
+    c00, c11 = stats["sc"].get((0, 0), 0), stats["sc"].get((1, 1), 0)
+    p00 = base
+    if c00 and p00 > 1e-12:
+        r = (1 - (c00 / n) / p00) / (lh * la)
+        est += r * c00; wsum += c00
+    p11 = base * lh * la
+    if c11 and p11 > 1e-12:
+        r = 1 - (c11 / n) / p11
+        est += r * c11; wsum += c11
+    rho = est / wsum if wsum else 0.0
+    return max(RHO_CLAMP[0], min(RHO_CLAMP[1], rho))
+
+
+def main() -> None:
+    all_rows = {lg: league_rows(lg) for lg in sorted(set(DIVS.values()))}
+    st = {lg: half_stats(rows) for lg, rows in all_rows.items()}
+    tot_ht = sum(v["hth"] + v["hta"] for v in st.values())
+    tot_ft = sum(v["ft"] for v in st.values())
+    prior_s = tot_ht / tot_ft if tot_ft else S_FALLBACK
+    g_stats = {"hth": sum(v["hth"] for v in st.values()),
+               "hta": sum(v["hta"] for v in st.values()),
+               "ft": tot_ft,
+               "sc": Counter(), "n": sum(v["n"] for v in st.values())}
+    for v in st.values():
+        g_stats["sc"].update(v["sc"])
+    out = {
+        "meta": {"priorGoals": PRIOR_GOALS, "sClamp": list(S_CLAMP), "rhoClamp": list(RHO_CLAMP)},
+        "global": {"s": round(shrink_s(g_stats, prior_s), 4),
+                   "rho_half": round(rho_half(g_stats), 4), "n": g_stats["n"]},
+        "leagues": {lg: {"s": round(shrink_s(v, prior_s), 4),
+                         "rho_half": round(rho_half(v), 4), "n": v["n"]}
+                    for lg, v in st.items() if v["n"] > 0},
+    }
+    CACHE.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
+    print(f"[half-params] global s={out['global']['s']} rho={out['global']['rho_half']} n={out['global']['n']}")
+    for lg, v in out["leagues"].items():
+        print(f"  {lg}: s={v['s']} rho_half={v['rho_half']} n={v['n']}")
+    # 自检断言（TDD 验收线）
+    assert 0.40 <= out["global"]["s"] <= 0.50, f"global s={out['global']['s']} 越界（足球统计常识 0.44~0.47）"
+    assert out["global"]["n"] > 8000, f"样本 {out['global']['n']} 异常（8联赛×4季应 >8000）"
+    print("[half-params] 自检通过 → engine/cache/half_share.json")
+
+
+if __name__ == "__main__":
+    main()
+</pre></div>
+<div class="step"><b class="sn">Step 1.3</b> 跑通并核对断言：<pre>python engine/scripts/half_params.py</pre>
+预期：各联赛 s 落 0.42~0.48（个别联赛可到 0.49），rho_half 多为负值（DC 1997 同号），自检通过。若某联赛 s&gt;0.5 或 rho=clamp 边界值，<b>停：回设计 §6 复核，不要硬闯</b>。</div>
+<div class="step"><b class="sn">Step 1.4</b> commit：<pre>git add engine/scripts/half_params.py engine/cache/half_share.json
+git commit -m "feat: half_params 半场参数生成——fd多季联赛级占比s(Beta收缩)+rho_half矩估计 → half_share.json"</pre></div>
+
+<h2>Task 2：dc_predict.py 重标定 + 温度 + hafu 参数化（设计 §4 §5 §6）</h2>
+<p><b>Files：</b>Modify <code>engine/scripts/dc_predict.py</code>；Create <code>engine/scripts/tests/test_pool.py</code>。</p>
+<div class="step"><b class="sn">Step 2.1</b> 写失败测试 <code>engine/scripts/tests/test_pool.py</code>：
+<pre>import sys, unittest
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # engine/scripts/
+
+import numpy as np
+from dc_predict import (score_matrix, hafu_approx, ttg_dist,
+                        reweight_matrix, reweight_hafu, temper)
+
+
+class TestReweight(unittest.TestCase):
+    def test_matrix_three_way_exact(self):
+        p = score_matrix(1.5, 1.1, -0.05)
+        target = [0.5, 0.3, 0.2]
+        q = reweight_matrix(p, target)
+        s = lambda m, f: float(sum(m[i, j] for i in range(7) for j in range(7) if f(i, j)))
+        self.assertAlmostEqual(s(q, lambda i, j: i > j), 0.5, places=9)
+        self.assertAlmostEqual(s(q, lambda i, j: i == j), 0.3, places=9)
+        self.assertAlmostEqual(s(q, lambda i, j: i < j), 0.2, places=9)
+
+    def test_matrix_shape_conserved(self):
+        """域内 odds ratio 不变（IPF structure conservation）。"""
+        p = score_matrix(1.8, 0.9, -0.08)
+        q = reweight_matrix(p, [0.6, 0.25, 0.15])
+        or_p = p[2, 0] / p[2, 1]
+        or_q = q[2, 0] / q[2, 1]
+        self.assertAlmostEqual(or_p, or_q, places=9)
+
+    def test_matrix_identity_when_target_equals_current(self):
+        p = score_matrix(1.4, 1.2, -0.05)
+        s = lambda m, f: float(sum(m[i, j] for i in range(7) for j in range(7) if f(i, j)))
+        q = reweight_matrix(p, [s(p, lambda i, j: i > j), s(p, lambda i, j: i == j), s(p, lambda i, j: i < j)])
+        self.assertTrue(np.allclose(p, q, atol=1e-9))
+
+    def test_hafu_ft_margin_aligned(self):
+        h = hafu_approx(1.6, 1.0)
+        target = [0.55, 0.25, 0.2]
+        q = reweight_hafu(h, target)
+        for d, ft in enumerate("hda"):
+            cur = sum(q[k] for k in q if k[1] == ft)
+            self.assertAlmostEqual(cur, target[d], places=9)
+
+    def test_temper_identity_at_one_and_flattens(self):
+        ps = [0.6, 0.3, 0.1]
+        self.assertTrue(all(abs(a - b) < 1e-12 for a, b in zip(temper(ps, 1.0), ps)))
+        t2 = temper(ps, 2.0)
+        self.assertLess(max(t2) - min(t2), max(ps) - min(ps))  # T>1 平滑
+        self.assertAlmostEqual(sum(t2), 1.0, places=9)
+
+    def test_hafu_params_default_equals_legacy(self):
+        """默认参数 = 现状行为（零破坏验收）。"""
+        h_new = hafu_approx(1.5, 1.1)                      # 新签名默认值
+        lh1, la1 = 1.5 * 0.45, 1.1 * 0.45                  # 旧算法手写复现
+        import math
+        def pois(k, lam): return math.exp(-lam) * lam ** k / math.factorial(k)
+        keys = [a + b for a in "hda" for b in "hda"]
+        ref = {k: 0.0 for k in keys}
+        for x in range(6):
+            for y in range(6):
+                p1 = pois(x, lh1) * pois(y, la1)
+                ht = "h" if x > y else ("d" if x == y else "a")
+                for u in range(6):
+                    for v in range(6):
+                        p2 = pois(u, 1.5 - lh1) * pois(v, 1.1 - la1)
+                        fx, fy = x + u, y + v
+                        ft = "h" if fx > fy else ("d" if fx == fy else "a")
+                        ref[ht + ft] += p1 * p2
+        tot = sum(ref.values())
+        for k in keys:
+            self.assertAlmostEqual(h_new[k], ref[k] / tot, places=9)
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)
+</pre></div>
+<div class="step"><b class="sn">Step 2.2</b> 跑失败：<pre>python engine/scripts/tests/test_pool.py</pre>
+预期：ImportError: cannot import name 'reweight_matrix'（6 个用例收集到、全 FAIL）。</div>
+<div class="step"><b class="sn">Step 2.3</b> 实现——dc_predict.py 追加（放在 hafu_approx 之后、fuse 之前）：
+<pre>TEMPERATURE = CACHE_DIR / "temperature.json"
+
+
+def load_half_params(league: str | None = None) -> tuple[float, float]:
+    """(s, rho_half)：联赛级命中用联赛；miss（日韩瑞沙）→全局；无文件→(0.45, 0) 现状行为。"""
+    if not (CACHE_DIR / "half_share.json").exists():
+        return HALF_LAMBDA_SHARE, 0.0
+    data = json.loads((CACHE_DIR / "half_share.json").read_text(encoding="utf-8"))
+    ent = (data.get("leagues") or {}).get(league) if league else None
+    if not ent:
+        ent = data.get("global") or {}
+    return float(ent.get("s", HALF_LAMBDA_SHARE)), float(ent.get("rho_half", 0.0))
+
+
+def load_temperature() -> dict:
+    """{pool: T}；缺文件/未启用池 → 1.0（现状行为）。"""
+    if not TEMPERATURE.exists():
+        return {"crs": 1.0, "ttg": 1.0, "hafu": 1.0}
+    data = json.loads(TEMPERATURE.read_text(encoding="utf-8"))
+    return {k: (float(v.get("T", 1.0)) if v.get("enabled") else 1.0)
+            for k, v in (data.get("pools") or {}).items()}
+
+
+def temper(probs: list[float], t: float) -> list[float]:
+    """池级温度：p_T ∝ p^(1/T)（Guo 2017 概率空间变体）；t=1 恒等。"""
+    if abs(t - 1.0) < 1e-12:
+        return list(probs)
+    z = [max(p, 1e-12) ** (1.0 / t) for p in probs]
+    s = sum(z)
+    return [v / s for v in z]
+
+
+def reweight_matrix(p: np.ndarray, target: list[float]) -> np.ndarray:
+    """三域（主胜 i>j / 平局 i=j / 客胜 i<j）一步精确重加权对齐 target 三向。
+
+    IPF structure conservation 特例：域内交叉乘积比不变（保 ρ 低分形状/TTG 形状）。
+    target 须归一（|Σ-1|<1e-3，护栏在 CLI 层）。
+    """
+    out = p.copy()
+    for d, cond in enumerate((lambda i, j: i > j, lambda i, j: i == j, lambda i, j: i < j)):
+        mask = np.array([[cond(i, j) for j in range(7)] for i in range(7)])
+        cur = float(p[mask].sum())
+        if cur > 1e-12:
+            out[mask] = p[mask] * (target[d] / cur)
+    return out / out.sum()
+
+
+def reweight_hafu(hafu: dict[str, float], target: list[float]) -> dict[str, float]:
+    """HAFU 9 键条件分解：保持 P(HT|FT)，第二字母（FT）三列对齐 target。"""
+    out = dict(hafu)
+    for d, ft in enumerate("hda"):
+        keys = [k for k in out if k[1] == ft]
+        cur = sum(out[k] for k in keys)
+        if cur > 1e-12:
+            for k in keys:
+                out[k] = out[k] * (target[d] / cur)
+    t = sum(out.values())
+    return {k: v / t for k, v in out.items()}
+</pre>
+同时改造 <b>hafu_approx 签名</b>（保留旧默认，加 ρ_half 修半场段）：
+<pre>def hafu_approx(lh: float, la: float, s: float = HALF_LAMBDA_SHARE, rho_half: float = 0.0) -> dict[str, float]:
+    """半全场 9 组合：半场 λ=全场×s、下半场守恒；rho_half 仅修半场段（dc_tau），
+    下半场为构造量不修（低分偏差由 FT 三向重标定兜底，设计 §6）。"""
+    lh1, la1 = lh * s, la * s
+    lh2, la2 = lh - lh1, la - la1
+
+    def pois(k: int, lam: float) -> float:
+        return math.exp(-lam) * lam ** k / math.factorial(k)
+
+    out = {a + b: 0.0 for a in "hda" for b in "hda"}
+    for x in SCORE_RANGE:
+        for y in SCORE_RANGE:
+            p1 = pois(x, lh1) * pois(y, la1) * max(dc_tau(x, y, lh1, la1, rho_half), 1e-12)
+            if p1 < 1e-12:
+                continue
+            ht = "h" if x > y else ("d" if x == y else "a")
+            for u in SCORE_RANGE:
+                for v in SCORE_RANGE:
+                    p2 = pois(u, lh2) * pois(v, la2)
+                    fx, fy = x + u, y + v
+                    ft = "h" if fx > fy else ("d" if fx == fy else "a")
+                    out[ht + ft] += p1 * p2
+    total = sum(out.values()) or 1.0
+    return {k: v / total for k, v in out.items()}</pre></div>
+<div class="step"><b class="sn">Step 2.4</b> 跑测试至全绿：<pre>python engine/scripts/tests/test_pool.py</pre>
+预期：6 passed。<b>test_hafu_params_default_equals_legacy 必须过</b>——它是零破坏验收。</div>
+<div class="step"><b class="sn">Step 2.5</b> CLI 接线——main() 内（market 分支之后）追加 --adjust 输出块：
+<pre>    adjust = None
+    if "--adjust" in sys.argv:
+        i = sys.argv.index("--adjust")
+        adjust = [float(x) for x in sys.argv[i + 1].split(",")]
+        if abs(sum(adjust) - 1.0) > 1e-3:
+            log("dc_predict", f"--adjust 三向和={sum(adjust):.4f} ≠1，拒绝（防 skill 流程手算失误）")
+            return
+        adjust = [max(v, 0.01) for v in adjust]
+        if min(adjust) == 0.01:
+            log("dc_predict", "warn: target 有项 &lt;0.01 被 clamp（修正系数叠乘压塌某域）")
+    tpool = load_temperature()
+    result["temperature"] = tpool
+    s_lg, rho_h = load_half_params(league)
+    if adjust:
+        pm = reweight_matrix(p, adjust)
+        hf = reweight_hafu(hafu_approx(lh, la, s_lg, rho_h), adjust)
+        result["adjusted"] = {
+            "source": "fused+factor-adjusted",
+            "target": adjust,
+            "p_three": [round(v, 4) for v in adjust],
+            "top_scores": [{"score": f"{i}-{j}", "prob": round(float(pm[i, j]), 4)}
+                           for i, j in sorted(((i, j) for i in range(7) for j in range(7)),
+                                               key=lambda t: -pm[t])[:5]],
+            "ttg": [round(v, 4) for v in temper(ttg_dist(pm), tpool["ttg"])],
+            "hafu": {k: round(v, 4) for k, v in sorted(temper(hf, tpool["hafu"]).items())},
+        }</pre>
+注意：bare <code>hafu</code> 主输出（非 adjusted）同步升级为 <code>hafu_approx(lh, la, s_lg, rho_h)</code>（half_share 已存在，此为主链口径而非破坏——<b>对拍 Step 0.1 基线时 hafu 数值会变，这是设计预期（参数升级）；p_dc/ttg 不变</b>。p_dc 与 top_scores 不变因矩阵未动）。</div>
+<div class="step"><b class="sn">Step 2.6</b> CLI 冒烟 + 对拍：
+<pre>python engine/scripts/dc_predict.py spain-laliga "Rayo Vallecano" "Alaves" --market 2.05,3.4,3.9 --adjust 0.42,0.31,0.27</pre>
+预期：JSON 含 <code>adjusted</code> 块；adjusted.ttg 三向加权和守恒；<code>p_dc</code>/<code>ttg</code> 与基线一致（hafu 允许变化——参数升级）。再跑 <code>--adjust 0.30,0.30,0.40</code>（和=1）与 <code>--adjust 0.5,0.4,0.2</code>（和=1.1）后者应打印拒绝。</div>
+<div class="step"><b class="sn">Step 2.7</b> commit：
+<pre>git add engine/scripts/dc_predict.py engine/scripts/tests/test_pool.py
+git commit -m "feat: dc_predict 三域重标定+池级温度+半场参数化——reweight_matrix/hafu,temper,--adjust CLI(护栏:和校验/clamp),hafu_approx(s,rho_half);unittest 6用例含零破坏验收"</pre></div>
+
+<h2>Task 3：boldplay.py 接线（设计 §3 消费端）</h2>
+<p><b>Files：</b>Modify <code>engine/scripts/boldplay.py</code>（mix_candidates + import 行）。</p>
+<div class="step"><b class="sn">Step 3.1</b> import 行扩容：
+<pre>from dc_predict import (score_matrix, ttg_dist, hafu_approx, devig as devig_n,
+                         reweight_matrix, reweight_hafu, temper, load_half_params, load_temperature)</pre></div>
+<div class="step"><b class="sn">Step 3.2</b> mix_candidates 签名与消费（只列改动行，其余原样）：
+<pre>def mix_candidates(odds_day: dict, freq_table: dict, zh: dict, hafu: dict,
+                   dc_params_fn=_dc_params, adjust_map: dict | None = None) -> list:</pre>
+函数体内在 <code>lh, la, rho = params</code> 之后插入：
+<pre>        tpool = load_temperature()
+        adj = adjust_map.get(mid) if adjust_map else None
+        s_lg, rho_h = load_half_params(map_league(m.get("league", "")))</pre>
+CRS 池：<code>matrix = score_matrix(lh, la, rho)</code> 后加
+<pre>        if adj:
+            matrix = reweight_matrix(matrix, adj)
+        p_crs = temper([float(matrix[i, j]) for i in range(7) for j in range(7)], tpool["crs"])
+        crs_p = {(i, j): p_crs[i * 7 + j] for i in range(7) for j in range(7)}</pre>
+CRS 循环内 <code>float(matrix[x, y])</code> 全部替换为 <code>crs_p[(x, y)]</code>（含 5pp 门槛判断处）；leg dict 的 <code>"source": "dc"</code> 替换为 <code>"source": "dc-reweighted" if adj else "dc"</code>（CRS/TTG/HAFU 三处同改）。
+TTG 池：<code>p_dc = ttg_dist(matrix)</code> 后加 <code>p_dc = temper(p_dc, tpool["ttg"])</code>。
+HAFU 池：<code>p_dc = hafu_approx(lh, la)</code> 改为
+<pre>            p_dc = temper(list(reweight_hafu(hafu_approx(lh, la, s_lg, rho_h), adj).values())
+                          if adj else hafu_approx(lh, la, s_lg, rho_h), tpool["hafu"])
+            p_dc = dict(zip([a + b for a in "hda" for b in "hda"], p_dc))</pre></div>
+<div class="step"><b class="sn">Step 3.3</b> 对拍冒烟（不传 adjust_map，温度文件尚不存在 → T=1；half_share 已存在 → hafu 允许变化）：
+<pre>python -c "（复用 Task 0 Step 0.2 同款命令）"</pre>
+预期：候选腿数与基线接近（CRS/TTG 项 EV 数值不变；HAFU 项因参数升级可变）。<b>若 CRS/TTG 项 EV 变了 = 回归，停查。</b></div>
+<div class="step"><b class="sn">Step 3.4</b> adjust_map 冒烟（构造一场假 target 验证传导）：
+<pre>python -c "import sys;sys.path.insert(0,r'engine/scripts');import json,glob;from boldplay import *;odds=json.load(open(sorted(glob.glob('engine/cache/score_odds/*.json'))[-1],encoding='utf-8'));day=odds['matchDays'][0];mids=[m['matchNumStr'] for m in day['matches']];am={mids[0]:[0.5,0.3,0.2]};a=mix_candidates(day,build_freq_table(),_zh_map(),_hafu_odds(),adjust_map=am);print([l for l in a if l['matchNumStr']==mids[0]])"</pre>
+预期：该场腿 source 含 dc-reweighted（若该场有 DC 缓存）。</div>
+<div class="step"><b class="sn">Step 3.5</b> commit：
+<pre>git add engine/scripts/boldplay.py
+git commit -m "feat: boldplay A-MIX 消费重标定链——adjust_map逐场三向+池级温度+half_share参数;source标注dc-reweighted;无参数时与旧链等价"</pre></div>
+
+<h2>Task 4：temperature.py fd walk-forward 拟合 + 8 组合消融（设计 §5 §7）</h2>
+<p><b>Files：</b>Create <code>engine/scripts/temperature.py</code>；产物 <code>engine/cache/temperature.json</code> + <code>data/04-summaries/pool_ablation.json</code>。</p>
+<div class="step"><b class="sn">Step 4.1</b> 先读 <code>dc_fit.py:132-171</code> 确认 <code>fit(matches, xi)</code> 返回结构（应为 {teams, rho, homeAdv} 与 {league}_dc.json 同构——按实际微调 Task 内取参行）。</div>
+<div class="step"><b class="sn">Step 4.2</b> 实现（骨架完整，评估协议按设计 §7 粗粒度 walk-forward=赛季内 split）：
+<pre>#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""池级温度拟合 + 8 组合消融（fd 8联赛×4季，赛季内 60/40 split 无前视）。
+
+拟合：每联赛每赛季前 60% 场 fit() 拟 DC 参数 → 后 40% 场评估各池 logloss；
+温度 T 网格 [0.60, 1.60] step 0.05 最小化评估集 NLL。bootstrap 1000 次 CI。
+消融：2^3=8 组合（重标定[用 PPC 收盘 devig + fusion a0.4/b1.0 融合三向] × 温度 × hafu升级）。
+产出 engine/cache/temperature.json + data/04-summaries/pool_ablation.json。
+设计: docs/2026-08-26-pool-coverage-design.html §5 §7   开发者 sszhang
+"""
+import json, math, random
+from datetime import date
+from pathlib import Path
+
+from band_calibration import DIVS, SEASONS, fetch_rows
+from dc_fit import fit
+from dc_predict import (score_matrix, ttg_dist, hafu_approx, devig, fuse,
+                        reweight_matrix, reweight_hafu, temper, load_half_params)
+from common import ROOT
+
+CACHE = ROOT / "engine" / "cache" / "temperature.json"
+ABLATION = ROOT / "data" / "04-summaries" / "pool_ablation.json"
+SPLIT = 0.6
+T_GRID = [round(0.60 + 0.05 * i, 2) for i in range(21)]   # 0.60~1.60
+FUSION = {"a": 0.4, "b": 1.0}   # 与 engine/cache/fusion.json 现值一致；拟合时若文件存在则读它
+BOOTSTRAP_N = 1000
+MIN_EVAL_N = 50                 # 低于此数不启用该池温度（设计 §5）
+
+
+def parse_rows(season: str, div: str) -> list:
+    """fd 行 → {date, hg, ag, hth, hta, pph, ppd, ppa}；缺列跳过。"""
+    out = []
+    for r in fetch_rows(season, div):
+        try:
+            out.append({"date": r["Date"], "hg": int(r["FTHG"]), "ag": int(r["FTAG"]),
+                        "hth": int(r["HTHG"]), "hta": int(r["HTAG"]),
+                        "odds": [float(r["PPCH"]), float(r["PPCD"]), float(r["PPCA"])]})
+        except (KeyError, ValueError, TypeError):
+            continue
+    return sorted(out, key=lambda m: m["date"])
+    # fit 需要的 matches 结构按 Step 4.1 确认结果适配（load_matches 同构）
+
+
+def eval_match(lh, la, rho, m, s_rho, use_adj, use_T, use_hafu):
+    """单场各池 -log p（观测档/比分/键）。返回 {crs, ttg, hafu} 各池 ll（before/after 由调用方按开关组态算）。"""
+    ...  # 矩阵→(可选重标定:devig(PPC)+fuse→target)→聚合→(可选温度)；HAFU 同链
+    # CRS 观测 (hg,ag)：7x7 外取"其他"档=域内 1-域内矩阵和；TTG=min(hg+ag,7)；HAFU 键=sign(hth-hta)+sign(hg-ag)
+
+
+def fit_pool_T(records) -> dict:
+    """records: [(pool, {T: [逐场 ll]})] → 每池最优 T + bootstrap CI。"""
+    ...
+
+
+def main() -> None:
+    ...  # 组装 → 拟合 → 消融 8 组合 → 双 JSON 落盘 + 控制台摘要
+</pre>
+<b>实现注意</b>：① <code>fit(matches, xi=0.005)</code> 的 matches 元素结构照抄 dc_fit.load_matches 产物（Step 4.1 确认）；② 温度对 CRS 池作用对象是"矩阵 49 格 softmax"——评估档在矩阵外时取"其他"档概率（域内 1-域内和）后一起温度化再归一；③ HAFU 池照算数字但 <code>enabled: false</code>（设计 §5 暂不启用，JSON 留 reason 与前瞻监控说明，若 CI 显著为正留人审切换）；④ 重标定维度的 target 必须来自 <b>PPC 去水 + 融合</b>链（设计 §4 护栏③）。</div>
+<div class="step"><b class="sn">Step 4.3</b> 跑拟合（fd CSV 网络拉取，约几分钟）：
+<pre>python engine/scripts/temperature.py</pre>
+预期：控制台打印各池 T̂ / n_eval / ll_before / ll_after / CI；<code>temperature.json</code> 含 <code>pools.{crs,ttg,hafu}</code>；断言：<code>abs(T-1)∈[0,0.6]</code>、CI 下界&gt;0 才 enabled=true。</div>
+<div class="step"><b class="sn">Step 4.4</b> 消融矩阵核对：<code>pool_ablation.json</code> 8 组合 × 3 池 ll 齐全；基线组合（全关）与拟合链 ll_before 一致。</div>
+<div class="step"><b class="sn">Step 4.5</b> commit：
+<pre>git add engine/scripts/temperature.py engine/cache/temperature.json data/04-summaries/pool_ablation.json
+git commit -m "feat: temperature 池级温度fd walk-forward拟合+8组合消融——CRS/TTG按CI下界>0启用,HAFU拟合留档暂缓;pool_ablation落盘"</pre></div>
+
+<h2>Task 5：SKILL.md v5.2 五处改版（设计 §8）</h2>
+<p><b>Files：</b>Modify <code>skill/SKILL.md</code>（五处 + 版本号 + 自检清单）、<code>skill/references/coefficients.md</code>（传导说明）。</p>
+<div class="step"><b class="sn">Step 5.1</b> 版本头：标题行 v5.1 → <b>v5.2</b>；文首版本注记加一行"v5.2：修正三向经 --adjust 传导全玩法（三域重标定+池级温度+半场参数，设计见 docs/2026-08-26-pool-coverage-design.html）"。</div>
+<div class="step"><b class="sn">Step 5.2</b> <b>处① Step 3.5</b> 节末追加：
+<pre>### 修正三向回传 ★ v5.2 新增
+Step 4 修正系数打完得到最终三向后，若本轮涉及比分/总进球/半全场玩法，必须回传拿全玩法自洽概率：
+  python engine/scripts/dc_predict.py <联赛> "<主队>" "<客队>" --market h,d,a --adjust H,D,A
+- target 必须=融合+因子修正后的最终三向（裸 DC 修正禁止直传；JSON 带 source:"fused+factor-adjusted"）
+- 三向和 ≠1（±0.001）会被拒绝；任一项 <0.01 会被 clamp 并 warn
+- 输出 adjusted 块含重标定版 top_scores/ttg/hafu（已池级温度化）</pre></div>
+<div class="step"><b class="sn">Step 5.3</b> <b>处② Step 4</b> 修正系数表引言句"对概率做乘法修正"后补一句："修正对象为胜平负三向；v5.2 起该三向经 dc_predict 三域重标定传导至比分/总进球/半全场（系数表与计算流程不变）。"</div>
+<div class="step"><b class="sn">Step 5.4</b> <b>处③ Step 6 新玩法概率支撑段</b>（"ttg：总进球 0~7+ 8 档概率（DC 7×7 矩阵聚合）/ hafu：…λ×0.45…独立泊松枚举"两行）整段替换：
+<pre>**新玩法概率支撑（v5.2 起统一走重标定+温度链）**：
+- `ttg`：总进球 8 档 = 重标定矩阵聚合 + 池级温度化
+- `hafu`：半全场 9 键 = 联赛级半场占比 s（half_share.json，β收缩）+ 半场 ρ_half + FT 三向条件分解重标定
+- `crs`：比分 = 重标定矩阵直出 + 池级温度化（矩阵外比分入"其他"档）
+- 概率源链：修正三向 --adjust 回传（Step 3.5）→ boldplay A-MIX 三池 EV；温度参数 engine/cache/temperature.json（run.py learn 自动重拟，消融不过 T=1）
+- **EV 比选法 ★核心**：`EV = p_model × 体彩赔率 - 1`，全量计算，**EV > 0 且 |p_model - p_市场(去水)| < 5pp 才可推荐**（防模型自大）（口径不变，p_model 已是温度后概率）</pre></div>
+<div class="step"><b class="sn">Step 5.5</b> <b>处④ Step 6.5</b> "信息边际三定律/再跑一遍"小节加一行：临场复扫若当轮使用了 adjust_map，赔率复扫后<b>必须重算修正三向并同步更新 adjust_map 再重跑 boldplay</b>（旧三向×新赔率=错配）。</div>
+<div class="step"><b class="sn">Step 5.6</b> <b>处⑤ Step 8 闭环学习接线</b> 链条图在 <code>learn（非fd联赛增量拟合+版本发布）</code> 后加 <code>→ temperature 重拟（语料/fd 增量后，CI 不过自动 T=1）</code>。</div>
+<div class="step"><b class="sn">Step 5.7</b> 自检清单（二、输出前自检清单）加一条："涉及高赔池（CRS/TTG/HAFU）时，修正三向已 --adjust 回传且 adjust_map 随预测 JSON 归档"。coefficients.md 修正系数表开头加传导说明（同 5.3 措辞）。</div>
+<div class="step"><b class="sn">Step 5.8</b> commit：
+<pre>git add skill/SKILL.md skill/references/coefficients.md
+git commit -m "docs: SKILL.md v5.2——修正三向回传五处改版(Step3.5回传/Step4扩域/Step6概率源/Step6.5临场重算/Step8闭环T重拟)+自检清单+coefficients传导说明"</pre></div>
+
+<h2>Task 6：run.py 挂链 + arsenal 双份同步（设计 §9）</h2>
+<p><b>Files：</b>Modify <code>engine/scripts/run.py</code>；Sync <code>D:\project\arsenal\football-betting-prediction\SKILL.md</code>。</p>
+<div class="step"><b class="sn">Step 6.1</b> run.py <code>learn</code> 分支末尾（for 循环后）加：
+<pre>        sh("temperature.py")   # 语料/fd 增量后池级温度重拟（幂等：CI 不过落盘 T=1）</pre>
+<code>verify</code> 分支在 <code>sh("ablate.py")</code> 后加：
+<pre>        sh("temperature.py", "--check")   # 温度状态断言（T/CI/fittedAt 自检，缺文件警告不阻断）</pre>
+（temperature.py main 里支持 <code>--check</code>：只读 temperature.json 校验结构+打印状态，exit 0/1。）</div>
+<div class="step"><b class="sn">Step 6.2</b> 冒烟：<code>python engine/scripts/run.py learn japan</code>（若网络允许）或直接 <code>python engine/scripts/temperature.py --check</code>，预期打印各池状态。</div>
+<div class="step"><b class="sn">Step 6.3</b> arsenal 同步（字节级）：
+<pre>Copy-Item skill\SKILL.md D:\project\arsenal\football-betting-prediction\SKILL.md -Force
+git diff --no-index --stat skill\SKILL.md D:\project\arsenal\football-betting-prediction\SKILL.md
+if ($LASTEXITCODE -eq 0) { "cmp OK" } else { "MISMATCH - 停查" }</pre></div>
+<div class="step"><b class="sn">Step 6.4</b> commit：
+<pre>git add engine/scripts/run.py
+git commit -m "feat: run.py learn挂temperature重拟+verify挂--check断言;arsenal SKILL.md v5.2副本字节级同步"</pre></div>
+
+<h2>Task 7：审计报告 HTML + 收尾（设计 §1 §7 产出）</h2>
+<p><b>Files：</b>Create <code>docs/2026-08-26-pool-coverage-audit.html</code>。</p>
+<div class="step"><b class="sn">Step 7.1</b> 报告含五块（HTML+内嵌 SVG，风格对齐本计划/设计文档 CSS）：①因子×玩法覆盖矩阵（改造前 vs 改造后双表）；②三步设计摘要+参数实值（half_share/temperature 关键数）；③消融 8 组合矩阵表（pool_ablation.json 直出）；④验收线判定结论（每步 PASS/回落）；⑤数据来源清单（引用了哪些本地文件——检索铁律 10）。charset utf-8 必须。</div>
+<div class="step"><b class="sn">Step 7.2</b> 全链终检：Task 0 基线命令重跑一遍，确认零破坏口径（p_dc 不变/adjusted 链工作/temperature 消费生效）；tests 全绿。</div>
+<div class="step"><b class="sn">Step 7.3</b> 最终 commit：
+<pre>git add docs/2026-08-26-pool-coverage-audit.html
+git commit -m "docs: 玩法覆盖升级审计报告——覆盖矩阵前后对照+参数实值+8组合消融+验收判定+数据来源清单"</pre></div>
+
+<h2>验收线总表（执行完逐项打勾）</h2>
+<table>
+<tr><th>验收</th><th>命令/位置</th><th>通过标准</th></tr>
+<tr><td>零破坏</td><td>Task 0 基线对拍</td><td>p_dc/ttg 逐字节一致；hafu 仅参数升级级变化</td></tr>
+<tr><td>重标定数学</td><td>test_pool.py 4 用例</td><td>三向对齐 &lt;1e-9；odds ratio 守恒；恒等性</td></tr>
+<tr><td>温度验收</td><td>temperature.json</td><td>CRS/TTG CI 下界&gt;0 才 enabled；否则 T=1 落盘</td></tr>
+<tr><td>HAFU 升级</td><td>pool_ablation.json</td><td>9 键 ll 改善 CI 下界&gt;0（enabled 仍 false 留人审）</td></tr>
+<tr><td>护栏</td><td>CLI 冒烟</td><td>和≠1 拒绝；&lt;0.01 clamp+warn；source 标注</td></tr>
+<tr><td>流程接线</td><td>SKILL.md v5.2 / run.py</td><td>五处改版 + learn/verify 挂链 + arsenal cmp OK</td></tr>
+</table>
+
+<h2>风险与停止条件</h2>
+<ul>
+<li><b>fit() 返回结构不符预期</b>（Step 4.1）：适配取参行，勿改 dc_fit.py。</li>
+<li><b>fd 拉取超时/缺列大面积</b>（&gt;20% 场缺 HTHG）：停，报告后再定（可能该季 CSV 无半场列）。</li>
+<li><b>T̂ 顶格（0.6 或 1.6）</b>：分布边缘假象，停止启用该池（enabled=false + reason），人审。</li>
+<li><b>温度使 EV 候选数坍缩为 0</b>：属预期方向（收缩假阳性），在审计报告量化说明，不是故障。</li>
+<li>任何一步与设计文档冲突：以设计文档为准，回来改计划再执行。</li>
+</ul>
+</main></body></html>
