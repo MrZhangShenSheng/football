@@ -11,6 +11,7 @@
 import json
 import math
 import random
+import sys
 from datetime import date, datetime
 
 import numpy as np
@@ -237,9 +238,48 @@ def fit_pool_t(all_pre: list[dict], pool: str) -> dict:
     }
 
 
+# ── --check 只读状态断言 ────────────────────────────────────
+
+def _check_status() -> int:
+    """只读 temperature.json，打印各池状态。exit 0=就绪/缺文件不阻断，1=结构损坏。"""
+    if not CACHE.exists():
+        print("[temperature] temperature.json 不存在（run.py learn 未跑过温度拟合，消费端按 T=1 零破坏）")
+        return 0
+    try:
+        data = json.loads(CACHE.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError) as e:
+        print(f"[temperature] temperature.json 读取失败: {e}")
+        return 1
+    pools = data.get("pools")
+    if not isinstance(pools, dict):
+        print("[temperature] 结构损坏：缺 pools 字段")
+        return 1
+    missing = []
+    for pool in ("crs", "ttg", "hafu"):
+        p = pools.get(pool)
+        if not isinstance(p, dict):
+            missing.append(pool)
+            continue
+        for field in ("T", "enabled", "ci"):
+            if field not in p:
+                missing.append(f"{pool}.{field}")
+    if missing:
+        print(f"[temperature] 结构损坏：缺 {', '.join(missing)}")
+        return 1
+    print(f"[temperature] fittedAt: {data.get('fittedAt', '?')}")
+    for pool in ("crs", "ttg", "hafu"):
+        p = pools[pool]
+        ci = p["ci"]
+        print(f"  {pool}: T={p['T']:.2f} enabled={p['enabled']} CI=[{ci[0]:.4f}, {ci[1]:.4f}]")
+    print("[temperature] OK")
+    return 0
+
+
 # ── 主函数 ────────────────────────────────────────────────
 
 def main() -> None:
+    if len(sys.argv) > 1 and sys.argv[1] == "--check":
+        sys.exit(_check_status())
     # Fusion 系数：优先读文件，缺则默认
     fusion = FUSION_DEFAULT.copy()
     fusion_path = ROOT / "engine" / "cache" / "fusion.json"

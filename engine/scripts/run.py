@@ -95,6 +95,7 @@ def main() -> None:
         sh("trend_report.py")
         sh("calibrate.py")
         sh("ablate.py")
+        sh("temperature.py", "--check")   # 温度状态断言（T/CI/fittedAt 自检，缺文件警告不阻断）
     elif cmd == "learn":
         # 非fd联赛闭环：当年 espn history 增量采集 → --source local 拟合 → 版本发布
         # 例: python run.py learn / python run.py learn japan
@@ -113,6 +114,7 @@ def main() -> None:
                 continue
             sh("espn_fetch.py", "history", code, year)
             sh("dc_fit.py", league, "--source", "local", "--publish")
+        sh("temperature.py")   # 语料/fd 增量后池级温度重拟（幂等：CI 不过落盘 T=1）
     elif cmd == "all":
         sh("odds_fetch.py", "--season", "2526", *LEAGUES)
         sh("odds_fetch.py", "--season", CURRENT_SEASON, *LEAGUES)
