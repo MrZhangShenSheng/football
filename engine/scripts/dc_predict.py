@@ -71,12 +71,14 @@ def ttg_dist(p: np.ndarray) -> list[float]:
     return dist
 
 
-def hafu_approx(lh: float, la: float) -> dict[str, float]:
-    """半全场 9 组合近似：半场 λ=全场×0.45、下半场 ×0.55，两段独立泊松精确枚举聚合。
+def hafu_approx(lh: float, la: float, s: float = HALF_LAMBDA_SHARE, rho_half: float = 0.0) -> dict[str, float]:
+    """半全场 9 组合：半场 λ=全场×s、下半场守恒；rho_half 仅修半场段（dc_tau），
+    下半场为构造量不修（低分偏差由 FT 三向重标定兜底，设计 §6）。
 
     P(HT=x, 2nd=u) 独立 → FT=(x+u, y+v)；HT/FT 各自三向符号组合成 9 键（hh..aa）。
+    默认参数 = 旧版行为（s=0.45、rho_half=0 → tau 恒 1，零破坏验收）。
     """
-    lh1, la1 = lh * HALF_LAMBDA_SHARE, la * HALF_LAMBDA_SHARE
+    lh1, la1 = lh * s, la * s
     lh2, la2 = lh - lh1, la - la1
 
     def pois(k: int, lam: float) -> float:
@@ -85,7 +87,7 @@ def hafu_approx(lh: float, la: float) -> dict[str, float]:
     out = {a + b: 0.0 for a in "hda" for b in "hda"}
     for x in SCORE_RANGE:
         for y in SCORE_RANGE:
-            p1 = pois(x, lh1) * pois(y, la1)
+            p1 = pois(x, lh1) * pois(y, la1) * max(dc_tau(x, y, lh1, la1, rho_half), 1e-12)
             if p1 < 1e-12:
                 continue
             ht = "h" if x > y else ("d" if x == y else "a")
@@ -97,6 +99,69 @@ def hafu_approx(lh: float, la: float) -> dict[str, float]:
                     out[ht + ft] += p1 * p2
     total = sum(out.values()) or 1.0
     return {k: v / total for k, v in out.items()}
+
+
+TEMPERATURE = CACHE_DIR / "temperature.json"
+
+
+def load_half_params(league: str | None = None) -> tuple[float, float]:
+    """(s, rho_half)：联赛级命中用联赛；miss（日韩瑞沙）→全局；无文件→(0.45, 0) 现状行为。"""
+    if not (CACHE_DIR / "half_share.json").exists():
+        return HALF_LAMBDA_SHARE, 0.0
+    data = json.loads((CACHE_DIR / "half_share.json").read_text(encoding="utf-8"))
+    ent = (data.get("leagues") or {}).get(league) if league else None
+    if not ent:
+        ent = data.get("global") or {}
+    return float(ent.get("s", HALF_LAMBDA_SHARE)), float(ent.get("rho_half", 0.0))
+
+
+def load_temperature() -> dict:
+    """{pool: T}；缺文件/未启用池 → 1.0（现状行为）。"""
+    defaults = {"crs": 1.0, "ttg": 1.0, "hafu": 1.0}
+    if not TEMPERATURE.exists():
+        return defaults
+    data = json.loads(TEMPERATURE.read_text(encoding="utf-8"))
+    loaded = {k: (float(v.get("T", 1.0)) if v.get("enabled") else 1.0)
+              for k, v in (data.get("pools") or {}).items()}
+    defaults.update(loaded)
+    return defaults
+
+
+def temper(probs: list[float], t: float) -> list[float]:
+    """池级温度：p_T ∝ p^(1/T)（Guo 2017 概率空间变体）；t=1 恒等。"""
+    if abs(t - 1.0) < 1e-12:
+        return list(probs)
+    z = [max(p, 1e-12) ** (1.0 / t) for p in probs]
+    s = sum(z)
+    return [v / s for v in z]
+
+
+def reweight_matrix(p: np.ndarray, target: list[float]) -> np.ndarray:
+    """三域（主胜 i>j / 平局 i=j / 客胜 i<j）一步精确重加权对齐 target 三向。
+
+    IPF structure conservation 特例：域内交叉乘积比不变（保 ρ 低分形状/TTG 形状）。
+    target 须归一（|Σ-1|<1e-3，护栏在 CLI 层）。
+    """
+    out = p.copy()
+    for d, cond in enumerate((lambda i, j: i > j, lambda i, j: i == j, lambda i, j: i < j)):
+        mask = np.array([[cond(i, j) for j in range(7)] for i in range(7)])
+        cur = float(p[mask].sum())
+        if cur > 1e-12:
+            out[mask] = p[mask] * (target[d] / cur)
+    return out / out.sum()
+
+
+def reweight_hafu(hafu: dict[str, float], target: list[float]) -> dict[str, float]:
+    """HAFU 9 键条件分解：保持 P(HT|FT)，第二字母（FT）三列对齐 target。"""
+    out = dict(hafu)
+    for d, ft in enumerate("hda"):
+        keys = [k for k in out if k[1] == ft]
+        cur = sum(out[k] for k in keys)
+        if cur > 1e-12:
+            for k in keys:
+                out[k] = out[k] * (target[d] / cur)
+    t = sum(out.values())
+    return {k: v / t for k, v in out.items()}
 
 
 def fuse(p_dc: list[float], p_mkt: list[float], a: float, b: float,
@@ -151,6 +216,7 @@ def main() -> None:
     lh = math.exp(th["attack"] + ta["defense"] + dc["homeAdv"])
     la = math.exp(ta["attack"] + th["defense"])
     p = score_matrix(lh, la, dc["rho"])
+    s_lg, rho_h = load_half_params(league)
 
     p_home = float(sum(p[i, j] for i in range(7) for j in range(7) if i > j))
     p_draw = float(np.trace(p))
@@ -163,7 +229,8 @@ def main() -> None:
         "p_dc": [round(v, 4) for v in three],
         "top_scores": [],
         "ttg": [round(v, 4) for v in ttg_dist(p)],
-        "hafu": {k: round(v, 4) for k, v in sorted(hafu_approx(lh, la).items())},
+        "hafu": {k: round(v, 4) for k, v in sorted(hafu_approx(lh, la, s_lg, rho_h).items())},
+        "halfParams": {"league": league, "s": s_lg, "rhoHalf": rho_h},
         "market": None, "p_fused": None,
         "fusion": {"a": None, "b": None, "source": "engine/cache/fusion.json"},
     }
@@ -182,6 +249,34 @@ def main() -> None:
         result["fusion"] = {"a": fus["a"], "b": fus["b"]}
         diffs = [round(f - m, 4) for f, m in zip(p_f, p_mkt)]
         result["fusion_diff_pp"] = [round(d * 100, 1) for d in diffs]
+
+    # --adjust 三域重标定（设计 §5）：target 三向 → 矩阵/HAFU 重加权 + 池级温度
+    adjust = None
+    if "--adjust" in sys.argv:
+        i = sys.argv.index("--adjust")
+        adjust = [float(x) for x in sys.argv[i + 1].split(",")]
+        if abs(sum(adjust) - 1.0) > 1e-3:
+            log("dc_predict", f"--adjust 三向和={sum(adjust):.4f} ≠1，拒绝（防 skill 流程手算失误）")
+            return
+        adjust = [max(v, 0.01) for v in adjust]
+        if min(adjust) == 0.01:
+            log("dc_predict", "warn: target 有项 <0.01 被 clamp（修正系数叠乘压塌某域）")
+    tpool = load_temperature()
+    result["temperature"] = tpool
+    if adjust:
+        pm = reweight_matrix(p, adjust)
+        hf = reweight_hafu(hafu_approx(lh, la, s_lg, rho_h), adjust)
+        hft = temper(list(hf.values()), tpool["hafu"])
+        result["adjusted"] = {
+            "source": "fused+factor-adjusted",
+            "target": adjust,
+            "p_three": [round(v, 4) for v in adjust],
+            "top_scores": [{"score": f"{i}-{j}", "prob": round(float(pm[i, j]), 4)}
+                           for i, j in sorted(((i, j) for i in range(7) for j in range(7)),
+                                               key=lambda t: -pm[t])[:5]],
+            "ttg": [round(v, 4) for v in temper(ttg_dist(pm), tpool["ttg"])],
+            "hafu": {k: round(v, 4) for k, v in sorted(zip(hf.keys(), hft))},
+        }
 
     print(json.dumps(result, ensure_ascii=False, indent=2))
 
