@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>竞彩预测 2026-08-26</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f4ef; --surface:#ffffff; --surface-2:#efece4;
+  --ink:#1c1a17; --ink-2:#57534e; --ink-3:#8a8580;
+  --line:#d9d4c9; --line-2:#e8e3d8;
+  --accent:#9a3b1f; --accent-2:#c45a36;
+  --good:#2f6b3a; --warn:#9a6b1f; --bad:#8a2f24;
+  --gold:#a8780a;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15130f; --surface:#1e1b16; --surface-2:#25221c;
+    --ink:#e8e3d8; --ink-2:#a8a299; --ink-3:#756f66;
+    --line:#322e26; --line-2:#2a261f;
+    --accent:#d4663f; --accent-2:#e07a4f;
+    --good:#5ba368; --warn:#c89834; --bad:#c85a4f;
+    --gold:#d4a838;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15130f; --surface:#1e1b16; --surface-2:#25221c;
+  --ink:#e8e3d8; --ink-2:#a8a299; --ink-3:#756f66;
+  --line:#322e26; --line-2:#2a261f;
+  --accent:#d4663f; --accent-2:#e07a4f;
+  --good:#5ba368; --warn:#c89834; --bad:#c85a4f;
+  --gold:#d4a838;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:"Noto Sans SC",-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  font-size:15px; line-height:1.6;
+  padding:2rem 1rem 4rem;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:880px;margin:0 auto}
+.mono{font-family:"JetBrains Mono","Consolas",monospace;font-variant-numeric:tabular-nums}
+h1,h2,h3{font-family:"Noto Serif SC","Noto Sans SC",serif;font-weight:700;letter-spacing:-0.01em}
+header.page{margin-bottom:2.2rem;padding-bottom:1.4rem;border-bottom:2px solid var(--ink)}
+header.page .eyebrow{
+  font-size:.72rem; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--ink-3); margin-bottom:.5rem; font-family:"JetBrains Mono",monospace;
+}
+header.page h1{font-size:2rem;line-height:1.15;margin-bottom:.6rem}
+header.page .sub{color:var(--ink-2);font-size:.95rem}
+.banner{
+  background:var(--warn); color:#fff; padding:.7rem 1rem; border-radius:4px;
+  font-size:.85rem; margin-bottom:1.6rem; display:flex; gap:.6rem; align-items:flex-start;
+  line-height:1.45;
+}
+.banner svg{flex-shrink:0;margin-top:.12rem}
+.banner b{font-weight:700}
+.eyebrow-sec{
+  font-size:.72rem; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--ink-3); font-family:"JetBrains Mono",monospace;
+  margin:2.4rem 0 .9rem; display:flex; align-items:center; gap:.6rem;
+}
+.eyebrow-sec::after{content:"";flex:1;height:1px;background:var(--line)}
+.summary-grid{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:.6rem; margin-bottom:1.6rem;
+}
+@media (max-width:640px){.summary-grid{grid-template-columns:repeat(2,1fr)}}
+.stat{
+  background:var(--surface); border:1px solid var(--line); border-radius:6px;
+  padding:.85rem .9rem;
+}
+.stat .label{font-size:.68rem;color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.3rem}
+.stat .val{font-size:1.35rem;font-weight:700;font-family:"JetBrains Mono",monospace;color:var(--ink)}
+.stat .val.pos{color:var(--good)}
+.stat .val.warn{color:var(--warn)}
+.tier{
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  margin-bottom:1.2rem; overflow:hidden;
+}
+.tier-head{
+  display:flex; align-items:baseline; gap:.7rem; padding:.85rem 1.1rem;
+  border-bottom:1px solid var(--line); background:var(--surface-2);
+  flex-wrap:wrap;
+}
+.tier-head .badge{
+  font-size:.7rem; font-weight:700; padding:.15rem .5rem; border-radius:3px;
+  letter-spacing:.04em; font-family:"JetBrains Mono",monospace;
+}
+.badge.up{background:var(--accent);color:#fff}
+.badge.mid{background:var(--gold);color:#fff}
+.badge.base{background:var(--ink-2);color:#fff}
+.tier-head h3{font-size:1.05rem;flex-shrink:0}
+.tier-head .meta{margin-left:auto;font-size:.78rem;color:var(--ink-3);font-family:"JetBrains Mono",monospace}
+.tier-head .meta b{color:var(--ink)}
+table.plan{
+  width:100%; border-collapse:collapse; font-size:.86rem;
+}
+table.plan th, table.plan td{
+  padding:.6rem .7rem; text-align:left; border-bottom:1px solid var(--line-2);
+  vertical-align:top;
+}
+table.plan th{
+  background:var(--surface-2); font-size:.68rem; letter-spacing:.05em;
+  text-transform:uppercase; color:var(--ink-3); font-weight:500;
+  font-family:"JetBrains Mono",monospace; white-space:nowrap;
+}
+table.plan td.code{font-family:"JetBrains Mono",monospace;color:var(--accent);font-weight:500;white-space:nowrap}
+table.plan td.result{font-weight:500}
+table.plan td.basis{color:var(--ink-2);font-size:.82rem;line-height:1.5}
+table.plan tr:last-child td{border-bottom:none}
+.odds-tag{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:.78rem;color:var(--good);font-weight:500}
+.odds-tag.neg{color:var(--bad)}
+.tier-foot{
+  padding:.7rem 1.1rem; background:var(--surface-2); font-size:.82rem;
+  display:flex; gap:1.2rem; flex-wrap:wrap; color:var(--ink-2);
+  border-top:1px solid var(--line);
+}
+.tier-foot .item b{color:var(--ink);font-family:"JetBrains Mono",monospace}
+.tier-foot .item.pos b{color:var(--good)}
+.tier-foot .item.neg b{color:var(--bad)}
+.note-line{padding:.5rem 1.1rem .7rem;font-size:.78rem;color:var(--ink-3);font-style:italic;line-height:1.5}
+.match-card{
+  background:var(--surface); border:1px solid var(--line); border-radius:6px;
+  margin-bottom:.7rem; padding:.85rem 1rem;
+}
+.match-card .mc-head{
+  display:flex; align-items:baseline; gap:.6rem; flex-wrap:wrap; margin-bottom:.5rem;
+}
+.match-card .mc-code{font-family:"JetBrains Mono",monospace;color:var(--accent);font-weight:600;font-size:.85rem}
+.match-card .mc-match{font-weight:500;font-size:.92rem}
+.match-card .mc-league{font-size:.72rem;color:var(--ink-3);margin-left:auto}
+.star{color:var(--gold);letter-spacing:.05em;font-size:.8rem}
+.star.dim{color:var(--ink-3)}
+.match-card .mc-row{display:flex;gap:1rem;flex-wrap:wrap;font-size:.8rem;color:var(--ink-2);margin-top:.3rem}
+.match-card .mc-row .k{color:var(--ink-3);min-width:3.5rem}
+.match-card .mc-pick{font-weight:500;color:var(--ink)}
+.match-card .mc-chain{font-size:.74rem;color:var(--ink-3);margin-top:.4rem;font-family:"JetBrains Mono",monospace}
+.tag-avoid{display:inline-block;font-size:.7rem;background:var(--bad);color:#fff;padding:.1rem .4rem;border-radius:3px;margin-left:.4rem;vertical-align:middle}
+.exclude-list{font-size:.85rem}
+.exclude-list .ex-row{
+  display:flex; gap:.6rem; padding:.45rem 0; border-bottom:1px dashed var(--line-2);
+  align-items:baseline;
+}
+.exclude-list .ex-row:last-child{border-bottom:none}
+.exclude-list .ex-code{font-family:"JetBrains Mono",monospace;color:var(--ink-3);min-width:5rem}
+.exclude-list .ex-match{min-width:13rem}
+.exclude-list .ex-reason{color:var(--ink-2);font-size:.8rem;margin-left:auto;text-align:right}
+footer.page{margin-top:2.6rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--ink-3);line-height:1.6}
+.src-list{font-size:.78rem;color:var(--ink-3);line-height:1.7}
+.src-list li{list-style:none;padding-left:1rem;position:relative}
+.src-list li::before{content:"—";position:absolute;left:0;color:var(--ink-3)}
+.svg-ico{width:1em;height:1em;display:inline-block;vertical-align:-0.1em}
+@media (max-width:640px){
+  body{padding:1.2rem .6rem 3rem}
+  header.page h1{font-size:1.5rem}
+  table.plan{font-size:.8rem}
+  table.plan th,table.plan td{padding:.5rem .4rem}
+  .exclude-list .ex-match{min-width:0}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="page">
+  <div class="eyebrow">竞彩足球 · 阶梯出票卡 v5.2</div>
+  <h1>2026-08-26 轮预测</h1>
+  <div class="sub">15 场在售 · 韩职2 / 英联赛杯3 / 欧冠4 / 西甲3 / 巴西杯3</div>
+</header>
+
+<div class="banner">
+  <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+  <div><b>单锚模式 · 置信度下调</b>　Pinnacle 收盘价全缺失（未赛场无收盘 + 韩职/欧冠/英联杯/巴西杯 fd 不覆盖），概率锚退化为体彩去水（毛利~13%）。修正后概率 ×0.97，星级上限 ⭐⭐⭐。HAD 池抽水 13% 叠加单锚惩罚，几乎所有方向 EV 为负——价值集中在高赔池 CRS/TTG。</div>
+</div>
+
+<div class="summary-grid">
+  <div class="stat"><div class="label">总投入</div><div class="val">20<span style="font-size:.7em;color:var(--ink-3)">元</span></div></div>
+  <div class="stat"><div class="label">至少中一注</div><div class="val">62.6%</div></div>
+  <div class="stat"><div class="label">合规项</div><div class="val">5<span style="font-size:.7em;color:var(--ink-3)">/15</span></div></div>
+  <div class="stat"><div class="label">翻身档EV</div><div class="val pos">+13.5%</div></div>
+</div>
+
+<div class="eyebrow-sec">阶梯方案 · 每方案独立表格</div>
+
+<!-- 翻身档 -->
+<section class="tier">
+  <div class="tier-head">
+    <span class="badge up">翻身</span>
+    <h3>A-MIX mix-2串1</h3>
+    <span class="meta">本金 10元 · ×5倍 · 合赔 54.2</span>
+  </div>
+  <table class="plan">
+    <thead>
+      <tr><th>场次编号</th><th>场次名称</th><th>比赛时间</th><th>预测结果</th><th>预测依据</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="code">① 周四008</td>
+        <td>巴萨 vs 毕尔巴鄂</td>
+        <td>08-28 03:00</td>
+        <td class="result">TTG 5球 <span class="odds-tag">@7.0 EV+8.6%</span></td>
+        <td class="basis">DC λ_主2.75/客0.83，巴萨主场进攻强；5球档 p_dc=15.5% vs 市场11.9%，分歧3.6pp&lt;5pp合规。温度T=1.35校准后长尾略抬，属 walk-forward 验证范围内</td>
+      </tr>
+      <tr>
+        <td class="code">② 周四007</td>
+        <td>塞尔塔 vs 奥萨苏纳</td>
+        <td>08-28 02:30</td>
+        <td class="result">CRS 2-0 <span class="odds-tag">@7.75 EV+4.5%</span></td>
+        <td class="basis">DC p_dc=13.5% vs 市场9.7%，分歧3.8pp合规。塞尔塔主场对奥萨苏纳（近况3胜1平6负），净胜2球概率高于市场定价</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="tier-foot">
+    <div class="item">合赔 <b>54.2</b></div>
+    <div class="item">倍投 <b>×5</b></div>
+    <div class="item">中即 ≈<b>542元</b></div>
+    <div class="item pos">串关EV <b>+13.5%</b></div>
+    <div class="item">串关概率 <b>2.09%</b></div>
+  </div>
+  <div class="note-line">跨场合规（官方：同注串同场只能一种玩法，本两腿分属周四008/007✓）　A-MIX 选腿规则：EV 相近选容错大者，TTG 5球覆盖多比分（5:0/4:1/3:2）&gt; CRS 单比分</div>
+</section>
+
+<!-- 进阶档 -->
+<section class="tier">
+  <div class="tier-head">
+    <span class="badge mid">进阶</span>
+    <h3>HAD 3串1×3倍</h3>
+    <span class="meta">本金 6元 · ×3倍 · 合赔 1.53</span>
+  </div>
+  <table class="plan">
+    <thead>
+      <tr><th>场次编号</th><th>场次名称</th><th>比赛时间</th><th>预测结果</th><th>预测依据</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="code">① 周四008</td>
+        <td>巴萨 vs 毕尔巴鄂</td>
+        <td>08-28 03:00</td>
+        <td class="result">HAD 主胜 <span class="odds-tag">@1.20 EV+1.2%</span></td>
+        <td class="basis">DC p=84.3%（西甲R3修正后），唯一正向 EV 的 HAD 选项。巴萨主场对毕尔巴鄂（第20），实力差明确</td>
+      </tr>
+      <tr>
+        <td class="code">② 周三010</td>
+        <td>皇马 vs 皇家社会</td>
+        <td>08-27 03:00</td>
+        <td class="result">HAD 主胜 <span class="odds-tag neg">@1.14 EV-16.1%</span></td>
+        <td class="basis">同方案①（巴萨腿）。皇马8胜1平1负榜首 vs 皇家社会2胜2平6负第19，超低赔胆材仅作串关骨架，单关无价值（赔率≤1.25）</td>
+      </tr>
+      <tr>
+        <td class="code">③ 周三003</td>
+        <td>热刺 vs 查尔顿</td>
+        <td>08-27 02:45</td>
+        <td class="result">HAD 主胜 <span class="odds-tag neg">@1.12 EV-16.6%</span></td>
+        <td class="basis">热刺5伤全 apps=0（杯赛边缘/轮换信号），杯赛留力×0.75 修正后仍74.4%。英超vs英甲实力鸿沟，骨架腿</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="tier-foot">
+    <div class="item">合赔 <b>1.53</b></div>
+    <div class="item">倍投 <b>×3</b></div>
+    <div class="item">中即 ≈<b>9元</b></div>
+    <div class="item neg">串关EV <b>-29.2%</b></div>
+    <div class="item">串关概率 <b>46.2%</b></div>
+  </div>
+  <div class="note-line">负期望骨架（单锚模式 HAD 抽水 13%×3串期望返还率 0.871³=66.0%）　回血主线：3 场全中方回本，概率 46%；任一翻车即断</div>
+</section>
+
+<!-- 保底档 -->
+<section class="tier">
+  <div class="tier-head">
+    <span class="badge base">保底</span>
+    <h3>HAD 4串1×2注互补</h3>
+    <span class="meta">本金 4元 · 2注 · 共享≤2场</span>
+  </div>
+  <table class="plan">
+    <thead>
+      <tr><th>场次编号</th><th>场次名称</th><th>比赛时间</th><th>预测结果</th><th>预测依据</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="code">注1 ①②③④</td>
+        <td>巴萨+皇马+热刺+塞尔塔</td>
+        <td>08-27~28</td>
+        <td class="result">HAD 4主胜 <span class="odds-tag neg">合赔2.7</span></td>
+        <td class="basis">同翻身/进阶①②③腿 + 塞尔塔主胜（1星胶着，degraded）。4串1，2元→中即5.4元，概率23.3%</td>
+      </tr>
+      <tr>
+        <td class="code">注2 ①②⑤⑥</td>
+        <td>巴萨+皇马+纽卡+帕梅</td>
+        <td>08-27~28</td>
+        <td class="result">HAD 4主胜 <span class="odds-tag neg">合赔3.6</span></td>
+        <td class="basis">同注1①② + 纽卡主胜（72.5%，西布罗姆近8胜1平1负但英超对英冠）+ 帕梅拉斯主场（巴冷门×0.9）。2元→中即7.2元，概率17.5%</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="tier-foot">
+    <div class="item">共享胆材 <b>巴萨+皇马</b></div>
+    <div class="item">注1概率 <b>23.3%</b></div>
+    <div class="item">注2概率 <b>17.5%</b></div>
+    <div class="item">degraded <b>含胶着场</b></div>
+  </div>
+  <div class="note-line">注1含塞尔塔1星胶着场（极差36.3pp 但 EV 全负），单锚模式常态。两注共享巴萨+皇马，其一翻车两注同灭——耦合风险</div>
+</section>
+
+<div class="eyebrow-sec">入串场次详情</div>
+
+<div class="match-card">
+  <div class="mc-head">
+    <span class="mc-code">周四008</span><span class="mc-match">巴萨 vs 毕尔巴鄂</span>
+    <span class="mc-league">西甲 R3 · 08-28 03:00</span>
+    <span class="star">★★★</span>
+  </div>
+  <div class="mc-row"><span class="k">主胜</span><span class="mc-pick">p=84.3% @1.20 EV+1.2%</span></div>
+  <div class="mc-row"><span class="k">高赔池</span><span>TTG 5球 @7.0 EV+8.6% ｜ CRS 2-0 @7.5 EV+6.8%</span></div>
+  <div class="mc-row"><span class="k">排名</span><span>主[5] vs 客[20] · 近况主7胜1平2负 / 客5胜1平4负</span></div>
+  <div class="mc-row"><span class="k">伤停</span><span>客伤1主力（apps=1）；主无伤停数据</span></div>
+  <div class="mc-chain">chain: R3×0.95/平×1.10 + 伤停d=-1×0.97/×1.03 + 单锚×0.97</div>
+</div>
+
+<div class="match-card">
+  <div class="mc-head">
+    <span class="mc-code">周四007</span><span class="mc-match">塞尔塔 vs 奥萨苏纳</span>
+    <span class="mc-league">西甲 R3 · 08-28 02:30</span>
+    <span class="star">★</span>
+  </div>
+  <div class="mc-row"><span class="k">主胜</span><span class="mc-pick">p=50.6% @1.78 EV-10%</span></div>
+  <div class="mc-row"><span class="k">高赔池</span><span>CRS 2-0 @7.75 EV+4.5%（DC 13.5% vs 市场 9.7%）</span></div>
+  <div class="mc-row"><span class="k">排名</span><span>主[12] vs 客[11] · 中游对决 · 近况主5胜4平1负 / 客3胜1平6负</span></div>
+  <div class="mc-chain">chain: R3×0.95/平×1.10 + 单锚×0.97</div>
+</div>
+
+<div class="match-card">
+  <div class="mc-head">
+    <span class="mc-code">周三010</span><span class="mc-match">皇马 vs 皇家社会</span>
+    <span class="mc-league">西甲 R3 · 08-27 03:00</span>
+    <span class="star">★★★</span>
+  </div>
+  <div class="mc-row"><span class="k">主胜</span><span class="mc-pick">p=73.6% @1.14 EV-16.1%（超低赔胆材，仅骨架）</span></div>
+  <div class="mc-row"><span class="k">高赔池</span><span>CRS 2-0 @7.75 EV+1.5% ｜ TTG 2球 @5.0 EV+1.1%（均勉强合规）</span></div>
+  <div class="mc-row"><span class="k">排名</span><span>主[7] vs 客[19] · 近况主8胜1平1负 / 客2胜2平6负</span></div>
+  <div class="mc-row"><span class="k">伤停</span><span>主4伤全 apps=0（恩德里克等边缘）；客4伤含 Soler1出场</span></div>
+  <div class="mc-chain">chain: R3×0.95/平×1.10 + 单锚×0.97 ｜ DC-市场分歧-1.9pp（DC可靠）</div>
+</div>
+
+<div class="match-card">
+  <div class="mc-head">
+    <span class="mc-code">周三003</span><span class="mc-match">热刺 vs 查尔顿</span>
+    <span class="mc-league">英联赛杯 R2 · 08-27 02:45</span>
+    <span class="star">★★★</span>
+  </div>
+  <div class="mc-row"><span class="k">主胜</span><span class="mc-pick">p=74.4% @1.12 EV-16.6%</span></div>
+  <div class="mc-row"><span class="k">情报</span><span>热刺5伤全 apps=0（杯赛边缘/轮换信号）；查尔顿门将 Mannion 缺（apps=1主力）</span></div>
+  <div class="mc-row"><span class="k">近况</span><span>主5胜3平2负 / 客6胜1平3负（英甲 vs 英超鸿沟）</span></div>
+  <div class="mc-chain">chain: 杯赛留力×0.75 + 伤停d=-1×0.97/×1.03 + 单锚×0.97</div>
+</div>
+
+<div class="eyebrow-sec">排除场次简报</div>
+
+<div class="exclude-list">
+  <div class="ex-row"><span class="ex-code">周三006</span><span class="ex-match">采列 vs 布拉迪斯</span><span class="ex-reason">欧冠R3，极差7.8pp 胶着，避开</span></div>
+  <div class="ex-row"><span class="ex-code">周三007</span><span class="ex-match">维京 vs 萨迪纳摩</span><span class="ex-reason">欧冠R3，极差8.6pp 胶着，避开</span></div>
+  <div class="ex-row"><span class="ex-code">周三001</span><span class="ex-match">大田市民 vs 蔚山现代</span><span class="ex-reason">韩职，1星，客胜 EV+8.2% 但 HAD 无单关资格</span></div>
+  <div class="ex-row"><span class="ex-code">周三002</span><span class="ex-match">安养FC vs 仁川联</span><span class="ex-reason">韩职，1星，客胜 EV-16.3% 负期望</span></div>
+  <div class="ex-row"><span class="ex-code">周三004</span><span class="ex-match">纽卡斯尔 vs 西布罗姆</span><span class="ex-reason">英联杯，3星入保底注2，EV-10.8% 骨架</span></div>
+  <div class="ex-row"><span class="ex-code">周三005</span><span class="ex-match">雅典AEK vs 索列夫</span><span class="ex-reason">欧冠次回合，3星但 EV-21%，首回合0-0平保护已修正</span></div>
+  <div class="ex-row"><span class="ex-code">周三008</span><span class="ex-match">里昂 vs 费内巴切</span><span class="ex-reason">欧冠，1星，客伤4主力但主胜仅50%无单关价值</span></div>
+  <div class="ex-row"><span class="ex-code">周三009</span><span class="ex-match">普雷斯顿 vs 埃弗顿</span><span class="ex-reason">英联杯，3星客胜 EV-11.5%，普雷斯顿近10场2胜7负</span></div>
+  <div class="ex-row"><span class="ex-code">周三011</span><span class="ex-match">帕梅拉斯 vs 桑托斯</span><span class="ex-reason">巴西杯，3星入保底注2，EV-18.4% 巴冷门</span></div>
+  <div class="ex-row"><span class="ex-code">周三012</span><span class="ex-match">达伽马 vs 维多利亚</span><span class="ex-reason">巴西杯，3星 EV-18.6%，与011同质不重复入串</span></div>
+  <div class="ex-row"><span class="ex-code">周四009</span><span class="ex-match">巴西国际 vs 格雷米奥</span><span class="ex-reason">巴西杯，1星 EV-20%，近况1胜4平5负</span></div>
+</div>
+
+<div class="eyebrow-sec">EV 扫描声明（铁律 8）</div>
+<div class="note-line" style="font-style:normal;color:var(--ink-2)">
+  5 场 DC 缓存联赛全量扫描：CRS 31×5场=155 选项 → 8 项合规 ｜ TTG 8×4场=32 选项（韩职2场体彩缺 ttg）→ 4 项合规 ｜ HAFU 9×5场=45 选项 → 3 项合规。共 15 项合规，逻辑筛选后 5 项可靠（拒收 10 项：温度长尾放大 0:0/5:0/6球 + 同向偏差警惕 皇马0球0:0 + 强队对弱旅 0:0 逻辑不符）。拒收项最高 EV+64.6%（巴萨5:0）系温度 T=1.35 抬长尾，待回填验证。
+</div>
+
+<footer class="page">
+  <div style="font-weight:700;color:var(--ink-2);margin-bottom:.5rem;font-size:.82rem">数据来源清单</div>
+  <ul class="src-list">
+    <li>体彩官方 API（sporttery_fetch.py）：15 场赛程+赔率+15 场 insight 单场情报</li>
+    <li>ESPN API（espn_fetch.py）：英联杯/欧冠资格赛/巴西杯赛程英文身份确认</li>
+    <li>football-data.co.uk（odds_fetch.py）：西甲 2627 赛季 16 场（本轮未赛场无收盘价）</li>
+    <li>DC 缓存：korea_dc.json（602场2024-2026）/ spain-laliga_dc.json（189场2526赛季）</li>
+    <li>温度参数 engine/cache/temperature.json（CRS/TTG T=1.35，walk-forward CI 通过）</li>
+    <li>别名补建：14 队新别名（希腊/保加利亚/斯洛文尼亚/斯洛伐克/克罗地亚/土耳其+巴西5队+英格兰2队）</li>
+  </ul>
+  <div style="margin-top:.8rem;color:var(--ink-3)">本轮归档：data/02-results/2026-08-26.json（v5.2 schema）· boldplay：data/03-predictions/2026-08-26-boldplay.json（seq=4 meizhou）· 月封顶 240元 当前 20元 余额 220元</div>
+</footer>
+
+</div>
+</body>
+</html>

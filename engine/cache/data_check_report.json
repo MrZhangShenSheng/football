@@ -1,8 +1,11 @@
 {
   "checkedAt": "2026-08-26",
   "leagues": {
-    "韩职": {
-      "status": "missing"
+    "korea-k-league": {
+      "status": "ready",
+      "roundsPlayed": 23,
+      "standingsSource": "titan007",
+      "fdCovered": false
     },
     "英联赛杯": {
       "status": "missing"
@@ -10,18 +13,19 @@
     "欧冠": {
       "status": "missing"
     },
-    "西甲": {
-      "status": "missing"
+    "spain-laliga": {
+      "status": "ready",
+      "roundsPlayed": 21,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
     },
     "巴西杯": {
       "status": "missing"
     }
   },
   "missingLeagues": [
-    "韩职",
     "英联赛杯",
     "欧冠",
-    "西甲",
     "巴西杯"
   ],
   "staleLeagues": [],
@@ -112,7 +116,7 @@
     }
   ],
   "readyCount": {
-    "leagues": 0,
+    "leagues": 2,
     "teamsKnown": 234
   }
 }
