@@ -46,6 +46,12 @@ class TestReweight(unittest.TestCase):
         self.assertLess(max(t2) - min(t2), max(ps) - min(ps))  # T>1 平滑
         self.assertAlmostEqual(sum(t2), 1.0, places=9)
 
+    def test_temper_sharpens_below_one(self):
+        ps = [0.6, 0.3, 0.1]
+        t06 = temper(ps, 0.6)
+        self.assertGreater(max(t06) - min(t06), max(ps) - min(ps))  # T<1 锐化
+        self.assertAlmostEqual(sum(t06), 1.0, places=9)
+
     def test_hafu_params_default_equals_legacy(self):
         """默认参数 = 现状行为（零破坏验收）。"""
         h_new = hafu_approx(1.5, 1.1)                      # 新签名默认值

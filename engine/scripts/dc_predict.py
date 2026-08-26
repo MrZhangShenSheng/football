@@ -152,7 +152,9 @@ def reweight_matrix(p: np.ndarray, target: list[float]) -> np.ndarray:
 
 
 def reweight_hafu(hafu: dict[str, float], target: list[float]) -> dict[str, float]:
-    """HAFU 9 键条件分解：保持 P(HT|FT)，第二字母（FT）三列对齐 target。"""
+    """HAFU 9 键条件分解：保持 P(HT|FT)，第二字母（FT）三列对齐 target。
+    契约：某 FT 列整列缺失（cur≤1e-12）时该列静默置 0、概率摊给其余列。
+    """
     out = dict(hafu)
     for d, ft in enumerate("hda"):
         keys = [k for k in out if k[1] == ft]
@@ -255,6 +257,9 @@ def main() -> None:
     if "--adjust" in sys.argv:
         i = sys.argv.index("--adjust")
         adjust = [float(x) for x in sys.argv[i + 1].split(",")]
+        if len(adjust) != 3:
+            log("dc_predict", f"--adjust 须三项 h,d,a，收到 {len(adjust)} 项，拒绝")
+            return
         if abs(sum(adjust) - 1.0) > 1e-3:
             log("dc_predict", f"--adjust 三向和={sum(adjust):.4f} ≠1，拒绝（防 skill 流程手算失误）")
             return
@@ -268,7 +273,7 @@ def main() -> None:
         hf = reweight_hafu(hafu_approx(lh, la, s_lg, rho_h), adjust)
         hft = temper(list(hf.values()), tpool["hafu"])
         result["adjusted"] = {
-            "source": "fused+factor-adjusted",
+            "source": "fused+factor-adjusted" if market else "raw+manual-adjusted",
             "target": adjust,
             "p_three": [round(v, 4) for v in adjust],
             "top_scores": [{"score": f"{i}-{j}", "prob": round(float(pm[i, j]), 4)}
