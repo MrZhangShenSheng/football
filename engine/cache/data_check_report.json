@@ -1,7 +1,7 @@
 {
-  "checkedAt": "2026-08-25",
+  "checkedAt": "2026-08-26",
   "leagues": {
-    "沙职": {
+    "韩职": {
       "status": "missing"
     },
     "英联赛杯": {
@@ -13,28 +13,23 @@
     "西甲": {
       "status": "missing"
     },
-    "韩职": {
+    "巴西杯": {
       "status": "missing"
     }
   },
   "missingLeagues": [
-    "沙职",
+    "韩职",
     "英联赛杯",
     "欧冠",
     "西甲",
-    "韩职"
+    "巴西杯"
   ],
   "staleLeagues": [],
   "missingAlias": [
     {
-      "team": "斯托克城",
+      "team": "查尔顿",
       "league": "英联赛杯",
-      "match": "斯托克城 vs 赫尔城"
-    },
-    {
-      "team": "伯明翰",
-      "league": "英联赛杯",
-      "match": "伯明翰 vs 布伦特"
+      "match": "热刺 vs 查尔顿"
     },
     {
       "team": "雅典AEK",
@@ -70,19 +65,49 @@
       "team": "费内巴切",
       "league": "欧冠",
       "match": "里昂 vs 费内巴切"
+    },
+    {
+      "team": "普雷斯顿",
+      "league": "英联赛杯",
+      "match": "普雷斯顿 vs 埃弗顿"
+    },
+    {
+      "team": "帕梅拉斯",
+      "league": "巴西杯",
+      "match": "帕梅拉斯 vs 桑托斯"
+    },
+    {
+      "team": "达伽马",
+      "league": "巴西杯",
+      "match": "达伽马 vs 维多利亚"
+    },
+    {
+      "team": "维多利亚",
+      "league": "巴西杯",
+      "match": "达伽马 vs 维多利亚"
+    },
+    {
+      "team": "巴西国际",
+      "league": "巴西杯",
+      "match": "巴西国际 vs 格雷米奥"
+    },
+    {
+      "team": "格雷米奥",
+      "league": "巴西杯",
+      "match": "巴西国际 vs 格雷米奥"
     }
   ],
   "notReadyTeams": [
     {
-      "team": "达曼协定",
-      "teamId": "al-ettifaq",
-      "league": "saudi",
+      "team": "西布罗姆",
+      "teamId": "west-brom",
+      "league": "england",
       "status": "missing"
     },
     {
-      "team": "利雅胜利",
-      "teamId": "al-nassr",
-      "league": "saudi",
+      "team": "桑托斯",
+      "teamId": "santos",
+      "league": "brazil",
       "status": "missing"
     }
   ],

@@ -1,0 +1,169 @@
+{
+ "date": "2026-08-26",
+ "seq": 4,
+ "shape": "meizhou",
+ "tiers": {
+  "base": {
+   "cost": 4,
+   "legs": [
+    [
+     {
+      "matchNumStr": "周三001",
+      "match": "大田市民-蔚山现代",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 2.15
+     },
+     {
+      "matchNumStr": "周三002",
+      "match": "安养FC-仁川联",
+      "play": "had",
+      "pick": "客胜",
+      "odds": 2.04
+     },
+     {
+      "matchNumStr": "周三006",
+      "match": "采列-布拉迪斯",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 2.2
+     },
+     {
+      "matchNumStr": "周三007",
+      "match": "维京-萨迪纳摩",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 2.23
+     }
+    ],
+    [
+     {
+      "matchNumStr": "周三006",
+      "match": "采列-布拉迪斯",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 2.2
+     },
+     {
+      "matchNumStr": "周三007",
+      "match": "维京-萨迪纳摩",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 2.23
+     },
+     {
+      "matchNumStr": "周三008",
+      "match": "里昂-费内巴切",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 1.81
+     },
+     {
+      "matchNumStr": "周四007",
+      "match": "塞尔塔-奥萨苏纳",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 1.78
+     }
+    ]
+   ],
+   "play": "had-4串1",
+   "note": "×2注互补(共享≤2场)"
+  },
+  "mid": {
+   "cost": 6,
+   "legs": [
+    [
+     {
+      "matchNumStr": "周三001",
+      "match": "大田市民-蔚山现代",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 2.15
+     },
+     {
+      "matchNumStr": "周三002",
+      "match": "安养FC-仁川联",
+      "play": "had",
+      "pick": "客胜",
+      "odds": 2.04
+     },
+     {
+      "matchNumStr": "周三006",
+      "match": "采列-布拉迪斯",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 2.2
+     },
+     {
+      "matchNumStr": "周三007",
+      "match": "维京-萨迪纳摩",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 2.23
+     },
+     {
+      "matchNumStr": "周三008",
+      "match": "里昂-费内巴切",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 1.81
+     }
+    ]
+   ],
+   "multiplier": 3,
+   "play": "had-5串1×3倍",
+   "note": "默认HAD"
+  },
+  "upset": {
+   "cost": 10,
+   "multiplier": 5,
+   "legs": [
+    {
+     "play": "ttg",
+     "pick": "0球",
+     "odds": 30.0,
+     "source": "dc",
+     "matchNumStr": "周三010",
+     "match": "皇马-皇家社会",
+     "ev": 1.0261
+    },
+    {
+     "play": "ttg",
+     "pick": "0球",
+     "odds": 10.0,
+     "source": "dc",
+     "matchNumStr": "周三002",
+     "match": "安养FC-仁川联",
+     "ev": 0.2232
+    },
+    {
+     "play": "ttg",
+     "pick": "0球",
+     "odds": 15.0,
+     "source": "dc",
+     "matchNumStr": "周三001",
+     "match": "大田市民-蔚山现代",
+     "ev": 0.1987
+    },
+    {
+     "play": "crs",
+     "pick": "1:0",
+     "odds": 6.0,
+     "source": "dc",
+     "matchNumStr": "周四007",
+     "match": "塞尔塔-奥萨苏纳",
+     "ev": 0.0449
+    }
+   ],
+   "play": "mix-4串1",
+   "expOdds": 27000.0,
+   "winIfHit": 270000.0,
+   "note": "A-MIX 跨池EV最优4腿（ttg,ttg,ttg,crs） ⚠️4/4腿低分同向,警惕ρ低分修正系统性偏差(8-25 TTG0球拒收教训,回填验证前慎跟)"
+  }
+ },
+ "totalCost": 20,
+ "densityNote": "期望返还 ≈ 33.3%（各腿池水连乘crs/ttg）",
+ "postTaxNote": "单注奖金超1万部分税20%;4串单注限额50万已反算倍数",
+ "ranAt": "2026-08-26"
+}

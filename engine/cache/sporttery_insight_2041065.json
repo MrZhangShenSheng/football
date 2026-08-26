@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-08-25",
+ "fetchedAt": "2026-08-26",
  "source": "sporttery",
  "matchId": 2041065,
  "match": {
@@ -40,7 +40,62 @@
  },
  "injuries": {
   "home": [],
-  "away": []
+  "away": [
+   {
+    "name": "居诺克",
+    "pos": "守门员",
+    "no": "34",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 4,
+    "starts": 4
+   },
+   {
+    "name": "塔利斯卡",
+    "pos": "中场",
+    "no": "94",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 5,
+    "starts": 5
+   },
+   {
+    "name": "阿森西奥",
+    "pos": "中场",
+    "no": "10",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 5,
+    "starts": 3
+   },
+   {
+    "name": "索云库",
+    "pos": "后卫",
+    "no": "4",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 0,
+    "starts": 0
+   },
+   {
+    "name": "阿克蒂尔克奥卢",
+    "pos": "前锋",
+    "no": "9",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 5,
+    "starts": 5
+   },
+   {
+    "name": "J.奥斯特沃尔德",
+    "pos": "后卫",
+    "no": "24",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 3,
+    "starts": 3
+   }
+  ]
  },
  "form": {
   "goalAvg": {
@@ -119,7 +174,7 @@
      "goalAvgCnt": "0.8",
      "goalCnt": 4,
      "goalProbability": "67%",
-     "injuryFlag": 0,
+     "injuryFlag": 1,
      "personId": 282310,
      "personName": "塔利斯卡",
      "playerPositionCode": "Midfielder",
@@ -155,7 +210,7 @@
      "goalAvgCnt": "0",
      "goalCnt": 0,
      "goalProbability": "0%",
-     "injuryFlag": 0,
+     "injuryFlag": 1,
      "personId": 462387,
      "personName": "阿克蒂尔克奥卢",
      "playerPositionCode": "Forward",

@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-08-25",
+ "fetchedAt": "2026-08-26",
  "source": "sporttery",
  "matchId": 2041060,
  "match": {
@@ -39,8 +39,73 @@
   }
  },
  "injuries": {
-  "home": [],
-  "away": []
+  "home": [
+   {
+    "name": "麦迪逊",
+    "pos": "中场",
+    "no": "10",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 0,
+    "starts": 0
+   },
+   {
+    "name": "D. Kulusevski",
+    "pos": "中场",
+    "no": "21",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 0,
+    "starts": 0
+   },
+   {
+    "name": "库杜斯",
+    "pos": "中场",
+    "no": "20",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 0,
+    "starts": 0
+   },
+   {
+    "name": "西蒙斯",
+    "pos": "中场",
+    "no": "7",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 0,
+    "starts": 0
+   },
+   {
+    "name": "W. Odobert",
+    "pos": "前锋",
+    "no": "28",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 0,
+    "starts": 0
+   }
+  ],
+  "away": [
+   {
+    "name": "戈登",
+    "pos": "前锋",
+    "no": "0",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 1,
+    "starts": 1
+   },
+   {
+    "name": "W. Mannion",
+    "pos": "守门员",
+    "no": "0",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 1,
+    "starts": 1
+   }
+  ]
  },
  "form": {
   "goalAvg": {
@@ -129,7 +194,7 @@
      "goalAvgCnt": "1.0",
      "goalCnt": 1,
      "goalProbability": "33%",
-     "injuryFlag": 0,
+     "injuryFlag": 1,
      "personId": 88147,
      "personName": "戈登",
      "playerPositionCode": "Forward",
