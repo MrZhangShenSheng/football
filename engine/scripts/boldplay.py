@@ -7,7 +7,8 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 from band_calibration import devid
 from common import load_aliases
-from dc_predict import score_matrix, ttg_dist, hafu_approx, devig as devig_n
+from dc_predict import (score_matrix, ttg_dist, hafu_approx, devig as devig_n,
+                        reweight_matrix, reweight_hafu, temper, load_half_params, load_temperature)
 from score_ev import build_freq_table, ev_scan, map_league
 
 SHAPES = {"guilin": {"band": (10.0, 17.0), "multiplier": 4, "cost": 8},
@@ -124,7 +125,8 @@ def _dc_params(m: dict, zh: dict, cache_dir: Path = CACHE_DIR):
     return lh, la, dc["rho"]
 
 
-def mix_candidates(odds_day: dict, freq_table: dict, zh: dict, hafu: dict, dc_params_fn=_dc_params) -> list:
+def mix_candidates(odds_day: dict, freq_table: dict, zh: dict, hafu: dict,
+                   dc_params_fn=_dc_params, adjust_map: dict | None = None) -> list:
     """A-MIX 候选腿：每场 CRS/TTG/HAFU 三池 EV 最优合规项，按 EV 降序。
 
     概率源统一 DC 模型（score_matrix 49 比分 + ttg_dist/hafu_approx 聚合）——8-25 会话
@@ -146,7 +148,14 @@ def mix_candidates(odds_day: dict, freq_table: dict, zh: dict, hafu: dict, dc_pa
             if ev > 0 and (best is None or ev > best[0]):
                 best = (ev, leg)
 
+        tpool = load_temperature()
+        adj = adjust_map.get(mid) if adjust_map else None
+        s_lg, rho_h = load_half_params(map_league(m.get("league", "")))
         matrix = score_matrix(lh, la, rho)
+        if adj:
+            matrix = reweight_matrix(matrix, adj)
+        p_crs = temper([float(matrix[i, j]) for i in range(7) for j in range(7)], tpool["crs"])
+        crs_p = {(i, j): p_crs[i * 7 + j] for i in range(7) for j in range(7)}
         crs = {k: float(v) for k, v in (m.get("crs") or {}).items() if ":" in k}
         if crs:
             inv = sum(1.0 / o for o in crs.values())
@@ -155,25 +164,33 @@ def mix_candidates(odds_day: dict, freq_table: dict, zh: dict, hafu: dict, dc_pa
                     continue
                 x, y = (int(t) for t in k.split(":"))
                 p_mkt = (1.0 / o) / inv
-                if abs(float(matrix[x, y]) - p_mkt) < DIVERGENCE_LIMIT:
-                    offer(float(matrix[x, y]) * o - 1, {"play": "crs", "pick": k, "odds": o, "source": "dc"})
+                if abs(crs_p[(x, y)] - p_mkt) < DIVERGENCE_LIMIT:
+                    offer(crs_p[(x, y)] * o - 1,
+                          {"play": "crs", "pick": k, "odds": o, "source": "dc-reweighted" if adj else "dc"})
         ttg_o = m.get("ttg") or {}
         if len(ttg_o) == 8:
             p_mkt = devig_n([float(ttg_o[f"s{i}"]) for i in range(8)])
             p_dc = ttg_dist(matrix)
+            p_dc = temper(p_dc, tpool["ttg"])
             for i in range(8):
                 o = float(ttg_o[f"s{i}"])
                 if ODDS_RANGE[0] <= o <= ODDS_RANGE[1] and abs(p_dc[i] - p_mkt[i]) < DIVERGENCE_LIMIT:
                     offer(p_dc[i] * o - 1,
-                          {"play": "ttg", "pick": f"{i}球" if i < 7 else "7+球", "odds": o, "source": "dc"})
+                          {"play": "ttg", "pick": f"{i}球" if i < 7 else "7+球", "odds": o,
+                           "source": "dc-reweighted" if adj else "dc"})
         hf = hafu.get(mid) or {}
         if len(hf) == 9:
             keys = [a + b for a in "hda" for b in "hda"]
             p_mkt = devig_n([hf[k] for k in keys])
-            p_dc = hafu_approx(lh, la)
+            p_dc0 = hafu_approx(lh, la, s_lg, rho_h)
+            if adj:
+                p_dc0 = reweight_hafu(p_dc0, adj)
+            p_dc9 = temper([p_dc0[k] for k in keys], tpool["hafu"])
+            p_dc = dict(zip(keys, p_dc9))
             for k in keys:
                 if ODDS_RANGE[0] <= hf[k] <= ODDS_RANGE[1] and abs(p_dc[k] - p_mkt[keys.index(k)]) < DIVERGENCE_LIMIT:
-                    offer(p_dc[k] * hf[k] - 1, {"play": "hafu", "pick": k, "odds": hf[k], "source": "dc"})
+                    offer(p_dc[k] * hf[k] - 1,
+                          {"play": "hafu", "pick": k, "odds": hf[k], "source": "dc-reweighted" if adj else "dc"})
         if best:
             ev, leg = best
             legs.append({**leg, "matchNumStr": mid, "match": f'{m.get("home")}-{m.get("away")}',
