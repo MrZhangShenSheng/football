@@ -44,6 +44,7 @@ def test_mix_ttg_positive_ev_wins():
     import numpy as _np
     p2 = _np.zeros((7, 7)); p2[5, 0] = 1.0
     boldplay.score_matrix = lambda lh, la, rho: p2
+    boldplay.load_temperature = lambda: {"crs": 1.0, "ttg": 1.0, "hafu": 1.0}  # 关温度：单点mock分布会被T≠1放大分歧(temper后p=1.0,分歧93pp被5pp门槛挡)；本用例聚焦EV双门槛
     boldplay.ttg_dist = lambda p: [0.0, 0.0, 0.0, 0.0, 0.0, 0.10, 0.0, 0.0]  # 5球 10%：EV=0.1×11-1=+0.1, 市场≈7% 分歧3pp
 
     def fake_dc(m, z):
