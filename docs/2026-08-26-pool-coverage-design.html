@@ -1,0 +1,202 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>玩法覆盖升级设计（pool coverage）</title>
+<style>
+  :root{--ink:#1c2733;--sub:#5b6b7a;--line:#d8e0e8;--bg:#f6f8fa;--accent:#0f6b4f;--accent2:#b4540a;--bad:#a12734;--good:#0f6b4f;--card:#fff}
+  @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#dbe4ec;--sub:#8fa1b3;--line:#2c3947;--bg:#101822;--accent:#4fc49b;--accent2:#e8a04c;--bad:#e2717e;--good:#4fc49b;--card:#18222e}}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.75 "Segoe UI","Microsoft YaHei",sans-serif}
+  main{max-width:920px;margin:0 auto;padding:32px 28px 72px}
+  h1{font-size:24px;margin:0 0 4px}h2{font-size:18px;margin:40px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+  .sub{color:var(--sub);font-size:13px}
+  code,pre{font-family:Consolas,"JetBrains Mono",monospace;font-size:13px}
+  code{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+  pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;overflow-x:auto;line-height:1.55}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:14px;background:var(--card)}
+  th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+  th{background:var(--bg);font-weight:600}
+  .good{color:var(--good);font-weight:600}.bad{color:var(--bad);font-weight:600}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin:14px 0}
+  .icon{width:18px;height:18px;vertical-align:-4px;margin-right:6px;color:var(--accent)}
+  .fig{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px;margin:16px 0}
+  .fig .cap{font-size:12.5px;color:var(--sub);text-align:center;margin-top:8px}
+  svg text{font-family:"Segoe UI","Microsoft YaHei",sans-serif}
+</style>
+</head>
+<body><main>
+<h1><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M17.5 14v7M14 17.5h7"/></svg>玩法覆盖升级设计（pool coverage）</h1>
+<p class="sub">2026-08-26 · 作者 sszhang · 状态：设计已确认，待实施 · 前置：skill v5.1 A-MIX（boldplay）、corpus 就绪 143 场</p>
+
+<h2>1. 背景与审计结论</h2>
+<p>起问：预测模型的多个影响因子是否主要作用于 90 分钟胜平负？比分（CRS）、半全场（HAFU）、总进球（TTG）是否吃到因子？逐脚本审计（dc_predict.py / boldplay.py / score_ev.py / SKILL.md Step3.5–6）得到覆盖矩阵：</p>
+<table>
+<tr><th>概率产线</th><th>因子</th><th>胜平负</th><th>比分 CRS</th><th>总进球 TTG</th><th>半全场 HAFU</th></tr>
+<tr><td>DC 模型（dc_fit）</td><td>攻防参数×4 + 主场 + ρ</td><td class="good">✅矩阵聚合</td><td class="good">✅矩阵直出</td><td class="good">✅矩阵聚合</td><td style="color:var(--accent2);font-weight:600">⚠️0.45λ近似</td></tr>
+<tr><td>市场融合（fuse）</td><td>Pinnacle 去水 ×1.0</td><td class="good">✅</td><td class="bad">❌</td><td class="bad">❌</td><td class="bad">❌</td></tr>
+<tr><td>Elo 修正</td><td>c·Δelo（ClubElo）</td><td class="good">✅仅三向</td><td class="bad">❌</td><td class="bad">❌</td><td class="bad">❌</td></tr>
+<tr><td>8因子加权（Step4）</td><td>排名/状态/H2H/伤停/战意/开季…</td><td class="good">✅</td><td>❌仅A/B级门槛</td><td class="bad">❌</td><td class="bad">❌</td></tr>
+<tr><td>修正系数（9条）</td><td>战意状态机/开季/保级平局保护…</td><td class="good">✅</td><td class="bad">❌</td><td class="bad">❌</td><td class="bad">❌</td></tr>
+<tr><td>历史频率（score_ev，已降fallback）</td><td>分联赛比分频率 Beta 收缩</td><td>—</td><td class="good">✅</td><td>—</td><td>—</td></tr>
+</table>
+<p><b>三大缺口</b>：</p>
+<ol>
+<li><b>因子不传导</b>——战意状态机判"平局×1.30"时比分矩阵纹丝不动，玩法间内部打架（三向推平局、比分 top1 却是 1-0 主胜）。</li>
+<li><b>三池裸 DC</b>——v5.1 boldplay 的 CRS/TTG/HAFU 池 EV 用 100% 裸 DC 概率打体彩（抽水 20%~34%），胜平负却有 Pinnacle 融合校准；未校准尾部误差直进 EV（"0球正值项 ρ 同向嫌疑"的根源）。</li>
+<li><b>HAFU 结构最弱</b>——λ×0.45 硬分割 + 上下半场独立假设，无市场校准、无因子注入，连池赔率都需另走 sporttery_matches 特殊抓取。</li>
+</ol>
+
+<h2>2. 方案选型</h2>
+<table>
+<tr><th>方案</th><th>内容</th><th>否决/采纳理由</th></tr>
+<tr><td><b>一：渐进三步（采纳）</b></td><td>三域重标定 + 池级温度 + HAFU 参数升级</td><td>三步正交、逐个消融、无正增益即回落，符合项目消融纪律</td></tr>
+<tr><td>二：最小改动</td><td>仅 IPF + EV 体彩自举收缩</td><td>自举有循环论证嫌疑（含水价格校准自己）；HAFU 结构问题不解决</td></tr>
+<tr><td>三：双时段 DC 重构</td><td>fd 半场比分直接拟半场攻防参数</td><td>数据减半过拟合、韩职/沙特无半场数据断粮（恰是实票池）、工程量大</td></tr>
+</table>
+
+<h2>3. 总体架构</h2>
+<div class="fig">
+<svg viewBox="0 0 860 330" role="img" aria-label="架构对比图">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker>
+    <marker id="ard" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--accent2)"/></marker>
+  </defs>
+  <text x="10" y="20" font-size="13" font-weight="600" fill="var(--sub)">现状：修正三向到顶即断链，三池裸概率</text>
+  <rect x="10" y="32" width="120" height="34" rx="6" fill="none" stroke="currentColor"/><text x="70" y="54" font-size="12.5" text-anchor="middle">dc_fit</text>
+  <rect x="170" y="32" width="150" height="34" rx="6" fill="none" stroke="currentColor"/><text x="245" y="54" font-size="12.5" text-anchor="middle">dc_predict 比分矩阵</text>
+  <rect x="370" y="32" width="190" height="34" rx="6" fill="none" stroke="currentColor"/><text x="465" y="54" font-size="12.5" text-anchor="middle">skill：市场融合+8因子+修正</text>
+  <rect x="610" y="32" width="120" height="34" rx="6" fill="none" stroke="var(--accent2)"/><text x="670" y="54" font-size="12.5" text-anchor="middle" fill="var(--accent2)">修正后三向 →止</text>
+  <line x1="130" y1="49" x2="168" y2="49" stroke="currentColor" marker-end="url(#ar)"/>
+  <line x1="320" y1="49" x2="368" y2="49" stroke="currentColor" marker-end="url(#ar)"/>
+  <line x1="560" y1="49" x2="608" y2="49" stroke="currentColor" marker-end="url(#ar)"/>
+  <rect x="170" y="110" width="150" height="34" rx="6" fill="none" stroke="currentColor" stroke-dasharray="4 3"/><text x="245" y="132" font-size="12.5" text-anchor="middle">裸矩阵（不回头）</text>
+  <line x1="245" y1="66" x2="245" y2="108" stroke="var(--bad)" stroke-dasharray="4 3" marker-end="url(#ar)"/>
+  <rect x="370" y="110" width="360" height="34" rx="6" fill="none" stroke="var(--bad)"/><text x="550" y="132" font-size="12.5" text-anchor="middle" fill="var(--bad)">boldplay 三池 EV = 100% 裸 DC × 体彩赔率</text>
+  <line x1="320" y1="127" x2="368" y2="127" stroke="currentColor" marker-end="url(#ar)"/>
+  <text x="10" y="190" font-size="13" font-weight="600" fill="var(--sub)">目标：修正三向 --adjust 回传，全玩法自洽 + 温度校准</text>
+  <rect x="10" y="202" width="120" height="34" rx="6" fill="none" stroke="currentColor"/><text x="70" y="224" font-size="12.5" text-anchor="middle">dc_fit</text>
+  <rect x="170" y="202" width="150" height="34" rx="6" fill="none" stroke="currentColor"/><text x="245" y="224" font-size="12.5" text-anchor="middle">dc_predict 矩阵</text>
+  <rect x="370" y="202" width="190" height="34" rx="6" fill="none" stroke="currentColor"/><text x="465" y="224" font-size="12.5" text-anchor="middle">skill：融合+因子+修正</text>
+  <rect x="610" y="202" width="130" height="34" rx="6" fill="none" stroke="var(--accent2)"/><text x="675" y="224" font-size="12.5" text-anchor="middle" fill="var(--accent2)">修正后三向</text>
+  <line x1="130" y1="219" x2="168" y2="219" stroke="currentColor" marker-end="url(#ar)"/>
+  <line x1="320" y1="219" x2="368" y2="219" stroke="currentColor" marker-end="url(#ar)"/>
+  <line x1="560" y1="219" x2="608" y2="219" stroke="currentColor" marker-end="url(#ar)"/>
+  <path d="M675 236 C675 280 320 280 245 238" fill="none" stroke="var(--accent2)" stroke-width="1.8" marker-end="url(#ard)"/>
+  <text x="450" y="278" font-size="12" fill="var(--accent2)">--adjust h,d,a 回传（步骤1 网关）</text>
+  <rect x="170" y="202" width="150" height="34" rx="6" fill="none" stroke="var(--good)" transform="translate(0,100)" opacity="0"/>
+  <rect x="370" y="302" width="200" height="0" fill="none"/>
+  <rect x="170" y="288" width="150" height="0" fill="none"/>
+  <rect x="360" y="300" width="370" height="0" fill="none"/>
+  <rect x="360" y="296" width="180" height="30" rx="6" fill="none" stroke="var(--good)"/><text x="450" y="316" font-size="12" text-anchor="middle" fill="var(--good)">重标定矩阵</text>
+  <line x1="245" y1="236" x2="245" y2="294" stroke="var(--good)" stroke-width="1.6" marker-end="url(#ar)" transform="translate(205,0)"/>
+  <rect x="560" y="296" width="170" height="30" rx="6" fill="none" stroke="var(--good)"/><text x="645" y="316" font-size="12" text-anchor="middle" fill="var(--good)">三池温度化 EV（步骤2）</text>
+  <line x1="542" y1="311" x2="558" y2="311" stroke="currentColor" marker-end="url(#ar)"/>
+</svg>
+<p class="cap">图1 · 现状断链 vs 目标回传链。因子判断仍是 skill 流程的知识工作（Agent 算修正三向），代码只提供"三向 → 全玩法重标定"的概率原子——战意状态机不写进 Python。</p>
+</div>
+<p><b>数据流单向</b>：fd 历史拟参数 → cache（half_share / temperature）→ dc_predict 出概率 → skill 修正三向 → <code>--adjust</code> 回传重标定 → boldplay EV。无循环依赖。</p>
+
+<h2>4. 步骤 1：三域重标定（因子传导）</h2>
+<p><b>核心简化</b>：主胜格（i&gt;j）、平局格（i=j）、客胜格（i&lt;j）三域互斥，<b>不需要迭代 IPF</b>——每域乘一个常数即精确对齐：</p>
+<pre>w_H = target_H / p_dc_H        P'(x,y) = P(x,y) × w(所属域)
+w_D = target_D / p_dc_D        三域权重对齐后矩阵和自动 =1（target 归一）
+w_A = target_A / p_dc_A</pre>
+<p>性质（IPF structure conservation 的特例）：域内相对结构不变（1-0 与 2-0 比例保持 → ρ 低分形状、TTG 形状保留），仅三向质量重新分配。战意抬平 → 0-0/1-1/2-2 等比放大 → TTG 低档自然微升。</p>
+<p><b>HAFU 传导用条件分解</b>：9 键 = HT×FT（第二字母为 FT），保持 P(HT|FT) 不变，按 FT 三列（<code>*h</code>/<code>*d</code>/<code>*a</code>）乘域权重对齐修正后三向，HT 边际随条件分布自然传导。</p>
+<p><b>接口</b>（dc_predict.py）：</p>
+<pre>reweight_matrix(p, target) -> np.ndarray
+reweight_hafu(hafu9, target) -> dict
+CLI: --adjust 0.42,0.31,0.27 -> JSON 增加 "adjusted" 块（三向/比分/TTG/HAFU 重标定版）
+boldplay.mix_candidates 增加可选 adjust_map（场次编号 -> 三向），有则 EV 全从重标定链算</pre>
+<p><b>护栏</b>：① target 三向和 =1（±0.001）否则报错——防 skill 流程手算失误静默进矩阵；② target 任一项 &lt;0.01 时 clamp 并 warn——防修正系数叠乘压塌某域；③ <b>target 必须是"融合+因子修正后"的最终三向</b>（裸 DC 修正禁止直传，JSON 加 <code>source</code> 字段标注——学术依据见 §11 ⑤：7220 场验证裸结构模型无市场增量）；④ before/after 同 JSON 输出，报告可审计。</p>
+
+<h2>5. 步骤 2：池级温度校准</h2>
+<p><b>定义</b>：<code>p_T(k) ∝ p(k)^(1/T)</code>，每池一个标量；T&gt;1 平滑（修 DC 过度自信尾部）、T&lt;1 锐化。作用概率空间 = Guo et al. 2017 作用 log 空间的标准变体（最小化 NLL 时一致）。<b>为什么用温度不用体彩自举融合</b>：体彩赔率是含水价格，自举校准循环论证；fd 历史+自家语料独立干净。</p>
+<p><b>作用顺序铁定：先重标定、后温度</b>（矩阵三向传导 → 池聚合 → 温度化），防止顺序颠倒破坏三向对齐。</p>
+<p><b>拟合协议（walk-forward 无前视）</b>：fd 8 联赛×4 季按日期排序，前缀 ≥50 场起步拟 T，其后各场用"该场之前数据"的 T 算 log loss，滚动前移（与 backtest.py 同构）。逐池观测目标：TTG=命中档、CRS=命中比分（矩阵外并入"其他"档，映射按 dump-odds 存档口径）、HAFU=命中 9 键。<b>HAFU 温度暂不启用</b>：143 场语料 half 覆盖仅 9.7%（9/93），fd 历史 HTHG/HTAG 虽全覆盖但线上 HAFU 池无法历史回溯（sporttery_matches 无日存档）——上线后前瞻监控攒样本。</p>
+<p><b>消融线</b>：bootstrap CI 下界 &gt;0（log loss 改善确证为正）才启用该池 T；否则落盘 T=1（代码保留、参数回落 = 删除效果）。</p>
+<p><b>消费端</b>：boldplay 三池 EV、dc_predict <code>--adjust</code> 输出链全部用温度后概率；报告展示 T 前后对照，EV 排序变化可审计。产出 <code>engine/cache/temperature.json</code>：每池 <code>{T, n, ll_before, ll_after, bootstrap CI, fittedAt}</code>。</p>
+
+<h2>6. 步骤 3：HAFU 半场参数升级</h2>
+<p><b>数据</b>：fd CSV <code>HTHG/HTAG</code> 列（fetch_rows 全列直读，现成），8 联赛×4 季每联赛 1200+ 场半场计数。</p>
+<ul>
+<li><b>参数 1：联赛级半场占比 s</b> = ΣHTHG+ΣHTAG / ΣFTHG+ΣFTAG，β 收缩到全局（先验 ~200 球），clamp [0.3, 0.6]（λ 守恒防呆）。替代硬编码 0.45。<b>队级不做</b>——一季 34 场×场均 1.3 半场球，β 收缩后必退回联赛级（YAGNI）。</li>
+<li><b>参数 2：半场 ρ_half</b>——复用 dc_tau 作用于半场比分矩阵（半场 λ≈0.6 低分密度高，ρ 效应比全场强）。<b>只修半场段、不修下半场段</b>：竞彩 HAFU 判 HT/FT 符号，半场段有直接观测；"下半场比分"是构造量无观测口径，其低分偏差由 FT 三向重标定兜底。</li>
+</ul>
+<pre>lh1 = lh × s_league, la1 = la × s_league     # 联赛级占比
+半场矩阵 = 泊松(lh1, la1) × dc_tau(ρ_half)    # 低分修正
+下半场 λ = 全场 λ − 半场 λ                     # 总 λ 守恒</pre>
+<p><b>回退</b>：日韩瑞沙（league 库无半场列）→ 全局 s + 全局 ρ_half；<code>half_share.json</code> 缺文件 → 0.45 / ρ=0（现状行为）。产出 <code>engine/cache/half_share.json</code>：<code>{league: {s, rho_half, n}, global: {...}}</code>，生成脚本 <code>half_params.py</code>（独立可重跑）。</p>
+<p><b>验证</b>：fd 历史 walk-forward 上 HT/FT 边际校准 + 9 键 logloss，before/after 对照。</p>
+
+<h2>7. 验证协议（fd 历史 walk-forward）</h2>
+<div class="card">
+<b>验证语料从"143 场回填语料"升级为"fd 多季历史"</b>：fd CSV 自带 FTHG/FTAG（CRS/TTG 观测）+ HTHG/HTAG（HAFU 观测全覆盖，绕开 9.7% half 覆盖死结）+ PPCH/D/PPCA Pinnacle 收盘（融合三向可复现 → 重标定链可复现）。8 联赛×4 季数千场，统计功效充足。历史"当时 DC 参数"不可复现的问题（fd 联赛无版本存档）由 walk-forward 滚动拟参解决。<b>143 场语料降级为上线后前瞻监控集</b>（线上实测 vs 离线验证对照）。
+</div>
+<p><b>消融矩阵</b>：2³ = 8 组合全跑（基线 / +重标定 / +温度 / +HAFU升级 / … / 全叠加），报告主看逐池单步增量与全叠加 vs 基线。</p>
+<table>
+<tr><th>步骤</th><th>性质</th><th>验收</th></tr>
+<tr><td>重标定</td><td>自洽性/因子传导，非精度提升</td><td>数值断言（三向对齐误差 &lt;1e-9）+ EV 链行为对照；不设 logloss 线</td></tr>
+<tr><td>温度</td><td>概率校准</td><td>逐池 log loss 改善 bootstrap CI 下界 &gt;0</td></tr>
+<tr><td>HAFU 升级</td><td>结构修复</td><td>HT/FT 边际校准 + 9 键 logloss CI 下界 &gt;0</td></tr>
+</table>
+<p><b>零破坏设计</b>：每步参数可独立回落——<code>--adjust</code> 不传 = 现状；T=1 = 现状；无 half_share.json = 现状。</p>
+
+<h2>8. skill 主流程改动（五处，v5.1 → v5.2）</h2>
+<table>
+<tr><th>#</th><th>位置</th><th>改动</th></tr>
+<tr><td>1</td><td>Step 3.5（DC概率+融合）</td><td>新增动作：融合+因子修正后三向 → <code>--adjust</code> 回传拿全玩法自洽概率</td></tr>
+<tr><td>2</td><td>Step 4（修正系数）</td><td>系数语义扩域："对三向乘法修正"→"三向修正经重标定传导全玩法"；系数表本身不变</td></tr>
+<tr><td>3</td><td>Step 6（玩法×数据等级矩阵）</td><td>"新玩法概率支撑"段从"裸 DC/0.45 近似"改 v5.2 口径（重标定+温度链）；EV 比选法 p_model 语义更新</td></tr>
+<tr><td>4</td><td>Step 6.5 + 铁律8（boldplay EV）</td><td>boldplay 消费 adjust_map+温度；输出加概率源标注；<b>"再跑一遍"临场复扫时 adjust_map 须同步重算</b></td></tr>
+<tr><td>5</td><td>Step 8（闭环学习）</td><td>闭环加一站：语料增量 → T 重拟 → 消融复核（T 从语料拟，语料涨不重拟 = 校准漂移）</td></tr>
+</table>
+<p>外加：references/coefficients.md 补传导说明；自检清单加"修正三向是否回传 --adjust"；预测 JSON 归档含 adjust 三向值（追溯）；<b>adjust_map 生命周期</b>=Agent 写临时 JSON、当轮有效、随预测归档防丢。</p>
+
+<h2>9. 安装更新链 + 历史数据兼容</h2>
+<table>
+<tr><th>#</th><th>机制</th><th>结论</th></tr>
+<tr><td>1</td><td>run.py update</td><td><b>不挂</b> half_share 重建（update 每预测日跑，fd 拉取有网络成本；慢变参数对齐 fusion.json 低频模式）</td></tr>
+<tr><td>2</td><td>run.py learn</td><td><b>必加</b> temperature.py 挂链尾（语料增量后 T 重拟，消融不过自动 T=1 落盘）</td></tr>
+<tr><td>3</td><td>run.py verify</td><td>加 temperature 状态断言（T/CI/fittedAt 自检）</td></tr>
+<tr><td>4</td><td>junction 安装</td><td>无需动作（真身在项目内，~/.claude/skills/ 是链接，改源即生效）</td></tr>
+<tr><td>5</td><td>arsenal 双份</td><td>SKILL.md v5.2 改版后同步 D:\project\arsenal\football-betting-prediction\SKILL.md + 字节级 cmp 校验</td></tr>
+<tr><td>6</td><td>models/ 版本化</td><td>temperature/half_share 不自建版本目录（全局×3池单值迭代快），JSON 自描述（fittedAt/n/CI）可追溯</td></tr>
+</table>
+<p><b>历史兼容三断点</b>：①143 场 half 覆盖 9.7% → HAFU 温度不启用；②sporttery_matches 无日存档 → HAFU 池 EV 只前瞻监控；③fd 联赛无模型版本存档 → walk-forward 拟参绕开。<b>并存清单</b>：预测 JSON 加 <code>schemaVersion</code>（旧报告不重算）；tickets/trend 历史不回刷、口径断代标注 T 上线日；boldplay settle 只看赛果零耦合；fd 个别缺 HTHG 场次跳过并计数。</p>
+
+<h2>10. 文件清单与落地顺序</h2>
+<table>
+<tr><th>动作</th><th>文件</th></tr>
+<tr><td>改</td><td>engine/scripts/dc_predict.py（reweight×2 + --adjust + hafu_approx 读参数表）</td></tr>
+<tr><td>改</td><td>engine/scripts/boldplay.py（adjust_map + 温度 + half_share 消费）</td></tr>
+<tr><td>改</td><td>skill/SKILL.md v5.2（五处）+ references/coefficients.md</td></tr>
+<tr><td>新</td><td>engine/scripts/half_params.py、engine/scripts/temperature.py</td></tr>
+<tr><td>新</td><td>engine/cache/half_share.json、engine/cache/temperature.json</td></tr>
+<tr><td>新</td><td>docs/2026-08-26-pool-coverage-design.html（本文档）+ 审计报告</td></tr>
+</table>
+<p><b>落地顺序（拟合顺序匹配消费顺序）</b>：</p>
+<pre>1. half_params.py → half_share.json（纯新增无风险）
+2. dc_predict.py：重标定 + --adjust + hafu_approx 升级（默认行为=现状）
+3. boldplay.py：adjust_map + 温度 + 参数表消费
+4. temperature.py：在最终概率链（重标定+新HAFU之上）fd 历史 walk-forward 拟合
+5. 消融矩阵 8 组合全跑 → 验收线判定 → 审计报告 HTML
+6. SKILL.md v5.2 五处改版 → arsenal 副本同步 cmp → run.py learn/verify 挂链 → git commit</pre>
+
+<h2>11. 文献支撑</h2>
+<table>
+<tr><th>#</th><th>文献</th><th>印证</th></tr>
+<tr><td>①</td><td>Guo et al. 2017, On Calibration of Modern Neural Networks (ICML, arXiv:1706.04599)</td><td>步骤2基石：单参数温度缩放 "surprisingly effective"，优于多参数 isotonic（过拟合风险）</td></tr>
+<tr><td>②</td><td>Dixon &amp; Robinson 1998, A Birth Process Model for Association Football Matches, The Statistician 47(3):523-538</td><td>步骤3鼻祖：进球强度时变（下半场更高），半场占比/两段建模学术出处</td></tr>
+<tr><td>③</td><td>Dixon &amp; Coles 1997, Applied Statistics 46(2):265-280</td><td>dc_tau 出处；ρ_half 复用同构修正有先例</td></tr>
+<tr><td>④</td><td>IPF/Raking：Deming-Stephan 1940；Fienberg 1970 收敛证明</td><td>步骤1数学依据：structure conservation（交叉乘积比不变）= 保形状调边际</td></tr>
+<tr><td>⑤</td><td>Pitcan 2026, Does a Structural Model Add Anything to the Closing Price? (arXiv:2608.11505)</td><td>意甲19季7220场：DC vs 收盘价 pooling weight≈0——佐证融合市场主导（a=0.4 保守正确）+ 警示裸 DC 打体彩三池风险 + target 必须用融合后三向的依据</td></tr>
+<tr><td>⑥</td><td>del Bano Rollin et al. 2018, Risk-Neutral Pricing and Hedging of In-Play Football Bets (arXiv:1811.03931)</td><td>"泊松比分模型向市场校准"直接先例——重标定即该思路的离散化</td></tr>
+<tr><td>⑦</td><td>Liang 2026, From Score Matrices to Football-Aware Match-State Simulation (arXiv:2608.05030)</td><td>旁证：score-driven DC + LLM 重排序，与本项目 DC+RAG 混合架构同构</td></tr>
+</table>
+
+<h2>12. 风险与回退</h2>
+<ul>
+<li><b>每步独立回落</b>：零破坏设计（见 §7），出问题回落参数即恢复现状行为。</li>
+<li><b>温度补偿错位</b>：temperature.py 必须在最终概率链上拟（顺序 §5 铁定），否则 T 补偿旧 HAFU 偏差后升级错位。</li>
+<li><b>重标定压塌</b>：clamp+warn 护栏（§4 ②）；临场复扫 adjust_map 不同步重算 = 旧三向新赔率错配（SKILL.md 流程明示）。</li>
+<li><b>消融不过</b>：按验收线回落参数、保留代码——与项目"无正增益即删"纪律一致。</li>
+</ul>
+</main></body></html>
