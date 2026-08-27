@@ -1,122 +1,26 @@
 {
-  "checkedAt": "2026-08-26",
+  "checkedAt": "2026-08-27",
   "leagues": {
-    "korea-k-league": {
-      "status": "ready",
-      "roundsPlayed": 23,
-      "standingsSource": "titan007",
-      "fdCovered": false
-    },
-    "英联赛杯": {
+    "欧罗巴": {
       "status": "missing"
     },
-    "欧冠": {
+    "西甲": {
       "status": "missing"
-    },
-    "spain-laliga": {
-      "status": "ready",
-      "roundsPlayed": 21,
-      "standingsSource": "fd-derived",
-      "fdCovered": true
     },
     "巴西杯": {
       "status": "missing"
     }
   },
   "missingLeagues": [
-    "英联赛杯",
-    "欧冠",
+    "欧罗巴",
+    "西甲",
     "巴西杯"
   ],
   "staleLeagues": [],
-  "missingAlias": [
-    {
-      "team": "查尔顿",
-      "league": "英联赛杯",
-      "match": "热刺 vs 查尔顿"
-    },
-    {
-      "team": "雅典AEK",
-      "league": "欧冠",
-      "match": "雅典AEK vs 索列夫"
-    },
-    {
-      "team": "索列夫",
-      "league": "欧冠",
-      "match": "雅典AEK vs 索列夫"
-    },
-    {
-      "team": "采列",
-      "league": "欧冠",
-      "match": "采列 vs 布拉迪斯"
-    },
-    {
-      "team": "布拉迪斯",
-      "league": "欧冠",
-      "match": "采列 vs 布拉迪斯"
-    },
-    {
-      "team": "维京",
-      "league": "欧冠",
-      "match": "维京 vs 萨迪纳摩"
-    },
-    {
-      "team": "萨迪纳摩",
-      "league": "欧冠",
-      "match": "维京 vs 萨迪纳摩"
-    },
-    {
-      "team": "费内巴切",
-      "league": "欧冠",
-      "match": "里昂 vs 费内巴切"
-    },
-    {
-      "team": "普雷斯顿",
-      "league": "英联赛杯",
-      "match": "普雷斯顿 vs 埃弗顿"
-    },
-    {
-      "team": "帕梅拉斯",
-      "league": "巴西杯",
-      "match": "帕梅拉斯 vs 桑托斯"
-    },
-    {
-      "team": "达伽马",
-      "league": "巴西杯",
-      "match": "达伽马 vs 维多利亚"
-    },
-    {
-      "team": "维多利亚",
-      "league": "巴西杯",
-      "match": "达伽马 vs 维多利亚"
-    },
-    {
-      "team": "巴西国际",
-      "league": "巴西杯",
-      "match": "巴西国际 vs 格雷米奥"
-    },
-    {
-      "team": "格雷米奥",
-      "league": "巴西杯",
-      "match": "巴西国际 vs 格雷米奥"
-    }
-  ],
-  "notReadyTeams": [
-    {
-      "team": "西布罗姆",
-      "teamId": "west-brom",
-      "league": "england",
-      "status": "missing"
-    },
-    {
-      "team": "桑托斯",
-      "teamId": "santos",
-      "league": "brazil",
-      "status": "missing"
-    }
-  ],
+  "missingAlias": [],
+  "notReadyTeams": [],
   "readyCount": {
-    "leagues": 2,
-    "teamsKnown": 234
+    "leagues": 0,
+    "teamsKnown": 260
   }
 }
