@@ -1,0 +1,94 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>实票偏好档案设计（ticket preference）</title>
+<style>
+  :root{--ink:#1c2733;--sub:#5b6b7a;--line:#d8e0e8;--bg:#f6f8fa;--accent:#0f6b4f;--accent2:#b4540a;--bad:#a12734;--good:#0f6b4f;--card:#fff}
+  @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#dbe4ec;--sub:#8fa1b3;--line:#2c3947;--bg:#101822;--accent:#4fc49b;--accent2:#e8a04c;--bad:#e2717e;--good:#4fc49b;--card:#18222e}}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.75 "Segoe UI","Microsoft YaHei",sans-serif}
+  main{max-width:920px;margin:0 auto;padding:32px 28px 72px}
+  h1{font-size:24px;margin:0 0 4px}h2{font-size:18px;margin:40px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+  .sub{color:var(--sub);font-size:13px}
+  code,pre{font-family:Consolas,"JetBrains Mono",monospace;font-size:13px}
+  code{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+  pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;overflow-x:auto;line-height:1.55}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:14px;background:var(--card)}
+  th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+  th{background:var(--bg);font-weight:600}
+  .good{color:var(--good);font-weight:600}.bad{color:var(--bad);font-weight:600}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin:14px 0}
+  .icon{width:18px;height:18px;vertical-align:-4px;margin-right:6px;color:var(--accent)}
+</style>
+</head>
+<body><main>
+<h1><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.6-9.5-9A5.5 5.5 0 0 1 12 5.5 5.5 5.5 0 0 1 21.5 12C19 16.4 12 21 12 21z"/></svg>实票偏好档案设计（ticket preference）</h1>
+<p class="sub">2026-08-27 · 作者 sszhang · 状态：设计已确认，同日实施 · 前置：实票账本（docs/2026-08-25-tickets-design.html）</p>
+
+<h2>1. 问题</h2>
+<p>boldplay 出票卡与用户实票口味完全脱节：生成器产出平串（HAD 4串1/5串1 + A-MIX 4串1 平串、倍数反算、档位 8/10/6 元），而 6 张实票全部是<b>容错串</b>（4串11 / 3场混串）、固定 2 元/注、重口玩法（CRS×11 / HAFU×5 / TTG×4 / HAD×2）、带双票对冲习惯——结果是 6/6 票 <code>source: manual</code> 自选，出票卡生成器没有承载任何用户偏好。</p>
+<table>
+<tr><th></th><th>boldplay 出票卡</th><th>用户实票（T001~T006）</th></tr>
+<tr><td>形状</td><td>平串：HAD 4串1×2注 / 5串1×3倍 / A-MIX 4串1</td><td><b>容错串</b>：4串11（6×2串1+4×3串1+1×4串1）/ 3场混串（2串1×3+3串1×1）</td></tr>
+<tr><td>玩法</td><td>HAD 为主 + A-MIX 混合</td><td>重口：CRS/HAFU dd/TTG 极端值，HAD 仅 2 腿</td></tr>
+<tr><td>注金</td><td>档位 8/10/6 元，倍数反算</td><td>固定 2 元/注，票面 8~22 元</td></tr>
+<tr><td>对冲</td><td>无</td><td>双票同骨架换 1 腿（T002/T003、T005/T006）</td></tr>
+</table>
+
+<h2>2. 定位（方案 B：纯知识库）</h2>
+<div class="card">
+<b><code>data/06-tickets/preference.json</code> = 静态手写的实票偏好档案，skill 会话在出方案/组票环节读它对齐口味；boldplay、backfill 等代码一律不读不写。</b>理由：6 张票样本小，不值得建自动统计链路；"偏爱容错串搏回血""双票对冲"这类策略意图机器统计不出来，只能人写（YAGNI）。
+</div>
+<p>分层职责——偏好档案是<b>组装器</b>不是选腿器：</p>
+<table>
+<tr><th>层</th><th>谁负责</th><th>偏好档案能否复现</th></tr>
+<tr><td>选腿（哪场、哪个具体比分）</td><td>当轮预测流程（DC 融合 + EV 扫描 + 临场情报）</td><td class="bad">否</td></tr>
+<tr><td>组装（几串几注、多少钱、怎么派彩）</td><td>preference.json</td><td class="good">是</td></tr>
+</table>
+
+<h2>3. Schema</h2>
+<pre>{
+  "meta": {"lastUpdated": "2026-08-27", "sampleSize": 6, "sampleRange": ["T001","T006"], "maintainMode": "static-manual"},
+  "shapes": [                      // 腿数 → 形状映射（组装规则核心）
+    {"name": "4串11容错", "legsCount": 4, "combos": "6×2串1+4×3串1+1×4串1", "unitStake": 2, "cost": 22},
+    {"name": "3场混串", "legsCount": 3, "combos": "2串1×3注+3串1×1注", "unitStake": 2, "cost": 8}
+  ],
+  "stake": {"unitStake": 2, "ticketBand": [8, 22], "roundRedline": 30},
+  "playTaste": {                   // 按体彩玩法全集拓展，每玩法 universe→band→history→avoid 四件套
+    "priority": ["CRS", "HAFU", "TTG", "HAD"],
+    "byPlay": { "CRS": {...}, "HAFU": {...}, "TTG": {...}, "HAD": {...}, "HHAD": {...} }
+  },
+  "structure": "2条高赔奖金引擎腿+1条稳腿托底;场均腿赔~7.9",
+  "hedging": "双票同骨架只换1条腿",
+  "leagueFocus": "西甲重仓(近期票全西甲);样本6票仅供参考",
+  "payoutStyle": "按形状结算:中2关回1注2串1即视为部分回收",
+  "notes": "6/6手动自选;系统方案仅作骨架参考;战绩88投293回/净+205.4,CRS为主要盈利来源"
+}</pre>
+<p><b>playTaste 玩法全集</b>（22 条腿精确统计）：</p>
+<table>
+<tr><th>玩法</th><th>universe</th><th>band（口味带）</th><th>history</th><th>avoid</th></tr>
+<tr><td>CRS</td><td>31项（比分29+胜/平/负其他）</td><td>小比分胜方型：净胜≤2 且总进球≤3</td><td>2-0×6，1-1/0-1/2-1/1-0/3-0 各1</td><td>长尾"其他"、大比分4-0+</td></tr>
+<tr><td>HAFU</td><td>9项（半场×全场）</td><td>dd 为主力，aa 次之</td><td>dd×4，aa×1</td><td>反转组 ad/da；hh 强队慢热陷阱（8-26 教训）</td></tr>
+<tr><td>TTG</td><td>8档（0~7+球）</td><td>两端极端：0球/5球</td><td>0球×3，5球×1</td><td>中间档2-3球（从未入票）</td></tr>
+<tr><td>HAD</td><td>3项（主/平/客）</td><td>仅高赔价值主胜或串内托底</td><td>主胜@4.05×2</td><td>低赔热门单独成腿</td></tr>
+<tr><td>HHAD</td><td>让球胜平负</td><td>—</td><td>从未入票</td><td>开放尝试：EV&gt;0 且分歧合规才进，不作默认</td></tr>
+</table>
+
+<h2>4. 接入方式（3 挂点，代码零改动）</h2>
+<ol>
+<li><b>skill/SKILL.md 出票卡环节</b>（主挂点）：boldplay 三档展示后、AI 把系统方案翻译成用户形状时，读 preference.json 按 shapes/playTaste 组装。</li>
+<li><b>协议表"我买了/出票了"</b>：建档时用档案预填默认形状（2元/注、容错串），用户只口述差异；票面与档案不符时 AI 警觉追问而非默默推形状（防 T005/T006 漏腿类事故）。</li>
+<li><b>CLAUDE.md 目录结构</b>：<code>data/06-tickets/</code> 描述补 preference.json。</li>
+</ol>
+
+<h2>5. 维护纪律</h2>
+<ul>
+<li>口味变化用户口述 → 手改 + 更 <code>lastUpdated</code>/<code>sampleSize</code> + git commit（git 历史=变更凭证）。</li>
+<li><b>被动校验</b>：每次新票入账，AI 核对票面是否被档案覆盖；出现档案外的形状/玩法/注金（如首次 HHAD）提醒用户更新档案再收档。</li>
+<li><b>升级触发线</b>（现在不做）：sampleSize ≥ 20 时偏好统计才有代表性，届时考虑结构化维度自动重算。</li>
+</ul>
+
+<h2>6. 回放验收（6/6）</h2>
+<p>档案落盘后逐张回放：给定 T001~T006 每张票的<b>腿集合</b>，档案规则推导形状/注数/金额/派彩规则，与 tickets.json 实际票面对照。<b>6/6 全对收工，有错补维度重验。</b>手工对照，不写代码——档案本来就是给 AI 读的，AI 对得上就是检验通过。</p>
+
+<h2>7. 实施顺序</h2>
+<pre>git pull（单写会话纪律）→ 写 preference.json → 回放 6/6 → SKILL.md + CLAUDE.md 挂点
+→ pytest 全量（落盘新 JSON 纪律）→ git commit（设计文档+档案+挂点一起）</pre>
+</main></body></html>
