@@ -1,0 +1,283 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>2026-08-27 比分选法重设计：联赛频率 + 球队平移 + 形状带（freq-band）</title>
+<style>
+:root{
+  --ink:#1f2937; --muted:#6b7280; --line:#e5e7eb; --bg:#f8fafc; --card:#ffffff;
+  --accent:#059669; --accent-soft:#ecfdf5; --warn:#d97706; --warn-soft:#fffbeb;
+  --danger:#dc2626; --danger-soft:#fef2f2; --code-bg:#f3f4f6;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI","Microsoft YaHei",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.75}
+.wrap{max-width:920px;margin:0 auto;padding:32px 20px 64px}
+header.doc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px 28px;margin-bottom:20px}
+header.doc h1{margin:0 0 6px;font-size:22px;color:var(--accent)}
+header.doc .meta{color:var(--muted);font-size:13px}
+section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 28px;margin-bottom:18px}
+h2{font-size:17px;margin:0 0 14px;padding-bottom:8px;border-bottom:2px solid var(--accent-soft);display:flex;align-items:center;gap:8px;color:var(--ink)}
+h2 .ic{color:var(--accent);display:inline-flex}
+h3{font-size:15px;margin:18px 0 8px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin:10px 0}
+th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+th{background:var(--accent-soft);font-weight:600}
+tr:nth-child(even) td{background:#fcfdfd}
+code,pre{font-family:Consolas,"Cascadia Mono",monospace}
+code{background:var(--code-bg);padding:1px 5px;border-radius:4px;font-size:12.5px}
+pre{background:var(--code-bg);border:1px solid var(--line);border-radius:8px;padding:12px 16px;overflow-x:auto;font-size:12.5px;line-height:1.6}
+.note{background:var(--warn-soft);border-left:4px solid var(--warn);padding:10px 14px;border-radius:0 8px 8px 0;font-size:13.5px;margin:12px 0}
+.principle{background:var(--accent-soft);border-left:4px solid var(--accent);padding:10px 14px;border-radius:0 8px 8px 0;font-size:13.5px;margin:12px 0}
+.toc{display:flex;flex-wrap:wrap;gap:8px;font-size:13px}
+.toc a{color:var(--accent);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:3px 12px;background:var(--card)}
+.toc a:hover{background:var(--accent-soft)}
+figure{margin:14px 0;text-align:center}
+figure svg{max-width:100%;height:auto;color:var(--accent)}
+figcaption{font-size:12.5px;color:var(--muted);margin-top:6px}
+.hl{color:var(--accent);font-weight:600}
+.del{color:var(--danger);text-decoration:line-through}
+ul{margin:8px 0}
+li{margin:4px 0}
+.src{font-size:12.5px;color:var(--muted)}
+.icon{width:18px;height:18px;flex:none}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="i-doc" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M9 13h6 M9 17h6"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 3l9 5-9 5-9-5z M3 13l9 5 9-5"/></symbol>
+<symbol id="i-filter" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 5h16 M7 12h10 M10 19h4"/></symbol>
+<symbol id="i-exit" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4 M16 17l5-5-5-5 M21 12H9"/></symbol>
+<symbol id="i-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path stroke="currentColor" stroke-width="2" d="M5.6 5.6l12.8 12.8"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M4 12.5l5 5L20 6.5"/></symbol>
+<symbol id="i-book" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20 V4H6.5A2.5 2.5 0 0 0 4 6.5z M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 22V4 M4 4c3-2 6 2 10 0 2-1 4-1 6 0v10c-2-1-4-1-6 0-4 2-7-2-10 0"/></symbol>
+</defs></svg>
+
+<div class="wrap">
+
+<header class="doc">
+  <h1>比分选法重设计：联赛频率 + 球队平移 + 形状带（freq-band）</h1>
+  <div class="meta">设计文档 v1.0 · 2026-08-27 · 状态：<span class="hl">评审通过（大哥逐节确认），待实施</span> · 作者 sszhang / Claude Code</div>
+  <div class="toc" style="margin-top:12px">
+    <a href="#s1">① 漂移诊断</a><a href="#s2">② 设计原则</a><a href="#s3">③ 频率+平移</a><a href="#s4">④ 三步选法</a><a href="#s5">⑤ 兜底关档</a><a href="#s6">⑥ A-MIX 退场</a><a href="#s7">⑦ DC 边界</a><a href="#s8">⑧ 档案同步</a><a href="#s9">⑨ 验收标准</a><a href="#s10">⑩ 参考来源</a>
+  </div>
+</header>
+
+<section id="s1">
+  <h2><svg class="ic icon"><use href="#i-doc"/></svg>一、背景：从一句质疑到漂移诊断</h2>
+  <p>起因是大哥的质疑：<b>"比分总是取的最小赔率的比分，赔率只能代表购买的人多人少，并不能真实反映实际结果。"</b>逐份重读设计文档后确认：系统在 08-24 之后逐步<b>偏离了 bold play 的原始设计初衷</b>。</p>
+  <table>
+    <tr><th>节点</th><th>原始设计</th><th>当前实现</th><th>漂移性质</th></tr>
+    <tr><td>概率源</td><td>模型审计已证 DC 无增量（Route D：DC top1 命中 9.5% &lt; 经验频率 11.5%，概率系统性高估 75%）</td><td>A-MIX 用 DC 概率 × 体彩赔率算 EV，假装找到"正 EV"</td><td><b>与自家审计结论矛盾</b></td></tr>
+    <tr><td>比分选择</td><td>经验频率 × 赔率的正 EV 列表（真实赛果数据驱动）</td><td>DC 模型矩阵 × 体彩赔率（Poisson 假设驱动）</td><td>数据驱动 → 模型驱动</td></tr>
+    <tr><td>Pool Coverage（08-26）</td><td>三池裸 DC 是待修问题</td><td>温度/reweight 把无增量的信号修得更"精确"</td><td>在错误基础上精修</td></tr>
+    <tr><td>EV 的意义</td><td>接受负 EV，优化密度（Dubins-Savage bold play，万倍通道）</td><td>追求"正 EV"选项，如同 value betting</td><td>从 bold play → 伪 value betting</td></tr>
+  </table>
+  <p>核心矛盾一句话：<b>模型审计说"DC 打不过市场"，A-MIX 却在用 DC 概率找市场的"定价错误"——逻辑自相矛盾。</b>大哥的质疑更进一步：体彩赔率本身反映投注热度而非真实概率，以它为基准的"正 EV"大概率是模型幻觉。</p>
+  <div class="principle">决策：比分选择回归数据驱动——<b>分布形状来自真实赛果频率，赔率只做门槛、不做排序依据，DC 彻底退出比分选择链路。</b></div>
+</section>
+
+<section id="s2">
+  <h2><svg class="ic icon"><use href="#i-flag"/></svg>二、设计原则（三条铁律）</h2>
+  <ul>
+    <li><b>数据说话，模型不说话</b>：比分分布的形状来自联赛真实赛果频率；球队信息只平移位置，不用 Poisson 造分布（Poisson 系统性低估方差已被自家审计证实）。</li>
+    <li><b>赔率只做门槛，不做排序</b>：赔率回答"杠杆够不够"（形状带），从不回答"选谁"（选谁只看真实频率 q）。购买热度不参与决策排序。</li>
+    <li><b>宁可空轮，不硬凑</b>：无合规比分则跳过该场；不足 4 场则关档不出票。4 串 1 一个凑数腿能废掉整票（继承 08-24 原设计的"关档保护"）。</li>
+  </ul>
+</section>
+
+<section id="s3">
+  <h2><svg class="ic icon"><use href="#i-layers"/></svg>三、核心方法：联赛模板 + 球队平移（分层经验贝叶斯）</h2>
+  <figure>
+    <svg viewBox="0 0 720 210" role="img" aria-label="三层收缩结构图">
+      <g fill="none" stroke="currentColor" stroke-width="1.8">
+        <rect x="260" y="10" width="200" height="46" rx="8" style="fill:#ecfdf5"/>
+        <rect x="200" y="80" width="320" height="46" rx="8" style="fill:#ecfdf5"/>
+        <rect x="140" y="150" width="440" height="46" rx="8" style="fill:#ecfdf5"/>
+        <path d="M360 56v24 M340 126v24 M380 126v24"/>
+        <path d="M330 66l6 8 6-8 M310 136l6 8 6-8 M370 136l6 8 6-8" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+      <g font-size="14" text-anchor="middle" fill="#1f2937">
+        <text x="360" y="29">全局层：所有联赛汇总先验</text>
+        <text x="360" y="47" font-size="12" fill="#6b7280">（数据少时向上收缩）</text>
+        <text x="360" y="99">联赛层：联赛比分频率表 + Beta 收缩（strength=50）</text>
+        <text x="360" y="117" font-size="12" fill="#6b7280">score_ev.py 已有基础设施，直接复用</text>
+        <text x="360" y="169">球队层：本场攻防平移（新增第三层）</text>
+        <text x="360" y="187" font-size="12" fill="#6b7280">λ 平移只调位置，不改形状</text>
+      </g>
+    </svg>
+    <figcaption>图 1 · 三层收缩：全局 → 联赛 → 球队（Efron &amp; Morris 分层经验贝叶斯，现有 Beta 收缩的自然延伸）</figcaption>
+  </figure>
+
+  <h3>3.1 平移量计算（乘法进球模型）</h3>
+  <p>联赛基准与两队近期状态（近 10 场，取 <code>data/01-teams/</code> 球队画像 / 体彩 insight 近 10 场）：</p>
+  <pre>联赛基准: 主场场均 1.45 球，客场场均 1.10 球
+主队近10场: 场均进 2.1 / 失 0.8    客队近10场: 场均进 0.9 / 失 1.5
+
+λ_h = 主队场均进 × 客队场均失 / 联赛主场场均 = 2.1 × 1.5 / 1.45 = <b>2.17</b>
+λ_a = 客队场均进 × 主队场均失 / 联赛客场场均 = 0.9 × 0.8 / 1.10 = <b>0.65</b></pre>
+  <p>本场目标位置：总进球 T = 2.82，净胜球 D = +1.52——频率表整体向"主队中等净胜"方向平移。</p>
+
+  <h3>3.2 平移映射（保形状、调位置）</h3>
+  <p>拿到 (λ_h, λ_a) 后<b>不用 Poisson 造分布</b>，对联赛频率表做二维重加权：</p>
+  <pre># 每个比分 (h,a) 的坐标: t = h+a（总进球轴）, d = h−a（净胜球轴）
+# 联赛基准位置 (T̄, D̄)，本场目标，带宽 = 联赛 t/d 标准差
+# 高斯核重加权：靠近本场目标的比分按距离比例抬升，靠近基准的相应回落
+
+q_new(h,a) ∝ q_league(h,a) × K(t−T)/K(t−T̄) × K(d−D)/K(d−D̄)   →   归一化</pre>
+  <ul>
+    <li><b>小样本护栏</b>：新赛季前几轮球队画像不足（近 10 场不满）→ 平移退化为纯联赛频率（λ 直接取联赛均值），零破坏降级。</li>
+    <li><b>回测定生死</b>：核重加权若回测无正增益，降级为不平移；带宽不手调，由回测选定。</li>
+  </ul>
+</section>
+
+<section id="s4">
+  <h2><svg class="ic icon"><use href="#i-filter"/></svg>四、选比分三步法</h2>
+  <figure>
+    <svg viewBox="0 0 720 672" role="img" aria-label="比分选择三步决策流程">
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0L10 5L0 10z" fill="currentColor"/>
+        </marker>
+      </defs>
+      <g fill="none" stroke="currentColor" stroke-width="1.8">
+        <!-- 主流程节点 -->
+        <rect x="230" y="16" width="220" height="48" rx="10" style="fill:#ecfdf5"/>
+        <rect x="205" y="384" width="270" height="52" rx="10" style="fill:#ecfdf5"/>
+        <rect x="222" y="608" width="236" height="50" rx="10" style="stroke-width:2.4"/>
+        <!-- 判定菱形 -->
+        <path d="M206 152L340 104L474 152L340 200Z"/>
+        <path d="M186 292L340 240L494 292L340 344Z"/>
+        <path d="M212 524L340 474L468 524L340 574Z"/>
+        <!-- 淘汰/关档节点（虚线红） -->
+        <rect x="540" y="128" width="150" height="48" rx="10" stroke="#dc2626" stroke-dasharray="5 4"/>
+        <rect x="540" y="268" width="150" height="48" rx="10" stroke="#dc2626" stroke-dasharray="5 4"/>
+        <rect x="540" y="500" width="150" height="48" rx="10" stroke="#dc2626" stroke-dasharray="5 4"/>
+        <!-- 箭头 -->
+        <path d="M340 64v36" marker-end="url(#ar)"/>
+        <path d="M474 152h66" stroke="#dc2626" marker-end="url(#ar)"/>
+        <path d="M340 200v34" marker-end="url(#ar)"/>
+        <path d="M494 292h46" stroke="#dc2626" marker-end="url(#ar)"/>
+        <path d="M340 344v34" marker-end="url(#ar)"/>
+        <path d="M340 436v34" marker-end="url(#ar)"/>
+        <path d="M468 524h72" stroke="#dc2626" marker-end="url(#ar)"/>
+        <path d="M340 574v28" marker-end="url(#ar)"/>
+      </g>
+      <g font-size="13.5" text-anchor="middle" fill="#1f2937">
+        <text x="340" y="45">每场比分清单（CRS 31 项）</text>
+        <text x="340" y="146">闸门 ①：平移后 q ≥ 1%？</text>
+        <text x="340" y="167" font-size="12" fill="#6b7280">联赛 300 场 ≈ 出现 ≥3 次</text>
+        <text x="340" y="286">闸门 ②：赔率 ∈ 形状带？</text>
+        <text x="340" y="307" font-size="12" fill="#6b7280">桂林 10~17 / 梅州 18~28</text>
+        <text x="340" y="405">带内 q 最高比分胜出</text>
+        <text x="340" y="425" font-size="12" fill="#6b7280">每场最多 1 腿（避免同场相关）</text>
+        <text x="340" y="518">合格场次 ≥ 4？</text>
+        <text x="340" y="638">按 q 降序取前 4 场 → 4串1</text>
+        <text x="615" y="149" fill="#dc2626">淘汰</text>
+        <text x="615" y="168" font-size="11.5" fill="#dc2626">出现率不足</text>
+        <text x="615" y="289" fill="#dc2626">淘汰</text>
+        <text x="615" y="308" font-size="11.5" fill="#dc2626">杠杆不合格</text>
+        <text x="615" y="521" fill="#dc2626">关档不出票</text>
+        <text x="615" y="540" font-size="11.5" fill="#dc2626">不硬凑</text>
+        <text x="352" y="222" fill="#059669">是</text>
+        <text x="352" y="366" fill="#059669">是</text>
+        <text x="352" y="596" fill="#059669">是</text>
+        <text x="500" y="144" fill="#dc2626" font-size="12">否</text>
+        <text x="514" y="284" fill="#dc2626" font-size="12">否</text>
+        <text x="488" y="516" fill="#dc2626" font-size="12">否</text>
+      </g>
+    </svg>
+    <figcaption>图 2 · 三步选比分决策流：带子管杠杆、频率管选择、赔率不参与排序</figcaption>
+  </figure>
+
+  <h3>示例（单场判定）</h3>
+  <table>
+    <tr><th>比分</th><th>q（平移后）</th><th>赔率</th><th>判定</th></tr>
+    <tr><td>1:1</td><td>10.2%</td><td>6.5</td><td>❌ 赔率太低（杠杆不够）</td></tr>
+    <tr><td>2:0</td><td>4.5%</td><td>12.5</td><td>✅ 桂林带 → <b>q 最高者胜出</b></td></tr>
+    <tr><td>0:2</td><td>2.0%</td><td>22.0</td><td>✅ 梅州带（合格但 q 不及 2:0）</td></tr>
+    <tr><td>4:0</td><td>0.3%</td><td>40.0</td><td>❌ 出现太少（q &lt; 1%）</td></tr>
+  </table>
+  <div class="note"><b>形状带边界待核对</b>：10~17 / 18~28 是当初按大奖形状反推的值。搜索配额恢复（08-31）后，用体彩 CRS 历史实际开出的大奖比分赔率段分布核对一次；核对前沿用现值。</div>
+</section>
+
+<section id="s5">
+  <h2><svg class="ic icon"><use href="#i-ban"/></svg>五、兜底与关档</h2>
+  <ul>
+    <li><span class="del">Tier 3 兜底（从 1:1 / 1:0 / 2:1 里挑最高赔）——砍掉</span>。它的本质是"没辙了拿赔率凑"，恰是本次要治的病。</li>
+    <li>某场所有比分不合格（q 都低或赔率都不在带内）→ <b>跳过该场选别场</b>。</li>
+    <li>合格场次不足 4 → <b>关档不出票</b>，不硬凑（4 串 1 一个凑数腿能废掉整票）。</li>
+    <li>连续 26 轮翻身档未中 → 强制复盘条款继承原设计，不变。</li>
+  </ul>
+</section>
+
+<section id="s6">
+  <h2><svg class="ic icon"><use href="#i-exit"/></svg>六、A-MIX 退场方案（开关切换 + 回测定生死）</h2>
+  <pre>boldplay.py 增加 --method 开关:
+  --method=freq    ← 新方法（联赛频率+球队平移+形状带+q 排序），默认
+  --method=amix    ← 旧方法（DC×体彩 EV 全量扫描），保留一个月过渡</pre>
+  <table>
+    <tr><th>步骤</th><th>动作</th><th>产物</th></tr>
+    <tr><td>1 · 上线</td><td>新方法默认出票（首期仅 CRS 池）</td><td>freq 链路生效</td></tr>
+    <tr><td>2 · 回测</td><td>在已回填赛果（<code>data/02-results/</code> corpus）上 walk-forward：两法各自会选什么比分、各中几个、所选比分平均赔率（杠杆对比）</td><td>回测对照表</td></tr>
+    <tr><td>3 · 定夺（一个月后）</td><td>回测占优 + 实盘正常 → 删除 A-MIX 及其服务件；表现异常 → 一键切回 amix + 复盘</td><td>退场归档报告</td></tr>
+  </table>
+</section>
+
+<section id="s7">
+  <h2><svg class="ic icon"><use href="#i-check"/></svg>七、DC 边界与 TTG / HAFU</h2>
+  <table>
+    <tr><th>链路</th><th>处置</th></tr>
+    <tr><td>比分（CRS）选择</td><td><b>DC 彻底退役</b>；温度 / reweight / half-ρ（08-26 pool-coverage 产物，均为 A-MIX 服务件）随 amix 旧路径保留一个月，删除 A-MIX 时一并清理</td></tr>
+    <tr><td>胜平负 fusion</td><td><b>不动</b>——p_final = σ(0.4·logit(p_DC) + 1.0·logit(p_pin)) 是另一条链路，模型审计对它的结论是"71% 赔率权重是特性不是缺陷"</td></tr>
+    <tr><td>dc_predict.py</td><td>保留（fusion 链路使用 + 叙事参考）；<code>top_scores</code> 仅作概率锚展示，<b>禁止作为选项依据</b>（SKILL.md 既有条款，重申）</td></tr>
+    <tr><td>TTG / HAFU</td><td>首期不动（随 amix 旧路径保留）；二期按同样思路改造（各自的经验频率 + 各自的带）</td></tr>
+  </table>
+</section>
+
+<section id="s8">
+  <h2><svg class="ic icon"><use href="#i-book"/></svg>八、档案同步义务（三处一致）</h2>
+  <div class="note">前车之鉴（memory: skill-示例即误导源）：规范改了示例没改，就被照抄放大成事故。本次改动涉及三处档案，<b>必须同步</b>：</div>
+  <ul>
+    <li><b>SKILL.md</b>：重写"高赔池全量 EV 扫描"章节 → 新三步法；过渡期内两套并存须标适用范围（freq=默认 / amix=过渡保留）。</li>
+    <li><b>memory: score-selection-ev-scan-discipline</b>：8-25 的"全量 EV 扫描"纪律建立在新设计推翻的假设上——实施落地时改写或删除。</li>
+    <li><b>skill/references/lessons.md</b>：追加本轮教训（"EV 之锚漂移：审计说无增量的模型被拿去找市场定价错误"）。</li>
+  </ul>
+</section>
+
+<section id="s9">
+  <h2><svg class="ic icon"><use href="#i-target"/></svg>九、验收标准</h2>
+  <table>
+    <tr><th>#</th><th>验收项</th><th>标准</th></tr>
+    <tr><td>1</td><td>可复现性</td><td>同一输入必得同一 q；无球队数据时平移自动退化为纯联赛频率（零破坏）</td></tr>
+    <tr><td>2</td><td>历史回测</td><td>walk-forward：freq vs amix 的比分命中率、所选比分平均赔率、假想 4串1 命中分布，输出对照表</td></tr>
+    <tr><td>3</td><td>实盘对照（首月）</td><td>freq 出票；amix 影子跑（只记录不投钱）</td></tr>
+    <tr><td>4</td><td>纪律</td><td>关档月统计：空轮次数、连续未中轮数（26 轮强制复盘条款继承）</td></tr>
+    <tr><td>5</td><td>形状带核对（08-31 后）</td><td>体彩 CRS 历史大奖比分的赔率段分布 vs 10~17 / 18~28</td></tr>
+    <tr><td>6</td><td>测试纪律</td><td>落盘新 JSON 后 pytest 全量重跑（engine/tests 直跑静默 0 输出）</td></tr>
+  </table>
+</section>
+
+<section id="s10">
+  <h2><svg class="ic icon"><use href="#i-doc"/></svg>十、参考文献与数据来源</h2>
+  <h3>本项目文档（漂移诊断依据）</h3>
+  <ul class="src">
+    <li><code>docs/2026-08-24-model-audit-design.html</code> — Route D：DC 无增量结论（本次退役的法理依据）</li>
+    <li><code>docs/2026-08-24-boldplay-design.html</code> — bold play 原始设计：密度框架 / 桂林·梅州形状 / 关档保护（本次回归的初衷）</li>
+    <li><code>docs/2026-08-26-pool-coverage-design.html</code> — 温度 / reweight（本次随 A-MIX 退役的服务件）</li>
+    <li><code>engine/scripts/boldplay.py</code>（A-MIX / 形状带现存代码）· <code>score_ev.py</code>（联赛频率表+Beta 收缩，直接复用）· <code>dc_predict.py</code>（保留于 fusion 链路）</li>
+    <li><code>data/01-teams/</code> 球队画像（近 10 场进失球，平移输入）· <code>data/02-results/</code>（回测语料）</li>
+  </ul>
+  <h3>理论参考</h3>
+  <ul class="src">
+    <li>Efron &amp; Morris — 分层经验贝叶斯收缩（三层结构：全局→联赛→球队）</li>
+    <li>Gelman et al.《Bayesian Data Analysis》— 多层模型，足球进球为标准案例</li>
+    <li>Maher (1982)；Dixon &amp; Coles (1997)；Karlis &amp; Ntzoufras (2003) — 乘法进球模型与 λ 建模（只取 λ 计算，不用 Poisson 造分布）</li>
+    <li>Ley, Van de Wiele, Van Eetvelde (2019) *Statistical Modelling* — 进球差建模近期实力</li>
+    <li>Groll et al. (2018) — 世界杯预测的模型+经验混合方法（"保形状调位置"哲学一致）</li>
+  </ul>
+  <div class="note"><b>诚实标注</b>："联赛模板+球队平移"的确切组合无现成完整文献，有效性不以文献背书、只以本设计第九节的回测验收。以上文献出自模型知识储备，<b>搜索配额 08-31 恢复后核对原文</b>再正式引用。</div>
+</section>
+
+</div>
+</body>
+</html>
