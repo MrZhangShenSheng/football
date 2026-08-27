@@ -1,8 +1,8 @@
 {
- "fetchedAt": "2026-08-23",
+ "fetchedAt": "2026-08-27",
  "source": "espn",
  "leagueCode": "fra.1",
- "season": "2026",
+ "season": null,
  "standings": [
   {
    "pos": 1,
@@ -30,7 +30,7 @@
   },
   {
    "pos": 3,
-   "team": "Lyon",
+   "team": "Lille",
    "played": 1,
    "won": 1,
    "drawn": 0,
@@ -42,6 +42,30 @@
   },
   {
    "pos": 4,
+   "team": "Lyon",
+   "played": 1,
+   "won": 1,
+   "drawn": 0,
+   "lost": 0,
+   "gf": 2,
+   "ga": 0,
+   "gd": 2,
+   "pts": 3
+  },
+  {
+   "pos": 5,
+   "team": "AS Monaco",
+   "played": 1,
+   "won": 1,
+   "drawn": 0,
+   "lost": 0,
+   "gf": 1,
+   "ga": 0,
+   "gd": 1,
+   "pts": 3
+  },
+  {
+   "pos": 6,
    "team": "Brest",
    "played": 1,
    "won": 0,
@@ -53,7 +77,7 @@
    "pts": 1
   },
   {
-   "pos": 5,
+   "pos": 7,
    "team": "Le Mans",
    "played": 1,
    "won": 0,
@@ -65,7 +89,31 @@
    "pts": 1
   },
   {
-   "pos": 6,
+   "pos": 8,
+   "team": "Paris Saint-Germain",
+   "played": 1,
+   "won": 0,
+   "drawn": 1,
+   "lost": 0,
+   "gf": 2,
+   "ga": 2,
+   "gd": 0,
+   "pts": 1
+  },
+  {
+   "pos": 9,
+   "team": "Stade Rennais",
+   "played": 1,
+   "won": 0,
+   "drawn": 1,
+   "lost": 0,
+   "gf": 2,
+   "ga": 2,
+   "gd": 0,
+   "pts": 1
+  },
+  {
+   "pos": 10,
    "team": "Lorient",
    "played": 1,
    "won": 0,
@@ -77,7 +125,7 @@
    "pts": 1
   },
   {
-   "pos": 7,
+   "pos": 11,
    "team": "Nice",
    "played": 1,
    "won": 0,
@@ -89,7 +137,7 @@
    "pts": 1
   },
   {
-   "pos": 8,
+   "pos": 12,
    "team": "Paris FC",
    "played": 1,
    "won": 0,
@@ -101,7 +149,7 @@
    "pts": 1
   },
   {
-   "pos": 9,
+   "pos": 13,
    "team": "Troyes",
    "played": 1,
    "won": 0,
@@ -113,80 +161,32 @@
    "pts": 1
   },
   {
-   "pos": 10,
-   "team": "Angers",
-   "played": 0,
-   "won": 0,
-   "drawn": 0,
-   "lost": 0,
-   "gf": 0,
-   "ga": 0,
-   "gd": 0,
-   "pts": 0
-  },
-  {
-   "pos": 11,
-   "team": "Le Havre AC",
-   "played": 0,
-   "won": 0,
-   "drawn": 0,
-   "lost": 0,
-   "gf": 0,
-   "ga": 0,
-   "gd": 0,
-   "pts": 0
-  },
-  {
-   "pos": 12,
-   "team": "Lille",
-   "played": 0,
-   "won": 0,
-   "drawn": 0,
-   "lost": 0,
-   "gf": 0,
-   "ga": 0,
-   "gd": 0,
-   "pts": 0
-  },
-  {
-   "pos": 13,
-   "team": "AS Monaco",
-   "played": 0,
-   "won": 0,
-   "drawn": 0,
-   "lost": 0,
-   "gf": 0,
-   "ga": 0,
-   "gd": 0,
-   "pts": 0
-  },
-  {
    "pos": 14,
-   "team": "Paris Saint-Germain",
-   "played": 0,
+   "team": "Le Havre AC",
+   "played": 1,
    "won": 0,
    "drawn": 0,
-   "lost": 0,
+   "lost": 1,
    "gf": 0,
-   "ga": 0,
-   "gd": 0,
+   "ga": 1,
+   "gd": -1,
    "pts": 0
   },
   {
    "pos": 15,
-   "team": "Stade Rennais",
-   "played": 0,
+   "team": "Toulouse",
+   "played": 1,
    "won": 0,
    "drawn": 0,
-   "lost": 0,
+   "lost": 1,
    "gf": 0,
-   "ga": 0,
-   "gd": 0,
+   "ga": 2,
+   "gd": -2,
    "pts": 0
   },
   {
    "pos": 16,
-   "team": "Toulouse",
+   "team": "Angers",
    "played": 1,
    "won": 0,
    "drawn": 0,

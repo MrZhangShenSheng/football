@@ -1,8 +1,8 @@
 {
- "fetchedAt": "2026-08-23",
+ "fetchedAt": "2026-08-27",
  "source": "espn",
  "leagueCode": "ned.1",
- "season": "2026",
+ "season": null,
  "standings": [
   {
    "pos": 1,
@@ -18,30 +18,54 @@
   },
   {
    "pos": 2,
-   "team": "FC Groningen",
-   "played": 2,
+   "team": "Go Ahead Eagles",
+   "played": 3,
    "won": 2,
-   "drawn": 0,
+   "drawn": 1,
    "lost": 0,
-   "gf": 6,
-   "ga": 2,
-   "gd": 4,
-   "pts": 6
+   "gf": 9,
+   "ga": 4,
+   "gd": 5,
+   "pts": 7
   },
   {
    "pos": 3,
-   "team": "Go Ahead Eagles",
-   "played": 2,
-   "won": 1,
+   "team": "PSV Eindhoven",
+   "played": 3,
+   "won": 2,
    "drawn": 1,
    "lost": 0,
-   "gf": 6,
-   "ga": 3,
-   "gd": 3,
-   "pts": 4
+   "gf": 9,
+   "ga": 4,
+   "gd": 5,
+   "pts": 7
   },
   {
    "pos": 4,
+   "team": "Feyenoord Rotterdam",
+   "played": 3,
+   "won": 2,
+   "drawn": 1,
+   "lost": 0,
+   "gf": 8,
+   "ga": 4,
+   "gd": 4,
+   "pts": 7
+  },
+  {
+   "pos": 5,
+   "team": "FC Groningen",
+   "played": 3,
+   "won": 2,
+   "drawn": 0,
+   "lost": 1,
+   "gf": 7,
+   "ga": 7,
+   "gd": 0,
+   "pts": 6
+  },
+  {
+   "pos": 6,
    "team": "Ajax Amsterdam",
    "played": 2,
    "won": 1,
@@ -50,30 +74,6 @@
    "gf": 4,
    "ga": 2,
    "gd": 2,
-   "pts": 4
-  },
-  {
-   "pos": 5,
-   "team": "PSV Eindhoven",
-   "played": 2,
-   "won": 1,
-   "drawn": 1,
-   "lost": 0,
-   "gf": 4,
-   "ga": 3,
-   "gd": 1,
-   "pts": 4
-  },
-  {
-   "pos": 6,
-   "team": "Feyenoord Rotterdam",
-   "played": 2,
-   "won": 1,
-   "drawn": 1,
-   "lost": 0,
-   "gf": 3,
-   "ga": 2,
-   "gd": 1,
    "pts": 4
   },
   {
@@ -186,18 +186,6 @@
   },
   {
    "pos": 16,
-   "team": "ADO Den Haag",
-   "played": 2,
-   "won": 0,
-   "drawn": 0,
-   "lost": 2,
-   "gf": 1,
-   "ga": 6,
-   "gd": -5,
-   "pts": 0
-  },
-  {
-   "pos": 17,
    "team": "Willem II",
    "played": 2,
    "won": 0,
@@ -209,15 +197,27 @@
    "pts": 0
   },
   {
-   "pos": 18,
-   "team": "SC Cambuur",
-   "played": 2,
+   "pos": 17,
+   "team": "ADO Den Haag",
+   "played": 3,
    "won": 0,
    "drawn": 0,
-   "lost": 2,
-   "gf": 1,
-   "ga": 7,
-   "gd": -6,
+   "lost": 3,
+   "gf": 2,
+   "ga": 9,
+   "gd": -7,
+   "pts": 0
+  },
+  {
+   "pos": 18,
+   "team": "SC Cambuur",
+   "played": 3,
+   "won": 0,
+   "drawn": 0,
+   "lost": 3,
+   "gf": 3,
+   "ga": 12,
+   "gd": -9,
    "pts": 0
   }
  ]

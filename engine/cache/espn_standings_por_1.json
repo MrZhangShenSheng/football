@@ -1,11 +1,23 @@
 {
- "fetchedAt": "2026-08-23",
+ "fetchedAt": "2026-08-27",
  "source": "espn",
  "leagueCode": "por.1",
- "season": "2026",
+ "season": null,
  "standings": [
   {
    "pos": 1,
+   "team": "FC Porto",
+   "played": 3,
+   "won": 3,
+   "drawn": 0,
+   "lost": 0,
+   "gf": 6,
+   "ga": 0,
+   "gd": 6,
+   "pts": 9
+  },
+  {
+   "pos": 2,
    "team": "Sporting CP",
    "played": 3,
    "won": 2,
@@ -17,7 +29,7 @@
    "pts": 7
   },
   {
-   "pos": 2,
+   "pos": 3,
    "team": "Maritimo",
    "played": 3,
    "won": 2,
@@ -29,52 +41,40 @@
    "pts": 7
   },
   {
-   "pos": 3,
-   "team": "Arouca",
-   "played": 2,
-   "won": 2,
-   "drawn": 0,
-   "lost": 0,
-   "gf": 5,
-   "ga": 0,
-   "gd": 5,
-   "pts": 6
-  },
-  {
    "pos": 4,
-   "team": "FC Porto",
-   "played": 2,
+   "team": "Santa Clara",
+   "played": 3,
    "won": 2,
-   "drawn": 0,
-   "lost": 0,
-   "gf": 4,
-   "ga": 0,
-   "gd": 4,
-   "pts": 6
-  },
-  {
-   "pos": 5,
-   "team": "C.D. Nacional",
-   "played": 2,
-   "won": 1,
    "drawn": 1,
    "lost": 0,
    "gf": 4,
    "ga": 2,
    "gd": 2,
-   "pts": 4
+   "pts": 7
+  },
+  {
+   "pos": 5,
+   "team": "Arouca",
+   "played": 3,
+   "won": 2,
+   "drawn": 0,
+   "lost": 1,
+   "gf": 5,
+   "ga": 2,
+   "gd": 3,
+   "pts": 6
   },
   {
    "pos": 6,
-   "team": "Santa Clara",
+   "team": "Gil Vicente",
    "played": 2,
-   "won": 1,
-   "drawn": 1,
+   "won": 2,
+   "drawn": 0,
    "lost": 0,
    "gf": 3,
-   "ga": 2,
-   "gd": 1,
-   "pts": 4
+   "ga": 0,
+   "gd": 3,
+   "pts": 6
   },
   {
    "pos": 7,
@@ -90,18 +90,30 @@
   },
   {
    "pos": 8,
-   "team": "Gil Vicente",
-   "played": 1,
+   "team": "C.D. Nacional",
+   "played": 3,
    "won": 1,
-   "drawn": 0,
-   "lost": 0,
-   "gf": 1,
-   "ga": 0,
+   "drawn": 1,
+   "lost": 1,
+   "gf": 4,
+   "ga": 3,
    "gd": 1,
-   "pts": 3
+   "pts": 4
   },
   {
    "pos": 9,
+   "team": "Vitória de Guimaraes",
+   "played": 3,
+   "won": 1,
+   "drawn": 0,
+   "lost": 2,
+   "gf": 3,
+   "ga": 4,
+   "gd": -1,
+   "pts": 3
+  },
+  {
+   "pos": 10,
    "team": "Rio Ave",
    "played": 3,
    "won": 1,
@@ -113,7 +125,7 @@
    "pts": 3
   },
   {
-   "pos": 10,
+   "pos": 11,
    "team": "Estrela",
    "played": 2,
    "won": 0,
@@ -125,7 +137,7 @@
    "pts": 2
   },
   {
-   "pos": 11,
+   "pos": 12,
    "team": "Académico de Viseu",
    "played": 3,
    "won": 0,
@@ -137,7 +149,7 @@
    "pts": 2
   },
   {
-   "pos": 12,
+   "pos": 13,
    "team": "Braga",
    "played": 1,
    "won": 0,
@@ -149,19 +161,19 @@
    "pts": 1
   },
   {
-   "pos": 13,
+   "pos": 14,
    "team": "FC Famalicao",
-   "played": 2,
+   "played": 3,
    "won": 0,
    "drawn": 1,
-   "lost": 1,
+   "lost": 2,
    "gf": 2,
-   "ga": 3,
-   "gd": -1,
+   "ga": 4,
+   "gd": -2,
    "pts": 1
   },
   {
-   "pos": 14,
+   "pos": 15,
    "team": "Moreirense",
    "played": 2,
    "won": 0,
@@ -173,7 +185,7 @@
    "pts": 1
   },
   {
-   "pos": 15,
+   "pos": 16,
    "team": "Estoril",
    "played": 3,
    "won": 0,
@@ -185,7 +197,7 @@
    "pts": 1
   },
   {
-   "pos": 16,
+   "pos": 17,
    "team": "Alverca",
    "played": 3,
    "won": 0,
@@ -197,27 +209,15 @@
    "pts": 1
   },
   {
-   "pos": 17,
-   "team": "Vitória de Guimaraes",
-   "played": 2,
-   "won": 0,
-   "drawn": 0,
-   "lost": 2,
-   "gf": 2,
-   "ga": 4,
-   "gd": -2,
-   "pts": 0
-  },
-  {
    "pos": 18,
    "team": "Casa Pia",
-   "played": 2,
+   "played": 3,
    "won": 0,
    "drawn": 0,
-   "lost": 2,
+   "lost": 3,
    "gf": 0,
-   "ga": 8,
-   "gd": -8,
+   "ga": 10,
+   "gd": -10,
    "pts": 0
   }
  ]
