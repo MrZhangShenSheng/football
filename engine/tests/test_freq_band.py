@@ -54,3 +54,25 @@ def test_lambdas_multiplicative_and_clamp():
     assert freq_band.lambdas((0.0, 1.0), (2.0, 1.0), (1.0, 1.0)) is None  # 空基准
     assert freq_band.lambdas(base, (9.0, 0.1), (0.2, 9.0))[0] <= freq_band.LAMBDA_CLAMP[1]
     assert freq_band.lambdas(base, (0.05, 0.1), (0.05, 0.1)) == (freq_band.LAMBDA_CLAMP[0],) * 2
+
+
+def _mini_blob():
+    return Counter({"__n": 100, "1:1": 30, "1:0": 25, "0:0": 20, "2:0": 15, "0:1": 10})
+
+
+def test_shifted_q_pure_mode():
+    """lam=None → 纯联赛频率归一化（零破坏降级）；c=0 比分恒 0；空 Counter → 空。"""
+    q = freq_band.shifted_q(_mini_blob(), None)
+    assert abs(sum(q.values()) - 1.0) < 1e-9
+    assert abs(q["1:1"] - 0.30) < 1e-9
+    assert "3:3" not in q                                  # c=0 格子不出现（真实数据从未出现）
+    assert freq_band.shifted_q(Counter(), None) == {}
+
+
+def test_shifted_q_direction_and_conservation():
+    """强主平移(λh 2.4/λa 0.5)：靠近目标的比分 q 抬升、远离的回落；归一化守恒。"""
+    pure = freq_band.shifted_q(_mini_blob(), None)
+    shifted = freq_band.shifted_q(_mini_blob(), (2.4, 0.5))   # T=2.9, D=1.9
+    assert shifted["2:0"] > pure["2:0"]          # (t=2,d=2) 靠近目标
+    assert shifted["0:1"] < pure["0:1"]          # (t=1,d=-1) 远离目标
+    assert abs(sum(shifted.values()) - 1.0) < 1e-9

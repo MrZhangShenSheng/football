@@ -86,3 +86,32 @@ def lambdas(base: tuple, home_str, away_str) -> tuple:
     la = away_str[0] * home_str[1] / base[1]
     return (min(max(lh, LAMBDA_CLAMP[0]), LAMBDA_CLAMP[1]),
             min(max(la, LAMBDA_CLAMP[0]), LAMBDA_CLAMP[1]))
+
+
+def shifted_q(blob: Counter, lam=None) -> dict:
+    """联赛频率 Counter → {比分: q}。lam=(λh,λa) 时按 (t=h+a, d=h−a) 双轴高斯核平移：
+    靠近本场目标的比分按距离比例抬升、靠近基准的回落——形状仍来自真实频率
+    （c=0 的格子恒 0：真实数据从未出现的比分永不被选）。lam=None → 纯频率归一化。"""
+    n = blob.get("__n", 0)
+    if not n:
+        return {}
+    counts = {s: c for s, c in blob.items() if s != "__n"}
+    coords = {}
+    for s in counts:
+        h, a = (int(x) for x in s.split(":"))
+        coords[s] = (h + a, h - a)
+    t_bar = sum(coords[s][0] * c for s, c in counts.items()) / n
+    d_bar = sum(coords[s][1] * c for s, c in counts.items()) / n
+    sig_t2 = max(sum((coords[s][0] - t_bar) ** 2 * c for s, c in counts.items()) / n, SIGMA_FLOOR ** 2)
+    sig_d2 = max(sum((coords[s][1] - d_bar) ** 2 * c for s, c in counts.items()) / n, SIGMA_FLOOR ** 2)
+    if lam is None:
+        return {s: c / n for s, c in counts.items()}
+    T, D = lam[0] + lam[1], lam[0] - lam[1]
+    w = {}
+    for s, c in counts.items():
+        t, d = coords[s]
+        g = (((t - t_bar) ** 2 - (t - T) ** 2) / (2 * sig_t2)
+             + ((d - d_bar) ** 2 - (d - D) ** 2) / (2 * sig_d2))
+        w[s] = c * math.exp(g)
+    z = sum(w.values())
+    return {s: v / z for s, v in w.items()} if z else {}
