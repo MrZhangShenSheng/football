@@ -44,3 +44,13 @@ def test_team_strength_window_and_gate():
     assert abs(gf - (8 + 6) / 10) < 1e-9 and abs(ga - 2 / 10) < 1e-9
     assert freq_band.team_strength({"y": [(1, 1)] * 4}, "y") is None
     assert freq_band.team_strength({}, "none") is None
+
+
+def test_lambdas_multiplicative_and_clamp():
+    """λh=主进×客失/模板主场场均；λa 对称；缺强度/零基准→None；clamp 生效。"""
+    base = (1.5, 1.0)
+    assert freq_band.lambdas(base, (2.0, 0.8), (0.9, 1.5)) == (2.0 * 1.5 / 1.5, 0.9 * 0.8 / 1.0)
+    assert freq_band.lambdas(base, None, (0.9, 1.5)) is None      # 近况缺失降级
+    assert freq_band.lambdas((0.0, 1.0), (2.0, 1.0), (1.0, 1.0)) is None  # 空基准
+    assert freq_band.lambdas(base, (9.0, 0.1), (0.2, 9.0))[0] <= freq_band.LAMBDA_CLAMP[1]
+    assert freq_band.lambdas(base, (0.05, 0.1), (0.05, 0.1)) == (freq_band.LAMBDA_CLAMP[0],) * 2

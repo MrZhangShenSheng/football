@@ -75,3 +75,14 @@ def team_strength(form: dict, norm_name: str):
     recent = rows[-RECENT_WINDOW:]
     return (sum(r[0] for r in recent) / len(recent),
             sum(r[1] for r in recent) / len(recent))
+
+
+def lambdas(base: tuple, home_str, away_str) -> tuple:
+    """乘法进球模型（Maher/Dixon-Coles 只取 λ 计算，不用 Poisson 造分布）：
+    λ_h = 主队场均进 × 客队场均失 / 模板主场场均；λ_a 对称。clamp 防极端。"""
+    if not home_str or not away_str or base[0] <= 0 or base[1] <= 0:
+        return None
+    lh = home_str[0] * away_str[1] / base[0]
+    la = away_str[0] * home_str[1] / base[1]
+    return (min(max(lh, LAMBDA_CLAMP[0]), LAMBDA_CLAMP[1]),
+            min(max(la, LAMBDA_CLAMP[0]), LAMBDA_CLAMP[1]))
