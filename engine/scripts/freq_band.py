@@ -36,3 +36,42 @@ def global_pool(freq_table: dict) -> Counter:
     for blob in freq_table.values():
         g.update(blob)
     return g
+
+
+def build_team_form(fetch_rows_fn=fetch_rows,
+                    league_glob="data/02-results/league/*_matches.json") -> dict:
+    """fd CSV + 本地联赛库 → {norm队名: [(进球, 失球), ...]}（源内按时间序，取尾即最近）。
+    fd 队名(HomeTeam/AwayTeam) 与本地 tid 统一 norm 化做键；测试以 fetch_rows_fn/league_glob 注入隔离网络。"""
+    form = defaultdict(list)
+    for season in SEASONS:
+        for div in DIVS:
+            for r in fetch_rows_fn(season, div):
+                try:
+                    hg, ag = int(r["FTHG"]), int(r["FTAG"])
+                    form[_norm(r["HomeTeam"])].append((hg, ag))
+                    form[_norm(r["AwayTeam"])].append((ag, hg))
+                except (KeyError, ValueError, TypeError):
+                    continue
+    for path in glob.glob(league_glob):
+        key = path.replace("\\", "/").split("/")[-1].replace("_matches.json", "")
+        if key not in LEAGUE_STORE:
+            continue
+        data = json.loads(Path(path).read_text(encoding="utf-8"))
+        rows = data.get("matches", []) if isinstance(data, dict) else (data or [])
+        for m in rows:
+            try:
+                form[_norm(m["home"])].append((int(m["hg"]), int(m["ag"])))
+                form[_norm(m["away"])].append((int(m["ag"]), int(m["hg"])))
+            except (KeyError, ValueError, TypeError):
+                continue
+    return dict(form)
+
+
+def team_strength(form: dict, norm_name: str):
+    """norm队名 → 近 RECENT_WINDOW 场 (场均进, 场均失)；不足 FORM_MIN_MATCHES → None。"""
+    rows = form.get(norm_name) or []
+    if len(rows) < FORM_MIN_MATCHES:
+        return None
+    recent = rows[-RECENT_WINDOW:]
+    return (sum(r[0] for r in recent) / len(recent),
+            sum(r[1] for r in recent) / len(recent))
