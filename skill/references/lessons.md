@@ -86,3 +86,9 @@
 | **T004 手动建档双漏字段**：settle 误写为 settle: null（结算链找 settled.status）+ 缺 source 字段 → settle_tickets 整票静默跳过（verify 报 0 票/0 腿无告警），补 source 后 ticket_report 渲染又 KeyError 崩溃 | backfill.py settle_tickets 兜底（缺 settled/status 视为 pending）；ticket_report 改 .get 容错；若再犯第三次上建档 schema 校验器（缺 id/legs/settled/source 拒绝写盘） |
 | **上会话残留回填未 commit**：周二003/006 赛果已回填主文件+模型 v3/v4 已发布但工作区 M 态滞留，本会话差点当"回填 0 场=链路坏"误诊 | 单写会话纪律补强：回填/learn 产物即时 commit；下会话见"回填 0 场但票腿 null"先查工作区残留再查链路 |
 | 方向 2/2 全中、CRS 0/2 全断（半场 2:0 被逆转 + 差一球）：4串11 全 CRS 票型对尾部剧本零容错 | 票层 vs 模型层分离再实证：CRS 高赔票=彩票形状接受 ~2% 活口概率，不因单票改池；混串 A-MIX 容错优势只在事前选腿，不在事后追改 |
+
+## 2026-08-27 轮（比分选法重设计 freq-band：EV 之锚漂移）
+
+| 事故/发现 | 沉淀 |
+|:---|:---|
+| **EV 之锚漂移（大哥质疑触发）**："比分总取最小赔率，赔率=购买热度≠真实结果"——重读设计文档发现 8-24 模型审计已证 DC 无增量，A-MIX 却用 DC 概率找市场定价错误（自相矛盾）；8-25 修"取 TOP1 低赔"时修成"全量 EV 扫描"，仍以体彩赔率为价值锚，未回 bold play 原始设计（接受负 EV 优化密度） | 比分选法 freq-band（v5.3 默认，docs/2026-08-27-freq-band-design.html）：联赛频率模板+球队平移+形状带+q排序；生存阈按模板真实频率（平移不救真实出现不足、c=0 永不入选）；赔率只做门槛不做排序；<4 腿关档不硬凑；DC 退出比分链路（`--method=amix` 过渡一个月，freq_backtest.py 对照定生死）。教训：审计结论（DC 无增量）必须传导到所有下游用 DC 的地方；修 bug 先回设计初衷，别在错误地基上精修 |
