@@ -51,7 +51,7 @@ def test_build_ticket_structure():
         {"matchNumStr": f"周一00{i}", "league": "意甲", "home": f"H{i}", "away": f"A{i}",
          "had": {"h": 1.6, "d": 4.0, "a": 6.0},
          "crs": {"2:0": 9.0, "3:1": 22.0, "1:1": 5.8, "1:0": 6.5, "2:1": 8.0}} for i in range(1, 7)]}
-    t = build_ticket(odds_day, {"italy-serie-a": {"__n": 1000, "2:0": 90, "3:1": 30, "1:1": 115, "1:0": 98, "2:1": 86}}, seq=1)
+    t = build_ticket(odds_day, {"italy-serie-a": {"__n": 1000, "2:0": 90, "3:1": 30, "1:1": 115, "1:0": 98, "2:1": 86}}, seq=1, method="amix")
     assert t["seq"] == 1 and t["shape"] == "guilin"   # 奇数轮桂林
     base = t["tiers"]["base"]
     assert base["cost"] == 4 and len(base["legs"]) == 2          # 2 注 × 2 元
@@ -74,7 +74,7 @@ def test_build_ticket_base_degraded_four_pool():
         {"matchNumStr": f"周一00{i}", "league": "意甲", "home": f"H{i}", "away": f"A{i}",
          "had": {"h": 1.6, "d": 4.0, "a": 6.0},
          "crs": {"2:0": 9.0, "3:1": 22.0, "1:1": 5.8, "1:0": 6.5, "2:1": 8.0}} for i in (1, 2, 3, 4)]}
-    t = build_ticket(odds_day, {"italy-serie-a": {"__n": 1000, "2:0": 90, "3:1": 30, "1:1": 115, "1:0": 98, "2:1": 86}}, seq=1)
+    t = build_ticket(odds_day, {"italy-serie-a": {"__n": 1000, "2:0": 90, "3:1": 30, "1:1": 115, "1:0": 98, "2:1": 86}}, seq=1, method="amix")
     base = t["tiers"]["base"]
     assert base["cost"] == 2 and len(base["legs"]) == 1 and len(base["legs"][0]) == 4
     assert base["degraded"] is True
@@ -85,13 +85,13 @@ def test_upset_legs_schema():
         {"matchNumStr": f"周一00{i}", "league": "意甲", "home": f"H{i}", "away": f"A{i}",
          "had": {"h": 1.6, "d": 4.0, "a": 6.0},
          "crs": {"2:0": 9.0, "3:1": 22.0, "1:1": 5.8, "1:0": 6.5, "2:1": 8.0}} for i in (1, 2, 3, 4)]}
-    t = build_ticket(odds_day, {"italy-serie-a": {"__n": 1000, "2:0": 90, "3:1": 30, "1:1": 115, "1:0": 98, "2:1": 86}}, seq=1)
+    t = build_ticket(odds_day, {"italy-serie-a": {"__n": 1000, "2:0": 90, "3:1": 30, "1:1": 115, "1:0": 98, "2:1": 86}}, seq=1, method="amix")
     assert all(l["play"] == "crs" and l["pick"] == l.get("score") for l in t["tiers"]["upset"]["legs"])
     # pick_upset_legs 直取路径（带内 12.0）
     rows = [{"matchNumStr": "周一001", "leagueId": "italy-serie-a", "n": 400, "score": "2:0", "odds": 12.0, "ev": 0.4}]
     t2 = build_ticket({"matches": odds_day["matches"][:1] + [
         {"matchNumStr": f"周一00{i}", "league": "意甲", "home": f"H{i}", "away": f"A{i}",
-         "had": {"h": 1.6, "d": 4.0, "a": 6.0}, "crs": {"2:0": 12.0, "1:1": 5.8}} for i in (2, 3, 4)]}, {}, seq=3)
+         "had": {"h": 1.6, "d": 4.0, "a": 6.0}, "crs": {"2:0": 12.0, "1:1": 5.8}} for i in (2, 3, 4)]}, {}, seq=3, method="amix")
     # freq_table 为空 → ev_scan 无带内行 → 走 fallback；断言兜底路径同样规范
     assert all(l["play"] == "crs" and l["pick"] == l.get("score") for l in t2["tiers"]["upset"]["legs"])
     for l in pick_upset_legs(rows, "guilin"):
@@ -102,7 +102,7 @@ def test_thin_pool_costs_truthful():
     odds_day = {"matches": [
         {"matchNumStr": "周二005", "league": "欧冠", "home": "LASK", "away": "凯尔特人",
          "had": {"h": 2.5, "d": 3.2, "a": 2.7}, "crs": {"1:0": 11.0, "1:1": 6.0}}]}
-    t = build_ticket(odds_day, {}, seq=1)
+    t = build_ticket(odds_day, {}, seq=1, method="amix")
     assert t["tiers"]["base"]["cost"] == 2 and t["tiers"]["base"]["degraded"] is True   # 仅 1 非空注组
     assert t["tiers"]["mid"]["cost"] == 6 and t["tiers"]["mid"]["multiplier"] == 3      # 1 腿仍 ×3 倍真实成本
     assert t["tiers"]["mid"]["degraded"] is True    # 1 腿 <5

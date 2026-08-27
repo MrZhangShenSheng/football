@@ -114,3 +114,42 @@ def test_freq_legs_survival_gate_and_shift_flag():
                                 {"inter": [(2, 0)] * 10, "venezia": [(0, 2)] * 10}, zh,
                                 band=(10.0, 17.0))
     assert legs2 and legs2[0]["shifted"] is True
+
+
+def test_build_ticket_freq_default_and_gate():
+    """默认 method=freq：走 freq_legs；合格腿<4 → 关档空 upset（不硬凑）。"""
+    import boldplay
+    odds_day = {"matches": [
+        {"matchNumStr": "001", "league": "意甲", "home": "A", "away": "B",
+         "had": {"h": 1.6, "d": 4.0, "a": 6.0}, "crs": {"2:0": 12.0}}]}
+    t = boldplay.build_ticket(odds_day, {"italy-serie-a": _mini_blob()}, seq=1,
+                              method="freq", form={})
+    assert t["method"] == "freq"
+    assert t["tiers"]["upset"]["legs"] == [] and t["tiers"]["upset"]["cost"] == 0   # 1腿<4 关档
+    assert "关档" in t["tiers"]["upset"]["note"]
+
+
+def test_build_ticket_amix_unchanged():
+    """amix 过渡路径行为不变：仍走 mix_candidates（monkeypatch 隔离 DC/网络）。"""
+    import importlib
+    import boldplay
+    odds_day = {"matches": [
+        {"matchNumStr": "001", "league": "意甲", "home": "A", "away": "B",
+         "had": {"h": 1.6, "d": 4.0, "a": 6.0},
+         "crs": {"2:0": 12.0}, "ttg": {"s0": 9.5, "s1": 4.0, "s2": 3.2, "s3": 3.5,
+                                        "s4": 6.5, "s5": 11.0, "s6": 20.0, "s7": 30.0}}]}
+    calls = []
+
+    def fake_mix(od, ft, zh, hf, dc_params_fn=None, adjust_map=None):
+        calls.append(1)
+        return [{"play": "crs", "pick": "2:0", "odds": 12.0, "source": "dc",
+                 "matchNumStr": "001", "match": "A-B", "ev": 0.1}] * 3
+
+    orig = boldplay.mix_candidates
+    boldplay.mix_candidates = fake_mix
+    try:
+        t = boldplay.build_ticket(odds_day, {"italy-serie-a": _mini_blob()}, seq=1, method="amix")
+    finally:
+        boldplay.mix_candidates = orig
+    assert calls == [1] and len(t["tiers"]["upset"]["legs"]) == 3   # amix 链未动
+    assert t["method"] == "amix"

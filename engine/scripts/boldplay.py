@@ -1,7 +1,8 @@
-"""Bold Play 阶梯出票卡生成器：三档组装/限额反算/月封顶/settle 回填/A-MIX 跨池选腿。开发者 sszhang
+"""Bold Play 阶梯出票卡生成器：三档组装/限额反算/月封顶/settle 回填/比分选法双链。开发者 sszhang
 密度口径（体彩真实池水，skill v4.9 实测）：HAD 0.871^串 / CRS 0.661^串；4串单注限额50万。
-A-MIX（★ v5.1 混串合法后新默认）：每场 CRS/TTG/HAFU 三池全量 EV 扫描（铁律 8）取 EV 最优合规腿
-（EV>0 且 |p_model-p市场|<5pp），跨池组串 2~4 关；纯 CRS 形状带版退居 fallback。"""
+freq-band（★ 2026-08-27 重设计默认，docs/2026-08-27-freq-band-design.html）：联赛频率模板+球队平移
++形状带+q排序，DC 退出比分链路；合格腿<4 关档不硬凑。--method=amix 过渡保留一个月（DC×体彩EV
+三池全量扫描取最优，回测定去留），字节级不变。"""
 import glob, json, math, sys
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -10,6 +11,7 @@ from common import load_aliases
 from dc_predict import (score_matrix, ttg_dist, hafu_approx, devig as devig_n,
                         reweight_matrix, reweight_hafu, temper, load_half_params, load_temperature)
 from score_ev import build_freq_table, ev_scan, map_league
+from freq_band import build_team_form, freq_legs
 
 SHAPES = {"guilin": {"band": (10.0, 17.0), "multiplier": 4, "cost": 8},
           "meizhou": {"band": (18.0, 28.0), "multiplier": 5, "cost": 10}}
@@ -199,25 +201,38 @@ def mix_candidates(odds_day: dict, freq_table: dict, zh: dict, hafu: dict,
     return legs
 
 
-def build_ticket(odds_day: dict, freq_table: dict, seq: int) -> dict:
+def build_ticket(odds_day: dict, freq_table: dict, seq: int,
+                 method: str = "freq", form: dict | None = None) -> dict:
     shape = "guilin" if seq % 2 == 1 else "meizhou"
-    rows = ev_scan(odds_day, freq_table)
-    # upset 腿三链：A-MIX（v5.1 新默认）→ CRS 形状带 → 经验频率退路
-    mix = mix_candidates(odds_day, freq_table, _zh_map(), _hafu_odds())
-    if len(mix) >= 2:
-        upset = mix[:4]
-        play = f"mix-{len(upset)}串1"
-        upset_note = f"A-MIX 跨池EV最优{len(upset)}腿（{','.join(l['play'] for l in upset)}）"
-        low_cnt = sum(1 for l in upset
-                      if (l["play"] == "crs" and l["pick"] in ("0:0", "0:1", "1:0", "1:1", "0:2", "2:0", "1:2", "2:1", "0:3", "3:0", "1:3", "3:1", "2:2") and sum(int(t) for t in l["pick"].split(":")) <= 2)
-                      or (l["play"] == "ttg" and l["pick"] in ("0球", "1球")))
-        if low_cnt >= 3:
-            upset_note += f" ⚠️{low_cnt}/{len(upset)}腿低分同向,警惕ρ低分修正系统性偏差(8-25 TTG0球拒收教训,回填验证前慎跟)"
+    if method == "amix":
+        # ---- amix 过渡路径（一个月回测定去留，字节级不变；Tier3 退路随本路径共存亡）----
+        rows = ev_scan(odds_day, freq_table)
+        # upset 腿三链：A-MIX（v5.1 至 8-27 默认）→ CRS 形状带 → 经验频率退路
+        mix = mix_candidates(odds_day, freq_table, _zh_map(), _hafu_odds())
+        if len(mix) >= 2:
+            upset = mix[:4]
+            play = f"mix-{len(upset)}串1"
+            upset_note = f"A-MIX 跨池EV最优{len(upset)}腿（{','.join(l['play'] for l in upset)}）"
+            low_cnt = sum(1 for l in upset
+                          if (l["play"] == "crs" and l["pick"] in ("0:0", "0:1", "1:0", "1:1", "0:2", "2:0", "1:2", "2:1", "0:3", "3:0", "1:3", "3:1", "2:2") and sum(int(t) for t in l["pick"].split(":")) <= 2)
+                          or (l["play"] == "ttg" and l["pick"] in ("0球", "1球")))
+            if low_cnt >= 3:
+                upset_note += f" ⚠️{low_cnt}/{len(upset)}腿低分同向,警惕ρ低分修正系统性偏差(8-25 TTG0球拒收教训,回填验证前慎跟)"
+        else:
+            upset = pick_upset_legs(rows, shape) or _fallback_upset(odds_day)
+            upset = [dict(l, play="crs", pick=l.get("pick", l["score"])) for l in upset]  # settle() schema
+            play = "crs-4串1"
+            upset_note = f"{shape}形状 带宽{SHAPES[shape]['band']}"
     else:
-        upset = pick_upset_legs(rows, shape) or _fallback_upset(odds_day)
-        upset = [dict(l, play="crs", pick=l.get("pick", l["score"])) for l in upset]  # settle() schema
+        # ---- freq-band 默认路径（2026-08-27 重设计）：三步选法；<4 腿关档不硬凑 ----
+        legs = freq_legs(odds_day, freq_table, form if form is not None else build_team_form(),
+                         _zh_map(), SHAPES[shape]["band"])
+        upset = ([dict(l, play="crs", pick=l["score"]) for l in legs[:4]]   # settle() schema
+                 if len(legs) >= 4 else [])
         play = "crs-4串1"
-        upset_note = f"{shape}形状 带宽{SHAPES[shape]['band']}"
+        shifted_cnt = sum(1 for l in legs[:4] if l["shifted"])
+        upset_note = (f"{shape}形状 freq-band 带宽{SHAPES[shape]['band']} · 球队平移{shifted_cnt}/{len(upset)}腿"
+                      if upset else f"{shape}形状 freq-band 关档（合格腿{len(legs)}<4，不硬凑）")
     total_odds = 1.0
     for l in upset:
         total_odds *= l["odds"]
@@ -258,7 +273,7 @@ def build_ticket(odds_day: dict, freq_table: dict, seq: int) -> dict:
     if len(upset) < 4:                                      # 设计 4 串
         tiers["upset"]["degraded"] = True
     return {
-        "date": str(date.today()), "seq": seq, "shape": shape,
+        "date": str(date.today()), "seq": seq, "shape": shape, "method": method,
         "tiers": tiers,
         "totalCost": min(20, base_cost + mid_cost + cost),
         "densityNote": "期望返还 ≈ " + (f"{math.prod(POOL_KEEP.get(l.get('play', 'crs'), 0.8) for l in upset):.1%}"
@@ -370,8 +385,10 @@ def cmd_settle() -> None:
 
 
 def main() -> None:
-    if len(sys.argv) > 1 and sys.argv[1] == "settle":
+    args = sys.argv[1:]
+    if args and args[0] == "settle":
         return cmd_settle()
+    method = "amix" if "--method=amix" in args else "freq"
     latest = sorted(glob.glob("engine/cache/score_odds/*.json"))[-1]
     odds = json.load(open(latest, encoding="utf-8"))
     table = build_freq_table()
@@ -383,7 +400,7 @@ def main() -> None:
         return
     # 当轮=全部在售比赛日合并（2026-08-25 修复：原 matchDays[-1] 漏掉当晚场次）
     all_days = {"matches": [m for d in odds.get("matchDays", []) for m in d.get("matches", [])]}
-    out = build_ticket(all_days, table, seq)
+    out = build_ticket(all_days, table, seq, method=method)
     out["ranAt"] = str(date.today())
     path = f"data/03-predictions/{date.today()}-boldplay.json"
     with open(path, "w", encoding="utf-8") as f:
