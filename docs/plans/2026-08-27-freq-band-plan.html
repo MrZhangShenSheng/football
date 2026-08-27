@@ -1,0 +1,552 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>2026-08-27 freq-band 实施计划</title>
+<style>
+:root{--ink:#1f2937;--muted:#6b7280;--line:#e5e7eb;--bg:#f8fafc;--card:#fff;--accent:#059669;--accent-soft:#ecfdf5;--warn:#d97706;--warn-soft:#fffbeb;--code:#f3f4f6}
+*{box-sizing:border-box}body{margin:0;font-family:"Segoe UI","Microsoft YaHei",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.7}
+.wrap{max-width:960px;margin:0 auto;padding:28px 20px 60px}
+header{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px 26px;margin-bottom:18px}
+h1{margin:0 0 4px;font-size:21px;color:var(--accent)}
+.meta{color:var(--muted);font-size:13px}
+section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 26px;margin-bottom:16px}
+h2{font-size:16px;margin:0 0 12px;padding-bottom:6px;border-bottom:2px solid var(--accent-soft)}
+h3{font-size:14px;margin:14px 0 6px}
+code{font-family:Consolas,monospace;background:var(--code);padding:1px 5px;border-radius:4px;font-size:12.5px}
+pre{background:var(--code);border:1px solid var(--line);border-radius:8px;padding:12px 16px;overflow-x:auto;font-size:12.5px;line-height:1.55}
+pre b{color:var(--accent)}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:8px 0}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+th{background:var(--accent-soft)}
+.note{background:var(--warn-soft);border-left:4px solid var(--warn);padding:8px 14px;border-radius:0 8px 8px 0;font-size:13px;margin:10px 0}
+ol.steps{margin:8px 0;padding-left:22px}ol.steps li{margin:6px 0}
+.files{font-size:12.5px;background:var(--accent-soft);border-radius:6px;padding:6px 12px;margin:8px 0}
+.cmd{font-family:Consolas,monospace;font-size:12.5px;background:#0f172a;color:#e2e8f0;border-radius:6px;padding:6px 12px;display:block;margin:4px 0;white-space:pre-wrap}
+</style>
+</head><body><div class="wrap">
+
+<header>
+<h1>freq-band 比分选法实施计划</h1>
+<div class="meta">2026-08-27 · 设计依据 <code>docs/2026-08-27-freq-band-design.html</code> · 执行方式：Subagent-Driven（逐任务子代理 + 任务间审查）· 单写会话纪律：主工作区逐任务 commit，不用 worktree</div>
+<div><b>目标：</b>A-MIX（DC×体彩EV）退役为过渡开关，freq-band 三步选法（联赛频率+球队平移+形状带+q排序）成为 boldplay 默认链路。<br>
+<b>架构：</b>新模块 <code>engine/scripts/freq_band.py</code> 自包含（不 import boldplay，避免环）；boldplay 集成点 <code>build_ticket(method=)</code> 分支，amix 分支字节级不变；对照回测脚本独立。DC/温度/reweight 只服务 amix 过渡路径。<br>
+<b>技术栈：</b>Python 3 + pytest（平铺函数风格，<code>sys.path.insert</code> 注入 scripts）；数据源 fd CSV + <code>data/02-results/league/</code> + 体彩赔率存档。</div>
+</header>
+
+<section id="t0">
+<h2>Task 0 · 基线快照（改前锚点）</h2>
+<div class="files">Create: <code>engine/cache/freq_band_baseline.json</code></div>
+<ol class="steps">
+<li>全量测试基线：<span class="cmd">python -m pytest engine/tests -q</span> 期望：无 FAIL（项目口径：静默 0 输出=全过，如有输出原样记录）</li>
+<li>amix 行为快照（去易变字段 date/ranAt 后落盘，供 Task 6 字节级对照）：<span class="cmd">@'
+import sys, json, glob
+sys.path.insert(0, "engine/scripts")
+from boldplay import build_ticket, _zh_map, _hafu_odds, mix_candidates
+from score_ev import build_freq_table, ev_scan
+odds = json.load(open(sorted(glob.glob("engine/cache/score_odds/*.json"))[-1], encoding="utf-8"))
+day = {"matches": [m for d in odds.get("matchDays", []) for m in d.get("matches", [])]}
+t = build_ticket(day, build_freq_table(), seq=99)
+t.pop("date", None); t.pop("ranAt", None)
+json.dump(t, open("engine/cache/freq_band_baseline.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+print("[baseline] upset legs:", [l.get("pick", l.get("score")) for l in t["tiers"]["upset"]["legs"]])
+'@ | python -</span> 期望：打印 amix upset 腿列表（seq=99 → meizhou 形状）</li>
+<li>Commit：<span class="cmd">git add engine/cache/freq_band_baseline.json
+git commit -m "chore(freq-band): Task0 amix基线快照(去易变字段)"</span></li>
+</ol>
+</section>
+
+<section id="t1">
+<h2>Task 1 · freq_band 模块骨架 + 联赛基准速率</h2>
+<div class="files">Create: <code>engine/scripts/freq_band.py</code> · Test: <code>engine/tests/test_freq_band.py</code></div>
+<ol class="steps">
+<li>写失败测试（文件头 docstring + sys.path 注入，风格照 <code>test_boldplay_mix.py</code>）：
+<pre>"""freq-band 比分选法测试（2026-08-27 重设计：联赛频率+球队平移+形状带+q排序）。开发者 sszhang"""
+import sys
+from collections import Counter
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+
+import freq_band  # noqa: E402
+
+
+def test_league_base_rates():
+    """频率 Counter → (主队场均, 客队场均)：Σh·c/n 与 Σa·c/n。"""
+    blob = Counter({"__n": 3, "1:0": 1, "0:0": 1, "2:1": 1})
+    assert freq_band.league_base_rates(blob) == (1.0, 1 / 3)   # (1+0+2)/3, (0+0+1)/3
+    assert freq_band.league_base_rates(Counter()) == (0.0, 0.0)
+
+
+def test_global_pool():
+    """全局池 = 各联赛 Counter 汇总（欧冠等无映射联赛的模板）。"""
+    table = {"a": Counter({"__n": 2, "1:0": 1, "0:0": 1}),
+             "b": Counter({"__n": 2, "1:0": 2})}
+    pool = freq_band.global_pool(table)
+    assert pool["__n"] == 4 and pool["1:0"] == 3 and pool["0:0"] == 1</pre></li>
+<li>跑失败确认：<span class="cmd">python -m pytest engine/tests/test_freq_band.py -v</span> 期望：<b>ModuleNotFoundError: freq_band</b></li>
+<li>最小实现（<code>freq_band.py</code> 第一段——模块 docstring + 常量 + <code>_norm</code> + 两函数）：
+<pre>"""freq-band 比分选法（2026-08-27 重设计）：联赛频率模板+球队实力平移+形状带+q排序。开发者 sszhang
+铁律（docs/2026-08-27-freq-band-design.html）：分布形状来自真实赛果频率（不造分布）；
+赔率只做形状带门槛、不做排序；DC 不参与比分选择；数据缺失零破坏降级（纯联赛模板）。"""
+import glob, json, math
+from collections import Counter, defaultdict
+from band_calibration import DIVS, SEASONS, fetch_rows
+from score_ev import map_league
+
+RECENT_WINDOW = 10          # 球队近况窗口（场）
+FORM_MIN_MATCHES = 5        # 近况最少场数：不足 → 不平移（纯联赛模板降级）
+SURVIVE_Q = 0.01            # 生存阈值：平移后 q &lt; 1% 的比分视为噪声
+LAMBDA_CLAMP = (0.2, 4.5)   # λ 合理域（防小样本狂胜拉爆）
+SIGMA_FLOOR = 0.5           # 核带宽下限（防极端单点分布 σ→0）
+LEAGUE_STORE = ("japan", "korea", "sweden", "saudi")   # 本地赛果库联赛（与 score_ev 口径一致）
+
+
+def _norm(name: str) -> str:
+    """队名宽松匹配键（与 boldplay._dc_params 同口径）：小写去连字符去空格。"""
+    return str(name).lower().replace("-", "").replace(" ", "")
+
+
+def league_base_rates(blob: Counter) -> tuple:
+    """频率 Counter → (主场场均进球, 客场场均进球)：Σh·c/n 与 Σa·c/n。"""
+    n = blob.get("__n", 0)
+    if not n:
+        return 0.0, 0.0
+    gh = sum(int(s.split(":")[0]) * c for s, c in blob.items() if s != "__n")
+    ga = sum(int(s.split(":")[1]) * c for s, c in blob.items() if s != "__n")
+    return gh / n, ga / n
+
+
+def global_pool(freq_table: dict) -> Counter:
+    """全联赛汇总 Counter（欧冠/巴甲等无映射联赛的模板池）。"""
+    g = Counter()
+    for blob in freq_table.values():
+        g.update(blob)
+    return g</pre></li>
+<li>跑通过确认：<span class="cmd">python -m pytest engine/tests/test_freq_band.py -v</span> 期望：2 passed</li>
+<li>Commit：<span class="cmd">git add engine/scripts/freq_band.py engine/tests/test_freq_band.py
+git commit -m "feat(freq-band): 模块骨架+联赛基准速率/全局池"</span></li>
+</ol>
+</section>
+
+<section id="t2">
+<h2>Task 2 · 球队近况表 build_team_form + team_strength</h2>
+<div class="files">Modify: <code>engine/scripts/freq_band.py</code> · Test: <code>engine/tests/test_freq_band.py</code>（追加）</div>
+<ol class="steps">
+<li>追加失败测试（零网络纪律：fetch_rows_fn 与 league_glob 注入隔离）：
+<pre>def test_build_team_form_fd_and_local(tmp_path):
+    """fd 行 + 本地 league 库 → norm 键近况表；离网注入隔离（phase1 铁律）。"""
+    fd_rows = [{"HomeTeam": "Arsenal", "AwayTeam": "Man City", "FTHG": "2", "FTAG": "1"},
+               {"HomeTeam": "Man City", "AwayTeam": "Arsenal", "FTHG": "3", "FTAG": "0"}]
+    lg = tmp_path / "korea_matches.json"
+    lg.write_text('{"matches": [{"home": "ulsan", "away": "pohang-steelers", "hg": 2, "ag": 0}]}',
+                  encoding="utf-8")
+    form = freq_band.build_team_form(fetch_rows_fn=lambda s, d: fd_rows if d == "E0" else [],
+                                     league_glob=str(tmp_path / "*_matches.json"))
+    assert form["arsenal"] == [(2, 1), (0, 3)]        # (进球, 失球) 源内时序
+    assert form["mancity"] == [(1, 2), (3, 0)]        # norm("Man City") == norm("man-city")
+    assert form["ulsan"] == [(2, 0)] and form["pohangsteelers"] == [(0, 2)]
+
+
+def test_team_strength_window_and_gate():
+    """近 RECENT_WINDOW 场均值；&lt;FORM_MIN_MATCHES → None（降级不平移）。"""
+    form = {"x": [(1, 0)] * (freq_band.RECENT_WINDOW - 1) + [(3, 1)] * 2}
+    gf, ga = freq_band.team_strength(form, "x")      # 12 场取近 10：8×(1,0)+2×(3,1)
+    assert abs(gf - (8 + 6) / 10) &lt; 1e-9 and abs(ga - 2 / 10) &lt; 1e-9
+    assert freq_band.team_strength({"y": [(1, 1)] * 4}, "y") is None
+    assert freq_band.team_strength({}, "none") is None</pre></li>
+<li>跑失败确认：期望 <b>AttributeError: build_team_form</b></li>
+<li>追加实现：
+<pre>def build_team_form(fetch_rows_fn=fetch_rows,
+                    league_glob="data/02-results/league/*_matches.json") -> dict:
+    """fd CSV + 本地联赛库 → {norm队名: [(进球, 失球), ...]}（源内按时间序，取尾即最近）。
+    fd 队名(HomeTeam/AwayTeam) 与本地 tid 统一 norm 化做键；测试以注入隔离网络。"""
+    form = defaultdict(list)
+    for season in SEASONS:
+        for div in DIVS:
+            for r in fetch_rows_fn(season, div):
+                try:
+                    hg, ag = int(r["FTHG"]), int(r["FTAG"])
+                    form[_norm(r["HomeTeam"])].append((hg, ag))
+                    form[_norm(r["AwayTeam"])].append((ag, hg))
+                except (KeyError, ValueError, TypeError):
+                    continue
+    for path in glob.glob(league_glob):
+        key = path.replace("\\\\", "/").split("/")[-1].replace("_matches.json", "")
+        if key not in LEAGUE_STORE:
+            continue
+        data = json.loads(Path(path).read_text(encoding="utf-8"))
+        rows = data.get("matches", []) if isinstance(data, dict) else (data or [])
+        for m in rows:
+            try:
+                form[_norm(m["home"])].append((int(m["hg"]), int(m["ag"])))
+                form[_norm(m["away"])].append((int(m["ag"]), int(m["hg"])))
+            except (KeyError, ValueError, TypeError):
+                continue
+    return dict(form)
+
+
+def team_strength(form: dict, norm_name: str):
+    """norm队名 → 近 RECENT_WINDOW 场 (场均进, 场均失)；不足 FORM_MIN_MATCHES → None。"""
+    rows = form.get(norm_name) or []
+    if len(rows) &lt; FORM_MIN_MATCHES:
+        return None
+    recent = rows[-RECENT_WINDOW:]
+    return (sum(r[0] for r in recent) / len(recent),
+            sum(r[1] for r in recent) / len(recent))</pre>
+注意：需在文件顶部 import 中追加 <code>from pathlib import Path</code>。</li>
+<li>跑通过：期望 4 passed</li>
+<li>Commit：<span class="cmd">git commit -am "feat(freq-band): 球队近况表(fd+league库,注入隔离)+强度窗口门"</span></li>
+</ol>
+</section>
+
+<section id="t3">
+<h2>Task 3 · λ 乘法模型 lambdas</h2>
+<div class="files">Modify: <code>engine/scripts/freq_band.py</code> · Test: 追加</div>
+<ol class="steps">
+<li>失败测试：
+<pre>def test_lambdas_multiplicative_and_clamp():
+    """λh=主进×客失/联赛主场场均；λa 对称；缺强度/零基准→None；clamp 生效。"""
+    base = (1.5, 1.0)
+    assert freq_band.lambdas(base, (2.0, 0.8), (0.9, 1.5)) == (2.0 * 1.5 / 1.5, 0.9 * 0.8 / 1.0)
+    assert freq_band.lambdas(base, None, (0.9, 1.5)) is None      # 近况缺失降级
+    assert freq_band.lambdas((0.0, 1.0), (2.0, 1.0), (1.0, 1.0)) is None  # 空基准
+    assert freq_band.lambdas(base, (9.0, 0.1), (0.2, 9.0))[0] &lt;= freq_band.LAMBDA_CLAMP[1]
+    assert freq_band.lambdas(base, (0.05, 0.1), (0.05, 0.1)) == (freq_band.LAMBDA_CLAMP[0],) * 2</pre></li>
+<li>跑失败确认 → 3. 追加实现：
+<pre>def lambdas(base: tuple, home_str, away_str) -> tuple:
+    """乘法进球模型（Maher/Dixon-Coles 只取 λ 计算，不用 Poisson 造分布）：
+    λ_h = 主队场均进 × 客队场均失 / 模板主场场均；λ_a 对称。clamp 防极端。"""
+    if not home_str or not away_str or base[0] &lt;= 0 or base[1] &lt;= 0:
+        return None
+    lh = home_str[0] * away_str[1] / base[0]
+    la = away_str[0] * home_str[1] / base[1]
+    return (min(max(lh, LAMBDA_CLAMP[0]), LAMBDA_CLAMP[1]),
+            min(max(la, LAMBDA_CLAMP[0]), LAMBDA_CLAMP[1]))</pre></li>
+<li>跑通过（6 passed）→ 4. Commit：<span class="cmd">git commit -am "feat(freq-band): λ乘法模型+clamp护栏"</span></li>
+</ol>
+</section>
+
+<section id="t4">
+<h2>Task 4 · 高斯核平移 shifted_q</h2>
+<div class="files">Modify: <code>engine/scripts/freq_band.py</code> · Test: 追加</div>
+<ol class="steps">
+<li>失败测试：
+<pre>def _mini_blob():
+    return Counter({"__n": 100, "1:1": 30, "1:0": 25, "0:0": 20, "2:0": 15, "0:1": 10})
+
+
+def test_shifted_q_pure_mode():
+    """lam=None → 纯联赛频率归一化（零破坏降级）；c=0 比分恒 0。"""
+    q = freq_band.shifted_q(_mini_blob(), None)
+    assert abs(sum(q.values()) - 1.0) &lt; 1e-9
+    assert abs(q["1:1"] - 0.30) &lt; 1e-9 and q["3:3"] == 0.0 if "3:3" not in q else q["3:3"] == 0.0
+    assert freq_band.shifted_q(Counter(), None) == {}
+
+
+def test_shifted_q_direction_and_conservation():
+    """强主平移(λh 2.4/λa 0.5)：主胜向比分 q 抬升、客胜向回落；归一化守恒。"""
+    pure = freq_band.shifted_q(_mini_blob(), None)
+    shifted = freq_band.shifted_q(_mini_blob(), (2.4, 0.5))   # T=2.9, D=1.9
+    assert shifted["2:0"] &gt; pure["2:0"]          # (t=2,d=2) 靠近目标
+    assert shifted["0:1"] &lt; pure["0:1"]          # (t=1,d=-1) 远离目标
+    assert abs(sum(shifted.values()) - 1.0) &lt; 1e-9</pre></li>
+<li>跑失败确认 → 3. 追加实现：
+<pre>def shifted_q(blob: Counter, lam=None) -> dict:
+    """联赛频率 Counter → {比分: q}。lam=(λh,λa) 时按 (t=h+a, d=h−a) 双轴高斯核平移：
+    靠近本场目标的比分按距离比例抬升、靠近基准的回落——形状仍来自真实频率
+    （c=0 的格子恒 0：真实数据从未出现的比分永不被选）。lam=None → 纯频率归一化。"""
+    n = blob.get("__n", 0)
+    if not n:
+        return {}
+    counts = {s: c for s, c in blob.items() if s != "__n"}
+    coords = {}
+    for s in counts:
+        h, a = (int(x) for x in s.split(":"))
+        coords[s] = (h + a, h - a)
+    t_bar = sum(coords[s][0] * c for s, c in counts.items()) / n
+    d_bar = sum(coords[s][1] * c for s, c in counts.items()) / n
+    sig_t2 = max(sum((coords[s][0] - t_bar) ** 2 * c for s, c in counts.items()) / n, SIGMA_FLOOR ** 2)
+    sig_d2 = max(sum((coords[s][1] - d_bar) ** 2 * c for s, c in counts.items()) / n, SIGMA_FLOOR ** 2)
+    if lam is None:
+        return {s: c / n for s, c in counts.items()}
+    T, D = lam[0] + lam[1], lam[0] - lam[1]
+    w = {}
+    for s, c in counts.items():
+        t, d = coords[s]
+        g = (((t - t_bar) ** 2 - (t - T) ** 2) / (2 * sig_t2)
+             + ((d - d_bar) ** 2 - (d - D) ** 2) / (2 * sig_d2))
+        w[s] = c * math.exp(g)
+    z = sum(w.values())
+    return {s: v / z for s, v in w.items()} if z else {}</pre></li>
+<li>跑通过（8 passed）→ 4. Commit：<span class="cmd">git commit -am "feat(freq-band): 高斯核平移(保形状调位置,c=0恒0)"</span></li>
+</ol>
+</section>
+
+<section id="t5">
+<h2>Task 5 · 三步选法 freq_legs</h2>
+<div class="files">Modify: <code>engine/scripts/freq_band.py</code> · Test: 追加</div>
+<ol class="steps">
+<li>失败测试：
+<pre>def _odds_day():
+    return {"matches": [
+        {"matchNumStr": "001", "league": "意甲", "home": "国际米兰", "away": "威尼斯",
+         "had": {"h": 1.3, "d": 5.5, "a": 9.0},
+         "crs": {"2:0": 12.0, "2:1": 15.0, "3:1": 22.0, "1:1": 6.5, "0:2": 26.0, "4:0": 40.0}},
+        {"matchNumStr": "002", "league": "欧冠", "home": "X队", "away": "Y队",   # 无映射→全局池+无近况→纯模板
+         "had": {"h": 2.0, "d": 3.2, "a": 3.6},
+         "crs": {"2:0": 12.0, "0:2": 22.0}},
+    ]}
+
+
+def test_freq_legs_three_gates():
+    """闸门①q≥1% ②形状带 ③带内q最高每场1腿；跨场q降序；胜其他过滤。"""
+    table = {"italy-serie-a": _mini_blob()}
+    form = {}                                        # 无近况 → 纯模板
+    zh = {"国际米兰": "inter", "威尼斯": "venezia", "X队": "x", "Y队": "y"}
+    legs = freq_band.freq_legs(_odds_day(), table, form, zh, band=(10.0, 17.0))
+    assert [l["matchNumStr"] for l in legs] == ["001"]        # 002 的 0:0/0:1 不在带内低赔,2:0/0:2 在带内
+    leg = legs[0]
+    assert leg["score"] == "2:0" and leg["odds"] == 12.0       # 带内(2:0@12/2:1@15) q 最高 15%
+    assert leg["shifted"] is False and leg["q"] == 0.15
+
+
+def test_freq_legs_survival_gate_and_shift_flag():
+    """q&lt;1% 的带内比分出局；有近况输入 → shifted 标记。"""
+    table = {"italy-serie-a": Counter({"__n": 1000, "1:1": 300, "1:0": 280, "2:0": 5})}  # 2:0 q=0.5%
+    zh = {"国际米兰": "inter", "威尼斯": "venezia"}
+    legs = freq_band.freq_legs(_odds_day(), table,
+                               {"inter": [(2, 0)] * 10, "venezia": [(0, 2)] * 10}, zh,
+                               band=(10.0, 17.0))
+    assert legs == []                                          # 001 唯一带内 2:0 被生存阈拦 → 空手
+    table2 = {"italy-serie-a": Counter({"__n": 1000, "1:1": 300, "1:0": 280, "2:0": 50})}
+    legs2 = freq_band.freq_legs(_odds_day(), table2,
+                                {"inter": [(2, 0)] * 10, "venezia": [(0, 2)] * 10}, zh,
+                                band=(10.0, 17.0))
+    assert legs2 and legs2[0]["shifted"] is True</pre></li>
+<li>跑失败确认 → 3. 追加实现：
+<pre>def freq_legs(odds_day: dict, freq_table: dict, form: dict, zh: dict, band: tuple) -> list:
+    """三步选法（docs/2026-08-27-freq-band-design.html 图2）：
+    ①生存阈 q≥1% ②赔率∈形状带 ③带内 q 最高（每场 1 腿），跨场按 q 降序。
+    模板池：联赛映射命中用联赛频率，否则全局池；近况缺失自动降级纯模板。"""
+    lo, hi = band
+    pool = global_pool(freq_table)
+    legs = []
+    for m in odds_day.get("matches", []):
+        lg = map_league(m.get("league", ""))
+        blob = freq_table.get(lg) if lg else None
+        blob = blob if (blob and blob.get("__n", 0)) else pool
+        if not blob.get("__n", 0):
+            continue                                   # 全局池也空 → 无数据不选
+        base = league_base_rates(blob)
+        lam = lambdas(base,
+                      team_strength(form, _norm(zh.get(m.get("home", ""), ""))),
+                      team_strength(form, _norm(zh.get(m.get("away", ""), ""))))
+        qmap = shifted_q(blob, lam)
+        best = None                                    # (q, leg)
+        for s, o in (m.get("crs") or {}).items():
+            if ":" not in s:                           # 胜其他/平其他/负其他
+                continue
+            o = float(o)
+            if not (lo &lt;= o &lt;= hi):
+                continue
+            q = qmap.get(s, 0.0)
+            if q &lt; SURVIVE_Q:
+                continue
+            if best is None or q &gt; best[0]:
+                best = (q, {"matchNumStr": m["matchNumStr"],
+                            "match": f'{m.get("home")}-{m.get("away")}',
+                            "score": s, "odds": o, "q": round(q, 4),
+                            "shifted": lam is not None})
+        if best:
+            legs.append(best[1])
+    legs.sort(key=lambda l: -l["q"])
+    return legs</pre></li>
+<li>跑通过（10 passed）→ 4. Commit：<span class="cmd">git commit -am "feat(freq-band): 三步选法freq_legs(三闸门+每场1腿+q降序)"</span></li>
+</ol>
+</section>
+
+<section id="t6">
+<h2>Task 6 · boldplay 集成：--method 开关 + 关档 + 旧测试适配</h2>
+<div class="files">Modify: <code>engine/scripts/boldplay.py</code>（build_ticket 202-220 行区 / main 372-393 行区）· Modify: <code>engine/tests/test_boldplay.py</code> · Test: <code>engine/tests/test_freq_band.py</code>（追加集成测试）</div>
+<ol class="steps">
+<li>追加失败测试：
+<pre>def test_build_ticket_freq_default_and_gate():
+    """默认 method=freq：走 freq_legs；合格腿&lt;4 → 关档空 upset（不硬凑）。"""
+    import boldplay
+    odds_day = {"matches": [
+        {"matchNumStr": "001", "league": "意甲", "home": "A", "away": "B",
+         "had": {"h": 1.6, "d": 4.0, "a": 6.0}, "crs": {"2:0": 12.0}}]}
+    form = {}
+    t = boldplay.build_ticket(odds_day, {"italy-serie-a": _mini_blob()}, seq=1,
+                              method="freq", form=form)
+    assert t["method"] == "freq"
+    assert t["tiers"]["upset"]["legs"] == [] and t["tiers"]["upset"]["cost"] == 0   # 1腿&lt;4 关档
+    assert "关档" in t["tiers"]["upset"]["note"]
+    zh = boldplay._zh_map()
+    assert isinstance(zh, dict)
+
+
+def test_build_ticket_amix_unchanged():
+    """amix 过渡路径行为不变：仍走 mix_candidates（monkeypatch 隔离 DC/网络）。"""
+    import boldplay
+    odds_day = {"matches": [
+        {"matchNumStr": "001", "league": "意甲", "home": "A", "away": "B",
+         "had": {"h": 1.6, "d": 4.0, "a": 6.0},
+         "crs": {"2:0": 12.0}, "ttg": {"s0": 9.5, "s1": 4.0, "s2": 3.2, "s3": 3.5,
+                                        "s4": 6.5, "s5": 11.0, "s6": 20.0, "s7": 30.0}}]}
+    calls = []
+
+    def fake_mix(od, ft, zh, hf, dc_params_fn=None, adjust_map=None):
+        calls.append(1)
+        return [{"play": "crs", "pick": "2:0", "odds": 12.0, "source": "dc",
+                 "matchNumStr": "001", "match": "A-B", "ev": 0.1}] * 3
+
+    boldplay.mix_candidates = fake_mix
+    try:
+        t = boldplay.build_ticket(odds_day, {"italy-serie-a": _mini_blob()}, seq=1, method="amix")
+    finally:
+        import importlib
+        importlib.reload(boldplay)
+    assert calls == [1] and len(t["tiers"]["upset"]["legs"]) == 3   # amix 链未动
+    assert t["method"] == "amix"</pre></li>
+<li>跑失败确认（TypeError: unexpected keyword 'method' / 'form'）</li>
+<li>改 <code>boldplay.py</code>：
+<pre># 顶部 import 区追加：
+from freq_band import freq_legs, build_team_form
+
+# build_ticket 签名与 upset 段替换（202-220 行区）：
+def build_ticket(odds_day: dict, freq_table: dict, seq: int,
+                 method: str = "freq", form: dict | None = None) -> dict:
+    shape = "guilin" if seq % 2 == 1 else "meizhou"
+    if method == "amix":
+        # ---- amix 过渡路径（一个月回测定去留，字节级不变；Tier3 退路随本路径共存亡）----
+        rows = ev_scan(odds_day, freq_table)
+        mix = mix_candidates(odds_day, freq_table, _zh_map(), _hafu_odds())
+        if len(mix) &gt;= 2:
+            upset = mix[:4]
+            play = f"mix-{len(upset)}串1"
+            upset_note = f"A-MIX 跨池EV最优{len(upset)}腿（{','.join(l['play'] for l in upset)}）"
+            low_cnt = sum(1 for l in upset
+                          if (l["play"] == "crs" and l["pick"] in ("0:0", "0:1", "1:0", "1:1", "0:2", "2:0", "1:2", "2:1", "0:3", "3:0", "1:3", "3:1", "2:2") and sum(int(t) for t in l["pick"].split(":")) &lt;= 2)
+                          or (l["play"] == "ttg" and l["pick"] in ("0球", "1球")))
+            if low_cnt &gt;= 3:
+                upset_note += f" ⚠️{low_cnt}/{len(upset)}腿低分同向,警惕ρ低分修正系统性偏差(8-25 TTG0球拒收教训,回填验证前慎跟)"
+        else:
+            upset = pick_upset_legs(rows, shape) or _fallback_upset(odds_day)
+            upset = [dict(l, play="crs", pick=l.get("pick", l["score"])) for l in upset]
+            play = "crs-4串1"
+            upset_note = f"{shape}形状 带宽{SHAPES[shape]['band']}"
+    else:
+        # ---- freq-band 默认路径（2026-08-27 重设计）：三步选法；&lt;4 腿关档不硬凑 ----
+        upset = freq_legs(odds_day, freq_table, form if form is not None else build_team_form(),
+                          _zh_map(), SHAPES[shape]["band"])[:4]
+        upset = [dict(l, play="crs", pick=l["score"]) for l in upset]   # settle() schema
+        play = "crs-4串1"
+        shifted_cnt = sum(1 for l in upset if l["shifted"])
+        upset_note = (f"{shape}形状 freq-band 带宽{SHAPES[shape]['band']} · 球队平移{shifted_cnt}/{len(upset)}腿"
+                      if upset else f"{shape}形状 freq-band 关档（合格腿&lt;4，不硬凑）")
+
+# 返回 dict 追加字段（"shape": shape 行后）："method": method,</pre>
+<pre># main() 参数解析替换：
+def main() -> None:
+    args = sys.argv[1:]
+    if args and args[0] == "settle":
+        return cmd_settle()
+    method = "amix" if "--method=amix" in args else "freq"
+    ...  # 原逻辑不动，build_ticket 调用改 build_ticket(all_days, table, seq, method=method)</pre></li>
+<li>适配旧测试：<code>test_boldplay.py</code> 中 4 个直接调 <code>build_ticket(odds_day, table, seq)</code> 的用例（<code>test_build_ticket_structure</code> / <code>test_build_ticket_base_degraded_four_pool</code> / <code>test_upset_legs_schema</code> / <code>test_thin_pool_costs_truthful</code>）补 <code>method="amix"</code> 参数（它们测的就是 amix 链路行为，语义不变）</li>
+<li>跑通过：<span class="cmd">python -m pytest engine/tests -q</span> 期望全绿（含未动模块）</li>
+<li>amix 字节级对照：重跑 Task 0 快照命令 → 与 <code>engine/cache/freq_band_baseline.json</code> diff，期望仅 <code>"method"</code> 字段差异（upset 腿/成本/注全部一致）</li>
+<li>Commit：<span class="cmd">git commit -am "feat(freq-band): boldplay集成默认freq+amix开关过渡+关档不硬凑"</span></li>
+</ol>
+</section>
+
+<section id="t7">
+<h2>Task 7 · 对照回测 freq_backtest.py</h2>
+<div class="files">Create: <code>engine/scripts/freq_backtest.py</code> · 产出: <code>data/04-summaries/freq_backtest.json</code></div>
+<ol class="steps">
+<li>实现（存档文件名=日期，赛果窗口 d~d+2 复用 boldplay._load_results 口径）：
+<pre>"""freq vs amix 历史对照回测（freq-band 设计验收②）：score_odds 存档日 × 两法选腿 × 赛果判定。开发者 sszhang"""
+import glob, json
+from datetime import date
+from pathlib import Path
+from boldplay import build_ticket, _load_results
+from score_ev import build_freq_table
+from freq_band import build_team_form
+
+
+def main() -> None:
+    table = build_freq_table()
+    form = build_team_form()
+    out = {"ranAt": str(date.today()), "days": [], "totals": {}}
+    for method in ("freq", "amix"):
+        out["totals"][method] = {"legs": 0, "hits": 0, "odds_sum": 0.0, "tickets": 0,
+                                 "tickets_hit": 0, "days_covered": 0}
+    for p in sorted(glob.glob("engine/cache/score_odds/*.json")):
+        day = Path(p).stem
+        odds = json.loads(Path(p).read_text(encoding="utf-8"))
+        day_odds = {"matches": [m for d in odds.get("matchDays", []) for m in d.get("matches", [])]}
+        if not day_odds["matches"]:
+            continue
+        results = _load_results(day)
+        row = {"day": day, "results": len(results)}
+        for method in ("freq", "amix"):
+            ticket = build_ticket(day_odds, table, seq=1, method=method, form=form)
+            legs = ticket["tiers"]["upset"]["legs"]
+            hits = sum(1 for l in legs if (results.get(l["matchNumStr"]) or {}).get("score") == l["pick"])
+            covered = len(legs) &gt;= 4
+            t = out["totals"][method]
+            t["legs"] += len(legs); t["hits"] += hits
+            t["odds_sum"] += sum(l["odds"] for l in legs)
+            if covered:
+                t["tickets"] += 1; t["days_covered"] += 1
+                if hits == len(legs) == 4:
+                    t["tickets_hit"] += 1
+            row[method] = {"legs": len(legs), "hits": hits,
+                           "avgOdds": round(sum(l["odds"] for l in legs) / len(legs), 2) if legs else None,
+                           "picks": [f'{l["matchNumStr"]}:{l["pick"]}@{l["odds"]}' for l in legs]}
+        out["days"].append(row)
+    for method, t in out["totals"].items():
+        if t["legs"]:
+            t["hit_rate"] = round(t["hits"] / t["legs"], 4)
+            t["avg_odds"] = round(t["odds_sum"] / t["legs"], 2)
+    Path("data/04-summaries/freq_backtest.json").write_text(
+        json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
+    for method, t in out["totals"].items():
+        print(f"[freq-backtest] {method}: 腿{t['legs']} 中{t['hits']}"
+              f" 命中率{t.get('hit_rate', 0):.1%} 均赔{t.get('avg_odds', 0)}"
+              f" 成票日{t['days_covered']} 全中票{t['tickets_hit']}")
+    print("[freq-backtest] → data/04-summaries/freq_backtest.json")
+
+
+if __name__ == "__main__":
+    main()</pre></li>
+<li>跑真数据（fd CSV 网络拉取，需数分钟）：<span class="cmd">python engine/scripts/freq_backtest.py</span> 期望：两法统计行 + JSON 落盘</li>
+<li>人工核对：amix 行的 picks 与历史 boldplay JSON 一致性抽查；freq 覆盖日 ≥ amix（不依赖 DC 缓存）</li>
+<li>Commit：<span class="cmd">git add engine/scripts/freq_backtest.py data/04-summaries/freq_backtest.json
+git commit -m "feat(freq-band): freq/amix对照回测脚本+首跑归档"</span></li>
+</ol>
+</section>
+
+<section id="t8">
+<h2>Task 8 · 档案三处同步（含 CLAUDE.md）</h2>
+<div class="files">Modify: <code>skill/SKILL.md</code> · <code>skill/references/lessons.md</code> · <code>.claude/CLAUDE.md</code>（项目）· memory 三件</div>
+<ol class="steps">
+<li><b>SKILL.md</b>："高赔池全量 EV 扫描"章节重写为 freq-band 三步法（铁律 8 同步改写）；amix 旧法标注"过渡保留至回测定夺，调用 --method=amix"；示例同步替换（教训：示例即误导源）</li>
+<li><b>lessons.md</b>：追加条目"EV 之锚漂移（8-27）：审计证无增量的 DC 被拿去找市场定价错误=自相矛盾；比分选法回归数据驱动"</li>
+<li><b>.claude/CLAUDE.md</b>（项目）：boldplay 行加 freq-band 描述与 --method 说明</li>
+<li><b>memory</b>：改写 <code>score-selection-ev-scan-discipline.md</code>（EV 扫描→freq-band 三步法，标注 amix 过渡）；更新 <code>freq-band-redesign-in-progress.md</code> 为实施完成态；同步 <code>MEMORY.md</code> 索引行</li>
+<li>Commit：<span class="cmd">git commit -am "docs(freq-band): SKILL/lessons/CLAUDE.md 档案同步(三处一致)"</span>（memory 在 Claude 目录，不入本仓库 git）</li>
+</ol>
+</section>
+
+<section id="t9">
+<h2>Task 9 · 全量回归 + live smoke + 终验</h2>
+<ol class="steps">
+<li>pytest 全量：<span class="cmd">python -m pytest engine/tests -q</span> 期望全绿</li>
+<li>live smoke（freq 默认链路首次实战出卡）：<span class="cmd">python engine/scripts/boldplay.py</span> 期望：stdout 出卡 + <code>data/03-predictions/&lt;today&gt;-boldplay.json</code> 含 <code>"method": "freq"</code>，upset 腿全部 play=crs；不足 4 腿时显示关档 note（本轮 8-27 已有出票 JSON 时确认是否覆盖语义——同日重跑覆盖，属预期）</li>
+<li>验收对照设计文档第九节逐项核对（可复现性/回测/关档统计首条）</li>
+<li>Commit：<span class="cmd">git commit -am "feat(freq-band): live smoke 出卡+终验"</span></li>
+</ol>
+<div class="note"><b>纪律红线</b>：每任务一步一 commit；amix 分支只许移动不许改写（字节级对照兜底）；测试零网络（注入隔离）；落盘新 JSON 后必须 pytest 全量重跑。</div>
+</section>
+
+</div></body></html>
