@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-08-26",
-  "n_filled": 95,
+  "generatedAt": "2026-08-27",
+  "n_filled": 102,
   "gateReady": true,
   "humanReview": true,
   "report": [
     {
       "coeff": "开季修正",
       "n_trigger": 23,
-      "n_base": 72,
+      "n_base": 79,
       "hit_trigger": 0.87,
-      "hit_base": 0.694,
-      "status": "✅ 建议标已验证：触发场 87% ≥ 对照 69%",
-      "diff": "SKILL.md 修正系数『开季修正』标注 ✅已验证（正增益 +18%）"
+      "hit_base": 0.658,
+      "status": "✅ 建议标已验证：触发场 87% ≥ 对照 66%",
+      "diff": "SKILL.md 修正系数『开季修正』标注 ✅已验证（正增益 +21%）"
     },
     {
       "coeff": "联赛波动",
@@ -30,12 +30,12 @@
     },
     {
       "coeff": "战意状态机",
-      "n_trigger": 5,
-      "n_base": 90,
-      "hit_trigger": 0.8,
-      "hit_base": 0.733,
-      "status": "✅ 建议标已验证：触发场 80% ≥ 对照 73%",
-      "diff": "SKILL.md 修正系数『战意状态机』标注 ✅已验证（正增益 +7%）"
+      "n_trigger": 9,
+      "n_base": 93,
+      "hit_trigger": 0.556,
+      "hit_base": 0.72,
+      "status": "⚠️ 建议降级/删除：触发场 56% 显著低于对照 72%（差 16%）",
+      "diff": "SKILL.md 修正系数『战意状态机』标注 ⚠️证据薄弱 或删除（负增益 -16%）"
     },
     {
       "coeff": "平局率修正",

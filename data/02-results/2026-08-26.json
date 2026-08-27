@@ -1,135 +1,330 @@
 {
-  "date": "2026-08-26",
-  "version": "v4.6",
-  "mode": "single-anchor (Pinnacle missing, x0.97)",
-  "plans": [
-    {
-      "plan": "🚀搏奖",
-      "type": "高赔单关组",
-      "stake": "4元(2元×2注)",
-      "legs": [
-        "周三010 HAFU dd(半平/全平) @11.00 p=10.79% EV+18.7%",
-        "周四008 CRS 3-0(巴萨3-0) @8.25 p=9.64% EV+20.2%"
-      ],
-      "odds": null,
-      "evEach": true,
-      "hitRate": 0.52
-    }
-  ],
-  "matches": [
-    {
-      "idx": 1, "code": "周三003", "league": "英联赛杯",
-      "match": "热刺 vs 查尔顿",
-      "pick": "排除", "odds": null, "star": 2, "grade": "B",
-      "dc": null, "fused": null, "final": null,
-      "chain": null, "ev": null, "inPlan": null,
-      "note": "热刺5主力伤(攻击线瘫痪)·CRS/TTG/HAFU全量扫描0正值"
-    },
-    {
-      "idx": 2, "code": "周三004", "league": "英联赛杯",
-      "match": "纽卡斯尔 vs 西布罗姆",
-      "pick": "排除", "odds": null, "star": 2, "grade": "B",
-      "dc": null, "fused": null, "final": null,
-      "chain": null, "ev": null, "inPlan": null,
-      "note": "英联赛杯无DC·纽卡HAD 1.23超低赔EV极负"
-    },
-    {
-      "idx": 3, "code": "周三005", "league": "欧冠",
-      "match": "雅典AEK vs 索列夫",
-      "pick": "排除", "odds": null, "star": 1, "grade": "C",
-      "dc": null, "fused": null, "final": null,
-      "chain": null, "ev": null, "inPlan": null,
-      "note": "欧冠资格赛·索列夫数据全缺·无法达B级"
-    },
-    {
-      "idx": 4, "code": "周三006", "league": "欧冠",
-      "match": "采列 vs 布拉迪斯",
-      "pick": "排除", "odds": null, "star": 2, "grade": "B",
-      "dc": null, "fused": null, "final": null,
-      "chain": null, "ev": null, "inPlan": null,
-      "note": "概率胶着(42/29/29极差13pp)·★★避开"
-    },
-    {
-      "idx": 5, "code": "周三007", "league": "欧冠",
-      "match": "维京 vs 萨迪纳摩",
-      "pick": "排除", "odds": null, "star": 2, "grade": "B",
-      "dc": null, "fused": null, "final": null,
-      "chain": null, "ev": null, "inPlan": null,
-      "note": "概率胶着(41/28/31极差13pp)·★★避开"
-    },
-    {
-      "idx": 6, "code": "周三008", "league": "欧冠",
-      "match": "里昂 vs 费内巴切",
-      "pick": "HAD 主胜(参考)", "odds": 1.78, "star": 3, "grade": "B",
-      "dc": null, "fused": [0.53, 0.26, 0.21], "final": 0.53,
-      "chain": "单锚×0.97", "ev": -0.04, "inPlan": null,
-      "note": "费内巴切6核心伤(塔利斯卡/门将/ winger)·市场已反映·HAFU/CRS均无正值EV"
-    },
-    {
-      "idx": 7, "code": "周三009", "league": "英联赛杯",
-      "match": "普雷斯顿 vs 埃弗顿",
-      "pick": "排除", "odds": null, "star": 2, "grade": "B",
-      "dc": null, "fused": null, "final": null,
-      "chain": null, "ev": null, "inPlan": null,
-      "note": "埃弗顿方向清晰(p≈70%)但赔率1.38 EV负·无正值高赔选项"
-    },
-    {
-      "idx": 8, "code": "周三010", "league": "西甲(R1)",
-      "match": "皇马 vs 皇家社会",
-      "pick": "HAFU dd(半平/全平)", "odds": 11.00, "star": 4, "grade": "A",
-      "dc": [0.758, 0.1665, 0.0755], "fused": [0.772, 0.1476, 0.0804],
-      "final": 0.1079,
-      "chain": "R1×0.80", "ev": 0.187, "inPlan": "🚀搏奖",
-      "adjust_map": {"target": [0.730, 0.191, 0.079], "source": "fused+factor-adjusted"}
-    },
-    {
-      "idx": 9, "code": "周三011", "league": "巴西杯",
-      "match": "帕梅拉斯 vs 桑托斯",
-      "pick": "排除", "odds": null, "star": 2, "grade": "B",
-      "dc": null, "fused": null, "final": null,
-      "chain": null, "ev": null, "inPlan": null,
-      "note": "巴西杯无DC·帕梅拉斯p≈58%·EV全负"
-    },
-    {
-      "idx": 10, "code": "周三012", "league": "巴西杯",
-      "match": "达伽马 vs 维多利亚",
-      "pick": "排除", "odds": null, "star": 2, "grade": "B",
-      "dc": null, "fused": null, "final": null,
-      "chain": null, "ev": null, "inPlan": null,
-      "note": "巴西杯无DC·达伽马p≈54%·EV全负"
-    },
-    {
-      "idx": 11, "code": "周四007", "league": "西甲(R1)",
-      "match": "塞尔塔 vs 奥萨苏纳",
-      "pick": "HAFU dd(半平/全平)", "odds": 5.50, "star": 2, "grade": "B",
-      "dc": [0.5351, 0.3214, 0.1435], "fused": [0.543, 0.312, 0.145],
-      "final": 0.2039,
-      "chain": "R1×0.80", "ev": 0.104, "inPlan": null,
-      "note": "★★概率胶着但dd被低估·塞尔塔主场平局率50%·仅单关不入串",
-      "adjust_map": {"target": [0.508, 0.335, 0.157], "source": "fused+factor-adjusted"}
-    },
-    {
-      "idx": 12, "code": "周四008", "league": "西甲(R1)",
-      "match": "巴萨 vs 毕尔巴鄂",
-      "pick": "CRS 3-0", "odds": 8.25, "star": 4, "grade": "A",
-      "dc": [0.8556, 0.1112, 0.0332], "fused": [0.7792, 0.1466, 0.0742],
-      "final": 0.0964,
-      "chain": "R1×0.80", "ev": 0.202, "inPlan": "🚀搏奖",
-      "adjust_map": {"target": [0.827, 0.111, 0.062], "source": "fused+factor-adjusted"}
-    },
-    {
-      "idx": 13, "code": "周四009", "league": "巴西杯",
-      "match": "巴西国际 vs 格雷米奥",
-      "pick": "排除", "odds": null, "star": 2, "grade": "B",
-      "dc": null, "fused": null, "final": null,
-      "chain": null, "ev": null, "inPlan": null,
-      "note": "H2H 50%平局率·概率胶着·无正值"
-    }
-  ],
-  "ev_scan_summary": {
-    "CRS": "31×2场(皇社/巴萨) → 2项合规(巴萨3-0 EV+20.2%, 巴萨hh EV+1.5%)",
-    "TTG": "8×3场 → 0项合规",
-    "HAFU": "9×3场 → 3项合规(皇社dd +18.7%, 巴萨hh +1.5%, 塞尔塔dd +10.4%)",
-    "non_dc": "10场无DC → 0项合规"
+ "date": "2026-08-26",
+ "version": "v4.6",
+ "mode": "single-anchor (Pinnacle missing, x0.97)",
+ "plans": [
+  {
+   "plan": "🚀搏奖",
+   "type": "高赔单关组",
+   "stake": "4元(2元×2注)",
+   "legs": [
+    "周三010 HAFU dd(半平/全平) @11.00 p=10.79% EV+18.7%",
+    "周四008 CRS 3-0(巴萨3-0) @8.25 p=9.64% EV+20.2%"
+   ],
+   "odds": null,
+   "evEach": true,
+   "hitRate": 0.52
   }
+ ],
+ "matches": [
+  {
+   "idx": 1,
+   "code": "周三003",
+   "league": "英联赛杯",
+   "match": "热刺 vs 查尔顿",
+   "pick": "排除",
+   "odds": null,
+   "star": 2,
+   "grade": "B",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": null,
+   "ev": null,
+   "inPlan": null,
+   "note": "热刺5主力伤(攻击线瘫痪)·CRS/TTG/HAFU全量扫描0正值",
+   "result": "5-1",
+   "half": "2:0",
+   "directionHit": null,
+   "scoreHit": null
+  },
+  {
+   "idx": 2,
+   "code": "周三004",
+   "league": "英联赛杯",
+   "match": "纽卡斯尔 vs 西布罗姆",
+   "pick": "排除",
+   "odds": null,
+   "star": 2,
+   "grade": "B",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": null,
+   "ev": null,
+   "inPlan": null,
+   "note": "英联赛杯无DC·纽卡HAD 1.23超低赔EV极负",
+   "result": "3-2",
+   "half": "1:1",
+   "directionHit": null,
+   "scoreHit": null
+  },
+  {
+   "idx": 3,
+   "code": "周三005",
+   "league": "欧冠",
+   "match": "雅典AEK vs 索列夫",
+   "pick": "排除",
+   "odds": null,
+   "star": 1,
+   "grade": "C",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": null,
+   "ev": null,
+   "inPlan": null,
+   "note": "欧冠资格赛·索列夫数据全缺·无法达B级",
+   "result": "4-0",
+   "half": "3:0",
+   "directionHit": null,
+   "scoreHit": null
+  },
+  {
+   "idx": 4,
+   "code": "周三006",
+   "league": "欧冠",
+   "match": "采列 vs 布拉迪斯",
+   "pick": "排除",
+   "odds": null,
+   "star": 2,
+   "grade": "B",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": null,
+   "ev": null,
+   "inPlan": null,
+   "note": "概率胶着(42/29/29极差13pp)·★★避开",
+   "result": "1-1",
+   "half": "1:1",
+   "directionHit": null,
+   "scoreHit": null
+  },
+  {
+   "idx": 5,
+   "code": "周三007",
+   "league": "欧冠",
+   "match": "维京 vs 萨迪纳摩",
+   "pick": "排除",
+   "odds": null,
+   "star": 2,
+   "grade": "B",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": null,
+   "ev": null,
+   "inPlan": null,
+   "note": "概率胶着(41/28/31极差13pp)·★★避开",
+   "result": "3-1",
+   "half": "1:1",
+   "directionHit": null,
+   "scoreHit": null
+  },
+  {
+   "idx": 6,
+   "code": "周三008",
+   "league": "欧冠",
+   "match": "里昂 vs 费内巴切",
+   "pick": "HAD 主胜(参考)",
+   "odds": 1.78,
+   "star": 3,
+   "grade": "B",
+   "dc": null,
+   "fused": [
+    0.53,
+    0.26,
+    0.21
+   ],
+   "final": 0.53,
+   "chain": "单锚×0.97",
+   "ev": -0.04,
+   "inPlan": null,
+   "note": "费内巴切6核心伤(塔利斯卡/门将/ winger)·市场已反映·HAFU/CRS均无正值EV",
+   "result": "1-2",
+   "half": "0:2",
+   "directionHit": false,
+   "scoreHit": false
+  },
+  {
+   "idx": 7,
+   "code": "周三009",
+   "league": "英联赛杯",
+   "match": "普雷斯顿 vs 埃弗顿",
+   "pick": "排除",
+   "odds": null,
+   "star": 2,
+   "grade": "B",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": null,
+   "ev": null,
+   "inPlan": null,
+   "note": "埃弗顿方向清晰(p≈70%)但赔率1.38 EV负·无正值高赔选项",
+   "result": "0-4",
+   "half": "0:1",
+   "directionHit": null,
+   "scoreHit": null
+  },
+  {
+   "idx": 8,
+   "code": "周三010",
+   "league": "西甲(R1)",
+   "match": "皇马 vs 皇家社会",
+   "pick": "HAFU dd(半平/全平)",
+   "odds": 11.0,
+   "star": 4,
+   "grade": "A",
+   "dc": [
+    0.758,
+    0.1665,
+    0.0755
+   ],
+   "fused": [
+    0.772,
+    0.1476,
+    0.0804
+   ],
+   "final": 0.1079,
+   "chain": "R1×0.80",
+   "ev": 0.187,
+   "inPlan": "🚀搏奖",
+   "adjust_map": {
+    "target": [
+     0.73,
+     0.191,
+     0.079
+    ],
+    "source": "fused+factor-adjusted"
+   },
+   "result": "4-1",
+   "half": "1:1",
+   "directionHit": null,
+   "scoreHit": false
+  },
+  {
+   "idx": 9,
+   "code": "周三011",
+   "league": "巴西杯",
+   "match": "帕梅拉斯 vs 桑托斯",
+   "pick": "排除",
+   "odds": null,
+   "star": 2,
+   "grade": "B",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": null,
+   "ev": null,
+   "inPlan": null,
+   "note": "巴西杯无DC·帕梅拉斯p≈58%·EV全负"
+  },
+  {
+   "idx": 10,
+   "code": "周三012",
+   "league": "巴西杯",
+   "match": "达伽马 vs 维多利亚",
+   "pick": "排除",
+   "odds": null,
+   "star": 2,
+   "grade": "B",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": null,
+   "ev": null,
+   "inPlan": null,
+   "note": "巴西杯无DC·达伽马p≈54%·EV全负"
+  },
+  {
+   "idx": 11,
+   "code": "周四007",
+   "league": "西甲(R1)",
+   "match": "塞尔塔 vs 奥萨苏纳",
+   "pick": "HAFU dd(半平/全平)",
+   "odds": 5.5,
+   "star": 2,
+   "grade": "B",
+   "dc": [
+    0.5351,
+    0.3214,
+    0.1435
+   ],
+   "fused": [
+    0.543,
+    0.312,
+    0.145
+   ],
+   "final": 0.2039,
+   "chain": "R1×0.80",
+   "ev": 0.104,
+   "inPlan": null,
+   "note": "★★概率胶着但dd被低估·塞尔塔主场平局率50%·仅单关不入串",
+   "adjust_map": {
+    "target": [
+     0.508,
+     0.335,
+     0.157
+    ],
+    "source": "fused+factor-adjusted"
+   }
+  },
+  {
+   "idx": 12,
+   "code": "周四008",
+   "league": "西甲(R1)",
+   "match": "巴萨 vs 毕尔巴鄂",
+   "pick": "CRS 3-0",
+   "odds": 8.25,
+   "star": 4,
+   "grade": "A",
+   "dc": [
+    0.8556,
+    0.1112,
+    0.0332
+   ],
+   "fused": [
+    0.7792,
+    0.1466,
+    0.0742
+   ],
+   "final": 0.0964,
+   "chain": "R1×0.80",
+   "ev": 0.202,
+   "inPlan": "🚀搏奖",
+   "adjust_map": {
+    "target": [
+     0.827,
+     0.111,
+     0.062
+    ],
+    "source": "fused+factor-adjusted"
+   }
+  },
+  {
+   "idx": 13,
+   "code": "周四009",
+   "league": "巴西杯",
+   "match": "巴西国际 vs 格雷米奥",
+   "pick": "排除",
+   "odds": null,
+   "star": 2,
+   "grade": "B",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": null,
+   "ev": null,
+   "inPlan": null,
+   "note": "H2H 50%平局率·概率胶着·无正值"
+  }
+ ],
+ "ev_scan_summary": {
+  "CRS": "31×2场(皇社/巴萨) → 2项合规(巴萨3-0 EV+20.2%, 巴萨hh EV+1.5%)",
+  "TTG": "8×3场 → 0项合规",
+  "HAFU": "9×3场 → 3项合规(皇社dd +18.7%, 巴萨hh +1.5%, 塞尔塔dd +10.4%)",
+  "non_dc": "10场无DC → 0项合规"
+ }
 }

@@ -1,11 +1,11 @@
 {
   "meta": {
-    "lastUpdated": "2026-08-26",
+    "lastUpdated": "2026-08-27",
     "note": "实票账本:票=顶层实体(不按日期切分);实票=有结算记录的票,其余全是方案推演;出票后票面事实永不改写;派彩按形状算(4串11中2关只回1注2串1)",
     "totalTickets": 6,
-    "totalStake": 82,
+    "totalStake": 88,
     "totalPayout": 293.4,
-    "totalNet": 211.4,
+    "totalNet": 205.4,
     "disciplineEvents": [
       {
         "date": "2026-08-24",
@@ -246,6 +246,7 @@
       "source": "manual",
       "placedAt": "2026-08-26 00:15",
       "stake": 22,
+      "unitStake": 2,
       "shape": "4串11容错(CRS)",
       "matchDays": [
         "2026-08-26",
@@ -285,8 +286,8 @@
           "pick": "1-0",
           "odds": 6.0,
           "revoked": false,
-          "result": null,
-          "actual": null
+          "result": "miss",
+          "actual": "4:0(半3:0)"
         },
         {
           "code": "周三010",
@@ -296,8 +297,8 @@
           "pick": "2-0",
           "odds": 8.0,
           "revoked": false,
-          "result": null,
-          "actual": null
+          "result": "miss",
+          "actual": "4:1(半1:1)"
         }
       ],
       "payoutShape": "按形状结算:中2关回1注2串1/中3关回3注2串1+1注3串1/全中回全部11注;4串1注合赔5022中10044(超1万部分税20%)",
@@ -306,7 +307,13 @@
         "hitAtLeastTwo": "≈6.0%(至少回一注2串1,泊松近似)"
       },
       "settled": {
-        "status": "pending"
+        "status": "settled",
+        "hits": 0,
+        "winUnits": 0,
+        "payout": 0.0,
+        "net": -22.0,
+        "roi": -100.0,
+        "settledAt": "2026-08-27 09:44"
       }
     },
     {
@@ -314,8 +321,12 @@
       "source": "manual",
       "placedAt": "2026-08-26",
       "stake": 8,
+      "unitStake": 8,
       "shape": "2串1(HAFU+CRS)",
-      "matchDays": ["2026-08-27", "2026-08-28"],
+      "matchDays": [
+        "2026-08-27",
+        "2026-08-28"
+      ],
       "origin": "用户自选·2元×4倍",
       "legs": [
         {
@@ -324,9 +335,9 @@
           "match": "皇马 vs 皇家社会",
           "market": "HAFU",
           "pick": "dd(半平/全平)",
-          "odds": 11.00,
-          "result": null,
-          "actual": null
+          "odds": 11.0,
+          "result": "miss",
+          "actual": "4:1(半1:1)"
         },
         {
           "code": "周四008",
@@ -341,15 +352,21 @@
       ],
       "combinedOdds": 90.75,
       "potentialWin": 726,
-      "settled": {"status": "pending"}
+      "settled": {
+        "status": "pending"
+      }
     },
     {
       "id": "T006",
       "source": "manual",
       "placedAt": "2026-08-26",
       "stake": 8,
+      "unitStake": 8,
       "shape": "2串1(CRS+TTG)",
-      "matchDays": ["2026-08-27", "2026-08-28"],
+      "matchDays": [
+        "2026-08-27",
+        "2026-08-28"
+      ],
       "origin": "用户自选·2元×4倍",
       "legs": [
         {
@@ -368,14 +385,16 @@
           "match": "巴萨 vs 毕尔巴鄂",
           "market": "TTG",
           "pick": "5球",
-          "odds": 7.00,
+          "odds": 7.0,
           "result": null,
           "actual": null
         }
       ],
       "combinedOdds": 54.25,
       "potentialWin": 434,
-      "settled": {"status": "pending"}
+      "settled": {
+        "status": "pending"
+      }
     }
   ]
 }
