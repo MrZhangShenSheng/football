@@ -321,13 +321,15 @@
       "source": "manual",
       "placedAt": "2026-08-26",
       "stake": 8,
-      "unitStake": 8,
-      "shape": "2串1(HAFU+CRS)",
+      "unitStake": 2,
+      "units": 4,
+      "shape": "3场混串(2串1×3注+3串1×1注)",
       "matchDays": [
         "2026-08-27",
         "2026-08-28"
       ],
-      "origin": "用户自选·2元×4倍",
+      "origin": "用户自选·2元×4注",
+      "combos": "3×2串1(010×007/010×008/007×008)+1×3串1=4注×2元",
       "legs": [
         {
           "code": "周三010",
@@ -340,6 +342,16 @@
           "actual": "4:1(半1:1)"
         },
         {
+          "code": "周四007",
+          "league": "西甲",
+          "match": "塞尔塔 vs 奥萨苏纳",
+          "market": "CRS",
+          "pick": "2-0",
+          "odds": 7.75,
+          "result": null,
+          "actual": null
+        },
+        {
           "code": "周四008",
           "league": "西甲",
           "match": "巴萨 vs 毕尔巴鄂",
@@ -350,25 +362,39 @@
           "actual": null
         }
       ],
-      "combinedOdds": 90.75,
-      "potentialWin": 726,
+      "payoutShape": "按形状结算:010已miss,死3注(010×007@85.25/010×008@90.75/3串1@703.31);活注仅007×008合赔63.94→中回127.88",
+      "combinedOdds": 63.94,
+      "potentialWin": 127.88,
       "settled": {
         "status": "pending"
-      }
+      },
+      "note": "2026-08-27修正:原登记误记2场2串1(漏007腿,unitStake误8);用户报票面确认=3场2串1+3串1共4注8元"
     },
     {
       "id": "T006",
       "source": "manual",
       "placedAt": "2026-08-26",
       "stake": 8,
-      "unitStake": 8,
-      "shape": "2串1(CRS+TTG)",
+      "unitStake": 2,
+      "units": 4,
+      "shape": "3场混串(2串1×3注+3串1×1注)",
       "matchDays": [
         "2026-08-27",
         "2026-08-28"
       ],
-      "origin": "用户自选·2元×4倍",
+      "origin": "用户自选·2元×4注",
+      "combos": "3×2串1(010×007/010×008/007×008)+1×3串1=4注×2元",
       "legs": [
+        {
+          "code": "周三010",
+          "league": "西甲",
+          "match": "皇马 vs 皇家社会",
+          "market": "HAFU",
+          "pick": "dd(半平/全平)",
+          "odds": 11.0,
+          "result": "miss",
+          "actual": "4:1(半1:1)"
+        },
         {
           "code": "周四007",
           "league": "西甲",
@@ -390,11 +416,13 @@
           "actual": null
         }
       ],
+      "payoutShape": "按形状结算:010已miss,死3注(010×007@85.25/010×008@77.0/3串1@596.75);活注仅007×008合赔54.25→中回108.50",
       "combinedOdds": 54.25,
-      "potentialWin": 434,
+      "potentialWin": 108.5,
       "settled": {
         "status": "pending"
-      }
+      },
+      "note": "2026-08-27修正:原登记误记2场2串1(漏010腿);用户报票面确认=3场2串1+3串1共4注8元"
     }
   ]
 }
