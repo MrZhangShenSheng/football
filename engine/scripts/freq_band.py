@@ -115,3 +115,44 @@ def shifted_q(blob: Counter, lam=None) -> dict:
         w[s] = c * math.exp(g)
     z = sum(w.values())
     return {s: v / z for s, v in w.items()} if z else {}
+
+
+def freq_legs(odds_day: dict, freq_table: dict, form: dict, zh: dict, band: tuple) -> list:
+    """三步选法（docs/2026-08-27-freq-band-design.html 图2）：
+    ①生存阈：模板真实频率 q_pure≥1%（平移不救真实出现不足的比分——数据说话）
+    ②赔率∈形状带 ③带内平移后 q 最高（每场 1 腿），跨场按 q 降序。
+    模板池：联赛映射命中用联赛频率，否则全局池；近况缺失自动降级纯模板。"""
+    lo, hi = band
+    pool = global_pool(freq_table)
+    legs = []
+    for m in odds_day.get("matches", []):
+        lg = map_league(m.get("league", ""))
+        blob = freq_table.get(lg) if lg else None
+        blob = blob if (blob and blob.get("__n", 0)) else pool
+        if not blob.get("__n", 0):
+            continue                                   # 全局池也空 → 无数据不选
+        base = league_base_rates(blob)
+        lam = lambdas(base,
+                      team_strength(form, _norm(zh.get(m.get("home", ""), ""))),
+                      team_strength(form, _norm(zh.get(m.get("away", ""), ""))))
+        q_pure = shifted_q(blob, None)
+        q_rank = shifted_q(blob, lam)
+        best = None                                    # (q, leg)
+        for s, o in (m.get("crs") or {}).items():
+            if ":" not in s:                           # 胜其他/平其他/负其他
+                continue
+            o = float(o)
+            if not (lo <= o <= hi):
+                continue
+            if q_pure.get(s, 0.0) < SURVIVE_Q:
+                continue
+            q = q_rank.get(s, 0.0)
+            if best is None or q > best[0]:
+                best = (q, {"matchNumStr": m["matchNumStr"],
+                            "match": f'{m.get("home")}-{m.get("away")}',
+                            "score": s, "odds": o, "q": round(q, 4),
+                            "shifted": lam is not None})
+        if best:
+            legs.append(best[1])
+    legs.sort(key=lambda l: -l["q"])
+    return legs

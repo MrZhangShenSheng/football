@@ -76,3 +76,41 @@ def test_shifted_q_direction_and_conservation():
     assert shifted["2:0"] > pure["2:0"]          # (t=2,d=2) 靠近目标
     assert shifted["0:1"] < pure["0:1"]          # (t=1,d=-1) 远离目标
     assert abs(sum(shifted.values()) - 1.0) < 1e-9
+
+
+def _odds_day():
+    return {"matches": [
+        {"matchNumStr": "001", "league": "意甲", "home": "国际米兰", "away": "威尼斯",
+         "had": {"h": 1.3, "d": 5.5, "a": 9.0},
+         "crs": {"2:0": 12.0, "2:1": 15.0, "3:1": 22.0, "1:1": 6.5, "0:2": 26.0, "4:0": 40.0}},
+        {"matchNumStr": "002", "league": "欧冠", "home": "X队", "away": "Y队",   # 无映射→全局池+无近况→纯模板
+         "had": {"h": 2.0, "d": 3.2, "a": 3.6},
+         "crs": {"2:0": 12.0, "0:2": 22.0}},
+    ]}
+
+
+def test_freq_legs_three_gates():
+    """闸门①q≥1% ②形状带 ③带内q最高每场1腿；跨场q降序；胜其他过滤。"""
+    table = {"italy-serie-a": _mini_blob()}
+    form = {}                                        # 无近况 → 纯模板
+    zh = {"国际米兰": "inter", "威尼斯": "venezia", "X队": "x", "Y队": "y"}
+    legs = freq_band.freq_legs(_odds_day(), table, form, zh, band=(10.0, 17.0))
+    assert [l["matchNumStr"] for l in legs] == ["001", "002"]  # 002 无映射→全局池=同模板,2:0@12.0 q=15% 并列入选(q 同值稳定序)
+    leg = legs[0]
+    assert leg["score"] == "2:0" and leg["odds"] == 12.0       # 带内 q 最高 15%；3:1/0:2 真实数据未出现→恒0出局
+    assert leg["shifted"] is False and leg["q"] == 0.15
+
+
+def test_freq_legs_survival_gate_and_shift_flag():
+    """q<1% 的带内比分出局；有近况输入 → shifted 标记。"""
+    table = {"italy-serie-a": Counter({"__n": 1000, "1:1": 300, "1:0": 280, "2:0": 5})}  # 2:0 q=0.5%
+    zh = {"国际米兰": "inter", "威尼斯": "venezia"}
+    legs = freq_band.freq_legs(_odds_day(), table,
+                               {"inter": [(2, 0)] * 10, "venezia": [(0, 2)] * 10}, zh,
+                               band=(10.0, 17.0))
+    assert legs == []                                          # 001 唯一带内 2:0 被生存阈拦 → 空手
+    table2 = {"italy-serie-a": Counter({"__n": 1000, "1:1": 300, "1:0": 280, "2:0": 50})}
+    legs2 = freq_band.freq_legs(_odds_day(), table2,
+                                {"inter": [(2, 0)] * 10, "venezia": [(0, 2)] * 10}, zh,
+                                band=(10.0, 17.0))
+    assert legs2 and legs2[0]["shifted"] is True
