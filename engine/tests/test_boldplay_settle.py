@@ -39,11 +39,11 @@ def test_settle_missing_result_marks_none():
 
 
 def test_settle_real_schema_score_key():
-    """真实出票 JSON（2026-08-24-boldplay.json）：upset 腿 CRS 选项存 score 键（非 pick）。"""
+    """真实出票 JSON（2026-08-24-boldplay.json）字节级复刻：upset 腿无 play 键（按 tier 推断 crs）、选项存 score。"""
     real = {"totalCost": 18, "tiers": {
         "upset": {"cost": 8, "multiplier": 4,
-                  "legs": [{"matchNumStr": "周二005", "play": "crs", "score": "1:0", "odds": 11.0},
-                           {"matchNumStr": "周二006", "play": "crs", "score": "1:0", "odds": 13.0}]}}}
+                  "legs": [{"matchNumStr": "周二005", "score": "1:0", "odds": 11.0},
+                           {"matchNumStr": "周二006", "score": "1:0", "odds": 13.0}]}}}
     res = settle(real, {"周二005": "1:0", "周二006": "1:0"})
     assert res["legHits"]["upset"] == [[True, True]] and res["upsetHit"] is True
     assert abs(res["payout"] - 2 * 11.0 * 13.0 * 4) < 1e-6
@@ -96,8 +96,36 @@ def test_load_results_reads_half_from_disk(tmp_path, monkeypatch):
         "date": "2026-08-24",
         "matches": [{"code": "周一001", "result": "2-1", "half": "1-0"},
                     {"code": "周一002", "result": "0-0"}]}), encoding="utf-8")
-    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr("boldplay.ROOT", tmp_path)
     from boldplay import _load_results
     res = _load_results("2026-08-24")
     assert res["周一001"] == {"score": "2:1", "half": "1:0"}   # half 转冒号
     assert res["周一002"] == {"score": "0:0", "half": None}    # 无 half（ESPN 链路）→ None
+
+
+def test_cmd_settle_loops_all_cards(tmp_path, monkeypatch, capsys):
+    """循环结算：旧卡（腿已完赛）捞回补结算、未完赛卡跳过、已结算卡幂等。
+    2026-08-28 教训：只取最新一张时 08-27 卡被 08-28 卡顶住永远轮不到结算；
+    路径走 ROOT 后与 cwd 无关（run.py sh() cwd=engine/scripts 下裸相对 glob 落空）。"""
+    import json as _json
+    import boldplay
+    pred = tmp_path / "data" / "03-predictions"; pred.mkdir(parents=True)
+    res_dir = tmp_path / "data" / "02-results"; res_dir.mkdir(parents=True)
+    (res_dir / "2026-08-27.json").write_text(_json.dumps({"date": "2026-08-27",
+        "matches": [{"code": "周四001", "result": "4-1"}]}), encoding="utf-8")
+    (pred / "2026-08-26-boldplay.json").write_text(_json.dumps(
+        {"date": "2026-08-26", "totalCost": 4, "settle": {"payout": 0.0}, "tiers": {}}), encoding="utf-8")
+    (pred / "2026-08-27-boldplay.json").write_text(_json.dumps(
+        {"date": "2026-08-27", "totalCost": 4, "tiers": {"upset": {"cost": 4, "multiplier": 1,
+          "legs": [{"matchNumStr": "周四001", "play": "had", "pick": "主胜", "odds": 1.98}]}}}), encoding="utf-8")
+    (pred / "2026-08-28-boldplay.json").write_text(_json.dumps(
+        {"date": "2026-08-28", "totalCost": 4, "tiers": {"upset": {"cost": 4, "multiplier": 1,
+          "legs": [{"matchNumStr": "周五001", "play": "had", "pick": "主胜", "odds": 1.5}]}}}), encoding="utf-8")
+    monkeypatch.setattr(boldplay, "ROOT", tmp_path)
+    boldplay.cmd_settle()
+    out = capsys.readouterr().out
+    assert "已结算" in out and "赛果未回填" in out            # 幂等跳过 + 未完赛跳过
+    settled = _json.loads((pred / "2026-08-27-boldplay.json").read_text(encoding="utf-8"))
+    assert settled["settle"]["legHits"]["upset"] == [[True]]  # 旧卡被循环捞回结算
+    pending = _json.loads((pred / "2026-08-28-boldplay.json").read_text(encoding="utf-8"))
+    assert "settle" not in pending                             # 未完赛卡不写 settle

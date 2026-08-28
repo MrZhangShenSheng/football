@@ -67,5 +67,29 @@
  "totalCost": 18,
  "densityNote": "CRS 4串期望返还 ≈ 0.661^4 = 19.1%(体彩真实池水,非Pinnacle口径)",
  "postTaxNote": "单注奖金超1万部分税20%;4串单注限额50万已反算倍数",
- "ranAt": "2026-08-24"
+ "ranAt": "2026-08-24",
+ "settle": {
+  "legHits": {
+   "base": [
+    [
+     true
+    ]
+   ],
+   "mid": [
+    [
+     true
+    ]
+   ],
+   "upset": [
+    [
+     false,
+     false
+    ]
+   ]
+  },
+  "upsetHit": false,
+  "payout": 0.0,
+  "densityRecovered": 0.0,
+  "settledAt": "2026-08-28"
+ }
 }

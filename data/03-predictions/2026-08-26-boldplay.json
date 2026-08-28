@@ -119,5 +119,36 @@
  "totalCost": 16,
  "densityNote": "期望返还 ≈ 52.6%（各腿池水连乘crs/ttg）",
  "postTaxNote": "单注奖金超1万部分税20%;4串单注限额50万已反算倍数",
- "ranAt": "2026-08-26"
+ "ranAt": "2026-08-26",
+ "settle": {
+  "legHits": {
+   "base": [
+    [
+     false,
+     true,
+     false,
+     false
+    ]
+   ],
+   "mid": [
+    [
+     false,
+     true,
+     false,
+     false,
+     false
+    ]
+   ],
+   "upset": [
+    [
+     false,
+     false
+    ]
+   ]
+  },
+  "upsetHit": false,
+  "payout": 0.0,
+  "densityRecovered": 0.0,
+  "settledAt": "2026-08-28"
+ }
 }

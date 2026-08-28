@@ -7,7 +7,7 @@ import glob, json, math, sys
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from band_calibration import devid
-from common import load_aliases
+from common import ROOT, load_aliases
 from dc_predict import (score_matrix, ttg_dist, hafu_approx, devig as devig_n,
                         reweight_matrix, reweight_hafu, temper, load_half_params, load_temperature)
 from score_ev import build_freq_table, ev_scan, map_league
@@ -312,13 +312,14 @@ def settle(ticket: dict, results: dict) -> dict:
                 half = ent.get("half") if isinstance(ent, dict) else None
                 if sc is None:
                     hits.append(None); continue
-                if leg["play"] == "crs":
+                play = leg.get("play") or ("crs" if tier == "upset" else "had")  # 08-24 A-MIX 老卡 upset 腿无 play 键
+                if play == "crs":
                     ok = (leg.get("pick") or leg.get("score")) == sc
-                elif leg["play"] == "ttg":
+                elif play == "ttg":
                     h_, a_ = (int(x) for x in sc.split(":"))
                     want = str(leg.get("pick") or leg.get("score")).replace("球", "").replace("+", "")
                     ok = (h_ + a_ >= 7 and want == "7") if "7" in want and int(want) == 7 else (h_ + a_ == int(want))
-                elif leg["play"] == "hafu":
+                elif play == "hafu":
                     if not half:
                         hits.append(None); continue  # 无半场比分（ESPN 链路/旧档），人工判
                     pick = str(leg.get("pick") or leg.get("score"))
@@ -347,8 +348,8 @@ def _load_results(d: str) -> dict:
         base = datetime.strptime(d, "%Y-%m-%d").date()
     except ValueError:
         return out
-    for delta in (0, 1, 2):
-        p = Path(f"data/02-results/{base + timedelta(days=delta)}.json")
+    for delta in (-1, 0, 1, 2):   # -1：体彩票"周X编号"晚场跨自然日（周一001 实际周日晚开赛，出卡日=次日）
+        p = ROOT / "data" / "02-results" / f"{base + timedelta(days=delta)}.json"
         if not p.exists():
             continue
         data = json.loads(p.read_text(encoding="utf-8"))
@@ -360,28 +361,31 @@ def _load_results(d: str) -> dict:
 
 
 def cmd_settle() -> None:
-    paths = sorted(glob.glob("data/03-predictions/*-boldplay.json"))
+    # 旧→新循环结算全部卡：只取最新一张时，漏跑一轮的旧卡永远轮不到结算（2026-08-28
+    # 08-27 卡被 08-28 卡顶住教训）；路径走 ROOT 绝对定位，run.py sh() 的 cwd=engine/scripts
+    # 下裸相对 glob 落空 → verify 链路静默"无出票 JSON"同日实证
+    paths = sorted((ROOT / "data" / "03-predictions").glob("*-boldplay.json"))
     if not paths:
         print("[boldplay] 无出票 JSON"); return
-    p = Path(paths[-1])
-    ticket = json.loads(p.read_text(encoding="utf-8"))
-    if ticket.get("settle"):
-        print(f"[boldplay] {p.name} 已结算(payout={ticket['settle']['payout']:.0f})，跳过"); return
-    results = _load_results(ticket["date"])
-    codes = set()
-    for tier in ticket["tiers"].values():
-        legs = tier.get("legs") or []
-        for note in (legs if legs and isinstance(legs[0], list) else [legs]):
-            codes.update(l["matchNumStr"] for l in note)
-    missing = sorted(c for c in codes if c not in results)
-    if missing:
-        print(f"[boldplay] 赛果未回填: {', '.join(missing)}（完赛后重跑）"); return
-    res = settle(ticket, results)
-    ticket["settle"] = {**res, "settledAt": str(date.today())}
-    p.write_text(json.dumps(ticket, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
-    u = res["legHits"].get("upset", [[]])[0]
-    print(f"[boldplay] settle {p.name}: upset {sum(1 for h in u if h)}/{len(u)}关 "
-          f"全中={res['upsetHit']} payout={res['payout']:.0f} 密度回收={res['densityRecovered']} → 已写回 settle 字段")
+    for p in paths:
+        ticket = json.loads(p.read_text(encoding="utf-8"))
+        if ticket.get("settle"):
+            print(f"[boldplay] {p.name} 已结算(payout={ticket['settle']['payout']:.0f})，跳过"); continue
+        results = _load_results(ticket["date"])
+        codes = set()
+        for tier in ticket["tiers"].values():
+            legs = tier.get("legs") or []
+            for note in (legs if legs and isinstance(legs[0], list) else [legs]):
+                codes.update(l["matchNumStr"] for l in note)
+        missing = sorted(c for c in codes if c not in results)
+        if missing:
+            print(f"[boldplay] {p.name} 赛果未回填: {', '.join(missing)}（完赛后重跑）"); continue
+        res = settle(ticket, results)
+        ticket["settle"] = {**res, "settledAt": str(date.today())}
+        p.write_text(json.dumps(ticket, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+        u = res["legHits"].get("upset", [[]])[0]
+        print(f"[boldplay] settle {p.name}: upset {sum(1 for h in u if h)}/{len(u)}关 "
+              f"全中={res['upsetHit']} payout={res['payout']:.0f} 密度回收={res['densityRecovered']} → 已写回 settle 字段")
 
 
 def main() -> None:

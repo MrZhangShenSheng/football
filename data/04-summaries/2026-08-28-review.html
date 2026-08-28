@@ -1,0 +1,100 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>2026-08-28 回填复盘 · 08-27卡结算+settle链路修复</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#1c2430;--sub:#5b6675;--line:#e3e7ec;--ok:#0a7d43;--bad:#c0392b;--warn:#b07d00;--accent:#2456c4}
+@media (prefers-color-scheme: dark){:root{--bg:#14181f;--card:#1d232c;--ink:#e8ecf1;--sub:#9aa5b1;--line:#2d3540;--ok:#3ecf7a;--bad:#ff7a68;--warn:#f0c040;--accent:#7aa5f8}}
+*{box-sizing:border-box}
+body{margin:0;padding:24px;background:var(--bg);color:var(--ink);font:14px/1.65 "Microsoft YaHei",system-ui,sans-serif}
+.wrap{max-width:960px;margin:0 auto}
+h1{font-size:20px;margin:0 0 4px}h2{font-size:16px;margin:28px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.sub{color:var(--sub);font-size:12.5px;margin-bottom:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.kpi .v{font-size:22px;font-weight:700}
+.kpi .l{font-size:12px;color:var(--sub)}
+.ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--sub);font-weight:600;background:transparent}
+.tag{display:inline-block;padding:1px 8px;border-radius:99px;font-size:11.5px;border:1px solid var(--line)}
+.tag.ok{border-color:var(--ok);color:var(--ok)}.tag.bad{border-color:var(--bad);color:var(--bad)}.tag.warn{border-color:var(--warn);color:var(--warn)}
+.ic{width:15px;height:15px;vertical-align:-2.5px;margin-right:4px}
+ul{margin:6px 0;padding-left:20px}
+.src{font-size:12px;color:var(--sub);border-top:1px dashed var(--line);padding-top:10px;margin-top:20px}
+code{background:rgba(125,125,125,.14);padding:1px 5px;border-radius:4px;font-size:12.5px}
+</style></head><body><div class="wrap">
+<svg style="display:none"><symbol id="i-ball" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v6l-5 4M12 9l5 4M7 7l5 2 5-2"/></symbol><symbol id="i-fix" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 6l4 4-8 8H6v-4z"/><path d="M13 7l4 4"/></symbol><symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h9a3 3 0 013 3v13H7a3 3 0 01-3-3z"/><path d="M20 4v16"/></symbol><symbol id="i-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.5"/></symbol></svg>
+
+<h1><svg class="ic"><use href="#i-ball"/></svg>2026-08-28 回填复盘 · 08-27 卡结算 + settle 链路修复</h1>
+<div class="sub">生成 2026-08-28 10:40 · 范围：周四场赛果回填（周五001~014 今晚开赛，明早 verify 补） · 实票 6 张全已结算（无 pending）</div>
+
+<div class="grid">
+<div class="kpi"><div class="l">本轮回填场次</div><div class="v">2</div><div class="l">周四009 巴西杯 ×2记录（体彩对票）</div></div>
+<div class="kpi"><div class="l">08-27 卡结算</div><div class="v bad">-18元</div><div class="l">三档全灭 · HAD骨架 4中2</div></div>
+<div class="kpi"><div class="l">历史卡补结算</div><div class="v">5张</div><div class="l">upset档 0/14 腿 · 层4实测库</div></div>
+<div class="kpi"><div class="l">语料就绪度</div><div class="v">176<span style="font-size:13px">/199</span></div><div class="l">可校准✅ 可消融✅</div></div>
+</div>
+
+<h2><svg class="ic"><use href="#i-ball"/></svg>一、回填明细</h2>
+<div class="card">
+<table>
+<tr><th>场次</th><th>对阵</th><th>赛果</th><th>预测/排除</th><th>判定</th></tr>
+<tr><td>周四009</td><td>巴西国际 vs 格雷米奥（巴西杯）</td><td>0-0</td><td>排除（两记录均未选）</td><td class="ok">避开正确 ✓</td></tr>
+<tr><td colspan="5" style="color:var(--sub)">另补算历史方向漏判 5 条（带注释 pick 旧漏判，backfill 自动）：周三008 主胜(参考)→❌ · 周四008 HAD主胜→✅（2-0）等</td></tr>
+</table>
+<p><b>08-27 卡（周四场）结算明细</b>（settle 逐腿判定，总投入 18 元）：</p>
+<table>
+<tr><th>档位</th><th>腿</th><th>选项</th><th>赛果</th><th>判定</th></tr>
+<tr><td rowspan="4">base<br>4串1×2注<br><span class="tag bad">全灭</span></td><td>周四001 比尔森 vs 贝红星</td><td>主胜@1.98</td><td>4-1</td><td class="ok">✓</td></tr>
+<tr><td>周四002 奥莫尼亚 vs 圣图尔登</td><td>主胜@1.83</td><td>4-2</td><td class="ok">✓</td></tr>
+<tr><td>周四005 费伦茨 vs 特拉布宗</td><td><b>客胜</b>@2.04</td><td>4-0（主胜）</td><td class="bad">✗ 断</td></tr>
+<tr><td>周四007 塞尔塔 vs 奥萨苏纳</td><td>主胜@1.78</td><td>1-2（客胜）</td><td class="bad">✗ 断</td></tr>
+<tr><td>mid 5串1×3倍</td><td colspan="4">同上 4 腿 + 周四009 主胜@1.72 → 0-0 平 <span class="tag bad">全灭</span></td></tr>
+<tr><td>upset CRS<br><span class="tag warn">腿数不足降级</span></td><td>周四008 巴萨 0:0@28 · 周四007 0:2@22</td><td colspan="2">实际 2-0 · 1-2</td><td class="bad">0/2 全灭</td></tr>
+</table>
+<ul>
+<li><b>最差决策</b>：周四005 客胜——费伦茨欧战主场 4-0 打穿，附加赛次回合强队回归常态；与 08-26 卡同病（欧战/杯赛高波动场做 HAD 骨架）</li>
+<li><b>相对好的一面</b>：周四001/002 主胜骨架方向对（4-1/4-2 大胜），错在 005/007/009 三腿——50% 方向命中低于 63.2% 基线</li>
+<li><b>翻身档</b>（degraded 2 腿）本就不足 4 腿关档仍出——按 freq-band 铁律"合格腿&lt;4 关档不硬凑"，此卡系旧链路产物（seq6 出于 08-27，规则当日才定稿），08-28 卡（seq7）已按新规则</li>
+</ul>
+</div>
+
+<h2><svg class="ic"><use href="#i-fix"/></svg>二、settle 链路三处缺陷修复（本轮回填的工程副产品）</h2>
+<div class="card">
+<table>
+<tr><th>#</th><th>缺陷</th><th>修复</th><th>验证</th></tr>
+<tr><td>1</td><td><code>cmd_settle</code> 只结算最新一张卡——08-27 卡被 08-28 卡顶住永远轮不到</td><td>循环结算全部卡（旧→新，幂等跳过已结算/未完赛）</td><td class="ok">5 张历史卡补结算</td></tr>
+<tr><td>2</td><td>glob 裸相对路径——run.py sh() 的 cwd=engine/scripts 下落空 → verify 链路静默"无出票 JSON"</td><td>路径统一走 <code>common.ROOT</code> 绝对定位（corpus 等脚本既有惯例）</td><td class="ok">verify 链路可用</td></tr>
+<tr><td>3</td><td>08-24 A-MIX 老卡 upset 腿无 <code>play</code> 键 → KeyError；测试 fixture 手补 play 掩盖真实 schema</td><td>按 tier 推断缺省 play（upset→crs）；fixture 改字节级复刻真实卡</td><td class="ok">pytest 114 绿</td></tr>
+<tr><td>4</td><td>_load_results 窗口只有 +0/+1/+2 天——周一编号晚场（周日晚开赛）查不到前一天赛果</td><td>窗口扩为 -1~+2</td><td class="ok">08-25-r3 卡补结算</td></tr>
+</table>
+<p style="color:var(--sub);font-size:12.5px">历史卡 upset 档累计 0/14 腿（08-24:0/2 · 08-25:0/4 · 08-25-r3:0/4 · 08-26:0/2 · 08-27:0/2）——CRS 4串1 复合期望极低的实测注脚，与体彩 CRS 4串期望返还 19.1% 口径一致，入层4实测库。</p>
+</div>
+
+<h2><svg class="ic"><use href="#i-book"/></svg>三、闭环学习产出</h2>
+<div class="card">
+<table>
+<tr><th>环节</th><th>结果</th><th>说明</th></tr>
+<tr><td>corpus</td><td>199 条（回填 176 · CLV 7 · p_final 134）</td><td>可校准✅ 可消融✅；calibrate 因缺 p_dc 列跳过（新轮预测起补采）</td></tr>
+<tr><td>trend ⑦校准</td><td class="warn">⚠️ 40~55% 桶实际 34% vs 预测 47%</td><td>系统性高估 13pp——中概率档（三星区）预测过度自信，与 08-27 卡 HAD 骨架 4中2 互证</td></tr>
+<tr><td>ablate 开季修正</td><td class="ok">✅ 已验证：触发场 88% vs 对照 66%（n=24，+22pp）</td><td>系数保留，SKILL.md 可标"已验证"</td></tr>
+<tr><td>ablate 战意状态机</td><td class="bad">⚠️ 建议降级/删除：触发场 56% vs 对照 72%（n=9，-17pp）</td><td>样本尚小（9 场）但方向不利——待 n≥15 再定夺，人审不自动改</td></tr>
+<tr><td>learn japan</td><td class="warn">拒绝发布：holdout 0.9715 劣于 v2 的 0.9448</td><td>2026 新季 178 场入库后拟合变差——holdout 护栏正确拦截（缓存 japan_dc.json 已更新，models/latest 仍指 v2）</td></tr>
+<tr><td>learn saudi/sweden</td><td>跳过发布</td><td>训练集与 v5/v4 完全相同，无新数据</td></tr>
+<tr><td>temperature</td><td>三池 T=1.30（crs/ttg 启用 · hafu 按设计禁用）</td><td>6012 场评估集，Delta-ll 全正，断言通过</td></tr>
+</table>
+</div>
+
+<h2><svg class="ic"><use href="#i-warn"/></svg>四、教训沉淀</h2>
+<div class="card">
+<ul>
+<li><b>静默失败的第二形态</b>：verify 里"无出票 JSON"不是没卡，是 cwd 让 glob 落空——脚本一律走 ROOT 绝对路径（corpus 惯例），任何"无数据"输出都要疑路径而非疑数据（铁律 8 空结果追查再添一例）</li>
+<li><b>测试 fixture 不得手补真实数据缺的字段</b>：08-24 卡测试补了 play 键，真实卡没有——fixture 字节级复刻真实 schema 才是回归测试（skill"示例即误导源"同病）</li>
+<li><b>欧战附加赛/杯赛不做 HAD 骨架</b>：连续两轮（08-26/08-27 卡）在该类赛事断腿，波动远超联赛；候选纪律：附加赛次回合+两国杯赛只进 upset 档或不入卡</li>
+<li><b>--help 误触发</b>：boldplay.py 无 help 子命令，未知参数静默走生成动作——本次恰好确定性重生成无损伤，但 CLI 应对未知参数报错（记入待办，本轮不动）</li>
+</ul>
+</div>
+
+<div class="src"><b>数据来源</b>：data/02-results/2026-08-26.json · 2026-08-27.json（回填主文件）｜data/03-predictions/2026-08-2[4-8]-boldplay.json（settle 判定）｜data/04-summaries/corpus.json · ablate-report.json · trend.html（闭环产出）｜engine/cache/temperature.json（温度重拟）｜backfill 输出（体彩对票 2 场）</div>
+</div></body></html>
