@@ -276,7 +276,7 @@
     0.5207
    ],
    "final": 0.472,
-   "chain": "R2×0.9+单锚×0.97",
+   "chain": "R2×0.9+单锚×0.97+里尔终审3伤(市场CRS已异动消化)",
    "ev": -0.269,
    "inPlan": "B+M+U",
    "result": null,
@@ -813,9 +813,9 @@
     0.2348,
     0.498
    ],
-   "final": 0.45,
-   "chain": "R2×0.9+单锚×0.97",
-   "ev": -0.119,
+   "final": 0.468,
+   "chain": "R2×0.9+单锚×0.97+伤停d=+6(斯特拉斯9伤终审)",
+   "ev": -0.083,
    "inPlan": "B+M",
    "result": null,
    "directionHit": null,
@@ -1113,9 +1113,9 @@
     0.2673,
     0.4844
    ],
-   "final": 0.459,
-   "chain": "R3×0.95+单锚×0.97",
-   "ev": -0.155,
+   "final": 0.447,
+   "chain": "R3×0.95+单锚×0.97+伤停d=-1(勒诺尔芒终审)",
+   "ev": -0.178,
    "inPlan": "B+M",
    "result": null,
    "directionHit": null,
@@ -1665,6 +1665,7 @@
  "meta": {
   "anchorMode": "单锚(Pinnacle收盘不可得,体彩HAD去水为概率基准,×0.97,星级上限三星)",
   "freqNote": "freq-band 带内选腿 56场→56腿·平移53/56·取q前4; 终审换腿1(利兹C级→热刺A级)",
-  "dataSource": "sporttery五池+insight30场+fd七联赛双季+DC11联赛(fd)+3联赛(local)"
+  "dataSource": "sporttery五池+insight30场+fd七联赛双季+DC11联赛(fd)+3联赛(local)",
+  "finalReview": "2026-08-28 终审: 马竞勒诺尔芒缺阵d=-1(46%→44.7%维持腿); 斯特拉斯9伤d=+6(朗斯45%→46.8%); 里尔+3伤与CRS异动同向=市场已知不修订; 热刺0:1无新信息禁调换(定律3),周六晚首发后可复核"
  }
 }
