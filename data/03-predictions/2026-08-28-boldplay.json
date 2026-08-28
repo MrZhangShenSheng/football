@@ -1,0 +1,174 @@
+{
+ "date": "2026-08-28",
+ "seq": 6,
+ "shape": "meizhou",
+ "method": "freq",
+ "tiers": {
+  "base": {
+   "cost": 4,
+   "legs": [
+    [
+     {
+      "matchNumStr": "周五001",
+      "match": "不伦瑞克-柏林赫塔",
+      "play": "had",
+      "pick": "客胜",
+      "odds": 2.31
+     },
+     {
+      "matchNumStr": "周五003",
+      "match": "桑坦德-埃尔切",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 1.95
+     },
+     {
+      "matchNumStr": "周五005",
+      "match": "蒙彼利埃-布洛涅",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 1.63
+     },
+     {
+      "matchNumStr": "周五007",
+      "match": "罗达JC-布雷达",
+      "play": "had",
+      "pick": "客胜",
+      "odds": 1.96
+     }
+    ],
+    [
+     {
+      "matchNumStr": "周五005",
+      "match": "蒙彼利埃-布洛涅",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 1.63
+     },
+     {
+      "matchNumStr": "周五007",
+      "match": "罗达JC-布雷达",
+      "play": "had",
+      "pick": "客胜",
+      "odds": 1.96
+     },
+     {
+      "matchNumStr": "周五010",
+      "match": "里尔-巴黎圣曼",
+      "play": "had",
+      "pick": "客胜",
+      "odds": 1.55
+     },
+     {
+      "matchNumStr": "周五012",
+      "match": "雷克斯-伯明翰",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 2.3
+     }
+    ]
+   ],
+   "play": "had-4串1",
+   "note": "×2注互补(共享≤2场)"
+  },
+  "mid": {
+   "cost": 6,
+   "legs": [
+    [
+     {
+      "matchNumStr": "周五001",
+      "match": "不伦瑞克-柏林赫塔",
+      "play": "had",
+      "pick": "客胜",
+      "odds": 2.31
+     },
+     {
+      "matchNumStr": "周五003",
+      "match": "桑坦德-埃尔切",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 1.95
+     },
+     {
+      "matchNumStr": "周五005",
+      "match": "蒙彼利埃-布洛涅",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 1.63
+     },
+     {
+      "matchNumStr": "周五007",
+      "match": "罗达JC-布雷达",
+      "play": "had",
+      "pick": "客胜",
+      "odds": 1.96
+     },
+     {
+      "matchNumStr": "周五010",
+      "match": "里尔-巴黎圣曼",
+      "play": "had",
+      "pick": "客胜",
+      "odds": 1.55
+     }
+    ]
+   ],
+   "multiplier": 3,
+   "play": "had-5串1×3倍",
+   "note": "默认HAD"
+  },
+  "upset": {
+   "cost": 2,
+   "multiplier": 1,
+   "legs": [
+    {
+     "matchNumStr": "周五013",
+     "match": "里奥阿维-里斯本",
+     "score": "1:0",
+     "odds": 23.0,
+     "q": 0.1209,
+     "shifted": false,
+     "play": "crs",
+     "pick": "1:0"
+    },
+    {
+     "matchNumStr": "周五009",
+     "match": "AC米兰-威尼斯",
+     "score": "0:1",
+     "odds": 18.0,
+     "q": 0.0849,
+     "shifted": false,
+     "play": "crs",
+     "pick": "0:1"
+    },
+    {
+     "matchNumStr": "周五004",
+     "match": "赛哈海湾-利雅新月",
+     "score": "2:1",
+     "odds": 21.0,
+     "q": 0.0817,
+     "shifted": false,
+     "play": "crs",
+     "pick": "2:1"
+    },
+    {
+     "matchNumStr": "周五007",
+     "match": "罗达JC-布雷达",
+     "score": "2:0",
+     "odds": 20.0,
+     "q": 0.0683,
+     "shifted": false,
+     "play": "crs",
+     "pick": "2:0"
+    }
+   ],
+   "play": "crs-4串1",
+   "expOdds": 173880.0,
+   "winIfHit": 347760.0,
+   "note": "meizhou形状 freq-band 带宽(18.0, 28.0) · 球队平移0/4腿"
+  }
+ },
+ "totalCost": 12,
+ "densityNote": "期望返还 ≈ 19.1%（各腿池水连乘crs）",
+ "postTaxNote": "单注奖金超1万部分税20%;4串单注限额50万已反算倍数",
+ "ranAt": "2026-08-28"
+}
