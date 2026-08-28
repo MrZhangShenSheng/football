@@ -348,19 +348,34 @@ def expand_combos(n: int) -> list[tuple[int, ...]]:
     return [c for size in range(2, n + 1) for c in combinations(range(n), size)]
 
 
+TAX_THRESHOLD = 10000  # 体彩单注奖金个税起征线（元）
+TAX_RATE = 0.2         # 超线部分税率
+
+
+def after_tax(gross: float) -> float:
+    """单注奖金税后：超 1 万部分缴 20% 个税（体彩兑奖口径，按注计算）。"""
+    return gross if gross <= TAX_THRESHOLD else TAX_THRESHOLD + (gross - TAX_THRESHOLD) * (1 - TAX_RATE)
+
+
 def settle_payout(ticket: dict) -> dict:
-    """按形状算派彩：命中注=子集腿全 hit，派彩=Σ(unitStake×Π子集赔率)。
+    """按形状算派彩：命中注=子集腿全 hit，派彩=Σ(单注税后奖金)。
 
     票面腿一律参与结算（体彩出票不可撤，revoked 仅作纪律对照展示）。
+    注结构：带 bets（[{legs:[腿索引], multiplier:N}]）按 bets 算——4串1复式/倍投/
+    共享腿互补等非全组合形状必须显式声明，expand_combos 全组合口径会虚高；
+    无 bets 走全组合兜底（4串11/3场混串等旧形状，倍数1）。
     """
     legs, unit = ticket["legs"], ticket["unitStake"]
+    bets = ticket.get("bets")
+    combos = ([(tuple(b["legs"]), b.get("multiplier", 1)) for b in bets]
+              if bets else [(c, 1) for c in expand_combos(len(legs))])
     payout, win_units = 0.0, 0
-    for combo in expand_combos(len(legs)):
-        if all(legs[i].get("result") == "hit" for i in combo):
+    for idxs, mult in combos:
+        if all(legs[i].get("result") == "hit" for i in idxs):
             odds = 1.0
-            for i in combo:
+            for i in idxs:
                 odds *= legs[i]["odds"]
-            payout += unit * odds
+            payout += after_tax(unit * mult * odds)
             win_units += 1
     stake = ticket["stake"]
     return {"hits": sum(1 for l in legs if l.get("result") == "hit"),
