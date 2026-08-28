@@ -46,6 +46,21 @@ def test_team_strength_window_and_gate():
     assert freq_band.team_strength({}, "none") is None
 
 
+def test_build_team_form_alias_dual_keys(tmp_path):
+    """fd 行双键收录：norm(fd名) 与 norm(tid)（经 aliases.fd 对照）同数据——
+    体彩中文→zh_map→tid 后可命中 fd 库数据（tid≠fd 名的队：bayern vs Bayern Munich）。"""
+    fd_rows = [{"HomeTeam": "Bayern Munich", "AwayTeam": "Bayer Leverkusen", "FTHG": "3", "FTAG": "0"}]
+    aliases = {"bayern": {"zh": "拜仁", "fd": "Bayern Munich"},
+               "leverkusen": {"zh": "勒沃库森", "fd": "Bayer Leverkusen"}}
+    form = freq_band.build_team_form(fetch_rows_fn=lambda s, d: fd_rows if (d == "D1" and s == "2526") else [],
+                                     league_glob=str(tmp_path / "*_matches.json"),
+                                     aliases=aliases)
+    assert form["bayernmunich"] == [(3, 0)]      # fd 名键（原始收录）
+    assert form["bayern"] == [(3, 0)]            # tid 键（别名对照复制）
+    assert form["bayerleverkusen"] == [(0, 3)]
+    assert form["leverkusen"] == [(0, 3)]
+
+
 def test_lambdas_multiplicative_and_clamp():
     """λh=主进×客失/模板主场场均；λa 对称；缺强度/零基准→None；clamp 生效。"""
     base = (1.5, 1.0)

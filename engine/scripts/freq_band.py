@@ -39,17 +39,35 @@ def global_pool(freq_table: dict) -> Counter:
 
 
 def build_team_form(fetch_rows_fn=fetch_rows,
-                    league_glob="data/02-results/league/*_matches.json") -> dict:
+                    league_glob="data/02-results/league/*_matches.json",
+                    aliases: dict | None = None) -> dict:
     """fd CSV + 本地联赛库 → {norm队名: [(进球, 失球), ...]}（源内按时间序，取尾即最近）。
-    fd 队名(HomeTeam/AwayTeam) 与本地 tid 统一 norm 化做键；测试以 fetch_rows_fn/league_glob 注入隔离网络。"""
+    fd 队名(HomeTeam/AwayTeam) 与本地 tid 统一 norm 化做键；fd 行经 aliases.fd 对照双写 tid 键
+    （tid≠fd 名的队：bayern vs Bayern Munich——体彩中文→zh_map→tid 才能命中 fd 数据）。
+    测试以 fetch_rows_fn/league_glob/aliases 注入隔离网络。"""
+    if aliases is None:
+        from common import load_aliases
+        aliases = load_aliases()
+    fd_to_tid = {}
+    for tid, srcs in aliases.items():
+        if isinstance(srcs, dict) and srcs.get("fd"):
+            fd_to_tid[_norm(srcs["fd"])] = _norm(tid)
+
+    def add(name: str, row: tuple):
+        key = _norm(name)
+        form[key].append(row)
+        tid_key = fd_to_tid.get(key)
+        if tid_key and tid_key != key:
+            form[tid_key].append(row)     # fd 名 → tid 双键（同一行两键各存一份）
+
     form = defaultdict(list)
     for season in SEASONS:
         for div in DIVS:
             for r in fetch_rows_fn(season, div):
                 try:
                     hg, ag = int(r["FTHG"]), int(r["FTAG"])
-                    form[_norm(r["HomeTeam"])].append((hg, ag))
-                    form[_norm(r["AwayTeam"])].append((ag, hg))
+                    add(r["HomeTeam"], (hg, ag))
+                    add(r["AwayTeam"], (ag, hg))
                 except (KeyError, ValueError, TypeError):
                     continue
     for path in glob.glob(league_glob):
