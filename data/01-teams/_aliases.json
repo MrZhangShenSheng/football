@@ -22,7 +22,10 @@
    "zh": "利雅得新月",
    "clubelo": null,
    "understat": null,
-   "espn": "Al Hilal"
+   "espn": "Al Hilal",
+   "variants": [
+    "利雅新月"
+   ]
   },
   "al-riyadh": {
    "zh": "利雅得",
@@ -106,7 +109,7 @@
    "espn": "Al Fateh"
   },
   "al-khaleej": {
-   "zh": "卡利杰",
+   "zh": "赛哈海湾",
    "clubelo": null,
    "understat": null,
    "espn": "Al Khaleej"
@@ -768,6 +771,18 @@
    "clubelo": null,
    "understat": null,
    "fd": "Gil Vicente"
+  },
+  "rio-ave": {
+   "zh": "里奥阿维",
+   "fd": "Rio Ave"
+  },
+  "sporting-cp": {
+   "zh": "里斯本",
+   "fd": "Sporting CP",
+   "variants": [
+    "里斯本竞技",
+    "葡萄牙体育"
+   ]
   }
  },
  "denmark": {
@@ -1059,6 +1074,18 @@
    "clubelo": null,
    "understat": null,
    "fd": "Monaco"
+  },
+  "paris-saint-germain": {
+   "zh": "巴黎圣日耳曼",
+   "fd": "Paris SG",
+   "variants": [
+    "巴黎圣曼",
+    "巴黎"
+   ]
+  },
+  "boulogne": {
+   "zh": "布洛涅",
+   "fd": "Boulogne"
   }
  },
  "netherlands": {
@@ -1078,7 +1105,11 @@
    ]
   },
   "excelsior-rotterdam": {
-   "zh": "罗达JC"
+   "zh": "精英队",
+   "variants": [
+    "鹿特丹精英",
+    "精英队"
+   ]
   },
   "fc-eindhoven-abbr": {
    "zh": "埃因FC",
@@ -1304,6 +1335,10 @@
    "zh": "拜仁",
    "fd": "Bayern Munich",
    "espn": "Bayern Munich"
+  },
+  "stuttgart": {
+   "zh": "斯图加特",
+   "fd": "Stuttgart"
   }
  },
  "germany-dfb-pokal": {
@@ -1413,6 +1448,36 @@
   "omonia-nicosia": {
    "zh": "奥莫尼亚",
    "espn": "Omonia Nicosia"
+  }
+ },
+ "germany-2-bundesliga": {
+  "hertha-bsc": {
+   "zh": "柏林赫塔",
+   "fd": "Hertha"
+  },
+  "osnabrueck": {
+   "zh": "奥斯纳",
+   "fd": "Osnabruck"
+  }
+ },
+ "netherlands-eerste": {
+  "roda-jc": {
+   "zh": "罗达JC",
+   "fd": "Roda JC"
+  },
+  "nac-breda": {
+   "zh": "布雷达",
+   "fd": "NAC Breda"
+  }
+ },
+ "england-championship": {
+  "birmingham": {
+   "zh": "伯明翰",
+   "fd": "Birmingham"
+  },
+  "wrexham": {
+   "zh": "雷克斯",
+   "fd": "Wrexham"
   }
  }
 }

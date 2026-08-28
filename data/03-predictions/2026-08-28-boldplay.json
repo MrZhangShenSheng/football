@@ -1,7 +1,7 @@
 {
  "date": "2026-08-28",
- "seq": 6,
- "shape": "meizhou",
+ "seq": 7,
+ "shape": "guilin",
  "method": "freq",
  "tiers": {
   "base": {
@@ -117,57 +117,57 @@
    "note": "默认HAD"
   },
   "upset": {
-   "cost": 2,
-   "multiplier": 1,
+   "cost": 8,
+   "multiplier": 4,
    "legs": [
     {
-     "matchNumStr": "周五013",
-     "match": "里奥阿维-里斯本",
+     "matchNumStr": "周五010",
+     "match": "里尔-巴黎圣曼",
+     "score": "0:0",
+     "odds": 16.0,
+     "q": 0.1458,
+     "shifted": true,
+     "play": "crs",
+     "pick": "0:0"
+    },
+    {
+     "matchNumStr": "周五001",
+     "match": "不伦瑞克-柏林赫塔",
+     "score": "0:0",
+     "odds": 15.0,
+     "q": 0.1274,
+     "shifted": true,
+     "play": "crs",
+     "pick": "0:0"
+    },
+    {
+     "matchNumStr": "周五007",
+     "match": "罗达JC-布雷达",
      "score": "1:0",
-     "odds": 23.0,
-     "q": 0.1209,
+     "odds": 13.0,
+     "q": 0.1043,
      "shifted": false,
      "play": "crs",
      "pick": "1:0"
     },
     {
-     "matchNumStr": "周五009",
-     "match": "AC米兰-威尼斯",
-     "score": "0:1",
-     "odds": 18.0,
-     "q": 0.0849,
-     "shifted": false,
+     "matchNumStr": "周五012",
+     "match": "雷克斯-伯明翰",
+     "score": "0:2",
+     "odds": 12.5,
+     "q": 0.1013,
+     "shifted": true,
      "play": "crs",
-     "pick": "0:1"
-    },
-    {
-     "matchNumStr": "周五004",
-     "match": "赛哈海湾-利雅新月",
-     "score": "2:1",
-     "odds": 21.0,
-     "q": 0.0817,
-     "shifted": false,
-     "play": "crs",
-     "pick": "2:1"
-    },
-    {
-     "matchNumStr": "周五007",
-     "match": "罗达JC-布雷达",
-     "score": "2:0",
-     "odds": 20.0,
-     "q": 0.0683,
-     "shifted": false,
-     "play": "crs",
-     "pick": "2:0"
+     "pick": "0:2"
     }
    ],
    "play": "crs-4串1",
-   "expOdds": 173880.0,
-   "winIfHit": 347760.0,
-   "note": "meizhou形状 freq-band 带宽(18.0, 28.0) · 球队平移0/4腿"
+   "expOdds": 39000.0,
+   "winIfHit": 312000.0,
+   "note": "guilin形状 freq-band 带宽(10.0, 17.0) · 球队平移3/4腿"
   }
  },
- "totalCost": 12,
+ "totalCost": 18,
  "densityNote": "期望返还 ≈ 19.1%（各腿池水连乘crs）",
  "postTaxNote": "单注奖金超1万部分税20%;4串单注限额50万已反算倍数",
  "ranAt": "2026-08-28"
