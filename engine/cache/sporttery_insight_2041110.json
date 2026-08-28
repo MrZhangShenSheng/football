@@ -1,0 +1,205 @@
+{
+ "fetchedAt": "2026-08-27",
+ "source": "sporttery",
+ "matchId": 2041110,
+ "match": {
+  "code": "周五012",
+  "league": "英冠",
+  "gameweek": "3",
+  "season": "2026/2027",
+  "home": "雷克斯",
+  "away": "伯明翰",
+  "kickoff": "2026-08-29 03:00",
+  "uniformMatchId": 2502488
+ },
+ "standing": {
+  "away": {
+   "groupName": "",
+   "phaseName": "Regular Season",
+   "ranking": "14",
+   "sAwayDrawMatchCnt": "1",
+   "sAwayLossGoalMatchCnt": "0",
+   "sAwayWinGoalMatchCnt": "0",
+   "sDrawMatchCnt": "2",
+   "sLossGoalMatchCnt": "0",
+   "sWinGoalMatchCnt": "0",
+   "seasonName": "2026/2027"
+  },
+  "home": {
+   "groupName": "",
+   "phaseName": "Regular Season",
+   "ranking": "13",
+   "sDrawMatchCnt": "2",
+   "sHomeDrawMatchCnt": "1",
+   "sHomeLossGoalMatchCnt": "0",
+   "sHomeWinGoalMatchCnt": "0",
+   "sLossGoalMatchCnt": "0",
+   "sWinGoalMatchCnt": "0",
+   "seasonName": "2026/2027"
+  }
+ },
+ "injuries": {
+  "home": [],
+  "away": []
+ },
+ "form": {
+  "goalAvg": {
+   "awayGoalAvgCnt": "1.6",
+   "awayGoalAvgCntRatio": "64.0",
+   "homeGoalAvgCnt": "0.9",
+   "homeGoalAvgCntRatio": "36.0",
+   "totalLegCnt": 10
+  },
+  "last10": {
+   "awayDrawMatchCnt": 3,
+   "awayLossGoalMatchCnt": 2,
+   "awayScoreRatio": "60",
+   "awayWinGoalMatchCnt": 5,
+   "homeDrawMatchCnt": 4,
+   "homeLossGoalMatchCnt": 4,
+   "homeScoreRatio": "33",
+   "homeWinGoalMatchCnt": 2,
+   "totalLegCnt": 10
+  },
+  "last10HomeAway": {
+   "awayDrawMatchCnt": 3,
+   "awayLossGoalMatchCnt": 3,
+   "awayScoreRatio": "50",
+   "awayWinGoalMatchCnt": 4,
+   "homeDrawMatchCnt": 3,
+   "homeLossGoalMatchCnt": 2,
+   "homeScoreRatio": "60",
+   "homeWinGoalMatchCnt": 5,
+   "totalLegCnt": 10
+  }
+ },
+ "h2h": {
+  "statistics": {
+   "drawMatchCnt": 2,
+   "drawProbability": "50%",
+   "goalCnt": 0,
+   "lossGoalCnt": 0,
+   "lossGoalMatchCnt": 2,
+   "lossProbability": "50%",
+   "netGoal": 0,
+   "sportteryTeamId": 0,
+   "teamId": 0,
+   "teamShortName": "雷克斯",
+   "totalLegCnt": 4,
+   "winGoalMatchCnt": 0,
+   "winProbability": "0%"
+  },
+  "matches": [
+   {
+    "date": "2026-04-12",
+    "home": "伯明翰",
+    "score": "2:0",
+    "ht": "0:0",
+    "away": "雷克斯",
+    "winner": "away"
+   },
+   {
+    "date": "2025-10-04",
+    "home": "雷克斯",
+    "score": "1:1",
+    "ht": "1:0",
+    "away": "伯明翰",
+    "winner": "draw"
+   },
+   {
+    "date": "2025-01-24",
+    "home": "雷克斯",
+    "score": "1:1",
+    "ht": "1:1",
+    "away": "伯明翰",
+    "winner": "draw"
+   },
+   {
+    "date": "2024-09-17",
+    "home": "伯明翰",
+    "score": "3:1",
+    "ht": "1:1",
+    "away": "雷克斯",
+    "winner": "away"
+   }
+  ]
+ },
+ "scorers": {
+  "away": {
+   "playerList": [
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "100%",
+     "injuryFlag": 0,
+     "personId": 317144,
+     "personName": "格雷",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 0,
+     "substituteMatchCnt": 2,
+     "suspensionFlag": 0,
+     "uniformNo": "10"
+    }
+   ],
+   "sportteryTeamId": 3,
+   "teamId": 669,
+   "teamShortName": "伯明翰",
+   "uniformTeamId": 27
+  },
+  "home": {
+   "playerList": [
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0.5",
+     "assistCnt": 1,
+     "assistProbability": "100%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "50%",
+     "injuryFlag": 0,
+     "personId": 651066,
+     "personName": "D. Imray",
+     "playerPositionCode": "Defender",
+     "playerPositionDesc": "后卫",
+     "startedMatchCnt": 2,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "30"
+    },
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "50%",
+     "injuryFlag": 0,
+     "personId": 260764,
+     "personName": "摩尔",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 2,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "19"
+    }
+   ],
+   "sportteryTeamId": 88,
+   "teamId": 715,
+   "teamShortName": "雷克斯",
+   "uniformTeamId": 1335
+  },
+  "seasonId": 15373,
+  "seasonName": "2026/2027",
+  "tournamentId": 278,
+  "tournamentShortName": "英冠",
+  "uniformLeagueId": 71,
+  "uniformMatchId": 2502488
+ }
+}
