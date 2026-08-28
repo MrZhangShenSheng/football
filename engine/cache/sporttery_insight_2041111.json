@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-08-27",
+ "fetchedAt": "2026-08-28",
  "source": "sporttery",
  "matchId": 2041111,
  "match": {
@@ -40,7 +40,35 @@
  },
  "injuries": {
   "home": [],
-  "away": []
+  "away": [
+   {
+    "name": "F. Ioannidis",
+    "pos": "前锋",
+    "no": "7",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 2,
+    "starts": 2
+   },
+   {
+    "name": "塞尔吉 阿尔蒂米拉",
+    "pos": "中场",
+    "no": "5",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 3,
+    "starts": 3
+   },
+   {
+    "name": "Iván Fresneda",
+    "pos": "后卫",
+    "no": "22",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 3,
+    "starts": 1
+   }
+  ]
  },
  "form": {
   "goalAvg": {
@@ -183,7 +211,7 @@
      "goalAvgCnt": "1.0",
      "goalCnt": 2,
      "goalProbability": "29%",
-     "injuryFlag": 0,
+     "injuryFlag": 1,
      "personId": 508528,
      "personName": "F. Ioannidis",
      "playerPositionCode": "Forward",

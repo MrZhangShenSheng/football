@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-08-27",
+ "fetchedAt": "2026-08-28",
  "source": "sporttery",
  "matchId": 2041103,
  "match": {
@@ -39,8 +39,46 @@
   }
  },
  "injuries": {
-  "home": [],
-  "away": []
+  "home": [
+   {
+    "name": "A. Gueguin",
+    "pos": "前锋",
+    "no": "22",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 0,
+    "starts": 0
+   },
+   {
+    "name": "Y. Issoufou",
+    "pos": "前锋",
+    "no": "7",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 3,
+    "starts": 0
+   },
+   {
+    "name": "N. Pays",
+    "pos": "前锋",
+    "no": "18",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 3,
+    "starts": 3
+   }
+  ],
+  "away": [
+   {
+    "name": "J. Martin",
+    "pos": "中场",
+    "no": "90",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 2,
+    "starts": 2
+   }
+  ]
  },
  "form": {
   "goalAvg": {
@@ -179,7 +217,7 @@
      "goalAvgCnt": "0.3",
      "goalCnt": 1,
      "goalProbability": "33%",
-     "injuryFlag": 0,
+     "injuryFlag": 1,
      "personId": 722262,
      "personName": "Y. Issoufou",
      "playerPositionCode": "Forward",
@@ -197,7 +235,7 @@
      "goalAvgCnt": "0.3",
      "goalCnt": 1,
      "goalProbability": "33%",
-     "injuryFlag": 0,
+     "injuryFlag": 1,
      "personId": 727618,
      "personName": "N. Pays",
      "playerPositionCode": "Forward",

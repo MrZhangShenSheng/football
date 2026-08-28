@@ -9,18 +9,11 @@
    "legs": [
     [
      {
-      "matchNumStr": "周五001",
-      "match": "不伦瑞克-柏林赫塔",
+      "matchNumStr": "周六001",
+      "match": "水户蜀葵-町田泽维",
       "play": "had",
       "pick": "客胜",
-      "odds": 2.31
-     },
-     {
-      "matchNumStr": "周五003",
-      "match": "桑坦德-埃尔切",
-      "play": "had",
-      "pick": "主胜",
-      "odds": 1.95
+      "odds": 1.75
      },
      {
       "matchNumStr": "周五005",
@@ -30,11 +23,18 @@
       "odds": 1.63
      },
      {
-      "matchNumStr": "周五007",
-      "match": "罗达JC-布雷达",
+      "matchNumStr": "周五010",
+      "match": "里尔-巴黎圣曼",
       "play": "had",
       "pick": "客胜",
-      "odds": 1.96
+      "odds": 1.55
+     },
+     {
+      "matchNumStr": "周六028",
+      "match": "塞维利亚-马竞",
+      "play": "had",
+      "pick": "客胜",
+      "odds": 1.84
      }
     ],
     [
@@ -46,13 +46,6 @@
       "odds": 1.63
      },
      {
-      "matchNumStr": "周五007",
-      "match": "罗达JC-布雷达",
-      "play": "had",
-      "pick": "客胜",
-      "odds": 1.96
-     },
-     {
       "matchNumStr": "周五010",
       "match": "里尔-巴黎圣曼",
       "play": "had",
@@ -60,11 +53,18 @@
       "odds": 1.55
      },
      {
-      "matchNumStr": "周五012",
-      "match": "雷克斯-伯明翰",
+      "matchNumStr": "周六017",
+      "match": "斯特拉斯-朗斯",
       "play": "had",
-      "pick": "主胜",
-      "odds": 2.3
+      "pick": "客胜",
+      "odds": 1.96
+     },
+     {
+      "matchNumStr": "周五001",
+      "match": "不伦瑞克-柏林赫塔",
+      "play": "had",
+      "pick": "客胜",
+      "odds": 2.31
      }
     ]
    ],
@@ -76,18 +76,11 @@
    "legs": [
     [
      {
-      "matchNumStr": "周五001",
-      "match": "不伦瑞克-柏林赫塔",
+      "matchNumStr": "周六001",
+      "match": "水户蜀葵-町田泽维",
       "play": "had",
       "pick": "客胜",
-      "odds": 2.31
-     },
-     {
-      "matchNumStr": "周五003",
-      "match": "桑坦德-埃尔切",
-      "play": "had",
-      "pick": "主胜",
-      "odds": 1.95
+      "odds": 1.75
      },
      {
       "matchNumStr": "周五005",
@@ -97,18 +90,25 @@
       "odds": 1.63
      },
      {
-      "matchNumStr": "周五007",
-      "match": "罗达JC-布雷达",
-      "play": "had",
-      "pick": "客胜",
-      "odds": 1.96
-     },
-     {
       "matchNumStr": "周五010",
       "match": "里尔-巴黎圣曼",
       "play": "had",
       "pick": "客胜",
       "odds": 1.55
+     },
+     {
+      "matchNumStr": "周六028",
+      "match": "塞维利亚-马竞",
+      "play": "had",
+      "pick": "客胜",
+      "odds": 1.84
+     },
+     {
+      "matchNumStr": "周六017",
+      "match": "斯特拉斯-朗斯",
+      "play": "had",
+      "pick": "客胜",
+      "odds": 1.96
      }
     ]
    ],
@@ -121,6 +121,26 @@
    "multiplier": 4,
    "legs": [
     {
+     "matchNumStr": "周六027",
+     "match": "尤文图斯-帕尔马",
+     "score": "0:0",
+     "odds": 17.0,
+     "q": 0.1725,
+     "shifted": true,
+     "play": "crs",
+     "pick": "0:0"
+    },
+    {
+     "matchNumStr": "周六019",
+     "match": "热刺-纽卡斯尔",
+     "score": "0:1",
+     "odds": 13.0,
+     "q": 0.1291,
+     "shifted": true,
+     "play": "crs",
+     "pick": "0:1"
+    },
+    {
      "matchNumStr": "周五010",
      "match": "里尔-巴黎圣曼",
      "score": "0:0",
@@ -131,44 +151,25 @@
      "pick": "0:0"
     },
     {
-     "matchNumStr": "周五001",
-     "match": "不伦瑞克-柏林赫塔",
-     "score": "0:0",
-     "odds": 15.0,
-     "q": 0.1274,
-     "shifted": true,
-     "play": "crs",
-     "pick": "0:0"
-    },
-    {
-     "matchNumStr": "周五007",
-     "match": "罗达JC-布雷达",
-     "score": "1:0",
+     "matchNumStr": "周六022",
+     "match": "佛罗伦萨-弗洛西诺",
+     "score": "0:1",
      "odds": 13.0,
-     "q": 0.1043,
-     "shifted": false,
-     "play": "crs",
-     "pick": "1:0"
-    },
-    {
-     "matchNumStr": "周五012",
-     "match": "雷克斯-伯明翰",
-     "score": "0:2",
-     "odds": 12.5,
-     "q": 0.1013,
+     "q": 0.1421,
      "shifted": true,
      "play": "crs",
-     "pick": "0:2"
+     "pick": "0:1"
     }
    ],
    "play": "crs-4串1",
-   "expOdds": 39000.0,
-   "winIfHit": 312000.0,
-   "note": "guilin形状 freq-band 带宽(10.0, 17.0) · 球队平移3/4腿"
+   "expOdds": 45968.0,
+   "winIfHit": 367744.0,
+   "note": "guilin形状 freq-band 带宽(10.0, 17.0) · 球队平移4/4腿·终审换腿1(利兹C级→热刺A顺延)"
   }
  },
  "totalCost": 18,
  "densityNote": "期望返还 ≈ 19.1%（各腿池水连乘crs）",
  "postTaxNote": "单注奖金超1万部分税20%;4串单注限额50万已反算倍数",
- "ranAt": "2026-08-28"
+ "ranAt": "2026-08-28",
+ "revisionNote": "Step6.5 终审: base/mid 重排(C级罗达JC/圣保利/大宫+伤停雷克斯→池内修正p最高A/B腿,R1零入串); upset 换1腿(周日009利兹0:0胶着C级→周六019热刺0:1 q12.91% A级顺延,合赔不变45968); 依据=insight伤停/数据分级为脚本链外信息边际"
 }
