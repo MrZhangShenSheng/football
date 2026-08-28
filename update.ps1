@@ -16,6 +16,16 @@ git pull --ff-only
 if ($LASTEXITCODE -ne 0) { Write-Host "    git pull failed (check local changes)" -ForegroundColor DarkYellow }
 Pop-Location
 
+# 1.5 skill -> arsenal sync (global rule: skill must be double-saved, byte-identical;
+#     arsenal repo is Windows-only D:\project\arsenal, absent on mac/linux update.sh by design)
+if (Test-Path "D:\project\arsenal") {
+    Write-Host "[1.5/7] Syncing skill to arsenal..." -ForegroundColor Yellow
+    Copy-Item "$HOME_DIR\skill\SKILL.md" "D:\project\arsenal\football-betting-prediction\SKILL.md" -Force
+    fc.exe /b "$HOME_DIR\skill\SKILL.md" "D:\project\arsenal\football-betting-prediction\SKILL.md" | Out-Null
+    if ($LASTEXITCODE -eq 0) { Write-Host "    OK: byte-identical" -ForegroundColor Green }
+    else { Write-Host "    ARSENAL SYNC FAILED - manual cmp required" -ForegroundColor Red }
+}
+
 # 2. pip deps sync (only installs if changed)
 Write-Host "[2/7] Sync Python deps..." -ForegroundColor Yellow
 python -m pip install -r "$HOME_DIR\engine\requirements.txt" --quiet --disable-pip-version-check

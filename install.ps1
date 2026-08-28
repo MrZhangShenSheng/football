@@ -28,6 +28,16 @@ if (Test-Path "$SKILL_LINK\SKILL.md") {
     Write-Host "    junction failed" -ForegroundColor Red; exit 1
 }
 
+# 2.5 skill -> arsenal sync (global rule: skill must be double-saved, byte-identical;
+#     only when arsenal repo exists on this machine)
+if (Test-Path "D:\project\arsenal") {
+    Write-Host "    syncing to arsenal..." -ForegroundColor Yellow
+    Copy-Item "$HOME_DIR\skill\SKILL.md" "D:\project\arsenal\football-betting-prediction\SKILL.md" -Force
+    fc.exe /b "$HOME_DIR\skill\SKILL.md" "D:\project\arsenal\football-betting-prediction\SKILL.md" | Out-Null
+    if ($LASTEXITCODE -eq 0) { Write-Host "    OK: arsenal byte-identical" -ForegroundColor Green }
+    else { Write-Host "    ARSENAL SYNC FAILED - manual cmp required" -ForegroundColor Red }
+}
+
 # 3. Persist FOOTBALL_HOME (needs new terminal to take effect)
 Write-Host "[3/4] Setting FOOTBALL_HOME..." -ForegroundColor Yellow
 [Environment]::SetEnvironmentVariable("FOOTBALL_HOME", $HOME_DIR, "User")
