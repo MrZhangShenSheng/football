@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>带内落点复盘 · 联赛/球队维度 × seq=7 方案对照</title>
+<style>
+:root{--ink:#1a1f2e;--mut:#6b7280;--line:#e5e7eb;--bg:#f8f9fb;--acc:#0f62fe;--warn:#b45309;--ok:#047857;--bandA:#94a3b8;--bandB:#0f62fe;--bandC:#7c3aed;--bandD:#f59e0b;--bandX:#e11d48}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font:14px/1.7 "Microsoft YaHei",system-ui,sans-serif;color:var(--ink);background:var(--bg);padding:24px;max-width:1100px;margin:0 auto}
+h1{font-size:21px;margin-bottom:2px}h2{font-size:17px;margin:26px 0 10px;border-left:4px solid var(--acc);padding-left:10px}
+.meta{color:var(--mut);font-size:12px;margin-bottom:14px}
+table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);margin:8px 0;font-size:13px}
+th,td{padding:6px 10px;border-bottom:1px solid var(--line);text-align:left}
+th{background:#f1f5f9;font-size:12px}td.c{text-align:center;white-space:nowrap}
+.bar{display:inline-block;height:10px;border-radius:2px;margin-right:4px;vertical-align:middle}
+.bA{background:var(--bandA)}.bB{background:var(--bandB)}.bC{background:var(--bandC)}.bD{background:var(--bandD)}.bX{background:var(--bandX)}
+.pct{font-weight:600;color:var(--acc)}
+.good{color:var(--ok)}.bad{color:var(--warn)}
+.card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px 16px;margin:10px 0}
+.card.warn{border-color:#fcd34d;background:#fffbeb}
+.note{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:13px}
+.legend{font-size:12px;color:var(--mut);margin:6px 0}
+svg text{font-family:"Microsoft YaHei",sans-serif}
+</style></head><body>
+<h1>带内落点复盘 · 联赛/球队维度 × 本轮方案对照</h1>
+<p class="meta">样本：2026-08-24 ~ 08-27 共 38 场（体彩 CRS 赔率存档 × 已回填赛果交集）· 对照方案：2026-08-28 boldplay seq=7（18 元三档）· 生成 2026-08-28</p>
+
+<h2>一、联赛维度：实际比分落带分布</h2>
+<div class="legend"><span class="bar bA"></span>A &lt;10倍 · <span class="bar bB"></span>B 10-17（桂林带）· <span class="bar bC"></span>C 18-28（梅州带）· <span class="bar bD"></span>D 29+ · <span class="bar bX"></span>X 其他档</div>
+<table>
+<thead><tr><th>联赛</th><th>场次</th><th>分布（A / B / C / D）</th><th>带内占比 B+C</th><th>特征</th></tr></thead>
+<tbody>
+<tr><td>欧冠</td><td class="c">10</td><td><span class="bar bA" style="width:40px"></span>2 <span class="bar bB" style="width:100px"></span>5 <span class="bar bC" style="width:60px"></span>3</td><td class="c"><span class="pct">80%</span></td><td>资格赛火力差大，B 带主力产区</td></tr>
+<tr><td>西甲</td><td class="c">9</td><td><span class="bar bA" style="width:80px"></span>4 <span class="bar bB" style="width:100px"></span>5</td><td class="c"><span class="pct">56%</span></td><td>带内全落 B（10-17），无 C——最"标准"的桂林带联赛</td></tr>
+<tr><td>英联赛杯</td><td class="c">6</td><td><span class="bar bA" style="width:20px"></span>1 <span class="bar bB" style="width:20px"></span>1 <span class="bar bC" style="width:60px"></span>3</td><td class="c"><span class="pct">67%</span></td><td>全落 C（18-28）大分，强弱悬殊3球+</td></tr>
+<tr><td>欧罗巴</td><td class="c">6</td><td><span class="bar bA" style="width:60px"></span>3 <span class="bar bD" style="width:60px"></span>3</td><td class="c">0%</td><td>两极分化：要么热门要么 29+ 极冷，带内空白</td></tr>
+<tr><td>巴西杯</td><td class="c">4</td><td><span class="bar bA" style="width:60px"></span>3 <span class="bar bB" style="width:20px"></span>1</td><td class="c">25%</td><td>偏 A 低赔（南美 0:0/1:0 多）</td></tr>
+<tr><td>沙职</td><td class="c">3</td><td><span class="bar bA" style="width:20px"></span>1 <span class="bar bC" style="width:40px"></span>2</td><td class="c">67%</td><td>全落 C 大分（2:3/3:2 型对攻）</td></tr>
+<tr><td>意甲</td><td class="c">2</td><td><span class="bar bA" style="width:20px"></span>1 <span class="bar bC" style="width:20px"></span>1</td><td class="c">50%</td><td>样本薄（R1 刚开）</td></tr>
+<tr><td>韩职/葡超</td><td class="c">3</td><td><span class="bar bA" style="width:60px"></span>3</td><td class="c">0%</td><td>全 A 低赔</td></tr>
+<tr><td>瑞超/法乙/英超</td><td class="c">3</td><td><span class="bar bB" style="width:20px"></span>1 <span class="bar bC" style="width:40px"></span>2</td><td class="c">100%</td><td>样本 1 场/联赛，仅参考</td></tr>
+</tbody></table>
+
+<svg viewBox="0 0 1000 220" width="100%" role="img" aria-label="联赛落带堆叠图">
+<g font-size="12" fill="#374151">
+<text x="0" y="30">欧冠</text><rect x="70" y="18" width="80" height="14" rx="2" fill="#94a3b8"/><rect x="150" y="18" width="200" height="14" rx="2" fill="#0f62fe"/><rect x="350" y="18" width="120" height="14" rx="2" fill="#7c3aed"/>
+<text x="0" y="60">西甲</text><rect x="70" y="48" width="160" height="14" rx="2" fill="#94a3b8"/><rect x="230" y="48" width="200" height="14" rx="2" fill="#0f62fe"/>
+<text x="0" y="90">英联赛杯</text><rect x="70" y="78" width="40" height="14" rx="2" fill="#94a3b8"/><rect x="110" y="78" width="40" height="14" rx="2" fill="#0f62fe"/><rect x="150" y="78" width="120" height="14" rx="2" fill="#7c3aed"/>
+<text x="0" y="120">欧罗巴</text><rect x="70" y="108" width="120" height="14" rx="2" fill="#94a3b8"/><rect x="190" y="108" width="120" height="14" rx="2" fill="#f59e0b"/>
+<text x="0" y="150">沙职</text><rect x="70" y="138" width="40" height="14" rx="2" fill="#94a3b8"/><rect x="110" y="138" width="80" height="14" rx="2" fill="#7c3aed"/>
+<text x="0" y="180">巴西杯</text><rect x="70" y="168" width="120" height="14" rx="2" fill="#94a3b8"/><rect x="190" y="168" width="40" height="14" rx="2" fill="#0f62fe"/>
+</g>
+</svg>
+
+<h2>二、B 带（桂林带 10-17）9 场命中明细——什么比分在出</h2>
+<table>
+<thead><tr><th>编号</th><th>联赛</th><th>对阵</th><th>比分</th><th>赔率</th><th>类型</th></tr></thead>
+<tbody>
+<tr><td class="c">周一004</td><td>西甲</td><td>奥萨苏纳 vs 莱万特</td><td class="c"><b>0:0</b></td><td class="c">10.5</td><td>低分平（唯一 0:0）</td></tr>
+<tr><td class="c">周一007</td><td>法乙</td><td>兰斯 vs 阿纳西</td><td class="c">3:1</td><td class="c">13.0</td><td>主胜中分</td></tr>
+<tr><td class="c">周三007</td><td>欧冠</td><td>维京 vs 萨迪纳摩</td><td class="c">3:1</td><td class="c">16.0</td><td>主胜中分</td></tr>
+<tr><td class="c">周三008</td><td>欧冠</td><td>里昂 vs 费内巴切</td><td class="c">1:2</td><td class="c">10.5</td><td>客胜中分</td></tr>
+<tr><td class="c">周三010</td><td>西甲</td><td>皇马 vs 皇家社会</td><td class="c">4:1</td><td class="c">16.0</td><td>主胜大分</td></tr>
+<tr><td class="c">周三011</td><td>巴西杯</td><td>帕梅拉斯 vs 桑托斯</td><td class="c">3:0</td><td class="c">11.0</td><td>主胜零封</td></tr>
+<tr><td class="c">周二006</td><td>欧冠</td><td>博德闪耀 vs 奈梅亨</td><td class="c">3:0</td><td class="c">14.0</td><td>主胜零封</td></tr>
+<tr><td class="c">周二007</td><td>英超</td><td>诺丁汉 vs 利兹联</td><td class="c">0:2</td><td class="c">16.0</td><td>客胜零封</td></tr>
+<tr><td class="c">周四007</td><td>西甲</td><td>塞尔塔 vs 奥萨苏纳</td><td class="c">1:2</td><td class="c">14.0</td><td>客胜中分</td></tr>
+</tbody></table>
+<p class="legend">9 场里：主胜 4 / 客胜 3 / 平 1（0:0）/ —— 3 球以上 7 场、0:0 仅 1 场。<b>B 带的真实面孔是"3:0/3:1/4:1 型中高比分"，不是 0:0。</b>0:0 的赔率通常 8~15，只有低分联赛/铁公鸡对局才落进 10-17。</p>
+
+<h2>三、球队维度：方案 10 队的近 4 天信号</h2>
+<div class="card"><b>佛罗伦萨（upset 腿 · 0:1 @13）</b><br>
+8-24 意甲 R1 罗马 4:0 佛罗伦萨 [C 带 @24]——紫百合首轮被灌 4 球，防线崩盘实证；近 10 场场均失 2.0。freq-band 平移（弗洛西诺近 10 场 6W2D2L 状态好 + 佛罗伦萨防守漏）推高 0:1。<span class="good">✔ 有近期数据支撑</span>。但注意：DC 融合方向给主胜 55%，比分与方向解耦是 freq-band 设计本意，方向赌的是对家。</div>
+<div class="card"><b>热刺（upset 腿 · 0:1 @13）</b><br>
+8-26 联赛杯热刺 5:1 查尔顿 [C 带 @27]——热刺近况是<b>高分火力队</b>（进 5 球）。freq-band 选 0:1（低分客胜）的 q 来自纽卡斯尔近 10 场低分属性+热刺近 10 场整体口径，与本周 5:1 的手感方向相反。<span class="bad">⚠ 本腿与近 4 天信号相悖，4 腿里最存疑</span>（5:1 是杯赛打弱旅，联赛口径权重应打折，但无法量化）。</div>
+<div class="card"><b>尤文（upset 腿 · 0:0 @17）</b><br>
+近 4 天无出场（意甲 R1 轮空或未售）。意甲仅 2 场样本：0:1（A）+ 罗马 4:0（C）——新赛季意甲既有低分也有大分，无倾向性信号。0:0 依据全靠 freq 平移（尤文场均失 0.8 + 帕尔马场均 0.8 进球）。<span class="bad">⚠ q17.25% 是条件概率外推，38 场实证里带内 0:0 仅 1 例（还是西甲）</span>——三支 0:0/0:1 腿的"低分剧本"在近 4 天 B 带里只兑现过 1 次。</div>
+<div class="card"><b>马竞（base/mid 腿 · 客胜 @1.84）</b><br>
+西甲近 4 天 9 场带内 56% 且全落 B——联赛层面健康；马竞本身近 4 天无出场（上轮西甲 8-27 塞维利亚场是本轮）。近 10 场 5W1D4L。<span class="good">✔ 联赛分布支撑方向玩法（HAD），与比分带无关</span>。</div>
+<div class="card"><b>蒙彼利埃（base/mid 腿 · 主胜 @1.63）</b><br>
+法乙近 4 天唯一 1 场：兰斯 3:1 阿纳西 [B 带]——法乙出中分主胜。蒙彼利埃本季 R4 排第 2、近 10 场 6W2D2L，但<b>3 名前锋全伤</b>（insight），伤停 d=+2 已压概率至 52%。<span class="bad">⚠ 锋线全伤的队打出 B 带型中高比分（3:1）的能力存疑，主胜方向本身也偏软</span>。</div>
+<div class="card"><b>里尔/巴黎/朗斯（法甲 3 腿）·柏林赫塔（德乙）·町田（日职）</b><br>
+法甲/德乙/日职近 4 天 0 场（新赛季未开或未售）——无近期落带信号，全靠联赛画像+DC。法乙仅有的 1 场落 B（法系联赛带内倾向存在）。</div>
+
+<h2>四、结论：方案 vs 分布的三处错位</h2>
+<div class="note">
+<b>① upset 档"低分剧本"与 B 带真实面孔错位</b>：B 带 9 场实证里 7 场是 3 球+中高比分、0:0 只有 1 场；本轮 4 腿却是 2×0:0 + 2×0:1 全低分。freq-band 的 q 是"两队近况条件频率"，而近 4 天数据提示赛季初球队体能充沛、大分偏多——平移用的近 10 场含季前赛/上季末，可能低估了开季节奏。这不是链路错误（q 口径自洽），是<b>口径时滞风险</b>。<br><br>
+<b>② 热刺 0:1 最存疑</b>：热刺本周刚 5:1，选它 0:1 客负方向+低分双违背。若要换腿，B 带实证更支持"主胜 3:0/3:1 型"——但 freq-band 按程序选腿，临场（周六晚首发公布后）可按定律 1 用首发信息复核这条腿。<br><br>
+<b>③ 联赛选带可反哺</b>：欧冠/沙职/杯赛类"强弱悬殊场"才是 B/C 带主产区（80%/67%），本轮 upset 4 腿全是联赛场（意甲/法甲/英超）——带内空间比杯赛场窄。后续轮次 freq-band 若引入"联赛带内先验"（欧冠资格赛权重&gt;意甲），分布利用率会更高。已记入观察清单，待 n≥100 回测定。
+</div>
+<p class="meta">数据源：engine/cache/score_odds/2026-08-2[4567].json（CRS 31 项）× data/02-results/ 同期赛果 38 场 · 方案=data/03-predictions/2026-08-28-boldplay.json seq=7 · 样本限制：38 场含 26 场杯赛，联赛样本薄；频带结论以方向性参考为主，勿当精确概率。</p>
+</body></html>
