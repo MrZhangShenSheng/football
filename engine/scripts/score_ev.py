@@ -6,11 +6,13 @@ from band_calibration import DIVS, SEASONS, fetch_rows, devid, band_of
 
 PRIOR_STRENGTH = 50          # 收缩先验强度(场)
 
-LEAGUE_MAP = {          # 体彩中文缩写 → fd 英文 id（2026-08-24 存档实测）
+LEAGUE_MAP = {          # 体彩中文缩写 → fd 英文 id（2026-08-24 存档实测；08-28 补次级联赛）
     "英超": "england-premier", "西甲": "spain-laliga", "德甲": "germany-bundesliga",
     "意甲": "italy-serie-a", "法甲": "france-ligue1", "法乙": "france-ligue2",
     "荷甲": "netherlands-eredivisie", "葡超": "portugal-primeira",
     "沙职": "saudi", "瑞超": "sweden", "日职": "japan", "韩职": "korea",
+    "英冠": "england-championship", "德乙": "germany-2-bundesliga",
+    "荷乙": "netherlands-eerste", "西乙": "spain-laliga2", "意乙": "italy-serie-b",
 }                       # 巴甲/欧冠等无对应 → None → 全局池（设计内）
 
 def map_league(name: str):

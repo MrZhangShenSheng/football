@@ -8,7 +8,10 @@ UA = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"}
 FD_URL = "https://www.football-data.co.uk/mmz4281/{season}/{div}.csv"
 DIVS = {"E0": "england-premier", "SP1": "spain-laliga", "D1": "germany-bundesliga",
         "I1": "italy-serie-a", "F1": "france-ligue1", "N1": "netherlands-eredivisie",
-        "P1": "portugal-primeira", "F2": "france-ligue2"}
+        "P1": "portugal-primeira", "F2": "france-ligue2",
+        "E1": "england-championship", "D2": "germany-2-bundesliga",
+        "N2": "netherlands-eerste", "SP2": "spain-laliga2",
+        "I2": "italy-serie-b"}   # 08-28 补次级（freq-band 平移覆盖）
 SEASONS = ["2223", "2324", "2425", "2526"]
 
 def devid(oh, od_, oa):

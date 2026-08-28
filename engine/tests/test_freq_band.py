@@ -61,6 +61,16 @@ def test_build_team_form_alias_dual_keys(tmp_path):
     assert form["leverkusen"] == [(0, 3)]
 
 
+def test_league_coverage_fd_divs():
+    """体彩常见次级联赛映射 + fd DIVS 拉取覆盖（2026-08-28 卡实测缺口：德乙/荷乙/英冠）。"""
+    from score_ev import LEAGUE_MAP
+    from band_calibration import DIVS
+    for zh_name in ("德乙", "荷乙", "英冠", "西乙", "意乙"):
+        assert zh_name in LEAGUE_MAP, f"{zh_name} 无 LEAGUE_MAP 映射"
+        assert LEAGUE_MAP[zh_name] in DIVS.values(), f"{zh_name} 映射 {LEAGUE_MAP[zh_name]} 无对应 fd DIVS"
+    assert set(DIVS) >= {"E1", "D2", "N2", "SP2"}   # 英冠/德乙/荷乙/西乙 CSV 拉取
+
+
 def test_lambdas_multiplicative_and_clamp():
     """λh=主进×客失/模板主场场均；λa 对称；缺强度/零基准→None；clamp 生效。"""
     base = (1.5, 1.0)
