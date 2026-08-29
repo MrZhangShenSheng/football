@@ -103,6 +103,15 @@ if (Test-Path $corpusPath) {
     $trendExists = if (Test-Path "$HOME_DIR\data\04-summaries\trend.html") { "yes" } else { "no" }
     Write-Host "  plans tracked: $nPlans | trend.html: $trendExists (logloss/hit-rate/CLV/calibration/buckets/plan-accuracy)" -ForegroundColor Green
 }
+# attribution ledger summary (P2 2026-08-29: error attribution factors F1-F10 -> ablate gate)
+$attrPath = "$HOME_DIR\data\04-summaries\attribution.json"
+if (Test-Path $attrPath) {
+    $ad = [System.IO.File]::ReadAllText($attrPath, [System.Text.Encoding]::UTF8) | ConvertFrom-Json
+    $nErr = @($ad.records.PSObject.Properties).Count
+    $fs = ($ad.factorStats.PSObject.Properties | ForEach-Object { "$($_.Name):$($_.Value.nPrimary)" }) -join " "
+    $cand = if ($ad.ablateCandidates.Count -gt 0) { "ablate-ready: $($ad.ablateCandidates -join ',')" } else { "ablate gate: <20/factor" }
+    Write-Host "  attribution: $nErr errors | $fs | $cand -> data/04-summaries/attribution.json" -ForegroundColor Green
+}
 # ticket ledger summary (v4.10: real-money tickets; a ticket without settlement record is a plan, not a purchase)
 $tk = "$HOME_DIR\data\06-tickets\tickets.json"
 if (Test-Path $tk) {

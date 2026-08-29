@@ -62,6 +62,17 @@ n_plans = sum(1 for v in plans.values() if isinstance(v, (list, dict)))
 print(f"    出票方案: {n_plans} 个已记录 → 详情见 data/04-summaries/trend.html（①logloss ②命中率 ③CLV ④校准 ⑤分桶 ⑥方案准确率 ⑦回归断言）")
 PYEOF
 fi
+# 偏差归因账本摘要（P2 2026-08-29：错题→F1-F10 因子→消融门）
+if [ -f "$HOME_DIR/data/04-summaries/attribution.json" ]; then
+    python3 - "$HOME_DIR/data/04-summaries/attribution.json" << 'PYEOF'
+import json, sys
+d = json.load(open(sys.argv[1], encoding="utf-8"))
+fs = " ".join(f"{k}:{v['nPrimary']}" for k, v in sorted(d.get("factorStats", {}).items()))
+cand = d.get("ablateCandidates") or []
+gate = "消融就绪: " + ",".join(cand) if cand else "消融门槛未达(<20/因子)"
+print(f"    偏差归因: {len(d.get('records', {}))} 场错题 | {fs} | {gate} → data/04-summaries/attribution.json")
+PYEOF
+fi
 
 # 知识库新鲜度摘要（与 update.ps1 对齐）
 echo ""

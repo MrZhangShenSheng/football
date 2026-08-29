@@ -24,6 +24,12 @@ import subprocess
 import sys
 
 from common import log
+from odds_fetch import LEAGUE_CODES
+
+# Pinnacle 收盘刷新范围：odds_fetch 全表 + 杯赛/苏超特殊码
+# （对齐 pin_close.FD_LEAGUE_MAP 17 联赛——归因引擎 F3/F4 的 pinClose 数据源，P2 2026-08-29；
+#   fit 仍只用 LEAGUES 主流 6 联赛，互不影响）
+PIN_CODES = [*LEAGUE_CODES, "EC0", "SC0"]
 
 # 常用联赛：fd 代码 → (全名, 建议拟合赛季)
 LEAGUES = {
@@ -55,7 +61,7 @@ def main() -> None:
     rest = sys.argv[2:]
 
     if cmd == "update":
-        codes = rest or list(LEAGUES)
+        codes = rest or PIN_CODES   # P2 起全表刷新（归因 pinClose 数据源）
         # 上季（拟合用）+ 当季（锚用）
         sh("odds_fetch.py", "--season", "2526", *codes)
         sh("odds_fetch.py", "--season", CURRENT_SEASON, *codes)
@@ -120,8 +126,8 @@ def main() -> None:
             sh("dc_fit.py", league, "--source", "local", "--publish")
         sh("temperature.py")   # 语料/fd 增量后池级温度重拟（幂等：CI 不过落盘 T=1）
     elif cmd == "all":
-        sh("odds_fetch.py", "--season", "2526", *LEAGUES)
-        sh("odds_fetch.py", "--season", CURRENT_SEASON, *LEAGUES)
+        sh("odds_fetch.py", "--season", "2526", *PIN_CODES)
+        sh("odds_fetch.py", "--season", CURRENT_SEASON, *PIN_CODES)
         sh("sporttery_fetch.py")
         sh("build_index.py")
         sh("league_profile.py", "--all")
