@@ -4,16 +4,22 @@
   "records": {
     "2026-08-23|周日015|HAD": {
       "primary": "F9",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
-        "pfinalPick": null,
-        "dcBest": null,
-        "fusedBest": null,
-        "pickIdx": null,
+        "pfinalPick": 0.525,
+        "dcBest": 0,
+        "fusedBest": 0,
+        "pickIdx": 0,
         "resultIdx": 1,
-        "scoreBias": "2-2"
+        "result": "2-2",
+        "oddsDrift": {
+          "pickOdds": 1.7,
+          "laterOdds": 1.93
+        }
       },
-      "confidence": "low",
+      "confidence": "high",
       "source": "rule",
       "confirmed": true
     },
@@ -26,7 +32,7 @@
         "fusedBest": 2,
         "pickIdx": 0,
         "resultIdx": 2,
-        "scoreBias": "0-1"
+        "result": "0-1"
       },
       "confidence": "high",
       "source": "rule",
@@ -39,11 +45,11 @@
         "pfinalPick": null,
         "dcBest": null,
         "fusedBest": null,
-        "pickIdx": null,
+        "pickIdx": 0,
         "resultIdx": 1,
-        "scoreBias": "1-1"
+        "result": "1-1"
       },
-      "confidence": "low",
+      "confidence": "high",
       "source": "rule",
       "confirmed": true
     },
@@ -51,14 +57,14 @@
       "primary": "F9",
       "secondary": [],
       "evidence": {
-        "pfinalPick": null,
-        "dcBest": null,
-        "fusedBest": null,
-        "pickIdx": null,
+        "pfinalPick": 0.543,
+        "dcBest": 0,
+        "fusedBest": 0,
+        "pickIdx": 0,
         "resultIdx": 1,
-        "scoreBias": "0-0"
+        "result": "0-0"
       },
-      "confidence": "low",
+      "confidence": "high",
       "source": "rule",
       "confirmed": true
     },
@@ -71,7 +77,7 @@
         "fusedBest": null,
         "pickIdx": null,
         "resultIdx": 1,
-        "scoreBias": "0-0"
+        "result": "0-0"
       },
       "confidence": "low",
       "source": "rule",
@@ -86,7 +92,7 @@
         "fusedBest": 2,
         "pickIdx": 2,
         "resultIdx": 1,
-        "scoreBias": "0-0"
+        "result": "0-0"
       },
       "confidence": "high",
       "source": "rule",
@@ -101,7 +107,7 @@
         "fusedBest": 0,
         "pickIdx": 0,
         "resultIdx": 2,
-        "scoreBias": "1-2"
+        "result": "1-2"
       },
       "confidence": "high",
       "source": "rule",
@@ -116,7 +122,7 @@
         "fusedBest": 2,
         "pickIdx": 2,
         "resultIdx": 0,
-        "scoreBias": "2-1"
+        "result": "2-1"
       },
       "confidence": "high",
       "source": "rule",
@@ -133,7 +139,7 @@
         "fusedBest": 0,
         "pickIdx": 1,
         "resultIdx": 0,
-        "scoreBias": "4-0",
+        "result": "4-0",
         "oddsDrift": {
           "pickOdds": 3.8,
           "laterOdds": 4.05
@@ -152,7 +158,7 @@
         "fusedBest": 1,
         "pickIdx": 1,
         "resultIdx": 0,
-        "scoreBias": "3-1"
+        "result": "3-1"
       },
       "confidence": "high",
       "source": "rule",
@@ -169,7 +175,7 @@
         "fusedBest": 0,
         "pickIdx": 1,
         "resultIdx": 2,
-        "scoreBias": "1-2",
+        "result": "1-2",
         "oddsDrift": {
           "pickOdds": 3.35,
           "laterOdds": 3.45
@@ -183,14 +189,14 @@
       "primary": "F9",
       "secondary": [],
       "evidence": {
-        "pfinalPick": null,
+        "pfinalPick": 0.53,
         "dcBest": null,
-        "fusedBest": null,
-        "pickIdx": null,
+        "fusedBest": 0,
+        "pickIdx": 0,
         "resultIdx": 2,
-        "scoreBias": "1-2"
+        "result": "1-2"
       },
-      "confidence": "low",
+      "confidence": "high",
       "source": "rule",
       "confirmed": true
     },
@@ -205,7 +211,7 @@
         "fusedBest": null,
         "pickIdx": 0,
         "resultIdx": 2,
-        "scoreBias": "0-1",
+        "result": "0-1",
         "oddsDrift": {
           "pickOdds": 1.51,
           "laterOdds": 1.61
@@ -224,7 +230,7 @@
         "fusedBest": 0,
         "pickIdx": 0,
         "resultIdx": 1,
-        "scoreBias": "0-0"
+        "result": "0-0"
       },
       "confidence": "high",
       "source": "rule",
@@ -239,7 +245,7 @@
         "fusedBest": 0,
         "pickIdx": 0,
         "resultIdx": 2,
-        "scoreBias": "2-3"
+        "result": "2-3"
       },
       "confidence": "high",
       "source": "rule",
@@ -254,7 +260,7 @@
         "fusedBest": null,
         "pickIdx": 2,
         "resultIdx": 1,
-        "scoreBias": "2-2"
+        "result": "2-2"
       },
       "confidence": "high",
       "source": "rule",
@@ -269,7 +275,7 @@
         "fusedBest": 2,
         "pickIdx": 2,
         "resultIdx": 1,
-        "scoreBias": "2-2"
+        "result": "2-2"
       },
       "confidence": "high",
       "source": "rule",
@@ -284,7 +290,7 @@
         "fusedBest": 0,
         "pickIdx": 0,
         "resultIdx": 2,
-        "scoreBias": "1-2"
+        "result": "1-2"
       },
       "confidence": "high",
       "source": "rule",
@@ -299,7 +305,7 @@
         "fusedBest": 2,
         "pickIdx": 2,
         "resultIdx": 0,
-        "scoreBias": "1-0"
+        "result": "1-0"
       },
       "confidence": "high",
       "source": "rule",
@@ -310,7 +316,7 @@
     "F9": {
       "nPrimary": 19,
       "nSecondary": 0,
-      "avgProbGap": 0.3614
+      "avgProbGap": 0.4352
     }
   },
   "ablateCandidates": [],

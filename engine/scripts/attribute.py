@@ -9,6 +9,7 @@ P1 范围：F5（dc vs fused·低置信）/ F9（兜底）/ F10（赔率漂移�
 """
 import json
 from collections import defaultdict
+from datetime import date
 from pathlib import Path
 
 from common import log, ROOT
@@ -22,10 +23,14 @@ _DIR_IDX = {"主胜": 0, "胜": 0, "平": 1, "平局": 1, "客胜": 2}
 
 
 def pick_to_index(play: str, pick: str) -> int | None:
-    """'HAD 客胜' → 2。非 HAD 或无法解析 → None。"""
+    """'HAD 客胜' → 2。非 HAD 或无法解析 → None。
+
+    兼容带后缀的 pick：'主胜(方案外)' → 0（strip 括号注释后缀，I-2 修正）。
+    """
     if play != "HAD":
         return None
-    return _DIR_IDX.get(pick.strip())
+    direction = pick.split("(")[0].strip()
+    return _DIR_IDX.get(direction)
 
 
 def result_to_idx(result: str) -> int | None:
@@ -59,7 +64,7 @@ def correction_flipped(dc: list, fused: list, result_idx: int) -> bool | None:
     F4（纯融合稀释）待 P2 落盘 chainSteps[] 后从 F5 中分离。
     数据不足（无 dc/fused 或 result_idx 越界）→ None。
     """
-    if not dc or not fused or result_idx is None or result_idx >= 3:
+    if not dc or not fused or result_idx is None or result_idx < 0 or result_idx >= 3:
         return None
     dc_best = dc.index(max(dc))
     fused_best = fused.index(max(fused))
@@ -80,7 +85,7 @@ def classify(rec: dict) -> dict:
     fused = rec.get("fused")
     ev = {"pfinalPick": None, "dcBest": None, "fusedBest": None,
           "pickIdx": pick_idx, "resultIdx": result_idx,
-          "scoreBias": rec.get("result")}
+          "result": rec.get("result")}
 
     # 非 HAD 或结果不可解析 → F9 低置信（R7 变体待 P2）
     if pick_idx is None or result_idx is None:
@@ -123,18 +128,19 @@ def odds_drift_buy_heat(drift: dict | None) -> bool:
 _HAD_KEY = {0: "h", 1: "d", 2: "a"}
 
 
-def load_odds_drift(code: str, pick_odds, pick_idx: int | None, round_date: str) -> dict | None:
+def load_odds_drift(code: str, pick_odds, pick_idx: int | None) -> dict | None:
     """从 score_odds 日存档取该场 pick 方向的快照赔率（R5）。
 
     had 扁平结构 {h,d,a}（非嵌套）；遍历所有日文件按 matchNumStr 匹配 code。
+    文件按日期升序遍历，laterOdds 取最晚日期匹配快照（I-1 修正：避免文件系统返回顺序不确定）。
     返回 {pickOdds, laterOdds}；无存档或无该场 → None（F10 不触发，安全降级）。
-    P1 简化：laterOdds 取匹配到的快照赔率，不校验快照时刻 vs 出票时刻先后。
+    P1 简化：不校验快照时刻 vs 出票时刻先后（待 P2 oddsUpdatedAt 时间轴）。
     """
     if not SCORE_ODDS_DIR.exists() or pick_idx not in _HAD_KEY:
         return None
     had_key = _HAD_KEY[pick_idx]
     later = None
-    for p in SCORE_ODDS_DIR.glob("*.json"):
+    for p in sorted(SCORE_ODDS_DIR.glob("*.json")):
         try:
             data = json.loads(p.read_text(encoding="utf-8"))
         except json.JSONDecodeError:
@@ -168,6 +174,8 @@ def build() -> tuple[dict, dict]:
     """遍历 02-results 主文件 → 对错题跑 classify → 叠加 F10 → 落 attribution.json。
 
     返回 (records, factorStats)。主文件=无 -rN 后缀（终审版，同 corpus round_sort 语义）。
+    已知限制：仅处理 pick 含 'HAD ' 前缀的场次（v4.6+ 格式）；早期无前缀格式
+    （如 pick='主胜'，play 字段='胜平负'）被跳过（I-3，1 场历史数据，YAGNI 不兼容）。
     """
     records = {}
     for p in sorted(RESULTS_DIR.glob("*.json")):
@@ -191,7 +199,7 @@ def build() -> tuple[dict, dict]:
 
             # F10 执行层叠加（独立判别，方向错时记次因）
             pick_idx = out["evidence"].get("pickIdx")
-            drift = load_odds_drift(m.get("code"), m.get("odds"), pick_idx, round_id[:10])
+            drift = load_odds_drift(m.get("code"), m.get("odds"), pick_idx)
             if drift and odds_drift_buy_heat(drift):
                 out.setdefault("secondary", []).append("F10")
                 out["evidence"]["oddsDrift"] = drift
@@ -214,8 +222,7 @@ def build() -> tuple[dict, dict]:
                           "avgProbGap": round(s / n, 4) if n else 0.0}
 
     candidates = [f for f, (n, _) in prim.items() if n >= 20]
-    from datetime import date as _date
-    payload = {"schemaVersion": 1, "generatedAt": str(_date.today()),
+    payload = {"schemaVersion": 1, "generatedAt": str(date.today()),
                "records": records, "factorStats": factorStats,
                "ablateCandidates": candidates, "resolved": {}}
     OUT.parent.mkdir(parents=True, exist_ok=True)

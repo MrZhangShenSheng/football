@@ -22,6 +22,11 @@ class TestIndexParse:
     def test_non_had_returns_none(self):
         assert pick_to_index("CRS", "2-1") is None
 
+    def test_pick_with_suffix(self):
+        # '主胜(方案外)' 带括号注释后缀 → 0（I-2 修正）
+        assert pick_to_index("HAD", "主胜(方案外)") == 0
+        assert pick_to_index("HAD", "客胜(参考)") == 2
+
     def test_result_home_win(self):
         assert result_to_idx("3-1") == 0
 
