@@ -69,6 +69,62 @@ class TestClassifyF34:
         assert out["primary"] == "F9"
         assert out["evidence"].get("pinSource") is None
 
+
+class TestClassifyF1F5:
+    """F5 精确重放（fusedPre）+ F1 λ 失准（P2）。"""
+
+    def _mk(self, **kw):
+        base = dict(code="x", pick="HAD 主胜", dc=[0.5, 0.25, 0.25],
+                    fused=[0.5, 0.25, 0.25], result="0-2", directionHit=False)
+        base.update(kw)
+        return base
+
+    def test_F5_precise_fused_pre(self):
+        # fusedPre 看客对、fused 被修正拉向主、结果客 → F5 精确（不依赖 dc 近似）
+        r = self._mk(fusedPre=[0.1, 0.2, 0.7], dc=[0.1, 0.2, 0.7])
+        out = classify(r)
+        assert out["primary"] == "F5"
+        assert out["evidence"]["replay"] == "fusedPre"
+        assert out["confidence"] == "high"
+
+    def test_F5_fallback_low_confidence(self):
+        # 无 fusedPre 历史场 → dc argmax 近似（P1 行为，confidence low）
+        r = self._mk(dc=[0.1, 0.2, 0.7])
+        out = classify(r)
+        assert out["primary"] == "F5"
+        assert out["confidence"] == "low"
+
+    def test_F1_lambda_gap(self):
+        # λ 总期望 2.3 球、实际 5 球（差 2.7>1.5）→ F1
+        r = self._mk(lambdaHome=1.2, lambdaAway=1.1, result="3-2")
+        out = classify(r)
+        assert out["primary"] == "F1"
+        assert out["evidence"]["lambdaGap"] == 2.7
+
+    def test_F1_not_triggered_small_gap(self):
+        # 差 0.5<1.5 → 不触发 F1 → F9
+        r = self._mk(lambdaHome=1.2, lambdaAway=1.1, result="1-1")
+        out = classify(r)
+        assert out["primary"] == "F9"
+
+    def test_F1_no_lambda_falls_back(self):
+        # 无 λ（历史场）→ 不判 F1 → F9
+        r = self._mk()
+        out = classify(r)
+        assert out["primary"] == "F9"
+
+    def test_pick_deviation_flagged(self):
+        # fused 看客对、pick 选主（方案外场）→ F9 但标 pickDeviation（错在选法不在概率）
+        r = self._mk(pick="HAD 主胜", fused=[0.1, 0.2, 0.7], dc=[0.1, 0.2, 0.7])
+        out = classify(r)
+        assert out["primary"] == "F9"
+        assert out["evidence"]["pickDeviation"] is True
+
+    def test_pick_aligned_no_deviation(self):
+        r = self._mk()   # base: fused 主= pick 主胜 → 无标记
+        out = classify(r)
+        assert "pickDeviation" not in out["evidence"]
+
     def test_result_home_win(self):
         assert result_to_idx("3-1") == 0
 

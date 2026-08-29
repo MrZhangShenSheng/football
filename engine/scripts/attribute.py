@@ -97,6 +97,17 @@ def classify(rec: dict) -> dict:
         ev["dcBest"] = dc.index(max(dc))
     if fused:
         ev["fusedBest"] = fused.index(max(fused))
+        # pick 偏离模型最优向（方案外/搏冷场）：错在选法不在概率，账本须可区分（2026-08-23 周日016 实例）
+        if pick_idx != ev["fusedBest"]:
+            ev["pickDeviation"] = True
+
+    # ⓪ F5 精确重放（P2：fusedPre 修正前三向对 + fused 错 = 修正乘子实锤）
+    fused_pre = rec.get("fusedPre")
+    if fused_pre and len(fused_pre) == 3:
+        if fused_pre.index(max(fused_pre)) == result_idx and \
+                fused and fused.index(max(fused)) != result_idx:
+            ev["replay"] = "fusedPre"
+            return {"primary": "F5", "secondary": [], "evidence": ev, "confidence": "high"}
 
     # ① F3/F4 市场锚分歧（P2：pinClose 真收盘·先于 F5 近似——dc对+fused错+pin对=F4实锤）
     pin = rec.get("pinClose")
@@ -112,7 +123,20 @@ def classify(rec: dict) -> dict:
 
     # ② F5 修正/融合背锅（dc 对 + fused 错·近似，无 pinClose 场）
     if correction_flipped(dc, fused, result_idx):
+        ev["replay"] = "dc_approx"
         return {"primary": "F5", "secondary": [], "evidence": ev, "confidence": "low"}
+
+    # ③ F1 λ 失准（P2：|实际总进球 − λ总期望| > 1.5）
+    lh, la = rec.get("lambdaHome"), rec.get("lambdaAway")
+    if lh is not None and la is not None:
+        h, _, a = str(rec.get("result") or "").partition("-")
+        try:
+            gap = abs((int(h) + int(a)) - (float(lh) + float(la)))
+            if gap > LAMBDA_GAP_THRESHOLD:
+                ev["lambdaGap"] = round(gap, 2)
+                return {"primary": "F1", "secondary": [], "evidence": ev, "confidence": "high"}
+        except (TypeError, ValueError):
+            pass
 
     # ③ F9 随机兜底（dc 也错，或 dc/fused 同向错）
     return {"primary": "F9", "secondary": [], "evidence": ev, "confidence": "high"}
@@ -138,6 +162,9 @@ def odds_drift_buy_heat(drift: dict | None) -> bool:
 
 # 方向下标 → score_odds had 扁平 key（h=主胜/d=平/a=客胜）
 _HAD_KEY = {0: "h", 1: "d", 2: "a"}
+
+# F1 判别阈值：|实际总进球 − λ总期望| 超此值判 λ 失准（设计 §6 ③）
+LAMBDA_GAP_THRESHOLD = 1.5
 
 
 def load_odds_drift(code: str, pick_odds, pick_idx: int | None) -> dict | None:
