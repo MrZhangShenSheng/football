@@ -10,6 +10,7 @@
 | **"我买了/出票了"** | 方案转正（复制当轮方案legs冻结赔率+时间戳）或手动建档（自组票报票面）→ 写 `data/06-tickets/tickets.json` + 日期JSON挂指针 → git commit（**git 历史=出票凭证**；体彩出票后票面不可改写） | 实票登记确认 |
 | **"XX队近况？"** | 本地知识库检索（00-leagues/01-teams/04-summaries）→ 直接回答 | 纯文本答案 |
 | **"跑下回测"** | run.py backtest → 与市场基线对比 | RPS 对照表 |
+| **"帮我复核这场 XX"** | football-live-assessment skill（单场临场评估：数据核验→伤停首发→概率重估→玩法比较→风险结论，**只分析不下注**；读仓库缓存，旧缓存须标注数据模式，与主 skill"临场复核"分工=单场深挖 vs 全流程出票） | 临场评估报告（证据等级+概率区间+EV 门槛） |
 
 约定：预测命令自带数据刷新（用户永远不用手动 run.py）；每次流程结束自动 commit（git 历史=预测锁定凭证）。
 **命令路径铁律**：run.py 不在仓库根目录，主入口一律 `python engine/scripts/run.py <子命令>`（update/verify/corpus/learn/backtest）；其余脚本同在 `engine/scripts/`。
