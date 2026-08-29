@@ -110,6 +110,7 @@ def _set_trends_dir(p):
 
 
 def _now_iso():
+    """本地时区 ISO8601（+08:00）。开发者 sszhang"""
     return datetime.now().astimezone().strftime("%Y-%m-%dT%H:%M:%S%z")[:-2] + ":00"
 
 
@@ -149,6 +150,59 @@ def write_snapshot(extracted, trigger, day=None):
     atomic_write_json(path, doc)
     n_chg = len(changes) if not snap["base"] else len(extracted)
     log("trends", f"odds快照 {'base' if snap['base'] else 'diff'} {n_chg} 项 → {path.name}")
+    return path
+
+
+def _key_player(l):
+    """主力判定（修正系数9 同款口径）：apps>=2 且 starts/apps>=0.7。开发者 sszhang"""
+    apps, starts = int(l.get("apps") or 0), int(l.get("starts") or 0)
+    return apps >= 2 and starts / max(apps, 1) >= 0.7
+
+
+def extract_intel(payload, code):
+    """insight 落盘 payload → 时序摘要 entry（伤停 keyPlayer 标记+d 符号/排名/近10/场均球/H2H）。
+    开发者 sszhang"""
+    inj = payload.get("injuries") or {}
+    def slim(side):
+        return [{"name": x.get("name"), "pos": x.get("pos"), "apps": x.get("apps"),
+                 "starts": x.get("starts"), "keyPlayer": _key_player(x)}
+                for x in (inj.get(side) or [])]
+    home_i, away_i = slim("home"), slim("away")
+    st = payload.get("standing") or {}
+    fm = (payload.get("form") or {})
+    avg, l10 = fm.get("goalAvg") or {}, (fm.get("last10HomeAway") or {})
+    h2h = (payload.get("h2h") or {}).get("statistics") or {}
+    return {
+        "at": _now_iso(), "matchId": payload.get("matchId"), "code": code,
+        "league": (payload.get("match") or {}).get("league"),
+        "fullFile": f"engine/cache/sporttery_insight_{payload.get('matchId')}.json",
+        "injuries": {"home": home_i, "away": away_i, "d": len(home_i) - len(away_i)},
+        "rank": {"home": int(st["home"]["ranking"]) if (st.get("home") or {}).get("ranking") else None,
+                 "away": int(st["away"]["ranking"]) if (st.get("away") or {}).get("ranking") else None},
+        "form": {"homeLast10": f"{l10.get('homeWinGoalMatchCnt', 0)}胜{l10.get('homeDrawMatchCnt', 0)}平"
+                               f"{l10.get('homeLossGoalMatchCnt', 0)}负",
+                 "awayLast10": f"{l10.get('awayWinGoalMatchCnt', 0)}胜{l10.get('awayDrawMatchCnt', 0)}平"
+                               f"{l10.get('awayLossGoalMatchCnt', 0)}负",
+                 "homeGoalAvg": _f(avg.get("homeGoalAvgCnt")), "awayGoalAvg": _f(avg.get("awayGoalAvgCnt"))},
+        "h2hSummary": f"{h2h.get('winGoalMatchCnt', 0)}胜{h2h.get('drawMatchCnt', 0)}平"
+                      f"{h2h.get('lossGoalMatchCnt', 0)}负" if h2h else None,
+    }
+
+
+def write_intel_entry(payload, code, day=None):
+    """insight 摘要追加当日 intel 文件（同场重复拉取=多 entry，时序语义）。开发者 sszhang"""
+    day = day or date.today().isoformat()
+    path = _TRENDS_DIR / f"{day}-intel.json"
+    _TRENDS_DIR.mkdir(parents=True, exist_ok=True)
+    doc = {"date": day, "type": "intel-timeline", "schemaVersion": SCHEMA_VERSION, "entries": []}
+    if path.exists():
+        try:
+            doc = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            log("trends", f"当日intel文件损坏，重置（{path.name}）")
+    doc["entries"].append(extract_intel(payload, code))
+    atomic_write_json(path, doc)
+    log("trends", f"intel摘要 → {path.name}（累计 {len(doc['entries'])} 条）")
     return path
 
 
@@ -215,7 +269,6 @@ def selftest():
 
     # ---- write_snapshot（临时目录跑，不污染真 05-trends）----
     import tempfile
-    import os
     with tempfile.TemporaryDirectory() as td:
         real_dir = globals()["_TRENDS_DIR"]
         _set_trends_dir(Path(td))          # 测试钩子：重定向 TRENDS_DIR
@@ -257,6 +310,45 @@ def selftest():
         finally:
             _set_trends_dir(real_dir)      # 恢复
     print("[selftest] write_snapshot OK")
+
+    # ---- extract_intel + write_intel_entry ----
+    insight_fx = {
+        "fetchedAt": "2026-08-30", "source": "sporttery", "matchId": 2041147,
+        "match": {"code": "周六027", "league": "意甲"},
+        "standing": {"home": {"ranking": "8"}, "away": {"ranking": "16"}},
+        "injuries": {
+            "home": [{"name": "耶尔德兹", "pos": "前锋", "apps": 1, "starts": 1},
+                     {"name": "替补X", "pos": "中场", "apps": 1, "starts": 0},
+                     {"name": "布雷默", "pos": "后卫", "apps": 3, "starts": 3}],
+            "away": [{"name": "Nicolussi", "pos": "中场", "apps": 0, "starts": 0}]},
+        "form": {"goalAvg": {"homeGoalAvgCnt": "1.1", "awayGoalAvgCnt": "0.8"},
+                 "last10HomeAway": {"homeWinGoalMatchCnt": 6, "homeDrawMatchCnt": 2, "homeLossGoalMatchCnt": 2,
+                                     "awayWinGoalMatchCnt": 3, "awayDrawMatchCnt": 2, "awayLossGoalMatchCnt": 5}},
+        "h2h": {"statistics": {"winGoalMatchCnt": 7, "drawMatchCnt": 2, "lossGoalMatchCnt": 1}},
+    }
+    e = extract_intel(insight_fx, "周六027")
+    assert e["matchId"] == 2041147 and e["code"] == "周六027" and e["league"] == "意甲"
+    assert e["rank"] == {"home": 8, "away": 16}, e["rank"]
+    assert e["injuries"]["d"] == 2, e["injuries"]["d"]                # 3主-1客（布雷默入fixture）
+    assert e["injuries"]["home"][0]["keyPlayer"] is False             # apps=1<2：开季小样本不判主力（探针修正）
+    assert e["injuries"]["home"][1]["keyPlayer"] is False             # apps1/starts0
+    assert e["injuries"]["home"][2]["keyPlayer"] is True              # apps3/starts3：主力（口径正例）
+    assert e["form"]["homeLast10"] == "6胜2平2负" and e["form"]["awayLast10"] == "3胜2平5负"
+    assert e["form"]["homeGoalAvg"] == 1.1 and e["form"]["awayGoalAvg"] == 0.8
+    assert e["h2hSummary"] == "7胜2平1负"
+    real_dir2 = globals()["_TRENDS_DIR"]
+    with tempfile.TemporaryDirectory() as td:
+        _set_trends_dir(Path(td))
+        try:
+            p = write_intel_entry(insight_fx, "周六027", day="2026-08-30")
+            doc = json.loads(p.read_text(encoding="utf-8"))
+            assert doc["type"] == "intel-timeline" and len(doc["entries"]) == 1
+            assert doc["entries"][0]["fullFile"].endswith("sporttery_insight_2041147.json")
+            write_intel_entry(insight_fx, "周六027", day="2026-08-30")   # 同场重复拉取=多entry
+            assert len(json.loads(p.read_text(encoding="utf-8"))["entries"]) == 2
+        finally:
+            _set_trends_dir(real_dir2)
+    print("[selftest] extract_intel + write_intel_entry OK")
 
 
 if __name__ == "__main__":
