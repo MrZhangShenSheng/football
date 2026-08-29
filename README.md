@@ -41,6 +41,12 @@ cd $FOOTBALL_HOME
 
 > `install` 是一次性的（建 junction/设环境变量）；`update` 是高频的（只 pull+刷数据+测试）。两个都幂等可重跑。
 
+## 每周自动预测（GitHub Actions）
+
+仓库内置 `.github/workflows/weekly-prediction.yml`。它默认每周六 UTC 00:00 运行，即北京时间周六 08:00；流程会安装依赖、刷新核心数据和体彩五池赔率、调用 `boldplay.py` 生成当周预测卡、校验 JSON，并将可复现的预测与缓存变更提交回 `main`。外部数据源临时失败时，工作流会保留最新可用本地缓存并在日志中标记降级，不会伪造实时数据。
+
+也可以在 GitHub 的 **Actions → Weekly Football Prediction → Run workflow** 手动运行，并选择 `freq`（默认）或 `amix`。每次运行设有 30 分钟上限和并发保护；运行日志作为 Actions artifact 保留 14 天，不写入仓库。
+
 ## 日常操作（两种方式）
 
 ### 方式一：对 Claude 说一句话（推荐，全流程自动）
