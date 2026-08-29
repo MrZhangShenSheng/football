@@ -78,7 +78,7 @@ def normalize_grade(value) -> str:
 
 def build_series(records: list[dict]) -> dict:
     """按轮次（round 字段）聚合的评估序列。"""
-    filled = [r for r in records if outcome_idx(r) is not None]
+    filled = [r for r in records if outcome_idx(r) is not None and r.get("directionHit") is not None]
     by_round = defaultdict(list)
     for r in filled:
         by_round[r.get("round", "?")].append(r)

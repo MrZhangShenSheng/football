@@ -25,12 +25,13 @@
    "chain": "R3×0.95+单锚×0.97",
    "ev": -0.018,
    "inPlan": "B",
-   "result": null,
-   "directionHit": null,
-   "scoreHit": null,
+   "result": "3-5",
+   "directionHit": true,
+   "scoreHit": true,
    "clv": null,
-   "clv_approx_dk": null,
-   "clv_note": "主胜2.6→2.75卖冷,资金流向客胜方向,赫塔腿利好"
+   "clv_approx_dk": -17.0,
+   "clv_note": "主胜2.6→2.75卖冷,资金流向客胜方向,赫塔腿利好; CLV_dk基准=体彩最后快照去水公允(票面2.10 vs 快照(08-27 13:40)三向去水公允2.530;含体彩毛利~11%+客胜2.24→2.10买热段)",
+   "half": "2:2"
   },
   {
    "idx": 2,
@@ -47,12 +48,13 @@
    "chain": "R3×0.95+单锚×0.97",
    "ev": -0.153,
    "inPlan": null,
-   "result": null,
-   "directionHit": null,
-   "scoreHit": null,
+   "result": "0-1",
+   "directionHit": false,
+   "scoreHit": false,
    "clv": null,
    "clv_approx_dk": null,
-   "clv_note": null
+   "clv_note": null,
+   "half": "0:1"
   },
   {
    "idx": 3,
@@ -77,12 +79,13 @@
    "chain": "R3×0.95+单锚×0.97",
    "ev": -0.205,
    "inPlan": null,
-   "result": null,
-   "directionHit": null,
-   "scoreHit": null,
+   "result": "3-2",
+   "directionHit": true,
+   "scoreHit": true,
    "clv": null,
    "clv_approx_dk": null,
-   "clv_note": null
+   "clv_note": null,
+   "half": "3:0"
   },
   {
    "idx": 4,
@@ -107,12 +110,13 @@
    "chain": "单锚×0.97",
    "ev": -0.098,
    "inPlan": null,
-   "result": null,
-   "directionHit": null,
-   "scoreHit": null,
+   "result": "1-5",
+   "directionHit": true,
+   "scoreHit": true,
    "clv": null,
    "clv_approx_dk": null,
-   "clv_note": null
+   "clv_note": null,
+   "half": "1:5"
   },
   {
    "idx": 5,
@@ -137,12 +141,13 @@
    "chain": "伤停d=+2+单锚×0.97",
    "ev": -0.157,
    "inPlan": "B+M",
-   "result": null,
-   "directionHit": null,
-   "scoreHit": null,
+   "result": "0-0",
+   "directionHit": false,
+   "scoreHit": false,
    "clv": null,
-   "clv_approx_dk": null,
-   "clv_note": "出票窗口赔率异动: 主胜1.63→1.51(-7%),方向被市场买热确认,CLV将按实出价计"
+   "clv_approx_dk": -15.9,
+   "clv_note": "出票窗口赔率异动: 主胜1.63→1.51(-7%),方向被市场买热确认,CLV将按实出价计; CLV_dk基准=体彩最后快照去水公允(票面1.51 vs 快照(08-27 13:40,主胜1.59)去水公允1.796;出票买在1.63→1.51热尾段,fd收盘待补)",
+   "half": "0:0"
   },
   {
    "idx": 6,
@@ -167,12 +172,13 @@
    "chain": "单锚×0.97",
    "ev": -0.126,
    "inPlan": null,
-   "result": null,
-   "directionHit": null,
-   "scoreHit": null,
+   "result": "2-3",
+   "directionHit": false,
+   "scoreHit": false,
    "clv": null,
    "clv_approx_dk": null,
-   "clv_note": null
+   "clv_note": null,
+   "half": "1:2"
   },
   {
    "idx": 7,
@@ -189,12 +195,13 @@
    "chain": "单锚×0.97",
    "ev": -0.115,
    "inPlan": null,
-   "result": null,
-   "directionHit": null,
-   "scoreHit": null,
+   "result": "2-2",
+   "directionHit": false,
+   "scoreHit": false,
    "clv": null,
    "clv_approx_dk": null,
-   "clv_note": null
+   "clv_note": null,
+   "half": "1:1"
   },
   {
    "idx": 8,
@@ -219,12 +226,13 @@
    "chain": "R1×0.8+伤停d=-4+单锚×0.97",
    "ev": -0.133,
    "inPlan": null,
-   "result": null,
-   "directionHit": null,
-   "scoreHit": null,
+   "result": "5-1",
+   "directionHit": true,
+   "scoreHit": true,
    "clv": null,
    "clv_approx_dk": null,
-   "clv_note": null
+   "clv_note": null,
+   "half": "1:0"
   },
   {
    "idx": 9,
@@ -249,12 +257,13 @@
    "chain": "R2×0.9+伤停d=-2+单锚×0.97",
    "ev": 0.096,
    "inPlan": null,
-   "result": null,
-   "directionHit": null,
-   "scoreHit": null,
+   "result": "2-0",
+   "directionHit": true,
+   "scoreHit": true,
    "clv": null,
    "clv_approx_dk": null,
-   "clv_note": null
+   "clv_note": null,
+   "half": "0:0"
   },
   {
    "idx": 10,
@@ -279,12 +288,13 @@
    "chain": "R2×0.9+单锚×0.97+里尔终审3伤(市场CRS已异动消化)",
    "ev": -0.269,
    "inPlan": "B+M+U",
-   "result": null,
-   "directionHit": null,
-   "scoreHit": null,
+   "result": "2-2",
+   "directionHit": false,
+   "scoreHit": false,
    "clv": null,
-   "clv_approx_dk": null,
-   "clv_note": "TTG0球16→14.5被买热,低进球剧本市场旁证,0:0 CRS赔率16.0未动"
+   "clv_approx_dk": -12.6,
+   "clv_note": "TTG0球16→14.5被买热,低进球剧本市场旁证,0:0 CRS赔率16.0未动; CLV_dk基准=体彩最后快照去水公允(票面1.52 vs 快照(08-28 12:03,客胜1.54)去水公允1.739;≈纯体彩毛利,fd收盘待补)",
+   "half": "1:0"
   },
   {
    "idx": 11,
@@ -309,12 +319,13 @@
    "chain": "R2×0.9+单锚×0.97",
    "ev": -0.199,
    "inPlan": null,
-   "result": null,
-   "directionHit": null,
-   "scoreHit": null,
+   "result": "1-4",
+   "directionHit": true,
+   "scoreHit": true,
    "clv": null,
    "clv_approx_dk": null,
-   "clv_note": null
+   "clv_note": null,
+   "half": "0:1"
   },
   {
    "idx": 12,
@@ -339,12 +350,13 @@
    "chain": "R3×0.95+伤停d=+3+单锚×0.97",
    "ev": -0.052,
    "inPlan": null,
-   "result": null,
-   "directionHit": null,
-   "scoreHit": null,
+   "result": "1-2",
+   "directionHit": false,
+   "scoreHit": false,
    "clv": null,
    "clv_approx_dk": null,
-   "clv_note": null
+   "clv_note": null,
+   "half": "0:1"
   },
   {
    "idx": 13,
@@ -369,12 +381,13 @@
    "chain": "单锚×0.97",
    "ev": -0.101,
    "inPlan": null,
-   "result": null,
-   "directionHit": null,
-   "scoreHit": null,
+   "result": "0-4",
+   "directionHit": true,
+   "scoreHit": true,
    "clv": null,
    "clv_approx_dk": null,
-   "clv_note": null
+   "clv_note": null,
+   "half": "0:4"
   },
   {
    "idx": 14,
@@ -399,12 +412,13 @@
    "chain": "R3×0.95+单锚×0.97",
    "ev": -0.123,
    "inPlan": null,
-   "result": null,
-   "directionHit": null,
-   "scoreHit": null,
+   "result": "1-0",
+   "directionHit": false,
+   "scoreHit": false,
    "clv": null,
    "clv_approx_dk": null,
-   "clv_note": null
+   "clv_note": null,
+   "half": "1:0"
   },
   {
    "idx": 15,

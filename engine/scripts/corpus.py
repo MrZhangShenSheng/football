@@ -71,6 +71,7 @@ def normalize_record(r: dict, round_id: str) -> dict | None:
             "directionHit": r.get("directionHit"),
             "scoreHit": r.get("scoreHit"),
             "clv": r.get("clv"),
+            "clv_approx_dk": r.get("clv_approx_dk"),
             "clv_note": r.get("clv_note"),
         }
     out["round"] = round_id
