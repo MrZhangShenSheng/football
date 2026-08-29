@@ -3,9 +3,10 @@
 """预测偏差归因引擎：对错题逐场判别偏差因子，落 attribution.json。
 
 设计：docs/2026-08-29-attribution-design.html（四层12因子 + 判别树 + 消融门）。
-P1 范围：F5（dc vs fused·低置信）/ F9（兜底）/ F10（赔率漂移）。
-  F3/F4 待 P2 真收盘三向（反解循环论证失效，见 impl-plan 设计修正说明）。
-数据源：data/02-results/*.json 主文件（非 corpus——需 dc/fused 数组做 F5 判别）。
+P2 判别树：⓪F5精确(fusedPre对fused错·修正乘子实锤) → ①F3/F4(pinClose真收盘：
+分歧且市场对——DC对被稀释=F4/DC也错=F3) → ②F5近似(dc argmax·低置信·无pinClose场)
+→ ③F1(λ失准|Δ进球|>1.5) → ④F9兜底；F10(赔率漂移)在 build() 独立叠加。
+数据源：data/02-results/*.json 主文件（非 corpus——需 dc/fused/pinClose 数组）。
 """
 import json
 from collections import defaultdict
@@ -74,8 +75,8 @@ def correction_flipped(dc: list, fused: list, result_idx: int) -> bool | None:
 def classify(rec: dict) -> dict:
     """主判别树：错题 → {primary, secondary, evidence, confidence}。
 
-    P1 判别顺序：①F5(dc对fused错) → ②F9(兜底)。
-    F3/F4 待 P2 真收盘三向（反解循环论证失效，见 impl-plan 设计修正说明）。
+    P2 判别顺序：⓪F5精确 → ①F3/F4 → ②F5近似 → ③F1 → ④F9（同模块 docstring）。
+    pickDeviation 标记：pick≠fused argmax（方案外/搏冷场）——错在选法不在概率。
     F10 执行层在 build() 中独立叠加（不在此函数，因需 score_odds 外部数据）。
     """
     play, direction = _parse_pick(rec.get("pick") or "")
@@ -111,17 +112,17 @@ def classify(rec: dict) -> dict:
 
     # ① F3/F4 市场锚分歧（P2：pinClose 真收盘·先于 F5 近似——dc对+fused错+pin对=F4实锤）
     pin = rec.get("pinClose")
-    ev["pinSource"] = rec.get("pinSource") if pin else None
+    ev["pinSource"] = rec.get("pinSource")   # 透传（无 pinClose 场也保留 ambiguous/none 观测粒度）
     if pin and len(pin) == 3:
         pin_best = pin.index(max(pin))
-        dc_best = dc.index(max(dc)) if dc else None
-        fused_best = fused.index(max(fused)) if fused else None
+        dc_best = ev.get("dcBest")
+        fused_best = ev.get("fusedBest")
         if fused_best is not None and fused_best != pin_best and pin_best == result_idx:
             if dc_best == result_idx:
                 return {"primary": "F4", "secondary": [], "evidence": ev, "confidence": "high"}
             return {"primary": "F3", "secondary": [], "evidence": ev, "confidence": "high"}
 
-    # ② F5 修正/融合背锅（dc 对 + fused 错·近似，无 pinClose 场）
+    # ② F5 修正/融合背锅（dc 对 + fused 错·近似，pinClose 缺失或同向时）
     if correction_flipped(dc, fused, result_idx):
         ev["replay"] = "dc_approx"
         return {"primary": "F5", "secondary": [], "evidence": ev, "confidence": "low"}
@@ -138,7 +139,7 @@ def classify(rec: dict) -> dict:
         except (TypeError, ValueError):
             pass
 
-    # ③ F9 随机兜底（dc 也错，或 dc/fused 同向错）
+    # ④ F9 随机兜底（dc 也错，或 dc/fused 同向错）
     return {"primary": "F9", "secondary": [], "evidence": ev, "confidence": "high"}
 
 

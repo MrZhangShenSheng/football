@@ -23,6 +23,11 @@ class TestLeagueMap:
         assert fd_league_name("德乙(R3)") == "germany-bundesliga2"   # strip 轮次后缀
         assert fd_league_name("欧冠") == "EC0"
 
+    def test_ucl_qualifiers_variant(self):
+        # I-2：'欧冠资格赛(次回合生死战)' 剥后缀 → 欧冠资格赛 → EC0（真实错题 3 场救回）
+        assert fd_league_name("欧冠资格赛(次回合生死战)") == "EC0"
+        assert fd_league_name("欧冠附加赛") == "EC0"
+
     def test_unknown_returns_none(self):
         assert fd_league_name("日职") is None          # fd 不覆盖
         assert fd_league_name("韩职") is None
@@ -80,6 +85,24 @@ class TestMatchPinClose:
         out = match_pin_close("英超", "28/08/2026 03:00", "2-1", Path("."))
         assert out[0] == "none" and out[1] is None
 
+    def test_leading_zero_score_normalized(self, tmp_path):
+        # fd fthg='05' 补零 vs result '5-x' → int 归一后匹配（M1）
+        c = self._cache(tmp_path, [
+            {"date": "28/08/2026", "fthg": "05", "ftag": "1",
+             "pin_h": "2.0", "pin_d": "3.4", "pin_a": "3.8"},
+        ])
+        out = match_pin_close("英超", "2026-08-28", "5-1", c)
+        assert out[0] == "fd"
+
+    def test_annotated_score_conservative_miss(self, tmp_path):
+        # result 带注释 '2-1（加时）' → 保守 miss none（M1）
+        c = self._cache(tmp_path, [
+            {"date": "28/08/2026", "fthg": "2", "ftag": "1",
+             "pin_h": "2.0", "pin_d": "3.4", "pin_a": "3.8"},
+        ])
+        out = match_pin_close("英超", "2026-08-28", "2-1（加时）", c)
+        assert out[0] == "none" and out[1] is None
+
 
 class TestApplyPinClose:
     """回填集成点：rec 增补 pinClose/pinSource。"""
@@ -96,5 +119,11 @@ class TestApplyPinClose:
 
     def test_idempotent_no_overwrite(self, tmp_path):
         rec = {"league": "英超", "result": "2-1", "pinSource": "fd", "pinClose": [0.5, 0.2, 0.3]}
-        apply_pin_close(rec, "2026-08-28", tmp_path)   # 空缓存 none
+        assert apply_pin_close(rec, "2026-08-28", tmp_path) is False   # 已有→无变更
         assert rec["pinClose"] == [0.5, 0.2, 0.3]      # 已有不覆盖（幂等）
+
+    def test_none_to_none_no_change(self, tmp_path):
+        # 两次跑都是 none → 第二次返回 False（不置 dirty·M2）
+        rec = {"league": "英超", "result": "2-1", "pinSource": "none"}
+        assert apply_pin_close(rec, "2026-08-28", tmp_path) is False
+        assert rec["pinSource"] == "none"

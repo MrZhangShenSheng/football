@@ -6,7 +6,7 @@
 |:---|:---|:---|
 | **"帮我预测"** | run.py update（刷数据+联赛画像）→ **data_check 体检+冷启动初始化（缺联赛/球队画像先补）** → dc_fit --auto → 体彩采集 → 本地检索+ESPN 实时积分榜 → DC 融合 → 战意状态机 → 分析评级 → 报告+预测JSON 归档 → git commit | 摘要卡（方案/赔率/仓位） |
 | **"再跑一遍"** | 体彩赔率复扫 → 信息边际三定律判定 → 增量更新报告 → git commit | 终审结论（维持/修订） |
-| **"回填赛果"** | 查赛果 → 回填命中率 → fd 刷收盘价 → 算 CLV → **票务结算（backfill.settle_tickets：pending票对赛果→按形状算派彩→重刷 tickets.html）** → **run.py corpus（语料+就绪度+趋势报告）→ run.py attribute（错题归因→attribution.json）→ run.py learn（非fd联赛增量拟合+版本发布）** → dc_fit 重拟合 → 复盘报告归档 → git commit | 复盘摘要（方向/比分/CLV/教训+学习就绪度）+ tickets.html 实票账本（资金曲线/玩法分解）+ trend.html 胜率趋势（4折线+校准图+方案准确率）+ attribution.json（偏差归因账本：F5/F9/F10 因子分布） |
+| **"回填赛果"** | 查赛果 → 回填命中率 → fd 刷收盘价 → 算 CLV → **票务结算（backfill.settle_tickets：pending票对赛果→按形状算派彩→重刷 tickets.html）** → **run.py corpus（语料+就绪度+趋势报告）→ run.py attribute（错题归因→attribution.json）→ run.py learn（非fd联赛增量拟合+版本发布）** → dc_fit 重拟合。回填时自动增补 `pinClose/pinSource`（fd Pinnacle 收盘三键匹配·日±1+比分+联赛→去水三向，ambiguous 诚实降级；F3/F4 市场锚判别地基），v4.7 起新轮 matches[] 带 `lambdaHome/lambdaAway/fusedPre/chainSteps`（归因 F1/F5 精确判别） → 复盘报告归档 → git commit | 复盘摘要（方向/比分/CLV/教训+学习就绪度）+ tickets.html 实票账本（资金曲线/玩法分解）+ trend.html 胜率趋势（4折线+校准图+方案准确率）+ attribution.json（偏差归因账本：F5/F9/F10 因子分布） |
 | **"我买了/出票了"** | 方案转正（复制当轮方案legs冻结赔率+时间戳）或手动建档（自组票报票面）→ 写 `data/06-tickets/tickets.json` + 日期JSON挂指针 → git commit（**git 历史=出票凭证**；体彩出票后票面不可改写） | 实票登记确认 |
 | **"XX队近况？"** | 本地知识库检索（00-leagues/01-teams/04-summaries）→ 直接回答 | 纯文本答案 |
 | **"跑下回测"** | run.py backtest → 与市场基线对比 | RPS 对照表 |

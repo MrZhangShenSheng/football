@@ -247,8 +247,7 @@ def backfill(day_limit: str | None = None) -> dict:
                 # 已回填但无 pinClose → 纯本地 fd 三键匹配补跑（历史场解锁 F3/F4，不查网络）
                 if not rec.get("pinClose") and sc:
                     d0 = rec.get("date") or data.get("date")
-                    if d0 and d0 <= TODAY:
-                        apply_pin_close(rec, d0, ROOT / "engine" / "cache")
+                    if d0 and d0 <= TODAY and apply_pin_close(rec, d0, ROOT / "engine" / "cache"):
                         data["_dirty"] = True
                 continue
             d = rec.get("date") or data.get("date")

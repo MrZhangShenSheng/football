@@ -22,7 +22,9 @@ FD_LEAGUE_MAP = {
     "荷甲": "netherlands-eredivisie", "比甲": "belgium-first-a",
     "葡超": "portugal-liga", "土超": "turkey-super-lig",
     "希腊超": "greece-super", "俄超": "russia-premier",
-    "欧冠": "EC0", "苏超": "SC0",
+    "欧冠": "EC0", "欧冠资格赛": "EC0", "欧冠附加赛": "EC0",
+    "欧罗巴": "EL0",   # fd 侧 EL0 缓存未拉过（glob 空→none，拉了自动激活）
+    "苏超": "SC0",
 }
 _SUFFIX = re.compile(r"[（(].*?[)）]$")
 
@@ -46,6 +48,14 @@ def fd_league_name(league_zh: str | None) -> str | None:
     return FD_LEAGUE_MAP.get(base)
 
 
+def _score_int(s: str | None) -> int | None:
+    """比分部件 int 归一（'05'→5·带注释'1（加时）'→None 保守 miss）。"""
+    try:
+        return int(str(s).strip())
+    except (TypeError, ValueError):
+        return None
+
+
 def _date_window(iso: str) -> set[str]:
     d = date.fromisoformat(iso)
     return {(d + timedelta(days=k)).isoformat() for k in (-1, 0, 1)}
@@ -61,6 +71,9 @@ def match_pin_close(league_zh: str, match_date_iso: str, result: str,
     if lg is None or not match_date_iso or not result or "-" not in str(result):
         return "none", None
     hg, _, ag = str(result).partition("-")
+    hg_i, ag_i = _score_int(hg), _score_int(ag)
+    if hg_i is None or ag_i is None:
+        return "none", None   # 带注释比分（'2-1（加时）'类）→ 保守 miss
     try:
         window = _date_window(match_date_iso)
     except ValueError:
@@ -74,7 +87,7 @@ def match_pin_close(league_zh: str, match_date_iso: str, result: str,
         for row in data.get("matches") or []:
             if parse_fd_date(row.get("date")) not in window:
                 continue
-            if str(row.get("fthg")) == hg.strip() and str(row.get("ftag")) == ag.strip():
+            if _score_int(row.get("fthg")) == hg_i and _score_int(row.get("ftag")) == ag_i:
                 hits.append(row)
     if not hits:
         return "none", None
@@ -88,15 +101,19 @@ def match_pin_close(league_zh: str, match_date_iso: str, result: str,
     return "fd", [round(v, 4) for v in devig(odds)]
 
 
-def apply_pin_close(rec: dict, match_date_iso: str, cache_dir: Path) -> None:
-    """回填集成点：rec 增补 pinClose/pinSource（已有则不覆盖，幂等）。
+def apply_pin_close(rec: dict, match_date_iso: str, cache_dir: Path) -> bool:
+    """回填集成点：rec 增补 pinClose/pinSource，返回是否有实质变更（幂等）。
 
+    ambiguous/none 场不冻结——fd 缓存刷新后重跑 backfill 自动救回（幂等键只看 pinClose）。
     写回铁律扩展：此二字段为增补字段，不属于预测锁定字段。
     """
     if rec.get("pinClose"):
-        return
+        return False
     src, pin = match_pin_close(rec.get("league"), match_date_iso,
                                rec.get("result") or "", cache_dir)
+    if rec.get("pinSource") == src and not pin:
+        return False   # 结论未变（none→none）不置 dirty，避免每次重写文件
     rec["pinSource"] = src
     if pin:
         rec["pinClose"] = pin
+    return True
