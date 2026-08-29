@@ -206,6 +206,33 @@ def write_intel_entry(payload, code, day=None):
     return path
 
 
+def write_livescan(scan, day=None):
+    """livescan 扫描事件校验后追加当日文件（skill 临场扫描唯一合法录入通道，SKILL Step 6.5）。
+    校验: trigger ∈ SCAN_TRIGGERS; 每场 matchId+code 必填, threat ∈ THREAT_LEVELS。
+    开发者 sszhang"""
+    if scan.get("trigger") not in SCAN_TRIGGERS:
+        raise ValueError(f"trigger 非法: {scan.get('trigger')}（合法: {', '.join(SCAN_TRIGGERS)}）")
+    for i, m in enumerate(scan.get("matches") or []):
+        if not (m.get("matchId") and m.get("code")):
+            raise ValueError(f"matches[{i}] 缺 matchId/code（桥按 matchId 对齐，必填）")
+        if m.get("threat") not in THREAT_LEVELS:
+            raise ValueError(f"matches[{i}].threat 非法: {m.get('threat')}（合法: {', '.join(THREAT_LEVELS)}）")
+    scan = {"at": _now_iso(), **scan}
+    day = day or date.today().isoformat()
+    path = _TRENDS_DIR / f"{day}-livescan.json"
+    _TRENDS_DIR.mkdir(parents=True, exist_ok=True)
+    doc = {"date": day, "type": "livescan", "schemaVersion": SCHEMA_VERSION, "scans": []}
+    if path.exists():
+        try:
+            doc = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            log("trends", f"当日livescan文件损坏，重置（{path.name}）")
+    doc["scans"].append(scan)
+    atomic_write_json(path, doc)
+    log("trends", f"livescan {len(scan['matches'])} 场 → {path.name}")
+    return path
+
+
 # ---------- selftest ----------
 
 def selftest():
@@ -350,7 +377,36 @@ def selftest():
             _set_trends_dir(real_dir2)
     print("[selftest] extract_intel + write_intel_entry OK")
 
+    # ---- write_livescan 校验 ----
+    scan_ok = {"trigger": "出票后监控", "verdict": "无真边际无可修订",
+               "matches": [{"code": "周六027", "matchId": 2041147,
+                            "tickets": [{"ticket": "T010", "pick": "0:1", "frozenOdds": 25.0}],
+                            "oddsNow": {"crs": {"0:1": 25.0}},
+                            "signals": {"oddsMoveVsFrozen": 0.0, "keyPlayerOut": {"team": "home", "player": "耶尔德兹"}},
+                            "threat": "high", "note": "测试"}]}
+    real_dir3 = globals()["_TRENDS_DIR"]
+    with tempfile.TemporaryDirectory() as td:
+        _set_trends_dir(Path(td))
+        try:
+            p = write_livescan(scan_ok, day="2026-08-30")
+            assert json.loads(p.read_text(encoding="utf-8"))["scans"][0]["trigger"] == "出票后监控"
+            for bad in ({"trigger": "胡乱触发", **{k: v for k, v in scan_ok.items() if k != "trigger"}},   # 非法trigger
+                        {**scan_ok, "matches": [{**scan_ok["matches"][0], "threat": "极高"}]},              # 非法threat
+                        {**scan_ok, "matches": [{k: v for k, v in scan_ok["matches"][0].items() if k != "matchId"}]}):  # 缺matchId
+                try:
+                    write_livescan(bad, day="2026-08-30")
+                    assert False, "应抛 ValueError"
+                except ValueError:
+                    pass
+        finally:
+            _set_trends_dir(real_dir3)
+    print("[selftest] write_livescan OK")
+
 
 if __name__ == "__main__":
     if "--selftest" in sys.argv:
         selftest()
+    elif len(sys.argv) >= 3 and sys.argv[1] == "livescan":
+        write_livescan(json.loads(Path(sys.argv[2]).read_text(encoding="utf-8")))
+    else:
+        print(__doc__)
