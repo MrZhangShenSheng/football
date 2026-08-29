@@ -46,8 +46,7 @@ def extract_odds(matches):
                "kickoff": f"{m.get('matchDate', '')} {m.get('matchTime', '')}".strip()}
         for pool in POOL_KEYS:
             src = m.get(pool) or {}
-            rec[pool] = {k: (_f(v) if pool != "hhad" or k != "goalLine" else _f(v))
-                         for k, v in src.items() if v is not None}
+            rec[pool] = {k: _f(v) for k, v in src.items() if v is not None}
         out.append(rec)
     return out
 
