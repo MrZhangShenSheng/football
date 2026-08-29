@@ -2,8 +2,8 @@
   "meta": {
     "lastUpdated": "2026-08-29",
     "note": "实票账本:票=顶层实体(不按日期切分);实票=有结算记录的票,其余全是方案推演;出票后票面事实永不改写;派彩按形状算(4串11中2关只回1注2串1)",
-    "totalTickets": 9,
-    "totalStake": 104,
+    "totalTickets": 10,
+    "totalStake": 134,
     "totalPayout": 293.4,
     "totalNet": 189.4,
     "disciplineEvents": [
@@ -13,6 +13,13 @@
         "actualNet": 229.0,
         "counterfactualNet": -44.0,
         "verdict": "009命中2-0,含它的2串1回273;若等r2重出票(无009变3关),两票仅中1关(004)全灭-44。本次未听模型多赚273,但单果不证明流程错——EV决策以长期论"
+      },
+      {
+        "date": "2026-08-29",
+        "event": "T010出票未执行编号×联赛×主客三重验证(铁律3):翻身档第3腿周一006西甲奥萨苏纳0:2@19误买成周一002芬超赫尔火花0:2@20;形状自扩4串1→4串15含单关(2元→30元)",
+        "actualNet": null,
+        "counterfactualNet": null,
+        "verdict": "pending·回填后对比误买腿vs方案腿(赫尔火花芬超无频率库未过筛vs奥萨苏纳q10.89过freq-band筛)+形状扩容边际损益"
       }
     ]
   },
@@ -458,8 +465,9 @@
           "market": "HAD",
           "pick": "客胜",
           "odds": 1.75,
-          "result": "pending",
-          "priceNote": null
+          "result": "miss",
+          "priceNote": null,
+          "actual": "1:1(半1:1)"
         },
         {
           "code": "周五005",
@@ -563,8 +571,9 @@
           "market": "HAD",
           "pick": "客胜",
           "odds": 1.75,
-          "result": "pending",
-          "priceNote": null
+          "result": "miss",
+          "priceNote": null,
+          "actual": "1:1(半1:1)"
         },
         {
           "code": "周五005",
@@ -662,10 +671,11 @@
           "market": "CRS",
           "pick": "0-3",
           "odds": 17.0,
-          "result": "pending",
+          "result": "miss",
           "note": "第一次推荐腿·系统各版boldplay未存档此腿(用户票面为准)·日职B级",
           "q": null,
-          "priceNote": null
+          "priceNote": null,
+          "actual": "0:1(半0:0)"
         },
         {
           "code": "周五010",
@@ -756,6 +766,187 @@
         "status": "pending"
       },
       "note": "倍数2为用户改单(系统按50万限额反算4倍);2026-08-28晚登记修正:原误记周日009利兹0:0@13,用户报票面确认=周六002清水0:3@17(第一次推荐腿,系统档案未存,票面为准);利兹腿从未实际购买;全中概率粗估≈1/24000级天堂场景|21:5x出票后即时复扫:赔率按实价冻结(周五005买热1.63→1.58/周五010巴黎1.55→1.52/周五001赫塔2.31→2.10/里尔0:0比分16→14.5,方向均向pick收敛=市场认可但CLV为负;以终端票面为准)"
+    },
+    {
+      "id": "T010",
+      "source": "boldplay-seq8-upset-revised",
+      "placedAt": "2026-08-29",
+      "stake": 30,
+      "unitStake": 2,
+      "units": 15,
+      "shape": "CRS 4串15全组合(4单关+6×2串1+4×3串1+1×4串1)",
+      "matchDays": [
+        "2026-08-30",
+        "2026-09-01"
+      ],
+      "origin": "方案转正改单·boldplay seq8梅州翻身档(CRS 4串1×1倍2元)4腿保留3腿(周六026/周日004/周六027);第3腿周一006西甲奥萨苏纳-赫塔费0:2@19出票时误买成周一002芬超赫尔火花-TPS图尔0:2@20(编号三重验证未执行);形状自扩4串1→4串15含单关(2元→30元)",
+      "combos": "C(4,1)4+C(4,2)6+C(4,3)4+C(4,4)1=15注×2元=30元",
+      "legs": [
+        {
+          "code": "周六026",
+          "league": "葡超",
+          "match": "维塞乌 vs 波尔图",
+          "market": "CRS",
+          "pick": "1-0",
+          "odds": 25.0,
+          "q": 0.1209,
+          "result": "pending",
+          "note": "方案腿·freq-band纯模板(shifted=false)·票面@25冻结(体彩后调价至28)",
+          "priceNote": null
+        },
+        {
+          "code": "周日004",
+          "league": "德乙",
+          "match": "圣保利 vs 凯泽",
+          "market": "CRS",
+          "pick": "0-2",
+          "odds": 24.0,
+          "q": 0.1146,
+          "result": "pending",
+          "note": "方案腿·freq-band球队平移(shifted=true)",
+          "priceNote": null
+        },
+        {
+          "code": "周一002",
+          "league": "芬超",
+          "match": "赫尔火花 vs TPS图尔",
+          "market": "CRS",
+          "pick": "0-2",
+          "odds": 20.0,
+          "q": null,
+          "result": "pending",
+          "note": "误买腿·原方案=周一006奥萨苏纳0:2@19(q10.89)·芬超无本地频率库q不可算·未过freq-band生存阈·小联赛比分腿违入选纪律·票面为准",
+          "priceNote": null
+        },
+        {
+          "code": "周六027",
+          "league": "意甲",
+          "match": "尤文图斯 vs 帕尔马",
+          "market": "CRS",
+          "pick": "0-1",
+          "odds": 25.0,
+          "q": 0.1062,
+          "result": "pending",
+          "note": "方案腿·freq-band球队平移(shifted=true)·与T009共享场次(T009买0-0@17)",
+          "priceNote": null
+        }
+      ],
+      "bets": [
+        {
+          "legs": [
+            0
+          ],
+          "multiplier": 1
+        },
+        {
+          "legs": [
+            1
+          ],
+          "multiplier": 1
+        },
+        {
+          "legs": [
+            2
+          ],
+          "multiplier": 1
+        },
+        {
+          "legs": [
+            3
+          ],
+          "multiplier": 1
+        },
+        {
+          "legs": [
+            0,
+            1
+          ],
+          "multiplier": 1
+        },
+        {
+          "legs": [
+            0,
+            2
+          ],
+          "multiplier": 1
+        },
+        {
+          "legs": [
+            0,
+            3
+          ],
+          "multiplier": 1
+        },
+        {
+          "legs": [
+            1,
+            2
+          ],
+          "multiplier": 1
+        },
+        {
+          "legs": [
+            1,
+            3
+          ],
+          "multiplier": 1
+        },
+        {
+          "legs": [
+            2,
+            3
+          ],
+          "multiplier": 1
+        },
+        {
+          "legs": [
+            0,
+            1,
+            2
+          ],
+          "multiplier": 1
+        },
+        {
+          "legs": [
+            0,
+            1,
+            3
+          ],
+          "multiplier": 1
+        },
+        {
+          "legs": [
+            0,
+            2,
+            3
+          ],
+          "multiplier": 1
+        },
+        {
+          "legs": [
+            1,
+            2,
+            3
+          ],
+          "multiplier": 1
+        },
+        {
+          "legs": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "multiplier": 1
+        }
+      ],
+      "payoutShape": "按形状结算:中1场回1注单关(40~50);中2场回1注2串1(960~1250);中3场回3×2串1+1×3串1(24,360~29,650税后);4场全中15注全回:税前封顶609,798(4串1注60万超50万单注限额封顶50万)·税后499,198",
+      "combinedOdds": 300000.0,
+      "potentialWin": 499198,
+      "settled": {
+        "status": "pending"
+      },
+      "note": "翻身档方案2元自扩至30元(压roundRedline 30上限);4单关CRS资格✓(poolSingle全1);形状为preference档案外新形状(档案仅4串11/3场混串)待大哥确认后更新档案;8月累计stake 134/240月封顶内"
     }
   ]
 }
