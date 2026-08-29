@@ -1,0 +1,174 @@
+{
+ "date": "2026-08-29",
+ "seq": 7,
+ "shape": "guilin",
+ "method": "freq",
+ "tiers": {
+  "base": {
+   "cost": 4,
+   "legs": [
+    [
+     {
+      "matchNumStr": "周六001",
+      "match": "水户蜀葵-町田泽维",
+      "play": "had",
+      "pick": "客胜",
+      "odds": 1.68
+     },
+     {
+      "matchNumStr": "周六002",
+      "match": "清水鼓动-柏太阳神",
+      "play": "had",
+      "pick": "客胜",
+      "odds": 1.73
+     },
+     {
+      "matchNumStr": "周六003",
+      "match": "大宫松鼠-湘南海洋",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 1.96
+     },
+     {
+      "matchNumStr": "周六004",
+      "match": "蔚山现代-金泉尚武",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 2.03
+     }
+    ],
+    [
+     {
+      "matchNumStr": "周六003",
+      "match": "大宫松鼠-湘南海洋",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 1.96
+     },
+     {
+      "matchNumStr": "周六004",
+      "match": "蔚山现代-金泉尚武",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 2.03
+     },
+     {
+      "matchNumStr": "周六005",
+      "match": "卡斯鲁厄-沃夫斯堡",
+      "play": "had",
+      "pick": "客胜",
+      "odds": 1.81
+     },
+     {
+      "matchNumStr": "周六011",
+      "match": "柏林联合-法兰克福",
+      "play": "had",
+      "pick": "客胜",
+      "odds": 2.38
+     }
+    ]
+   ],
+   "play": "had-4串1",
+   "note": "×2注互补(共享≤2场)"
+  },
+  "mid": {
+   "cost": 6,
+   "legs": [
+    [
+     {
+      "matchNumStr": "周六001",
+      "match": "水户蜀葵-町田泽维",
+      "play": "had",
+      "pick": "客胜",
+      "odds": 1.68
+     },
+     {
+      "matchNumStr": "周六002",
+      "match": "清水鼓动-柏太阳神",
+      "play": "had",
+      "pick": "客胜",
+      "odds": 1.73
+     },
+     {
+      "matchNumStr": "周六003",
+      "match": "大宫松鼠-湘南海洋",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 1.96
+     },
+     {
+      "matchNumStr": "周六004",
+      "match": "蔚山现代-金泉尚武",
+      "play": "had",
+      "pick": "主胜",
+      "odds": 2.03
+     },
+     {
+      "matchNumStr": "周六005",
+      "match": "卡斯鲁厄-沃夫斯堡",
+      "play": "had",
+      "pick": "客胜",
+      "odds": 1.81
+     }
+    ]
+   ],
+   "multiplier": 3,
+   "play": "had-5串1×3倍",
+   "note": "默认HAD"
+  },
+  "upset": {
+   "cost": 8,
+   "multiplier": 4,
+   "legs": [
+    {
+     "matchNumStr": "周日008",
+     "match": "桑德兰-富勒姆",
+     "score": "0:0",
+     "odds": 10.0,
+     "q": 0.1759,
+     "shifted": true,
+     "play": "crs",
+     "pick": "0:0"
+    },
+    {
+     "matchNumStr": "周六027",
+     "match": "尤文图斯-帕尔马",
+     "score": "0:0",
+     "odds": 15.0,
+     "q": 0.1725,
+     "shifted": true,
+     "play": "crs",
+     "pick": "0:0"
+    },
+    {
+     "matchNumStr": "周一012",
+     "match": "巴萨-巴列卡诺",
+     "score": "1:0",
+     "odds": 11.0,
+     "q": 0.1616,
+     "shifted": true,
+     "play": "crs",
+     "pick": "1:0"
+    },
+    {
+     "matchNumStr": "周日009",
+     "match": "利兹联-布伦特",
+     "score": "0:0",
+     "odds": 13.0,
+     "q": 0.1569,
+     "shifted": true,
+     "play": "crs",
+     "pick": "0:0"
+    }
+   ],
+   "play": "crs-4串1",
+   "expOdds": 21450.0,
+   "winIfHit": 171600.0,
+   "note": "guilin形状 freq-band 带宽(10.0, 17.0) · 球队平移4/4腿"
+  }
+ },
+ "totalCost": 18,
+ "densityNote": "期望返还 ≈ 19.1%（各腿池水连乘crs）",
+ "postTaxNote": "单注奖金超1万部分税20%;4串单注限额50万已反算倍数",
+ "ranAt": "2026-08-29"
+}

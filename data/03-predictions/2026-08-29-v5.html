@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026-08-29 预测 v5.3 · 开季R2单锚</title>
+<style>
+:root{
+  --bg:#f7f8fa;--card:#fff;--ink:#1a2332;--sub:#5a6573;--line:#e3e6ec;
+  --gold:#c89933;--red:#cf3a3a;--green:#2e8b57;--blue:#2c6fb8;--amber:#d98a1f;
+  --tier1:#2e8b57;--tier2:#c89933;--tier3:#cf3a3a;
+}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#15191f;--card:#1e242c;--ink:#e8ecf2;--sub:#9aa4b0;--line:#2c333d;
+    --gold:#d4a943;--red:#e0584f;--green:#4cb080;--blue:#5b9fdb;--amber:#e0a23c;
+    --tier1:#4cb080;--tier2:#d4a943;--tier3:#e0584f;}
+}
+:root[data-theme="dark"]{--bg:#15191f;--card:#1e242c;--ink:#e8ecf2;--sub:#9aa4b0;--line:#2c333d;
+  --gold:#d4a943;--red:#e0584f;--green:#4cb080;--blue:#5b9fdb;--amber:#e0a23c;
+  --tier1:#4cb080;--tier2:#d4a943;--tier3:#e0584f;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:14px/1.6 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif;padding:20px;max-width:1100px;margin:0 auto}
+h1{font-size:20px;margin-bottom:4px}
+.meta{color:var(--sub);font-size:13px;margin-bottom:16px}
+.warn{background:linear-gradient(90deg,var(--amber)15,transparent);border-left:3px solid var(--amber);padding:12px 14px;border-radius:6px;margin-bottom:20px;font-size:13px}
+.warn b{color:var(--amber)}
+.sec{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-bottom:16px}
+.sec h2{font-size:16px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.tier{border-left:4px solid}
+.t1{border-color:var(--tier1)} .t2{border-color:var(--tier2)} .t3{border-color:var(--tier3)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line)}
+th{color:var(--sub);font-weight:600;background:rgba(0,0,0,.02)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) th{background:rgba(255,255,255,.03)}}
+:root[data-theme="dark"] th{background:rgba(255,255,255,.03)}
+.code{font-weight:700;color:var(--blue)}
+.tag{display:inline-block;padding:1px 7px;border-radius:10px;font-size:11px;font-weight:600}
+.tag-g{background:var(--green);color:#fff} .tag-a{background:var(--amber);color:#fff}
+.tag-r{background:var(--red);color:#fff} .tag-s{background:var(--sub);color:#fff}
+.ev-neg{color:var(--red)} .ev-pos{color:var(--green)}
+.sub-note{color:var(--sub);font-size:12px;margin:6px 0 10px}
+summary{cursor:pointer;font-weight:600;color:var(--blue);padding:6px 0}
+.small{font-size:12px;color:var(--sub)}
+.kv{display:flex;gap:20px;flex-wrap:wrap;margin:4px 0 12px}
+.kv div{font-size:13px}.kv b{color:var(--ink)}
+.leg{display:grid;grid-template-columns:80px 1fr 90px 60px;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13px;align-items:center}
+.leg:last-child{border:0}
+@media(max-width:640px){.leg{grid-template-columns:1fr;gap:2px}}
+svg{vertical-align:middle}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute"><symbol id="i-ball" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2 L12 22 M2 12 L22 12 M5 5 L19 19 M19 5 L5 19" stroke="currentColor" stroke-width="1" opacity=".5"/></symbol></svg>
+
+<h1>⚽ 2026-08-29 周末预测 v5.3</h1>
+<div class="meta">开季 R2 · 单锚降级模式 · 66 场在售（周六29+周日25+周一12）· 生成于 2026-08-29</div>
+
+<div class="warn">
+<b>⚠ 数据质量警示（本轮如实降级）</b><br>
+① <b>开季 R2</b>：欧洲跨年联赛（英西德意法荷葡）刚开打2轮，近况仅1-2场、排名参考价值低 → 全场应用开季修正（强队胜×0.90/平×1.20），星级上限 ⭐⭐⭐<br>
+② <b>单锚模式</b>：本轮未赛场无 Pinnacle 收盘价（赛前本就无），概率锚退化为 DC 模型(2526上赛季参数)+体彩去水融合，整体×0.97 置信折扣<br>
+③ <b>standings 残留</b>：联赛画像 roundsPlayed=22 系上赛季残留，已用体彩 insight 实时排名(2026/27)覆盖关键场<br>
+④ <b>球队画像缺</b>：德甲目录仅2队、升班马(伊普斯/帕德博恩/埃沃斯堡/弗洛西诺)不在DC缓存→纯市场锚<br>
+<b>结论：本轮置信度低于赛季中段，超低赔胆材遍地但含金量存疑，建议小注试水而非重仓。</b>
+</div>
+
+<!-- 摘要卡：三档对比 -->
+<div class="sec">
+<h2>📋 出单摘要卡 · 三档对比</h2>
+<table>
+<tr><th>方案</th><th>票面</th><th>本金</th><th>合赔</th><th>中即≈</th><th>选腿策略</th></tr>
+<tr><td><span class="tag tag-g">保底</span></td><td>HAD 4串1 ×2注互补</td><td>4元</td><td>11.5/17.1倍</td><td>46/68元</td><td>日职韩职德乙德甲中赔胆·共享≤2场</td></tr>
+<tr><td><span class="tag tag-a">进阶</span></td><td>HAD 5串1 ×3倍</td><td>6元</td><td>20.9×3倍</td><td>≈125元</td><td>保底5场全串·回血主线</td></tr>
+<tr><td><span class="tag tag-r">翻身</span></td><td>CRS 4串1 ×4倍</td><td>8元</td><td>21450倍</td><td>≈17.1万</td><td>freq-band 广西买法·搏奖尾巴</td></tr>
+</table>
+<div class="kv" style="margin-top:12px">
+<div>总投入 <b>18元</b></div>
+<div>至少中一注 ≈ <b>8~12%</b><span class="small">（体彩去水近似·耦合口径）</span></div>
+<div>全灭率 ≈ <b>88~92%</b></div>
+<div>期望返还 <b>≈19.1%</b><span class="small">（CRS池水连乘）</span></div>
+</div>
+<div class="sub-note">三档可组合或单选。负期望本质：娱乐性质，<b>单期≤30元</b>红线不可破。翻身档8元属"以小博大"，4腿CRS全中概率约0.06%，不要追加。</div>
+</div>
+
+<!-- 保底档 -->
+<div class="sec tier t1">
+<h2>🛡️ 保底档 · HAD 4串1 ×2注互补 · 4元</h2>
+<div class="sub-note">两注共享周六003/004（≤2场），任一注全中即回血。日职R3/韩职23轮/德乙R2开季混合。</div>
+
+<div class="sub-note"><b>注①（合赔11.5倍·2元·中即≈23元）</b></div>
+<div class="leg"><span class="code">周六001</span><span>水户蜀葵 vs 町田泽维</span><span>客胜@1.68</span><span class="tag tag-s">日R3</span></div>
+<div class="leg"><span class="code">周六002</span><span>清水鼓动 vs 柏太阳神</span><span>客胜@1.73</span><span class="tag tag-s">日R3</span></div>
+<div class="leg"><span class="code">周六003</span><span>大宫松鼠 vs 湘南海洋</span><span>主胜@1.96</span><span class="tag tag-s">日乙R2</span></div>
+<div class="leg"><span class="code">周六004</span><span>蔚山现代 vs 金泉尚武</span><span>主胜@2.03</span><span class="tag tag-g">韩23轮</span></div>
+
+<div class="sub-note" style="margin-top:14px"><b>注②（合赔17.1倍·2元·中即≈34元）</b></div>
+<div class="leg"><span class="code">周六003</span><span>大宫松鼠 vs 湘南海洋</span><span>主胜@1.96</span><span class="tag tag-s">共享</span></div>
+<div class="leg"><span class="code">周六004</span><span>蔚山现代 vs 金泉尚武</span><span>主胜@2.03</span><span class="tag tag-s">共享</span></div>
+<div class="leg"><span class="code">周六005</span><span>卡斯鲁厄 vs 沃夫斯堡</span><span>客胜@1.81</span><span class="tag tag-s">德乙R2</span></div>
+<div class="leg"><span class="code">周六011</span><span>柏林联合 vs 法兰克福</span><span>客胜@2.38</span><span class="tag tag-a">胶着37%</span></div>
+<div class="sub-note" style="color:var(--amber)">注②含周六011客胜@2.38（去水37%胶着），为全档最弱腿，翻车风险最高；若求稳可弃注②只买注①。</div>
+</div>
+
+<!-- 进阶档 -->
+<div class="sec tier t2">
+<h2>⚖️ 进阶档 · HAD 5串1 ×3倍 · 6元</h2>
+<div class="sub-note">保底5场全串×3倍，全中合赔62.7倍，中即≈125元。本质是保底注①+周六005的加长版。</div>
+<div class="leg"><span class="code">周六001</span><span>水户蜀葵 vs 町田泽维</span><span>客胜@1.68</span><span class="small">53%</span></div>
+<div class="leg"><span class="code">周六002</span><span>清水鼓动 vs 柏太阳神</span><span>客胜@1.73</span><span class="small">51%</span></div>
+<div class="leg"><span class="code">周六003</span><span>大宫松鼠 vs 湘南海洋</span><span>主胜@1.96</span><span class="small">45%</span></div>
+<div class="leg"><span class="code">周六004</span><span>蔚山现代 vs 金泉尚武</span><span>主胜@2.03</span><span class="small">44%</span></div>
+<div class="leg"><span class="code">周六005</span><span>卡斯鲁厄 vs 沃夫斯堡</span><span>客胜@1.81</span><span class="small">49%</span></div>
+</div>
+
+<!-- 翻身档 -->
+<div class="sec tier t3">
+<h2>🚀 翻身档 · CRS 4串1 ×4倍 · 8元 · 广西买法(freq-band)</h2>
+<div class="sub-note">freq-band 铁律8选腿：联赛频率模板+球队平移+形状带(10-17)+q排序。合赔21450倍，4腿全中≈17.1万。<b>负期望搏奖，切勿追加倍数。</b></div>
+<div class="leg"><span class="code">周日008</span><span>桑德兰 vs 富勒姆</span><span>0:0@10.0</span><span class="small">q17.6%</span></div>
+<div class="leg"><span class="code">周六027</span><span>尤文图斯 vs 帕尔马</span><span>0:0@15.0</span><span class="small">q17.3%</span></div>
+<div class="leg"><span class="code">周一012</span><span>巴萨 vs 巴列卡诺</span><span>1:0@11.0</span><span class="small">q16.2%</span></div>
+<div class="leg"><span class="code">周日009</span><span>利兹联 vs 布伦特</span><span>0:0@13.0</span><span class="small">q15.7%</span></div>
+<div class="sub-note" style="color:var(--red)">⚠ 矛盾提示：周六027尤文vs帕尔马，方向层我评主胜71%(@1.12)，但freq-band选0:0比分。freq-band基于意甲低分场真实频率，与强弱判断未必一致——尤文对弱队0:0属冷门剧本，q17.3%是模板频率非最优预测。CRS本质是搏冷门比分，接受此分歧。</div>
+</div>
+
+<!-- 深挖硬胆备选 -->
+<div class="sec">
+<h2>🎯 深挖硬胆备选（未入boldplay保底，超低赔骨架）</h2>
+<div class="sub-note">我对13场跑了DC+体彩融合+insight实时排名。以下为p_final≥62%的硬胆，赔率1.12-1.45超低赔，4串合赔仅~2倍（回血有余暴利无望），可单选入串或作胆材替换保底弱腿。</div>
+<table>
+<tr><th>编号</th><th>对阵</th><th>排名H/A</th><th>pick</th><th>赔率</th><th>p_final</th><th>EV</th><th>星</th><th>依据</th></tr>
+<tr><td class="code">周日018</td><td>坎布尔 vs 特温特</td><td>18/12</td><td>客胜</td><td>1.23</td><td>74%</td><td class="ev-neg">-8.9%</td><td>★★★</td><td>坎布尔18名+近况2胜8负崩盘，客胜最硬</td></tr>
+<tr><td class="code">周六027</td><td>尤文图斯 vs 帕尔马</td><td>8/16</td><td>主胜</td><td>1.12</td><td>71%</td><td class="ev-neg">-20.8%</td><td>★★★</td><td>尤文8 vs 帕尔马16，近况6胜2平2负占优</td></tr>
+<tr><td class="code">周六020</td><td>多特蒙德 vs 汉堡</td><td>4/10</td><td>主胜</td><td>1.25</td><td>69%</td><td class="ev-neg">-13.7%</td><td>★★★</td><td>多特4 vs 汉堡10，主场</td></tr>
+<tr><td class="code">周六026</td><td>维塞乌 vs 波尔图</td><td>?/?</td><td>客胜</td><td>1.19</td><td>68%</td><td class="ev-neg">-19.6%</td><td>★★★</td><td>波尔图客胜，超低赔骨架</td></tr>
+<tr><td class="code">周日020</td><td>卡利亚里 vs 国际米兰</td><td>7/2</td><td>客胜</td><td>1.27</td><td>67%</td><td class="ev-neg">-15.2%</td><td>★★★</td><td>国米2名+近况6胜4平0负不败</td></tr>
+<tr><td class="code">周日014</td><td>曼联 vs 伊普斯</td><td>17/7</td><td>主胜</td><td>1.26</td><td>66%</td><td class="ev-neg">-17.4%</td><td>★★★⚠</td><td><b>风险</b>：曼联排名17<伊普斯7，开季差，主胜66%系市场看好名气，排名不支持</td></tr>
+<tr><td class="code">周六006</td><td>利物浦 vs 诺丁汉</td><td>10/15</td><td>主胜</td><td>1.32</td><td>62%</td><td class="ev-neg">-18.8%</td><td>★★★</td><td>利物浦10名开季慢热，主场</td></tr>
+<tr><td class="code">周六010</td><td>莱红牛 vs 门兴</td><td>?/?</td><td>主胜</td><td>1.41</td><td>62%</td><td class="ev-neg">-13.3%</td><td>★★★</td><td>莱比锡主场</td></tr>
+</table>
+<div class="sub-note">EV全负为体彩抽水必然（HAD池12.9%），单关期望返还0.871。骨架胆不卡单关EV，看概率+排名支持度。周日014曼联建议<b>剔除或降级</b>。</div>
+</div>
+
+<!-- 谨慎/剔除 -->
+<div class="sec">
+<h2>⚠ 谨慎/剔除场</h2>
+<div class="leg"><span class="code">周日014</span><span>曼联 vs 伊普斯</span><span>主胜66%@1.26</span><span class="tag tag-r">剔除</span></div>
+<div class="sub-note">曼联排名17 vs 伊普斯7，近况4胜3平3负 vs 7胜1平2负——客队开季更优。主胜66%全靠市场名气，排名/近况不支持，建议不入串。</div>
+<div class="leg"><span class="code">周六024</span><span>阿尔克马 vs 前进之鹰</span><span>主胜68%@1.24</span><span class="tag tag-a">谨慎</span></div>
+<div class="sub-note">荷甲排名1 vs 2（前两名对决），实力接近，主胜68%@1.24高估，平局保护建议双选或不作胆。</div>
+</div>
+
+<!-- 排除简报 -->
+<div class="sec">
+<h2>📋 排除简报（C/D级 · 一行一场）</h2>
+<div class="small" style="line-height:2.1">
+<span class="code">周六011</span> 柏林联合vs法兰克福 [C] 德甲R2胶着37/26/37 → 避开<br>
+<span class="code">周六021</span> 蒙扎vs乌迪内斯 [C] 意甲R2胶着31/30/39 → 避开<br>
+<span class="code">周六023</span> 萨索洛vs都灵 [C] 意甲R2胶着43/29/29 → 避开<br>
+<span class="code">周日016</span> 那不勒斯vs科莫 [C] 意甲胶着40/30/30 → 避开<br>
+<span class="code">周日017</span> 拉科vs巴伦西亚 [C] 西甲胶着36/31/33 → 避开<br>
+<span class="code">周日021</span> 摩纳哥vs马赛 [C] 法甲胶着41/25/33 → 避开<br>
+<span class="code">周日023</span> 塞尔塔vs毕尔巴鄂 [C] 西甲胶着40/29/31 → 避开<br>
+<span class="code">周一006</span> 奥萨苏纳vs赫塔费 [C] 西甲胶着45/33/22 → 避开<br>
+<span class="code">周一007</span> 亚特兰大vs博洛尼亚 [C] 意甲44/32/24 → 弱主胜不做胆<br>
+<span class="code">周六018</span> 维京vs奥勒松 [D] 挪超·无联赛画像+球队缺 → 排除<br>
+<span class="code">周日007</span> 博德闪耀vs罗森博格 [D] 挪超强强但数据缺 → 排除（小联赛最多1场入串也不选）<br>
+<span class="code">周日022</span> 弗拉门戈vs博塔弗戈 [D] 巴甲·无画像 → 排除<br>
+<span class="code">周六029</span> 华盛顿vs洛杉矶FC [D] 美职·无画像 → 排除<br>
+<span class="code">周日025</span> 圣路易城vs达拉斯 [D] 美职·无画像 → 排除<br>
+<span class="code">周一001/002</span> 芬超两场 [D] 无画像 → 排除<br>
+<span class="code">周日006</span> 费耶诺德vs海牙 [特殊] HAD未开售·让球盘（强队大热）<br>
+<span class="code">周日013</span> 皇马vs马拉加 [特殊] HAD未开售·让球盘<br>
+<span class="code">周一010</span> 本菲卡vs埃斯托里 [特殊] HAD未开售·让球盘<br>
+<span class="code">周一012</span> 巴萨vs巴列卡诺 [特殊] HAD未开售·让2球@2.00/4.20/2.56（已入翻身档CRS 1:0）
+</div>
+</div>
+
+<!-- 临场提示 -->
+<div class="sec">
+<h2>⏰ 临场终审提示（Step 6.5 · 出票前≤12h）</h2>
+<div class="small">
+<b>本轮为赛前预测，开赛前须复核</b>（按信息边际三定律）：<br>
+① <b>首发/伤停</b>：开季R2各队轮换可能性高，尤其中游队。出票前跑 <code>python engine/scripts/sporttery_fetch.py insight &lt;matchId&gt;</code> 复核伤停终版<br>
+② <b>赔率复扫</b>：体彩赔率开赛前可能异动。零异动+新消息=真边际可修订；异动=市场已消化<br>
+③ <b>翻身档比分</b>：freq-band选腿基于上赛季频率模板，开季阵容变化大，4腿CRS属搏奖，临场首发公布后(30-60min)锁价<br>
+④ <b>单锚提醒</b>：本轮无Pinnacle收盘锚，临场若有Pinnacle数据可补算CLV，但赛前通常仍无收盘价
+</div>
+</div>
+
+<div class="small" style="color:var(--sub);margin-top:8px">
+<b>数据来源</b>：体彩官方API(sporttery_fetch.py·赛程+赔率+insight) · football-data.co.uk(odds_fetch·2526+2627收盘/xG) · DC模型缓存(2526上赛季参数·ξ=0.005) · 体彩insight(实时排名2026/27+伤停+近10场) · boldplay freq-band(score_odds/2026-08-29.json)<br>
+<b>归档</b>：data/02-results/2026-08-29.json(32场v4.7) · data/03-predictions/2026-08-29-boldplay.json(三档) · 本报告 data/03-predictions/2026-08-29-v5.html
+</div>
+
+</body>
+</html>
