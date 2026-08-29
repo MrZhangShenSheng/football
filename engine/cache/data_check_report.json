@@ -1,218 +1,172 @@
 {
   "checkedAt": "2026-08-29",
   "leagues": {
-    "japan": {
-      "status": "ready",
-      "roundsPlayed": 3,
-      "standingsSource": "espn",
-      "fdCovered": false
-    },
-    "japan-j2": {
-      "status": "ready",
-      "roundsPlayed": 2,
-      "standingsSource": "titan007",
-      "fdCovered": false
-    },
-    "korea-k-league": {
-      "status": "ready",
-      "roundsPlayed": 23,
-      "standingsSource": "titan007",
-      "fdCovered": false
-    },
-    "germany-bundesliga2": {
-      "status": "ready",
-      "roundsPlayed": 12,
-      "standingsSource": "fd-derived",
-      "fdCovered": true
-    },
-    "england": {
+    "韩职": {
       "status": "missing"
     },
-    "england-championship": {
-      "status": "ready",
-      "roundsPlayed": 24,
-      "standingsSource": "fd-derived",
-      "fdCovered": true
-    },
-    "sweden": {
-      "status": "ready",
-      "roundsPlayed": 18,
-      "standingsSource": "titan007",
-      "fdCovered": false
-    },
-    "germany-bundesliga": {
-      "status": "ready",
-      "roundsPlayed": 17,
-      "standingsSource": "fd-derived",
-      "fdCovered": true
-    },
-    "spain": {
+    "德乙": {
       "status": "missing"
     },
-    "france": {
+    "英超": {
       "status": "missing"
     },
-    "norway": {
+    "英冠": {
       "status": "missing"
     },
-    "italy": {
+    "瑞超": {
       "status": "missing"
     },
-    "netherlands-eredivisie": {
-      "status": "ready",
-      "roundsPlayed": 19,
-      "standingsSource": "fd-derived",
-      "fdCovered": true
-    },
-    "portugal": {
+    "德甲": {
       "status": "missing"
     },
-    "usa": {
+    "西甲": {
       "status": "missing"
     },
-    "brazil": {
+    "法甲": {
       "status": "missing"
     },
-    "finland": {
-      "status": "ready",
-      "roundsPlayed": 21,
-      "standingsSource": "titan007",
-      "fdCovered": false
+    "挪超": {
+      "status": "missing"
+    },
+    "意甲": {
+      "status": "missing"
+    },
+    "荷甲": {
+      "status": "missing"
+    },
+    "葡超": {
+      "status": "missing"
+    },
+    "美职": {
+      "status": "missing"
+    },
+    "巴甲": {
+      "status": "missing"
+    },
+    "芬超": {
+      "status": "missing"
+    },
+    "法乙": {
+      "status": "missing"
     }
   },
   "missingLeagues": [
-    "england",
-    "spain",
-    "france",
-    "norway",
-    "italy",
-    "portugal",
-    "usa",
-    "brazil"
+    "韩职",
+    "德乙",
+    "英超",
+    "英冠",
+    "瑞超",
+    "德甲",
+    "西甲",
+    "法甲",
+    "挪超",
+    "意甲",
+    "荷甲",
+    "葡超",
+    "美职",
+    "巴甲",
+    "芬超",
+    "法乙"
   ],
   "staleLeagues": [],
   "missingAlias": [
     {
       "team": "伍尔弗",
-      "league": "england-championship",
+      "league": "英冠",
       "match": "伍尔弗 vs 斯托克城"
     },
     {
       "team": "斯托克城",
-      "league": "england-championship",
+      "league": "英冠",
       "match": "伍尔弗 vs 斯托克城"
     },
     {
       "team": "代格福什",
-      "league": "sweden",
+      "league": "瑞超",
       "match": "埃夫斯堡 vs 代格福什"
     },
     {
       "team": "奥勒松",
-      "league": "norway",
+      "league": "挪超",
       "match": "维京 vs 奥勒松"
     },
     {
       "team": "华盛顿",
-      "league": "usa",
+      "league": "美职",
       "match": "华盛顿 vs 洛杉矶FC"
     },
     {
       "team": "洛杉矶FC",
-      "league": "usa",
+      "league": "美职",
       "match": "华盛顿 vs 洛杉矶FC"
     },
     {
       "team": "罗森博格",
-      "league": "norway",
+      "league": "挪超",
       "match": "博德闪耀 vs 罗森博格"
     },
     {
       "team": "弗赖堡",
-      "league": "germany-bundesliga",
+      "league": "德甲",
       "match": "弗赖堡 vs 不来梅"
     },
     {
       "team": "不来梅",
-      "league": "germany-bundesliga",
+      "league": "德甲",
       "match": "弗赖堡 vs 不来梅"
     },
     {
       "team": "弗拉门戈",
-      "league": "brazil",
+      "league": "巴甲",
       "match": "弗拉门戈 vs 博塔弗戈"
     },
     {
       "team": "圣路易城",
-      "league": "usa",
+      "league": "美职",
       "match": "圣路易城 vs 达拉斯"
     },
     {
       "team": "国际图尔",
-      "league": "finland",
+      "league": "芬超",
       "match": "国际图尔 vs 库奥皮奥"
     },
     {
       "team": "库奥皮奥",
-      "league": "finland",
+      "league": "芬超",
       "match": "国际图尔 vs 库奥皮奥"
     },
     {
       "team": "TPS图尔",
-      "league": "finland",
+      "league": "芬超",
       "match": "赫尔火花 vs TPS图尔"
     },
     {
       "team": "第戎",
-      "league": "france",
+      "league": "法乙",
       "match": "第戎 vs 圣埃蒂安"
     },
     {
       "team": "圣埃蒂安",
-      "league": "france",
+      "league": "法乙",
       "match": "第戎 vs 圣埃蒂安"
     },
     {
       "team": "维拉",
-      "league": "england",
+      "league": "英超",
       "match": "维拉 vs 阿森纳"
     },
     {
       "team": "埃斯托里",
-      "league": "portugal",
+      "league": "葡超",
       "match": "本菲卡 vs 埃斯托里"
     },
     {
       "team": "布拉加",
-      "league": "portugal",
+      "league": "葡超",
       "match": "布拉加 vs 吉马良斯"
     }
   ],
   "notReadyTeams": [
-    {
-      "team": "水户蜀葵",
-      "teamId": "mito-hollyhock",
-      "league": "japan",
-      "status": "missing"
-    },
-    {
-      "team": "柏太阳神",
-      "teamId": "kashiwa-reysol",
-      "league": "japan",
-      "status": "missing"
-    },
-    {
-      "team": "大宫松鼠",
-      "teamId": "omiya-ardija",
-      "league": "japan-j2",
-      "status": "missing"
-    },
-    {
-      "team": "湘南海洋",
-      "teamId": "shonan-bellmare",
-      "league": "japan",
-      "status": "missing"
-    },
     {
       "team": "卡斯鲁厄",
       "teamId": "karlsruhe",
@@ -455,7 +409,7 @@
     }
   ],
   "readyCount": {
-    "leagues": 9,
+    "leagues": 0,
     "teamsKnown": 316
   }
 }
