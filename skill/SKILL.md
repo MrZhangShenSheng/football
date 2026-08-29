@@ -73,7 +73,7 @@ Step 5   星级评级（概率阈值 × 数据等级约束）
 Step 6   玩法匹配与风险三档方案（🚀/⚖️/🛡️ + EV 硬门槛 + 资金纪律）★ v4.6
 Step 6.5 出票前临场终审（信息边际 → 最终方案逻辑校验）★ 出票必经
 Step 7   分层报告输出（摘要卡概率×赔率×EV → 推荐详情 → 排除简报）★ v4.6
-Step 8   赛果回填 + 五维复盘 + 闭环学习（corpus/trend/learn）★ v4.5.1
+Step 8   赛果回填 + 五维复盘 + 闭环学习（corpus/attribute/trend/learn）★ v4.5.1
 ```
 
 并行控制：同一时间最多 4~5 个查询，按联赛分组采集，高关注度比赛优先。
@@ -593,14 +593,14 @@ C/D 级场次，每场一行：
 
 ### 触发方式
 
-- **一键闭环**：`python engine/scripts/run.py verify`（backfill 双链路回填 → corpus → trend → calibrate → ablate 全自动；体彩编号对票为主链路，ESPN 兜底，未开赛场自动跳过、完赛后重跑即回填）
+- **一键闭环**：`python engine/scripts/run.py verify`（backfill 双链路回填 → corpus → attribute → trend → calibrate → ablate 全自动；体彩编号对票为主链路，ESPN 兜底，未开赛场自动跳过、完赛后重跑即回填）
 - **手动触发**：用户说"回填赛果" / "复盘上一轮"
 
 回填后跑 `python3 engine/scripts/boldplay.py settle` 逐 leg 判定（比分 4串 部分命中 legHits 是层4实测库数据点），结果写回出票 JSON 的 settle 字段。
 
 ### 闭环学习接线 ★ v4.7 全链路（回填 → 验证 → 提升自动化）
 
-- `python engine/scripts/run.py verify` 一键闭环：**backfill.py**（体彩编号对票主链路+ESPN 兜底，v4.9 双链路；未开赛自动跳过）→ **settle_tickets**（v4.10 票务结算：pending 实票对赛果→按形状算派彩→重刷 tickets.html）→ **boldplay.py settle**（v5.0 阶梯卡推演结算：逐 leg 判定，legHits 入层4实测库）→ **corpus.py**（语料+就绪度：重校 n≥100 / 消融 n≥50 / 断言 n≥15）→ **trend_report.py**（趋势 ①~⑥ + ⑦回归断言 A1 校准/A2 星级/A3 系数/A4 DC 价值，静默=健康）→ **calibrate.py**（n≥100 网格搜 a∈[0.05,0.6] 最小 RPS；护栏：改善<1% 不动 / a 封顶 0.6）→ **ablate.py**（chain 触发 vs 未触发命中率；负增益>10pp 出 diff 建议人审，不自动改 SKILL.md）
+- `python engine/scripts/run.py verify` 一键闭环：**backfill.py**（体彩编号对票主链路+ESPN 兜底，v4.9 双链路；未开赛自动跳过）→ **settle_tickets**（v4.10 票务结算：pending 实票对赛果→按形状算派彩→重刷 tickets.html）→ **boldplay.py settle**（v5.0 阶梯卡推演结算：逐 leg 判定，legHits 入层4实测库）→ **corpus.py**（语料+就绪度：重校 n≥100 / 消融 n≥50 / 断言 n≥15）→ **attribute.py**（规则归因：错题判别 F5/F9/F10 → attribution.json + factorStats，消融候选 nPrimary≥20）→ **trend_report.py**（趋势 ①~⑥ + ⑦回归断言 A1 校准/A2 星级/A3 系数/A4 DC 价值，静默=健康）→ **calibrate.py**（n≥100 网格搜 a∈[0.05,0.6] 最小 RPS；护栏：改善<1% 不动 / a 封顶 0.6）→ **ablate.py**（chain 触发 vs 未触发命中率；负增益>10pp 出 diff 建议人审，不自动改 SKILL.md）
 - `python engine/scripts/run.py learn`：非fd联赛当年增量采集 → dc_fit --source local → models/ 版本发布（holdout 门槛）→ temperature 重拟（语料/fd 增量后，CI 不过自动 T=1）
 
 **chain 字段格式约定 ★ v4.7**：新轮预测必须存**结构化数组**（如 `["R1","保级平局"]`，消融器按关键词分桶），自由文本仅进 note——否则 A3 断言与 ablate 永远无法自动化。系数关键词映射见 ablate.py COEFF_PATTERNS。

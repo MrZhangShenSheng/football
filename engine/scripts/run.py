@@ -95,6 +95,7 @@ def main() -> None:
         sh("backfill.py", *rest)
         sh("boldplay.py", "settle")     # 阶梯卡推演结算（幂等安静：无出票/未完赛/已结算均跳过）
         sh("corpus.py")
+        sh("attribute.py")          # 规则归因（设计 §6 判别树 → attribution.json）
         sh("trend_report.py")
         sh("calibrate.py")
         sh("ablate.py")
