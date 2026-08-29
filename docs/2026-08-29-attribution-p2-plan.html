@@ -1,0 +1,474 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>预测偏差归因引擎 P2 实施计划（真收盘+λ+精确重放）</title>
+<style>
+  :root{--ink:#1c2733;--sub:#5b6b7a;--line:#d8e0e8;--bg:#f6f8fa;--accent:#0f6b4f;--accent2:#b4540a;--bad:#a12734;--good:#0f6b4f;--card:#fff;--amber:#9a6b00}
+  @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#dbe4ec;--sub:#8fa1b3;--line:#2c3947;--bg:#101822;--accent:#4fc49b;--accent2:#e8a04c;--bad:#e2717e;--good:#4fc49b;--card:#18222e;--amber:#d4a82c}}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.7 "Segoe UI","Microsoft YaHei",sans-serif}
+  main{max-width:960px;margin:0 auto;padding:32px 28px 72px}
+  h1{font-size:23px;margin:0 0 4px}h2{font-size:17px;margin:34px 0 10px;padding-bottom:5px;border-bottom:1px solid var(--line)}
+  h3{font-size:15px;margin:20px 0 6px}.sub{color:var(--sub);font-size:13px}
+  code,pre{font-family:Consolas,"JetBrains Mono",monospace;font-size:12.5px}
+  code{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+  pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:13px 15px;overflow-x:auto;line-height:1.5}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.5px;background:var(--card)}
+  th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+  th{background:var(--bg);font-weight:600}
+  .good{color:var(--good);font-weight:600}.bad{color:var(--bad);font-weight:600}.amber{color:var(--amber);font-weight:600}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:12px 0}
+  .icon{width:18px;height:18px;vertical-align:-4px;margin-right:6px;color:var(--accent)}
+  .warn{border-left:3px solid var(--amber);background:var(--card);padding:9px 14px;margin:12px 0;border-radius:0 8px 8px 0}
+  .task{border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin:18px 0;background:var(--card)}
+  .task>h3{margin-top:0}.step{font-size:13px;margin:6px 0}.f{color:var(--accent);font-weight:600}
+</style>
+</head><body><main>
+
+<h1><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg>预测偏差归因引擎 P2 实施计划</h1>
+<p class="sub">2026-08-29 · 作者 sszhang · 配套：P1 已落地（attribution.py 22 测·136 全绿）· 范围：真收盘三向 + λ 落盘 + F3/F4/F1/F5 精确解锁</p>
+
+<div class="warn"><b>目标：</b>解锁 F3/F4（市场锚分歧·信息优势审计地基）、F1（λ失准）、F5 精确重放。<br>
+<b>两个数据决策（已与用户确认）：</b>跨源匹配 A 主 B 辅（三键硬匹配 + fd 映射渐进）；P2 全量（①schema ②匹配落盘 ③判别升级）。<br>
+<b>关键调研结论：</b>λ 与 Pinnacle 收盘源头均已存在（dc_predict result 含 lambdaHome/Away + market；odds_fetch 缓存含 pin_h/d/a）——P2 是"让它们落盘+判别"，不是新算。</div>
+
+<h2>P2 判别树（升级后）</h2>
+<pre>错题入场（directionHit=false）
+├─ ① F5 精确：fusedPre 存在 → fusedPre_best==result 且 fused_best!=result → F5
+│        （无 fusedPre 的历史场：退 P1 的 dc argmax 近似，confidence:low）
+├─ ② F3/F4（pinClose 真收盘存在时）：
+│     pin_best = argmax(pinClose)
+│     ├─ fused_best != pin_best（分歧）且 pin_best==result（市场对）：
+│     │    ├─ dc_best==result → F4（DC 对被融合稀释）
+│     │    └─ dc_best!=result → F3（DC 也错·独立观点错）
+│     └─ fused_best == pin_best（同向）→ 下钻 ③
+├─ ③ F1（λ 存在时）：|实际总进球 − (λh+λa)| > 1.5 → F1
+├─ ④ F9 兜底
+└─ F10 叠加不变（P1 已实现）</pre>
+
+<h2>存储新增</h2>
+<h3>02-results matches[] +4 字段（预测时落盘，SKILL.md v4.7）</h3>
+<pre><code>"lambdaHome": 1.42, "lambdaAway": 1.08,   // dc_predict 原始输出
+"fusedPre": [0.28, 0.26, 0.46],             // 修正前融合三向（dc_predict fuse() 原始输出）
+"chainSteps": [{"name":"开季修正","factor":0.95},{"name":"单锚","factor":0.97}]
+// chainSteps 供 ablate 统计（parse_chain 已兼容数组）；fusedPre 供 F5 精确重放</code></pre>
+<h3>回填时 +2 字段（backfill 落盘）</h3>
+<pre><code>"pinClose": [0.24, 0.25, 0.51],   // fd Pinnacle 收盘去水三向（devig）
+"pinSource": "fd"                 // fd=唯一匹配 / ambiguous=撞比分跳过 / none=fd不覆盖</code></pre>
+<div class="warn"><b>写回铁律扩展</b>：pinClose/pinSource 是<b>新增增补字段</b>，不属"预测锁定字段"，回填可写。ambiguous 场不落 pinClose（F3/F4 跳过，诚实降级），统计 ambiguous 率——若 >40% 触发 P2.5 种子映射（B 辅：fd 英文名↔_aliases 一次性人工对齐主流联赛 ~160 队）。</div>
+
+<h2>跨源三键匹配（pin_close.py 新模块）</h2>
+<pre><code>匹配键：fd 行 (date±1 天窗口, fthg:ftag, 联赛文件) ↔ 02-results (完赛自然日, result, league)
+- fd date 格式 "23/08/2026"（dd/mm/yyyy）→ 解析对齐
+- 中文联赛名 → fd league_name 映射表（27 个缓存文件清单）
+  英超→england-premier 德乙→germany-bundesliga2 欧冠→EC0 ...（日职/沙特/韩职/北欧→fd 不覆盖，pinSource:"none"）
+- 唯一匹配 → devig(pin_h/d/a) 落盘；多行撞（同日同比分同联赛）→ ambiguous 跳过
+- 联赛内撞比分是常态（一轮 2-3 场 1-1），ambiguous 预计 30-50%——量化后决定 P2.5</code></pre>
+<table>
+<tr><th>决策点</th><th>选择</th><th>理由</th></tr>
+<tr><td>CLV 路径复用？</td><td class="bad">不可复用</td><td>clv/clv_note 是会话人肉写入（叙事文本），无脚本匹配代码</td></tr>
+<tr><td>ambiguous 消歧</td><td>跳过+统计率</td><td>队名桥缺失；数据驱动决定是否做种子映射（YAGNI）</td></tr>
+<tr><td>反解 derive_market_probs</td><td class="bad">彻底不写</td><td>P1 已证失效（pin≈fused），有真收盘更不需要</td></tr>
+</table>
+
+<hr>
+
+<h2>Task 1：SKILL.md v4.7 schema（纯文档）</h2>
+<div class="task">
+<p>Modify: <code>skill/SKILL.md:618-650</code>（v4.6 schema 区）+ Step 8 归档规则注记</p>
+<h3>Step 1: schema 示例 matches[] 加 4 字段</h3>
+<p class="step">在 v4.6 schema 示例的 "dc"/"fused" 行后加：</p>
+<pre><code>"lambdaHome": 1.42, "lambdaAway": 1.08,   // v4.7：λ 落盘（dc_predict 原始输出·归因 F1）
+"fusedPre": [0.28, 0.26, 0.46],             // v4.7：修正前融合三向（F5 精确重放）
+"chainSteps": [{"name":"开季修正","factor":0.95}],  // v4.7：修正乘子结构化（ablate 兼容）</code></pre>
+<h3>Step 2: 归档规则注记</h3>
+<p class="step">v4.6 归档规则（line 56 表格行）补一句：v4.7 起新轮 matches[] 必带 lambdaHome/lambdaAway/fusedPre/chainSteps（老轮不回补，归因引擎自动降级近似）。</p>
+<h3>Step 3: Commit</h3>
+<pre><code>git add skill/SKILL.md
+git commit -m "docs(skill): v4.7 schema——matches加lambdaHome/Away+fusedPre+chainSteps(归因F1/F5解锁)"</code></pre>
+</div>
+
+<h2>Task 2：pin_close.py 匹配模块（TDD）</h2>
+<div class="task">
+<p>Create: <code>engine/scripts/pin_close.py</code> · Test: <code>engine/tests/test_pin_close.py</code></p>
+<h3>Step 1: 失败测试</h3>
+<pre><code># -*- coding: utf-8 -*-
+"""pin_close 三键匹配测试。"""
+import json
+import pytest
+
+from pin_close import parse_fd_date, fd_league_name, match_pin_close
+
+
+class TestParseFdDate:
+    def test_ddmmyyyy(self):
+        assert parse_fd_date("23/08/2026") == "2026-08-23"
+
+    def test_invalid(self):
+        assert parse_fd_date("bad") is None
+        assert parse_fd_date(None) is None
+
+
+class TestLeagueMap:
+    def test_known(self):
+        assert fd_league_name("英超") == "england-premier"
+        assert fd_league_name("德乙(R3)") == "germany-bundesliga2"   # strip 轮次后缀
+        assert fd_league_name("欧冠") == "EC0"
+
+    def test_unknown_returns_none(self):
+        assert fd_league_name("日职") is None          # fd 不覆盖
+        assert fd_league_name("韩职") is None
+
+
+class TestMatchPinClose:
+    def _cache(self, tmp_path, rows):
+        d = tmp_path / "odds_england-premier_2627.json"
+        d.write_text(json.dumps({"season": "2627", "matches": rows}), encoding="utf-8")
+        return tmp_path
+
+    def test_unique_match(self, tmp_path):
+        c = self._cache(tmp_path, [
+            {"date": "28/08/2026", "home": "A", "away": "B", "fthg": "2", "ftag": "1",
+             "pin_h": "2.0", "pin_d": "3.4", "pin_a": "3.8"},
+            {"date": "28/08/2026", "home": "C", "away": "D", "fthg": "0", "ftag": "0",
+             "pin_h": "1.5", "pin_d": "4.0", "pin_a": "6.0"},
+        ])
+        out = match_pin_close("英超", "2026-08-28", "2-1", c)
+        assert out[0] == "fd"
+        pin = out[1]
+        assert abs(sum(pin) - 1.0) < 1e-6          # devig 去水归一
+        assert pin[0] > pin[1] and pin[0] > pin[2] # 2.0 最低赔 → 主胜概率最高
+
+    def test_ambiguous_same_score(self, tmp_path):
+        c = self._cache(tmp_path, [
+            {"date": "28/08/2026", "home": "A", "away": "B", "fthg": "1", "ftag": "1",
+             "pin_h": "2.5", "pin_d": "3.2", "pin_a": "2.8"},
+            {"date": "28/08/2026", "home": "C", "away": "D", "fthg": "1", "ftag": "1",
+             "pin_h": "1.9", "pin_d": "3.5", "pin_a": "4.0"},
+        ])
+        out = match_pin_close("英超", "2026-08-28", "1-1", c)
+        assert out[0] == "ambiguous" and out[1] is None
+
+    def test_date_window_plus_minus_one(self, tmp_path):
+        # fd 当地日=27（完赛日 28 的前一天，跨时区晚场）
+        c = self._cache(tmp_path, [
+            {"date": "27/08/2026", "home": "A", "away": "B", "fthg": "2", "ftag": "1",
+             "pin_h": "2.0", "pin_d": "3.4", "pin_a": "3.8"},
+        ])
+        out = match_pin_close("英超", "2026-08-28", "2-1", c)
+        assert out[0] == "fd"
+
+    def test_no_league_coverage(self, tmp_path):
+        out = match_pin_close("日职", "2026-08-28", "2-1", tmp_path)
+        assert out[0] == "none" and out[1] is None
+
+    def test_no_row(self, tmp_path):
+        c = self._cache(tmp_path, [])
+        out = match_pin_close("英超", "2026-08-28", "2-1", c)
+        assert out[0] == "none" and out[1] is None</code></pre>
+<h3>Step 2: 跑测试确认失败</h3>
+<p class="step">Run: <code>python -m pytest engine/tests/test_pin_close.py -v</code> → FAIL（ModuleNotFoundError）</p>
+<h3>Step 3: 实现</h3>
+<pre><code>#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""fd Pinnacle 收盘三键匹配：完赛日±1 + 比分 + 联赛 → 去水三向（pinClose）。
+
+P2 归因地基（docs/2026-08-29-attribution-p2-plan.html）：F3/F4 判别的市场锚来源。
+ambiguous（同窗同比分同联赛多行）→ 跳过标 ambiguous，统计率驱动 P2.5 种子映射。
+"""
+import json
+import re
+from datetime import date, timedelta
+from pathlib import Path
+
+from dc_predict import devig
+
+# 中文联赛名（strip 轮次/资格赛后缀前）→ fd odds 文件 league_name
+FD_LEAGUE_MAP = {
+    "英超": "england-premier", "英冠": "england-championship",
+    "西甲": "spain-laliga", "西乙": "spain-liga2",
+    "德甲": "germany-bundesliga", "德乙": "germany-bundesliga2",
+    "意甲": "italy-serie-a", "意乙": "italy-serie-b",
+    "法甲": "france-ligue1", "法乙": "france-ligue2",
+    "荷甲": "netherlands-eredivisie", "比甲": "belgium-first-a",
+    "葡超": "portugal-liga", "土超": "turkey-super-lig",
+    "希腊超": "greece-super", "俄超": "russia-premier",
+    "欧冠": "EC0", "苏超": "SC0",
+}
+_SUFFIX = re.compile(r"[（(].*?[)）]$")
+
+
+def parse_fd_date(s: str | None) -> str | None:
+    """fd 'dd/mm/yyyy' → 'yyyy-mm-dd'。"""
+    if not s or "/" not in str(s):
+        return None
+    try:
+        d, m, y = str(s).split("/")
+        return date(int(y), int(m), int(d)).isoformat()
+    except (ValueError, TypeError):
+        return None
+
+
+def fd_league_name(league_zh: str | None) -> str | None:
+    """'德乙(R3)' → 'germany-bundesliga2'。fd 不覆盖联赛 → None。"""
+    if not league_zh:
+        return None
+    base = _SUFFIX.sub("", str(league_zh)).strip()
+    return FD_LEAGUE_MAP.get(base)
+
+
+def _date_window(iso: str) -> set[str]:
+    d = date.fromisoformat(iso)
+    return {(d + timedelta(days=k)).isoformat() for k in (-1, 0, 1)}
+
+
+def match_pin_close(league_zh: str, match_date_iso: str, result: str,
+                    cache_dir: Path) -> tuple[str, list | None]:
+    """三键匹配 → (pinSource, pinClose 去水三向 or None)。
+
+    pinSource: fd=唯一匹配 / ambiguous=撞比分 / none=无覆盖或无行。
+    """
+    lg = fd_league_name(league_zh)
+    if lg is None or not match_date_iso or not result or "-" not in str(result):
+        return "none", None
+    hg, _, ag = str(result).partition("-")
+    window = _date_window(match_date_iso)
+    hits: list[dict] = []
+    for f in sorted(cache_dir.glob(f"odds_{lg}_*.json")):
+        try:
+            data = json.loads(f.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            continue
+        for row in data.get("matches") or []:
+            if parse_fd_date(row.get("date")) not in window:
+                continue
+            if str(row.get("fthg")) == hg.strip() and str(row.get("ftag")) == ag.strip():
+                hits.append(row)
+    if not hits:
+        return "none", None
+    if len(hits) > 1:
+        return "ambiguous", None
+    r = hits[0]
+    try:
+        odds = [float(r["pin_h"]), float(r["pin_d"]), float(r["pin_a"])]
+    except (KeyError, TypeError, ValueError):
+        return "none", None
+    return "fd", [round(v, 4) for v in devig(odds)]</code></pre>
+<h3>Step 4: 测试过 → Step 5: Commit</h3>
+<pre><code>git add engine/scripts/pin_close.py engine/tests/test_pin_close.py
+git commit -m "feat(pinclose): fd收盘三键匹配模块(日±1+比分+联赛·devig去水·ambiguous降级·单测8绿)"</code></pre>
+</div>
+
+<h2>Task 3：backfill 集成落盘（TDD）</h2>
+<div class="task">
+<p>Modify: <code>engine/scripts/backfill.py</code>（写回区 line 328 附近） · Test: <code>engine/tests/test_pin_close.py</code> 加集成类</p>
+<h3>Step 1: 失败测试</h3>
+<pre><code>class TestApplyPinClose:
+    """回填成功后给 rec 增补 pinClose/pinSource。"""
+
+    def test_apply(self, tmp_path):
+        from pin_close import apply_pin_close
+        cache = tmp_path
+        (cache / "odds_england-premier_2627.json").write_text(json.dumps(
+            {"season": "2627", "matches": [
+                {"date": "28/08/2026", "fthg": "2", "ftag": "1",
+                 "pin_h": "2.0", "pin_d": "3.4", "pin_a": "3.8"}]}), encoding="utf-8")
+        rec = {"league": "英超", "result": "2-1"}
+        apply_pin_close(rec, "2026-08-28", cache)
+        assert rec["pinSource"] == "fd"
+        assert abs(sum(rec["pinClose"]) - 1.0) < 1e-6
+
+    def test_idempotent_no_overwrite(self, tmp_path):
+        from pin_close import apply_pin_close
+        rec = {"league": "英超", "result": "2-1", "pinSource": "fd", "pinClose": [0.5, 0.2, 0.3]}
+        apply_pin_close(rec, "2026-08-28", tmp_path)   # 空缓存 none
+        assert rec["pinClose"] == [0.5, 0.2, 0.3]      # 已有不覆盖（幂等）</code></pre>
+<h3>Step 2: 失败确认 → Step 3: 实现（pin_close.py 加 apply_pin_close）</h3>
+<pre><code>def apply_pin_close(rec: dict, match_date_iso: str, cache_dir: Path) -> None:
+    """回填集成点：rec 增补 pinClose/pinSource（已有则不覆盖，幂等）。
+
+    写回铁律扩展：此二字段为增补字段，不属于预测锁定字段。
+    """
+    if rec.get("pinClose"):
+        return
+    src, pin = match_pin_close(rec.get("league"), match_date_iso,
+                               rec.get("result") or "", cache_dir)
+    rec["pinSource"] = src
+    if pin:
+        rec["pinClose"] = pin</code></pre>
+<h3>Step 4: backfill.py 写回区接线</h3>
+<p class="step">在赛果写回成功处（rec["result"] 赋值后、统一写回前）调 <code>apply_pin_close(rec, 完赛日, CACHE_DIR)</code>；写回铁律注释行同步更新（docstring + line 8）。完赛日取 match_sporttery 返回的 matchDate（无则跳过 pinClose）。</p>
+<p class="step">Run 真实验证：<code>python engine/scripts/run.py verify</code>（幂等：已回填场不动，新完赛场增补）</p>
+<h3>Step 5: Commit</h3>
+<pre><code>git add engine/scripts/pin_close.py engine/scripts/backfill.py engine/tests/test_pin_close.py
+git commit -m "feat(backfill): 回填集成pinClose落盘(apply_pin_close幂等·写回铁律扩展增补字段)"</code></pre>
+</div>
+
+<h2>Task 4：attribute 升级 F3/F4（TDD）</h2>
+<div class="task">
+<p>Modify: <code>engine/scripts/attribute.py</code>（classify 中段插 F3/F4） · Test: <code>engine/tests/test_attribute.py</code> 加类</p>
+<h3>Step 1: 失败测试</h3>
+<pre><code>class TestClassifyF34:
+    """pinClose 存在时的市场分歧分流。"""
+
+    def _mk(self, **kw):
+        base = dict(code="x", pick="HAD 主胜", dc=[0.5, 0.25, 0.25],
+                    fused=[0.5, 0.25, 0.25], result="0-2",
+                    directionHit=False, pinClose=[0.15, 0.2, 0.65])
+        base.update(kw)
+        return base
+
+    def test_F3_dc_also_wrong(self):
+        # fused 看主、pin 看客、结果客、DC 也看主 → F3
+        out = classify(self._mk())
+        assert out["primary"] == "F3"
+        assert out["evidence"]["pinSource"] == "fd"
+
+    def test_F4_dc_right_diluted(self):
+        # DC 看客对、fused 被拉向主、pin 看客、结果客 → F4（DC 对被稀释）
+        r = self._mk(dc=[0.1, 0.2, 0.7])
+        out = classify(r)
+        assert out["primary"] == "F4"
+
+    def test_agree_falls_through(self):
+        # fused 与 pin 同向看主、结果客 → 不判 F3/F4 → F9
+        r = self._mk(pinClose=[0.5, 0.25, 0.25])
+        out = classify(r)
+        assert out["primary"] == "F9"
+
+    def test_market_wrong_we_wrong_not_f3(self):
+        # pin 也看主错（市场同错）→ 同向 → F9（市场不是免罪金牌）
+        r = self._mk(pinClose=[0.55, 0.2, 0.25])
+        out = classify(r)
+        assert out["primary"] == "F9"
+
+    def test_no_pin_close_keeps_p1_behavior(self):
+        # 无 pinClose → P1 行为（F9 兜底），evidence.pinSource=None
+        r = self._mk(); r.pop("pinClose")
+        out = classify(r)
+        assert out["primary"] == "F9"
+        assert out["evidence"].get("pinSource") is None</code></pre>
+<h3>Step 2: 失败确认 → Step 3: 实现</h3>
+<p class="step">classify 中 F5 判别后、F9 兜底前插入：</p>
+<pre><code>    # ② F3/F4 市场锚分歧（P2：pinClose 真收盘）
+    pin = rec.get("pinClose")
+    ev["pinSource"] = rec.get("pinSource") if pin else None
+    if pin and len(pin) == 3:
+        pin_best = pin.index(max(pin))
+        fused_best_now = fused.index(max(fused)) if fused else None
+        dc_best = dc.index(max(dc)) if dc else None
+        if fused_best_now is not None and fused_best_now != pin_best and pin_best == result_idx:
+            if dc_best == result_idx:
+                return {"primary": "F4", "secondary": [], "evidence": ev, "confidence": "high"}
+            return {"primary": "F3", "secondary": [], "evidence": ev, "confidence": "high"}</code></pre>
+<h3>Step 4: 全测过 → Step 5: Commit</h3>
+<pre><code>git add engine/scripts/attribute.py engine/tests/test_attribute.py
+git commit -m "feat(attrib): F3/F4真收盘判别解锁(pinClose分流·F4=DC对被稀释·单测5绿)"</code></pre>
+</div>
+
+<h2>Task 5：attribute 升级 F1 + F5 精确（TDD）</h2>
+<div class="task">
+<p>Modify: <code>engine/scripts/attribute.py</code> · Test: <code>engine/tests/test_attribute.py</code> 加类</p>
+<h3>Step 1: 失败测试</h3>
+<pre><code>class TestClassifyF1F5:
+    """F5 精确重放（fusedPre）+ F1 λ 失准。"""
+
+    def _mk(self, **kw):
+        base = dict(code="x", pick="HAD 主胜", dc=[0.5, 0.25, 0.25],
+                    fused=[0.5, 0.25, 0.25], result="0-2", directionHit=False)
+        base.update(kw)
+        return base
+
+    def test_F5_precise_fused_pre(self):
+        # fusedPre 看客对、fused 被修正拉向主、结果客 → F5 精确（不再依赖 dc 近似）
+        r = self._mk(fusedPre=[0.1, 0.2, 0.7], dc=[0.1, 0.2, 0.7],
+                     fused=[0.5, 0.25, 0.25], result="0-2")
+        out = classify(r)
+        assert out["primary"] == "F5"
+        assert out["evidence"]["replay"] == "fusedPre"
+
+    def test_F5_fallback_low_confidence(self):
+        # 无 fusedPre 历史场 → dc argmax 近似（P1 行为，confidence low）
+        r = self._mk(dc=[0.1, 0.2, 0.7], fused=[0.5, 0.25, 0.25])
+        out = classify(r)
+        assert out["primary"] == "F5"
+        assert out["confidence"] == "low"
+
+    def test_F1_lambda_gap(self):
+        # λ 总期望 2.3 球、实际 5 球（差 2.7>1.5）→ F1；注意需先不触发 F5/F3/F4
+        r = self._mk(lambdaHome=1.2, lambdaAway=1.1,
+                     dc=[0.5, 0.25, 0.25], fused=[0.5, 0.25, 0.25],
+                     result="3-2")   # 5 球
+        out = classify(r)
+        assert out["primary"] == "F1"
+
+    def test_F1_not_triggered_small_gap(self):
+        # 差 0.5<1.5 → 不触发 F1 → F9
+        r = self._mk(lambdaHome=1.2, lambdaAway=1.1, result="1-1")   # 2 球 vs 2.3 期望
+        out = classify(r)
+        assert out["primary"] == "F9"
+
+    def test_F1_no_lambda_falls_back(self):
+        # 无 λ（历史场）→ 不判 F1 → F9
+        r = self._mk()
+        out = classify(r)
+        assert out["primary"] == "F9"</code></pre>
+<h3>Step 2: 失败确认 → Step 3: 实现</h3>
+<pre><code>LAMBDA_GAP_THRESHOLD = 1.5   # |实际总进球-λ总期望|>1.5 → F1
+
+# classify 内，F5 段改为：
+    # ① F5 精确重放（fusedPre 存在）→ 退 dc argmax 近似（P1）
+    fused_pre = rec.get("fusedPre")
+    if fused_pre and len(fused_pre) == 3:
+        if fused_pre.index(max(fused_pre)) == result_idx and \\
+                fused and fused.index(max(fused)) != result_idx:
+            ev["replay"] = "fusedPre"
+            return {"primary": "F5", "secondary": [], "evidence": ev, "confidence": "high"}
+    elif correction_flipped(dc, fused, result_idx):
+        ev["replay"] = "dc_approx"
+        return {"primary": "F5", "secondary": [], "evidence": ev, "confidence": "low"}
+
+# F3/F4 段后、F9 兜底前插入：
+    # ③ F1 λ 失准（P2）
+    lh, la = rec.get("lambdaHome"), rec.get("lambdaAway")
+    if lh is not None and la is not None:
+        h, _, a = str(rec.get("result") or "").partition("-")
+        try:
+            gap = abs((int(h) + int(a)) - (float(lh) + float(la)))
+            if gap > LAMBDA_GAP_THRESHOLD:
+                ev["lambdaGap"] = round(gap, 2)
+                return {"primary": "F1", "secondary": [], "evidence": ev, "confidence": "high"}
+        except (TypeError, ValueError):
+            pass</code></pre>
+<h3>Step 4: 全测过 → Step 5: Commit</h3>
+<pre><code>git add engine/scripts/attribute.py engine/tests/test_attribute.py
+git commit -m "feat(attrib): F5精确重放(fusedPre·high)+F1λ失准(|Δ进球|>1.5·单测5绿)"</code></pre>
+</div>
+
+<h2>Task 6：全量验证 + 一致性收尾</h2>
+<div class="task">
+<h3>Step 1: pytest 全量</h3>
+<p class="step">Run: <code>python -m pytest engine/tests/ -q</code> → 预期全绿（136 + pin_close 10 + F34 5 + F1F5 5 ≈ 156）</p>
+<h3>Step 2: 真实数据跑通</h3>
+<p class="step">Run: <code>python engine/scripts/run.py attribute</code> → 归因报告。历史场无 pinClose/λ → F3/F4/F1 判不出的照旧 F9（诚实降级），ambiguous 率首次量化。</p>
+<h3>Step 3: CLAUDE.md/SKILL.md 一致性</h3>
+<p class="step">CLAUDE.md 回填链产出列补 pinClose 说明；SKILL.md 已在 Task 1 改，junction 自动同步。</p>
+<h3>Step 4: Commit 收尾</h3>
+<pre><code>git add -A
+git commit -m "feat(attrib-P2): 全量验证——pytest 156绿+真实跑通+ambiguous率首报"</code></pre>
+</div>
+
+<hr>
+
+<h2>P2 验收标准</h2>
+<table>
+<tr><th>验收项</th><th>标准</th></tr>
+<tr><td>pin_close 模块</td><td>三键匹配唯一→devig 落盘；ambiguous/none 诚实降级；幂等不覆盖</td></tr>
+<tr><td>backfill 集成</td><td>回填成功场自动增补 pinClose/pinSource（写回铁律扩展：增补字段）</td></tr>
+<tr><td>attribute 判别树</td><td>F5 精确（fusedPre·high）>F3/F4（pinClose）>F1（λ）>F9；无新数据场保持 P1 行为</td></tr>
+<tr><td>schema v4.7</td><td>SKILL.md 新轮落 λ/fusedPre/chainSteps；老轮不回补自动降级</td></tr>
+<tr><td>pytest</td><td>全量绿（~156）</td></tr>
+<tr><td>ambiguous 率</td><td>首次量化报告（>40% 触发 P2.5 种子映射决策）</td></tr>
+</table>
+
+<h2>P2.5 备忘（按需触发）</h2>
+<p>ambiguous 率 &gt;40% 时：一次性人工对齐主流联赛 fd 英文名 ↔ _aliases（~160 队种子映射），match_pin_close 消歧优先级：三键唯一 &gt; 三键+队名 &gt; ambiguous 跳过。</p>
+
+</main></body></html>
