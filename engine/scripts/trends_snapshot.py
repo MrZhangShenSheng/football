@@ -52,11 +52,13 @@ def extract_odds(matches):
 
 
 def replay_odds(snapshots):
-    """base 全量 → 依次应用 changes/removed → {code: 场记录}（diff 基准/分析回放通用）。开发者 sszhang"""
+    """base 全量 → 依次应用 changes/removed → {code: 场记录}（diff 基准/分析回放通用）。
+    深拷贝池 dict：回放态与快照互不污染（write_snapshot 读→回放→写回的审计保真）。开发者 sszhang"""
     state = {}
     for s in snapshots or []:
         if s.get("base"):
-            state = {m["code"]: dict(m) for m in s.get("matches") or []}
+            state = {m["code"]: {**m, **{k: dict(v) for k, v in m.items() if isinstance(v, dict)}}
+                     for m in s.get("matches") or []}
             continue
         for c in s.get("changes") or []:
             rec = state.setdefault(c["code"], {"code": c["code"]})
@@ -64,9 +66,9 @@ def replay_odds(snapshots):
                 if k == "code":
                     continue
                 if isinstance(v, dict) and isinstance(rec.get(k), dict):
-                    rec[k].update(v)          # 池内项级合并
+                    rec[k].update(v)          # 池内项级合并（rec[k] 已是拷贝）
                 else:
-                    rec[k] = v
+                    rec[k] = dict(v) if isinstance(v, dict) else v   # 新场池dict同样拷贝
         for code in s.get("removed") or []:
             state.pop(code, None)
     return state
@@ -97,6 +99,57 @@ def diff_odds(prev, new_matches):
             changes.append({"code": code, **delta})
     removed = [c for c in prev if c not in new_codes]
     return changes, removed
+
+
+_TRENDS_DIR = TRENDS_DIR          # 可重定向（selftest 用；运行时不变）
+
+
+def _set_trends_dir(p):
+    """selftest 钩子：重定向时序库目录。开发者 sszhang"""
+    globals()["_TRENDS_DIR"] = p
+
+
+def _now_iso():
+    return datetime.now().astimezone().strftime("%Y-%m-%dT%H:%M:%S%z")[:-2] + ":00"
+
+
+def atomic_write_json(path, data):
+    """tmp + rename 原子写（并发竞态防护，ADR D7）。开发者 sszhang"""
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    tmp.write_text(json.dumps(data, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    tmp.replace(path)
+
+
+def write_snapshot(extracted, trigger, day=None):
+    """提取结果 → 追加当日 odds 时序文件。无文件/损坏 → 新 base 全量版（损坏转 .corrupt-<ts> 备份）。
+    返回文件 Path。开发者 sszhang"""
+    day = day or date.today().isoformat()
+    path = _TRENDS_DIR / f"{day}-odds.json"
+    _TRENDS_DIR.mkdir(parents=True, exist_ok=True)
+    doc = {"date": day, "type": "odds-timeline", "schemaVersion": SCHEMA_VERSION, "snapshots": []}
+    prev = {}
+    if path.exists():
+        try:
+            doc = json.loads(path.read_text(encoding="utf-8"))
+            prev = replay_odds(doc.get("snapshots"))
+        except json.JSONDecodeError:
+            backup = path.with_suffix(f"{path.suffix}.corrupt-{datetime.now():%H%M%S}")
+            path.replace(backup)
+            log("trends", f"当日odds文件损坏，降级新base版（备份 {backup.name}）")
+            doc = {"date": day, "type": "odds-timeline", "schemaVersion": SCHEMA_VERSION, "snapshots": []}
+    changes, removed = diff_odds(prev, extracted)
+    snap = {"at": _now_iso(), "trigger": trigger, "base": not doc["snapshots"]}
+    if snap["base"]:
+        snap["matches"] = extracted
+    else:
+        snap["changes"] = changes
+        if removed:
+            snap["removed"] = removed
+    doc["snapshots"].append(snap)
+    atomic_write_json(path, doc)
+    n_chg = len(changes) if not snap["base"] else len(extracted)
+    log("trends", f"odds快照 {'base' if snap['base'] else 'diff'} {n_chg} 项 → {path.name}")
+    return path
 
 
 # ---------- selftest ----------
@@ -159,6 +212,51 @@ def selftest():
                         "hhad": {}, "crs": {}, "ttg": {}, "hafu": {}}], changes
     assert removed == ["周日001"], removed
     print("[selftest] replay_odds + diff_odds OK")
+
+    # ---- write_snapshot（临时目录跑，不污染真 05-trends）----
+    import tempfile
+    import os
+    with tempfile.TemporaryDirectory() as td:
+        real_dir = globals()["_TRENDS_DIR"]
+        _set_trends_dir(Path(td))          # 测试钩子：重定向 TRENDS_DIR
+        try:
+            day = "2026-08-30"
+            m1 = [{"code": "周六001", "matchId": 1, "league": "意甲", "home": "A", "away": "B",
+                   "kickoff": "2026-08-30 19:00:00", "had": {"h": 2.0, "d": 3.1, "a": 3.5},
+                   "hhad": {}, "crs": {"s01s00": 8.0}, "ttg": {}, "hafu": {}}]
+            p = write_snapshot(m1, "run.py update", day)
+            doc = json.loads(p.read_text(encoding="utf-8"))
+            assert doc["schemaVersion"] == 1 and doc["snapshots"][0]["base"] is True
+            assert len(doc["snapshots"][0]["matches"]) == 1
+            # 二刷：无变化 → changes 为空的增量版
+            write_snapshot(m1, "临场复扫", day)
+            doc = json.loads(p.read_text(encoding="utf-8"))
+            assert len(doc["snapshots"]) == 2 and doc["snapshots"][1]["base"] is False
+            assert doc["snapshots"][1]["changes"] == [], doc["snapshots"][1]
+            # 三刷：调价 → 只出该项
+            m2 = [dict(m1[0])]
+            m2[0]["crs"] = {"s01s00": 8.5}
+            write_snapshot(m2, "run.py snapshot", day)
+            doc = json.loads(p.read_text(encoding="utf-8"))
+            assert doc["snapshots"][2]["changes"] == [{"code": "周六001", "crs": {"s01s00": 8.5}}]
+            # 回放一致性：终态 == 三刷输入
+            assert replay_odds(doc["snapshots"])["周六001"]["crs"]["s01s00"] == 8.5
+            # 四刷重载：base保真回归（评审裁定——replay须深拷贝，不得就地污染历史快照）
+            m3 = [dict(m1[0])]
+            m3[0]["crs"] = {"s01s00": 9.0}
+            write_snapshot(m3, "临场复扫", day)
+            doc = json.loads(p.read_text(encoding="utf-8"))
+            assert doc["snapshots"][0]["matches"][0]["crs"]["s01s00"] == 8.0, \
+                "base快照须保持原始值（replay深拷贝防污染）"
+            # 损坏降级：写坏文件 → 新 base 版 + .corrupt 备份
+            p.write_text("{broken json", encoding="utf-8")
+            write_snapshot(m1, "run.py update", day)
+            doc = json.loads(p.read_text(encoding="utf-8"))
+            assert doc["snapshots"][0]["base"] is True and len(doc["snapshots"]) == 1
+            assert list(Path(td).glob("*.corrupt-*")), "损坏文件应有备份"
+        finally:
+            _set_trends_dir(real_dir)      # 恢复
+    print("[selftest] write_snapshot OK")
 
 
 if __name__ == "__main__":
