@@ -99,3 +99,21 @@ def classify(rec: dict) -> dict:
 
     # ② F9 随机兜底（dc 也错，或 dc/fused 同向错）
     return {"primary": "F9", "secondary": [], "evidence": ev, "confidence": "high"}
+
+
+def odds_drift_buy_heat(drift: dict | None) -> bool:
+    """R5 判据：出票赔率 < 漂移后赔率（赔率向不利方向漂移=追热入场）。
+
+    laterOdds > pickOdds × 1.02（2% 涨幅阈值防噪声）→ 追热。
+    drift={pickOdds, laterOdds}：来源 score_odds oddsUpdatedAt 时间轴回放。
+    """
+    if not drift:
+        return False
+    po = drift.get("pickOdds")
+    lo = drift.get("laterOdds")
+    if po is None or lo is None:
+        return False
+    try:
+        return float(lo) > float(po) * 1.02
+    except (TypeError, ValueError):
+        return False

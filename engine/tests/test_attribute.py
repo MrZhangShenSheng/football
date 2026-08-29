@@ -2,7 +2,7 @@
 """归因引擎单元测试。"""
 import pytest
 
-from attribute import pick_to_index, result_to_idx, correction_flipped, classify
+from attribute import pick_to_index, result_to_idx, correction_flipped, classify, odds_drift_buy_heat
 
 
 class TestIndexParse:
@@ -95,3 +95,26 @@ class TestClassify:
         out = classify(r)
         assert out["primary"] == "F9"
         assert out["confidence"] == "low"
+
+
+class TestOddsDrift:
+    """F10：score_odds 出票后赔率向不利方向漂移=追热（R5）。"""
+
+    def test_drift_against_pick_buy_heat(self):
+        # pick=客胜 odds=1.55，漂移后 1.65（赔率升=买热更难赚）
+        drift = {"pickOdds": 1.55, "laterOdds": 1.65}
+        assert odds_drift_buy_heat(drift) is True
+
+    def test_drift_toward_pick_not_buy_heat(self):
+        # 赔率降=卖冷，不是追热
+        drift = {"pickOdds": 1.55, "laterOdds": 1.45}
+        assert odds_drift_buy_heat(drift) is False
+
+    def test_small_drift_below_threshold(self):
+        # 涨幅 <2% 阈值=噪声，不算追热
+        drift = {"pickOdds": 1.55, "laterOdds": 1.56}
+        assert odds_drift_buy_heat(drift) is False
+
+    def test_missing_odds(self):
+        assert odds_drift_buy_heat(None) is False
+        assert odds_drift_buy_heat({}) is False
