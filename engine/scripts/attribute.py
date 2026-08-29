@@ -117,3 +117,125 @@ def odds_drift_buy_heat(drift: dict | None) -> bool:
         return float(lo) > float(po) * 1.02
     except (TypeError, ValueError):
         return False
+
+
+# 方向下标 → score_odds had 扁平 key（h=主胜/d=平/a=客胜）
+_HAD_KEY = {0: "h", 1: "d", 2: "a"}
+
+
+def load_odds_drift(code: str, pick_odds, pick_idx: int | None, round_date: str) -> dict | None:
+    """从 score_odds 日存档取该场 pick 方向的快照赔率（R5）。
+
+    had 扁平结构 {h,d,a}（非嵌套）；遍历所有日文件按 matchNumStr 匹配 code。
+    返回 {pickOdds, laterOdds}；无存档或无该场 → None（F10 不触发，安全降级）。
+    P1 简化：laterOdds 取匹配到的快照赔率，不校验快照时刻 vs 出票时刻先后。
+    """
+    if not SCORE_ODDS_DIR.exists() or pick_idx not in _HAD_KEY:
+        return None
+    had_key = _HAD_KEY[pick_idx]
+    later = None
+    for p in SCORE_ODDS_DIR.glob("*.json"):
+        try:
+            data = json.loads(p.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            continue
+        for day in data.get("matchDays") or []:
+            for m in day.get("matches") or []:
+                if m.get("matchNumStr") != code:
+                    continue
+                had = m.get("had") or {}
+                val = had.get(had_key)
+                if val is not None:
+                    try:
+                        later = float(val)
+                    except (TypeError, ValueError):
+                        pass
+    if later is None:
+        return None
+    try:
+        po = float(pick_odds)
+    except (TypeError, ValueError):
+        return None
+    return {"pickOdds": po, "laterOdds": later}
+
+
+def _is_error(rec: dict) -> bool:
+    """错题入场：directionHit=False（P1 仅处理 HAD 方向错；CRS 待 P2 R7 变体）。"""
+    return rec.get("directionHit") is False
+
+
+def build() -> tuple[dict, dict]:
+    """遍历 02-results 主文件 → 对错题跑 classify → 叠加 F10 → 落 attribution.json。
+
+    返回 (records, factorStats)。主文件=无 -rN 后缀（终审版，同 corpus round_sort 语义）。
+    """
+    records = {}
+    for p in sorted(RESULTS_DIR.glob("*.json")):
+        if p.name.startswith("_") or "-r" in p.stem:
+            continue  # 跳过 _ 前缀和 -rN 过程快照
+        try:
+            data = json.loads(p.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            continue
+        round_id = p.stem
+        for m in data.get("matches") or []:
+            if not _is_error(m):
+                continue
+            play, _ = _parse_pick(m.get("pick") or "")
+            if not play:
+                continue
+            key = f"{round_id[:10]}|{m.get('code')}|{play}"
+            out = classify(m)
+            out["source"] = "rule"
+            out["confirmed"] = True   # rule 判定默认确认；llm 软标签才 false
+
+            # F10 执行层叠加（独立判别，方向错时记次因）
+            pick_idx = out["evidence"].get("pickIdx")
+            drift = load_odds_drift(m.get("code"), m.get("odds"), pick_idx, round_id[:10])
+            if drift and odds_drift_buy_heat(drift):
+                out.setdefault("secondary", []).append("F10")
+                out["evidence"]["oddsDrift"] = drift
+            records[key] = out
+
+    # factorStats：主因频次（key 去重已保证按场）+ avgProbGap
+    prim = defaultdict(lambda: [0, 0.0])   # [n, probgap_sum]
+    sec = defaultdict(int)
+    for r in records.values():
+        f = r["primary"]
+        prim[f][0] += 1
+        pg = r["evidence"].get("pfinalPick")
+        if pg is not None:
+            prim[f][1] += (1.0 - float(pg))   # 错向置信度 → 损失量近似
+        for s in r.get("secondary", []):
+            sec[s] += 1
+    factorStats = {}
+    for f, (n, s) in prim.items():
+        factorStats[f] = {"nPrimary": n, "nSecondary": sec.get(f, 0),
+                          "avgProbGap": round(s / n, 4) if n else 0.0}
+
+    candidates = [f for f, (n, _) in prim.items() if n >= 20]
+    from datetime import date as _date
+    payload = {"schemaVersion": 1, "generatedAt": str(_date.today()),
+               "records": records, "factorStats": factorStats,
+               "ablateCandidates": candidates, "resolved": {}}
+    OUT.parent.mkdir(parents=True, exist_ok=True)
+    OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+                   encoding="utf-8")
+    return records, factorStats
+
+
+def main() -> None:
+    records, stats = build()
+    log("attribute", f"归因 {len(records)} 场错题 → {OUT.relative_to(ROOT)}")
+    for f, s in sorted(stats.items(), key=lambda kv: -kv[1]["nPrimary"]):
+        log("attribute", f"  {f}: 主因 {s['nPrimary']}场 / 次因 {s['nSecondary']} / avgGap {s['avgProbGap']}")
+    cand = [f for f, s in stats.items() if s["nPrimary"] >= 20]
+    if cand:
+        log("attribute", f"⚠️ 消融候选（nPrimary≥20）：{cand}")
+    else:
+        mx = max((s["nPrimary"] for s in stats.values()), default=0)
+        log("attribute", f"消融门槛未达（需≥20场，当前最高 {mx} 场）")
+
+
+if __name__ == "__main__":
+    main()

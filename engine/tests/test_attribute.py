@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """归因引擎单元测试。"""
+import json
+
 import pytest
 
 from attribute import pick_to_index, result_to_idx, correction_flipped, classify, odds_drift_buy_heat
@@ -118,3 +120,46 @@ class TestOddsDrift:
     def test_missing_odds(self):
         assert odds_drift_buy_heat(None) is False
         assert odds_drift_buy_heat({}) is False
+
+
+class TestBuild:
+    """集成：fixture 02-results → attribution.json + factorStats。"""
+
+    def test_wrong_matches_attributed(self, tmp_path, monkeypatch):
+        res = tmp_path / "02-results"
+        res.mkdir()
+        (res / "2026-08-28.json").write_text(json.dumps({
+            "date": "2026-08-28",
+            "matches": [
+                {  # F5：DC 看客对、fused 看主错、pick 主胜、结果客胜
+                    "code": "周五010", "pick": "HAD 主胜", "odds": 1.55,
+                    "dc": [0.1, 0.2, 0.7], "fused": [0.6, 0.2, 0.2],
+                    "result": "0-2", "directionHit": False, "chain": "R3×0.95"
+                },
+                {  # F9：DC 和 fused 都看主错、结果客胜
+                    "code": "周五011", "pick": "HAD 主胜", "odds": 2.0,
+                    "dc": [0.6, 0.2, 0.2], "fused": [0.6, 0.2, 0.2],
+                    "result": "0-2", "directionHit": False, "chain": ""
+                },
+                {  # 非错题：方向对，跳过
+                    "code": "周五012", "pick": "HAD 客胜", "odds": 1.8,
+                    "dc": [0.2, 0.2, 0.6], "fused": [0.2, 0.2, 0.6],
+                    "result": "0-2", "directionHit": True, "chain": ""
+                },
+            ],
+            "plans": {}
+        }), encoding="utf-8")
+        out_path = tmp_path / "attribution.json"
+        import attribute
+        monkeypatch.setattr(attribute, "RESULTS_DIR", res)
+        monkeypatch.setattr(attribute, "OUT", out_path)
+        monkeypatch.setattr(attribute, "SCORE_ODDS_DIR", tmp_path)
+        records, stats = attribute.build()
+        assert len(records) == 2  # 跳过方向对的周五012
+        assert records["2026-08-28|周五010|HAD"]["primary"] == "F5"
+        assert records["2026-08-28|周五011|HAD"]["primary"] == "F9"
+        assert stats["F5"]["nPrimary"] == 1
+        assert stats["F9"]["nPrimary"] == 1
+        saved = json.loads(out_path.read_text(encoding="utf-8"))
+        assert saved["schemaVersion"] == 1
+        assert "F5" in saved["factorStats"]
