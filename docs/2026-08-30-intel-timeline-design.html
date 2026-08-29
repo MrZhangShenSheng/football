@@ -1,0 +1,267 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>赛前情报时序库设计（intel-timeline）· 2026-08-30</title>
+<style>
+:root{color-scheme:dark}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;max-width:960px;margin:0 auto;padding:24px 20px;background:#14161a;color:#d7dae0;line-height:1.65}
+h1{font-size:1.5em;border-bottom:2px solid #4a9eff;padding-bottom:8px;color:#fff}
+h2{font-size:1.2em;color:#4a9eff;margin-top:2em;border-left:4px solid #4a9eff;padding-left:10px}
+h3{font-size:1.05em;color:#e8e8e8;margin-top:1.5em}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:0.92em}
+th,td{border:1px solid #3a3f47;padding:6px 10px;text-align:left;vertical-align:top}
+th{background:#1f2530;color:#9fc3ff}
+tr:nth-child(even) td{background:#191d24}
+code,pre{font-family:ui-monospace,Menlo,monospace;font-size:0.88em;background:#1b1f26;border-radius:4px}
+code{padding:1px 5px}
+pre{padding:12px;overflow-x:auto;border:1px solid #2c313a;line-height:1.5}
+.tag{display:inline-block;padding:1px 8px;border-radius:10px;font-size:0.8em;margin-right:4px}
+.must{background:#5c1f24;color:#ff9aa2}.ok{background:#1d4a2c;color:#7fe0a0}.open{background:#4a3b1d;color:#ffd57f}
+.note{background:#1f2530;border-left:4px solid #ffd57f;padding:10px 14px;margin:12px 0;font-size:0.92em}
+figure{margin:16px 0;text-align:center}
+figcaption{font-size:0.85em;color:#8a919c;margin-top:6px}
+.flow{color:#9fc3ff}
+</style>
+</head><body>
+
+<h1>赛前情报时序库设计（intel-timeline）</h1>
+<p>日期：2026-08-30 · 状态：<span class="tag open">待大哥终审</span> · 关联：SKILL.md v5.3 / attribution 管线 / 05-trends 目录</p>
+
+<h2>1. 背景与动机</h2>
+<p>2026-08-29 晚 T010 出票后的临场扫描暴露了数据易失性问题：<code>sporttery_matches.json</code> 每次刷新整体覆盖，<b>历史赔率状态（如 1:0 从 25→28 的调价过程）赛后永久无法重建</b>；临场扫描的判断结论只存在于对话中；insight 情报虽按 matchId 持久化，但同场多次拉取只留最后一版，无时序。</p>
+<p>大哥的三个诉求：① 临场扫描信息即时整理落盘；② 以后每次/每天收集自动记录；③ 将来把积累的数据设计成影响因子微调模型（<b>因子去向先不锁定</b>，数据只管结构化留痕）。</p>
+<p>本设计新建「赛前情报时序库」子系统：在数据获取点埋钩子自动落盘，回填时挂赛果对齐桥，为将来因子验证提供零人工对账成本的原料。</p>
+
+<h2>2. 目标与非目标</h2>
+<table>
+<tr><th>目标（本期实现）</th><th>非目标（YAGNI，明确不做）</th></tr>
+<tr><td>
+① 赔率时序：刷新钩子自动落盘，diff 增量链，全五池<br>
+② 情报时序：insight 拉取即摘要落盘，时序保留<br>
+③ livescan：临场扫描结构化落盘（signals+threat 枚举）<br>
+④ 赛果对齐桥：backfill 挂 preSnapshots 指针（matchId 键）<br>
+⑤ SKILL.md 纪律固化 + <code>run.py snapshot</code> 手动补拍
+</td><td>
+· SQLite（仓库既定 500 文件触发线之前保持文件制）<br>
+· _index.json（一天≤3文件，glob 兜底，检索铁律8）<br>
+· 因子设计/消融（远期，走 corpus→attribute→ablate 现成管线）<br>
+· 历史数据回补（不可再生，legacy livescan 双格式兼容即可）<br>
+· 定时任务（已选型：刷新埋钩子+手动子命令）
+</td></tr>
+</table>
+
+<h2>2.5 核心设计原则</h2>
+<div class="note"><b>采集宁全勿缺，分析宁简勿繁</b>——没记的字段是永久丢失不可回补（因子去向未锁定 ⇒ 任何池都可能是信号源）；分析侧按需取用，多余字段不构成负担。</div>
+
+<h2>3. 总体架构与数据流</h2>
+<figure>
+<svg viewBox="0 0 880 470" width="100%" style="max-width:860px;color:#d7dae0" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M0 0L10 5L0 10z" fill="currentColor" opacity="0.7"/>
+</marker>
+<symbol id="ic-db" viewBox="0 0 24 24"><path d="M4 4c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zm0 3v4c0 1.7 3.6 3 8 3s8-1.3 8-3V7c0 1.7-3.6 3-8 3S4 8.7 4 7zm0 7v4c0 1.7 3.6 3 8 3s8-1.3 8-3v-4c0 1.7-3.6 3-8 3s-8-1.3-8-3z" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+<symbol id="ic-api" viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+<symbol id="ic-hook" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.4" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 7.4V15a4 4 0 0 0 8 0v-2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+</defs>
+<style>
+.t1{font:600 13px -apple-system,"PingFang SC",sans-serif;fill:currentColor}
+.t2{font:11px -apple-system,"PingFang SC",sans-serif;fill:#8a919c}
+.t3{font:600 12px -apple-system,"PingFang SC",sans-serif;fill:#9fc3ff}
+.box{fill:#1b1f26;stroke:#3a3f47;stroke-width:1.2}
+.box2{fill:#1a2420;stroke:#3d6b4f;stroke-width:1.2}
+.box3{fill:#241f2b;stroke:#5b4a7a;stroke-width:1.2}
+</style>
+<!-- 源 -->
+<rect x="20" y="30" width="130" height="52" rx="8" class="box"/>
+<use href="#ic-api" x="32" y="44" width="22" height="22"/>
+<text x="62" y="52" class="t1">体彩 API</text>
+<text x="62" y="68" class="t2">赛程+全玩法赔率</text>
+<rect x="20" y="200" width="130" height="52" rx="8" class="box"/>
+<use href="#ic-api" x="32" y="214" width="22" height="22"/>
+<text x="62" y="222" class="t1">体彩 insight</text>
+<text x="62" y="238" class="t2">伤停/近况/H2H</text>
+<rect x="20" y="360" width="130" height="52" rx="8" class="box"/>
+<use href="#ic-eye" x="32" y="374" width="22" height="22"/>
+<text x="62" y="382" class="t1">skill 临场扫描</text>
+<text x="62" y="398" class="t2">Step 6.5 复核</text>
+<!-- cache -->
+<rect x="230" y="60" width="200" height="66" rx="8" class="box"/>
+<use href="#ic-db" x="242" y="76" width="20" height="20"/>
+<text x="268" y="84" class="t1">sporttery_matches.json</text>
+<text x="242" y="112" class="t2">engine/cache/ · 整体覆盖</text>
+<rect x="230" y="200" width="200" height="66" rx="8" class="box"/>
+<use href="#ic-db" x="242" y="216" width="20" height="20"/>
+<text x="268" y="224" class="t1">insight_{matchId}.json</text>
+<text x="242" y="252" class="t2">engine/cache/ · 全量单版</text>
+<!-- 钩子 -->
+<rect x="475" y="45" width="46" height="46" rx="23" class="box3"/>
+<use href="#ic-hook" x="485" y="55" width="26" height="26"/>
+<text x="466" y="110" class="t3">钩子①</text>
+<rect x="475" y="210" width="46" height="46" rx="23" class="box3"/>
+<use href="#ic-hook" x="485" y="220" width="26" height="26"/>
+<text x="466" y="275" class="t3">钩子②</text>
+<rect x="475" y="363" width="46" height="46" rx="23" class="box3"/>
+<use href="#ic-hook" x="485" y="373" width="26" height="26"/>
+<text x="466" y="428" class="t3">钩子③</text>
+<!-- 05-trends -->
+<rect x="570" y="30" width="290" height="66" rx="8" class="box2"/>
+<text x="584" y="52" class="t1">data/05-trends/{date}-odds.json</text>
+<text x="584" y="70" class="t2">赔率时序 · 全五池 · diff增量链 · 原子写</text>
+<rect x="570" y="200" width="290" height="66" rx="8" class="box2"/>
+<text x="584" y="222" class="t1">data/05-trends/{date}-intel.json</text>
+<text x="584" y="240" class="t2">情报摘要 · matchId指针回链cache全量</text>
+<rect x="570" y="360" width="290" height="66" rx="8" class="box2"/>
+<text x="584" y="382" class="t1">data/05-trends/{date}-livescan.json</text>
+<text x="584" y="400" class="t2">扫描事件 · signals结构化 · threat枚举 · write_livescan()校验</text>
+<!-- 箭头 -->
+<line x1="150" y1="56" x2="230" y2="80" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)" opacity="0.7"/>
+<text x="160" y="52" class="t2">刷新</text>
+<line x1="150" y1="226" x2="230" y2="230" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)" opacity="0.7"/>
+<text x="160" y="222" class="t2">拉取</text>
+<line x1="430" y1="85" x2="475" y2="68" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)" opacity="0.7"/>
+<line x1="430" y1="230" x2="475" y2="233" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)" opacity="0.7"/>
+<line x1="521" y1="68" x2="570" y2="63" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)" opacity="0.7"/>
+<line x1="521" y1="233" x2="570" y2="233" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)" opacity="0.7"/>
+<line x1="150" y1="386" x2="475" y2="386" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)" opacity="0.7"/>
+<line x1="521" y1="386" x2="570" y2="392" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)" opacity="0.7"/>
+<!-- 桥 -->
+<rect x="230" y="450" width="630" height="0" fill="none"/>
+<path d="M720 360 L720 442 L370 442 L370 306" fill="none" stroke="#7fe0a0" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#ar)"/>
+<rect x="470" y="428" width="300" height="34" rx="6" fill="none"/>
+<text x="480" y="450" style="font:600 12px -apple-system,'PingFang SC',sans-serif;fill:#7fe0a0">赛果对齐桥：backfill 挂 preSnapshots 指针</text>
+<text x="480" y="466" class="t2" style="fill:#7fe0a0;opacity:0.75">匹配键=matchId（编号每周复用）· 查找窗口=比赛日±1天 · 指向02-results每场记录</text>
+</svg>
+<figcaption>图1 · intel-timeline 数据流：三个数据获取点埋钩子 → 05-trends 时序库 → 回填桥挂账</figcaption>
+</figure>
+
+<h2>4. 三类文件 schema</h2>
+
+<h3>4.1 odds 时序（全五池 · diff 增量链）</h3>
+<pre>{
+  "date": "2026-08-30", "type": "odds-timeline", "schemaVersion": 1,
+  "snapshots": [
+    { "at": "2026-08-30T10:15+08:00", "trigger": "run.py update", "base": true,
+      "matches": [
+        { "code": "周日001", "matchId": 2041160, "league": "意甲",
+          "home": "X", "away": "Y", "kickoff": "2026-08-30 19:00",
+          "had":  {"h":1.1,"d":6.4,"a":14.0},
+          "hhad": {"fix":-1,"h":2.1,"d":3.2,"a":3.4},
+          "crs":  {"s01s00":28.0, "...": "31项"},
+          "ttg":  {"s0":8.5,"...": "8档"},
+          "hafu": {"hh":3.1,"...": "9键"} } ] },
+    { "at": "2026-08-30T14:20+08:00", "trigger": "临场复扫", "base": false,
+      "changes": [ { "code": "周日004", "crs": {"s00s02": 24.5} } ],
+      "removed": ["周六026"] }
+  ]
+}</pre>
+<ul>
+<li><b>diff 粒度</b>：场内玩法项级；新上考场次全项进 changes（天然兼容）；<b>元数据变化</b>（kickoff 改期/队名勘误）允许进 changes 整场标记</li>
+<li><b>回放规则</b>：base 全量 → 依次应用 changes；diff 基准 = 当日文件最后一版回放态</li>
+<li><b>副产品（存量 bug 修复）</b>：日首版全量带 matchId = 留档了 code→matchId 映射。原系统停售后 cache 被覆盖、赛后从编号无法反解 matchId——此映射天然持久化</li>
+<li><b>体积</b>：全五池日首版 ~220KB，增量版日常几 KB（实测 49 场仅 1 场调价）；约 90MB/年，跨年归档压缩（§8）</li>
+</ul>
+
+<h3>4.2 intel 时序（按需场次 · 摘要+指针）</h3>
+<pre>{
+  "date": "2026-08-30", "type": "intel-timeline", "schemaVersion": 1,
+  "entries": [
+    { "at": "...", "matchId": 2041147, "code": "周六027", "league": "意甲",
+      "fullFile": "engine/cache/sporttery_insight_2041147.json",
+      "injuries": { "home": [ { "name": "耶尔德兹", "pos": "前锋", "apps": 1, "starts": 1, "keyPlayer": true } ],
+                    "away": [], "d": 1 },
+      "rank": {"home": 8, "away": 16},
+      "form": {"homeLast10": "6胜2平2负", "awayLast10": "3胜2平5负",
+                "homeGoalAvg": 1.1, "awayGoalAvg": 0.8},
+      "h2hSummary": "7胜2平1负" }
+  ]
+}</pre>
+<ul>
+<li><code>keyPlayer</code> 判定沿用修正系数9标准：apps≥2 且 starts/apps≥0.7；<code>d</code> = 主−客缺阵数（先主后客，带符号，正值=主伤更重）</li>
+<li>同场赛前多次拉取 = 多条 entry 并存（时序语义，修复"只留最后一版"缺口）</li>
+<li>h2hSummary 保持粗摘要定位（H2H 仅叙事参考不进权重，检索铁律5），明细走 fullFile 指针</li>
+</ul>
+
+<h3>4.3 livescan 事件（扫描判断 · 结构化）</h3>
+<pre>{
+  "date": "2026-08-30", "type": "livescan", "schemaVersion": 1,
+  "scans": [
+    { "at": "...", "trigger": "T010出票后监控",
+      "verdict": "无真边际无可修订",
+      "matches": [
+        { "code": "周六027", "matchId": 2041147,
+          "tickets": [ { "ticket": "T010", "pick": "0:1", "frozenOdds": 25.0 } ],
+          "oddsNow":  { "crs": {"0:1": 25.0} },
+          "signals": { "oddsMoveVsFrozen": 0.0,
+                        "keyPlayerOut": { "team": "home", "player": "耶尔德兹" },
+                        "formMismatch": "帕尔马场均0.8球支撑不了客胜2球" },
+          "threat": "high",
+          "note": "自由文本：尤文火力降利好0:0(T009)不利好0:1" } ] }
+  ]
+}</pre>
+<ul>
+<li><code>threat</code> 枚举：<code>high / midhigh / mid / low</code>；<code>trigger</code> 枚举：<code>run.py update / 预测Step1 / run.py snapshot / 临场复扫 / 出票后监控 / 用户要求</code></li>
+<li><code>signals</code> = 因子验证直接可读的结构化原料；<code>note</code> = 自由文本</li>
+<li><code>oddsNow</code> 声明为冗余字段（自包含便于单场回看），分析时以 odds 时序文件为准</li>
+<li>录入走 <code>write_livescan()</code> 校验函数（枚举/必填字段/schemaVersion），防手写漂移</li>
+<li>2026-08-29 legacy 文件保留原样（git=事实），分析脚本双格式兼容</li>
+</ul>
+
+<h2>5. 代码改动清单</h2>
+<table>
+<tr><th>#</th><th>文件</th><th>改动</th><th>性质</th></tr>
+<tr><td>1</td><td><code>engine/scripts/trends_snapshot.py</code> <b>新建</b></td><td>纯函数库：<code>extract_odds()</code> / <code>replay_odds()</code> / <code>diff_odds()</code> / <code>write_snapshot()</code>（tmp+rename 原子写）/ <code>extract_intel()</code> / <code>write_livescan()</code>（schema 校验）；<code>--selftest</code> 自测入口</td><td>核心模块</td></tr>
+<tr><td>2</td><td><code>engine/scripts/sporttery_fetch.py</code></td><td>两处接线：主流程写 cache 后调 odds 快照；insight 子命令写 cache 后调 intel 摘要。各 +3 行</td><td>钩子埋点</td></tr>
+<tr><td>3</td><td><code>engine/scripts/run.py</code></td><td><code>snapshot</code> 子命令：全量刷新触发钩子①；<code>--insight 周日004,周一002</code> 可选触发钩子②</td><td>手动补拍</td></tr>
+<tr><td>4</td><td><code>engine/scripts/backfill.py</code></td><td>回填时按 <b>matchId</b>（code 经 odds 日首版映射解析）在<b>比赛日±1 天</b>的 05-trends 文件中找赛前最后记录，match 加 <code>preSnapshots: {lastOddsAt, lastIntelAt}</code>；找不到则省略不报错</td><td>对齐桥</td></tr>
+<tr><td>5</td><td><code>skill/SKILL.md</code> + 项目 CLAUDE.md</td><td>① Step 1 加"刷新即快照（自动）"；② Step 6.5 加纪律"临场扫描必落盘 livescan（write_livescan() 录入），禁止只留对话"；③ 05-trends 目录描述更新为情报时序库</td><td>纪律固化</td></tr>
+</table>
+
+<h2>6. 错误边界</h2>
+<table>
+<tr><th>情形</th><th>处理</th></tr>
+<tr><td>体彩 API 失败</td><td>钩子跟随刷新成功才触发，无独立重试（刷新本身已有降级链）</td></tr>
+<tr><td>当日 odds 文件损坏/被手改</td><td>回放失败 → warn + 降级为<b>新 base 全量版</b>（宁冗余不丢数）</td></tr>
+<tr><td>并发写（双会话同时刷新）</td><td><b>原子写</b>（tmp+rename）+ 仓库单写会话纪律双保险</td></tr>
+<tr><td>跨日</td><td>新文件新 base（每日一次全量，可接受）</td></tr>
+<tr><td>同场 insight 重复拉取</td><td>多条 entry 并存（时序语义正确）</td></tr>
+<tr><td>backfill 找不到该场快照</td><td><code>preSnapshots</code> 省略（部分场次无情报是常态）</td></tr>
+<tr><td>空调价</td><td>也落盘（"该时点无调价"本身是数据点）</td></tr>
+</table>
+
+<h2>7. 测试方案（脚本自测风格，无 pytest）</h2>
+<ol>
+<li><b><code>trends_snapshot.py --selftest</code></b>：fixture 三情形——①单项调价 diff 只出该项 ②新上考场全项进 changes ③停售进 removed；断言回放(base+changes) == 全量真值；元数据改期留痕</li>
+<li><b>集成</b>：<code>run.py snapshot</code> 连跑两次 → 第二次 changes 为空或极少 + 文件合法可回放</li>
+<li><b>回填桥</b>：造一场已回填记录（含 code→matchId 跨日解析），验证指针挂载且 lastOddsAt &lt; kickoff</li>
+<li><b>write_livescan 校验</b>：威胁度枚举外值被拒、必填字段缺失被拒</li>
+</ol>
+
+<h2>8. 容量与演进</h2>
+<ul>
+<li>05-trends 文件量并入 500 文件触发线（与 02-results 合并计数，全局口径）</li>
+<li>跨年归档：旧年份目录 gzip（git 对压缩文件同样可 diff 存储）</li>
+<li>schemaVersion 迁移规则：<b>只加字段不删、旧文件不回改</b>；分析脚本按 version 分支</li>
+<li>落盘文件随流程 commit 入库（git = 凭证，仓库惯例）</li>
+</ul>
+
+<h2>9. 远期衔接（开放问题 · 本期不实现）</h2>
+<p>因子候选（schema 已预埋）：<code>oddsMoveVsFrozen</code>（市场信号）/ <code>keyPlayerOut</code> + <code>d</code>（阵容）/ <code>threat</code> 枚举 vs 实际命中（扫描判断质量）/ <code>formMismatch</code>（定性，需将来结构化）。</p>
+<div class="note"><b>消融纪律不动摇</b>：数据积累 ≠ 因子自动有效。验证走现成管线 corpus 积累 → attribution 新增因子键 → <b>ablate 消融，无正增益即删</b>（战意因子 2026-08-29 降级先例，两份独立分析一致结论）。</div>
+<p><b>明示边界</b>："每天必有档"做不到——钩子跟会话走，当天不开会话则无快照（选型时已确认：刷新埋钩子+手动补拍，非定时任务）。</p>
+
+<h2>10. 决策记录（ADR）</h2>
+<table>
+<tr><th>#</th><th>决策</th><th>理由</th><th>备选与否决原因</th></tr>
+<tr><td>D1</td><td>范围=混合：赔率全量+情报按需</td><td>因子验证样本量 vs 接口频率风险的平衡</td><td>全量全套（49次insight/天有封禁风险）；只记关注场（样本不足）</td></tr>
+<tr><td>D2</td><td>触发=刷新埋钩子+手动子命令</td><td>零新增基础设施，数据获取点天然触发</td><td>定时任务（不开会话无档/7天过期/系统级要装权限）</td></tr>
+<tr><td>D3</td><td>因子去向先不锁定</td><td>避免 schema 为臆想的因子服务</td><td>预设修正系数层/DC层/选腿层（锁死思路）</td></tr>
+<tr><td>D4</td><td>方案B：结构化时序库+diff增量</td><td>体积最小；matchId 聚合天然支持；回填桥让 attribution 零打通成本</td><td>方案A原始快照（git膨胀+对齐重做）；方案C SQLite（违反500文件触发线架构决策）</td></tr>
+<tr><td>D5</td><td><b>全五池落盘</b></td><td>没记=永久丢失不可回补；采集宁全勿缺</td><td>三池 had+hhad+crs（省几十 MB 但ttg/hafu信号永失）</td></tr>
+<tr><td>D6</td><td>livescan 轻量工具化（write_livescan 校验）</td><td>signals 是因子验证核心原料，格式漂移=原料污染</td><td>纯纪律约束（软）；重命令行（过度）</td></tr>
+<tr><td>D7</td><td>原子写（tmp+rename）</td><td>一行代码防竞态损坏→数据质量滑坡</td><td>仅靠单写会话纪律（有窗口）</td></tr>
+<tr><td>D8</td><td>桥匹配键=matchId，窗口=比赛日±1天</td><td>体彩编号每周复用；cache 停售后覆盖致 code 反解不可行</td><td>code 匹配（跨周错配）；单日窗口（漏赛前夜时点）</td></tr>
+</table>
+
+<hr>
+<p style="color:#8a919c;font-size:0.85em">数据来源：本会话临场扫描实测（b237093 保全）、engine/cache/sporttery_matches.json 结构、tickets.json T009/T010 先例、SKILL.md v5.3。设计过程：brainstorming skill（分类 architectural · 三轮澄清 · 方案对比 A/B/C · review 补漏 3 项必修+3 项拍板）。</p>
+</body></html>
