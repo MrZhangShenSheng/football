@@ -11,6 +11,7 @@
   python run.py cn [联赛ID]              # titan007 国内兜底积分榜（ESPN 不可达时用）
   python run.py backfill [日期]           # 赛果自动回填（ESPN按日+别名匹配；无覆盖联赛标不可得）
   python run.py corpus                    # 学习语料汇总 + 趋势报告（回填后跑）
+  python run.py attribute            # 规则归因（错题判别→attribution.json，回填后跑）
   python run.py verify                    # 回归验证闭环：backfill→corpus→trend(断言)→calibrate→ablate
   python run.py learn [联赛...]           # 本地赛果联赛增量采集+拟合+版本发布（日职/沙特/瑞超）
   python run.py all                       # update + fit --auto + learn 一条龙（预测日跑这个）
@@ -85,6 +86,8 @@ def main() -> None:
     elif cmd == "corpus":
         sh("corpus.py")
         sh("trend_report.py")
+    elif cmd == "attribute":
+        sh("attribute.py")          # 规则归因（设计 §6 判别树）
     elif cmd == "backfill":
         sh("backfill.py", *rest)
     elif cmd == "verify":
