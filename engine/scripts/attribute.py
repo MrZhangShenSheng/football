@@ -50,3 +50,17 @@ def _parse_pick(pick: str) -> tuple[str, str]:
         p, d = pick.split(" ", 1)
         return p.strip(), d.strip()
     return "", pick.strip()
+
+
+def correction_flipped(dc: list, fused: list, result_idx: int) -> bool | None:
+    """F5 近似（R4 低置信）：dc 最高向==结果（DC 原本对）且 fused 最高向!=结果（融合后错）。
+
+    P1 无法区分 chain 修正乘子 vs 融合 a/b 配比导致 → 统一归 F5；
+    F4（纯融合稀释）待 P2 落盘 chainSteps[] 后从 F5 中分离。
+    数据不足（无 dc/fused 或 result_idx 越界）→ None。
+    """
+    if not dc or not fused or result_idx is None or result_idx >= 3:
+        return None
+    dc_best = dc.index(max(dc))
+    fused_best = fused.index(max(fused))
+    return dc_best == result_idx and fused_best != result_idx

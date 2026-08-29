@@ -2,7 +2,7 @@
 """归因引擎单元测试。"""
 import pytest
 
-from attribute import pick_to_index, result_to_idx
+from attribute import pick_to_index, result_to_idx, correction_flipped
 
 
 class TestIndexParse:
@@ -32,3 +32,26 @@ class TestIndexParse:
     def test_result_invalid(self):
         assert result_to_idx("弃赛") is None
         assert result_to_idx(None) is None
+
+
+class TestCorrectionReplay:
+    """F5 近似：DC 对(dc_best==result) 但 fused 错(≠result) → 修正/融合背锅。"""
+
+    def test_dc_right_fused_wrong(self):
+        # DC 看主、fused 看客、结果主胜 → DC 对融合错
+        dc = [0.6, 0.2, 0.2]; fused = [0.2, 0.2, 0.6]; result_idx = 0
+        assert correction_flipped(dc, fused, result_idx) is True
+
+    def test_dc_also_wrong(self):
+        # DC 也看主、结果客胜 → DC 也错，不是修正背锅
+        dc = [0.6, 0.2, 0.2]; fused = [0.6, 0.2, 0.2]; result_idx = 2
+        assert correction_flipped(dc, fused, result_idx) is False
+
+    def test_dc_right_fused_right(self):
+        # DC 和 fused 都对 → 不是错题场景，但函数应返 False
+        dc = [0.2, 0.2, 0.6]; fused = [0.2, 0.2, 0.6]; result_idx = 2
+        assert correction_flipped(dc, fused, result_idx) is False
+
+    def test_missing_data_returns_none(self):
+        assert correction_flipped(None, [0.6, 0.2, 0.2], 0) is None
+        assert correction_flipped([0.6, 0.2, 0.2], [0.6, 0.2, 0.2], None) is None
