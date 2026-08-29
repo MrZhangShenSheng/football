@@ -14,12 +14,14 @@
   python run.py attribute            # 规则归因（错题判别→attribution.json，回填后跑）
   python run.py verify                    # 回归验证闭环：backfill→corpus→trend(断言)→calibrate→ablate
   python run.py learn [联赛...]           # 本地赛果联赛增量采集+拟合+版本发布（日职/沙特/瑞超）
+  python run.py snapshot [--insight 周日004,周一002]  # 情报时序手动补拍（odds全量快照+可选情报）
   python run.py all                       # update + fit --auto + learn 一条龙（预测日跑这个）
 
 联赛代码（football-data.co.uk）：SP1 西甲 F1 法甲 F2 法乙 E0 英超 D1 德甲 I1 意甲 ...
 fit/predict/backtest 用联赛全名：spain-laliga / france-ligue1 / france-ligue2 ...
 本地赛果联赛（espn history 回填）：japan / saudi / sweden；体彩源（sporttery league-results 回填）：korea
 """
+import json
 import subprocess
 import sys
 
@@ -125,6 +127,21 @@ def main() -> None:
             sh("espn_fetch.py", "history", code, year)
             sh("dc_fit.py", league, "--source", "local", "--publish")
         sh("temperature.py")   # 语料/fd 增量后池级温度重拟（幂等：CI 不过落盘 T=1）
+    elif cmd == "snapshot":
+        # intel-timeline 手动补拍：刷新触发钩子①（odds 全量快照）；--insight 按编号拉情报触发钩子②
+        import os
+        os.environ["TRENDS_TRIGGER"] = "run.py snapshot"
+        sh("sporttery_fetch.py")
+        if rest and rest[0] == "--insight" and len(rest) >= 2:
+            cache_path = __import__("pathlib").Path(__file__).parent.parent / "cache" / "sporttery_matches.json"
+            cache = json.loads(cache_path.read_text(encoding="utf-8"))
+            ids = {m["code"]: m["matchId"] for m in cache.get("matches") or [] if m.get("code")}
+            for code in rest[1].split(","):
+                mid = ids.get(code.strip())
+                if mid:
+                    sh("sporttery_fetch.py", "insight", str(mid))
+                else:
+                    log("run", f"{code} 不在售/无 matchId，跳过")
     elif cmd == "all":
         sh("odds_fetch.py", "--season", "2526", *PIN_CODES)
         sh("odds_fetch.py", "--season", CURRENT_SEASON, *PIN_CODES)
