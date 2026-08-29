@@ -1,0 +1,666 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>预测偏差归因引擎 P1 实施计划</title>
+<style>
+  :root{--ink:#1c2733;--sub:#5b6b7a;--line:#d8e0e8;--bg:#f6f8fa;--accent:#0f6b4f;--accent2:#b4540a;--bad:#a12734;--good:#0f6b4f;--card:#fff;--amber:#9a6b00}
+  @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#dbe4ec;--sub:#8fa1b3;--line:#2c3947;--bg:#101822;--accent:#4fc49b;--accent2:#e8a04c;--bad:#e2717e;--good:#4fc49b;--card:#18222e;--amber:#d4a82c}}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.7 "Segoe UI","Microsoft YaHei",sans-serif}
+  main{max-width:960px;margin:0 auto;padding:32px 28px 72px}
+  h1{font-size:23px;margin:0 0 4px}h2{font-size:17px;margin:34px 0 10px;padding-bottom:5px;border-bottom:1px solid var(--line)}
+  h3{font-size:15px;margin:20px 0 6px}.sub{color:var(--sub);font-size:13px}
+  code,pre{font-family:Consolas,"JetBrains Mono",monospace;font-size:12.5px}
+  code{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+  pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:13px 15px;overflow-x:auto;line-height:1.5}
+  pre code{background:none;border:none;padding:0}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.5px;background:var(--card)}
+  th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+  th{background:var(--bg);font-weight:600}
+  .good{color:var(--good);font-weight:600}.bad{color:var(--bad);font-weight:600}.amber{color:var(--amber);font-weight:600}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:12px 0}
+  .icon{width:18px;height:18px;vertical-align:-4px;margin-right:6px;color:var(--accent)}
+  .warn{border-left:3px solid var(--amber);background:var(--card);padding:9px 14px;margin:12px 0;border-radius:0 8px 8px 0}
+  .task{border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin:18px 0;background:var(--card)}
+  .task>h3{margin-top:0}
+  .step{font-size:13px;margin:6px 0}.f{color:var(--accent);font-weight:600}
+</style>
+</head><body><main>
+
+<h1><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>预测偏差归因引擎 P1 实施计划</h1>
+<p class="sub">2026-08-29 · 作者 sszhang · 配套设计：docs/2026-08-29-attribution-design.html · 范围：P1 规则归因打底（无前置依赖）</p>
+
+<div class="warn"><b>目标：</b>对 02-results 错题逐场判别偏差因子，落 attribution.json + factorStats。<br>
+<b>架构：</b>attribute.py 直接读 02-results 主文件（非 corpus——corpus 不透传 dc 数组，而 F5 判别需 dc/fused 双向）。判别纯函数化便于单测。<br>
+<b>TDD：</b>每个 task 先写失败测试 → 实现 → 测试过 → commit。pytest + class 风格，conftest 已注入 scripts 路径。</div>
+
+<h2>设计修正说明（重要——写计划时跑通数学后发现）</h2>
+<div class="card">
+<p>原设计 §10 P1 写"F3/F4（反解低置信）"。实际把融合公式 <code>fused=σ(a·logit(dc)+b·logit(pin))</code> 在归一化数据上跑通后发现：<b>反解出的 pin 的 argmax 几乎总与 fused 同向</b>（b=1.0 主导，fused 高度受 pin 拉动），导致"我们与市场分歧"（F3）在反解下几乎永远判不出来——这正是 R1"反解是循环论证"的深层表现。</p>
+<p><b>诚实结论</b>：F3/F4 必须待 P2 落盘真收盘三向（独立于融合公式的市场锚）才能判。P1 实质交付收敛为：</p>
+<ul>
+<li><span class="f">F5</span> 修正/融合背锅：<code>dc_best==result_idx</code>（DC 原本对）且 <code>fused_best!=result_idx</code>（融合后错）——<b>不依赖 pin，P1 可判</b></li>
+<li><span class="f">F9</span> 随机兜底：dc 也错（dc_best!=result_idx）—— P1 兜底</li>
+<li><span class="f">F10</span> 追买热入场：score_odds 出票后赔率升 &gt;2%（R5）—— P1 可判</li>
+<li><span class="f">F3/F4</span> → 移至 P2（真收盘三向落盘后），P1 不做反解</li>
+</ul>
+<p>反解函数 <code>derive_market_probs</code> 相应移到 P2。P1 不写无用代码（YAGNI）。</p>
+</div>
+
+<h2>上下文（零上下文工程师必读）</h2>
+<table>
+<tr><th>项</th><th>值/路径</th></tr>
+<tr><td>新建主脚本</td><td><code>engine/scripts/attribute.py</code></td></tr>
+<tr><td>新建测试</td><td><code>engine/tests/test_attribute.py</code></td></tr>
+<tr><td>修改入口</td><td><code>engine/scripts/run.py</code>（elif 链加 attribute 子命令）</td></tr>
+<tr><td>运行时产出</td><td><code>data/04-summaries/attribution.json</code>（脚本生成）</td></tr>
+<tr><td>测试 conftest</td><td><code>engine/tests/conftest.py</code> 已把 <code>engine/scripts</code> 注入 sys.path，测试内 <code>from attribute import ...</code> 直连</td></tr>
+<tr><td>公共工具</td><td><code>from common import log, ROOT</code>（ROOT=项目根，log UTF-8 打印）</td></tr>
+<tr><td>数据源</td><td><code>data/02-results/*.json</code> 主文件（无 -rN 后缀=终审版），顶层 <code>matches[]</code></td></tr>
+<tr><td>体彩赔率存档</td><td><code>engine/cache/score_odds/YYYY-MM-DD.json</code>：<code>matchDays[].matches[]</code> 每场有 <code>matchNumStr/had/oddsUpdatedAt</code></td></tr>
+</table>
+
+<h3>match 记录字段速查（02-results matches[]）</h3>
+<pre><code>{
+  "code": "周五010", "league": "法甲", "match": "里尔 vs 巴黎圣曼",
+  "pick": "HAD 客胜", "odds": 1.55,
+  "dc":     [0.15, 0.20, 0.65],   // DC 三向 [主,平,客]
+  "fused":  [0.10, 0.15, 0.75],   // 融合后三向（argmax 通常 = pick）
+  "result": "2-2", "directionHit": false, "scoreHit": false,
+  "chain": "R3×0.95", "clv_approx_dk": -12.6, "half": "2:2"
+}</code></pre>
+
+<h3>方向索引映射</h3>
+<pre><code>主胜=0 / 平=1 / 客胜=2
+pick "HAD 客胜"：split(" ")→ play="HAD", direction="客胜"→ index 2
+result "2-2"→ 平(1)；"3-1"→ 主胜(0)；"0-2"→ 客胜(2)</code></pre>
+
+<h3>F5 判别逻辑（P1 核心，不依赖 pin）</h3>
+<pre><code>错题入场：directionHit=false（pick 错：pick_idx != result_idx）
+F5 = dc_best == result_idx  （DC 原本看对结果方向）
+   且 fused_best != result_idx（融合后看错 = pick 错）
+   → 修正链/融合把 DC 的对改成错（P1 无法区分 chain vs a/b，统一归 F5，F4 待 P2）
+F9 = 否则（dc_best != result_idx，DC 也错）→ 随机/兜底</code></pre>
+
+<hr>
+
+<h2>Task 1：方向索引 + 结果解析纯函数</h2>
+<div class="task">
+<h3>Files</h3>
+<p>Create: <code>engine/scripts/attribute.py</code> · Test: <code>engine/tests/test_attribute.py</code></p>
+
+<h3>Step 1: 写失败测试</h3>
+<pre><code># -*- coding: utf-8 -*-
+"""归因引擎单元测试。"""
+import pytest
+
+from attribute import pick_to_index, result_to_idx
+
+
+class TestIndexParse:
+    """pick→方向下标 / result→结果下标。"""
+
+    def test_pick_had_away(self):
+        assert pick_to_index("HAD", "客胜") == 2
+
+    def test_pick_had_home(self):
+        assert pick_to_index("HAD", "主胜") == 0
+
+    def test_pick_had_draw(self):
+        assert pick_to_index("HAD", "平") == 1
+
+    def test_non_had_returns_none(self):
+        assert pick_to_index("CRS", "2-1") is None
+
+    def test_result_home_win(self):
+        assert result_to_idx("3-1") == 0
+
+    def test_result_away_win(self):
+        assert result_to_idx("0-2") == 2
+
+    def test_result_draw(self):
+        assert result_to_idx("2-2") == 1
+
+    def test_result_invalid(self):
+        assert result_to_idx("弃赛") is None
+        assert result_to_idx(None) is None
+</code></pre>
+
+<h3>Step 2: 跑测试确认失败</h3>
+<p class="step">Run: <code>python -m pytest engine/tests/test_attribute.py::TestIndexParse -v</code><br>
+Expected: FAIL（<code>ModuleNotFoundError: No module named 'attribute'</code>）</p>
+
+<h3>Step 3: 实现</h3>
+<p class="step">在 <code>engine/scripts/attribute.py</code> 写：</p>
+<pre><code>#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""预测偏差归因引擎：对错题逐场判别偏差因子，落 attribution.json。
+
+设计：docs/2026-08-29-attribution-design.html（四层12因子 + 判别树 + 消融门）。
+P1 范围：F5（dc vs fused·低置信）/ F9（兜底）/ F10（赔率漂移）。
+  F3/F4 待 P2 真收盘三向（反解循环论证失效，见设计修正说明）。
+数据源：data/02-results/*.json 主文件（非 corpus——需 dc/fused 数组做 F5 判别）。
+"""
+import json
+from collections import defaultdict
+from pathlib import Path
+
+from common import log, ROOT
+
+OUT = ROOT / "data" / "04-summaries" / "attribution.json"
+RESULTS_DIR = ROOT / "data" / "02-results"
+SCORE_ODDS_DIR = ROOT / "engine" / "cache" / "score_odds"
+
+# 方向 → 三向数组下标
+_DIR_IDX = {"主胜": 0, "胜": 0, "平": 1, "平局": 1, "客胜": 2}
+
+
+def pick_to_index(play: str, pick: str) -> int | None:
+    """'HAD 客胜' → 2。非 HAD 或无法解析 → None。"""
+    if play != "HAD":
+        return None
+    return _DIR_IDX.get(pick.strip())
+
+
+def result_to_idx(result: str) -> int | None:
+    """'3-1'→0(主胜) / '0-2'→2(客胜) / '2-2'→1(平)。"""
+    if not result or "-" not in str(result):
+        return None
+    parts = str(result).split("-")
+    try:
+        h, a = int(parts[0]), int(parts[1])
+    except (ValueError, IndexError):
+        return None
+    if h > a:
+        return 0
+    if h < a:
+        return 2
+    return 1
+
+
+def _parse_pick(pick: str) -> tuple[str, str]:
+    """'HAD 客胜' → ('HAD','客胜')。"""
+    if " " in pick:
+        p, d = pick.split(" ", 1)
+        return p.strip(), d.strip()
+    return "", pick.strip()
+</code></pre>
+
+<h3>Step 4: 跑测试确认通过</h3>
+<p class="step">Run: <code>python -m pytest engine/tests/test_attribute.py::TestIndexParse -v</code><br>
+Expected: 8 passed</p>
+
+<h3>Step 5: Commit</h3>
+<pre><code>cd D:\Users\shenshengzhang\football
+git add engine/scripts/attribute.py engine/tests/test_attribute.py
+git commit -m "feat(attrib): 方向索引+结果解析纯函数(单测8绿)"</code></pre>
+</div>
+
+<h2>Task 2：F5 修正链近似重放</h2>
+<div class="task">
+<h3>Files</h3>
+<p>Modify: <code>engine/scripts/attribute.py</code> · Test: <code>engine/tests/test_attribute.py</code></p>
+
+<h3>Step 1: 写失败测试</h3>
+<pre><code>class TestCorrectionReplay:
+    """F5 近似：DC 对(dc_best==result) 但 fused 错(≠result) → 修正/融合背锅。"""
+
+    def test_dc_right_fused_wrong(self):
+        # DC 看主、fused 看客、结果主胜 → DC 对融合错
+        dc = [0.6, 0.2, 0.2]; fused = [0.2, 0.2, 0.6]; result_idx = 0
+        assert correction_flipped(dc, fused, result_idx) is True
+
+    def test_dc_also_wrong(self):
+        # DC 也看主、结果客胜 → DC 也错，不是修正背锅
+        dc = [0.6, 0.2, 0.2]; fused = [0.6, 0.2, 0.2]; result_idx = 2
+        assert correction_flipped(dc, fused, result_idx) is False
+
+    def test_dc_right_fused_right(self):
+        # DC 和 fused 都对 → 不是错题场景，但函数应返 False
+        dc = [0.2, 0.2, 0.6]; fused = [0.2, 0.2, 0.6]; result_idx = 2
+        assert correction_flipped(dc, fused, result_idx) is False
+
+    def test_missing_data_returns_none(self):
+        assert correction_flipped(None, [0.6, 0.2, 0.2], 0) is None
+        assert correction_flipped([0.6, 0.2, 0.2], [0.6, 0.2, 0.2], None) is None
+</code></pre>
+
+<h3>Step 2: 跑测试确认失败</h3>
+<p class="step">Run: <code>python -m pytest engine/tests/test_attribute.py::TestCorrectionReplay -v</code><br>
+Expected: FAIL（<code>ImportError: cannot import name 'correction_flipped'</code>）</p>
+
+<h3>Step 3: 实现</h3>
+<pre><code>def correction_flipped(dc: list, fused: list, result_idx: int) -> bool | None:
+    """F5 近似（R4 低置信）：dc 最高向==结果（DC 原本对）且 fused 最高向!=结果（融合后错）。
+
+    P1 无法区分 chain 修正乘子 vs 融合 a/b 配比导致 → 统一归 F5；
+    F4（纯融合稀释）待 P2 落盘 chainSteps[] 后从 F5 中分离。
+    数据不足（无 dc/fused 或 result_idx 越界）→ None。
+    """
+    if not dc or not fused or result_idx is None or result_idx >= 3:
+        return None
+    dc_best = dc.index(max(dc))
+    fused_best = fused.index(max(fused))
+    return dc_best == result_idx and fused_best != result_idx
+</code></pre>
+
+<h3>Step 4: 跑测试确认通过</h3>
+<p class="step">Run: <code>python -m pytest engine/tests/test_attribute.py -v</code><br>
+Expected: 12 passed</p>
+
+<h3>Step 5: Commit</h3>
+<pre><code>git add engine/scripts/attribute.py engine/tests/test_attribute.py
+git commit -m "feat(attrib): F5修正链近似重放(dc对fused错·低置信·单测4绿)"</code></pre>
+</div>
+
+<h2>Task 3：主判别树 classify</h2>
+<div class="task">
+<h3>Files</h3>
+<p>Modify: <code>engine/scripts/attribute.py</code> · Test: <code>engine/tests/test_attribute.py</code></p>
+
+<h3>Step 1: 写失败测试</h3>
+<pre><code>class TestClassify:
+    """主判别树：错题 → (primary, secondary, evidence, confidence)。"""
+
+    def _mk(self, **kw):
+        base = dict(code="x", pick="HAD 客胜", dc=[0.15, 0.2, 0.65],
+                    fused=[0.1, 0.15, 0.75], result="2-2",
+                    directionHit=False, scoreHit=False, chain="R3×0.95")
+        base.update(kw)
+        return base
+
+    def test_F5_dc_right_fused_wrong(self):
+        # DC 看客、fused 看主、结果客胜 → DC 对被改成错 = F5
+        r = self._mk(pick="HAD 客胜", dc=[0.1, 0.2, 0.7],
+                     fused=[0.6, 0.2, 0.2], result="0-2")
+        out = classify(r)
+        assert out["primary"] == "F5"
+        assert out["confidence"] == "low"   # R4 近似版标低
+
+    def test_F9_dc_also_wrong(self):
+        # DC 和 fused 都看主、结果客胜 → 都错 = F9 随机兜底
+        r = self._mk(pick="HAD 主胜", dc=[0.6, 0.2, 0.2],
+                     fused=[0.6, 0.2, 0.2], result="0-2")
+        out = classify(r)
+        assert out["primary"] == "F9"
+        assert out["confidence"] == "high"
+
+    def test_non_had_falls_to_F9_low(self):
+        # 非 HAD 玩法（CRS 等）→ 暂落 F9 低置信（R7 变体待 P2）
+        r = self._mk(pick="CRS 2-1", result="2-2")
+        out = classify(r)
+        assert out["primary"] == "F9"
+        assert out["confidence"] == "low"
+
+    def test_unparseable_result_falls_to_F9_low(self):
+        r = self._mk(result="弃赛")
+        out = classify(r)
+        assert out["primary"] == "F9"
+        assert out["confidence"] == "low"
+</code></pre>
+
+<h3>Step 2: 跑测试确认失败</h3>
+<p class="step">Run: <code>python -m pytest engine/tests/test_attribute.py::TestClassify -v</code><br>
+Expected: FAIL（<code>ImportError: cannot import name 'classify'</code>）</p>
+
+<h3>Step 3: 实现</h3>
+<pre><code>def classify(rec: dict) -> dict:
+    """主判别树：错题 → {primary, secondary, evidence, confidence}。
+
+    P1 判别顺序：①F5(dc对fused错) → ②F9(兜底)。
+    F3/F4 待 P2 真收盘三向（反解循环论证失效，见设计修正说明）。
+    F10 执行层在 build() 中独立叠加（不在此函数，因需 score_odds 外部数据）。
+    """
+    play, direction = _parse_pick(rec.get("pick") or "")
+    pick_idx = pick_to_index(play, direction)
+    result_idx = result_to_idx(rec.get("result") or "")
+    dc = rec.get("dc")
+    fused = rec.get("fused")
+    ev = {"pfinalPick": None, "dcBest": None, "fusedBest": None,
+          "pickIdx": pick_idx, "resultIdx": result_idx,
+          "scoreBias": rec.get("result")}
+
+    # 非 HAD 或结果不可解析 → F9 低置信（R7 变体待 P2）
+    if pick_idx is None or result_idx is None:
+        return {"primary": "F9", "secondary": [], "evidence": ev, "confidence": "low"}
+
+    if fused and pick_idx < len(fused):
+        ev["pfinalPick"] = round(float(fused[pick_idx]), 4)
+    if dc:
+        ev["dcBest"] = dc.index(max(dc))
+    if fused:
+        ev["fusedBest"] = fused.index(max(fused))
+
+    # ① F5 修正/融合背锅（dc 对 + fused 错）
+    if correction_flipped(dc, fused, result_idx):
+        return {"primary": "F5", "secondary": [], "evidence": ev, "confidence": "low"}
+
+    # ② F9 随机兜底（dc 也错，或 dc/fused 同向错）
+    return {"primary": "F9", "secondary": [], "evidence": ev, "confidence": "high"}
+</code></pre>
+
+<h3>Step 4: 跑测试确认通过</h3>
+<p class="step">Run: <code>python -m pytest engine/tests/test_attribute.py -v</code><br>
+Expected: 16 passed</p>
+
+<h3>Step 5: Commit</h3>
+<pre><code>git add engine/scripts/attribute.py engine/tests/test_attribute.py
+git commit -m "feat(attrib): 主判别树classify(F5→F9·非HAD落F9低置信·单测4绿)"</code></pre>
+</div>
+
+<h2>Task 4：F10 赔率漂移判别</h2>
+<div class="task">
+<h3>Files</h3>
+<p>Modify: <code>engine/scripts/attribute.py</code> · Test: <code>engine/tests/test_attribute.py</code></p>
+
+<h3>Step 1: 写失败测试</h3>
+<pre><code>class TestOddsDrift:
+    """F10：score_odds 出票后赔率向不利方向漂移=追热（R5）。"""
+
+    def test_drift_against_pick_buy_heat(self):
+        # pick=客胜 odds=1.55，漂移后 1.65（赔率升=买热更难赚）
+        drift = {"pickOdds": 1.55, "laterOdds": 1.65}
+        assert odds_drift_buy_heat(drift) is True
+
+    def test_drift_toward_pick_not_buy_heat(self):
+        # 赔率降=卖冷，不是追热
+        drift = {"pickOdds": 1.55, "laterOdds": 1.45}
+        assert odds_drift_buy_heat(drift) is False
+
+    def test_small_drift_below_threshold(self):
+        # 涨幅 <2% 阈值=噪声，不算追热
+        drift = {"pickOdds": 1.55, "laterOdds": 1.56}
+        assert odds_drift_buy_heat(drift) is False
+
+    def test_missing_odds(self):
+        assert odds_drift_buy_heat(None) is False
+        assert odds_drift_buy_heat({}) is False
+</code></pre>
+
+<h3>Step 2: 跑测试确认失败</h3>
+<p class="step">Run: <code>python -m pytest engine/tests/test_attribute.py::TestOddsDrift -v</code><br>
+Expected: FAIL（<code>ImportError</code>）</p>
+
+<h3>Step 3: 实现</h3>
+<pre><code>def odds_drift_buy_heat(drift: dict | None) -> bool:
+    """R5 判据：出票赔率 &lt; 漂移后赔率（赔率向不利方向漂移=追热入场）。
+
+    laterOdds > pickOdds × 1.02（2% 涨幅阈值防噪声）→ 追热。
+    drift={pickOdds, laterOdds}：来源 score_odds oddsUpdatedAt 时间轴回放。
+    """
+    if not drift:
+        return False
+    po = drift.get("pickOdds")
+    lo = drift.get("laterOdds")
+    if po is None or lo is None:
+        return False
+    try:
+        return float(lo) > float(po) * 1.02
+    except (TypeError, ValueError):
+        return False
+
+
+def load_odds_drift(code: str, pick_odds: float, round_date: str) -> dict | None:
+    """从 score_odds 日存档取该场出票后赔率漂移（R5）。
+
+    返回 {pickOdds, laterOdds}；无存档或无该场 → None（F10 不触发，不报错）。
+    P1 简化：laterOdds 取当日最后一次快照的 pick 方向赔率。
+    """
+    if not SCORE_ODDS_DIR.exists():
+        return None
+    # round_date '2026-08-28' → 找该日及次日存档
+    candidates = list(SCORE_ODDS_DIR.glob(f"{round_date}*.json"))
+    if not candidates:
+        return None
+    best = {"pickOdds": pick_odds, "laterOdds": None}
+    for p in candidates:
+        try:
+            data = json.loads(p.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            continue
+        for day in data.get("matchDays") or []:
+            for m in day.get("matches") or []:
+                if m.get("matchNumStr") != code:
+                    continue
+                had = m.get("had") or {}
+                # had 结构：{h:{odds}, d:{odds}, a:{odds}} 或扁平；取客胜/主胜/平的 later odds
+                later = had.get("a", {}).get("odds") if had.get("a") else None
+                if later is not None:
+                    try:
+                        best["laterOdds"] = float(later)
+                    except (TypeError, ValueError):
+                        pass
+    return best if best["laterOdds"] is not None else None
+</code></pre>
+
+<h3>Step 4: 跑测试确认通过</h3>
+<p class="step">Run: <code>python -m pytest engine/tests/test_attribute.py -v</code><br>
+Expected: 20 passed</p>
+<div class="warn"><b>load_odds_drift 的 score_odds had 结构</b>需在实现时按实际 JSON 调整字段路径——Step 3 的 <code>had.get("a",{}).get("odds")</code> 是占位推测。实现前先 <code>python -c "import json;d=json.load(open(r'engine/cache/score_odds/2026-08-28.json',encoding='utf-8'));print(json.dumps(d['matchDays'][0]['matches'][0]['had'],ensure_ascii=False,indent=2))"</code> 看真实结构再改取值路径。这是 P1 唯一需要现场校准的字段。</div>
+
+<h3>Step 5: Commit</h3>
+<pre><code>git add engine/scripts/attribute.py engine/tests/test_attribute.py
+git commit -m "feat(attrib): F10赔率漂移追热判据(oddsUpdatedAt·2%阈值·单测4绿)"</code></pre>
+</div>
+
+<h2>Task 5：文件层 build + 落盘 + factorStats</h2>
+<div class="task">
+<h3>Files</h3>
+<p>Modify: <code>engine/scripts/attribute.py</code> · Test: <code>engine/tests/test_attribute.py</code></p>
+
+<h3>Step 1: 写失败测试（集成，tmp_path + monkeypatch）</h3>
+<pre><code>import json
+from pathlib import Path
+
+
+class TestBuild:
+    """集成：fixture 02-results → attribution.json + factorStats。"""
+
+    def test_wrong_matches_attributed(self, tmp_path, monkeypatch):
+        res = tmp_path / "02-results"
+        res.mkdir()
+        (res / "2026-08-28.json").write_text(json.dumps({
+            "date": "2026-08-28",
+            "matches": [
+                {  # F5：DC 看客对、fused 看主错、结果客胜
+                    "code": "周五010", "pick": "HAD 客胜", "odds": 1.55,
+                    "dc": [0.1, 0.2, 0.7], "fused": [0.6, 0.2, 0.2],
+                    "result": "0-2", "directionHit": False, "chain": "R3×0.95"
+                },
+                {  # F9：DC 和 fused 都看主错、结果客胜
+                    "code": "周五011", "pick": "HAD 主胜", "odds": 2.0,
+                    "dc": [0.6, 0.2, 0.2], "fused": [0.6, 0.2, 0.2],
+                    "result": "0-2", "directionHit": False, "chain": ""
+                },
+                {  # 非错题：方向对，跳过
+                    "code": "周五012", "pick": "HAD 客胜", "odds": 1.8,
+                    "dc": [0.2, 0.2, 0.6], "fused": [0.2, 0.2, 0.6],
+                    "result": "0-2", "directionHit": True, "chain": ""
+                },
+            ],
+            "plans": {}
+        }), encoding="utf-8")
+        out_path = tmp_path / "attribution.json"
+        import attribute
+        monkeypatch.setattr(attribute, "RESULTS_DIR", res)
+        monkeypatch.setattr(attribute, "OUT", out_path)
+        monkeypatch.setattr(attribute, "SCORE_ODDS_DIR", tmp_path)
+        records, stats = attribute.build()
+        assert len(records) == 2  # 跳过方向对的周五012
+        assert records["2026-08-28|周五010|HAD"]["primary"] == "F5"
+        assert records["2026-08-28|周五011|HAD"]["primary"] == "F9"
+        assert stats["F5"]["nPrimary"] == 1
+        assert stats["F9"]["nPrimary"] == 1
+        saved = json.loads(out_path.read_text(encoding="utf-8"))
+        assert saved["schemaVersion"] == 1
+        assert "F5" in saved["factorStats"]
+</code></pre>
+
+<h3>Step 2: 跑测试确认失败</h3>
+<p class="step">Run: <code>python -m pytest engine/tests/test_attribute.py::TestBuild -v</code><br>
+Expected: FAIL（<code>ImportError: cannot import name 'build'</code>）</p>
+
+<h3>Step 3: 实现</h3>
+<pre><code>def _is_error(rec: dict) -> bool:
+    """错题入场：directionHit=False（P1 仅处理 HAD 方向错；CRS 待 P2 R7 变体）。"""
+    return rec.get("directionHit") is False
+
+
+def build() -> tuple[dict, dict]:
+    """遍历 02-results 主文件 → 对错题跑 classify → 叠加 F10 → 落 attribution.json。
+
+    返回 (records, factorStats)。主文件=无 -rN 后缀（终审版）。
+    """
+    records = {}
+    for p in sorted(RESULTS_DIR.glob("*.json")):
+        if p.name.startswith("_") or "-r" in p.stem:
+            continue  # 跳过 _ 前缀和 -rN 过程快照（同 corpus round_sort 语义）
+        try:
+            data = json.loads(p.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            continue
+        round_id = p.stem
+        for m in data.get("matches") or []:
+            if not _is_error(m):
+                continue
+            play, _ = _parse_pick(m.get("pick") or "")
+            if not play:
+                continue
+            key = f"{round_id[:10]}|{m.get('code')}|{play}"
+            out = classify(m)
+            out["source"] = "rule"
+            out["confirmed"] = True   # rule 判定默认确认；llm 软标签才 false
+
+            # F10 执行层叠加（独立判别，方向错时记次因）
+            drift = load_odds_drift(m.get("code"), m.get("odds"), round_id[:10])
+            if drift and odds_drift_buy_heat(drift):
+                out.setdefault("secondary", []).append("F10")
+                out["evidence"]["oddsDrift"] = drift
+            records[key] = out
+
+    # factorStats：主因频次（key 去重已保证按场）+ avgProbGap
+    prim = defaultdict(lambda: [0, 0.0])   # [n, probgap_sum]
+    sec = defaultdict(int)
+    for r in records.values():
+        f = r["primary"]
+        prim[f][0] += 1
+        pg = r["evidence"].get("pfinalPick")
+        if pg is not None:
+            prim[f][1] += (1.0 - float(pg))   # 错向置信度 → 损失量近似
+        for s in r.get("secondary", []):
+            sec[s] += 1
+    factorStats = {}
+    for f, (n, s) in prim.items():
+        factorStats[f] = {"nPrimary": n, "nSecondary": sec.get(f, 0),
+                          "avgProbGap": round(s / n, 4) if n else 0.0}
+
+    candidates = [f for f, (n, _) in prim.items() if n >= 20]
+    from datetime import date as _date
+    payload = {"schemaVersion": 1, "generatedAt": str(_date.today()),
+               "records": records, "factorStats": factorStats,
+               "ablateCandidates": candidates, "resolved": {}}
+    OUT.parent.mkdir(parents=True, exist_ok=True)
+    OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+                   encoding="utf-8")
+    return records, factorStats
+
+
+def main() -> None:
+    records, stats = build()
+    log("attribute", f"归因 {len(records)} 场错题 → {OUT.relative_to(ROOT)}")
+    for f, s in sorted(stats.items(), key=lambda kv: -kv[1]["nPrimary"]):
+        log("attribute", f"  {f}: 主因 {s['nPrimary']}场 / 次因 {s['nSecondary']} / avgGap {s['avgProbGap']}")
+    cand = [f for f, s in stats.items() if s["nPrimary"] >= 20]
+    if cand:
+        log("attribute", f"⚠️ 消融候选（nPrimary≥20）：{cand}")
+    else:
+        mx = max((s["nPrimary"] for s in stats.values()), default=0)
+        log("attribute", f"消融门槛未达（需≥20场，当前最高 {mx} 场）")
+
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+
+<h3>Step 4: 跑测试确认通过</h3>
+<p class="step">Run: <code>python -m pytest engine/tests/test_attribute.py -v</code><br>
+Expected: 21 passed</p>
+
+<h3>Step 5: Commit</h3>
+<pre><code>git add engine/scripts/attribute.py engine/tests/test_attribute.py
+git commit -m "feat(attrib): 文件层build+factorStats+F10叠加+attribution.json落盘(集成测1绿)"</code></pre>
+</div>
+
+<h2>Task 6：run.py 加 attribute 子命令 + pytest 全量</h2>
+<div class="task">
+<h3>Files</h3>
+<p>Modify: <code>engine/scripts/run.py:85-87</code>（corpus 分支后加 attribute）+ docstring</p>
+
+<h3>Step 1: 改 run.py</h3>
+<p class="step">在 corpus 分支后、backfill 分支前插入。原文：</p>
+<pre><code>    elif cmd == "corpus":
+        sh("corpus.py")
+        sh("trend_report.py")
+    elif cmd == "backfill":</code></pre>
+<p class="step">改为：</p>
+<pre><code>    elif cmd == "corpus":
+        sh("corpus.py")
+        sh("trend_report.py")
+    elif cmd == "attribute":
+        sh("attribute.py")          # 规则归因（设计 §6 判别树）
+    elif cmd == "backfill":</code></pre>
+<p class="step">同时在 run.py 顶部 docstring 用法区（line 12-13 附近）加一行：</p>
+<pre><code>  python run.py attribute            # 规则归因（错题判别→attribution.json，回填后跑）</code></pre>
+
+<h3>Step 2: 手动验证子命令可跑</h3>
+<p class="step">Run: <code>python engine/scripts/run.py attribute</code><br>
+Expected: 打印 <code>[attribute] 归因 N 场错题 → data/04-summaries/attribution.json</code> + 各因子频次行 + 消融门槛行。无报错。生成的 attribution.json 用 <code>python -c "import json;print(json.dumps(json.load(open('data/04-summaries/attribution.json',encoding='utf-8'))['factorStats'],ensure_ascii=False,indent=2))"</code> 查看。</p>
+
+<h3>Step 3: pytest 全量回归（R10 纪律）</h3>
+<p class="step">Run: <code>python -m pytest engine/tests/ -q</code><br>
+Expected: 全绿（原有 114 + 新增 21 = 135 passed，0 failed）</p>
+<div class="warn"><b>若 fail</b>：本 task 仅改 run.py 加分支，不应影响既有测试。若既有测试 fail，先 <code>git stash</code> 回滚 run.py 确认是否本 task 引入，排查后再继续。</div>
+
+<h3>Step 4: Commit</h3>
+<pre><code>git add engine/scripts/run.py
+git commit -m "feat(run): 加attribute子命令(规则归因·回填后跑)+pytest全量135绿"</code></pre>
+</div>
+
+<h2>Task 7：SKILL.md 回填流程加 attribute 步</h2>
+<div class="task">
+<h3>Files</h3>
+<p>Modify: <code>skill/SKILL.md</code> + 同步 <code>~/.claude/skills/football-betting-prediction/SKILL.md</code>（全局规范：双份一致）</p>
+
+<h3>Step 1: 改流程链</h3>
+<p class="step">在 SKILL.md 回填流程的 corpus 步后加 attribute：</p>
+<pre><code>... → run.py corpus（语料） → run.py attribute（错题归因→attribution.json）
+    → run.py learn → dc_fit 重拟合 → 复盘报告 → git commit</code></pre>
+
+<h3>Step 2: 双份校验</h3>
+<pre><code>python -c "import pathlib;a=pathlib.Path('skill/SKILL.md').read_bytes();b=pathlib.Path(r'D:\Users\shenshengzhang\.claude\skills\football-betting-prediction\SKILL.md').read_bytes();print('一致' if a==b else '不一致')"</code></pre>
+
+<h3>Step 3: Commit</h3>
+<pre><code>git add skill/SKILL.md
+git commit -m "docs(skill): 回填流程加attribute归因步(双份同步·语料后复盘前)"</code></pre>
+</div>
+
+<hr>
+
+<h2>P1 验收标准</h2>
+<table>
+<tr><th>验收项</th><th>标准</th></tr>
+<tr><td>attribution.json 落盘</td><td>跑 <code>run.py attribute</code> 后生成，含 records + factorStats + ablateCandidates + resolved</td></tr>
+<tr><td>因子判别</td><td>F5（dc对fused错·低置信）/ F9（兜底·高置信）可区分；非 HAD 场落 F9 低置信；F10 赔率漂移作次因叠加</td></tr>
+<tr><td>诚实边界</td><td>F3/F4 不在 P1 判别（反解循环论证失效，标"待 P2 真收盘"），不假装能判</td></tr>
+<tr><td>pytest</td><td>全量绿（135 passed），test_attribute.py 21 passed</td></tr>
+<tr><td>run.py 子命令</td><td><code>python run.py attribute</code> 可跑，打印因子频次 + 消融门槛</td></tr>
+<tr><td>SKILL.md</td><td>回填流程含 attribute 步，双份一致</td></tr>
+</table>
+
+<h2>P2-P5 后续（本计划不开工，仅备忘）</h2>
+<table>
+<tr><th>阶段</th><th>内容</th><th>前置</th></tr>
+<tr><td><b>P2</b> 预测侧补字段 + F3/F4</td><td>matches[] 增 <code>lambda</code>+<code>chainSteps[]</code>+真收盘三向落盘；写 <code>derive_market_probs</code>；attribute 升级判 F3/F4（真收盘非反解）、F1（λ）、F5 精确重放</td><td>改 dc_predict/odds_fetch 落盘</td></tr>
+<tr><td><b>P3</b> LLM 软标签</td><td>三触发条件 + insight 信源 + confirmed 流程 + 复盘报告"偏差归因"节</td><td>P1 稳定</td></tr>
+<tr><td><b>P4</b> 消融门接通</td><td>nPrimary≥20 因子进 ablate 候选 → 消融正增益 → 人工拍板</td><td>样本 2-3 月</td></tr>
+<tr><td><b>P5</b> 票级归因</td><td>F11/F12 在票务结算层（票死且共享胆 → F11）</td><td>P1 + tickets.html</td></tr>
+</table>
+
+</main></body></html>
