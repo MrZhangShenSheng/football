@@ -16,6 +16,7 @@ v4.5：五池全采——had 胜平负 / hhad 让球 / crs 比分(31选项) / tt
                                                           # 伤停+近10场+即时排名+H2H+射手，供预测分析评级阶段补伤停（免搜索配额）
 """
 import json
+import os
 import sys
 import time
 from datetime import date, timedelta
@@ -24,6 +25,8 @@ from pathlib import Path
 import requests
 
 from common import load_aliases, log, ROOT
+from trends_snapshot import extract_odds as ts_extract_odds, write_snapshot
+from trends_snapshot import write_intel_entry
 
 API_BASE = "https://webapi.sporttery.cn/gateway/uniform/football"
 URL = API_BASE + "/getMatchCalculatorV1.qry"
@@ -68,6 +71,11 @@ def cmd_insight(mid: str) -> None:
     }
     out = CACHE_DIR / f"sporttery_insight_{mid}.json"
     out.write_text(json.dumps(payload, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    # 钩子②：情报摘要落时序（intel-timeline 设计 §5；失败不阻断）
+    try:
+        write_intel_entry(payload, payload["match"]["code"])
+    except Exception as e:
+        log("trends", f"intel摘要失败(不阻断): {e}")
     inj_h, inj_a = payload["injuries"]["home"], payload["injuries"]["away"]
     log("sporttery", f"{payload['match']['code']} {payload['match']['league']} "
                      f"{payload['match']['home']} vs {payload['match']['away']} → {out.name}")
@@ -408,6 +416,11 @@ def main() -> None:
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     log("sporttery", f"{len(out_matches)} 场 → {OUT.relative_to(ROOT)}")
+    # 钩子①：刷新即快照（intel-timeline 设计 §5；失败不阻断主流程）
+    try:
+        write_snapshot(ts_extract_odds(out_matches), os.environ.get("TRENDS_TRIGGER", "run.py update"))
+    except Exception as e:
+        log("trends", f"odds快照失败(不阻断): {e}")
     # 打印编号连续性检查 + 五池在售/单关统计
     codes = [m["code"] for m in out_matches if m.get("code")]
     log("sporttery", "编号: " + ", ".join(codes))
