@@ -2,7 +2,7 @@
 """归因引擎单元测试。"""
 import pytest
 
-from attribute import pick_to_index, result_to_idx, correction_flipped
+from attribute import pick_to_index, result_to_idx, correction_flipped, classify
 
 
 class TestIndexParse:
@@ -55,3 +55,43 @@ class TestCorrectionReplay:
     def test_missing_data_returns_none(self):
         assert correction_flipped(None, [0.6, 0.2, 0.2], 0) is None
         assert correction_flipped([0.6, 0.2, 0.2], [0.6, 0.2, 0.2], None) is None
+
+
+class TestClassify:
+    """主判别树：错题 → (primary, secondary, evidence, confidence)。"""
+
+    def _mk(self, **kw):
+        base = dict(code="x", pick="HAD 客胜", dc=[0.15, 0.2, 0.65],
+                    fused=[0.1, 0.15, 0.75], result="2-2",
+                    directionHit=False, scoreHit=False, chain="R3×0.95")
+        base.update(kw)
+        return base
+
+    def test_F5_dc_right_fused_wrong(self):
+        # DC 看客、fused 看主、结果客胜 → pick=主胜错，DC对被改成错 = F5
+        r = self._mk(pick="HAD 主胜", dc=[0.1, 0.2, 0.7],
+                     fused=[0.6, 0.2, 0.2], result="0-2")
+        out = classify(r)
+        assert out["primary"] == "F5"
+        assert out["confidence"] == "low"   # R4 近似版标低
+
+    def test_F9_dc_also_wrong(self):
+        # DC 和 fused 都看主、结果客胜 → 都错 = F9 随机兜底
+        r = self._mk(pick="HAD 主胜", dc=[0.6, 0.2, 0.2],
+                     fused=[0.6, 0.2, 0.2], result="0-2")
+        out = classify(r)
+        assert out["primary"] == "F9"
+        assert out["confidence"] == "high"
+
+    def test_non_had_falls_to_F9_low(self):
+        # 非 HAD 玩法（CRS 等）→ 暂落 F9 低置信（R7 变体待 P2）
+        r = self._mk(pick="CRS 2-1", result="2-2")
+        out = classify(r)
+        assert out["primary"] == "F9"
+        assert out["confidence"] == "low"
+
+    def test_unparseable_result_falls_to_F9_low(self):
+        r = self._mk(result="弃赛")
+        out = classify(r)
+        assert out["primary"] == "F9"
+        assert out["confidence"] == "low"

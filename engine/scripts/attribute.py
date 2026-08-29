@@ -64,3 +64,38 @@ def correction_flipped(dc: list, fused: list, result_idx: int) -> bool | None:
     dc_best = dc.index(max(dc))
     fused_best = fused.index(max(fused))
     return dc_best == result_idx and fused_best != result_idx
+
+
+def classify(rec: dict) -> dict:
+    """主判别树：错题 → {primary, secondary, evidence, confidence}。
+
+    P1 判别顺序：①F5(dc对fused错) → ②F9(兜底)。
+    F3/F4 待 P2 真收盘三向（反解循环论证失效，见 impl-plan 设计修正说明）。
+    F10 执行层在 build() 中独立叠加（不在此函数，因需 score_odds 外部数据）。
+    """
+    play, direction = _parse_pick(rec.get("pick") or "")
+    pick_idx = pick_to_index(play, direction)
+    result_idx = result_to_idx(rec.get("result") or "")
+    dc = rec.get("dc")
+    fused = rec.get("fused")
+    ev = {"pfinalPick": None, "dcBest": None, "fusedBest": None,
+          "pickIdx": pick_idx, "resultIdx": result_idx,
+          "scoreBias": rec.get("result")}
+
+    # 非 HAD 或结果不可解析 → F9 低置信（R7 变体待 P2）
+    if pick_idx is None or result_idx is None:
+        return {"primary": "F9", "secondary": [], "evidence": ev, "confidence": "low"}
+
+    if fused and pick_idx < len(fused):
+        ev["pfinalPick"] = round(float(fused[pick_idx]), 4)
+    if dc:
+        ev["dcBest"] = dc.index(max(dc))
+    if fused:
+        ev["fusedBest"] = fused.index(max(fused))
+
+    # ① F5 修正/融合背锅（dc 对 + fused 错）
+    if correction_flipped(dc, fused, result_idx):
+        return {"primary": "F5", "secondary": [], "evidence": ev, "confidence": "low"}
+
+    # ② F9 随机兜底（dc 也错，或 dc/fused 同向错）
+    return {"primary": "F9", "secondary": [], "evidence": ev, "confidence": "high"}
