@@ -615,7 +615,7 @@ C/D 级场次，每场一行：
 
 `engine/scripts/run.py verify` 的 backfill 已自动化（体彩编号对票+ESPN 兜底，无需手工搜索）；手工兜底才走：从预测记录提取编号+对阵 → 批量搜索"编号 联赛 比分"→ 回填。
 
-### 预测记录格式 ★ v4.6 schema（唯一标准，corpus.py 双格式兼容但新轮必须用本格式）
+### 预测记录格式 ★ v4.7 schema（唯一标准，corpus.py 双格式兼容但新轮必须用本格式；v4.7 新增归因四字段）
 
 每轮预测输出时同步生成结构化记录（保存到 `data/02-results/YYYY-MM-DD.json`，**遵守铁律 7 防覆盖**）：
 
@@ -634,6 +634,9 @@ C/D 级场次，每场一行：
      "dc": [0.03, 0.08, 0.89], "fused": [0.03, 0.08, 0.89],  // DC 与融合概率
      "final": 0.841,                            // 修正后最终概率（pick 选项）
      "chain": "R3×0.95",                        // 修正系数链
+     "lambdaHome": 1.42, "lambdaAway": 1.08,    // v4.7：λ 落盘（dc_predict 原始输出·归因 F1）
+     "fusedPre": [0.03, 0.09, 0.88],            // v4.7：修正前融合三向（归因 F5 精确重放）
+     "chainSteps": [{"name":"开季修正","factor":0.95}],  // v4.7：修正乘子结构化（ablate 兼容数组）
      "ev": -0.031,                              // EV（p_model×odds-1）
      "inPlan": "B",                             // 入串方案名 / null
      // ↓ 回填时补齐：
@@ -644,7 +647,7 @@ C/D 级场次，每场一行：
 }
 ```
 
-> corpus.py 归一规则：grade 字母→数字（A=4）、pick 玩法前缀拆出 `play` 字段、league 去轮次后缀、fused→p_final。回填只改 `result/directionHit/scoreHit/clv*` 字段，**不动预测时锁定的其他字段**。
+> corpus.py 归一规则：grade 字母→数字（A=4）、pick 玩法前缀拆出 `play` 字段、league 去轮次后缀、fused→p_final。回填只改 `result/directionHit/scoreHit/clv*` 字段 + 增补 `pinClose/pinSource`（backfill 自动·fd 收盘三向），**不动预测时锁定的其他字段**。v4.7 起新轮 matches[] 必带 `lambdaHome/lambdaAway/fusedPre/chainSteps`（λ 与修正前融合自 dc_predict 输出透传；老轮不回补，归因引擎自动降级近似）。
 
 ### 五维命中率统计
 
