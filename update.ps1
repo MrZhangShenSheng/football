@@ -16,9 +16,10 @@ git pull --ff-only
 if ($LASTEXITCODE -ne 0) { Write-Host "    git pull failed (check local changes)" -ForegroundColor DarkYellow }
 Pop-Location
 
-# 1.5 skill -> arsenal sync (global rule: skill must be double-saved, byte-identical;
-#     arsenal repo is Windows-only D:\project\arsenal, absent on mac/linux update.sh by design)
-if (Test-Path "D:\project\arsenal") {
+# 1.5 skill -> arsenal sync (only when arsenal tracks this skill's dir;
+#     football-betting-prediction removed from arsenal 2026-08-29 — no longer maintained there,
+#     re-create the dir manually to re-enable sync)
+if (Test-Path "D:\project\arsenal\football-betting-prediction") {
     Write-Host "[1.5/7] Syncing skill to arsenal..." -ForegroundColor Yellow
     Copy-Item "$HOME_DIR\skill\SKILL.md" "D:\project\arsenal\football-betting-prediction\SKILL.md" -Force
     fc.exe /b "$HOME_DIR\skill\SKILL.md" "D:\project\arsenal\football-betting-prediction\SKILL.md" | Out-Null
