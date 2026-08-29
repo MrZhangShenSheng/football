@@ -88,7 +88,8 @@
    "result": "0-1",
    "backfillNote": "ESPN scoreboard 2026-08-23 手动回填(backfill.py zh→espn映射缺口期)",
    "directionHit": null,
-   "scoreHit": false
+   "scoreHit": false,
+   "pinSource": "ambiguous"
   },
   {
    "idx": 2,
@@ -119,7 +120,13 @@
    "result": "0-5",
    "note": "事故记录:r2将hh误标'客/客'被本轮复用;hh@15实为埃尔切爆冷双胜(DC 9.5% EV+42.5%但语义非本意);巴萨客/客=aa,终端1.75(缓存1.70),EV-17.8%不合格剔除方案;用户已按客/客出票入4串11实票",
    "directionHit": null,
-   "scoreHit": null
+   "scoreHit": null,
+   "pinSource": "fd",
+   "pinClose": [
+    0.1162,
+    0.169,
+    0.7149
+   ]
   },
   {
    "idx": 3,
@@ -150,7 +157,8 @@
    "result": "3-1",
    "note": "同场HAD主胜进平衡档主线串（同场次不同票不同池，合规）",
    "directionHit": null,
-   "scoreHit": false
+   "scoreHit": false,
+   "pinSource": "none"
   },
   {
    "idx": 4,
@@ -182,7 +190,8 @@
    "note": "保守口径:DC dd 17.2% EV+3.2%；修正后p20% EV+20%",
    "backfillNote": "ESPN scoreboard 2026-08-23 手动回填(backfill.py zh→espn映射缺口期)",
    "directionHit": null,
-   "scoreHit": true
+   "scoreHit": true,
+   "pinSource": "none"
   },
   {
    "idx": 5,
@@ -213,7 +222,8 @@
    "inPlan": "⚖️平衡",
    "result": "3-1",
    "directionHit": true,
-   "scoreHit": true
+   "scoreHit": true,
+   "pinSource": "none"
   },
   {
    "idx": 6,
@@ -244,7 +254,13 @@
    "inPlan": "⚖️平衡",
    "result": "2-5",
    "directionHit": true,
-   "scoreHit": true
+   "scoreHit": true,
+   "pinSource": "fd",
+   "pinClose": [
+    0.0892,
+    0.1486,
+    0.7622
+   ]
   },
   {
    "idx": 7,
@@ -276,7 +292,8 @@
    "note": "r1教训:瑞超方向判断0/3,平局结构性支撑(系数3/8)",
    "backfillNote": "ESPN scoreboard 2026-08-23 手动回填(backfill.py zh→espn映射缺口期)",
    "directionHit": true,
-   "scoreHit": null
+   "scoreHit": null,
+   "pinSource": "none"
   },
   {
    "idx": 8,
@@ -307,7 +324,8 @@
    "result": "2-0",
    "note": "r2平衡档成员,本轮被町田×费耶诺德(EV-5.1%>-21.6%)替代;留力风险:欧协联资格赛❓未确认",
    "directionHit": true,
-   "scoreHit": true
+   "scoreHit": true,
+   "pinSource": "none"
   },
   {
    "idx": 9,
@@ -339,7 +357,13 @@
    "note": "r2终审维持方案外,本轮复核EV-22%一致",
    "backfillNote": "ESPN scoreboard 2026-08-23 手动回填(backfill.py zh→espn映射缺口期)",
    "directionHit": true,
-   "scoreHit": null
+   "scoreHit": null,
+   "pinSource": "fd",
+   "pinClose": [
+    0.1222,
+    0.2037,
+    0.6741
+   ]
   },
   {
    "idx": 10,
@@ -370,7 +394,8 @@
    "result": "2-1",
    "note": "CRS 4-0@17相对分歧2x剔除(防模型自大)",
    "directionHit": true,
-   "scoreHit": null
+   "scoreHit": null,
+   "pinSource": "ambiguous"
   },
   {
    "idx": 11,
@@ -401,7 +426,13 @@
    "result": "5-2",
    "backfillNote": "ESPN scoreboard 2026-08-23 手动回填(backfill.py zh→espn映射缺口期)",
    "directionHit": true,
-   "scoreHit": null
+   "scoreHit": null,
+   "pinSource": "fd",
+   "pinClose": [
+    0.6501,
+    0.2162,
+    0.1337
+   ]
   },
   {
    "idx": 12,
@@ -432,7 +463,8 @@
    "result": "1-2",
    "directionHit": true,
    "backfillNote": "ESPN scoreboard 2026-08-23 手动回填(backfill.py zh→espn映射缺口期)",
-   "scoreHit": null
+   "scoreHit": null,
+   "pinSource": "none"
   },
   {
    "idx": 13,
@@ -462,7 +494,13 @@
    "inPlan": null,
    "result": "2-0",
    "directionHit": true,
-   "scoreHit": null
+   "scoreHit": null,
+   "pinSource": "fd",
+   "pinClose": [
+    0.7609,
+    0.1547,
+    0.0844
+   ]
   },
   {
    "idx": 14,
@@ -493,7 +531,13 @@
    "result": "2-5",
    "note": "避开决策追踪:★★避开场次",
    "directionHit": false,
-   "scoreHit": null
+   "scoreHit": null,
+   "pinSource": "fd",
+   "pinClose": [
+    0.0892,
+    0.1486,
+    0.7622
+   ]
   },
   {
    "idx": 15,
@@ -515,7 +559,8 @@
    "result": "5-0",
    "note": "ESPN复核:温哥华第2(37分)vs达拉斯第5(33分)西区强强,剔除维持",
    "directionHit": true,
-   "scoreHit": null
+   "scoreHit": null,
+   "pinSource": "none"
   },
   {
    "idx": 16,
@@ -545,7 +590,13 @@
    "inPlan": null,
    "result": "5-1",
    "directionHit": true,
-   "scoreHit": null
+   "scoreHit": null,
+   "pinSource": "fd",
+   "pinClose": [
+    0.7356,
+    0.1605,
+    0.1039
+   ]
   },
   {
    "idx": 17,
@@ -574,7 +625,13 @@
    "inPlan": null,
    "result": "1-2",
    "directionHit": true,
-   "scoreHit": null
+   "scoreHit": null,
+   "pinSource": "fd",
+   "pinClose": [
+    0.2111,
+    0.2814,
+    0.5075
+   ]
   },
   {
    "idx": 18,
@@ -596,7 +653,8 @@
    "inPlan": null,
    "result": "0-1",
    "directionHit": true,
-   "scoreHit": null
+   "scoreHit": null,
+   "pinSource": "ambiguous"
   },
   {
    "idx": 19,
@@ -624,8 +682,9 @@
    "ev": -0.273,
    "inPlan": null,
    "result": "4-0",
-   "directionHit": null,
-   "scoreHit": null
+   "directionHit": true,
+   "scoreHit": null,
+   "pinSource": "none"
   },
   {
    "idx": 20,
@@ -655,8 +714,9 @@
    "ev": -0.202,
    "inPlan": null,
    "result": "2-3",
-   "directionHit": null,
-   "scoreHit": null
+   "directionHit": true,
+   "scoreHit": null,
+   "pinSource": "none"
   },
   {
    "idx": 21,
@@ -681,7 +741,13 @@
    "note": "CRS 2-0/3-0@6.0市场锚无边际(三定律3无边际禁选),R1修正深,跳过",
    "backfillNote": "ESPN scoreboard 2026-08-23 手动回填(backfill.py zh→espn映射缺口期)",
    "directionHit": true,
-   "scoreHit": null
+   "scoreHit": null,
+   "pinSource": "fd",
+   "pinClose": [
+    0.8175,
+    0.1243,
+    0.0582
+   ]
   },
   {
    "idx": 22,
@@ -703,7 +769,8 @@
    "result": "2-0",
    "backfillNote": "ESPN scoreboard 2026-08-23 手动回填(backfill.py zh→espn映射缺口期)",
    "directionHit": false,
-   "scoreHit": null
+   "scoreHit": null,
+   "pinSource": "ambiguous"
   },
   {
    "idx": 23,
@@ -733,7 +800,8 @@
    "result": "0-3",
    "note": "避开决策追踪",
    "directionHit": null,
-   "scoreHit": null
+   "scoreHit": null,
+   "pinSource": "none"
   }
  ]
 }

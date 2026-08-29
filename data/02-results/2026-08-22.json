@@ -1,6 +1,8 @@
 {
  "date": "2026-08-22",
- "tickets": ["T001"],
+ "tickets": [
+  "T001"
+ ],
  "version": "v4.5.2",
  "generatedAt": "2026-08-22T13:50:00+08:00",
  "anchors": {
@@ -69,7 +71,13 @@
    "note": "超低赔胆仅做骨架;坎布尔0分垫底,费耶诺德4分",
    "result": "2-5",
    "directionHit": true,
-   "scoreHit": true
+   "scoreHit": true,
+   "pinSource": "fd",
+   "pinClose": [
+    0.0892,
+    0.1486,
+    0.7622
+   ]
   },
   {
    "idx": 41,
@@ -92,7 +100,8 @@
    "note": "瑞超小联赛限额1场已用",
    "result": "2-0",
    "directionHit": true,
-   "scoreHit": true
+   "scoreHit": true,
+   "pinSource": "none"
   },
   {
    "idx": 28,
@@ -115,7 +124,8 @@
    "note": "无DC纯市场锚",
    "result": "5-0",
    "directionHit": true,
-   "scoreHit": true
+   "scoreHit": true,
+   "pinSource": "none"
   },
   {
    "idx": 37,
@@ -138,7 +148,8 @@
    "note": "poolSingle=1可单关;分歧+5.5pp已标注",
    "result": "2-1",
    "directionHit": true,
-   "scoreHit": true
+   "scoreHit": true,
+   "pinSource": "ambiguous"
   },
   {
    "idx": 27,
@@ -162,7 +173,13 @@
    "backfillNote": "ESPN scoreboard 2026-08-23 手动回填(backfill.py zh→espn映射缺口期)",
    "result": "1-2",
    "directionHit": true,
-   "scoreHit": null
+   "scoreHit": null,
+   "pinSource": "fd",
+   "pinClose": [
+    0.1222,
+    0.2037,
+    0.6741
+   ]
   },
   {
    "idx": 24,
@@ -183,7 +200,8 @@
    "backfillNote": "ESPN scoreboard 2026-08-23 手动回填(backfill.py zh→espn映射缺口期)",
    "result": "0-1",
    "directionHit": null,
-   "scoreHit": false
+   "scoreHit": false,
+   "pinSource": "ambiguous"
   },
   {
    "idx": 9,
@@ -204,7 +222,8 @@
    "backfillNote": "ESPN scoreboard 2026-08-23 手动回填(backfill.py zh→espn映射缺口期)",
    "result": "1-1",
    "directionHit": null,
-   "scoreHit": true
+   "scoreHit": true,
+   "pinSource": "none"
   },
   {
    "idx": 52,
@@ -224,7 +243,13 @@
    "note": "以小博大;分歧4pp合规",
    "result": "0-5",
    "directionHit": null,
-   "scoreHit": null
+   "scoreHit": null,
+   "pinSource": "fd",
+   "pinClose": [
+    0.1162,
+    0.169,
+    0.7149
+   ]
   },
   {
    "idx": 53,
@@ -246,8 +271,14 @@
    "inPlan": "排除",
    "note": "四星但:poolSingle=0不可单关+开季限额已用费耶诺德+分歧+8.5pp对手榜首2连胜",
    "result": "2-0",
-   "directionHit": null,
-   "scoreHit": null
+   "directionHit": true,
+   "scoreHit": null,
+   "pinSource": "fd",
+   "pinClose": [
+    0.7609,
+    0.1547,
+    0.0844
+   ]
   }
  ]
 }

@@ -247,7 +247,8 @@
    "resultScore": "0-2",
    "resultOutcome": "a",
    "directionHit": true,
-   "result": "0-2"
+   "result": "0-2",
+   "pinSource": "none"
   },
   {
    "idx": 3,
@@ -365,7 +366,13 @@
    "resultScore": "0-0",
    "resultOutcome": "d",
    "directionHit": false,
-   "result": "0-0"
+   "result": "0-0",
+   "pinSource": "fd",
+   "pinClose": [
+    0.4896,
+    0.2877,
+    0.2227
+   ]
   },
   {
    "idx": 5,
@@ -429,7 +436,8 @@
    "resultScore": "3-2",
    "resultOutcome": "h",
    "directionHit": true,
-   "result": "3-2"
+   "result": "3-2",
+   "pinSource": "none"
   },
   {
    "idx": 6,
@@ -493,7 +501,13 @@
    "resultScore": "4-0",
    "resultOutcome": "h",
    "directionHit": true,
-   "result": "4-0"
+   "result": "4-0",
+   "pinSource": "fd",
+   "pinClose": [
+    0.5518,
+    0.2606,
+    0.1876
+   ]
   },
   {
    "idx": 7,
@@ -633,7 +647,13 @@
    "resultScore": "2-3",
    "resultOutcome": "a",
    "directionHit": true,
-   "result": "2-3"
+   "result": "2-3",
+   "pinSource": "fd",
+   "pinClose": [
+    0.2591,
+    0.2744,
+    0.4665
+   ]
   },
   {
    "idx": 9,
@@ -724,7 +744,8 @@
    "resultScore": "2-0",
    "resultOutcome": "h",
    "directionHit": true,
-   "result": "2-0"
+   "result": "2-0",
+   "pinSource": "ambiguous"
   },
   {
    "idx": 10,

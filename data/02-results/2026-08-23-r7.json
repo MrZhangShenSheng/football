@@ -72,7 +72,8 @@
    "scoreHit": false,
    "clv": null,
    "clv_approx_dk": null,
-   "clv_note": "Pinnacle停摆，回填时算DK近似"
+   "clv_note": "Pinnacle停摆，回填时算DK近似",
+   "pinSource": "ambiguous"
   },
   {
    "idx": 9,
@@ -101,7 +102,8 @@
    "directionHit": null,
    "scoreHit": false,
    "clv": null,
-   "clv_approx_dk": null
+   "clv_approx_dk": null,
+   "pinSource": "ambiguous"
   },
   {
    "idx": 23,
@@ -130,7 +132,13 @@
    "directionHit": null,
    "scoreHit": null,
    "clv": null,
-   "clv_approx_dk": null
+   "clv_approx_dk": null,
+   "pinSource": "fd",
+   "pinClose": [
+    0.6359,
+    0.2115,
+    0.1526
+   ]
   },
   {
    "idx": 17,
@@ -159,7 +167,13 @@
    "directionHit": null,
    "scoreHit": null,
    "clv": null,
-   "clv_approx_dk": null
+   "clv_approx_dk": null,
+   "pinSource": "fd",
+   "pinClose": [
+    0.2459,
+    0.2491,
+    0.505
+   ]
   },
   {
    "idx": 2,
@@ -185,10 +199,11 @@
    "ev": -0.151,
    "inPlan": "⚖️平衡+用户实票",
    "result": "3-1",
-   "directionHit": null,
+   "directionHit": true,
    "scoreHit": null,
    "clv": null,
-   "clv_approx_dk": null
+   "clv_approx_dk": null,
+   "pinSource": "none"
   },
   {
    "idx": 14,
@@ -217,7 +232,13 @@
    "directionHit": true,
    "scoreHit": true,
    "clv": null,
-   "clv_approx_dk": null
+   "clv_approx_dk": null,
+   "pinSource": "fd",
+   "pinClose": [
+    0.0892,
+    0.1486,
+    0.7622
+   ]
   },
   {
    "idx": 24,
@@ -246,7 +267,13 @@
    "directionHit": null,
    "scoreHit": null,
    "clv": null,
-   "clv_approx_dk": null
+   "clv_approx_dk": null,
+   "pinSource": "fd",
+   "pinClose": [
+    0.1162,
+    0.169,
+    0.7149
+   ]
   },
   {
    "idx": 16,
@@ -276,7 +303,13 @@
    "scoreHit": null,
    "clv": null,
    "clv_approx_dk": null,
-   "note": "★r7撤销r5的搏奖推荐；如已购不追加"
+   "note": "★r7撤销r5的搏奖推荐；如已购不追加",
+   "pinSource": "fd",
+   "pinClose": [
+    0.2435,
+    0.2721,
+    0.4844
+   ]
   },
   {
    "idx": 8,
@@ -306,7 +339,13 @@
    "scoreHit": null,
    "clv": null,
    "clv_approx_dk": null,
-   "note": "★r7撤销r5推荐（EV+44.5%系失真λ产物）；方向层主胜72%（市场锚+修正链）四星可另行入串"
+   "note": "★r7撤销r5推荐（EV+44.5%系失真λ产物）；方向层主胜72%（市场锚+修正链）四星可另行入串",
+   "pinSource": "fd",
+   "pinClose": [
+    0.7356,
+    0.1605,
+    0.1039
+   ]
   }
  ],
  "sources": {

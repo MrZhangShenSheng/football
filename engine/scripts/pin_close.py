@@ -61,7 +61,10 @@ def match_pin_close(league_zh: str, match_date_iso: str, result: str,
     if lg is None or not match_date_iso or not result or "-" not in str(result):
         return "none", None
     hg, _, ag = str(result).partition("-")
-    window = _date_window(match_date_iso)
+    try:
+        window = _date_window(match_date_iso)
+    except ValueError:
+        return "none", None   # matchDate 非 ISO（体彩口径可能带时间）→ 安全降级
     hits: list[dict] = []
     for f in sorted(cache_dir.glob(f"odds_{lg}_*.json")):
         try:

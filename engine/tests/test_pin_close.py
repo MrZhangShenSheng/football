@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 """pin_close 三键匹配测试。"""
 import json
+from pathlib import Path
 
 import pytest
 
-from pin_close import parse_fd_date, fd_league_name, match_pin_close
+from pin_close import parse_fd_date, fd_league_name, match_pin_close, apply_pin_close
 
 
 class TestParseFdDate:
@@ -73,3 +74,27 @@ class TestMatchPinClose:
         c = self._cache(tmp_path, [])
         out = match_pin_close("英超", "2026-08-28", "2-1", c)
         assert out[0] == "none" and out[1] is None
+
+    def test_invalid_match_date_safe(self):
+        # matchDate 非 ISO 格式（体彩口径可能是 '2026-08-28 00:00:00'）→ 安全降级 none 不崩
+        out = match_pin_close("英超", "28/08/2026 03:00", "2-1", Path("."))
+        assert out[0] == "none" and out[1] is None
+
+
+class TestApplyPinClose:
+    """回填集成点：rec 增补 pinClose/pinSource。"""
+
+    def test_apply(self, tmp_path):
+        (tmp_path / "odds_england-premier_2627.json").write_text(json.dumps(
+            {"season": "2627", "matches": [
+                {"date": "28/08/2026", "fthg": "2", "ftag": "1",
+                 "pin_h": "2.0", "pin_d": "3.4", "pin_a": "3.8"}]}), encoding="utf-8")
+        rec = {"league": "英超", "result": "2-1"}
+        apply_pin_close(rec, "2026-08-28", tmp_path)
+        assert rec["pinSource"] == "fd"
+        assert abs(sum(rec["pinClose"]) - 1.0) < 1e-6
+
+    def test_idempotent_no_overwrite(self, tmp_path):
+        rec = {"league": "英超", "result": "2-1", "pinSource": "fd", "pinClose": [0.5, 0.2, 0.3]}
+        apply_pin_close(rec, "2026-08-28", tmp_path)   # 空缓存 none
+        assert rec["pinClose"] == [0.5, 0.2, 0.3]      # 已有不覆盖（幂等）

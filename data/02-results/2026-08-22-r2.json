@@ -92,7 +92,8 @@
    "backfillNote": "ESPN scoreboard 2026-08-23 手动回填(backfill.py zh→espn映射缺口期)",
    "result": "0-1",
    "directionHit": null,
-   "scoreHit": false
+   "scoreHit": false,
+   "pinSource": "ambiguous"
   },
   {
    "idx": 9,
@@ -113,7 +114,8 @@
    "backfillNote": "ESPN scoreboard 2026-08-23 手动回填(backfill.py zh→espn映射缺口期)",
    "result": "1-1",
    "directionHit": null,
-   "scoreHit": true
+   "scoreHit": true,
+   "pinSource": "none"
   },
   {
    "idx": 52,
@@ -133,7 +135,13 @@
    "note": "分歧2pp健康;信息边际修订依据ESPN新闻08-20/22",
    "result": "0-5",
    "directionHit": null,
-   "scoreHit": null
+   "scoreHit": null,
+   "pinSource": "fd",
+   "pinClose": [
+    0.1162,
+    0.169,
+    0.7149
+   ]
   },
   {
    "idx": 42,
@@ -161,7 +169,13 @@
    "note": "超低赔胆仅做骨架;坎布尔3连败(0分垫底,上轮客1-3),费耶诺德上轮主2-2平弱旅微减",
    "result": "2-5",
    "directionHit": true,
-   "scoreHit": true
+   "scoreHit": true,
+   "pinSource": "fd",
+   "pinClose": [
+    0.0892,
+    0.1486,
+    0.7622
+   ]
   },
   {
    "idx": 41,
@@ -184,7 +198,8 @@
    "note": "瑞超小联赛限额1场已用",
    "result": "2-0",
    "directionHit": true,
-   "scoreHit": true
+   "scoreHit": true,
+   "pinSource": "none"
   },
   {
    "idx": 28,
@@ -207,7 +222,8 @@
    "note": "定律1真边际剔除;v4.5.2曾入方案A/B",
    "result": "5-0",
    "directionHit": true,
-   "scoreHit": null
+   "scoreHit": null,
+   "pinSource": "none"
   },
   {
    "idx": 37,
@@ -229,8 +245,9 @@
    "inPlan": null,
    "note": "Foden状态低迷(Maresca 08-22力挺)小噪音;ESPN-210实力差大;EV深负按v4.6剔除",
    "result": "2-1",
-   "directionHit": null,
-   "scoreHit": null
+   "directionHit": true,
+   "scoreHit": null,
+   "pinSource": "ambiguous"
   },
   {
    "idx": 27,
@@ -254,7 +271,13 @@
    "backfillNote": "ESPN scoreboard 2026-08-23 手动回填(backfill.py zh→espn映射缺口期)",
    "result": "1-2",
    "directionHit": true,
-   "scoreHit": null
+   "scoreHit": null,
+   "pinSource": "fd",
+   "pinClose": [
+    0.1222,
+    0.2037,
+    0.6741
+   ]
   }
  ]
 }

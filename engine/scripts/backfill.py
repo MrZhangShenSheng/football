@@ -5,7 +5,8 @@
 闭环 P2-A（docs/2026-08-22-learning-loop-design.html）· P0 修复 2026-08-23：
 - 链路 1（主）：体彩 zqsgkj 开奖口径按场次编号精确对票（含半场比分，半全场命中可判定）
 - 链路 2（兜底）：espn_fetch results 按日拉赛果，中文队名经 _aliases zh → espn 匹配
-- 写回规则（铁律 7）：只改 result/directionHit/scoreHit/backfillNote 字段，不动预测锁定字段
+- 写回规则（铁律 7）：只改 result/directionHit/scoreHit/backfillNote 字段，不动预测锁定字段；
+  增补字段 pinClose/pinSource（fd 收盘三键匹配·P2 归因地基）随回填成功自动落盘，幂等不覆盖
 - 输出：本轮回填 N/M（体彩对票 K）+ 不可得清单
 
 用法：
@@ -21,6 +22,7 @@ from pathlib import Path
 import requests
 
 from common import load_aliases, log, ROOT
+from pin_close import apply_pin_close
 
 RESULTS_DIR = ROOT / "data" / "02-results"
 TICKETS_FILE = ROOT / "data" / "06-tickets" / "tickets.json"  # 实票账本（票务结算）
@@ -220,6 +222,7 @@ def backfill(day_limit: str | None = None) -> dict:
     zh_map = zh_to_espn_map()
     # 收集未回填记录（result 为空或'不可得'均重试——'不可得'曾因 ESPN 单链路断粮，体彩可救回）
     targets = []  # (path, data, rec, date, espn_code, league)
+    touched: dict[int, tuple] = {}   # id(data) → (path, data)：收集阶段被动过的文件也须写回
     n_fix = 0
     for p in sorted(RESULTS_DIR.glob("*.json")):
         if p.name.startswith("_"):
@@ -232,6 +235,7 @@ def backfill(day_limit: str | None = None) -> dict:
         for rec in recs:
             if not rec.get("pick"):
                 continue
+            touched.setdefault(id(data), (p, data))
             if rec.get("result") not in (None, UNAVAILABLE_MARK):
                 # 已回填但方向未判（旧版 strip_play 判不出带注释 pick）→ 纯本地补算，不重查网络
                 sc = parse_score(rec.get("result"))
@@ -240,6 +244,12 @@ def backfill(day_limit: str | None = None) -> dict:
                     rec["directionHit"] = outcome_of(*sc) == oi
                     data["_dirty"] = True
                     n_fix += 1
+                # 已回填但无 pinClose → 纯本地 fd 三键匹配补跑（历史场解锁 F3/F4，不查网络）
+                if not rec.get("pinClose") and sc:
+                    d0 = rec.get("date") or data.get("date")
+                    if d0 and d0 <= TODAY:
+                        apply_pin_close(rec, d0, ROOT / "engine" / "cache")
+                        data["_dirty"] = True
                 continue
             d = rec.get("date") or data.get("date")
             if not d or d > TODAY:
@@ -290,6 +300,7 @@ def backfill(day_limit: str | None = None) -> dict:
             oh = option_hit(rec, hg, ag, hh, ha)
             rec["scoreHit"] = oh if oh is not None else rec.get("scoreHit")
             rec.pop("backfillNote", None)  # 救回成功，清'不可得/缓存延迟'旧标注
+            apply_pin_close(rec, sp.get("matchDate") or d, ROOT / "engine" / "cache")
             n_fill += 1
             n_sp += 1
             data["_dirty"] = True
@@ -314,6 +325,7 @@ def backfill(day_limit: str | None = None) -> dict:
             rec["directionHit"] = (outcome_of(hg, ag) == oi) if oi is not None else None
             oh = option_hit(rec, hg, ag)
             rec["scoreHit"] = oh if oh is not None else rec.get("scoreHit")
+            apply_pin_close(rec, d, ROOT / "engine" / "cache")   # ESPN 兜底场用预测日作窗口中心
             n_fill += 1
             data["_dirty"] = True
             continue
@@ -325,12 +337,12 @@ def backfill(day_limit: str | None = None) -> dict:
         else:
             rec.setdefault("backfillNote", "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑")
         data["_dirty"] = True
-    # 统一写回
-    written = set()
+    # 统一写回（targets + 收集阶段补算/补跑动过的文件——已回填文件不在 targets 但也须落盘）
     for p, data, *_ in targets:
-        if id(data) not in written and data.pop("_dirty", False):
+        touched.setdefault(id(data), (p, data))
+    for p, data in touched.values():
+        if data.pop("_dirty", False):
             p.write_text(json.dumps(data, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
-            written.add(id(data))
     tick = settle_tickets(sp_cache)
     return {"filled": n_fill, "sporttery": n_sp, "missed": n_miss, "fixed": n_fix, "tickets": tick}
 
