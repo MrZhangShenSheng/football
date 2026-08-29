@@ -229,7 +229,7 @@ def write_livescan(scan, day=None):
             log("trends", f"当日livescan文件损坏，重置（{path.name}）")
     doc["scans"].append(scan)
     atomic_write_json(path, doc)
-    log("trends", f"livescan {len(scan['matches'])} 场 → {path.name}")
+    log("trends", f"livescan {len(scan.get('matches') or [])} 场 → {path.name}")
     return path
 
 
@@ -398,6 +398,9 @@ def selftest():
                     assert False, "应抛 ValueError"
                 except ValueError:
                     pass
+            # 回归（评审裁定）：缺 matches 键的空扫描须写盘成功且不抛异常（写后 log 不得 KeyError）
+            p2 = write_livescan({"trigger": "用户要求", "verdict": "无场次"}, day="2026-08-30")
+            assert p2.exists()
         finally:
             _set_trends_dir(real_dir3)
     print("[selftest] write_livescan OK")
