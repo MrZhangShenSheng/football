@@ -77,26 +77,36 @@ def normalize_grade(value) -> str:
 
 
 def build_series(records: list[dict]) -> dict:
-    """按轮次（round 字段）聚合的评估序列。"""
-    filled = [r for r in records if outcome_idx(r) is not None and r.get("directionHit") is not None]
+    """按轮次（round 字段）聚合的评估序列。
+
+    双口径（2026-08-29 分母污染修复）：
+    - logloss：有赛果 outcome 即可算（p_final 场参与累计，分母 n）
+    - 方向命中率/校准/分桶/断言：仅 directionHit 已判定的场（排除场/比分场混入会稀释）
+    """
+    filled = [r for r in records if outcome_idx(r) is not None]
+    dir_filled = [r for r in filled if r.get("directionHit") is not None]
     by_round = defaultdict(list)
-    for r in filled:
+    for r in dir_filled:
         by_round[r.get("round", "?")].append(r)
     rounds = sorted(by_round)
-    series = {"rounds": [], "cum": {"n": 0, "ll_model": 0.0, "ll_mkt": 0.0, "hit": 0, "score_hit": 0, "score_n": 0}}
+    series = {"rounds": [], "cum": {"n": 0, "n_dir": 0, "ll_model": 0.0, "ll_mkt": 0.0, "hit": 0, "score_hit": 0, "score_n": 0}}
     rows_out = []
+    # logloss 累计走完整 filled（按轮分桶：outcome 可算即可参与）
+    ll_by_round = defaultdict(lambda: [0.0, 0.0, 0])  # rd -> [ll_model, ll_mkt, n_ll]
+    for r in filled:
+        oi = outcome_idx(r)
+        pf = r.get("p_final")
+        if pf and len(pf) == 3:
+            acc = ll_by_round[r.get("round", "?")]
+            acc[0] += logloss(pf, oi)
+            acc[2] += 1
+            pm = market_probs(r)
+            if pm and len(pm) == 3:
+                acc[1] += logloss(pm, oi)
     for rd in rounds:
         recs = by_round[rd]
-        ll_m = ll_k = 0.0
         hit = score_hit = score_n = 0
         for r in recs:
-            oi = outcome_idx(r)
-            pf = r.get("p_final")
-            if pf and len(pf) == 3:
-                ll_m += logloss(pf, oi)
-                pm = market_probs(r)
-                if pm and len(pm) == 3:
-                    ll_k += logloss(pm, oi)
             if r.get("directionHit"):
                 hit += 1
             pick = r.get("pick")
@@ -104,32 +114,34 @@ def build_series(records: list[dict]) -> dict:
                 score_n += 1
                 if r.get("scoreHit"):
                     score_hit += 1
+        ll_m, ll_k, n_ll = ll_by_round.get(rd, [0.0, 0.0, 0])
         s = series["cum"]
-        s["n"] += len(recs)
+        s["n"] += n_ll
         s["ll_model"] += ll_m
         s["ll_mkt"] += ll_k
+        s["n_dir"] += len(recs)
         s["hit"] += hit
         s["score_hit"] += score_hit
         s["score_n"] += score_n
         row = {
             "round": rd, "n": len(recs),
-            "cum_n": s["n"],
+            "cum_n": s["n_dir"],
             "cum_logloss": round(s["ll_model"] / max(s["n"], 1), 4),
             "cum_logloss_mkt": round(s["ll_mkt"] / max(s["n"], 1), 4),
-            "cum_hit_rate": round(s["hit"] / max(s["n"], 1), 4),
+            "cum_hit_rate": round(s["hit"] / max(s["n_dir"], 1), 4),
             "cum_score_rate": round(s["score_hit"] / max(s["score_n"], 1), 4) if s["score_n"] else None,
         }
         rows_out.append(row)
         series["rounds"] = rows_out
-    # 滚动窗口（按已回填场序，非按轮）
-    hits = [1 if r.get("directionHit") else 0 for r in filled]
+    # 滚动窗口（按已回填场序，非按轮）——方向口径
+    hits = [1 if r.get("directionHit") else 0 for r in dir_filled]
     rolling = []
     for i in range(len(hits)):
         lo = max(0, i - ROLLING_WINDOW + 1)
         win = hits[lo:i + 1]
         rolling.append(round(sum(win) / len(win), 4))
     series["rolling"] = rolling
-    series["filled"] = filled
+    series["filled"] = dir_filled  # 下游（校准/分桶/断言/方案层）均为方向口径
     return series
 
 
