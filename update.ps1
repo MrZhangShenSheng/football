@@ -16,6 +16,16 @@ git pull --ff-only
 if ($LASTEXITCODE -ne 0) { Write-Host "    git pull failed (check local changes)" -ForegroundColor DarkYellow }
 Pop-Location
 
+# 1.5 skill junction sync (also repairs existing installations)
+Write-Host "[1.5/7] Syncing skill junctions..." -ForegroundColor Yellow
+$SKILL_DIR = "$env:USERPROFILE\.claude\skills"
+if (-not (Test-Path $SKILL_DIR)) { New-Item -ItemType Directory -Force $SKILL_DIR | Out-Null }
+$LIVE_SKILL_LINK = "$SKILL_DIR\football-live-assessment"
+if (Test-Path $LIVE_SKILL_LINK) { cmd /c rmdir "$LIVE_SKILL_LINK" }
+cmd /c mklink /J "$LIVE_SKILL_LINK" "$HOME_DIR\skill\football-live-assessment"
+if (Test-Path "$LIVE_SKILL_LINK\SKILL.md") { Write-Host "    OK: live assessment" -ForegroundColor Green }
+else { Write-Host "    live assessment junction failed" -ForegroundColor DarkYellow }
+
 # 1.5 skill -> arsenal sync (only when arsenal tracks this skill's dir;
 #     football-betting-prediction removed from arsenal 2026-08-29 — no longer maintained there,
 #     re-create the dir manually to re-enable sync)

@@ -16,6 +16,13 @@ echo "[1/7] git pull..."
 cd "$HOME_DIR"
 git pull --ff-only || echo "    git pull 失败（检查本地改动）"
 
+# 1.5 skill 软链接同步（兼容已有安装）
+echo "[1.5/7] 同步 skill 软链接..."
+mkdir -p "$HOME/.claude/skills"
+ln -sfn "$HOME_DIR/skill" "$HOME/.claude/skills/football-betting-prediction"
+ln -sfn "$HOME_DIR/skill/football-live-assessment" "$HOME/.claude/skills/football-live-assessment"
+test -f "$HOME/.claude/skills/football-live-assessment/SKILL.md" && echo "    OK: live assessment" || echo "    临场评估技能链接失败（可手动重跑 install.sh）"
+
 # 2. Python 依赖同步
 echo "[2/7] 同步 Python 依赖..."
 python3 -m pip install -r "$HOME_DIR/engine/requirements.txt" --quiet

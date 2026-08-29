@@ -20,7 +20,9 @@ echo "    OK"
 echo "[2/4] 建立 skill 软链接..."
 mkdir -p "$HOME/.claude/skills"
 ln -sfn "$HOME_DIR/skill" "$HOME/.claude/skills/football-betting-prediction"
-test -f "$HOME/.claude/skills/football-betting-prediction/SKILL.md" && echo "    OK" || { echo "    失败"; exit 1; }
+ln -sfn "$HOME_DIR/skill/football-live-assessment" "$HOME/.claude/skills/football-live-assessment"
+test -f "$HOME/.claude/skills/football-betting-prediction/SKILL.md" && \
+  test -f "$HOME/.claude/skills/football-live-assessment/SKILL.md" && echo "    OK: 预测 + 临场评估技能" || { echo "    失败"; exit 1; }
 
 # 3. 持久化 FOOTBALL_HOME
 echo "[3/4] 设置环境变量 FOOTBALL_HOME..."

@@ -22,8 +22,11 @@ if (-not (Test-Path $SKILL_DIR)) { New-Item -ItemType Directory -Force $SKILL_DI
 $SKILL_LINK = "$SKILL_DIR\football-betting-prediction"
 if (Test-Path $SKILL_LINK) { cmd /c rmdir "$SKILL_LINK" }
 cmd /c mklink /J "$SKILL_LINK" "$HOME_DIR\skill"
-if (Test-Path "$SKILL_LINK\SKILL.md") {
-    Write-Host "    OK: $SKILL_LINK" -ForegroundColor Green
+$LIVE_SKILL_LINK = "$SKILL_DIR\football-live-assessment"
+if (Test-Path $LIVE_SKILL_LINK) { cmd /c rmdir "$LIVE_SKILL_LINK" }
+cmd /c mklink /J "$LIVE_SKILL_LINK" "$HOME_DIR\skill\football-live-assessment"
+if ((Test-Path "$SKILL_LINK\SKILL.md") -and (Test-Path "$LIVE_SKILL_LINK\SKILL.md")) {
+    Write-Host "    OK: prediction + live assessment skills" -ForegroundColor Green
 } else {
     Write-Host "    junction failed" -ForegroundColor Red; exit 1
 }

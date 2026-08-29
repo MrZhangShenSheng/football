@@ -16,6 +16,21 @@ git clone <repo-url> football && cd football
 # 3. 重开终端，对 Claude 说"帮我预测"即可触发
 ```
 
+## 临场评估技能
+
+仓库现在包含两个互补的技能入口：根目录 `skill/SKILL.md` 负责全局竞彩足球预测、串关方案、赛果回填与复盘；`skill/football-live-assessment/SKILL.md` 负责指定比赛的临场伤停、官方首发、赔率时点、真实胜率区间，以及胜平负、让球和比分玩法之间的比较。后者不会覆盖前者，而是作为针对单场比赛的复核层使用。
+
+安装脚本会同时建立以下两个全局技能链接：
+
+```text
+~/.claude/skills/football-betting-prediction
+~/.claude/skills/football-live-assessment
+```
+
+适合使用临场评估技能的请求包括“结合最新伤停重新估算某队胜率”“检查官方首发后是否需要改玩法”“比较胜平负、让球和比分的 EV”“复核某条比分腿是否与市场和阵容冲突”。完整输出格式见 [`skill/football-live-assessment/README.md`](skill/football-live-assessment/README.md)。
+
+> 临场评估只提供概率、证据等级和风险分析，不代替用户下注；“命中容错改善”或“抽水改善”不等于“正 EV”。
+
 ## 更新（日常/换机后）
 
 ```bash
