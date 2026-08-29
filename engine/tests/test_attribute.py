@@ -27,6 +27,48 @@ class TestIndexParse:
         assert pick_to_index("HAD", "主胜(方案外)") == 0
         assert pick_to_index("HAD", "客胜(参考)") == 2
 
+
+class TestClassifyF34:
+    """pinClose 存在时的市场分歧分流（P2）。"""
+
+    def _mk(self, **kw):
+        base = dict(code="x", pick="HAD 主胜", dc=[0.5, 0.25, 0.25],
+                    fused=[0.5, 0.25, 0.25], result="0-2",
+                    directionHit=False, pinClose=[0.15, 0.2, 0.65], pinSource="fd")
+        base.update(kw)
+        return base
+
+    def test_F3_dc_also_wrong(self):
+        # fused 看主、pin 看客、结果客、DC 也看主 → F3
+        out = classify(self._mk())
+        assert out["primary"] == "F3"
+        assert out["evidence"]["pinSource"] == "fd"
+
+    def test_F4_dc_right_diluted(self):
+        # DC 看客对、fused 被拉向主、pin 看客、结果客 → F4（DC 对被稀释）
+        r = self._mk(dc=[0.1, 0.2, 0.7])
+        out = classify(r)
+        assert out["primary"] == "F4"
+
+    def test_agree_falls_through(self):
+        # fused 与 pin 同向看主、结果客 → 不判 F3/F4 → F9
+        r = self._mk(pinClose=[0.5, 0.25, 0.25])
+        out = classify(r)
+        assert out["primary"] == "F9"
+
+    def test_market_wrong_we_wrong_not_f3(self):
+        # pin 也看主错（市场同错）→ 同向 → F9（市场不是免罪金牌）
+        r = self._mk(pinClose=[0.55, 0.2, 0.25])
+        out = classify(r)
+        assert out["primary"] == "F9"
+
+    def test_no_pin_close_keeps_p1_behavior(self):
+        # 无 pinClose → P1 行为（F9 兜底），evidence.pinSource=None
+        r = self._mk(); r.pop("pinClose"); r.pop("pinSource")
+        out = classify(r)
+        assert out["primary"] == "F9"
+        assert out["evidence"].get("pinSource") is None
+
     def test_result_home_win(self):
         assert result_to_idx("3-1") == 0
 

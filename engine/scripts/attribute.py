@@ -98,11 +98,23 @@ def classify(rec: dict) -> dict:
     if fused:
         ev["fusedBest"] = fused.index(max(fused))
 
-    # ① F5 修正/融合背锅（dc 对 + fused 错）
+    # ① F3/F4 市场锚分歧（P2：pinClose 真收盘·先于 F5 近似——dc对+fused错+pin对=F4实锤）
+    pin = rec.get("pinClose")
+    ev["pinSource"] = rec.get("pinSource") if pin else None
+    if pin and len(pin) == 3:
+        pin_best = pin.index(max(pin))
+        dc_best = dc.index(max(dc)) if dc else None
+        fused_best = fused.index(max(fused)) if fused else None
+        if fused_best is not None and fused_best != pin_best and pin_best == result_idx:
+            if dc_best == result_idx:
+                return {"primary": "F4", "secondary": [], "evidence": ev, "confidence": "high"}
+            return {"primary": "F3", "secondary": [], "evidence": ev, "confidence": "high"}
+
+    # ② F5 修正/融合背锅（dc 对 + fused 错·近似，无 pinClose 场）
     if correction_flipped(dc, fused, result_idx):
         return {"primary": "F5", "secondary": [], "evidence": ev, "confidence": "low"}
 
-    # ② F9 随机兜底（dc 也错，或 dc/fused 同向错）
+    # ③ F9 随机兜底（dc 也错，或 dc/fused 同向错）
     return {"primary": "F9", "secondary": [], "evidence": ev, "confidence": "high"}
 
 
