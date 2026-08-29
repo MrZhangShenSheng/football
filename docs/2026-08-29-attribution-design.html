@@ -1,0 +1,279 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>预测偏差归因引擎设计（prediction attribution）</title>
+<style>
+  :root{--ink:#1c2733;--sub:#5b6b7a;--line:#d8e0e8;--bg:#f6f8fa;--accent:#0f6b4f;--accent2:#b4540a;--bad:#a12734;--good:#0f6b4f;--card:#fff;--amber:#9a6b00}
+  @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#dbe4ec;--sub:#8fa1b3;--line:#2c3947;--bg:#101822;--accent:#4fc49b;--accent2:#e8a04c;--bad:#e2717e;--good:#4fc49b;--card:#18222e;--amber:#d4a82c}}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.75 "Segoe UI","Microsoft YaHei",sans-serif}
+  main{max-width:940px;margin:0 auto;padding:32px 28px 72px}
+  h1{font-size:24px;margin:0 0 4px}h2{font-size:18px;margin:40px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+  h3{font-size:15px;margin:22px 0 8px}
+  .sub{color:var(--sub);font-size:13px}
+  code,pre{font-family:Consolas,"JetBrains Mono",monospace;font-size:13px}
+  code{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+  pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;overflow-x:auto;line-height:1.55}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:14px;background:var(--card)}
+  th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+  th{background:var(--bg);font-weight:600}
+  .good{color:var(--good);font-weight:600}.bad{color:var(--bad);font-weight:600}.amber{color:var(--amber);font-weight:600}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin:14px 0}
+  .icon{width:18px;height:18px;vertical-align:-4px;margin-right:6px;color:var(--accent)}
+  .warn{border-left:3px solid var(--amber);background:var(--card);padding:10px 16px;margin:14px 0;border-radius:0 8px 8px 0}
+  .diag{width:100%;margin:14px 0}
+  .tag{display:inline-block;font-size:12px;padding:1px 7px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--sub)}
+  .f{color:var(--accent);font-weight:600}
+</style>
+</head><body><main>
+
+<svg width="0" height="0" style="position:absolute"><symbol id="i-radar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 12L19 5"/></symbol></svg>
+
+<h1><svg class="icon"><use href="#i-radar"/></svg>预测偏差归因引擎设计（prediction attribution）</h1>
+<p class="sub">2026-08-29 · 作者 sszhang · 状态：设计已确认（含 10 条 review 修正全采纳），待分阶段实施 · 前置：corpus 语料（data/04-summaries/corpus.json）+ 实票账本（docs/2026-08-25-tickets-design.html）+ 体彩赔率日存档（engine/cache/score_odds/）</p>
+
+<h2>1. 问题</h2>
+<p>回测复盘长期停在<b>表现层</b>：corpus 记录"预测了什么（pick/odds/修正链）+ 结果（result）+ 中没中（dirHit/scoreHit）"，trend.html 统计命中率/校准，但<b>"为什么错"始终是自由文本</b>——复盘报告里的教训（如本轮"买热≠方向确认"）写完即弃，没有结构化沉淀。结果是同样的偏差反复出现却无法量化、无法排序、无法系统性反哺预测链的参数与系数。</p>
+<p>项目的硬约束在先：修正系数须消融回测、无正增益即删（战意状态机=前车之鉴，连续负增益 56% vs 70% 待降级）。归因若直接改系数，就是用事后诸葛亮替代消融验证。本设计要把"偏差原因"从叙事变成<b>可量化、可积累、经消融门反哺</b>的结构化账本。</p>
+
+<h2>2. 目标与边界</h2>
+<table>
+<tr><th>维度</th><th>定义</th></tr>
+<tr><td>核心目标</td><td>对每道错题结构化归因（1 主因 + ≤2 次因），滚动统计因子频次与损失量，攒够样本经消融门反哺预测链</td></tr>
+<tr><td>不做什么</td><td>不做实时归因（只回填后跑）；不替人定罪（消融门 + 人工拍板才动系数）；不追求 100% 覆盖（证据弱场留待确认）</td></tr>
+<tr><td>反馈闭环</td><td>归因产假设 → 消融定罪 → 人工拍板 → 改 fusion/缓存/preference；消融无增益则记账关闭</td></tr>
+</table>
+
+<h2>3. 因子分类法（四层 12 因子）</h2>
+<p>从预测链真实存在、可操作的环节反推，分四层——前三层修模型/补数据/记账随机，第四层是本轮实票教训催生的执行层（修纪律不修模型）。</p>
+<table>
+<tr><th>层</th><th>因子</th><th>含义</th><th>反哺对象</th></tr>
+<tr><td rowspan="5"><b>① 模型层</b><br>系统性偏差<br>可修参数/系数</td><td><span class="f">F1</span> λ失准</td><td>攻防强度估计错（预期进球 vs 实际进球偏差大）</td><td>ξ / 重拟合口径</td></tr>
+<tr><td><span class="f">F2</span> ρ/平局参数</td><td>DC 平局相关性强，0-0/1-1 常系统性低估</td><td>ρ 参数</td></tr>
+<tr><td><span class="f">F3</span> 市场锚分歧</td><td>我们 p_final 与 Pinnacle 收盘分歧在先、我们错在后</td><td>消融候选 → 降 a</td></tr>
+<tr><td><span class="f">F4</span> 融合系数</td><td>纯 DC 方向其实对，fused 被拉向市场稀释</td><td>融合系数 a/b</td></tr>
+<tr><td><span class="f">F5</span> 修正系数背锅</td><td>开季×0.95/R3/温度等乘子把对的方向改错</td><td>修正开关</td></tr>
+<tr><td rowspan="3"><b>② 信息层</b><br>输入缺失<br>补采集</td><td><span class="f">F6</span> 战意/轮换</td><td>无欲无求、杯赛轮换、保级拼命——状态机没捕捉</td><td>战意机消融去留</td></tr>
+<tr><td><span class="f">F7</span> 伤停缺采集</td><td>关键球员缺阵没进画像</td><td>insight 伤停进画像</td></tr>
+<tr><td><span class="f">F8</span> 样本不足</td><td>开季前几轮、新升班马、非 fd 联赛数据薄</td><td>（只作次因，标低置信）</td></tr>
+<tr><td rowspan="1"><b>③ 随机层</b><br>方差<br>只记账</td><td><span class="f">F9</span> 概率合理结果偏差</td><td>p_final 与市场一致、xG 占优但输（单场方差，不是错）</td><td>什么都不修，验随机占比</td></tr>
+<tr><td rowspan="3"><b>④ 执行层</b><br>入场/组票偏差<br>修纪律不修模型</td><td><span class="f">F10</span> 追买热入场</td><td>CLV 为负，方向对也是负边际</td><td>preference / 追热禁令</td></tr>
+<tr><td><span class="f">F11</span> 票结构集中</td><td>共享胆一挂双杀（T007/T008 本轮实锤）</td><td>preference 共享胆规则</td></tr>
+<tr><td><span class="f">F12</span> 入场时机</td><td>赔率漂移窗口追价</td><td>纪律表</td></tr>
+</table>
+<div class="warn"><b>执行层不进场次树</b>：F11/F12 是票级归因，由票务结算层负责（结算时票死且多注共享同一挂胆 → 票级记 F11）。场次引擎只管单场 F10。执行问题让模型背锅是最大的归因误区。</div>
+
+<h2>4. 总体架构与数据流</h2>
+<p>归因引擎作为新环节插入"回填赛果"链，位置在 <b>corpus 之后、复盘报告之前</b>：</p>
+<svg class="diag" viewBox="0 0 900 470" fill="none" stroke="currentColor" stroke-width="1.5" role="img" aria-label="数据流架构图">
+  <rect x="20" y="20" width="860" height="170" rx="8" stroke="var(--line)" stroke-dasharray="5 4" fill="var(--bg)"/>
+  <text x="30" y="14" font-size="11" fill="var(--sub)">现有回填链</text>
+  <g font-size="12" fill="var(--ink)">
+    <rect x="35" y="45" width="86" height="34" rx="5" stroke="var(--sub)"/><text x="78" y="66" text-anchor="middle">查赛果</text>
+    <rect x="135" y="45" width="70" height="34" rx="5" stroke="var(--sub)"/><text x="170" y="66" text-anchor="middle">回填</text>
+    <rect x="219" y="45" width="80" height="34" rx="5" stroke="var(--sub)"/><text x="259" y="66" text-anchor="middle">fd收盘价</text>
+    <rect x="313" y="45" width="64" height="34" rx="5" stroke="var(--sub)"/><text x="345" y="66" text-anchor="middle">CLV</text>
+    <rect x="391" y="45" width="74" height="34" rx="5" stroke="var(--sub)"/><text x="428" y="66" text-anchor="middle">票结算</text>
+    <rect x="479" y="45" width="74" height="34" rx="5" stroke="var(--sub)"/><text x="516" y="66" text-anchor="middle">corpus</text>
+    <rect x="813" y="45" width="62" height="34" rx="5" stroke="var(--sub)"/><text x="844" y="66" text-anchor="middle">报告</text>
+    <rect x="745" y="45" width="58" height="34" rx="5" stroke="var(--sub)"/><text x="774" y="66" text-anchor="middle">dc拟合</text>
+    <rect x="675" y="45" width="58" height="34" rx="5" stroke="var(--sub)"/><text x="704" y="66" text-anchor="middle">learn</text>
+    <g stroke="var(--sub)" stroke-width="1.2" fill="none"><path d="M121 62h14M205 62h14M299 62h14M377 62h14M451 62h28M465 62v104M465 166h260M465 104h210M465 104v28h210"/>
+      <path d="M553 62h122M733 62h12M805 62h8" marker-end="url(#arr1)"/></g>
+  </g>
+  <rect x="565" y="88" width="150" height="40" rx="6" stroke="var(--accent)" stroke-width="2.2" fill="var(--card)"/>
+  <text x="640" y="105" font-size="13" font-weight="600" text-anchor="middle" fill="var(--accent)">attribute</text>
+  <text x="640" y="120" font-size="10" text-anchor="middle" fill="var(--sub)">规则归因引擎（新增）</text>
+  <path d="M516 62h49" stroke="var(--accent)" stroke-width="2.2" marker-end="url(#arr2)"/>
+  <path d="M715 108h30" stroke="var(--accent)" stroke-width="2.2" marker-end="url(#arr2)"/>
+  <g font-size="12">
+    <rect x="35" y="210" width="190" height="60" rx="8" stroke="var(--accent)" stroke-width="1.8" fill="var(--card)"/>
+    <text x="130" y="232" text-anchor="middle" fill="var(--accent)" font-weight="600">attribution.json</text>
+    <text x="130" y="250" font-size="10" text-anchor="middle" fill="var(--sub)">逐场归因 + 软标签（落盘）</text>
+    <rect x="260" y="210" width="170" height="60" rx="8" stroke="var(--accent2)" stroke-width="1.8" fill="var(--card)"/>
+    <text x="345" y="232" text-anchor="middle" fill="var(--accent2)" font-weight="600">factor_stats</text>
+    <text x="345" y="250" font-size="10" text-anchor="middle" fill="var(--sub)">频次/损失量/可修复率</text>
+    <rect x="465" y="210" width="200" height="60" rx="8" stroke="var(--bad)" stroke-width="1.8" fill="var(--card)"/>
+    <text x="565" y="232" text-anchor="middle" fill="var(--bad)" font-weight="600">ablate 候选队列</text>
+    <text x="565" y="250" font-size="10" text-anchor="middle" fill="var(--sub)">nPrimary≥20 的因子进队</text>
+    <rect x="695" y="210" width="180" height="60" rx="8" stroke="var(--good)" stroke-width="1.8" fill="var(--card)"/>
+    <text x="785" y="232" text-anchor="middle" fill="var(--good)" font-weight="600">消融正增益 + 人工拍板</text>
+    <text x="785" y="250" font-size="10" text-anchor="middle" fill="var(--sub)">才改 fusion/缓存/preference</text>
+    <g stroke="var(--sub)" stroke-width="1.4" fill="none" marker-end="url(#arr1)">
+      <path d="M640 128v82M225 240h35M430 240h35M635 240h60"/>
+    </g>
+  </g>
+  <rect x="20" y="305" width="860" height="155" rx="8" stroke="var(--line)" stroke-dasharray="5 4" fill="var(--bg)"/>
+  <text x="30" y="299" font-size="11" fill="var(--sub)">反哺路径（因子 → 可操作对象）</text>
+  <g font-size="11.5" fill="var(--ink)">
+    <rect x="35" y="325" width="250" height="115" rx="6" stroke="var(--accent)"/><text x="48" y="345" font-weight="600" fill="var(--accent)">① 模型层 F1-F5</text>
+    <text x="48" y="367">→ ablate.py 消融</text><text x="48" y="385">F4→融合系数 a</text><text x="48" y="403">F5→修正开关 / F2→ρ</text><text x="48" y="421">F1→ξ/重拟合口径</text>
+    <rect x="330" y="325" width="250" height="115" rx="6" stroke="var(--accent2)"/><text x="343" y="345" font-weight="600" fill="var(--accent2)">② 信息层 F6-F8</text>
+    <text x="343" y="367">→ 补采集（非调参）</text><text x="343" y="385">F7→insight 伤停进画像</text><text x="343" y="403">F6→战意机消融去留</text><text x="343" y="421">F8→只作次因标低置信</text>
+    <rect x="625" y="325" width="250" height="115" rx="6" stroke="var(--good)"/><text x="638" y="345" font-weight="600" fill="var(--good)">③④ 随机+执行层</text>
+    <text x="638" y="367">F9→只记账验随机占比</text><text x="638" y="385">F10→preference 追热禁令</text><text x="638" y="403">F11→共享胆规则</text><text x="638" y="421">F12→纪律表</text>
+  </g>
+  <defs><marker id="arr1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0L6 3L0 6" stroke="var(--sub)"/></marker><marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0L6 3L0 6" stroke="var(--accent)"/></marker></defs>
+</svg>
+
+<h2>5. 存储设计</h2>
+<p>独立落盘 <code>data/04-summaries/attribution.json</code>——因软标签和判别快照是"历史判断"不可重算，corpus 重刷不影响此文件。</p>
+<pre>{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-29",
+  "records": {
+    "2026-08-28|周五010|HAD": {
+      "primary": "F3",
+      "secondary": ["F5"],
+      "evidence": {
+        "pfinalPick": 0.42, "pinPick": 0.51,
+        "agree": false, "weWrong": true,
+        "chainDelta": 0.03,
+        "lambdaGap": null, "scoreBias": "+1.5",
+        "pinSource": "csv",            // csv（真收盘去水）| derived（反解·低置信）
+        "oddsDrift": "+0.08"           // R5：score_odds 调价时间戳回放的赔率漂移
+      },
+      "source": "rule",                // rule | llm
+      "confidence": "high",            // high | low（R4/R8/R10 标低置信）
+      "confirmed": true,               // LLM 软标签待人工确认才进统计
+      "note": null
+    }
+  },
+  "factorStats": {
+    "F3": {"nPrimary": 12, "nSecondary": 7, "avgProbGap": 0.07, "recoverableRate": 0.6}
+  },
+  "ablateCandidates": ["F2"],          // nPrimary≥20 进队
+  "resolved": { "F11": "已修：共享胆规则进 preference" }
+}</pre>
+<h3>要点</h3>
+<ul>
+<li><b>key 与 corpus 对齐</b>：<code>date|code|play</code>，回填重扫后同场覆盖（后写胜出，与 corpus 同规则）</li>
+<li><b>evidence 全量化</b>：每个因子判别时的数值依据存档，防"事后讲故事"，抽检有据可查</li>
+<li><b>resolved 区</b>：因子闭环后（消融定罪并修了 / 人工裁决不动）移入此区记账，避免重复进候选队列</li>
+<li><b>confidence 字段</b>：R4（F5 第一版降级）、R8（F9 垃圾桶自检）、R10（历史场无 λ）三处标 low，不进 factorStats 主统计</li>
+</ul>
+
+<h2>6. 规则归因判别决策树</h2>
+<p><code>attribute.py</code> 对每道错题跑这棵树（自上而下，首个命中定主因，树上可再取至多 2 个强信号作次因）：</p>
+<svg class="diag" viewBox="0 0 900 600" fill="none" stroke="currentColor" stroke-width="1.5" role="img" aria-label="判别决策树">
+  <rect x="320" y="10" width="260" height="40" rx="6" stroke="var(--ink)" stroke-width="2" fill="var(--card)"/>
+  <text x="450" y="35" text-anchor="middle" font-size="13" font-weight="600" fill="var(--ink)">错题入场（dirHit=false 或 scoreHit=false）</text>
+  <path d="M450 50v30" stroke="var(--ink)" marker-end="url(#a1)"/>
+  <rect x="300" y="85" width="300" height="48" rx="6" stroke="var(--accent)" stroke-width="1.8" fill="var(--card)"/>
+  <text x="450" y="106" text-anchor="middle" font-size="12" font-weight="600" fill="var(--accent)">① 修正链重放 F5</text>
+  <text x="450" y="123" text-anchor="middle" font-size="10.5" fill="var(--sub)">去掉 chain 修正重算 → 方向翻转？</text>
+  <path d="M450 133v22M450 155h-200v28" stroke="var(--ink)" marker-end="url(#a1)"/>
+  <path d="M450 155h200v28" stroke="var(--ink)" marker-end="url(#a1)"/>
+  <rect x="180" y="185" width="140" height="34" rx="5" stroke="var(--accent)" stroke-width="1.8" fill="var(--card)"/>
+  <text x="250" y="207" text-anchor="middle" font-size="12" font-weight="600" fill="var(--accent)">主因 F5</text>
+  <text x="120" y="207" font-size="10" fill="var(--amber)">confidence: low（R4）</text>
+  <rect x="510" y="185" width="280" height="34" rx="5" stroke="var(--sub)" fill="var(--bg)"/>
+  <text x="650" y="207" text-anchor="middle" font-size="11" fill="var(--sub)">否 → 下钻 ② 市场分歧分流</text>
+  <path d="M650 219v30" stroke="var(--ink)" marker-end="url(#a1)"/>
+  <rect x="470" y="252" width="360" height="34" rx="5" stroke="var(--sub)" fill="var(--bg)"/>
+  <text x="650" y="274" text-anchor="middle" font-size="11" fill="var(--sub)">用真收盘三向（R1）判 we 与 pin 分歧</text>
+  <path d="M650 286v20M650 306h-160v28M650 306h160v28" stroke="var(--ink)" marker-end="url(#a1)"/>
+  <rect x="370" y="336" width="240" height="40" rx="5" stroke="var(--bad)" stroke-width="1.6" fill="var(--card)"/>
+  <text x="490" y="354" text-anchor="middle" font-size="11" font-weight="600" fill="var(--bad)">we≠pin 且 pin对、we错</text>
+  <text x="490" y="370" text-anchor="middle" font-size="10" fill="var(--sub)">分歧且我们错</text>
+  <rect x="640" y="336" width="220" height="40" rx="5" stroke="var(--sub)" fill="var(--bg)"/>
+  <text x="750" y="354" text-anchor="middle" font-size="11" fill="var(--sub)">we≈pin 同向错</text>
+  <text x="750" y="370" text-anchor="middle" font-size="10" fill="var(--sub)">→ 下钻 ③</text>
+  <path d="M490 376v24M490 400h-90v28M490 400h90v28" stroke="var(--ink)" marker-end="url(#a1)"/>
+  <rect x="310" y="430" width="180" height="34" rx="5" stroke="var(--bad)" stroke-width="1.8" fill="var(--card)"/>
+  <text x="400" y="452" text-anchor="middle" font-size="11" font-weight="600" fill="var(--bad)">DC 也错 → 主因 F3</text>
+  <rect x="490" y="430" width="220" height="34" rx="5" stroke="var(--bad)" stroke-width="1.8" fill="var(--card)"/>
+  <text x="600" y="452" text-anchor="middle" font-size="11" font-weight="600" fill="var(--bad)">DC对被拉向市场 → 主因 F4</text>
+  <text x="450" y="420" font-size="9.5" fill="var(--amber)">R2：F3+F4 >50% 触发信息优势审计</text>
+  <path d="M750 376v30M750 406v20M750 426h-20v20" stroke="var(--ink)" fill="none" marker-end="url(#a1)"/>
+  <rect x="570" y="448" width="320" height="50" rx="6" stroke="var(--accent)" stroke-width="1.8" fill="var(--card)"/>
+  <text x="730" y="469" text-anchor="middle" font-size="12" font-weight="600" fill="var(--accent)">③ 比分形态下钻</text>
+  <text x="730" y="486" text-anchor="middle" font-size="10.5" fill="var(--sub)">|实际−λ期望|>1.5球→F1 / 栽平局相邻→F2</text>
+  <path d="M730 498v24M730 522h-90v24M730 522h70v24" stroke="var(--ink)" marker-end="url(#a1)"/>
+  <rect x="560" y="548" width="140" height="30" rx="5" stroke="var(--accent)" stroke-width="1.6" fill="var(--card)"/>
+  <text x="630" y="568" text-anchor="middle" font-size="11" font-weight="600" fill="var(--accent)">主因 F1</text>
+  <rect x="700" y="548" width="140" height="30" rx="5" stroke="var(--accent)" stroke-width="1.6" fill="var(--card)"/>
+  <text x="770" y="568" text-anchor="middle" font-size="11" font-weight="600" fill="var(--accent)">主因 F2</text>
+  <path d="M730 522h150v-6" stroke="var(--ink)"/><path d="M880 516v22" stroke="var(--ink)" marker-end="url(#a1)"/>
+  <rect x="780" y="538" width="100" height="30" rx="5" stroke="var(--sub)" fill="var(--bg)"/>
+  <text x="830" y="558" text-anchor="middle" font-size="11" fill="var(--sub)">皆不中 → F9</text>
+  <text x="830" y="586" text-anchor="middle" font-size="9.5" fill="var(--amber)">R8：垃圾桶有效性自检</text>
+  <rect x="20" y="430" width="270" height="80" rx="6" stroke="var(--accent2)" stroke-width="1.6" fill="var(--card)" stroke-dasharray="4 3"/>
+  <text x="155" y="450" text-anchor="middle" font-size="11" font-weight="600" fill="var(--accent2)">执行层叠加（独立判别）</text>
+  <text x="30" y="470" font-size="10" fill="var(--ink)">CLV&lt;0 且方向对 → 主因 F10</text>
+  <text x="30" y="486" font-size="10" fill="var(--ink)">CLV&lt;0 且方向错 → F10 记次因</text>
+  <text x="30" y="502" font-size="9.5" fill="var(--amber)">R5：用 score_odds 赔率漂移判据</text>
+  <defs><marker id="a1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0L6 3L0 6" stroke="var(--ink)"/></marker></defs>
+</svg>
+
+<h3>CRS 变体（R7）</h3>
+<p>corpus 里比分玩法 <code>directionHit=null</code>，标准入场条件与②市场分流对 CRS 场失效。变体明确化：</p>
+<ul>
+<li><b>入场条件</b>：<code>scoreHit=false && play=CRS</code></li>
+<li><b>市场分流</b>：用"实际结果的三向"对比 pick 的三向（而非 directionHit）</li>
+<li><b>下钻</b>：方向对+比分错时 F1/F2 判别优先于 F9；"带内比分没选中"（freq-band 排序问题）单独标 <code>F1*</code> 备注选法，不混入 λ 失准</li>
+</ul>
+
+<h2>7. 软标签流程与 skill 改动</h2>
+<h3>触发条件（克制，三选一才请 LLM）</h3>
+<ol>
+<li>规则落 <b>F9 但偏差剧烈</b>（比分差 &gt;2 球 / 半场全场倒挂）——"随机"可能是软因素没看见的遮羞布</li>
+<li><b>证据弱场</b>：树上两个因子信号都中等、主因勉强判出的</li>
+<li>用户点名场次（复盘时"这场帮我归一下"）</li>
+</ol>
+<h3>LLM 判什么</h3>
+<p>只有 F6（战意/轮换）、F7（伤停）、F8 升主因这三件事。依据优先用<b>可验证信源</b>：体彩 <code>insight</code> 接口的伤停/近况数据（已有）、半场比分 <code>half</code> 字段（轮换嫌疑：下半场崩盘）、联赛格局画像（无欲无求/保级拼命）。</p>
+<div class="warn"><b>防污染纪律</b>：软标签落盘带 <code>source:"llm"</code> + <code>note</code>（一句可验证依据）+ <code>confirmed:false</code>。<b>未确认标签不计入 factorStats</b>——复盘报告高亮列出待确认项，用户一句"确认"后才进统计。LLM 只能做两件事：将 F6/F7 升为次因、或改判主因；改判必须附信源。</div>
+<h3>skill 改动（SKILL.md 回填流程加一步）</h3>
+<pre>现有：... → corpus → learn → dc重拟合 → 复盘报告
+改为：... → corpus → attribute（规则归因）→ LLM补软标签（仅触发场）
+      → 用户确认待确认项 → 复盘报告（含"偏差归因"节）→ commit</pre>
+
+<h2>8. 统计口径与消融门</h2>
+<h3>factorStats 口径（每因子滚动累计）</h3>
+<table>
+<tr><th>指标</th><th>定义</th></tr>
+<tr><td>nPrimary / nSecondary</td><td>主/次因频次（<b>按场去重</b>：同场多玩法归因后统计只取主玩法 HAD 一条，防重复计数）</td></tr>
+<tr><td>avgProbGap</td><td>主因场中"错的那一向"我们 p_final 与市场/真实结果的平均概率差（=损失量，区分"高频小伤"与"低频致命"）</td></tr>
+<tr><td>recoverableRate</td><td>可修复率——F5场=重放翻转率、F3场=pin对的比例（回答"消掉该因子能救回几场"）</td></tr>
+</table>
+<div class="warn"><b>R3 树序偏差声明</b>：factorStats 呈现时注明"主因分布按预设因果优先级产出，树序本身是待验证假设"；同时把次因信号纳入观察（F3 作次因的频率高=市场分歧其实更普遍），交叉印证树序是否人为压低了某些因子。</div>
+<div class="warn"><b>R2 信息优势审计触发</b>：F3+F4 主因合计占比 &gt;50% 时自动触发审计——模型 vs 市场 RPS 差 + CLV 分布全量。若结论是模型无信息优势，正确动作是把 a 降到 0（纯跟市场），结论如实呈报，由用户拍板。这不是 bug，是这套系统最锋利也最难接受的结论。</div>
+
+<h2>9. Review 10 条修正（全部采纳）</h2>
+<table>
+<tr><th>#</th><th>问题</th><th>修正</th><th>落点</th></tr>
+<tr><td class="bad">R1</td><td>反解市场三向是循环论证</td><td>主判据改为回填时从 fd CSV 拉真收盘三向去水落盘；反解值仅非 fd 联赛兜底标 <code>pinSource:"derived"</code> 低置信</td><td>判别树②</td></tr>
+<tr><td class="bad">R2</td><td>F3/F4 高占比否定系统存在意义</td><td>F3+F4 &gt;50% 自动触发信息优势审计，如实呈报</td><td>§8</td></tr>
+<tr><td class="amber">R3</td><td>树序污染因子频次</td><td>factorStats 注明树序假设 + 次因信号交叉印证</td><td>§8</td></tr>
+<tr><td class="amber">R4</td><td>F5 修正链重放实现难</td><td>第一版 F5 降级近似标 <code>confidence:"low"</code>，待预测侧落盘 <code>chainSteps[]</code> 后精确重放</td><td>判别树①</td></tr>
+<tr><td class="amber">R5</td><td>F10 判据依赖噪声 CLV</td><td>F10 改用 score_odds <code>oddsUpdatedAt</code> 调价时间戳回放赔率漂移，体彩场全覆盖</td><td>执行层叠加</td></tr>
+<tr><td class="amber">R6</td><td>样本量时间线</td><td>每轮错题 5-10 场摊 12 因子，单因子攒 20 主因需 2-3 月起；文档写明预期，resolved 区先闭环先腾位</td><td>§2 边界</td></tr>
+<tr><td class="amber">R7</td><td>CRS 场树变体未写清</td><td>入场条件改 <code>scoreHit=false && play=CRS</code>，市场分流用实际三向，带内未选标 F1*</td><td>§6 CRS 变体</td></tr>
+<tr><td class="amber">R8</td><td>F9 垃圾桶有效性</td><td>F9 场 avgProbGap 与 F3 场对比自检，无显著差别=分流无效</td><td>判别树/§8</td></tr>
+<tr><td class="good">R9</td><td>教训档案 vs attribution 分工</td><td>教训档案=给 skill 看的叙事沉淀，attribution=给统计看的结构化账本，同题材双记</td><td>§1 定位</td></tr>
+<tr><td class="good">R10</td><td>历史场 F1 低置信 + pytest</td><td>历史场无 λ 用联赛均值近似标 low；预测侧新增落盘字段（λ/chainSteps/收盘三向）后 pytest 全量重跑</td><td>§5/§10</td></tr>
+</table>
+
+<h2>10. 实施分阶段</h2>
+<table>
+<tr><th>阶段</th><th>内容</th><th>前置</th></tr>
+<tr><td><b>P1 规则归因打底</b></td><td>attribute.py 判别树（F1-F5/F9/F10）+ attribution.json 落盘 + factorStats；F5/F1 先 low 置信</td><td>无（用现有 corpus + score_odds）</td></tr>
+<tr><td><b>P2 预测侧补字段</b></td><td>matches[] 增 <code>lambda</code>（λ_home/away）+ <code>chainSteps[]</code> 结构化 + 真收盘三向落盘</td><td>改 dc_predict/odds_fetch 落盘；pytest 全量</td></tr>
+<tr><td><b>P3 LLM 软标签</b></td><td>三触发条件 + insight 信源 + confirmed 流程 + 复盘报告"偏差归因"节</td><td>P1 稳定</td></tr>
+<tr><td><b>P4 消融门接通</b></td><td>nPrimary≥20 因子进 ablate 候选队列 → 消融正增益 → 人工拍板改系数</td><td>样本积累 2-3 月</td></tr>
+<tr><td><b>P5 票级归因</b></td><td>F11/F12 在票务结算层实现（票死且共享胆 → 记 F11）</td><td>P1 + tickets.html 改</td></tr>
+</table>
+<div class="warn"><b>pytest 纪律（R10）</b>：P2 落盘新字段（λ/chainSteps/收盘三向）后必须 pytest 全量重跑；P1 落盘 attribution.json 是新文件不触发既有测试回归，但 attribute.py 自身须配单元测试。</div>
+
+<h2>11. 与现有体系的关系</h2>
+<table>
+<tr><th>现有资产</th><th>关系</th></tr>
+<tr><td>corpus.json（255 条 records）</td><td>数据源——attribute 读 records[] 的错题，归因结果写回 attribution.json（不污染 corpus）</td></tr>
+<tr><td>ablate.py / calibrate.py</td><td>反哺出口——候选因子进 ablate 消融，正增益走 calibrate 校准 a</td></tr>
+<tr><td>trend.html（胜率趋势）</td><td>表现层——attribution 是其归因层补充，二者并行不替代</td></tr>
+<tr><td>preference.json（实票偏好）</td><td>F10/F11 反哺对象——执行层因子改纪律不改模型</td></tr>
+<tr><td>教训档案（SKILL references）</td><td>叙事沉淀——R9 同题材双记，叙事给人看，账本给统计看</td></tr>
+<tr><td>score_odds 日存档</td><td>R5 判据源——oddsUpdatedAt 回放赔率漂移判 F10</td></tr>
+</table>
+
+<p class="sub" style="margin-top:40px">设计至此。下一步：P1 规则归因打底可随时开工（无前置依赖），P2/P3/P4 按阶段推进。</p>
+
+</main></body></html>
