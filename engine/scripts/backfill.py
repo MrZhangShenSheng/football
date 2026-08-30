@@ -23,6 +23,7 @@ import requests
 
 from common import load_aliases, log, ROOT
 from pin_close import apply_pin_close
+from trends_snapshot import find_pre_snapshots
 
 RESULTS_DIR = ROOT / "data" / "02-results"
 TICKETS_FILE = ROOT / "data" / "06-tickets" / "tickets.json"  # 实票账本（票务结算）
@@ -300,6 +301,9 @@ def backfill(day_limit: str | None = None) -> dict:
             rec["scoreHit"] = oh if oh is not None else rec.get("scoreHit")
             rec.pop("backfillNote", None)  # 救回成功，清'不可得/缓存延迟'旧标注
             apply_pin_close(rec, sp.get("matchDate") or d, ROOT / "engine" / "cache")
+            ps = find_pre_snapshots(rec.get("code"), d)
+            if ps:
+                rec.setdefault("preSnapshots", ps)   # 幂等：不覆盖已有指针
             n_fill += 1
             n_sp += 1
             data["_dirty"] = True
@@ -325,6 +329,9 @@ def backfill(day_limit: str | None = None) -> dict:
             oh = option_hit(rec, hg, ag)
             rec["scoreHit"] = oh if oh is not None else rec.get("scoreHit")
             apply_pin_close(rec, d, ROOT / "engine" / "cache")   # ESPN 兜底场用预测日作窗口中心
+            ps = find_pre_snapshots(rec.get("code"), d)
+            if ps:
+                rec.setdefault("preSnapshots", ps)   # 幂等：不覆盖已有指针
             n_fill += 1
             data["_dirty"] = True
             continue

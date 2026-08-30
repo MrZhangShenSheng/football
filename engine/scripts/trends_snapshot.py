@@ -233,6 +233,52 @@ def write_livescan(scan, day=None):
     return path
 
 
+def find_pre_snapshots(code, d):
+    """赛果对齐桥：在预测日 ±1 天的 odds/intel 时序里找该场赛前最后状态。
+
+    匹配键=matchId（体彩编号每周复用，ADR D8）：odds 日首版带 code→matchId 映射，
+    先解析 matchId 再对 intel 精确匹配。返回 {matchId, lastOddsAt, lastIntelAt} 或 None。
+    开发者 sszhang
+    """
+    from datetime import timedelta
+    base = date.fromisoformat(d)
+    match_id, last_odds = None, None
+    for delta in (-1, 0, 1):
+        path = _TRENDS_DIR / f"{(base + timedelta(days=delta)).isoformat()}-odds.json"
+        if not path.exists():
+            continue
+        try:
+            doc = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            continue
+        for s in doc.get("snapshots") or []:
+            hit = (any(m.get("code") == code for m in s.get("matches") or [])
+                   or any(c.get("code") == code for c in s.get("changes") or []))
+            if hit:
+                last_odds = s["at"]
+                for m in s.get("matches") or []:
+                    if m.get("code") == code and m.get("matchId"):
+                        match_id = m["matchId"]
+                for c in s.get("changes") or []:
+                    if c.get("code") == code and c.get("matchId"):
+                        match_id = c["matchId"]
+    if match_id is None:
+        return None
+    last_intel = None
+    for delta in (-1, 0, 1):
+        path = _TRENDS_DIR / f"{(base + timedelta(days=delta)).isoformat()}-intel.json"
+        if not path.exists():
+            continue
+        try:
+            doc = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            continue
+        for e in doc.get("entries") or []:
+            if e.get("matchId") == match_id:
+                last_intel = e["at"]
+    return {"matchId": match_id, "lastOddsAt": last_odds, "lastIntelAt": last_intel}
+
+
 # ---------- selftest ----------
 
 def selftest():
@@ -404,6 +450,38 @@ def selftest():
         finally:
             _set_trends_dir(real_dir3)
     print("[selftest] write_livescan OK")
+
+    # ---- find_pre_snapshots 桥（跨日窗口: d-1/d/d+1）----
+    real_dir4 = globals()["_TRENDS_DIR"]
+    with tempfile.TemporaryDirectory() as td:
+        _set_trends_dir(Path(td))
+        try:
+            # 赛前夜 d-1 扫过（含 matchId），比赛日 d 又扫（调价）
+            (Path(td) / "2026-08-29-odds.json").write_text(json.dumps({
+                "date": "2026-08-29", "type": "odds-timeline", "schemaVersion": 1,
+                "snapshots": [{"at": "2026-08-29T23:50:00+08:00", "trigger": "出票后监控", "base": True,
+                                "matches": [{"code": "周六026", "matchId": 2041146, "league": "葡超",
+                                              "home": "维塞乌", "away": "波尔图", "kickoff": "2026-08-30 01:00:00",
+                                              "had": {"h": 11.25, "d": 5.6, "a": 1.16}, "hhad": {}, "crs": {"s01s00": 25.0},
+                                              "ttg": {}, "hafu": {}}]}]}, ensure_ascii=False), encoding="utf-8")
+            (Path(td) / "2026-08-30-odds.json").write_text(json.dumps({
+                "date": "2026-08-30", "type": "odds-timeline", "schemaVersion": 1,
+                "snapshots": [
+                    {"at": "2026-08-30T00:30:00+08:00", "trigger": "临场复扫", "base": True,
+                     "matches": [{"code": "周六026", "matchId": 2041146, "kickoff": "2026-08-30 01:00:00",
+                                   "had": {"h": 11.5, "d": 5.7, "a": 1.15}, "hhad": {}, "crs": {"s01s00": 28.0},
+                                   "ttg": {}, "hafu": {}}]}]}, ensure_ascii=False), encoding="utf-8")
+            (Path(td) / "2026-08-29-intel.json").write_text(json.dumps({
+                "date": "2026-08-29", "type": "intel-timeline", "schemaVersion": 1,
+                "entries": [{"at": "2026-08-29T23:52:00+08:00", "matchId": 2041146, "code": "周六026"}]},
+                ensure_ascii=False), encoding="utf-8")
+            r = find_pre_snapshots("周六026", "2026-08-29")
+            assert r == {"matchId": 2041146, "lastOddsAt": "2026-08-30T00:30:00+08:00",
+                         "lastIntelAt": "2026-08-29T23:52:00+08:00"}, r
+            assert find_pre_snapshots("不存在", "2026-08-29") is None
+        finally:
+            _set_trends_dir(real_dir4)
+    print("[selftest] find_pre_snapshots OK")
 
 
 if __name__ == "__main__":
