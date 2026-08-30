@@ -1,7 +1,7 @@
 """freq-band 比分选法（2026-08-27 重设计）：联赛频率模板+球队实力平移+形状带+q排序。开发者 sszhang
 铁律（docs/2026-08-27-freq-band-design.html）：分布形状来自真实赛果频率（不造分布）；
 赔率只做形状带门槛、不做排序；DC 不参与比分选择；数据缺失零破坏降级（纯联赛模板）。"""
-import glob, json, math
+import glob, json, math, re
 from collections import Counter, defaultdict
 from datetime import date
 from pathlib import Path
@@ -210,11 +210,14 @@ ALPHA_CACHE = ROOT / "engine" / "cache" / "hafu_alpha.json"
 
 
 def _half_ft_rows(results_dir=None):
-    """02-results → [(半场三向idx, 全场三向idx)]（half+result 齐全的场次）。开发者 sszhang"""
-    from pathlib import Path
+    """02-results → [(半场三向idx, 全场三向idx)]（half+result 齐全的场次）。
+    去重口径(评审fix)：排除 -rN 过程快照；主文件跨日/文件内按(主队,客队)同场去重(取首现)。
+    开发者 sszhang"""
     base = Path(results_dir) if results_dir else ROOT / "data" / "02-results"
-    rows = []
+    rows, seen = [], set()
     for p in sorted(base.glob("2*.json")):
+        if re.search(r"-r\d+\.json$", p.name):    # -rN 过程快照不算观测
+            continue
         try:
             data = json.loads(p.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError):
@@ -228,6 +231,12 @@ def _half_ft_rows(results_dir=None):
                 hh_, ha_ = (int(x) for x in str(hf).split(":"))
             except ValueError:
                 continue
+            name = str(m.get("match") or "")
+            if " vs " in name:                    # 同场去重键=(主队,客队)；无名场次不参与去重
+                key = tuple(x.strip() for x in name.split(" vs ", 1))
+                if key in seen:
+                    continue
+                seen.add(key)
             tri = lambda a, b: 0 if a > b else (1 if a == b else 2)
             rows.append((tri(hh_, ha_), tri(hg, ag)))
     return rows
@@ -248,10 +257,12 @@ def half_three_way(results_dir=None) -> dict:
 def hafu_alpha(results_dir=None) -> dict:
     """观测9键频率 / [P_half×P_FT]全局 → 纠偏系数α（spec §4.2 v1.1·D8）。
     全局口径混合联赛(选择偏差诚实标注于JSON note)；样本0的键α=1.0不纠。
-    结果缓存 engine/cache/hafu_alpha.json（n不变复用）。开发者 sszhang"""
+    缓存 engine/cache/hafu_alpha.json 仅 results_dir=None 时读写（自定义目录现算不污染全局缓存）。
+    开发者 sszhang"""
     rows = _half_ft_rows(results_dir)
     n = len(rows)
-    if ALPHA_CACHE.exists():
+    use_cache = results_dir is None
+    if use_cache and ALPHA_CACHE.exists():
         try:
             cached = json.loads(ALPHA_CACHE.read_text(encoding="utf-8"))
             if cached.get("n") == n:
@@ -271,8 +282,9 @@ def hafu_alpha(results_dir=None) -> dict:
         alpha[k] = round((obs[k] / n) / base, 4) if base > 0 and obs[k] >= 5 else 1.0
     out = {"alpha": alpha, "n": n, "ranAt": str(date.today()),
            "note": "全局口径·混合联赛·含选场偏差; obs<5键不纠(α=1)"}
-    ALPHA_CACHE.parent.mkdir(parents=True, exist_ok=True)
-    ALPHA_CACHE.write_text(json.dumps(out, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    if use_cache:
+        ALPHA_CACHE.parent.mkdir(parents=True, exist_ok=True)
+        ALPHA_CACHE.write_text(json.dumps(out, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     return out
 
 
@@ -288,9 +300,8 @@ def hafu_agg(q_map: dict, p_half: dict, alpha: dict) -> dict:
 
 
 def _selftest_hafu():
-    from pathlib import Path
     res = hafu_alpha()                       # 真实02-results数据
-    assert res["n"] >= 100, f"半场样本不足: {res['n']}"
+    assert res["n"] >= 50, f"半场样本不足: {res['n']}"   # 去重真实口径≈61·评审裁定诚实下限
     assert res["alpha"]["dd"] >= 1.0, f"α(dd)必须≥1(方向性·spec D8): {res['alpha']['dd']}"
     p_half = half_three_way()
     assert abs(sum(p_half.values()) - 1.0) < 1e-6
@@ -304,7 +315,7 @@ def _selftest_hafu():
     alpha2 = dict(alpha1); alpha2["hh"] = 2.0
     out2 = hafu_agg(qm, p_half, alpha2)
     assert out2["hh"] > out["hh"] * 1.5      # 归一化稀释后仍显著抬升
-    print("[selftest] hafu_alpha + hafu_agg OK")
+    print(f"[selftest] hafu_alpha + hafu_agg OK (n={res['n']} 去重口径)")
 
 
 if __name__ == "__main__":
