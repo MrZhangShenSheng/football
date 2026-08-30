@@ -250,6 +250,14 @@ def backfill(day_limit: str | None = None) -> dict:
                     d0 = rec.get("date") or data.get("date")
                     if d0 and d0 <= TODAY and apply_pin_close(rec, d0, ROOT / "engine" / "cache"):
                         data["_dirty"] = True
+                # 已回填但无 preSnapshots → 历史轮本地补挂桥（时序库晚于该轮回填时补指针，幂等）
+                if not rec.get("preSnapshots") and rec.get("code"):
+                    dd = rec.get("date") or data.get("date")
+                    if dd:
+                        ps = find_pre_snapshots(rec.get("code"), dd)
+                        if ps:
+                            rec.setdefault("preSnapshots", ps)
+                            data["_dirty"] = True
                 continue
             d = rec.get("date") or data.get("date")
             if not d or d > TODAY:
@@ -328,6 +336,7 @@ def backfill(day_limit: str | None = None) -> dict:
             rec["directionHit"] = (outcome_of(hg, ag) == oi) if oi is not None else None
             oh = option_hit(rec, hg, ag)
             rec["scoreHit"] = oh if oh is not None else rec.get("scoreHit")
+            rec.pop("backfillNote", None)  # 对齐链路1：救回成功，清'不可得/缓存延迟'旧标注
             apply_pin_close(rec, d, ROOT / "engine" / "cache")   # ESPN 兜底场用预测日作窗口中心
             ps = find_pre_snapshots(rec.get("code"), d)
             if ps:

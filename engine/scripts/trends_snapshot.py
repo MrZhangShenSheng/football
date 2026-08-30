@@ -133,11 +133,12 @@ def write_snapshot(extracted, trigger, day=None):
         try:
             doc = json.loads(path.read_text(encoding="utf-8"))
             prev = replay_odds(doc.get("snapshots"))
-        except json.JSONDecodeError:
+        except (json.JSONDecodeError, UnicodeDecodeError, OSError):
             backup = path.with_suffix(f"{path.suffix}.corrupt-{datetime.now():%H%M%S}")
             path.replace(backup)
             log("trends", f"当日odds文件损坏，降级新base版（备份 {backup.name}）")
             doc = {"date": day, "type": "odds-timeline", "schemaVersion": SCHEMA_VERSION, "snapshots": []}
+    doc.setdefault("snapshots", [])   # 形状防御：重载文件缺键不崩（M1）
     changes, removed = diff_odds(prev, extracted)
     snap = {"at": _now_iso(), "trigger": trigger, "base": not doc["snapshots"]}
     if snap["base"]:
@@ -198,8 +199,9 @@ def write_intel_entry(payload, code, day=None):
     if path.exists():
         try:
             doc = json.loads(path.read_text(encoding="utf-8"))
-        except json.JSONDecodeError:
+        except (json.JSONDecodeError, UnicodeDecodeError, OSError):
             log("trends", f"当日intel文件损坏，重置（{path.name}）")
+    doc.setdefault("entries", [])     # 形状防御：重载文件缺键不崩（M1）
     doc["entries"].append(extract_intel(payload, code))
     atomic_write_json(path, doc)
     log("trends", f"intel摘要 → {path.name}（累计 {len(doc['entries'])} 条）")
@@ -217,7 +219,7 @@ def write_livescan(scan, day=None):
             raise ValueError(f"matches[{i}] 缺 matchId/code（桥按 matchId 对齐，必填）")
         if m.get("threat") not in THREAT_LEVELS:
             raise ValueError(f"matches[{i}].threat 非法: {m.get('threat')}（合法: {', '.join(THREAT_LEVELS)}）")
-    scan = {"at": _now_iso(), **scan}
+    scan = {"at": _now_iso(), **{k: v for k, v in scan.items() if k != "at"}}  # 调用方误传 at 一律被服务端时间覆盖
     day = day or date.today().isoformat()
     path = _TRENDS_DIR / f"{day}-livescan.json"
     _TRENDS_DIR.mkdir(parents=True, exist_ok=True)
@@ -225,8 +227,9 @@ def write_livescan(scan, day=None):
     if path.exists():
         try:
             doc = json.loads(path.read_text(encoding="utf-8"))
-        except json.JSONDecodeError:
+        except (json.JSONDecodeError, UnicodeDecodeError, OSError):
             log("trends", f"当日livescan文件损坏，重置（{path.name}）")
+    doc.setdefault("scans", [])       # 形状防御：重载文件缺键不崩（M1）
     doc["scans"].append(scan)
     atomic_write_json(path, doc)
     log("trends", f"livescan {len(scan.get('matches') or [])} 场 → {path.name}")
@@ -234,44 +237,63 @@ def write_livescan(scan, day=None):
 
 
 def find_pre_snapshots(code, d):
-    """赛果对齐桥：在预测日 ±1 天的 odds/intel 时序里找该场赛前最后状态。
+    """赛果对齐桥：在比赛日 ±1 天的 odds/intel 时序里找该场赛前最后状态（spec 口径"比赛日±1天"）。
 
+    两段式：第一遍宽窗 d-1..d+3（与 backfill 对票窗口一致）从时间线记录解析该 code 的
+    kickoff 与 matchId；第二段以 kickoff 日期为中心扫 ±1 天文件取最后时点
+    （odds 命中判定与 last_odds 取值都在这一段）；kickoff 解析不到时回退预测日 d±1。
     匹配键=matchId（体彩编号每周复用，ADR D8）：odds 日首版带 code→matchId 映射，
     先解析 matchId 再对 intel 精确匹配。返回 {matchId, lastOddsAt, lastIntelAt} 或 None。
     开发者 sszhang
     """
     from datetime import timedelta
     base = date.fromisoformat(d)
-    match_id, last_odds = None, None
-    for delta in (-1, 0, 1):
+    match_id, kickoff = None, None
+    for delta in (-1, 0, 1, 2, 3):                      # 第一遍：宽窗解析 kickoff/matchId
         path = _TRENDS_DIR / f"{(base + timedelta(days=delta)).isoformat()}-odds.json"
         if not path.exists():
             continue
         try:
             doc = json.loads(path.read_text(encoding="utf-8"))
-        except json.JSONDecodeError:
+        except (json.JSONDecodeError, UnicodeDecodeError, OSError):
+            continue
+        for s in doc.get("snapshots") or []:
+            for m in s.get("matches") or []:
+                if m.get("code") == code:
+                    match_id = m.get("matchId") or match_id
+                    kickoff = m.get("kickoff") or kickoff
+            for c in s.get("changes") or []:
+                if c.get("code") == code:
+                    match_id = c.get("matchId") or match_id
+                    kickoff = c.get("kickoff") or kickoff
+    if match_id is None:
+        return None
+    try:
+        center = date.fromisoformat(str(kickoff)[:10]) if kickoff else base
+    except ValueError:
+        center = base                                    # kickoff 畸形 → 回退预测日±1
+    last_odds = None
+    for delta in (-1, 0, 1):                             # 第二段：比赛日±1 取赛前最后时点
+        path = _TRENDS_DIR / f"{(center + timedelta(days=delta)).isoformat()}-odds.json"
+        if not path.exists():
+            continue
+        try:
+            doc = json.loads(path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, UnicodeDecodeError, OSError):
             continue
         for s in doc.get("snapshots") or []:
             hit = (any(m.get("code") == code for m in s.get("matches") or [])
                    or any(c.get("code") == code for c in s.get("changes") or []))
             if hit:
                 last_odds = s["at"]
-                for m in s.get("matches") or []:
-                    if m.get("code") == code and m.get("matchId"):
-                        match_id = m["matchId"]
-                for c in s.get("changes") or []:
-                    if c.get("code") == code and c.get("matchId"):
-                        match_id = c["matchId"]
-    if match_id is None:
-        return None
     last_intel = None
     for delta in (-1, 0, 1):
-        path = _TRENDS_DIR / f"{(base + timedelta(days=delta)).isoformat()}-intel.json"
+        path = _TRENDS_DIR / f"{(center + timedelta(days=delta)).isoformat()}-intel.json"
         if not path.exists():
             continue
         try:
             doc = json.loads(path.read_text(encoding="utf-8"))
-        except json.JSONDecodeError:
+        except (json.JSONDecodeError, UnicodeDecodeError, OSError):
             continue
         for e in doc.get("entries") or []:
             if e.get("matchId") == match_id:
@@ -451,7 +473,7 @@ def selftest():
             _set_trends_dir(real_dir3)
     print("[selftest] write_livescan OK")
 
-    # ---- find_pre_snapshots 桥（跨日窗口: d-1/d/d+1）----
+    # ---- find_pre_snapshots 桥（比赛日±1中心：宽窗解析 kickoff → 开球日±1 取值）----
     real_dir4 = globals()["_TRENDS_DIR"]
     with tempfile.TemporaryDirectory() as td:
         _set_trends_dir(Path(td))
@@ -478,6 +500,10 @@ def selftest():
             r = find_pre_snapshots("周六026", "2026-08-29")
             assert r == {"matchId": 2041146, "lastOddsAt": "2026-08-30T00:30:00+08:00",
                          "lastIntelAt": "2026-08-29T23:52:00+08:00"}, r
+            # 窗口锚比赛日而非预测日：预测日早于全部 fixture 文件仍命中（kickoff=08-30 → 中心 08-30）
+            r_early = find_pre_snapshots("周六026", "2026-08-28")
+            assert r_early == {"matchId": 2041146, "lastOddsAt": "2026-08-30T00:30:00+08:00",
+                               "lastIntelAt": "2026-08-29T23:52:00+08:00"}, r_early
             assert find_pre_snapshots("不存在", "2026-08-29") is None
         finally:
             _set_trends_dir(real_dir4)
