@@ -316,8 +316,9 @@ def backfill(day_limit: str | None = None) -> dict:
             n_sp += 1
             data["_dirty"] = True
             continue
-        if sp and sp["status"] == "Fixture":
-            continue  # 体彩确认未开赛——本轮跳过（不标'不可得/缓存延迟'），完赛后重跑自动回填
+        # 体彩仍标 Fixture 时先不跳过：开奖录入滞后于实际终场（2026-08-30 周六深夜场实测，
+        # 体彩 matchDate+1 标未完赛而 ESPN 已 FULL_TIME）——给 ESPN 兜底一次机会，两边都没有才跳过
+        sp_fixture = bool(sp and sp["status"] == "Fixture")
         # 链路 2（兜底）：ESPN 队名匹配（体彩编号对票失败时仍可能覆盖）
         hit_row = None
         if code:
@@ -344,6 +345,8 @@ def backfill(day_limit: str | None = None) -> dict:
             n_fill += 1
             data["_dirty"] = True
             continue
+        if sp_fixture:
+            continue  # 体彩仍标未完赛且 ESPN 无终场赛果——本轮跳过（不标'不可得/缓存延迟'），完赛后重跑
         n_miss += 1
         if lg in ESPN_UNAVAILABLE or not code:
             rec["result"] = UNAVAILABLE_MARK
@@ -423,6 +426,36 @@ def recalc_meta(data: dict) -> None:
     })
 
 
+def _results_index(match_days: list) -> dict[str, dict]:
+    """02-results 回填库扫 编号→{score,halfScore}（体彩开奖滞后时的票务回退对票源）。
+
+    2026-08-30 教训：周六深夜场 ESPN 链路先回填而体彩 zqsgkj 无比分，全腿已完赛的
+    T007/T008/T009 卡 pending。跨文件同编号取首个有赛果者（同场赛果一致）。
+    """
+    days: set[str] = set()
+    for md in match_days:
+        try:
+            base = date.fromisoformat(str(md))
+        except ValueError:
+            continue
+        for k in (-1, 0, 1):
+            days.add((base + timedelta(days=k)).isoformat())
+    idx: dict[str, dict] = {}
+    for dd in sorted(days):
+        p = RESULTS_DIR / f"{dd}.json"
+        if not p.exists():
+            continue
+        try:
+            data = json.loads(p.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            continue
+        for rec in data.get("matches") or []:
+            r = rec.get("result")
+            if r and r != UNAVAILABLE_MARK and rec.get("code") and rec["code"] not in idx:
+                idx[rec["code"]] = {"score": r, "halfScore": rec.get("half") or ""}
+    return idx
+
+
 def settle_tickets(sp_cache: dict[str, dict[str, dict]]) -> dict:
     """票务结算（回填链尾部）：扫 pending 票 → 编号对票更新腿 → 全腿终态按形状算派彩。
 
@@ -437,6 +470,7 @@ def settle_tickets(sp_cache: dict[str, dict[str, dict]]) -> dict:
         st = (t.get("settled") or {}).get("status")
         if st not in (None, "pending"):  # 缺 settled/status 视为 pending（T004 手动建档漏字段被静默跳过教训）
             continue
+        res_idx = _results_index(t.get("matchDays") or [])
         all_final = True
         for leg in t["legs"]:
             if leg.get("result") not in (None, "pending"):
@@ -447,6 +481,12 @@ def settle_tickets(sp_cache: dict[str, dict[str, dict]]) -> dict:
                 if sp and sp.get("score"):
                     break
             score = parse_score(sp.get("score")) if sp else None
+            if not score and res_idx.get(leg["code"]):
+                # 体彩开奖滞后（深夜场次日晨未录）→ 回退 02-results 回填库；
+                # HAFU 腿半场缺失仍保持 pending（半场只有体彩口径有），不误判
+                fb = res_idx[leg["code"]]
+                score = parse_score(fb["score"])
+                sp = {"score": fb["score"], "halfScore": fb.get("halfScore") or ""}
             if not score:
                 all_final = False
                 continue

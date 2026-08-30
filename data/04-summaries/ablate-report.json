@@ -1,26 +1,25 @@
 {
-  "generatedAt": "2026-08-29",
-  "n_filled": 121,
+  "generatedAt": "2026-08-30",
+  "n_filled": 169,
   "gateReady": true,
   "humanReview": true,
   "report": [
     {
       "coeff": "开季修正",
-      "n_trigger": 37,
-      "n_base": 84,
-      "hit_trigger": 0.811,
-      "hit_base": 0.643,
-      "rps_trigger": 0.1086,
-      "rps_base": 0.1874,
-      "logloss_trigger": 0.6046,
-      "logloss_base": 0.8667,
-      "n_prob": 34,
+      "n_trigger": 73,
+      "n_base": 96,
+      "hit_trigger": 0.685,
+      "hit_base": 0.615,
+      "rps_trigger": 0.1521,
+      "rps_base": 0.1937,
+      "logloss_trigger": 0.7831,
+      "logloss_base": 0.8978,
+      "n_prob": 67,
       "rps_diff_ci95": [
-        -0.1251,
-        -0.0334
+        -0.0837,
+        0.0044
       ],
-      "status": "✅ 建议标已验证：触发组 RPS 显著更好（diff CI95 [-0.1251, -0.0334] 全在 0 下方）",
-      "diff": "SKILL.md 修正系数『开季修正』标注 ✅已验证（RPS 正增益 CI [-0.1251, -0.0334]）"
+      "status": "维持：RPS diff CI95 [-0.0837, 0.0044] 跨 0（方向性证据不足，命中率 68% vs 62% 仅展示）"
     },
     {
       "coeff": "联赛波动",
@@ -40,19 +39,19 @@
     {
       "coeff": "战意状态机",
       "n_trigger": 9,
-      "n_base": 112,
+      "n_base": 160,
       "hit_trigger": 0.556,
-      "hit_base": 0.705,
+      "hit_base": 0.65,
       "rps_trigger": 0.1592,
-      "rps_base": 0.1624,
+      "rps_base": 0.176,
       "logloss_trigger": 0.8763,
-      "logloss_base": 0.775,
+      "logloss_base": 0.8449,
       "n_prob": 8,
       "rps_diff_ci95": [
-        -0.0726,
-        0.0785
+        -0.0813,
+        0.0629
       ],
-      "status": "维持：RPS diff CI95 [-0.0726, 0.0785] 跨 0（方向性证据不足，命中率 56% vs 70% 仅展示）"
+      "status": "维持：RPS diff CI95 [-0.0813, 0.0629] 跨 0（方向性证据不足，命中率 56% vs 65% 仅展示）"
     },
     {
       "coeff": "平局率修正",

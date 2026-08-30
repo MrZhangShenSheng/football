@@ -1,11 +1,11 @@
 {
   "meta": {
-    "lastUpdated": "2026-08-29",
+    "lastUpdated": "2026-08-30",
     "note": "实票账本:票=顶层实体(不按日期切分);实票=有结算记录的票,其余全是方案推演;出票后票面事实永不改写;派彩按形状算(4串11中2关只回1注2串1)",
     "totalTickets": 10,
     "totalStake": 134,
     "totalPayout": 293.4,
-    "totalNet": 189.4,
+    "totalNet": 159.4,
     "disciplineEvents": [
       {
         "date": "2026-08-24",
@@ -498,8 +498,9 @@
           "market": "HAD",
           "pick": "客胜",
           "odds": 1.84,
-          "result": "pending",
-          "priceNote": null
+          "result": "hit",
+          "priceNote": null,
+          "actual": "1-3"
         },
         {
           "code": "周六017",
@@ -508,8 +509,9 @@
           "market": "HAD",
           "pick": "客胜",
           "odds": 1.96,
-          "result": "pending",
-          "priceNote": null
+          "result": "miss",
+          "priceNote": null,
+          "actual": "2:1(半0:1)"
         },
         {
           "code": "周五001",
@@ -545,7 +547,13 @@
       "combinedOdds": 9.88,
       "potentialWin": 35.24,
       "settled": {
-        "status": "pending"
+        "status": "settled",
+        "hits": 2,
+        "winUnits": 0,
+        "payout": 0.0,
+        "net": -4.0,
+        "roi": -100.0,
+        "settledAt": "2026-08-30 09:31"
       },
       "note": "赔率按方案票面冻结;周五005蒙彼17:38复扫买热至1.51,实际出票价≤1.51(注①合赔实≈7.54/注②≈10.60,CLV偏高估)|21:5x出票后即时复扫:赔率按实价冻结(周五005买热1.63→1.58/周五010巴黎1.55→1.52/周五001赫塔2.31→2.10/里尔0:0比分16→14.5,方向均向pick收敛=市场认可但CLV为负;以终端票面为准)"
     },
@@ -604,8 +612,9 @@
           "market": "HAD",
           "pick": "客胜",
           "odds": 1.84,
-          "result": "pending",
-          "priceNote": null
+          "result": "hit",
+          "priceNote": null,
+          "actual": "1-3"
         },
         {
           "code": "周六017",
@@ -614,8 +623,9 @@
           "market": "HAD",
           "pick": "客胜",
           "odds": 1.96,
-          "result": "pending",
-          "priceNote": null
+          "result": "miss",
+          "priceNote": null,
+          "actual": "2:1(半0:1)"
         }
       ],
       "bets": [
@@ -634,7 +644,13 @@
       "combinedOdds": 15.16,
       "potentialWin": 90.94,
       "settled": {
-        "status": "pending"
+        "status": "settled",
+        "hits": 1,
+        "winUnits": 0,
+        "payout": 0.0,
+        "net": -6.0,
+        "roi": -100.0,
+        "settledAt": "2026-08-30 09:31"
       },
       "note": "同T007周五005出票价冻结口径;5串1无容错,全中95.67(税前,未超单注1万免税)|21:5x出票后即时复扫:赔率按实价冻结(周五005买热1.63→1.58/周五010巴黎1.55→1.52/周五001赫塔2.31→2.10/里尔0:0比分16→14.5,方向均向pick收敛=市场认可但CLV为负;以终端票面为准)"
     },
@@ -661,8 +677,9 @@
           "pick": "0-0",
           "odds": 17.0,
           "q": 0.1725,
-          "result": "pending",
-          "priceNote": null
+          "result": "miss",
+          "priceNote": null,
+          "actual": "2-0"
         },
         {
           "code": "周六002",
@@ -697,8 +714,9 @@
           "pick": "0-1",
           "odds": 13.0,
           "q": 0.1421,
-          "result": "pending",
-          "priceNote": null
+          "result": "miss",
+          "priceNote": null,
+          "actual": "0:3(半0:2)"
         },
         {
           "code": "周六019",
@@ -708,8 +726,9 @@
           "pick": "0-1",
           "odds": 13.0,
           "q": 0.1291,
-          "result": "pending",
-          "priceNote": null
+          "result": "miss",
+          "priceNote": null,
+          "actual": "0:2(半0:0)"
         }
       ],
       "bets": [
@@ -763,7 +782,13 @@
       "combinedOdds": 54476.5,
       "potentialWin": 781555.2,
       "settled": {
-        "status": "pending"
+        "status": "settled",
+        "hits": 0,
+        "winUnits": 0,
+        "payout": 0.0,
+        "net": -20.0,
+        "roi": -100.0,
+        "settledAt": "2026-08-30 09:31"
       },
       "note": "倍数2为用户改单(系统按50万限额反算4倍);2026-08-28晚登记修正:原误记周日009利兹0:0@13,用户报票面确认=周六002清水0:3@17(第一次推荐腿,系统档案未存,票面为准);利兹腿从未实际购买;全中概率粗估≈1/24000级天堂场景|21:5x出票后即时复扫:赔率按实价冻结(周五005买热1.63→1.58/周五010巴黎1.55→1.52/周五001赫塔2.31→2.10/里尔0:0比分16→14.5,方向均向pick收敛=市场认可但CLV为负;以终端票面为准)"
     },
@@ -790,9 +815,10 @@
           "pick": "1-0",
           "odds": 25.0,
           "q": 0.1209,
-          "result": "pending",
+          "result": "miss",
           "note": "方案腿·freq-band纯模板(shifted=false)·票面@25冻结(体彩后调价至28)",
-          "priceNote": null
+          "priceNote": null,
+          "actual": "0-3"
         },
         {
           "code": "周日004",
@@ -826,9 +852,10 @@
           "pick": "0-1",
           "odds": 25.0,
           "q": 0.1062,
-          "result": "pending",
+          "result": "miss",
           "note": "方案腿·freq-band球队平移(shifted=true)·与T009共享场次(T009买0-0@17)",
-          "priceNote": null
+          "priceNote": null,
+          "actual": "2-0"
         }
       ],
       "bets": [

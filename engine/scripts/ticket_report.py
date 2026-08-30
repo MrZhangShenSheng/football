@@ -165,10 +165,11 @@ def discipline_rows(meta: dict) -> str:
         return '<p class="empty">暂无登记事件（出票后的临场干预/撤单对账，出票时登记）</p>'
     rows = []
     for e in events:
-        cost = round(e.get("counterfactualNet", 0) - e.get("actualNet", 0), 1)
+        an, cn = e.get("actualNet") or 0, e.get("counterfactualNet") or 0   # 手工维护可能为 null（2026-08-30 结算撞线）
+        cost = round(cn - an, 1)
         cls = "pos" if cost >= 0 else "neg"
         rows.append(f'<tr><td>{e["date"]}</td><td>{e["event"]}</td>'
-                    f'<td>{e["actualNet"]:+.1f}</td><td>{e["counterfactualNet"]:+.1f}</td>'
+                    f'<td>{an:+.1f}</td><td>{cn:+.1f}</td>'
                     f'<td class="{cls}">{cost:+.1f}</td><td class="sub">{e.get("verdict", "")}</td></tr>')
     return "".join(rows)
 
