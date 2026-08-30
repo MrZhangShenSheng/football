@@ -537,6 +537,7 @@ D 级(0项)     ❌       ❌       ❌       ❌
 - 每处修订必须输出：修订项、旧→新、依据（具体新信息+来源）、赔率影响
 - 终审后复核官方赔率未再异动方可出票；异动则重新走定律 1/2 判定
 - **扫描必落盘 ★ v5.4**：临场扫描结果必须经 `python engine/scripts/trends_snapshot.py livescan <scan.json>` 录入 `data/05-trends/`（结构化 signals + threat 枚举 + matchId 必填），**禁止只留在对话里**——赔率状态停售后不可再生，扫描判断是将来因子验证的原始对账材料
+- **快照触发标签 ★ v5.4.1**：临场扫描/复扫的赔率刷新须带环境变量前缀：`TRENDS_TRIGGER=临场复扫 python3 engine/scripts/sporttery_fetch.py`——直跑默认标 "run.py update"，时序库按 trigger 分场景分析时会失真（2026-08-30 终审 M2 沉淀）
 
 ### 实票登记（出票即记账）★ v4.10 新增
 
