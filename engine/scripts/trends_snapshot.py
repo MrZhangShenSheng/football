@@ -242,12 +242,15 @@ def find_pre_snapshots(code, d):
     两段式：第一遍宽窗 d-1..d+3（与 backfill 对票窗口一致）从时间线记录解析该 code 的
     kickoff 与 matchId；第二段以 kickoff 日期为中心扫 ±1 天文件取最后时点
     （odds 命中判定与 last_odds 取值都在这一段）；kickoff 解析不到时回退预测日 d±1。
+    跨周同码护栏：仅接受 kickoff 日期落在 [d-1, d+3] 内的记录（体彩编号每周复用，
+    下周同 code 场 = d+6~d+8 必在窗外被拒，防止桥中心漂移到错周+错 matchId 永久钉死）。
     匹配键=matchId（体彩编号每周复用，ADR D8）：odds 日首版带 code→matchId 映射，
     先解析 matchId 再对 intel 精确匹配。返回 {matchId, lastOddsAt, lastIntelAt} 或 None。
     开发者 sszhang
     """
     from datetime import timedelta
     base = date.fromisoformat(d)
+    d_minus1, d_plus3 = (base - timedelta(days=1)).isoformat(), (base + timedelta(days=3)).isoformat()
     match_id, kickoff = None, None
     for delta in (-1, 0, 1, 2, 3):                      # 第一遍：宽窗解析 kickoff/matchId
         path = _TRENDS_DIR / f"{(base + timedelta(days=delta)).isoformat()}-odds.json"
@@ -259,11 +262,15 @@ def find_pre_snapshots(code, d):
             continue
         for s in doc.get("snapshots") or []:
             for m in s.get("matches") or []:
-                if m.get("code") == code:
+                ko_date = (m.get("kickoff") or "")[:10]
+                if m.get("code") == code and ko_date and d_minus1 <= ko_date <= d_plus3:
+                    # 跨周同码护栏：kickoff 日期须落在本比赛窗口内才采（含 matchId），
+                    # 下周复用同 code 场（d+6~d+8）整条记录拒收
                     match_id = m.get("matchId") or match_id
                     kickoff = m.get("kickoff") or kickoff
             for c in s.get("changes") or []:
-                if c.get("code") == code:
+                ko_date = (c.get("kickoff") or "")[:10]
+                if c.get("code") == code and ko_date and d_minus1 <= ko_date <= d_plus3:
                     match_id = c.get("matchId") or match_id
                     kickoff = c.get("kickoff") or kickoff
     if match_id is None:
@@ -504,6 +511,18 @@ def selftest():
             r_early = find_pre_snapshots("周六026", "2026-08-28")
             assert r_early == {"matchId": 2041146, "lastOddsAt": "2026-08-30T00:30:00+08:00",
                                "lastIntelAt": "2026-08-29T23:52:00+08:00"}, r_early
+            # 跨周同码护栏回归：d+3 文件挂出下周复用同 code 场（matchId 999999 / kickoff d+8 窗外）
+            # → 须整条拒收，不得抢走 matchId / 把桥中心漂到下周（若无护栏 last-wins 会采 999999）
+            (Path(td) / "2026-09-01-odds.json").write_text(json.dumps({
+                "date": "2026-09-01", "type": "odds-timeline", "schemaVersion": 1,
+                "snapshots": [{"at": "2026-09-01T09:00:00+08:00", "trigger": "run.py update", "base": True,
+                                "matches": [{"code": "周六026", "matchId": 999999, "league": "葡超",
+                                              "home": "维塞乌", "away": "波尔图", "kickoff": "2026-09-06 15:00:00",
+                                              "had": {"h": 11.0, "d": 5.5, "a": 1.18}, "hhad": {}, "crs": {},
+                                              "ttg": {}, "hafu": {}}]}]}, ensure_ascii=False), encoding="utf-8")
+            r_guard = find_pre_snapshots("周六026", "2026-08-29")
+            assert r_guard["matchId"] == 2041146, r_guard        # 不得采下周复用场的 999999
+            assert r_guard == r, r_guard                         # 中心仍=08-30，时点取值不变
             assert find_pre_snapshots("不存在", "2026-08-29") is None
         finally:
             _set_trends_dir(real_dir4)
