@@ -66,6 +66,7 @@ def normalize_record(r: dict, round_id: str) -> dict | None:
             "ev": r.get("ev"),
             "in_plan": r.get("inPlan"),
             "chain": r.get("chain"),
+            "pools": r.get("pools"),      # 三池卡透传不展开（spec §4.5#6；实时结算判定递延台账）
             # 回填字段透传（新 schema 预置 result:null，回填后此处同步）
             "result": r.get("result"),
             "directionHit": r.get("directionHit"),

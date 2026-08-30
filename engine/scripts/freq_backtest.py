@@ -4,7 +4,7 @@ import glob, json, math, sys
 from datetime import date
 from pathlib import Path
 from backfill import expand_combos
-from boldplay import build_ticket, _load_results, _leg_hit, _tier_bets
+from boldplay import build_ticket, is_process_snapshot, _load_results, _leg_hit, _tier_bets
 from common import ROOT
 from score_ev import build_freq_table
 from freq_band import build_team_form
@@ -22,6 +22,8 @@ def replay_base_structure() -> None:
     tot = {"old_spend": 0.0, "old_payout": 0.0, "old_rounds": 0,
            "new_spend": 0.0, "new_payout": 0.0, "new_rounds": 0}
     for p in sorted((ROOT / "data" / "03-predictions").glob("*-boldplay*.json")):
+        if is_process_snapshot(p):
+            continue    # -rN 过程快照：同日主文件=真相（铁律7），防同轮双计（I2）
         try:
             t = json.loads(p.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError):

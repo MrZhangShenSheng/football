@@ -325,8 +325,8 @@ def _selftest_hafu():
 def pools_card(m: dict, q_map: dict, form: dict, zh: dict, freq_table: dict) -> dict:
     """单场三池玩法卡（spec §4.3 v1.2）：CRS带内top1 + TTG top2 + HAFU top2，
     EV=q×体彩赔率−1；双行推荐（保底=相近带q最高/翻身=相近带赔率最高）；
-    CRS分歧旗（平移放大效应·降级第二推荐）；低置信旗（模板缺失/样本<LOW_CONF_N，
-    不砍池推荐走结构兜底=抽水低池优先）。开发者 sszhang"""
+    CRS分歧旗（EV全场最高且|q−市场隐含|>5pp → 标divergent+翻身带剔除·I1裁定）；
+    低置信旗（模板缺失/样本<LOW_CONF_N，不砍池推荐走结构兜底=抽水低池优先）。开发者 sszhang"""
     lg = map_league(m.get("league", ""))
     blob = freq_table.get(lg) if lg else None
     n_tpl = (blob or {}).get("__n", 0) if blob else 0
@@ -366,17 +366,27 @@ def pools_card(m: dict, q_map: dict, form: dict, zh: dict, freq_table: dict) -> 
     if not cands:
         return {"code": code, "match": match,
                 "candidates": [], "flags": flags + ["no_candidates"]}
-    # CRS 分歧旗（spec D12）: CRS 候选 EV 居首且 |q−市场隐含|>阈值 → 降级到末位(第二推荐)
-    if cands[0]["pool"] == "crs" and crs_top:
-        implied = 1.0 / (crs_top["odds"] * MARKET_MARGIN_DIV)
-        if (crs_top["q"] - implied) * 100 > DIVERGENCE_FLAG_PP and len(cands) > 1:
+    # CRS 分歧旗（spec D12·终审I1裁定落地）: CRS 候选 EV 为全场最高 且 |q−市场隐含|>阈值
+    # → 标 divergent=True（留候选展示并降级末位）；翻身推荐带剔除（模型傲慢不进决策链）
+    if cands[0]["pool"] == "crs" and cands[0]["ev"] >= max(c["ev"] for c in cands):
+        implied = 1.0 / (cands[0]["odds"] * MARKET_MARGIN_DIV)
+        if (cands[0]["q"] - implied) * 100 > DIVERGENCE_FLAG_PP:
             flags.append("divergence")
-            cands.append(cands.pop(0))            # 降级到末位=第二推荐
-    # 双行推荐: EV 相近带(差<0.1·演示档)内, 保底取q最高/翻身取赔率最高
+            cands[0]["divergent"] = True
+            cands.append(cands.pop(0))            # 降级到末位=第二推荐（展示口径）
+    # 双行推荐: EV 相近带(差<0.1·演示档)内, 保底取q最高/翻身取赔率最高；
+    # 翻身带只取非分歧候选（band=max EV among 非分歧），全分歧→最高q非CRS候选或None
+    # （本场不出翻身腿）；保底带不受分歧旗影响（保底视角命中优先）
     evs = [c["ev"] for c in cands]
     band = [c for c in cands if c["ev"] >= max(evs) - 0.1]
     rec_base = max(band, key=lambda c: c["q"])
-    rec_upset = max(band, key=lambda c: c["odds"])
+    nd = [c for c in cands if not c.get("divergent")]
+    if nd:
+        rec_upset = max((c for c in nd if c["ev"] >= max(c["ev"] for c in nd) - 0.1),
+                        key=lambda c: c["odds"])
+    else:
+        non_crs = [c for c in cands if c["pool"] != "crs"]
+        rec_upset = max(non_crs, key=lambda c: c["q"]) if non_crs else None
     if "low_conf" in flags:                        # 结构兜底: 抽水低池优先(spec D9)
         low_vig = [c for c in band if c["pool"] in ("ttg", "hafu")]
         if low_vig:
@@ -400,18 +410,29 @@ def _selftest_pools():
     assert "divergence" not in cardA["flags"] and "low_conf" not in cardA["flags"]
     assert all(abs(c["ev"] - (c["q"] * c["odds"] - 1)) < 1e-4 for c in cardA["candidates"])  # 1e-4=4位小数舍入容差
 
-    # ── Scenario B（分歧旗）：CRS 0:2 q=11.5%@24 vs 隐含 1/(24×1.13)≈3.7% → Δ7.8pp>5pp ──
-    # 手算: crs 0:2 EV=.115×24−1=1.76 居首；1:1@7.5 低于带下限10出局；ttg s2=.195@3.75 EV=−.2688
-    #   降级后 CRS 不再居首；带内(max−0.1=1.66)仅剩 CRS → 双行同源，分歧场景不断言双行
+    # ── Scenario B（分歧旗·I1裁定）：CRS 0:2 q=11.5%@24 vs 隐含 1/(24×1.13)≈3.7% → Δ7.8pp>5pp ──
+    # 手算: crs 0:2 EV=.115×24−1=1.76 全场最高；1:1@7.5 低于带下限10出局；ttg s2=.195@3.75 EV=−.2688
+    #   divergent 标记留候选展示；翻身带=非分歧候选（hafu dd）→ CRS 不进翻身推荐；
+    #   保底带仍含 CRS（保底视角命中优先）
     mB = {"code": "周日004", "league": "德乙", "home": "圣保利", "away": "凯泽",
           "crs": {"0:2": 24.0, "1:1": 7.5}, "ttg": {"s2": 3.75, "s3": 3.55},
           "hafu": {"dd": 6.25, "hh": 2.75}}
     cardB = pools_card(mB, {"0:2": 0.115, "1:1": 0.08}, {}, {}, ftA)
     assert "divergence" in cardB["flags"]
     assert cardB["candidates"][0]["pool"] != "crs"                     # 降级后 CRS 不居首
+    assert any(c.get("divergent") for c in cardB["candidates"])        # 被旗候选标 divergent 留展示
+    assert cardB["rec_upset"]["pool"] != "crs"                         # 分歧CRS不进翻身推荐(I1裁定)
+    assert cardB["rec_upset"]["pool"] in ("ttg", "hafu")               # 翻身=非分歧带(ttg/hafu候选)
+    assert cardB["rec_base"]["pool"] == "hafu" and cardB["rec_base"]["pick"] == "dd"  # 保底=带内q最高(dd .433>CRS .115)·rec_base计算不看divergent(I1裁定:分歧只排翻身)
     assert all(c["code"] == "周日004" and c["match"] == "圣保利 vs 凯泽"
                for c in cardB["candidates"])                           # 候选自带 code/match（T4 契约）
     assert all(abs(c["ev"] - (c["q"] * c["odds"] - 1)) < 1e-4 for c in cardB["candidates"])
+
+    # ── Scenario D（全分歧退路）：唯一候选=分歧CRS → rec_upset=None（本场不出翻身腿）──
+    mD = {"code": "周六020", "league": "德乙", "home": "C队", "away": "D队", "crs": {"0:2": 24.0}}
+    cardD = pools_card(mD, {"0:2": 0.115}, {}, {}, ftA)
+    assert "divergence" in cardD["flags"] and cardD["rec_upset"] is None
+    assert cardD["rec_base"]["pool"] == "crs"                          # 保底视角仍可落CRS
 
     # ── Scenario C（低置信兜底）：联赛无映射(芬超)+空模板 → low_conf 旗 + 低抽水池兜底 ──
     # q_map 空 → q_eff 空 → crs/ttg 全 q=0 出局；hafu_agg 空 q_map → FT 三向全平 → d 列非零

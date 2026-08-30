@@ -3,7 +3,7 @@
 freq-band（★ 2026-08-27 重设计默认，docs/2026-08-27-freq-band-design.html）：联赛频率模板+球队平移
 +形状带+q排序，DC 退出比分链路；合格腿<4 关档不硬凑。--method=amix 过渡保留一个月（DC×体彩EV
 三池全量扫描取最优，回测定去留），字节级不变。"""
-import glob, json, math, sys
+import glob, json, math, re, sys
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from backfill import expand_combos   # 4串11=大小≥2全组合(结算引擎同源)
@@ -286,10 +286,23 @@ def build_ticket(odds_day: dict, freq_table: dict, seq: int,
         "postTaxNote": "单注奖金超1万部分税20%;4串单注限额50万已反算倍数",
     }
 
-def upset_month_spend(month: str) -> float:
-    """当月翻身档累计投入：扫 data/03-predictions/{month}-*-boldplay*.json 的 tiers.upset.cost。开发者 sszhang"""
+SNAPSHOT_STEM_RE = re.compile(r"-r\d+-boldplay")   # -rN 过程快照（{date}-rN-boldplay.json，铁律7：同日主文件=真相）
+
+
+def is_process_snapshot(p: Path) -> bool:
+    """-rN 过程快照判定：gate 证据（月投入/连败）与历史回放只认主文件，防同轮双计。
+    与 freq_band._half_ft_rows 的 -rN 排除同口径；boldplay 的 -rN 在 -boldplay 前缀前，
+    故锚 `-r\\d+-boldplay` 不锚行尾（02-results 的 -rN 是文件名后缀才锚 .json$）。开发者 sszhang"""
+    return bool(SNAPSHOT_STEM_RE.search(p.stem))
+
+
+def upset_month_spend(month: str, pred_dir: Path = PRED_DIR) -> float:
+    """当月翻身档累计投入：扫 data/03-predictions/{month}-*-boldplay*.json 的 tiers.upset.cost
+    （-rN 过程快照排除，铁律7 同日主文件=真相）。开发者 sszhang"""
     total = 0.0
-    for p in PRED_DIR.glob(f"{month}-*-boldplay*.json"):
+    for p in pred_dir.glob(f"{month}-*-boldplay*.json"):
+        if is_process_snapshot(p):
+            continue
         try:
             doc = json.loads(p.read_text(encoding="utf-8"))
             total += ((doc.get("tiers") or {}).get("upset") or {}).get("cost") or 0
@@ -300,10 +313,13 @@ def upset_month_spend(month: str) -> float:
 
 def upset_dry_streak(month: str, pred_dir: Path = PRED_DIR) -> int:
     """当月连续翻身档 0 回款轮数（SKILL v5.5 降半仓 gate 依据）：扫与 upset_month_spend
-    同口径的 {month}-*-boldplay*.json，按文件序从最新**已结算**票往回数 settle.upsetHit
-    ==False 的连续张数；未结算票跳过（未开彩≠已见亏损），遇回款轮即断。开发者 sszhang"""
+    同口径的 {month}-*-boldplay*.json（-rN 过程快照排除），按文件序从最新**已结算**票
+    往回数 settle.upsetHit ==False 的连续张数；未结算票跳过（未开彩≠已见亏损），
+    遇回款轮即断。开发者 sszhang"""
     streak = 0
     for p in sorted(pred_dir.glob(f"{month}-*-boldplay*.json"), reverse=True):
+        if is_process_snapshot(p):
+            continue
         try:
             doc = json.loads(p.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError):
@@ -394,8 +410,9 @@ def build_two_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form: d
     cards = [pools_card(_card_view(m, hafu_map), _q_map_for(m, freq_table, form, zh),
                         form, zh, freq_table)
              for m in odds_day.get("matches", []) if _is_ab(m)]
-    # 翻身: seq 奇=跨池2串1×3 / 偶=跨池4串1×N; 腿=各场 rec_upset(同场≤1)
-    cand = sorted((c["rec_upset"] for c in cards if c.get("candidates")), key=lambda c: -c["ev"])
+    # 翻身: seq 奇=跨池2串1×3 / 偶=跨池4串1×N; 腿=各场 rec_upset(同场≤1; 全分歧场
+    # rec_upset=None → 不出翻身腿, freq_band pools_card I1 裁定)
+    cand = sorted((c["rec_upset"] for c in cards if c.get("rec_upset")), key=lambda c: -c["ev"])
     seen, legs = set(), []
     for c in cand:
         code = c.get("code")
@@ -448,8 +465,9 @@ def render_ticket(t: dict) -> str:
             continue
         fl = ("⚠" if "divergence" in c["flags"] else "") + ("🟡" if "low_conf" in c["flags"] else "")
         rb, ru = c["rec_base"], c["rec_upset"]
+        ru_txt = f"{ru['pool'].upper()} {ru['pick']}@{ru['odds']}" if ru else "—(分歧排除)"
         lines.append(f"│   {c['code']} {fl} 保底→{rb['pool'].upper()} {rb['pick']}(q{rb['q']:.0%})"
-                     f" · 翻身→{ru['pool'].upper()} {ru['pick']}@{ru['odds']}")
+                     f" · 翻身→{ru_txt}")
     spend = upset_month_spend(str(date.today())[:7])
     warn = " ⚠月预算红线!" if spend >= MONTHLY_UPSET_CAP else ""
     lines.append(f"└ 翻身月预算: {spend:.0f}/{MONTHLY_UPSET_CAP:.0f}元{warn} · 出票核对单见 v5.4.2 格式")
@@ -467,7 +485,8 @@ def _leg_hit(leg: dict, ent, default_play: str):
     """单腿命中判定 → True/False/None（赛果缺失/HAFU无半场=None 待人工）。开发者 sszhang
 
     HAD pick 由比分方向推导；CRS 精确比对（选项兼容 pick/score 两键——计划口径
-    用 pick，真实出票 JSON 的 upset 腿用 score）；TTG 总进球（含 7+ 档）；HAFU
+    用 pick，真实出票 JSON 的 upset 腿用 score）；TTG 总进球双词汇统一（pools_card
+    体彩池键 s0..s7 与 legacy "2球"/"2"/"7+"——s 前缀剥离后同判，含 7+ 档）；HAFU
     需 half（backfill 体彩链路落盘，ESPN 链路无半场 → None 待人工）。"""
     if ent is None:
         return None                                    # 赛果缺失
@@ -480,7 +499,7 @@ def _leg_hit(leg: dict, ent, default_play: str):
         return (leg.get("pick") or leg.get("score")) == sc
     if play == "ttg":
         h_, a_ = (int(x) for x in sc.split(":"))
-        want = str(leg.get("pick") or leg.get("score")).replace("球", "").replace("+", "")
+        want = str(leg.get("pick") or leg.get("score")).replace("球", "").replace("+", "").lstrip("s")
         return (h_ + a_ >= 7 and want == "7") if "7" in want and int(want) == 7 else (h_ + a_ == int(want))
     if play == "hafu":
         if not half:
@@ -516,7 +535,9 @@ def settle(ticket: dict, results: dict) -> dict:
     upset 各档 Σ全中注 2×倍数×Π腿赔率，另记 tierPayout 分档回款（对照报告用）；
     upsetHit=翻身档有 bets 且每注腿全中（pool-4x1=倍数注全中；closed 关档=False）。
     ②legacy 票（无 bets）原口径字节不变：payout 只算 upset 档全中（合赔×2×倍数，
-    推演库口径；实票结算走 tickets.json 账本）。"""
+    推演库口径；实票结算走 tickets.json 账本）。upset 空腿 legacy 票判 False
+    （vacuous-True 防守：all([])==True 会让关档空轮污染 dry-streak 回款记录）。
+    开发者 sszhang"""
     is_new = ticket.get("structure") == "new" or any(
         bool(t.get("bets")) for t in ticket.get("tiers", {}).values())
     leg_hits, tier_payout, upset_hit = {}, {}, False
@@ -540,7 +561,7 @@ def settle(ticket: dict, results: dict) -> dict:
                 "tierPayout": tier_payout,
                 "densityRecovered": round(payout / ticket.get("totalCost", 1), 4)}
     u = ticket["tiers"].get("upset", {})
-    upset_hit = bool(u) and all(h is True for h in leg_hits.get("upset", [[]])[0])
+    upset_hit = bool(u) and bool(u.get("legs")) and all(h is True for h in leg_hits.get("upset", [[]])[0])
     payout = 0.0
     if upset_hit:
         raw = 2 * u["multiplier"]
@@ -598,7 +619,7 @@ def cmd_settle() -> None:
             print(f"[boldplay] settle {p.name}: upset {sum(1 for h in u if h)}/{len(u)}关 "
                   f"全中={res['upsetHit']} payout={res['payout']:.0f} 密度回收={res['densityRecovered']} → 已写回 settle 字段")
         except Exception as e:   # 单卡损坏不中断整轮结算（v2 任务5：新旧/两档结构混扫兼容）
-            print(f"[boldplay] settle {p.name} 失败(跳过): {e}")
+            print(f"[boldplay] settle {p.name} 失败(跳过): {type(e).__name__}: {e}")
 
 
 def _selftest_two_tier():
@@ -695,6 +716,16 @@ def _selftest_settle():
     rl = settle(lg, results)
     assert rl["upsetHit"] is True and "tierPayout" not in rl
     assert abs(rl["payout"] - 2 * 4 * 3.5 * 7.0 * 1.7 * 4.0) < 1e-9
+    # ⑤ legacy 空档 upset 票：vacuous-True 防守——空腿不判全中（否则污染 dry-streak 回款记录）
+    le = {"totalCost": 4, "tiers": {"base": {"cost": 4, "legs": []},
+                                    "upset": {"cost": 0, "legs": []}}}
+    rle = settle(le, results)
+    assert rle["upsetHit"] is False and rle["payout"] == 0.0
+    # ⑥ TTG sN 词汇（C1 回归）：pools_card 体彩池键 s2/s7 与 legacy 2球/7+ 同判
+    assert _leg_hit({"play": "ttg", "pick": "s2"}, {"score": "1:1"}, "ttg") is True     # 总2球
+    assert _leg_hit({"play": "ttg", "pick": "s7"}, {"score": "3:4"}, "ttg") is True    # 7球=7+档
+    assert _leg_hit({"play": "ttg", "pick": "s3"}, {"score": "1:1"}, "ttg") is False   # 2≠3
+    assert _leg_hit({"play": "ttg", "pick": "7+"}, {"score": "4:3"}, "ttg") is True    # legacy 7+ 仍通
     print("[selftest] settle(两档bets/legacy双形状) OK")
 
 
@@ -711,6 +742,14 @@ def _selftest_dry_streak():
             (d / f"2026-08-{day}-boldplay.json").write_text(json.dumps(
                 {"date": f"2026-08-{day}", "settle": {"upsetHit": False}}), encoding="utf-8")
         assert upset_dry_streak("2026-08", d) == 4
+        # -rN 过程快照不入证据（I2 回归·铁律7 同日主文件=真相）：-legacy 双轨卡仍入账
+        (d / "2026-08-29-r2-boldplay.json").write_text(json.dumps(
+            {"date": "2026-08-29", "settle": {"upsetHit": False},
+             "tiers": {"upset": {"cost": 8}}}), encoding="utf-8")
+        (d / "2026-08-27-boldplay-legacy.json").write_text(json.dumps(
+            {"date": "2026-08-27", "tiers": {"upset": {"cost": 2}}}), encoding="utf-8")
+        assert upset_dry_streak("2026-08", d) == 4                      # 快照已结算False不续败(否则5)
+        assert upset_month_spend("2026-08", d) == 2.0                   # 快照8不入账·legacy真票2入账
         (d / "2026-08-30-boldplay.json").write_text(json.dumps(
             {"date": "2026-08-30"}), encoding="utf-8")                  # 未结算：跳过不断
         assert upset_dry_streak("2026-08", d) == 4

@@ -66,6 +66,31 @@ def test_settle_ttg_leg():
     assert settle(tk, {"001": "2:0", "002": "2:1"})["legHits"]["upset"] == [[True, False]]
 
 
+def test_settle_ttg_sporttery_pool_key():
+    """C1 回归：pools_card 体彩池键 sN（pick="s2"/"s7"）结算同判——旧解析 int("s2")
+    ValueError 被 cmd_settle except 吞掉=真实票结算死链；legacy 词汇（"2球"/"7+"）不受影响。"""
+    tk = {"totalCost": 4, "tiers": {"upset": {"cost": 4, "multiplier": 1, "legs": [
+        {"matchNumStr": "001", "play": "ttg", "pick": "s2", "odds": 3.8},
+        {"matchNumStr": "002", "play": "ttg", "pick": "s7", "odds": 16.0}]}}}
+    assert settle(tk, {"001": "1:1", "002": "3:4"})["legHits"]["upset"] == [[True, True]]   # 总2球; 7球=7+档
+    assert settle(tk, {"001": "1:1", "002": "2:1"})["legHits"]["upset"] == [[True, False]]  # 3球<7
+    tk3 = {"totalCost": 4, "tiers": {"upset": {"cost": 4, "multiplier": 1, "legs": [
+        {"matchNumStr": "001", "play": "ttg", "pick": "s3", "odds": 4.5}]}}}
+    assert settle(tk3, {"001": "1:1"})["legHits"]["upset"] == [[False]]                     # 总2球≠s3
+    tkl = {"totalCost": 4, "tiers": {"upset": {"cost": 4, "multiplier": 1, "legs": [
+        {"matchNumStr": "001", "play": "ttg", "pick": "7+", "odds": 16.0}]}}}
+    assert settle(tkl, {"001": "4:3"})["legHits"]["upset"] == [[True]]                      # legacy "7+" 仍通
+
+
+def test_settle_legacy_empty_upset_not_vacuous_true():
+    """carry-along 7：legacy 空 upset 腿票判 False——all([])==True 的 vacuous 假阳
+    会把关档空轮记成回款，污染 dry-streak。"""
+    tk = {"totalCost": 4, "tiers": {"base": {"cost": 4, "legs": []},
+                                    "upset": {"cost": 0, "legs": []}}}
+    res = settle(tk, {"001": "1:1"})
+    assert res["upsetHit"] is False and res["payout"] == 0.0
+
+
 def test_settle_hafu_leg_needs_half():
     """A-MIX HAFU 腿：02-results 无半场比分 → None 待人工（诚实口径，不自动判）。"""
     tk = {"totalCost": 8, "tiers": {"upset": {"cost": 8, "multiplier": 2, "legs": [
