@@ -140,7 +140,7 @@ football/
 ├── engine/                ← ② 计算层
 │   ├── scripts/           #    run.py(入口) / dc_fit / dc_predict / backtest / corpus / trend_report / backfill / calibrate / ablate / odds_fetch / elo_fetch / xg_fetch / espn_fetch / cn_fetch / sporttery_fetch / band_calibration / score_ev / live_odds_probe / build_index / boldplay(阶梯出票卡+settle,比分选法freq-band默认) / freq_band(联赛频率+球队平移+形状带+q排序) / freq_backtest(freq vs amix对照回测) / ticket_report(实票账本报告) / research/(一次性研究脚本归档)
 │   └── cache/             #    DC 参数 / models/ 版本化存档 / fusion.json / fd 赔率缓存 / sporttery_matches.json(五池+单关资格) / score_odds(体彩全玩法赔率日存档) / live_odds_feasibility.json
-├── skill/                 ← ③ 检索入口：SKILL.md v5.4（阶梯出票卡为默认输出；比分选法 freq-band；刷新即快照/扫描必落盘纪律）+ references/ 外置参考（系数详表/官方规则/教训档案，按需加载）
+├── skill/                 ← ③ 检索入口：SKILL.md v5.5（阶梯出票卡两档制：保底HAD 4串11+翻身多池引擎seq轮换；逐场三池玩法卡；刷新即快照/扫描必落盘纪律）+ references/ 外置参考（系数详表/官方规则/教训档案，按需加载）
 └── docs/                  #    设计文档
 ```
 

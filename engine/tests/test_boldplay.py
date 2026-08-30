@@ -108,3 +108,22 @@ def test_thin_pool_costs_truthful():
     assert t["tiers"]["mid"]["degraded"] is True    # 1 腿 <5
     assert len(t["tiers"]["upset"]["legs"]) == 1 and t["tiers"]["upset"]["degraded"] is True  # 1 腿 <4
     assert t["totalCost"] == t["tiers"]["base"]["cost"] + t["tiers"]["mid"]["cost"] + t["tiers"]["upset"]["cost"]
+
+
+# ---------- boldplay v2（两档制+多池引擎）回归薄壳 ----------
+# 与 --selftest 同源（selftest 含 build_two_tier/render_ticket/settle 双形状/dry_streak
+# 全链断言），pytest 入口保证 update.sh [7/7] 回归覆盖 v2 新代码。开发者 sszhang
+
+
+def test_v2_selftest_full_chain():
+    """v2 全链：两档结构+可读性渲染+settle双形状+降半仓gate（selftest 同源）。"""
+    import boldplay as bp
+    bp._selftest_two_tier()
+    bp._selftest_settle()
+    bp._selftest_dry_streak()
+
+
+def test_v2_upset_month_cap_constant():
+    """月预算常量与 SKILL v5.5 文本承诺一致（40 元红线）。"""
+    import boldplay as bp
+    assert bp.MONTHLY_UPSET_CAP == 40
