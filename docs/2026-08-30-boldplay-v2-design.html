@@ -1,0 +1,193 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>阶梯出票卡 v2 设计（两档制+多池引擎+逐场三池卡）· 2026-08-30</title>
+<style>
+:root{color-scheme:dark}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;max-width:980px;margin:0 auto;padding:24px 20px;background:#14161a;color:#d7dae0;line-height:1.65}
+h1{font-size:1.45em;border-bottom:2px solid #4a9eff;padding-bottom:8px;color:#fff}
+h2{font-size:1.15em;color:#4a9eff;margin-top:2em;border-left:4px solid #4a9eff;padding-left:10px}
+h3{font-size:1.02em;color:#e8e8e8;margin-top:1.4em}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:0.9em}
+th,td{border:1px solid #3a3f47;padding:5px 10px;text-align:left;vertical-align:top}
+th{background:#1f2530;color:#9fc3ff}
+tr:nth-child(even) td{background:#191d24}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.note{background:#1f2530;border-left:4px solid #ffd57f;padding:10px 14px;margin:12px 0;font-size:0.92em}
+figure{margin:18px 0;text-align:center}
+figcaption{font-size:0.85em;color:#8a919c;margin-top:6px}
+code,pre{font-family:ui-monospace,Menlo,monospace;font-size:0.88em;background:#1b1f26;border-radius:4px}
+pre{padding:12px;overflow-x:auto;border:1px solid #2c313a;line-height:1.5}
+.tag{display:inline-block;padding:1px 8px;border-radius:10px;font-size:0.8em;margin-right:4px}
+.ok{background:#1d4a2c;color:#7fe0a0}.open{background:#4a3b1d;color:#ffd57f}
+svg text{font-family:-apple-system,"PingFang SC",sans-serif}
+</style>
+</head><body>
+
+<h1>阶梯出票卡 v2：两档制 + 多池引擎 + 逐场三池卡</h1>
+<p>日期：2026-08-30 · 状态：<span class="tag open">待大哥终审</span> · 前置证据：<code>data/04-summaries/2026-08-30-plan-vs-ticket-review.html</code> · 关联：SKILL v5.4.2 / freq_band / boldplay / preference.json</p>
+
+<h2>1. 背景与动机（三份实证）</h2>
+<ol>
+<li><b>方案推演 7 版全灭</b>（−114 元 / 21 注过关 0 全中）vs 实票容错型 +159.4——63% 选场命中率下，过关型结构数学失血，容错型结构盈利（T002/T003 的 4串11 中 2 关回高赔 2串1 = +229）</li>
+<li><b>T010 双事故</b>：买错场次（无出票预检，已另立 v5.4.2 双防线）+ 形状自扩超带（无仓位纪律）</li>
+<li><b>大哥的结构判断</b>：CRS 31 选 1 难度高且赔率相对难度不划算；半全场（HAFU 9 选 1）/总进球（TTG 8 选 1）常更合适——三池抽水结构（33.9% vs 20.4%）与高频选项命中率（5-12% vs 18-32%）支持该判断，且实票口味档案中 HAFU dd×4、TTG 0球×3 早已在票</li>
+</ol>
+
+<h2>2. 目标与非目标</h2>
+<table>
+<tr><th>目标（本期）</th><th>非目标（YAGNI）</th></tr>
+<tr><td>
+① 两档制：保底 HAD 4串11 + 翻身多池引擎（进阶档砍除）<br>
+② 逐场三池玩法卡：每场 A/B 级预测输出 CRS/TTG/HAFU 的 q×赔率 EV 并排与推荐池<br>
+③ 翻身档 seq 形状轮换（容错引擎/彩票 交替，一个月实测对照）<br>
+④ legacy 双结构过渡（--structure=legacy 保留一个月）<br>
+⑤ 翻身档月度彩票预算纪律（preference.json）
+</td><td>
+· 期望盈利（负期望系统不变，改的是方差结构与信息透明）<br>
+· DC 重进比分链路（freq-band 铁律 8 不动）<br>
+· 半全场条件分解升级（v1 用独立近似，消融后再定）<br>
+· 8 串长链/复式等新形状（M串N 表已归档备查，按需再议）<br>
+· 自动下注/加注（红线纪律不动）
+</td></tr>
+</table>
+
+<h2>3. 总体数据流</h2>
+<figure>
+<svg viewBox="0 0 900 400" width="100%" style="max-width:880px;color:#d7dae0" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor" opacity=".7"/></marker></defs>
+<style>.bx{fill:#1b1f26;stroke:#3a3f47;stroke-width:1.2}.bx2{fill:#1a2420;stroke:#3d6b4f;stroke-width:1.2}.t1{font:600 12.5px -apple-system,'PingFang SC',sans-serif;fill:currentColor}.t2{font:11px -apple-system,'PingFang SC',sans-serif;fill:#8a919c}.ar{stroke:currentColor;stroke-width:1.4;opacity:.7}</style>
+<rect x="20" y="40" width="180" height="72" rx="8" class="bx"/>
+<text x="34" y="62" class="t1">freq-band 频率模板</text>
+<text x="34" y="80" class="t2">联赛比分矩阵 + 球队平移(λ)</text>
+<text x="34" y="96" class="t2">+ half_share.json 半场占比</text>
+<rect x="20" y="160" width="180" height="56" rx="8" class="bx"/>
+<text x="34" y="182" class="t1">体彩五池赔率</text>
+<text x="34" y="200" class="t2">sporttery_matches.json(已有)</text>
+<rect x="250" y="70" width="200" height="120" rx="8" class="bx2"/>
+<text x="264" y="94" class="t1">聚合层 (freq_band.py 扩展)</text>
+<text x="264" y="114" class="t2">TTG_k = Σ_{i+j=k} P(i,j) 8档</text>
+<text x="264" y="130" class="t2">HAFU(x,y) = s(x)×P_FT(y) 9键</text>
+<text x="264" y="146" class="t2">CRS 带内 q (freq-band 原样)</text>
+<text x="264" y="166" class="t2">EV = q × 体彩赔率 − 1</text>
+<rect x="520" y="20" width="360" height="90" rx="8" class="bx2"/>
+<text x="534" y="44" class="t1">逐场三池玩法卡 (Step 7 报告)</text>
+<text x="534" y="64" class="t2">三池 top 选项 q×赔率×EV 并排 + 推荐池</text>
+<text x="534" y="82" class="t2">EV差&lt;0.05 选抽水低池；全负EV如实标注</text>
+<rect x="520" y="150" width="170" height="90" rx="8" class="bx2"/>
+<text x="534" y="174" class="t1">保底档 HAD 4串11</text>
+<text x="534" y="192" class="t2">现 HAD 选腿逻辑复用</text>
+<text x="534" y="208" class="t2">expand_combos 展开 11 注</text>
+<text x="534" y="224" class="t2">22 元 · 结算引擎现成</text>
+<rect x="710" y="150" width="170" height="90" rx="8" class="bx2"/>
+<text x="724" y="174" class="t1">翻身档 多池引擎</text>
+<text x="724" y="192" class="t2">seq奇偶轮换:</text>
+<text x="724" y="208" class="t2">奇=跨池2串1×3注(容错)</text>
+<text x="724" y="224" class="t2">偶=跨池4串1×N倍(彩票)</text>
+<rect x="520" y="280" width="360" height="86" rx="8" class="bx"/>
+<text x="534" y="304" class="t1">settle 结算 + 对照回测 (一个月)</text>
+<text x="534" y="322" class="t2">new vs legacy(--structure=legacy) 双轨</text>
+<text x="534" y="340" class="t2">seq 轮换两形状各积 4~5 轮实测</text>
+<line x1="200" y1="76" x2="250" y2="110" class="ar" marker-end="url(#a2)"/>
+<line x1="200" y1="188" x2="250" y2="160" class="ar" marker-end="url(#a2)"/>
+<line x1="450" y1="120" x2="520" y2="65" class="ar" marker-end="url(#a2)"/>
+<line x1="450" y1="150" x2="520" y2="195" class="ar" marker-end="url(#a2)"/>
+<line x1="450" y1="165" x2="710" y2="195" class="ar" marker-end="url(#a2)"/>
+<line x1="700" y1="240" x2="640" y2="280" class="ar" marker-end="url(#a2)"/>
+</svg>
+<figcaption>图1 · v2 数据流：频率模板→三池聚合→逐场卡（地基）→ 保底/翻身组票 → 双轨对照</figcaption>
+</figure>
+
+<h2>4. 逐项设计</h2>
+
+<h3>4.1 两档制（保底 4串11 + 翻身多池；进阶砍除）</h3>
+<table>
+<tr><th>档</th><th>形状</th><th>成本</th><th>选腿</th><th>依据</th></tr>
+<tr><td>保底</td><td>HAD <b>4串11</b>（6×2串1+4×3串1+1×4串1）</td><td class="num">22 元</td><td>现 boldplay HAD 选腿复用（四星三星、赔率带 1.5~2.4）</td><td>回款概率 85.2%（vs 4串1 15.8%）；T002/T003 实证 +229；无单关资格约束</td></tr>
+<tr><td>翻身</td><td>seq 轮换：<b>奇=跨池 2串1×3 注</b>（6元）/ <b>偶=跨池 4串1×1~4倍</b>（2~8元）</td><td class="num">2~8 元</td><td>逐场三池卡推荐池的候选（§4.3）</td><td>容错引擎期望返还 43.7%（CRS 2串1）vs 彩票 19.1%——一个月实测对照定终身</td></tr>
+<tr><td>~~进阶~~</td><td colspan="4">砍除：5串1×3倍 七轮 0/7 全中、贡献 −42 元，三档中实证最差</td></tr>
+</table>
+<div class="note"><b>总仓位</b>：24~30 元/轮，roundRedline 30 不破。<b>混串木桶</b>：跨池 4串1 含 CRS/HAFU 腿 ≤4 关 ✓ 合法；跨池 2串1 无约束。<b>翻身月度彩票预算</b>（C 纪律）：40 元/月上限写入 preference.json（budget_gate 自动执行，含在 240 月封顶内），连续 4 轮 0 回款自动降半仓位并提示。</div>
+
+<h3>4.2 三池聚合公式（freq_band.py 扩展，纯函数）</h3>
+<pre>TTG 聚合（比分矩阵 → 总进球 8 档）:
+  TTG_k = Σ_{i+j=k} P(i,j),  k = 0..6；TTG_7+ = 1 − Σ_{k=0..6}      ← 体彩 s0..s7 对齐
+
+HAFU 聚合（v1 独立近似，消融后再升级条件分解）:
+  HAFU(x,y) = s(x) × P_FT(y)
+  s = half_share.json 联赛半场占比（β收缩，已有）
+  P_FT(y) = 比分矩阵按净胜球聚合的三向（P(i>j), P(i=j), P(i<j)）
+  ⚠️ 独立性假设（半场与全场结果无关）为 v1 简化——dd 型（半平全平）会略低估，
+     消融数据够后升级 s(x)×P_FT(y|x) 条件分解
+
+CRS：freq-band 带内 q 原样（铁律 8 三步选法不动）
+
+EV 口径: EV = q × 体彩赔率 − 1（同一场跨池对比合法——池间差是抽水结构 33.9%/20.4%，
+非 amix 的"DC 找市场错价"；q 源始终是真实频率模板）</pre>
+
+<h3>4.3 逐场三池玩法卡（Step 7 报告新增输出）</h3>
+<ul>
+<li>每场 A/B 级场次一张卡：三池各取 top 选项（CRS=带内 q 最高 1 项；TTG=q 最高 2 档；HAFU=q 最高 2 键）并排：选项 / q 真实频率 / 体彩赔率 / EV</li>
+<li>推荐规则：三池 EV 最高者；EV 差 &lt; 0.05 选抽水低池（TTG/HAFU）；<b>全负 EV 如实标注"负EV娱乐注"</b>（体彩常态，诚实呈现）</li>
+<li>C/D 级不出卡（数据等级约束）；卡随预测 JSON 归档（matches[] 增 pools 字段：{crs:{pick,q,odds,ev}, ttg:{...}, hafu:{...}, recommend}）</li>
+<li>预测记录 schema：pools 字段随回填闭环（settle 判 pools.recommend 命中率 → trend ⑦ 新断言：推荐池 vs 实际最优池）</li>
+</ul>
+
+<h3>4.4 legacy 双结构过渡（freq-band/amix 同款模式）</h3>
+<ul>
+<li><code>boldplay.py --structure=new</code>（默认）/ <code>--structure=legacy</code>（旧三档），字节级保留旧结构</li>
+<li>过渡期一个月：settle 双轨结算各留痕；freq_backtest.py 扩展结构对照维度</li>
+<li>一个月后按实测定夺：新结构回款率/期望返还 vs legacy（消融纪律，无正增益即回滚）</li>
+<li>T010（4串15 含单关翻身首测）结果纳入定夺数据</li>
+</ul>
+
+<h3>4.5 改动清单</h3>
+<table>
+<tr><th>#</th><th>文件</th><th>改动</th></tr>
+<tr><td>1</td><td><code>engine/scripts/freq_band.py</code></td><td>+<code>ttg_agg(matrix)</code> / <code>hafu_agg(matrix, half_share)</code> 纯函数 + selftest（ΣTTG=1、ΣHAFU=1、EV 计算三池）</td></tr>
+<tr><td>2</td><td><code>engine/scripts/boldplay.py</code></td><td>structure 参数（new/legacy）；保底 expand_combos 4串11；翻身多池选腿（读逐场卡 pools.recommend）+ seq 轮换 + 月度彩票预算 gate；settle 双形状适配（2串1×3 结算=三注独立）</td></tr>
+<tr><td>3</td><td><code>skill/SKILL.md</code></td><td>Step 6 阶梯出票卡节重写（两档制 v2）+ Step 7 三池玩法卡输出规范 + 版本 v5.5</td></tr>
+<tr><td>4</td><td><code>data/06-tickets/preference.json</code></td><td>+翻身月度彩票预算 40 元 + 降仓位规则 + 形状档案更新（4串15 待大哥确认固定/特例后录入）</td></tr>
+<tr><td>5</td><td><code>engine/scripts/freq_backtest.py</code></td><td>结构对照维度（new vs legacy 回款率/期望返还）</td></tr>
+<tr><td>6</td><td>预测 JSON schema</td><td>matches[] +<code>pools</code> 字段（三池候选+推荐池），corpus/trend 兼容增量</td></tr>
+</table>
+
+<h2>5. 错误边界</h2>
+<table>
+<tr><th>情形</th><th>处理</th></tr>
+<tr><td>场次无 half_share（联赛缺半场先验）</td><td>HAFU 池标注"先验缺失"不出候选，TTG/CRS 正常（聚合不依赖 half_share）</td></tr>
+<tr><td>体彩 ttg/hafu 池未开售</td><td>该池标 ❌ 跳过（odds dump 的池数据存在性检查）</td></tr>
+<tr><td>三池 EV 全负</td><td>如实标注，推荐列"最不差"+ 负EV 娱乐注标记（宁缺毋滥原则不变）</td></tr>
+<tr><td>seq 轮换遇翻身腿不足</td><td>奇数轮 2串1×3 需 ≥3 场有卡候选；不足降级 2串1×N（N=可用场数）或关档（铁律 8 不硬凑）</td></tr>
+<tr><td>legacy 过渡期双轨数据冲突</td><td>各自独立 settle 账本，trend 报告分列；不合并统计</td></tr>
+</table>
+
+<h2>6. 测试方案</h2>
+<ol>
+<li><b>freq_band 聚合 selftest</b>：ΣTTG(0..7+)=1 断言；ΣHAFU(9键)=1；已知矩阵手算值比对（如 1:1+2:2+0:0+2:0 组合的 TTG_2）</li>
+<li><b>boldplay new 结构 selftest</b>：4串11 展开 11 注对账；seq 奇偶形状切换；预算 gate 触发</li>
+<li><b>对照回测</b>：用已回填语料（13 轮）跑 new vs legacy 结构回放——历史轮的 HAD 腿 replay 4串11 结算 vs 旧三档（容错回款路径验证）</li>
+<li><b>集成</b>：下一轮真实预测走全链（三池卡→两档组票→出票核对单）</li>
+</ol>
+
+<h2>7. 决策记录（ADR）</h2>
+<table>
+<tr><th>#</th><th>决策</th><th>理由</th><th>备选与否决原因</th></tr>
+<tr><td>D1</td><td>双结构过渡（new 默认 + legacy 对照一个月）</td><td>freq-band/amix 先例；真实数据继续积累</td><td>直接切（失去对照）；回测先行（7 轮 0/21 已是回测结论）</td></tr>
+<tr><td>D2</td><td>两档制，进阶砍除</td><td>5串1 七轮 0/7 最差实证</td><td>三档瘦身（进阶 2串1×2 留尾——一个月后可议）</td></tr>
+<tr><td>D3</td><td>保底 = 4串11</td><td>85.2% 回款概率 + T002/003 实证盈利 + 结算引擎现成（expand_combos）</td><td>3串4（8元，更瘦但回款概率 66.8%）；4串15（含单关但成本 30 吞满预算）</td></tr>
+<tr><td>D4</td><td>翻身 = 多池引擎 + seq 轮换</td><td>大哥观点+三池结构数据；缺实测故轮换对照</td><td>纯彩票甲（19.1% 期望）；纯容错乙（失去翻身本义）</td></tr>
+<tr><td>D5</td><td>跨池 EV 对比合法（≠amix 找错价）</td><td>q 源=真实频率；池间差=抽水结构</td><td>纯抽水排序（丢场次信号信息）</td></tr>
+<tr><td>D6</td><td>HAFU v1 独立近似</td><td>half_share 已有；条件分解需半场数据积累</td><td>条件分解（数据不足，消融后升级）</td></tr>
+<tr><td>D7</td><td>逐场三池卡=A/B 级限定</td><td>C/D 级数据等级不够（玩法×等级矩阵既有约束）</td><td>全部场次出卡（噪声）</td></tr>
+</table>
+
+<h2>8. 远期衔接</h2>
+<ul>
+<li><b>消融纪律</b>：一个月双轨数据 → 结构定夺（无正增益即回滚 legacy）；pools.recommend 命中率进 trend ⑦ 断言</li>
+<li><b>HAFU 条件分解</b>：半场数据（insight 的 H2H 带半场比分）积累后升级 D6</li>
+<li><b>T010 定夺输入</b>：4串15 含单关翻身首测结果（明后晚）纳入翻身档终形</li>
+<li><b>4串15 形状档案</b>：待大哥确认"固定买法/特例"后录入 preference.json</li>
+</ul>
+
+<hr>
+<p style="color:#8a919c;font-size:0.85em">证据链：plan-vs-ticket-review.html（7 轮实证）/ play-rules.md M串N 全表（2026-08-30 补）/ preference.json 实票口味 / SKILL v5.4.2。设计过程：brainstorming skill（architectural 路径 · 路径/档位/玩法三层澄清 · 调研驱动修订两轮——M串N 调研 + 大哥多池观点）。</p>
+</body></html>
