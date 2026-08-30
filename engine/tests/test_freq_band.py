@@ -209,6 +209,9 @@ def test_pools_card_divergence_flag(monkeypatch):
     card = freq_band.pools_card(m, {"0:2": 0.115, "1:1": 0.08}, {}, {}, ft)
     assert "divergence" in card["flags"]
     assert card["candidates"][0]["pool"] != "crs"                     # 降级后不居首
+    assert any(c.get("divergent") for c in card["candidates"])        # divergent 标记留展示(I1裁定)
+    assert card["rec_upset"]["pool"] != "crs"                         # 分歧CRS不进翻身推荐
+    assert card["rec_base"]["pool"] == "crs"                          # 保底带不受分歧旗影响(桩环境下band仅CRS·rec_base不看divergent; selftest真实α环境下dd更高时同理)
     assert all(c["code"] == "周日004" and c["match"] == "圣保利 vs 凯泽"
                for c in card["candidates"])                           # 候选自带 code/match（T4 契约）
     # EV=q×赔率−1（存档 4 位舍入容差）；1:1@7.5 低于带下限10出局；s3 无 q 出局

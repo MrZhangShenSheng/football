@@ -111,13 +111,15 @@ def test_corpus_dual_schema():
     assert nr["round"] == "2026-08-22" and nr["pick"] == "主胜"
     new = {"code": "周日014", "league": "荷甲(R3)", "match": "坎布尔 vs 费耶诺德",
            "pick": "HAD 客胜", "odds": 1.14, "star": 4, "grade": "A",
-           "fused": [0.032, 0.083, 0.885], "final": 0.841, "ev": -0.031, "inPlan": "B"}
+           "fused": [0.032, 0.083, 0.885], "final": 0.841, "ev": -0.031, "inPlan": "B",
+           "pools": {"rec_base": {"pool": "crs", "pick": "1:1", "q": 0.1, "odds": 8.0}}}
     nr2 = normalize_record(new, "2026-08-23")
     assert nr2["league"] == "荷甲"
     assert nr2["grade"] == 4
     assert nr2["pick"] == "客胜" and nr2["play"] == "HAD"
     assert nr2["p_final"] == [0.032, 0.083, 0.885]
     assert nr2["round"] == "2026-08-23"
+    assert nr2["pools"] == new["pools"]     # 三池卡透传不展开（I3·spec §4.5#6）
 
 
 def test_backfill_chain():
