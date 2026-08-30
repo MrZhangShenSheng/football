@@ -174,3 +174,36 @@ def freq_legs(odds_day: dict, freq_table: dict, form: dict, zh: dict, band: tupl
             legs.append(best[1])
     legs.sort(key=lambda l: -l["q"])
     return legs
+
+
+def ttg_agg(q_map: dict) -> dict:
+    """比分分布 → 体彩总进球8档 {s0..s7}（s7=7+并桶；'胜其他'等长尾并入s7保守）。
+    纯分桶不改形状（spec §4.2）。开发者 sszhang"""
+    out = {f"s{k}": 0.0 for k in range(8)}
+    for s, q in q_map.items():
+        if ":" not in s:
+            out["s7"] += q
+            continue
+        h, a = (int(x) for x in s.split(":"))
+        out[f"s{min(h + a, 7)}"] += q
+    return out
+
+
+def _selftest_ttg():
+    q = {"1:0": 0.20, "0:1": 0.15, "2:2": 0.10, "3:3": 0.05, "0:0": 0.30, "2:0": 0.12, "4:3": 0.08}
+    # 归一化fixture Σ=1.00
+    out = ttg_agg(q)
+    assert abs(sum(out.values()) - 1.0) < 1e-9
+    assert abs(out["s0"] - 0.30) < 1e-9          # 0:0
+    assert abs(out["s1"] - 0.35) < 1e-9          # 1:0 + 0:1
+    assert abs(out["s4"] - 0.10) < 1e-9          # 2:2
+    assert abs(out["s6"] - 0.05) < 1e-9          # 3:3
+    assert abs(out["s7"] - 0.08) < 1e-9          # 4:3 → 7球并入s7(=7+)
+    assert abs(out["s2"] - 0.12) < 1e-9          # 2:0
+    print("[selftest] ttg_agg OK")
+
+
+if __name__ == "__main__":
+    import sys
+    if "--selftest" in sys.argv:
+        _selftest_ttg()

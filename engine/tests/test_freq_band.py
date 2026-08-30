@@ -178,3 +178,10 @@ def test_build_ticket_amix_unchanged():
         boldplay.mix_candidates = orig
     assert calls == [1] and len(t["tiers"]["upset"]["legs"]) == 3   # amix 链未动
     assert t["method"] == "amix"
+
+
+def test_ttg_agg_buckets():
+    from freq_band import ttg_agg
+    out = ttg_agg({"1:0": 0.6, "2:2": 0.4})
+    assert abs(out["s1"] - 0.6) < 1e-9 and abs(out["s4"] - 0.4) < 1e-9
+    assert abs(sum(out.values()) - 1.0) < 1e-9
