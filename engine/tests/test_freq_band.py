@@ -185,3 +185,11 @@ def test_ttg_agg_buckets():
     out = ttg_agg({"1:0": 0.6, "2:2": 0.4})
     assert abs(out["s1"] - 0.6) < 1e-9 and abs(out["s4"] - 0.4) < 1e-9
     assert abs(sum(out.values()) - 1.0) < 1e-9
+
+
+def test_hafu_agg_normalized():
+    from freq_band import hafu_agg
+    p_half = {"h": 0.4, "d": 0.35, "a": 0.25}
+    alpha = {k: 1.0 for k in ("hh","hd","ha","dh","dd","da","ah","ad","aa")}
+    out = hafu_agg({"1:1": 0.5, "2:2": 0.5}, p_half, alpha)
+    assert abs(sum(out.values()) - 1.0) < 1e-9

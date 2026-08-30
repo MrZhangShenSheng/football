@@ -3,8 +3,10 @@
 赔率只做形状带门槛、不做排序；DC 不参与比分选择；数据缺失零破坏降级（纯联赛模板）。"""
 import glob, json, math
 from collections import Counter, defaultdict
+from datetime import date
 from pathlib import Path
 from band_calibration import DIVS, SEASONS, fetch_rows
+from common import ROOT
 from score_ev import map_league
 
 RECENT_WINDOW = 10          # 球队近况窗口（场）
@@ -203,7 +205,110 @@ def _selftest_ttg():
     print("[selftest] ttg_agg OK")
 
 
+HAFU_KEYS = [f"{x}{y}" for x in "hda" for y in "hda"]
+ALPHA_CACHE = ROOT / "engine" / "cache" / "hafu_alpha.json"
+
+
+def _half_ft_rows(results_dir=None):
+    """02-results → [(半场三向idx, 全场三向idx)]（half+result 齐全的场次）。开发者 sszhang"""
+    from pathlib import Path
+    base = Path(results_dir) if results_dir else ROOT / "data" / "02-results"
+    rows = []
+    for p in sorted(base.glob("2*.json")):
+        try:
+            data = json.loads(p.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        for m in data.get("matches") or []:
+            sc, hf = m.get("result"), m.get("half")
+            if not (sc and hf and ":" in str(hf)):
+                continue
+            try:
+                hg, ag = (int(x) for x in str(sc).replace("-", ":").split(":"))
+                hh_, ha_ = (int(x) for x in str(hf).split(":"))
+            except ValueError:
+                continue
+            tri = lambda a, b: 0 if a > b else (1 if a == b else 2)
+            rows.append((tri(hh_, ha_), tri(hg, ag)))
+    return rows
+
+
+def half_three_way(results_dir=None) -> dict:
+    """本地半场三向经验频率 {"h","d","a"}（α 与 HAFU 聚合共用数据源）。开发者 sszhang"""
+    rows = _half_ft_rows(results_dir)
+    n = len(rows)
+    if not n:
+        return {"h": 1/3, "d": 1/3, "a": 1/3}     # 无数据→均匀退化(低置信)
+    c = [0, 0, 0]
+    for x, _ in rows:
+        c[x] += 1
+    return {"h": c[0]/n, "d": c[1]/n, "a": c[2]/n}
+
+
+def hafu_alpha(results_dir=None) -> dict:
+    """观测9键频率 / [P_half×P_FT]全局 → 纠偏系数α（spec §4.2 v1.1·D8）。
+    全局口径混合联赛(选择偏差诚实标注于JSON note)；样本0的键α=1.0不纠。
+    结果缓存 engine/cache/hafu_alpha.json（n不变复用）。开发者 sszhang"""
+    rows = _half_ft_rows(results_dir)
+    n = len(rows)
+    if ALPHA_CACHE.exists():
+        try:
+            cached = json.loads(ALPHA_CACHE.read_text(encoding="utf-8"))
+            if cached.get("n") == n:
+                return cached
+        except (OSError, json.JSONDecodeError):
+            pass
+    obs = {k: 0 for k in HAFU_KEYS}
+    ph = [0, 0, 0]; pf = [0, 0, 0]
+    for x, y in rows:
+        obs[HAFU_KEYS[x * 3 + y]] += 1
+        ph[x] += 1; pf[y] += 1
+    tri = "hda"
+    alpha = {}
+    for k in HAFU_KEYS:
+        x, y = tri.index(k[0]), tri.index(k[1])
+        base = (ph[x] / n) * (pf[y] / n)
+        alpha[k] = round((obs[k] / n) / base, 4) if base > 0 and obs[k] >= 5 else 1.0
+    out = {"alpha": alpha, "n": n, "ranAt": str(date.today()),
+           "note": "全局口径·混合联赛·含选场偏差; obs<5键不纠(α=1)"}
+    ALPHA_CACHE.parent.mkdir(parents=True, exist_ok=True)
+    ALPHA_CACHE.write_text(json.dumps(out, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    return out
+
+
+def hafu_agg(q_map: dict, p_half: dict, alpha: dict) -> dict:
+    """半场三向(经验) × 本场FT三向(q_map聚合) × α → 九键归一（spec §4.2）。
+    注意: half_share.json 为 s/ρ_half 标量结构非九键，v1 用本地经验 P_half（侦察确认）。开发者 sszhang"""
+    ph_ft = sum(q for s, q in q_map.items() if ":" in s and int(s.split(":")[0]) > int(s.split(":")[1]))
+    pa_ft = sum(q for s, q in q_map.items() if ":" in s and int(s.split(":")[0]) < int(s.split(":")[1]))
+    p_ft = {"h": ph_ft, "d": max(1 - ph_ft - pa_ft, 0.0), "a": pa_ft}
+    raw = {f"{x}{y}": p_half[x] * p_ft[y] * alpha.get(f"{x}{y}", 1.0) for x in "hda" for y in "hda"}
+    z = sum(raw.values())
+    return {k: v / z for k, v in raw.items()} if z else {k: 1/9 for k in HAFU_KEYS}
+
+
+def _selftest_hafu():
+    from pathlib import Path
+    res = hafu_alpha()                       # 真实02-results数据
+    assert res["n"] >= 100, f"半场样本不足: {res['n']}"
+    assert res["alpha"]["dd"] >= 1.0, f"α(dd)必须≥1(方向性·spec D8): {res['alpha']['dd']}"
+    p_half = half_three_way()
+    assert abs(sum(p_half.values()) - 1.0) < 1e-6
+    # 构造q_map: 纯主胜分布 → FT=(1,0,0) → 九键只剩 xh
+    qm = {"2:0": 0.5, "3:1": 0.5}
+    alpha1 = {k: 1.0 for k in ("hh","hd","ha","dh","dd","da","ah","ad","aa")}
+    out = hafu_agg(qm, p_half, alpha1)
+    assert abs(sum(out.values()) - 1.0) < 1e-9
+    assert abs(out["hh"] + out["dh"] + out["ah"] - 1.0) < 1e-9   # FT全主胜→xh三键占满
+    # 纠偏生效: α(hh)=2 时 hh 翻倍(归一化前)
+    alpha2 = dict(alpha1); alpha2["hh"] = 2.0
+    out2 = hafu_agg(qm, p_half, alpha2)
+    assert out2["hh"] > out["hh"] * 1.5      # 归一化稀释后仍显著抬升
+    print("[selftest] hafu_alpha + hafu_agg OK")
+
+
 if __name__ == "__main__":
     import sys
     if "--selftest" in sys.argv:
         _selftest_ttg()
+        _selftest_hafu()
