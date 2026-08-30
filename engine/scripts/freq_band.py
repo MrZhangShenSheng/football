@@ -15,6 +15,10 @@ SURVIVE_Q = 0.01            # 生存阈值：平移后 q < 1% 的比分视为噪
 LAMBDA_CLAMP = (0.2, 4.5)   # λ 合理域（防小样本狂胜拉爆）
 SIGMA_FLOOR = 0.5           # 核带宽下限（防极端单点分布 σ→0）
 LEAGUE_STORE = ("japan", "korea", "sweden", "saudi")   # 本地赛果库联赛（与 score_ev 口径一致）
+BAND_DEFAULT = (10.0, 28.0)   # CRS 形状带（桂林-梅州合并带，与 boldplay 现状一致；boldplay.band_ok 是 had 方向带不可复用）
+DIVERGENCE_FLAG_PP = 5        # |q − 市场隐含| 超此值(百分点)触发分歧旗（spec D12）
+MARKET_MARGIN_DIV = 1.13      # 体彩三向去水除数近似
+LOW_CONF_N = 100              # 模板样本低置信线（spec D9：不砍池只标旗）
 
 
 def _norm(name: str) -> str:
@@ -318,8 +322,110 @@ def _selftest_hafu():
     print(f"[selftest] hafu_alpha + hafu_agg OK (n={res['n']} 去重口径)")
 
 
+def pools_card(m: dict, q_map: dict, form: dict, zh: dict, freq_table: dict) -> dict:
+    """单场三池玩法卡（spec §4.3 v1.2）：CRS带内top1 + TTG top2 + HAFU top2，
+    EV=q×体彩赔率−1；双行推荐（保底=相近带q最高/翻身=相近带赔率最高）；
+    CRS分歧旗（平移放大效应·降级第二推荐）；低置信旗（模板缺失/样本<LOW_CONF_N，
+    不砍池推荐走结构兜底=抽水低池优先）。开发者 sszhang"""
+    lg = map_league(m.get("league", ""))
+    blob = freq_table.get(lg) if lg else None
+    n_tpl = (blob or {}).get("__n", 0) if blob else 0
+    flags = []
+    if n_tpl < LOW_CONF_N:                         # 映射缺失(None)/空模板 → n_tpl=0 同样低置信
+        flags.append("low_conf")
+    # 联赛模板优先, 缺则全局池(freq_legs 同款降级); q_map 已含平移
+    q_eff = q_map if q_map else shifted_q(global_pool(freq_table) if freq_table else Counter(), None)
+    p_half, alpha_doc = half_three_way(), hafu_alpha()
+    alpha = alpha_doc.get("alpha", {})
+    ttg_q = ttg_agg(q_eff)
+    hafu_q = hafu_agg(q_eff, p_half, alpha)
+    code, match = m.get("code"), f'{m.get("home")} vs {m.get("away")}'
+    cands = []
+    crs_top = None
+    for s, o in (m.get("crs") or {}).items():
+        o = float(o)
+        if ":" in s and BAND_DEFAULT[0] <= o <= BAND_DEFAULT[1]:      # 形状带门槛(铁律8)
+            c = {"code": code, "match": match, "pool": "crs", "pick": s,
+                 "q": round(q_eff.get(s, 0.0), 4), "odds": o}
+            if crs_top is None or c["q"] > crs_top["q"]:
+                crs_top = c
+    if crs_top and crs_top["q"] > 0:
+        crs_top["ev"] = round(crs_top["q"] * crs_top["odds"] - 1, 4)
+        cands.append(crs_top)
+    ttg_c = sorted(({"code": code, "match": match, "pool": "ttg", "pick": k,
+                     "q": round(v, 4), "odds": float(o)}
+                    for k, o in (m.get("ttg") or {}).items() for v in [ttg_q.get(k, 0.0)] if v > 0),
+                   key=lambda c: -c["q"])[:2]
+    hafu_c = sorted(({"code": code, "match": match, "pool": "hafu", "pick": k,
+                      "q": round(v, 4), "odds": float(o)}
+                     for k, o in (m.get("hafu") or {}).items() for v in [hafu_q.get(k, 0.0)] if v > 0),
+                    key=lambda c: -c["q"])[:2]
+    for c in ttg_c + hafu_c:
+        c["ev"] = round(c["q"] * c["odds"] - 1, 4)
+    cands.extend(ttg_c + hafu_c)
+    if not cands:
+        return {"code": code, "match": match,
+                "candidates": [], "flags": flags + ["no_candidates"]}
+    # CRS 分歧旗（spec D12）: CRS 候选 EV 居首且 |q−市场隐含|>阈值 → 降级到末位(第二推荐)
+    if cands[0]["pool"] == "crs" and crs_top:
+        implied = 1.0 / (crs_top["odds"] * MARKET_MARGIN_DIV)
+        if (crs_top["q"] - implied) * 100 > DIVERGENCE_FLAG_PP and len(cands) > 1:
+            flags.append("divergence")
+            cands.append(cands.pop(0))            # 降级到末位=第二推荐
+    # 双行推荐: EV 相近带(差<0.1·演示档)内, 保底取q最高/翻身取赔率最高
+    evs = [c["ev"] for c in cands]
+    band = [c for c in cands if c["ev"] >= max(evs) - 0.1]
+    rec_base = max(band, key=lambda c: c["q"])
+    rec_upset = max(band, key=lambda c: c["odds"])
+    if "low_conf" in flags:                        # 结构兜底: 抽水低池优先(spec D9)
+        low_vig = [c for c in band if c["pool"] in ("ttg", "hafu")]
+        if low_vig:
+            rec_base = max(low_vig, key=lambda c: c["q"])
+    return {"code": code, "match": match,
+            "candidates": cands, "rec_base": rec_base, "rec_upset": rec_upset, "flags": flags}
+
+
+def _selftest_pools():
+    # ── Scenario A（双行推荐）：两候选 EV 相近 → 保底取 q 最高 / 翻身取赔率最高 ──
+    # 手算: q_map={"0:2":.09,"1:1":.10,"2:1":.12} → ttg_q: s2=.19, s3=.12（0:2/1:1 均总2球）
+    #   crs 1:1  q=.100 @11.5 → EV=1.150−1=.150；隐含 1/(11.5×1.13)=7.7% → Δ2.3pp<5pp 无分歧
+    #   ttg s3   q=.120 @9.5  → EV=1.140−1=.140；EV差.010<0.1 → 双候选同带
+    mA = {"code": "周六001", "league": "德乙", "home": "A队", "away": "B队",
+          "crs": {"1:1": 11.5}, "ttg": {"s3": 9.5}}
+    ftA = {"germany-2-bundesliga": Counter({"1:1": 40, "2:2": 20, "__n": 200})}  # n=200≥100
+    cardA = pools_card(mA, {"0:2": 0.09, "1:1": 0.10, "2:1": 0.12}, {}, {}, ftA)
+    assert cardA["code"] == "周六001" and cardA["match"] == "A队 vs B队"
+    assert cardA["rec_base"]["pool"] == "ttg" and cardA["rec_base"]["pick"] == "s3"      # 保底=q最高(.12>.10)
+    assert cardA["rec_upset"]["pool"] == "crs" and cardA["rec_upset"]["pick"] == "1:1"  # 翻身=赔率最高(11.5>9.5)
+    assert "divergence" not in cardA["flags"] and "low_conf" not in cardA["flags"]
+    assert all(abs(c["ev"] - (c["q"] * c["odds"] - 1)) < 1e-4 for c in cardA["candidates"])  # 1e-4=4位小数舍入容差
+
+    # ── Scenario B（分歧旗）：CRS 0:2 q=11.5%@24 vs 隐含 1/(24×1.13)≈3.7% → Δ7.8pp>5pp ──
+    # 手算: crs 0:2 EV=.115×24−1=1.76 居首；1:1@7.5 低于带下限10出局；ttg s2=.195@3.75 EV=−.2688
+    #   降级后 CRS 不再居首；带内(max−0.1=1.66)仅剩 CRS → 双行同源，分歧场景不断言双行
+    mB = {"code": "周日004", "league": "德乙", "home": "圣保利", "away": "凯泽",
+          "crs": {"0:2": 24.0, "1:1": 7.5}, "ttg": {"s2": 3.75, "s3": 3.55},
+          "hafu": {"dd": 6.25, "hh": 2.75}}
+    cardB = pools_card(mB, {"0:2": 0.115, "1:1": 0.08}, {}, {}, ftA)
+    assert "divergence" in cardB["flags"]
+    assert cardB["candidates"][0]["pool"] != "crs"                     # 降级后 CRS 不居首
+    assert all(c["code"] == "周日004" and c["match"] == "圣保利 vs 凯泽"
+               for c in cardB["candidates"])                           # 候选自带 code/match（T4 契约）
+    assert all(abs(c["ev"] - (c["q"] * c["odds"] - 1)) < 1e-4 for c in cardB["candidates"])
+
+    # ── Scenario C（低置信兜底）：联赛无映射(芬超)+空模板 → low_conf 旗 + 低抽水池兜底 ──
+    # q_map 空 → q_eff 空 → crs/ttg 全 q=0 出局；hafu_agg 空 q_map → FT 三向全平 → d 列非零
+    mC = {"code": "周一002", "league": "芬超", "home": "赫尔火花", "away": "TPS",
+          "crs": {"0:2": 20.0}, "ttg": {"s3": 3.55}, "hafu": {"dd": 6.25}}
+    cardC = pools_card(mC, {}, {}, {}, {})
+    assert "low_conf" in cardC["flags"]
+    assert cardC["rec_base"]["pool"] == "hafu"                         # 结构兜底=抽水低池优先(spec D9)
+    print("[selftest] pools_card OK")
+
+
 if __name__ == "__main__":
     import sys
     if "--selftest" in sys.argv:
         _selftest_ttg()
         _selftest_hafu()
+        _selftest_pools()

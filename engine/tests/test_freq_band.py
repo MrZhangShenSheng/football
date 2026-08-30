@@ -193,3 +193,24 @@ def test_hafu_agg_normalized():
     alpha = {k: 1.0 for k in ("hh","hd","ha","dh","dd","da","ah","ad","aa")}
     out = hafu_agg({"1:1": 0.5, "2:2": 0.5}, p_half, alpha)
     assert abs(sum(out.values()) - 1.0) < 1e-9
+
+
+def test_pools_card_divergence_flag(monkeypatch):
+    """pools_card 分歧旗：CRS q=11.5%@24 vs 市场隐含 1/(24×1.13)≈3.7% → Δ7.8pp>5pp
+    → 标 divergence 并降级 CRS（不再居首）。hafu_alpha/half_three_way 打桩隔离真实数据。"""
+    monkeypatch.setattr(freq_band, "hafu_alpha",
+                        lambda results_dir=None: {"alpha": {k: 1.0 for k in freq_band.HAFU_KEYS}, "n": 61})
+    monkeypatch.setattr(freq_band, "half_three_way",
+                        lambda results_dir=None: {"h": 0.4, "d": 0.3, "a": 0.3})
+    m = {"code": "周日004", "league": "德乙", "home": "圣保利", "away": "凯泽",
+         "crs": {"0:2": 24.0, "1:1": 7.5}, "ttg": {"s2": 3.75, "s3": 3.55},
+         "hafu": {"dd": 6.25, "hh": 2.75}}
+    ft = {"germany-2-bundesliga": Counter({"1:1": 40, "2:2": 20, "__n": 200})}
+    card = freq_band.pools_card(m, {"0:2": 0.115, "1:1": 0.08}, {}, {}, ft)
+    assert "divergence" in card["flags"]
+    assert card["candidates"][0]["pool"] != "crs"                     # 降级后不居首
+    assert all(c["code"] == "周日004" and c["match"] == "圣保利 vs 凯泽"
+               for c in card["candidates"])                           # 候选自带 code/match（T4 契约）
+    # EV=q×赔率−1（存档 4 位舍入容差）；1:1@7.5 低于带下限10出局；s3 无 q 出局
+    assert {c["pick"] for c in card["candidates"]} == {"0:2", "s2", "dd"}
+    assert all(abs(c["ev"] - (c["q"] * c["odds"] - 1)) < 1e-4 for c in card["candidates"])
