@@ -27,7 +27,8 @@
   "stake": {
     "unitStake": 2,
     "ticketBand": [8, 22],
-    "roundRedline": 30
+    "roundRedline": 30,
+    "upsetMonthlyCap": 40
   },
   "playTaste": {
     "priority": ["CRS", "HAFU", "TTG", "HAD"],
@@ -67,5 +68,5 @@
   "hedging": "双票同骨架只换1条腿(T002/T003换第4关,T005/T006换008腿)",
   "leagueFocus": "西甲重仓(近期票全西甲);样本6票,联赛权重仅供参考",
   "payoutStyle": "按形状结算:中2关回1注2串1即视为部分回收",
-  "notes": "6/6手动自选;系统方案仅作骨架参考;战绩88投293回/净+205.4,CRS为主要盈利来源"
+  "notes": "6/6手动自选;系统方案仅作骨架参考;战绩88投293回/净+205.4,CRS为主要盈利来源；boldplay v2: 翻身月预算40元gate(boldplay自动执行)+连续4轮0回款降半仓"
 }
