@@ -700,7 +700,8 @@ def _selftest_settle():
 
 def _selftest_dry_streak():
     """连续翻身0回款降半仓 gate 自检（v2 T7 评审沉淀）：4张已结算全 False → streak=4 且
-    两形状实降（2x1x3→1注2元 / 4x1→倍数1）/ 未结算票跳过 / 回款轮断连 / closed 不动。开发者 sszhang"""
+    两形状实降（2x1x3→1注2元 / 4x1→倍数1）/ 未结算票跳过 / 回款轮断连 / closed 不动 /
+    最低仓 4x1 mult=1 不实降且不落 upsetHalved 存证。开发者 sszhang"""
     import tempfile
     had = lambda i: {"matchNumStr": f"周六00{i}", "match": "m", "play": "had",
                      "pick": "主胜", "odds": 2.0}
@@ -736,6 +737,14 @@ def _selftest_dry_streak():
     tc = {"tiers": {"base": {"cost": 22, "play": "had-4串11", "legs": []},
                     "upset": {"shape": "closed", "cost": 0, "legs": [], "note": "关档"}}}
     assert halve_upset(tc) is False                                    # 关档无仓位不动
+    t41f = {"tiers": {"base": {"cost": 22, "play": "had-4串11", "legs": []},
+                      "upset": {"shape": "pool-4x1", "cost": 2, "multiplier": 1,
+                                "legs": [had(i) for i in (1, 2, 3, 4)],
+                                "bets": [{"legs": [0, 1, 2, 3], "multiplier": 1}]}}}
+    assert halve_upset(t41f) is False and "totalCost" not in t41f      # 4x1 倍数已在1=最低仓：不实降不改票
+    streak = 4
+    assert not (streak >= 4 and t41f["tiers"]["upset"]["cost"] > 0 and halve_upset(t41f))
+                                          # main 落键同式：False → upsetHalved 存证不落（防虚假减半）
     t21["seq"], t21["cards"] = 9, []
     assert "⚠连续4轮翻身0回款·仓位减半" in render_ticket({**t21, "upsetHalved": 4})
     print("[selftest] upset_dry_streak + halve_upset OK")
@@ -774,9 +783,8 @@ def main() -> None:
                                      "note": f"翻身月预算红线 {u_spend:.0f}/{MONTHLY_UPSET_CAP:.0f}元 · 关档"}
             out["totalCost"] = out["tiers"]["base"]["cost"]
         streak = upset_dry_streak(str(date.today())[:7])   # v5.5: 连续4轮0回款降半仓
-        if streak >= 4 and out["tiers"]["upset"]["cost"] > 0:
-            halve_upset(out)
-            out["upsetHalved"] = streak
+        if streak >= 4 and out["tiers"]["upset"]["cost"] > 0 and halve_upset(out):
+            out["upsetHalved"] = streak   # 仅实降落存证（最低仓/关档 False 不写·评审裁定）
         print(render_ticket(out))
     else:
         out = build_ticket(all_days, table, seq, method=method)
