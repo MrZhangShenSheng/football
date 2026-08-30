@@ -23,7 +23,7 @@ svg text{font-family:-apple-system,"PingFang SC",sans-serif}
 </head><body>
 
 <h1>阶梯出票卡 v2：两档制 + 多池引擎 + 逐场三池卡</h1>
-<p>日期：2026-08-30 · 状态：<span class="tag open">待大哥终审</span> · 前置证据：<code>data/04-summaries/2026-08-30-plan-vs-ticket-review.html</code> · 关联：SKILL v5.4.2 / freq_band / boldplay / preference.json</p>
+<p>日期：2026-08-30 · v1.1（红队审查+大哥三决议修入）· 状态：<span class="tag open">待大哥终审</span> · 前置证据：<code>data/04-summaries/2026-08-30-plan-vs-ticket-review.html</code> · 关联：SKILL v5.4.2 / freq_band / boldplay / preference.json</p>
 
 <h2>1. 背景与动机（三份实证）</h2>
 <ol>
@@ -111,12 +111,14 @@ svg text{font-family:-apple-system,"PingFang SC",sans-serif}
 <pre>TTG 聚合（比分矩阵 → 总进球 8 档）:
   TTG_k = Σ_{i+j=k} P(i,j),  k = 0..6；TTG_7+ = 1 − Σ_{k=0..6}      ← 体彩 s0..s7 对齐
 
-HAFU 聚合（v1 独立近似，消融后再升级条件分解）:
-  HAFU(x,y) = s(x) × P_FT(y)
-  s = half_share.json 联赛半场占比（β收缩，已有）
+HAFU 聚合（v1.1 独立近似 + 经验纠偏系数 α）:
+  HAFU(x,y) = s(x) × P_FT(y) × α(x,y)
+  s = half_share.json 联赛半场占比（β收缩，已有；实施前存活检查——amix 降级后是否仍被 learn 链刷新，死数据先重建）
   P_FT(y) = 比分矩阵按净胜球聚合的三向（P(i>j), P(i=j), P(i<j)）
-  ⚠️ 独立性假设（半场与全场结果无关）为 v1 简化——dd 型（半平全平）会略低估，
-     消融数据够后升级 s(x)×P_FT(y|x) 条件分解
+  α(x,y) = 观测频率 / 独立近似 的联赛级纠偏系数——半场结果条件化（半场0-0→全场平局率实测~45-50% vs 无条件26%），
+     独立近似对 dd 系统性低估 30-50%；α 从 02-results 半场比分（half 字段，~150场起步）计算，
+     全局系数起步、分联赛样本够后升级，随回填自动重估
+  selftest 断言: α(dd) ≥ 1（方向性验证——dd 必须上修）
 
 CRS：freq-band 带内 q 原样（铁律 8 三步选法不动）
 
@@ -126,16 +128,19 @@ EV 口径: EV = q × 体彩赔率 − 1（同一场跨池对比合法——池�
 <h3>4.3 逐场三池玩法卡（Step 7 报告新增输出）</h3>
 <ul>
 <li>每场 A/B 级场次一张卡：三池各取 top 选项（CRS=带内 q 最高 1 项；TTG=q 最高 2 档；HAFU=q 最高 2 键）并排：选项 / q 真实频率 / 体彩赔率 / EV</li>
-<li>推荐规则：三池 EV 最高者；EV 差 &lt; 0.05 选抽水低池（TTG/HAFU）；<b>全负 EV 如实标注"负EV娱乐注"</b>（体彩常态，诚实呈现）</li>
+<li>推荐规则（v1.1 双行）：<b>保底视角</b>=EV 相近带（差 &lt; 动态阈值）内取 q 最高者（命中优先）；<b>翻身视角</b>=相近带内取赔率最高者（右尾优先）——同 EV 的 25%@3.4 与 12%@24 对两档是相反的正确答案，单推荐必错其一</li>
+<li>动态阈值：max(0.05, 2×合并标准误)——样本小时阈值自动放宽，EV 微差让位给结构规则（抽水低池优先）；<b>样本不足（n&lt;100）不砍池不砍卡</b>，改标"低置信"旗（q 基于 β 收缩先验，推荐按结构规则兜底）——大哥决议：小联赛（芬超/韩职）场次不能没有推荐</li>
+<li><b>全负 EV 如实标注"负EV娱乐注"</b>（体彩常态，诚实呈现）</li>
 <li>C/D 级不出卡（数据等级约束）；卡随预测 JSON 归档（matches[] 增 pools 字段：{crs:{pick,q,odds,ev}, ttg:{...}, hafu:{...}, recommend}）</li>
 <li>预测记录 schema：pools 字段随回填闭环（settle 判 pools.recommend 命中率 → trend ⑦ 新断言：推荐池 vs 实际最优池）</li>
 </ul>
 
 <h3>4.4 legacy 双结构过渡（freq-band/amix 同款模式）</h3>
 <ul>
-<li><code>boldplay.py --structure=new</code>（默认）/ <code>--structure=legacy</code>（旧三档），字节级保留旧结构</li>
-<li>过渡期一个月：settle 双轨结算各留痕；freq_backtest.py 扩展结构对照维度</li>
-<li>一个月后按实测定夺：新结构回款率/期望返还 vs legacy（消融纪律，无正增益即回滚）</li>
+<li><code>boldplay.py --structure=new</code>（默认 → <code>{date}-boldplay.json</code>）/ <code>--structure=legacy</code>（旧三档 → <b>独立文件</b> <code>{date}-boldplay-legacy.json</code>，防同日双跑互相覆盖），字节级保留旧结构</li>
+<li>过渡期一个月：settle 按结构分别结算归档；freq_backtest.py 扩展结构对照维度</li>
+<li><b>回测范围（v1.1 修正）</b>：保底档 HAD 腿历史在档可回放（4串11 replay ✓）；翻身多池档<b>不可历史回放</b>（历史轮无 pools 字段、五池时序仅 intel-timeline 上线后积累）——靠前瞻一个月实测</li>
+<li>一个月定夺标准（v1.1 明确）：<b>方向性结论</b>（回款率 85% vs 16% 量级差异可判）+ 期望返还量级结论继续观察（13pp 差异单月方差不可分辨）；seq 轮换为<b>非受控观察</b>（轮次质量混杂），结论标注置信等级</li>
 <li>T010（4串15 含单关翻身首测）结果纳入定夺数据</li>
 </ul>
 
@@ -147,7 +152,8 @@ EV 口径: EV = q × 体彩赔率 − 1（同一场跨池对比合法——池�
 <tr><td>3</td><td><code>skill/SKILL.md</code></td><td>Step 6 阶梯出票卡节重写（两档制 v2）+ Step 7 三池玩法卡输出规范 + 版本 v5.5</td></tr>
 <tr><td>4</td><td><code>data/06-tickets/preference.json</code></td><td>+翻身月度彩票预算 40 元 + 降仓位规则 + 形状档案更新（4串15 待大哥确认固定/特例后录入）</td></tr>
 <tr><td>5</td><td><code>engine/scripts/freq_backtest.py</code></td><td>结构对照维度（new vs legacy 回款率/期望返还）</td></tr>
-<tr><td>6</td><td>预测 JSON schema</td><td>matches[] +<code>pools</code> 字段（三池候选+推荐池），corpus/trend 兼容增量</td></tr>
+<tr><td>6</td><td>预测 JSON schema</td><td>matches[] +<code>pools</code> 字段（三池候选+双行推荐+低置信旗）；<b>涟漪显式枚举</b>：corpus 归一化透传 pools（不展开）；settle 新增 pools.recommend 命中判定（option_hit 池前缀复用+recommend 结构适配）；attribute v1 对 pools <b>仅记录不归因</b>（F1-F10 因子为三向+CRS 设计，TTG/HAFU 归因待样本）</td></tr>
+<tr><td>7</td><td>月度预算状态口径</td><td>翻身月预算 40 元累计=扫当月 <code>{date}-boldplay*.json</code> 的 tiers.upset.cost 聚合（含 legacy），settle 后回写轮次回款状态；"连续 4 轮 0 回款降半仓"读各轮 settle 字段</td></tr>
 </table>
 
 <h2>5. 错误边界</h2>
@@ -157,6 +163,8 @@ EV 口径: EV = q × 体彩赔率 − 1（同一场跨池对比合法——池�
 <tr><td>体彩 ttg/hafu 池未开售</td><td>该池标 ❌ 跳过（odds dump 的池数据存在性检查）</td></tr>
 <tr><td>三池 EV 全负</td><td>如实标注，推荐列"最不差"+ 负EV 娱乐注标记（宁缺毋滥原则不变）</td></tr>
 <tr><td>seq 轮换遇翻身腿不足</td><td>奇数轮 2串1×3 需 ≥3 场有卡候选；不足降级 2串1×N（N=可用场数）或关档（铁律 8 不硬凑）</td></tr>
+<tr><td>跨池腿同场相关性</td><td>翻身引擎选腿硬约束：<b>同场最多 1 腿</b>（A场 CRS 2-0 与 A场 TTG 2球同生共死=变相加倍，非分散）</td></tr>
+<tr><td>half_share.json 死数据</td><td>实施前存活检查（amix 降级后 learn 链是否仍刷新）；死则先重建再启用 HAFU 聚合</td></tr>
 <tr><td>legacy 过渡期双轨数据冲突</td><td>各自独立 settle 账本，trend 报告分列；不合并统计</td></tr>
 </table>
 
@@ -178,6 +186,10 @@ EV 口径: EV = q × 体彩赔率 − 1（同一场跨池对比合法——池�
 <tr><td>D5</td><td>跨池 EV 对比合法（≠amix 找错价）</td><td>q 源=真实频率；池间差=抽水结构</td><td>纯抽水排序（丢场次信号信息）</td></tr>
 <tr><td>D6</td><td>HAFU v1 独立近似</td><td>half_share 已有；条件分解需半场数据积累</td><td>条件分解（数据不足，消融后升级）</td></tr>
 <tr><td>D7</td><td>逐场三池卡=A/B 级限定</td><td>C/D 级数据等级不够（玩法×等级矩阵既有约束）</td><td>全部场次出卡（噪声）</td></tr>
+<tr><td>D8</td><td>HAFU 经验纠偏系数 α（大哥讨论1决议）</td><td>独立近似对 dd 方向性低估 30-50%，有偏估计不得进决策链；α 全局起步随回填重估</td><td>区间化显示（知偏不修）；v1 不推荐 HAFU（排除大哥最有心得的玩法）</td></tr>
+<tr><td>D9</td><td>样本不足不砍池，降置信标注+动态阈值兜底（大哥讨论2决议）</td><td>小联赛（芬超/韩职）场次不能没有推荐；动态阈值 max(0.05,2×SE) 连续处理样本量</td><td>硬门槛 n≥100 不出卡（砍掉大哥常用联赛）</td></tr>
+<tr><td>D10</td><td>双行推荐：保底视角/翻身视角（大哥讨论3决议）</td><td>同 EV 的稳选/右尾选对两档是相反正确答案，单推荐必错其一</td><td>单推荐+脚注；单 EV 排序</td></tr>
+<tr><td>D11</td><td>legacy 独立文件 + 回测范围改写 + 定夺标准分级（红队审查修正）</td><td>防同日覆盖；翻身多池不可历史回放是事实必须写明；单月只出方向性结论</td><td>同名文件双写（互相覆盖）；回测含翻身档（不可执行）</td></tr>
 </table>
 
 <h2>8. 远期衔接</h2>
