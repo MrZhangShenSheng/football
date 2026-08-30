@@ -23,7 +23,7 @@ description: |
 | `data/02-results/` | 历史比赛结果（赛果回填）+ `league/` 本地赛果库 | `YYYY-MM-DD.json` 按日期 |
 | `data/03-predictions/` | 最近预测文件 | `YYYY-MM-DD*.html` |
 | `data/04-summaries/` | 预测总结与复盘（含 corpus.json/trend.html） | `YYYY-MM-DD-review.html` |
-| `data/05-trends/` | 趋势发现 | `*.json` |
+| `data/05-trends/` | **赛前情报时序库**（intel-timeline，docs/2026-08-30-intel-timeline-design.html）：`{date}-odds.json` 五池赔率 diff 增量链（刷新自动落盘）/ `{date}-intel.json` 情报摘要（insight 拉取自动落盘）/ `{date}-livescan.json` 临场扫描事件（skill 录入，`trends_snapshot.py livescan` 校验通道）；2026-08-29 前的 livescan 为 legacy 格式双格式兼容 | `YYYY-MM-DD-{odds\|intel\|livescan}.json` |
 | `engine/cache/` | DC 参数缓存 + models/ 版本存档 + fusion.json + 体彩缓存 | `{league}_dc.json` 等 |
 | `skill/references/` | 低频参考（官方规则/系数详表/教训档案，按需加载） | `*.md` |
 
@@ -111,6 +111,7 @@ Step 8   赛果回填 + 五维复盘 + 闭环学习（corpus/attribute/trend/lea
 - [ ] 按联赛分组输出场次统计
 - [ ] **场次完整性**：脚本拉取后核对编号连续性，如周五→周六→周日有断裂则补查（体彩偶有停售场次，编号跳号属正常）
 - [ ] **双锚齐全**：至少 70% 场次拿到 Pinnacle 收盘价；未拿到的标注"锚缺失"并降级处理
+- **刷新即快照 ★ v5.4**：任何路径刷新 `sporttery_matches.json` / 拉取 insight 自动落盘 `data/05-trends/` 时序（钩子内嵌，失败不阻断）；手动补拍 `python engine/scripts/run.py snapshot [--insight 编号,编号]`
 
 输出：`| # | 场次编号(体彩) | 联赛 | 主队[排名] | 客队[排名] | 开赛日期时间 | 体彩赔率 | Pinnacle收盘 |`（# 为全局序号，场次编号列=体彩编号 `周X00N`，两列并存职责不同勿混）
 
@@ -535,6 +536,7 @@ D 级(0项)     ❌       ❌       ❌       ❌
 - 只允许"信息增强"方向修订（新事实推翻旧判断），禁止追高赔率方向修订
 - 每处修订必须输出：修订项、旧→新、依据（具体新信息+来源）、赔率影响
 - 终审后复核官方赔率未再异动方可出票；异动则重新走定律 1/2 判定
+- **扫描必落盘 ★ v5.4**：临场扫描结果必须经 `python engine/scripts/trends_snapshot.py livescan <scan.json>` 录入 `data/05-trends/`（结构化 signals + threat 枚举 + matchId 必填），**禁止只留在对话里**——赔率状态停售后不可再生，扫描判断是将来因子验证的原始对账材料
 
 ### 实票登记（出票即记账）★ v4.10 新增
 
