@@ -298,6 +298,45 @@ def upset_month_spend(month: str) -> float:
     return total
 
 
+def upset_dry_streak(month: str, pred_dir: Path = PRED_DIR) -> int:
+    """当月连续翻身档 0 回款轮数（SKILL v5.5 降半仓 gate 依据）：扫与 upset_month_spend
+    同口径的 {month}-*-boldplay*.json，按文件序从最新**已结算**票往回数 settle.upsetHit
+    ==False 的连续张数；未结算票跳过（未开彩≠已见亏损），遇回款轮即断。开发者 sszhang"""
+    streak = 0
+    for p in sorted(pred_dir.glob(f"{month}-*-boldplay*.json"), reverse=True):
+        try:
+            doc = json.loads(p.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if not doc.get("settle"):                 # 未结算：跳过不断 streak
+            continue
+        if doc["settle"].get("upsetHit") is False:
+            streak += 1
+        else:
+            break                                  # 回款轮：连断
+    return streak
+
+
+def halve_upset(t: dict) -> bool:
+    """翻身档降半仓（连续≥4轮 0 回款触发）：pool-2x1x3→砍到 1 注 2串1(2元)；
+    pool-4x1→倍数砍到 1；closed/已在最低仓不动。返回是否实际降仓。开发者 sszhang"""
+    up = t.get("tiers", {}).get("upset") or {}
+    shape = up.get("shape")
+    if shape == "pool-2x1x3":
+        if len(up.get("bets") or []) <= 1:
+            return False
+        up["legs"], up["bets"], up["cost"] = up["legs"][:2], up["bets"][:1], 2
+    elif shape == "pool-4x1" and up.get("multiplier", 0) > 1:
+        up["multiplier"] = 1
+        up["bets"] = [{**b, "multiplier": 1} for b in up.get("bets") or []]
+        up["cost"] = 2 * len(up["bets"])
+    else:
+        return False
+    up["note"] = f'{up.get("note", "")} · 连续0回款降半仓'
+    t["totalCost"] = t["tiers"]["base"]["cost"] + up["cost"]
+    return True
+
+
 def _is_ab(m: dict) -> bool:
     """A/B级入池口径=现 build_ticket HAD 池过滤（had 齐全且最小赔率≥1.55 的非强胆场；
     spec D7：C/D 级数据等级不够，不出三池卡）。开发者 sszhang"""
@@ -401,6 +440,8 @@ def render_ticket(t: dict) -> str:
             lines.append(f"│   {l['matchNumStr']} │ {l.get('match', '')[:14]:14s} │ "
                          f"{l['play'].upper()} {l['pick']} @{l['odds']}"
                          + (f" │ EV{l['ev']:+.0%}" if "ev" in l else ""))
+    if t.get("upsetHalved"):
+        lines.append(f"│ ⚠连续{t['upsetHalved']}轮翻身0回款·仓位减半")
     lines.append("│ 三池推荐(A/B级场):")
     for c in t.get("cards") or []:
         if not c.get("candidates"):
@@ -657,6 +698,49 @@ def _selftest_settle():
     print("[selftest] settle(两档bets/legacy双形状) OK")
 
 
+def _selftest_dry_streak():
+    """连续翻身0回款降半仓 gate 自检（v2 T7 评审沉淀）：4张已结算全 False → streak=4 且
+    两形状实降（2x1x3→1注2元 / 4x1→倍数1）/ 未结算票跳过 / 回款轮断连 / closed 不动。开发者 sszhang"""
+    import tempfile
+    had = lambda i: {"matchNumStr": f"周六00{i}", "match": "m", "play": "had",
+                     "pick": "主胜", "odds": 2.0}
+    with tempfile.TemporaryDirectory() as td:
+        d = Path(td)
+        for i, day in enumerate((26, 27, 28, 29)):
+            (d / f"2026-08-{day}-boldplay.json").write_text(json.dumps(
+                {"date": f"2026-08-{day}", "settle": {"upsetHit": False}}), encoding="utf-8")
+        assert upset_dry_streak("2026-08", d) == 4
+        (d / "2026-08-30-boldplay.json").write_text(json.dumps(
+            {"date": "2026-08-30"}), encoding="utf-8")                  # 未结算：跳过不断
+        assert upset_dry_streak("2026-08", d) == 4
+        (d / "2026-08-25-boldplay.json").write_text(json.dumps(
+            {"date": "2026-08-25", "settle": {"upsetHit": True}}), encoding="utf-8")
+        assert upset_dry_streak("2026-08", d) == 4                      # 更早回款轮不在连上
+        (d / "2026-08-29-boldplay.json").write_text(json.dumps(
+            {"date": "2026-08-29", "settle": {"upsetHit": True}}), encoding="utf-8")
+        assert upset_dry_streak("2026-08", d) == 0                      # 最新已结算票回款 → 连断
+    t21 = {"tiers": {"base": {"cost": 22, "play": "had-4串11", "legs": []},
+                     "upset": {"shape": "pool-2x1x3", "cost": 6, "legs": [had(i) for i in (1, 2, 3, 4, 5, 6)],
+                               "bets": [{"legs": [0, 1], "multiplier": 1},
+                                        {"legs": [2, 3], "multiplier": 1},
+                                        {"legs": [4, 5], "multiplier": 1}]}}}
+    assert halve_upset(t21) is True
+    assert t21["tiers"]["upset"]["cost"] == 2 and len(t21["tiers"]["upset"]["bets"]) == 1
+    assert len(t21["tiers"]["upset"]["legs"]) == 2 and t21["totalCost"] == 24
+    t41 = {"tiers": {"base": {"cost": 22, "play": "had-4串11", "legs": []},
+                     "upset": {"shape": "pool-4x1", "cost": 8, "multiplier": 4,
+                               "legs": [had(i) for i in (1, 2, 3, 4)],
+                               "bets": [{"legs": [0, 1, 2, 3], "multiplier": 4}]}}}
+    assert halve_upset(t41) is True
+    assert t41["tiers"]["upset"]["multiplier"] == 1 and t41["tiers"]["upset"]["cost"] == 2
+    tc = {"tiers": {"base": {"cost": 22, "play": "had-4串11", "legs": []},
+                    "upset": {"shape": "closed", "cost": 0, "legs": [], "note": "关档"}}}
+    assert halve_upset(tc) is False                                    # 关档无仓位不动
+    t21["seq"], t21["cards"] = 9, []
+    assert "⚠连续4轮翻身0回款·仓位减半" in render_ticket({**t21, "upsetHalved": 4})
+    print("[selftest] upset_dry_streak + halve_upset OK")
+
+
 def main() -> None:
     args = sys.argv[1:]
     if args and args[0] == "settle":
@@ -664,6 +748,7 @@ def main() -> None:
     if "--selftest" in args:
         _selftest_two_tier()
         _selftest_settle()
+        _selftest_dry_streak()
         return
     method = "amix" if "--method=amix" in args else "freq"
     structure = "legacy" if "--structure=legacy" in args else "new"   # v2 两档默认，legacy 双轨对照一个月
@@ -688,6 +773,10 @@ def main() -> None:
                                      "legs": out["tiers"]["upset"].get("legs") or [],
                                      "note": f"翻身月预算红线 {u_spend:.0f}/{MONTHLY_UPSET_CAP:.0f}元 · 关档"}
             out["totalCost"] = out["tiers"]["base"]["cost"]
+        streak = upset_dry_streak(str(date.today())[:7])   # v5.5: 连续4轮0回款降半仓
+        if streak >= 4 and out["tiers"]["upset"]["cost"] > 0:
+            halve_upset(out)
+            out["upsetHalved"] = streak
         print(render_ticket(out))
     else:
         out = build_ticket(all_days, table, seq, method=method)
