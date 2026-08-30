@@ -422,49 +422,85 @@ def _direction(score: str) -> str:
 
 HAFU_DIR = {"h": "主胜", "d": "平", "a": "客胜"}   # HAFU 两字母键 → 方向中文（首=半场 次=全场）
 
-def settle(ticket: dict, results: dict) -> dict:
-    """逐 leg 判定（phase2 任务6）。results: matchNumStr → 'h:a' 或 {'score':'h:a','half':'h:a'}。
+def _leg_hit(leg: dict, ent, default_play: str):
+    """单腿命中判定 → True/False/None（赛果缺失/HAFU无半场=None 待人工）。开发者 sszhang
 
-    HAD pick 由比分方向推导；CRS 精确比对（选项兼容 pick/score 两键——
-    计划口径用 pick，真实出票 JSON 的 upset 腿用 score）；HAFU 需 half
-    （backfill 体彩链路落盘，ESPN 链路无半场 → None 待人工）。payout 只算
-    upset 档全中（合赔×2×倍数，推演库口径；实票结算走 tickets.json 账本）。
-    """
-    leg_hits, payout = {}, 0.0
+    HAD pick 由比分方向推导；CRS 精确比对（选项兼容 pick/score 两键——计划口径
+    用 pick，真实出票 JSON 的 upset 腿用 score）；TTG 总进球（含 7+ 档）；HAFU
+    需 half（backfill 体彩链路落盘，ESPN 链路无半场 → None 待人工）。"""
+    if ent is None:
+        return None                                    # 赛果缺失
+    sc = ent.get("score") if isinstance(ent, dict) else ent
+    half = ent.get("half") if isinstance(ent, dict) else None
+    if sc is None:
+        return None
+    play = leg.get("play") or default_play             # 08-24 A-MIX 老卡 upset 腿无 play 键
+    if play == "crs":
+        return (leg.get("pick") or leg.get("score")) == sc
+    if play == "ttg":
+        h_, a_ = (int(x) for x in sc.split(":"))
+        want = str(leg.get("pick") or leg.get("score")).replace("球", "").replace("+", "")
+        return (h_ + a_ >= 7 and want == "7") if "7" in want and int(want) == 7 else (h_ + a_ == int(want))
+    if play == "hafu":
+        if not half:
+            return None                                # 无半场比分（ESPN 链路/旧档），人工判
+        pick = str(leg.get("pick") or leg.get("score"))
+        return (pick[:1] in HAFU_DIR and pick[1:] in HAFU_DIR
+                and _direction(half) == HAFU_DIR[pick[:1]]
+                and _direction(sc) == HAFU_DIR[pick[1:]])
+    return leg["pick"] == _direction(sc)
+
+
+def _tier_bets(blob: dict, flat_hits: list) -> tuple:
+    """两档 bets 结构单档结算 → (派彩, 全部注全中)。开发者 sszhang
+
+    派彩=Σ全中注 2×倍数×Π腿赔率（推演对照口径，无税无上限，与 legacy 无税
+    payout 一致）；空注/腿索引越界判不中（防 vacuous-True 假阳）；无 bets
+    （closed 关档）→ (0.0, False)。"""
+    legs, bets = blob.get("legs") or [], blob.get("bets") or []
+    payout, flags = 0.0, []
+    for bet in bets:
+        idxs = bet.get("legs") or []
+        hit = bool(idxs) and all(0 <= i < len(legs) and flat_hits[i] is True for i in idxs)
+        flags.append(hit)
+        if hit:
+            payout += 2 * bet.get("multiplier", 1) * math.prod(legs[i]["odds"] for i in idxs)
+    return payout, (bool(bets) and all(flags))
+
+
+def settle(ticket: dict, results: dict) -> dict:
+    """逐 leg 判定（phase2 任务6；v2 任务5 双形状）。results: matchNumStr → 'h:a' 或 {'score':'h:a','half':'h:a'}。
+
+    双形状分派：①两档 bets 结构（structure=new 或任一档带 bets）：payout=base+
+    upset 各档 Σ全中注 2×倍数×Π腿赔率，另记 tierPayout 分档回款（对照报告用）；
+    upsetHit=翻身档有 bets 且每注腿全中（pool-4x1=倍数注全中；closed 关档=False）。
+    ②legacy 票（无 bets）原口径字节不变：payout 只算 upset 档全中（合赔×2×倍数，
+    推演库口径；实票结算走 tickets.json 账本）。"""
+    is_new = ticket.get("structure") == "new" or any(
+        bool(t.get("bets")) for t in ticket.get("tiers", {}).values())
+    leg_hits, tier_payout, upset_hit = {}, {}, False
     for tier, blob in ticket.get("tiers", {}).items():
         leg_hits[tier] = []
         raw_legs = blob.get("legs") or []
         notes = raw_legs if raw_legs and isinstance(raw_legs[0], list) else [raw_legs]
+        default_play = "crs" if tier == "upset" else "had"
+        flat_hits = []
         for note_legs in notes:
-            hits = []
-            for leg in note_legs:
-                ent = results.get(leg["matchNumStr"])
-                if ent is None:
-                    hits.append(None); continue      # 赛果缺失
-                sc = ent.get("score") if isinstance(ent, dict) else ent
-                half = ent.get("half") if isinstance(ent, dict) else None
-                if sc is None:
-                    hits.append(None); continue
-                play = leg.get("play") or ("crs" if tier == "upset" else "had")  # 08-24 A-MIX 老卡 upset 腿无 play 键
-                if play == "crs":
-                    ok = (leg.get("pick") or leg.get("score")) == sc
-                elif play == "ttg":
-                    h_, a_ = (int(x) for x in sc.split(":"))
-                    want = str(leg.get("pick") or leg.get("score")).replace("球", "").replace("+", "")
-                    ok = (h_ + a_ >= 7 and want == "7") if "7" in want and int(want) == 7 else (h_ + a_ == int(want))
-                elif play == "hafu":
-                    if not half:
-                        hits.append(None); continue  # 无半场比分（ESPN 链路/旧档），人工判
-                    pick = str(leg.get("pick") or leg.get("score"))
-                    ok = (pick[:1] in HAFU_DIR and pick[1:] in HAFU_DIR
-                          and _direction(half) == HAFU_DIR[pick[:1]]
-                          and _direction(sc) == HAFU_DIR[pick[1:]])
-                else:
-                    ok = leg["pick"] == _direction(sc)
-                hits.append(ok)
+            hits = [_leg_hit(leg, results.get(leg["matchNumStr"]), default_play) for leg in note_legs]
             leg_hits[tier].append(hits)
+            flat_hits.extend(hits)
+        if is_new:
+            tier_payout[tier], hit_all = _tier_bets(blob, flat_hits)
+            if tier == "upset":
+                upset_hit = hit_all
+    if is_new:
+        payout = sum(tier_payout.values())
+        return {"legHits": leg_hits, "upsetHit": upset_hit, "payout": payout,
+                "tierPayout": tier_payout,
+                "densityRecovered": round(payout / ticket.get("totalCost", 1), 4)}
     u = ticket["tiers"].get("upset", {})
     upset_hit = bool(u) and all(h is True for h in leg_hits.get("upset", [[]])[0])
+    payout = 0.0
     if upset_hit:
         raw = 2 * u["multiplier"]
         for leg in u["legs"]:
@@ -497,28 +533,31 @@ def cmd_settle() -> None:
     # 旧→新循环结算全部卡：只取最新一张时，漏跑一轮的旧卡永远轮不到结算（2026-08-28
     # 08-27 卡被 08-28 卡顶住教训）；路径走 ROOT 绝对定位，run.py sh() 的 cwd=engine/scripts
     # 下裸相对 glob 落空 → verify 链路静默"无出票 JSON"同日实证
-    paths = sorted((ROOT / "data" / "03-predictions").glob("*-boldplay.json"))
+    paths = sorted((ROOT / "data" / "03-predictions").glob("*-boldplay*.json"))  # v2: 含 -legacy 双轨对照卡
     if not paths:
         print("[boldplay] 无出票 JSON"); return
     for p in paths:
-        ticket = json.loads(p.read_text(encoding="utf-8"))
-        if ticket.get("settle"):
-            print(f"[boldplay] {p.name} 已结算(payout={ticket['settle']['payout']:.0f})，跳过"); continue
-        results = _load_results(ticket["date"])
-        codes = set()
-        for tier in ticket["tiers"].values():
-            legs = tier.get("legs") or []
-            for note in (legs if legs and isinstance(legs[0], list) else [legs]):
-                codes.update(l["matchNumStr"] for l in note)
-        missing = sorted(c for c in codes if c not in results)
-        if missing:
-            print(f"[boldplay] {p.name} 赛果未回填: {', '.join(missing)}（完赛后重跑）"); continue
-        res = settle(ticket, results)
-        ticket["settle"] = {**res, "settledAt": str(date.today())}
-        p.write_text(json.dumps(ticket, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
-        u = res["legHits"].get("upset", [[]])[0]
-        print(f"[boldplay] settle {p.name}: upset {sum(1 for h in u if h)}/{len(u)}关 "
-              f"全中={res['upsetHit']} payout={res['payout']:.0f} 密度回收={res['densityRecovered']} → 已写回 settle 字段")
+        try:
+            ticket = json.loads(p.read_text(encoding="utf-8"))
+            if ticket.get("settle"):
+                print(f"[boldplay] {p.name} 已结算(payout={ticket['settle']['payout']:.0f})，跳过"); continue
+            results = _load_results(ticket["date"])
+            codes = set()
+            for tier in ticket["tiers"].values():
+                legs = tier.get("legs") or []
+                for note in (legs if legs and isinstance(legs[0], list) else [legs]):
+                    codes.update(l["matchNumStr"] for l in note)
+            missing = sorted(c for c in codes if c not in results)
+            if missing:
+                print(f"[boldplay] {p.name} 赛果未回填: {', '.join(missing)}（完赛后重跑）"); continue
+            res = settle(ticket, results)
+            ticket["settle"] = {**res, "settledAt": str(date.today())}
+            p.write_text(json.dumps(ticket, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+            u = res["legHits"].get("upset", [[]])[0]
+            print(f"[boldplay] settle {p.name}: upset {sum(1 for h in u if h)}/{len(u)}关 "
+                  f"全中={res['upsetHit']} payout={res['payout']:.0f} 密度回收={res['densityRecovered']} → 已写回 settle 字段")
+        except Exception as e:   # 单卡损坏不中断整轮结算（v2 任务5：新旧/两档结构混扫兼容）
+            print(f"[boldplay] settle {p.name} 失败(跳过): {e}")
 
 
 def _selftest_two_tier():
@@ -563,12 +602,68 @@ def _selftest_two_tier():
     print("[selftest] build_two_tier + render_ticket OK")
 
 
+def _selftest_settle():
+    """两档 bets 结构结算自检（v2 任务5）：4串11中2关回1注2串1 / 跨池2串1逐注独立 /
+    pool-4x1 倍数注 / closed 关档防崩（无 bets 不假阳）/ legacy 票走原口径不变。开发者 sszhang"""
+    had = lambda mid, pick, o: {"matchNumStr": mid, "match": mid, "play": "had", "pick": pick, "odds": o}
+    base_legs = [had("周六001", "主胜", 1.8), had("周六002", "主胜", 2.0),
+                 had("周六003", "主胜", 2.5), had("周六004", "平", 3.2)]
+    base = {"cost": 22, "legs": base_legs,
+            "bets": [{"legs": list(c), "multiplier": 1} for c in expand_combos(4)]}
+    up_legs = [{"matchNumStr": "周六005", "match": "m", "play": "ttg", "pick": "2球", "odds": 3.5},
+               {"matchNumStr": "周六006", "match": "m", "play": "crs", "pick": "1:1", "odds": 7.0},
+               {"matchNumStr": "周六007", "match": "m", "play": "had", "pick": "主胜", "odds": 1.7},
+               {"matchNumStr": "周六008", "match": "m", "play": "hafu", "pick": "hh", "odds": 5.0},
+               {"matchNumStr": "周六009", "match": "m", "play": "hafu", "pick": "hh", "odds": 4.0},
+               {"matchNumStr": "周六010", "match": "m", "play": "crs", "pick": "0:0", "odds": 9.0}]
+    results = {"周六001": "2:0", "周六002": "3:1", "周六003": "0:1", "周六004": "1:2",  # base 中2/4
+               "周六005": "1:1", "周六006": "1:1",                                      # pair1 ttg2球+crs1:1 全中
+               "周六007": "2:1",                                                        # had 主胜 ✓
+               "周六008": {"score": "0:1", "half": "0:1"},                              # hafu hh ✗ → pair2 挂
+               "周六009": {"score": "2:0", "half": "1:0"},                              # hafu hh ✓
+               "周六010": "2:0"}                                                        # crs 0:0 ✗ → pair3 挂
+    # ① pool-2x1x3：3注独立2串1仅 pair1 全中；base 4串11 中2关回 1 注2串1
+    t21 = {"structure": "new", "totalCost": 28, "tiers": {"base": base,
+        "upset": {"shape": "pool-2x1x3", "cost": 6, "legs": up_legs,
+                  "bets": [{"legs": [0, 1], "multiplier": 1},
+                           {"legs": [2, 3], "multiplier": 1},
+                           {"legs": [4, 5], "multiplier": 1}]}}}
+    r21 = settle(t21, results)
+    assert r21["legHits"]["base"] == [[True, True, False, False]]
+    assert r21["tierPayout"] == {"base": 2 * 1.8 * 2.0, "upset": 2 * 3.5 * 7.0}   # 精确浮点
+    assert r21["payout"] == 2 * 1.8 * 2.0 + 2 * 3.5 * 7.0
+    assert r21["upsetHit"] is False                          # 3对只中1对 ≠ 翻身档全中
+    # ② pool-4x1：单注倍数票全中 → upsetHit 真、2×倍数×Π腿赔率
+    t41 = {"structure": "new", "totalCost": 28, "tiers": {"base": base,
+        "upset": {"shape": "pool-4x1", "cost": 6, "legs": [up_legs[i] for i in (0, 1, 2, 4)],
+                  "multiplier": 3, "bets": [{"legs": [0, 1, 2, 3], "multiplier": 3}]}}}
+    r41 = settle(t41, results)
+    assert r41["upsetHit"] is True
+    assert abs(r41["tierPayout"]["upset"] - 2 * 3 * 3.5 * 7.0 * 1.7 * 4.0) < 1e-9
+    assert abs(r41["payout"] - (2 * 1.8 * 2.0 + 2 * 3 * 3.5 * 7.0 * 1.7 * 4.0)) < 1e-9
+    # ③ closed 关档：无 bets → upsetHit 假、0 回款、settle 不崩（无 KeyError）
+    tc = {"structure": "new", "totalCost": 22, "tiers": {"base": base,
+        "upset": {"shape": "closed", "cost": 0, "legs": up_legs[:1], "note": "翻身候选腿不足·关档"}}}
+    rc = settle(tc, results)
+    assert rc["upsetHit"] is False and rc["tierPayout"]["upset"] == 0.0
+    assert rc["payout"] == rc["tierPayout"]["base"] == 2 * 1.8 * 2.0
+    # ④ legacy 票（无 bets）：原口径不变——upset 全中=2×倍数×Π腿赔率，无 tierPayout 键
+    lg = {"totalCost": 18, "tiers": {
+        "base": {"cost": 4, "legs": [[base_legs[0], base_legs[1]], [base_legs[2], base_legs[3]]]},
+        "upset": {"cost": 8, "multiplier": 4, "legs": [up_legs[i] for i in (0, 1, 2, 4)]}}}
+    rl = settle(lg, results)
+    assert rl["upsetHit"] is True and "tierPayout" not in rl
+    assert abs(rl["payout"] - 2 * 4 * 3.5 * 7.0 * 1.7 * 4.0) < 1e-9
+    print("[selftest] settle(两档bets/legacy双形状) OK")
+
+
 def main() -> None:
     args = sys.argv[1:]
     if args and args[0] == "settle":
         return cmd_settle()
     if "--selftest" in args:
         _selftest_two_tier()
+        _selftest_settle()
         return
     method = "amix" if "--method=amix" in args else "freq"
     structure = "legacy" if "--structure=legacy" in args else "new"   # v2 两档默认，legacy 双轨对照一个月
