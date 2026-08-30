@@ -135,12 +135,12 @@ football/
 │   ├── 02-results/        #    赛果回填（YYYY-MM-DD.json，含 CLV）+ league/ 本地赛果库（ESPN回填）
 │   ├── 03-predictions/    #    预测报告 HTML（仅用户输出用 HTML+SVG）
 │   ├── 04-summaries/      #    五维统计 + 回测结果 + corpus.json 学习语料
-│   ├── 05-trends/         #    趋势发现
+│   ├── 05-trends/         #    ★情报时序库 intel-timeline（odds 五池 diff 链/intel 摘要/livescan 扫描事件；刷新自动落盘+回填挂 preSnapshots 桥）
 │   └── 06-tickets/        #    ★实票账本（票=顶层实体：形状/腿/赔率冻结/结算/纪律事件 + tickets.html 报告）——实票=有结算记录的票，其余全是方案推演
 ├── engine/                ← ② 计算层
 │   ├── scripts/           #    run.py(入口) / dc_fit / dc_predict / backtest / corpus / trend_report / backfill / calibrate / ablate / odds_fetch / elo_fetch / xg_fetch / espn_fetch / cn_fetch / sporttery_fetch / band_calibration / score_ev / live_odds_probe / build_index / boldplay(阶梯出票卡+settle,比分选法freq-band默认) / freq_band(联赛频率+球队平移+形状带+q排序) / freq_backtest(freq vs amix对照回测) / ticket_report(实票账本报告) / research/(一次性研究脚本归档)
 │   └── cache/             #    DC 参数 / models/ 版本化存档 / fusion.json / fd 赔率缓存 / sporttery_matches.json(五池+单关资格) / score_odds(体彩全玩法赔率日存档) / live_odds_feasibility.json
-├── skill/                 ← ③ 检索入口：SKILL.md v5.3（阶梯出票卡为默认输出；比分选法 freq-band）+ references/ 外置参考（系数详表/官方规则/教训档案，按需加载）
+├── skill/                 ← ③ 检索入口：SKILL.md v5.4（阶梯出票卡为默认输出；比分选法 freq-band；刷新即快照/扫描必落盘纪律）+ references/ 外置参考（系数详表/官方规则/教训档案，按需加载）
 └── docs/                  #    设计文档
 ```
 

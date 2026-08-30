@@ -113,3 +113,20 @@ print(f"    实票账本: {len(ts)} 张（待结算 {n_pending}）· 本金 {m.g
       f" · 净利 {m.get('totalNet', 0):+.1f} 元 → data/06-tickets/tickets.html")
 PYEOF
 fi
+# 情报时序库摘要（v5.4 intel-timeline：odds 五池 diff 链 / intel 摘要 / livescan；刷新自动落盘）
+if ls "$HOME_DIR"/data/05-trends/*-odds.json >/dev/null 2>&1; then
+    python3 - "$HOME_DIR/data/05-trends" << 'PYEOF'
+import json, pathlib, sys
+d = pathlib.Path(sys.argv[1])
+odds = sorted(d.glob("*-odds.json"))
+snaps = sum(len(json.load(open(p, encoding="utf-8")).get("snapshots", [])) for p in odds)
+entries = sum(len(json.load(open(p, encoding="utf-8")).get("entries", []))
+              for p in sorted(d.glob("*-intel.json")))
+scans = sum(len(json.load(open(p, encoding="utf-8")).get("scans", []))
+            for p in sorted(d.glob("*-livescan.json")))
+print(f"    情报时序库: {len(odds)} 日赔率链 / {snaps} 版快照 · 情报 {entries} 条 · "
+      f"livescan {scans} 次扫描（回填自动挂 preSnapshots 桥）")
+PYEOF
+else
+    echo "    情报时序库: 未落盘（sporttery_fetch 首次刷新自动建）"
+fi

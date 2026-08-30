@@ -131,6 +131,18 @@ if (Test-Path $tk) {
     $net = "{0:+0.0;-0.0}" -f $td.meta.totalNet
     Write-Host "  ticket ledger: $($td.tickets.Count) tickets ($pending pending) | stake $($td.meta.totalStake) | net $net -> data/06-tickets/tickets.html" -ForegroundColor Green
 }
+# intel timeline summary (v5.4: this update's run.py all / sporttery_fetch already auto-triggered the hooks)
+$trendsDirU = "$HOME_DIR\data\05-trends"
+$oddsU = @(Get-ChildItem "$trendsDirU\*-odds.json" -ErrorAction SilentlyContinue)
+if ($oddsU.Count -gt 0) {
+    $snapsU = 0; $entriesU = 0; $scansU = 0
+    foreach ($f in $oddsU) { $snapsU += @(([System.IO.File]::ReadAllText($f.FullName, [System.Text.Encoding]::UTF8) | ConvertFrom-Json).snapshots).Count }
+    foreach ($f in @(Get-ChildItem "$trendsDirU\*-intel.json" -ErrorAction SilentlyContinue)) { $entriesU += @(([System.IO.File]::ReadAllText($f.FullName, [System.Text.Encoding]::UTF8) | ConvertFrom-Json).entries).Count }
+    foreach ($f in @(Get-ChildItem "$trendsDirU\*-livescan.json" -ErrorAction SilentlyContinue)) { $scansU += @(([System.IO.File]::ReadAllText($f.FullName, [System.Text.Encoding]::UTF8) | ConvertFrom-Json).scans).Count }
+    Write-Host "  intel timeline: $($oddsU.Count) day(s) odds chain / $snapsU snapshots | intel $entriesU | livescan $scansU (preSnapshots bridge on backfill)" -ForegroundColor Green
+} else {
+    Write-Host "  intel timeline: not yet on disk (sporttery_fetch auto-creates on first refresh)" -ForegroundColor DarkYellow
+}
 $ml = "$HOME_DIR\engine\cache\models\latest.json"
 if (Test-Path $ml) {
     $lv = [System.IO.File]::ReadAllText($ml, [System.Text.Encoding]::UTF8) | ConvertFrom-Json

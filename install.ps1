@@ -134,3 +134,15 @@ if (Test-Path $tkInstall) {
     $netI = "{0:+0.0;-0.0}" -f $tkd.meta.totalNet
     Write-Host "  ticket ledger: $($tkd.tickets.Count) tickets ($pendingI pending) | stake $($tkd.meta.totalStake) | net $netI -> data/06-tickets/tickets.html" -ForegroundColor Green
 }
+# intel timeline summary (v5.4: odds diff-chain / intel / livescan; auto-snapshot on refresh)
+$trendsDir = "$HOME_DIR\data\05-trends"
+$oddsFiles = @(Get-ChildItem "$trendsDir\*-odds.json" -ErrorAction SilentlyContinue)
+if ($oddsFiles.Count -gt 0) {
+    $snaps = 0; $entries = 0; $scans = 0
+    foreach ($f in $oddsFiles) { $snaps += @(([System.IO.File]::ReadAllText($f.FullName, [System.Text.Encoding]::UTF8) | ConvertFrom-Json).snapshots).Count }
+    foreach ($f in @(Get-ChildItem "$trendsDir\*-intel.json" -ErrorAction SilentlyContinue)) { $entries += @(([System.IO.File]::ReadAllText($f.FullName, [System.Text.Encoding]::UTF8) | ConvertFrom-Json).entries).Count }
+    foreach ($f in @(Get-ChildItem "$trendsDir\*-livescan.json" -ErrorAction SilentlyContinue)) { $scans += @(([System.IO.File]::ReadAllText($f.FullName, [System.Text.Encoding]::UTF8) | ConvertFrom-Json).scans).Count }
+    Write-Host "  intel timeline: $($oddsFiles.Count) day(s) odds chain / $snaps snapshots | intel $entries | livescan $scans (preSnapshots bridge on backfill)" -ForegroundColor Green
+} else {
+    Write-Host "  intel timeline: not yet on disk (sporttery_fetch auto-creates on first refresh)" -ForegroundColor DarkYellow
+}

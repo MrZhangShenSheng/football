@@ -80,6 +80,23 @@ gate = "消融就绪: " + ",".join(cand) if cand else "消融门槛未达(<20/�
 print(f"    偏差归因: {len(d.get('records', {}))} 场错题 | {fs} | {gate} → data/04-summaries/attribution.json")
 PYEOF
 fi
+# 情报时序库摘要（v5.4 intel-timeline：本次 update 的 run.py all / sporttery_fetch 已自动触发钩子落盘）
+if ls "$HOME_DIR"/data/05-trends/*-odds.json >/dev/null 2>&1; then
+    python3 - "$HOME_DIR/data/05-trends" << 'PYEOF'
+import json, pathlib, sys
+d = pathlib.Path(sys.argv[1])
+odds = sorted(d.glob("*-odds.json"))
+snaps = sum(len(json.load(open(p, encoding="utf-8")).get("snapshots", [])) for p in odds)
+entries = sum(len(json.load(open(p, encoding="utf-8")).get("entries", []))
+              for p in sorted(d.glob("*-intel.json")))
+scans = sum(len(json.load(open(p, encoding="utf-8")).get("scans", []))
+            for p in sorted(d.glob("*-livescan.json")))
+print(f"    情报时序库: {len(odds)} 日赔率链 / {snaps} 版快照 · 情报 {entries} 条 · "
+      f"livescan {scans} 次扫描（回填自动挂 preSnapshots 桥）")
+PYEOF
+else
+    echo "    情报时序库: 未落盘（sporttery_fetch 首次刷新自动建）"
+fi
 
 # 知识库新鲜度摘要（与 update.ps1 对齐）
 echo ""
