@@ -65,7 +65,7 @@ li{margin:4px 0}
 <tr class="pickrow"><td>②</td><td>周一011</td><td>布拉加 vs 吉马良斯</td><td>CRS 0:1</td><td>9.1%</td><td>@13.0</td><td>+19%</td><td>引擎②（后防5伤逻辑最顺）</td></tr>
 <tr class="pickrow"><td>③</td><td>周一008</td><td>第戎 vs 圣埃蒂安</td><td>CRS 1:0</td><td>12.3%</td><td>@12.0</td><td>+47%</td><td>托底（全场q最高）</td></tr>
 </table>
-<div class="note" style="margin-top:8px">票面：3场混串 = 2串1×3注 + 3串1×1注 = 4注 × 2元 = <b>8 元</b>（档案 shapes[1] 合法形状，票带 8~22 ✓）· 全腿在 CRS 口味带内（净胜≤2 且总进球≤3，0:2=客胜版主力形状）· 3串1 合赔 2964 → 全中 5928 元；只中 2 关最差回 312 元 · 三腿全中概率 ≈0.12% · 与保底 22 元合计 <b>30 元整，顶格 roundRedline</b></div>
+<div class="note" style="margin-top:8px">票面：3场混串 = 2串1×3注 + 3串1×1注 = 4注 × 2元 = <b>8 元</b>（档案 shapes[1] 合法形状，票带 8~22 ✓）· 全腿在 CRS 口味带内（净胜≤2 且总进球≤3，0:2=客胜版主力形状）· 3串1 合赔 2964；全注全中 = 2串1三注(494+456+312) + 3串1(5928) = <b>7190 元</b>；只中 2 关最差回 312 元 · 与保底 22 元合计 <b>30 元整，顶格 roundRedline</b></div>
 <div class="note" style="margin-top:6px">⚠️ 008 1:0 与 DC 反向（DC 82% 看客胜，判定系法乙小样本过拟合；频率口径纯联赛模板）——两口径背离已告知，按口味带保留为托底腿。<b>TTG/HAFU 本轮不出</b>：口味带"两端极端"无 0球候选，005 s7@15.5 是已知平移过冲缺陷腿（瑞超 s7 真实 0% 被抬 44%，08-30 存证）——违缺陷腿不入串纪律</div>
 <div class="ticket">
 ┌ 出票核对单（终端编号以此为准）────────────────<br>
@@ -76,6 +76,19 @@ li{margin:4px 0}
 └ 出票时逐条对照，发现不一致立即停 ────────
 </div>
 <div class="note" style="margin-top:6px">可选加购：广西形状 CRS 4串1（008 1:0 × 007 0:0 × 006 0:2 × 011 0:1，合赔 35568，2 元全中 71136 税前）——<b>档案外形状</b>（shapes 无 4串1）+ 加购后本轮 32 元超 roundRedline 2 元 + 007 0:0 有伤停反向警示，三项需大哥拍板；出票则 preference.json 须补形状</div>
+</div>
+
+<h2>一·C、铁律9·混串审核（q 口径统一）</h2>
+<div class="card">
+<div class="note" style="margin-bottom:8px">大哥要求审核"偏好档改 TTG/HAFU 同赛果是否赔率更高"。初评曾用 DC 口径得"011 CRS EV-7%→TTG+4%"，但偏好档是 freq-band 链路（铁律8 用 q 口径），<b>口径错配已纠正</b>——统一 q 口径（联赛真实频率）重算如下：</div>
+<table>
+<tr><th>场次(预测比分)</th><th>CRS（同赛果必中）</th><th>TTG（同赛果必中）</th><th>HAFU（需半场对·非必中）</th></tr>
+<tr><td>006 0:2</td><td class="ok">0:2 @19 EV<b>+107%</b></td><td>s2 @3.15 EV-10%</td><td>aa @7.5 EV+100%（半客/全客）</td></tr>
+<tr><td>011 0:1</td><td class="ok">0:1 @13 EV<b>+18%</b></td><td>s1 @4.9 EV+4%</td><td>aa @8.5 EV+55%（半客/全客）</td></tr>
+<tr><td>008 1:0</td><td class="ok">1:0 @12 EV<b>+48%</b></td><td>s1 @4.75 EV+3%</td><td>hh @7.5 EV+52%（半主/全主）</td></tr>
+</table>
+<div class="note" style="margin-top:8px"><b>结论：维持 CRS 3串1，不换。</b>三条理由：① <b>同赛果必中性</b>——CRS/TTG 在"预测比分不变"下必中，HAFU 需额外猜对半场（0:1 赛果下半场 0:0→da 中而非 aa，aa 非必中），HAFU 的高 EV 是"半场也对"的额外风险换的，<b>不是同赛果免费升 EV</b>；② <b>q 口径 CRS 双优</b>——006/008 CRS EV 在"必中"类里最高，011 CRS EV+18% 亦优于 TTG+4%；③ <b>杠杆优先</b>——CRS 3串1 合赔 2964（全中 7190）远高于 HAFU 3串（7.5×8.5×7.5=478，全中 956），符合 preference.json"CRS 为主要盈利来源"。TTG 全场 EV 最低（容错高换低赔+低抽水但赔率被压）不换。</div>
+<div class="note" style="margin-top:6px">⚠️ 011 HAFU aa EV+55% 是唯一"数字更高"项，逻辑也顺（布拉加后防 5 伤→半场可能就崩→半客全客）。但它是"半场客胜"的额外预测，非"0:1 赛果必中"。若大哥信"半场就客胜"可跨票分池加注 011 HAFU aa 单关@8.5（2元），本轮 32 元超红线 2 元——铁律9 允许同场跨票分池，需大哥拍板。</div>
 </div>
 
 <h2>二、腿序逻辑（为什么是这四条）</h2>
