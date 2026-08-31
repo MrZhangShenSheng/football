@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastUpdated": "2026-08-30",
+    "lastUpdated": "2026-08-31",
     "note": "实票账本:票=顶层实体(不按日期切分);实票=有结算记录的票,其余全是方案推演;出票后票面事实永不改写;派彩按形状算(4串11中2关只回1注2串1)",
     "totalTickets": 10,
     "totalStake": 134,
@@ -828,9 +828,10 @@
           "pick": "0-2",
           "odds": 24.0,
           "q": 0.1146,
-          "result": "pending",
+          "result": "miss",
           "note": "方案腿·freq-band球队平移(shifted=true)",
-          "priceNote": null
+          "priceNote": null,
+          "actual": "1:2(半0:1)"
         },
         {
           "code": "周一002",

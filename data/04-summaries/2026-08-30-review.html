@@ -1,97 +1,104 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
-<title>回填复盘 2026-08-30 · 周六深夜场闭环</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026-08-30 轮复盘 · 保底档四腿全中</title>
 <style>
-  :root{--ink:#1a1d23;--sub:#5b6472;--line:#e3e7ee;--bg:#f7f8fa;--card:#fff;--ok:#0a7d43;--bad:#c0392b;--warn:#b7791f;--accent:#2456a6}
-  *{box-sizing:border-box}
-  body{margin:0;font:15px/1.65 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--bg)}
-  .wrap{max-width:1080px;margin:0 auto;padding:28px 20px 60px}
-  h1{font-size:22px;margin:0 0 4px}
-  .meta{color:var(--sub);font-size:13px;margin-bottom:20px}
-  h2{font-size:17px;margin:34px 0 12px;padding-left:10px;border-left:4px solid var(--accent)}
-  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
-  .card .k{color:var(--sub);font-size:12px;margin-bottom:6px}
-  .card .v{font-size:24px;font-weight:700}
-  .card .s{font-size:12px;color:var(--sub);margin-top:4px}
-  .ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}
-  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:14px}
-  th{background:#eef1f6;text-align:left;padding:8px 12px;font-size:13px;color:var(--sub)}
-  td{padding:7px 12px;border-top:1px solid var(--line)}
-  .tag{display:inline-block;padding:1px 8px;border-radius:10px;font-size:12px;background:#eef1f6;color:var(--sub)}
-  .tag.ok{background:#e5f3ec;color:var(--ok)}
-  .tag.bad{background:#faeae8;color:var(--bad)}
-  .tag.warn{background:#faf3e4;color:var(--warn)}
-  .note{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--sub);margin-top:10px}
-  ul{margin:8px 0}
-  li{margin:4px 0}
-  code{background:#eef1f6;padding:1px 5px;border-radius:4px;font-size:13px}
-</style>
-</head><body><div class="wrap">
+:root{--bg:#f6f7f9;--card:#fff;--ink:#1c2330;--sub:#5b6472;--line:#e3e6eb;--ok:#0a7d43;--bad:#b3261e;--warn:#9a6700;--accent:#2b5fae;--chip:#eef2f8}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:14px/1.65 "Segoe UI","Microsoft YaHei",sans-serif;padding:24px}
+.wrap{max-width:980px;margin:0 auto}
+h1{font-size:20px;margin-bottom:4px}
+h2{font-size:15px;margin:26px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.meta{color:var(--sub);font-size:12.5px;margin-bottom:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-bottom:12px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.kpi .v{font-size:22px;font-weight:700}
+.kpi .l{font-size:12px;color:var(--sub)}
+.ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--sub);font-weight:600;background:var(--chip)}
+.chip{display:inline-block;background:var(--chip);border-radius:5px;padding:1px 8px;font-size:12px;margin-right:6px}
+.note{font-size:12.5px;color:var(--sub)}
+ul{padding-left:20px}
+li{margin:4px 0}
+.svg-ic{width:1em;height:1em;vertical-align:-0.12em;fill:currentColor;margin-right:4px}
+.foot{margin-top:26px;color:var(--sub);font-size:12px;border-top:1px solid var(--line);padding-top:10px}
+</style></head><body><div class="wrap">
+<svg width="0" height="0" style="position:absolute"><symbol id="ic-ok" viewBox="0 0 16 16"><path d="M6.5 12.2 2.8 8.5l1.4-1.4 2.3 2.3 5.3-5.3 1.4 1.4z"/></symbol><symbol id="ic-bad" viewBox="0 0 16 16"><path d="M8 6.6 4.7 3.3 3.3 4.7 6.6 8l-3.3 3.3 1.4 1.4L8 9.4l3.3 3.3 1.4-1.4L9.4 8l3.3-3.3-1.4-1.4z"/></symbol><symbol id="ic-wait" viewBox="0 0 16 16"><path d="M8 1.5a6.5 6.5 0 1 0 6.5 6.5H12A4 4 0 1 1 8 4v3l4-3.5L8 0z"/></symbol><symbol id="ic-doc" viewBox="0 0 16 16"><path d="M9.5 1H3.5A1.5 1.5 0 0 0 2 2.5v11A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V5.5zM9 2.2 12.8 6H9zM4.5 11.5h7V13h-7zm0-2.5h7v1.5h-7zm0-2.5h4.5V8H4.5z"/></symbol></svg>
 
-<h1>回填复盘 · 2026-08-30（周日晨）</h1>
-<div class="meta">范围：08-28 / 08-29 两轮 58 场记录 · 回填链：体彩对票（主）+ ESPN（兜底）· 数据截至 2026-08-30 09:40</div>
+<h1>2026-08-30 轮复盘 · 保底档 4串11 四腿全中</h1>
+<div class="meta">回填日 2026-08-31 · 预测版本 v5.5（两档制）· 数据来源：体彩 zqsgkj 对票（4/4）· 报告=data/04-summaries/2026-08-30-review.html</div>
 
-<div class="cards">
-  <div class="card"><div class="k">本轮新回填</div><div class="v">11 <span style="font-size:14px;color:var(--sub)">场</span></div><div class="s">周六深夜场 ESPN 兜底全中链 6 场 + 跨文件重复 5 场</div></div>
-  <div class="card"><div class="k">08-28 轮方向命中率</div><div class="v">54% <span style="font-size:14px">(21/39)</span></div><div class="s">3星 9/12 · 2星 8/19 · 1星 4/8</div></div>
-  <div class="card"><div class="k">08-29 轮方向命中率</div><div class="v">58% <span style="font-size:14px">(11/19)</span></div><div class="s">3星 5/8 · 剩余 31 场今晚明晨</div></div>
-  <div class="card"><div class="k">实票结算</div><div class="v bad">3 票全灭</div><div class="s">T007/T008/T009 payout=0 · T010 已数学死亡</div></div>
-  <div class="card"><div class="k">执行漏洞修复</div><div class="v warn">3 处</div><div class="s">ESPN映射缺口 / Fixture挡道 / 票务单链路</div></div>
-  <div class="card"><div class="k">语料就绪度</div><div class="v">254/295</div><div class="s">✅可校准(n≥100) · ✅可消融(n≥50)</div></div>
+<div class="kpis">
+<div class="kpi"><div class="l">方向命中率（本轮）</div><div class="v ok">4/4 · 100%</div></div>
+<div class="kpi"><div class="l">保底档推演（未出票）</div><div class="v ok">11注全中 · 净+15.15</div></div>
+<div class="kpi"><div class="l">实票结算（上轮尾）</div><div class="v bad">T007-009 全灭 -30</div></div>
+<div class="kpi"><div class="l">T010（跨日票）</div><div class="v warn">pending · 剩今晚1腿</div></div>
+<div class="kpi"><div class="l">语料就绪度</div><div class="v">323 条 · 可校准✅</div></div>
 </div>
 
-<h2>一、本轮回填明细（周六深夜场 · ESPN 兜底链路）</h2>
-<table>
-<tr><th>编号</th><th>对阵</th><th>赛果</th><th>预测</th><th>赔率</th><th>方向</th></tr>
-<tr><td>周六023</td><td>萨索洛 vs 都灵</td><td>2-1</td><td>HAD 主胜</td><td>@2.08</td><td><span class="tag ok">✅</span></td></tr>
-<tr><td>周六024</td><td>阿尔克马 vs 前进之鹰</td><td>5-2</td><td>HAD 主胜</td><td>@1.26</td><td><span class="tag ok">✅</span></td></tr>
-<tr><td>周六025</td><td>皇家社会 vs 西班牙人</td><td>2-1</td><td>HAD 主胜</td><td>@1.83</td><td><span class="tag ok">✅</span></td></tr>
-<tr><td>周六026</td><td>维塞乌 vs 波尔图</td><td>0-3</td><td>HAD 客胜</td><td>@1.44</td><td><span class="tag ok">✅</span></td></tr>
-<tr><td>周六027</td><td>尤文图斯 vs 帕尔马</td><td>2-0</td><td>HAD 主胜</td><td>@1.12</td><td><span class="tag ok">✅</span></td></tr>
-<tr><td>周六028</td><td>塞维利亚 vs 马竞</td><td>1-3</td><td>HAD 客胜</td><td>@1.84</td><td><span class="tag ok">✅</span></td></tr>
+<h2>一、四腿赛果明细（全部命中）</h2>
+<div class="card"><table>
+<tr><th>编号</th><th>对阵</th><th>联赛</th><th>pick</th><th>赔率</th><th>赛果(半场)</th><th>方向</th><th>星级</th></tr>
+<tr><td>周六018</td><td>维京 vs 奥勒松</td><td>挪超R19</td><td>HAD 主胜</td><td>1.14</td><td>2-1 (0:1)</td><td class="ok"><svg class="svg-ic"><use href="#ic-ok"/></svg>中 · 半场落后逆转</td><td>⭐3</td></tr>
+<tr><td>周日012</td><td>特尔斯达 vs 阿贾克斯</td><td>荷甲R4</td><td>HAD 客胜</td><td>1.29</td><td>0-4 (0:1)</td><td class="ok"><svg class="svg-ic"><use href="#ic-ok"/></svg>中</td><td>⭐4</td></tr>
+<tr><td>周日018</td><td>坎布尔 vs 特温特</td><td>荷甲R4</td><td>HAD 客胜</td><td>1.20</td><td>1-4 (0:2)</td><td class="ok"><svg class="svg-ic"><use href="#ic-ok"/></svg>中</td><td>⭐4</td></tr>
+<tr><td>周日020</td><td>卡利亚里 vs 国际米兰</td><td>意甲R2</td><td>HAD 客胜</td><td>1.27</td><td>0-1 (0:1)</td><td class="ok"><svg class="svg-ic"><use href="#ic-ok"/></svg>中</td><td>⭐3</td></tr>
 </table>
-<div class="note">六场方向 <b>100% 全中</b>——但全部是低赔侧（1.12~2.08），串关价值有限；真正的损失都发生在周五/周六晚场冷门（见错题分析）。</div>
+<div class="note" style="margin-top:8px">28 场中仅此 4 场有 pick（保底档腿）；其余 24 场采集未推荐（pick=null，backfill 设计跳过，无判定对象）。翻身档=月预算关档、freq-band 聚合档=关档（平移过冲缺陷存证：瑞超 s7 真实 0% 被抬 44%，见 3fb3f89）。</div></div>
 
-<h2>二、错题归因重点（34 场错题 · F9 主因 33 场）</h2>
+<h2>二、保底档 4串11 推演结算（未转正 · 纸面）</h2>
+<div class="card">
 <table>
-<tr><th>冷门簇</th><th>代表场次</th><th>模式</th></tr>
-<tr><td>英超 R2 主队失势</td><td>利物浦 2-2 诺丁汉(@1.37) · 热刺 0-2 纽卡(@2.06) · 伯恩茅斯 1-1 埃弗顿</td><td>开季第2轮主胜溢价系统性高估</td></tr>
-<tr><td>德甲 R1/R2 疯狂轮</td><td>勒沃库森客负 2-3 埃沃斯堡(@1.5) · 美因茨 0-0 · 科隆 3-2 · 柏林联合 3-3</td><td>德甲开季爆冷率远超画像，波动系数偏小</td></tr>
-<tr><td>意甲大冷</td><td>佛罗伦萨 0-3 弗洛西诺内(@1.5 主胜)</td><td>赛季首个主场惨案，模型无信号属正常黑天鹅</td></tr>
-<tr><td>法甲双平</td><td>里尔 2-2 巴黎(@1.55 客胜)</td><td>强客连胜预期 vs 实际平局——巴黎客场平局惯例未入修正</td></tr>
+<tr><th>档</th><th>注数</th><th>派彩(税前)</th></tr>
+<tr><td>6×2串1</td><td>6</td><td>17.99 元</td></tr>
+<tr><td>4×3串1</td><td>4</td><td>14.67 元</td></tr>
+<tr><td>1×4串1</td><td>1</td><td>4.48 元</td></tr>
+<tr><td><b>合计</b></td><td><b>11 注 · 22 元</b></td><td><b>37.15 元 · 净 +15.15</b></td></tr>
 </table>
-<div class="note">开季修正系数消融结论仍为「维持」（CI95 [-0.084, +0.004] 跨 0），但触发场命中率 68% vs 未触发 62%——方向性偏好存在、样本尚不足以升级。F9（市场锚偏差）为 33 场错题主因，avgGap 0.40：错题集中在体彩与收盘价分歧大的场次，选单过滤可考虑把「体彩赔率 vs Pinnacle 去水分歧 >7pp」从标注升级为硬排除。</div>
+<div class="note" style="margin-top:8px"><svg class="svg-ic"><use href="#ic-wait"/></svg>方案推演未出票（无转正记录）——两档制首验：63% 单腿命中率下 4串11 的容错设计（中2关回1注2串1）本轮未被触发即全中，T002 型"高赔腿覆盖全票"结构继续有效。</div></div>
 
-<h2>三、实票账本结算（T007~T010）</h2>
-<table>
-<tr><th>票</th><th>形状</th><th>腿况</th><th>派彩</th><th>备注</th></tr>
-<tr><td>T007</td><td>HAD 4串1×2注互补</td><td>6腿中2（马竞客胜✅ 不伦瑞克客胜✅，水户/蒙彼利埃/里尔/斯特拉斯 ❌）</td><td class="bad">0</td><td>已结算</td></tr>
-<tr><td>T008</td><td>HAD 4串1×2注互补</td><td>5腿中1（马竞客胜✅）</td><td class="bad">0</td><td>已结算</td></tr>
-<tr><td>T009</td><td>CRS 5串1</td><td>5腿中0（尤文0-0实2-0 · 清水0-3实0-1 · 里尔0-0实2-2 · 佛洛0-1实0-3 · 热刺0-1✅实0-2 miss）</td><td class="bad">0</td><td>已结算</td></tr>
-<tr><td>T010</td><td>CRS 4串15全组合</td><td>周六026 miss · 周六027 miss + 今晚明晨 2 腿 pending（存活组合：2 单关+1×2串1，两腿全中回收 968 元）</td><td class="warn">13/15 注已灭</td><td>明晚自动结算</td></tr>
+<h2>三、实票账本（data/06-tickets/tickets.json）</h2>
+<div class="card"><table>
+<tr><th>票</th><th>形状</th><th>状态</th><th>结果</th></tr>
+<tr><td>T007</td><td>HAD 4串1×2注互补</td><td class="bad">settled 08-30 09:31</td><td>2/4 腿 · 派彩 0 · <b class="bad">-4</b></td></tr>
+<tr><td>T008</td><td>HAD 5串1×3倍</td><td class="bad">settled 08-30 09:31</td><td>1/5 腿 · 派彩 0 · <b class="bad">-6</b></td></tr>
+<tr><td>T009</td><td>CRS 5场4串1复式×2倍</td><td class="bad">settled 08-30 09:31</td><td>0/5 腿 · 派彩 0 · <b class="bad">-20</b></td></tr>
+<tr><td>T010</td><td>CRS 4串15全组合（30元）</td><td class="warn">pending</td><td>3 腿 miss（维塞乌0-3/圣保利1-2/尤文2-0）；剩误买腿周一002 芬超今晚开赛——中=回1注单关40元(净+10)，不中=-30</td></tr>
 </table>
-<div class="note">本票务周 4 张实票全灭。共性教训：HAD 票的死腿高度重合（水户/蒙彼利埃/里尔——全是周五六低赔"稳胆"），<b>低赔胆在开季轮的坍塌是当前最大亏损源</b>；CRS 票继续验证 freq-band 的正确性——比分命中本就 26% 基线，5串全中概率个位数，属形状固有风险非选法错误。</div>
+<div class="note" style="margin-top:8px">T010 即 T010 事故票（周一006 误买周一002，编号三重验证未执行，已记 meta.disciplineEvents）。结算须全腿终态，今晚完赛后重跑 verify 自动闭。</div></div>
 
-<h2>四、执行漏洞修复（本轮代码变更 3 处）</h2>
-<table>
-<tr><th>#</th><th>漏洞</th><th>修复</th><th>影响</th></tr>
-<tr><td>1</td><td>_aliases espn 映射缺口：juventus/torino/az-alkmaar/go-ahead-eagles/atletico-madrid/porto 六队 espn=null；viseu 存 'Academico'（无重音）≠ ESPN 'Académico'</td><td>按 ESPN displayName 精确补齐 7 队</td><td>ESPN 兜底链路对这些队恢复可用</td></tr>
-<tr><td>2</td><td>backfill 体彩 Fixture 状态直跳：周六深夜场体彩开奖滞后（matchDate+1 标未完赛）而 ESPN 已 FULL_TIME，ESPN 兜底被挡</td><td>Fixture 先记标志不跳过，ESPN 命中即回填，两边都无才跳过</td><td>本场 11 场回填的解锁点</td></tr>
-<tr><td>3</td><td>settle_tickets 只走体彩链路：全腿完赛的 T007/8/9 卡 pending；ticket_report 对 disciplineEvents null 值减法崩溃</td><td>体彩无分回退 02-results 回填库（HAFU 无半场仍 pending 不误判）+ null 防护</td><td>3 票结算解锁 + tickets.html 重刷恢复</td></tr>
-</table>
-<div class="note">pytest 回归 7/7 通过。三处修复全部指向同一病根：<b>双链路体系里"主链路有响应但内容滞后"的状态被当成了终态</b>——后续若再遇数据源部分更新，先查主链路状态字段是否过时，再决定跳过还是降级。</div>
+<h2>四、闭环链路状态（run.py verify 08-31 重跑）</h2>
+<div class="card"><ul>
+<li><svg class="svg-ic"><use href="#ic-ok"/></svg><b>corpus</b>：323 条（回填 284 · p_final 242）→ 门槛 <b>✅可校准 ✅可消融</b></li>
+<li><svg class="svg-ic"><use href="#ic-doc"/></svg><b>attribute</b>：41 场错题 → F9 主因 39 场（avgGap 0.42）/ F5 主因 2 场（avgGap 0.60）；<span class="warn">F9 nPrimary 39≥20 成消融候选</span>（fd 不覆盖联赛错题 none 占比结构性偏高是已知背景）</li>
+<li><svg class="svg-ic"><use href="#ic-doc"/></svg><b>trend</b>：196 场 / 15 轮 → <span class="warn">⚠️ 70%~101% 桶实际 95% vs 预测 77%（系统性低估 19pp）</span>——高置信档概率输出偏保守，与 4/4 全中相互印证</li>
+<li><b>ablate</b>：开季修正维持（CI 跨 0，命中率 69% vs 62% 仅展示）；战意维持（CI 跨 0）；联赛波动/保级平局/首回合平局/平局率/伤停差值样本不足（&lt;5 触发场）继续观察</li>
+<li><b>calibrate</b>：跳过（缺 p_dc 列，新轮预测起补采）· <b>temperature</b>：crs/ttg T=1.30 enabled，hafu CI 未过 disabled——自检 OK</li>
+</ul></div>
 
-<h2>五、闭环指标与待办</h2>
-<table>
-<tr><th>指标</th><th>数值</th><th>状态</th></tr>
-<tr><td>语料就绪度</td><td>295 条 / 已回填 254 / p_final 217 / CLV 10</td><td>✅ 可校准 · ✅ 可消融</td></tr>
-<tr><td>校准警告</td><td>0-40% 桶实际 55% vs 预测 37%；70-100% 桶实际 94% vs 预测 77%</td><td class="warn">两端系统性低估 17pp——预测分布过于集中在中间档</td></tr>
-<tr><td>pinClose / CLV</td><td>本轮 0 条（fd CSV 尚未发布 08-28/29 轮，西甲最新仅到 08-27）</td><td>⏳ fd 更新后重跑 backfill 幂等补齐</td></tr>
-<tr><td>boldplay 结算</td><td>08-28 已结算（upset 0/4 payout=0）；08-29 等周一006+周日004</td><td>⏳ 明晚 verify 自动完成</td></tr>
-<tr><td>温度参数</td><td>crs/ttg T=1.30（CI 过）· hafu T=1.30 disabled（CI 不过自动停用）</td><td>✅ 稳定</td></tr>
-</table>
-<div class="note"><b>明晚「回填赛果」或 verify 将自动处理</b>：今晚+明晨 31 场（周日001~025/周一001~012）赛果回填、08-29 boldplay 结算、T010 票终态、fd 发布后的 pinClose/CLV 批量补齐。校准两端低估 17pp 是下一个系统性课题——方向上指向星级阈值重划（当前 55%~65% 的三星带挤了过多实际命中不足的场次）。</div>
+<h2>五、模型维护（本轮动作）</h2>
+<div class="card"><ul>
+<li><b>6 联赛两季联拟（2526+2627）</b>：西甲 209 场 / 法甲 162 / 法乙 125 / 英超 220 / 意甲 210（数据截至 08-24~27，fd CSV 滞后正常）；此前缓存为纯上季拟合（当季 ≥5 场新赛果未进模型）</li>
+<li><span class="warn"><svg class="svg-ic"><use href="#ic-wait"/></svg>德甲例外</span>：fd 2627 德甲 CSV 未发布（HTTP 300），维持上季 150 场拟合；下轮回填时 odds_fetch 重试</li>
+<li><b>非 fd 联赛</b>（上会话 learn 已完成）：korea v6 / sweden v7 发布，latest.json 路由更新；league 库增量 +66 行</li>
+<li><b>pytest 全量</b>：185 passed（DC 缓存落盘后回归）</li>
+</ul></div>
 
-<div class="meta" style="margin-top:30px">数据来源：data/02-results/2026-08-28.json · 2026-08-29.json · 2026-08-29-r1.json（回填主档）/ engine/cache/espn_results_*.json（ESPN 兜底）/ engine/cache/sporttery_results_*.json（体彩开奖）/ data/06-tickets/tickets.json（票务）/ data/04-summaries/corpus.json · attribution.json · ablate-report.json（闭环指标）</div>
+<h2>六、CLV 与数据缺口（诚实记录）</h2>
+<div class="card"><ul>
+<li>本轮 4 场 pinClose 均为 None：荷甲/意甲 fd CSV 尚未含 08-30 轮赛果（三键匹配无果）；挪超非 fd 覆盖。fd 更新后下轮回填自动补（apply_pin_close 对历史场幂等补跑）</li>
+<li>ESPN 赛果接口停摆中（体彩对票主链路无影响）</li>
+<li>周一 12 场今晚开赛（pick=null 不入判定）；boldplay 08-30 卡 5 腿（周一005/006/007/008/011）完赛后重跑 settle</li>
+</ul></div>
 
+<h2>七、沉淀与待办</h2>
+<div class="card"><ul>
+<li><b>今晚必做</b>：周一场完赛后重跑 <code>python engine/scripts/run.py verify</code>——boldplay 5 腿结算 + T010 全腿终态结算（票务账本重刷）</li>
+<li><b>观察项</b>：F9 消融候选（nPrimary 39）待人审；校准低估 19pp 若持续，calibrate 重校（n≥100 达标后）会自动吸收</li>
+<li><b>无新事故</b>：本轮链路无纪律事件；T010 事故属上轮已记录存量</li>
+</ul></div>
+
+<div class="foot">数据来源清单：data/02-results/2026-08-30.json（主文件）· data/06-tickets/tickets.json · data/04-summaries/{corpus,attribution,ablate-report}.json · engine/cache/*_dc.json · 体彩 zqsgkj 开奖口径 · football-data.co.uk CSV（2526+2627）· trend.html</div>
 </div></body></html>
