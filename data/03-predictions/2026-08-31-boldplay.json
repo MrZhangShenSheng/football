@@ -1,0 +1,684 @@
+{
+ "structure": "new",
+ "date": "2026-08-31",
+ "seq": 10,
+ "tiers": {
+  "base": {
+   "cost": 22,
+   "legs": [
+    {
+     "matchNumStr": "周一003",
+     "match": "莱切-罗马",
+     "play": "had",
+     "pick": "客胜",
+     "odds": 1.33,
+     "prob": 0.623,
+     "star": 3,
+     "note": "融合69%×R2开季强队胜0.90=62.3%·h2h罗马8-2-0·罗马场均2.5球·伤停d=0"
+    },
+    {
+     "matchNumStr": "周一009",
+     "match": "维拉-阿森纳",
+     "play": "had",
+     "pick": "客胜",
+     "odds": 1.4,
+     "prob": 0.571,
+     "star": 3,
+     "note": "融合61%×R2开季0.90×伤停对侧1.04=57.1%·维拉7人伤d=+4·阿森纳近10场5-3-2"
+    },
+    {
+     "matchNumStr": "周一004",
+     "match": "佐加顿斯-米亚尔比",
+     "play": "had",
+     "pick": "主胜",
+     "odds": 1.42,
+     "prob": 0.592,
+     "star": 3,
+     "note": "单锚61%×0.97=59.2%·米亚尔比场均0.9球·瑞超占小联赛唯一额度(R19无开季修正)"
+    },
+    {
+     "matchNumStr": "周一012",
+     "match": "巴萨-巴列卡诺",
+     "play": "hhad",
+     "pick": "让球主胜(-2)",
+     "odds": 1.85,
+     "prob": 0.504,
+     "star": 3,
+     "note": "HAD停售走HHAD-2·DC λ3.20/0.47→P(净胜≥3)≈50.4% vs 市场去水47.9%分歧2.5pp·巴列卡诺主力门将缺阵·巴萨近10场9-0-1·R3开季已含弱化"
+    }
+   ],
+   "play": "had-4串11",
+   "bets": [
+    {
+     "legs": [
+      0,
+      1
+     ],
+     "multiplier": 1
+    },
+    {
+     "legs": [
+      0,
+      2
+     ],
+     "multiplier": 1
+    },
+    {
+     "legs": [
+      0,
+      3
+     ],
+     "multiplier": 1
+    },
+    {
+     "legs": [
+      1,
+      2
+     ],
+     "multiplier": 1
+    },
+    {
+     "legs": [
+      1,
+      3
+     ],
+     "multiplier": 1
+    },
+    {
+     "legs": [
+      2,
+      3
+     ],
+     "multiplier": 1
+    },
+    {
+     "legs": [
+      0,
+      1,
+      2
+     ],
+     "multiplier": 1
+    },
+    {
+     "legs": [
+      0,
+      1,
+      3
+     ],
+     "multiplier": 1
+    },
+    {
+     "legs": [
+      0,
+      2,
+      3
+     ],
+     "multiplier": 1
+    },
+    {
+     "legs": [
+      1,
+      2,
+      3
+     ],
+     "multiplier": 1
+    },
+    {
+     "legs": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "multiplier": 1
+    }
+   ],
+   "note": "6×2串1+4×3串1+1×4串1 · 中2关回1注2串1 · 终审r1：脚本4腿(001芬超胶着41/28/31+002T010误买场+006平局33%高危)全二星被推翻——001/006排除,002让位瑞超额度,换入003/009/004/012(012为HHAD腿,HHAD 8串上限>4串11木桶合规)"
+  },
+  "upset": {
+   "shape": "closed",
+   "cost": 0,
+   "legs": [
+    {
+     "matchNumStr": "周一005",
+     "match": "天狼星 vs 马尔默",
+     "play": "ttg",
+     "pick": "s7",
+     "odds": 15.5,
+     "q": 0.4328,
+     "ev": 5.7084
+    },
+    {
+     "matchNumStr": "周一006",
+     "match": "奥萨苏纳 vs 赫塔费",
+     "play": "hafu",
+     "pick": "aa",
+     "odds": 7.5,
+     "q": 0.2657,
+     "ev": 0.9928
+    },
+    {
+     "matchNumStr": "周一011",
+     "match": "布拉加 vs 吉马良斯",
+     "play": "hafu",
+     "pick": "aa",
+     "odds": 8.5,
+     "q": 0.1823,
+     "ev": 0.5495
+    },
+    {
+     "matchNumStr": "周一008",
+     "match": "第戎 vs 圣埃蒂安",
+     "play": "crs",
+     "pick": "1:0",
+     "odds": 12.0,
+     "q": 0.1226,
+     "ev": 0.4712
+    }
+   ],
+   "note": "翻身月预算红线 40/40元 · 关档"
+  }
+ },
+ "totalCost": 22,
+ "cards": [
+  {
+   "code": "周一001",
+   "match": "国际图尔 vs 库奥皮奥",
+   "candidates": [
+    {
+     "code": "周一001",
+     "match": "国际图尔 vs 库奥皮奥",
+     "pool": "crs",
+     "pick": "0:1",
+     "q": 0.0771,
+     "odds": 10.0,
+     "ev": -0.229
+    },
+    {
+     "code": "周一001",
+     "match": "国际图尔 vs 库奥皮奥",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2366,
+     "odds": 3.5,
+     "ev": -0.1719
+    },
+    {
+     "code": "周一001",
+     "match": "国际图尔 vs 库奥皮奥",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2226,
+     "odds": 3.65,
+     "ev": -0.1875
+    },
+    {
+     "code": "周一001",
+     "match": "国际图尔 vs 库奥皮奥",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2064,
+     "odds": 3.6,
+     "ev": -0.257
+    },
+    {
+     "code": "周一001",
+     "match": "国际图尔 vs 库奥皮奥",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.1736,
+     "odds": 4.8,
+     "ev": -0.1667
+    }
+   ],
+   "rec_base": {
+    "code": "周一001",
+    "match": "国际图尔 vs 库奥皮奥",
+    "pool": "ttg",
+    "pick": "s2",
+    "q": 0.2366,
+    "odds": 3.5,
+    "ev": -0.1719
+   },
+   "rec_upset": {
+    "code": "周一001",
+    "match": "国际图尔 vs 库奥皮奥",
+    "pool": "crs",
+    "pick": "0:1",
+    "q": 0.0771,
+    "odds": 10.0,
+    "ev": -0.229
+   },
+   "flags": [
+    "low_conf"
+   ]
+  },
+  {
+   "code": "周一002",
+   "match": "赫尔火花 vs TPS图尔",
+   "candidates": [
+    {
+     "code": "周一002",
+     "match": "赫尔火花 vs TPS图尔",
+     "pool": "crs",
+     "pick": "0:1",
+     "q": 0.0771,
+     "odds": 14.0,
+     "ev": 0.0794
+    },
+    {
+     "code": "周一002",
+     "match": "赫尔火花 vs TPS图尔",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2366,
+     "odds": 4.1,
+     "ev": -0.0299
+    },
+    {
+     "code": "周一002",
+     "match": "赫尔火花 vs TPS图尔",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2226,
+     "odds": 3.55,
+     "ev": -0.2098
+    },
+    {
+     "code": "周一002",
+     "match": "赫尔火花 vs TPS图尔",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2064,
+     "odds": 3.0,
+     "ev": -0.3808
+    },
+    {
+     "code": "周一002",
+     "match": "赫尔火花 vs TPS图尔",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.1736,
+     "odds": 5.5,
+     "ev": -0.0452
+    }
+   ],
+   "rec_base": {
+    "code": "周一002",
+    "match": "赫尔火花 vs TPS图尔",
+    "pool": "crs",
+    "pick": "0:1",
+    "q": 0.0771,
+    "odds": 14.0,
+    "ev": 0.0794
+   },
+   "rec_upset": {
+    "code": "周一002",
+    "match": "赫尔火花 vs TPS图尔",
+    "pool": "crs",
+    "pick": "0:1",
+    "q": 0.0771,
+    "odds": 14.0,
+    "ev": 0.0794
+   },
+   "flags": [
+    "low_conf"
+   ]
+  },
+  {
+   "code": "周一005",
+   "match": "天狼星 vs 马尔默",
+   "candidates": [
+    {
+     "code": "周一005",
+     "match": "天狼星 vs 马尔默",
+     "pool": "crs",
+     "pick": "3:2",
+     "q": 0.0521,
+     "odds": 17.5,
+     "ev": -0.0882
+    },
+    {
+     "code": "周一005",
+     "match": "天狼星 vs 马尔默",
+     "pool": "ttg",
+     "pick": "s7",
+     "q": 0.4328,
+     "odds": 15.5,
+     "ev": 5.7084
+    },
+    {
+     "code": "周一005",
+     "match": "天狼星 vs 马尔默",
+     "pool": "ttg",
+     "pick": "s5",
+     "q": 0.1394,
+     "odds": 7.1,
+     "ev": -0.0103
+    },
+    {
+     "code": "周一005",
+     "match": "天狼星 vs 马尔默",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2514,
+     "odds": 2.7,
+     "ev": -0.3212
+    },
+    {
+     "code": "周一005",
+     "match": "天狼星 vs 马尔默",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.1928,
+     "odds": 6.0,
+     "ev": 0.1568
+    }
+   ],
+   "rec_base": {
+    "code": "周一005",
+    "match": "天狼星 vs 马尔默",
+    "pool": "ttg",
+    "pick": "s7",
+    "q": 0.4328,
+    "odds": 15.5,
+    "ev": 5.7084
+   },
+   "rec_upset": {
+    "code": "周一005",
+    "match": "天狼星 vs 马尔默",
+    "pool": "ttg",
+    "pick": "s7",
+    "q": 0.4328,
+    "odds": 15.5,
+    "ev": 5.7084
+   },
+   "flags": []
+  },
+  {
+   "code": "周一006",
+   "match": "奥萨苏纳 vs 赫塔费",
+   "candidates": [
+    {
+     "code": "周一006",
+     "match": "奥萨苏纳 vs 赫塔费",
+     "pool": "ttg",
+     "pick": "s1",
+     "q": 0.2902,
+     "odds": 3.1,
+     "ev": -0.1004
+    },
+    {
+     "code": "周一006",
+     "match": "奥萨苏纳 vs 赫塔费",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.285,
+     "odds": 3.15,
+     "ev": -0.1023
+    },
+    {
+     "code": "周一006",
+     "match": "奥萨苏纳 vs 赫塔费",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.2657,
+     "odds": 7.5,
+     "ev": 0.9928
+    },
+    {
+     "code": "周一006",
+     "match": "奥萨苏纳 vs 赫塔费",
+     "pool": "hafu",
+     "pick": "dd",
+     "q": 0.1327,
+     "odds": 3.65,
+     "ev": -0.5156
+    },
+    {
+     "code": "周一006",
+     "match": "奥萨苏纳 vs 赫塔费",
+     "pool": "crs",
+     "pick": "0:2",
+     "q": 0.1089,
+     "odds": 19.0,
+     "ev": 1.0691,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周一006",
+    "match": "奥萨苏纳 vs 赫塔费",
+    "pool": "hafu",
+    "pick": "aa",
+    "q": 0.2657,
+    "odds": 7.5,
+    "ev": 0.9928
+   },
+   "rec_upset": {
+    "code": "周一006",
+    "match": "奥萨苏纳 vs 赫塔费",
+    "pool": "hafu",
+    "pick": "aa",
+    "q": 0.2657,
+    "odds": 7.5,
+    "ev": 0.9928
+   },
+   "flags": [
+    "divergence"
+   ]
+  },
+  {
+   "code": "周一007",
+   "match": "亚特兰大 vs 博洛尼亚",
+   "candidates": [
+    {
+     "code": "周一007",
+     "match": "亚特兰大 vs 博洛尼亚",
+     "pool": "crs",
+     "pick": "0:0",
+     "q": 0.1187,
+     "odds": 12.0,
+     "ev": 0.4244
+    },
+    {
+     "code": "周一007",
+     "match": "亚特兰大 vs 博洛尼亚",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2805,
+     "odds": 3.45,
+     "ev": -0.0323
+    },
+    {
+     "code": "周一007",
+     "match": "亚特兰大 vs 博洛尼亚",
+     "pool": "ttg",
+     "pick": "s1",
+     "q": 0.2472,
+     "odds": 4.8,
+     "ev": 0.1866
+    },
+    {
+     "code": "周一007",
+     "match": "亚特兰大 vs 博洛尼亚",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.1936,
+     "odds": 7.0,
+     "ev": 0.3552
+    },
+    {
+     "code": "周一007",
+     "match": "亚特兰大 vs 博洛尼亚",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.1699,
+     "odds": 2.65,
+     "ev": -0.5498
+    }
+   ],
+   "rec_base": {
+    "code": "周一007",
+    "match": "亚特兰大 vs 博洛尼亚",
+    "pool": "hafu",
+    "pick": "aa",
+    "q": 0.1936,
+    "odds": 7.0,
+    "ev": 0.3552
+   },
+   "rec_upset": {
+    "code": "周一007",
+    "match": "亚特兰大 vs 博洛尼亚",
+    "pool": "crs",
+    "pick": "0:0",
+    "q": 0.1187,
+    "odds": 12.0,
+    "ev": 0.4244
+   },
+   "flags": []
+  },
+  {
+   "code": "周一008",
+   "match": "第戎 vs 圣埃蒂安",
+   "candidates": [
+    {
+     "code": "周一008",
+     "match": "第戎 vs 圣埃蒂安",
+     "pool": "crs",
+     "pick": "1:0",
+     "q": 0.1226,
+     "odds": 12.0,
+     "ev": 0.4712
+    },
+    {
+     "code": "周一008",
+     "match": "第戎 vs 圣埃蒂安",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2219,
+     "odds": 3.35,
+     "ev": -0.2566
+    },
+    {
+     "code": "周一008",
+     "match": "第戎 vs 圣埃蒂安",
+     "pool": "ttg",
+     "pick": "s1",
+     "q": 0.2175,
+     "odds": 4.75,
+     "ev": 0.0331
+    },
+    {
+     "code": "周一008",
+     "match": "第戎 vs 圣埃蒂安",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2023,
+     "odds": 7.5,
+     "ev": 0.5172
+    },
+    {
+     "code": "周一008",
+     "match": "第戎 vs 圣埃蒂安",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.1709,
+     "odds": 2.75,
+     "ev": -0.53
+    }
+   ],
+   "rec_base": {
+    "code": "周一008",
+    "match": "第戎 vs 圣埃蒂安",
+    "pool": "hafu",
+    "pick": "hh",
+    "q": 0.2023,
+    "odds": 7.5,
+    "ev": 0.5172
+   },
+   "rec_upset": {
+    "code": "周一008",
+    "match": "第戎 vs 圣埃蒂安",
+    "pool": "crs",
+    "pick": "1:0",
+    "q": 0.1226,
+    "odds": 12.0,
+    "ev": 0.4712
+   },
+   "flags": []
+  },
+  {
+   "code": "周一011",
+   "match": "布拉加 vs 吉马良斯",
+   "candidates": [
+    {
+     "code": "周一011",
+     "match": "布拉加 vs 吉马良斯",
+     "pool": "crs",
+     "pick": "0:1",
+     "q": 0.0915,
+     "odds": 13.0,
+     "ev": 0.1895
+    },
+    {
+     "code": "周一011",
+     "match": "布拉加 vs 吉马良斯",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2271,
+     "odds": 3.7,
+     "ev": -0.1597
+    },
+    {
+     "code": "周一011",
+     "match": "布拉加 vs 吉马良斯",
+     "pool": "ttg",
+     "pick": "s1",
+     "q": 0.2124,
+     "odds": 4.9,
+     "ev": 0.0408
+    },
+    {
+     "code": "周一011",
+     "match": "布拉加 vs 吉马良斯",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2091,
+     "odds": 2.45,
+     "ev": -0.4877
+    },
+    {
+     "code": "周一011",
+     "match": "布拉加 vs 吉马良斯",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.1823,
+     "odds": 8.5,
+     "ev": 0.5495
+    }
+   ],
+   "rec_base": {
+    "code": "周一011",
+    "match": "布拉加 vs 吉马良斯",
+    "pool": "hafu",
+    "pick": "aa",
+    "q": 0.1823,
+    "odds": 8.5,
+    "ev": 0.5495
+   },
+   "rec_upset": {
+    "code": "周一011",
+    "match": "布拉加 vs 吉马良斯",
+    "pool": "hafu",
+    "pick": "aa",
+    "q": 0.1823,
+    "odds": 8.5,
+    "ev": 0.5495
+   },
+   "flags": []
+  }
+ ],
+ "ranAt": "2026-08-31",
+ "revision": "r1"
+}

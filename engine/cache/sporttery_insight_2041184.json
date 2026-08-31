@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-08-30",
+ "fetchedAt": "2026-08-31",
  "source": "sporttery",
  "matchId": 2041184,
  "match": {
@@ -28,7 +28,7 @@
   "home": {
    "groupName": "",
    "phaseName": "Regular Season",
-   "ranking": "7",
+   "ranking": "8",
    "sDrawMatchCnt": "1",
    "sHomeDrawMatchCnt": "1",
    "sHomeLossGoalMatchCnt": "0",
@@ -39,8 +39,37 @@
   }
  },
  "injuries": {
-  "home": [],
-  "away": []
+  "home": [
+   {
+    "name": "Bruma",
+    "pos": "前锋",
+    "no": "7",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 0,
+    "starts": 0
+   },
+   {
+    "name": "苏达科夫",
+    "pos": "中场",
+    "no": "10",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 2,
+    "starts": 2
+   }
+  ],
+  "away": [
+   {
+    "name": "谢卡",
+    "pos": "中场",
+    "no": "8",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 2,
+    "starts": 2
+   }
+  ]
  },
  "form": {
   "goalAvg": {

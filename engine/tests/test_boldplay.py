@@ -127,3 +127,34 @@ def test_v2_upset_month_cap_constant():
     """月预算常量与 SKILL v5.5 文本承诺一致（40 元红线）。"""
     import boldplay as bp
     assert bp.MONTHLY_UPSET_CAP == 40
+
+
+def test_filter_onsale_drops_finished_and_refreshes_had(tmp_path, monkeypatch):
+    """2026-08-31 修复回归：跨日存档已完赛场（周日腿）被在售白名单滤掉，
+    在售当前 HAD 价覆盖存档旧价（出票以终端实价为准）。开发者 sszhang"""
+    import json as _json
+    import boldplay as bp
+    cache = tmp_path / "sporttery_matches.json"
+    cache.write_text(_json.dumps({"matches": [
+        {"code": "周一003", "had": {"h": "7.50", "d": "4.20", "a": "1.31"}},
+    ]}, ensure_ascii=False), encoding="utf-8")
+    monkeypatch.setattr(bp, "CACHE_DIR", tmp_path)
+    day = {"matches": [
+        {"matchNumStr": "周日011", "had": {"h": 1.57, "d": 3.8, "a": 4.4}},
+        {"matchNumStr": "周一003", "had": {"h": 7.35, "d": 4.15, "a": 1.33}},
+    ]}
+    out = bp._filter_onsale(day)
+    assert [m["matchNumStr"] for m in out["matches"]] == ["周一003"]
+    assert out["matches"][0]["had"] == {"h": 7.5, "d": 4.2, "a": 1.31}
+
+
+def test_filter_onsale_falls_back_when_cache_missing(tmp_path, monkeypatch):
+    """在售缓存缺失/为空 → 原样退回（保持旧行为，不阻断出卡）。开发者 sszhang"""
+    import boldplay as bp
+    monkeypatch.setattr(bp, "CACHE_DIR", tmp_path)  # 无 sporttery_matches.json
+    day = {"matches": [{"matchNumStr": "周日011", "had": {"h": 1.57, "d": 3.8, "a": 4.4}}]}
+    out = bp._filter_onsale(day)
+    assert [m["matchNumStr"] for m in out["matches"]] == ["周日011"]
+    (tmp_path / "sporttery_matches.json").write_text('{"matches": []}', encoding="utf-8")
+    out2 = bp._filter_onsale(day)
+    assert [m["matchNumStr"] for m in out2["matches"]] == ["周日011"]

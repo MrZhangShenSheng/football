@@ -359,6 +359,27 @@ def _is_ab(m: dict) -> bool:
     return bool(m.get("had")) and 1.55 <= min(m["had"].values())
 
 
+def _filter_onsale(all_days: dict) -> dict:
+    """2026-08-31 修复：跨日存档合并把已完赛场拉进选腿池（周一出卡时周日场已踢完，
+    实测保底档选出四条已完赛周日腿=废票）——按在售缓存白名单过滤，并在售
+    当前 HAD 价覆盖存档旧价（出票赔率以终端实价为准）；在售缓存缺失/空时退回旧行为。
+    开发者 sszhang"""
+    try:
+        onsale = json.loads((CACHE_DIR / "sporttery_matches.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return all_days
+    cur = {m.get("code"): m for m in onsale.get("matches") or [] if m.get("code")}
+    if not cur:
+        return all_days
+    out = dict(all_days)
+    out["matches"] = [m for m in all_days.get("matches", []) if m.get("matchNumStr") in cur]
+    for m in out["matches"]:
+        live_had = (cur.get(m.get("matchNumStr")) or {}).get("had") or {}
+        if all(live_had.get(k) for k in ("h", "d", "a")):
+            m["had"] = {k: float(live_had[k]) for k in ("h", "d", "a")}
+    return out
+
+
 def _pick_had_legs(odds_day: dict) -> list:
     """现 build_ticket base 档 HAD 选腿复用（行为不变）：入池=_is_ab，逐场取最低赔方向，
     取前 4 腿（=现 base 第一注组 legs_pool[0:4]）；matchNumStr 缺时落 code 口径。开发者 sszhang"""
@@ -813,6 +834,7 @@ def main() -> None:
         return
     # 当轮=全部在售比赛日合并（2026-08-25 修复：原 matchDays[-1] 漏掉当晚场次）
     all_days = {"matches": [m for d in odds.get("matchDays", []) for m in d.get("matches", [])]}
+    all_days = _filter_onsale(all_days)
     if structure == "new":
         out = build_two_tier(all_days, table, seq, zh=_zh_map(), form=build_team_form())
         u_spend = upset_month_spend(str(date.today())[:7])
