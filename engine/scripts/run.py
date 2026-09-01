@@ -4,7 +4,7 @@
 
 用法：
   python run.py update                    # 刷新当季+上季主流联赛赔率/xG 缓存 + 重建球队索引
-  python run.py fit [联赛] [赛季]         # DC 拟合（默认西甲 2526；--auto 新鲜度自检）
+  python run.py fit [联赛] [赛季]         # DC 拟合（赛季缺省=缓存最新两季联拟；--auto 新鲜度自检）
   python run.py predict 联赛 主队 客队 [--market h,d,a]   # DC 预测 + 可选融合
   python run.py backtest [联赛] [赛季]    # walk-forward 回测（RPS/logloss）
   python run.py espn [联赛代码]           # ESPN 直连积分榜/赛果（日职/北欧等 fd 不覆盖联赛）
@@ -72,10 +72,9 @@ def main() -> None:
         sh("league_profile.py", "--all")
     elif cmd == "fit":
         if rest:
-            league, season = rest[0], rest[1] if len(rest) > 1 else "2526"
+            sh("dc_fit.py", *rest[:2], "--auto")
         else:
-            league, season = "spain-laliga", "2526"
-        sh("dc_fit.py", league, season, "--auto")
+            log("run", "用法: python run.py fit <联赛> [赛季]（赛季缺省=缓存最新两季联拟）")
     elif cmd == "predict":
         if len(rest) < 3:
             log("run", '用法: python run.py predict <联赛全名> "<主队fd名>" "<客队fd名>" [--market h,d,a]')
