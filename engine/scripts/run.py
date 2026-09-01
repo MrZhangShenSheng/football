@@ -33,14 +33,14 @@ from odds_fetch import LEAGUE_CODES
 #   fit 仍只用 LEAGUES 主流 6 联赛，互不影响）
 PIN_CODES = [*LEAGUE_CODES, "EC0", "SC0"]
 
-# 常用联赛：fd 代码 → (全名, 建议拟合赛季)
+# 常用联赛：fd 代码 → (全名, 建议拟合赛季)；两季联拟（2627 单季样本薄，2026-08-31 覆盖教训）
 LEAGUES = {
-    "SP1": ("spain-laliga", "2526"),
-    "F1": ("france-ligue1", "2526"),
-    "F2": ("france-ligue2", "2526"),
-    "E0": ("england-premier", "2526"),
-    "D1": ("germany-bundesliga", "2526"),
-    "I1": ("italy-serie-a", "2526"),
+    "SP1": ("spain-laliga", "2526,2627"),
+    "F1": ("france-ligue1", "2526,2627"),
+    "F2": ("france-ligue2", "2526,2627"),
+    "E0": ("england-premier", "2526,2627"),
+    "D1": ("germany-bundesliga", "2526,2627"),
+    "I1": ("italy-serie-a", "2526,2627"),
 }
 # 非fd联赛：espn_code → 本地联赛名（history 回填 + --source local 拟合）
 LOCAL_LEAGUES = {
