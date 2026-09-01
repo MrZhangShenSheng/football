@@ -2,8 +2,8 @@
   "meta": {
     "lastUpdated": "2026-09-01",
     "note": "实票账本:票=顶层实体(不按日期切分);实票=有结算记录的票,其余全是方案推演;出票后票面事实永不改写;派彩按形状算(4串11中2关只回1注2串1)",
-    "totalTickets": 12,
-    "totalStake": 200,
+    "totalTickets": 14,
+    "totalStake": 230,
     "totalPayout": 353.59,
     "totalNet": 153.59,
     "disciplineEvents": [
@@ -1209,6 +1209,147 @@
         "settledAt": "2026-09-01 09:53"
       },
       "note": "赔率按方案冻结;形状2*3按16元/2倍/2元推4注=3场混串(2串1×3+3串1×1)解读(符合方案原形,倍数1→2);preference.json口味带内(净胜≤2总进球≤3) | 出票冻结价修正:008 CRS 1:0=13.0(大哥确认买时13,非复扫14);006=19/011=13不变;全中税前16612→15496.00/税后12927.20"
+    },
+    {
+      "id": "T013",
+      "source": "manual",
+      "placedAt": "2026-09-01",
+      "stake": 10,
+      "unitStake": 2,
+      "units": 1,
+      "multiplier": 5,
+      "shape": "CRS 单关×5倍",
+      "matchDays": [
+        "2026-09-02"
+      ],
+      "origin": "用户自选·CRS单关比分3:0×5倍",
+      "combos": "1注×2元×5倍=10元",
+      "legs": [
+        {
+          "code": "周三004",
+          "league": "日职",
+          "match": "町田泽维 vs 川崎前锋",
+          "market": "CRS",
+          "pick": "3:0",
+          "odds": 15.0,
+          "result": "pending",
+          "actual": null
+        }
+      ],
+      "payoutShape": "按形状结算:命中回15.00×2×5=150元;未中全灭",
+      "combinedOdds": 15.0,
+      "potentialWin": 150.0,
+      "settled": {
+        "status": "pending"
+      },
+      "note": "CRS单关·poolSingle=1✓;3:0在preference带内(净胜≤2总进球≤3);形状=preference档案外新形状(此前无单场CRS×N倍);与T014共享周三004场次(关联风险:町田输则双灭)"
+    },
+    {
+      "id": "T014",
+      "source": "manual",
+      "placedAt": "2026-09-01",
+      "stake": 20,
+      "unitStake": 2,
+      "units": 5,
+      "multiplier": 2,
+      "shape": "HAD 4串5(4×3串1+1×4串1)×2倍",
+      "matchDays": [
+        "2026-09-02"
+      ],
+      "origin": "用户自选·4场HAD容错串·3×4按20元/2倍/2元推5注=4串5解读(与T011同形)",
+      "combos": "4×3串1+1×4串1=5注×2元×2倍=20元",
+      "bets": [
+        {
+          "legs": [
+            0,
+            1,
+            2
+          ],
+          "multiplier": 2
+        },
+        {
+          "legs": [
+            0,
+            1,
+            3
+          ],
+          "multiplier": 2
+        },
+        {
+          "legs": [
+            0,
+            2,
+            3
+          ],
+          "multiplier": 2
+        },
+        {
+          "legs": [
+            1,
+            2,
+            3
+          ],
+          "multiplier": 2
+        },
+        {
+          "legs": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "multiplier": 2
+        }
+      ],
+      "legs": [
+        {
+          "code": "周二001",
+          "league": "沙职",
+          "match": "利雅新月 vs 吉达国民",
+          "market": "HAD",
+          "pick": "主胜(h)",
+          "odds": 1.35,
+          "result": "pending",
+          "actual": null
+        },
+        {
+          "code": "周二007",
+          "league": "英冠",
+          "match": "谢菲联 vs 博尔顿",
+          "market": "HAD",
+          "pick": "主胜(h)",
+          "odds": 1.48,
+          "result": "pending",
+          "actual": null
+        },
+        {
+          "code": "周三003",
+          "league": "日职",
+          "match": "水户蜀葵 vs 鹿岛鹿角",
+          "market": "HAD",
+          "pick": "客胜(a)",
+          "odds": 1.79,
+          "result": "pending",
+          "actual": null
+        },
+        {
+          "code": "周三004",
+          "league": "日职",
+          "match": "町田泽维 vs 川崎前锋",
+          "market": "HAD",
+          "pick": "主胜(h)",
+          "odds": 1.71,
+          "result": "pending",
+          "actual": null
+        }
+      ],
+      "payoutShape": "按形状结算(出票实价1.35/1.48/1.79/1.71):全中5注全回=4注3串1(14.31+13.67+16.53+18.12)+1注4串1(24.46)≈87.14(大哥票面为准);中3关回1注3串1(13.67~18.12);各注<1万不税",
+      "combinedOdds": 4.357,
+      "potentialWin": 87.14,
+      "settled": {
+        "status": "pending"
+      },
+      "note": "HAD×4低赔容错串;与T011同形(4串5×2倍);形状=preference档案外新形状(此前无HAD串关);与T013共享周三004(关联风险:町田输则T013+T014双灭) | 票面修正(大哥口述+18:47快照佐证):终端预计中奖87.14元;出票实价001=1.35(登记时API值1.48已降赔)/007=1.48(登记1.51);理论反推87.09≈票面87.14(分位取整差);潜在CLV归零——001降赔发生在出票前"
     }
   ]
 }
