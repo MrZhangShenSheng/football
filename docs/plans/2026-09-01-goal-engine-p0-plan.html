@@ -200,11 +200,14 @@ def test_match_features_symmetric_and_clean():
     f = match_features(hist, sides, "A", "B")
     # A 近5主场场均 = pad(3, 1, home_rate=2.0) = (3+4.0)/3 ≈ 2.333；ratio = 2.333/2.0
     assert abs(f["home_att"] - (3 + 2.0 * 2) / 3 / 2.0) < 1e-9
-    # B 近5客场失球 = pad(2, 1, away_rate=2.0)；away_rate = (0+1+2)/3 = 1.0 → pad=(2+2)/2=2.0 → ratio 2.0
-    assert abs(f["away_def"] - 2.0 / 1.0) < 1e-9
+    # B 近5客场失球 = pad(2, 1, home_rate=2.0)/2.0 = 1.0——B 失球恰为联赛主侧均值→中性（09-01 审查修正口径）
+    assert abs(f["away_def"] - 1.0) < 1e-9
 
 def test_early_season_weight():
-    assert early_weight(0) == 0.3 and early_weight(1) == 0.3 and early_weight(2) == 1.0</code></pre>
+    assert early_weight(0) == 0.3 and early_weight(1) == 0.3 and early_weight(2) == 1.0
+
+def test_typical_league_all_neutral():
+    # 属性探针：每队账本均值恰等于联赛均值的"典型联赛"→四 ratio 全 ≈1.0（防 def 分母侧回退 bug）</code></pre>
 <p><b>Step 2</b> 跑 → FAIL（模块不存在）。</p>
 <p><b>Step 3</b> 实现 goal_engine.py 特征层（文件头含完整 docstring：设计出处/阶段0 语义/超参标注）：</p>
 <pre><code>#!/usr/bin/env python3
@@ -271,14 +274,14 @@ def match_features(hist, sides, home, away):
         return pad_rate(sum(seq[-WINDOW:]), min(len(seq), WINDOW), side_rate)
     f = {
         "home_att": rate("home_gf", home, sides["home_rate"]) / sides["home_rate"],
-        "home_def": rate("home_ga", home, sides["home_rate"]) / sides["home_rate"],   # 主队主场失球 vs 主侧均失
+        "home_def": rate("home_ga", home, sides["away_rate"]) / sides["away_rate"],   # 主队失球=客侧产出→基准客侧场均（09-01 复审修正：原计划误用 home_rate，典型队恒偏 0.83/1.25 而非中性 1.0）
         "away_att": rate("away_gf", away, sides["away_rate"]) / sides["away_rate"],
-        "away_def": rate("away_ga", away, sides["away_rate"]) / sides["away_rate"],
+        "away_def": rate("away_ga", away, sides["home_rate"]) / sides["home_rate"],   # 客队失球=主侧产出→基准主侧场均
     }
     f["w_home"] = early_weight(len(hist["home_gf"].get(home, [])))
     f["w_away"] = early_weight(len(hist["away_gf"].get(away, [])))
     return f</code></pre>
-<p class="note">注意 league_sides 用「该场之前」的场次聚合——对照统计主循环里逐场切片（见 T5），build_history 同理传前缀切片。<code>home_def</code> 分母用主队侧均值：失球基准=对侧产出，用同侧均值才同尺度。</p>
+<p class="note">注意 league_sides 用「该场之前」的场次聚合——对照统计主循环里逐场切片（见 T5），build_history 同理传前缀切片。<code>home_def</code> 分母用客队侧均值、<code>away_def</code> 用主队侧均值：失球基准=对侧产出（主队场均失球≡客队场均进球），基准侧必须交叉——原计划此处写反，2026-09-01 质量审查实证典型队恒偏后修正，属性测试「典型联赛全中性」为永久探针。</p>
 <p><b>Step 4</b> 跑测试至 PASS。</p>
 <p><b>Step 5</b> Commit：<code>feat(goal-engine): 特征层——近5主客攻防率滚动构造+小样本收缩+开季降权(TDD)</code></p>
 </div>
@@ -330,17 +333,20 @@ def lambda_from_dc(dc, home, away):
             math.exp(ta["attack"] + th["defense"]))
 
 def lambda_mult(f, side, disable=()):
-    """side="home" → 用 home_att × away_def；side="away" 对称。开季权重乘进 β。"""
+    """side="home" → 用 home_att × away_def；side="away" 对称。
+    逐项开季加权（09-01 审查修订）：att 项权重=攻方簿场次、def 项=守方（对侧）簿场次——
+    防主队主战 1 场(w=0.3)把客队 10 场样本的防守信号也压到 0.3 的交叉污染。"""
     att = f["home_att"] if side == "home" else f["away_att"]
     dfn = f["away_def"] if side == "home" else f["home_def"]
-    w = f["w_home"] if side == "home" else f["w_away"]
+    w_att = f["w_home"] if side == "home" else f["w_away"]
+    w_def = f["w_away"] if side == "home" else f["w_home"]
+    if "shrink" in disable:          # 消融：关开季降权 = 两权重恒 1
+        w_att = w_def = 1.0
     z = 0.0
     if "att" not in disable and att > 0:
-        z += BETA * w * math.log(att)
+        z += BETA * w_att * math.log(att)
     if "def" not in disable and dfn > 0:
-        z += BETA * w * math.log(dfn)
-    if "shrink" in disable:          # 消融：关开季降权 = 权重恒 1
-        z /= w if w > 0 else 1.0
+        z += BETA * w_def * math.log(dfn)
     return math.exp(z)
 
 def score_matrix(lh, la, rho):
