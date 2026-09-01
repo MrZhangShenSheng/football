@@ -1,14 +1,20 @@
-"""goal_engine 进球引擎（双轨分化设计 P0）——T3 特征层：滚动无泄漏的队级攻防率。
+"""goal_engine 进球引擎（双轨分化设计 P0）——T3 特征层 + T4 矩阵层。
 开发者 sszhang
 
 设计出处：docs/2026-09-01-dual-track-prediction-design.html 第五节
-（λ_final = λ_DC × exp(Σ βᵢ·xᵢ)，本模块产出特征 xᵢ 与开季权重；矩阵层/出口层见 T4/T5）。
+（λ_final = λ_DC × exp(Σ βᵢ·xᵢ)，本模块产出特征 xᵢ、开季权重与修正后比分矩阵；
+出口层见 T5）。
 
 阶段0 语义：特征全部从场次序列自身滚动构造——每场只用该场之前的数据
 （球队画像/standings 是当前时点快照，禁止用于历史逐场回测）。
 超参标注：BETA / PRIOR_K 为阶段0 手写值，阶段1 学习器（残差回归学 β）替换，
 替换前须过消融验证（消融铁律：无正增益即置零除名）。
 """
+import math
+
+import numpy as np
+
+from dc_fit import dc_tau
 
 BETA = 0.3            # 阶段0 手写乘子强度（学习器替换对象）
 PRIOR_K = 2.0         # 小样本向联赛均值收缩的先验场次
@@ -73,3 +79,58 @@ def match_features(hist, sides, home, away):
     f["w_home"] = early_weight(len(hist["home_gf"].get(home, [])))
     f["w_away"] = early_weight(len(hist["away_gf"].get(away, [])))
     return f
+
+
+# ---------- T4 矩阵层 ----------
+
+def lambda_from_dc(dc, home, away):
+    """DC 参数 → (λ_home, λ_away)。参数结构 {teams:{name:{attack,defense}}, homeAdv, rho}。"""
+    th, ta = dc["teams"].get(home), dc["teams"].get(away)
+    if not th or not ta:
+        return None
+    return (math.exp(th["attack"] + ta["defense"] + dc["homeAdv"]),
+            math.exp(ta["attack"] + th["defense"]))
+
+
+def lambda_mult(f, side, disable=()):
+    """side="home" → 用 home_att × away_def；side="away" 对称。
+    逐项开季加权（09-01 审查修订）：att 项权重=攻方簿场次、def 项=守方（对侧）簿场次——
+    防主队主战 1 场(w=0.3)把客队 10 场样本的防守信号也压到 0.3 的交叉污染。"""
+    att = f["home_att"] if side == "home" else f["away_att"]
+    dfn = f["away_def"] if side == "home" else f["home_def"]
+    w_att = f["w_home"] if side == "home" else f["w_away"]
+    w_def = f["w_away"] if side == "home" else f["w_home"]
+    if "shrink" in disable:          # 消融：关开季降权 = 两权重恒 1
+        w_att = w_def = 1.0
+    z = 0.0
+    if "att" not in disable and att > 0:
+        z += BETA * w_att * math.log(att)
+    if "def" not in disable and dfn > 0:
+        z += BETA * w_def * math.log(dfn)
+    return math.exp(z)
+
+
+def score_matrix(lh, la, rho):
+    """修正后 λ 重建 7×7 DC 比分矩阵（低分 tau 修正，构造同 backtest.dc_three 但独立实现不动 backtest）。"""
+    p = np.zeros((7, 7))
+    for x in range(7):
+        for y in range(7):
+            pm = math.exp(-lh) * lh ** x / math.factorial(x) * math.exp(-la) * la ** y / math.factorial(y)
+            p[x, y] = max(pm * dc_tau(x, y, lh, la, rho), 1e-12)
+    p /= p.sum()
+    return p
+
+
+def ttg_probs(matrix):
+    """总进球 0..13 桶概率（13 桶=≥13，和为 1）。"""
+    out = [0.0] * 14
+    for i in range(7):
+        for j in range(7):
+            out[min(i + j, 13)] += matrix[i, j]
+    return out
+
+
+def crs_rank(matrix):
+    """49 比分按概率降序 [(score, p), ...]。"""
+    return sorted(((f"{i}-{j}", float(matrix[i, j])) for i in range(7) for j in range(7)),
+                  key=lambda kv: -kv[1])
