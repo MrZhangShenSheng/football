@@ -204,8 +204,8 @@ def option_hit(rec: dict, hg: int, ag: int, hhg: int | None = None, hag: int | N
     oi = pick_outcome_idx(rec)
     if oi is not None:
         return outcome_of(hg, ag) == oi
-    m = re.match(r"^(\d+)\s*-\s*(\d+)$", pick)
-    if m:  # 比分
+    m = re.match(r"^(\d+)\s*[-:：]\s*(\d+)$", pick)
+    if m:  # 比分（连字符 '0-2' 预测口径 / 冒号 '0:2' 体彩票面口径）
         return int(m.group(1)) == hg and int(m.group(2)) == ag
     m = re.match(r"^(\d)\+?$", pick)
     if m:  # 总进球 N 球 / N+球
@@ -234,17 +234,21 @@ def backfill(day_limit: str | None = None) -> dict:
             continue
         recs = data.get("records") or data.get("matches") or []
         for rec in recs:
-            if not rec.get("pick"):
-                continue
+            if not rec.get("code"):
+                continue  # 有编号即可对票（pick=None 的 CRS/TTG 方案腿场也回填 result，boldplay settle 靠它）
             touched.setdefault(id(data), (p, data))
             if rec.get("result") not in (None, UNAVAILABLE_MARK):
                 # 已回填但方向未判（旧版 strip_play 判不出带注释 pick）→ 纯本地补算，不重查网络
                 sc = parse_score(rec.get("result"))
                 oi = pick_outcome_idx(rec)
-                if sc and oi is not None and rec.get("directionHit") is None:
-                    rec["directionHit"] = outcome_of(*sc) == oi
-                    data["_dirty"] = True
-                    n_fix += 1
+                if sc and rec.get("directionHit") is None:
+                    dh = (outcome_of(*sc) == oi if oi is not None
+                          else hhad_hit(str(rec.get("pick") or "").split(" ", 1)[-1], *sc)
+                          if str(rec.get("pick") or "").startswith("HHAD") else None)
+                    if dh is not None:
+                        rec["directionHit"] = dh
+                        data["_dirty"] = True
+                        n_fix += 1
                 # 已回填但无 pinClose → 纯本地 fd 三键匹配补跑（历史场解锁 F3/F4，不查网络）
                 if not rec.get("pinClose") and sc:
                     d0 = rec.get("date") or data.get("date")
@@ -304,7 +308,13 @@ def backfill(day_limit: str | None = None) -> dict:
             if sp.get("halfScore"):
                 rec["half"] = str(sp["halfScore"])    # 半场比分落盘（boldplay settle 判 HAFU 用）
             oi = pick_outcome_idx(rec)
-            rec["directionHit"] = (outcome_of(hg, ag) == oi) if oi is not None else None
+            if oi is not None:
+                rec["directionHit"] = outcome_of(hg, ag) == oi
+            elif str(rec.get("pick") or "").startswith("HHAD"):
+                # 让球腿：pick 如 'HHAD 让球主胜(-2)'，三向判定器不识别 → hhad_hit 让球线判定
+                rec["directionHit"] = hhad_hit(str(rec["pick"]).split(" ", 1)[-1], hg, ag)
+            else:
+                rec["directionHit"] = None
             oh = option_hit(rec, hg, ag, hh, ha)
             rec["scoreHit"] = oh if oh is not None else rec.get("scoreHit")
             rec.pop("backfillNote", None)  # 救回成功，清'不可得/缓存延迟'旧标注
@@ -334,7 +344,13 @@ def backfill(day_limit: str | None = None) -> dict:
             hg, ag = hit_row["hg"], hit_row["ag"]
             rec["result"] = f"{hg}-{ag}"
             oi = pick_outcome_idx(rec)
-            rec["directionHit"] = (outcome_of(hg, ag) == oi) if oi is not None else None
+            if oi is not None:
+                rec["directionHit"] = outcome_of(hg, ag) == oi
+            elif str(rec.get("pick") or "").startswith("HHAD"):
+                # 让球腿：pick 如 'HHAD 让球主胜(-2)'，三向判定器不识别 → hhad_hit 让球线判定
+                rec["directionHit"] = hhad_hit(str(rec["pick"]).split(" ", 1)[-1], hg, ag)
+            else:
+                rec["directionHit"] = None
             oh = option_hit(rec, hg, ag)
             rec["scoreHit"] = oh if oh is not None else rec.get("scoreHit")
             rec.pop("backfillNote", None)  # 对齐链路1：救回成功，清'不可得/缓存延迟'旧标注
@@ -366,10 +382,33 @@ def backfill(day_limit: str | None = None) -> dict:
 
 
 def leg_hit(leg: dict, score: tuple[int, int], half: tuple[int | None, int | None]) -> bool | None:
-    """票腿命中判定（复用 option_hit）：market 前缀 + 去'球'尾字后走同一套文本判定。"""
-    pick = str(leg.get("pick") or "").replace("球", "").strip()
-    rec = {"pick": f'{leg.get("market")} {pick}'}
+    """票腿命中判定（复用 option_hit）：market 前缀 + 去'球'尾字后走同一套文本判定。
+    HHAD 让球腿 pick 带让球线（'让球主胜(-2)'），括号会被 strip_play 清掉 → 走 hhad_hit。"""
+    market = str(leg.get("market") or "").upper()
+    pick_raw = str(leg.get("pick") or "")
+    if market == "HHAD":
+        return hhad_hit(pick_raw, score[0], score[1])
+    pick = pick_raw.replace("球", "").strip()
+    rec = {"pick": f"{market} {pick}"}
     return option_hit(rec, score[0], score[1], half[0], half[1])
+
+
+def hhad_hit(pick: str, hg: int, ag: int) -> bool | None:
+    """让球腿判定：让球线取 pick 括号内数字（-2=主让2），主队 +line vs 客队后判三向。"""
+    m_line = re.search(r"[（(]\s*([+-]?\d+)\s*[)）]", pick)
+    if not m_line:
+        return None
+    line = int(m_line.group(1))
+    body = re.sub(r"[（(][^（）()]*[)）]", "", pick).replace("球", "").strip()
+    if "客胜" in body or "负" in body:
+        want = 2
+    elif "主胜" in body or body.endswith("胜"):
+        want = 0
+    elif "平" in body:
+        want = 1
+    else:
+        return None
+    return outcome_of(hg + line, ag) == want
 
 
 def expand_combos(n: int) -> list[tuple[int, ...]]:

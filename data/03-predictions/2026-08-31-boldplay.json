@@ -680,5 +680,33 @@
   }
  ],
  "ranAt": "2026-08-31",
- "revision": "r1"
+ "revision": "r1",
+ "settle": {
+  "legHits": {
+   "base": [
+    [
+     true,
+     true,
+     true,
+     false
+    ]
+   ],
+   "upset": [
+    [
+     false,
+     false,
+     false,
+     false
+    ]
+   ]
+  },
+  "upsetHit": false,
+  "payout": 16.765279999999997,
+  "tierPayout": {
+   "base": 16.765279999999997,
+   "upset": 0.0
+  },
+  "densityRecovered": 0.7621,
+  "settledAt": "2026-09-01"
+ }
 }

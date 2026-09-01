@@ -134,7 +134,8 @@
    },
    "excludeReason": "客伤8人致修正后平局40.9%但与市场30.3%分歧10.6pp超5pp,HAD无正EV,CRS边际不入选",
    "result": "0-1",
-   "backfillNote": "ESPN手动补填(避开场无pick,backfill跳过;供避开决策追踪)"
+   "backfillNote": "ESPN手动补填(避开场无pick,backfill跳过;供避开决策追踪)",
+   "pinSource": "ambiguous"
   },
   {
    "idx": 2,
@@ -295,7 +296,8 @@
    },
    "excludeReason": "瑞超×1.5波动修正后极差9.2pp<10pp胶着★★避开",
    "result": "0-3",
-   "backfillNote": "ESPN手动补填(避开场无pick,backfill跳过;供避开决策追踪)"
+   "backfillNote": "ESPN手动补填(避开场无pick,backfill跳过;供避开决策追踪)",
+   "pinSource": "none"
   },
   {
    "idx": 4,
@@ -560,7 +562,13 @@
    },
    "excludeReason": "DC与市场分歧diff_pp=[-5.8,+0.5,+5.3]主胜客胜均超5pp警戒,模型可能错",
    "result": "3-1",
-   "backfillNote": "ESPN手动补填(避开场无pick,backfill跳过;供避开决策追踪)"
+   "backfillNote": "ESPN手动补填(避开场无pick,backfill跳过;供避开决策追踪)",
+   "pinSource": "fd",
+   "pinClose": [
+    0.4884,
+    0.2738,
+    0.2378
+   ]
   },
   {
    "idx": 8,
@@ -784,7 +792,13 @@
    },
    "excludeReason": "主伤7人后防主力,无DC(升班马),市场锚修正后平局分歧5.9pp超限,HAD不可单关(poolSingle=0),全池无正EV",
    "result": "1-1",
-   "backfillNote": "ESPN手动补填(避开场无pick,backfill跳过;供避开决策追踪)"
+   "backfillNote": "ESPN手动补填(避开场无pick,backfill跳过;供避开决策追踪)",
+   "pinSource": "fd",
+   "pinClose": [
+    0.3981,
+    0.3157,
+    0.2861
+   ]
   },
   {
    "idx": 11,
@@ -821,7 +835,12 @@
     "h": 1,
     "a": 0
    },
-   "excludeReason": "巴甲×1.3波动后极差7.6pp<10pp胶着★★避开,无DC"
+   "excludeReason": "巴甲×1.3波动后极差7.6pp<10pp胶着★★避开,无DC",
+   "result": "2-3",
+   "half": "0:2",
+   "directionHit": null,
+   "scoreHit": null,
+   "pinSource": "none"
   },
   {
    "idx": 12,
@@ -855,7 +874,12 @@
     "h": 0,
     "a": 0
    },
-   "excludeReason": "首回合0-3落后,凯尔特人客场轮换,市场锚全池负EV,无DC"
+   "excludeReason": "首回合0-3落后,凯尔特人客场轮换,市场锚全池负EV,无DC",
+   "result": "4-1",
+   "half": "1:1",
+   "directionHit": null,
+   "scoreHit": null,
+   "pinSource": "none"
   },
   {
    "idx": 13,
@@ -889,7 +913,12 @@
     "h": 0,
     "a": 0
    },
-   "excludeReason": "首回合3-1领先,博德主场管理比赛,市场锚全池负EV,无DC"
+   "excludeReason": "首回合3-1领先,博德主场管理比赛,市场锚全池负EV,无DC",
+   "result": "3-0",
+   "half": "2:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "pinSource": "none"
   }
  ],
  "sources": [

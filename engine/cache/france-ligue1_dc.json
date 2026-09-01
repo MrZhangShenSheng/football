@@ -1,98 +1,89 @@
 {
   "league": "france-ligue1",
   "seasons": [
-    "2526",
-    "2627"
+    "2526"
   ],
   "xi": 0.005,
-  "homeAdv": 0.245,
+  "homeAdv": 0.4281,
   "rho": 0.1,
-  "matchesUsed": 162,
+  "matchesUsed": 153,
   "dateRange": [
     "2025-08-15",
-    "2026-08-23"
+    "2026-01-04"
   ],
   "lastFit": "2026-08-31",
   "teams": {
     "Angers": {
-      "attack": -0.2417,
-      "defense": 0.006
+      "attack": -0.1625,
+      "defense": -0.1488
     },
     "Auxerre": {
-      "attack": 0.0122,
-      "defense": 0.4266
+      "attack": -0.4669,
+      "defense": 0.178
     },
     "Brest": {
-      "attack": 0.0418,
-      "defense": 0.1252
+      "attack": -0.0661,
+      "defense": 0.1159
     },
     "Le Havre": {
-      "attack": -0.6101,
-      "defense": -0.0585
-    },
-    "Le Mans": {
-      "attack": 0.415,
-      "defense": 0.7429
+      "attack": -0.5328,
+      "defense": -0.0791
     },
     "Lens": {
-      "attack": 0.6126,
-      "defense": -0.1801
+      "attack": 0.3242,
+      "defense": -0.652
     },
     "Lille": {
-      "attack": 0.4761,
-      "defense": -0.1102
+      "attack": 0.32,
+      "defense": 0.0476
     },
     "Lorient": {
-      "attack": -0.2933,
-      "defense": 0.0151
+      "attack": -0.213,
+      "defense": 0.1711
     },
     "Lyon": {
-      "attack": 0.2869,
-      "defense": -0.435
+      "attack": 0.0951,
+      "defense": -0.2966
     },
     "Marseille": {
-      "attack": 0.6357,
-      "defense": -0.3564
+      "attack": 0.3786,
+      "defense": -0.2373
     },
     "Metz": {
-      "attack": -0.012,
-      "defense": 0.5147
+      "attack": -0.1345,
+      "defense": 0.4876
     },
     "Monaco": {
-      "attack": 0.2187,
-      "defense": 0.1979
+      "attack": 0.1338,
+      "defense": 0.2934
     },
     "Nantes": {
-      "attack": -0.135,
-      "defense": 0.2562
+      "attack": -0.297,
+      "defense": 0.209
     },
     "Nice": {
-      "attack": -0.2954,
-      "defense": 0.1394
+      "attack": -0.1531,
+      "defense": 0.2547
     },
     "Paris FC": {
-      "attack": 0.0039,
-      "defense": 0.2681
+      "attack": -0.0862,
+      "defense": 0.2427
     },
     "Paris SG": {
-      "attack": 0.5945,
-      "defense": -0.1976
+      "attack": 0.4866,
+      "defense": -0.4029
     },
     "Rennes": {
-      "attack": 0.429,
-      "defense": 0.0855
+      "attack": 0.2744,
+      "defense": 0.0181
     },
     "Strasbourg": {
-      "attack": 0.0719,
-      "defense": 0.158
+      "attack": 0.07,
+      "defense": -0.1428
     },
     "Toulouse": {
-      "attack": -0.0179,
-      "defense": 0.0868
-    },
-    "Troyes": {
-      "attack": -2.1929,
-      "defense": -1.6846
+      "attack": 0.0295,
+      "defense": -0.0587
     }
   }
 }

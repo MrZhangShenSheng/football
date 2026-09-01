@@ -1337,5 +1337,35 @@
   "at": "2026-08-30",
   "why": "保底4腿全换：脚本选腿无修正系数链",
   "law": "Step6.5 信息边际三定律·修订纪律（信息增强方向）"
+ },
+ "settle": {
+  "legHits": {
+   "base": [
+    [
+     true,
+     true,
+     true,
+     true
+    ]
+   ],
+   "upset": [
+    [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ]
+   ]
+  },
+  "upsetHit": false,
+  "payout": 37.1471928,
+  "tierPayout": {
+   "base": 37.1471928,
+   "upset": 0.0
+  },
+  "densityRecovered": 1.6885,
+  "settledAt": "2026-09-01"
  }
 }

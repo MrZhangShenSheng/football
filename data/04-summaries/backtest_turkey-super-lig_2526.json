@@ -1,0 +1,31 @@
+{
+  "league": "turkey-super-lig",
+  "season": "2526",
+  "refitEvery": 30,
+  "fusion": {
+    "a": 0.4,
+    "b": 1.0
+  },
+  "ranAt": "2026-08-31",
+  "metrics": {
+    "market_only": {
+      "rps": 0.1776,
+      "logloss": 0.9799,
+      "acc": 0.52,
+      "n": 102
+    },
+    "dc_only": {
+      "rps": 0.2153,
+      "logloss": 1.1275,
+      "acc": 0.441,
+      "n": 102
+    },
+    "fused": {
+      "rps": 0.1844,
+      "logloss": 0.9972,
+      "acc": 0.49,
+      "n": 102
+    }
+  },
+  "records": 102
+}

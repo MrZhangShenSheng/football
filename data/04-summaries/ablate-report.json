@@ -1,30 +1,44 @@
 {
-  "generatedAt": "2026-08-31",
-  "n_filled": 196,
+  "generatedAt": "2026-09-01",
+  "n_filled": 203,
   "gateReady": true,
   "humanReview": true,
   "report": [
     {
       "coeff": "开季修正",
-      "n_trigger": 91,
-      "n_base": 105,
-      "hit_trigger": 0.692,
-      "hit_base": 0.619,
-      "rps_trigger": 0.1483,
-      "rps_base": 0.1851,
-      "logloss_trigger": 0.7672,
-      "logloss_base": 0.8729,
-      "n_prob": 83,
+      "n_trigger": 97,
+      "n_base": 106,
+      "hit_trigger": 0.711,
+      "hit_base": 0.623,
+      "rps_trigger": 0.145,
+      "rps_base": 0.184,
+      "logloss_trigger": 0.7511,
+      "logloss_base": 0.8688,
+      "n_prob": 89,
       "rps_diff_ci95": [
-        -0.0757,
-        0.0026
+        -0.0777,
+        -0.0012
       ],
-      "status": "维持：RPS diff CI95 [-0.0757, 0.0026] 跨 0（方向性证据不足，命中率 69% vs 62% 仅展示）"
+      "status": "✅ 建议标已验证：触发组 RPS 显著更好（diff CI95 [-0.0777, -0.0012] 全在 0 下方）",
+      "diff": "SKILL.md 修正系数『开季修正』标注 ✅已验证（RPS 正增益 CI [-0.0777, -0.0012]）"
     },
     {
       "coeff": "联赛波动",
-      "n_trigger": 4,
-      "status": "样本不足（<5 触发场），继续观察"
+      "n_trigger": 5,
+      "n_base": 198,
+      "hit_trigger": 0.8,
+      "hit_base": 0.662,
+      "rps_trigger": 0.0719,
+      "rps_base": 0.1665,
+      "logloss_trigger": 0.4328,
+      "logloss_base": 0.8176,
+      "n_prob": 3,
+      "rps_diff_ci95": [
+        -0.1186,
+        -0.0705
+      ],
+      "status": "✅ 建议标已验证：触发组 RPS 显著更好（diff CI95 [-0.1186, -0.0705] 全在 0 下方）",
+      "diff": "SKILL.md 修正系数『联赛波动』标注 ✅已验证（RPS 正增益 CI [-0.1186, -0.0705]）"
     },
     {
       "coeff": "保级平局保护",
@@ -39,19 +53,19 @@
     {
       "coeff": "战意状态机",
       "n_trigger": 9,
-      "n_base": 187,
+      "n_base": 194,
       "hit_trigger": 0.556,
-      "hit_base": 0.658,
+      "hit_base": 0.67,
       "rps_trigger": 0.1592,
-      "rps_base": 0.168,
+      "rps_base": 0.1652,
       "logloss_trigger": 0.8763,
-      "logloss_base": 0.8202,
+      "logloss_base": 0.8083,
       "n_prob": 8,
       "rps_diff_ci95": [
-        -0.0737,
-        0.0721
+        -0.0691,
+        0.0683
       ],
-      "status": "维持：RPS diff CI95 [-0.0737, 0.0721] 跨 0（方向性证据不足，命中率 56% vs 66% 仅展示）"
+      "status": "维持：RPS diff CI95 [-0.0691, 0.0683] 跨 0（方向性证据不足，命中率 56% vs 67% 仅展示）"
     },
     {
       "coeff": "平局率修正",

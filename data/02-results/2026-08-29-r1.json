@@ -88,7 +88,12 @@
    "clv": null,
    "clv_approx_dk": null,
    "half": "2:3",
-   "pinSource": "none"
+   "pinSource": "fd",
+   "pinClose": [
+    0.3092,
+    0.2638,
+    0.427
+   ]
   },
   {
    "idx": 2,
@@ -132,7 +137,12 @@
    "clv": null,
    "clv_approx_dk": null,
    "half": "1:2",
-   "pinSource": "none"
+   "pinSource": "fd",
+   "pinClose": [
+    0.354,
+    0.266,
+    0.38
+   ]
   },
   {
    "idx": 3,
@@ -176,7 +186,7 @@
    "clv": null,
    "clv_approx_dk": null,
    "half": "0:1",
-   "pinSource": "none"
+   "pinSource": "ambiguous"
   },
   {
    "idx": 4,
@@ -264,7 +274,7 @@
    "clv": null,
    "clv_approx_dk": null,
    "half": "1:0",
-   "pinSource": "none"
+   "pinSource": "ambiguous"
   },
   {
    "idx": 6,
@@ -307,7 +317,12 @@
    "scoreHit": false,
    "clv": null,
    "clv_approx_dk": null,
-   "pinSource": "none"
+   "pinSource": "fd",
+   "pinClose": [
+    0.2988,
+    0.2895,
+    0.4117
+   ]
   },
   {
    "idx": 7,
@@ -333,7 +348,12 @@
    "scoreHit": null,
    "clv": null,
    "clv_approx_dk": null,
-   "pinSource": "none"
+   "pinSource": "fd",
+   "pinClose": [
+    0.0853,
+    0.1876,
+    0.7271
+   ]
   },
   {
    "idx": 8,
@@ -360,12 +380,17 @@
    "clv": null,
    "clv_approx_dk": null,
    "half": "0:1",
-   "pinSource": "none",
+   "pinSource": "fd",
    "preSnapshots": {
     "matchId": 2041153,
     "lastOddsAt": "2026-08-30T07:46:38+08:00",
     "lastIntelAt": "2026-08-30T10:57:24+08:00"
-   }
+   },
+   "pinClose": [
+    0.5227,
+    0.2512,
+    0.2261
+   ]
   },
   {
    "idx": 9,
@@ -386,11 +411,23 @@
    "lambdaAway": null,
    "ev": 1.0691,
    "inPlan": "翻身",
-   "result": null,
+   "result": "1-0",
    "directionHit": null,
    "scoreHit": null,
    "clv": null,
-   "clv_approx_dk": null
+   "clv_approx_dk": null,
+   "half": "1:0",
+   "pinSource": "fd",
+   "preSnapshots": {
+    "matchId": 2041180,
+    "lastOddsAt": "2026-08-31T19:25:50+08:00",
+    "lastIntelAt": "2026-08-31T11:24:40+08:00"
+   },
+   "pinClose": [
+    0.3084,
+    0.2804,
+    0.4112
+   ]
   },
   {
    "idx": 10,
@@ -416,7 +453,7 @@
    "scoreHit": null,
    "clv": null,
    "clv_approx_dk": null,
-   "pinSource": "none"
+   "pinSource": "ambiguous"
   }
  ]
 }
