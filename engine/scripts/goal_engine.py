@@ -9,14 +9,7 @@
 超参标注：BETA / PRIOR_K 为阶段0 手写值，阶段1 学习器（残差回归学 β）替换，
 替换前须过消融验证（消融铁律：无正增益即置零除名）。
 """
-import math
-import sys
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-from common import ROOT
-
-CACHE = ROOT / "engine" / "cache"
 BETA = 0.3            # 阶段0 手写乘子强度（学习器替换对象）
 PRIOR_K = 2.0         # 小样本向联赛均值收缩的先验场次
 WINDOW = 5            # 滚动窗口
@@ -59,20 +52,23 @@ def early_weight(games_before):
 def match_features(hist, sides, home, away):
     """返回 {"home_att","home_def","away_att","away_def","w_home","w_away"}——四 ratio + 两开季权重。
     无历史的簿记 ratio=1.0（不修正）；窗口=近 WINDOW 场；pad 用窗口内累计。
-    home_def 分母用主队侧均值（失球基准=对侧产出，同侧同尺度），away_def 同理用客队侧均值。"""
+    失球基准=对侧产出（跨侧对尺度）：home_def（主队失球）分母用客队侧均值 away_rate，
+    away_def（客队失球）分母用主队侧均值 home_rate。"""
     def rate(book, team, side_rate):
         seq = hist[book].get(team, [])
         if not seq:
             return None        # 无历史由调用侧决定（返回 None 而非垫值——ratio=1.0 的语义在 match_features 内处理）
         return pad_rate(sum(seq[-WINDOW:]), min(len(seq), WINDOW), side_rate)
     def ratio(book, team, side_rate):
+        if side_rate <= 0:
+            return 1.0         # 基准不可信（如揭幕战仅 0 进球侧）→ 不修正，与空簿哲学同构
         r = rate(book, team, side_rate)
         return 1.0 if r is None else r / side_rate
     f = {
         "home_att": ratio("home_gf", home, sides["home_rate"]),
-        "home_def": ratio("home_ga", home, sides["home_rate"]),
+        "home_def": ratio("home_ga", home, sides["away_rate"]),
         "away_att": ratio("away_gf", away, sides["away_rate"]),
-        "away_def": ratio("away_ga", away, sides["away_rate"]),
+        "away_def": ratio("away_ga", away, sides["home_rate"]),
     }
     f["w_home"] = early_weight(len(hist["home_gf"].get(home, [])))
     f["w_away"] = early_weight(len(hist["away_gf"].get(away, [])))
