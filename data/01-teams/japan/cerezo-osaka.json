@@ -3,28 +3,19 @@
  "name": "Cerezo Osaka",
  "nameZh": "大阪樱花",
  "league": "japan",
- "lastUpdated": "2026-08-22",
- "source": "cold-start + espn/fd recent results",
+ "lastUpdated": "2026-09-01",
+ "source": "sporttery-insight",
  "standing": {
-  "pos": 13,
-  "played": 2,
-  "won": 1,
-  "drawn": 0,
-  "lost": 1,
-  "gf": 2,
-  "ga": 4,
-  "pts": 3
+  "pos": 10,
+  "leagueTable": "日职",
+  "season": "2026"
  },
  "elo": null,
- "form": [
-  {
-   "date": "2026-08-15",
-   "opp": "Avispa Fukuoka",
-   "venue": "A",
-   "score": "0-3",
-   "result": "L"
-  }
- ],
+ "form": [],
+ "formSummary": {
+  "last10": "7胜1平2负",
+  "goalAvg": "1.6"
+ },
  "injuries": [],
- "notes": "冷启动基础画像（仅积分榜），待深度采集补充"
+ "notes": "insight回填(轮次5);近10场=7胜1平2负,场均进1.6"
 }

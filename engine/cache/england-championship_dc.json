@@ -1,113 +1,138 @@
 {
   "league": "england-championship",
   "seasons": [
-    "2526"
+    "2526",
+    "2627"
   ],
   "xi": 0.005,
-  "homeAdv": 0.3084,
-  "rho": -0.0117,
-  "matchesUsed": 260,
+  "homeAdv": 0.3427,
+  "rho": -0.1372,
+  "matchesUsed": 296,
   "dateRange": [
     "2025-08-08",
-    "2026-01-05"
+    "2026-08-29"
   ],
-  "lastFit": "2026-08-28",
+  "lastFit": "2026-09-01",
   "teams": {
     "Birmingham": {
-      "attack": -0.2043,
-      "defense": 0.1397
+      "attack": -0.0358,
+      "defense": -0.0698
     },
     "Blackburn": {
-      "attack": -0.4214,
-      "defense": 0.0151
+      "attack": -0.0959,
+      "defense": -0.1141
+    },
+    "Bolton": {
+      "attack": -1.1805,
+      "defense": -0.879
     },
     "Bristol City": {
-      "attack": 0.161,
-      "defense": -0.2028
+      "attack": 0.0799,
+      "defense": -0.0366
+    },
+    "Burnley": {
+      "attack": -0.1529,
+      "defense": 0.9155
+    },
+    "Cardiff": {
+      "attack": 0.1291,
+      "defense": 0.2773
     },
     "Charlton": {
-      "attack": -0.1067,
-      "defense": -0.0361
+      "attack": -0.0396,
+      "defense": -0.2412
     },
     "Coventry": {
-      "attack": 0.5351,
-      "defense": -0.0968
+      "attack": 0.5619,
+      "defense": -0.2554
     },
     "Derby": {
-      "attack": -0.0709,
-      "defense": 0.0266
+      "attack": -0.1472,
+      "defense": 0.2431
     },
     "Hull": {
-      "attack": 0.2289,
-      "defense": 0.152
+      "attack": 0.1635,
+      "defense": 0.027
     },
     "Ipswich": {
-      "attack": 0.2319,
-      "defense": -0.2679
+      "attack": 0.185,
+      "defense": -0.4106
     },
     "Leicester": {
-      "attack": 0.1776,
-      "defense": 0.2094
+      "attack": 0.1706,
+      "defense": 0.1369
+    },
+    "Lincoln": {
+      "attack": -0.1741,
+      "defense": 0.3723
     },
     "Middlesbrough": {
-      "attack": 0.1577,
-      "defense": -0.2707
+      "attack": 0.1885,
+      "defense": -0.1528
     },
     "Millwall": {
-      "attack": -0.1185,
-      "defense": -0.2086
+      "attack": 0.1268,
+      "defense": -0.1624
     },
     "Norwich": {
-      "attack": -0.0411,
-      "defense": 0.0413
+      "attack": -0.1366,
+      "defense": 0.1883
     },
     "Oxford": {
-      "attack": -0.2215,
-      "defense": -0.0101
+      "attack": -0.274,
+      "defense": -0.1225
     },
     "Portsmouth": {
-      "attack": -0.437,
-      "defense": 0.1341
+      "attack": -0.1205,
+      "defense": 0.1922
     },
     "Preston": {
-      "attack": 0.0816,
-      "defense": -0.299
+      "attack": -0.0782,
+      "defense": -0.0067
     },
     "QPR": {
-      "attack": 0.2015,
-      "defense": 0.1761
+      "attack": 0.3001,
+      "defense": -0.0519
     },
     "Sheffield United": {
-      "attack": 0.368,
-      "defense": 0.169
+      "attack": 0.1207,
+      "defense": -0.1414
     },
     "Sheffield Weds": {
-      "attack": -0.5473,
-      "defense": 0.5249
+      "attack": -0.64,
+      "defense": 0.4701
     },
     "Southampton": {
-      "attack": 0.0896,
-      "defense": 0.2024
+      "attack": 0.521,
+      "defense": 0.1384
     },
     "Stoke": {
-      "attack": -0.2233,
-      "defense": -0.3847
+      "attack": -0.176,
+      "defense": -0.0344
     },
     "Swansea": {
-      "attack": -0.1519,
-      "defense": -0.1314
+      "attack": 0.0332,
+      "defense": -0.5281
     },
     "Watford": {
-      "attack": 0.1022,
-      "defense": -0.056
+      "attack": -0.0174,
+      "defense": -0.2238
     },
     "West Brom": {
-      "attack": -0.0701,
-      "defense": 0.0726
+      "attack": -0.0183,
+      "defense": 0.0739
+    },
+    "West Ham": {
+      "attack": -0.2298,
+      "defense": 0.2239
+    },
+    "Wolves": {
+      "attack": 0.8614,
+      "defense": 0.1239
     },
     "Wrexham": {
-      "attack": 0.2787,
-      "defense": 0.1011
+      "attack": 0.0749,
+      "defense": 0.048
     }
   }
 }

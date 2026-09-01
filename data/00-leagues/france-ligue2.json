@@ -1,25 +1,48 @@
 {
   "league": "france-ligue2",
   "season": "2026-27",
-  "generatedAt": "2026-08-31",
-  "roundsPlayed": 14,
+  "generatedAt": "2026-09-01",
+  "roundsPlayed": 15,
   "standings": [
     {
       "pos": 1,
-      "team": "Red Star",
+      "team": "St Etienne",
       "played": 14,
+      "won": 9,
+      "drawn": 2,
+      "lost": 3,
+      "gf": 33,
+      "ga": 20,
+      "gd": 13,
+      "pts": 29,
+      "form": "LWWWW",
+      "homeRecord": {
+        "w": 4,
+        "d": 1,
+        "l": 2
+      },
+      "awayRecord": {
+        "w": 5,
+        "d": 1,
+        "l": 1
+      }
+    },
+    {
+      "pos": 2,
+      "team": "Red Star",
+      "played": 15,
       "won": 8,
       "drawn": 4,
-      "lost": 2,
-      "gf": 19,
-      "ga": 10,
-      "gd": 9,
+      "lost": 3,
+      "gf": 20,
+      "ga": 14,
+      "gd": 6,
       "pts": 28,
-      "form": "WWWDD",
+      "form": "WWDDL",
       "homeRecord": {
         "w": 2,
         "d": 2,
-        "l": 2
+        "l": 3
       },
       "awayRecord": {
         "w": 6,
@@ -28,30 +51,53 @@
       }
     },
     {
-      "pos": 2,
-      "team": "St Etienne",
-      "played": 13,
-      "won": 8,
-      "drawn": 2,
-      "lost": 3,
-      "gf": 30,
-      "ga": 18,
-      "gd": 12,
-      "pts": 26,
-      "form": "LLWWW",
+      "pos": 3,
+      "team": "Montpellier",
+      "played": 15,
+      "won": 7,
+      "drawn": 4,
+      "lost": 4,
+      "gf": 16,
+      "ga": 12,
+      "gd": 4,
+      "pts": 25,
+      "form": "WDWWD",
       "homeRecord": {
-        "w": 4,
-        "d": 1,
+        "w": 2,
+        "d": 4,
         "l": 2
       },
       "awayRecord": {
-        "w": 4,
-        "d": 1,
-        "l": 1
+        "w": 5,
+        "d": 0,
+        "l": 2
       }
     },
     {
-      "pos": 3,
+      "pos": 4,
+      "team": "Pau FC",
+      "played": 15,
+      "won": 7,
+      "drawn": 4,
+      "lost": 4,
+      "gf": 20,
+      "ga": 16,
+      "gd": 4,
+      "pts": 25,
+      "form": "LLWLD",
+      "homeRecord": {
+        "w": 4,
+        "d": 0,
+        "l": 4
+      },
+      "awayRecord": {
+        "w": 3,
+        "d": 4,
+        "l": 0
+      }
+    },
+    {
+      "pos": 5,
       "team": "Troyes",
       "played": 11,
       "won": 7,
@@ -74,112 +120,66 @@
       }
     },
     {
-      "pos": 4,
-      "team": "Montpellier",
-      "played": 14,
-      "won": 7,
-      "drawn": 3,
-      "lost": 4,
-      "gf": 16,
-      "ga": 12,
-      "gd": 4,
-      "pts": 24,
-      "form": "WWDWW",
-      "homeRecord": {
-        "w": 2,
-        "d": 3,
-        "l": 2
-      },
-      "awayRecord": {
-        "w": 5,
-        "d": 0,
-        "l": 2
-      }
-    },
-    {
-      "pos": 5,
-      "team": "Pau FC",
-      "played": 14,
-      "won": 7,
-      "drawn": 3,
-      "lost": 4,
-      "gf": 18,
-      "ga": 14,
-      "gd": 4,
-      "pts": 24,
-      "form": "DLLWL",
-      "homeRecord": {
-        "w": 4,
-        "d": 0,
-        "l": 4
-      },
-      "awayRecord": {
-        "w": 3,
-        "d": 3,
-        "l": 0
-      }
-    },
-    {
       "pos": 6,
-      "team": "Annecy",
-      "played": 14,
-      "won": 6,
-      "drawn": 3,
-      "lost": 5,
-      "gf": 18,
-      "ga": 15,
-      "gd": 3,
-      "pts": 21,
-      "form": "WWWWL",
-      "homeRecord": {
-        "w": 2,
-        "d": 3,
-        "l": 1
-      },
-      "awayRecord": {
-        "w": 4,
-        "d": 0,
-        "l": 4
-      }
-    },
-    {
-      "pos": 7,
       "team": "Reims",
-      "played": 14,
-      "won": 5,
+      "played": 15,
+      "won": 6,
       "drawn": 6,
       "lost": 3,
-      "gf": 22,
-      "ga": 19,
-      "gd": 3,
-      "pts": 21,
-      "form": "DDDDW",
+      "gf": 26,
+      "ga": 20,
+      "gd": 6,
+      "pts": 24,
+      "form": "DDDWW",
       "homeRecord": {
         "w": 4,
         "d": 2,
         "l": 1
       },
       "awayRecord": {
-        "w": 1,
+        "w": 2,
         "d": 4,
         "l": 2
       }
     },
     {
-      "pos": 8,
-      "team": "Rodez",
-      "played": 14,
-      "won": 5,
+      "pos": 7,
+      "team": "Annecy",
+      "played": 15,
+      "won": 6,
       "drawn": 4,
       "lost": 5,
       "gf": 19,
-      "ga": 20,
-      "gd": -1,
-      "pts": 19,
-      "form": "DLWLW",
+      "ga": 16,
+      "gd": 3,
+      "pts": 22,
+      "form": "WWWLD",
       "homeRecord": {
         "w": 2,
-        "d": 3,
+        "d": 4,
+        "l": 1
+      },
+      "awayRecord": {
+        "w": 4,
+        "d": 0,
+        "l": 4
+      }
+    },
+    {
+      "pos": 8,
+      "team": "Rodez",
+      "played": 15,
+      "won": 5,
+      "drawn": 5,
+      "lost": 5,
+      "gf": 21,
+      "ga": 22,
+      "gd": -1,
+      "pts": 20,
+      "form": "LWLWD",
+      "homeRecord": {
+        "w": 2,
+        "d": 4,
         "l": 2
       },
       "awayRecord": {
@@ -190,19 +190,42 @@
     },
     {
       "pos": 9,
-      "team": "Guingamp",
-      "played": 14,
+      "team": "Nancy",
+      "played": 15,
       "won": 5,
-      "drawn": 3,
+      "drawn": 4,
       "lost": 6,
-      "gf": 20,
-      "ga": 25,
+      "gf": 14,
+      "ga": 17,
+      "gd": -3,
+      "pts": 19,
+      "form": "LDLWW",
+      "homeRecord": {
+        "w": 2,
+        "d": 1,
+        "l": 4
+      },
+      "awayRecord": {
+        "w": 3,
+        "d": 3,
+        "l": 2
+      }
+    },
+    {
+      "pos": 10,
+      "team": "Guingamp",
+      "played": 15,
+      "won": 5,
+      "drawn": 4,
+      "lost": 6,
+      "gf": 23,
+      "ga": 28,
       "gd": -5,
-      "pts": 18,
-      "form": "DLLWL",
+      "pts": 19,
+      "form": "LLWLD",
       "homeRecord": {
         "w": 3,
-        "d": 2,
+        "d": 3,
         "l": 2
       },
       "awayRecord": {
@@ -212,17 +235,17 @@
       }
     },
     {
-      "pos": 10,
+      "pos": 11,
       "team": "Dunkerque",
-      "played": 14,
+      "played": 15,
       "won": 4,
       "drawn": 5,
-      "lost": 5,
+      "lost": 6,
       "gf": 26,
-      "ga": 21,
-      "gd": 5,
+      "ga": 23,
+      "gd": 3,
       "pts": 17,
-      "form": "LWWDL",
+      "form": "WWDLL",
       "homeRecord": {
         "w": 3,
         "d": 2,
@@ -231,11 +254,11 @@
       "awayRecord": {
         "w": 1,
         "d": 3,
-        "l": 2
+        "l": 3
       }
     },
     {
-      "pos": 11,
+      "pos": 12,
       "team": "Le Mans",
       "played": 11,
       "won": 4,
@@ -258,30 +281,30 @@
       }
     },
     {
-      "pos": 12,
-      "team": "Nancy",
-      "played": 14,
-      "won": 4,
-      "drawn": 4,
-      "lost": 6,
+      "pos": 13,
+      "team": "Clermont",
+      "played": 15,
+      "won": 3,
+      "drawn": 7,
+      "lost": 5,
       "gf": 12,
-      "ga": 17,
-      "gd": -5,
+      "ga": 18,
+      "gd": -6,
       "pts": 16,
-      "form": "LLDLW",
+      "form": "WDLDD",
       "homeRecord": {
         "w": 1,
-        "d": 1,
-        "l": 4
+        "d": 5,
+        "l": 2
       },
       "awayRecord": {
-        "w": 3,
-        "d": 3,
-        "l": 2
+        "w": 2,
+        "d": 2,
+        "l": 3
       }
     },
     {
-      "pos": 13,
+      "pos": 14,
       "team": "Amiens",
       "played": 11,
       "won": 4,
@@ -304,63 +327,63 @@
       }
     },
     {
-      "pos": 14,
-      "team": "Laval",
-      "played": 14,
-      "won": 3,
-      "drawn": 6,
-      "lost": 5,
-      "gf": 13,
-      "ga": 17,
-      "gd": -4,
-      "pts": 15,
-      "form": "LWLWD",
-      "homeRecord": {
-        "w": 1,
-        "d": 2,
-        "l": 3
-      },
-      "awayRecord": {
-        "w": 2,
-        "d": 4,
-        "l": 2
-      }
-    },
-    {
       "pos": 15,
-      "team": "Clermont",
-      "played": 14,
+      "team": "Laval",
+      "played": 15,
       "won": 3,
       "drawn": 6,
-      "lost": 5,
-      "gf": 12,
-      "ga": 18,
-      "gd": -6,
+      "lost": 6,
+      "gf": 13,
+      "ga": 20,
+      "gd": -7,
       "pts": 15,
-      "form": "LWDLD",
+      "form": "WLWDL",
       "homeRecord": {
         "w": 1,
-        "d": 4,
-        "l": 2
+        "d": 2,
+        "l": 4
       },
       "awayRecord": {
         "w": 2,
-        "d": 2,
-        "l": 3
+        "d": 4,
+        "l": 2
       }
     },
     {
       "pos": 16,
-      "team": "Boulogne",
-      "played": 13,
+      "team": "Grenoble",
+      "played": 15,
       "won": 3,
-      "drawn": 3,
+      "drawn": 5,
+      "lost": 7,
+      "gf": 16,
+      "ga": 22,
+      "gd": -6,
+      "pts": 14,
+      "form": "LLDLW",
+      "homeRecord": {
+        "w": 1,
+        "d": 4,
+        "l": 1
+      },
+      "awayRecord": {
+        "w": 2,
+        "d": 1,
+        "l": 6
+      }
+    },
+    {
+      "pos": 17,
+      "team": "Boulogne",
+      "played": 14,
+      "won": 3,
+      "drawn": 4,
       "lost": 7,
       "gf": 10,
       "ga": 15,
       "gd": -5,
-      "pts": 12,
-      "form": "DLDLD",
+      "pts": 13,
+      "form": "LDLDD",
       "homeRecord": {
         "w": 1,
         "d": 3,
@@ -368,45 +391,22 @@
       },
       "awayRecord": {
         "w": 2,
-        "d": 0,
-        "l": 4
-      }
-    },
-    {
-      "pos": 17,
-      "team": "Grenoble",
-      "played": 14,
-      "won": 2,
-      "drawn": 5,
-      "lost": 7,
-      "gf": 13,
-      "ga": 22,
-      "gd": -9,
-      "pts": 11,
-      "form": "DLLDL",
-      "homeRecord": {
-        "w": 1,
-        "d": 4,
-        "l": 1
-      },
-      "awayRecord": {
-        "w": 1,
         "d": 1,
-        "l": 6
+        "l": 4
       }
     },
     {
       "pos": 18,
       "team": "Metz",
-      "played": 3,
+      "played": 4,
       "won": 1,
-      "drawn": 2,
+      "drawn": 3,
       "lost": 0,
-      "gf": 3,
-      "ga": 2,
+      "gf": 4,
+      "ga": 3,
       "gd": 1,
-      "pts": 5,
-      "form": "WDD",
+      "pts": 6,
+      "form": "WDDD",
       "homeRecord": {
         "w": 1,
         "d": 1,
@@ -414,22 +414,22 @@
       },
       "awayRecord": {
         "w": 0,
-        "d": 1,
+        "d": 2,
         "l": 0
       }
     },
     {
       "pos": 19,
       "team": "Sochaux",
-      "played": 3,
+      "played": 4,
       "won": 1,
-      "drawn": 1,
+      "drawn": 2,
       "lost": 1,
       "gf": 1,
       "ga": 3,
       "gd": -2,
-      "pts": 4,
-      "form": "LDW",
+      "pts": 5,
+      "form": "LDWD",
       "homeRecord": {
         "w": 1,
         "d": 0,
@@ -437,7 +437,7 @@
       },
       "awayRecord": {
         "w": 0,
-        "d": 1,
+        "d": 2,
         "l": 0
       }
     },
@@ -467,19 +467,19 @@
     {
       "pos": 21,
       "team": "Dijon",
-      "played": 3,
+      "played": 4,
       "won": 0,
       "drawn": 2,
-      "lost": 1,
-      "gf": 2,
-      "ga": 3,
-      "gd": -1,
+      "lost": 2,
+      "gf": 4,
+      "ga": 6,
+      "gd": -2,
       "pts": 2,
-      "form": "DLD",
+      "form": "DLDL",
       "homeRecord": {
         "w": 0,
         "d": 0,
-        "l": 1
+        "l": 2
       },
       "awayRecord": {
         "w": 0,
@@ -490,15 +490,15 @@
     {
       "pos": 22,
       "team": "Nantes",
-      "played": 3,
+      "played": 4,
       "won": 0,
-      "drawn": 0,
+      "drawn": 1,
       "lost": 3,
-      "gf": 3,
-      "ga": 8,
+      "gf": 6,
+      "ga": 11,
       "gd": -5,
-      "pts": 0,
-      "form": "LLL",
+      "pts": 1,
+      "form": "LLLD",
       "homeRecord": {
         "w": 0,
         "d": 0,
@@ -506,16 +506,16 @@
       },
       "awayRecord": {
         "w": 0,
-        "d": 0,
+        "d": 1,
         "l": 1
       }
     }
   ],
   "leagueStats": {
-    "avgGoals": 2.48,
-    "homeWinRate": 0.344,
-    "drawRate": 0.304,
-    "upsetRate": 0.376,
+    "avgGoals": 2.515,
+    "homeWinRate": 0.328,
+    "drawRate": 0.321,
+    "upsetRate": 0.358,
     "topScores": [
       {
         "score": "0-1",
@@ -527,11 +527,11 @@
       },
       {
         "score": "1-1",
-        "count": 14
+        "count": 15
       }
     ],
     "computedFrom": "fd",
-    "matchesUsed": 125,
+    "matchesUsed": 134,
     "seasonsMerged": [
       "2526",
       "2627"
@@ -539,8 +539,8 @@
   },
   "context": {
     "titleRace": {
-      "leader": "Red Star",
-      "gap": 2
+      "leader": "St Etienne",
+      "gap": 1
     },
     "relegationZone": [
       20,
@@ -555,8 +555,8 @@
     ]
   },
   "dcParams": {
-    "homeAdv": 0.0069,
-    "rho": 0.0958,
+    "homeAdv": 0.0,
+    "rho": 0.0502,
     "xi": 0.005
   },
   "freshness": {

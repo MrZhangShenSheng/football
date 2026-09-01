@@ -3,21 +3,19 @@
  "name": "Venezia",
  "nameZh": "威尼斯",
  "league": "italy",
- "lastUpdated": "2026-08-22",
- "source": "cold-start: league standings + manual name map",
+ "lastUpdated": "2026-09-01",
+ "source": "sporttery-insight",
  "standing": {
-  "pos": 20,
-  "played": 0,
-  "won": 0,
-  "drawn": 0,
-  "lost": 0,
-  "gf": 0,
-  "ga": 0,
-  "pts": 0,
-  "leagueTable": "italy-serie-a"
+  "pos": null,
+  "leagueTable": "意大利杯",
+  "season": "2026/2027"
  },
  "elo": null,
  "form": [],
+ "formSummary": {
+  "last10": "5胜2平3负",
+  "goalAvg": "2.7"
+ },
  "injuries": [],
- "notes": "冷启动基础画像（积分榜），待深度采集补充"
+ "notes": "insight回填(轮次);近10场=5胜2平3负,场均进2.7"
 }

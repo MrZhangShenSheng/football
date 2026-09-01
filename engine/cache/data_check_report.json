@@ -1,175 +1,55 @@
 {
-  "checkedAt": "2026-08-31",
+  "checkedAt": "2026-09-01",
   "leagues": {
-    "芬超": {
+    "saudi": {
+      "status": "ready",
+      "roundsPlayed": 2,
+      "standingsSource": "espn",
+      "fdCovered": false
+    },
+    "england-championship": {
+      "status": "ready",
+      "roundsPlayed": 25,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "意大利杯": {
       "status": "missing"
     },
-    "意甲": {
+    "日联赛杯": {
       "status": "missing"
     },
-    "瑞超": {
-      "status": "missing"
+    "japan": {
+      "status": "ready",
+      "roundsPlayed": 3,
+      "standingsSource": "espn",
+      "fdCovered": false
     },
-    "西甲": {
-      "status": "missing"
-    },
-    "法乙": {
-      "status": "missing"
-    },
-    "英超": {
-      "status": "missing"
-    },
-    "葡超": {
+    "germany-dfb-pokal": {
       "status": "missing"
     }
   },
   "missingLeagues": [
-    "芬超",
-    "意甲",
-    "瑞超",
-    "西甲",
-    "法乙",
-    "英超",
-    "葡超"
+    "意大利杯",
+    "日联赛杯",
+    "germany-dfb-pokal"
   ],
   "staleLeagues": [],
-  "missingAlias": [],
-  "notReadyTeams": [
+  "missingAlias": [
     {
-      "team": "国际图尔",
-      "teamId": "inter-turku",
-      "league": "finland",
-      "status": "missing"
+      "team": "八户南源",
+      "league": "日联赛杯",
+      "match": "八户南源 vs 枥木城"
     },
     {
-      "team": "库奥皮奥",
-      "teamId": "kups-kuopio",
-      "league": "finland",
-      "status": "missing"
-    },
-    {
-      "team": "赫尔火花",
-      "teamId": "gnistan-helsinki",
-      "league": "finland",
-      "status": "missing"
-    },
-    {
-      "team": "TPS图尔",
-      "teamId": "tps-turku",
-      "league": "finland",
-      "status": "missing"
-    },
-    {
-      "team": "莱切",
-      "teamId": "lecce",
-      "league": "italy",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 9
-    },
-    {
-      "team": "米亚尔比",
-      "teamId": "mjallby",
-      "league": "sweden",
-      "status": "stale",
-      "lastUpdated": "2026-08-21",
-      "ageDays": 10
-    },
-    {
-      "team": "天狼星",
-      "teamId": "sirius",
-      "league": "sweden",
-      "status": "stale",
-      "lastUpdated": "2026-08-21",
-      "ageDays": 10
-    },
-    {
-      "team": "赫塔费",
-      "teamId": "getafe",
-      "league": "spain",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 9
-    },
-    {
-      "team": "亚特兰大",
-      "teamId": "atalanta",
-      "league": "italy",
-      "status": "missing"
-    },
-    {
-      "team": "第戎",
-      "teamId": "dijon",
-      "league": "france",
-      "status": "missing"
-    },
-    {
-      "team": "圣埃蒂安",
-      "teamId": "saint-etienne",
-      "league": "france",
-      "status": "missing"
-    },
-    {
-      "team": "维拉",
-      "teamId": "aston-villa",
-      "league": "england",
-      "status": "missing"
-    },
-    {
-      "team": "阿森纳",
-      "teamId": "arsenal",
-      "league": "england",
-      "status": "stale",
-      "lastUpdated": "2026-08-21",
-      "ageDays": 10
-    },
-    {
-      "team": "本菲卡",
-      "teamId": "benfica",
-      "league": "portugal",
-      "status": "stale",
-      "lastUpdated": "2026-08-21",
-      "ageDays": 10
-    },
-    {
-      "team": "埃斯托里",
-      "teamId": "estoril",
-      "league": "portugal",
-      "status": "missing"
-    },
-    {
-      "team": "布拉加",
-      "teamId": "braga",
-      "league": "portugal",
-      "status": "missing"
-    },
-    {
-      "team": "吉马良斯",
-      "teamId": "guimaraes",
-      "league": "portugal",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 9
-    },
-    {
-      "team": "巴萨",
-      "teamId": "barcelona",
-      "league": "spain",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 9
-    },
-    {
-      "team": "巴列卡诺",
-      "teamId": "rayo-vallecano",
-      "league": "spain",
-      "status": "stale",
-      "lastUpdated": "2026-08-21",
-      "ageDays": 10
+      "team": "枥木城",
+      "league": "日联赛杯",
+      "match": "八户南源 vs 枥木城"
     }
   ],
+  "notReadyTeams": [],
   "readyCount": {
-    "leagues": 0,
-    "teamsKnown": 329
+    "leagues": 3,
+    "teamsKnown": 340
   }
 }

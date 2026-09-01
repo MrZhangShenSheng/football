@@ -1,22 +1,21 @@
 {
  "teamId": "bayern",
- "name": "Bayern Munich",
+ "name": "Bayern",
  "nameZh": "拜仁",
  "league": "germany-bundesliga",
- "lastUpdated": "2026-08-22",
- "source": "cold-start: league standings + manual name map",
+ "lastUpdated": "2026-09-01",
+ "source": "sporttery-insight",
  "standing": {
-  "pos": 3,
-  "played": 0,
-  "won": 0,
-  "drawn": 0,
-  "lost": 0,
-  "gf": 0,
-  "ga": 0,
-  "pts": 0
+  "pos": null,
+  "leagueTable": "德国杯",
+  "season": "2026/2027"
  },
  "elo": null,
  "form": [],
+ "formSummary": {
+  "last10": "9胜0平1负",
+  "goalAvg": "2.8"
+ },
  "injuries": [],
- "notes": "冷启动基础画像（仅积分榜），待深度采集补充"
+ "notes": "insight回填(轮次);近10场=9胜0平1负,场均进2.8"
 }
