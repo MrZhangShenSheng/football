@@ -43,8 +43,8 @@
 <h1>预测逻辑双轨分化设计</h1>
 <div class="meta">
   HAD 市场直信轨 + 进球独立引擎轨 · 定稿于 2026-09-01 ·
-  状态：<b>设计定稿，未开发</b>（P0/P1/P2 切片见第五节） ·
-  决策人：大哥 · 依据：2026-09-01 会话研究 + 两轮实票逻辑解剖
+  状态：<b>设计定稿（同日复审修订），未开发</b>（P0/P1/P2 切片见第七节） ·
+  决策人：大哥 · 依据：2026-09-01 会话研究 + 两轮实票逻辑解剖 + 同日复审（docs/2026-09-01-dual-track-design-review.html）
 </div>
 
 <h2>一、设计缘起与观察</h2>
@@ -62,6 +62,16 @@
 <tr><td>混战（&lt;40%）</td><td>483</td><td>35.2%</td><td><span class="pill bad">不买纪律</span></td></tr>
 </table>
 <p>校准表（腿级）：60~70% 档实际频率 <b>+5.4pp</b>、70~80% 档 <b>+7.5pp</b> 高于隐含——收盘价在热门端系统性保守，市场越倾向越准且仍有富余。</p>
+<p><b>倾向项分档实测（09-01 复审补算，n=2337，准入门槛的直接依据）</b>：</p>
+<table>
+<tr><th>市场隐含档（倾向项）</th><th>场次</th><th>实际命中</th><th>95% 置信带</th></tr>
+<tr><td>60~65%</td><td>147</td><td>66.0%</td><td>±7.7%</td></tr>
+<tr><td><b>65~70%</b></td><td>129</td><td><b>75.2%</b></td><td>±7.5%</td></tr>
+<tr><td>65~75%</td><td>222</td><td>76.1%</td><td>±5.6%</td></tr>
+<tr><td>70~80%</td><td>163</td><td>81.6%</td><td>±5.9%</td></tr>
+<tr><td>80%+</td><td>49</td><td>87.8%</td><td>±9.2%</td></tr>
+</table>
+<p class="note">60~65% 段 66.0% 与 65~70% 段 75.2% 之间存在悬崖——65% 准入切点有实证断层支撑，非拍脑袋。</p>
 
 <h3>2.2 可预测性塌陷梯度</h3>
 <table>
@@ -96,7 +106,7 @@
 
   <rect x="350" y="20" width="260" height="52" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
   <text x="480" y="42" text-anchor="middle" font-size="14" font-weight="600" fill="var(--ink)">DC λ底座（两季联拟）</text>
-  <text x="480" y="61" text-anchor="middle" font-size="11" fill="var(--muted)">λ_h / λ_a · F9 校准低估 42% 待吸收</text>
+  <text x="480" y="61" text-anchor="middle" font-size="11" fill="var(--muted)">λ_h / λ_a · F9 残差由阶段1学习器吸收（非固定乘子）</text>
 
   <rect x="670" y="20" width="260" height="52" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
   <text x="800" y="42" text-anchor="middle" font-size="14" font-weight="600" fill="var(--ink)">情报层（共享数据）</text>
@@ -156,8 +166,9 @@
 <tr><td>4</td><td>休息天数</td><td>01-teams 画像</td><td>λ 双侧微调</td></tr>
 <tr><td>5</td><td>战意状态（争冠/保级/无欲）</td><td>00-leagues 格局</td><td>λ 双侧</td></tr>
 <tr><td>6</td><td>xG 对位（近5场）</td><td>fd CSV hxg/axg</td><td>λ 双侧</td></tr>
+<tr><td>7</td><td>开季/进球环境漂移档</td><td>赛季间朴素三档漂移观察（2526 最常见 1/2/3 → 2627 已漂 2/3/4）</td><td>λ 双侧（HAD 轨 R1/R2 修正的进球轨对应物）</td></tr>
 </table>
-<p><b>学习器三阶段</b>（修正乘子不拍脑袋）：阶段0 手写规则乘子（08-30/31 票据人工系数形式化，立即可用）→ 阶段1 线性回归学 β（残差 log(实际λ/λ_DC) ~ 特征，n≥50 消融门槛）→ 阶段2 GBM（n≥100 校准门槛，corpus 已达 335）。每阶段升级须消融通过。</p>
+<p><b>学习器三阶段</b>（修正乘子不拍脑袋）：阶段0 手写规则乘子（08-30/31 票据人工系数形式化，立即可用）→ 阶段1 线性回归学 β（残差 log(实际λ/λ_DC) ~ 特征，n≥50 消融门槛）→ 阶段2 GBM（n≥100 校准门槛，corpus 已达 335）。每阶段升级须消融通过。F9 校准低估的吸收路径即阶段1 残差学习（概率空间 gap 不作固定 λ 乘子直乘）。</p>
 <p><b>输出</b>：修正后 7×7 比分矩阵 → TTG 四带概率（主出口）+ CRS 频率带（口味出口，freq-band 平移法继续用、输入换修正矩阵）。</p>
 </div>
 
@@ -166,15 +177,17 @@
 <p><b>TTG 市场锚</b>：odds_fetch 扩拉 fd OU 2.5 收盘（Pinnacle 优先、B365 兜底）→ TTG 概率与市场隐含<b>分歧率</b>常设（&gt;8pp 进"引擎 vs 市场对抗清单"复盘单列）；出票 CLV 按体彩赔率出票、fd OU 收盘结算，与 HAD 同口径。</p>
 <p><b>CRS 统计口径</b>：walk-forward 比分矩阵 log-loss + TTG 带命中率（裸 DC 62.4% 为对照线）+ CRS TOP1/3/5（基线 13.8%/36.4%/54.5%）；不算 CLV，EV 只用体彩赔率。</p>
 <p><b>消融铁律（生死线）</b>：每因子单独开关 walk-forward 对比，无正增益 → β 置零除名（冷门因子四轮证伪之训：发现器不立项）；回测一律 walk-forward、成交按 Pinnacle 收盘。</p>
-<p><b>观察窗</b>：与 freq-band 09-27 决策窗口合并评审，修正矩阵换入后 freq/amix 对照重跑再定去留。</p>
+<p><b>观察窗</b>：与 freq-band 09-27 决策窗口合并评审，修正矩阵换入后 freq/amix 对照重跑再定去留。<b>最低数据量门槛（09-01 复审增补）</b>：修正矩阵实跑 ≥3 轮出票+回填方可开评审；P0 若 9 月中旬后动工导致样本不足，评审顺延而非硬决。TTG/CRS 主次出口同为该评审议题（09-01 复审拍板：暂不定主次，两出口对照统计说话）。</p>
 </div>
 
 <h2>七、落地边界与 MVP 切片</h2>
 <div class="card">
 <table>
 <tr><th>模块</th><th>动作</th><th>层级</th></tr>
-<tr><td><code>engine/scripts/goal_engine.py</code></td><td>新建：修正乘子层 + 修正矩阵 + TTG/CRS 输出 + 消融开关</td><td><span class="pill ok">P0</span></td></tr>
+<tr><td>fd OU 列覆盖率实测</td><td>2526/2627 两季 OU 列覆盖统计（半天工作，决定 TTG 市场锚成色；缺列→B365→仍缺→C 口径）</td><td><span class="pill warn">P0 前置</span></td></tr>
+<tr><td><code>engine/scripts/goal_engine.py</code></td><td>新建：修正乘子层 + 修正矩阵 + TTG/CRS 两出口对照统计（主次 09-27 定）+ 消融开关</td><td><span class="pill ok">P0</span></td></tr>
 <tr><td><code>odds_fetch.py</code></td><td>扩拉 fd OU 2.5 收盘两键</td><td><span class="pill ok">P0</span></td></tr>
+<tr><td>P1 前置验证</td><td>旁路腿池充足性：拿近期 boldplay 轮次重算市场隐含 ≥65% 腿数（旁路后达标腿池 -36%，须确认 4串11 组票不饿死）</td><td><span class="pill warn">P1 前置</span></td></tr>
 <tr><td><code>dc_predict.py</code></td><td>HAD 融合旁路（a 不进胜平负路径，DC 三向转展示列）</td><td><span class="pill warn">P1</span></td></tr>
 <tr><td><code>boldplay.py</code> / <code>freq_band.py</code></td><td>输入矩阵切修正矩阵（随 09-27 评审）</td><td><span class="pill warn">P1</span></td></tr>
 <tr><td><code>SKILL.md</code></td><td>双轨化改版 + 两条纪律线入册 + 票据 note 口径</td><td><span class="pill warn">P1</span></td></tr>
@@ -182,7 +195,7 @@
 <tr><td>GBM / xG / 对抗清单自动化</td><td>学习器升级 + 特征补全</td><td><span class="pill bad">P2</span></td></tr>
 </table>
 <p><b>明确不做</b>：不动 tickets 账本结构、不动 fd 拉取范围、不建新存储、非 fd 联赛 TTG 无锚退化统计口径（不硬造锚）。</p>
-<p><b>依赖风险</b>：insight 伤停字段化口径需预演一轮；fd OU 列 2526/2627 覆盖率需实测，缺列降 B365、仍缺降 C 口径。</p>
+<p><b>依赖风险</b>：insight 伤停字段化口径需预演一轮；fd OU 列 2526/2627 覆盖率需实测，缺列降 B365、仍缺降 C 口径（已列 P0 前置，实测先行再动引擎）。</p>
 </div>
 
 <h2>八、决策记录（拍板链）</h2>
@@ -190,23 +203,25 @@
 <table>
 <tr><th>#</th><th>议题</th><th>选项</th><th>大哥拍板</th></tr>
 <tr><td>1</td><td>进球建模目标玩法</td><td>A 总进球带 / B 精确比分 / C 共享引擎</td><td><b>C</b>（TTG 主出口 + CRS 口味出口）</td></tr>
-<tr><td>2</td><td>引擎与 DC 关系</td><td>A λ底座+修正层 / B 特征回归 / C 贝叶斯</td><td><b>①融合式</b>（A 骨架 + B 学习器）</td></tr>
+<tr><td>2</td><td>引擎与 DC 关系</td><td>A λ底座+修正层 / B 特征回归 / C 贝叶斯</td><td><b>A+B 融合式</b>（A 骨架 + B 学习器）</td></tr>
 <tr><td>3</td><td>胜平负概率来源</td><td>A 纯市场 / B 分档混合 / C 自适应权重</td><td><b>A</b>（爆冷质疑澄清后锁定：风险结构正交）</td></tr>
 <tr><td>4</td><td>爆冷尾部风险</td><td>门槛/垫/对冲/熔断四抓手</td><td><b>①门槛 + ④熔断</b>写纪律线，②③维持现状</td></tr>
 <tr><td>5</td><td>进球引擎验证口径</td><td>A fd OU 锚 / B 体彩自锚 / C 纯统计</td><td><b>A+C</b>（TTG 市场锚 + CRS 消融统计）</td></tr>
+<tr><td>6</td><td>09-01 复审：TTG 主出口动机被朴素基线打穿（DC 前3档 62.4% in-sample &lt; 朴素固定猜 1/2/3 的 64.8%）</td><td>A 改验收线超朴素 / B 主次互换 / C 暂不定主次留 09-27</td><td><b>C</b>（朴素基线数字留复审记录不写入本设计；P0 交付两出口对照统计）</td></tr>
+<tr><td>7</td><td>09-01 复审：P1 旁路实质影响（扰动均值 6.2pp、DC 拉入 161 场命中 73.3%、腿池 -36%）</td><td>直接旁路 / 先验证腿池充足性</td><td><b>先验证</b>（P1 前置项入第七节，防 4串11 腿源饿死）</td></tr>
 </table>
 </div>
 
 <h2>九、数据来源清单</h2>
 <div class="card">
 <ul>
-<li>engine/cache/odds_{league}_{season}.json（fd 收盘价+赛果，14 联赛 2526/2627，n=2310）——市场校准与信号分档</li>
+<li>engine/cache/odds_{league}_{season}.json（fd 收盘价+赛果，14 联赛 2526/2627，n=2310 @09-01 上午快照；同日下午复跑 n=2337，缓存增量 27 场属正常漂移）——市场校准与信号分档</li>
 <li>data/04-summaries/corpus.json（335 方案腿）——玩法级实战命中率</li>
 <li>data/04-summaries/attribution.json（41 归因记录）——F9/F5 因子分布</li>
 <li>data/03-predictions/2026-08-30|31-boldplay.json——两轮命中腿逻辑解剖</li>
 <li>engine/cache/*_dc.json（14 联赛 DC 参数）——比分矩阵 TOP-k（n=1740，口径：全季拟合含轻泄漏，研究参考）</li>
 <li>data/00-leagues/*.json（standings）——联赛进球结构与主客分裂</li>
-<li>研究脚本：engine/scripts/research/had_crs_divergence.py（本设计全部数字可复跑）</li>
+<li>研究脚本：engine/scripts/research/had_crs_divergence.py（本设计全部数字可复跑，快照 09-01 上午）；research/review_dual_track_claims.py + research/bypass_impact_quantify.py（09-01 复审补算：朴素基线对照/倾向项分档/旁路扰动，快照 09-01 下午）</li>
 </ul>
 </div>
 

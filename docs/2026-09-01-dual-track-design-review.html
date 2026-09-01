@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>双轨分化设计复审报告</title>
+<style>
+  :root {
+    --ink: #1f2937; --muted: #6b7280; --line: #e5e7eb;
+    --accent: #0f766e; --accent-soft: #ccfbf1;
+    --warn: #b45309; --warn-soft: #fef3c7;
+    --ok: #15803d; --ok-soft: #dcfce7;
+    --bad: #b91c1c; --bad-soft: #fee2e2;
+    --card: #ffffff; --bg: #f8fafc;
+  }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", "Microsoft YaHei", sans-serif; color: var(--ink); background: var(--bg); margin: 0; padding: 24px; line-height: 1.65; }
+  .wrap { max-width: 1080px; margin: 0 auto; }
+  h1 { font-size: 24px; margin: 0 0 4px; }
+  h2 { font-size: 18px; margin: 32px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--accent); color: var(--accent); }
+  h3 { font-size: 15px; margin: 20px 0 8px; }
+  .meta { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+  .meta b { color: var(--warn); }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px 20px; margin: 12px 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; margin: 10px 0; }
+  th { background: #f1f5f9; text-align: left; }
+  th, td { border: 1px solid var(--line); padding: 6px 10px; }
+  code { background: #f1f5f9; border-radius: 4px; padding: 1px 5px; font-size: 12.5px; }
+  .tag-ok { color: var(--ok); font-weight: 600; }
+  .tag-bad { color: var(--bad); font-weight: 600; }
+  .tag-warn { color: var(--warn); font-weight: 600; }
+  .pill { display: inline-block; border-radius: 999px; padding: 1px 10px; font-size: 12px; font-weight: 600; }
+  .pill.ok { background: var(--ok-soft); color: var(--ok); }
+  .pill.bad { background: var(--bad-soft); color: var(--bad); }
+  .pill.warn { background: var(--warn-soft); color: var(--warn); }
+  .note { color: var(--muted); font-size: 12.5px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>双轨分化设计复审报告</h1>
+<div class="meta">
+  复审对象：<a href="2026-09-01-dual-track-prediction-design.html">docs/2026-09-01-dual-track-prediction-design.html</a>（同日 12:03 定稿） ·
+  复审日期：2026-09-01 下午 · 复审人：Claude（大哥拍板） ·
+  方法：设计声称逐条复跑 + 朴素基线对照 + 旁路扰动量化（三个补算脚本随档归档）
+</div>
+
+<h2>一、复审结论速览</h2>
+<div class="card">
+<table>
+<tr><th>级</th><th>条目</th><th>性质</th><th>拍板</th></tr>
+<tr><td rowspan="3"><b>A 动摇根基</b></td><td>A1 TTG 甜点区被朴素基线打穿</td><td class="tag-bad">核心动机重估</td><td>暂不定主次，留 09-27</td></tr>
+<tr><td>A2 主次出口可能定反（CRS 超额更硬）</td><td class="tag-warn">同上</td><td>同上（P0 交付两出口对照统计）</td></tr>
+<tr><td>A3 朴素基线应作验证对照线</td><td class="tag-warn">验证口径补强</td><td>暂不写入设计，数字留本报告</td></tr>
+<tr><td rowspan="2"><b>B 数据支撑</b></td><td>B1 65% 准入线实测成立且更强</td><td class="tag-ok">好消息</td><td>分档表已补进设计 2.1</td></tr>
+<tr><td>B2 样本快照漂移（2310→2337）</td><td class="tag-warn">口径卫生</td><td>设计来源清单已注快照日期</td></tr>
+<tr><td rowspan="5"><b>C 定义模糊</b></td><td>C1 连败熔断状态机不完整</td><td class="tag-warn">执行漂移风险</td><td><span class="pill warn">待定夺</span></td></tr>
+<tr><td>C2 无锚联赛与 65% 准入衔接留白</td><td class="tag-bad">假胆教训未入设计</td><td>已定纪律线（铁律 10）</td></tr>
+<tr><td>C3 双向校验阈值缺失</td><td class="tag-warn">执行漂移风险</td><td><span class="pill warn">待定夺</span></td></tr>
+<tr><td>C4 F9「42% 待吸收」表述误导</td><td class="tag-warn">表述瑕疵</td><td>已改（指向阶段1学习器）</td></tr>
+<tr><td>C5 学习器样本口径未定义</td><td class="tag-warn">执行漂移风险</td><td><span class="pill warn">待定夺</span></td></tr>
+<tr><td rowspan="5"><b>D 工程时间线</b></td><td>D1 OU 覆盖率实测应前置</td><td class="tag-warn">顺序问题</td><td>已列 P0 前置</td></tr>
+<tr><td>D2 09-27 评审数据量风险</td><td class="tag-warn">时间线风险</td><td>已写最低门槛（≥3 轮）</td></tr>
+<tr><td>D3 旁路影响未量化 → 补算发现实质变更</td><td class="tag-bad">新发现见第四节</td><td>P1 前置验证腿池充足性</td></tr>
+<tr><td>D4 决策记录 #2 编号瑕疵</td><td class="note">格式</td><td>已修</td></tr>
+<tr><td>D5 进球环境漂移无对应机制</td><td class="tag-warn">特征缺口</td><td>已入特征表第 7 行</td></tr>
+</table>
+</div>
+
+<h2>二、A 级：TTG 主出口动机重估（核心发现）</h2>
+<div class="card">
+<p><b>方法</b>：把「永远无脑选最常见固定档」作为朴素基线（零参数、零拟合，天然 out-of-sample 性质），与设计的 DC 数字同窗口（2526 单季）对照：</p>
+<table>
+<tr><th>口径</th><th>DC（含泄漏 in-sample）</th><th>朴素基线（固定档）</th><th>超额</th></tr>
+<tr><td><b>TTG 概率前3档</b></td><td>62.4%</td><td><b>64.8%</b>（固定猜 1/2/3 球）</td><td class="tag-bad">-2.4pp</td></tr>
+<tr><td>CRS TOP1</td><td>13.8%</td><td>13.0%（永远猜 1-1）</td><td>+0.8pp</td></tr>
+<tr><td>CRS TOP3</td><td>36.4%</td><td>31.5%（1-1/1-0/2-1）</td><td class="tag-ok">+4.9pp</td></tr>
+<tr><td>CRS TOP5</td><td>54.5%</td><td>46.2%</td><td class="tag-ok">+8.3pp</td></tr>
+</table>
+<p><b>结论 A1</b>：DC 在 TTG 上占了泄漏便宜仍输给「永远猜 1/2/3」——总进球带 60%+ 命中是玩法低方差性质（进球分布天然集中），不是模型能力。设计 2.2「被跳过的甜点区」功劳记错账主。</p>
+<p><b>结论 A2</b>：超额预测力在 CRS（TOP3 +4.9pp / TOP5 +8.3pp），TTG 为负。决策 #1「TTG 主出口」的拍板依据正是 62.4%。主次暂不互换，等 P0 修正矩阵两出口对照统计说话（09-27 评审议题）。</p>
+<p><b>附带信号</b>：2627（n=321）最常见三档已漂成 <b>2/3/4</b>（2526 为 1/2/3，朴素基线 64.8%→60.7%）——进球环境季节间漂移真实存在，静态朴素档会过期；这正是进球引擎该捕捉的增量（已入设计特征表 #7 开季/漂移档）。</p>
+<p><b>A3 遗留</b>：朴素基线数字（64.8% / 31.5% / 46.2% / 13.0% @2526；60.7% / 26.5% / 41.7% / 9.3% @2627）留存本报告。P0 实跑对照统计时<b>必须</b>把朴素基线列入对照表——它是零成本生死线：修正矩阵 walk-forward 超不过朴素，引擎无上线理由。</p>
+</div>
+
+<h2>三、B 级：65% 准入线实证（好消息）</h2>
+<div class="card">
+<p>设计第四节「该档实测腿级命中 70%+」原本无出处——直接验算（倾向项=隐含最高项，n=2337）：</p>
+<table>
+<tr><th>市场隐含档</th><th>场次</th><th>实际命中</th><th>95% 置信带</th></tr>
+<tr><td>60~65%</td><td>147</td><td>66.0%</td><td>±7.7%</td></tr>
+<tr><td><b>65~70%</b></td><td>129</td><td><b>75.2%</b></td><td>±7.5%</td></tr>
+<tr><td>65~75%</td><td>222</td><td>76.1%</td><td>±5.6%</td></tr>
+<tr><td>70~80%</td><td>163</td><td>81.6%</td><td>±5.9%</td></tr>
+<tr><td>80%+</td><td>49</td><td>87.8%</td><td>±9.2%</td></tr>
+</table>
+<p>声称成立且保守了（75.2% &gt; 70%）。更值钱的是 <b>60~65 段 66.0% 的悬崖</b>：65% 切点有实证断层支撑。此表已补进设计 2.1。</p>
+<p class="note">B2：设计 n=2310 为 09-01 上午快照，下午复跑同口径 n=2337（缓存增 27 场）。差异 1.2% 无实质影响；设计来源清单已注快照日期，防复跑对不上数。</p>
+</div>
+
+<h2>四、D3 补算：P1 旁路是实质变更（新发现）</h2>
+<div class="card">
+<p>原预期「b=1.0 主导下旁路扰动 &lt;1pp、属口径诚实+简化」——<b>被数据打脸</b>。实测（n=1981，fd 联赛 DC 可算场次）：</p>
+<ul>
+<li>倾向项 |融合-市场| 概率扰动：均值 <b>6.2pp</b>，p50 5.6pp，p90 12.1pp，p99 18.9pp，max 45.9pp</li>
+<li>倾向方向翻转（argmax 不一致）：<b>9.2%</b>（183/1981）</li>
+<li>65% 门槛：市场不达标被融合拉入 <b>161 场</b>（8.1%），市场达标被拉出仅 8 场——logit 空间 0.4·logit(p_DC) 在 DC 与市场分歧大时扰动可观，方向以放大热门为主</li>
+</ul>
+<h3>门槛翻转分组命中（判定=市场倾向项）</h3>
+<table>
+<tr><th>组</th><th>场次</th><th>命中</th><th>解读</th></tr>
+<tr><td>双达标（市场≥65 且融合≥65）</td><td>281</td><td><b>80.1%</b></td><td>旁路后仅存腿池</td></tr>
+<tr><td><b>DC 拉入（市场&lt;65 但融合≥65）</b></td><td>161</td><td><b>73.3%</b></td><td class="tag-warn">有质量的腿源，旁路即砍</td></tr>
+<tr><td>融合拉出（市场≥65 但融合&lt;65）</td><td>8</td><td>62.5%</td><td>小样本</td></tr>
+<tr><td>双不达标</td><td>1531</td><td>43.8%</td><td>不买区</td></tr>
+</table>
+<p><b>权衡本质</b>：旁路 = 命中率 +2.5pp（80.1% vs 合并 77.6%）换腿池 -36%（442→281 场）。DC 拉入组 73.3% 显著高于 60~65 段 66.0%，说明 a=0.4 在暧昧带确有增量信息，并非噪声。<b>腿池风险是实战级</b>：达标率 22.3%→14.2%，一轮 17 场平均达标腿 3.8→2.4 条，而保底 4串11 需 4 条——旁路后部分轮次可能组不满保底票。</p>
+<p><b>拍板</b>：P1 动工前置验证（已入设计第七节）——拿近期 boldplay 轮次重算各腿市场隐含，实测 ≥65% 腿数是否够组票；若饿死，P1 降级为「融合保留+报告双列口径」或门槛微调复议。</p>
+</div>
+
+<h2>五、C 级待定夺清单（P0/P1 动工前逐条定）</h2>
+<div class="card">
+<table>
+<tr><th>#</th><th>议题</th><th>待定内容</th></tr>
+<tr><td>C1</td><td>连败熔断状态机</td><td>(a) 一轮多票时"保底 miss"判定粒度（保底票全 miss？无保底票轮次计保持还是重置？）(b) 减半作用域（只保底票 vs 含翻身池——搏奖票跟着减半无理）(c) 「中一轮恢复」粒度</td></tr>
+<tr><td>C3</td><td>双向校验阈值</td><td>修正把概率压多少降星、压多少剔除（建议：跌破准入线剔除，带内压 >5pp 降星——待拍）</td></tr>
+<tr><td>C5</td><td>学习器样本口径</td><td>(a) n≥50 的 n 是场还是腿（学 β 单元=场×2λ）(b) 联赛进球基线差 40%，联赛内学 vs 全池学+联赛哑变量 (c) 阶段2 门槛「corpus 335」是腿数，TTG/CRS 腿占比未知，不能直接当 n 用</td></tr>
+</table>
+<p class="note">已落实的 C2（无锚联赛腿禁入保底胆 → SKILL.md 铁律 10 + 执行清单 #29）与 C4（F9 表述改指向阶段1学习器）不在待定夺之列。</p>
+</div>
+
+<h2>六、修订落点清单（设计文档已同步）</h2>
+<div class="card">
+<ul>
+<li>meta 状态：定稿（同日复审修订）+ 复审报告链接</li>
+<li>2.1 节：倾向项分档实测表 + 65 悬崖注（B1）</li>
+<li>架构图：F9 表述改「残差由阶段1学习器吸收（非固定乘子）」（C4）</li>
+<li>第五节特征表：#7 开季/进球环境漂移档（D5）；学习器段落补 F9 吸收路径说明</li>
+<li>第六节观察窗：最低数据量门槛 ≥3 轮出票+回填，不足顺延；TTG/CRS 主次入 09-27 议题（A1/A2）</li>
+<li>第七节 MVP 表：新增「fd OU 覆盖率实测」P0 前置行（D1）+「旁路腿池充足性」P1 前置行（D3）；goal_engine 动作改「两出口对照统计（主次 09-27 定）」</li>
+<li>第八节决策记录：#2 编号修正（D4）；新增 #6（A1/A2 拍板）、#7（D3 拍板）</li>
+<li>第九节来源：快照日期注释（B2）+ 复审脚本归档</li>
+<li>SKILL.md：铁律 10（无锚联赛腿禁入保底胆）+ 执行清单 #29（C2）</li>
+</ul>
+</div>
+
+<h2>七、数据来源与脚本</h2>
+<div class="card">
+<ul>
+<li>engine/scripts/research/review_dual_track_claims.py —— 倾向项分档命中 + 总进球朴素基线（A/B 级数字）</li>
+<li>engine/scripts/research/bypass_impact_quantify.py —— 旁路扰动 + 65 门槛翻转 + 分组命中（D3 数字）</li>
+<li>engine/scripts/research/had_crs_divergence.py —— 原设计研究脚本（对照）</li>
+<li>engine/cache/odds_{league}_{season}.json（14 联赛 2526/2627，复跑快照 09-01 下午）</li>
+<li>engine/cache/{league}_dc.json（DC 参数，旁路量化用）</li>
+<li>data/04-summaries/2026-09-01-qa.html（假胆教训来源）</li>
+</ul>
+<p class="note">本报告全部数字可由上述脚本复跑；快照口径：分档/朴素基线 n=2337（2526 n=2016 / 2627 n=321），旁路量化 n=1981（DC 可算子集）。</p>
+</div>
+
+</div>
+</body>
+</html>
