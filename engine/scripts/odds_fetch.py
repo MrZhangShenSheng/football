@@ -53,6 +53,33 @@ def fetch_league_csv(code: str, season: str) -> list[dict] | None:
         return None
 
 
+def normalize_row(r: dict) -> dict | None:
+    """fd CSV 行 → 统一场次 dict（含 OU 2.5 三键）；无 Pinnacle 三向收盘则 None。"""
+    def g(*keys):
+        for k in keys:
+            for rk, rv in r.items():
+                if rk and rk.lower() == k.lower():
+                    return rv
+        return None
+    pin_c_h = g("PPCH", "Psh")  # Pinnacle 收盘（PPC*=closing；老赛季为 Psh）
+    pin_c_d = g("PPCD", "Psd")
+    pin_c_a = g("PPCA", "Psa")
+    if not pin_c_h:
+        return None
+    ou_over = g("P>2.5"); ou_under = g("P<2.5"); ou_src = "pin" if ou_over else None
+    if not ou_over:
+        ou_over = g("B365>2.5"); ou_under = g("B365<2.5"); ou_src = "b365" if ou_over else None
+    return {
+        "date": g("Date"), "home": g("HomeTeam"), "away": g("AwayTeam"),
+        "fthg": g("FTHG"), "ftag": g("FTAG"),
+        "pin_h": pin_c_h, "pin_d": pin_c_d, "pin_a": pin_c_a,
+        "pin_open_h": g("PPH"), "pin_open_d": g("PPD"), "pin_open_a": g("PPA"),
+        "b365c_h": g("B365CH"), "b365c_d": g("B365CD"), "b365c_a": g("B365CA"),
+        "hxg": g("HxG"), "axg": g("AxG"),
+        "ou_over25": ou_over, "ou_under25": ou_under, "ou_source": ou_src,
+    }
+
+
 def main() -> None:
     season = "2627"
     args = sys.argv[1:]
@@ -67,25 +94,9 @@ def main() -> None:
             continue
         out_rows = []
         for r in rows:
-            # 列名在不同赛季大小写不稳定，做一次归一
-            def g(*keys):
-                for k in keys:
-                    for rk, rv in r.items():
-                        if rk and rk.lower() == k.lower():
-                            return rv
-                return None
-            pin_c_h = g("PPCH", "Psh")  # Pinnacle 收盘（PPC*=closing；老赛季为 Psh）
-            pin_c_d = g("PPCD", "Psd")
-            pin_c_a = g("PPCA", "Psa")
-            if pin_c_h:
-                out_rows.append({
-                    "date": g("Date"), "home": g("HomeTeam"), "away": g("AwayTeam"),
-                    "fthg": g("FTHG"), "ftag": g("FTAG"),
-                    "pin_h": pin_c_h, "pin_d": pin_c_d, "pin_a": pin_c_a,
-                    "pin_open_h": g("PPH"), "pin_open_d": g("PPD"), "pin_open_a": g("PPA"),
-                    "b365c_h": g("B365CH"), "b365c_d": g("B365CD"), "b365c_a": g("B365CA"),
-                    "hxg": g("HxG"), "axg": g("AxG"),
-                })
+            m = normalize_row(r)
+            if m:
+                out_rows.append(m)
         league_name = LEAGUE_CODES.get(code, code)
         out = CACHE_DIR / f"odds_{league_name}_{season}.json"
         payload = {"fetchedAt": date.today().isoformat(), "source": "football-data.co.uk", "season": season, "matches": out_rows}
