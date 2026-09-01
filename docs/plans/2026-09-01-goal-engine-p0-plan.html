@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>goal-engine P0 实施计划</title>
+<style>
+  :root { --ink:#1f2937; --muted:#6b7280; --line:#e5e7eb; --accent:#0f766e; --accent-soft:#ccfbf1; --warn:#b45309; --warn-soft:#fef3c7; --ok:#15803d; --ok-soft:#dcfce7; --bad:#b91c1c; --bad-soft:#fee2e2; --card:#fff; --bg:#f8fafc; }
+  * { box-sizing:border-box; }
+  body { font-family:"Segoe UI","Microsoft YaHei",sans-serif; color:var(--ink); background:var(--bg); margin:0; padding:24px; line-height:1.6; }
+  .wrap { max-width:1080px; margin:0 auto; }
+  h1 { font-size:24px; margin:0 0 4px; }
+  h2 { font-size:18px; margin:30px 0 10px; padding-bottom:6px; border-bottom:2px solid var(--accent); color:var(--accent); }
+  h3 { font-size:15px; margin:18px 0 6px; }
+  .meta { color:var(--muted); font-size:13px; margin-bottom:18px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px 18px; margin:10px 0; }
+  table { border-collapse:collapse; width:100%; font-size:13.5px; margin:8px 0; }
+  th { background:#f1f5f9; text-align:left; }
+  th,td { border:1px solid var(--line); padding:5px 9px; }
+  code { background:#f1f5f9; border-radius:4px; padding:1px 5px; font-size:12.5px; }
+  pre { background:#0f172a; color:#e2e8f0; border-radius:8px; padding:14px 16px; overflow-x:auto; font-size:12.5px; line-height:1.55; }
+  pre code { background:none; color:inherit; padding:0; }
+  .pill { display:inline-block; border-radius:999px; padding:1px 10px; font-size:12px; font-weight:600; }
+  .pill.ok { background:var(--ok-soft); color:var(--ok); }
+  .pill.warn { background:var(--warn-soft); color:var(--warn); }
+  .pill.bad { background:var(--bad-soft); color:var(--bad); }
+  .note { color:var(--muted); font-size:12.5px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>goal-engine P0 实施计划</h1>
+<div class="meta">
+  日期：2026-09-01 · 执行：Subagent-Driven（本会话逐任务派发） · 验收：大哥（2026-09-02） ·
+  上游：<a href="../2026-09-01-dual-track-prediction-design.html">双轨分化设计</a> +
+  <a href="../2026-09-01-dual-track-design-review.html">复审报告</a>（commit 540e103）
+</div>
+
+<h2>〇、目标与边界</h2>
+<div class="card">
+<p><b>Goal</b>：交付进球引擎轨 P0——λ_DC 滚动特征修正层 + 修正比分矩阵 + TTG/CRS 两出口对照统计（修正 vs 裸 DC vs 朴素基线），外加两项前置验证（fd OU 覆盖率、P1 旁路腿池）。</p>
+<p><b>明确不做</b>（YAGNI）：不接 insight 伤停（P1 字段化后）、不做 xG 特征、不动 dc_predict/boldplay/freq_band（P1）、不做学习器（阶段1）、不改 fusion.json、不动 tickets 账本。主次出口不预设——两出口对照统计交数据，09-27 评审定（复审拍板）。</p>
+<p><b>验收标准</b>（明天大哥验收看这四条）：</p>
+<table>
+<tr><th>#</th><th>验收物</th><th>标准</th></tr>
+<tr><td>1</td><td><code>engine/cache/ou_coverage.json</code></td><td>14 联赛×两季 OU 列覆盖率 + 数据源分层结论（Pinnacle 直用/降 B365/C 口径）</td></tr>
+<tr><td>2</td><td><code>data/04-summaries/goal-engine-report.json</code></td><td>全联赛对照统计：修正/裸DC/朴素static/朴素rolling 四线 × TTG前3档 + CRS TOP1/3/5，含逐因子消融节</td></tr>
+<tr><td>3</td><td>walk-forward 管线</td><td>西甲单联赛 walk-forward 三线对照跑通（真分段重拟合）</td></tr>
+<tr><td>4</td><td>旁路腿池报告</td><td>近期 boldplay 轮次的市场≥65% 腿数 vs 融合≥65% 腿数对照（P1 前置拍板依据）</td></tr>
+</table>
+<p><b>全程纪律</b>：TDD（每模块先测后码）；每任务一 commit；全量 <code>python -m pytest engine/tests -q</code> 收尾（现有 187 passed 基线，memory：落盘新 JSON 后必须全量重跑）；<b>不 push</b>（大哥验收后自行 push）。</p>
+</div>
+
+<h2>一、核心架构决策（执行代理必读）</h2>
+<div class="card">
+<h3>1. 特征无泄漏原则（本计划最重要的一条）</h3>
+<p>球队画像（<code>data/01-teams/</code>）是<b>当前时点快照</b>、联赛 standings 是<b>全季聚合</b>——两者对历史逐场回测都有时间错位泄漏。因此阶段0 特征<b>全部从 <code>engine/cache/odds_{league}_{season}.json</code> 的场次序列自身滚动构造</b>：每场只用该场<b>之前</b>的比分数据算特征。</p>
+<h3>2. 阶段0 特征集（3 项，全滚动）与超参（手写，待阶段1学习器替换）</h3>
+<table>
+<tr><th>特征</th><th>构造</th><th>作用面</th></tr>
+<tr><td>F1 攻击率</td><td>主队近5<b>主场</b>场均进球（小样本向联赛主队侧均值收缩）÷ 联赛主队侧均值 → ratio_att_h；对称得客队</td><td>λ 同侧乘子</td></tr>
+<tr><td>F2 防守率</td><td>对侧近5<b>客场</b>场均失球（同样收缩）÷ 联赛客队侧均值 → ratio_def；对称得主队</td><td>λ 对侧乘子</td></tr>
+<tr><td>F3 开季降权</td><td>该队此前场次 &lt;2 时，特征权重 ×0.3（样本不足回落裸 DC；语义=早期收缩，非硬乘 λ）</td><td>特征层</td></tr>
+</table>
+<div style="background:#f1f5f9;border-left:3px solid var(--accent);padding:8px 14px;font-family:Consolas,monospace;font-size:13px;border-radius:4px;margin:8px 0;">
+λ_home' = λ_home_DC × exp( β·ln(ratio_att_h) + β·ln(ratio_def_a) )，β=0.3；λ_away' 对称<br>
+小样本收缩：rate = (队内累计 + 联赛均值×2.0) / (场次 + 2.0)
+</div>
+<p class="note">β=0.3 与收缩先验 k=2.0 是阶段0 手写超参——报告里必须标注「待阶段1学习器替换+消融验证」。消融开关三个：<code>att</code> / <code>def</code> / <code>shrink</code>。</p>
+<h3>3. 朴素基线双口径（复审 A3 落地）</h3>
+<p><b>naiveStatic</b>＝全季最常见固定档（TTG 取最常见 3 档、CRS 取最常见 TOP5 比分；含轻微泄漏，与复审 64.8%/31.5% 口径一致可比）；<b>naiveRolling</b>＝该场之前场次的最常见 3 档/TOP5（干净无泄漏）。<b>生死线</b>：修正矩阵 walk-forward 超不过 naiveRolling，引擎无上线理由（复审拍板）。</p>
+<h3>4. 口径诚实标注</h3>
+<p>对照统计主表为 in-sample（λ_DC 全季拟合含泄漏）——与设计 62.4% 同口径才可比；报告 <code>notes[]</code> 必须写明。干净结论看 Task 6 的 walk-forward 单联赛线。</p>
+<h3>5. 代码复用与不碰清单</h3>
+<p>复用：<code>dc_fit.dc_tau</code>（低分修正）、<code>dc_fit.load_matches</code>、<code>odds_fetch.fetch_league_csv</code>、<code>common.log/ROOT</code>。矩阵重建在 goal_engine 内自写 <code>score_matrix(lh,la,rho)</code>（不动 backtest.dc_three——surgical）。测试 import 靠 <code>engine/tests/conftest.py</code> 已注入 scripts 路径。</p>
+</div>
+
+<h2>二、任务清单（7 任务 · 每任务 TDD + commit）</h2>
+<div class="card">
+<table>
+<tr><th>任务</th><th>交付</th><th>依赖</th></tr>
+<tr><td>T1 OU 覆盖率实测（P0 前置）</td><td><code>engine/scripts/research/ou_coverage.py</code> + <code>engine/cache/ou_coverage.json</code></td><td>—（网络）</td></tr>
+<tr><td>T2 odds_fetch 扩 OU 键</td><td>normalize_row 抽取 + <code>engine/tests/test_odds_fetch.py</code> + 重拉 14 联赛两季</td><td>—（网络）</td></tr>
+<tr><td>T3 goal_engine 特征层</td><td><code>engine/scripts/goal_engine.py</code>（features 部分）+ <code>engine/tests/test_goal_engine.py</code></td><td>—</td></tr>
+<tr><td>T4 goal_engine 矩阵层</td><td>score_matrix / lambda_mult / ttg_probs / crs_rank + 测试</td><td>T3</td></tr>
+<tr><td>T5 对照统计 + 消融</td><td><code>--compare</code> CLI + <code>data/04-summaries/goal-engine-report.json</code></td><td>T4</td></tr>
+<tr><td>T6 walk-forward 西甲</td><td><code>--walk-forward --league spain-laliga</code> 三线对照</td><td>T5</td></tr>
+<tr><td>T7 旁路腿池验证（P1 前置）</td><td><code>engine/scripts/research/bypass_pool_check.py</code> + 报告节</td><td>—</td></tr>
+</table>
+</div>
+
+<h2>三、T1：fd OU 列覆盖率实测</h2>
+<div class="card">
+<p><b>Files</b>：Create <code>engine/scripts/research/ou_coverage.py</code>；Create <code>engine/cache/ou_coverage.json</code>（运行产物）。</p>
+<p><b>Step 1</b> 写脚本：复用 <code>odds_fetch.fetch_league_csv(code, season)</code> 与 <code>LEAGUE_CODES</code>（注意 research 脚本路径注入惯例：<code>ROOT = Path(__file__).resolve().parents[3]</code>，与同目录 <code>review_dual_track_claims.py</code> 一致）。对 14 个 fd 联赛 × {2526, 2627}：逐行取 <code>P&gt;2.5 / P&lt;2.5 / B365&gt;2.5 / B365&lt;2.5</code>（大小写归一逻辑照抄 odds_fetch 的 <code>g()</code>），统计非空率。</p>
+<pre><code># 核心统计逻辑
+for code, league in LEAGUE_CODES.items():          # 14 联赛（跳过 SP2 若无缓存……不：直接拉 CSV）
+    for season in ("2526", "2627"):
+        rows = fetch_league_csv(code, season)
+        if rows is None: continue
+        n = len(rows)
+        def cov(*keys):
+            hit = 0
+            for r in rows:
+                for k in keys:
+                    if any(rk and rk.lower() == k.lower() and rv.strip() for rk, rv in r.items() if rk):
+                        hit += 1; break
+            return round(hit / n, 4)
+        rec = {"n": n, "pin": cov("P>2.5", "P<2.5"), "b365": cov("B365>2.5", "B365<2.5")}
+# 分层结论：pin≥0.9 → "pin"；b365≥0.9 → "b365"；否则 "c"（C 口径=纯统计无锚）
+verdict[league] = "pin" if rec["pin"] >= 0.9 else ("b365" if rec["b365"] >= 0.9 else "c")</code></pre>
+<p><b>Step 2</b> 运行：<code>python engine/scripts/research/ou_coverage.py</code>，产物写 <code>engine/cache/ou_coverage.json</code>：结构 <code>{"fetchedAt","leagues":{lg:{season:{n,pin,b365}}},"verdict":{lg:tier}}</code>。</p>
+<p><b>Step 3</b> 人工核对输出分层是否与常识相符（英超/西甲应 pin≥0.9；希腊/土耳其可能降级）。</p>
+<p><b>Step 4</b> Commit：<code>feat(p0): OU列覆盖率实测——14联赛两季Pinnacle/B365分层结论落盘</code></p>
+</div>
+
+<h2>四、T2：odds_fetch.py 扩 OU 三键</h2>
+<div class="card">
+<p><b>Files</b>：Modify <code>engine/scripts/odds_fetch.py</code>；Create <code>engine/tests/test_odds_fetch.py</code>。</p>
+<p><b>Step 1</b> 写失败测试（<code>engine/tests/test_odds_fetch.py</code>）：</p>
+<pre><code>"""odds_fetch.normalize_row 单测：OU 三键扩展（T2）。"""
+from odds_fetch import normalize_row
+
+BASE = {"Date": "14/08/2026", "HomeTeam": "Arsenal", "AwayTeam": "Chelsea",
+        "FTHG": "2", "FTAG": "1", "PSH": "1.50", "PSD": "4.20", "PSA": "6.00"}
+
+def test_ou_pin_source():
+    row = dict(BASE, **{"P>2.5": "1.95", "P<2.5": "1.90", "B365>2.5": "1.90"})
+    m = normalize_row(row)
+    assert m["ou_over25"] == "1.95"
+    assert m["ou_under25"] == "1.90"
+    assert m["ou_source"] == "pin"
+
+def test_ou_b365_fallback():
+    row = dict(BASE, **{"B365>2.5": "1.85", "B365<2.5": "1.95"})
+    m = normalize_row(row)
+    assert m["ou_over25"] == "1.85"
+    assert m["ou_source"] == "b365"
+
+def test_ou_missing_is_none():
+    m = normalize_row(dict(BASE))
+    assert m["ou_over25"] is None and m["ou_source"] is None
+
+def test_row_without_pin_h dropped():
+    assert normalize_row({"HomeTeam": "X", "AwayTeam": "Y"}) is None</code></pre>
+<p><b>Step 2</b> 跑 <code>python -m pytest engine/tests/test_odds_fetch.py -v</code> → 预期 FAIL（<code>ImportError: normalize_row</code>）。</p>
+<p><b>Step 3</b> 实现：把 main() 循环内 <code>g()</code> + out_rows.append 逻辑抽成模块级纯函数（保持既有键不变，新增三键）：</p>
+<pre><code>def normalize_row(r: dict) -> dict | None:
+    """fd CSV 行 → 统一场次 dict（含 OU 2.5 三键）；无 Pinnacle 三向收盘则 None。"""
+    def g(*keys):
+        for k in keys:
+            for rk, rv in r.items():
+                if rk and rk.lower() == k.lower():
+                    return rv
+        return None
+    pin_c_h = g("PPCH", "Psh"); pin_c_d = g("PPCD", "Psd"); pin_c_a = g("PPCA", "Psa")
+    if not pin_c_h:
+        return None
+    ou_over = g("P>2.5"); ou_under = g("P<2.5"); ou_src = "pin" if ou_over else None
+    if not ou_over:
+        ou_over = g("B365>2.5"); ou_under = g("B365<2.5"); ou_src = "b365" if ou_over else None
+    return {
+        "date": g("Date"), "home": g("HomeTeam"), "away": g("AwayTeam"),
+        "fthg": g("FTHG"), "ftag": g("FTAG"),
+        "pin_h": pin_c_h, "pin_d": pin_c_d, "pin_a": pin_c_a,
+        "pin_open_h": g("PPH"), "pin_open_d": g("PPD"), "pin_open_a": g("PPA"),
+        "b365c_h": g("B365CH"), "b365c_d": g("B365CD"), "b365c_a": g("B365CA"),
+        "hxg": g("HxG"), "axg": g("AxG"),
+        "ou_over25": ou_over, "ou_under25": ou_under, "ou_source": ou_src,
+    }</code></pre>
+<p>main() 改为 <code>m = normalize_row(r); if m: out_rows.append(m)</code>（其余不动）。</p>
+<p><b>Step 4</b> 跑测试至 PASS；再跑 <code>python -m pytest engine/tests/test_odds_dump.py -v</code> 确认无回归。</p>
+<p><b>Step 5</b> 重拉全部：<code>python engine/scripts/odds_fetch.py --season 2526 E0 E1 SP1 SP2 D1 D2 I1 I2 F1 F2 N1 B1 P1 T1 G1</code> 与 <code>--season 2627</code> 同列表（网络任务，失败重试 ≤2 次遵守铁律 4）。抽查：<code>odds_spain-laliga_2526.json</code> 末 3 场含 <code>ou_source</code> 键。</p>
+<p><b>Step 6</b> Commit：<code>feat(odds): 扩拉fd OU2.5两键(ou_over25/under25/source·Pinnacle优先B365兜底)+normalize_row抽取+14联赛两季重拉</code></p>
+</div>
+
+<h2>五、T3：goal_engine 特征层（滚动无泄漏）</h2>
+<div class="card">
+<p><b>Files</b>：Create <code>engine/scripts/goal_engine.py</code>；Create <code>engine/tests/test_goal_engine.py</code>。</p>
+<p><b>Step 1</b> 写失败测试（特征层部分）：</p>
+<pre><code>"""goal_engine 单测：T3 特征层（滚动构造/收缩/开季降权）+ T4 矩阵层。"""
+import math
+import numpy as np
+from goal_engine import build_history, match_features, pad_rate, league_sides
+
+M = lambda h, a, hg, ag: {"home": h, "away": a, "fthg": hg, "ftag": ag}
+
+def test_pad_rate_shrinks_to_league():
+    # 1 场进 0 球的队：先验 k=2 拉向联赛均值 1.5 → (0+3.0)/(1+2)=1.0
+    assert abs(pad_rate(0, 1, 1.5) - 1.0) < 1e-9
+
+def test_league_sides():
+    ms = [M("A", "B", 2, 0), M("B", "A", 1, 1)]
+    s = league_sides(ms)
+    assert s["home_rate"] == 1.5 and s["away_rate"] == 0.5
+
+def test_match_features_symmetric_and_clean():
+    # A 主场 2 场进 4 球；B 客场 1 场失 1 球；构造历史后 A vs B 的特征只用历史场
+    hist, sides = build_history([M("A", "C", 3, 0), M("D", "A", 1, 1), M("C", "B", 2, 2)])
+    f = match_features(hist, sides, "A", "B")
+    # A 近5主场场均 = pad(3, 1, home_rate=2.0) = (3+4.0)/3 ≈ 2.333；ratio = 2.333/2.0
+    assert abs(f["home_att"] - (3 + 2.0 * 2) / 3 / 2.0) < 1e-9
+    # B 近5客场失球 = pad(2, 1, away_rate=2.0)；away_rate = (0+1+2)/3 = 1.0 → pad=(2+2)/2=2.0 → ratio 2.0
+    assert abs(f["away_def"] - 2.0 / 1.0) < 1e-9
+
+def test_early_season_weight():
+    assert early_weight(0) == 0.3 and early_weight(1) == 0.3 and early_weight(2) == 1.0</code></pre>
+<p><b>Step 2</b> 跑 → FAIL（模块不存在）。</p>
+<p><b>Step 3</b> 实现 goal_engine.py 特征层（文件头含完整 docstring：设计出处/阶段0 语义/超参标注）：</p>
+<pre><code>#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""goal_engine —— 双轨分化设计进球引擎轨 P0（docs/2026-09-01-dual-track-prediction-design.html 第五节）。
+
+阶段0 = 手写规则乘子（08-30/31 人工系数形式化起点）：
+  λ' = λ_DC × exp( β·ln(r_att) + β·ln(r_def) )，β=0.3（手写超参，待阶段1学习器替换+消融）
+  特征全部从 odds_{lg}_{season}.json 场次序列滚动构造（只用该场之前数据，无时间错位泄漏）：
+    r_att  = 队近5主场(客场)场均进球(收缩) / 联赛主(客)队侧场均进球
+    r_def  = 对侧近5客场(主场)场均失球(收缩) / 联赛客(主)队侧场均
+    开季降权：该队此前场次 <2 → 特征权重 ×0.3（样本不足回落裸 DC）
+消融开关：att / def / shrink（--disable）。
+对照统计口径：in-sample（λ_DC 全季拟合含泄漏，与设计 62.4% 同口径可比；报告 notes 必须标注）。
+开发者：sszhang（P0 由 Claude 实施，2026-09-01）
+"""
+import json
+import math
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from common import ROOT  # noqa: E402
+
+CACHE = ROOT / "engine" / "cache"
+BETA = 0.3            # 阶段0 手写乘子强度（学习器替换对象）
+PRIOR_K = 2.0         # 小样本向联赛均值收缩的先验场次
+WINDOW = 5            # 滚动窗口
+EARLY_GAMES = 2       # 此前场次 <2 视为开季
+EARLY_WEIGHT = 0.3
+
+def pad_rate(team_sum, n, league_rate):
+    """小样本收缩：(队累计 + 联赛均值×k) / (n+k)。"""
+    return (team_sum + league_rate * PRIOR_K) / (n + PRIOR_K)
+
+def league_sides(prior_matches):
+    """联赛两侧进球基线：{"home_rate","away_rate"}（场均，用传入的（该场前）场次算）。"""
+    n = len(prior_matches)
+    if n == 0:
+        return {"home_rate": 1.4, "away_rate": 1.1}   # 全局常识垫值（仅赛季头几场）
+    hg = sum(m["fthg"] for m in prior_matches)
+    ag = sum(m["ftag"] for m in prior_matches)
+    return {"home_rate": hg / n, "away_rate": ag / n}
+
+def build_history(prior_matches):
+    """队级滚动账本：{"home_gf": {team:[...]}, "home_ga": ..., "away_gf": ..., "away_ga": ...}（进失球序列）。"""
+    hist = {"home_gf": {}, "home_ga": {}, "away_gf": {}, "away_ga": {}}
+    for m in prior_matches:
+        hist["home_gf"].setdefault(m["home"], []).append(m["fthg"])
+        hist["home_ga"].setdefault(m["home"], []).append(m["ftag"])
+        hist["away_gf"].setdefault(m["away"], []).append(m["ftag"])
+        hist["away_ga"].setdefault(m["away"], []).append(m["fthg"])
+    return hist
+
+def early_weight(games_before):
+    return EARLY_WEIGHT if games_before < EARLY_GAMES else 1.0
+
+def match_features(hist, sides, home, away):
+    """返回 {"home_att","home_def","away_att","away_def","w_home","w_away"}——全部为 ratio（≥0）。"""
+    def rate(book, team, side_rate):
+        seq = hist[book].get(team, [])
+        if not seq:
+            return 1.0                                   # 无历史 → 不修正
+        return pad_rate(sum(seq[-WINDOW:]), min(len(seq), WINDOW), side_rate)
+    f = {
+        "home_att": rate("home_gf", home, sides["home_rate"]) / sides["home_rate"],
+        "home_def": rate("home_ga", home, sides["home_rate"]) / sides["home_rate"],   # 主队主场失球 vs 主侧均失
+        "away_att": rate("away_gf", away, sides["away_rate"]) / sides["away_rate"],
+        "away_def": rate("away_ga", away, sides["away_rate"]) / sides["away_rate"],
+    }
+    f["w_home"] = early_weight(len(hist["home_gf"].get(home, [])))
+    f["w_away"] = early_weight(len(hist["away_gf"].get(away, [])))
+    return f</code></pre>
+<p class="note">注意 league_sides 用「该场之前」的场次聚合——对照统计主循环里逐场切片（见 T5），build_history 同理传前缀切片。<code>home_def</code> 分母用主队侧均值：失球基准=对侧产出，用同侧均值才同尺度。</p>
+<p><b>Step 4</b> 跑测试至 PASS。</p>
+<p><b>Step 5</b> Commit：<code>feat(goal-engine): 特征层——近5主客攻防率滚动构造+小样本收缩+开季降权(TDD)</code></p>
+</div>
+
+<h2>六、T4：goal_engine 矩阵层</h2>
+<div class="card">
+<p><b>Files</b>：Modify <code>engine/scripts/goal_engine.py</code>；Modify <code>engine/tests/test_goal_engine.py</code>。</p>
+<p><b>Step 1</b> 追加失败测试：</p>
+<pre><code>from goal_engine import lambda_from_dc, lambda_mult, score_matrix, ttg_probs, crs_rank
+
+DC = {"teams": {"A": {"attack": 0.30, "defense": -0.10}, "B": {"attack": 0.10, "defense": -0.20}},
+      "homeAdv": 0.25, "rho": -0.05}
+F1X = {"home_att": 1.0, "home_def": 1.0, "away_att": 1.0, "away_def": 1.0, "w_home": 1.0, "w_away": 1.0}
+
+def test_lambda_mult_identity_when_no_signal():
+    assert abs(lambda_mult(F1X, side="home") - 1.0) < 1e-12
+
+def test_lambda_mult_direction():
+    f = dict(F1X, home_att=1.5, away_def=1.2)          # 主攻强+客防烂 → λ_home 放大
+    m = lambda_mult(f, side="home")
+    assert m > 1.0 and abs(m - math.exp(0.3 * math.log(1.5) + 0.3 * math.log(1.2))) < 1e-12
+
+def test_lambda_mult_disable_and_early_weight():
+    f = dict(F1X, home_att=1.5, w_home=0.3)
+    assert abs(lambda_mult(f, side="home", disable=("att",)) - 1.0) < 1e-12
+    assert abs(lambda_mult(f, side="home") - math.exp(0.09 * math.log(1.5))) < 1e-12
+
+def test_score_matrix_normalized_and_ttg():
+    m = score_matrix(1.5, 1.1, -0.05)
+    assert abs(m.sum() - 1.0) < 1e-9 and m.shape == (7, 7) and (m >= 0).all()
+    tp = ttg_probs(m)
+    assert abs(sum(tp) - 1.0) < 1e-9 and len(tp) == 14
+    rk = crs_rank(m)
+    assert len(rk) == 49 and rk[0][1] >= rk[1][1]
+
+def test_lambda_from_dc():
+    lh, la = lambda_from_dc(DC, "A", "B")
+    assert abs(lh - math.exp(0.30 - 0.20 + 0.25)) < 1e-12 and abs(la - math.exp(0.10 - 0.10)) < 1e-12</code></pre>
+<p><b>Step 2</b> 跑 → FAIL。</p>
+<p><b>Step 3</b> 实现矩阵层：</p>
+<pre><code>import numpy as np
+from dc_fit import dc_tau
+
+def lambda_from_dc(dc, home, away):
+    th, ta = dc["teams"].get(home), dc["teams"].get(away)
+    if not th or not ta:
+        return None
+    return (math.exp(th["attack"] + ta["defense"] + dc["homeAdv"]),
+            math.exp(ta["attack"] + th["defense"]))
+
+def lambda_mult(f, side, disable=()):
+    """side="home" → 用 home_att × away_def；side="away" 对称。开季权重乘进 β。"""
+    att = f["home_att"] if side == "home" else f["away_att"]
+    dfn = f["away_def"] if side == "home" else f["home_def"]
+    w = f["w_home"] if side == "home" else f["w_away"]
+    z = 0.0
+    if "att" not in disable and att > 0:
+        z += BETA * w * math.log(att)
+    if "def" not in disable and dfn > 0:
+        z += BETA * w * math.log(dfn)
+    if "shrink" in disable:          # 消融：关开季降权 = 权重恒 1
+        z /= w if w > 0 else 1.0
+    return math.exp(z)
+
+def score_matrix(lh, la, rho):
+    """修正后 λ 重建 7×7 DC 比分矩阵（低分 tau 修正同 backtest.dc_three）。"""
+    p = np.zeros((7, 7))
+    for x in range(7):
+        for y in range(7):
+            pm = math.exp(-lh) * lh ** x / math.factorial(x) * math.exp(-la) * la ** y / math.factorial(y)
+            p[x, y] = max(pm * dc_tau(x, y, lh, la, rho), 1e-12)
+    p /= p.sum()
+    return p
+
+def ttg_probs(matrix):
+    out = [0.0] * 14
+    for i in range(7):
+        for j in range(7):
+            out[min(i + j, 13)] += matrix[i, j]
+    return out
+
+def crs_rank(matrix):
+    return sorted(((f"{i}-{j}", float(matrix[i, j])) for i in range(7) for j in range(7)),
+                  key=lambda kv: -kv[1])</code></pre>
+<p><b>Step 4</b> 测试 PASS（若 dc_tau 签名与预期不符，读 <code>dc_fit.py:87</code> 适配，不改 dc_fit）。</p>
+<p><b>Step 5</b> Commit：<code>feat(goal-engine): 矩阵层——λ乘子/修正矩阵重建/TTG桶/CRS排序(TDD)</code></p>
+</div>
+
+<h2>七、T5：对照统计 + 消融（核心交付）</h2>
+<div class="card">
+<p><b>Files</b>：Modify <code>engine/scripts/goal_engine.py</code>；Create <code>data/04-summaries/goal-engine-report.json</code>（运行产物）。</p>
+<p><b>Step 1</b> 实现对照主循环（无独立单测——集成逻辑，靠断言自检 + 人工核对数字与复审基线同量级）：</p>
+<pre><code>FD_LEAGUES = ["england-premier", "england-championship", "spain-laliga", "germany-bundesliga",
+              "germany-bundesliga2", "italy-serie-a", "italy-serie-b", "france-ligue1",
+              "france-ligue2", "netherlands-eredivisie", "portugal-primeira",
+              "belgium-first-a", "turkey-super-lig", "greece-super"]
+
+def load_odds_matches(league, seasons=("2526",)):
+    out = []
+    for s in seasons:
+        p = CACHE / f"odds_{league}_{s}.json"
+        if not p.exists(): continue
+        data = json.loads(p.read_text(encoding="utf-8"))
+        for m in data.get("matches", []):
+            if m.get("fthg") is None: continue
+            try:
+                out.append({"home": m["home"], "away": m["away"], "season": s,
+                            "fthg": int(m["fthg"]), "ftag": int(m["ftag"])})
+            except (ValueError, TypeError, KeyError): continue
+    return out
+
+def evaluate_league(league, disable=()):
+    """逐场切片：prior = 该场之前的同联赛场次（跨季拼接按时间序）。
+    四线统计：corrected / bareDc / naiveRolling / naiveStatic（static=全季最常见档，泄漏口径）。"""
+    dc = json.loads((CACHE / f"{league}_dc.json").read_text(encoding="utf-8"))
+    ms = load_odds_matches(league)
+    counters = {k: {"ttg3": [0, 0], "crs1": [0, 0], "crs3": [0, 0], "crs5": [0, 0]} for k in
+                ("corrected", "bareDc", "naiveRolling")}
+    # naiveStatic：全季最常见 3 总进球档 + TOP5 比分（Counter，同复审口径）
+    from collections import Counter
+    tot_c = Counter(m["fthg"] + m["ftag"] for m in ms)
+    scr_c = Counter(f"{m['fthg']}-{m['ftag']}" for m in ms)
+    static_ttg3 = {g for g, _ in tot_c.most_common(3)}
+    static_crs5 = {s for s, _ in scr_c.most_common(5)}
+    n_static = {"ttg3": [0, 0], "crs1": [0, 0], "crs3": [0, 0], "crs5": [0, 0]}
+    for idx, m in enumerate(ms):
+        prior = ms[:idx]
+        lam = lambda_from_dc(dc, m["home"], m["away"])
+        if lam is None: continue
+        actual_t = m["fthg"] + m["ftag"]; actual_s = f"{m['fthg']}-{m['ftag']}"
+        sides = league_sides(prior); hist = build_history(prior)
+        f = match_features(hist, sides, m["home"], m["away"])
+        lh, la = lam
+        lhc = lh * lambda_mult(f, "home", disable)
+        lac = la * lambda_mult(f, "away", disable)
+        for name, matrix in (("corrected", score_matrix(lhc, lac, dc["rho"])),
+                             ("bareDc", score_matrix(lh, la, dc["rho"]))):
+            bump(counters[name], matrix, actual_t, actual_s)
+        # naiveRolling：prior 最常见 3 档 / TOP5 比分（prior 为空跳过该场）
+        if prior:
+            tc = Counter(x["fthg"] + x["ftag"] for x in prior)
+            sc = Counter(f"{x['fthg']}-{x['ftag']}" for x in prior)
+            r_ttg3 = {g for g, _ in tc.most_common(3)}
+            r_crs5 = {s for s, _ in sc.most_common(5)}
+            bump_naive(counters["naiveRolling"], r_ttg3, r_crs5, actual_t, actual_s)
+        bump_naive(n_static, static_ttg3, static_crs5, actual_t, actual_s)
+    return counters, n_static
+
+# bump：matrix → TTG 前3档/CRS TOP1/3/5 是否命中（rank 同 had_crs_divergence 口径）；
+# bump_naive：固定档集合命中。两者各维护 [hit, n]。
+# --compare 主入口：全联赛聚合 + ablation 节（disable=() / ("att",) / ("def",) / ("shrink",)）→ 落盘 JSON</code></pre>
+<p>落盘结构（<code>data/04-summaries/goal-engine-report.json</code>）：</p>
+<pre><code>{
+  "ranAt": "2026-09-01T…", "mode": "in-sample corrected-vs-naive (design 62.4% same-caliber)",
+  "hyper": {"beta": 0.3, "priorK": 2.0, "window": 5, "earlyWeight": 0.3, "note": "阶段0手写，待阶段1学习器替换"},
+  "leagues": {"spain-laliga": {"n": 380,
+      "corrected":  {"ttg3": 0.66, "crs1": 0.14, "crs3": 0.37, "crs5": 0.55},
+      "bareDc":     {"ttg3": 0.62, "crs1": 0.13, "crs3": 0.36, "crs5": 0.54},
+      "naiveStatic":{"ttg3": 0.64, "crs1": 0.13, "crs3": 0.31, "crs5": 0.46},
+      "naiveRolling":{"ttg3": 0.63, "crs1": 0.12, "crs3": 0.30, "crs5": 0.45}}},
+  "total": {…同结构…},
+  "ablation": {"noAtt": {…}, "noDef": {…}, "noShrink": {…}},
+  "baselineRefs": {"designTtg3": 0.624, "reviewNaiveStaticTtg3_2526": 0.648},
+  "notes": ["in-sample：λ_DC 全季拟合含泄漏（与设计 62.4% 同口径）；干净结论看 walkForward 节",
+            "naiveStatic 全季聚合含泄漏，naiveRolling 干净", "生死线：walk-forward 超不过 naiveRolling 则引擎不上线（复审 A3）"]
+}</code></pre>
+<p><b>Step 2</b> 运行 <code>python engine/scripts/goal_engine.py --compare</code>，人工核对：<code>total.bareDc.ttg3</code> 应≈62%（复现设计基线，±2pp 内算同口径）；corrected 与 bareDc 的差即阶段0乘子增量。</p>
+<p><b>Step 3</b> <code>python -m pytest engine/tests -q</code> 全量绿（187+新增）。</p>
+<p><b>Step 4</b> Commit：<code>feat(goal-engine): 对照统计+消融——修正/裸DC/朴素static+rolling四线×TTG前3/CRS TOP1-3-5落盘goal-engine-report.json</code></p>
+</div>
+
+<h2>八、T6：walk-forward 西甲（干净口径管线）</h2>
+<div class="card">
+<p><b>Files</b>：Modify <code>engine/scripts/goal_engine.py</code>；报告 JSON 增 <code>walkForward</code> 节。</p>
+<p><b>Step 1</b> 先读 <code>engine/scripts/backtest.py</code> 的 <code>walk_forward()</code>（分段重拟合骨架）与 <code>dc_fit.py</code> 的拟合入口函数名，照抄分段模式：<b>每 60 场为一段</b>，段首用该段之前全部场次重拟合 DC（调 dc_fit 拟合函数——若其签名只吃 load_matches 格式，就给段前数据构造同格式列表），段内逐场：λ_DC(段首参数) → 滚动特征 → 三线（corrected / bareDc / naiveRolling）命中统计。特征切片与 T5 相同（全序列 prior）。</p>
+<p><b>Step 2</b> 运行 <code>python engine/scripts/goal_engine.py --walk-forward --league spain-laliga</code>，结果写进报告 <code>walkForward</code> 节（同四线结构，notes 注明「真分段重拟合，无参数泄漏；特征滚动无泄漏——干净口径」）。</p>
+<p><b>Step 3</b> 人工核对：walkForward 的 bareDc.ttg3 会低于 in-sample 值（泄漏被移除，预期掉 1~4pp）——这是正常且预期的，写进 notes。</p>
+<p><b>Step 4</b> 全量 pytest；Commit：<code>feat(goal-engine): walk-forward西甲管线——60场分段重拟合×滚动特征，干净口径三线对照入报告</code></p>
+</div>
+
+<h2>九、T7：P1 前置——旁路腿池充足性验证</h2>
+<div class="card">
+<p><b>Files</b>：Create <code>engine/scripts/research/bypass_pool_check.py</code>；结论追加进 <code>goal-engine-report.json</code> 的 <code>bypassPool</code> 节（或终端打印后由主会话归档）。</p>
+<p><b>Step 1</b> 先读 <code>data/03-predictions/2026-09-01-boldplay.json</code>（以及 08-30/08-31 两份）的 <code>cards[].legs[]</code> 结构，确认腿的字段（matchId/联赛/场次/玩法/概率/赔率）。</p>
+<p><b>Step 2</b> 对每腿定位该场的 Pinnacle 收盘三向（来源优先级：腿自身 pinClose 键 → <code>data/02-results/{date}.json</code> matches[].pinClose → <code>odds_{lg}_{season}.json</code> 按队名匹配 devig），算市场隐含；同时取腿的融合概率（boldplay 概率字段）。</p>
+<p><b>Step 3</b> 输出对照表（三轮合计）：</p>
+<pre><code>轮次     腿池    市场≥65%   融合≥65%   差额   4串11可组(≥4腿)
+09-01    N       a          b          a-b    yes/no
+结论：旁路后是否仍可稳定组保底 4串11（判定线：三轮全部 ≥4 条为安全；有轮 <4 为饿死风险）</code></pre>
+<p><b>Step 4</b> 全量 pytest（research 脚本无测试，跑全量防误伤）；Commit：<code>feat(review): P1前置旁路腿池验证——近三轮boldplay市场/融合双口径达标腿数对照(4串11组票风险判定)</code></p>
+</div>
+
+<h2>十、收尾（主会话执行，不派发）</h2>
+<div class="card">
+<p>1. 全量 <code>python -m pytest engine/tests -q</code> 绿 → 2. <code>goal-engine-report.json</code> 数字与复审基线互验（bareDc≈62%）→ 3. 更新 memory（dual-track-prediction-design：P0 已交付）→ 4. 汇总提交（若 T7 后有零散未提交文件）→ 5. 给大哥留验收摘要（四验收物路径 + 关键数字 + 明日验收顺序建议）。</p>
+</div>
+
+</div>
+</body>
+</html>
