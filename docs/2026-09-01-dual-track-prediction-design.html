@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>预测逻辑双轨分化设计（HAD 市场直信轨 + 进球独立引擎轨）</title>
+<style>
+  :root {
+    --ink: #1f2937; --muted: #6b7280; --line: #e5e7eb;
+    --accent: #0f766e; --accent-soft: #ccfbf1;
+    --warn: #b45309; --warn-soft: #fef3c7;
+    --ok: #15803d; --ok-soft: #dcfce7;
+    --bad: #b91c1c; --bad-soft: #fee2e2;
+    --card: #ffffff; --bg: #f8fafc;
+  }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", "Microsoft YaHei", sans-serif; color: var(--ink); background: var(--bg); margin: 0; padding: 24px; line-height: 1.65; }
+  .wrap { max-width: 1080px; margin: 0 auto; }
+  h1 { font-size: 24px; margin: 0 0 4px; }
+  h2 { font-size: 18px; margin: 32px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--accent); color: var(--accent); }
+  h3 { font-size: 15px; margin: 20px 0 8px; }
+  .meta { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+  .meta b { color: var(--warn); }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px 20px; margin: 12px 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; margin: 10px 0; }
+  th { background: #f1f5f9; text-align: left; }
+  th, td { border: 1px solid var(--line); padding: 6px 10px; }
+  code { background: #f1f5f9; border-radius: 4px; padding: 1px 5px; font-size: 12.5px; }
+  .tag-ok { color: var(--ok); font-weight: 600; }
+  .tag-bad { color: var(--bad); font-weight: 600; }
+  .tag-warn { color: var(--warn); font-weight: 600; }
+  .pill { display: inline-block; border-radius: 999px; padding: 1px 10px; font-size: 12px; font-weight: 600; }
+  .pill.ok { background: var(--ok-soft); color: var(--ok); }
+  .pill.bad { background: var(--bad-soft); color: var(--bad); }
+  .pill.warn { background: var(--warn-soft); color: var(--warn); }
+  .note { color: var(--muted); font-size: 12.5px; }
+  svg text { font-family: "Segoe UI", "Microsoft YaHei", sans-serif; }
+  .formula { background: #f1f5f9; border-left: 3px solid var(--accent); padding: 8px 14px; font-family: Consolas, monospace; font-size: 13px; border-radius: 4px; margin: 8px 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>预测逻辑双轨分化设计</h1>
+<div class="meta">
+  HAD 市场直信轨 + 进球独立引擎轨 · 定稿于 2026-09-01 ·
+  状态：<b>设计定稿，未开发</b>（P0/P1/P2 切片见第五节） ·
+  决策人：大哥 · 依据：2026-09-01 会话研究 + 两轮实票逻辑解剖
+</div>
+
+<h2>一、设计缘起与观察</h2>
+<div class="card">
+<p>大哥观察：胜平负玩法中赔率大部分情况能体现真实结果趋势；比分玩法仅少部分情况与结果一致。2026-09-01 以 2310 场 fd 收盘数据 + 335 条 corpus 方案腿 + 1740 场 DC 比分矩阵验证，观察成立且可量化，遂将两玩法预测逻辑分化：方向玩法信市场，进球玩法走独立引擎。</p>
+</div>
+
+<h2>二、研究底子（2026-09-01 实测）</h2>
+<div class="card">
+<h3>2.1 市场信号强度（fd 全联赛 2526+2627，n=2310）</h3>
+<table>
+<tr><th>信号档</th><th>场次</th><th>命中</th><th>判定</th></tr>
+<tr><td>强信号（隐含≥70%）</td><td>210</td><td><b>83.3%</b></td><td><span class="pill ok">直接可信</span></td></tr>
+<tr><td>中信号（40~70%）</td><td>1617</td><td>51.1%</td><td><span class="pill warn">需修正链</span></td></tr>
+<tr><td>混战（&lt;40%）</td><td>483</td><td>35.2%</td><td><span class="pill bad">不买纪律</span></td></tr>
+</table>
+<p>校准表（腿级）：60~70% 档实际频率 <b>+5.4pp</b>、70~80% 档 <b>+7.5pp</b> 高于隐含——收盘价在热门端系统性保守，市场越倾向越准且仍有富余。</p>
+
+<h3>2.2 可预测性塌陷梯度</h3>
+<table>
+<tr><th>口径</th><th>命中率</th><th>说明</th></tr>
+<tr><td>方向（强信号档市场）</td><td>83.3%</td><td>市场直信的底气</td></tr>
+<tr><td>方向（corpus HAD 152 腿）</td><td>66%</td><td>实战口径</td></tr>
+<tr><td><b>总进球带（DC 概率前3档，n=1740）</b></td><td><b>62.4%</b></td><td class="tag-ok">被跳过的甜点区</td></tr>
+<tr><td>CRS TOP3（DC 矩阵）</td><td>36.4%</td><td>—</td></tr>
+<tr><td>CRS TOP1（DC 矩阵）</td><td>13.8%</td><td>精确比分天花板</td></tr>
+<tr><td>corpus CRS 实票 15 腿</td><td class="tag-bad">0%（方向 100%）</td><td>T012 型零容错根源</td></tr>
+</table>
+
+<h3>2.3 两轮命中腿逻辑解剖（08-30 / 08-31，8 腿全中）</h3>
+<p>统一公式：<b>市场锚概率（融合 b=1.0 主导 / 无锚联赛单锚先验）× 轻修正链（开季 R1×0.80 / R2×0.90、伤停系数、波动降档）→ 修正后 50~78% 低赔倾向腿</b>。胜平负命中的功臣是市场锚而非 DC；而进球侧（T012 / upset 池）走裸 DC 的 q/EV 扫描、无任何修正因子，全 miss。08-31 巴萨 HHAD-2 腿（DC λ 3.20/0.47 直接算净胜≥3≈50.4% vs 市场 47.9%）命中，证明 λ 引擎在净胜/总进球类玩法上有信号，缺的是修正因子层——且该腿 note 里人工手写的伤停/近况系数正是修正层的原材料。</p>
+
+<h3>2.4 进球影响因素盘点</h3>
+<p>本地已有：联赛进球基线（意甲 2.37 ~ 荷甲 3.34，差 40%，第一锚）、主客场效应（主胜率 34~49%、主队得分占比 50~61%）、归因账本 F9 校准低估 39 例主导（avgProbGap 42%）。缺口：伤停结构化（体彩 insight 有源未字段化）、xG 对位（fd 主流联赛 hxg/axg）。</p>
+</div>
+
+<h2>三、总体架构与数据流</h2>
+<div class="card">
+<svg viewBox="0 0 960 470" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;color:var(--accent)" role="img" aria-label="双轨分化架构图">
+  <defs>
+    <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <!-- 数据源层 -->
+  <rect x="30" y="20" width="260" height="52" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="160" y="42" text-anchor="middle" font-size="14" font-weight="600" fill="var(--ink)">Pinnacle 收盘去水</text>
+  <text x="160" y="61" text-anchor="middle" font-size="11" fill="var(--muted)">无锚联赛 → 单锚先验</text>
+
+  <rect x="350" y="20" width="260" height="52" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="480" y="42" text-anchor="middle" font-size="14" font-weight="600" fill="var(--ink)">DC λ底座（两季联拟）</text>
+  <text x="480" y="61" text-anchor="middle" font-size="11" fill="var(--muted)">λ_h / λ_a · F9 校准低估 42% 待吸收</text>
+
+  <rect x="670" y="20" width="260" height="52" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="800" y="42" text-anchor="middle" font-size="14" font-weight="600" fill="var(--ink)">情报层（共享数据）</text>
+  <text x="800" y="61" text-anchor="middle" font-size="11" fill="var(--muted)">伤停 / 近况 / 主客分裂 / 休息 / 战意 / xG</text>
+
+  <!-- 双轨 -->
+  <rect x="30" y="150" width="430" height="120" rx="10" fill="var(--accent-soft)" stroke="currentColor" stroke-width="2"/>
+  <text x="245" y="178" text-anchor="middle" font-size="15" font-weight="700" fill="var(--accent)">市场直信轨（胜平负/让球）</text>
+  <text x="245" y="202" text-anchor="middle" font-size="12" fill="var(--ink)">p = devig(收盘三向) × 修正链</text>
+  <text x="245" y="222" text-anchor="middle" font-size="12" fill="var(--ink)">DC 融合旁路 · DC 三向转展示列</text>
+  <text x="245" y="248" text-anchor="middle" font-size="12" fill="var(--ink)">准入：市场隐含 ≥65% · 连败熔断减半</text>
+
+  <rect x="500" y="150" width="430" height="120" rx="10" fill="var(--warn-soft)" stroke="#b45309" stroke-width="2"/>
+  <text x="715" y="178" text-anchor="middle" font-size="15" font-weight="700" fill="var(--warn)">进球引擎轨（TTG / CRS / HAFU）</text>
+  <text x="715" y="202" text-anchor="middle" font-size="12" fill="var(--ink)">λ_final = λ_DC × exp(Σ βᵢ·xᵢ)</text>
+  <text x="715" y="222" text-anchor="middle" font-size="12" fill="var(--ink)">修正矩阵 → TTG 四带（主）+ CRS 频率带（口味）</text>
+  <text x="715" y="248" text-anchor="middle" font-size="12" fill="var(--ink)">q 排序 / EV：体彩赔率仅此用途</text>
+
+  <!-- 输出层 -->
+  <rect x="30" y="340" width="430" height="58" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="245" y="364" text-anchor="middle" font-size="13" font-weight="600" fill="var(--ink)">保底票选腿（HAD/HHAD 低赔倾向）</text>
+  <text x="245" y="384" text-anchor="middle" font-size="11" fill="var(--muted)">形状/对冲维持 preference.json 现状</text>
+
+  <rect x="500" y="340" width="430" height="58" rx="8" fill="none" stroke="#b45309" stroke-width="1.5"/>
+  <text x="715" y="364" text-anchor="middle" font-size="13" font-weight="600" fill="var(--ink)">翻身池 / 混串腿（freq-band 平移带）</text>
+  <text x="715" y="384" text-anchor="middle" font-size="11" fill="var(--muted)">输入从裸 DC 矩阵换修正矩阵</text>
+
+  <!-- 连线 -->
+  <line x1="160" y1="72" x2="200" y2="150" stroke="currentColor" stroke-width="1.5" marker-end="url(#arw)"/>
+  <line x1="480" y1="72" x2="640" y2="150" stroke="currentColor" stroke-width="1.5" marker-end="url(#arw)"/>
+  <line x1="800" y1="72" x2="300" y2="150" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arw)"/>
+  <line x1="800" y1="72" x2="760" y2="150" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arw)"/>
+  <line x1="245" y1="270" x2="245" y2="340" stroke="currentColor" stroke-width="1.5" marker-end="url(#arw)"/>
+  <line x1="715" y1="270" x2="715" y2="340" stroke="#b45309" stroke-width="1.5" marker-end="url(#arw)"/>
+  <text x="830" y="120" font-size="10.5" fill="var(--muted)">虚线=共享数据基建，不共享概率结论</text>
+</svg>
+<p class="note">核心原则：两轨<b>不共享概率结论，只共享数据基建</b>；DC 全部价值转移到进球轨做 λ 底座；体彩赔率永不作概率锚，只做可买性与 EV/派彩。</p>
+</div>
+
+<h2>四、市场直信轨设计</h2>
+<div class="card">
+<p><b>概率公式</b>：<code>p_HAD = devig(Pinnacle 收盘三向)</code>，不再与 DC logit 融合（fusion a 系数旁路）。DC 三向概率降级为报告对照展示列。</p>
+<p><b>修正链保留</b>（已验证有效的轻量先验，与 DC 无关）：开季轮次修正 R1×0.80 / R2×0.90；伤停系数（核心缺阵 → d 值乘子，对侧另计）；联赛波动降档（瑞超类 ×0.95）。修正后与市场隐含<b>双向校验</b>：修正把 62% 压到 55% 时降星或剔除。</p>
+<p><b>无锚退化</b>：fd 不覆盖联赛（瑞超/日职/沙特/韩职）沿用单锚先验（上轮收盘/联赛画像），报告标注"无市场锚，置信降档"。</p>
+<p><b>准入与纪律</b>：保底腿准入 = 市场隐含 ≥65%（该档实测腿级命中 70%+）；<b>连败熔断</b>——连续两轮保底 miss → 下轮注金减半，中一轮恢复；回血垫形状（4串5/4串11）与对冲腿比例维持 preference.json 现状。报告腿依据口径从"融合69%×R2"改为"市场69%×R2"。</p>
+<p class="note">爆冷风险说明：纯市场不改变选腿赔率带（由保底档口味定位决定），A 只让概率估计更准；尾部风险由门槛+熔断+垫结构管理，三者正交。</p>
+</div>
+
+<h2>五、进球引擎设计</h2>
+<div class="card">
+<div class="formula">λ_final = λ_DC × exp(Σ βᵢ · xᵢ)　　（log 空间线性，保 λ 恒正）</div>
+<table>
+<tr><th>#</th><th>特征</th><th>来源</th><th>作用面</th></tr>
+<tr><td>1</td><td>核心伤停数（攻/守分计）</td><td>体彩 insight（需字段化）</td><td>λ 攻守两侧</td></tr>
+<tr><td>2</td><td>近10场进/失球率偏离</td><td>standings gf/ga/form</td><td>λ 双侧</td></tr>
+<tr><td>3</td><td>主客分裂系数</td><td>homeRecord/awayRecord</td><td>λ 主客差</td></tr>
+<tr><td>4</td><td>休息天数</td><td>01-teams 画像</td><td>λ 双侧微调</td></tr>
+<tr><td>5</td><td>战意状态（争冠/保级/无欲）</td><td>00-leagues 格局</td><td>λ 双侧</td></tr>
+<tr><td>6</td><td>xG 对位（近5场）</td><td>fd CSV hxg/axg</td><td>λ 双侧</td></tr>
+</table>
+<p><b>学习器三阶段</b>（修正乘子不拍脑袋）：阶段0 手写规则乘子（08-30/31 票据人工系数形式化，立即可用）→ 阶段1 线性回归学 β（残差 log(实际λ/λ_DC) ~ 特征，n≥50 消融门槛）→ 阶段2 GBM（n≥100 校准门槛，corpus 已达 335）。每阶段升级须消融通过。</p>
+<p><b>输出</b>：修正后 7×7 比分矩阵 → TTG 四带概率（主出口）+ CRS 频率带（口味出口，freq-band 平移法继续用、输入换修正矩阵）。</p>
+</div>
+
+<h2>六、验证与消融（A+C 口径）</h2>
+<div class="card">
+<p><b>TTG 市场锚</b>：odds_fetch 扩拉 fd OU 2.5 收盘（Pinnacle 优先、B365 兜底）→ TTG 概率与市场隐含<b>分歧率</b>常设（&gt;8pp 进"引擎 vs 市场对抗清单"复盘单列）；出票 CLV 按体彩赔率出票、fd OU 收盘结算，与 HAD 同口径。</p>
+<p><b>CRS 统计口径</b>：walk-forward 比分矩阵 log-loss + TTG 带命中率（裸 DC 62.4% 为对照线）+ CRS TOP1/3/5（基线 13.8%/36.4%/54.5%）；不算 CLV，EV 只用体彩赔率。</p>
+<p><b>消融铁律（生死线）</b>：每因子单独开关 walk-forward 对比，无正增益 → β 置零除名（冷门因子四轮证伪之训：发现器不立项）；回测一律 walk-forward、成交按 Pinnacle 收盘。</p>
+<p><b>观察窗</b>：与 freq-band 09-27 决策窗口合并评审，修正矩阵换入后 freq/amix 对照重跑再定去留。</p>
+</div>
+
+<h2>七、落地边界与 MVP 切片</h2>
+<div class="card">
+<table>
+<tr><th>模块</th><th>动作</th><th>层级</th></tr>
+<tr><td><code>engine/scripts/goal_engine.py</code></td><td>新建：修正乘子层 + 修正矩阵 + TTG/CRS 输出 + 消融开关</td><td><span class="pill ok">P0</span></td></tr>
+<tr><td><code>odds_fetch.py</code></td><td>扩拉 fd OU 2.5 收盘两键</td><td><span class="pill ok">P0</span></td></tr>
+<tr><td><code>dc_predict.py</code></td><td>HAD 融合旁路（a 不进胜平负路径，DC 三向转展示列）</td><td><span class="pill warn">P1</span></td></tr>
+<tr><td><code>boldplay.py</code> / <code>freq_band.py</code></td><td>输入矩阵切修正矩阵（随 09-27 评审）</td><td><span class="pill warn">P1</span></td></tr>
+<tr><td><code>SKILL.md</code></td><td>双轨化改版 + 两条纪律线入册 + 票据 note 口径</td><td><span class="pill warn">P1</span></td></tr>
+<tr><td>insight 伤停</td><td>note 文本 → 结构化字段（攻/守分计）</td><td><span class="pill warn">P1</span></td></tr>
+<tr><td>GBM / xG / 对抗清单自动化</td><td>学习器升级 + 特征补全</td><td><span class="pill bad">P2</span></td></tr>
+</table>
+<p><b>明确不做</b>：不动 tickets 账本结构、不动 fd 拉取范围、不建新存储、非 fd 联赛 TTG 无锚退化统计口径（不硬造锚）。</p>
+<p><b>依赖风险</b>：insight 伤停字段化口径需预演一轮；fd OU 列 2526/2627 覆盖率需实测，缺列降 B365、仍缺降 C 口径。</p>
+</div>
+
+<h2>八、决策记录（拍板链）</h2>
+<div class="card">
+<table>
+<tr><th>#</th><th>议题</th><th>选项</th><th>大哥拍板</th></tr>
+<tr><td>1</td><td>进球建模目标玩法</td><td>A 总进球带 / B 精确比分 / C 共享引擎</td><td><b>C</b>（TTG 主出口 + CRS 口味出口）</td></tr>
+<tr><td>2</td><td>引擎与 DC 关系</td><td>A λ底座+修正层 / B 特征回归 / C 贝叶斯</td><td><b>①融合式</b>（A 骨架 + B 学习器）</td></tr>
+<tr><td>3</td><td>胜平负概率来源</td><td>A 纯市场 / B 分档混合 / C 自适应权重</td><td><b>A</b>（爆冷质疑澄清后锁定：风险结构正交）</td></tr>
+<tr><td>4</td><td>爆冷尾部风险</td><td>门槛/垫/对冲/熔断四抓手</td><td><b>①门槛 + ④熔断</b>写纪律线，②③维持现状</td></tr>
+<tr><td>5</td><td>进球引擎验证口径</td><td>A fd OU 锚 / B 体彩自锚 / C 纯统计</td><td><b>A+C</b>（TTG 市场锚 + CRS 消融统计）</td></tr>
+</table>
+</div>
+
+<h2>九、数据来源清单</h2>
+<div class="card">
+<ul>
+<li>engine/cache/odds_{league}_{season}.json（fd 收盘价+赛果，14 联赛 2526/2627，n=2310）——市场校准与信号分档</li>
+<li>data/04-summaries/corpus.json（335 方案腿）——玩法级实战命中率</li>
+<li>data/04-summaries/attribution.json（41 归因记录）——F9/F5 因子分布</li>
+<li>data/03-predictions/2026-08-30|31-boldplay.json——两轮命中腿逻辑解剖</li>
+<li>engine/cache/*_dc.json（14 联赛 DC 参数）——比分矩阵 TOP-k（n=1740，口径：全季拟合含轻泄漏，研究参考）</li>
+<li>data/00-leagues/*.json（standings）——联赛进球结构与主客分裂</li>
+<li>研究脚本：engine/scripts/research/had_crs_divergence.py（本设计全部数字可复跑）</li>
+</ul>
+</div>
+
+</div>
+</body>
+</html>
