@@ -55,6 +55,7 @@ def fetch_league_csv(code: str, season: str) -> list[dict] | None:
 
 def normalize_row(r: dict) -> dict | None:
     """fd CSV 行 → 统一场次 dict（含 OU 2.5 三键）；无 Pinnacle 三向收盘则 None。"""
+    # 列名在不同赛季大小写不稳定，做一次归一
     def g(*keys):
         for k in keys:
             for rk, rv in r.items():
@@ -66,9 +67,17 @@ def normalize_row(r: dict) -> dict | None:
     pin_c_a = g("PPCA", "Psa")
     if not pin_c_h:
         return None
-    ou_over = g("P>2.5"); ou_under = g("P<2.5"); ou_src = "pin" if ou_over else None
-    if not ou_over:
-        ou_over = g("B365>2.5"); ou_under = g("B365<2.5"); ou_src = "b365" if ou_over else None
+    # OU 三键：两侧价齐备才算有效配对（T1 契约——做锚去水需两侧价齐备，消费方仍须复核）；
+    # 空串与缺失同视为缺（仅此三键，既有 16 键行为不变）。
+    ou_over = g("P>2.5"); ou_under = g("P<2.5")
+    if ou_over and ou_under:
+        ou_over25, ou_under25, ou_src = ou_over, ou_under, "pin"
+    else:
+        ou_over = g("B365>2.5"); ou_under = g("B365<2.5")
+        if ou_over and ou_under:
+            ou_over25, ou_under25, ou_src = ou_over, ou_under, "b365"
+        else:
+            ou_over25 = ou_under25 = ou_src = None
     return {
         "date": g("Date"), "home": g("HomeTeam"), "away": g("AwayTeam"),
         "fthg": g("FTHG"), "ftag": g("FTAG"),
@@ -76,7 +85,7 @@ def normalize_row(r: dict) -> dict | None:
         "pin_open_h": g("PPH"), "pin_open_d": g("PPD"), "pin_open_a": g("PPA"),
         "b365c_h": g("B365CH"), "b365c_d": g("B365CD"), "b365c_a": g("B365CA"),
         "hxg": g("HxG"), "axg": g("AxG"),
-        "ou_over25": ou_over, "ou_under25": ou_under, "ou_source": ou_src,
+        "ou_over25": ou_over25, "ou_under25": ou_under25, "ou_source": ou_src,
     }
 
 
