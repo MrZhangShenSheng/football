@@ -1,0 +1,216 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2026-09-01 预测答疑 · 编号口径 / 周二排除 / 4串11测算</title>
+<style>
+:root{
+  --bg:#f7f6f3; --card:#fff; --ink:#1a1a1a; --sub:#666; --line:#e0ddd7;
+  --accent:#c0392b; --gold:#b8860b; --green:#2e7d32; --blue:#1565c0; --red:#c62828; --amber:#f57f17;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#1a1a1a; --card:#252525; --ink:#e8e6e1; --sub:#999; --line:#3a3a3a;
+  --accent:#e74c3c; --gold:#d4a017; --green:#66bb6a; --blue:#5c9ee0; --red:#ef5350; --amber:#ffb300;
+}}
+:root[data-theme="dark"]{
+  --bg:#1a1a1a; --card:#252525; --ink:#e8e6e1; --sub:#999; --line:#3a3a3a;
+  --accent:#e74c3c; --gold:#d4a017; --green:#66bb6a; --blue:#5c9ee0; --red:#ef5350; --amber:#ffb300;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;font-size:14px;padding:16px;max-width:880px;margin:0 auto}
+h1{font-size:1.3em;margin-bottom:4px}
+h2{font-size:1.05em;margin:20px 0 8px;padding-bottom:4px;border-bottom:2px solid var(--accent);color:var(--accent)}
+h3{font-size:.95em;margin:14px 0 6px}
+.sub{color:var(--sub);font-size:.8em;margin-bottom:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px;margin-bottom:12px}
+.summary{border:2px solid var(--accent);background:var(--card)}
+.tag{display:inline-block;font-size:.7em;padding:2px 7px;border-radius:3px;font-weight:600;margin-right:4px}
+.t-ok{background:var(--green);color:#fff}
+.t-warn{background:var(--amber);color:#fff}
+.t-no{background:var(--red);color:#fff}
+.t-info{background:var(--blue);color:#fff}
+table{width:100%;border-collapse:collapse;font-size:.82em;margin:8px 0}
+th,td{border:1px solid var(--line);padding:5px 7px;text-align:center}
+th{background:var(--bg);color:var(--sub);font-weight:600}
+td.l{text-align:left}
+.ev-neg{color:var(--red);font-weight:700}
+.ev-pos{color:var(--green);font-weight:700}
+.star{color:var(--gold)}
+.warn{background:rgba(245,127,23,0.12);border-left:3px solid var(--amber);padding:8px 12px;font-size:.8em;margin:8px 0;border-radius:0 4px 4px 0}
+.danger{background:rgba(198,40,40,0.08);border-left:3px solid var(--red);padding:8px 12px;font-size:.8em;margin:8px 0;border-radius:0 4px 4px 0}
+svg{display:block;margin:8px auto;max-width:100%}
+.svg-cap{text-align:center;font-size:.72em;color:var(--sub);margin:2px 0 10px}
+.foot{font-size:.72em;color:var(--sub);margin-top:16px;border-top:1px solid var(--line);padding-top:8px}
+ul{padding-left:20px}
+li{margin:3px 0}
+.hl{font-weight:700}
+</style>
+</head>
+<body>
+
+<h1>2026-09-01 预测三问答疑</h1>
+<div class="sub">生成：2026-09-01（周二）· 对当轮预测 <code>2026-09-01-v5.html</code> 的补充说明 · 大哥三问逐条归档</div>
+
+<!-- ============ Q1 ============ -->
+<h2>Q1 · 为什么"今天"预测的都是"明天"的比赛？</h2>
+
+<div class="card summary">
+<span class="tag t-ok">结论</span>不是 bug，是<b>竞彩编号=体彩销售日口径</b>（非开赛自然日）+ <b>欧洲夜场时差</b>叠加的正常现象。数据链路无异常：<code>engine/cache/sporttery_matches.json</code> fetchedAt=2026-09-01，17 场全部是当前在售场次。
+</div>
+
+<div class="card">
+<h3>在售 17 场的开赛时间（北京时间）</h3>
+<table>
+<tr><th>编号段</th><th>场次</th><th>开赛（北京时间）</th><th>当地实际时间</th></tr>
+<tr><td>周二001</td><td class="l">沙特联 利雅新月 vs 吉达国民</td><td class="l"><b>09-02 02:00</b></td><td class="l">沙特 09-01 21:00（今晚）</td></tr>
+<tr><td>周二002~009</td><td class="l">英冠 8 场</td><td class="l"><b>09-02 02:45~03:00</b></td><td class="l">英格兰 09-01 19:45/20:00（今晚）</td></tr>
+<tr><td>周二010</td><td class="l">意大利杯 都灵 vs 蒙扎</td><td class="l"><b>09-02 03:00</b></td><td class="l">意大利 09-01 21:00（今晚）</td></tr>
+<tr><td>周三001~004</td><td class="l">日职/日联杯 4 场</td><td class="l">09-02 17:30~18:00</td><td class="l">日本 09-02 傍晚（明天）</td></tr>
+<tr><td>周三005~010</td><td class="l">意杯 2 场 + 德国杯 1 场</td><td class="l">09-02 21:00 ~ 09-03 02:45</td><td class="l">欧洲 09-02 下午~晚场（明天）</td></tr>
+</table>
+
+<h3>两个被叠在一起的概念</h3>
+<ul>
+<li><b>编号里的"周二"= 体彩销售日</b>，不是开赛自然日。一个销售日约从当日 11:00 到次日 11:00，英格兰"周二晚"的比赛换算成北京时间已是周三凌晨 02:45，仍落在周二销售窗口内 → 编"周二00X"。</li>
+<li><b>欧洲夜场时差</b>：今晚欧洲开球的比赛（英国 −7h、意大利/德国 −6h、沙特 −5h，夏令时口径），北京时间全部落在明天凌晨 02:00~03:00。</li>
+<li><b>"今天"的场次为什么一场都没有</b>：周一编号那批（09-01 凌晨开球）今晨已开赛停售；今天白天到午夜本就没有新场次开球（亚洲场集中傍晚，今天傍晚没排场，日职是明天傍晚的"周三001~004"）。今天白天跑预测，拉到的必然全是明天凌晨起开打的场次。</li>
+</ul>
+
+<svg viewBox="0 0 800 190" role="img" aria-label="销售日与开赛时间轴">
+  <!-- 时间轴主线 -->
+  <line x1="40" y1="100" x2="780" y2="100" stroke="var(--line)" stroke-width="2"/>
+  <!-- 销售日色带 -->
+  <rect x="108" y="94" width="330" height="12" rx="3" fill="var(--blue)" opacity="0.28"/>
+  <rect x="438" y="94" width="328" height="12" rx="3" fill="var(--gold)" opacity="0.28"/>
+  <text x="273" y="88" text-anchor="middle" font-size="12" fill="var(--blue)" font-weight="600">周二销售日 → 编号「周二001~010」</text>
+  <text x="602" y="88" text-anchor="middle" font-size="12" fill="var(--gold)" font-weight="600">周三销售日 → 编号「周三001~010」</text>
+  <!-- 今日预测时刻 -->
+  <line x1="211" y1="64" x2="211" y2="106" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="211" y="56" text-anchor="middle" font-size="11" fill="var(--accent)">今天中午跑预测（销售日刚开始）</text>
+  <!-- 周二10场点簇 02:00-03:00 -->
+  <g fill="var(--blue)">
+    <circle cx="314" cy="120" r="4"/><circle cx="317" cy="130" r="4"/><circle cx="320" cy="120" r="4"/><circle cx="323" cy="130" r="4"/>
+    <circle cx="316" cy="140" r="4"/><circle cx="319" cy="150" r="4"/><circle cx="322" cy="140" r="4"/><circle cx="325" cy="150" r="4"/>
+    <circle cx="328" cy="120" r="4"/><circle cx="329" cy="140" r="4"/>
+  </g>
+  <text x="321" y="170" text-anchor="middle" font-size="11" fill="var(--sub)">周二10场全部挤在 09-02 凌晨02:00~03:00（=今晚欧洲夜场）</text>
+  <!-- 周三7场点 -->
+  <g fill="var(--gold)">
+    <circle cx="527" cy="120" r="4"/><circle cx="535" cy="120" r="4"/><circle cx="540" cy="120" r="4"/><circle cx="545" cy="120" r="4"/>
+    <circle cx="575" cy="120" r="4"/><circle cx="616" cy="120" r="4"/><circle cx="653" cy="120" r="4"/>
+  </g>
+  <text x="590" y="140" text-anchor="middle" font-size="11" fill="var(--sub)">周三7场：09-02 傍晚~09-03 凌晨（明天）</text>
+  <!-- 今日白天空档 -->
+  <rect x="108" y="94" width="178" height="12" rx="3" fill="none" stroke="var(--red)" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="197" y="128" text-anchor="middle" font-size="11" fill="var(--red)">今日白天：无在售场次开赛</text>
+  <!-- 时间刻度 -->
+  <g font-size="10" fill="var(--sub)" text-anchor="middle">
+    <line x1="40" y1="100" x2="40" y2="106" stroke="var(--sub)"/><text x="40" y="118">09-01 06:00</text>
+    <line x1="204" y1="100" x2="204" y2="106" stroke="var(--sub)"/><text x="204" y="118" x="168">09-01 12:00</text>
+    <line x1="287" y1="100" x2="287" y2="106" stroke="var(--sub)"/><text x="287" y="118">09-02 00:00</text>
+    <line x1="438" y1="100" x2="438" y2="106" stroke="var(--sub)"/><text x="452" y="118">09-02 12:00</text>
+    <line x1="615" y1="100" x2="615" y2="106" stroke="var(--sub)"/><text x="628" y="118">09-03 00:00</text>
+    <line x1="780" y1="100" x2="780" y2="106" stroke="var(--sub)"/><text x="772" y="118">09-03 12:00</text>
+  </g>
+</svg>
+<div class="svg-cap">北京时间轴 · 09-01 06:00 → 09-03 12:00 · 色带=体彩销售日窗口 · 点=场次开赛时刻</div>
+
+<div class="warn">⚠️ <b>实操要紧的一条</b>：周二001~010 这 10 场（8 英冠+沙特+意杯）销售截止就在<b>今晚</b>，开赛前停售——开赛时间虽是"明天凌晨"，但<b>票得今晚出</b>。周三那 7 场才是明天白天/傍晚的事。</div>
+</div>
+
+<!-- ============ Q2 ============ -->
+<h2>Q2 · 为什么推荐里没有周二的场次？</h2>
+
+<div class="card summary">
+<span class="tag t-ok">结论</span>周二 10 场逐场筛完<b>没有一腿够格</b>：8 场英冠全落"胶着/二星"区，仅有的两个边界三星（001/007）都是超低赔负 EV 假胆。不是漏推，是材料质量系统性偏差 + 纪律拦截。
+</div>
+
+<div class="card">
+<h3>周二 10 场全灭明细（摘自当轮排除简报）</h3>
+<table>
+<tr><th>编号</th><th>对阵</th><th>评级</th><th class="l">排除理由</th></tr>
+<tr><td>周二001</td><td class="l">利雅新月 vs 吉达国民</td><td><span class="star">⭐⭐⭐</span></td><td class="l">主胜 54.5% 但 @1.48 超低赔：EV <b>-19%</b>；HAD poolSingle=0 <b>无单关资格</b>，入串=拖垮整串 EV</td></tr>
+<tr><td>周二002</td><td class="l">斯旺西 vs 沃特福德</td><td>⭐⭐</td><td class="l">47.9% 不够三星线，EV -14%</td></tr>
+<tr><td>周二003</td><td class="l">西汉姆联 vs 伍尔弗</td><td>⭐⭐避开</td><td class="l">胶着（主35.5%/客39.2%）+ DC 0样本（英超降级队）噪声</td></tr>
+<tr><td>周二004</td><td class="l">朴次茅斯 vs 德比郡</td><td>⭐⭐</td><td class="l">47.8%；下游对决触发保级平局保护；EV -5%</td></tr>
+<tr><td>周二005</td><td class="l">林肯城 vs 布莱克本</td><td>⭐⭐避开</td><td class="l">胶着到极致（三项极差仅 2.7pp）</td></tr>
+<tr><td>周二006</td><td class="l">普雷斯顿 vs 布城</td><td>⭐⭐避开</td><td class="l">胶着；普雷斯顿排 23 垫底近 10 场 1 胜 1 平 8 负</td></tr>
+<tr><td>周二007</td><td class="l">谢菲联 vs 博尔顿</td><td><span class="star">⭐⭐⭐</span></td><td class="l">主胜 54.7% 但 @1.51 超低赔：EV ≈ <b>-17%</b>，同样无单关资格；近10场5胜5平不败说明市场定价充分</td></tr>
+<tr><td>周二008</td><td class="l">伯明翰 vs 南安普敦</td><td>⭐⭐避开</td><td class="l">胶着（38.6%/33.8%）</td></tr>
+<tr><td>周二009</td><td class="l">斯托克城 vs 诺维奇</td><td>⭐⭐避开</td><td class="l">胶着（极差 8.1pp）+ 斯托克垫底</td></tr>
+<tr><td>周二010</td><td class="l">都灵 vs 蒙扎</td><td>⭐⭐</td><td class="l">49.5%；蒙扎 DC 0 样本走市场锚；@1.75 偏低</td></tr>
+</table>
+
+<h3>结构性原因</h3>
+<ul>
+<li><b>8 场英冠全军覆没</b>：英冠高波动联赛，本轮主胜概率最高才 54.7%，其余 7 场全部三项极差 &lt;10pp 胶着区 → 触发"二星避开"纪律。这是英冠常态，不是意外。</li>
+<li><b>仅有的两个"三星"都是假胆</b>：概率踩着 55% 线（0.545/0.547），赔率却压到 1.48/1.51——<b>概率刚够、赔率不够</b>，且都无单关资格（poolSingle=0），唯一玩法是入串，又被 EV 纪律拦死。</li>
+</ul>
+
+<h3>两假胆 vs 两真胆（EV 差 15pp）</h3>
+<table>
+<tr><th>腿</th><th>概率</th><th>赔率</th><th>EV</th><th>归宿</th></tr>
+<tr><td>周二001 主胜</td><td>54.5%</td><td>@1.48</td><td class="ev-neg">-19.3%</td><td>排除</td></tr>
+<tr><td>周二007 主胜</td><td>54.7%</td><td>@1.51</td><td class="ev-neg">-17.4%</td><td>排除</td></tr>
+<tr><td>周三003 客胜 ✅</td><td>54.9%</td><td>@1.79</td><td class="ev-neg">-1.7%</td><td>平衡档入串</td></tr>
+<tr><td>周三004 主胜 ✅</td><td>57.3%</td><td>@1.71</td><td class="ev-neg">-2.0%</td><td>平衡档入串</td></tr>
+</table>
+<p style="font-size:.8em;color:var(--sub)">注：竞彩负期望框架下四条腿 EV 均为负，入串的两条是全轮 EV 最浅（-2% 档）的真三星；体彩 12.9% 抽水是地板，选腿纪律=选离地板最近的。</p>
+
+<div class="warn">补一句口径备忘：预测记录 <code>2026-09-01.json</code> 中 <code>周三004 町田泽维</code> 出现两条<b>不是重复事故</b>——同一场两条玩法记录（HAD 主胜@1.71 + CRS 3:0@15.0），idx 同为 14，回填按 code+pick 对票不受影响。</div>
+</div>
+
+<!-- ============ Q3 ============ -->
+<h2>Q3 · boldplay 保底档 4串11（22元）能赚多少？</h2>
+
+<div class="card summary">
+<span class="tag t-ok">速答</span>全中 4 关回 <b>124.73 元</b>（净赚 +102.73）；恰中 3 关回 33.4~37.4（小赚）；恰中 2 关回 6.4~8.2（亏）；≤1 关全亏。全中概率仅 <b>3.0%</b>，期望回款 12.4 元，期望净 <b>-9.6 元</b>。
+</div>
+
+<div class="card">
+<h3>票面结构（boldplay 保底档 · HAD 4串11）</h3>
+<table>
+<tr><th>腿</th><th>对阵</th><th>pick</th><th>赔率</th><th>主报告概率</th></tr>
+<tr><td>A</td><td class="l">周二002 斯旺西 vs 沃特福德</td><td>主胜</td><td>@1.80</td><td>47.9%</td></tr>
+<tr><td>B</td><td class="l">周二003 西汉姆联 vs 伍尔弗</td><td>主胜</td><td>@1.78</td><td>35.5%（胶着避开场）</td></tr>
+<tr><td>C</td><td class="l">周二004 朴次茅斯 vs 德比郡</td><td>主胜</td><td>@1.99</td><td>47.8%</td></tr>
+<tr><td>D</td><td class="l">周二005 林肯城 vs 布莱克本</td><td>主胜</td><td>@2.05</td><td>36.6%（胶着避开场）</td></tr>
+</table>
+<p style="font-size:.8em">6×2串1 + 4×3串1 + 1×4串1 = 11 注 × 2 元 = <b>22 元</b>（中 2 关回 1 注 2串1，容错结构）</p>
+
+<h3>回款分布（2元/注 × 复合赔率）</h3>
+<table>
+<tr><th>命中</th><th>回款</th><th>净赚</th><th>发生概率*</th><th>分注锚点</th></tr>
+<tr><td><b>全中 4 关</b></td><td><b>124.73 元</b></td><td class="ev-pos">+102.73</td><td><b>3.0%</b></td><td class="l">4串1 @13.07 → 26.14 元</td></tr>
+<tr><td>恰中 3 关</td><td>33.40~37.39 元</td><td class="ev-pos">+11.4~+15.4</td><td>17.0%</td><td class="l">3串1：12.75 / 13.14 / 14.69 / 14.52 元</td></tr>
+<tr><td>恰中 2 关</td><td>6.41~8.16 元</td><td class="ev-neg">-13.8~-15.6</td><td>35.9%</td><td class="l">2串1：AB 6.41 最低 / CD 8.16 最高</td></tr>
+<tr><td>中 ≤1 关</td><td>0</td><td class="ev-neg">-22</td><td>44.0%</td><td class="l">全灭 11.1% + 恰 1 关 32.9%</td></tr>
+</table>
+<p style="font-size:.8em;color:var(--sub)">*概率按主报告修正后概率（A 47.9% / B 35.5% / C 47.8% / D 36.6%）独立近似展开；中 3 关回款区间取决于哪腿挂（B挂最高 37.39 / D挂最低 33.40）。</p>
+
+<h3>期望账</h3>
+<ul>
+<li>期望回款 ≈ 3.0%×124.73 + 17.0%×35.5 + 35.9%×7.3 ≈ <b>12.4 元</b></li>
+<li>期望净收益 = 12.4 − 22 = <b>-9.6 元</b>；返还率 ≈ 56%，与 HAD 抽水复合 0.871⁴ ≈ 57.6% 吻合（四次抽水）</li>
+<li>至少中 2 关（有回款）概率 = 55.9%</li>
+</ul>
+
+<div class="danger">🚨 <b>红灯一：这张卡已被主报告 override，不是最终推荐。</b>boldplay 保底档是程序按概率机械选前 4 腿，选中的 B（周二003）与 D（周二005）<b>正是主报告标"胶着避开"的场</b>（极差仅 3.7pp / 2.7pp）——这两腿单独概率仅 35.5%/36.6%，是全票最大软肋。当轮定稿方案为 4 元版：周三003+004 HAD 2串1（2元）+ 周三004 CRS 3:0 单关（2元）。</div>
+<div class="danger">🚨 <b>红灯二：今晚截止。</b>4 场全部北京时间 09-02 凌晨 02:45 开赛，要买今晚出票，没有"明天再说"。</div>
+
+<h3>若一定要参与今晚：最小敞口版</h3>
+<p style="font-size:.8em">周二腿里概率最高的两条是 A+C（47.9%/47.8%）：AC 2串1 @3.58 一注 2 元，中则回 7.16 元，联合概率 22.9%。<b>诚实口径：EV 仍 ≈ -18%</b>（周二这批概率均不过半，怎么组都是深负区）——2 元的意义不是价值，是把损失敞口从 22 压到 2 的参与价。按纪律不推，仅备选。</p>
+</div>
+
+<!-- ============ 来源 ============ -->
+<h2>数据来源清单</h2>
+<div class="card foot">
+<ul>
+<li><code>engine/cache/sporttery_matches.json</code>（fetchedAt=2026-09-01）· 在售 17 场编号/开赛时间/赔率/poolSingle</li>
+<li><code>data/02-results/2026-09-01.json</code> · 当轮预测记录（matches 18 条含同场双玩法、plans 2 档）</li>
+<li><code>data/03-predictions/2026-09-01-boldplay.json</code> · 保底档 4串11 票面（seq=11, structure=new）</li>
+<li><code>data/03-predictions/2026-09-01-v5.html</code> · 当轮主报告（排除简报/override 记录）</li>
+<li>奖金口径：单注奖金 = 2元 × 复合赔率，保留两位；派彩按形状算（4串11 中 2 关只回 1 注 2串1）</li>
+</ul>
+</div>
+
+</body>
+</html>
