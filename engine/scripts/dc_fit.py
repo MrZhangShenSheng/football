@@ -256,7 +256,13 @@ def main() -> None:
         log("dc_fit", "用法: python dc_fit.py <league> [season[,s2]] [--scan] [--auto] [--source local] [--publish]")
         return
     league = args[0]
-    seasons = args[1].split(",") if len(args) > 1 else ["2627"]
+    if len(args) > 1:
+        seasons = args[1].split(",")
+    else:
+        # 裸调（无 season 参数）默认两季联拟：取缓存最新两季。
+        # 2627 单季样本薄，"单季≥30 即单季拟合"曾退化覆盖西甲缓存（2026-08-31 教训）。
+        avail = sorted(p.stem.removeprefix(f"odds_{league}_") for p in CACHE_DIR.glob(f"odds_{league}_*.json"))
+        seasons = avail[-2:] if len(avail) >= 2 else (avail or ["2627"])
 
     # --auto：缓存新鲜则跳过（新增场次 <5）
     dest = CACHE_DIR / f"{league}_dc.json"
