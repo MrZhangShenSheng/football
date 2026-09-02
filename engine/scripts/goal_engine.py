@@ -92,10 +92,15 @@ def lambda_from_dc(dc, home, away):
             math.exp(ta["attack"] + th["defense"]))
 
 
+DISABLE_KEYS = ("att", "def", "shrink")   # lambda_mult 合法消融键（typo 即抛错，防静默假零增益）
+
+
 def lambda_mult(f, side, disable=()):
     """side="home" → 用 home_att × away_def；side="away" 对称。
     逐项开季加权（09-01 审查修订）：att 项权重=攻方簿场次、def 项=守方（对侧）簿场次——
     防主队主战 1 场(w=0.3)把客队 10 场样本的防守信号也压到 0.3 的交叉污染。"""
+    if set(disable) - set(DISABLE_KEYS):
+        raise ValueError(f"unknown disable: {disable}")
     att = f["home_att"] if side == "home" else f["away_att"]
     dfn = f["away_def"] if side == "home" else f["home_def"]
     w_att = f["w_home"] if side == "home" else f["w_away"]
@@ -122,11 +127,11 @@ def score_matrix(lh, la, rho):
 
 
 def ttg_probs(matrix):
-    """总进球 0..13 桶概率（13 桶=≥13，和为 1）。"""
-    out = [0.0] * 14
+    """总进球 0..12 桶概率（7×7 矩阵 i+j 最大 12，13 桶无死桶，和为 1）。"""
+    out = [0.0] * 13
     for i in range(7):
         for j in range(7):
-            out[min(i + j, 13)] += matrix[i, j]
+            out[min(i + j, 12)] += matrix[i, j]
     return out
 
 

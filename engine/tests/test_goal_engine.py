@@ -1,6 +1,9 @@
 """goal_engine 单测：T3 特征层（滚动构造/收缩/开季降权）+ T4 矩阵层（λ乘子/DC矩阵重建）。"""
 import math
 
+import numpy as np
+import pytest
+
 from goal_engine import (build_history, crs_rank, early_weight, lambda_from_dc, lambda_mult,
                          league_sides, match_features, pad_rate, score_matrix, ttg_probs)
 
@@ -112,11 +115,11 @@ def test_lambda_mult_shrink_disable_and_cross_weight():
 
 
 def test_score_matrix_normalized_and_ttg():
-    """7×7 矩阵归一非负；TTG 14 桶和=1；CRS 49 项降序。"""
+    """7×7 矩阵归一非负；TTG 13 桶（0..12，i+j 最大 12）和=1；CRS 49 项降序。"""
     m = score_matrix(1.5, 1.1, -0.05)
     assert abs(m.sum() - 1.0) < 1e-9 and m.shape == (7, 7) and (m >= 0).all()
     tp = ttg_probs(m)
-    assert abs(sum(tp) - 1.0) < 1e-9 and len(tp) == 14
+    assert abs(sum(tp) - 1.0) < 1e-9 and len(tp) == 13
     rk = crs_rank(m)
     assert len(rk) == 49 and rk[0][1] >= rk[1][1]
 
@@ -125,3 +128,30 @@ def test_lambda_from_dc():
     """DC 参数 → λ：λ_home=exp(att_h + def_a + homeAdv)，λ_away=exp(att_a + def_h)。"""
     lh, la = lambda_from_dc(DC, "A", "B")
     assert abs(lh - math.exp(0.30 - 0.20 + 0.25)) < 1e-12 and abs(la - math.exp(0.10 - 0.10)) < 1e-12
+
+
+def test_lambda_from_dc_missing_team():
+    """缺队返回 None（调用侧降级：不修正直接用 λ_DC 基线）。"""
+    assert lambda_from_dc(DC, "A", "NOPE") is None and lambda_from_dc(DC, "NOPE", "B") is None
+
+
+def test_lambda_mult_away_symmetry():
+    """away 对称分支：att=away_att×w_away、def=home_def×w_home（与 home 侧 cross-weight 探针配对）。"""
+    f = dict(F1X, away_att=1.5, home_def=1.2, w_away=0.3)
+    assert abs(lambda_mult(f, side="away") - math.exp(0.09 * math.log(1.5) + 0.3 * math.log(1.2))) < 1e-12
+
+
+def test_lambda_mult_disable_typo_raises():
+    """消融 typo 防呆：未知 disable 键抛 ValueError——防 'at'/'deff' 静默全量产出假零增益冤杀因子。"""
+    with pytest.raises(ValueError):
+        lambda_mult(F1X, side="home", disable=("at",))
+    with pytest.raises(ValueError):
+        lambda_mult(F1X, side="away", disable=("att", "deff"))
+
+
+def test_ttg_crs_placement():
+    """构造性落位探针：2-1 与 0-3 同落 3 球桶；主客对调/下标错位（tp[3]≠1 或 1-2 居首）必炸。"""
+    m = np.zeros((7, 7)); m[2, 1] = 0.6; m[0, 3] = 0.4
+    tp = ttg_probs(m)
+    assert abs(tp[3] - 1.0) < 1e-12 and sum(x for i, x in enumerate(tp) if i != 3) == 0.0
+    assert crs_rank(m)[0] == ("2-1", 0.6)
