@@ -37,6 +37,9 @@ COEFF_PATTERNS = {
     "伤停差值": r"伤停差值|主力缺阵|门将缺阵",
 }
 DEGRADE_GAP = 0.10  # 触发场命中率低于未触发 10pp → 建议降级（旧线，概率样本不足时回退）
+# 逐系数概率样本护栏（2026-09-02 人审先例：联赛波动 n_prob=3 场 bootstrap 出 CI[-0.128,-0.077]
+# "建议标已验证"被人审驳回——小样本 CI 假显著，显著性/降级建议均不出，只观察）
+PROB_MIN_SIGNIFICANT = 10
 PROB_SUM_TOL = 0.05  # p_final 三向求和容差（防非归一脏数据入概率指标）
 
 
@@ -134,8 +137,12 @@ def main() -> None:
         if not n_ready:
             entry["status"] = f"观察中（语料门槛 n≥{ABLATE_MIN_N} 未达，当前结论仅参考）"
         elif ci is not None:
+            if tm["n_prob"] < PROB_MIN_SIGNIFICANT or bm["n_prob"] < PROB_MIN_SIGNIFICANT:
+                # 逐系数护栏：小样本 CI 假显著（人审先例：n_prob=3 出"全负 CI"被驳回）
+                entry["status"] = (f"概率样本不足（触发 n_prob={tm['n_prob']}/对照 {bm['n_prob']}，"
+                                   f"<{PROB_MIN_SIGNIFICANT}），继续观察（CI [{ci[0]}, {ci[1]}] 仅参考）")
             # 主判据：RPS diff 95% CI（触发−对照；RPS 小=好，diff>0=触发组更差）
-            if ci[0] > 0:
+            elif ci[0] > 0:
                 entry["status"] = f"⚠️ 建议降级/删除：触发组 RPS 显著更差（diff CI95 [{ci[0]}, {ci[1]}] 全在 0 上方）"
                 entry["diff"] = f"SKILL.md 修正系数『{coeff}』降级或删除（RPS 负增益 CI [{ci[0]}, {ci[1]}]）"
             elif ci[1] < 0:
