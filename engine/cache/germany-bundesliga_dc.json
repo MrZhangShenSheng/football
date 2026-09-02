@@ -1,89 +1,102 @@
 {
   "league": "germany-bundesliga",
   "seasons": [
-    "2526"
+    "2526",
+    "2627"
   ],
   "xi": 0.005,
-  "homeAdv": 0.4503,
-  "rho": -0.1868,
-  "matchesUsed": 150,
+  "homeAdv": 0.2565,
+  "rho": -0.1609,
+  "matchesUsed": 159,
   "dateRange": [
     "2025-08-22",
-    "2026-01-15"
+    "2026-08-30"
   ],
-  "lastFit": "2026-08-31",
+  "lastFit": "2026-09-02",
   "teams": {
     "Augsburg": {
-      "attack": -0.5178,
-      "defense": 0.2106
+      "attack": -0.2956,
+      "defense": 0.1899
     },
     "Bayern Munich": {
-      "attack": 0.9832,
-      "defense": -0.6602
+      "attack": 1.1487,
+      "defense": -0.5321
     },
     "Dortmund": {
-      "attack": 0.2562,
-      "defense": -0.6581
+      "attack": 0.3879,
+      "defense": -0.6724
     },
     "Ein Frankfurt": {
-      "attack": 0.3446,
-      "defense": 0.3344
+      "attack": 0.6164,
+      "defense": 0.4071
+    },
+    "Elversberg": {
+      "attack": 0.8914,
+      "defense": 0.2376
     },
     "FC Koln": {
-      "attack": -0.0827,
-      "defense": 0.0856
+      "attack": 0.2931,
+      "defense": 0.1066
     },
     "Freiburg": {
-      "attack": 0.1421,
-      "defense": 0.0769
+      "attack": 0.4687,
+      "defense": 0.1159
     },
     "Hamburg": {
-      "attack": -0.3855,
-      "defense": 0.0797
+      "attack": -0.2385,
+      "defense": 0.0814
     },
     "Heidenheim": {
-      "attack": -0.4691,
-      "defense": 0.4106
+      "attack": -0.2176,
+      "defense": 0.3746
     },
     "Hoffenheim": {
-      "attack": 0.3919,
-      "defense": -0.2257
+      "attack": 0.5897,
+      "defense": 0.07
     },
     "Leverkusen": {
-      "attack": 0.3429,
-      "defense": -0.0155
+      "attack": 0.5039,
+      "defense": -0.017
     },
     "M'gladbach": {
-      "attack": -0.0266,
-      "defense": 0.1345
+      "attack": 0.0551,
+      "defense": 0.1895
     },
     "Mainz": {
-      "attack": -0.4748,
-      "defense": 0.0486
+      "attack": -0.2501,
+      "defense": 0.0495
+    },
+    "Paderborn": {
+      "attack": -2.3595,
+      "defense": -2.3167
     },
     "RB Leipzig": {
-      "attack": 0.29,
-      "defense": -0.3684
+      "attack": 0.5075,
+      "defense": -0.4632
+    },
+    "Schalke 04": {
+      "attack": -2.5205,
+      "defense": 1.1701
     },
     "St Pauli": {
-      "attack": -0.7074,
-      "defense": 0.0319
+      "attack": -0.4211,
+      "defense": 0.068
     },
     "Stuttgart": {
-      "attack": 0.3302,
-      "defense": -0.0482
+      "attack": 0.4922,
+      "defense": 0.0722
     },
     "Union Berlin": {
-      "attack": -0.106,
-      "defense": -0.0191
+      "attack": 0.2105,
+      "defense": 0.1336
     },
     "Werder Bremen": {
-      "attack": -0.3946,
-      "defense": 0.1975
+      "attack": -0.1198,
+      "defense": 0.3625
     },
     "Wolfsburg": {
-      "attack": 0.0835,
-      "defense": 0.3848
+      "attack": 0.2576,
+      "defense": 0.3731
     }
   }
 }
