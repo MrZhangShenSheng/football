@@ -68,6 +68,20 @@
 </div>
 
 <h2>二、A 级：TTG 主出口动机重估（核心发现）</h2>
+
+<h3>⚠️ 09-02 勘误：A1 的「DC 输朴素」为不对称口径对比，结论撤回（P0 T5 实测发现）</h3>
+<div class="card" style="border-left:4px solid var(--warn)">
+<p><b>勘误事由</b>：本报告 A1 用「DC 62.4% vs 朴素 64.8%」判定 DC 输朴素——但两者口径不对称：62.4% 出自 <code>had_crs_divergence.py</code> 的「49 比分按概率降序<b>去重收集</b>总进球档取前3」（丢掉低概率比分承载的档概率，数值天然偏低），而 64.8% 是「聚合频次 top3」（正确口径）。P0 交付（commit a8ffee3，n=1740 与设计同场次）同口径重测：</p>
+<table>
+<tr><th>口径</th><th>DC（in-sample）</th><th>朴素对照</th><th>结论</th></tr>
+<tr><td>聚合口径（正确）</td><td><b>68.28%</b></td><td>naiveStatic 67.07% / naiveRolling 63.45%</td><td class="tag-ok">DC 赢 +1.2pp / +4.8pp</td></tr>
+<tr><td>去重口径（设计 62.4% 来源）</td><td>62.24%（复验）</td><td>—</td><td class="note">口径本身有偏，不宜作对照线</td></tr>
+<tr><td>干净口径（西甲 walk-forward，n=129）</td><td>73.64%</td><td>naiveRolling 69.77%</td><td class="tag-ok">DC 赢 +3.9pp（≈0.9σ 不显著）</td></tr>
+</table>
+<p><b>修正后的 A 级结论</b>：A1「甜点区含玩法低方差成分」仍成立（naiveStatic 67% 本身高），但「DC 在 TTG 上输给朴素」<b>撤回</b>——同口径下裸 DC 有真实超额。A2「主次出口定反」的动机削弱（TTG 主出口不再被证伪），「暂不定主次」拍板不变且更稳。A3「朴素基线必须作对照线」的价值反被证明——正是它逼出了口径问题。另注：设计文档 2.2 的 62.4% 数字本身是去重口径产物，09-27 评审应改用 goal-engine-report.json 的聚合口径系列。</p>
+<p class="note">详见 data/04-summaries/goal-engine-report.json（total 节 + bareDcTtg3ScoreDedup 双口径键 + walkForward 节）。</p>
+</div>
+
 <div class="card">
 <p><b>方法</b>：把「永远无脑选最常见固定档」作为朴素基线（零参数、零拟合，天然 out-of-sample 性质），与设计的 DC 数字同窗口（2526 单季）对照：</p>
 <table>
