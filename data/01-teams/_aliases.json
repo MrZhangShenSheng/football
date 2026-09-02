@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "updatedAt": "2026-08-27",
+  "updatedAt": "2026-09-02",
   "note": "规范ID=kebab-case英文，多数据源经此表解析。null=待对应fetch脚本首次运行时补全（勿手填猜测）。league=国内联赛目录名（杯赛参赛队挂国内联赛）。",
   "sources": {
    "zh": "体彩官方API中文名",
@@ -440,7 +440,7 @@
   },
   "athletico-paranaense": {
    "zh": "巴竞技",
-   "espn": "Athletico Paranaense",
+   "espn": "Athletico-PR",
    "clubelo": null,
    "understat": null
   },
@@ -477,6 +477,58 @@
    "clubelo": null,
    "understat": null,
    "espn": "Flamengo"
+  },
+  "atletico-mg": {
+   "zh": "米竞技",
+   "espn": "Atlético-MG"
+  },
+  "bahia": {
+   "zh": "巴伊亚",
+   "espn": "Bahia"
+  },
+  "ceara": {
+   "zh": "塞阿拉",
+   "espn": "Ceará"
+  },
+  "chapecoense": {
+   "zh": "沙佩科",
+   "espn": "Chapecoense"
+  },
+  "coritiba": {
+   "zh": "科里蒂巴",
+   "espn": "Coritiba"
+  },
+  "cruzeiro": {
+   "zh": "克鲁塞罗",
+   "espn": "Cruzeiro"
+  },
+  "fluminense": {
+   "zh": "弗鲁米嫩",
+   "espn": "Fluminense"
+  },
+  "fortaleza": {
+   "zh": "福塔雷萨",
+   "espn": "Fortaleza"
+  },
+  "juventude": {
+   "zh": "尤文图德",
+   "espn": "Juventude"
+  },
+  "red-bull-bragantino": {
+   "zh": "布拉干蒂",
+   "espn": "Red Bull Bragantino"
+  },
+  "remo": {
+   "zh": "雷莫",
+   "espn": "Remo"
+  },
+  "sport-recife": {
+   "zh": "累西腓体育",
+   "espn": "Sport"
+  },
+  "sao-paulo": {
+   "zh": "圣保罗",
+   "espn": "São Paulo"
   }
  },
  "argentina": {
@@ -794,7 +846,63 @@
    "zh": "奥胡斯",
    "clubelo": null,
    "understat": null,
-   "espn": "AGF Aarhus"
+   "espn": "AGF"
+  },
+  "ac-horsens": {
+   "zh": "霍森斯",
+   "espn": "AC Horsens"
+  },
+  "aab": {
+   "zh": "奥尔堡",
+   "espn": "AaB"
+  },
+  "brondby": {
+   "zh": "布隆德比",
+   "espn": "Brøndby IF"
+  },
+  "fc-copenhagen": {
+   "zh": "哥本哈根",
+   "espn": "F.C. København"
+  },
+  "fc-fredericia": {
+   "zh": "腓特烈西亚",
+   "espn": "FC Fredericia"
+  },
+  "fc-midtjylland": {
+   "zh": "中日德兰",
+   "espn": "FC Midtjylland"
+  },
+  "fc-nordsjaelland": {
+   "zh": "北西兰",
+   "espn": "FC Nordsjælland"
+  },
+  "lyngby": {
+   "zh": "灵比",
+   "espn": "Lyngby Boldklub"
+  },
+  "odense": {
+   "zh": "欧登塞",
+   "espn": "Odense Boldklub"
+  },
+  "randers": {
+   "zh": "兰德斯",
+   "espn": "Randers FC"
+  },
+  "silkeborg": {
+   "zh": "锡尔克堡",
+   "espn": "Silkeborg IF"
+  },
+  "sonderjyske": {
+   "zh": "桑德捷斯基",
+   "espn": "Sønderjyske Fodbold"
+  },
+  "vejle": {
+   "zh": "瓦埃勒",
+   "espn": "Vejle Boldklub"
+  },
+  "viborg": {
+   "zh": "维堡",
+   "espn": "Viborg FF"
   }
  },
  "japan": {
@@ -1210,7 +1318,8 @@
    "espn": "Cagliari"
   },
   "frosinone": {
-   "zh": "弗洛西诺"
+   "zh": "弗洛西诺",
+   "espn": "Frosinone"
   },
   "juventus": {
    "zh": "尤文图斯",
@@ -1218,11 +1327,13 @@
    "espn": "Juventus"
   },
   "venezia": {
-   "zh": "威尼斯"
+   "zh": "威尼斯",
+   "espn": "Venezia"
   },
   "lecce": {
    "zh": "莱切",
-   "fd": "Lecce"
+   "fd": "Lecce",
+   "espn": "Lecce"
   },
   "torino": {
    "zh": "都灵",
@@ -1231,7 +1342,8 @@
   },
   "ac-milan": {
    "zh": "AC米兰",
-   "fd": "Milan"
+   "fd": "Milan",
+   "espn": "AC Milan"
   },
   "atalanta": {
    "zh": "亚特兰大",
@@ -1418,14 +1530,16 @@
   },
   "stuttgart": {
    "zh": "斯图加特",
-   "fd": "Stuttgart"
+   "fd": "Stuttgart",
+   "espn": "VfB Stuttgart"
   },
   "leverkusen": {
    "zh": "勒沃库森",
    "variants": [
     "拜耳勒沃库森"
    ],
-   "source": "sporttery-2026-08-28"
+   "source": "sporttery-2026-08-28",
+   "espn": "Bayer Leverkusen"
   },
   "leipzig": {
    "zh": "莱红牛",
@@ -1433,77 +1547,88 @@
     "莱比锡红牛",
     "RB莱比锡"
    ],
-   "source": "sporttery-2026-08-28"
+   "source": "sporttery-2026-08-28",
+   "espn": "RB Leipzig"
   },
   "gladbach": {
    "zh": "门兴",
    "variants": [
     "门兴格拉德巴赫"
    ],
-   "source": "sporttery-2026-08-28"
+   "source": "sporttery-2026-08-28",
+   "espn": "Borussia Mönchengladbach"
   },
   "frankfurt": {
    "zh": "法兰克福",
    "variants": [
     "法兰克福"
    ],
-   "source": "sporttery-2026-08-28"
+   "source": "sporttery-2026-08-28",
+   "espn": "Eintracht Frankfurt"
   },
   "cologne": {
    "zh": "科隆",
    "variants": [
     "科隆"
    ],
-   "source": "sporttery-2026-08-28"
+   "source": "sporttery-2026-08-28",
+   "espn": "FC Cologne"
   },
   "hoffenheim": {
    "zh": "霍芬海姆",
    "variants": [
     "霍芬海姆"
    ],
-   "source": "sporttery-2026-08-28"
+   "source": "sporttery-2026-08-28",
+   "espn": "TSG Hoffenheim"
   },
   "mainz": {
    "zh": "美因茨",
    "variants": [
     "美因茨05"
    ],
-   "source": "sporttery-2026-08-28"
+   "source": "sporttery-2026-08-28",
+   "espn": "Mainz"
   },
   "paderborn": {
    "zh": "帕德博恩",
    "variants": [
     "帕德伯恩"
    ],
-   "source": "sporttery-2026-08-28"
+   "source": "sporttery-2026-08-28",
+   "espn": "SC Paderborn 07"
   },
   "hamburg": {
    "zh": "汉堡",
    "variants": [
     "汉堡"
    ],
-   "source": "sporttery-2026-08-28"
+   "source": "sporttery-2026-08-28",
+   "espn": "Hamburg SV"
   },
   "augsburg": {
    "zh": "奥格斯堡",
    "variants": [
     "奥格斯堡"
    ],
-   "source": "sporttery-2026-08-28"
+   "source": "sporttery-2026-08-28",
+   "espn": "FC Augsburg"
   },
   "schalke": {
    "zh": "沙尔克04",
    "variants": [
     "沙尔克零四"
    ],
-   "source": "sporttery-2026-08-28"
+   "source": "sporttery-2026-08-28",
+   "espn": "Schalke 04"
   },
   "elversberg": {
    "zh": "埃沃斯堡",
    "variants": [
     "埃尔沃斯堡"
    ],
-   "source": "sporttery-2026-08-28"
+   "source": "sporttery-2026-08-28",
+   "espn": "SV Elversberg"
   },
   "freiburg": {
    "zh": "弗赖堡",
@@ -1516,27 +1641,43 @@
    "clubelo": null,
    "understat": null,
    "espn": "Werder Bremen"
+  },
+  "union-berlin": {
+   "zh": "柏林联",
+   "espn": "1. FC Union Berlin"
+  },
+  "holstein-kiel": {
+   "zh": "荷尔斯泰因",
+   "espn": "Holstein Kiel"
+  },
+  "heidenheim": {
+   "zh": "海登海姆",
+   "espn": "1. FC Heidenheim 1846"
   }
  },
  "germany-dfb-pokal": {
   "furth": {
-   "zh": "菲尔特"
+   "zh": "菲尔特",
+   "espn": "SpVgg Greuther Fürth"
   },
   "bochum": {
-   "zh": "波鸿"
+   "zh": "波鸿",
+   "espn": "VfL Bochum"
   },
   "braunschweig": {
-   "zh": "不伦瑞克"
+   "zh": "不伦瑞克",
+   "espn": "TSV Eintracht Braunschweig"
   },
   "union-berlin": {
    "zh": "柏林联合",
-   "fd": "Union Berlin"
+   "fd": "Union Berlin",
+   "espn": "1. FC Union Berlin"
   }
  },
  "usa": {
   "vancouver-whitecaps": {
    "zh": "温哥华",
-   "espn": "Vancouver Whitecaps FC",
+   "espn": "Vancouver Whitecaps",
    "clubelo": null,
    "understat": null
   },
@@ -1562,7 +1703,107 @@
    "zh": "圣路易城",
    "clubelo": null,
    "understat": null,
-   "espn": "St. Louis City SC"
+   "espn": "St. Louis CITY SC"
+  },
+  "atlanta-united": {
+   "zh": "亚特兰大联",
+   "espn": "Atlanta United FC"
+  },
+  "austin-fc": {
+   "zh": "奥斯汀FC",
+   "espn": "Austin FC"
+  },
+  "cf-montreal": {
+   "zh": "蒙特利尔CF",
+   "espn": "CF Montréal"
+  },
+  "charlotte-fc": {
+   "zh": "夏洛特FC",
+   "espn": "Charlotte FC"
+  },
+  "chicago-fire": {
+   "zh": "芝加哥火焰",
+   "espn": "Chicago Fire FC"
+  },
+  "colorado-rapids": {
+   "zh": "科罗拉多",
+   "espn": "Colorado Rapids"
+  },
+  "columbus-crew": {
+   "zh": "哥伦布机员",
+   "espn": "Columbus Crew"
+  },
+  "dc-united": {
+   "zh": "华盛顿联",
+   "espn": "D.C. United"
+  },
+  "fc-cincinnati": {
+   "zh": "辛辛那提FC",
+   "espn": "FC Cincinnati"
+  },
+  "houston-dynamo": {
+   "zh": "休斯敦迪纳摩",
+   "espn": "Houston Dynamo FC"
+  },
+  "inter-miami": {
+   "zh": "迈阿密国际",
+   "espn": "Inter Miami CF"
+  },
+  "la-galaxy": {
+   "zh": "洛杉矶银河",
+   "espn": "LA Galaxy"
+  },
+  "lafc": {
+   "zh": "洛杉矶FC",
+   "espn": "LAFC"
+  },
+  "minnesota-united": {
+   "zh": "明尼苏达联",
+   "espn": "Minnesota United FC"
+  },
+  "nashville-sc": {
+   "zh": "纳什维尔SC",
+   "espn": "Nashville SC"
+  },
+  "orlando-city": {
+   "zh": "奥兰多城",
+   "espn": "Orlando City SC"
+  },
+  "philadelphia-union": {
+   "zh": "费城联合",
+   "espn": "Philadelphia Union"
+  },
+  "portland-timbers": {
+   "zh": "波特兰伐木",
+   "espn": "Portland Timbers"
+  },
+  "real-salt-lake": {
+   "zh": "皇家盐湖城",
+   "espn": "Real Salt Lake"
+  },
+  "ny-red-bulls": {
+   "zh": "纽约红牛",
+   "espn": "Red Bull New York"
+  },
+  "san-diego-fc": {
+   "zh": "圣迭戈FC",
+   "espn": "San Diego FC"
+  },
+  "san-jose-earthquakes": {
+   "zh": "圣何塞地震",
+   "espn": "San Jose Earthquakes"
+  },
+  "seattle-sounders": {
+   "zh": "西雅图海湾",
+   "espn": "Seattle Sounders FC"
+  },
+  "sporting-kansas-city": {
+   "zh": "堪萨斯城",
+   "espn": "Sporting Kansas City"
+  },
+  "toronto-fc": {
+   "zh": "多伦多FC",
+   "espn": "Toronto FC"
   }
  },
  "scotland": {
@@ -1588,7 +1829,71 @@
    "zh": "奥勒松",
    "clubelo": null,
    "understat": null,
-   "espn": "Aalesund FK"
+   "espn": "Aalesund"
+  },
+  "bryne": {
+   "zh": "布莱尼",
+   "espn": "Bryne"
+  },
+  "fredrikstad": {
+   "zh": "弗雷德里",
+   "espn": "Fredrikstad"
+  },
+  "ham-kam": {
+   "zh": "哈姆卡姆",
+   "espn": "Hamarkameratene"
+  },
+  "haugesund": {
+   "zh": "海于格松",
+   "espn": "Haugesund"
+  },
+  "ik-start": {
+   "zh": "斯达",
+   "espn": "IK Start"
+  },
+  "kfum-oslo": {
+   "zh": "KFUM奥斯陆",
+   "espn": "KFUM Oslo"
+  },
+  "kristiansund": {
+   "zh": "克里斯蒂安",
+   "espn": "Kristiansund BK"
+  },
+  "lillestrom": {
+   "zh": "利勒斯特",
+   "espn": "Lillestrom"
+  },
+  "molde": {
+   "zh": "莫尔德",
+   "espn": "Molde"
+  },
+  "rosenborg": {
+   "zh": "罗森博格",
+   "espn": "Rosenborg"
+  },
+  "brann": {
+   "zh": "布兰",
+   "espn": "SK Brann"
+  },
+  "sandefjord": {
+   "zh": "桑德菲杰",
+   "espn": "Sandefjord"
+  },
+  "sarpsborg": {
+   "zh": "萨尔普斯堡",
+   "espn": "Sarpsborg FK"
+  },
+  "stromsgodset": {
+   "zh": "斯特罗姆加",
+   "espn": "Stromsgodset"
+  },
+  "tromso": {
+   "zh": "特罗姆瑟",
+   "espn": "Tromso"
+  },
+  "valerenga": {
+   "zh": "瓦勒伦加",
+   "espn": "Vålerenga"
   }
  },
  "greece": {
@@ -1722,39 +2027,111 @@
  "germany-bundesliga2": {
   "hertha-bsc": {
    "zh": "柏林赫塔",
-   "fd": "Hertha"
+   "fd": "Hertha",
+   "espn": "Hertha Berlin"
   },
   "osnabrueck": {
    "zh": "奥斯纳",
-   "fd": "Osnabruck"
+   "fd": "Osnabruck",
+   "espn": "VfL Osnabruck"
   },
   "karlsruhe": {
    "zh": "卡斯鲁厄",
    "variants": [
     "卡尔斯鲁厄"
    ],
-   "source": "sporttery-2026-08-28"
+   "source": "sporttery-2026-08-28",
+   "espn": "Karlsruher SC"
   },
   "wolfsburg": {
    "zh": "沃夫斯堡",
    "variants": [
     "沃尔夫斯堡"
    ],
-   "source": "sporttery-2026-08-28"
+   "source": "sporttery-2026-08-28",
+   "espn": "VfL Wolfsburg"
   },
   "st-pauli": {
    "zh": "圣保利",
    "variants": [
     "圣保利"
    ],
-   "source": "sporttery-2026-08-28"
+   "source": "sporttery-2026-08-28",
+   "espn": "St. Pauli"
   },
   "kaiserslautern": {
    "zh": "凯泽",
    "variants": [
     "凯泽斯劳滕"
    ],
-   "source": "sporttery-2026-08-28"
+   "source": "sporttery-2026-08-28",
+   "espn": "Kaiserslautern"
+  },
+  "bielefeld": {
+   "zh": "比勒费",
+   "espn": "Arminia Bielefeld"
+  },
+  "duesseldorf": {
+   "zh": "杜塞尔多夫",
+   "espn": "Fortuna Düsseldorf"
+  },
+  "nuernberg": {
+   "zh": "纽伦堡",
+   "espn": "1. FC Nürnberg"
+  },
+  "magdeburg": {
+   "zh": "马格德堡",
+   "espn": "1. FC Magdeburg"
+  },
+  "hannover-96": {
+   "zh": "汉诺威96",
+   "espn": "Hannover 96"
+  },
+  "bochum": {
+   "zh": "波鸿",
+   "espn": "VfL Bochum"
+  },
+  "dresden": {
+   "zh": "德累斯顿",
+   "espn": "Dynamo Dresden"
+  },
+  "saarbruecken": {
+   "zh": "萨尔布吕肯",
+   "espn": "Saarbrücken"
+  }
+ },
+ "italy-serie-b": {
+  "empoli": {
+   "zh": "恩波利",
+   "espn": "Empoli"
+  },
+  "cremonese": {
+   "zh": "克雷莫纳",
+   "espn": "Cremonese"
+  },
+  "sampdoria": {
+   "zh": "桑普多利亚",
+   "espn": "Sampdoria"
+  },
+  "spezia": {
+   "zh": "斯佩齐亚",
+   "espn": "Spezia"
+  },
+  "bari": {
+   "zh": "巴里",
+   "espn": "Bari"
+  },
+  "palermo": {
+   "zh": "巴勒莫",
+   "espn": "Palermo"
+  },
+  "pisa": {
+   "zh": "比萨",
+   "espn": "Pisa"
+  },
+  "cesena": {
+   "zh": "切塞纳",
+   "espn": "Cesena"
   }
  }
 }

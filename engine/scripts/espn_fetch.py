@@ -41,8 +41,13 @@ ESPN_LEAGUES = {
     "ita.1": "italy-serie-a", "fra.1": "france-ligue1", "ned.1": "netherlands-eredivisie",
     "por.1": "portugal-primeira", "jpn.1": "japan", "jpn.2": "japan-j2",
     "swe.1": "sweden", "nor.1": "norway", "den.1": "denmark", "ksa.1": "saudi",
+    "bra.1": "brazil", "usa.1": "usa",
     "sco.1": "scotland", "kor.1": "korea-k-league", "ned.2": "netherlands",
+    # 杯赛（层1 2026-09-02：cup=true 标记，dc_fit 跳过、score_ev 频率表含入）
+    "ita.coppa_italia": "coppa-italia", "ger.dfb_pokal": "dfb-pokal",
+    "conmebol.libertadores": "libertadores",
 }
+CUP_LEAGUES = {"coppa-italia", "dfb-pokal", "libertadores"}
 
 
 def get_json(url: str, params: dict) -> dict | None:
@@ -215,6 +220,7 @@ def cmd_history(code: str, y1: str, y2: str | None) -> None:
     payload = {
         "league": league, "source": "espn-history", "seasons": [y1, y2],
         "fetchedAt": date.today().isoformat(),
+        "cup": league in CUP_LEAGUES,
         "droppedUnmapped": len(dropped), "matches": merged,
     }
     out_path.write_text(json.dumps(payload, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")

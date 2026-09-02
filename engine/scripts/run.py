@@ -49,6 +49,10 @@ LOCAL_LEAGUES = {
     "jpn.1": "japan",
     "ksa.1": "saudi",
     "swe.1": "sweden",
+    "bra.1": "brazil",   # 层1 2026-09-02 扩容：四联赛 2144 场入库 + DC v1 发布
+    "nor.1": "norway",
+    "den.1": "denmark",
+    "usa.1": "usa",
 }
 # 体彩源联赛（ESPN 不覆盖；sporttery_fetch.py league-results 回填，2026-08-23 韩职接入）
 SPORTTERY_LEAGUES = ("korea",)
