@@ -430,16 +430,25 @@ def walk_forward_section(league, seasons=("2526",), segment=SEGMENT, xi=DEFAULT_
     corrected, bareDc, naiveRolling = walk_forward_counts(ms, segment=segment, xi=xi, fit_fn=fit_fn)
     elapsed = time.time() - t0
     n_fits = len(range(segment, len(ms), segment))
+    n = corrected["ttg3"][1]
     notes = [
         f"真分段重拟合（{segment}场/段，段首用段前全部场次重拟合），λ_DC 无全季泄漏；特征滚动无泄漏——干净口径",
         "burn-in 语义照抄 backtest.walk_forward：第一段为纯训练池不预测，预测从第 2 段起（训练池累积非滚动窗口）",
-        "bareDc 低于 in-sample total 的 0.6828 属预期（泄漏移除，预期掉 1~4pp）——实际差值见泄漏核对行",
-        f"耗时 {elapsed:.1f}s（装载 {len(ms)} 场 / 预测 {corrected['ttg3'][1]} 场 / {n_fits} 次段首重拟合）",
+        f"耗时 {elapsed:.1f}s（装载 {len(ms)} 场 / 预测 {n} 场 / {n_fits} 次段首重拟合）",
     ]
     if elapsed > 120:
         notes.append("拟合耗时超 2 分钟：可接受（计划边界），已如实记录")
+    if n:   # 小样本警示（I1 删硬编码方向句后的替代）：n/SE/差值全动态；n=0（M1 理论路径）无差值可警
+        corr_rate = corrected["ttg3"][0] / n
+        se_pp = math.sqrt(corr_rate * (1 - corr_rate) / n) * 100
+        naive_rate = naiveRolling["ttg3"][0] / naiveRolling["ttg3"][1]
+        notes.append(
+            f"单联赛单季 n={n} 为小样本，差值未做显著性检验（单线标准误约 {se_pp:.1f}pp："
+            f"corrected {(corr_rate - naive_rate) * 100:+.1f}pp / "
+            f"bareDc {(bareDc['ttg3'][0] / bareDc['ttg3'][1] - naive_rate) * 100:+.1f}pp 均不显著），"
+            "09-27 评审应合并多联赛口径后裁决——勿把 corrected 落后字面判死，亦勿把 bareDc 领先误读为无泄漏优势")
     return {"league": league, "season": list(seasons), "segment": segment,
-            "n": corrected["ttg3"][1],
+            "n": n,
             "corrected": _rates(corrected), "bareDc": _rates(bareDc), "naiveRolling": _rates(naiveRolling),
             "notes": notes}
 
