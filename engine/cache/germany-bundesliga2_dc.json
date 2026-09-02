@@ -1,89 +1,110 @@
 {
   "league": "germany-bundesliga2",
   "seasons": [
-    "2526"
+    "2526",
+    "2627"
   ],
   "xi": 0.005,
-  "homeAdv": 0.2281,
-  "rho": -0.0139,
-  "matchesUsed": 89,
+  "homeAdv": 0.2449,
+  "rho": 0.1,
+  "matchesUsed": 116,
   "dateRange": [
     "2025-08-01",
-    "2025-10-26"
+    "2026-08-30"
   ],
-  "lastFit": "2026-08-28",
+  "lastFit": "2026-09-02",
   "teams": {
     "Bielefeld": {
-      "attack": 0.2969,
-      "defense": 0.3066
+      "attack": 0.0964,
+      "defense": 0.2127
     },
     "Bochum": {
-      "attack": 0.1196,
-      "defense": 0.3316
+      "attack": -0.9368,
+      "defense": -0.2907
     },
     "Braunschweig": {
-      "attack": -0.3962,
-      "defense": 0.4886
+      "attack": 0.6053,
+      "defense": 0.7865
+    },
+    "Cottbus": {
+      "attack": 0.0739,
+      "defense": 0.7394
     },
     "Darmstadt": {
-      "attack": -0.0431,
-      "defense": -0.6144
+      "attack": -0.59,
+      "defense": -0.0623
     },
     "Dresden": {
-      "attack": 0.1542,
-      "defense": 0.3957
+      "attack": -0.0967,
+      "defense": 0.4576
     },
     "Elversberg": {
-      "attack": 0.387,
-      "defense": -0.5361
+      "attack": 0.2699,
+      "defense": -0.9456
     },
     "Fortuna Dusseldorf": {
-      "attack": -0.5084,
-      "defense": 0.3274
+      "attack": -0.7615,
+      "defense": 0.1296
     },
     "Greuther Furth": {
-      "attack": 0.1746,
-      "defense": 0.7859
+      "attack": 0.3269,
+      "defense": 0.7148
     },
     "Hannover": {
-      "attack": 0.2335,
-      "defense": 0.104
+      "attack": -0.234,
+      "defense": -0.1137
+    },
+    "Heidenheim": {
+      "attack": 0.6304,
+      "defense": 1.0316
     },
     "Hertha": {
-      "attack": -0.0237,
-      "defense": -0.2815
+      "attack": 0.3523,
+      "defense": -0.2091
     },
     "Holstein Kiel": {
-      "attack": -0.1844,
-      "defense": -0.4235
+      "attack": -0.1109,
+      "defense": 0.4215
     },
     "Kaiserslautern": {
-      "attack": 0.3997,
-      "defense": -0.1237
+      "attack": -0.0146,
+      "defense": -0.9833
     },
     "Karlsruhe": {
-      "attack": 0.104,
-      "defense": 0.1447
+      "attack": 0.2294,
+      "defense": 0.1495
     },
     "Magdeburg": {
-      "attack": -0.5913,
-      "defense": 0.296
+      "attack": -0.2269,
+      "defense": 0.4032
     },
     "Nurnberg": {
-      "attack": -0.2622,
-      "defense": 0.0561
+      "attack": 0.4864,
+      "defense": -0.1262
+    },
+    "Osnabruck": {
+      "attack": -0.4707,
+      "defense": 0.5562
     },
     "Paderborn": {
-      "attack": 0.1705,
-      "defense": -0.423
+      "attack": 0.1402,
+      "defense": -0.6856
     },
     "Preußen Münster": {
-      "attack": -0.016,
-      "defense": 0.4909
+      "attack": -0.1148,
+      "defense": 0.2816
     },
     "Schalke 04": {
-      "attack": -0.0147,
-      "defense": -1.3254
+      "attack": -0.167,
+      "defense": -1.8565
+    },
+    "St Pauli": {
+      "attack": -0.2775,
+      "defense": 0.246
+    },
+    "Wolfsburg": {
+      "attack": 0.7901,
+      "defense": -0.8569
     }
   }
 }

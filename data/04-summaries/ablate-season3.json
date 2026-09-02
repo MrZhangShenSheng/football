@@ -1,0 +1,202 @@
+{
+ "schemaVersion": 1,
+ "generatedAt": "2026-09-02",
+ "design": "docs/2026-09-02-data-backfill-design.html 层3",
+ "metric": "holdout logloss(split=0.8,末段20%)·负=三季更好",
+ "decision": "不切默认:11/16恶化(意乙+0.269/希腊超+0.220/比甲+0.178——小联赛队池漂移,2425已降级队挤占参数空间);英超-0.087/西甲-0.088改善显著但系holdout单分割,须walk-forward复核后才可立项分层接入;2425留缓存零风险(auto只取最新两季已验证)",
+ "premise": "设计预判(小样本联赛受益最大)被证伪——实测相反",
+ "leagues": [
+  {
+   "league": "england-premier",
+   "twoSeason": {
+    "n": 230,
+    "holdout": 1.1118
+   },
+   "threeSeason": {
+    "n": 610,
+    "holdout": 1.025
+   },
+   "delta": -0.0868
+  },
+  {
+   "league": "england-championship",
+   "twoSeason": {
+    "n": 296,
+    "holdout": 1.0342
+   },
+   "threeSeason": {
+    "n": 848,
+    "holdout": 1.0549
+   },
+   "delta": 0.0207
+  },
+  {
+   "league": "spain-laliga",
+   "twoSeason": {
+    "n": 219,
+    "holdout": 1.0369
+   },
+   "threeSeason": {
+    "n": 599,
+    "holdout": 0.9487
+   },
+   "delta": -0.0882
+  },
+  {
+   "league": "spain-liga2",
+   "twoSeason": {
+    "n": 229,
+    "holdout": 1.1205
+   },
+   "threeSeason": {
+    "n": 691,
+    "holdout": 1.1523
+   },
+   "delta": 0.0318
+  },
+  {
+   "league": "germany-bundesliga",
+   "twoSeason": {
+    "n": 159,
+    "holdout": 0.8223
+   },
+   "threeSeason": {
+    "n": 465,
+    "holdout": 0.9208
+   },
+   "delta": 0.0985
+  },
+  {
+   "league": "germany-bundesliga2",
+   "twoSeason": {
+    "n": 116,
+    "holdout": 1.1615
+   },
+   "threeSeason": {
+    "n": 422,
+    "holdout": 1.1354
+   },
+   "delta": -0.0261
+  },
+  {
+   "league": "italy-serie-a",
+   "twoSeason": {
+    "n": 220,
+    "holdout": 0.9463
+   },
+   "threeSeason": {
+    "n": 600,
+    "holdout": 0.9592
+   },
+   "delta": 0.0129
+  },
+  {
+   "league": "italy-serie-b",
+   "twoSeason": {
+    "n": 110,
+    "holdout": 1.2008
+   },
+   "threeSeason": {
+    "n": 490,
+    "holdout": 1.4702
+   },
+   "delta": 0.2694
+  },
+  {
+   "league": "france-ligue1",
+   "twoSeason": {
+    "n": 171,
+    "holdout": 1.0891
+   },
+   "threeSeason": {
+    "n": 477,
+    "holdout": 1.1103
+   },
+   "delta": 0.0212
+  },
+  {
+   "league": "france-ligue2",
+   "twoSeason": {
+    "n": 134,
+    "holdout": 1.3
+   },
+   "threeSeason": {
+    "n": 440,
+    "holdout": 1.1407
+   },
+   "delta": -0.1593
+  },
+  {
+   "league": "netherlands-eredivisie",
+   "twoSeason": {
+    "n": 175,
+    "holdout": 1.0801
+   },
+   "threeSeason": {
+    "n": 481,
+    "holdout": 1.048
+   },
+   "delta": -0.0321
+  },
+  {
+   "league": "belgium-first-a",
+   "twoSeason": {
+    "n": 129,
+    "holdout": 0.8626
+   },
+   "threeSeason": {
+    "n": 440,
+    "holdout": 1.041
+   },
+   "delta": 0.1784
+  },
+  {
+   "league": "portugal-liga",
+   "twoSeason": {
+    "n": 186,
+    "holdout": 0.8566
+   },
+   "threeSeason": {
+    "n": 492,
+    "holdout": 0.8615
+   },
+   "delta": 0.0049
+  },
+  {
+   "league": "turkey-super-lig",
+   "twoSeason": {
+    "n": 158,
+    "holdout": 1.024
+   },
+   "threeSeason": {
+    "n": 498,
+    "holdout": 1.0858
+   },
+   "delta": 0.0618
+  },
+  {
+   "league": "greece-super",
+   "twoSeason": {
+    "n": 67,
+    "holdout": 0.7446
+   },
+   "threeSeason": {
+    "n": 300,
+    "holdout": 0.9647
+   },
+   "delta": 0.2201
+  },
+  {
+   "league": "SC0",
+   "twoSeason": {
+    "n": 74,
+    "holdout": 1.0698
+   },
+   "threeSeason": {
+    "n": 302,
+    "holdout": 1.121
+   },
+   "delta": 0.0512
+  }
+ ]
+}
