@@ -640,70 +640,6 @@
       "source": "rule",
       "confirmed": true
     },
-    "2026-08-29|周六006|HAD": {
-      "primary": "F9",
-      "secondary": [],
-      "evidence": {
-        "pfinalPick": 0.666,
-        "dcBest": 0,
-        "fusedBest": 0,
-        "pickIdx": 0,
-        "resultIdx": 1,
-        "result": "2-2",
-        "pinSource": "fd"
-      },
-      "confidence": "high",
-      "source": "rule",
-      "confirmed": true
-    },
-    "2026-08-29|周六009|HAD": {
-      "primary": "F9",
-      "secondary": [],
-      "evidence": {
-        "pfinalPick": 0.61,
-        "dcBest": null,
-        "fusedBest": 2,
-        "pickIdx": 2,
-        "resultIdx": 0,
-        "result": "3-2",
-        "pinSource": "fd"
-      },
-      "confidence": "high",
-      "source": "rule",
-      "confirmed": true
-    },
-    "2026-08-29|周六013|HAD": {
-      "primary": "F9",
-      "secondary": [],
-      "evidence": {
-        "pfinalPick": 0.624,
-        "dcBest": null,
-        "fusedBest": 0,
-        "pickIdx": 0,
-        "resultIdx": 1,
-        "result": "0-0",
-        "pinSource": "fd"
-      },
-      "confidence": "high",
-      "source": "rule",
-      "confirmed": true
-    },
-    "2026-08-29|周六022|HAD": {
-      "primary": "F9",
-      "secondary": [],
-      "evidence": {
-        "pfinalPick": 0.583,
-        "dcBest": null,
-        "fusedBest": 0,
-        "pickIdx": 0,
-        "resultIdx": 2,
-        "result": "0-3",
-        "pinSource": "fd"
-      },
-      "confidence": "high",
-      "source": "rule",
-      "confirmed": true
-    },
     "2026-09-01|周二004|HAD": {
       "primary": "F9",
       "secondary": [],
@@ -757,9 +693,9 @@
   },
   "factorStats": {
     "F9": {
-      "nPrimary": 41,
+      "nPrimary": 37,
       "nSecondary": 0,
-      "avgProbGap": 0.4133
+      "avgProbGap": 0.4169
     },
     "F5": {
       "nPrimary": 2,

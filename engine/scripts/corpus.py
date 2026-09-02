@@ -6,6 +6,10 @@
 - calibrate.py（融合重校 n≥100）/ ablate.py（系数消融 n≥50/系数）/ 本地拟合就绪度（n≥30/联赛）
   的门槛判断都读本文件的 readiness 字段
 - 按 (date, code) 去重，后写覆盖；杯赛/联赛口径保留原值
+- 跨日同场合并（2026-09-02 发现：同场卖两天进两个日期文件，(date,code) 键拦不住，
+  366 条含 130 条重复 → 校准/消融被热门场重复加权）：同 (league, home, away, play) 且
+  pick 相同 = 同一判断跨日复用 → 预测锁定字段取最早轮、回填字段取非空合并；
+  pick 不同 = 跨日改选的独立判断 → 保留并计数
 
 用法：
   python corpus.py            # 重建语料 + 打印就绪度一行摘要
@@ -24,6 +28,64 @@ OUT = ROOT / "data" / "04-summaries" / "corpus.json"
 # 轮次后缀（-r1/-r2/-v2）：字典序会把 无后缀 排最后（"." > "-"）且 r10<r2，
 # 后写覆盖顺序就反了（首轮覆盖终审修订轮）→ 按数值轮次排序
 _ROUND_SUFFIX = re.compile(r"^(.+)-(?:r|v)(\d+)$")
+
+# 回填字段（合并时取非空；预测锁定字段取最早轮不动）
+BACKFILL_FIELDS = ("result", "directionHit", "scoreHit", "clv",
+                   "clv_approx_dk", "clv_note", "pinClose", "pinSource")
+_RESULT_SCORE = re.compile(r"^\d+-\d+$")
+
+
+def _split_match(match) -> tuple[str, str] | None:
+    if not match or " vs " not in str(match):
+        return None
+    h, a = str(match).split(" vs ", 1)
+    return re.sub(r"\[.*?\]", "", h).strip(), re.sub(r"\[.*?\]", "", a).strip()
+
+
+def _merge_backfill(base: dict, other: dict) -> None:
+    for f in BACKFILL_FIELDS:
+        bv, ov = base.get(f), other.get(f)
+        if f == "result":  # 真实比分 > "不可得" > None
+            def rank(v):
+                if v and _RESULT_SCORE.match(str(v)):
+                    return 2
+                return 1 if v else 0
+            if rank(ov) > rank(bv):
+                base[f] = ov
+        elif bv is None and ov is not None:
+            base[f] = ov
+
+
+def merge_crossday(rows: list[dict]) -> tuple[list[dict], int, int]:
+    """跨日同场合并：rows 须已按 date 升序（最早轮=基底）。
+
+    返回 (合并后 rows, 合并掉条数, pick 不同保留条数)。
+    """
+    groups: dict[tuple, list[dict]] = {}
+    passthrough: list[dict] = []
+    for r in rows:
+        hm = _split_match(r.get("match"))
+        if not hm:
+            passthrough.append(r)   # 无对阵串的老记录不参与合并
+            continue
+        groups.setdefault((r.get("league"), hm[0], hm[1], r.get("play")), []).append(r)
+    out: list[dict] = []
+    merged = diff_pick = 0
+    for grp in groups.values():
+        if len(grp) == 1:
+            out.append(grp[0])
+            continue
+        base, others = grp[0], grp[1:]
+        for o in others:
+            if str(o.get("pick")) == str(base.get("pick")):
+                _merge_backfill(base, o)
+                merged += 1
+            else:  # 跨日改选 = 独立判断，保留
+                out.append(o)
+                diff_pick += 1
+        out.append(base)
+    out.extend(passthrough)
+    return out, merged, diff_pick
 
 
 def round_sort_key(p: Path) -> tuple[str, int]:
@@ -101,6 +163,7 @@ def build() -> dict:
             records[key] = nr  # 后写覆盖（同场同玩法重扫以最新为准；同场不同玩法各留一条——v4.6 同场次多票合规结构）
 
     rows = sorted(records.values(), key=lambda r: (r.get("date") or "", r.get("code") or ""))
+    rows, merged_n, diff_pick_n = merge_crossday(rows)
     # 方案层（02-results 顶层 plans：老格式 dict{方案名: [编号]}；新格式 list[{plan, legs:[描述串]}]）
     plans = {}
     for p in sorted(RESULTS_DIR.glob("*.json")):
@@ -141,6 +204,8 @@ def build() -> dict:
             "n_result": n_result,
             "n_clv": n_clv,
             "n_pfinal": n_pfinal,
+            "n_dedup_merged": merged_n,
+            "n_dedup_diff_pick_kept": diff_pick_n,
             "calibrateReady": n_result >= CALIBRATE_MIN_N,
             "calibrateGap": max(0, CALIBRATE_MIN_N - n_result),
             "ablateReady": n_result >= ABLATE_MIN_N,
@@ -158,8 +223,8 @@ def build() -> dict:
 def main() -> None:
     c = build()
     rd = c["readiness"]
-    log("corpus", f"语料 {c['n_total']} 条（已回填 {rd['n_result']} · CLV {rd['n_clv']} · p_final {rd['n_pfinal']}）"
-        f" → {OUT.relative_to(ROOT)}")
+    log("corpus", f"语料 {c['n_total']} 条（已回填 {rd['n_result']} · CLV {rd['n_clv']} · p_final {rd['n_pfinal']} · "
+        f"跨日同场合并 {rd['n_dedup_merged']} 条/改选保留 {rd['n_dedup_diff_pick_kept']}） → {OUT.relative_to(ROOT)}")
     cal = "✅可校准" if rd["calibrateReady"] else f"距融合重校门槛还差 {rd['calibrateGap']} 条回填"
     abl = "✅可消融" if rd["ablateReady"] else f"距系数消融门槛还差 {max(0, ABLATE_MIN_N - rd['n_result'])} 条"
     log("corpus", f"门槛：{cal}；{abl}")

@@ -9,6 +9,7 @@ P2 判别树：⓪F5精确(fusedPre对fused错·修正乘子实锤) → ①F3/F4
 数据源：data/02-results/*.json 主文件（非 corpus——需 dc/fused/pinClose 数组）。
 """
 import json
+import re
 from collections import defaultdict
 from datetime import date
 from pathlib import Path
@@ -218,6 +219,7 @@ def build() -> tuple[dict, dict]:
     （如 pick='主胜'，play 字段='胜平负'）被跳过（I-3，1 场历史数据，YAGNI 不兼容）。
     """
     records = {}
+    seen_crossday = set()  # 跨日同场去重（同场卖两天进两个日期文件；corpus 2026-09-02 同款语义）
     for p in sorted(RESULTS_DIR.glob("*.json")):
         if p.name.startswith("_") or "-r" in p.stem:
             continue  # 跳过 _ 前缀和 -rN 过程快照
@@ -229,9 +231,15 @@ def build() -> tuple[dict, dict]:
         for m in data.get("matches") or []:
             if not _is_error(m):
                 continue
-            play, _ = _parse_pick(m.get("pick") or "")
+            play, pick_txt = _parse_pick(m.get("pick") or "")
             if not play:
                 continue
+            match_str = re.sub(r"\[.*?\]", "", str(m.get("match") or "")).strip()
+            if match_str and " vs " in match_str:  # 无对阵串的记录无法识别同场 → 不参与去重（防误杀）
+                cd_key = (str(m.get("league") or "").split("(")[0], match_str, play, pick_txt)
+                if cd_key in seen_crossday:
+                    continue  # 同场同玩法同选法跨日复用 → 首见已归因
+                seen_crossday.add(cd_key)
             key = f"{round_id[:10]}|{m.get('code')}|{play}"
             out = classify(m)
             out["source"] = "rule"
