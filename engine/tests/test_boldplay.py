@@ -110,17 +110,18 @@ def test_thin_pool_costs_truthful():
     assert t["totalCost"] == t["tiers"]["base"]["cost"] + t["tiers"]["mid"]["cost"] + t["tiers"]["upset"]["cost"]
 
 
-# ---------- boldplay v2（两档制+多池引擎）回归薄壳 ----------
-# 与 --selftest 同源（selftest 含 build_two_tier/render_ticket/settle 双形状/dry_streak
-# 全链断言），pytest 入口保证 update.sh [7/7] 回归覆盖 v2 新代码。开发者 sszhang
+# ---------- boldplay v2/v3（三档制+多池引擎+彩票档）回归薄壳 ----------
+# 与 --selftest 同源（selftest 含 build_three_tier/render_ticket/settle 双形状/dry_streak
+# /lottery 全链断言），pytest 入口保证 update.sh [7/7] 回归覆盖新代码。开发者 sszhang
 
 
 def test_v2_selftest_full_chain():
-    """v2 全链：两档结构+可读性渲染+settle双形状+降半仓gate（selftest 同源）。"""
+    """v2/v3 全链：三档结构+可读性渲染+settle双形状+降半仓gate+彩票档（selftest 同源）。"""
     import boldplay as bp
-    bp._selftest_two_tier()
+    bp._selftest_three_tier()
     bp._selftest_settle()
     bp._selftest_dry_streak()
+    bp._selftest_lottery()
 
 
 def test_v2_upset_month_cap_constant():
@@ -158,3 +159,84 @@ def test_filter_onsale_falls_back_when_cache_missing(tmp_path, monkeypatch):
     (tmp_path / "sporttery_matches.json").write_text('{"matches": []}', encoding="utf-8")
     out2 = bp._filter_onsale(day)
     assert [m["matchNumStr"] for m in out2["matches"]] == ["周日011"]
+
+
+# ---------- 彩票档（docs/2026-09-02-lottery-tier-design.html）----------
+# HAD/HHAD N串1×1倍=2元，合格腿全上 N∈[4,8]，p_fused≥0.55/超低赔≤1.25通道，
+# 无预算管理（拍板C）。开发者 sszhang
+
+_FAKE_DC = lambda m, zh: (2.0, 0.85, -0.05)   # 主强λ：p_dc 主胜 ~0.72
+
+
+def _mk_had(i, h, d, a):
+    return {"matchNumStr": f"周六00{i}", "match": f"m{i}", "league": "英超",
+            "home": f"H{i}", "away": f"A{i}", "had": {"h": h, "d": d, "a": a}}
+
+
+def test_lottery_constants_match_design():
+    """常量与设计文档 §02 一致：门槛 0.55 / 超低赔 1.25+0.50 / 腿数窗 [4,8]。"""
+    import boldplay as bp
+    assert (bp.LOTTERY_MIN_P, bp.LOTTERY_LOW_ODDS, bp.LOTTERY_LOW_ODDS_MIN_P) == (0.55, 1.25, 0.50)
+    assert (bp.LOTTERY_MIN_LEGS, bp.LOTTERY_MAX_LEGS) == (4, 8)
+
+
+def test_lottery_legs_pool_dedup_and_ev_order():
+    """合格腿全上 + 同场去重留 EV 最高 + EV 降序返回。"""
+    import boldplay as bp
+    day = {"matches": [_mk_had(i, 1.42 + 0.02 * i, 4.0, 6.2) for i in range(1, 6)]}
+    hhad_map = {"周六001": {"goalLine": -1.0, "h": 2.10, "d": 3.30, "a": 3.05}}
+    legs = bp._lottery_legs(day, zh={}, hhad_map=hhad_map, dc_params_fn=_FAKE_DC,
+                            fusion=(0.4, 1.0))
+    assert len(legs) == 5                                             # 池=合格场数全上
+    assert sum(1 for l in legs if l["matchNumStr"] == "周六001") == 1  # 同场≤1腿（铁律9）
+    assert [l["ev"] for l in legs] == sorted((l["ev"] for l in legs), reverse=True)
+    assert all(l["p"] >= bp.LOTTERY_LOW_ODDS_MIN_P for l in legs)
+
+
+def test_lottery_legs_below_threshold_excluded():
+    """p_fused<0.55 且非超低赔（均势场）→ 不入池。"""
+    import boldplay as bp
+    day = {"matches": [_mk_had(1, 3.00, 3.20, 2.15)]}   # 市场主胜~0.29 vs DC~0.72 → p_fused~0.37
+    assert bp._lottery_legs(day, zh={}, dc_params_fn=_FAKE_DC, fusion=(0.4, 1.0)) == []
+
+
+def test_lottery_tier_open_close_and_cap():
+    """池≥4 出 N串1×1倍=2元（bets 全索引单注）；<4 关档；>8 截前 8。"""
+    import boldplay as bp
+    leg = lambda i: {"matchNumStr": f"周六00{i}", "match": f"m{i}", "play": "had",
+                     "pick": "主胜", "odds": 1.5, "p": 0.6, "ev": -0.1}
+    t4 = bp._lottery_tier([leg(i) for i in range(1, 5)])
+    assert t4["shape"] == "lottery-4x1" and t4["cost"] == 2
+    assert t4["bets"] == [{"legs": [0, 1, 2, 3], "multiplier": 1}]
+    assert t4["expOdds"] == 5.1 and t4["winIfHit"] == 10.0   # round 口径：1位/0位小数
+    t3 = bp._lottery_tier([leg(i) for i in range(1, 4)])
+    assert t3["shape"] == "closed" and t3["cost"] == 0 and "不硬凑" in t3["note"]
+    t9 = bp._lottery_tier([leg(i) for i in range(1, 10)])
+    assert t9["shape"] == "lottery-8x1" and len(t9["legs"]) == 8
+
+
+def test_lottery_hhad_leg_hit_goal_line():
+    """HHAD 让球判定：goalLine=-1 → 1:0让平 / 2:0让主 / 0:1让客；无 goalLine=None 待人工。"""
+    import boldplay as bp
+    base = {"play": "hhad", "pick": "让球平", "goalLine": -1.0}
+    assert bp._leg_hit(base, "1:0", "hhad") is True
+    assert bp._leg_hit({**base, "pick": "让球主胜"}, "2:0", "hhad") is True
+    assert bp._leg_hit({**base, "pick": "让球客胜"}, "0:1", "hhad") is True
+    assert bp._leg_hit({**base, "pick": "让球主胜"}, "1:0", "hhad") is False
+    assert bp._leg_hit({"play": "hhad", "pick": "让球主胜"}, "1:0", "hhad") is None
+
+
+def test_lottery_settle_all_hit_payout_and_break_zero():
+    """彩票档结算走 bets 同源链：全中=2×Π赔率；断任一腿=0。"""
+    import boldplay as bp
+    legs = [{"matchNumStr": f"周六00{i}", "match": "m", "play": "had", "pick": "主胜",
+             "odds": o} for i, o in enumerate((1.5, 1.7, 1.9, 2.1), 1)]
+    tk = {"structure": "new", "totalCost": 24,
+          "tiers": {"base": {"cost": 22, "legs": [], "bets": []},
+                    "upset": {"shape": "closed", "cost": 0, "legs": []},
+                    "lottery": bp._lottery_tier(legs)}}
+    full = bp.settle(tk, {l["matchNumStr"]: "2:0" for l in legs})
+    assert abs(full["tierPayout"]["lottery"] - 2 * 1.5 * 1.7 * 1.9 * 2.1) < 1e-9
+    broke = bp.settle(tk, {l["matchNumStr"]: ("2:0" if i else "0:2")
+                           for i, l in enumerate(legs)})          # 第0腿断
+    assert broke["tierPayout"]["lottery"] == 0.0

@@ -73,13 +73,13 @@ python3 run.py corpus                               # ★学习语料汇总+就�
 python3 run.py predict spain-laliga Vallecano Alaves --market 2.05,3.4,3.9
 python3 run.py predict japan kashima-antlers avispa-fukuoka   # 日职/沙特/瑞超本地模型也可用
 python3 run.py backtest spain-laliga 2526
-python3 boldplay.py                                 # ★v5.3 阶梯出票卡（保底4/进阶6/翻身档；upset=freq-band三步选法:联赛频率+球队平移+形状带+q排序,DC退出比分链路,合格腿<4关档不硬凑;--method=amix过渡保留一个月待回测定夺，月封顶240自动gate）
-python3 boldplay.py settle                          # 阶梯卡推演结算：逐leg判定（CRS/TTG/HAFU自动判,HAFU需backfill落盘半场;无半场旧档仍人工），legHits入层4实测库（实票走"我买了"登记账本）
+python3 boldplay.py                                 # ★v5.6 阶梯出票卡三档制（保底HAD 4串11+翻身多池引擎seq轮换+彩票档HAD/HHAD N串1×1倍=2元,p_fused≥0.55/超低赔≤1.25门槛,合格腿全上4~8串<4关档,无预算管理;翻身=freq-band三步选法,--method=amix过渡;进阶档已砍除）
+python3 boldplay.py settle                          # 阶梯卡推演结算：逐leg判定（CRS/TTG/HAFU/HHAD让球自动判,HAFU需backfill落盘半场;彩票档全中才派彩;无半场旧档仍人工），legHits入层4实测库（实票走"我买了"登记账本）
 python3 freq_backtest.py                            # freq vs amix 对照回测（score_odds 存档日 × 两法选腿 × 赛果判定 → freq_backtest.json）
 python3 ticket_report.py                            # 实票账本报告（资金曲线/票务清单/玩法分解/纪律对照）
 python3 goal_engine.py --compare                    # 进球引擎P0:修正/裸DC/朴素static+rolling四线对照+消融(09-27评审数据底子;⚠️重跑会抹报告walkForward/bypassPool节,之后须重跑walk-forward与bypass_pool_check)
 python3 goal_engine.py --walk-forward --league spain-laliga   # 干净口径三线(60场分段重拟合;生死线=corrected/bareDc vs naiveRolling)
-python -m pytest tests -q                           # 217 用例回归（改代码必跑）
+python -m pytest tests -q                           # 228 用例回归（改代码必跑）
 ```
 
 ## 预测日全流程
@@ -89,7 +89,7 @@ python -m pytest tests -q                           # 217 用例回归（改代�
 2. 触发 /football-betting-prediction       # Claude 走 skill：
    体彩API(赛程/五池赔率/单关资格) + fd缓存(Pinnacle锚) + 本地球队画像
    → dc_predict 概率(含 ttg总进球/hafu半全场) → logit融合 → EV比选 → 修正系数 → 报告(03-predictions/)
-3. 出票前 skill 自动走 Step 6.5 临场终审；v5.0 起默认输出 boldplay 阶梯出票卡（保底4/进阶6/翻身档，替换旧🚀/⚖️/🛡️三段式；v5.3 起翻身档比分=freq-band：数据说话，赔率只做门槛不做排序）
+3. 出票前 skill 自动走 Step 6.5 临场终审；v5.0 起默认输出 boldplay 阶梯出票卡（v5.6 三档：保底4串11+翻身多池+彩票N串，替换旧🚀/⚖️/🛡️三段式；v5.3 起翻身档比分=freq-band：数据说话，赔率只做门槛不做排序；v5.6 起彩票档=HAD/HHAD 合格腿全上 4~8 串右尾档）
 3.5 实际出票后说"我买了" → 实票登记入账本（git 历史=出票凭证），回填时自动结算
 4. 赛果出来后"回填赛果" → run.py verify 一键闭环（回填→语料+断言→重校→消融）→ learn版本发布 → 04-summaries/
 5. git commit（预测与赛果入库 = 可验证历史）
@@ -142,7 +142,7 @@ football/
 ├── engine/                ← ② 计算层
 │   ├── scripts/           #    run.py(入口) / dc_fit / dc_predict / backtest / corpus / trend_report / backfill / calibrate / ablate / odds_fetch / elo_fetch / xg_fetch / espn_fetch / cn_fetch / sporttery_fetch / band_calibration / score_ev / live_odds_probe / build_index / boldplay(阶梯出票卡+settle,比分选法freq-band默认) / freq_band(联赛频率+球队平移+形状带+q排序) / freq_backtest(freq vs amix对照回测) / goal_engine(进球引擎轨P0:滚动特征修正层+修正比分矩阵+TTG/CRS两出口对照统计+walk-forward,产出04-summaries/goal-engine-report.json) / ticket_report(实票账本报告) / research/(一次性研究脚本归档)
 │   └── cache/             #    DC 参数 / models/ 版本化存档 / fusion.json / fd 赔率缓存 / sporttery_matches.json(五池+单关资格) / score_odds(体彩全玩法赔率日存档) / live_odds_feasibility.json
-├── skill/                 ← ③ 检索入口：SKILL.md v5.5（阶梯出票卡两档制：保底HAD 4串11+翻身多池引擎seq轮换；逐场三池玩法卡；刷新即快照/扫描必落盘纪律）+ references/ 外置参考（系数详表/官方规则/教训档案，按需加载）
+├── skill/                 ← ③ 检索入口：SKILL.md v5.6（阶梯出票卡三档制：保底HAD 4串11+翻身多池引擎seq轮换+彩票档HAD/HHAD N串1×1倍合格腿全上4~8串；逐场三池玩法卡；刷新即快照/扫描必落盘纪律）+ references/ 外置参考（系数详表/官方规则/教训档案，按需加载）
 └── docs/                  #    设计文档
 ```
 

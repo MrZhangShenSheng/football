@@ -10,7 +10,8 @@ from backfill import expand_combos   # 4串11=大小≥2全组合(结算引擎�
 from band_calibration import devid
 from common import ROOT, load_aliases
 from dc_predict import (score_matrix, ttg_dist, hafu_approx, devig as devig_n,
-                        reweight_matrix, reweight_hafu, temper, load_half_params, load_temperature)
+                        reweight_matrix, reweight_hafu, temper, load_half_params,
+                        load_temperature, fuse)
 from score_ev import build_freq_table, ev_scan, map_league
 from freq_band import (build_team_form, freq_legs, pools_card, shifted_q, league_base_rates,
                        lambdas, team_strength, _norm)
@@ -26,6 +27,12 @@ SINGLE_LIMIT = 500_000.0        # 4-5 串单注奖金限额（官方规则）
 MONTHLY_CAP = 240.0
 ROUND_COST = 20.0
 MONTHLY_UPSET_CAP = 40.0        # 翻身月度彩票预算（spec §4.1 note·preference 同步）
+# 彩票档（docs/2026-09-02-lottery-tier-design.html）：HAD/HHAD N串1×1倍=2元，右尾优先，
+# 无预算管理（拍板C：独立 30 元轮红线，红线只管保底+翻身）
+LOTTERY_MIN_P = 0.55            # 三星干净腿门槛（skill 星级口径）
+LOTTERY_LOW_ODDS = 1.25         # 超低赔通道：赔率≤1.25 且 p≥0.50 视同合格（合赔稳定器）
+LOTTERY_LOW_ODDS_MIN_P = 0.50
+LOTTERY_MIN_LEGS, LOTTERY_MAX_LEGS = 4, 8   # 出档腿数窗：合格腿全上 N∈[4,8]，池>8 取 EV 前 8
 
 def band_ok(had: dict) -> str:
     """体彩 had 自去水方向带：max>=0.60 偏好，否则中性。"""
@@ -98,6 +105,36 @@ def _hafu_odds() -> dict:
         if hf and mid:
             out[mid] = {k: float(v) for k, v in hf.items()}
     return out
+
+
+def _hhad_odds() -> dict:
+    """sporttery_matches.json → {场次编号: {goalLine, h, d, a}}（score_odds 存档无 hhad，
+    与 _hafu_odds 同补链）。goalLine 体彩口径：'-1'=主让1球（让球结果=(主队得分+goalLine) vs 客队）。
+    开发者 sszhang"""
+    out = {}
+    try:
+        d = json.loads((CACHE_DIR / "sporttery_matches.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return out
+    for m in d.get("matches") or []:
+        hh, mid = m.get("hhad"), m.get("matchNumStr") or m.get("code")
+        if not (hh and mid and hh.get("goalLine") is not None):
+            continue
+        try:
+            out[mid] = {"goalLine": float(hh["goalLine"]),
+                        "h": float(hh["h"]), "d": float(hh["d"]), "a": float(hh["a"])}
+        except (TypeError, ValueError):
+            continue
+    return out
+
+
+def _load_fusion() -> tuple[float, float]:
+    """fusion.json → (a, b) 融合系数，缺失/损坏回退检索铁律4 默认 (0.4, 1.0)。开发者 sszhang"""
+    try:
+        f = json.loads((CACHE_DIR / "fusion.json").read_text(encoding="utf-8"))
+        return float(f["a"]), float(f["b"])
+    except (OSError, json.JSONDecodeError, KeyError, ValueError):
+        return 0.4, 1.0
 
 
 def _dc_params(m: dict, zh: dict, cache_dir: Path = CACHE_DIR):
@@ -417,10 +454,90 @@ def _card_view(m: dict, hafu_map: dict) -> dict:
     return {**m, "code": mid, "hafu": m.get("hafu") or hafu_map.get(mid) or {}}
 
 
-def build_two_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form: dict,
-                   hafu_map: dict | None = None) -> dict:
-    """新两档结构（spec §4.1）：保底 HAD 4串11(22元) + 翻身多池引擎(seq轮换)。
-    选腿: 保底=现HAD选腿(_pick_had_legs); 翻身=各场 pools_card rec_upset 候选(同场≤1腿, 按EV降序)。开发者 sszhang"""
+def _lottery_legs(odds_day: dict, zh: dict, hhad_map: dict | None = None,
+                  dc_params_fn=_dc_params, fusion: tuple[float, float] | None = None) -> list:
+    """彩票档选腿（docs/2026-09-02-lottery-tier-design.html §03）：逐场逐选项（HAD+HHAD 三向）
+    合格判定 + 场内 EV 最优 + 同场去重（铁律9），EV 降序返回。
+
+    合格 = p_fused≥0.55 或 超低赔≤1.25 且 p_fused≥0.50；p_fused = fuse(p_dc, p_mkt体彩去水, a, b)
+    （出票时点无 Pinnacle 收盘，市场腿=体彩即时价去水，与 mix_candidates 同口径）。
+    无 DC 缓存/队名未入库/无 had → 该场不入池。开发者 sszhang"""
+    if hhad_map is None:
+        hhad_map = _hhad_odds()
+    a, b = fusion if fusion else _load_fusion()
+    legs = []
+    for m in odds_day.get("matches", []):
+        mid = m.get("matchNumStr") or m.get("code")
+        had = m.get("had") or {}
+        params = dc_params_fn(m, zh)
+        if not (mid and had and params):
+            continue
+        lh, la, rho = params
+        matrix = score_matrix(lh, la, rho)
+        pools = [("had", {"h": had.get("h"), "d": had.get("d"), "a": had.get("a")}, 0.0)]
+        hh = hhad_map.get(mid)
+        if hh:
+            pools.append(("hhad", {k: hh[k] for k in ("h", "d", "a")}, hh["goalLine"]))
+        best = None                                              # (ev, leg) 场内 EV 最优合格项
+        for play, odds3, gl in pools:
+            if not all(odds3.get(k) for k in ("h", "d", "a")):
+                continue
+            o3 = [float(odds3["h"]), float(odds3["d"]), float(odds3["a"])]
+            p_mkt = devig_n(o3)
+            if play == "had":                                    # 三向聚合：净胜差 i-j
+                def bucket(i, j, gl=0.0):
+                    d = i - j + gl
+                    return 0 if d > 0 else (1 if d == 0 else 2)
+            else:                                                # 让球三向：i + goalLine vs j
+                def bucket(i, j, gl=gl):
+                    d = i + gl - j
+                    return 0 if d > 0 else (1 if d == 0 else 2)
+            p_dc = [0.0, 0.0, 0.0]
+            for i in range(7):
+                for j in range(7):
+                    p_dc[bucket(i, j)] += float(matrix[i, j])
+            p_f = fuse(p_dc, p_mkt, a, b)
+            names = {"had": ("主胜", "平", "客胜"),
+                     "hhad": ("让球主胜", "让球平", "让球客胜")}[play]
+            for k in range(3):
+                p, o = p_f[k], o3[k]
+                if not (p >= LOTTERY_MIN_P
+                        or (o <= LOTTERY_LOW_ODDS and p >= LOTTERY_LOW_ODDS_MIN_P)):
+                    continue
+                ev = p * o - 1
+                leg = {"matchNumStr": mid, "match": f'{m.get("home")}-{m.get("away")}',
+                       "play": play, "pick": names[k], "odds": o,
+                       "p": round(p, 4), "ev": round(ev, 4)}
+                if play == "hhad":
+                    leg["goalLine"] = gl
+                if best is None or ev > best[0]:
+                    best = (ev, leg)
+        if best:
+            legs.append(best[1])
+    legs.sort(key=lambda l: -l["ev"])
+    return legs
+
+
+def _lottery_tier(legs: list) -> dict:
+    """彩票档组装：池≥4 出 N串1×1倍=2元（bets 全索引单注——派彩走 settle._tier_bets
+    同源链路：全中才回款）；池<4 关档不硬凑。无预算管理（设计拍板C）。开发者 sszhang"""
+    legs = legs[:LOTTERY_MAX_LEGS]
+    if len(legs) < LOTTERY_MIN_LEGS:
+        return {"shape": "closed", "cost": 0, "legs": legs,
+                "note": f"彩票档关档（合格腿{len(legs)}<{LOTTERY_MIN_LEGS}，不硬凑）"}
+    total = math.prod(l["odds"] for l in legs)
+    return {"shape": f"lottery-{len(legs)}x1", "cost": 2, "legs": legs,
+            "bets": [{"legs": list(range(len(legs))), "multiplier": 1}],
+            "expOdds": round(total, 1), "winIfHit": round(2 * total, 0),
+            "note": f"{len(legs)}串1×1倍=2元 · 全中≈{2 * total:.0f}元 · 无预算管理（独立轮红线）"}
+
+
+def build_three_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form: dict,
+                     hafu_map: dict | None = None) -> dict:
+    """三档结构（spec §4.1 两档 + docs/2026-09-02 彩票档）：保底 HAD 4串11(22元) +
+    翻身多池引擎(seq轮换) + 彩票 N串1×1倍(2元,合格腿全上4~8,HAD/HHAD)。
+    选腿: 保底=现HAD选腿(_pick_had_legs); 翻身=各场 pools_card rec_upset 候选(同场≤1腿,
+    按EV降序); 彩票=_lottery_legs(p_fused≥0.55/超低赔通道)。开发者 sszhang"""
     had_legs = _pick_had_legs(odds_day)
     bets = [{"legs": list(c), "multiplier": 1} for c in expand_combos(len(had_legs))]
     base = {"cost": 2 * len(bets), "legs": had_legs, "play": "had-4串11", "bets": bets,
@@ -456,9 +573,10 @@ def build_two_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form: d
                  "note": "跨池4串1(木桶≤4关)"}
     if upset["cost"] < 2:                                   # 腿不足关档(铁律8不硬凑)
         upset = {"shape": "closed", "cost": 0, "legs": legs, "note": "翻身候选腿不足·关档"}
+    lottery = _lottery_tier(_lottery_legs(odds_day, zh))
     return {"structure": "new", "date": str(date.today()), "seq": seq,
-            "tiers": {"base": base, "upset": upset},
-            "totalCost": base["cost"] + upset["cost"],
+            "tiers": {"base": base, "upset": upset, "lottery": lottery},
+            "totalCost": base["cost"] + upset["cost"] + lottery["cost"],
             "cards": cards, "ranAt": str(date.today())}
 
 
@@ -469,14 +587,20 @@ def render_ticket(t: dict) -> str:
     ③三池卡候选区每场两行(保底视角/翻身视角)；④旗标用 emoji 前缀(⚠分歧/🟡低置信)；
     ⑤结尾预算行(月翻身累计x/40·红线提示)；⑥与 v5.4.2 出票核对单同款式(编号│对阵)。
     开发者 sszhang"""
+    lot = t["tiers"].get("lottery") or {}
     lines = [f"┌ 阶梯出票卡 v2 · seq{t['seq']} · 总成本 {t['totalCost']}元 "
-             f"(保底{t['tiers']['base']['cost']} + 翻身{t['tiers']['upset']['cost']}) ────────"]
-    for name, tier in (("保底", t["tiers"]["base"]), ("翻身", t["tiers"]["upset"])):
+             f"(保底{t['tiers']['base']['cost']} + 翻身{t['tiers']['upset']['cost']}"
+             + (f" + 彩票{lot['cost']}" if lot else "") + ") ────────"]
+    rows = [("保底", t["tiers"]["base"]), ("翻身", t["tiers"]["upset"])]
+    if lot:
+        rows.append(("彩票", lot))
+    for name, tier in rows:
         lines.append(f"│ {name}档 {tier['play'] if 'play' in tier else tier['shape']}"
                      f" · {tier['cost']}元 · {tier.get('note', '')}")
         for l in tier.get("legs") or []:
+            gl_txt = f"(让{l['goalLine']:+g})" if l.get("goalLine") is not None else ""
             lines.append(f"│   {l['matchNumStr']} │ {l.get('match', '')[:14]:14s} │ "
-                         f"{l['play'].upper()} {l['pick']} @{l['odds']}"
+                         f"{l['play'].upper()} {l['pick']}{gl_txt} @{l['odds']}"
                          + (f" │ EV{l['ev']:+.0%}" if "ev" in l else ""))
     if t.get("upsetHalved"):
         lines.append(f"│ ⚠连续{t['upsetHalved']}轮翻身0回款·仓位减半")
@@ -529,6 +653,13 @@ def _leg_hit(leg: dict, ent, default_play: str):
         return (pick[:1] in HAFU_DIR and pick[1:] in HAFU_DIR
                 and _direction(half) == HAFU_DIR[pick[:1]]
                 and _direction(sc) == HAFU_DIR[pick[1:]])
+    if play == "hhad":
+        gl = leg.get("goalLine")
+        if gl is None:
+            return None                                # 让球线缺失（旧档），人工判
+        h_, a_ = (int(x) for x in sc.split(":"))
+        d_ = h_ + gl - a_
+        return leg["pick"] == ("让球主胜" if d_ > 0 else ("让球平" if d_ == 0 else "让球客胜"))
     return leg["pick"] == _direction(sc)
 
 
@@ -639,11 +770,16 @@ def cmd_settle() -> None:
             u = res["legHits"].get("upset", [[]])[0]
             print(f"[boldplay] settle {p.name}: upset {sum(1 for h in u if h)}/{len(u)}关 "
                   f"全中={res['upsetHit']} payout={res['payout']:.0f} 密度回收={res['densityRecovered']} → 已写回 settle 字段")
+            lot_pay = (res.get("tierPayout") or {}).get("lottery")
+            if lot_pay is not None:
+                lot_hits = [h for note in res["legHits"].get("lottery", []) for h in note]
+                print(f"[boldplay]   彩票档: {sum(1 for h in lot_hits if h)}/{len(lot_hits)}关 "
+                      f"派彩{lot_pay:.0f}元（全中才回款，断=0）")
         except Exception as e:   # 单卡损坏不中断整轮结算（v2 任务5：新旧/两档结构混扫兼容）
             print(f"[boldplay] settle {p.name} 失败(跳过): {type(e).__name__}: {e}")
 
 
-def _selftest_two_tier():
+def _selftest_three_tier():
     from collections import Counter
     # 6 场裁定（brief 2 场拿不出保底 4 腿 HAD）：周日004 ttg 赔率工程化 12.0 →
     # TTG EV6.2 独占相近带（hafu dd EV≈2.1），保底/翻身双行稳定落 TTG（渲染锚点）。
@@ -668,7 +804,7 @@ def _selftest_two_tier():
          "crs": {"1:1": 8.0}, "ttg": {"s3": 3.55}, "hafu": {"dd": 7.2}},
     ]}
     ft = {"germany-2-bundesliga": Counter({"1:1": 120, "2:2": 40, "__n": 200})}  # 德乙模板 n=200 免 low_conf
-    t = build_two_tier(fake_day, ft, seq=9, zh={}, form={})
+    t = build_three_tier(fake_day, ft, seq=9, zh={}, form={})
     assert t["structure"] == "new"
     base = t["tiers"]["base"]
     assert base["cost"] == 22 and len(base["legs"]) == 4            # 4串11=22元
@@ -678,11 +814,59 @@ def _selftest_two_tier():
     codes = [l["matchNumStr"] for l in up["legs"]]
     assert len(codes) == len(set(codes))                            # 同场最多1腿(硬约束)
     assert 2 <= up["cost"] <= 8
-    assert 24 <= t["totalCost"] <= 30
+    assert 24 <= t["totalCost"] <= 30                               # zh={} 无DC参数→彩票档关档cost=0
+    lot = t["tiers"]["lottery"]
+    assert lot["shape"] == "closed" and lot["cost"] == 0            # 合格腿0<4 关档不硬凑
     txt = render_ticket(t)
-    for kw in ("出票核对单", "周日004", "圣保利", "TTG", "│"):     # 可读性规范锚点
+    for kw in ("出票核对单", "周日004", "圣保利", "TTG", "彩票档关档", "│"):  # 可读性规范锚点
         assert kw in txt, kw
-    print("[selftest] build_two_tier + render_ticket OK")
+    print("[selftest] build_three_tier + render_ticket OK")
+
+
+def _selftest_lottery():
+    """彩票档自检（docs/2026-09-02-lottery-tier-design.html）：合格腿全上/同场去重留EV最高/
+    池<4关档/池>8截前8/HHAD让球判定（goalLine 三向+_leg_hit）。开发者 sszhang"""
+    fake_dc = lambda m, zh: (2.0, 0.85, -0.05)         # 主强λ：p_dc 主胜~0.7+
+    mk = lambda i, h, d, a: {"matchNumStr": f"周六00{i}", "match": f"m{i}",
+                             "league": "英超", "home": f"H{i}", "away": f"A{i}",
+                             "had": {"h": h, "d": d, "a": a}}
+    day = {"matches": [mk(1, 1.45, 4.00, 6.50), mk(2, 1.42, 4.20, 6.80),
+                       mk(3, 1.48, 3.90, 6.20), mk(4, 1.44, 4.10, 6.60),
+                       mk(5, 1.50, 3.80, 5.90)]}        # 5场低赔主胜 → 池=5 全上
+    legs = _lottery_legs(day, zh={}, dc_params_fn=fake_dc, fusion=(0.4, 1.0))
+    assert len(legs) == 5 and all(l["pick"] == "主胜" for l in legs)   # 全主胜入池
+    assert all(l["p"] >= LOTTERY_LOW_ODDS_MIN_P for l in legs)
+    # 同场去重：hhad 让球主胜与 had 主胜同场 → 只留 EV 最高一条
+    hhad_map = {"周六001": {"goalLine": -1.0, "h": 2.10, "d": 3.30, "a": 3.05}}
+    legs2 = _lottery_legs(day, zh={}, hhad_map=hhad_map, dc_params_fn=fake_dc,
+                          fusion=(0.4, 1.0))
+    assert len(legs2) == 5
+    assert sum(1 for l in legs2 if l["matchNumStr"] == "周六001") == 1
+    # 池<4 关档 / 池>8 截前 8
+    t3 = _lottery_tier(legs[:3])
+    assert t3["shape"] == "closed" and t3["cost"] == 0
+    day9 = {"matches": [mk(i, 1.40 + 0.015 * i, 3.80, 5.50) for i in range(1, 10)]}
+    legs9 = _lottery_legs(day9, zh={}, dc_params_fn=fake_dc, fusion=(0.4, 1.0))
+    t9 = _lottery_tier(legs9)
+    assert t9["shape"] == "lottery-8x1" and len(t9["legs"]) == 8 and t9["cost"] == 2
+    assert t9["bets"] == [{"legs": [0, 1, 2, 3, 4, 5, 6, 7], "multiplier": 1}]
+    # HHAD 判定：goalLine=-1，1:0→让球平 / 2:0→让球主胜 / 0:1→让球客胜；无线=None
+    gl_leg = {"play": "hhad", "pick": "让球平", "goalLine": -1.0}
+    assert _leg_hit(gl_leg, "1:0", "hhad") is True
+    assert _leg_hit({**gl_leg, "pick": "让球主胜"}, "2:0", "hhad") is True
+    assert _leg_hit({**gl_leg, "pick": "让球客胜"}, "0:1", "hhad") is True
+    assert _leg_hit({**gl_leg, "pick": "让球主胜"}, "1:0", "hhad") is False
+    assert _leg_hit({"play": "hhad", "pick": "让球主胜"}, "1:0", "hhad") is None  # 无goalLine人工判
+    # 全中派彩：bets 结构走 _tier_bets 同源（全中=2×Π赔率，断1场=0）
+    tk = {"structure": "new", "totalCost": 24,
+          "tiers": {"lottery": t9, "base": {"cost": 22, "legs": [], "bets": []},
+                    "upset": {"shape": "closed", "cost": 0, "legs": []}}}
+    res = settle(tk, {l["matchNumStr"]: "2:0" for l in t9["legs"]})
+    assert res["tierPayout"]["lottery"] == 2 * math.prod(l["odds"] for l in t9["legs"])
+    res1 = settle(tk, {l["matchNumStr"]: ("2:0" if i else "0:2")   # 第0腿断
+                       for i, l in enumerate(t9["legs"])})
+    assert res1["tierPayout"]["lottery"] == 0.0
+    print("[selftest] lottery tier(选腿/去重/关档/截断/HHAD判定/派彩) OK")
 
 
 def _selftest_settle():
@@ -815,9 +999,10 @@ def main() -> None:
     if args and args[0] == "settle":
         return cmd_settle()
     if "--selftest" in args:
-        _selftest_two_tier()
+        _selftest_three_tier()
         _selftest_settle()
         _selftest_dry_streak()
+        _selftest_lottery()
         return
     method = "amix" if "--method=amix" in args else "freq"
     structure = "legacy" if "--structure=legacy" in args else "new"   # v2 两档默认，legacy 双轨对照一个月
@@ -836,7 +1021,7 @@ def main() -> None:
     all_days = {"matches": [m for d in odds.get("matchDays", []) for m in d.get("matches", [])]}
     all_days = _filter_onsale(all_days)
     if structure == "new":
-        out = build_two_tier(all_days, table, seq, zh=_zh_map(), form=build_team_form())
+        out = build_three_tier(all_days, table, seq, zh=_zh_map(), form=build_team_form())
         u_spend = upset_month_spend(str(date.today())[:7])
         if u_spend >= MONTHLY_UPSET_CAP and out["tiers"]["upset"]["cost"] > 0:
             out["tiers"]["upset"] = {"shape": "closed", "cost": 0,
