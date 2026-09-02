@@ -215,3 +215,23 @@ def test_evaluate_league_synthetic(tmp_path, monkeypatch):
         assert r["corrected"][key][1] == 4 and r["bareDc"][key][1] == 4 and r["naiveStatic"][key][1] == 4
         assert r["naiveRolling"][key][1] == 3              # 首场无历史不计
     assert r["sdTtg3"][1] == 4                             # 设计同口径（比分降序去重档）互验锚计数
+
+
+def test_evaluate_league_dc_missing_team_skips_match(tmp_path, monkeypatch):
+    """DC 缺队跳过路径：合成联赛中间插一场 teams 外的队（"Z"，5-5 极端值）——
+    整场四线都不计（corrected/bareDc/naiveStatic/naiveRolling 同 n 可比性地基，防回归）。"""
+    monkeypatch.setattr("goal_engine.CACHE_DIR", tmp_path)
+    dc = {"teams": {"A": {"attack": 0.3, "defense": -0.1}, "B": {"attack": 0.1, "defense": -0.2}},
+          "homeAdv": 0.25, "rho": -0.05}
+    (tmp_path / "testlg_dc.json").write_text(json.dumps(dc), encoding="utf-8")
+    scores = [(2, 1), (1, 1), (5, 5), (0, 2), (3, 1)]      # 第 3 场 Z 缺队
+    pairs = [("A", "B"), ("B", "A"), ("Z", "A"), ("A", "B"), ("B", "A")]
+    matches = [{"home": h, "away": a, "fthg": str(hg), "ftag": str(ag)}
+               for (h, a), (hg, ag) in zip(pairs, scores)]
+    (tmp_path / "odds_testlg_2526.json").write_text(
+        json.dumps({"season": "2526", "matches": matches}), encoding="utf-8")
+    r = evaluate_league("testlg")
+    for key in METRIC_KEYS:                                # 仍是 4 场：缺队场不进任何线
+        assert r["corrected"][key][1] == 4 and r["bareDc"][key][1] == 4 and r["naiveStatic"][key][1] == 4
+        assert r["naiveRolling"][key][1] == 3              # idx>0 的可算场 = 3（首场不计，缺队场不计）
+    assert r["sdTtg3"][1] == 4

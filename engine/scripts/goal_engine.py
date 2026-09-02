@@ -325,6 +325,9 @@ def build_report(seasons, disable=()):
         "notes": ["in-sample：λ_DC 全季拟合含泄漏；干净结论看 walkForward 节（T6）",
                   "naiveStatic 全季聚合含泄漏，naiveRolling 干净（该场前场次滚动）",
                   "生死线：walk-forward 超不过 naiveRolling 则引擎不上线（复审 A3 拍板）",
+                  "naiveStatic 与复审 64.8% 非同口径，勿直接对比 baselineRefs.reviewNaiveStaticTtg3_2526："
+                  "复审为常识固定猜 1/2/3 + Pinnacle 收盘过滤场次，"
+                  f"本报告为全季频序挑档（含泄漏）+ DC 可算 {total_sec['n']} 场——偏高属口径差异",
                   "TTG 口径差异（T5 实测澄清）：设计 62.4% 出自 had_crs_divergence 的「比分降序去重档前3」",
                   f"（total.bareDcTtg3ScoreDedup={total_sec['bareDcTtg3ScoreDedup']} 为该口径复验值，应≈0.624）；",
                   "本报告主口径=总进球聚合概率 top3（与 naive 侧频次 top3 对称）——两口径同场次同矩阵，",
