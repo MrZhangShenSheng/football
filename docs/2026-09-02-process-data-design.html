@@ -1,0 +1,78 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>设计 · 比赛过程数据实证（四层×一轨）</title>
+<style>
+:root{--bg:#f7f8fa;--card:#fff;--ink:#1c2333;--sub:#5a6478;--line:#e3e7ee;--ok:#0a7d43;--bad:#c0392b;--warn:#b07a00;--accent:#2456c6}
+[data-theme="dark"]{--bg:#14171d;--card:#1d222b;--ink:#e8ecf3;--sub:#98a3b8;--line:#323a48;--ok:#3dd68c;--bad:#ff7b6b;--warn:#ffc861;--accent:#7ba4ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.7 "Microsoft YaHei",system-ui,sans-serif;padding:24px}
+.wrap{max-width:980px;margin:0 auto}
+h1{font-size:20px;margin:0 0 4px}h2{font-size:16px;margin:30px 0 10px;border-left:4px solid var(--accent);padding-left:10px}
+.meta{color:var(--sub);font-size:12.5px;margin-bottom:16px}
+table{border-collapse:collapse;width:100%;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:13px;margin:8px 0}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:rgba(36,86,198,.07);font-weight:600;white-space:nowrap}tr:last-child td{border-bottom:none}
+pre{font-family:Consolas,monospace;font-size:12.5px;background:rgba(90,100,120,.1);border-radius:4px;padding:10px 14px;overflow-x:auto;line-height:1.55}
+ul{margin:6px 0;padding-left:20px}li{margin:3px 0}
+.tag{display:inline-block;padding:1px 8px;border-radius:10px;font-size:11.5px;font-weight:600}
+.t-ok{background:rgba(10,125,67,.12);color:var(--ok)}.t-bad{background:rgba(192,57,43,.12);color:var(--bad)}.t-warn{background:rgba(176,122,0,.14);color:var(--warn)}
+.rev{background:rgba(192,57,43,.06);border:1px solid rgba(192,57,43,.3);border-radius:8px;padding:10px 14px;margin:10px 0;font-size:13px}
+.foot{color:var(--sub);font-size:12px;margin-top:26px;border-top:1px solid var(--line);padding-top:10px}
+</style></head><body><div class="wrap">
+<h1>设计 · 比赛过程数据实证（四层 × 一条验证轨道）</h1>
+<div class="meta">2026-09-02 · brainstorming 定稿（大哥拍板：四层全进调研·全面实证·review 修正三处后归档）｜核心问题：比赛内过程数据（半场比分/xG/技术统计/进球时间线）对 比分与玩法预测有没有可验证的增益</div>
+
+<h2>一、实测地基（两个硬事实）</h2>
+<ul>
+<li><b>fd CSV 有 15 个过程列一直没拉</b>：HTHG/HTAG/HTR + HS/AS/HST/AST + HC/AC + HY/AY/HR/AR——抽查英超/西乙/希腊超三级联赛 <b>100% 非空</b>（半场比分零成本可得）；当前 odds_fetch 的列选择只存了比分+xG+赔率</li>
+<li><b>goal_engine 验证轨道现成</b>：match_features / lambda_mult / disable 消融参数 + walk-forward——新特征挂既有轨道，不走冷门因子"发现器立项"老路</li>
+</ul>
+
+<h2>二、总体架构</h2>
+<pre>数据层（odds_fetch 扩列重拉）
+  fd 12 过程列 + 既有 HxG/AxG → 两季 × 17 联赛 + EC0/SC0/EL0
+        │
+特征层（四条假设线，按先验分配资源）
+  ① 半场比分 → HAFU 球队级 half_share      【真实证】
+  ② xG → λ 收缩（goal_engine 乘子轨道）    【延期项·功效不足】
+  ③ 技术统计 → 射正修正                    【引用文献·不实证】
+  ④ 进球时间线 → late-goal 倾向             【源探测·不开则挂起】
+        │
+验证层（goal_engine 一条轨道）
+  walk-forward + disable 逐特征消融 → 增益矩阵（4特征×4出口×RPS/log-loss）
+  + 市场对照列（三向 vs pinClose / 总进球 vs OU2.5——其余出口无市场价，如实标注）
+  铁律：CI95 全正→进主链 / 跨0→观察 / 含负→删</pre>
+
+<h2>三、数据层</h2>
+<ul>
+<li><b>扩列</b>：odds_fetch.py:81-89 return dict 加 12 键（hthg/htag/htr/hs/as/hst/ast/hc/ac/hy/ay/hr/ar）——纯增列，既有 16 键行为不变（T1 契约），空值走 g() None 容错</li>
+<li><b>重拉范围</b>：2526+2627 × 17 联赛 + 三杯赛码（约 3 分钟）；<b>与层3 的 2425 拉取合并为一次网络任务</b></li>
+<li><b>half_share 改造点</b>：现 {meta, global, leagues} 联赛级 β 收缩（priorGoals=200）→ 球队级两级收缩（球队→联赛→全局回退链，与 elo/xG 画像回退同构）</li>
+<li><b>质量约束</b>：杯赛文件过程列非空率 &lt;80% 的联赛只进报告不进实证；重拉后 pytest 全量</li>
+</ul>
+
+<h2>四、review 修正三处（2026-09-02 大哥确认采纳）</h2>
+<div class="rev"><span class="tag t-bad">修正1</span> <b>xG 线延期</b>：2627 仅 20~40 场/联赛（2526 无 HxG 列），xG-λ 球队级均值=每队 3~4 场，方差大到 w 网格搜是噪声拟合；walk-forward 每段 15 场功效不足。→ 产出功效分析结论（需 n≥100），等 2627 积累或 Understat 开源再验，本轮不写代码。</div>
+<div class="rev"><span class="tag t-bad">修正2</span> <b>技术统计线降级为文献引用</b>：预期低还要实证=重蹈冷门因子四轮证伪覆辙；xG 已包含其大部分预测力。"全面实证"按<b>范围全覆盖·资源按先验分配</b>执行：①真实证 / ②功效分析 / ③引用 / ④探测。</div>
+<div class="rev"><span class="tag t-bad">修正3</span> <b>市场对照约束如实写</b>：TTG 8档/CRS 31项/HAFU 9键无市场价（fd 仅 OU 2.5）——增益矩阵加"vs pinClose 去水（三向）+ vs OU2.5（总进球）"两列可对照出口，其余出口标注"仅模型内对照+抽水底线（q×体彩赔率 EV）"。</div>
+
+<h2>五、实现风险（动工前先验证）</h2>
+<ul>
+<li><b>HAFU 特征形态待读码</b>：9 键=半场三向×全场<b>联合分布</b>，非"半场进球占比"单一参数可撑——实现第一步=读 dc_predict hafu 生成链（halfParams 构造），特征形态以读码结果为准，本设计的"两级收缩"是初步构想</li>
+<li><b>传导链验证</b>：v5.3 起比分选法走 freq-band、DC 退出比分选择——"DC λ 变准 ≠ 比分预测变准"；验证矩阵<b>必须含 goal_engine 轨的 TTG/CRS 出口</b>（λ 平移是传导路径），不能只验 dc_predict 侧</li>
+</ul>
+
+<h2>六、产出与排期</h2>
+<table><tr><th>项</th><th>内容</th></tr>
+<tr><td>产出物</td><td>① 增益矩阵报告 data/04-summaries/process-data-report.json（+HTML）② 过门槛特征的 disable 开关 ③ ②④线功效/探测附录</td></tr>
+<tr><td>工时</td><td>2 天（数据层 0.5 含层3 合并拉取 + ①特征+验证 1 + 报告 0.5）</td></tr>
+<tr><td>排期</td><td><b>层1（联赛库扩容）→ 本实证</b>（能力面优先于精度面；大哥默认）</td></tr></table>
+
+<h2>七、验收清单</h2>
+<ul>
+<li>①半场线：HAFU 出口 RPS 增益 CI95 出结论（进主链/观察/删三选一）；half_share 球队级仅在过门槛后接入 dc_predict</li>
+<li>②③④线各自产出功效分析/文献引用/源探测报告（不占实证工时）</li>
+<li>增益矩阵含市场对照两列 + 无市场价出口的口径标注</li>
+<li>四线同口径聚合（A1 教训）；全程 disable 消融可复现；pytest 全量绿</li>
+</ul>
+
+<div class="foot">关联：docs/2026-09-02-data-backfill-design.html（层1/层3 排期依赖）·docs/2026-08-27-freq-band-design.html（比分链路现状）·docs/2026-08-26-pool-coverage-design.html（HAFU half_share 由来）｜brainstorming + review 2026-09-02 定稿</div>
+</div></body></html>
