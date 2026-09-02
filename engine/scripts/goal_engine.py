@@ -468,8 +468,9 @@ def _run_walk_forward(league, seasons):
             f"walkForward {section['bareDc']['ttg3']}（{(section['bareDc']['ttg3'] - lg_sample) * 100:+.1f}pp，"
             "泄漏移除预期掉 1~4pp）")
     if in_sample is not None:
+        n_pooled = len(report.get("leagues", {}))
         section["notes"].append(
-            f"泄漏核对（15联赛池口径，联赛构成不同仅作参考）：in-sample total.bareDc.ttg3={in_sample} vs "
+            f"泄漏核对（{n_pooled} 联赛池口径（FD_LEAGUES 14 中有 DC 缓存者），联赛构成不同仅作参考）：in-sample total.bareDc.ttg3={in_sample} vs "
             f"walkForward {section['bareDc']['ttg3']}（{(section['bareDc']['ttg3'] - in_sample) * 100:+.1f}pp）")
     report["walkForward"] = section
     REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -487,7 +488,7 @@ def _run_walk_forward(league, seasons):
         print(f"泄漏核对（同联赛）：bareDc.ttg3={section['bareDc']['ttg3']} vs in-sample {league} {lg_sample}"
               f"（{(section['bareDc']['ttg3'] - lg_sample) * 100:+.1f}pp，泄漏移除预期掉 1~4pp）")
     if in_sample is not None:
-        print(f"泄漏核对（15联赛池，构成不同仅参考）：bareDc.ttg3={section['bareDc']['ttg3']} vs "
+        print(f"泄漏核对（{len(report.get('leagues', {}))} 联赛池，构成不同仅参考）：bareDc.ttg3={section['bareDc']['ttg3']} vs "
               f"in-sample total {in_sample}（{(section['bareDc']['ttg3'] - in_sample) * 100:+.1f}pp）")
 
 
