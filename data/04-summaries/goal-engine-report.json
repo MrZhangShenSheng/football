@@ -486,5 +486,241 @@
       "泄漏核对（同联赛口径）：in-sample spain-laliga.bareDc.ttg3=0.7831 vs walkForward 0.7364（-4.7pp，泄漏移除预期掉 1~4pp）",
       "泄漏核对（15联赛池口径，联赛构成不同仅作参考）：in-sample total.bareDc.ttg3=0.6828 vs walkForward 0.7364（+5.4pp）"
     ]
+  },
+  "bypassPool": {
+    "ranAt": "2026-09-02",
+    "checkedRounds": 3,
+    "rounds": [
+      "2026-08-30",
+      "2026-08-31",
+      "2026-09-01"
+    ],
+    "threshold": 0.65,
+    "legs": {
+      "total": 12,
+      "had": 11,
+      "hhad": 1
+    },
+    "marketMatch": {
+      "tier1LegPinClose": 0,
+      "tier2ResultsPinClose": 5,
+      "tier3OddsCache": 0,
+      "unmatched": 7
+    },
+    "totals": {
+      "mktGe65": 2,
+      "fusedGe65": 3
+    },
+    "perRound": [
+      {
+        "date": "2026-08-30",
+        "nHadLegs": 4,
+        "mktGe65": 2,
+        "fusedGe65": 3,
+        "canParlay11": false,
+        "matched": 3,
+        "unmatched": 1,
+        "legs": [
+          {
+            "code": "周六018",
+            "match": "维京-奥勒松",
+            "play": "had",
+            "pick": "主胜",
+            "odds": 1.14,
+            "fusedProb": 0.76,
+            "fusedSource": "boldplay.legs[].prob(融合×修正链终值)",
+            "mktProb": null,
+            "mktSource": null,
+            "mktGe65": false,
+            "fusedGe65": true,
+            "unmatchedReason": "三级来源均未匹配(队名无fd别名/联赛fd不覆盖)"
+          },
+          {
+            "code": "周日012",
+            "match": "特尔斯达-阿贾克斯",
+            "play": "had",
+            "pick": "客胜",
+            "odds": 1.29,
+            "fusedProb": 0.68,
+            "fusedSource": "boldplay.legs[].prob(融合×修正链终值)",
+            "mktProb": 0.6293,
+            "mktSource": "02-results.pinClose(fd收盘去水三向)",
+            "mktGe65": false,
+            "fusedGe65": true,
+            "unmatchedReason": null
+          },
+          {
+            "code": "周日018",
+            "match": "坎布尔-特温特",
+            "play": "had",
+            "pick": "客胜",
+            "odds": 1.2,
+            "fusedProb": 0.72,
+            "fusedSource": "boldplay.legs[].prob(融合×修正链终值)",
+            "mktProb": 0.7228,
+            "mktSource": "02-results.pinClose(fd收盘去水三向)",
+            "mktGe65": true,
+            "fusedGe65": true,
+            "unmatchedReason": null
+          },
+          {
+            "code": "周日020",
+            "match": "卡利亚里-国际米兰",
+            "play": "had",
+            "pick": "客胜",
+            "odds": 1.27,
+            "fusedProb": 0.63,
+            "fusedSource": "boldplay.legs[].prob(融合×修正链终值)",
+            "mktProb": 0.6741,
+            "mktSource": "02-results.pinClose(fd收盘去水三向)",
+            "mktGe65": true,
+            "fusedGe65": false,
+            "unmatchedReason": null
+          }
+        ]
+      },
+      {
+        "date": "2026-08-31",
+        "nHadLegs": 4,
+        "mktGe65": 0,
+        "fusedGe65": 0,
+        "canParlay11": false,
+        "matched": 2,
+        "unmatched": 2,
+        "legs": [
+          {
+            "code": "周一003",
+            "match": "莱切-罗马",
+            "play": "had",
+            "pick": "客胜",
+            "odds": 1.33,
+            "fusedProb": 0.623,
+            "fusedSource": "boldplay.legs[].prob(融合×修正链终值)",
+            "mktProb": 0.6458,
+            "mktSource": "02-results.pinClose(fd收盘去水三向)",
+            "mktGe65": false,
+            "fusedGe65": false,
+            "unmatchedReason": null
+          },
+          {
+            "code": "周一009",
+            "match": "维拉-阿森纳",
+            "play": "had",
+            "pick": "客胜",
+            "odds": 1.4,
+            "fusedProb": 0.571,
+            "fusedSource": "boldplay.legs[].prob(融合×修正链终值)",
+            "mktProb": 0.6487,
+            "mktSource": "02-results.pinClose(fd收盘去水三向)",
+            "mktGe65": false,
+            "fusedGe65": false,
+            "unmatchedReason": null
+          },
+          {
+            "code": "周一004",
+            "match": "佐加顿斯-米亚尔比",
+            "play": "had",
+            "pick": "主胜",
+            "odds": 1.42,
+            "fusedProb": 0.592,
+            "fusedSource": "boldplay.legs[].prob(融合×修正链终值)",
+            "mktProb": null,
+            "mktSource": null,
+            "mktGe65": false,
+            "fusedGe65": false,
+            "unmatchedReason": "三级来源均未匹配(队名无fd别名/联赛fd不覆盖)"
+          },
+          {
+            "code": "周一012",
+            "match": "巴萨-巴列卡诺",
+            "play": "hhad",
+            "pick": "让球主胜(-2)",
+            "odds": 1.85,
+            "fusedProb": 0.504,
+            "fusedSource": "boldplay.legs[].prob(融合×修正链终值)",
+            "mktProb": null,
+            "mktSource": null,
+            "mktGe65": false,
+            "fusedGe65": false,
+            "unmatchedReason": "hhad让球方向无三向收盘锚(pinClose为HAD三向,语义不匹配)"
+          }
+        ]
+      },
+      {
+        "date": "2026-09-01",
+        "nHadLegs": 4,
+        "mktGe65": 0,
+        "fusedGe65": 0,
+        "canParlay11": false,
+        "matched": 0,
+        "unmatched": 4,
+        "legs": [
+          {
+            "code": "周二002",
+            "match": "斯旺西-沃特福德",
+            "play": "had",
+            "pick": "主胜",
+            "odds": 1.8,
+            "fusedProb": 0.479,
+            "fusedSource": "02-results.final(修正链终值,方向对齐)",
+            "mktProb": null,
+            "mktSource": null,
+            "mktGe65": false,
+            "fusedGe65": false,
+            "unmatchedReason": "三级来源均未匹配(fd缓存无该场次)"
+          },
+          {
+            "code": "周二003",
+            "match": "西汉姆联-伍尔弗",
+            "play": "had",
+            "pick": "主胜",
+            "odds": 1.78,
+            "fusedProb": 0.355,
+            "fusedSource": "02-results.final(修正链终值,方向对齐)",
+            "mktProb": null,
+            "mktSource": null,
+            "mktGe65": false,
+            "fusedGe65": false,
+            "unmatchedReason": "三级来源均未匹配(fd缓存无该场次)"
+          },
+          {
+            "code": "周二004",
+            "match": "朴次茅斯-德比郡",
+            "play": "had",
+            "pick": "主胜",
+            "odds": 1.99,
+            "fusedProb": 0.478,
+            "fusedSource": "02-results.final(修正链终值,方向对齐)",
+            "mktProb": null,
+            "mktSource": null,
+            "mktGe65": false,
+            "fusedGe65": false,
+            "unmatchedReason": "三级来源均未匹配(fd缓存无该场次)"
+          },
+          {
+            "code": "周二005",
+            "match": "林肯城-布莱克本",
+            "play": "had",
+            "pick": "主胜",
+            "odds": 2.05,
+            "fusedProb": 0.366,
+            "fusedSource": "02-results.final(修正链终值,方向对齐)",
+            "mktProb": null,
+            "mktSource": null,
+            "mktGe65": false,
+            "fusedGe65": false,
+            "unmatchedReason": "三级来源均未匹配(fd缓存无该场次)"
+          }
+        ]
+      }
+    ],
+    "verdict": "饿死风险：市场口径达标腿 2/0/0（判定线=三轮全部≥4），按 boldplay 实跑腿口径市场≥65%组不满保底4串11；但融合口径同为 3/0/0 均<4——当前组票本就不按65%硬门槛选腿（星档制），本验证是轮池保守下界非准入池全景，P1去留留大哥裁决",
+    "notes": [
+      "融合口径来源：boldplay tiers.base.legs[].prob（=融合×修正链终值；08-31 四腿与 02-results 冻结 final 逐腿一致已验证）；09-01 腿无 prob 字段（脚本选腿未接修正系数链=已知缺陷），回退 02-results/{date}.json matches[].final（冻结 pick 方向与腿方向一致时采用；该轮 4 腿纯融合 fused[dir] 与修正后 final 均 <50%，口径选择不改变 ≥65 判定）",
+      "市场隐含匹配链路：腿自带 pinClose=0 腿；02-results pinClose（fd 收盘去水三向，场次编号对齐）=5 腿；odds 缓存（zh→fd 别名+日期±1 对齐 devig）=0 腿（相关队无 fd 别名条目且 09-01 场次未入缓存——缓存止于 29/08）；未匹配 7 腿如实报，不计入达标判定也不静默丢弃",
+      "未匹配明细：HHAD 让球方向无三向收盘锚 1 腿（08-31 周一012 巴萨-2，pinClose 为 HAD 三向语义不匹配）；挪超/瑞超 fd 不覆盖 2 腿（08-30 周六018、08-31 周一004）；09-01 整轮 4 腿（当轮未回填+缓存未含；但四腿出票赔率 1.78~2.05 隐含 49%~56% 未去水上限均 <65%，数据缺口不改变该轮判定——体彩隐含仅作界值旁注非概率锚）",
+      "样本口径限制：本验证只数 boldplay 实跑 HAD/HHAD 腿（12 腿=每轮 base 4 串 11 的 4 腿），非当轮全部场次准入池；D3 bypass_impact_quantify 的 442→281 场为池子全景口径，两者互补不互替；若需全景应另跑轮池全量扫描",
+      "双向翻转并存（与 D3 gate_in/gate_out 一致）：08-30 周日020 国米融合 0.63<65 但市场 0.674≥65（旁路会收入）；周日012 阿贾克斯融合 0.68≥65 但市场 0.629<65（旁路会剔除）"
+    ]
   }
 }
