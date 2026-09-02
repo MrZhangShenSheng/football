@@ -1,38 +1,52 @@
 {
-  "checkedAt": "2026-09-01",
+  "checkedAt": "2026-09-02",
   "leagues": {
-    "saudi": {
-      "status": "ready",
-      "roundsPlayed": 2,
-      "standingsSource": "espn",
-      "fdCovered": false
+    "日联赛杯": {
+      "status": "missing"
     },
-    "england-championship": {
-      "status": "ready",
-      "roundsPlayed": 25,
-      "standingsSource": "fd-derived",
-      "fdCovered": true
+    "日职": {
+      "status": "missing"
     },
     "意大利杯": {
       "status": "missing"
     },
-    "日联赛杯": {
+    "英冠": {
       "status": "missing"
     },
-    "japan": {
-      "status": "ready",
-      "roundsPlayed": 3,
-      "standingsSource": "espn",
-      "fdCovered": false
+    "德国杯": {
+      "status": "missing"
     },
-    "germany-dfb-pokal": {
+    "巴甲": {
+      "status": "missing"
+    },
+    "巴西杯": {
+      "status": "missing"
+    },
+    "沙职": {
+      "status": "missing"
+    },
+    "瑞超": {
+      "status": "missing"
+    },
+    "法甲": {
+      "status": "missing"
+    },
+    "西甲": {
       "status": "missing"
     }
   },
   "missingLeagues": [
-    "意大利杯",
     "日联赛杯",
-    "germany-dfb-pokal"
+    "日职",
+    "意大利杯",
+    "英冠",
+    "德国杯",
+    "巴甲",
+    "巴西杯",
+    "沙职",
+    "瑞超",
+    "法甲",
+    "西甲"
   ],
   "staleLeagues": [],
   "missingAlias": [
@@ -45,11 +59,166 @@
       "team": "枥木城",
       "league": "日联赛杯",
       "match": "八户南源 vs 枥木城"
+    },
+    {
+      "team": "女王巡游",
+      "league": "英冠",
+      "match": "女王巡游 vs 加的夫城"
+    },
+    {
+      "team": "加的夫城",
+      "league": "英冠",
+      "match": "女王巡游 vs 加的夫城"
+    },
+    {
+      "team": "米堡",
+      "league": "英冠",
+      "match": "伯恩利 vs 米堡"
+    },
+    {
+      "team": "迈季宽广",
+      "league": "沙职",
+      "match": "迈季宽广 vs 拉斯永恒"
+    },
+    {
+      "team": "拉斯永恒",
+      "league": "沙职",
+      "match": "迈季宽广 vs 拉斯永恒"
+    },
+    {
+      "team": "迪里耶",
+      "league": "沙职",
+      "match": "迪里耶 vs 胡巴卡德"
     }
   ],
-  "notReadyTeams": [],
+  "notReadyTeams": [
+    {
+      "team": "米尔沃尔",
+      "teamId": "millwall",
+      "league": "england",
+      "status": "missing"
+    },
+    {
+      "team": "雷克斯",
+      "teamId": "wrexham",
+      "league": "england-championship",
+      "status": "missing"
+    },
+    {
+      "team": "西布罗姆",
+      "teamId": "west-brom",
+      "league": "england",
+      "status": "missing"
+    },
+    {
+      "team": "查尔顿",
+      "teamId": "charlton",
+      "league": "england",
+      "status": "missing"
+    },
+    {
+      "team": "伯恩利",
+      "teamId": "burnley",
+      "league": "england",
+      "status": "missing"
+    },
+    {
+      "team": "弗拉门戈",
+      "teamId": "flamengo",
+      "league": "brazil",
+      "status": "missing"
+    },
+    {
+      "team": "米拉索尔",
+      "teamId": "mirassol",
+      "league": "brazil",
+      "status": "missing"
+    },
+    {
+      "team": "桑托斯",
+      "teamId": "santos",
+      "league": "brazil",
+      "status": "missing"
+    },
+    {
+      "team": "帕梅拉斯",
+      "teamId": "palmeiras",
+      "league": "brazil",
+      "status": "missing"
+    },
+    {
+      "team": "新未来SC",
+      "teamId": "neom-sc",
+      "league": "saudi",
+      "status": "stale",
+      "lastUpdated": "2026-08-24",
+      "ageDays": 9
+    },
+    {
+      "team": "赛哈海湾",
+      "teamId": "al-khaleej",
+      "league": "saudi",
+      "status": "missing"
+    },
+    {
+      "team": "米亚尔比",
+      "teamId": "mjallby",
+      "league": "sweden",
+      "status": "stale",
+      "lastUpdated": "2026-08-21",
+      "ageDays": 12
+    },
+    {
+      "team": "佐加顿斯",
+      "teamId": "djurgarden",
+      "league": "sweden",
+      "status": "stale",
+      "lastUpdated": "2026-08-24",
+      "ageDays": 9
+    },
+    {
+      "team": "胡巴卡德",
+      "teamId": "qadsiah",
+      "league": "saudi",
+      "status": "stale",
+      "lastUpdated": "2026-08-24",
+      "ageDays": 9
+    },
+    {
+      "team": "图卢兹",
+      "teamId": "toulouse",
+      "league": "france",
+      "status": "stale",
+      "lastUpdated": "2026-08-22",
+      "ageDays": 11
+    },
+    {
+      "team": "里尔",
+      "teamId": "lille",
+      "league": "france",
+      "status": "stale",
+      "lastUpdated": "2026-08-22",
+      "ageDays": 11
+    },
+    {
+      "team": "皇家社会",
+      "teamId": "sociedad",
+      "league": "spain",
+      "status": "stale",
+      "lastUpdated": "2026-08-21",
+      "ageDays": 12
+    },
+    {
+      "team": "塞尔塔",
+      "teamId": "celta",
+      "league": "spain",
+      "status": "stale",
+      "lastUpdated": "2026-08-22",
+      "ageDays": 11
+    }
+  ],
   "readyCount": {
-    "leagues": 3,
+    "leagues": 0,
     "teamsKnown": 340
   }
 }

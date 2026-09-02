@@ -1,0 +1,641 @@
+{
+ "structure": "new",
+ "date": "2026-09-02",
+ "seq": 11,
+ "tiers": {
+  "base": {
+   "cost": 22,
+   "legs": [
+    {
+     "matchNumStr": "周三001",
+     "match": "八户南源-枥木城",
+     "play": "had",
+     "pick": "客胜",
+     "odds": 2.39
+    },
+    {
+     "matchNumStr": "周三002",
+     "match": "大阪樱花-柏太阳神",
+     "play": "had",
+     "pick": "客胜",
+     "odds": 1.96
+    },
+    {
+     "matchNumStr": "周三003",
+     "match": "水户蜀葵-鹿岛鹿角",
+     "play": "had",
+     "pick": "客胜",
+     "odds": 1.71
+    },
+    {
+     "matchNumStr": "周三004",
+     "match": "町田泽维-川崎前锋",
+     "play": "had",
+     "pick": "主胜",
+     "odds": 1.69
+    }
+   ],
+   "play": "had-4串11",
+   "bets": [
+    {
+     "legs": [
+      0,
+      1
+     ],
+     "multiplier": 1
+    },
+    {
+     "legs": [
+      0,
+      2
+     ],
+     "multiplier": 1
+    },
+    {
+     "legs": [
+      0,
+      3
+     ],
+     "multiplier": 1
+    },
+    {
+     "legs": [
+      1,
+      2
+     ],
+     "multiplier": 1
+    },
+    {
+     "legs": [
+      1,
+      3
+     ],
+     "multiplier": 1
+    },
+    {
+     "legs": [
+      2,
+      3
+     ],
+     "multiplier": 1
+    },
+    {
+     "legs": [
+      0,
+      1,
+      2
+     ],
+     "multiplier": 1
+    },
+    {
+     "legs": [
+      0,
+      1,
+      3
+     ],
+     "multiplier": 1
+    },
+    {
+     "legs": [
+      0,
+      2,
+      3
+     ],
+     "multiplier": 1
+    },
+    {
+     "legs": [
+      1,
+      2,
+      3
+     ],
+     "multiplier": 1
+    },
+    {
+     "legs": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "multiplier": 1
+    }
+   ],
+   "note": "6×2串1+4×3串1+1×4串1 · 中2关回1注2串1"
+  },
+  "upset": {
+   "shape": "pool-2x1x3",
+   "cost": 6,
+   "legs": [
+    {
+     "matchNumStr": "周三002",
+     "match": "大阪樱花 vs 柏太阳神",
+     "play": "ttg",
+     "pick": "s7",
+     "odds": 27.0,
+     "q": 0.3131,
+     "ev": 7.4537
+    },
+    {
+     "matchNumStr": "周三003",
+     "match": "水户蜀葵 vs 鹿岛鹿角",
+     "play": "ttg",
+     "pick": "s6",
+     "odds": 25.0,
+     "q": 0.323,
+     "ev": 7.075
+    },
+    {
+     "matchNumStr": "周三004",
+     "match": "町田泽维 vs 川崎前锋",
+     "play": "crs",
+     "pick": "3:0",
+     "odds": 15.0,
+     "q": 0.0806,
+     "ev": 0.209
+    },
+    {
+     "matchNumStr": "周三005",
+     "match": "萨索洛 vs 弗洛西诺",
+     "play": "hafu",
+     "pick": "aa",
+     "odds": 7.0,
+     "q": 0.1686,
+     "ev": 0.1802
+    },
+    {
+     "matchNumStr": "周三001",
+     "match": "八户南源 vs 枥木城",
+     "play": "hafu",
+     "pick": "hh",
+     "odds": 4.6,
+     "q": 0.2192,
+     "ev": 0.0083
+    },
+    {
+     "matchNumStr": "周三006",
+     "match": "乌迪内斯 vs 威尼斯",
+     "play": "hafu",
+     "pick": "aa",
+     "odds": 5.6,
+     "q": 0.1686,
+     "ev": -0.0558
+    }
+   ],
+   "bets": [
+    {
+     "legs": [
+      0,
+      1
+     ],
+     "multiplier": 1
+    },
+    {
+     "legs": [
+      2,
+      3
+     ],
+     "multiplier": 1
+    },
+    {
+     "legs": [
+      4,
+      5
+     ],
+     "multiplier": 1
+    }
+   ],
+   "note": "3注跨池2串1(同场≤1腿)"
+  }
+ },
+ "totalCost": 28,
+ "cards": [
+  {
+   "code": "周三001",
+   "match": "八户南源 vs 枥木城",
+   "candidates": [
+    {
+     "code": "周三001",
+     "match": "八户南源 vs 枥木城",
+     "pool": "crs",
+     "pick": "0:0",
+     "q": 0.0718,
+     "odds": 10.0,
+     "ev": -0.282
+    },
+    {
+     "code": "周三001",
+     "match": "八户南源 vs 枥木城",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2365,
+     "odds": 3.35,
+     "ev": -0.2077
+    },
+    {
+     "code": "周三001",
+     "match": "八户南源 vs 枥木城",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2226,
+     "odds": 3.75,
+     "ev": -0.1653
+    },
+    {
+     "code": "周三001",
+     "match": "八户南源 vs 枥木城",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2192,
+     "odds": 4.6,
+     "ev": 0.0083
+    },
+    {
+     "code": "周三001",
+     "match": "八户南源 vs 枥木城",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.1686,
+     "odds": 4.25,
+     "ev": -0.2834
+    }
+   ],
+   "rec_base": {
+    "code": "周三001",
+    "match": "八户南源 vs 枥木城",
+    "pool": "hafu",
+    "pick": "hh",
+    "q": 0.2192,
+    "odds": 4.6,
+    "ev": 0.0083
+   },
+   "rec_upset": {
+    "code": "周三001",
+    "match": "八户南源 vs 枥木城",
+    "pool": "hafu",
+    "pick": "hh",
+    "q": 0.2192,
+    "odds": 4.6,
+    "ev": 0.0083
+   },
+   "flags": [
+    "low_conf"
+   ]
+  },
+  {
+   "code": "周三002",
+   "match": "大阪樱花 vs 柏太阳神",
+   "candidates": [
+    {
+     "code": "周三002",
+     "match": "大阪樱花 vs 柏太阳神",
+     "pool": "crs",
+     "pick": "0:3",
+     "q": 0.0549,
+     "odds": 18.0,
+     "ev": -0.0118
+    },
+    {
+     "code": "周三002",
+     "match": "大阪樱花 vs 柏太阳神",
+     "pool": "ttg",
+     "pick": "s7",
+     "q": 0.3131,
+     "odds": 27.0,
+     "ev": 7.4537
+    },
+    {
+     "code": "周三002",
+     "match": "大阪樱花 vs 柏太阳神",
+     "pool": "ttg",
+     "pick": "s6",
+     "q": 0.2087,
+     "odds": 17.0,
+     "ev": 2.5479
+    },
+    {
+     "code": "周三002",
+     "match": "大阪樱花 vs 柏太阳神",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.4472,
+     "odds": 3.25,
+     "ev": 0.4534
+    },
+    {
+     "code": "周三002",
+     "match": "大阪樱花 vs 柏太阳神",
+     "pool": "hafu",
+     "pick": "ha",
+     "q": 0.2172,
+     "odds": 22.0,
+     "ev": 3.7784
+    }
+   ],
+   "rec_base": {
+    "code": "周三002",
+    "match": "大阪樱花 vs 柏太阳神",
+    "pool": "ttg",
+    "pick": "s7",
+    "q": 0.3131,
+    "odds": 27.0,
+    "ev": 7.4537
+   },
+   "rec_upset": {
+    "code": "周三002",
+    "match": "大阪樱花 vs 柏太阳神",
+    "pool": "ttg",
+    "pick": "s7",
+    "q": 0.3131,
+    "odds": 27.0,
+    "ev": 7.4537
+   },
+   "flags": []
+  },
+  {
+   "code": "周三003",
+   "match": "水户蜀葵 vs 鹿岛鹿角",
+   "candidates": [
+    {
+     "code": "周三003",
+     "match": "水户蜀葵 vs 鹿岛鹿角",
+     "pool": "crs",
+     "pick": "0:3",
+     "q": 0.0798,
+     "odds": 16.0,
+     "ev": 0.2768
+    },
+    {
+     "code": "周三003",
+     "match": "水户蜀葵 vs 鹿岛鹿角",
+     "pool": "ttg",
+     "pick": "s6",
+     "q": 0.323,
+     "odds": 25.0,
+     "ev": 7.075
+    },
+    {
+     "code": "周三003",
+     "match": "水户蜀葵 vs 鹿岛鹿角",
+     "pool": "ttg",
+     "pick": "s5",
+     "q": 0.1813,
+     "odds": 13.0,
+     "ev": 1.3569
+    },
+    {
+     "code": "周三003",
+     "match": "水户蜀葵 vs 鹿岛鹿角",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.512,
+     "odds": 2.88,
+     "ev": 0.4746
+    },
+    {
+     "code": "周三003",
+     "match": "水户蜀葵 vs 鹿岛鹿角",
+     "pool": "hafu",
+     "pick": "ha",
+     "q": 0.2487,
+     "odds": 25.0,
+     "ev": 5.2175
+    }
+   ],
+   "rec_base": {
+    "code": "周三003",
+    "match": "水户蜀葵 vs 鹿岛鹿角",
+    "pool": "ttg",
+    "pick": "s6",
+    "q": 0.323,
+    "odds": 25.0,
+    "ev": 7.075
+   },
+   "rec_upset": {
+    "code": "周三003",
+    "match": "水户蜀葵 vs 鹿岛鹿角",
+    "pool": "ttg",
+    "pick": "s6",
+    "q": 0.323,
+    "odds": 25.0,
+    "ev": 7.075
+   },
+   "flags": []
+  },
+  {
+   "code": "周三004",
+   "match": "町田泽维 vs 川崎前锋",
+   "candidates": [
+    {
+     "code": "周三004",
+     "match": "町田泽维 vs 川崎前锋",
+     "pool": "crs",
+     "pick": "3:0",
+     "q": 0.0806,
+     "odds": 15.0,
+     "ev": 0.209
+    },
+    {
+     "code": "周三004",
+     "match": "町田泽维 vs 川崎前锋",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2559,
+     "odds": 3.6,
+     "ev": -0.0788
+    },
+    {
+     "code": "周三004",
+     "match": "町田泽维 vs 川崎前锋",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.1901,
+     "odds": 3.7,
+     "ev": -0.2966
+    },
+    {
+     "code": "周三004",
+     "match": "町田泽维 vs 川崎前锋",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.3434,
+     "odds": 2.72,
+     "ev": -0.066
+    },
+    {
+     "code": "周三004",
+     "match": "町田泽维 vs 川崎前锋",
+     "pool": "hafu",
+     "pick": "dh",
+     "q": 0.1824,
+     "odds": 4.6,
+     "ev": -0.161
+    }
+   ],
+   "rec_base": {
+    "code": "周三004",
+    "match": "町田泽维 vs 川崎前锋",
+    "pool": "crs",
+    "pick": "3:0",
+    "q": 0.0806,
+    "odds": 15.0,
+    "ev": 0.209
+   },
+   "rec_upset": {
+    "code": "周三004",
+    "match": "町田泽维 vs 川崎前锋",
+    "pool": "crs",
+    "pick": "3:0",
+    "q": 0.0806,
+    "odds": 15.0,
+    "ev": 0.209
+   },
+   "flags": []
+  },
+  {
+   "code": "周三005",
+   "match": "萨索洛 vs 弗洛西诺",
+   "candidates": [
+    {
+     "code": "周三005",
+     "match": "萨索洛 vs 弗洛西诺",
+     "pool": "crs",
+     "pick": "0:1",
+     "q": 0.0772,
+     "odds": 11.5,
+     "ev": -0.1122
+    },
+    {
+     "code": "周三005",
+     "match": "萨索洛 vs 弗洛西诺",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2365,
+     "odds": 3.6,
+     "ev": -0.1486
+    },
+    {
+     "code": "周三005",
+     "match": "萨索洛 vs 弗洛西诺",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2226,
+     "odds": 3.75,
+     "ev": -0.1653
+    },
+    {
+     "code": "周三005",
+     "match": "萨索洛 vs 弗洛西诺",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2192,
+     "odds": 2.8,
+     "ev": -0.3862
+    },
+    {
+     "code": "周三005",
+     "match": "萨索洛 vs 弗洛西诺",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.1686,
+     "odds": 7.0,
+     "ev": 0.1802
+    }
+   ],
+   "rec_base": {
+    "code": "周三005",
+    "match": "萨索洛 vs 弗洛西诺",
+    "pool": "hafu",
+    "pick": "aa",
+    "q": 0.1686,
+    "odds": 7.0,
+    "ev": 0.1802
+   },
+   "rec_upset": {
+    "code": "周三005",
+    "match": "萨索洛 vs 弗洛西诺",
+    "pool": "hafu",
+    "pick": "aa",
+    "q": 0.1686,
+    "odds": 7.0,
+    "ev": 0.1802
+   },
+   "flags": [
+    "low_conf"
+   ]
+  },
+  {
+   "code": "周三006",
+   "match": "乌迪内斯 vs 威尼斯",
+   "candidates": [
+    {
+     "code": "周三006",
+     "match": "乌迪内斯 vs 威尼斯",
+     "pool": "crs",
+     "pick": "0:0",
+     "q": 0.0718,
+     "odds": 11.0,
+     "ev": -0.2102
+    },
+    {
+     "code": "周三006",
+     "match": "乌迪内斯 vs 威尼斯",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2365,
+     "odds": 3.5,
+     "ev": -0.1723
+    },
+    {
+     "code": "周三006",
+     "match": "乌迪内斯 vs 威尼斯",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2226,
+     "odds": 3.75,
+     "ev": -0.1653
+    },
+    {
+     "code": "周三006",
+     "match": "乌迪内斯 vs 威尼斯",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2192,
+     "odds": 3.25,
+     "ev": -0.2876
+    },
+    {
+     "code": "周三006",
+     "match": "乌迪内斯 vs 威尼斯",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.1686,
+     "odds": 5.6,
+     "ev": -0.0558
+    }
+   ],
+   "rec_base": {
+    "code": "周三006",
+    "match": "乌迪内斯 vs 威尼斯",
+    "pool": "hafu",
+    "pick": "aa",
+    "q": 0.1686,
+    "odds": 5.6,
+    "ev": -0.0558
+   },
+   "rec_upset": {
+    "code": "周三006",
+    "match": "乌迪内斯 vs 威尼斯",
+    "pool": "hafu",
+    "pick": "aa",
+    "q": 0.1686,
+    "odds": 5.6,
+    "ev": -0.0558
+   },
+   "flags": [
+    "low_conf"
+   ]
+  }
+ ],
+ "ranAt": "2026-09-02"
+}

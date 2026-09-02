@@ -1,0 +1,270 @@
+{
+ "fetchedAt": "2026-09-02",
+ "source": "sporttery",
+ "matchId": 2041232,
+ "match": {
+  "code": "周三012",
+  "league": "巴甲",
+  "gameweek": "4",
+  "season": "2026",
+  "home": "弗拉门戈",
+  "away": "米拉索尔",
+  "kickoff": "2026-09-03 06:30",
+  "uniformMatchId": 2504701
+ },
+ "standing": {
+  "away": {
+   "groupName": "",
+   "phaseName": "Regular Season",
+   "ranking": "16",
+   "sAwayDrawMatchCnt": "3",
+   "sAwayLossGoalMatchCnt": "7",
+   "sAwayWinGoalMatchCnt": "1",
+   "sDrawMatchCnt": "7",
+   "sLossGoalMatchCnt": "11",
+   "sWinGoalMatchCnt": "6",
+   "seasonName": "2026"
+  },
+  "home": {
+   "groupName": "",
+   "phaseName": "Regular Season",
+   "ranking": "2",
+   "sDrawMatchCnt": "6",
+   "sHomeDrawMatchCnt": "3",
+   "sHomeLossGoalMatchCnt": "1",
+   "sHomeWinGoalMatchCnt": "7",
+   "sLossGoalMatchCnt": "4",
+   "sWinGoalMatchCnt": "14",
+   "seasonName": "2026"
+  }
+ },
+ "injuries": {
+  "home": [],
+  "away": [
+   {
+    "name": "Yuri",
+    "pos": "中场",
+    "no": "5",
+    "injury": 0,
+    "suspension": 1,
+    "apps": 6,
+    "starts": 4
+   },
+   {
+    "name": "Neto Moura",
+    "pos": "中场",
+    "no": "25",
+    "injury": 0,
+    "suspension": 1,
+    "apps": 15,
+    "starts": 11
+   }
+  ]
+ },
+ "form": {
+  "goalAvg": {
+   "awayGoalAvgCnt": "0.9",
+   "awayGoalAvgCntRatio": "27.3",
+   "homeGoalAvgCnt": "2.4",
+   "homeGoalAvgCntRatio": "72.7",
+   "totalLegCnt": 10
+  },
+  "last10": {
+   "awayDrawMatchCnt": 6,
+   "awayLossGoalMatchCnt": 3,
+   "awayScoreRatio": "30",
+   "awayWinGoalMatchCnt": 1,
+   "homeDrawMatchCnt": 3,
+   "homeLossGoalMatchCnt": 1,
+   "homeScoreRatio": "70",
+   "homeWinGoalMatchCnt": 6,
+   "totalLegCnt": 10
+  },
+  "last10HomeAway": {
+   "awayDrawMatchCnt": 3,
+   "awayLossGoalMatchCnt": 6,
+   "awayScoreRatio": "20",
+   "awayWinGoalMatchCnt": 1,
+   "homeDrawMatchCnt": 2,
+   "homeLossGoalMatchCnt": 1,
+   "homeScoreRatio": "77",
+   "homeWinGoalMatchCnt": 7,
+   "totalLegCnt": 10
+  }
+ },
+ "h2h": {
+  "statistics": {
+   "drawMatchCnt": 1,
+   "drawProbability": "33%",
+   "goalCnt": 0,
+   "lossGoalCnt": 0,
+   "lossGoalMatchCnt": 0,
+   "lossProbability": "0%",
+   "netGoal": 0,
+   "sportteryTeamId": 0,
+   "teamId": 0,
+   "teamShortName": "弗拉门戈",
+   "totalLegCnt": 3,
+   "winGoalMatchCnt": 2,
+   "winProbability": "67%"
+  },
+  "matches": [
+   {
+    "date": "2026-08-17",
+    "home": "米拉索尔",
+    "score": "1:5",
+    "ht": "0:1",
+    "away": "弗拉门戈",
+    "winner": "home"
+   },
+   {
+    "date": "2025-12-07",
+    "home": "米拉索尔",
+    "score": "3:3",
+    "ht": "2:2",
+    "away": "弗拉门戈",
+    "winner": "draw"
+   },
+   {
+    "date": "2025-08-10",
+    "home": "弗拉门戈",
+    "score": "2:1",
+    "ht": "1:0",
+    "away": "米拉索尔",
+    "winner": "home"
+   }
+  ]
+ },
+ "scorers": {
+  "away": {
+   "playerList": [
+    {
+     "appearanceCnt": 21,
+     "assistAvgCnt": "0.1",
+     "assistCnt": 2,
+     "assistProbability": "12%",
+     "goalAvgCnt": "0.2",
+     "goalCnt": 4,
+     "goalProbability": "16%",
+     "injuryFlag": 0,
+     "personId": 547251,
+     "personName": "伊戈尔 马克斯",
+     "playerPositionCode": "Defender",
+     "playerPositionDesc": "后卫",
+     "startedMatchCnt": 19,
+     "substituteMatchCnt": 2,
+     "suspensionFlag": 0,
+     "uniformNo": "32"
+    },
+    {
+     "appearanceCnt": 17,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.2",
+     "goalCnt": 4,
+     "goalProbability": "16%",
+     "injuryFlag": 0,
+     "personId": 71055,
+     "personName": "卡洛斯·爱德华多",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 10,
+     "substituteMatchCnt": 7,
+     "suspensionFlag": 0,
+     "uniformNo": "33"
+    },
+    {
+     "appearanceCnt": 24,
+     "assistAvgCnt": "0",
+     "assistCnt": 1,
+     "assistProbability": "6%",
+     "goalAvgCnt": "0.1",
+     "goalCnt": 2,
+     "goalProbability": "8%",
+     "injuryFlag": 0,
+     "personId": 470539,
+     "personName": "João Victor",
+     "playerPositionCode": "Defender",
+     "playerPositionDesc": "后卫",
+     "startedMatchCnt": 24,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "34"
+    }
+   ],
+   "sportteryTeamId": 2469,
+   "teamId": 10164,
+   "teamShortName": "米拉索尔",
+   "uniformTeamId": 2048
+  },
+  "home": {
+   "playerList": [
+    {
+     "appearanceCnt": 24,
+     "assistAvgCnt": "0.2",
+     "assistCnt": 4,
+     "assistProbability": "10%",
+     "goalAvgCnt": "0.6",
+     "goalCnt": 15,
+     "goalProbability": "32%",
+     "injuryFlag": 0,
+     "personId": 435998,
+     "personName": "佩德罗",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 23,
+     "substituteMatchCnt": 1,
+     "suspensionFlag": 0,
+     "uniformNo": "9"
+    },
+    {
+     "appearanceCnt": 24,
+     "assistAvgCnt": "0.3",
+     "assistCnt": 7,
+     "assistProbability": "18%",
+     "goalAvgCnt": "0.3",
+     "goalCnt": 8,
+     "goalProbability": "17%",
+     "injuryFlag": 0,
+     "personId": 476784,
+     "personName": "萨穆埃尔·利诺",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 19,
+     "substituteMatchCnt": 5,
+     "suspensionFlag": 0,
+     "uniformNo": "16"
+    },
+    {
+     "appearanceCnt": 18,
+     "assistAvgCnt": "0.3",
+     "assistCnt": 5,
+     "assistProbability": "13%",
+     "goalAvgCnt": "0.2",
+     "goalCnt": 4,
+     "goalProbability": "9%",
+     "injuryFlag": 0,
+     "personId": 362179,
+     "personName": "卡拉斯卡尔",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 10,
+     "substituteMatchCnt": 8,
+     "suspensionFlag": 0,
+     "uniformNo": "15"
+    }
+   ],
+   "sportteryTeamId": 571,
+   "teamId": 318,
+   "teamShortName": "弗拉门戈",
+   "uniformTeamId": 29
+  },
+  "seasonId": 14239,
+  "seasonName": "2026",
+  "tournamentId": 84,
+  "tournamentShortName": "巴甲",
+  "uniformLeagueId": 31,
+  "uniformMatchId": 2504701
+ }
+}

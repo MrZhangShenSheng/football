@@ -1,0 +1,430 @@
+{
+ "date": "2026-09-02",
+ "version": "v5.5",
+ "anchor": "单锚模式(体彩去水为概率基准;Pinnacle赛前价缺失;修正后概率×0.97,星级上限⭐⭐⭐)",
+ "plans": [
+  {
+   "plan": "A稳版·平衡",
+   "type": "HAD 2串1×2倍",
+   "stake": "4元(2元×2倍)",
+   "legs": [
+    "周三009 HAD 主胜@1.85 p63.9%",
+    "周四006 HAD 主胜@1.84 p56.9%"
+   ],
+   "odds": 3.4,
+   "evEach": false,
+   "note": "两fd锚干净胆;合赔3.40→13.6元;全中概率36.4%"
+  },
+  {
+   "plan": "B进取版·平衡",
+   "type": "HAD 3串1×2倍",
+   "stake": "4元(2元×2倍)",
+   "legs": [
+    "周三009 HAD 主胜@1.85 p63.9%",
+    "周三011 HAD 客胜@2.22 p63.0%⚠分歧",
+    "周四006 HAD 主胜@1.84 p56.9%"
+   ],
+   "odds": 7.555,
+   "evEach": false,
+   "note": "米堡腿模型63%vs市场39.9%分歧23pp已降级标注;保守口径全中15.3%/融合22.9%;合赔7.56→30.2元"
+  },
+  {
+   "plan": "C搏奖·HAFU",
+   "type": "HAFU 2串1",
+   "stake": "2元",
+   "legs": [
+    "周三009 HAFU hh(半主/全主)@3.05 p46.2%",
+    "周三011 HAFU aa(半客/全客)@3.75 p40%保守"
+   ],
+   "odds": 11.44,
+   "evEach": true,
+   "note": "女王hh DC46.2%vs市场41.2%分歧5pp内通过;米堡aa DC54.7%打折至40%保守口径EV+50%;合赔11.44→22.9元"
+  },
+  {
+   "plan": "C搏奖·广西CRS",
+   "type": "CRS 3串1",
+   "stake": "2元",
+   "legs": [
+    "周三009 CRS 2:0@10.5 q8.8%",
+    "周三011 CRS 1:2@8.75 q8.5%",
+    "周四006 CRS 1:0@8.0 q12.5%"
+   ],
+   "odds": 735.0,
+   "evEach": true,
+   "note": "freq-band三步:带内q最高(英冠TOP3验2-0/1-2,西甲TOP2验1-0);与方向票同向集中,彩票仓"
+  }
+ ],
+ "matches": [
+  {
+   "idx": 1,
+   "code": "周三007",
+   "league": "英冠(R4)",
+   "match": "米尔沃尔 vs 雷克斯",
+   "pick": "HAD 主胜",
+   "odds": 2.15,
+   "star": 2,
+   "grade": "A",
+   "dc": [
+    0.537,
+    0.274,
+    0.189
+   ],
+   "fused": [
+    0.511,
+    0.248,
+    0.241
+   ],
+   "final": 0.511,
+   "chain": "无",
+   "lambdaHome": 1.678,
+   "lambdaAway": 0.916,
+   "fusedPre": [
+    0.511,
+    0.248,
+    0.241
+   ],
+   "chainSteps": [],
+   "ev": 0.099,
+   "inPlan": null,
+   "note": "主51.1%二星+;米尔沃尔主7vs雷克斯客22(升班马);主伤L.Jensen(1)客伤2;米尔沃尔主场6胜0平4负无平局;DC53.7%与市场41.2%分歧12pp未过校验,降二星"
+  },
+  {
+   "idx": 2,
+   "code": "周三008",
+   "league": "英冠(R4)",
+   "match": "西布罗姆 vs 查尔顿",
+   "pick": "HAD (胶着避开)",
+   "odds": 1.71,
+   "star": 2,
+   "grade": "A",
+   "dc": [
+    0.346,
+    0.335,
+    0.319
+   ],
+   "fused": [
+    0.541,
+    0.258,
+    0.201
+   ],
+   "final": 0.541,
+   "chain": "无",
+   "lambdaHome": 1.087,
+   "lambdaAway": 1.035,
+   "fusedPre": [
+    0.541,
+    0.258,
+    0.201
+   ],
+   "chainSteps": [],
+   "ev": -0.075,
+   "inPlan": null,
+   "note": "市场主胜51.8%拉高融合54.1%但DC三向胶着(34.6/33.5/31.9);查尔顿排2客5胜1平4负强;西布罗姆主场4胜5平1负平局多;λ和2.12低进球;避开"
+  },
+  {
+   "idx": 3,
+   "code": "周三009",
+   "league": "英冠(R4)",
+   "match": "女王巡游 vs 加的夫城",
+   "pick": "HAD 主胜",
+   "odds": 1.85,
+   "star": 3,
+   "grade": "A",
+   "dc": [
+    0.67,
+    0.195,
+    0.136
+   ],
+   "fused": [
+    0.639,
+    0.187,
+    0.173
+   ],
+   "final": 0.639,
+   "chain": "无",
+   "lambdaHome": 2.51,
+   "lambdaAway": 1.08,
+   "fusedPre": [
+    0.639,
+    0.187,
+    0.173
+   ],
+   "chainSteps": [],
+   "ev": 0.182,
+   "inPlan": "A稳版",
+   "note": "主63.9%三星本轮最强胆;女王排4近10:7胜3平0负不败vs加的夫排18;λ主2.51攻强;HAFU hh@3.05 DC46.2%EV+41%过分歧校验入C票;CRS 2-0@10.5带内q8.8%"
+  },
+  {
+   "idx": 4,
+   "code": "周三011",
+   "league": "英冠(R4)",
+   "match": "伯恩利 vs 米堡",
+   "pick": "HAD 客胜",
+   "odds": 2.22,
+   "star": 3,
+   "grade": "A",
+   "dc": [
+    0.093,
+    0.152,
+    0.754
+   ],
+   "fused": [
+    0.202,
+    0.186,
+    0.612
+   ],
+   "final": 0.63,
+   "chain": "伤停d=+2客×1.04",
+   "lambdaHome": 1.038,
+   "lambdaAway": 3.016,
+   "fusedPre": [
+    0.202,
+    0.186,
+    0.612
+   ],
+   "chainSteps": [
+    {
+     "name": "伤停差值d=+2",
+     "factor": 1.04
+    }
+   ],
+   "ev": 0.399,
+   "inPlan": "B进取版",
+   "note": "客63.0%三星但分歧旗:模型vs市场39.9%差23pp(伯恩利英超降班马市场有记忆,DC按崩盘近况);主0胜5平5负+主伤2主力(B.Humphreys+松内);双平局队平局威胁真实;aa@3.75保守40%口径入C票;CRS 1:2@8.75带内q8.5%"
+  },
+  {
+   "idx": 5,
+   "code": "周三012",
+   "league": "巴甲",
+   "match": "弗拉门戈 vs 米拉索尔",
+   "pick": "HAD 主胜(超低赔不推)",
+   "odds": 1.18,
+   "star": 3,
+   "grade": "A",
+   "dc": null,
+   "fused": null,
+   "final": 0.82,
+   "chain": "无",
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": -0.032,
+   "inPlan": null,
+   "note": "市场主82%(1.18去水);弗拉门戈排2主场7胜2平1负vs米拉索尔排16客1胜3平6负;巴甲无DC;@1.18无单关价值EV-3%;HAD poolSingle=1可单关但不推"
+  },
+  {
+   "idx": 6,
+   "code": "周三013",
+   "league": "巴西杯",
+   "match": "桑托斯 vs 帕梅拉斯",
+   "pick": "HAD (胶着避开)",
+   "odds": 2.55,
+   "star": 2,
+   "grade": "B",
+   "dc": null,
+   "fused": null,
+   "final": 0.34,
+   "chain": "无",
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": -0.132,
+   "inPlan": null,
+   "note": "市场三向2.55/3.18/2.37胶着;巴西杯无DC;H2H近10桑托斯4胜2平4负均势;避开"
+  },
+  {
+   "idx": 7,
+   "code": "周四001",
+   "league": "沙职(R4)",
+   "match": "迈季宽广 vs 拉斯永恒",
+   "pick": "HAD (无锚低置信)",
+   "odds": 2.36,
+   "star": 1,
+   "grade": "C",
+   "dc": null,
+   "fused": null,
+   "final": 0.4,
+   "chain": "无",
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": -0.056,
+   "inPlan": null,
+   "note": "沙特升班马队DC无参数(队名未入拟合库);主11近10:2胜2平6负vs客4;市场客40%;无锚联赛铁律10禁保底胆;不推"
+  },
+  {
+   "idx": 8,
+   "code": "周四002",
+   "league": "沙职(R4)",
+   "match": "新未来SC vs 赛哈海湾",
+   "pick": "HAD 主胜(无锚不推)",
+   "odds": 1.64,
+   "star": 2,
+   "grade": "B",
+   "dc": null,
+   "fused": null,
+   "final": 0.57,
+   "chain": "无",
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": -0.065,
+   "inPlan": null,
+   "note": "市场主57%;NEOM主5胜3平2负vs赛哈海湾客1胜5平4负平局多;沙特无锚禁保底胆;仅翻身池候选"
+  },
+  {
+   "idx": 9,
+   "code": "周四003",
+   "league": "瑞超",
+   "match": "米亚尔比 vs 佐加顿斯",
+   "pick": "HAD 客胜",
+   "odds": 1.7,
+   "star": 3,
+   "grade": "A",
+   "dc": [
+    0.279,
+    0.265,
+    0.456
+   ],
+   "fused": [
+    0.214,
+    0.197,
+    0.589
+   ],
+   "final": 0.589,
+   "chain": "无",
+   "lambdaHome": 1.178,
+   "lambdaAway": 1.568,
+   "fusedPre": [
+    0.214,
+    0.197,
+    0.589
+   ],
+   "chainSteps": [],
+   "ev": 0.001,
+   "inPlan": null,
+   "note": "客58.9%三星;佐加顿斯排3近10:6胜2平2负客6胜2平2负vs米亚尔比排12近2胜1平7负崩;⚠瑞超无fd收盘锚铁律10禁保底胆——仅翻身池/加腿候选(T011先例);EV+0.1%持平"
+  },
+  {
+   "idx": 10,
+   "code": "周四004",
+   "league": "沙职(R4)",
+   "match": "迪里耶 vs 胡巴卡德",
+   "pick": "D级排除",
+   "odds": null,
+   "star": 0,
+   "grade": "D",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": "无",
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": null,
+   "note": "迪里耶(升班马)insight近10全0+DC无参数;胡巴卡德=qadsiah但不在2627拟合库;D级排除"
+  },
+  {
+   "idx": 11,
+   "code": "周四005",
+   "league": "法甲(R3)",
+   "match": "图卢兹 vs 里尔",
+   "pick": "HAD 客胜",
+   "odds": 2.01,
+   "star": 2,
+   "grade": "A",
+   "dc": [
+    0.298,
+    0.221,
+    0.48
+   ],
+   "fused": [
+    0.264,
+    0.22,
+    0.516
+   ],
+   "final": 0.503,
+   "chain": "R3×0.95",
+   "lambdaHome": 1.277,
+   "lambdaAway": 1.694,
+   "fusedPre": [
+    0.264,
+    0.22,
+    0.516
+   ],
+   "chainSteps": [
+    {
+     "name": "开季修正R3",
+     "factor": 0.95
+    }
+   ],
+   "ev": 0.011,
+   "inPlan": null,
+   "note": "里尔排3客7胜1平2负强但R3开季修正后50.3%二星;DC客48%vs市场44.1%分歧4pp内;EV+1.1%边缘;不作胆可作4串加腿"
+  },
+  {
+   "idx": 12,
+   "code": "周四006",
+   "league": "西甲(R4)",
+   "match": "皇家社会 vs 塞尔塔",
+   "pick": "HAD 主胜",
+   "odds": 1.84,
+   "star": 3,
+   "grade": "A",
+   "dc": [
+    0.503,
+    0.287,
+    0.21
+   ],
+   "fused": [
+    0.569,
+    0.232,
+    0.199
+   ],
+   "final": 0.569,
+   "chain": "无",
+   "lambdaHome": 1.502,
+   "lambdaAway": 0.887,
+   "fusedPre": [
+    0.569,
+    0.232,
+    0.199
+   ],
+   "chainSteps": [],
+   "ev": 0.047,
+   "inPlan": "A稳版",
+   "note": "主56.9%三星;皇社排13vs塞尔塔17;皇社近10:3胜1平6负差但主场4胜3平3负;DC50.3%vs市场48.2%分歧2pp内干净;CRS 1-0@8.0带内q12.5%入广西票"
+  },
+  {
+   "idx": 13,
+   "code": "周四007",
+   "league": "巴西杯",
+   "match": "格雷米奥 vs 巴西国际",
+   "pick": "HAD (胶着避开)",
+   "odds": 2.45,
+   "star": 2,
+   "grade": "B",
+   "dc": null,
+   "fused": null,
+   "final": 0.35,
+   "chain": "无",
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": -0.142,
+   "inPlan": null,
+   "note": "市场2.45/2.70/2.85三项极差<10pp胶着;巴西杯德比无DC;格雷米奥主场5胜2平3负vs巴西国际客2胜3平5负;避开"
+  }
+ ],
+ "boldplayOverride": {
+  "reason": "boldplay机械保底档选周三001-004全日职无锚场(001为D级J3队+002胶着,违铁律10),已override重建A/B/C三方案(fd锚场次);翻身档TTG s7/s6 EV+745%/+708%仍为freq-band λ爆炸bug(pools_card分歧旗仅CRS池触发设计缺口,09-01已定性),已剔除;实际翻身腿=女王hh+米堡aa(HAFU池,分歧旗人工核验过)",
+  "freqBandBug": "同09-01:TTG池无分歧校验;大阪/水户λ爆炸腿连续两轮出现,修复前boldplay翻身档TTG腿一律人工复核"
+ }
+}
