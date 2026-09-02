@@ -77,7 +77,9 @@ python3 boldplay.py                                 # ★v5.3 阶梯出票卡（
 python3 boldplay.py settle                          # 阶梯卡推演结算：逐leg判定（CRS/TTG/HAFU自动判,HAFU需backfill落盘半场;无半场旧档仍人工），legHits入层4实测库（实票走"我买了"登记账本）
 python3 freq_backtest.py                            # freq vs amix 对照回测（score_odds 存档日 × 两法选腿 × 赛果判定 → freq_backtest.json）
 python3 ticket_report.py                            # 实票账本报告（资金曲线/票务清单/玩法分解/纪律对照）
-python -m pytest tests -q                           # 113 用例回归（改代码必跑）
+python3 goal_engine.py --compare                    # 进球引擎P0:修正/裸DC/朴素static+rolling四线对照+消融(09-27评审数据底子;⚠️重跑会抹报告walkForward/bypassPool节,之后须重跑walk-forward与bypass_pool_check)
+python3 goal_engine.py --walk-forward --league spain-laliga   # 干净口径三线(60场分段重拟合;生死线=corrected/bareDc vs naiveRolling)
+python -m pytest tests -q                           # 217 用例回归（改代码必跑）
 ```
 
 ## 预测日全流程
@@ -138,7 +140,7 @@ football/
 │   ├── 05-trends/         #    ★情报时序库 intel-timeline（odds 五池 diff 链/intel 摘要/livescan 扫描事件；刷新自动落盘+回填挂 preSnapshots 桥）
 │   └── 06-tickets/        #    ★实票账本（票=顶层实体：形状/腿/赔率冻结/结算/纪律事件 + tickets.html 报告）——实票=有结算记录的票，其余全是方案推演
 ├── engine/                ← ② 计算层
-│   ├── scripts/           #    run.py(入口) / dc_fit / dc_predict / backtest / corpus / trend_report / backfill / calibrate / ablate / odds_fetch / elo_fetch / xg_fetch / espn_fetch / cn_fetch / sporttery_fetch / band_calibration / score_ev / live_odds_probe / build_index / boldplay(阶梯出票卡+settle,比分选法freq-band默认) / freq_band(联赛频率+球队平移+形状带+q排序) / freq_backtest(freq vs amix对照回测) / ticket_report(实票账本报告) / research/(一次性研究脚本归档)
+│   ├── scripts/           #    run.py(入口) / dc_fit / dc_predict / backtest / corpus / trend_report / backfill / calibrate / ablate / odds_fetch / elo_fetch / xg_fetch / espn_fetch / cn_fetch / sporttery_fetch / band_calibration / score_ev / live_odds_probe / build_index / boldplay(阶梯出票卡+settle,比分选法freq-band默认) / freq_band(联赛频率+球队平移+形状带+q排序) / freq_backtest(freq vs amix对照回测) / goal_engine(进球引擎轨P0:滚动特征修正层+修正比分矩阵+TTG/CRS两出口对照统计+walk-forward,产出04-summaries/goal-engine-report.json) / ticket_report(实票账本报告) / research/(一次性研究脚本归档)
 │   └── cache/             #    DC 参数 / models/ 版本化存档 / fusion.json / fd 赔率缓存 / sporttery_matches.json(五池+单关资格) / score_odds(体彩全玩法赔率日存档) / live_odds_feasibility.json
 ├── skill/                 ← ③ 检索入口：SKILL.md v5.5（阶梯出票卡两档制：保底HAD 4串11+翻身多池引擎seq轮换；逐场三池玩法卡；刷新即快照/扫描必落盘纪律）+ references/ 外置参考（系数详表/官方规则/教训档案，按需加载）
 └── docs/                  #    设计文档
