@@ -1,0 +1,455 @@
+{
+  "ranAt": "2026-09-02T09:51:34",
+  "mode": "in-sample corrected-vs-naive (ttg3=aggregated-prob top3, design 62.4%=score-dedup caliber)",
+  "seasons": [
+    "2526"
+  ],
+  "hyper": {
+    "beta": 0.3,
+    "priorK": 2.0,
+    "window": 5,
+    "earlyWeight": 0.3,
+    "note": "阶段0手写，待阶段1学习器替换"
+  },
+  "leagues": {
+    "england-premier": {
+      "n": 210,
+      "naiveRollingN": 209,
+      "corrected": {
+        "ttg3": 0.6762,
+        "crs1": 0.1,
+        "crs3": 0.3286,
+        "crs5": 0.5048
+      },
+      "bareDc": {
+        "ttg3": 0.7,
+        "crs1": 0.0952,
+        "crs3": 0.3333,
+        "crs5": 0.5333
+      },
+      "naiveRolling": {
+        "ttg3": 0.6172,
+        "crs1": 0.0622,
+        "crs3": 0.2536,
+        "crs5": 0.3541
+      },
+      "naiveStatic": {
+        "ttg3": 0.6571,
+        "crs1": 0.1143,
+        "crs3": 0.3048,
+        "crs5": 0.4429
+      }
+    },
+    "england-championship": {
+      "n": 260,
+      "naiveRollingN": 259,
+      "corrected": {
+        "ttg3": 0.7192,
+        "crs1": 0.1423,
+        "crs3": 0.3654,
+        "crs5": 0.5192
+      },
+      "bareDc": {
+        "ttg3": 0.7269,
+        "crs1": 0.1538,
+        "crs3": 0.3654,
+        "crs5": 0.5385
+      },
+      "naiveRolling": {
+        "ttg3": 0.6988,
+        "crs1": 0.139,
+        "crs3": 0.3784,
+        "crs5": 0.5251
+      },
+      "naiveStatic": {
+        "ttg3": 0.7192,
+        "crs1": 0.1615,
+        "crs3": 0.4154,
+        "crs5": 0.5769
+      }
+    },
+    "spain-laliga": {
+      "n": 189,
+      "naiveRollingN": 188,
+      "corrected": {
+        "ttg3": 0.7354,
+        "crs1": 0.1958,
+        "crs3": 0.3862,
+        "crs5": 0.5714
+      },
+      "bareDc": {
+        "ttg3": 0.7831,
+        "crs1": 0.2011,
+        "crs3": 0.4127,
+        "crs5": 0.6085
+      },
+      "naiveRolling": {
+        "ttg3": 0.7021,
+        "crs1": 0.1543,
+        "crs3": 0.3457,
+        "crs5": 0.4734
+      },
+      "naiveStatic": {
+        "ttg3": 0.7143,
+        "crs1": 0.1746,
+        "crs3": 0.3915,
+        "crs5": 0.5344
+      }
+    },
+    "germany-bundesliga": {
+      "n": 150,
+      "naiveRollingN": 149,
+      "corrected": {
+        "ttg3": 0.5867,
+        "crs1": 0.1067,
+        "crs3": 0.3,
+        "crs5": 0.46
+      },
+      "bareDc": {
+        "ttg3": 0.6133,
+        "crs1": 0.1533,
+        "crs3": 0.32,
+        "crs5": 0.48
+      },
+      "naiveRolling": {
+        "ttg3": 0.557,
+        "crs1": 0.0403,
+        "crs3": 0.1812,
+        "crs5": 0.302
+      },
+      "naiveStatic": {
+        "ttg3": 0.6133,
+        "crs1": 0.1,
+        "crs3": 0.28,
+        "crs5": 0.4133
+      }
+    },
+    "germany-bundesliga2": {
+      "n": 89,
+      "naiveRollingN": 88,
+      "corrected": {
+        "ttg3": 0.6629,
+        "crs1": 0.0899,
+        "crs3": 0.2584,
+        "crs5": 0.5056
+      },
+      "bareDc": {
+        "ttg3": 0.6854,
+        "crs1": 0.0899,
+        "crs3": 0.2809,
+        "crs5": 0.5169
+      },
+      "naiveRolling": {
+        "ttg3": 0.625,
+        "crs1": 0.0455,
+        "crs3": 0.2159,
+        "crs5": 0.3068
+      },
+      "naiveStatic": {
+        "ttg3": 0.6517,
+        "crs1": 0.1011,
+        "crs3": 0.3034,
+        "crs5": 0.4494
+      }
+    },
+    "italy-serie-a": {
+      "n": 200,
+      "naiveRollingN": 199,
+      "corrected": {
+        "ttg3": 0.67,
+        "crs1": 0.11,
+        "crs3": 0.36,
+        "crs5": 0.585
+      },
+      "bareDc": {
+        "ttg3": 0.685,
+        "crs1": 0.11,
+        "crs3": 0.38,
+        "crs5": 0.59
+      },
+      "naiveRolling": {
+        "ttg3": 0.6432,
+        "crs1": 0.0754,
+        "crs3": 0.2814,
+        "crs5": 0.4472
+      },
+      "naiveStatic": {
+        "ttg3": 0.675,
+        "crs1": 0.115,
+        "crs3": 0.325,
+        "crs5": 0.5
+      }
+    },
+    "france-ligue1": {
+      "n": 153,
+      "naiveRollingN": 152,
+      "corrected": {
+        "ttg3": 0.5752,
+        "crs1": 0.1242,
+        "crs3": 0.3595,
+        "crs5": 0.4902
+      },
+      "bareDc": {
+        "ttg3": 0.5817,
+        "crs1": 0.1373,
+        "crs3": 0.366,
+        "crs5": 0.4967
+      },
+      "naiveRolling": {
+        "ttg3": 0.5921,
+        "crs1": 0.1447,
+        "crs3": 0.3026,
+        "crs5": 0.4276
+      },
+      "naiveStatic": {
+        "ttg3": 0.6275,
+        "crs1": 0.1634,
+        "crs3": 0.3333,
+        "crs5": 0.4771
+      }
+    },
+    "france-ligue2": {
+      "n": 98,
+      "naiveRollingN": 97,
+      "corrected": {
+        "ttg3": 0.5816,
+        "crs1": 0.1327,
+        "crs3": 0.3878,
+        "crs5": 0.4898
+      },
+      "bareDc": {
+        "ttg3": 0.5918,
+        "crs1": 0.1633,
+        "crs3": 0.3776,
+        "crs5": 0.4796
+      },
+      "naiveRolling": {
+        "ttg3": 0.5876,
+        "crs1": 0.0928,
+        "crs3": 0.299,
+        "crs5": 0.4536
+      },
+      "naiveStatic": {
+        "ttg3": 0.6531,
+        "crs1": 0.1531,
+        "crs3": 0.3878,
+        "crs5": 0.5612
+      }
+    },
+    "netherlands-eredivisie": {
+      "n": 142,
+      "naiveRollingN": 141,
+      "corrected": {
+        "ttg3": 0.6338,
+        "crs1": 0.1056,
+        "crs3": 0.2887,
+        "crs5": 0.4225
+      },
+      "bareDc": {
+        "ttg3": 0.6338,
+        "crs1": 0.0986,
+        "crs3": 0.2746,
+        "crs5": 0.4437
+      },
+      "naiveRolling": {
+        "ttg3": 0.6099,
+        "crs1": 0.0851,
+        "crs3": 0.1915,
+        "crs5": 0.3688
+      },
+      "naiveStatic": {
+        "ttg3": 0.6479,
+        "crs1": 0.1268,
+        "crs3": 0.3099,
+        "crs5": 0.4648
+      }
+    },
+    "portugal-primeira": {
+      "n": 153,
+      "naiveRollingN": 152,
+      "corrected": {
+        "ttg3": 0.6863,
+        "crs1": 0.1765,
+        "crs3": 0.3791,
+        "crs5": 0.5948
+      },
+      "bareDc": {
+        "ttg3": 0.732,
+        "crs1": 0.1307,
+        "crs3": 0.4183,
+        "crs5": 0.6078
+      },
+      "naiveRolling": {
+        "ttg3": 0.6316,
+        "crs1": 0.0789,
+        "crs3": 0.25,
+        "crs5": 0.3553
+      },
+      "naiveStatic": {
+        "ttg3": 0.6732,
+        "crs1": 0.1111,
+        "crs3": 0.281,
+        "crs5": 0.4379
+      }
+    },
+    "belgium-first-a": {
+      "n": 96,
+      "naiveRollingN": 95,
+      "corrected": {
+        "ttg3": 0.6667,
+        "crs1": 0.1771,
+        "crs3": 0.3854,
+        "crs5": 0.5833
+      },
+      "bareDc": {
+        "ttg3": 0.6771,
+        "crs1": 0.1562,
+        "crs3": 0.3958,
+        "crs5": 0.6042
+      },
+      "naiveRolling": {
+        "ttg3": 0.6316,
+        "crs1": 0.1579,
+        "crs3": 0.2632,
+        "crs5": 0.3579
+      },
+      "naiveStatic": {
+        "ttg3": 0.6979,
+        "crs1": 0.1771,
+        "crs3": 0.375,
+        "crs5": 0.5208
+      }
+    }
+  },
+  "total": {
+    "n": 1740,
+    "naiveRollingN": 1729,
+    "corrected": {
+      "ttg3": 0.6626,
+      "crs1": 0.1333,
+      "crs3": 0.3483,
+      "crs5": 0.523
+    },
+    "bareDc": {
+      "ttg3": 0.6828,
+      "crs1": 0.1362,
+      "crs3": 0.3598,
+      "crs5": 0.5402
+    },
+    "naiveRolling": {
+      "ttg3": 0.6345,
+      "crs1": 0.1001,
+      "crs3": 0.2794,
+      "crs5": 0.4101
+    },
+    "naiveStatic": {
+      "ttg3": 0.6707,
+      "crs1": 0.1368,
+      "crs3": 0.3402,
+      "crs5": 0.4925
+    },
+    "bareDcTtg3ScoreDedup": 0.6224
+  },
+  "ablation": {
+    "noAtt": {
+      "n": 1740,
+      "naiveRollingN": 1729,
+      "corrected": {
+        "ttg3": 0.677,
+        "crs1": 0.1322,
+        "crs3": 0.3494,
+        "crs5": 0.5287
+      },
+      "bareDc": {
+        "ttg3": 0.6828,
+        "crs1": 0.1362,
+        "crs3": 0.3598,
+        "crs5": 0.5402
+      },
+      "naiveRolling": {
+        "ttg3": 0.6345,
+        "crs1": 0.1001,
+        "crs3": 0.2794,
+        "crs5": 0.4101
+      },
+      "naiveStatic": {
+        "ttg3": 0.6707,
+        "crs1": 0.1368,
+        "crs3": 0.3402,
+        "crs5": 0.4925
+      }
+    },
+    "noDef": {
+      "n": 1740,
+      "naiveRollingN": 1729,
+      "corrected": {
+        "ttg3": 0.6655,
+        "crs1": 0.1385,
+        "crs3": 0.3563,
+        "crs5": 0.5276
+      },
+      "bareDc": {
+        "ttg3": 0.6828,
+        "crs1": 0.1362,
+        "crs3": 0.3598,
+        "crs5": 0.5402
+      },
+      "naiveRolling": {
+        "ttg3": 0.6345,
+        "crs1": 0.1001,
+        "crs3": 0.2794,
+        "crs5": 0.4101
+      },
+      "naiveStatic": {
+        "ttg3": 0.6707,
+        "crs1": 0.1368,
+        "crs3": 0.3402,
+        "crs5": 0.4925
+      }
+    },
+    "noShrink": {
+      "n": 1740,
+      "naiveRollingN": 1729,
+      "corrected": {
+        "ttg3": 0.6621,
+        "crs1": 0.1339,
+        "crs3": 0.3494,
+        "crs5": 0.519
+      },
+      "bareDc": {
+        "ttg3": 0.6828,
+        "crs1": 0.1362,
+        "crs3": 0.3598,
+        "crs5": 0.5402
+      },
+      "naiveRolling": {
+        "ttg3": 0.6345,
+        "crs1": 0.1001,
+        "crs3": 0.2794,
+        "crs5": 0.4101
+      },
+      "naiveStatic": {
+        "ttg3": 0.6707,
+        "crs1": 0.1368,
+        "crs3": 0.3402,
+        "crs5": 0.4925
+      }
+    }
+  },
+  "baselineRefs": {
+    "designTtg3": 0.624,
+    "reviewNaiveStaticTtg3_2526": 0.648,
+    "reviewBareDcTtg3_2526": 0.624
+  },
+  "notes": [
+    "in-sample：λ_DC 全季拟合含泄漏；干净结论看 walkForward 节（T6）",
+    "naiveStatic 全季聚合含泄漏，naiveRolling 干净（该场前场次滚动）",
+    "生死线：walk-forward 超不过 naiveRolling 则引擎不上线（复审 A3 拍板）",
+    "TTG 口径差异（T5 实测澄清）：设计 62.4% 出自 had_crs_divergence 的「比分降序去重档前3」",
+    "（total.bareDcTtg3ScoreDedup=0.6224 为该口径复验值，应≈0.624）；",
+    "本报告主口径=总进球聚合概率 top3（与 naive 侧频次 top3 对称）——两口径同场次同矩阵，",
+    "bareDc 主口径 0.6828 高于设计基线属口径差异非模型增益；",
+    "复审 A1「DC 输朴素 2.4pp」是聚合朴素 vs 去重 DC 的不对称对比，同聚合口径下",
+    "bareDc 0.6828 > naiveStatic 0.6707 > naiveRolling 0.6345（供 09-27 评审重估）"
+  ]
+}

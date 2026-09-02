@@ -139,3 +139,245 @@ def crs_rank(matrix):
     """49 比分按概率降序 [(score, p), ...]。"""
     return sorted(((f"{i}-{j}", float(matrix[i, j])) for i in range(7) for j in range(7)),
                   key=lambda kv: -kv[1])
+
+
+# ---------- T5 对照统计 + 消融 CLI ----------
+
+import argparse
+import json
+from collections import Counter
+from datetime import datetime
+
+from common import ROOT
+
+CACHE_DIR = ROOT / "engine" / "cache"
+REPORT_PATH = ROOT / "data" / "04-summaries" / "goal-engine-report.json"
+
+FD_LEAGUES = ["england-premier", "england-championship", "spain-laliga", "germany-bundesliga",
+              "germany-bundesliga2", "italy-serie-a", "italy-serie-b", "france-ligue1",
+              "france-ligue2", "netherlands-eredivisie", "portugal-primeira",
+              "belgium-first-a", "turkey-super-lig", "greece-super"]
+
+METRIC_KEYS = ("ttg3", "crs1", "crs3", "crs5")
+LINES = ("corrected", "bareDc", "naiveRolling", "naiveStatic")
+BASELINE_REFS = {"designTtg3": 0.624, "reviewNaiveStaticTtg3_2526": 0.648, "reviewBareDcTtg3_2526": 0.624}
+
+
+def _ttg3_score_dedup(matrix, actual_t):
+    """设计 62.4% 同口径互验（had_crs_divergence.part_b）：49 比分按概率降序遍历，
+    首次出现的总进球档去重收集，前 3 个不同档含 actual_t 为命中。
+    与主口径（聚合概率 top3）的差异：受单比分概率位置影响，系统性偏低。"""
+    ranked = crs_rank(matrix)
+    tg_rank = []
+    for s, _ in ranked:
+        g = sum(map(int, s.split("-")))
+        if g not in tg_rank:
+            tg_rank.append(g)
+    return actual_t in tg_rank[:3]
+
+
+def load_odds_matches(league, seasons=("2526",)):
+    """读 engine/cache/odds_{league}_{season}.json → [{"home","away","season","fthg","ftag"}]。
+    fthg/ftag None（未赛）跳过；int() 失败跳过（脏行防御）；文件缺失静默跳过该季。"""
+    out = []
+    for season in seasons:
+        p = CACHE_DIR / f"odds_{league}_{season}.json"
+        if not p.exists():
+            continue
+        for m in json.loads(p.read_text(encoding="utf-8")).get("matches", []):
+            try:
+                hg, ag = int(m["fthg"]), int(m["ftag"])
+            except (TypeError, ValueError):
+                continue
+            out.append({"home": m["home"], "away": m["away"], "season": season, "fthg": hg, "ftag": ag})
+    return out
+
+
+def _new_counter():
+    """四指标命中账本 {key: [hit, n]}。"""
+    return {k: [0, 0] for k in METRIC_KEYS}
+
+
+def _top_keys(counter, k):
+    """频序前 k 键，并列按键升序（确定性——Counter.most_common 并列时按插入序不稳定）。"""
+    return [key for key, _ in sorted(counter.items(), key=lambda kv: (-kv[1], kv[0]))[:k]]
+
+
+def bump(counter, matrix, actual_t, actual_s):
+    """matrix 命中统计：ttg3（概率前3档含 actual_t）/ crs1|crs3|crs5（crs_rank 前 k 含 actual_s）。"""
+    tp = ttg_probs(matrix)
+    top3 = set(sorted(range(len(tp)), key=lambda i: (-tp[i], i))[:3])
+    ranked = [s for s, _ in crs_rank(matrix)]
+    for key, hit in (("ttg3", actual_t in top3),
+                     ("crs1", actual_s in ranked[:1]),
+                     ("crs3", actual_s in ranked[:3]),
+                     ("crs5", actual_s in ranked[:5])):
+        counter[key][0] += 1 if hit else 0
+        counter[key][1] += 1
+
+
+def bump_naive(counter, ttg3_set, crs5_set, actual_t, actual_s):
+    """固定档集合命中：ttg3 直接判 in；crs5_set 为按频序排好的 TOP5 比分列表，前 k 截取得 crs1/3/5。"""
+    for key, hit in (("ttg3", actual_t in ttg3_set),
+                     ("crs1", actual_s in crs5_set[:1]),
+                     ("crs3", actual_s in crs5_set[:3]),
+                     ("crs5", actual_s in crs5_set[:5])):
+        counter[key][0] += 1 if hit else 0
+        counter[key][1] += 1
+
+
+def evaluate_league(league, disable=(), seasons=("2526",)):
+    """逐场切片对照：corrected（乘子修正矩阵）/ bareDc（裸 DC）/ naiveRolling（该场前滚动频次）/
+    naiveStatic（全季频次，含泄漏=复审 64.8% 同口径）。
+    DC 缺队场次整场跳过（四线同场次切片才可对照）；无 DC 缓存返回 None。"""
+    dcp = CACHE_DIR / f"{league}_dc.json"
+    if not dcp.exists():
+        print(f"[goal-engine] {league}: 无 DC 缓存 {dcp.name}，跳过（先跑 dc_fit）")
+        return None
+    dc = json.loads(dcp.read_text(encoding="utf-8"))
+    ms = load_odds_matches(league, seasons)
+    rho = dc["rho"]
+    corrected, bareDc = _new_counter(), _new_counter()
+    naiveRolling, naiveStatic = _new_counter(), _new_counter()
+    static_ttg = Counter(m["fthg"] + m["ftag"] for m in ms)
+    static_crs = Counter(f"{m['fthg']}-{m['ftag']}" for m in ms)
+    st_t3, st_c5 = _top_keys(static_ttg, 3), _top_keys(static_crs, 5)
+    roll_ttg, roll_crs = Counter(), Counter()
+    sd_ttg3 = [0, 0]   # bareDc 矩阵的设计同口径（比分降序去重档）ttg3 计数——62.4% 互验锚
+    for idx, m in enumerate(ms):
+        lam = lambda_from_dc(dc, m["home"], m["away"])
+        if lam is None:
+            continue
+        lh, la = lam
+        actual_t, actual_s = m["fthg"] + m["ftag"], f"{m['fthg']}-{m['ftag']}"
+        hist, sides = build_history(ms[:idx])
+        f = match_features(hist, sides, m["home"], m["away"])
+        bump(corrected,
+             score_matrix(lh * lambda_mult(f, "home", disable), la * lambda_mult(f, "away", disable), rho),
+             actual_t, actual_s)
+        bare_m = score_matrix(lh, la, rho)
+        bump(bareDc, bare_m, actual_t, actual_s)
+        sd_ttg3[0] += 1 if _ttg3_score_dedup(bare_m, actual_t) else 0
+        sd_ttg3[1] += 1
+        bump_naive(naiveStatic, st_t3, st_c5, actual_t, actual_s)
+        if idx:  # prior 非空才有滚动频次可言（首场无历史不计 naiveRolling）
+            bump_naive(naiveRolling, _top_keys(roll_ttg, 3), _top_keys(roll_crs, 5), actual_t, actual_s)
+        roll_ttg[actual_t] += 1
+        roll_crs[actual_s] += 1
+    return {"corrected": corrected, "bareDc": bareDc,
+            "naiveRolling": naiveRolling, "naiveStatic": naiveStatic, "sdTtg3": sd_ttg3}
+
+
+def _aggregate(reports):
+    """league 级 [hit, n] 计数求和 → total 同构计数。"""
+    out = {line: _new_counter() for line in LINES}
+    for r in reports:
+        for line in LINES:
+            for key in METRIC_KEYS:
+                out[line][key][0] += r[line][key][0]
+                out[line][key][1] += r[line][key][1]
+    return out
+
+
+def _rates(counter):
+    """[hit, n] → {key: rate}（n=0 → None 防除零）。"""
+    return {key: (round(hit / n, 4) if n else None) for key, (hit, n) in counter.items()}
+
+
+def _section(counter_block):
+    """计数块 → 落盘节：主口径 n + naiveRolling 独立 n + 四线 rate。"""
+    n = counter_block["corrected"]["ttg3"][1]
+    n_rolling = counter_block["naiveRolling"]["ttg3"][1]
+    sec = {"n": n, "naiveRollingN": n_rolling}
+    sec.update({line: _rates(counter_block[line]) for line in LINES})
+    return sec
+
+
+def build_report(seasons, disable=()):
+    """全联赛基线 + 三键消融 → 报告 dict（含落盘与打印前的全部数据）。"""
+    reports = {}
+    for lg in FD_LEAGUES:
+        r = evaluate_league(lg, disable=disable, seasons=seasons)
+        if r is not None:
+            reports[lg] = r
+    leagues_sec = {lg: _section(r) for lg, r in reports.items()}
+    total_sec = _section(_aggregate(reports.values()))
+    sd_hit = sum(r["sdTtg3"][0] for r in reports.values())
+    sd_n = sum(r["sdTtg3"][1] for r in reports.values())
+    total_sec["bareDcTtg3ScoreDedup"] = round(sd_hit / sd_n, 4) if sd_n else None
+    ablation = {}
+    for name, key in (("noAtt", ("att",)), ("noDef", ("def",)), ("noShrink", ("shrink",))):
+        abl = {lg: evaluate_league(lg, disable=key, seasons=seasons) for lg in reports}
+        ablation[name] = _section(_aggregate(abl.values()))
+    mode = "in-sample corrected-vs-naive (ttg3=aggregated-prob top3, design 62.4%=score-dedup caliber)"
+    if disable:
+        mode += f" disable={list(disable)}"
+    return {
+        "ranAt": datetime.now().isoformat(timespec="seconds"),
+        "mode": mode,
+        "seasons": list(seasons),
+        "hyper": {"beta": BETA, "priorK": PRIOR_K, "window": WINDOW, "earlyWeight": EARLY_WEIGHT,
+                  "note": "阶段0手写，待阶段1学习器替换"},
+        "leagues": leagues_sec,
+        "total": total_sec,
+        "ablation": ablation,
+        "baselineRefs": BASELINE_REFS,
+        "notes": ["in-sample：λ_DC 全季拟合含泄漏；干净结论看 walkForward 节（T6）",
+                  "naiveStatic 全季聚合含泄漏，naiveRolling 干净（该场前场次滚动）",
+                  "生死线：walk-forward 超不过 naiveRolling 则引擎不上线（复审 A3 拍板）",
+                  "TTG 口径差异（T5 实测澄清）：设计 62.4% 出自 had_crs_divergence 的「比分降序去重档前3」",
+                  f"（total.bareDcTtg3ScoreDedup={total_sec['bareDcTtg3ScoreDedup']} 为该口径复验值，应≈0.624）；",
+                  "本报告主口径=总进球聚合概率 top3（与 naive 侧频次 top3 对称）——两口径同场次同矩阵，",
+                  f"bareDc 主口径 {total_sec['bareDc']['ttg3']} 高于设计基线属口径差异非模型增益；",
+                  "复审 A1「DC 输朴素 2.4pp」是聚合朴素 vs 去重 DC 的不对称对比，同聚合口径下",
+                  f"bareDc {total_sec['bareDc']['ttg3']} > naiveStatic {total_sec['naiveStatic']['ttg3']}"
+                  f" > naiveRolling {total_sec['naiveRolling']['ttg3']}（供 09-27 评审重估）"],
+    }
+
+
+def _print_total(sec, label):
+    """终端四线对比表 + 基线互验行。"""
+    print(f"\n== {label} 四线对照（率=hit/n） ==")
+    print(f"{'line':<14}" + "".join(f"{k:>8}" for k in METRIC_KEYS) + f"{'n':>8}")
+    for line in LINES:
+        n = sec["naiveRollingN"] if line == "naiveRolling" else sec["n"]
+        cells = "".join(f"{(sec[line][k] if sec[line][k] is not None else float('nan')):>8.4f}"
+                        for k in METRIC_KEYS)
+        print(f"{line:<14}{cells}{n:>8}")
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser(description="goal_engine T5 对照统计+消融")
+    ap.add_argument("--compare", action="store_true", help="四线对照+三键消融，落盘 goal-engine-report.json")
+    ap.add_argument("--disable", default="", help="消融键逗号分隔(att/def/shrink)，作用于 corrected 线")
+    ap.add_argument("--seasons", default="2526", help="赛季逗号分隔(默认 2526)")
+    ap.add_argument("--walk-forward", action="store_true", help="占位：walk-forward 为 T6 交付，本版未实现")
+    args = ap.parse_args(argv)
+    if args.walk_forward:
+        print("[goal-engine] --walk-forward 为 T6 交付，本版未实现（占位）")
+        return
+    if not args.compare:
+        ap.print_help()
+        return
+    seasons = tuple(s for s in (x.strip() for x in args.seasons.split(",")) if s)
+    disable = tuple(d for d in (x.strip() for x in args.disable.split(",")) if d)
+    bad = set(disable) - set(DISABLE_KEYS)
+    if bad:
+        raise SystemExit(f"[goal-engine] 未知 disable 键 {sorted(bad)}，合法：{DISABLE_KEYS}")
+
+    report = build_report(seasons, disable)
+    REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    REPORT_PATH.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(f"[goal-engine] 报告落盘 {REPORT_PATH}")
+    _print_total(report["total"], "total")
+    for name, sec in report["ablation"].items():
+        _print_total(sec, f"ablation.{name}")
+    t = report["total"]
+    print(f"\n基线互验：bareDc.ttg3={t['bareDc']['ttg3']}（聚合概率口径，高于设计属口径差异）；"
+          f"bareDcTtg3ScoreDedup={t['bareDcTtg3ScoreDedup']} vs 设计 {BASELINE_REFS['designTtg3']}(±0.02 同口径)；"
+          f"naiveStatic.ttg3={t['naiveStatic']['ttg3']} vs 复审 {BASELINE_REFS['reviewNaiveStaticTtg3_2526']}"
+          "（复审为常识固定档+Pinnacle过滤场次，本报告为全季频序档+DC可算场次）")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,4 +1,5 @@
 """goal_engine 单测：T3 特征层（滚动构造/收缩/开季降权）+ T4 矩阵层（λ乘子/DC矩阵重建）。"""
+import json
 import math
 
 import numpy as np
@@ -155,3 +156,62 @@ def test_ttg_crs_placement():
     tp = ttg_probs(m)
     assert abs(tp[3] - 1.0) < 1e-12 and sum(x for i, x in enumerate(tp) if i != 3) == 0.0
     assert crs_rank(m)[0] == ("2-1", 0.6)
+
+
+# ---------- T5 对照统计 + 消融 ----------
+
+from goal_engine import (LINES, METRIC_KEYS, _new_counter, bump, bump_naive,
+                         evaluate_league, load_odds_matches)
+
+
+def test_load_odds_matches(tmp_path, monkeypatch):
+    """odds 缓存解析：str→int 转换；fthg None（未赛）/空串（脏行）跳过；文件缺失静默空。"""
+    monkeypatch.setattr("goal_engine.CACHE_DIR", tmp_path)
+    raw = {"fetchedAt": "2026-09-01", "source": "t", "season": "2526", "matches": [
+        {"home": "A", "away": "B", "fthg": "2", "ftag": "1"},
+        {"home": "C", "away": "D", "fthg": None, "ftag": None},      # 未赛跳过
+        {"home": "E", "away": "F", "fthg": "", "ftag": "0"},         # 空串 int 失败跳过
+        {"home": "G", "away": "H", "fthg": "0", "ftag": "0"},
+    ]}
+    (tmp_path / "odds_testlg_2526.json").write_text(json.dumps(raw), encoding="utf-8")
+    ms = load_odds_matches("testlg")
+    assert ms == [{"home": "A", "away": "B", "season": "2526", "fthg": 2, "ftag": 1},
+                  {"home": "G", "away": "H", "season": "2526", "fthg": 0, "ftag": 0}]
+    assert load_odds_matches("testlg", seasons=("9999",)) == []      # 缺文件静默
+
+
+def test_bump_and_bump_naive():
+    """矩阵命中：ttg3=概率前3档、crs 前 k 截取；naive 固定档同构（crs5 列表前 k 截取）。"""
+    c = _new_counter()
+    m = np.zeros((7, 7)); m[1, 1] = 0.5; m[1, 2] = 0.3; m[2, 1] = 0.2
+    bump(c, m, actual_t=3, actual_s="1-2")
+    # ttg 桶：桶2(1-1)=0.5、桶3(1-2/2-1)=0.5、其余 0 → 前3档={2,3,+并列最小档0}，含 3
+    assert c["ttg3"] == [1, 1] and c["crs1"] == [0, 1] and c["crs3"] == [1, 1] and c["crs5"] == [1, 1]
+    bump(c, m, actual_t=9, actual_s="1-1")                            # ttg 9 球必 miss；crs1 hit
+    assert c["ttg3"] == [1, 2] and c["crs1"] == [1, 2]
+    cn = _new_counter()
+    bump_naive(cn, ttg3_set={1, 2, 3}, crs5_set=["1-1", "0-0", "2-2", "3-1", "0-1"],
+               actual_t=1, actual_s="3-1")
+    assert cn["ttg3"] == [1, 1] and cn["crs1"] == [0, 1] and cn["crs3"] == [0, 1] and cn["crs5"] == [1, 1]
+
+
+def test_evaluate_league_synthetic(tmp_path, monkeypatch):
+    """2 队 4 场合成联赛全链路：假 DC + 假 odds 跑通，四线结构齐、n 口径对（rolling 首场不计）。"""
+    monkeypatch.setattr("goal_engine.CACHE_DIR", tmp_path)
+    dc = {"teams": {"A": {"attack": 0.3, "defense": -0.1}, "B": {"attack": 0.1, "defense": -0.2}},
+          "homeAdv": 0.25, "rho": -0.05}
+    (tmp_path / "testlg_dc.json").write_text(json.dumps(dc), encoding="utf-8")
+    scores = [(2, 1), (1, 1), (0, 2), (3, 1)]
+    matches = [{"home": h, "away": a, "fthg": str(hg), "ftag": str(ag)}
+               for (h, a), (hg, ag) in zip([("A", "B"), ("B", "A"), ("A", "B"), ("B", "A")], scores)]
+    (tmp_path / "odds_testlg_2526.json").write_text(
+        json.dumps({"season": "2526", "matches": matches}), encoding="utf-8")
+    r = evaluate_league("testlg")
+    assert r is not None
+    for line in LINES:
+        assert set(r[line]) == set(METRIC_KEYS)
+        assert all(isinstance(v, list) and len(v) == 2 for v in r[line].values())
+    for key in METRIC_KEYS:                                # DC 可算 4 场：三线 n=4
+        assert r["corrected"][key][1] == 4 and r["bareDc"][key][1] == 4 and r["naiveStatic"][key][1] == 4
+        assert r["naiveRolling"][key][1] == 3              # 首场无历史不计
+    assert r["sdTtg3"][1] == 4                             # 设计同口径（比分降序去重档）互验锚计数
