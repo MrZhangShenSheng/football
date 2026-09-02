@@ -18,7 +18,7 @@ from freq_band import (build_team_form, freq_legs, pools_card, shifted_q, league
 
 SHAPES = {"guilin": {"band": (10.0, 17.0), "multiplier": 4, "cost": 8},
           "meizhou": {"band": (18.0, 28.0), "multiplier": 5, "cost": 10}}
-CACHE_DIR = Path("engine/cache")
+CACHE_DIR = ROOT / "engine/cache"   # 绝对定位（2026-09-02：相对路径在 cwd=engine/scripts 的 run.py 调用链下落空——彩票档 _dc_params 首次踩中，_hafu_odds/_hhad_odds/_load_fusion 同修）
 PRED_DIR = ROOT / "data" / "03-predictions"
 DIVERGENCE_LIMIT = 0.05   # |p_model - p市场| 合规线（skill 铁律 8 / 8-25 会话口径）
 ODDS_RANGE = (2.0, 40.0)  # A-MIX 单腿赔率合理域：排除 550 级长尾（经验频率/DC 尾部噪声 × 绝对pp分歧=假阳性，2026-08-25 探针实测 4:0@550 EV+845% 被放行）
