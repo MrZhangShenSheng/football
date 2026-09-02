@@ -54,8 +54,10 @@ def load_freeze(round_date):
 
 
 def freeze_pick_dir(fm):
-    """冻结记录 pick 的方向下标（胶着避开=融合 argmax 方向）。"""
+    """冻结记录 pick 的方向下标（胶着避开=融合 argmax 方向）；HHAD/CRS 等非 HAD 前缀返回 None。"""
     pick = fm.get("pick") or ""
+    if not pick.startswith("HAD"):  # 'HHAD 让球主胜(-2)' 含"主胜"子串，须先按前缀排除
+        return None
     if "主胜" in pick:
         return 0
     if "客胜" in pick:
@@ -106,7 +108,7 @@ def market_lookup(leg, dir_idx, fm, round_d, cache_rows, zh_fd):
     """三级来源取腿方向市场隐含概率。返回 (prob|None, source, miss_reason)。"""
     if dir_idx is None:
         return None, None, "hhad让球方向无三向收盘锚(pinClose为HAD三向,语义不匹配)"
-    if leg.get("pinClose"):
+    if leg.get("pinClose") and len(leg["pinClose"]) == 3:
         return leg["pinClose"][dir_idx], "leg.pinClose", None
     pc = (fm or {}).get("pinClose")
     if pc and len(pc) == 3:
@@ -117,7 +119,7 @@ def market_lookup(leg, dir_idx, fm, round_d, cache_rows, zh_fd):
         for d, home, away, odds in cache_rows:
             if abs((d - round_d).days) <= 1 and home == fdh and away == fda:
                 return devig(list(odds))[dir_idx], "odds_cache.devig", None
-        return None, None, "三级来源均未匹配(fd缓存无该场次)"
+        return None, None, "三级来源均未匹配(别名已映射,odds缓存为赛前快照未含该场次)"
     return None, None, "三级来源均未匹配(队名无fd别名/联赛fd不覆盖)"
 
 
@@ -221,11 +223,13 @@ def main():
             "09-01 腿无 prob 字段（脚本选腿未接修正系数链=已知缺陷），回退 02-results/{date}.json matches[].final"
             "（冻结 pick 方向与腿方向一致时采用；该轮 4 腿纯融合 fused[dir] 与修正后 final 均 <50%，口径选择不改变 ≥65 判定）",
             f"市场隐含匹配链路：腿自带 pinClose=0 腿；02-results pinClose（fd 收盘去水三向，场次编号对齐）={src2} 腿；"
-            f"odds 缓存（zh→fd 别名+日期±1 对齐 devig）={src3} 腿（相关队无 fd 别名条目且 09-01 场次未入缓存——缓存止于 29/08）；"
+            f"odds 缓存（zh→fd 别名+日期±1 对齐 devig）={src3} 腿；"
             f"未匹配 {unmatched_total} 腿如实报，不计入达标判定也不静默丢弃",
             "未匹配明细：HHAD 让球方向无三向收盘锚 1 腿（08-31 周一012 巴萨-2，pinClose 为 HAD 三向语义不匹配）；"
-            "挪超/瑞超 fd 不覆盖 2 腿（08-30 周六018、08-31 周一004）；09-01 整轮 4 腿（当轮未回填+缓存未含；"
-            "但四腿出票赔率 1.78~2.05 隐含 49%~56% 未去水上限均 <65%，数据缺口不改变该轮判定——体彩隐含仅作界值旁注非概率锚）",
+            "挪超/瑞超 fd 不覆盖（队名无 fd 别名）2 腿（08-30 周六018、08-31 周一004）；"
+            "09-01 整轮 4 腿（当轮未回填 pinClose；zh→fd 别名映射成功，但 odds 缓存为赛前快照、未含该轮场次——"
+            "本质为快照时点问题非覆盖边界；四腿出票赔率 1.78~2.05 隐含 49%~56% 未去水上限均 <65%，"
+            "数据缺口不改变该轮判定——体彩隐含仅作界值旁注非概率锚）",
             "样本口径限制：本验证只数 boldplay 实跑 HAD/HHAD 腿（12 腿=每轮 base 4 串 11 的 4 腿），非当轮全部场次准入池；"
             "D3 bypass_impact_quantify 的 442→281 场为池子全景口径，两者互补不互替；若需全景应另跑轮池全量扫描",
             "双向翻转并存（与 D3 gate_in/gate_out 一致）：08-30 周日020 国米融合 0.63<65 但市场 0.674≥65（旁路会收入）；"
