@@ -89,7 +89,12 @@
    "backfillNote": "ESPN scoreboard 2026-08-23 手动回填(backfill.py zh→espn映射缺口期)",
    "directionHit": null,
    "scoreHit": false,
-   "pinSource": "ambiguous"
+   "pinSource": "fd",
+   "pinClose": [
+    0.3231,
+    0.3323,
+    0.3446
+   ]
   },
   {
    "idx": 2,
@@ -260,7 +265,9 @@
     0.0892,
     0.1486,
     0.7622
-   ]
+   ],
+   "clv": -0.1311,
+   "clv_note": "pinClose精确口径(v2四键)"
   },
   {
    "idx": 7,
@@ -363,7 +370,9 @@
     0.1222,
     0.2037,
     0.6741
-   ]
+   ],
+   "clv": -0.1237,
+   "clv_note": "pinClose精确口径(v2四键)"
   },
   {
    "idx": 10,
@@ -395,7 +404,14 @@
    "note": "CRS 4-0@17相对分歧2x剔除(防模型自大)",
    "directionHit": true,
    "scoreHit": null,
-   "pinSource": "ambiguous"
+   "pinSource": "fd",
+   "pinClose": [
+    0.641,
+    0.2051,
+    0.1538
+   ],
+   "clv": -0.1475,
+   "clv_note": "pinClose精确口径(v2四键)"
   },
   {
    "idx": 11,
@@ -432,7 +448,9 @@
     0.6501,
     0.2162,
     0.1337
-   ]
+   ],
+   "clv": -0.1354,
+   "clv_note": "pinClose精确口径(v2四键)"
   },
   {
    "idx": 12,
@@ -500,7 +518,9 @@
     0.7609,
     0.1547,
     0.0844
-   ]
+   ],
+   "clv": -0.125,
+   "clv_note": "pinClose精确口径(v2四键)"
   },
   {
    "idx": 14,
@@ -537,7 +557,9 @@
     0.0892,
     0.1486,
     0.7622
-   ]
+   ],
+   "clv": -0.8501,
+   "clv_note": "pinClose精确口径(v2四键)"
   },
   {
    "idx": 15,
@@ -596,7 +618,9 @@
     0.7356,
     0.1605,
     0.1039
-   ]
+   ],
+   "clv": -0.0879,
+   "clv_note": "pinClose精确口径(v2四键)"
   },
   {
    "idx": 17,
@@ -631,7 +655,9 @@
     0.2111,
     0.2814,
     0.5075
-   ]
+   ],
+   "clv": -0.1982,
+   "clv_note": "pinClose精确口径(v2四键)"
   },
   {
    "idx": 18,
@@ -654,7 +680,14 @@
    "result": "0-1",
    "directionHit": true,
    "scoreHit": null,
-   "pinSource": "ambiguous"
+   "pinSource": "fd",
+   "pinClose": [
+    0.1298,
+    0.202,
+    0.6682
+   ],
+   "clv": -0.1247,
+   "clv_note": "pinClose精确口径(v2四键)"
   },
   {
    "idx": 19,
@@ -770,7 +803,14 @@
    "backfillNote": "ESPN scoreboard 2026-08-23 手动回填(backfill.py zh→espn映射缺口期)",
    "directionHit": false,
    "scoreHit": null,
-   "pinSource": "ambiguous"
+   "pinSource": "fd",
+   "pinClose": [
+    0.11,
+    0.187,
+    0.703
+   ],
+   "clv": -0.1494,
+   "clv_note": "pinClose精确口径(v2四键)"
   },
   {
    "idx": 23,

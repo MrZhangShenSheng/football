@@ -22,7 +22,7 @@ from pathlib import Path
 import requests
 
 from common import load_aliases, log, ROOT
-from pin_close import apply_pin_close
+from pin_close import apply_pin_close, fd_league_name
 from trends_snapshot import find_pre_snapshots
 
 RESULTS_DIR = ROOT / "data" / "02-results"
@@ -225,6 +225,7 @@ def backfill(day_limit: str | None = None) -> dict:
     targets = []  # (path, data, rec, date, espn_code, league)
     touched: dict[int, tuple] = {}   # id(data) → (path, data)：收集阶段被动过的文件也须写回
     n_fix = 0
+    n_pin_pending = 0   # fd 覆盖联赛已回填但 pinClose 仍缺（时机提示用，层2）
     for p in sorted(RESULTS_DIR.glob("*.json")):
         if p.name.startswith("_"):
             continue
@@ -249,11 +250,26 @@ def backfill(day_limit: str | None = None) -> dict:
                         rec["directionHit"] = dh
                         data["_dirty"] = True
                         n_fix += 1
-                # 已回填但无 pinClose → 纯本地 fd 三键匹配补跑（历史场解锁 F3/F4，不查网络）
-                if not rec.get("pinClose") and sc:
+                # 已回填：pinClose 补跑（无则 fd 四键匹配）+ 精确 CLV 补算（pinClose 有而 clv 无）
+                if sc:
                     d0 = rec.get("date") or data.get("date")
-                    if d0 and d0 <= TODAY and apply_pin_close(rec, d0, ROOT / "engine" / "cache"):
-                        data["_dirty"] = True
+                    if d0 and d0 <= TODAY:
+                        if not rec.get("pinClose"):
+                            if apply_pin_close(rec, d0, ROOT / "engine" / "cache"):
+                                data["_dirty"] = True
+                            if not rec.get("pinClose"):
+                                lg_base = str(rec.get("league") or "").split("(")[0].strip()
+                                if fd_league_name(lg_base):
+                                    n_pin_pending += 1   # fd 覆盖但未匹配（多为当日行未更新）
+                        # 精确 CLV（HAD 三向口径：出票赔率×去水概率-1）——独立于 pinClose 分支，
+                        # 存量 fd 匹配场（pinClose 先落盘）后续重跑也能补上
+                        if rec.get("pinClose") and rec.get("clv") is None and rec.get("odds"):
+                            oi = pick_outcome_idx(rec)
+                            if oi is not None and str(rec.get("pick") or "").startswith("HAD "):
+                                rec["clv"] = round(
+                                    float(rec["odds"]) * rec["pinClose"][oi] - 1, 4)
+                                rec["clv_note"] = "pinClose精确口径(v2四键)"
+                                data["_dirty"] = True
                 # 已回填但无 preSnapshots → 历史轮本地补挂桥（时序库晚于该轮回填时补指针，幂等）
                 if not rec.get("preSnapshots") and rec.get("code"):
                     dd = rec.get("date") or data.get("date")
@@ -378,7 +394,8 @@ def backfill(day_limit: str | None = None) -> dict:
         if data.pop("_dirty", False):
             p.write_text(json.dumps(data, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     tick = settle_tickets(sp_cache)
-    return {"filled": n_fill, "sporttery": n_sp, "missed": n_miss, "fixed": n_fix, "tickets": tick}
+    return {"filled": n_fill, "sporttery": n_sp, "missed": n_miss, "fixed": n_fix,
+            "pin_pending": n_pin_pending, "tickets": tick}
 
 
 def leg_hit(leg: dict, score: tuple[int, int], half: tuple[int | None, int | None]) -> bool | None:
@@ -561,6 +578,9 @@ def main() -> None:
                    f"（体彩/ESPN 均无 → 标不可得；ESPN 缓存延迟 → 稍后重跑）"
                    f" · 补算方向 {res['fixed']} 条（带注释 pick 旧漏判）"
                    f" · 票务结算 {res['tickets']['tickets']} 票/{res['tickets']['legs']} 腿")
+    if res.get("pin_pending"):
+        log("backfill", f"fd 覆盖联赛 pinClose 待补 {res['pin_pending']} 场"
+                       f"（fd 当日行英国下午更新·晚间重跑 verify 救回，幂等）")
     log("backfill", "回填后跑 run.py corpus 刷新语料+趋势报告")
 
 

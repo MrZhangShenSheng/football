@@ -127,3 +127,72 @@ class TestApplyPinClose:
         rec = {"league": "英超", "result": "2-1", "pinSource": "none"}
         assert apply_pin_close(rec, "2026-08-28", tmp_path) is False
         assert rec["pinSource"] == "none"
+
+
+class TestMatchPinCloseV2:
+    """层2 四键匹配（docs/2026-09-02-data-backfill-design.html）：队名主键 + 赛季隔离。
+
+    真实桥接表（_aliases.json）不在 tmp_path，队名路径需 monkeypatch 映射表。
+    """
+
+    def test_season_of(self):
+        from pin_close import season_of
+        assert season_of("2026-09-02") == "2627"
+        assert season_of("2026-03-01") == "2526"
+        assert season_of("2026-07-31") == "2627"
+        assert season_of("bad") is None
+
+    def test_team_key_resolves_ambiguous(self, tmp_path, monkeypatch):
+        # 旧三键 ambiguous（同窗同比分两行）→ 队名第四键唯一命中（层2 根因1）
+        import pin_close
+        monkeypatch.setattr(pin_close, "_zh_to_fd_names",
+                            lambda: {"女王巡游": "qpr", "加的夫城": "cardiff"})
+        c = tmp_path / "odds_england-championship_2627.json"
+        c.write_text(json.dumps({"matches": [
+            {"date": "28/08/2026", "home": "QPR", "away": "Cardiff", "fthg": "1", "ftag": "1",
+             "pin_h": "2.5", "pin_d": "3.2", "pin_a": "2.8"},
+            {"date": "28/08/2026", "home": "Millwall", "away": "Wrexham", "fthg": "1", "ftag": "1",
+             "pin_h": "1.9", "pin_d": "3.5", "pin_a": "4.0"}]}), encoding="utf-8")
+        out = pin_close.match_pin_close("英冠", "2026-08-28", "1-1", tmp_path,
+                                        match_zh="女王巡游 vs 加的夫城")
+        assert out[0] == "fd" and abs(sum(out[1]) - 1.0) < 2e-3   # round4 舍入容差
+
+    def test_team_key_score_conflict_degrades(self, tmp_path, monkeypatch):
+        # 队名唯一命中但比分不符 → 数据冲突诚实降级 none（不硬收）
+        import pin_close
+        monkeypatch.setattr(pin_close, "_zh_to_fd_names",
+                            lambda: {"女王巡游": "qpr", "加的夫城": "cardiff"})
+        c = tmp_path / "odds_england-championship_2627.json"
+        c.write_text(json.dumps({"matches": [
+            {"date": "28/08/2026", "home": "QPR", "away": "Cardiff", "fthg": "3", "ftag": "0",
+             "pin_h": "2.5", "pin_d": "3.2", "pin_a": "2.8"}]}), encoding="utf-8")
+        out = pin_close.match_pin_close("英冠", "2026-08-28", "1-1", tmp_path,
+                                        match_zh="女王巡游 vs 加的夫城")
+        assert out[0] == "none" and out[1] is None
+
+    def test_cross_season_isolation_on_fallback(self, tmp_path, monkeypatch):
+        # 回退路径（队名桥接失败）只读当季文件：上季同窗同比分唯一行不再被误配（层2 根因2）
+        import pin_close
+        monkeypatch.setattr(pin_close, "_zh_to_fd_names", lambda: {})
+        for season in ("2526", "2627"):
+            (tmp_path / f"odds_england-premier_{season}.json").write_text(json.dumps(
+                {"matches": [
+                    {"date": "28/08/2026", "home": "A", "away": "B", "fthg": "2", "ftag": "1",
+                     "pin_h": "2.0", "pin_d": "3.4", "pin_a": "3.8"}]}), encoding="utf-8")
+        # 旧版 glob 两季联扫：两行 ambiguous；新版当季单读：唯一行 → fd
+        out = pin_close.match_pin_close("英超", "2026-08-28", "2-1", tmp_path)
+        assert out[0] == "fd"
+
+    def test_team_key_reads_window_seasons(self, tmp_path, monkeypatch):
+        # 主路径（队名键）跨季边界窗口扫两季文件——真两队名不会错配
+        import pin_close
+        monkeypatch.setattr(pin_close, "_zh_to_fd_names",
+                            lambda: {"女王巡游": "qpr", "加的夫城": "cardiff"})
+        # 完赛 2026-06-30（2526 赛季末轮）：窗口 {06-29..07-01} 跨 2526/2627；行在 2526 文件
+        (tmp_path / "odds_england-championship_2526.json").write_text(json.dumps(
+            {"matches": [
+                {"date": "30/06/2026", "home": "QPR", "away": "Cardiff", "fthg": "1", "ftag": "0",
+                 "pin_h": "2.5", "pin_d": "3.2", "pin_a": "2.8"}]}), encoding="utf-8")
+        out = pin_close.match_pin_close("英冠", "2026-06-30", "1-0", tmp_path,
+                                        match_zh="女王巡游 vs 加的夫城")
+        assert out[0] == "fd" and out[1] is not None   # 跨季窗口主路径可达（精度见上容差）

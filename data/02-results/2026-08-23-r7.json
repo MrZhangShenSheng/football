@@ -73,7 +73,12 @@
    "clv": null,
    "clv_approx_dk": null,
    "clv_note": "Pinnacle停摆，回填时算DK近似",
-   "pinSource": "ambiguous"
+   "pinSource": "fd",
+   "pinClose": [
+    0.641,
+    0.2051,
+    0.1538
+   ]
   },
   {
    "idx": 9,
@@ -103,7 +108,12 @@
    "scoreHit": false,
    "clv": null,
    "clv_approx_dk": null,
-   "pinSource": "ambiguous"
+   "pinSource": "fd",
+   "pinClose": [
+    0.641,
+    0.2051,
+    0.1538
+   ]
   },
   {
    "idx": 23,
@@ -231,14 +241,15 @@
    "result": "2-5",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1311,
    "clv_approx_dk": null,
    "pinSource": "fd",
    "pinClose": [
     0.0892,
     0.1486,
     0.7622
-   ]
+   ],
+   "clv_note": "pinClose精确口径(v2四键)"
   },
   {
    "idx": 24,

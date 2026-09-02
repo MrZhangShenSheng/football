@@ -93,7 +93,12 @@
    "result": "0-1",
    "directionHit": null,
    "scoreHit": false,
-   "pinSource": "ambiguous"
+   "pinSource": "fd",
+   "pinClose": [
+    0.3231,
+    0.3323,
+    0.3446
+   ]
   },
   {
    "idx": 9,
@@ -175,7 +180,9 @@
     0.0892,
     0.1486,
     0.7622
-   ]
+   ],
+   "clv": -0.1311,
+   "clv_note": "pinClose精确口径(v2四键)"
   },
   {
    "idx": 41,
@@ -247,7 +254,14 @@
    "result": "2-1",
    "directionHit": true,
    "scoreHit": null,
-   "pinSource": "ambiguous"
+   "pinSource": "fd",
+   "pinClose": [
+    0.641,
+    0.2051,
+    0.1538
+   ],
+   "clv": -0.1475,
+   "clv_note": "pinClose精确口径(v2四键)"
   },
   {
    "idx": 27,
@@ -277,7 +291,9 @@
     0.1222,
     0.2037,
     0.6741
-   ]
+   ],
+   "clv": -0.1237,
+   "clv_note": "pinClose精确口径(v2四键)"
   }
  ]
 }

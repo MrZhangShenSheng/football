@@ -1,40 +1,40 @@
 {
  "generatedAt": "2026-09-02",
- "n_total": 353,
- "n_rounds": 17,
+ "n_total": 366,
+ "n_rounds": 18,
  "readiness": {
   "n_result": 345,
-  "n_clv": 17,
-  "n_pfinal": 268,
+  "n_clv": 99,
+  "n_pfinal": 275,
   "calibrateReady": true,
   "calibrateGap": 0,
   "ablateReady": true,
   "by_league": {
-   "西甲": 45,
+   "西甲": 46,
    "意甲": 43,
    "英超": 33,
    "葡超": 22,
    "荷甲": 21,
    "德甲": 19,
    "日职": 16,
-   "瑞超": 14,
-   "法甲": 14,
+   "英冠": 16,
+   "瑞超": 15,
+   "法甲": 15,
    "韩职": 13,
    "欧罗巴": 12,
-   "英冠": 12,
+   "沙职": 10,
    "德乙": 9,
    "法乙": 8,
    "芬超": 7,
-   "沙职": 7,
    "欧冠": 7,
    "欧冠资格赛": 6,
+   "巴西杯": 6,
+   "巴甲": 5,
    "德国杯": 5,
    "沙特联": 4,
    "荷乙": 4,
    "日乙": 4,
    "美职": 4,
-   "巴甲": 4,
-   "巴西杯": 4,
    "英联杯": 3,
    "英联赛杯": 3,
    "意大利杯": 3,
@@ -45,9 +45,9 @@
    "日联赛杯": 1
   },
   "by_star": {
-   "1": 31,
-   "2": 143,
-   "3": 91,
+   "1": 32,
+   "2": 149,
+   "3": 96,
    "4": 23
   }
  },
@@ -455,7 +455,12 @@
    "note": "主胜方向对·比分未中",
    "result": "3-0",
    "directionHit": null,
-   "pinSource": "none",
+   "pinSource": "fd",
+   "pinClose": [
+    0.8031,
+    0.1342,
+    0.0626
+   ],
    "date": "2026-08-20",
    "round": "2026-08-20"
   },
@@ -727,7 +732,12 @@
    "clv_note": "fd 2627 CSV 未更新到 8/21 场次（英超/法甲 CSV 未发布）→ CLV 待补",
    "clv_approx_dk": -2.2,
    "dk_close_dec": 2.25,
-   "pinSource": "ambiguous"
+   "pinSource": "fd",
+   "pinClose": [
+    0.4315,
+    0.2665,
+    0.302
+   ]
   },
   {
    "date": "2026-08-22",
@@ -808,7 +818,12 @@
    "grade": 2,
    "recommend": null,
    "result": "3-0",
-   "pinSource": "ambiguous",
+   "pinSource": "fd",
+   "pinClose": [
+    0.8031,
+    0.1342,
+    0.0626
+   ],
    "round": "2026-08-22-r1"
   },
   {
@@ -841,7 +856,12 @@
    "clv_note": "fd 2627 CSV 未更新到 8/21 场次（英超/法甲 CSV 未发布）→ CLV 待补",
    "clv_approx_dk": -13.0,
    "dk_close_dec": 2.15,
-   "pinSource": "ambiguous"
+   "pinSource": "fd",
+   "pinClose": [
+    0.4437,
+    0.2823,
+    0.274
+   ]
   },
   {
    "date": "2026-08-22",
@@ -1046,7 +1066,12 @@
    "directionHit": false,
    "scoreHit": false,
    "clv": null,
-   "pinSource": "ambiguous"
+   "pinSource": "fd",
+   "pinClose": [
+    0.11,
+    0.187,
+    0.703
+   ]
   },
   {
    "date": "2026-08-22",
@@ -1068,9 +1093,9 @@
    "result": "2-0",
    "directionHit": false,
    "scoreHit": null,
-   "clv": null,
+   "clv": -0.1494,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-22-r3"
   },
   {
@@ -1154,7 +1179,12 @@
    "scoreHit": false,
    "clv": null,
    "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑",
-   "pinSource": "ambiguous"
+   "pinSource": "fd",
+   "pinClose": [
+    0.4153,
+    0.2832,
+    0.3015
+   ]
   },
   {
    "date": "2026-08-22",
@@ -1219,7 +1249,12 @@
    "scoreHit": false,
    "clv": null,
    "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑",
-   "pinSource": "ambiguous"
+   "pinSource": "fd",
+   "pinClose": [
+    0.3308,
+    0.2988,
+    0.3705
+   ]
   },
   {
    "date": "2026-08-22",
@@ -1248,7 +1283,12 @@
    "directionHit": true,
    "scoreHit": true,
    "clv": null,
-   "pinSource": "ambiguous"
+   "pinSource": "fd",
+   "pinClose": [
+    0.1791,
+    0.2239,
+    0.597
+   ]
   },
   {
    "date": "2026-08-22",
@@ -1379,9 +1419,9 @@
    "result": "5-2",
    "directionHit": true,
    "scoreHit": null,
-   "clv": null,
+   "clv": -0.1354,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-22-r3"
   },
   {
@@ -1486,9 +1526,9 @@
    "result": "1-2",
    "directionHit": true,
    "scoreHit": null,
-   "clv": null,
+   "clv": -0.1169,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-22"
   },
   {
@@ -1600,9 +1640,9 @@
    "result": "5-1",
    "directionHit": true,
    "scoreHit": null,
-   "clv": null,
+   "clv": -0.0879,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-22-r3"
   },
   {
@@ -1627,9 +1667,9 @@
    "result": "2-1",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1475,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-22"
   },
   {
@@ -1681,9 +1721,9 @@
    "result": "2-5",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1311,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-22"
   },
   {
@@ -1707,9 +1747,9 @@
    "result": "0-1",
    "directionHit": true,
    "scoreHit": null,
-   "clv": null,
+   "clv": -0.1247,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-22-r3"
   },
   {
@@ -1736,9 +1776,9 @@
    "result": "1-2",
    "directionHit": true,
    "scoreHit": null,
-   "clv": null,
+   "clv": -0.1982,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-22-r3"
   },
   {
@@ -1786,9 +1826,9 @@
    "result": "2-0",
    "directionHit": true,
    "scoreHit": null,
-   "clv": null,
+   "clv": -0.125,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-22"
   },
   {
@@ -1879,9 +1919,9 @@
    "result": "0-0",
    "directionHit": false,
    "scoreHit": false,
-   "clv": null,
+   "clv": -0.2068,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-23"
   },
   {
@@ -1910,9 +1950,9 @@
    "result": "4-0",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1613,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-23"
   },
   {
@@ -1973,9 +2013,9 @@
    "result": "2-3",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1696,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-23"
   },
   {
@@ -2004,9 +2044,9 @@
    "result": "2-0",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1899,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-23"
   },
   {
@@ -2187,7 +2227,12 @@
    "scoreHit": false,
    "clv": null,
    "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑",
-   "pinSource": "ambiguous"
+   "pinSource": "fd",
+   "pinClose": [
+    0.3885,
+    0.3108,
+    0.3008
+   ]
   },
   {
    "date": "2026-08-23",
@@ -2246,7 +2291,12 @@
    "scoreHit": true,
    "clv": null,
    "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑",
-   "pinSource": "ambiguous"
+   "pinSource": "fd",
+   "pinClose": [
+    0.2304,
+    0.32,
+    0.4496
+   ]
   },
   {
    "date": "2026-08-23",
@@ -2276,7 +2326,12 @@
    "scoreHit": true,
    "clv": null,
    "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑",
-   "pinSource": "ambiguous"
+   "pinSource": "fd",
+   "pinClose": [
+    0.3231,
+    0.3323,
+    0.3446
+   ]
   },
   {
    "date": "2026-08-23",
@@ -2306,7 +2361,12 @@
    "scoreHit": false,
    "clv": null,
    "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑",
-   "pinSource": "ambiguous"
+   "pinSource": "fd",
+   "pinClose": [
+    0.3905,
+    0.2998,
+    0.3098
+   ]
   },
   {
    "date": "2026-08-23",
@@ -2336,7 +2396,12 @@
    "scoreHit": true,
    "clv": null,
    "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑",
-   "pinSource": "ambiguous"
+   "pinSource": "fd",
+   "pinClose": [
+    0.4135,
+    0.2863,
+    0.3002
+   ]
   },
   {
    "date": "2026-08-23",
@@ -2458,9 +2523,9 @@
    "result": "3-1",
    "directionHit": true,
    "scoreHit": null,
-   "clv": null,
+   "clv": -0.1004,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-23"
   },
   {
@@ -2818,7 +2883,12 @@
    "directionHit": null,
    "scoreHit": false,
    "clv": null,
-   "pinSource": "ambiguous"
+   "pinSource": "fd",
+   "pinClose": [
+    0.641,
+    0.2051,
+    0.1538
+   ]
   },
   {
    "date": "2026-08-23",
@@ -2875,9 +2945,9 @@
    "result": "2-1",
    "directionHit": true,
    "scoreHit": null,
-   "clv": null,
+   "clv": -0.1475,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-23"
   },
   {
@@ -2907,7 +2977,12 @@
    "directionHit": true,
    "scoreHit": true,
    "clv": null,
-   "pinSource": "ambiguous"
+   "pinSource": "fd",
+   "pinClose": [
+    0.2043,
+    0.2704,
+    0.5253
+   ]
   },
   {
    "date": "2026-08-23",
@@ -2935,9 +3010,9 @@
    "result": "0-2",
    "directionHit": true,
    "scoreHit": null,
-   "clv": null,
+   "clv": -0.17,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-23"
   },
   {
@@ -3023,7 +3098,12 @@
    "directionHit": true,
    "scoreHit": true,
    "clv": null,
-   "pinSource": "ambiguous"
+   "pinSource": "fd",
+   "pinClose": [
+    0.5887,
+    0.2432,
+    0.1681
+   ]
   },
   {
    "date": "2026-08-23",
@@ -3149,9 +3229,9 @@
    "result": "2-5",
    "directionHit": true,
    "scoreHit": null,
-   "clv": null,
+   "clv": -0.1311,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-23"
   },
   {
@@ -3215,9 +3295,9 @@
    "result": "2-2",
    "directionHit": false,
    "scoreHit": null,
-   "clv": null,
+   "clv": -0.1004,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-23"
   },
   {
@@ -3248,9 +3328,9 @@
    "result": "0-1",
    "directionHit": false,
    "scoreHit": false,
-   "clv": null,
+   "clv": -0.1234,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-23"
   },
   {
@@ -3341,9 +3421,9 @@
    "result": "0-1",
    "directionHit": true,
    "scoreHit": null,
-   "clv": null,
+   "clv": -0.1247,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-23"
   },
   {
@@ -3462,9 +3542,9 @@
    "result": "1-2",
    "directionHit": true,
    "scoreHit": null,
-   "clv": null,
+   "clv": -0.1982,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-23"
   },
   {
@@ -3555,9 +3635,9 @@
    "result": "2-0",
    "directionHit": true,
    "scoreHit": null,
-   "clv": null,
+   "clv": -0.1326,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-23"
   },
   {
@@ -4062,7 +4142,12 @@
    "directionHit": true,
    "scoreHit": true,
    "clv": null,
-   "pinSource": "ambiguous"
+   "pinSource": "fd",
+   "pinClose": [
+    0.1298,
+    0.202,
+    0.6682
+   ]
   },
   {
    "date": "2026-08-24",
@@ -4125,7 +4210,12 @@
    "directionHit": false,
    "scoreHit": false,
    "clv": null,
-   "pinSource": "ambiguous"
+   "pinSource": "fd",
+   "pinClose": [
+    0.3323,
+    0.3231,
+    0.3446
+   ]
   },
   {
    "date": "2026-08-24",
@@ -4256,7 +4346,12 @@
    "directionHit": true,
    "scoreHit": true,
    "clv": null,
-   "pinSource": "ambiguous"
+   "pinSource": "fd",
+   "pinClose": [
+    0.7609,
+    0.1547,
+    0.0844
+   ]
   },
   {
    "date": "2026-08-25",
@@ -4582,9 +4677,9 @@
    "result": "4-1",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.0109,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-25"
   },
   {
@@ -5700,9 +5795,9 @@
    "result": "2-0",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1328,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-27"
   },
   {
@@ -5750,9 +5845,9 @@
    "result": "3-5",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1238,
    "clv_approx_dk": -17.0,
-   "clv_note": "主胜2.6→2.75卖冷,资金流向客胜方向,赫塔腿利好; CLV_dk基准=体彩最后快照去水公允(票面2.10 vs 快照(08-27 13:40)三向去水公允2.530;含体彩毛利~11%+客胜2.24→2.10买热段)",
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -5773,9 +5868,9 @@
    "result": "0-1",
    "directionHit": false,
    "scoreHit": false,
-   "clv": null,
+   "clv": -0.2214,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -5800,9 +5895,9 @@
    "result": "3-2",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.0716,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -5854,9 +5949,9 @@
    "result": "0-0",
    "directionHit": false,
    "scoreHit": false,
-   "clv": null,
+   "clv": -0.1405,
    "clv_approx_dk": -15.9,
-   "clv_note": "出票窗口赔率异动: 主胜1.63→1.51(-7%),方向被市场买热确认,CLV将按实出价计; CLV_dk基准=体彩最后快照去水公允(票面1.51 vs 快照(08-27 13:40,主胜1.59)去水公允1.796;出票买在1.63→1.51热尾段,fd收盘待补)",
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -5881,9 +5976,9 @@
    "result": "2-3",
    "directionHit": false,
    "scoreHit": false,
-   "clv": null,
+   "clv": -0.0901,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -5931,9 +6026,9 @@
    "result": "5-1",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1139,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -5958,9 +6053,9 @@
    "result": "2-0",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1763,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -5985,9 +6080,9 @@
    "result": "2-2",
    "directionHit": false,
    "scoreHit": false,
-   "clv": null,
+   "clv": -0.1535,
    "clv_approx_dk": -12.6,
-   "clv_note": "TTG0球16→14.5被买热,低进球剧本市场旁证,0:0 CRS赔率16.0未动; CLV_dk基准=体彩最后快照去水公允(票面1.52 vs 快照(08-28 12:03,客胜1.54)去水公允1.739;≈纯体彩毛利,fd收盘待补)",
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -6012,9 +6107,9 @@
    "result": "1-4",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.144,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -6039,9 +6134,9 @@
    "result": "1-2",
    "directionHit": false,
    "scoreHit": false,
-   "clv": null,
+   "clv": -0.0112,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -6066,9 +6161,9 @@
    "result": "0-4",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1385,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -6093,9 +6188,9 @@
    "result": "1-0",
    "directionHit": false,
    "scoreHit": false,
-   "clv": null,
+   "clv": -0.1365,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -6220,9 +6315,9 @@
    "result": "2-5",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.2271,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -6247,9 +6342,9 @@
    "result": "2-2",
    "directionHit": false,
    "scoreHit": false,
-   "clv": null,
+   "clv": -0.1113,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -6270,9 +6365,9 @@
    "result": "3-2",
    "directionHit": false,
    "scoreHit": false,
-   "clv": null,
+   "clv": -0.1112,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -6297,9 +6392,9 @@
    "result": "3-0",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1439,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -6324,9 +6419,9 @@
    "result": "3-3",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.0956,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -6374,9 +6469,9 @@
    "result": "0-0",
    "directionHit": false,
    "scoreHit": false,
-   "clv": null,
+   "clv": -0.0797,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -6401,9 +6496,9 @@
    "result": "0-1",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1336,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -6428,9 +6523,9 @@
    "result": "1-1",
    "directionHit": false,
    "scoreHit": false,
-   "clv": null,
+   "clv": -0.1849,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -6455,9 +6550,9 @@
    "result": "5-2",
    "directionHit": false,
    "scoreHit": false,
-   "clv": null,
+   "clv": -0.1354,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -6482,9 +6577,9 @@
    "result": "2-1",
    "directionHit": false,
    "scoreHit": false,
-   "clv": null,
+   "clv": -0.0135,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -6509,9 +6604,9 @@
    "result": "0-2",
    "directionHit": false,
    "scoreHit": false,
-   "clv": null,
+   "clv": -0.1097,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -6536,9 +6631,9 @@
    "result": "2-0",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1225,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -6563,9 +6658,9 @@
    "result": "2-3",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1485,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -6590,9 +6685,9 @@
    "result": "0-3",
    "directionHit": false,
    "scoreHit": false,
-   "clv": null,
+   "clv": -0.1808,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -6617,9 +6712,9 @@
    "result": "2-1",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1285,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -6644,9 +6739,9 @@
    "result": "5-2",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1189,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -6671,9 +6766,9 @@
    "result": "2-1",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.0656,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -6698,9 +6793,9 @@
    "result": "0-3",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1129,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -6725,9 +6820,9 @@
    "result": "2-0",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1339,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -6752,9 +6847,9 @@
    "result": "1-3",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1052,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -6910,9 +7005,9 @@
    "result": "1-1",
    "directionHit": false,
    "scoreHit": false,
-   "clv": null,
+   "clv": 0.0026,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -7041,9 +7136,9 @@
    "result": "3-0",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": 0.1555,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-28"
   },
   {
@@ -7280,9 +7375,9 @@
    "result": "1-0",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.2919,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-29"
   },
   {
@@ -7307,9 +7402,9 @@
    "result": "0-1",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.7086,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-29"
   },
   {
@@ -7492,9 +7587,9 @@
    "result": "2-5",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.2271,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-29-r1"
   },
   {
@@ -7546,9 +7641,9 @@
    "result": "2-2",
    "directionHit": false,
    "scoreHit": false,
-   "clv": null,
+   "clv": -0.1437,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-29"
   },
   {
@@ -7573,9 +7668,9 @@
    "result": "3-2",
    "directionHit": false,
    "scoreHit": false,
-   "clv": null,
+   "clv": -0.1409,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-29"
   },
   {
@@ -7600,9 +7695,9 @@
    "result": "3-0",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1558,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-29"
   },
   {
@@ -7627,9 +7722,9 @@
    "result": "3-3",
    "directionHit": false,
    "scoreHit": false,
-   "clv": null,
+   "clv": -0.0956,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-29-r1"
   },
   {
@@ -7708,9 +7803,9 @@
    "result": "0-0",
    "directionHit": false,
    "scoreHit": false,
-   "clv": null,
+   "clv": -0.1288,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-29"
   },
   {
@@ -7735,9 +7830,9 @@
    "result": "0-1",
    "directionHit": false,
    "scoreHit": false,
-   "clv": null,
+   "clv": -0.3771,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-29-r1"
   },
   {
@@ -7762,9 +7857,9 @@
    "result": "1-1",
    "directionHit": false,
    "scoreHit": false,
-   "clv": null,
+   "clv": -0.1718,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-29-r1"
   },
   {
@@ -7789,9 +7884,9 @@
    "result": "5-2",
    "directionHit": false,
    "scoreHit": false,
-   "clv": null,
+   "clv": -0.1642,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-29-r1"
   },
   {
@@ -7816,9 +7911,9 @@
    "result": "2-0",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1154,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-29"
   },
   {
@@ -7843,9 +7938,9 @@
    "result": "0-3",
    "directionHit": false,
    "scoreHit": false,
-   "clv": null,
+   "clv": -0.1699,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-29"
   },
   {
@@ -7870,9 +7965,9 @@
    "result": "5-2",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1329,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-29"
   },
   {
@@ -7897,9 +7992,9 @@
    "result": "2-1",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.0809,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-29"
   },
   {
@@ -7947,9 +8042,9 @@
    "result": "0-3",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1348,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-29"
   },
   {
@@ -7997,9 +8092,9 @@
    "result": "2-0",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1339,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-29"
   },
   {
@@ -8024,9 +8119,9 @@
    "result": "1-3",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1052,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-29"
   },
   {
@@ -8128,9 +8223,9 @@
    "result": "4-1",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.0645,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-29"
   },
   {
@@ -8155,9 +8250,9 @@
    "result": "0-4",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1001,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-29"
   },
   {
@@ -8182,9 +8277,9 @@
    "result": "5-2",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1203,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-29"
   },
   {
@@ -8209,9 +8304,9 @@
    "result": "1-4",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.111,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-29"
   },
   {
@@ -8236,9 +8331,9 @@
    "result": "1-0",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1902,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-29"
   },
   {
@@ -8263,9 +8358,9 @@
    "result": "0-1",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1439,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-29"
   },
   {
@@ -8660,9 +8755,9 @@
    "result": "0-4",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1882,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-30"
   },
   {
@@ -8818,9 +8913,9 @@
    "result": "1-4",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1326,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-30"
   },
   {
@@ -8872,9 +8967,9 @@
    "result": "0-1",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1439,
    "clv_approx_dk": null,
-   "clv_note": null,
+   "clv_note": "pinClose精确口径(v2四键)",
    "round": "2026-08-30"
   },
   {
@@ -9805,6 +9900,333 @@
    "clv_approx_dk": 9.4,
    "clv_note": "DK近似:预测采集1.75 vs 临场收盘1.6(05-trends diff链重建,20:07末扫)",
    "round": "2026-09-01"
+  },
+  {
+   "date": "2026-09-02",
+   "code": "周三007",
+   "league": "英冠",
+   "match": "米尔沃尔 vs 雷克斯",
+   "stars": 2,
+   "grade": 4,
+   "pick": "主胜",
+   "play": "HAD",
+   "odds": 2.15,
+   "p_final": [
+    0.511,
+    0.248,
+    0.241
+   ],
+   "ev": 0.099,
+   "in_plan": null,
+   "chain": "无",
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "round": "2026-09-02"
+  },
+  {
+   "date": "2026-09-02",
+   "code": "周三008",
+   "league": "英冠",
+   "match": "西布罗姆 vs 查尔顿",
+   "stars": 2,
+   "grade": 4,
+   "pick": "(胶着避开)",
+   "play": "HAD",
+   "odds": 1.71,
+   "p_final": [
+    0.541,
+    0.258,
+    0.201
+   ],
+   "ev": -0.075,
+   "in_plan": null,
+   "chain": "无",
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "round": "2026-09-02"
+  },
+  {
+   "date": "2026-09-02",
+   "code": "周三009",
+   "league": "英冠",
+   "match": "女王巡游 vs 加的夫城",
+   "stars": 3,
+   "grade": 4,
+   "pick": "主胜",
+   "play": "HAD",
+   "odds": 1.85,
+   "p_final": [
+    0.639,
+    0.187,
+    0.173
+   ],
+   "ev": 0.182,
+   "in_plan": "A稳版",
+   "chain": "无",
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "round": "2026-09-02"
+  },
+  {
+   "date": "2026-09-02",
+   "code": "周三011",
+   "league": "英冠",
+   "match": "伯恩利 vs 米堡",
+   "stars": 3,
+   "grade": 4,
+   "pick": "客胜",
+   "play": "HAD",
+   "odds": 2.22,
+   "p_final": [
+    0.202,
+    0.186,
+    0.612
+   ],
+   "ev": 0.399,
+   "in_plan": "B进取版",
+   "chain": "伤停d=+2客×1.04",
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "round": "2026-09-02"
+  },
+  {
+   "date": "2026-09-02",
+   "code": "周三012",
+   "league": "巴甲",
+   "match": "弗拉门戈 vs 米拉索尔",
+   "stars": 3,
+   "grade": 4,
+   "pick": "主胜(超低赔不推)",
+   "play": "HAD",
+   "odds": 1.18,
+   "p_final": null,
+   "ev": -0.032,
+   "in_plan": null,
+   "chain": "无",
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "round": "2026-09-02"
+  },
+  {
+   "date": "2026-09-02",
+   "code": "周三013",
+   "league": "巴西杯",
+   "match": "桑托斯 vs 帕梅拉斯",
+   "stars": 2,
+   "grade": 3,
+   "pick": "(胶着避开)",
+   "play": "HAD",
+   "odds": 2.55,
+   "p_final": null,
+   "ev": -0.132,
+   "in_plan": null,
+   "chain": "无",
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "round": "2026-09-02"
+  },
+  {
+   "date": "2026-09-02",
+   "code": "周四001",
+   "league": "沙职",
+   "match": "迈季宽广 vs 拉斯永恒",
+   "stars": 1,
+   "grade": 2,
+   "pick": "(无锚低置信)",
+   "play": "HAD",
+   "odds": 2.36,
+   "p_final": null,
+   "ev": -0.056,
+   "in_plan": null,
+   "chain": "无",
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "round": "2026-09-02"
+  },
+  {
+   "date": "2026-09-02",
+   "code": "周四002",
+   "league": "沙职",
+   "match": "新未来SC vs 赛哈海湾",
+   "stars": 2,
+   "grade": 3,
+   "pick": "主胜(无锚不推)",
+   "play": "HAD",
+   "odds": 1.64,
+   "p_final": null,
+   "ev": -0.065,
+   "in_plan": null,
+   "chain": "无",
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "round": "2026-09-02"
+  },
+  {
+   "date": "2026-09-02",
+   "code": "周四003",
+   "league": "瑞超",
+   "match": "米亚尔比 vs 佐加顿斯",
+   "stars": 3,
+   "grade": 4,
+   "pick": "客胜",
+   "play": "HAD",
+   "odds": 1.7,
+   "p_final": [
+    0.214,
+    0.197,
+    0.589
+   ],
+   "ev": 0.001,
+   "in_plan": null,
+   "chain": "无",
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "round": "2026-09-02"
+  },
+  {
+   "date": "2026-09-02",
+   "code": "周四004",
+   "league": "沙职",
+   "match": "迪里耶 vs 胡巴卡德",
+   "stars": 0,
+   "grade": 1,
+   "pick": "D级排除",
+   "play": null,
+   "odds": null,
+   "p_final": null,
+   "ev": null,
+   "in_plan": null,
+   "chain": "无",
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "round": "2026-09-02"
+  },
+  {
+   "date": "2026-09-02",
+   "code": "周四005",
+   "league": "法甲",
+   "match": "图卢兹 vs 里尔",
+   "stars": 2,
+   "grade": 4,
+   "pick": "客胜",
+   "play": "HAD",
+   "odds": 2.01,
+   "p_final": [
+    0.264,
+    0.22,
+    0.516
+   ],
+   "ev": 0.011,
+   "in_plan": null,
+   "chain": "R3×0.95",
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "round": "2026-09-02"
+  },
+  {
+   "date": "2026-09-02",
+   "code": "周四006",
+   "league": "西甲",
+   "match": "皇家社会 vs 塞尔塔",
+   "stars": 3,
+   "grade": 4,
+   "pick": "主胜",
+   "play": "HAD",
+   "odds": 1.84,
+   "p_final": [
+    0.569,
+    0.232,
+    0.199
+   ],
+   "ev": 0.047,
+   "in_plan": "A稳版",
+   "chain": "无",
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "round": "2026-09-02"
+  },
+  {
+   "date": "2026-09-02",
+   "code": "周四007",
+   "league": "巴西杯",
+   "match": "格雷米奥 vs 巴西国际",
+   "stars": 2,
+   "grade": 3,
+   "pick": "(胶着避开)",
+   "play": "HAD",
+   "odds": 2.45,
+   "p_final": null,
+   "ev": -0.142,
+   "in_plan": null,
+   "chain": "无",
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "round": "2026-09-02"
   }
  ],
  "plans": {
@@ -10548,6 +10970,56 @@
    "odds": 15.0,
    "evEach": true,
    "note": "町田主场λ=2.21+3:0 DC概率8.8%/freq q8.1%一致;|8.1%-7.7%|<5pp;同场跨票分池(铁律9)"
+  },
+  "2026-09-02:A稳版·平衡": {
+   "plan": "A稳版·平衡",
+   "type": "HAD 2串1×2倍",
+   "stake": "4元(2元×2倍)",
+   "legs": [
+    "周三009 HAD 主胜@1.85 p63.9%",
+    "周四006 HAD 主胜@1.84 p56.9%"
+   ],
+   "odds": 3.4,
+   "evEach": false,
+   "note": "两fd锚干净胆;合赔3.40→13.6元;全中概率36.4%"
+  },
+  "2026-09-02:B进取版·平衡": {
+   "plan": "B进取版·平衡",
+   "type": "HAD 3串1×2倍",
+   "stake": "4元(2元×2倍)",
+   "legs": [
+    "周三009 HAD 主胜@1.85 p63.9%",
+    "周三011 HAD 客胜@2.22 p63.0%⚠分歧",
+    "周四006 HAD 主胜@1.84 p56.9%"
+   ],
+   "odds": 7.555,
+   "evEach": false,
+   "note": "米堡腿模型63%vs市场39.9%分歧23pp已降级标注;保守口径全中15.3%/融合22.9%;合赔7.56→30.2元"
+  },
+  "2026-09-02:C搏奖·HAFU": {
+   "plan": "C搏奖·HAFU",
+   "type": "HAFU 2串1",
+   "stake": "2元",
+   "legs": [
+    "周三009 HAFU hh(半主/全主)@3.05 p46.2%",
+    "周三011 HAFU aa(半客/全客)@3.75 p40%保守"
+   ],
+   "odds": 11.44,
+   "evEach": true,
+   "note": "女王hh DC46.2%vs市场41.2%分歧5pp内通过;米堡aa DC54.7%打折至40%保守口径EV+50%;合赔11.44→22.9元"
+  },
+  "2026-09-02:C搏奖·广西CRS": {
+   "plan": "C搏奖·广西CRS",
+   "type": "CRS 3串1",
+   "stake": "2元",
+   "legs": [
+    "周三009 CRS 2:0@10.5 q8.8%",
+    "周三011 CRS 1:2@8.75 q8.5%",
+    "周四006 CRS 1:0@8.0 q12.5%"
+   ],
+   "odds": 735.0,
+   "evEach": true,
+   "note": "freq-band三步:带内q最高(英冠TOP3验2-0/1-2,西甲TOP2验1-0);与方向票同向集中,彩票仓"
   }
  }
 }
