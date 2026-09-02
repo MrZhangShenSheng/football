@@ -235,3 +235,64 @@ def test_evaluate_league_dc_missing_team_skips_match(tmp_path, monkeypatch):
         assert r["corrected"][key][1] == 4 and r["bareDc"][key][1] == 4 and r["naiveStatic"][key][1] == 4
         assert r["naiveRolling"][key][1] == 3              # idx>0 的可算场 = 3（首场不计，缺队场不计）
     assert r["sdTtg3"][1] == 4
+
+
+# ---------- T6 walk-forward 干净口径 ----------
+
+from datetime import date
+
+from goal_engine import walk_forward_counts, walk_forward_section
+
+
+def _flat_dc_fit(train, xi):
+    """假拟合：全零 attack/defense + 固定 homeAdv/rho（返回 dc_fit.fit 元组形状，队表=train 内全队）。"""
+    teams = sorted({t["home"] for t in train} | {t["away"] for t in train})
+    n = len(teams)
+    return teams, np.zeros(n), np.zeros(n), 0.25, -0.05, 0.0
+
+
+def test_walk_forward_segmenting():
+    """分段/burn-in 语义（照抄 backtest.walk_forward）：8场段长3——
+    前3场纯 burn-in 不预测；idx=3/6 段首各重拟合且训练池=段前全部场次（累积 3/6 场，非段内窗口）。"""
+    teams = ["A", "B", "C", "D"]
+    ms = [{"home": teams[i % 4], "away": teams[(i + 1) % 4], "season": "2526",
+           "fthg": i % 4, "ftag": (i + 1) % 3, "date": date(2026, 8, 1 + i)} for i in range(8)]
+
+    def asRows(rows, hgKey, agKey):
+        return [(r["home"], r["away"], r[hgKey], r[agKey], r["date"].isoformat()) for r in rows]
+
+    trains = []
+
+    def spyFit(train, xi):
+        trains.append(list(train))
+        return _flat_dc_fit(train, xi)
+
+    corrected, bareDc, naiveRolling = walk_forward_counts(ms, segment=3, fit_fn=spyFit)
+    assert [len(t) for t in trains] == [3, 6]              # 两次段首重拟合，训练池累积增长
+    assert asRows(trains[0], "hg", "ag") == asRows(ms[:3], "fthg", "ftag")    # 第一段=burn-in 只进训练池
+    assert asRows(trains[1], "hg", "ag") == asRows(ms[:6], "fthg", "ftag")    # 第二次拟合=段前全部6场（含首段）
+    for line in (corrected, bareDc, naiveRolling):         # 预测场=idx 3..7 共 5 场（4队前3场全亮相→无缺队）
+        assert all(line[k][1] == 5 for k in METRIC_KEYS)   # 三线同 n（同场次切片才可对照）
+
+
+def test_walk_forward_synthetic(tmp_path, monkeypatch):
+    """合成小联赛全链路（真 dc_fit.fit 拟合）：4队12场 segment=5 → burn-in 5 + 预测 7；
+    三线四指标结构齐、n 口径=预测段全部场次（naiveRolling 同 n：prior 含 burn-in 段计数）。"""
+    monkeypatch.setattr("goal_engine.CACHE_DIR", tmp_path)
+    teams = ["A", "B", "C", "D"]
+    pairings = [(teams[i], teams[(i + 1) % 4]) for i in range(4)] \
+        + [(teams[(i + 1) % 4], teams[i]) for i in range(4)] \
+        + [("A", "C"), ("B", "D"), ("C", "A"), ("D", "B")]
+    matches = [{"home": h, "away": a, "date": date(2026, 8, 1 + i).strftime("%d/%m/%Y"),
+                "fthg": str((i * 3) % 5), "ftag": str((i + 2) % 4)}
+               for i, (h, a) in enumerate(pairings)]
+    (tmp_path / "odds_synlg_2526.json").write_text(
+        json.dumps({"season": "2526", "matches": matches}), encoding="utf-8")
+    sec = walk_forward_section("synlg", seasons=("2526",), segment=5)
+    assert sec is not None
+    assert sec["league"] == "synlg" and sec["season"] == ["2526"] and sec["segment"] == 5
+    assert sec["n"] == 7                                   # idx 5..11 全部可算（4队在前5场全亮相）
+    for line in ("corrected", "bareDc", "naiveRolling"):
+        assert set(sec[line]) == set(METRIC_KEYS)
+        assert all(isinstance(v, float) and 0.0 <= v <= 1.0 for v in sec[line].values())
+    assert any("分段重拟合" in s for s in sec["notes"])     # 干净口径说明随节落盘

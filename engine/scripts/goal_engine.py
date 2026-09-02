@@ -1,9 +1,9 @@
-"""goal_engine 进球引擎（双轨分化设计 P0）——T3 特征层 + T4 矩阵层。
+"""goal_engine 进球引擎（双轨分化设计 P0）——T3 特征层 + T4 矩阵层 + T5 对照统计 + T6 walk-forward。
 开发者 sszhang
 
 设计出处：docs/2026-09-01-dual-track-prediction-design.html 第五节
 （λ_final = λ_DC × exp(Σ βᵢ·xᵢ)，本模块产出特征 xᵢ、开季权重与修正后比分矩阵；
-出口层见 T5）。
+出口层见 T5，干净口径生死线见 T6）。
 
 阶段0 语义：特征全部从场次序列自身滚动构造——每场只用该场之前的数据
 （球队画像/standings 是当前时点快照，禁止用于历史逐场回测）。
@@ -349,20 +349,155 @@ def _print_total(sec, label):
         print(f"{line:<14}{cells}{n:>8}")
 
 
+# ---------- T6 walk-forward 干净口径（生死线） ----------
+
+import time
+
+from dc_fit import DEFAULT_XI, fit as fit_dc
+
+SEGMENT = 60          # walk-forward 段长（场）：段首重拟合一次，段内逐场预测
+
+
+def load_dated_matches(league, seasons=("2526",)):
+    """walk-forward 专用装载：load_odds_matches 的同源同序超集（多带 date 键）。
+    dc_fit.fit 需要日期算时间衰减权重，而 load_odds_matches 丢弃 date——本函数用单一列表
+    同时供「特征切片 prior=ms[:idx]」与「段首拟合切片」使用，索引天然对齐防两套过滤漂移。
+    date/fthg/ftag 任一不可解析跳过（与 dc_fit.load_matches 同过滤口径）。"""
+    out = []
+    for season in seasons:
+        p = CACHE_DIR / f"odds_{league}_{season}.json"
+        if not p.exists():
+            continue
+        for m in json.loads(p.read_text(encoding="utf-8")).get("matches", []):
+            try:
+                hg, ag = int(m["fthg"]), int(m["ftag"])
+                d = datetime.strptime(m["date"], "%d/%m/%Y").date()
+            except (TypeError, ValueError, KeyError):
+                continue
+            out.append({"home": m["home"], "away": m["away"], "season": season,
+                        "fthg": hg, "ftag": ag, "date": d})
+    return out
+
+
+def walk_forward_counts(ms, segment=SEGMENT, xi=DEFAULT_XI, fit_fn=None):
+    """真分段重拟合 walk-forward 三线 [hit,n] 计数（T6 干净口径，只算不落盘）。
+
+    分段语义照抄 backtest.walk_forward（REFIT_EVERY 段推进；只复用语义不 import——
+    那边是三向融合口径）：段长 segment，第一段为纯 burn-in（只作训练池、不预测）；
+    此后每个段首用「该段之前全部场次」（累积训练池，非段内滚动窗口）重拟合 DC →
+    段内逐场预测，λ_DC 无未来信息（末段不满一段也预测，同 backtest）。
+    特征切片与 T5 相同（prior=ms[:idx] 全序列滚动，不按段首冻结——特征本来就是滚动的）；
+    naiveRolling 同 T5（该场前滚动频次；burn-in 段也计入频次账本，预测段起算即有历史）。
+    DC 缺队场次三线同跳（同场次切片才可对照）。"""
+    if fit_fn is None:
+        fit_fn = fit_dc
+    corrected, bareDc, naiveRolling = _new_counter(), _new_counter(), _new_counter()
+    roll_ttg, roll_crs = Counter(), Counter()
+    dc, seg_end = None, segment
+    for idx, m in enumerate(ms):
+        if idx == seg_end:              # 段首：用段前全部场次重拟合（backtest 语义=累积训练池）
+            train = [{"date": t["date"], "home": t["home"], "away": t["away"],
+                      "hg": t["fthg"], "ag": t["ftag"]} for t in ms[:idx]]
+            teams, attack, defense, home_adv, rho, _ = fit_fn(train, xi)
+            dc = {"teams": {t: {"attack": float(attack[i]), "defense": float(defense[i])}
+                            for i, t in enumerate(teams)},
+                  "homeAdv": home_adv, "rho": rho}
+            seg_end += segment
+        if dc is not None:              # burn-in 段（idx<segment）dc 尚 None，天然不预测
+            lam = lambda_from_dc(dc, m["home"], m["away"])
+            if lam is not None:
+                lh, la = lam
+                actual_t, actual_s = m["fthg"] + m["ftag"], f"{m['fthg']}-{m['ftag']}"
+                hist, sides = build_history(ms[:idx])
+                f = match_features(hist, sides, m["home"], m["away"])
+                bump(corrected,
+                     score_matrix(lh * lambda_mult(f, "home"), la * lambda_mult(f, "away"), dc["rho"]),
+                     actual_t, actual_s)
+                bump(bareDc, score_matrix(lh, la, dc["rho"]), actual_t, actual_s)
+                bump_naive(naiveRolling, _top_keys(roll_ttg, 3), _top_keys(roll_crs, 5), actual_t, actual_s)
+        roll_ttg[m["fthg"] + m["ftag"]] += 1
+        roll_crs[f"{m['fthg']}-{m['ftag']}"] += 1
+    return corrected, bareDc, naiveRolling
+
+
+def walk_forward_section(league, seasons=("2526",), segment=SEGMENT, xi=DEFAULT_XI, fit_fn=None):
+    """单联赛 walk-forward → 报告节 dict（无可用场次返回 None）。耗时与拟合次数如实入 notes。"""
+    t0 = time.time()
+    ms = load_dated_matches(league, seasons)
+    if not ms:
+        print(f"[goal-engine] {league}: 无可用场次（缺 odds 缓存或 date/fthg 全不可解析），跳过")
+        return None
+    corrected, bareDc, naiveRolling = walk_forward_counts(ms, segment=segment, xi=xi, fit_fn=fit_fn)
+    elapsed = time.time() - t0
+    n_fits = len(range(segment, len(ms), segment))
+    notes = [
+        f"真分段重拟合（{segment}场/段，段首用段前全部场次重拟合），λ_DC 无全季泄漏；特征滚动无泄漏——干净口径",
+        "burn-in 语义照抄 backtest.walk_forward：第一段为纯训练池不预测，预测从第 2 段起（训练池累积非滚动窗口）",
+        "bareDc 低于 in-sample total 的 0.6828 属预期（泄漏移除，预期掉 1~4pp）——实际差值见泄漏核对行",
+        f"耗时 {elapsed:.1f}s（装载 {len(ms)} 场 / 预测 {corrected['ttg3'][1]} 场 / {n_fits} 次段首重拟合）",
+    ]
+    if elapsed > 120:
+        notes.append("拟合耗时超 2 分钟：可接受（计划边界），已如实记录")
+    return {"league": league, "season": list(seasons), "segment": segment,
+            "n": corrected["ttg3"][1],
+            "corrected": _rates(corrected), "bareDc": _rates(bareDc), "naiveRolling": _rates(naiveRolling),
+            "notes": notes}
+
+
+def _run_walk_forward(league, seasons):
+    """跑 walk-forward → 并入报告 walkForward 节（读旧报告→加节→单次落盘，既有节不动）。
+    终端输出三线表 + 生死线数字（corrected/bareDc vs naiveRolling，复审 A3 拍板只记录不裁决）。"""
+    section = walk_forward_section(league, seasons=seasons)
+    if section is None:
+        return
+    report = json.loads(REPORT_PATH.read_text(encoding="utf-8")) if REPORT_PATH.exists() else {}
+    lg_sample = report.get("leagues", {}).get(league, {}).get("bareDc", {}).get("ttg3")
+    in_sample = report.get("total", {}).get("bareDc", {}).get("ttg3")
+    if lg_sample is not None:
+        section["notes"].append(
+            f"泄漏核对（同联赛口径）：in-sample {league}.bareDc.ttg3={lg_sample} vs "
+            f"walkForward {section['bareDc']['ttg3']}（{(section['bareDc']['ttg3'] - lg_sample) * 100:+.1f}pp，"
+            "泄漏移除预期掉 1~4pp）")
+    if in_sample is not None:
+        section["notes"].append(
+            f"泄漏核对（15联赛池口径，联赛构成不同仅作参考）：in-sample total.bareDc.ttg3={in_sample} vs "
+            f"walkForward {section['bareDc']['ttg3']}（{(section['bareDc']['ttg3'] - in_sample) * 100:+.1f}pp）")
+    report["walkForward"] = section
+    REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    REPORT_PATH.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(f"[goal-engine] 报告落盘 {REPORT_PATH}（walkForward 节并入，既有节不动）")
+    print(f"\n== walkForward 三线对照（{league} {list(seasons)} segment={section['segment']} n={section['n']}）==")
+    print(f"{'line':<14}" + "".join(f"{k:>8}" for k in METRIC_KEYS))
+    for line in ("corrected", "bareDc", "naiveRolling"):
+        print(f"{line:<14}" + "".join(f"{section[line][k]:>8.4f}" for k in METRIC_KEYS))
+    for line in ("corrected", "bareDc"):
+        delta = (section[line]["ttg3"] - section["naiveRolling"]["ttg3"]) * 100
+        print(f"生死线（09-27 评审裁决）：{line}.ttg3={section[line]['ttg3']} vs "
+              f"naiveRolling={section['naiveRolling']['ttg3']} → {'超' if delta > 0 else '未超'}（{delta:+.1f}pp）")
+    if lg_sample is not None:
+        print(f"泄漏核对（同联赛）：bareDc.ttg3={section['bareDc']['ttg3']} vs in-sample {league} {lg_sample}"
+              f"（{(section['bareDc']['ttg3'] - lg_sample) * 100:+.1f}pp，泄漏移除预期掉 1~4pp）")
+    if in_sample is not None:
+        print(f"泄漏核对（15联赛池，构成不同仅参考）：bareDc.ttg3={section['bareDc']['ttg3']} vs "
+              f"in-sample total {in_sample}（{(section['bareDc']['ttg3'] - in_sample) * 100:+.1f}pp）")
+
+
 def main(argv=None):
-    ap = argparse.ArgumentParser(description="goal_engine T5 对照统计+消融")
+    ap = argparse.ArgumentParser(description="goal_engine T5 对照统计+消融 / T6 walk-forward 干净口径")
     ap.add_argument("--compare", action="store_true", help="四线对照+三键消融，落盘 goal-engine-report.json")
     ap.add_argument("--disable", default="", help="消融键逗号分隔(att/def/shrink)，作用于 corrected 线")
     ap.add_argument("--seasons", default="2526", help="赛季逗号分隔(默认 2526)")
-    ap.add_argument("--walk-forward", action="store_true", help="占位：walk-forward 为 T6 交付，本版未实现")
+    ap.add_argument("--walk-forward", action="store_true",
+                    help="T6 干净口径：60场分段重拟合 walk-forward 三线对照，并入报告 walkForward 节")
+    ap.add_argument("--league", default="spain-laliga", help="walk-forward 联赛（默认/验证只用 spain-laliga）")
     args = ap.parse_args(argv)
+    seasons = tuple(s for s in (x.strip() for x in args.seasons.split(",")) if s)
     if args.walk_forward:
-        print("[goal-engine] --walk-forward 为 T6 交付，本版未实现（占位）")
+        _run_walk_forward(args.league, seasons)
         return
     if not args.compare:
         ap.print_help()
         return
-    seasons = tuple(s for s in (x.strip() for x in args.seasons.split(",")) if s)
     disable = tuple(d for d in (x.strip() for x in args.disable.split(",")) if d)
     bad = set(disable) - set(DISABLE_KEYS)
     if bad:
