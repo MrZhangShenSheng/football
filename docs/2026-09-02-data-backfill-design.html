@@ -1,0 +1,74 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>设计 · 历史数据补全三层（联赛库/pinClose/纵深）</title>
+<style>
+:root{--bg:#f7f8fa;--card:#fff;--ink:#1c2333;--sub:#5a6478;--line:#e3e7ee;--ok:#0a7d43;--bad:#c0392b;--warn:#b07a00;--accent:#2456c6}
+[data-theme="dark"]{--bg:#14171d;--card:#1d222b;--ink:#e8ecf3;--sub:#98a3b8;--line:#323a48;--ok:#3dd68c;--bad:#ff7b6b;--warn:#ffc861;--accent:#7ba4ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.7 "Microsoft YaHei",system-ui,sans-serif;padding:24px}
+.wrap{max-width:980px;margin:0 auto}
+h1{font-size:20px;margin:0 0 4px}h2{font-size:16px;margin:30px 0 10px;border-left:4px solid var(--accent);padding-left:10px}
+.meta{color:var(--sub);font-size:12.5px;margin-bottom:16px}
+table{border-collapse:collapse;width:100%;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:13px;margin:8px 0}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:rgba(36,86,198,.07);font-weight:600;white-space:nowrap}tr:last-child td{border-bottom:none}
+code,pre{font-family:Consolas,monospace;font-size:12.5px;background:rgba(90,100,120,.1);border-radius:4px}
+pre{padding:10px 14px;overflow-x:auto;line-height:1.55}
+ul{margin:6px 0;padding-left:20px}li{margin:3px 0}
+.tag{display:inline-block;padding:1px 8px;border-radius:10px;font-size:11.5px;font-weight:600}
+.t-ok{background:rgba(10,125,67,.12);color:var(--ok)}.t-bad{background:rgba(192,57,43,.12);color:var(--bad)}.t-warn{background:rgba(176,122,0,.14);color:var(--warn)}
+.foot{color:var(--sub);font-size:12px;margin-top:26px;border-top:1px solid var(--line);padding-top:10px}
+</style></head><body><div class="wrap">
+<h1>设计 · 历史数据补全三层</h1>
+<div class="meta">2026-09-02 · brainstorming 定稿（大哥拍板：三块全补·含杯赛·层2 先行）｜背景：corpus 345 条回填中 CLV 仅 17 条；巴甲/巴西杯/挪超/丹超/美职无 DC（usa_matches.json 0KB）；DC 拟合仅两季纵深</div>
+
+<h2>一、总体架构</h2>
+<pre>层1 联赛赛果库扩容        层2 pinClose修复         层3 历史纵深
+ESPN+体彩双源回填          诊断→时机/规则双修        fd第三季(2425)
+    │                          │                      │
+    ├─→ data/02-results/league/   ├─→ 逐轮补算精确CLV     ├─→ engine/cache/odds_*_2425
+    │   (bra/nor/den/usa/杯赛)    │   (回填历史345条)      │
+    ▼                          ▼                      ▼
+dc_fit --source local      corpus CLV 17→150+        dc_fit 三季联拟
+四大联赛新DC版本           (盈利评估闭环)           holdout消融定默认
+杯赛→freq-band模板+语料
+(不强行DC·借用联赛参数)</pre>
+<ul><li><b>杯赛补法</b>：补历史赛果语料（出口=freq-band 比分频率模板+五维复盘），<b>不单独建 DC</b>（队池混杂硬拟污染参数）；杯赛场预测继续走"借用所属联赛 DC + 市场锚"</li>
+<li><b>实施顺序</b>：层2 → 层1 → 层3（层2 错配是正确性缺陷最急，大哥 09-02 拍板换序）</li></ul>
+
+<h2>二、层1 · 联赛赛果库扩容（含杯赛）</h2>
+<table><tr><th>源</th><th>职责</th><th>代码（09-02 实测）</th></tr>
+<tr><td>ESPN（主源·深历史）</td><td>四大联赛 2025+2026 两季全量</td><td>bra.1✅(11场) / nor.1✅(8) / den.1✅(7) / usa.1✅(15)</td></tr>
+<tr><td>体彩 league-results（补缺）</td><td>ESPN 缺的杯赛 + 体彩口径对齐</td><td>巴甲/巴西杯码实施时从 zqlszl 探测（copa.do.brasil HTTP 400，韩职=86 先例）</td></tr></table>
+<ul><li><b>落库</b>：data/02-results/league/{league}_matches.json，schema 复用 japan_matches.json（espn_fetch 现成解析器加码即用）；usa 0KB 空文件同流水线修复。预计量级：巴甲两季~760 / 美职~680 / 挪超丹超各~450</li>
+<li><b>杯赛隔离</b>：同目录建库但顶层 "cup": true；dc_fit 读库跳过 cup 库（结构性隔离），score_ev 频率表包含 cup 库（比分频率模板=杯赛数据唯一价值出口）</li>
+<li><b>口径风险</b>：美职/巴西杯/挪威杯加时点球赛制——回填只取 90 分钟口径（ESPN status 可判 AET），否则平局参数被污染</li></ul>
+<p><b>验收</b>：①league/ 新增 4 联赛+≥2 杯赛库，两季回填≥95%；②四联赛 DC v1 发布且 backtest RPS 不劣于市场基线（劣于则不接入 dc_predict 仅留库）；③下轮巴甲/巴西杯场 dc_predict/freq-band 输出非空；④usa 空文件→有效库；⑤run.py learn 增量含新联赛且幂等</p>
+
+<h2>三、层2 · pinClose 诊断与修复（先行）</h2>
+<p><b>诊断</b>（pin_close.py:64-101 实底，匹配三键=日期±1+比分+联赛，<b>不含队名</b>）：</p>
+<table><tr><th>#</th><th>根因</th><th>性质</th></tr>
+<tr><td>1</td><td>ambiguous 撞行：英超单轮 10 场，3 天窗内同比分常现 → 多行即跳过</td><td><span class="tag t-warn">低效</span></td></tr>
+<tr><td>2</td><td><b>跨季错配</b>：glob 扫两季文件，当季行未更新+上季同窗同比分唯一行 → 拿上季收盘价静默当本轮用</td><td><span class="tag t-bad">正确性缺陷</span></td></tr>
+<tr><td>3</td><td>EL0（欧罗巴）缓存从未拉过：run.py update 码表漏 EL0，欧罗巴 12 条语料全 none</td><td><span class="tag t-warn">遗漏</span></td></tr>
+<tr><td>4</td><td>时机错配：fd 英国下午补当日行，verify 上午跑（09-02 英冠 8 场 none 即此）</td><td><span class="tag t-warn">流程</span></td></tr></table>
+<p><b>修复四件套</b>：</p>
+<ul><li><b>队名第四键</b>：日期窗+联赛先筛（候选≤10 行），fd 英文名 vs 预测记录中文队名做 token 模糊匹配（_aliases.json teamId 桥接，归一去空格连字符后小写比较+子串兜底）；两对队名均匹配→唯一行；桥接失败回退现三键逻辑（保守降级，不破坏存量 17 条）</li>
+<li><b>赛季隔离</b>：按比赛日期只读对应赛季文件（month≥7→season=yy(yy+1)），根除跨季错配</li>
+<li><b>PIN_CODES 补 EL0</b>：run.py update 码表一行（EL0.csv 存在性实施时验证）</li>
+<li><b>时机约定</b>：pinClose 补跑安排晚间回填链（fd 已更新）；上午 verify 结束输出"fd 覆盖联赛 none N 场·晚间重跑救回"提示</li></ul>
+<p><b>历史救回</b>：修复后对 345 条全量幂等补跑（backfill.py:252 已有钩子，重跑即补）；预估 CLV 覆盖 17→150+（fd 覆盖联赛语料约 200 条×80%）</p>
+<p><b>验收</b>：ambiguous 率&lt;10%；无跨季错配（抽样 10 条人工核对 fd 原始行）；CLV≥150；pytest 全量通过</p>
+
+<h2>四、层3 · 历史纵深（第三季 2425）</h2>
+<ul><li>odds_fetch --season 2425 拉全 17 联赛入缓存</li>
+<li><b>拟合切换必须过消融</b>：三季 vs 两季 walk-forward 对照——显著更优→切默认（枚举 dc_fit 全部调用入口，memory 教训）；不优→2425 留缓存不接入（零风险退路）</li>
+<li>预判：ξ=0.005 时间衰减下 2425 权重自然萎缩，整体增益有限；真正受益的是小样本联赛（希超 2627 仅 54 场/德乙 89 场）——消融报告<b>按联赛分层</b>看，不搞一刀切</li></ul>
+
+<h2>五、实施排期</h2>
+<table><tr><th>批次</th><th>内容</th><th>改动面</th><th>验收</th></tr>
+<tr><td><b>层2（先行）</b></td><td>pin_close 四件套 + 345 条历史补跑</td><td>中（匹配逻辑重写+模糊桥接）</td><td>CLV 17→150+ · ambiguous&lt;10% · pytest 全量</td></tr>
+<tr><td>层1</td><td>espn_fetch 加 4 码 + learn 扩容 + 回填 + DC 发布</td><td>小（参数化扩展）</td><td>层1 验收 5 条</td></tr>
+<tr><td>层3</td><td>拉季 + 消融对照</td><td>极小</td><td>消融结论（切/不切）</td></tr></table>
+<p>每批次完成跑 pytest 全量（落盘新 JSON 后必须）+ git commit。</p>
+
+<div class="foot">关联：docs/2026-08-29-attribution-p2-plan.html（pinClose=F3/F4 判别地基）·docs/2026-08-27-freq-band-design.html（比分频率模板出口）｜brainstorming 会话 2026-09-02 定稿</div>
+</div></body></html>
