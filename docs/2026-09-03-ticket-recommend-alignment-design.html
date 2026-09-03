@@ -1,0 +1,139 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>实票×推荐对齐设计 · 系统同推制六件套</title>
+<style>
+:root{--ink:#1a2233;--sub:#5a6478;--line:#dfe3ec;--bg:#f7f8fb;--accent:#2b5fd9;--ok:#1e8e5a;--warn:#c2452d;--gold:#9a6b1f}
+*{box-sizing:border-box}
+body{margin:0;padding:32px 20px;color:var(--ink);background:#fff;font:14px/1.75 "Segoe UI","Microsoft YaHei",sans-serif}
+.wrap{max-width:960px;margin:0 auto}
+h1{font-size:24px;margin:0 0 4px}
+h2{font-size:18px;margin:36px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--line)}
+h2 .no{color:var(--accent);font-family:Consolas,monospace;margin-right:8px}
+h3{font-size:15px;margin:20px 0 8px}
+.meta{color:var(--sub);font-size:13px;margin-bottom:20px}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.5px}
+th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+th{background:var(--bg);font-weight:600}
+td.c,th.c{text-align:center}
+code{font-family:Consolas,monospace;background:var(--bg);padding:1px 5px;border-radius:3px;font-size:.92em}
+.tag{display:inline-block;padding:0 8px;border-radius:10px;font-size:12px;font-weight:600;vertical-align:1px}
+.tag.ok{background:#e4f3ec;color:var(--ok)}
+.tag.warn{background:#faeae6;color:var(--warn)}
+.tag.gold{background:#f7efdd;color:var(--gold)}
+.note{background:var(--bg);border-left:3px solid var(--accent);padding:10px 14px;margin:12px 0;border-radius:0 6px 6px 0;font-size:13.5px}
+ul{margin:8px 0;padding-left:22px}
+li{margin:4px 0}
+.fig{margin:16px 0;padding:16px;background:var(--bg);border-radius:8px;overflow-x:auto}
+.fig svg{display:block;margin:0 auto;max-width:100%;color:var(--ink)}
+.cap{text-align:center;color:var(--sub);font-size:12.5px;margin-top:6px}
+pre{background:var(--bg);padding:12px;border-radius:6px;font-size:12.5px;overflow-x:auto;line-height:1.6}
+</style>
+</head><body><div class="wrap">
+
+<h1>实票 × 推荐对齐设计 — 系统同推制六件套</h1>
+<div class="meta">2026-09-03 · 开发者 sszhang · 状态:设计定稿(brainstorm 四段确认)· 触发:16 票 60 腿实票×系统推荐逐腿对齐分析</div>
+
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="i-flag" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M5 21V4m0 0h12l-2.5 4L17 12H5"/></symbol>
+<symbol id="i-link" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M9 15l6-6M7 11a4 4 0 0 1 0-6l2-2a4 4 0 0 1 6 6l-1 1M17 13a4 4 0 0 1 0 6l-2 2a4 4 0 0 1-6-6l1-1"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 20V6M4 20h16M8 16v-5M12 16V8M16 16v-3"/></symbol>
+<symbol id="i-doc" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M6 2h9l4 4v16H6zM15 2v5h4"/></symbol>
+</defs></svg>
+
+<h2><span class="no">00</span>分析底子(2026-09-03 · 16 票 60 腿逐腿对齐)</h2>
+<table>
+<tr><th>腿分类</th><th class="c">条数</th><th class="c">命中率</th><th>含义</th></tr>
+<tr><td><span class="tag ok">agree</span> 同玩法同选项</td><td class="c">30</td><td class="c"><b>40%</b></td><td>与系统推荐一致</td></tr>
+<tr><td><span class="tag warn">play_diff</span> 玩法不同</td><td class="c">14</td><td class="c"><b>14%</b></td><td>系统推 HAD 大哥买 CRS/TTG(方向常对玩法把钱买没)</td></tr>
+<tr><td><span class="tag gold">no_rec</span> 仅方向/无玩法推荐</td><td class="c">15</td><td class="c">20%</td><td>覆盖缺口(fd 外联赛/早期 schema)自选玩法</td></tr>
+<tr><td>pick_diff 同玩法选项不同</td><td class="c">1</td><td class="c">0%</td><td>—</td></tr>
+</table>
+<div class="note"><b>盈亏分裂(核心发现)</b>:高一致票(一致度≥½)累计净 <b>+212.9 元</b>,零一致票累计净 <b>−75.6 元</b>——全账本盈利全部来自跟系统一致的票,所有亏损票都是零一致票。典型:T009 五场 CRS 复式 −20(尤文/热刺/紫百合三场系统推 HAD 主胜全中,CRS 全灭);T002/T003 +114.5×2 的 CRS 腿全是系统同推。另:08-28 后大哥买法已自发向系统靠拢(T011/T014/T015 几乎全一致),偏好档案 CRS>HAD 优先级与实际买法及实证盈亏脱节。</div>
+
+<h2><span class="no">01</span>决策记录(brainstorm 拍板)</h2>
+<table>
+<tr><th>决策点</th><th>结论</th><th>备注</th></tr>
+<tr><td>方案范围</td><td><b>最全六件套</b>(大哥拍板"最全")</td><td>A 推荐层补缺 + B 登记对照 + C 偏好档案 + E 票腿 schema + D 复盘自动化 + F 规范同步</td></tr>
+<tr><td>CRS 口味调和</td><td><span class="tag warn">系统同推制(拍板 A)</span></td><td>CRS/TTG/HAFU 腿入票<b>须系统同推</b>(池卡 rec 或 boldplay 腿);未同推自动落系统推荐玩法;HAD 按系统方向;priority 保留 CRS 优先(同推多玩法时 CRS 先入)——口味不变闸门加上,否决双轨小额(B)与口味降级(C)</td></tr>
+<tr><td>对照时点</td><td>登记时(赛前)+ 回填后统计</td><td>对照源=03-predictions 当日 JSON+boldplay 卡(赛前已有);corpus 回填后才合并,时序区分关键</td></tr>
+<tr><td>排除场</td><td><b>维持排除不放宽</b></td><td>模式2 实证:排除场照买全亏(T004/T005/T006);补缺=区分"没说"与"说了别买",非放宽</td></tr>
+</table>
+
+<h2><span class="no">02</span><svg width="14" height="14"><use href="#i-link"/></svg> E+ C:地基 — agreement schema + 偏好档案闸门</h2>
+<h3>票腿五值 agreement 字段(tickets.json 腿级)</h3>
+<table>
+<tr><th>值</th><th>判定</th><th>回执警示</th></tr>
+<tr><td><code>agree</code></td><td>同玩法同选项</td><td>无(✅)</td></tr>
+<tr><td><code>play_diff</code></td><td>同场系统推了别的玩法</td><td>黄牌+14%vs40%</td></tr>
+<tr><td><code>pick_diff</code></td><td>同玩法不同选项</td><td>黄牌</td></tr>
+<tr><td><code>no_rec</code></td><td>系统无玩法推荐/未覆盖</td><td>灰牌(中性)</td></tr>
+<tr><td><code>excluded</code></td><td>系统明确排除(胶着/D级,play="排除:…")</td><td>红牌(历史全亏)</td></tr>
+</table>
+<p>对照源:历史补算用 corpus records(同日 code 对齐);登记时用 <code>data/03-predictions/{date}.json</code> + 当轮 boldplay 卡。<b>T001~T016 共 60 腿回填补算</b>,新票登记实时写。</p>
+<h3>preference.json playTaste 加 gateRule</h3>
+<pre>"gateRule": "高抽水池玩法腿(CRS/TTG/HAFU)入票须系统同推——池卡 rec_base/rec_upset 含该场
+该玩法、或 boldplay 翻身/彩票腿含之;系统未同推该场,自动落系统推荐玩法;HAD 方向腿按系统
+方向。priority 保留 CRS 优先(同推多玩法时 CRS 先入)。"
+依据note: 偏离系统自选腿历史命中14%(2/14) vs 一致40%(12/30);零一致票净-75.6 vs 高一致+212.9</pre>
+
+<h2><span class="no">03</span><svg width="14" height="14"><use href="#i-flag"/></svg> B:登记对照流程("我买了"自动回执)</h2>
+<div class="fig">
+<svg viewBox="0 0 860 190" width="860" height="190" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="13">
+<defs><marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#2b5fd9"/></marker></defs>
+<g fill="none" stroke="#2b5fd9" stroke-width="1.6">
+<rect x="20" y="60" width="150" height="60" rx="8"/>
+<path d="M170 90h30" marker-end="url(#arr)"/>
+<rect x="200" y="60" width="170" height="60" rx="8"/>
+<path d="M370 90h30" marker-end="url(#arr)"/>
+<rect x="400" y="30" width="180" height="120" rx="8" stroke="#c2452d"/>
+<path d="M580 90h30" marker-end="url(#arr)"/>
+<rect x="610" y="60" width="230" height="60" rx="8"/>
+</g>
+<g fill="#1a2233">
+<text x="95" y="85" text-anchor="middle" font-weight="600">大哥报票面</text><text x="95" y="105" text-anchor="middle" fill="#5a6478" font-size="12">"我买了/出票了"</text>
+<text x="285" y="85" text-anchor="middle" font-weight="600">建档(四要素)</text><text x="285" y="105" text-anchor="middle" fill="#5a6478" font-size="12">tickets.json+git</text>
+<text x="490" y="55" text-anchor="middle" font-weight="600" fill="#c2452d">自动对照(必跑)</text><text x="490" y="77" text-anchor="middle" fill="#5a6478" font-size="12">03-predictions 当日JSON</text><text x="490" y="97" text-anchor="middle" fill="#5a6478" font-size="12">+boldplay 卡(赛前已有)</text><text x="490" y="117" text-anchor="middle" fill="#5a6478" font-size="12">逐腿写 agreement</text><text x="490" y="137" text-anchor="middle" fill="#5a6478" font-size="12">corpus 时点未合并禁用</text>
+<text x="725" y="85" text-anchor="middle" font-weight="600">回执随确认给出</text><text x="725" y="105" text-anchor="middle" fill="#5a6478" font-size="12">🚫红&gt;⚠黄&gt;灰·只提示不拦</text>
+</g></svg>
+<div class="cap">图1 · 登记对照流程:建档后必跑,回执随登记确认一起给</div>
+</div>
+<pre>[票务对照 T017] 3/4 腿与系统一致
+  ✅ 周三009 HAD 主胜 — 系统同推
+  ⚠ 周三011 CRS 1:2 — 系统推 HAD 客胜 [play_diff]
+     偏离警示:此类腿历史命中 14% vs 一致 40%
+  🚫 周三013 HAFU hh — 系统D级排除 [excluded]
+     排除场照买历史票全亏(T004/T005/T006)</pre>
+<p>警示分级:<code>excluded</code> 红牌 > <code>play_diff</code>/<code>pick_diff</code> 黄牌(附数据)> <code>no_rec</code> 灰牌;agree 不打扰。历史数字写死模板,由 D 区块动态值定期刷新。实现=对照函数固化进实票域模块供 skill 调用,不新建进程工具。</p>
+
+<h2><span class="no">04</span><svg width="14" height="14"><use href="#i-doc"/></svg> A:推荐层补缺(play 三态化,风控不松)</h2>
+<table>
+<tr><th>play 值</th><th>含义</th><th>对照判定</th></tr>
+<tr><td><code>crs 2:0</code> / <code>had 主胜</code></td><td>正常玩法推荐</td><td>agree/play_diff/pick_diff</td></tr>
+<tr><td><code>排除:胶着</code> / <code>排除:D级</code></td><td>风控明确排除</td><td><code>excluded</code> 红牌</td></tr>
+<tr><td>(空)</td><td><b>不再允许</b></td><td>—</td></tr>
+</table>
+<ul>
+<li>兜底链:fd 外联赛(芬超/沙特/J2/杯赛)走现有 <code>pools_card</code> low_conf 路径(无联赛模板→全局池+抽水兜底)——机制已在,补输出规范。</li>
+<li>SKILL.md Step 6/7 加"每场必答:玩法推荐或明确排除,禁止空白";C/D 级场允许只输出排除标记。</li>
+<li><b>历史轮不追溯改</b>(预测记录同票面冻结精神),历史 no_rec 腿照实归类,新轮起干净。</li>
+</ul>
+
+<h2><span class="no">05</span><svg width="14" height="14"><use href="#i-chart"/></svg> D+F:复盘自动化 + 规范</h2>
+<ul>
+<li><b>tickets.html"推荐一致率"区块</b>(ticket_report.py,回填结算重刷时自动算):五值分布+各分类命中率动态值;高一致 vs 零一致累计净额;回执模板警示数字改从此读最新值。</li>
+<li><b>SKILL.md</b>:登记流程加"建档后必跑对照出回执";Step 6/7 每场必答;偏好形状档案表接线 gateRule。</li>
+<li><b>lessons.md 教训</b>:偏离系统自选玩法腿 14% vs 一致 40%,零一致票全亏——口味通过闸门表达,不通过绕开系统表达(2026-09-03,16票60腿)。</li>
+</ul>
+
+<h2><span class="no">06</span>验收与落地顺序</h2>
+<table>
+<tr><th class="c">#</th><th>步骤</th><th>验收</th></tr>
+<tr><td class="c">1</td><td>E:分类函数+T001~T016 60腿补算</td><td>五值分布复现分析结果(30/14/1/15/0)</td></tr>
+<tr><td class="c">2</td><td>C:preference.json gateRule</td><td>档案落盘含依据 note</td></tr>
+<tr><td class="c">3</td><td>D:ticket_report.py 一致率区块</td><td>tickets.html 渲染正确,数字动态</td></tr>
+<tr><td class="c">4</td><td>A+B+F:SKILL.md 规范+lessons.md</td><td>登记对照/每场必答/gateRule 接线齐</td></tr>
+<tr><td class="c">5</td><td>pytest 全量+commit</td><td>基线 228+新用例不回归</td></tr>
+</table>
+<div class="note"><b>明确不做(YAGNI)</b>:不拦票(只提示);不追溯改历史预测记录;不新增数据源(池卡兜底已在);trend.html 不动(一致率归票务域)。</div>
+
+</div></body></html>
