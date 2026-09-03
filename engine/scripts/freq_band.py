@@ -14,6 +14,9 @@ FORM_MIN_MATCHES = 5        # 近况最少场数：不足 → 不平移（纯联
 SURVIVE_Q = 0.01            # 生存阈值：平移后 q < 1% 的比分视为噪声
 LAMBDA_CLAMP = (0.2, 4.5)   # λ 合理域（防小样本狂胜拉爆）
 SIGMA_FLOOR = 0.5           # 核带宽下限（防极端单点分布 σ→0）
+T_AXIS_GUARD = 0.4          # T轴护栏：平移目标 T=λh+λa 偏离模板总进球均值超40% → 降级纯模板
+                            # （2026-09-03 周四006事故：λ客÷纯客场基准虚高→T=4.35 vs 西甲均值2.6，
+                            #  高斯核远距平移把 s7 质量从2.1%抬到28.6%@37 EV+959%）
 LEAGUE_STORE = ("japan", "korea", "sweden", "saudi")   # 本地赛果库联赛（与 score_ev 口径一致）
 BAND_DEFAULT = (10.0, 28.0)   # CRS 形状带（桂林-梅州合并带，与 boldplay 现状一致；boldplay.band_ok 是 had 方向带不可复用）
 DIVERGENCE_FLAG_PP = 5        # |q − 市场隐含| 超此值(百分点)触发分歧旗（spec D12）
@@ -45,7 +48,7 @@ def global_pool(freq_table: dict) -> Counter:
 
 
 def build_team_form(fetch_rows_fn=fetch_rows,
-                    league_glob="data/02-results/league/*_matches.json",
+                    league_glob=None,
                     aliases: dict | None = None) -> dict:
     """fd CSV + 本地联赛库 → {norm队名: [(进球, 失球), ...]}（源内按时间序，取尾即最近）。
     fd 队名(HomeTeam/AwayTeam) 与本地 tid 统一 norm 化做键；fd 行经 aliases.fd 对照双写 tid 键
@@ -76,7 +79,9 @@ def build_team_form(fetch_rows_fn=fetch_rows,
                     add(r["AwayTeam"], (ag, hg))
                 except (KeyError, ValueError, TypeError):
                     continue
-    for path in glob.glob(league_glob):
+    # ROOT 绝对定位（2026-09-03 修复，同 score_ev.build_freq_table：相对 glob 在
+    # cwd=engine/scripts 下静默丢失日韩瑞沙近况 → team_strength 返回 None → 平移静默降级）
+    for path in glob.glob(league_glob or str(ROOT / "data/02-results/league/*_matches.json")):
         key = path.replace("\\", "/").split("/")[-1].replace("_matches.json", "")
         if key not in LEAGUE_STORE:
             continue
@@ -103,13 +108,39 @@ def team_strength(form: dict, norm_name: str):
 
 def lambdas(base: tuple, home_str, away_str) -> tuple:
     """乘法进球模型（Maher/Dixon-Coles 只取 λ 计算，不用 Poisson 造分布）：
-    λ_h = 主队场均进 × 客队场均失 / 模板主场场均；λ_a 对称。clamp 防极端。"""
+    λ_h = 主队场均进 × 客队场均失 / 模板混合基准；λ_a 对称。clamp 防极端。
+    分母=两侧基准均值（2026-09-03 修复）：team_strength 是主客混合口径（fd 行不分主客
+    双写），分母若用单侧基准，λ客被纯客场低基准放大 ~15%+，T 轴远距平移质量爆炸。
+    T 轴护栏：|T−模板总进球均值|/均值 > T_AXIS_GUARD → None（调用链降级纯模板）。"""
     if not home_str or not away_str or base[0] <= 0 or base[1] <= 0:
         return None
-    lh = home_str[0] * away_str[1] / base[0]
-    la = away_str[0] * home_str[1] / base[1]
-    return (min(max(lh, LAMBDA_CLAMP[0]), LAMBDA_CLAMP[1]),
-            min(max(la, LAMBDA_CLAMP[0]), LAMBDA_CLAMP[1]))
+    mixed = (base[0] + base[1]) / 2
+    lh = home_str[0] * away_str[1] / mixed
+    la = away_str[0] * home_str[1] / mixed
+    lh = min(max(lh, LAMBDA_CLAMP[0]), LAMBDA_CLAMP[1])
+    la = min(max(la, LAMBDA_CLAMP[0]), LAMBDA_CLAMP[1])
+    t_mean = base[0] + base[1]
+    if abs(lh + la - t_mean) / t_mean > T_AXIS_GUARD:
+        return None
+    return (lh, la)
+
+
+def _selftest_lambdas():
+    # 事故重放（2026-09-03 周四006）：混合分子 ÷ 单侧基准 → T=4.35 vs 模板均值2.62 → 护栏拦
+    # 修复后 λ客 2.53→2.18、T 4.35→3.99 仍偏模板均值 2.62 达 52% → 必须降级 None
+    base = (1.491, 1.126)                              # 西甲模板 (主场均,客场均)
+    lam = lambdas(base, (1.6, 1.9), (1.5, 1.7))
+    assert lam is None, f"事故场景须被T轴护栏拦下: {lam}"
+
+    # 对称性：两队完全相同 → λh=λa（混合分母下乘法模型对称），T 护栏内正常返回
+    lam2 = lambdas(base, (1.3, 1.2), (1.3, 1.2))
+    assert lam2 and abs(lam2[0] - lam2[1]) < 1e-9
+    assert abs(lam2[0] - 1.3 * 1.2 / ((base[0] + base[1]) / 2)) < 1e-9
+
+    # 温和进攻场：T 偏离 25%<40% → 正常平移（护栏不误伤）
+    lam3 = lambdas(base, (1.8, 1.1), (1.1, 1.8))
+    assert lam3 and lam3[0] > lam3[1]
+    print("[selftest] lambdas OK（分母对齐+T轴护栏）")
 
 
 def shifted_q(blob: Counter, lam=None) -> dict:
@@ -450,3 +481,4 @@ if __name__ == "__main__":
         _selftest_ttg()
         _selftest_hafu()
         _selftest_pools()
+        _selftest_lambdas()

@@ -3,6 +3,7 @@ import glob, json
 from collections import Counter
 from datetime import date
 from band_calibration import DIVS, SEASONS, fetch_rows, devid, band_of
+from common import ROOT
 
 PRIOR_STRENGTH = 50          # 收缩先验强度(场)
 
@@ -35,7 +36,9 @@ def build_freq_table() -> dict:
                 try:
                     blob[norm_score(r["FTHG"], r["FTAG"])] += 1; blob["__n"] += 1
                 except (KeyError, ValueError, TypeError): continue
-    for path in glob.glob("data/02-results/league/*_matches.json"):
+    # ROOT 绝对定位（2026-09-03 修复：相对路径在 cwd=engine/scripts 的 run.py 调用链下
+    # 静默丢掉日韩瑞沙 ~2300 场——boldplay.py:21 2026-09-02 同类修复的漏网之鱼）
+    for path in glob.glob(str(ROOT / "data/02-results/league/*_matches.json")):
         key = path.replace("\\", "/").split("/")[-1].replace("_matches.json", "")  # Windows glob 返回反斜杠，先归一再取文件名（2026-08-25 本地1948场静默丢失修复）
         if key not in ("japan", "korea", "sweden", "saudi"): continue
         blob = table.setdefault(key, Counter())
