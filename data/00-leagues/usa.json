@@ -1,8 +1,9 @@
 {
- "fetchedAt": "2026-09-03",
- "source": "espn",
- "leagueCode": "usa.1",
+ "league": "usa",
+ "zhName": "美职",
  "season": "2026",
+ "generatedAt": "2026-09-03",
+ "roundsPlayed": 23,
  "standings": [
   {
    "pos": 3,
@@ -364,5 +365,11 @@
    "gd": 7,
    "pts": 30
   }
- ]
+ ],
+ "freshness": {
+  "standingsSource": "espn",
+  "fetchedAt": "2026-09-03",
+  "stale": false
+ },
+ "notes": "ESPN 积分榜 2026-09-03 拉取，队名为 ESPN 英文名（分析时经 _aliases 对照）"
 }

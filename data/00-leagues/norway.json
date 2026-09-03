@@ -1,8 +1,9 @@
 {
- "fetchedAt": "2026-09-03",
- "source": "espn",
- "leagueCode": "nor.1",
+ "league": "norway",
+ "zhName": "挪超",
  "season": "2026",
+ "generatedAt": "2026-09-03",
+ "roundsPlayed": 18,
  "standings": [
   {
    "pos": 1,
@@ -196,5 +197,11 @@
    "gd": -19,
    "pts": 13
   }
- ]
+ ],
+ "freshness": {
+  "standingsSource": "espn",
+  "fetchedAt": "2026-09-03",
+  "stale": false
+ },
+ "notes": "ESPN 积分榜 2026-09-03 拉取，队名为 ESPN 英文名（分析时经 _aliases 对照）"
 }

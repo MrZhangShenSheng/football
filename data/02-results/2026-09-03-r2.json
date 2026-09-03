@@ -1,0 +1,502 @@
+{
+ "date": "2026-09-03",
+ "version": "v5.8",
+ "round": "周五001~014(14场:德乙1/法甲2/挪超1/沙职1/法乙1/荷甲1/荷乙1/德甲1/意甲1/英超1/西甲1/葡超1/美职1)·单锚模式(体彩去水为概率锚,Pinnacle收盘缺失)·周四001~007沿用2026-09-03.json冻结版(T017/018/019已出票)",
+ "plans": [
+  {
+   "plan": "保底档(建议·未出票)",
+   "type": "HAD 4串11=6×2串1+4×3串1+1×4串1",
+   "stake": "22元",
+   "legs": [
+    "周五002 里昂 主胜@1.38 p85%",
+    "周五011 皇马 客胜@1.30 p74%",
+    "周五008 斯图加特 主胜@1.39 p69%",
+    "周五010 利物浦 客胜@1.41 p66%"
+   ],
+   "odds": 3.52,
+   "evEach": false,
+   "note": "全fd锚胆;合赔3.52;全中11注50元;至少中2关94.4%;与T019四胆完全重叠=对T019的容错保险;⚠本轮红线30/30已满,执行需大哥拍板"
+  },
+  {
+   "plan": "翻身档",
+   "type": "关档",
+   "stake": "0元",
+   "legs": [],
+   "odds": null,
+   "note": "HAFU ha EV+358%/+290%系hafu概率失真(分歧>5pp拒收);周四001 CRS 0:0已被T018覆盖;剩余合格腿不足,宁缺毋滥"
+  },
+  {
+   "plan": "彩票档",
+   "type": "HAD 8串1(T019已购)",
+   "stake": "10元(2元×5倍)",
+   "legs": [],
+   "odds": 18.4,
+   "evEach": false,
+   "note": "T019=里昂/科莫/利雅新月/皇马/鹿斯巴达/斯图加特/利物浦/汉诺威8串,合赔18.4,全中≈184元,全中概率≈5.3%;本轮不再重复出票"
+  },
+  {
+   "plan": "平局轨",
+   "type": "关档",
+   "stake": "0元",
+   "legs": [],
+   "odds": null,
+   "note": "周五场无合格:周五005平26%<28%/周五007平27%<28%/周五014平26%<28%;周四001已由T018覆盖(早轮入轨)"
+  }
+ ],
+ "matches": [
+  {
+   "idx": 1,
+   "code": "周五001",
+   "league": "德乙(R4)",
+   "match": "汉诺威96 vs 卡斯鲁厄",
+   "pick": "HAD 主胜",
+   "odds": 1.49,
+   "star": 3,
+   "grade": "B",
+   "dc": [
+    0.384,
+    0.2574,
+    0.3586
+   ],
+   "fused": [
+    0.6385,
+    0.1721,
+    0.1894
+   ],
+   "final": 0.64,
+   "chain": "",
+   "lambdaHome": 1.174,
+   "lambdaAway": 1.123,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": -0.049,
+   "inPlan": "T019腿",
+   "note": ""
+  },
+  {
+   "idx": 2,
+   "code": "周五002",
+   "league": "法甲(R3)",
+   "match": "里昂 vs 欧塞尔",
+   "pick": "HAD 主胜",
+   "odds": 1.38,
+   "star": 4,
+   "grade": "B+",
+   "dc": [
+    0.847,
+    0.1016,
+    0.0514
+   ],
+   "fused": [
+    0.8376,
+    0.1064,
+    0.056
+   ],
+   "final": 0.853,
+   "chain": "R3×0.95+伤停×1.04",
+   "lambdaHome": 2.907,
+   "lambdaAway": 0.56,
+   "fusedPre": [
+    0.847,
+    0.102,
+    0.051
+   ],
+   "chainSteps": [
+    {
+     "name": "R3",
+     "factor": 0.95
+    },
+    {
+     "name": "伤停",
+     "factor": 1.04
+    }
+   ],
+   "ev": 0.177,
+   "inPlan": "保底胆+T019腿",
+   "note": "欧塞尔5人缺阵(4伤+Makosso停赛)+2连败失8球;里昂缺Duranville/Bidstrup/Merah"
+  },
+  {
+   "idx": 3,
+   "code": "周五003",
+   "league": "挪超(R19)",
+   "match": "腓特烈 vs 博德闪耀",
+   "pick": "HAD 客胜",
+   "odds": 1.19,
+   "star": 4,
+   "grade": "B",
+   "dc": [
+    0.1453,
+    0.2457,
+    0.609
+   ],
+   "fused": [
+    0.0559,
+    0.1126,
+    0.8315
+   ],
+   "final": 0.83,
+   "chain": "",
+   "lambdaHome": 0.73,
+   "lambdaAway": 1.746,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": -0.011,
+   "inPlan": "",
+   "note": "无锚联赛,禁入保底胆(铁律10)"
+  },
+  {
+   "idx": 4,
+   "code": "周五004",
+   "league": "沙职(R5)",
+   "match": "利雅青年 vs 利雅新月",
+   "pick": "HAD 客胜",
+   "odds": 1.3,
+   "star": 4,
+   "grade": "B",
+   "dc": [
+    0.0613,
+    0.1434,
+    0.7953
+   ],
+   "fused": [
+    0.0594,
+    0.0978,
+    0.8428
+   ],
+   "final": 0.84,
+   "chain": "",
+   "lambdaHome": 0.82,
+   "lambdaAway": 3.032,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": 0.096,
+   "inPlan": "T019腿",
+   "note": "无锚联赛"
+  },
+  {
+   "idx": 5,
+   "code": "周五005",
+   "league": "法乙(R5)",
+   "match": "格勒诺布 vs 阿纳西",
+   "pick": "HAD 客胜",
+   "odds": 2.17,
+   "star": 2,
+   "grade": "B",
+   "dc": [
+    0.2135,
+    0.2632,
+    0.5233
+   ],
+   "fused": [
+    0.2389,
+    0.2606,
+    0.5004
+   ],
+   "final": 0.5,
+   "chain": "",
+   "lambdaHome": 0.771,
+   "lambdaAway": 1.394,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": 0.086,
+   "inPlan": "",
+   "note": "三星下缘50%,EV+8.6%全场前三但置信有限"
+  },
+  {
+   "idx": 6,
+   "code": "周五006",
+   "league": "荷甲(R5)",
+   "match": "鹿斯巴达 vs 兹沃勒",
+   "pick": "HAD 主胜",
+   "odds": 1.68,
+   "star": 3,
+   "grade": "B",
+   "dc": [
+    0.5015,
+    0.2362,
+    0.2622
+   ],
+   "fused": [
+    0.6138,
+    0.1847,
+    0.2015
+   ],
+   "final": 0.61,
+   "chain": "",
+   "lambdaHome": 1.494,
+   "lambdaAway": 0.987,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": 0.031,
+   "inPlan": "T019腿",
+   "note": ""
+  },
+  {
+   "idx": 7,
+   "code": "周五007",
+   "league": "荷乙(R3)",
+   "match": "埃门 vs 福伦丹",
+   "pick": "排除:胶着边缘+开季R3+低置信",
+   "odds": null,
+   "star": 2,
+   "grade": "C",
+   "dc": null,
+   "fused": [
+    0.4026,
+    0.246,
+    0.3514
+   ],
+   "final": null,
+   "chain": "R3×0.95",
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": null,
+   "chainSteps": [
+    {
+     "name": "R3",
+     "factor": 0.95
+    }
+   ],
+   "ev": null,
+   "inPlan": "",
+   "note": "荷乙无DC缓存,极差11.1pp;三池卡CRS 1:0仅low_conf"
+  },
+  {
+   "idx": 8,
+   "code": "周五008",
+   "league": "德甲(R2)",
+   "match": "斯图加特 vs 科隆",
+   "pick": "HAD 主胜",
+   "odds": 1.39,
+   "star": 4,
+   "grade": "B",
+   "dc": [
+    0.5618,
+    0.2209,
+    0.2173
+   ],
+   "fused": [
+    0.7368,
+    0.1422,
+    0.121
+   ],
+   "final": 0.69,
+   "chain": "R2×0.90",
+   "lambdaHome": 2.352,
+   "lambdaAway": 1.441,
+   "fusedPre": null,
+   "chainSteps": [
+    {
+     "name": "R2",
+     "factor": 0.9
+    }
+   ],
+   "ev": -0.035,
+   "inPlan": "保底胆+T019腿",
+   "note": "上轮1-5惨败后市场仍给1.39;H2H主场对科隆6战不败;伤停未核查(搜索限流)"
+  },
+  {
+   "idx": 9,
+   "code": "周五009",
+   "league": "意甲(R3)",
+   "match": "热那亚 vs 科莫",
+   "pick": "HAD 客胜",
+   "odds": 1.7,
+   "star": 3,
+   "grade": "B",
+   "dc": [
+    0.155,
+    0.2075,
+    0.6375
+   ],
+   "fused": [
+    0.1368,
+    0.2024,
+    0.6608
+   ],
+   "final": 0.64,
+   "chain": "R3×0.95",
+   "lambdaHome": 0.701,
+   "lambdaAway": 1.759,
+   "fusedPre": null,
+   "chainSteps": [
+    {
+     "name": "R3",
+     "factor": 0.95
+    }
+   ],
+   "ev": 0.081,
+   "inPlan": "T019腿",
+   "note": "热那亚2战0进球佐证DC方向;科莫1W1D第8"
+  },
+  {
+   "idx": 10,
+   "code": "周五010",
+   "league": "英超(R2)",
+   "match": "伊普斯 vs 利物浦",
+   "pick": "HAD 客胜",
+   "odds": 1.41,
+   "star": 4,
+   "grade": "B",
+   "dc": [
+    0.3523,
+    0.1828,
+    0.4649
+   ],
+   "fused": [
+    0.1647,
+    0.1337,
+    0.7016
+   ],
+   "final": 0.66,
+   "chain": "R2×0.90",
+   "lambdaHome": 2.894,
+   "lambdaAway": 3.298,
+   "fusedPre": null,
+   "chainSteps": [
+    {
+     "name": "R2",
+     "factor": 0.9
+    }
+   ],
+   "ev": -0.069,
+   "inPlan": "保底胆+T019腿",
+   "note": "英超仅赛1轮(本轮R2非R4);利物浦2-2开局+Barcola新援在名单;伊普斯λ异常弃DC主胜分量"
+  },
+  {
+   "idx": 11,
+   "code": "周五011",
+   "league": "西甲(R4)",
+   "match": "贝蒂斯 vs 皇马",
+   "pick": "HAD 客胜",
+   "odds": 1.3,
+   "star": 4,
+   "grade": "B+",
+   "dc": [
+    0.1676,
+    0.195,
+    0.6374
+   ],
+   "fused": [
+    0.0897,
+    0.1151,
+    0.7952
+   ],
+   "final": 0.744,
+   "chain": "伤停×0.93",
+   "lambdaHome": 1.258,
+   "lambdaAway": 2.531,
+   "fusedPre": null,
+   "chainSteps": [
+    {
+     "name": "伤停",
+     "factor": 0.93
+    }
+   ],
+   "ev": -0.033,
+   "inPlan": "保底胆+T019腿",
+   "note": "皇马3战全胜进10失2;缺Tchouameni+Bellingham停+Rodrygo/Militao/Guler/Kovacic约5人"
+  },
+  {
+   "idx": 12,
+   "code": "周五012",
+   "league": "法甲(R3)",
+   "match": "巴黎圣曼 vs 摩纳哥",
+   "pick": "HAD 主胜",
+   "odds": 1.23,
+   "star": 3,
+   "grade": "B",
+   "dc": null,
+   "fused": [
+    0.7199,
+    0.1687,
+    0.1114
+   ],
+   "final": 0.7,
+   "chain": "R3×0.95",
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": [
+    0.7,
+    0.19,
+    0.11
+   ],
+   "chainSteps": [
+    {
+     "name": "R3",
+     "factor": 0.95
+    }
+   ],
+   "ev": -0.142,
+   "inPlan": "",
+   "note": "DC弃用(Paris FC错配);巴黎2连平+售Barcola+Neves伤/Mendes停 vs 摩纳哥2连胜零封——矛盾场降半档,不入保底胆"
+  },
+  {
+   "idx": 13,
+   "code": "周五013",
+   "league": "葡超(R5)",
+   "match": "波尔图 vs 摩雷伦斯",
+   "pick": "排除:HAD未开售·HHAD-2净胜3球EV负",
+   "odds": null,
+   "star": 1,
+   "grade": "C",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": "",
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": null,
+   "note": ""
+  },
+  {
+   "idx": 14,
+   "code": "周五014",
+   "league": "美职(R24)",
+   "match": "纽约城 vs 纳什维尔",
+   "pick": "排除:胶着(极差13.2pp)+无锚",
+   "odds": null,
+   "star": 2,
+   "grade": "C",
+   "dc": [
+    0.2914,
+    0.3256,
+    0.383
+   ],
+   "fused": [
+    0.3503,
+    0.2588,
+    0.3909
+   ],
+   "final": null,
+   "chain": "",
+   "lambdaHome": 0.898,
+   "lambdaAway": 1.072,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": "",
+   "note": ""
+  }
+ ],
+ "gateRules": {
+  "铁律10": "保底4胆全fd锚(里昂/皇马/斯图加特/利物浦);无锚联赛(挪超/沙职)腿不入保底",
+  "平局轨": "p_fused平≥28%+极差<12pp+R4起:周五无合格场"
+ },
+ "dataSources": [
+  "engine/cache/sporttery_matches.json(体彩21场五池赔率 09-03二次刷新)",
+  "engine/cache/{league}_dc.json(fd9联赛09-02拟合+local5联赛09-03重拟合)",
+  "engine/cache/espn_standings_{fra_1,esp_1,gbr_1,ger_1,ger_2,ita_1,fra_2,ned_1,por_1,nor_1,usa_1,swe_1}.json(ESPN积分榜轮次+开局核查)",
+  "WebSearch伤停核查4场:里昂/欧塞尔(sportsmole+starting11)、巴黎/摩纳哥(yahoo+sportsmole)、皇马(managingmadrid+goal)、斯图加特/利物浦(yahoo+standard)",
+  "sporttery insight接口停摆(HTTP 567)——伤停维度降级为搜索覆盖4场,其余场伤停缺失",
+  "data/00-leagues/norway.json+usa.json(本轮冷启动新建,ESPN源)"
+ ],
+ "finalReview": {
+  "执行时间": "2026-09-03(赛前,周四场当晚开赛前)",
+  "信息边际判定": "①里昂伤停差d=-2(欧塞尔5缺)真边际→×1.04上调 ②皇马伤停d=-5→×0.93下调 ③巴黎状态矛盾(2平+售Barcola vs 摩纳哥全胜)→移出保底胆=信息对冲跟随市场但不加仓 ④英超轮次勘误R4→R2(ESPN仅赛1轮)→R2×0.90修正",
+  "修订纪律": "全部修订为信息增强方向,无追高赔率修订"
+ }
+}

@@ -3,14 +3,14 @@
   "leagues": {
     "saudi": {
       "status": "ready",
-      "roundsPlayed": 2,
+      "roundsPlayed": 4,
       "standingsSource": "espn",
       "fdCovered": false
     },
     "sweden": {
       "status": "ready",
-      "roundsPlayed": 18,
-      "standingsSource": "titan007",
+      "roundsPlayed": 19,
+      "standingsSource": "espn",
       "fdCovered": false
     },
     "france-ligue1": {
@@ -25,105 +25,259 @@
       "standingsSource": "fd-derived",
       "fdCovered": true
     },
-    "brazil-copa": {
+    "brazil": {
+      "status": "missing"
+    },
+    "germany-bundesliga2": {
+      "status": "ready",
+      "roundsPlayed": 47,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "norway": {
+      "status": "missing"
+    },
+    "france-ligue2": {
+      "status": "ready",
+      "roundsPlayed": 49,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "netherlands-eredivisie": {
+      "status": "ready",
+      "roundsPlayed": 54,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "netherlands": {
+      "status": "ready",
+      "roundsPlayed": 2,
+      "standingsSource": "espn",
+      "fdCovered": false
+    },
+    "germany-bundesliga": {
+      "status": "ready",
+      "roundsPlayed": 52,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "italy-serie-a": {
+      "status": "ready",
+      "roundsPlayed": 60,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "england-premier": {
+      "status": "ready",
+      "roundsPlayed": 61,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "portugal-liga": {
+      "status": "ready",
+      "roundsPlayed": 55,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "usa": {
       "status": "missing"
     }
   },
   "missingLeagues": [
-    "brazil-copa"
+    "brazil",
+    "norway",
+    "usa"
   ],
   "staleLeagues": [],
-  "missingAlias": [
-    {
-      "team": "迈季宽广",
-      "league": "saudi",
-      "match": "迈季宽广 vs 拉斯永恒"
-    },
-    {
-      "team": "拉斯永恒",
-      "league": "saudi",
-      "match": "迈季宽广 vs 拉斯永恒"
-    },
-    {
-      "team": "迪里耶",
-      "league": "saudi",
-      "match": "迪里耶 vs 胡巴卡德"
-    }
-  ],
+  "missingAlias": [],
   "notReadyTeams": [
     {
-      "team": "新未来SC",
-      "teamId": "neom-sc",
-      "league": "saudi",
+      "team": "汉诺威96",
+      "teamId": "hannover-96",
+      "league": "germany-bundesliga2",
+      "status": "missing"
+    },
+    {
+      "team": "卡斯鲁厄",
+      "teamId": "karlsruhe",
+      "league": "germany-bundesliga2",
+      "status": "missing"
+    },
+    {
+      "team": "里昂",
+      "teamId": "lyon",
+      "league": "france",
+      "status": "stale",
+      "lastUpdated": "2026-08-22",
+      "ageDays": 12
+    },
+    {
+      "team": "欧塞尔",
+      "teamId": "auxerre",
+      "league": "france",
+      "status": "stale",
+      "lastUpdated": "2026-08-22",
+      "ageDays": 12
+    },
+    {
+      "team": "腓特烈",
+      "teamId": "fredrikstad",
+      "league": "norway",
+      "status": "missing"
+    },
+    {
+      "team": "博德闪耀",
+      "teamId": "bodo-glimt",
+      "league": "norway",
       "status": "stale",
       "lastUpdated": "2026-08-24",
       "ageDays": 10
     },
     {
-      "team": "赛哈海湾",
-      "teamId": "al-khaleej",
+      "team": "利雅青年",
+      "teamId": "al-shabab",
       "league": "saudi",
       "status": "missing"
     },
     {
-      "team": "米亚尔比",
-      "teamId": "mjallby",
-      "league": "sweden",
-      "status": "stale",
-      "lastUpdated": "2026-08-21",
-      "ageDays": 13
+      "team": "格勒诺布",
+      "teamId": "grenoble",
+      "league": "france",
+      "status": "missing"
     },
     {
-      "team": "佐加顿斯",
-      "teamId": "djurgarden",
-      "league": "sweden",
+      "team": "阿纳西",
+      "teamId": "annecy",
+      "league": "france",
       "status": "stale",
       "lastUpdated": "2026-08-24",
       "ageDays": 10
     },
     {
-      "team": "胡巴卡德",
-      "teamId": "qadsiah",
-      "league": "saudi",
-      "status": "stale",
-      "lastUpdated": "2026-08-24",
-      "ageDays": 10
+      "team": "鹿斯巴达",
+      "teamId": "sparta-rotterdam",
+      "league": "netherlands-eredivisie",
+      "status": "missing"
     },
     {
-      "team": "图卢兹",
-      "teamId": "toulouse",
-      "league": "france",
+      "team": "兹沃勒",
+      "teamId": "pec-zwolle",
+      "league": "netherlands-eredivisie",
+      "status": "missing"
+    },
+    {
+      "team": "埃门",
+      "teamId": "emmen",
+      "league": "netherlands",
+      "status": "missing"
+    },
+    {
+      "team": "福伦丹",
+      "teamId": "volendam",
+      "league": "netherlands",
+      "status": "missing"
+    },
+    {
+      "team": "斯图加特",
+      "teamId": "stuttgart",
+      "league": "germany-bundesliga",
+      "status": "missing"
+    },
+    {
+      "team": "科隆",
+      "teamId": "cologne",
+      "league": "germany-bundesliga",
+      "status": "missing"
+    },
+    {
+      "team": "热那亚",
+      "teamId": "genoa",
+      "league": "italy",
       "status": "stale",
       "lastUpdated": "2026-08-22",
       "ageDays": 12
     },
     {
-      "team": "里尔",
-      "teamId": "lille",
-      "league": "france",
+      "team": "科莫",
+      "teamId": "como",
+      "league": "italy",
       "status": "stale",
       "lastUpdated": "2026-08-22",
       "ageDays": 12
     },
     {
-      "team": "皇家社会",
-      "teamId": "sociedad",
+      "team": "伊普斯",
+      "teamId": "ipswich",
+      "league": "england",
+      "status": "stale",
+      "lastUpdated": "2026-08-22",
+      "ageDays": 12
+    },
+    {
+      "team": "利物浦",
+      "teamId": "liverpool",
+      "league": "england",
+      "status": "stale",
+      "lastUpdated": "2026-08-22",
+      "ageDays": 12
+    },
+    {
+      "team": "贝蒂斯",
+      "teamId": "betis",
       "league": "spain",
       "status": "stale",
       "lastUpdated": "2026-08-21",
       "ageDays": 13
     },
     {
-      "team": "塞尔塔",
-      "teamId": "celta",
+      "team": "皇马",
+      "teamId": "real-madrid",
       "league": "spain",
       "status": "stale",
       "lastUpdated": "2026-08-22",
       "ageDays": 12
+    },
+    {
+      "team": "巴黎圣曼",
+      "teamId": "paris-saint-germain",
+      "league": "france",
+      "status": "missing"
+    },
+    {
+      "team": "摩纳哥",
+      "teamId": "monaco",
+      "league": "france",
+      "status": "missing"
+    },
+    {
+      "team": "波尔图",
+      "teamId": "porto",
+      "league": "portugal",
+      "status": "stale",
+      "lastUpdated": "2026-08-22",
+      "ageDays": 12
+    },
+    {
+      "team": "摩雷伦斯",
+      "teamId": "moreirense",
+      "league": "portugal",
+      "status": "missing"
+    },
+    {
+      "team": "纽约城",
+      "teamId": "new-york-city",
+      "league": "usa",
+      "status": "missing"
+    },
+    {
+      "team": "纳什维尔",
+      "teamId": "nashville-sc",
+      "league": "usa",
+      "status": "missing"
     }
   ],
   "readyCount": {
-    "leagues": 4,
-    "teamsKnown": 426
+    "leagues": 12,
+    "teamsKnown": 437
   }
 }
