@@ -216,9 +216,7 @@
     },
     "2026-08-28|周五002|HAD": {
       "primary": "F9",
-      "secondary": [
-        "F10"
-      ],
+      "secondary": [],
       "evidence": {
         "pfinalPick": null,
         "dcBest": null,
@@ -226,11 +224,7 @@
         "pickIdx": 0,
         "resultIdx": 2,
         "result": "0-1",
-        "pinSource": "fd",
-        "oddsDrift": {
-          "pickOdds": 1.51,
-          "laterOdds": 1.61
-        }
+        "pinSource": "fd"
       },
       "confidence": "high",
       "source": "rule",
@@ -238,7 +232,9 @@
     },
     "2026-08-28|周五005|HAD": {
       "primary": "F9",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": 0.5385,
         "dcBest": 0,
@@ -246,7 +242,11 @@
         "pickIdx": 0,
         "resultIdx": 1,
         "result": "0-0",
-        "pinSource": "fd"
+        "pinSource": "fd",
+        "oddsDrift": {
+          "pickOdds": 1.63,
+          "laterOdds": 3.0
+        }
       },
       "confidence": "high",
       "source": "rule",
@@ -254,7 +254,9 @@
     },
     "2026-08-28|周五006|HAD": {
       "primary": "F9",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": 0.5989,
         "dcBest": 0,
@@ -262,7 +264,11 @@
         "pickIdx": 0,
         "resultIdx": 2,
         "result": "2-3",
-        "pinSource": "fd"
+        "pinSource": "fd",
+        "oddsDrift": {
+          "pickOdds": 1.46,
+          "laterOdds": 1.68
+        }
       },
       "confidence": "high",
       "source": "rule",
@@ -270,7 +276,9 @@
     },
     "2026-08-28|周五007|HAD": {
       "primary": "F9",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": null,
         "dcBest": null,
@@ -278,7 +286,11 @@
         "pickIdx": 2,
         "resultIdx": 1,
         "result": "2-2",
-        "pinSource": "none"
+        "pinSource": "none",
+        "oddsDrift": {
+          "pickOdds": 1.96,
+          "laterOdds": 2.52
+        }
       },
       "confidence": "high",
       "source": "rule",
@@ -318,7 +330,9 @@
     },
     "2026-08-28|周五014|HAD": {
       "primary": "F9",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": 0.4418,
         "dcBest": 2,
@@ -326,7 +340,11 @@
         "pickIdx": 2,
         "resultIdx": 0,
         "result": "1-0",
-        "pinSource": "fd"
+        "pinSource": "fd",
+        "oddsDrift": {
+          "pickOdds": 2.1,
+          "laterOdds": 2.42
+        }
       },
       "confidence": "high",
       "source": "rule",
