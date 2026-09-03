@@ -56,6 +56,15 @@ th{background:var(--bg);font-weight:600}
 <table><tr><th>日期</th><th>事件</th><th>实票净利</th><th>反事实净利</th><th>差异</th><th>评注</th></tr>
 <tr><td>2026-08-24</td><td>r2终审23:56撤009 CRS 2-0（模型三向分歧19.4pp），但双票已按v1于20:xx出票含009——票面事实优先</td><td>+229.0</td><td>-44.0</td><td class="neg">-273.0</td><td class="sub">009命中2-0,含它的2串1回273;若等r2重出票(无009变3关),两票仅中1关(004)全灭-44。本次未听模型多赚273,但单果不证明流程错——EV决策以长期论</td></tr><tr><td>2026-08-29</td><td>T010出票未执行编号×联赛×主客三重验证(铁律3):翻身档第3腿周一006西甲奥萨苏纳0:2@19误买成周一002芬超赫尔火花0:2@20;形状自扩4串1→4串15含单关(2元→30元)</td><td>+0.0</td><td>+0.0</td><td class="pos">+0.0</td><td class="sub">pending·回填后对比误买腿vs方案腿(赫尔火花芬超无频率库未过筛vs奥萨苏纳q10.89过freq-band筛)+形状扩容边际损益</td></tr><tr><td>2026-08-31</td><td>T011+T012本轮投36元超roundRedline 30元+6元(+20%):保底4串11缩4串5(20元2倍)+偏好3场混串倍数1→2(16元2倍);偏好档加倍是加注非改形,保底缩形降容错;大哥知情拍板</td><td>+0.0</td><td>+0.0</td><td class="pos">+0.0</td><td class="sub">金额红线已明示,8月累计含此超支待月结核算</td></tr><tr><td>2026-09-02</td><td>T015/T016同日改单容错升级(3串1→3串4)+两票合计32元超单期30元红线2元;当日四票(T013/T014/T015/T016)总出票62元集中女王/米堡/町田三方向</td><td>+0.0</td><td>+0.0</td><td class="pos">+0.0</td><td class="sub"></td></tr></table>
 
-<p class="src">数据来源：data/06-tickets/tickets.json（2026-09-03 刷新）· 设计：docs/2026-08-25-tickets-design.html ·
+<h2>⑤ 推荐一致率（票腿 × 系统推荐，对齐设计 §02）</h2>
+<table><tr><th>分类</th><th>腿数</th><th>命中率</th></tr>
+<tr><td>一致 <span class="sub">agree</span></td><td>30</td><td>40%</td></tr><tr><td>玩法不同 <span class="sub">play_diff</span></td><td>12</td><td>17%</td></tr><tr><td>选项不同 <span class="sub">pick_diff</span></td><td>1</td><td>0%</td></tr><tr><td>无玩法推荐 <span class="sub">no_rec</span></td><td>12</td><td>25%</td></tr><tr><td>排除场照买 <span class="sub">excluded</span></td><td>5</td><td>0%</td></tr></table>
+<p class="sub">高一致票（agree≥½ 腿，8 张）累计净
+<b class="pos">+212.9</b> ·
+低一致票（6 张）累计净
+<b class="neg">-75.6</b> ——
+盈利集中在跟系统一致的票；登记回执警示数字以本块最新值为准</p>
+
+<p class="src">数据来源：data/06-tickets/tickets.json（2026-09-03 刷新）· 设计：docs/2026-08-25-tickets-design.html + docs/2026-09-03-ticket-recommend-alignment-design.html（⑤）·
 色对经 dataviz validate_palette.js 验证（蓝/橙 diverging，protan ΔE≥21）</p>
 </main></body></html>

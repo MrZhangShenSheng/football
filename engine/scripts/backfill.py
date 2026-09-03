@@ -564,11 +564,67 @@ def settle_tickets(sp_cache: dict[str, dict[str, dict]]) -> dict:
         TICKETS_FILE.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         log("settle_tickets", f"票务结算 {n_tickets} 票/{n_legs} 腿")
         try:
+            backfill_agreement()   # ⑤ 一致率自愈（幂等；corpus 缺失静默跳过——对齐设计 §05）
+        except (OSError, json.JSONDecodeError):
+            pass
+        try:
             from ticket_report import render_report
             render_report()
         except ImportError:
             log("settle_tickets", "ticket_report 未安装，跳过报告重刷")
     return {"legs": n_legs, "tickets": n_tickets}
+
+
+AGREEMENT_VALUES = ("agree", "play_diff", "pick_diff", "no_rec", "excluded")  # 票腿×系统推荐五值（对齐设计 §02）
+_EXCLUDE_HINTS = ("排除", "避开", "D级")   # 历史 record 排除落在 pick 注释；新规范 play='排除:xx'
+
+
+def classify_agreement(leg: dict, rec: dict | None) -> str:
+    """实票腿 vs 系统推荐记录 → 五值 agreement（docs/2026-09-03-ticket-recommend-alignment-design.html §02）。
+
+    rec=None/无 play 无 pick → no_rec；play 或 pick（原始串，strip 前括号注释含'胶着避开'）含
+    排除字样 → excluded；玩法不同 → play_diff；同玩法经 strip_play 清洗后核心比较（兼容复合
+    pick '主胜 + CRS 1-0' 与 'dd(平/平)'→'dd'）。开发者 sszhang"""
+    if not rec:
+        return "no_rec"
+    rplay = str(rec.get("play") or "")
+    rpick = str(rec.get("pick") or "")
+    if not rplay and not rpick:
+        return "no_rec"
+    if rplay.startswith("排除") or any(h in (rplay + rpick) for h in _EXCLUDE_HINTS):
+        return "excluded"
+    if not rplay:
+        return "no_rec"                                  # 仅方向/无玩法推荐（pick='客胜' 类）
+    if rplay.strip().lower() != str(leg.get("market") or "").strip().lower():
+        return "play_diff"
+    lp, rp = strip_play(str(leg.get("pick") or "")), strip_play(rpick)
+    lp_n, rp_n = lp.replace("-", ":"), rp.replace("-", ":")   # CRS 分隔符统一（票'1-0' vs 系统'1:0'）
+    return "agree" if (not lp or lp_n == rp_n or lp_n in rp_n or rp_n in lp_n) else "pick_diff"
+
+
+def rec_for_leg(leg: dict, match_days: list, records: list) -> dict | None:
+    """票腿 → 同轮系统推荐记录：code 对齐，票日窗口内优先（跨轮同号兜底），窗口/全局
+    皆取日期最新一条。开发者 sszhang"""
+    days = set(match_days or [])
+    cands = [r for r in records if r.get("code") == leg.get("code")]
+    pool = [r for r in cands if r.get("date") in days] or cands
+    return sorted(pool, key=lambda r: str(r.get("date", "")))[-1] if pool else None
+
+
+def backfill_agreement(records: list | None = None) -> dict:
+    """全实票腿补算 agreement 写回 tickets.json（对齐设计 §02；幂等重算，indent=2 与
+    settle_tickets 写回同格式）。records 缺省读 corpus.json；返回五值分布。开发者 sszhang"""
+    if records is None:
+        corpus = json.loads((ROOT / "data" / "04-summaries" / "corpus.json").read_text(encoding="utf-8"))
+        records = corpus.get("records") or []
+    data = json.loads(TICKETS_FILE.read_text(encoding="utf-8"))
+    dist = {k: 0 for k in AGREEMENT_VALUES}
+    for t in data.get("tickets", []):
+        for leg in t.get("legs") or []:
+            leg["agreement"] = classify_agreement(leg, rec_for_leg(leg, t.get("matchDays"), records))
+            dist[leg["agreement"]] += 1
+    TICKETS_FILE.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return dist
 
 
 def main() -> None:

@@ -209,6 +209,63 @@ def test_parse_score_and_play_prefix():
     assert pick_outcome_idx({"pick": "HAFU aa"}) is None
 
 
+# ---------- 票腿×系统推荐 agreement 五值（docs/2026-09-03-ticket-recommend-alignment-design.html §02）----------
+
+def test_classify_agreement_five_values():
+    """五值分类：agree(分隔符/括号/复合pick兼容)/play_diff/pick_diff/no_rec(仅方向)/excluded(历史pick注释+新play前缀)。"""
+    from backfill import classify_agreement
+    # agree：CRS 分隔符统一（票'1-0' vs 系统'1:0'，2026-09-03 补算实证 3 条差异源）
+    assert classify_agreement({"market": "CRS", "pick": "1-0"}, {"play": "CRS", "pick": "1:0"}) == "agree"
+    # agree：复合 pick 子串（系统同场多玩法拼接）
+    assert classify_agreement({"market": "HAD", "pick": "主胜"}, {"play": "HAD", "pick": "主胜 + CRS 1-0"}) == "agree"
+    # agree：HAFU 括号注释剥离（'dd(平/平)' vs 'dd(半平/全平)' → 核心 'dd'）
+    assert classify_agreement({"market": "HAFU", "pick": "dd(平/平)"}, {"play": "HAFU", "pick": "dd(半平/全平)"}) == "agree"
+    # play_diff：同场系统推了别的玩法
+    assert classify_agreement({"market": "CRS", "pick": "0-0"}, {"play": "HAD", "pick": "主胜"}) == "play_diff"
+    # pick_diff：同玩法不同选项
+    assert classify_agreement({"market": "CRS", "pick": "0-0"}, {"play": "CRS", "pick": "0:1"}) == "pick_diff"
+    # no_rec：rec 缺失 / play 空（系统仅方向，pick='客胜' 不算玩法推荐）
+    assert classify_agreement({"market": "TTG", "pick": "0球"}, None) == "no_rec"
+    assert classify_agreement({"market": "TTG", "pick": "0球"}, {"play": "", "pick": "客胜"}) == "no_rec"
+    # excluded：历史排除落 pick 注释（胶着避开/D级）；新规范 play='排除:xx' 前缀
+    assert classify_agreement({"market": "CRS", "pick": "1-0"}, {"play": "HAD", "pick": "(胶着避开)"}) == "excluded"
+    assert classify_agreement({"market": "CRS", "pick": "1-0"}, {"play": "", "pick": "D级排除"}) == "excluded"
+    assert classify_agreement({"market": "CRS", "pick": "1-0"}, {"play": "排除:胶着", "pick": ""}) == "excluded"
+
+
+def test_rec_for_leg_and_backfill_agreement(tmp_path, monkeypatch):
+    """对齐查找（票日窗口优先+跨轮兜底取最新）+ 补算写回（幂等、五值分布、indent=2 与结算同格式）。"""
+    import json as _json
+    import backfill
+    records = [
+        {"code": "周六001", "date": "2026-08-28", "play": "HAD", "pick": "主胜"},
+        {"code": "周六001", "date": "2026-08-29", "play": "CRS", "pick": "2:0"},   # 同号跨轮：窗口外兜底取最新
+        {"code": "周日002", "date": "2026-08-28", "play": "HAD", "pick": "客胜"},
+    ]
+    leg = {"code": "周六001", "market": "HAD", "pick": "主胜"}
+    # 票日窗口命中 → 08-28 的 HAD 主胜（agree）
+    assert backfill.rec_for_leg(leg, ["2026-08-28"], records)["date"] == "2026-08-28"
+    assert backfill.classify_agreement(leg, backfill.rec_for_leg(leg, ["2026-08-28"], records)) == "agree"
+    # 窗口无记录 → 跨轮兜底取最新（08-29 CRS 2:0 → play_diff）
+    assert backfill.classify_agreement(leg, backfill.rec_for_leg(leg, ["2026-08-30"], records)) == "play_diff"
+    # 补算写回：两票三腿 → agree/play_diff/no_rec 各就位，幂等重算同分布
+    data = {"tickets": [
+        {"id": "T900", "matchDays": ["2026-08-28"],
+         "legs": [{"code": "周六001", "market": "HAD", "pick": "主胜"},
+                  {"code": "周日002", "market": "CRS", "pick": "0:1"}]},
+        {"id": "T901", "matchDays": ["2026-08-28"],
+         "legs": [{"code": "周日099", "market": "TTG", "pick": "3球"}]}]}
+    f = tmp_path / "tickets.json"
+    f.write_text(_json.dumps(data, ensure_ascii=False), encoding="utf-8")
+    monkeypatch.setattr(backfill, "TICKETS_FILE", f)
+    dist = backfill.backfill_agreement(records)
+    assert dist == {"agree": 1, "play_diff": 1, "pick_diff": 0, "no_rec": 1, "excluded": 0}
+    out = _json.loads(f.read_text(encoding="utf-8"))
+    assert [l["agreement"] for l in out["tickets"][0]["legs"]] == ["agree", "play_diff"]
+    assert out["tickets"][1]["legs"][0]["agreement"] == "no_rec"
+    assert backfill.backfill_agreement(records) == dist   # 幂等
+
+
 def test_ablate_chain_parsing():
     """chain 双格式解析：结构化数组 + 自由文本。"""
     from ablate import parse_chain

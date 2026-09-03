@@ -2,11 +2,13 @@
 # -*- coding: utf-8 -*-
 """实票账本报告：data/06-tickets/tickets.json → tickets.html。
 
-四块（docs/2026-08-25-tickets-design.html §6）：
+五块（docs/2026-08-25-tickets-design.html §6 + 2026-09-03 对齐设计 §05）：
 ① 资金曲线：累计净利逐票折线（结算时序）+ y=0 基线，单系列无图例
 ② 票务清单表：票面/结算/来源，撤销腿灰显
 ③ 玩法分解：命中注派彩与全部本金按"注内腿均分"归因到 market（HAD/CRS/TTG/HAFU）
 ④ 纪律对照：tickets.json meta.disciplineEvents（手工维护的决策事件对账）
+⑤ 推荐一致率：票腿 agreement 五值分布/各分类命中率 + 高一致 vs 低一致票净额
+   （docs/2026-09-03-ticket-recommend-alignment-design.html；登记回执警示数字以本块最新值为准）
 
 色对经 dataviz validate_palette.js 六检全过（蓝/橙 diverging，protan/deutan ΔE≥21，
 绿红对 deutan 5.3 不可用）：light #1a6faf/#c2620a · dark #4a94d1/#cf7f36。
@@ -174,12 +176,56 @@ def discipline_rows(meta: dict) -> str:
     return "".join(rows)
 
 
+AGREEMENT_LABELS = {"agree": "一致", "play_diff": "玩法不同", "pick_diff": "选项不同",
+                    "no_rec": "无玩法推荐", "excluded": "排除场照买"}   # 对齐设计 §02 五值
+
+
+def agreement_stats(tickets: list) -> dict:
+    """⑤ 推荐一致率统计：五值分布（各分类命中率）+ 按票一致度分组净额
+    （agree 数/腿数 ≥0.5 为高一致组；已结算票才计入分组）。开发者 sszhang"""
+    dist = defaultdict(lambda: [0, 0])                       # agreement → [hits, legs]
+    hi = {"net": 0.0, "tickets": 0}
+    lo = {"net": 0.0, "tickets": 0}
+    for t in tickets:
+        legs = t.get("legs") or []
+        for l in legs:
+            a = l.get("agreement")
+            if a:
+                dist[a][1] += 1
+                if l.get("result") == "hit":
+                    dist[a][0] += 1
+        st = t.get("settled") or {}
+        if st.get("status") == "settled" and legs:
+            rate = sum(1 for l in legs if l.get("agreement") == "agree") / len(legs)
+            grp = hi if rate >= 0.5 else lo
+            grp["net"] += st.get("net", 0)
+            grp["tickets"] += 1
+    return {"dist": dict(dist), "hi": hi, "lo": lo}
+
+
+def agreement_rows(stats: dict) -> str:
+    """⑤ 表格行：五值分布+命中率；空数据（票腿无 agreement 字段）给补算指引。"""
+    dist = stats["dist"]
+    if not dist:
+        return '<p class="empty">票腿无 agreement 字段——跑 <code>python engine/scripts/...</code> 补算（对齐设计 §02）</p>'
+    order = ["agree", "play_diff", "pick_diff", "no_rec", "excluded"]
+    rows = []
+    for a in order:
+        if a not in dist:
+            continue
+        h, n = dist[a]
+        rows.append(f'<tr><td>{AGREEMENT_LABELS[a]} <span class="sub">{a}</span></td>'
+                    f'<td>{n}</td><td>{h / n:.0%}</td></tr>')
+    return "".join(rows)
+
+
 def render(data: dict) -> str:
     tickets = data.get("tickets", [])
     meta = data.get("meta", {})
     pts = cum_points(tickets)
     mkt = market_attribution(tickets)
     bars = sorted(mkt.items(), key=lambda kv: -kv[1])
+    ag = agreement_stats(tickets)
     n_settled = len(settled_tickets(tickets))
     n_pending = len(tickets) - n_settled
     return f"""<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
@@ -240,7 +286,16 @@ th{{background:var(--bg);font-weight:600}}
 <table><tr><th>日期</th><th>事件</th><th>实票净利</th><th>反事实净利</th><th>差异</th><th>评注</th></tr>
 {discipline_rows(meta)}</table>
 
-<p class="src">数据来源：data/06-tickets/tickets.json（{meta.get("lastUpdated", "")} 刷新）· 设计：docs/2026-08-25-tickets-design.html ·
+<h2>⑤ 推荐一致率（票腿 × 系统推荐，对齐设计 §02）</h2>
+<table><tr><th>分类</th><th>腿数</th><th>命中率</th></tr>
+{agreement_rows(ag)}</table>
+<p class="sub">高一致票（agree≥½ 腿，{ag["hi"]["tickets"]} 张）累计净
+<b class="{"pos" if ag["hi"]["net"] >= 0 else "neg"}">{ag["hi"]["net"]:+.1f}</b> ·
+低一致票（{ag["lo"]["tickets"]} 张）累计净
+<b class="{"pos" if ag["lo"]["net"] >= 0 else "neg"}">{ag["lo"]["net"]:+.1f}</b> ——
+盈利集中在跟系统一致的票；登记回执警示数字以本块最新值为准</p>
+
+<p class="src">数据来源：data/06-tickets/tickets.json（{meta.get("lastUpdated", "")} 刷新）· 设计：docs/2026-08-25-tickets-design.html + docs/2026-09-03-ticket-recommend-alignment-design.html（⑤）·
 色对经 dataviz validate_palette.js 验证（蓝/橙 diverging，protan ΔE≥21）</p>
 </main></body></html>
 """

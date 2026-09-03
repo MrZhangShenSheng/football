@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastUpdated": "2026-08-27",
+    "lastUpdated": "2026-09-03",
     "sampleSize": 6,
     "sampleRange": ["T001", "T006"],
     "maintainMode": "static-manual",
@@ -32,6 +32,7 @@
   },
   "playTaste": {
     "priority": ["CRS", "HAFU", "TTG", "HAD"],
+    "gateRule": "高抽水池玩法腿(CRS/TTG/HAFU)入票须系统同推——池卡 rec_base/rec_upset 含该场该玩法、或 boldplay 翻身/彩票腿含之;系统未同推该场,自动落系统推荐玩法;HAD 方向腿按系统方向。priority 保留 CRS 优先(同推多玩法时 CRS 先入)。依据(2026-09-03 十六票60腿对齐分析,docs/2026-09-03-ticket-recommend-alignment-design.html):偏离系统自选腿命中14%(2/14) vs 一致40%(12/30);零一致票净-75.6 vs 高一致票+212.9;排除场照买全亏(T004/T005/T006)",
     "byPlay": {
       "CRS": {
         "universe": "31项(比分29+胜其他/平其他/负其他)",
