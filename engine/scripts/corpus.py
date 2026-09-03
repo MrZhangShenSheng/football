@@ -32,6 +32,9 @@ _ROUND_SUFFIX = re.compile(r"^(.+)-(?:r|v)(\d+)$")
 # 回填字段（合并时取非空；预测锁定字段取最早轮不动）
 BACKFILL_FIELDS = ("result", "directionHit", "scoreHit", "clv",
                    "clv_approx_dk", "clv_note", "pinClose", "pinSource")
+# 独立市场锚字段：calibrate/trend_report 用 p_pinnacle 替代 p_final 做市场基线
+# （修复市场基线污染：p_final 含模型贡献时不能兼作市场侧）
+INDEPENDENT_MARKET_FIELD = "p_pinnacle"
 _RESULT_SCORE = re.compile(r"^\d+-\d+$")
 
 
@@ -54,6 +57,10 @@ def _merge_backfill(base: dict, other: dict) -> None:
                 base[f] = ov
         elif bv is None and ov is not None:
             base[f] = ov
+    # 独立市场锚随 pinClose 同步（pinClose 可能被合并更新）
+    pin = base.get("pinClose")
+    if pin and len(pin) == 3:
+        base[INDEPENDENT_MARKET_FIELD] = pin
 
 
 def merge_crossday(rows: list[dict]) -> tuple[list[dict], int, int]:
@@ -113,6 +120,9 @@ def normalize_record(r: dict, round_id: str) -> dict | None:
     if not new_schema and old_schema:  # 老 schema 原样
         out = dict(r)
         out.setdefault("date", round_id[:10])
+        # 独立市场锚：老 schema 若含 pinClose（去水三向），透传为 p_pinnacle
+        if out.get("pinClose") and len(out["pinClose"]) == 3:
+            out[INDEPENDENT_MARKET_FIELD] = out["pinClose"]
     else:  # 新 schema（v4.6 matches[]）归一
         grade_map = {"A": 4, "B": 3, "C": 2, "D": 1}
         pick = str(r.get("pick") or "")
@@ -137,6 +147,10 @@ def normalize_record(r: dict, round_id: str) -> dict | None:
             "clv_approx_dk": r.get("clv_approx_dk"),
             "clv_note": r.get("clv_note"),
         }
+        # 独立市场锚：pinClose（Pinnacle 去水三向）→ p_pinnacle
+        pin = out.get("pinClose")
+        if pin and len(pin) == 3:
+            out[INDEPENDENT_MARKET_FIELD] = pin
     out["round"] = round_id
     return out
 

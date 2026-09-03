@@ -74,7 +74,26 @@ jobs:
           fi
           exit 0
 
+      - name: Check cache freshness
+        id: freshness
+        shell: bash
+        run: |
+          set -euo pipefail
+          latest_odds=$(find engine/cache/score_odds -maxdepth 1 -name '*.json' -type f -printf '%T@ %f\n' | sort -nr | head -1)
+          latest_date=$(echo "$latest_odds" | sed 's/^[0-9.]* //' | sed 's/\.json$//')
+          echo "latest_score_odds=$latest_date" >> "$GITHUB_OUTPUT"
+          # 7 天阈值：周赛制允许跨周缓存，超过 7 天视为陈旧
+          threshold=$(date -u -d '7 days ago' +%F 2>/dev/null || date -u -v-7d +%F)
+          if [[ "$latest_date" < "$threshold" ]]; then
+            echo "⚠ Stale cache: newest score_odds=$latest_date (threshold=$threshold)"
+            echo "stale=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "✅ Fresh cache: score_odds=$latest_date"
+            echo "stale=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Generate weekly prediction
+        id: generate
         shell: bash
         run: |
           set -euo pipefail
@@ -93,15 +112,22 @@ jobs:
           latest=$(find data/03-predictions -maxdepth 1 -name '*-boldplay.json' -type f -printf '%T@ %p\n' | sort -nr | head -1 | cut -d' ' -f2-)
           test -n "$latest"
           test "$(basename "$latest")" = "$(date -u +%F)-boldplay.json"
-          python - "$latest" <<'PY
+          python - "$latest" "${{ steps.freshness.outputs.stale }}" <<'PY
           import json, sys
           from pathlib import Path
           p = Path(sys.argv[1])
+          stale = sys.argv[2] == "true"
           d = json.loads(p.read_text(encoding="utf-8"))
           assert d.get("date"), "prediction date missing"
           assert "tiers" in d, "tiers missing"
           assert d.get("method") in {"freq", "amix"}, "unexpected method"
-          print(f"validated {p}: method={d['method']} totalCost={d.get('totalCost')}")
+          # 缓存新鲜度：陈旧时注入标记（不阻断，但下游可读）
+          if stale:
+              d.setdefault("warnings", []).append(f"stale_cache: score_odds older than 7 days")
+              p.write_text(json.dumps(d, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+              print(f"⚠ validated {p.name} with STALE cache warning")
+          else:
+              print(f"validated {p}: method={d['method']} totalCost={d.get('totalCost')}")
           PY
 
       - name: Commit generated artifacts

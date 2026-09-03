@@ -45,8 +45,12 @@ def logloss(probs: list[float], oi: int) -> float:
 
 
 def market_probs(r: dict) -> list[float] | None:
-    """市场基线：corpus 的 p_final 在纯市场锚场次即市场去水概率（dc_used=false 时二者同值，
-    dc_used=true 时 p_final 已含模型贡献——此时市场线退化为 p_final 本身，图上注明口径）。"""
+    """市场基线：优先取 p_pinnacle（Pinnacle 去水三向，独立于模型）。
+    缺失时降级 p_final——dc 场 p_final 含模型贡献，此时市场线退化为 p_final 本身。
+    返回 None 表示该场无可用的独立市场锚，调用方应跳过。"""
+    pin = r.get("p_pinnacle")
+    if pin and len(pin) == 3:
+        return pin
     return r.get("p_final")
 
 
@@ -93,6 +97,8 @@ def build_series(records: list[dict]) -> dict:
     rows_out = []
     # logloss 累计走完整 filled（按轮分桶：outcome 可算即可参与）
     ll_by_round = defaultdict(lambda: [0.0, 0.0, 0])  # rd -> [ll_model, ll_mkt, n_ll]
+    # 市场基线质量追踪：n_pin=独立 Pinnacle 锚 / n_fallback=p_final 降级
+    n_pin = n_fallback = 0
     for r in filled:
         oi = outcome_idx(r)
         pf = r.get("p_final")
@@ -103,6 +109,12 @@ def build_series(records: list[dict]) -> dict:
             pm = market_probs(r)
             if pm and len(pm) == 3:
                 acc[1] += logloss(pm, oi)
+                if r.get("p_pinnacle") and len(r["p_pinnacle"]) == 3:
+                    n_pin += 1
+                else:
+                    n_fallback += 1
+    series["marketBaseline"] = {"pinnacle": n_pin, "fallback": n_fallback,
+                                "contamination": round(n_fallback / max(n_pin + n_fallback, 1), 3)}
     for rd in rounds:
         recs = by_round[rd]
         hit = score_hit = score_n = 0

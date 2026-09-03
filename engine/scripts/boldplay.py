@@ -26,9 +26,10 @@ POOL_KEEP = {"had": 0.871, "hhad": 0.871, "ttg": 0.796, "hafu": 0.796, "crs": 0.
 SINGLE_LIMIT = 500_000.0        # 4-5 串单注奖金限额（官方规则）
 MONTHLY_CAP = 240.0
 ROUND_COST = 20.0
+ROUND_REDLINE = 30.0              # 轮次总预算红线（preference.json roundRedline 同步；含彩票档）
 MONTHLY_UPSET_CAP = 40.0        # 翻身月度彩票预算（spec §4.1 note·preference 同步）
 # 彩票档（docs/2026-09-02-lottery-tier-design.html）：HAD/HHAD N串1×1倍=2元，右尾优先，
-# 无预算管理（拍板C：独立 30 元轮红线，红线只管保底+翻身）
+# 预算归属：彩票 2 元计入轮次总红线 ROUND_REDLINE（保底+翻身+彩票 ≤ 30 元）
 LOTTERY_MIN_P = 0.55            # 三星干净腿门槛（skill 星级口径）
 LOTTERY_LOW_ODDS = 1.25         # 超低赔通道：赔率≤1.25 且 p≥0.50 视同合格（合赔稳定器）
 LOTTERY_LOW_ODDS_MIN_P = 0.50
@@ -529,7 +530,7 @@ def _lottery_tier(legs: list) -> dict:
     return {"shape": f"lottery-{len(legs)}x1", "cost": 2, "legs": legs,
             "bets": [{"legs": list(range(len(legs))), "multiplier": 1}],
             "expOdds": round(total, 1), "winIfHit": round(2 * total, 0),
-            "note": f"{len(legs)}串1×1倍=2元 · 全中≈{2 * total:.0f}元 · 无预算管理（独立轮红线）"}
+            "note": f"{len(legs)}串1×1倍=2元 · 全中≈{2 * total:.0f}元 · 计入轮次红线{ROUND_REDLINE}元"}
 
 
 def build_three_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form: dict,
@@ -574,10 +575,15 @@ def build_three_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form:
     if upset["cost"] < 2:                                   # 腿不足关档(铁律8不硬凑)
         upset = {"shape": "closed", "cost": 0, "legs": legs, "note": "翻身候选腿不足·关档"}
     lottery = _lottery_tier(_lottery_legs(odds_day, zh))
-    return {"structure": "new", "date": str(date.today()), "seq": seq,
-            "tiers": {"base": base, "upset": upset, "lottery": lottery},
-            "totalCost": base["cost"] + upset["cost"] + lottery["cost"],
-            "cards": cards, "ranAt": str(date.today())}
+    total_cost = base["cost"] + upset["cost"] + lottery["cost"]
+    out = {"structure": "new", "date": str(date.today()), "seq": seq,
+           "tiers": {"base": base, "upset": upset, "lottery": lottery},
+           "totalCost": total_cost,
+           "cards": cards, "ranAt": str(date.today())}
+    # 轮次预算红线（含彩票档，preference.json roundRedline 同步）
+    if total_cost > ROUND_REDLINE:
+        out["budgetWarning"] = f"totalCost {total_cost} > roundRedline {ROUND_REDLINE}"
+    return out
 
 
 def render_ticket(t: dict) -> str:
@@ -1038,6 +1044,12 @@ def main() -> None:
         print(f"[boldplay] legacy seq={out['seq']} {out['shape']} | 翻身档 {u['cost']}元 ×{u['multiplier']}倍 "
               f"合赔{u['expOdds']} 中即≈{u['winIfHit']:.0f}元 | 总投入 {out['totalCost']}元")
     out["ranAt"] = str(date.today())
+    # 数据新鲜度标记（CI 校验 + 下游可读）
+    _odds_stem = Path(latest).stem  # e.g. "2026-09-02"
+    out["dataAsOf"] = _odds_stem
+    _age_days = (date.today() - date.fromisoformat(_odds_stem)).days
+    if _age_days > 7:
+        out.setdefault("warnings", []).append(f"stale_cache: score_odds {(_age_days)}d old")
     suffix = "-legacy" if structure == "legacy" else ""
     path = PRED_DIR / f"{date.today()}-boldplay{suffix}.json"
     if dry:

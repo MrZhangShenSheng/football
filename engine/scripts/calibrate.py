@@ -53,12 +53,14 @@ def fuse_logpool(p_dc: list[float], p_mkt: list[float], a: float, b: float = 1.0
 
 
 def load_pairs() -> list[tuple[list[float], list[float], int]]:
-    """语料 → [(p_dc, p_mkt, outcome_idx)]。市场锚 = p_final 在 dc_used=false 场的值；
-    dc 场无独立市场列 → 用 p_final 兼作两侧（此时融合对比退化为常数，跳过该场）。"""
+    """语料 → [(p_dc, p_mkt, outcome_idx)]。
+    市场锚优先取 p_pinnacle（Pinnacle 去水三向，独立于模型）；
+    缺失时降级 p_final 并标记——此时融合对比退化（dc 场 p_final 含模型贡献）。"""
     if not CORPUS.exists():
         return []
     c = json.loads(CORPUS.read_text(encoding="utf-8"))
     pairs = []
+    fallback_n = 0
     for r in c.get("records", []):
         if not r.get("result") or "-" not in str(r["result"]):
             continue
@@ -67,10 +69,15 @@ def load_pairs() -> list[tuple[list[float], list[float], int]]:
         except ValueError:
             continue
         oi = 0 if hg > ag else (1 if hg == ag else 2)
-        p_mkt = r.get("p_final")
+        # 独立市场锚优先（修复市场基线污染）
+        p_mkt = r.get("p_pinnacle") or r.get("p_final")
+        if not r.get("p_pinnacle") and r.get("p_final"):
+            fallback_n += 1
         p_dc = r.get("p_dc") or r.get("dc")
         if p_mkt and len(p_mkt) == 3 and p_dc and len(p_dc) == 3:
             pairs.append((p_dc, p_mkt, oi))
+    if fallback_n > 0:
+        log("calibrate", f"⚠ {fallback_n} 场无 p_pinnacle 降级 p_final 作市场侧（退化·待回填 pinClose 补全）")
     return pairs
 
 
