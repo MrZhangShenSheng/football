@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastUpdated": "2026-09-02",
+    "lastUpdated": "2026-09-03",
     "note": "实票账本:票=顶层实体(不按日期切分);实票=有结算记录的票,其余全是方案推演;出票后票面事实永不改写;派彩按形状算(4串11中2关只回1注2串1)",
     "totalTickets": 16,
     "totalStake": 230,
@@ -1422,8 +1422,9 @@
           "market": "HAD",
           "pick": "主胜(h)",
           "odds": 1.85,
-          "result": null,
-          "note": "融合63.9%三星·近10:7胜3平0负·fd锚干净胆"
+          "result": "hit",
+          "note": "融合63.9%三星·近10:7胜3平0负·fd锚干净胆",
+          "actual": "2:1(半1:0)"
         },
         {
           "code": "周三011",
@@ -1432,8 +1433,9 @@
           "market": "HAD",
           "pick": "客胜(a)",
           "odds": 2.22,
-          "result": null,
-          "note": "63.0%三星但模型vs市场分歧23pp(保守42%)·双平局队平局威胁"
+          "result": "miss",
+          "note": "63.0%三星但模型vs市场分歧23pp(保守42%)·双平局队平局威胁",
+          "actual": "1:1(半0:1)"
         },
         {
           "code": "周四006",
@@ -1505,8 +1507,9 @@
           "market": "CRS",
           "pick": "2:0",
           "odds": 10.5,
-          "result": null,
-          "note": "freq-band带内q8.8%(DC一致)·英冠TOP3"
+          "result": "miss",
+          "note": "freq-band带内q8.8%(DC一致)·英冠TOP3",
+          "actual": "2:1(半1:0)"
         },
         {
           "code": "周三011",
@@ -1515,8 +1518,9 @@
           "market": "CRS",
           "pick": "1:2",
           "odds": 8.0,
-          "result": null,
-          "note": "freq-band带内q8.5%·⚠实价8.00(方案时8.75,12:08复扫已调价,冻结按8.00)"
+          "result": "miss",
+          "note": "freq-band带内q8.5%·⚠实价8.00(方案时8.75,12:08复扫已调价,冻结按8.00)",
+          "actual": "1:1(半0:1)"
         },
         {
           "code": "周四006",

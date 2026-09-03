@@ -637,5 +637,35 @@
    ]
   }
  ],
- "ranAt": "2026-09-02"
+ "ranAt": "2026-09-02",
+ "settle": {
+  "legHits": {
+   "base": [
+    [
+     true,
+     false,
+     false,
+     true
+    ]
+   ],
+   "upset": [
+    [
+     false,
+     true,
+     false,
+     false,
+     false,
+     false
+    ]
+   ]
+  },
+  "upsetHit": false,
+  "payout": 8.0782,
+  "tierPayout": {
+   "base": 8.0782,
+   "upset": 0.0
+  },
+  "densityRecovered": 0.2885,
+  "settledAt": "2026-09-03"
+ }
 }

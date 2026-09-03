@@ -1,43 +1,43 @@
 {
-  "generatedAt": "2026-09-02",
-  "n_filled": 184,
+  "generatedAt": "2026-09-03",
+  "n_filled": 188,
   "gateReady": true,
   "humanReview": true,
   "report": [
     {
       "coeff": "开季修正",
       "n_trigger": 77,
-      "n_base": 107,
+      "n_base": 111,
       "hit_trigger": 0.688,
-      "hit_base": 0.607,
+      "hit_base": 0.604,
       "rps_trigger": 0.1469,
-      "rps_base": 0.1906,
+      "rps_base": 0.1908,
       "logloss_trigger": 0.7669,
-      "logloss_base": 0.8891,
+      "logloss_base": 0.8939,
       "n_prob": 70,
       "rps_diff_ci95": [
-        -0.0838,
-        -0.002
+        -0.0828,
+        -0.0073
       ],
-      "status": "✅ 建议标已验证：触发组 RPS 显著更好（diff CI95 [-0.0838, -0.002] 全在 0 下方）",
-      "diff": "SKILL.md 修正系数『开季修正』标注 ✅已验证（RPS 正增益 CI [-0.0838, -0.002]）"
+      "status": "✅ 建议标已验证：触发组 RPS 显著更好（diff CI95 [-0.0828, -0.0073] 全在 0 下方）",
+      "diff": "SKILL.md 修正系数『开季修正』标注 ✅已验证（RPS 正增益 CI [-0.0828, -0.0073]）"
     },
     {
       "coeff": "联赛波动",
       "n_trigger": 5,
-      "n_base": 179,
+      "n_base": 183,
       "hit_trigger": 0.8,
-      "hit_base": 0.637,
+      "hit_base": 0.634,
       "rps_trigger": 0.0719,
-      "rps_base": 0.1738,
+      "rps_base": 0.1743,
       "logloss_trigger": 0.4328,
-      "logloss_base": 0.8445,
+      "logloss_base": 0.8484,
       "n_prob": 3,
       "rps_diff_ci95": [
-        -0.128,
-        -0.0768
+        -0.1276,
+        -0.0767
       ],
-      "status": "概率样本不足（触发 n_prob=3/对照 161，<10），继续观察（CI [-0.128, -0.0768] 仅参考）"
+      "status": "概率样本不足（触发 n_prob=3/对照 165，<10），继续观察（CI [-0.1276, -0.0767] 仅参考）"
     },
     {
       "coeff": "保级平局保护",
@@ -52,19 +52,19 @@
     {
       "coeff": "战意状态机",
       "n_trigger": 9,
-      "n_base": 175,
+      "n_base": 179,
       "hit_trigger": 0.556,
-      "hit_base": 0.646,
+      "hit_base": 0.642,
       "rps_trigger": 0.1592,
-      "rps_base": 0.1726,
+      "rps_base": 0.1732,
       "logloss_trigger": 0.8763,
-      "logloss_base": 0.8349,
+      "logloss_base": 0.8392,
       "n_prob": 8,
       "rps_diff_ci95": [
-        -0.0802,
-        0.065
+        -0.0812,
+        0.0607
       ],
-      "status": "概率样本不足（触发 n_prob=8/对照 156，<10），继续观察（CI [-0.0802, 0.065] 仅参考）"
+      "status": "概率样本不足（触发 n_prob=8/对照 160，<10），继续观察（CI [-0.0812, 0.0607] 仅参考）"
     },
     {
       "coeff": "平局率修正",
