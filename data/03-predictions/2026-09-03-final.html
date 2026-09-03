@@ -1,0 +1,260 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>最终出票方案 2026-09-03 · 双轮整合</title>
+<style>
+  :root{--bg:#0f1117;--card:#181b24;--border:#2a2f3e;--text:#d4d7e0;--dim:#8a8f9c;--accent:#fbbf24;--green:#22c55e;--red:#ef4444;--blue:#60a5fa;--star:#f59e0b;--purple:#a855f7}
+  @media(prefers-color-scheme:light){:root{--bg:#f7f8fa;--card:#fff;--border:#e0e3ea;--text:#1a1d28;--dim:#6b7280}}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Microsoft YaHei",sans-serif;line-height:1.65;padding:20px;max-width:1080px;margin:0 auto;font-size:15px}
+  h1{font-size:1.45em;margin-bottom:4px;color:var(--accent);display:flex;align-items:center;gap:10px}
+  h1 svg{width:28px;height:28px}
+  .subtitle{color:var(--dim);font-size:.85em;margin-bottom:18px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+  .card-title{font-size:1.08em;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .card-title svg{width:20px;height:20px;color:var(--accent)}
+  .badge{display:inline-block;font-size:.72em;padding:2px 8px;border-radius:6px;font-weight:600;vertical-align:middle}
+  .b-green{background:rgba(34,197,94,.15);color:var(--green)}
+  .b-red{background:rgba(239,68,68,.15);color:var(--red)}
+  .b-blue{background:rgba(96,165,250,.15);color:var(--blue)}
+  .b-amber{background:rgba(251,191,36,.15);color:var(--accent)}
+  .b-purple{background:rgba(168,85,247,.15);color:var(--purple)}
+  table{width:100%;border-collapse:collapse;font-size:.84em}
+  th{background:var(--border);padding:8px 10px;text-align:left;font-weight:600;font-size:.88em;white-space:nowrap}
+  th.c,td.c{text-align:center}
+  td{padding:7px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  .code{font-weight:700;color:var(--accent);font-family:Consolas,monospace;white-space:nowrap}
+  .pick{color:var(--green);font-weight:600}
+  .pos{color:var(--green);font-weight:700}
+  .neg{color:var(--red);font-weight:600}
+  .neu{color:var(--dim)}
+  .star{color:var(--star);letter-spacing:-1px}
+  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:8px}
+  .stat{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+  .stat .k{font-size:.75em;color:var(--dim)}
+  .stat .v{font-size:1.35em;font-weight:800;margin-top:2px}
+  .v-green{color:var(--green)}.v-red{color:var(--red)}.v-blue{color:var(--blue)}.v-amber{color:var(--accent)}
+  .note{color:var(--dim);font-size:.8em;margin-top:8px}
+  .warn-box{border:1px solid var(--red);background:rgba(239,68,68,.08);border-radius:10px;padding:14px;margin-bottom:16px}
+  .warn-box h3{color:var(--red);font-size:1em;display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .warn-box h3 svg{width:18px;height:18px}
+  .fix-row{display:grid;grid-template-columns:120px 1fr;gap:8px;padding:6px 0;font-size:.88em;border-bottom:1px dashed var(--border)}
+  .fix-row:last-child{border-bottom:none}
+  .fix-k{color:var(--dim);font-weight:600;white-space:nowrap}
+  .old{color:var(--red);text-decoration:line-through}
+  .new{color:var(--green);font-weight:600}
+  .ticket{border:2px solid var(--accent);border-radius:12px;padding:16px;margin-bottom:14px;background:var(--bg)}
+  .ticket-h{font-weight:800;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:8px;font-size:1.02em}
+  .ticket-h svg{width:18px;height:18px}
+  .t-row{display:grid;grid-template-columns:86px 64px 1fr 190px 70px;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);font-size:.87em;align-items:center;font-family:Consolas,monospace}
+  .t-row:last-of-type{border-bottom:none}
+  .t-total{margin-top:10px;padding-top:10px;border-top:2px solid var(--accent);font-size:.9em;font-weight:700;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
+  .t-league{color:var(--dim)}
+  .timeline{display:flex;gap:0;margin:14px 0}
+  .tl-step{flex:1;text-align:center;position:relative;padding:12px 6px;background:var(--bg);border:1px solid var(--border);font-size:.78em}
+  .tl-step:first-child{border-radius:8px 0 0 8px}
+  .tl-step:last-child{border-radius:0 8px 8px 0}
+  .tl-step b{display:block;font-size:1.05em}
+  .tl-now{border-color:var(--accent);background:rgba(251,191,36,.08)}
+  ul{padding-left:20px;font-size:.86em}
+  li{margin-bottom:5px}
+  .divider{border-top:1px dashed var(--border);margin:14px 0}
+</style></head><body>
+
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-ticket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9V7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a3 3 0 0 0 0 6v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a3 3 0 0 0 0-6z"/><path d="M13 5v2M13 11v2M13 17v2"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><circle cx="12" cy="14" r="1"/><path d="M12 9v4"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="i-fire" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+  <symbol id="i-lotto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h0M12 12h0M16 12h0"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+</svg>
+
+<h1><svg><use href="#i-ticket"/></svg> 最终出票方案 · 2026-09-03 双轮整合</h1>
+<div class="subtitle">周四轮（今晚开赛·已终审+执行修订）+ 周五轮（明晚开赛·待临场终审） · v5.8 · 生成时间 09-03 17:00</div>
+
+<!-- 总览摘要卡 -->
+<div class="card">
+  <div class="card-title"><svg><use href="#i-ticket"/></svg>今日总仓位：3 注 6 元</div>
+  <div class="stat-grid">
+    <div class="stat"><div class="k">总投入</div><div class="v v-amber">6 元</div></div>
+    <div class="stat"><div class="k">票数</div><div class="v v-blue">3 张</div></div>
+    <div class="stat"><div class="k">至少中一注</div><div class="v v-green">12.5%</div></div>
+    <div class="stat"><div class="k">全灭率</div><div class="v v-red">87.5%</div></div>
+    <div class="stat"><div class="k">期望返还<span style="font-size:.7em">(freq口径)</span></div><div class="v v-green">7.07 元<br><span style="font-size:.6em">(+17.7%)</span></div></div>
+  </div>
+  <table>
+    <tr><th>票</th><th>方案名（票面解释）</th><th class="c">票面</th><th class="c">金额</th><th class="c">状态</th></tr>
+    <tr>
+      <td class="code">A①</td>
+      <td><b>搏奖单关</b>：CRS 比分单关×1倍</td>
+      <td>002 CRS 0:0 单关</td><td class="c">2元</td>
+      <td class="c"><span class="badge b-green">已锁定</span></td>
+    </tr>
+    <tr>
+      <td class="code">A②</td>
+      <td><b>平局轨混串</b>：HAD平 × CRS 混合过关 2串1×1倍（<span class="neg">修订：001无单关资格</span>）</td>
+      <td>001平 × 002 CRS 0:0</td><td class="c">2元</td>
+      <td class="c"><span class="badge b-amber">修订</span></td>
+    </tr>
+    <tr>
+      <td class="code">B</td>
+      <td><b>彩票档</b>：HAD 8串1×1倍=2元·纯胜平负·断任一腿=0</td>
+      <td>8腿全胜平负</td><td class="c">2元</td>
+      <td class="c"><span class="badge b-blue">待周五终审</span></td>
+    </tr>
+  </table>
+  <div class="note">资金纪律：总仓位 6 元 ≤ 档位组合上限（搏奖4+彩票2）· 无压力状态 · 娱乐定位</div>
+</div>
+
+<!-- 执行修订声明 -->
+<div class="warn-box">
+  <h3><svg><use href="#i-warn"/></svg>执行修订 · A②票（周四轮平局轨）</h3>
+  <div class="fix-row"><span class="fix-k">修订项</span><span>周四001 HAD 平 单关 → 与周四002 组混合过关 2串1</span></div>
+  <div class="fix-row"><span class="fix-k">旧 → 新</span><span><span class="old">001 HAD平@3.05 单关 2元</span> → <span class="new">001 HAD平@3.05 × 002 CRS 0:0@16.50 混串2串1@50.33 2元</span></span></div>
+  <div class="fix-row"><span class="fix-k">依据（事实）</span><span>出票核验发现：周四001 <code>poolSingle.HAD=0</code>（胜平负不可单关）——平局轨"永久单关"在无单关资格场次无法执行（周四轮预测疏漏，本次核对单环节纠正）</span></div>
+  <div class="fix-row"><span class="fix-k">合规性</span><span>铁律9：不同场可用不同玩法组同一注串（混合过关本义）· 001沙职+002沙职 不同场次 ✓ · 含CRS腿 2串 ≤4关木桶 ✓ · 同场跨票分池合法（002 CRS 单关票A① + 002 CRS 入串票A②）✓</span></div>
+  <div class="fix-row"><span class="fix-k">EV影响</span><span>单关注 EV-14.3% → 混串 EV<b class="pos">+30.1%</b>（0.281×0.092×50.33-1，freq q9.2%口径）；保守口径（q=联赛基准5.6%）EV-20.8%</span></div>
+  <div class="fix-row"><span class="fix-k">耦合风险</span><span>A①与A②共享 002 腿：002 非0:0 → 两注全灭（A组至少中一注 = P(002 0:0) = 9.2%，原独立单关口径为 34.7%）——用"期望正+命中即百元"换"至少中一注概率下降"，大哥如偏好分散可撤A②省2元（备选开关）</span></div>
+</div>
+
+<!-- 方案A -->
+<div class="card">
+  <div class="card-title"><svg><use href="#i-fire"/></svg>方案A · 周四轮搏奖（2注4元 · 今晚开赛）</div>
+  <table>
+    <tr><th>注</th><th>编号</th><th>联赛</th><th>对阵</th><th>玩法 pick @赔率</th><th class="c">p</th><th class="c">EV</th><th class="c">命中回报</th></tr>
+    <tr>
+      <td class="code">A①</td><td class="code">周四002</td><td>沙职</td><td>新未来SC vs 赛哈海湾</td>
+      <td class="pick">CRS 0:0 @16.50</td><td class="c">9.2%<span style="color:var(--dim);font-size:.75em">(q)</span></td><td class="c pos">+51.8%</td><td class="c">33元</td>
+    </tr>
+    <tr>
+      <td class="code">A②</td><td class="code">周四001</td><td>沙职</td><td>迈季宽广 vs 拉斯永恒</td>
+      <td class="pick">HAD 平 @3.05 <span style="color:var(--dim)">×</span></td><td class="c" rowspan="2">2.59%<br><span style="color:var(--dim);font-size:.75em">(0.281×0.092)</span></td><td class="c pos" rowspan="2">+30.1%</td><td class="c" rowspan="2">100.65元</td>
+    </tr>
+    <tr>
+      <td></td><td class="code">周四002</td><td>沙职</td><td>新未来SC vs 赛哈海湾</td>
+      <td class="pick">CRS 0:0 @16.50</td>
+    </tr>
+  </table>
+  <div class="note">
+    依据：002 freq-band q9.2%（联赛基准5.6%+双低攻平移·DC 0-0=12.3%交叉印证）+ 池卡 rec_base 同推（gateRule✓）·
+    001 平局轨入轨四条全过（融合平28.1%≥28%·极差8.9pp&lt;12pp）已终审维持（平赔3.05零异动）·
+    客巴克利（主力中场）缺阵 d=-1 不涉平 ·
+    006×003 二串已按价格消失定律撤注（EV+0.5%→-14.8%）
+  </div>
+</div>
+
+<!-- 方案B -->
+<div class="card">
+  <div class="card-title"><svg><use href="#i-lotto"/></svg>方案B · 周五轮彩票档（8串1 × 1倍 = 2元 · 明晚开赛）</div>
+  <table>
+    <tr><th class="c">#</th><th>编号</th><th>联赛</th><th>对阵</th><th>pick</th><th class="c">赔率</th><th class="c">p_修正</th><th class="c">EV</th></tr>
+    <tr><td class="c">①</td><td class="code">周五002</td><td>法甲R3</td><td>里昂 vs 欧塞尔</td><td class="pick">主胜</td><td class="c">1.40</td><td class="c">69.1%</td><td class="c neg">-3.3%</td></tr>
+    <tr><td class="c">②</td><td class="code">周五009</td><td>意甲R3</td><td>热那亚 vs 科莫</td><td class="pick">客胜</td><td class="c">1.70</td><td class="c">58.8%</td><td class="c neu">-0.0%</td></tr>
+    <tr><td class="c">③</td><td class="code">周五004</td><td>沙职R5</td><td>利雅青年 vs 利雅新月</td><td class="pick">客胜</td><td class="c">1.32</td><td class="c">76.3%</td><td class="c pos">+0.7%</td></tr>
+    <tr><td class="c">④</td><td class="code">周五011</td><td>西甲R4</td><td>贝蒂斯 vs 皇马</td><td class="pick">客胜</td><td class="c">1.30</td><td class="c">76.1%</td><td class="c neg">-1.1%</td></tr>
+    <tr><td class="c">⑤</td><td class="code">周五006</td><td>荷甲R4</td><td>鹿斯巴达 vs 兹沃勒</td><td class="pick">主胜</td><td class="c">1.68</td><td class="c">58.8%</td><td class="c neg">-1.2%</td></tr>
+    <tr><td class="c">⑥</td><td class="code">周五008</td><td>德甲R2</td><td>斯图加特 vs 科隆</td><td class="pick">主胜</td><td class="c">1.39</td><td class="c">63.6%</td><td class="c neg">-1.7%</td></tr>
+    <tr><td class="c">⑦</td><td class="code">周五010</td><td>英超R3</td><td>伊普斯 vs 利物浦</td><td class="pick">客胜</td><td class="c">1.41</td><td class="c">64.6%</td><td class="c neg">-4.1%</td></tr>
+    <tr><td class="c">⑧</td><td class="code">周五001</td><td>德乙R4</td><td>汉诺威96 vs 卡斯鲁厄</td><td class="pick">主胜</td><td class="c">1.49</td><td class="c">62.5%</td><td class="c neg">-6.9%</td></tr>
+  </table>
+  <div class="divider"></div>
+  <div class="stat-grid">
+    <div class="stat"><div class="k">合赔</div><div class="v v-amber">20.04</div></div>
+    <div class="stat"><div class="k">全中奖金</div><div class="v v-green">40.08 元</div></div>
+    <div class="stat"><div class="k">P(全中)</div><div class="v v-blue">3.6%</div></div>
+    <div class="stat"><div class="k">断任一腿</div><div class="v v-red">0 元</div></div>
+  </div>
+  <div class="note">
+    选腿依据：10 条合格腿（p_fused≥0.55）> 8 → EV 降序取前8（003博德闪耀 EV-7.1%·超低赔1.19价值抽干 / 012 PSG EV-11.6%·DC-市场分歧30.7pp 均落选）·
+    纯 HAD 木桶合规（≤8关）· 开季修正已含（德甲R2×0.90 / 法甲英超意甲R3×0.95）·
+    ⚠️ 已知风险腿：009 热那亚 H2H 近6场0胜4平（平局风险）、011 贝蒂斯 H2H 50%平局率、001 DC-市场分歧21pp
+  </div>
+</div>
+
+<!-- 方案对比表 -->
+<div class="card">
+  <div class="card-title"><svg><use href="#i-check"/></svg>方案对比表</div>
+  <table>
+    <tr><th>方案</th><th>票面</th><th class="c">本金</th><th class="c">EV(freq)</th><th class="c">全中回报</th><th class="c">至少中一注</th><th class="c">全灭率</th></tr>
+    <tr><td class="code">A① 搏奖单关</td><td>002 CRS 0:0 单关×1倍</td><td class="c">2元</td><td class="c pos">+51.8%</td><td class="c">33元</td><td class="c" rowspan="2">9.2%<br><span style="font-size:.8em;color:var(--dim)">(耦合:同挂002)</span></td><td class="c" rowspan="2">90.8%</td></tr>
+    <tr><td class="code">A② 平局轨混串</td><td>001平×002 CRS 2串1×1倍</td><td class="c">2元</td><td class="c pos">+30.1%</td><td class="c">100.65元</td></tr>
+    <tr><td class="code">B 彩票档</td><td>HAD 8串1×1倍</td><td class="c">2元</td><td class="c neg">-28.7%</td><td class="c">40.08元</td><td class="c">3.6%</td><td class="c">96.4%</td></tr>
+    <tr style="background:var(--border)"><td class="code"><b>合计</b></td><td><b>3注</b></td><td class="c"><b>6元</b></td><td class="c pos"><b>+17.7%</b></td><td class="c">—</td><td class="c"><b>12.5%</b></td><td class="c"><b>87.5%</b></td></tr>
+  </table>
+  <div class="note">
+    EV 口径警示：A①A② 依赖 freq q=9.2%（联赛基准仅5.6%·保守口径下 A组 EV 转-7.6%/-20.8%、总期望 -1.14元）——002 双低攻（主1.50/客0.81 λ）+客队近10场0胜是平移上调依据 · B 为彩票定位（右尾策略，EV 负属常态）
+  </div>
+</div>
+
+<!-- 出票核对单 -->
+<div class="card">
+  <div class="card-title"><svg><use href="#i-ticket"/></svg>出票核对单（终端编号以此为准 · 出票时逐条对照，发现不一致立即停）</div>
+
+  <div class="ticket">
+    <div class="ticket-h"><svg><use href="#i-fire"/></svg>票A① + 票A②（今晚出票 · 23:00前完成稳妥）</div>
+    <div class="t-row"><span class="code">周四002</span><span class="t-league">沙职</span><span>新未来SC vs 赛哈海湾</span><span class="pick">CRS 0:0 @16.50</span><span class="t-league">单关</span></div>
+    <div class="t-total"><span>票面：比分（CRS）单关 × 1倍 = 1注 × 2元 = 2元</span><span>过关方式:单关 · 腿数:1 · 注数:1 · 金额:2元</span></div>
+    <div class="divider"></div>
+    <div class="t-row"><span class="code">周四001</span><span class="t-league">沙职</span><span>迈季宽广 vs 拉斯永恒</span><span class="pick">HAD 平 @3.05</span><span class="t-league">混串腿1</span></div>
+    <div class="t-row"><span class="code">周四002</span><span class="t-league">沙职</span><span>新未来SC vs 赛哈海湾</span><span class="pick">CRS 0:0 @16.50</span><span class="t-league">混串腿2</span></div>
+    <div class="t-total"><span>票面：混合过关 2串1 × 1倍 = 1注 × 2元 = 2元（合赔50.33→命中100.65元）</span><span>过关方式:2串1 · 腿数:2 · 注数:1 · 金额:2元</span></div>
+  </div>
+
+  <div class="ticket">
+    <div class="ticket-h"><svg><use href="#i-lotto"/></svg>票B（明天 09-04 临场终审后再出票 · 00:30首场前完成）</div>
+    <div class="t-row"><span class="code">周五002</span><span class="t-league">法甲</span><span>里昂 vs 欧塞尔</span><span class="pick">HAD 主胜 @1.40</span><span class="t-league">腿①</span></div>
+    <div class="t-row"><span class="code">周五009</span><span class="t-league">意甲</span><span>热那亚 vs 科莫</span><span class="pick">HAD 客胜 @1.70</span><span class="t-league">腿②</span></div>
+    <div class="t-row"><span class="code">周五004</span><span class="t-league">沙职</span><span>利雅青年 vs 利雅新月</span><span class="pick">HAD 客胜 @1.32</span><span class="t-league">腿③</span></div>
+    <div class="t-row"><span class="code">周五011</span><span class="t-league">西甲</span><span>贝蒂斯 vs 皇马</span><span class="pick">HAD 客胜 @1.30</span><span class="t-league">腿④</span></div>
+    <div class="t-row"><span class="code">周五006</span><span class="t-league">荷甲</span><span>鹿斯巴达 vs 兹沃勒</span><span class="pick">HAD 主胜 @1.68</span><span class="t-league">腿⑤</span></div>
+    <div class="t-row"><span class="code">周五008</span><span class="t-league">德甲</span><span>斯图加特 vs 科隆</span><span class="pick">HAD 主胜 @1.39</span><span class="t-league">腿⑥</span></div>
+    <div class="t-row"><span class="code">周五010</span><span class="t-league">英超</span><span>伊普斯 vs 利物浦</span><span class="pick">HAD 客胜 @1.41</span><span class="t-league">腿⑦</span></div>
+    <div class="t-row"><span class="code">周五001</span><span class="t-league">德乙</span><span>汉诺威96 vs 卡斯鲁厄</span><span class="pick">HAD 主胜 @1.49</span><span class="t-league">腿⑧</span></div>
+    <div class="t-total"><span>票面：胜平负（HAD）8串1 × 1倍 = 1注 × 2元 = 2元（合赔20.04→全中40.08元）</span><span>过关方式:8串1 · 腿数:8 · 注数:1 · 金额:2元</span></div>
+  </div>
+
+  <div class="note"><svg style="width:14px;height:14px;vertical-align:-2px;color:var(--red)"><use href="#i-warn"/></svg> 编号 × 联赛 × 主客三重核对义务在用户侧——2026-08-29 T010 事故（周一006 误买 周一002）防复发 · 出票后说"我买了"登记实票账本（git 历史=出票凭证）</div>
+</div>
+
+<!-- 时间线 -->
+<div class="card">
+  <div class="card-title"><svg><use href="#i-clock"/></svg>时间线</div>
+  <div class="timeline">
+    <div class="tl-step tl-now"><b>今晚 23:00 前</b>出票 A①A②<br><span style="color:var(--dim)">周四002 00:30开赛</span></div>
+    <div class="tl-step"><b>今晚 23:55</b>周四001 开赛<br><span style="color:var(--dim)">A②腿1 生效中</span></div>
+    <div class="tl-step"><b>明晚（09-04）</b>说"再跑一遍"<br><span style="color:var(--dim)">B票临场终审·复扫赔率+首发</span></div>
+    <div class="tl-step"><b>09-05 00:30 前</b>出票 B<br><span style="color:var(--dim)">周五001 首场开赛</span></div>
+  </div>
+  <ul>
+    <li>A 票已终审锁定（13:09 复扫：002 CRS 0:0@16.50 与 001 平@3.05 零异动维持）——如出票前再发现赔率异动，按信息边际三定律重新判定</li>
+    <li>B 票为初版——明天临场复扫（赔率异动/伤停终版/首发口径）后按三定律定稿，说"再跑一遍"触发</li>
+  </ul>
+</div>
+
+<!-- 风险 -->
+<div class="card">
+  <div class="card-title"><svg><use href="#i-warn"/></svg>风险与资金纪律</div>
+  <ul>
+    <li><b>全灭率 87.5%</b>：6 元预算按"全部打水漂"心理预期配置，负期望娱乐定位</li>
+    <li><b>A 组耦合</b>：4 元全挂在 002 的 0:0 上（9.2%）——0:0 是小概率高赔事件，双注同生共死</li>
+    <li><b>EV 口径敏感</b>：总期望 +17.7% 基于 freq q9.2% 口径；保守口径（联赛基准5.6%）为 -19%——002 平移上调依据（主客双低攻+客队近10场0胜）是判断核心，回填后 CLV 验证</li>
+    <li><b>B 票彩票定位</b>：3.6% 全中概率，断任一腿=0——已按大哥 v5.6 拍板"无预算管理独立轮"，2元/轮不设 gate</li>
+    <li><b>备选开关</b>：如大哥偏好风险分散，可撤 A②（省2元，今日总仓4元）——A① 独立保留（EV+51.8% 最强腿）</li>
+    <li>赔率以官方终端实时价为准，本卡赔率为 09-03 采集冻结价（出票 CLV 按出票时点价记录）</li>
+  </ul>
+</div>
+
+<!-- 数据来源 -->
+<div class="card">
+  <div class="card-title"><svg><use href="#i-check"/></svg>数据来源</div>
+  <ul>
+    <li>体彩赛程+五池赔率：engine/cache/sporttery_matches.json（09-03刷新·21场）+ score_odds/2026-09-03.json 日存档</li>
+    <li>周四轮终审档案：data/02-results/2026-09-03.json（f3a0607/9a45e97 锁定）+ data/05-trends/2026-09-03-livescan.json</li>
+    <li>周五轮预测档案：data/02-results/2026-09-03-r1.json + data/03-predictions/2026-09-03-r1.html（da0b361）</li>
+    <li>单场情报：data/05-trends/2026-09-03-intel.json（21场·排名/近10/伤停/H2H）</li>
+    <li>poolSingle 资格核验：engine/cache/sporttery_matches.json（本次核对单环节执行·发现 A② 修订项）</li>
+  </ul>
+</div>
+
+</body></html>
