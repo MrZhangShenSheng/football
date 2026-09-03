@@ -1,0 +1,102 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>脚本审计报告 · 相对路径静默失败 × 口径错配 · 2026-09-03</title>
+<style>
+:root{--ink:#1a2332;--sub:#5a6b82;--line:#dde5f0;--bg:#f7f9fc;--card:#fff;--red:#c0392b;--redbg:#fdf0ee;--amber:#b9770e;--amberbg:#fdf7e8;--green:#1e8e5a;--greenbg:#e9f7f0;--accent:#2456c4}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--bg);margin:0;padding:24px;line-height:1.65}
+.wrap{max-width:1060px;margin:0 auto}
+h1{font-size:22px;margin:0 0 4px}
+h2{font-size:17px;margin:28px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--line)}
+h3{font-size:15px;margin:16px 0 6px}
+.meta{color:var(--sub);font-size:13px;margin-bottom:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:12px 0}
+table{width:100%;border-collapse:collapse;font-size:13px;background:var(--card);border-radius:8px;overflow:hidden}
+th{background:#eef2f9;text-align:left;padding:7px 10px;font-size:12.5px}
+td{padding:7px 10px;border-top:1px solid var(--line);vertical-align:top}
+code{background:#eef2f9;padding:1px 5px;border-radius:4px;font-size:12px;font-family:ui-monospace,Menlo,monospace}
+.tag{display:inline-block;padding:1px 8px;border-radius:10px;font-size:11.5px;font-weight:600;white-space:nowrap}
+.t-red{background:var(--redbg);color:var(--red)}
+.t-amber{background:var(--amberbg);color:var(--amber)}
+.t-green{background:var(--greenbg);color:var(--green)}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.kpi .box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px;text-align:center}
+.kpi .num{font-size:24px;font-weight:700}
+.kpi .lbl{font-size:12px;color:var(--sub)}
+.n-red{color:var(--red)}.n-amber{color:var(--amber)}.n-green{color:var(--green)}
+.verdict{border-left:4px solid var(--accent);background:#f0f4fd;padding:10px 14px;border-radius:0 8px 8px 0;font-size:13.5px}
+code.path{background:#f2ede4}
+svg.ic{width:15px;height:15px;vertical-align:-2px;margin-right:4px}
+ul{margin:6px 0;padding-left:22px}
+li{margin:3px 0}
+.small{font-size:12px;color:var(--sub)}
+</style></head><body><div class="wrap">
+<svg width="0" height="0" style="position:absolute"><symbol id="i-bug" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M9 9a3 3 0 0 1 6 0v2H9V9zm-5 3h16M12 4v2M5 5l2 2M19 5l-2 2M8 21l1-4M16 21l-1-4M6 12v3a6 6 0 0 0 12 0v-3"/></symbol><symbol id="i-shield" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-3z"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.5" d="M4 12l5 5L20 6"/></symbol><symbol id="i-flask" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M9 3h6M10 3v6L4 19a2 2 0 0 0 2 3h12a2 2 0 0 0 2-3L14 9V3M7 15h10"/></symbol></svg>
+
+<h1><svg class="ic" style="color:var(--accent)"><use href="#i-shield"/></svg>engine/scripts 全量脚本审计报告</h1>
+<div class="meta">2026-09-03 · 触发事件：freq-band λ 分母口径错配（当日已修，commit ca8a069）· 审计范围：engine/scripts/*.py 33 个 + research/ 16 个 · 方法：静态模式扫描 + 双 cwd 动态验证 · 只读审计，修复另立项</div>
+
+<div class="verdict"><b>一句话结论</b>：33 个主目录脚本中 26 个干净；剩 1 个 🔴 高危（<code>band_calibration.fetch_rows</code> 网络静默断粮——主链频率模板/球队近况的无声缩水点）+ 6 处 🟡 中危。<b>关键回测结论未被污染</b>：goal_engine 的 walkForward 生死线全 ROOT 路径 cwd 免疫；freq_backtest 归档版（08-27，freq vs amix 换轨依据）当时从仓库根跑，数据无污染。</div>
+
+<h2>一、审计背景与病根定义</h2>
+<div class="card">
+<p>当日修复的 freq-band bug 暴露两类系统性病根，本审计按此扩面：</p>
+<ul>
+<li><b>病根① 相对路径静默失败</b>：<code>glob.glob("data/...")</code> 在 cwd=<code class="path">engine/scripts</code>（run.py sh() 子进程的固定 cwd）下落空且<b>不报错</b>——数据被静默丢弃。当日已修 <code>score_ev.build_freq_table</code> 与 <code>freq_band.build_team_form</code> 两处（~2300 场日韩瑞沙数据曾被无声丢掉）。响亮的 <code>open()</code> 失败危害较低（崩而不骗）。</li>
+<li><b>病根② λ/比率口径错配</b>：分子分母用不同统计口径。实例：λ客 = 混合口径场均进失 ÷ 纯客场基准，分母天然低 15%+ → T=4.35 vs 西甲均值 2.62 → 高斯核远距平移 s7 档质量 2.1%→28.6%，EV+959% 荒谬值流入出票卡。</li>
+</ul>
+</div>
+
+<h2>二、动态验证结果（回测结论是否被污染）</h2>
+<div class="kpi">
+<div class="box"><div class="num n-green">未污染</div><div class="lbl">goal_engine walkForward<br>（路径全 ROOT·cwd 免疫）</div></div>
+<div class="box"><div class="num n-green">未污染</div><div class="lbl">freq_backtest 08-27 归档<br>（仓库根跑·freq vs amix 依据）</div></div>
+<div class="box"><div class="num n-amber">已暴露</div><div class="lbl">freq_backtest 相对路径<br>（cwd=scripts 跑则静默空+崩）</div></div>
+<div class="box"><div class="num n-red">实锤</div><div class="lbl">fetch_rows 网络抖动<br>（10/39 源瞬时静默失败）</div></div>
+</div>
+
+<div class="card">
+<h3><svg class="ic" style="color:var(--green)"><use href="#i-check"/></svg>验证 1：goal_engine（进球引擎生死线）— 干净</h3>
+<p><code class="path">goal_engine.py:153-154</code> CACHE_DIR/REPORT_PATH 全部 ROOT 绝对定位，双 cwd 行为一致；walkForward 节（09-27 评审数据底子）读 <code class="path">engine/cache/odds_*.json</code> 本地缓存，不经网络。四簿分侧口径正确（失球基准=对侧产出，有注释），是本次审计的<b>正面样板</b>。<b>引擎生死线结论（corrected vs naiveRolling）可信。</b></p>
+</div>
+
+<div class="card">
+<h3><svg class="ic" style="color:var(--green)"><use href="#i-check"/></svg>验证 2：freq_backtest 08-27 归档（v5.3 比分选法换轨依据）— 未污染</h3>
+<p>归档版 ranAt=2026-08-27，覆盖 4 日 28 腿；当时从仓库根跑（glob 命中），数据无污染。今日从仓库根复跑对照（探针，未落盘）：freq 44腿中2（4.5%）vs amix 40腿中1（2.5%）——方向与归档一致（freq 覆盖更稳），换轨决策依据仍成立。<b>注意</b>：复跑数值与归档不同是因为 score_odds 存档天数从 4 天涨到 11 天+λ修复生效，属正常演进非污染。</p>
+<p class="small">⚠️ 但脚本自身带相对路径（L84/L113）：若未来从 scripts 目录跑，会先静默空扫再响亮崩——结论碰巧安全，工具本身要修（🟡）。</p>
+</div>
+
+<div class="card">
+<h3><svg class="ic" style="color:var(--red)"><use href="#i-bug"/></svg>验证 3：band_calibration.fetch_rows — 高危实锤</h3>
+<p>cwd=scripts 下全源扫描：39 个 (season, div) 源中 <b>10 个瞬时返回空</b>（含 2425:E0 英超、2425:SP1 西甲整季！）；复测同源 HTTP 200 数据正常——确认是<b>网络抖动被 <code>except Exception: return []</code> 完全吞掉</b>。该函数是主链唯一网络数据源：<code>boldplay → score_ev.build_freq_table</code>（频率模板）、<code>freq_band.build_team_form</code>（球队近况）、temperature/half_params 全经它。一次抖动 = 部分联赛模板/近况<b>无声蒸发</b>，下游 EV 计算基于残缺数据且无任何警告。half_params 有 n&gt;8000 断言能拦住，score_ev/freq_band <b>无护栏</b>。</p>
+</div>
+
+<h2>三、静态全扫病灶清单</h2>
+<table>
+<tr><th>分级</th><th>脚本:行号</th><th>问题</th><th>类型</th><th>修复建议</th></tr>
+<tr><td><span class="tag t-red">🔴 高危</span></td><td><code>band_calibration.py:41-42</code></td><td>fetch_rows 网络失败 <code>return []</code> 静默——主链频率模板/球队近况无声缩水，下游无护栏（今日实测 10/39 源瞬时空）</td><td>静默降级</td><td>失败计数+stderr warning；重试 1 次；下游 build_freq_table 对“空联赛&gt;半数”打警告</td></tr>
+<tr><td><span class="tag t-amber">🟡 中危</span></td><td><code>freq_backtest.py:84,113</code></td><td>相对 glob（scripts cwd 静默空）+ 相对写（响亮崩）；一次性验收工具</td><td>相对路径</td><td>换 ROOT（照抄 boldplay.py:21 模式，3 行）</td></tr>
+<tr><td><span class="tag t-amber">🟡 中危</span></td><td><code>score_ev.py:88,101</code></td><td>main() 相对 glob→IndexError + 相对写；主链 import 的函数已 ROOT 化（09-03 修）</td><td>相对路径</td><td>同上换 ROOT</td></tr>
+<tr><td><span class="tag t-amber">🟡 中危</span></td><td><code>band_calibration.py:70</code> · <code>live_odds_probe.py:38</code></td><td>相对写报告（响亮崩不骗人）；一次性工具</td><td>相对路径</td><td>同上换 ROOT</td></tr>
+<tr><td><span class="tag t-amber">🟡 中危</span></td><td><code>boldplay.py:1020</code></td><td>seq 计数 glob 含 <code>-rN</code> 过程快照，与月花费/连败统计（显式排快照）口径不一致 → seq 偏大</td><td>口径混用</td><td>glob 模式加排除（同 upset_month_spend 口径）</td></tr>
+<tr><td><span class="tag t-amber">🟡 中危</span></td><td><code>score_ev.py:43</code> + <code>freq_band.py:20</code> + LEAGUE_MAP</td><td>巴甲/挪超/丹超/美职已建 DC 模型（run.py 09-02 扩容）但无映射、不进频率白名单 → 双链静默降级（设计内 None 路径，但属<b>覆盖断层</b>：模型存在却用不上）</td><td>覆盖断层</td><td>四联赛本地库入 LEAGUE_STORE + LEAGUE_MAP 补映射；或显式声明不覆盖</td></tr>
+<tr><td><span class="tag t-amber">🟡 中危</span></td><td><code>research/dc_diag.py:7,87</code></td><td>相对读+exists 守卫=静默跳过；research 归档不在主链</td><td>相对路径</td><td>归档脚本可不动（记录在案）</td></tr>
+<tr><td><span class="tag t-amber">🟡 低</span></td><td><code>backfill.py:108</code></td><td>体彩日赛果抓取失败与“当日无赛事”返回值不可区分（幂等重试环可救，偏松）</td><td>静默降级</td><td>失败时返回 None 并打日志区分</td></tr>
+</table>
+
+<h2>四、干净面（26/33 主目录 + 15/16 research）</h2>
+<div class="card">
+<p><b>路径卫生</b>：run.py（<code>__file__</code> 锚定）、build_index.py（parents[2]）、其余 fetch/评估/归档脚本全 ROOT 或 <code>__file__</code> 锚定。<b>口径卫生</b>：goal_engine 四簿分侧为正面样板；backtest/calibrate/ablate/corpus/attribute/trend_report 的 pred/obs 均同场次切片同口径；temperature/half_params 网络挂有护栏（rows&lt;80 跳过、n&gt;8000 断言——“网络全挂不覆盖上一份好 cache”的反例样板）。</p>
+<p class="small">research/ 16 个归档中 15 个路径干净；4 个因子测试脚本依赖同一 fetch_rows 静默网络源（同 🔴 根因，归档不再跑，记录在案）。</p>
+</div>
+
+<h2>五、修复优先级建议（另立项，待大哥拍板）</h2>
+<table>
+<tr><th>#</th><th>动作</th><th>工作量</th><th>收益</th></tr>
+<tr><td>P0</td><td>fetch_rows 加失败计数+warning+1 次重试；build_freq_table/build_team_form 空源&gt;半数时打警告</td><td>~15 行</td><td>护住整个主链频率/近况数据源（今日实测抖动率 26%）</td></tr>
+<tr><td>P1</td><td>freq_backtest / score_ev.main / band_calibration.main / live_odds_probe 相对路径换 ROOT</td><td>~8 行</td><td>消灭 cwd 敏感类（boldplay.py:21 模式复制）</td></tr>
+<tr><td>P1</td><td>boldplay seq 计数排除 -rN 快照</td><td>1 行</td><td>seq/月花费/连败三口径归一</td></tr>
+<tr><td>P2</td><td>LEAGUE_MAP 补巴甲/挪超/丹超/美职映射 + LEAGUE_STORE 白名单扩容</td><td>~6 行</td><td>打通“已建模型却不进链”的覆盖断层（需要先核四联赛模板样本量是否够 LOW_CONF_N=100）</td></tr>
+<tr><td>P3</td><td>backfill fetch 失败区分 None；dc_diag 归档记录在案不动</td><td>~5 行</td><td>可观测性补强</td></tr>
+</table>
+
+<div class="meta" style="margin-top:20px">数据来源：静态扫描（33 主目录 + research/ 16 归档，逐行核对相对路径与比率口径）· 动态验证（双 cwd fetch_rows 全源 39 项两次采样、freq_backtest 仓库根复跑探针未落盘、goal_engine 路径核对）· 关联 commit：ca8a069（λ修复+两处 ROOT 化）· 审计会话只读未改业务代码</div>
+</div></body></html>
