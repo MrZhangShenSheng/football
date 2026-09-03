@@ -3,7 +3,7 @@
  "name": "Celta Vigo",
  "nameZh": "塞尔塔",
  "league": "spain",
- "lastUpdated": "2026-08-22",
+ "lastUpdated": "2026-09-03",
  "source": "cold-start: league standings + manual name map",
  "standing": {
   "pos": 12,
@@ -19,5 +19,36 @@
  "elo": null,
  "form": [],
  "injuries": [],
- "notes": "冷启动基础画像（积分榜），待深度采集补充"
+ "notes": "冷启动基础画像（积分榜），待深度采集补充",
+ "team": "塞尔塔",
+ "insight": {
+  "fetchedAt": "2026-09-03",
+  "matchCode": "周四006",
+  "gameweek": "6",
+  "season": "2026/2027",
+  "leagueZh": "西甲",
+  "away": {
+   "rank": "17",
+   "form10": "W3DNoneL3",
+   "goalAvg": "1.3",
+   "injuries": [
+    {
+     "name": "Aleix Febas",
+     "pos": "中场",
+     "apps": 2,
+     "starts": 2,
+     "injury": true,
+     "suspension": false
+    },
+    {
+     "name": "Borja Iglesias",
+     "pos": "前锋",
+     "apps": 0,
+     "starts": 0,
+     "injury": true,
+     "suspension": false
+    }
+   ]
+  }
+ }
 }

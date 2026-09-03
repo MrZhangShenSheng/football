@@ -3,7 +3,7 @@
  "name": "Toulouse",
  "nameZh": "图卢兹",
  "league": "france",
- "lastUpdated": "2026-08-22",
+ "lastUpdated": "2026-09-03",
  "source": "cold-start: league standings + manual name map",
  "standing": {
   "pos": 17,
@@ -19,5 +19,28 @@
  "elo": null,
  "form": [],
  "injuries": [],
- "notes": "冷启动基础画像（积分榜），待深度采集补充"
+ "notes": "冷启动基础画像（积分榜），待深度采集补充",
+ "team": "图卢兹",
+ "insight": {
+  "fetchedAt": "2026-09-03",
+  "matchCode": "周四005",
+  "gameweek": "3",
+  "season": "2026/2027",
+  "leagueZh": "法甲",
+  "home": {
+   "rank": "16",
+   "form10": "W4DNoneL3",
+   "goalAvg": "1.1",
+   "injuries": [
+    {
+     "name": "A. Francis",
+     "pos": "中场",
+     "apps": 0,
+     "starts": 0,
+     "injury": true,
+     "suspension": false
+    }
+   ]
+  }
+ }
 }

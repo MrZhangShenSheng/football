@@ -1,15 +1,15 @@
 {
   "generatedAt": "2026-09-03",
-  "n_filled": 188,
+  "n_filled": 189,
   "gateReady": true,
   "humanReview": true,
   "report": [
     {
       "coeff": "开季修正",
       "n_trigger": 77,
-      "n_base": 111,
+      "n_base": 112,
       "hit_trigger": 0.688,
-      "hit_base": 0.604,
+      "hit_base": 0.607,
       "rps_trigger": 0.1469,
       "rps_base": 0.1908,
       "logloss_trigger": 0.7669,
@@ -25,9 +25,9 @@
     {
       "coeff": "联赛波动",
       "n_trigger": 5,
-      "n_base": 183,
+      "n_base": 184,
       "hit_trigger": 0.8,
-      "hit_base": 0.634,
+      "hit_base": 0.636,
       "rps_trigger": 0.0719,
       "rps_base": 0.1743,
       "logloss_trigger": 0.4328,
@@ -52,9 +52,9 @@
     {
       "coeff": "战意状态机",
       "n_trigger": 9,
-      "n_base": 179,
+      "n_base": 180,
       "hit_trigger": 0.556,
-      "hit_base": 0.642,
+      "hit_base": 0.644,
       "rps_trigger": 0.1592,
       "rps_base": 0.1732,
       "logloss_trigger": 0.8763,
