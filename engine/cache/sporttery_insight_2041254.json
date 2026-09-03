@@ -1,0 +1,243 @@
+{
+ "fetchedAt": "2026-09-03",
+ "source": "sporttery",
+ "matchId": 2041254,
+ "match": {
+  "code": "周五010",
+  "league": "英超",
+  "gameweek": "3",
+  "season": "2026/2027",
+  "home": "伊普斯",
+  "away": "利物浦",
+  "kickoff": "2026-09-05 03:00",
+  "uniformMatchId": 2505527
+ },
+ "standing": {
+  "away": {
+   "groupName": "",
+   "phaseName": "Regular Season",
+   "ranking": "13",
+   "sAwayDrawMatchCnt": "1",
+   "sAwayLossGoalMatchCnt": "0",
+   "sAwayWinGoalMatchCnt": "0",
+   "sDrawMatchCnt": "2",
+   "sLossGoalMatchCnt": "0",
+   "sWinGoalMatchCnt": "0",
+   "seasonName": "2026/2027"
+  },
+  "home": {
+   "groupName": "",
+   "phaseName": "Regular Season",
+   "ranking": "12",
+   "sDrawMatchCnt": "0",
+   "sHomeDrawMatchCnt": "0",
+   "sHomeLossGoalMatchCnt": "0",
+   "sHomeWinGoalMatchCnt": "1",
+   "sLossGoalMatchCnt": "1",
+   "sWinGoalMatchCnt": "1",
+   "seasonName": "2026/2027"
+  }
+ },
+ "injuries": {
+  "home": [],
+  "away": []
+ },
+ "form": {
+  "goalAvg": {
+   "awayGoalAvgCnt": "1.8",
+   "awayGoalAvgCntRatio": "46.2",
+   "homeGoalAvgCnt": "2.1",
+   "homeGoalAvgCntRatio": "53.8",
+   "totalLegCnt": 10
+  },
+  "last10": {
+   "awayDrawMatchCnt": 4,
+   "awayLossGoalMatchCnt": 3,
+   "awayScoreRatio": "43",
+   "awayWinGoalMatchCnt": 3,
+   "homeDrawMatchCnt": 0,
+   "homeLossGoalMatchCnt": 3,
+   "homeScoreRatio": "70",
+   "homeWinGoalMatchCnt": 7,
+   "totalLegCnt": 10
+  },
+  "last10HomeAway": {
+   "awayDrawMatchCnt": 1,
+   "awayLossGoalMatchCnt": 7,
+   "awayScoreRatio": "23",
+   "awayWinGoalMatchCnt": 2,
+   "homeDrawMatchCnt": 3,
+   "homeLossGoalMatchCnt": 1,
+   "homeScoreRatio": "70",
+   "homeWinGoalMatchCnt": 6,
+   "totalLegCnt": 10
+  }
+ },
+ "h2h": {
+  "statistics": {
+   "drawMatchCnt": 0,
+   "drawProbability": "0%",
+   "goalCnt": 0,
+   "lossGoalCnt": 0,
+   "lossGoalMatchCnt": 2,
+   "lossProbability": "100%",
+   "netGoal": 0,
+   "sportteryTeamId": 0,
+   "teamId": 0,
+   "teamShortName": "伊普斯",
+   "totalLegCnt": 2,
+   "winGoalMatchCnt": 0,
+   "winProbability": "0%"
+  },
+  "matches": [
+   {
+    "date": "2025-01-25",
+    "home": "利物浦",
+    "score": "4:1",
+    "ht": "3:0",
+    "away": "伊普斯",
+    "winner": "away"
+   },
+   {
+    "date": "2024-08-17",
+    "home": "伊普斯",
+    "score": "0:2",
+    "ht": "0:0",
+    "away": "利物浦",
+    "winner": "away"
+   }
+  ]
+ },
+ "scorers": {
+  "away": {
+   "playerList": [
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0.5",
+     "assistCnt": 1,
+     "assistProbability": "33%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "25%",
+     "injuryFlag": 0,
+     "personId": 436584,
+     "personName": "加克波",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 2,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "18"
+    },
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "25%",
+     "injuryFlag": 0,
+     "personId": 756259,
+     "personName": "Víctor Muñoz",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 1,
+     "suspensionFlag": 0,
+     "uniformNo": "23"
+    },
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "25%",
+     "injuryFlag": 0,
+     "personId": 422165,
+     "personName": "A. Isak",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 2,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "9"
+    }
+   ],
+   "sportteryTeamId": 11,
+   "teamId": 663,
+   "teamShortName": "利物浦",
+   "uniformTeamId": 361
+  },
+  "home": {
+   "playerList": [
+    {
+     "appearanceCnt": 1,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "1.0",
+     "goalCnt": 1,
+     "goalProbability": "25%",
+     "injuryFlag": 0,
+     "personId": 529641,
+     "personName": "J.克拉克",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 0,
+     "substituteMatchCnt": 1,
+     "suspensionFlag": 0,
+     "uniformNo": "47"
+    },
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "25%",
+     "injuryFlag": 0,
+     "personId": 215570,
+     "personName": "阿克彭",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 0,
+     "substituteMatchCnt": 2,
+     "suspensionFlag": 0,
+     "uniformNo": "29"
+    },
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "25%",
+     "injuryFlag": 0,
+     "personId": 675994,
+     "personName": "Emersonn",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 2,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "19"
+    }
+   ],
+   "sportteryTeamId": 48,
+   "teamId": 685,
+   "teamShortName": "伊普斯",
+   "uniformTeamId": 507
+  },
+  "seasonId": 15374,
+  "seasonName": "2026/2027",
+  "tournamentId": 127,
+  "tournamentShortName": "英超",
+  "uniformLeagueId": 72,
+  "uniformMatchId": 2505527
+ }
+}
