@@ -906,11 +906,16 @@ def _selftest_three_tier():
     assert base["play"] == "had-4串11"
     assert not ({"周一002", "周六007"} & {l["matchNumStr"] for l in base["legs"]})  # 铁律10：无锚腿不入保底
     up = t["tiers"]["upset"]
-    assert up["shape"] in ("pool-2x1x3", "pool-4x1")               # seq奇偶轮换
+    # 批次3（2026-09-04）：分歧旗全候选化后，zh={} 纯模板 q 与手造 fixture 赔率普遍差
+    # >5pp → 翻身腿被滤光 → closed 属合法常态（真实数据未必关档：当轮实测 pool-2x1x3·6元）
+    if up["shape"] != "closed":
+        assert up["shape"] in ("pool-2x1x3", "pool-4x1")           # seq奇偶轮换
+        assert 2 <= up["cost"] <= 8
+    else:
+        assert up["cost"] == 0
     codes = [l["matchNumStr"] for l in up["legs"]]
     assert len(codes) == len(set(codes))                            # 同场最多1腿(硬约束)
-    assert 2 <= up["cost"] <= 8
-    assert 24 <= t["totalCost"] <= 30                               # zh={} 无DC参数→彩票档关档cost=0
+    assert 22 <= t["totalCost"] <= 30                               # zh={} 无DC参数→彩票档关档cost=0(翻身可关)
     lot = t["tiers"]["lottery"]
     assert lot["shape"] == "closed" and lot["cost"] == 0            # 合格腿0<4 关档不硬凑
     txt = render_ticket(t)

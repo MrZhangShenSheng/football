@@ -15,6 +15,7 @@ DIVS = {"E0": "england-premier", "SP1": "spain-laliga", "D1": "germany-bundeslig
         "N2": "netherlands-eerste", "SP2": "spain-laliga2",
         "I2": "italy-serie-b"}   # 08-28 补次级（freq-band 平移覆盖）
 SEASONS = ["2223", "2324", "2425", "2526"]
+CURRENT_SEASON = "2627"   # 当季（run.py:59 同口径独立定义，跨层共享须两处同步 bump）
 
 def devid(oh, od_, oa):
     s = 1/oh + 1/od_ + 1/oa
