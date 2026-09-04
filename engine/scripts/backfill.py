@@ -450,9 +450,16 @@ def settle_payout(ticket: dict) -> dict:
     注结构：带 bets（[{legs:[腿索引], multiplier:N}]）按 bets 算——4串1复式/倍投/
     共享腿互补等非全组合形状必须显式声明，expand_combos 全组合口径会虚高；
     无 bets 走全组合兜底（4串11/3场混串等旧形状，倍数1）。
+    bets 为 int（登记侧注数口径，T017~T019 教训）：单注票(units=1)退化为全腿一注
+    按顶层 multiplier 结算；多注票缺组合信息必须报错——静默兜底会算错派彩。
     """
     legs, unit = ticket["legs"], ticket["unitStake"]
     bets = ticket.get("bets")
+    if isinstance(bets, int):
+        if ticket.get("units") != 1:
+            raise ValueError(f"{ticket.get('id')}: bets={bets} 为注数口径但 units={ticket.get('units')}，"
+                             "缺注组合（[{legs,multiplier}]）无法按形状结算")
+        bets = [{"legs": list(range(len(legs))), "multiplier": ticket.get("multiplier", 1)}]
     combos = ([(tuple(b["legs"]), b.get("multiplier", 1)) for b in bets]
               if bets else [(c, 1) for c in expand_combos(len(legs))])
     payout, win_units = 0.0, 0

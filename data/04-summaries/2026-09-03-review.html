@@ -1,0 +1,111 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>09-03 双轮复盘 · 周四轮结算 + T017/T018/T019</title>
+<style>
+:root{--bg:#f7f7f5;--card:#ffffff;--ink:#1c1e21;--sub:#5c6470;--line:#e4e6ea;--hit:#0a7d33;--miss:#c0392b;--pend:#8a6d1a;--acc:#1a5fa8;--warn-bg:#fdf3d7;--ok-bg:#e8f5ec;--bad-bg:#fbe9e7;--chip:#eef1f5}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#16181c;--card:#1e2126;--ink:#e8eaed;--sub:#9aa3b0;--line:#32363d;--hit:#4cc274;--miss:#e5766a;--pend:#d4b35a;--acc:#6ab0e8;--warn-bg:#3a331d;--ok-bg:#1d3527;--bad-bg:#3d241f;--chip:#2a2e34}}
+:root[data-theme="dark"]{--bg:#16181c;--card:#1e2126;--ink:#e8eaed;--sub:#9aa3b0;--line:#32363d;--hit:#4cc274;--miss:#e5766a;--pend:#d4b35a;--acc:#6ab0e8;--warn-bg:#3a331d;--ok-bg:#1d3527;--bad-bg:#3d241f;--chip:#2a2e34}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.65 "Segoe UI","Microsoft YaHei",system-ui,sans-serif;padding:24px}
+.wrap{max-width:1080px;margin:0 auto}
+h1{font-size:20px;margin:0 0 4px}h2{font-size:16px;margin:28px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.meta{color:var(--sub);font-size:12.5px;margin-bottom:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:12px}
+.grid{display:grid;gap:12px}.g4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.kpi{font-size:24px;font-weight:600;margin:2px 0}
+.kpi-label{font-size:12px;color:var(--sub)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--sub);font-weight:600;font-size:12px;white-space:nowrap}
+.hit{color:var(--hit);font-weight:600}.miss{color:var(--miss);font-weight:600}.pend{color:var(--pend)}
+.chip{display:inline-block;background:var(--chip);border-radius:4px;padding:1px 7px;font-size:12px;margin:1px 3px 1px 0;white-space:nowrap}
+.badge-hit{background:var(--ok-bg);color:var(--hit)}.badge-miss{background:var(--bad-bg);color:var(--miss)}
+.badge-pend{background:var(--warn-bg);color:var(--pend)}
+.warn{background:var(--warn-bg);border-left:3px solid var(--pend);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13px}
+.note{color:var(--sub);font-size:12.5px}
+.hl{color:var(--acc);font-weight:600}
+code{background:var(--chip);border-radius:3px;padding:0 5px;font-size:12px;font-family:Consolas,monospace}
+svg.ic{width:1em;height:1em;vertical-align:-0.13em;margin-right:4px}
+ul{margin:6px 0;padding-left:20px}li{margin:3px 0}
+.src{font-size:12px;color:var(--sub)}
+</style></head><body><div class="wrap">
+
+<svg style="display:none"><symbol id="i-ball" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7l4 3-1.5 4.5h-5L8 10z" fill="currentColor"/></symbol><symbol id="i-ticket" viewBox="0 0 24 24"><path d="M3 8a2 2 0 012-2h14a2 2 0 012 2v2a2 2 0 000 4v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2a2 2 0 000-4z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15 7v10" stroke="currentColor" stroke-width="2" stroke-dasharray="2 3"/></symbol><symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3l10 18H2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 10v5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="18" r="1.2" fill="currentColor"/></symbol><symbol id="i-fix" viewBox="0 0 24 24"><path d="M14 6l4 4-8.5 8.5a2.8 2.8 0 11-4-4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M13 7l3-3 4 4-3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol><symbol id="i-learn" viewBox="0 0 24 24"><path d="M4 5h7v14H4zM13 5h7v14h-7z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 8h1M16 8h1M7 11h1M16 11h1" stroke="currentColor" stroke-width="2"/></symbol></svg>
+
+<h1><svg class="ic"><use href="#i-ball"/></svg>2026-09-03 双轮复盘 · 周四轮结算</h1>
+<div class="meta">回填日 2026-09-04 · v5.8 · 周四轮 6/7 回填（周四007 巴西场未完赛）· 周五轮 14 场未开赛顺延 · 实票结算 T015~T018 · T019 pending</div>
+
+<h2>一句话结论</h2>
+<div class="card">
+方向 <span class="hit">3/4</span>，但四张结算实票 <span class="miss">全灭 -52 元</span>；
+平局轨 v5.7 实票首腿命中（周四001 平 @3.1 → 2:2）却因 <b>无单关资格被迫混串</b>被 002 拖死——结构性缺口第二次实证，本次产生真实机会成本（单关口径应回 31 元）。
+<strong>选股层在赢，执行层在输。</strong>
+</div>
+
+<h2>① KPI 速览</h2>
+<div class="grid g4">
+  <div class="card"><div class="kpi-label">方向命中（推荐 4 场）</div><div class="kpi hit">3/4 · 75%</div><div class="note">001平✓ 002主✓ 003客✓ 006主✗</div></div>
+  <div class="card"><div class="kpi-label">本轮实票净利（4 票结算）</div><div class="kpi miss">-52 元</div><div class="note">T015 -16 · T016 -16 · T017 -10 · T018 -10</div></div>
+  <div class="card"><div class="kpi-label">账本累计（19 票）</div><div class="kpi hit">+85.26 元</div><div class="note">投入 282 · 回款 367.26</div></div>
+  <div class="card"><div class="kpi-label">boldplay 推演（周四轮）</div><div class="kpi hit">+5.0 元</div><div class="note">保底档 4 腿中 3 回 27.0（密度 1.125）· 翻身/彩票档 0</div></div>
+</div>
+
+<h2>② 逐场命中 · 周四轮</h2>
+<div class="card"><table>
+<tr><th>编号</th><th>对阵</th><th>推荐</th><th>赛果</th><th>方向</th><th>星级</th><th>备注</th></tr>
+<tr><td>周四001</td><td>迈季宽广 vs 拉斯永恒</td><td>HAD 平 @3.05（平局轨）</td><td><b>2-2</b>（半1-1）</td><td class="hit">✓ 命中</td><td>★★</td><td>入轨四条全过·EV标注不拦截；实际买价 3.10 升水</td></tr>
+<tr><td>周四002</td><td>新未来SC vs 赛哈海湾</td><td>HAD 主胜 @1.28</td><td><b>3-0</b>（半3-0）</td><td class="hit">✓ 命中</td><td>★★★</td><td>方向大胜；但 CRS 0:0 副选（q9.2%·EV+51%）远 miss</td></tr>
+<tr><td>周四003</td><td>米亚尔比 vs 佐加顿斯</td><td>HAD 客胜 @1.60</td><td><b>0-2</b></td><td class="hit">✓ 命中</td><td>★★★</td><td>瑞超无锚场，只做方向不进保底胆（铁律10 正确执行）</td></tr>
+<tr><td>周四004</td><td>迪里耶 vs 胡巴卡德</td><td>排除：D级+模型分歧47.6pp</td><td>0-2</td><td class="note">—</td><td>★</td><td>排除正确（无推荐无损失）</td></tr>
+<tr><td>周四005</td><td>图卢兹 vs 里尔</td><td>排除：开季R3·EV-1.0%</td><td>0-1</td><td class="note">—</td><td>★★</td><td>排除正确（若买主胜则 miss）</td></tr>
+<tr><td>周四006</td><td>皇家社会 vs 塞尔塔</td><td>HAD 主胜 @1.80</td><td><b>0-0</b>（半0-0）</td><td class="miss">✗ 未中</td><td>★★★</td><td>本轮唯一方向错题；西甲 R3 开季修正已应用仍 miss，待归因（F1 候选）</td></tr>
+<tr><td>周四007</td><td>格雷米奥 vs 巴西国际</td><td>未推</td><td class="pend">未完赛</td><td class="note">—</td><td>—</td><td>完赛后重跑 verify 补</td></tr>
+</table></div>
+
+<h2>③ 实票结算明细（T015~T019）</h2>
+<div class="card"><table>
+<tr><th>票号</th><th>形状</th><th>腿命中</th><th>派彩</th><th>净利</th><th>结算说明</th></tr>
+<tr><td>T015</td><td>HAD 3串4 ×2倍（16元）</td><td>1/3</td><td>0</td><td class="miss">-16</td><td>女王巡游主胜✓，但 3串4 最注单位=2串1，中1关不回款（形状口径正确）</td></tr>
+<tr><td>T016</td><td>CRS 3串4 ×2倍（16元）</td><td>0/3</td><td>0</td><td class="miss">-16</td><td>三腿比分全 miss（2:1≠2:0 / 1:1≠1:2 / 0:0≠1:0）</td></tr>
+<tr><td>T017</td><td>CRS 0:0 单关 ×5倍（10元）</td><td>0/1</td><td>0</td><td class="miss">-10</td><td>新未来 3:0 横扫，0:0 远 miss；freq-band 形状带选腿遇强主大胜的结构性盲区</td></tr>
+<tr><td>T018</td><td>混串2串1（001平×002 CRS）×5倍（10元）</td><td><b>1/2</b></td><td>0</td><td class="miss">-10</td><td>001 平 <b>hit @3.10</b>；002 CRS miss → 2串1 断腿=0。单腿理论回款 31 元被捆绑腿吞掉</td></tr>
+<tr><td>T019</td><td>HAD 8串1 ×5倍（10元）</td><td class="pend">pending</td><td class="pend">—</td><td class="pend">—</td><td>周五轮 8 腿（里昂/皇马/利物浦/斯图加特等）未开赛，完赛后重跑</td></tr>
+</table></div>
+
+<div class="warn">
+<svg class="ic"><use href="#i-warn"/></svg><b>平局轨单关资格缺口 · 第二次实证升级为实际损失</b><br>
+周四001 入轨四条全过（p平28.1%≥28% + 极差<12pp + 联赛R4起 + 杯赛不适用），但该场 <code>poolSingle.HAD=0</code> 无单关资格——平局轨"永久单关"无法执行，被迫与 002 组混串（方案 A② 修订版）。结果：平腿命中 @3.10，若可单关 10 元×3.10=<b>31 元回款</b>，混串被 002 拖死归零。<br>
+<b>行动项</b>：入轨门槛补第五条「<code>poolSingle.HAD=1</code> 单关资格前置核验」（memory 已挂账，本轮实证后建议立即写入 SKILL.md v5.7 平局轨节）。
+</div>
+
+<h2>④ 方案层 vs 实票层对照</h2>
+<div class="card"><table>
+<tr><th>口径</th><th>票面</th><th>成本</th><th>回款</th><th>净利</th><th>差异归因</th></tr>
+<tr><td>方案推演 A 组</td><td>A① 002 CRS 单关 + A② 001平×002 混串（各2元）</td><td>4</td><td>0</td><td class="miss">-4</td><td rowspan="2">5 倍化放大损失 5×；A 组本身 002 双注依赖是结构弱点（001 平的独立价值未拆分）</td></tr>
+<tr><td>实票 T017+T018</td><td>同上 ×5倍</td><td>20</td><td>0</td><td class="miss">-20</td></tr>
+<tr><td>方案推演 B（boldplay 保底）</td><td>HAD 4串11</td><td>22</td><td>27.0</td><td class="hit">+5.0</td><td>4 腿中 3：中3关=3×2串1+1×3串1=4 注回款，密度 1.125</td></tr>
+<tr><td>平衡档</td><td>006主×003客 2串1</td><td>0</td><td>0</td><td>0</td><td>临场终审撤注——006 后 miss，<b>撤注正确</b></td></tr>
+</table>
+<p class="note">平衡档撤注是本轮最佳决策之一：保留则 2串1 必挂。保底/翻身/彩票档方案层全部关档（合格腿不足），与实票零重叠。</p></div>
+
+<h2>⑤ 系统侧事件（本次回填修复与产出）</h2>
+<div class="card"><ul>
+<li><svg class="ic"><use href="#i-fix"/></svg><b>bets 注数口径事故修复</b>：T017~T019 登记时 <code>bets</code> 写成注数 int（<code>"bets": 1</code>），settle_payout 期望组合数组导致 TypeError、首次 verify 票务结算中断。已双重修复：①数据侧三票规范化为 <code>[{legs,multiplier}]</code>（票面事实不变）；②代码侧防御——单注票(units=1)自动退化全腿一注、多注票缺组合报明确 ValueError 防静默算错。pytest 228 passed。</li>
+<li><svg class="ic"><use href="#i-learn"/></svg><b>learn 闭环</b>：瑞超发布 <b>v9</b>（holdout 1.0339 替代 v8）、丹麦发布 <b>v3</b>（0.9621 替代 v2）；日职 0.9683/沙特 0.9260 holdout 劣化被门槛正确拒绝发布；巴甲/挪超/美职无新数据跳过。温度重拟 crs/ttg T=1.30 CI 下界>0 通过，hafu 维持 disabled（前瞻监控）。</li>
+<li><b>ablate</b>：开季修正✅建议标已验证（CI95 [-0.0798,-0.002] 全负），F9 消融候选挂账 nPrimary=38；联赛波动/战意等样本不足继续观察。</li>
+<li><b>calibrate</b>：210 场缺 p_pinnacle 降级退化口径——待 pinClose 补齐后自愈。</li>
+<li><span class="chip badge-pend">待办</span> pinClose 52 场待补：fd 当日行英国时间下午更新，<b>晚间重跑 verify 幂等救回</b>（本轮法甲005/西甲006 两场 fd 覆盖，补齐后精确 CLV 自动补算）。</li>
+<li><span class="chip badge-pend">存量</span> <code>test_freq_band.py</code> 2 个存量失败（λ 平移实现与测试期望不同步，改动范围外），建议单独排期修。</li>
+<li><span class="chip badge-pend">归因</span> 周四006 错题未入 attribution 账本（最新至 09-02），下轮扫描纳入。</li>
+</ul></div>
+
+<h2>⑥ 沉淀建议</h2>
+<div class="card"><ul>
+<li><b>平局轨第五条入轨门槛</b>（poolSingle.HAD=1 前置核验）：本轮已从"执行缺口"升级为"实际损失 31 元机会成本"，建议立即写入 SKILL.md——无单关资格的平局信号只降级为"混串腿"并显式提示捆绑风险，或直接跳过该场。</li>
+<li><b>freq-band CRS 遇强主横扫盲区</b>：002 主胜 p 高+CRS 0:0 带内 q 最高并存时（低进球强主剧本 vs 横扫剧本分歧），建议在 pools_card 加"方向×比分一致性旗"：方向腿三星以上且 CRS 选 0:0/1:0 小比分时标注剧本冲突，供大哥出票决策参考。</li>
+<li><b>5 倍化的数学事实</b>：T017/T018 方案 1 倍口径各 -2 元，5 倍后 -20 元——负期望抽水按倍数线性放大，平局轨首腿命中的 +31 元单关回款被倍数与捆绑双杀。倍数拍板权在大哥，系统义务是把"1倍推演结果"与"倍数放大风险"并排呈现。</li>
+</ul></div>
+
+<h2>数据来源清单</h2>
+<p class="src">data/02-results/2026-09-03.json（+r1/r2 周五轮未回填）· data/06-tickets/tickets.json（T015~T019 结算与 meta）· data/03-predictions/2026-09-03-boldplay.json（settle 字段）· data/04-summaries/attribution.json（截至 09-02）· data/04-summaries/ablate-report.json · engine/cache/temperature.json · fd 刷新 odds_fetch 两季 19 码（2026-09-04）· 体彩 zqsgkj 开奖口径对票。faithfulness：本报告全部数字取自上述落盘文件，无手工估算。</p>
+
+</div></body></html>
