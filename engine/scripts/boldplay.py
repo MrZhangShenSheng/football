@@ -1193,6 +1193,7 @@ def main() -> None:
         print(f"[boldplay] legacy seq={out['seq']} {out['shape']} | 翻身档 {u['cost']}元 ×{u['multiplier']}倍 "
               f"合赔{u['expOdds']} 中即≈{u['winIfHit']:.0f}元 | 总投入 {out['totalCost']}元")
     out["ranAt"] = str(date.today())
+    out["method"] = method      # 生成路径自描述（CI 校验/下游可读；三档制固定 freq 链，amix=legacy）
     # 数据新鲜度标记（P0-1：实时源 fetchedAt 口径；非当日抓取即警示）
     out["dataAsOf"] = (odds.get("fetchedAt") or "")[:10] or str(date.today())
     if out["dataAsOf"] != str(date.today()):
