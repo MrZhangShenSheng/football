@@ -79,16 +79,17 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          latest_odds=$(find engine/cache/score_odds -maxdepth 1 -name '*.json' -type f -printf '%T@ %f\n' | sort -nr | head -1)
-          latest_date=$(echo "$latest_odds" | sed 's/^[0-9.]* //' | sed 's/\.json$//')
-          echo "latest_score_odds=$latest_date" >> "$GITHUB_OUTPUT"
+          # 2026-09-04 起检查对象=sporttery_matches.json（boldplay 主数据源，批次1 改实时清单；
+          # score_odds 日存档仅为历史留档不再作数据源）
+          latest_date=$(python3 -c "import json;print((json.load(open('engine/cache/sporttery_matches.json'))['fetchedAt'] or '')[:10])")
+          echo "latest_live_fetch=$latest_date" >> "$GITHUB_OUTPUT"
           # 7 天阈值：周赛制允许跨周缓存，超过 7 天视为陈旧
           threshold=$(date -u -d '7 days ago' +%F 2>/dev/null || date -u -v-7d +%F)
-          if [[ "$latest_date" < "$threshold" ]]; then
-            echo "⚠ Stale cache: newest score_odds=$latest_date (threshold=$threshold)"
+          if [[ -z "$latest_date" || "$latest_date" < "$threshold" ]]; then
+            echo "⚠ Stale cache: sporttery_matches fetchedAt=$latest_date (threshold=$threshold)"
             echo "stale=true" >> "$GITHUB_OUTPUT"
           else
-            echo "✅ Fresh cache: score_odds=$latest_date"
+            echo "✅ Fresh cache: sporttery_matches fetchedAt=$latest_date"
             echo "stale=false" >> "$GITHUB_OUTPUT"
           fi
 
@@ -97,8 +98,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test -d engine/cache/score_odds
-          test "$(find engine/cache/score_odds -maxdepth 1 -name '*.json' -type f | wc -l)" -gt 0
+          test -f engine/cache/sporttery_matches.json   # boldplay 主数据源（实时在售清单）
           if [ "$PREDICTION_METHOD" = "amix" ]; then
             timeout 900 python -u engine/scripts/boldplay.py --method=amix | tee .github/run-logs/boldplay.log
           else
@@ -123,7 +123,7 @@ jobs:
           assert d.get("method") in {"freq", "amix"}, "unexpected method"
           # 缓存新鲜度：陈旧时注入标记（不阻断，但下游可读）
           if stale:
-              d.setdefault("warnings", []).append(f"stale_cache: score_odds older than 7 days")
+              d.setdefault("warnings", []).append(f"stale_live: sporttery_matches fetchedAt older than 7 days")
               p.write_text(json.dumps(d, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
               print(f"⚠ validated {p.name} with STALE cache warning")
           else:

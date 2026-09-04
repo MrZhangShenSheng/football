@@ -5,7 +5,8 @@ import glob, json, math, re
 from collections import Counter, defaultdict
 from datetime import date
 from pathlib import Path
-from band_calibration import DIVS, SEASONS, fetch_rows
+from band_calibration import (CURRENT_SEASON, DIVS, SEASONS, fetch_rows,
+                              warn_source_gaps)
 from common import ROOT
 from score_ev import map_league
 
@@ -20,7 +21,11 @@ T_AXIS_GUARD = 0.4          # T轴护栏：平移目标 T=λh+λa 偏离模板�
 LEAGUE_STORE = ("japan", "korea", "sweden", "saudi")   # 本地赛果库联赛（与 score_ev 口径一致）
 BAND_DEFAULT = (10.0, 28.0)   # CRS 形状带（桂林-梅州合并带，与 boldplay 现状一致；boldplay.band_ok 是 had 方向带不可复用）
 DIVERGENCE_FLAG_PP = 5        # |q − 市场隐含| 超此值(百分点)触发分歧旗（spec D12）
-MARKET_MARGIN_DIV = 1.13      # 体彩三向去水除数近似
+MARKET_MARGIN_DIV = 1.13      # 体彩三向去水除数近似（HAD 口径）
+POOL_MARGIN_DIV = {"crs": 1.512, "ttg": 1.256, "hafu": 1.256}   # 分池抽水除数（skill v4.9：
+# HAD 12.9% / TTG·HAFU 20.4% / CRS 33.9% → 1/(1−vig)）；高赔池用 HAD 除数会低估隐含→漏旗
+ALPHA_SHRINK_K = 20           # α β收缩先验权重（n=130 观测时先验占~13%）
+ALPHA_ALGO = "beta-shrink-v1"  # α 缓存算法版本（改估计器必须 bump 促重算）
 LOW_CONF_N = 100              # 模板样本低置信线（spec D9：不砍池只标旗）
 
 
@@ -47,10 +52,21 @@ def global_pool(freq_table: dict) -> Counter:
     return g
 
 
+FORM_SEASONS = SEASONS + [CURRENT_SEASON]   # 近况拉取含当季（批次3：SEASONS 止于 2526 时
+                                            # "近10场"=上季收官段，λ 方向性崩坏——帕尔马上季
+                                            # 末泥潭 0.8 球被当近况 → p_ft 客胜 64% vs 市场主胜 41%）
+CUR_YEAR_PREFIX = "20" + CURRENT_SEASON[:2]  # "2627" → "2026"（本地库行 date 年份判当季）
+PREV_SEASON = SEASONS[-1]                    # 上季（开季段当季不足时的全季先验源）
+PREV_MIN_MATCHES = 15                        # 上季全季先验最少场次（半季以上才有代表性）
+
+
 def build_team_form(fetch_rows_fn=fetch_rows,
                     league_glob=None,
                     aliases: dict | None = None) -> dict:
-    """fd CSV + 本地联赛库 → {norm队名: [(进球, 失球), ...]}（源内按时间序，取尾即最近）。
+    """fd CSV + 本地联赛库 → {norm队名: [(进球, 失球, 赛季, 联赛ID), ...]}（源内按时间序）。
+    行带季+联赛标签（批次3季标签·批次5联赛标签）：fd 行=fetch 的 season/DIVS 值；本地库行
+    =date 年份判当季 + 库名。联赛标签供 team_strength 上季先验滤跨联赛（升班马上季低级
+    联赛数据不冒充顶级联赛近况——埃沃斯堡上季德乙 2.1 球实证）。
     fd 队名(HomeTeam/AwayTeam) 与本地 tid 统一 norm 化做键；fd 行经 aliases.fd 对照双写 tid 键
     （tid≠fd 名的队：bayern vs Bayern Munich——体彩中文→zh_map→tid 才能命中 fd 数据）。
     测试以 fetch_rows_fn/league_glob/aliases 注入隔离网络。"""
@@ -70,13 +86,13 @@ def build_team_form(fetch_rows_fn=fetch_rows,
             form[tid_key].append(row)     # fd 名 → tid 双键（同一行两键各存一份）
 
     form = defaultdict(list)
-    for season in SEASONS:
-        for div in DIVS:
+    for season in FORM_SEASONS:
+        for div, div_id in DIVS.items():
             for r in fetch_rows_fn(season, div):
                 try:
                     hg, ag = int(r["FTHG"]), int(r["FTAG"])
-                    add(r["HomeTeam"], (hg, ag))
-                    add(r["AwayTeam"], (ag, hg))
+                    add(r["HomeTeam"], (hg, ag, season, div_id))
+                    add(r["AwayTeam"], (ag, hg, season, div_id))
                 except (KeyError, ValueError, TypeError):
                     continue
     # ROOT 绝对定位（2026-09-03 修复，同 score_ev.build_freq_table：相对 glob 在
@@ -89,21 +105,35 @@ def build_team_form(fetch_rows_fn=fetch_rows,
         rows = data.get("matches", []) if isinstance(data, dict) else (data or [])
         for m in rows:
             try:
-                form[_norm(m["home"])].append((int(m["hg"]), int(m["ag"])))
-                form[_norm(m["away"])].append((int(m["ag"]), int(m["hg"])))
+                tag = CURRENT_SEASON if str(m.get("date", "")).startswith(CUR_YEAR_PREFIX) else "old"
+                form[_norm(m["home"])].append((int(m["hg"]), int(m["ag"]), tag, key))
+                form[_norm(m["away"])].append((int(m["ag"]), int(m["hg"]), tag, key))
             except (KeyError, ValueError, TypeError):
                 continue
+    warn_source_gaps("freq-band 球队近况")   # 2026-09-04 审计 P0：fd 网络断粮护栏
     return dict(form)
 
 
-def team_strength(form: dict, norm_name: str):
-    """norm队名 → 近 RECENT_WINDOW 场 (场均进, 场均失)；不足 FORM_MIN_MATCHES → None。"""
+def team_strength(form: dict, norm_name: str, cur_league: str | None = None):
+    """norm队名 → (场均进, 场均失)，三层降级（2026-09-04 拍板·比分推荐判断力恢复）：
+    ①当季 ≥FORM_MIN_MATCHES 场 → 当季近 RECENT_WINDOW 场（真近况，R5+ 生效）
+    ②当季不足且传 cur_league → **上季全季均值**（同联赛行 ≥PREV_MIN_MATCHES；跨联赛行
+    滤除——升班马上季低级联赛数据不冒充，如埃沃斯堡上季德乙 2.1 球；上季全季比上季
+    收官10场稳，收官段战意噪声大）
+    ③再不足 → None（纯模板零破坏降级，pools_card 标 pure_template）
+    开季段(②)让 λ 恢复球队差异化——此前纯模板下 CRS 推荐=联赛频率复读（平局换皮）。开发者 sszhang"""
     rows = form.get(norm_name) or []
-    if len(rows) < FORM_MIN_MATCHES:
-        return None
-    recent = rows[-RECENT_WINDOW:]
-    return (sum(r[0] for r in recent) / len(recent),
-            sum(r[1] for r in recent) / len(recent))
+    cur = [r for r in rows if r[2] == CURRENT_SEASON]
+    if len(cur) >= FORM_MIN_MATCHES:
+        recent = cur[-RECENT_WINDOW:]
+        return (sum(r[0] for r in recent) / len(recent),
+                sum(r[1] for r in recent) / len(recent))
+    if cur_league:
+        prev = [r for r in rows if r[2] == PREV_SEASON and r[3] == cur_league]
+        if len(prev) >= PREV_MIN_MATCHES:
+            return (sum(r[0] for r in prev) / len(prev),
+                    sum(r[1] for r in prev) / len(prev))
+    return None
 
 
 def lambdas(base: tuple, home_str, away_str) -> tuple:
@@ -188,8 +218,8 @@ def freq_legs(odds_day: dict, freq_table: dict, form: dict, zh: dict, band: tupl
             continue                                   # 全局池也空 → 无数据不选
         base = league_base_rates(blob)
         lam = lambdas(base,
-                      team_strength(form, _norm(zh.get(m.get("home", ""), ""))),
-                      team_strength(form, _norm(zh.get(m.get("away", ""), ""))))
+                      team_strength(form, _norm(zh.get(m.get("home", ""), "")), lg),
+                      team_strength(form, _norm(zh.get(m.get("away", ""), "")), lg))
         q_pure = shifted_q(blob, None)
         q_rank = shifted_q(blob, lam)
         best = None                                    # (q, leg)
@@ -300,7 +330,7 @@ def hafu_alpha(results_dir=None) -> dict:
     if use_cache and ALPHA_CACHE.exists():
         try:
             cached = json.loads(ALPHA_CACHE.read_text(encoding="utf-8"))
-            if cached.get("n") == n:
+            if cached.get("n") == n and cached.get("algo") == ALPHA_ALGO:
                 return cached
         except (OSError, json.JSONDecodeError):
             pass
@@ -314,9 +344,16 @@ def hafu_alpha(results_dir=None) -> dict:
     for k in HAFU_KEYS:
         x, y = tri.index(k[0]), tri.index(k[1])
         base = (ph[x] / n) * (pf[y] / n)
-        alpha[k] = round((obs[k] / n) / base, 4) if base > 0 and obs[k] >= 5 else 1.0
-    out = {"alpha": alpha, "n": n, "ranAt": str(date.today()),
-           "note": "全局口径·混合联赛·含选场偏差; obs<5键不纠(α=1)"}
+        if base <= 0:
+            alpha[k] = 1.0
+            continue
+        # β收缩（2026-09-04 批次3）：obs≥5 硬门槛曾把稀疏键退回 α=1.0——独立乘积直接放行
+        # （ha/ah obs=2 → 帕尔马 ha 16.4% vs 市场 2.8%）；收缩 (obs+K·p_indep)/((n+K)·p_indep)
+        # 使稀疏键向真实观测率收敛、高估键向 1 回收。
+        rate = (obs[k] + ALPHA_SHRINK_K * base) / (n + ALPHA_SHRINK_K)
+        alpha[k] = round(rate / base, 4)
+    out = {"algo": ALPHA_ALGO, "alpha": alpha, "n": n, "ranAt": str(date.today()),
+           "note": "全局口径·混合联赛·含选场偏差; β收缩K=" + str(ALPHA_SHRINK_K)}
     if use_cache:
         ALPHA_CACHE.parent.mkdir(parents=True, exist_ok=True)
         ALPHA_CACHE.write_text(json.dumps(out, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
@@ -353,17 +390,22 @@ def _selftest_hafu():
     print(f"[selftest] hafu_alpha + hafu_agg OK (n={res['n']} 去重口径)")
 
 
-def pools_card(m: dict, q_map: dict, form: dict, zh: dict, freq_table: dict) -> dict:
+def pools_card(m: dict, q_map: dict, form: dict, zh: dict, freq_table: dict,
+               lam=None) -> dict:
     """单场三池玩法卡（spec §4.3 v1.2）：CRS带内top1 + TTG top2 + HAFU top2，
     EV=q×体彩赔率−1；双行推荐（保底=相近带q最高/翻身=相近带赔率最高）；
     CRS分歧旗（EV全场最高且|q−市场隐含|>5pp → 标divergent+翻身带剔除·I1裁定）；
-    低置信旗（模板缺失/样本<LOW_CONF_N，不砍池推荐走结构兜底=抽水低池优先）。开发者 sszhang"""
+    低置信旗（模板缺失/样本<LOW_CONF_N，不砍池推荐走结构兜底=抽水低池优先）；
+    纯模板旗（lam=None → pure_template·2026-09-04 拍板B：开季段λ无球队差异时
+    CRS/TTG 推荐是联赛频率复读=平局换皮，标注防误读为独立比分判断）。开发者 sszhang"""
     lg = map_league(m.get("league", ""))
     blob = freq_table.get(lg) if lg else None
     n_tpl = (blob or {}).get("__n", 0) if blob else 0
     flags = []
     if n_tpl < LOW_CONF_N:                         # 映射缺失(None)/空模板 → n_tpl=0 同样低置信
         flags.append("low_conf")
+    if lam is None:
+        flags.append("pure_template")
     # 联赛模板优先, 缺则全局池(freq_legs 同款降级); q_map 已含平移
     q_eff = q_map if q_map else shifted_q(global_pool(freq_table) if freq_table else Counter(), None)
     p_half, alpha_doc = half_three_way(), hafu_alpha()
@@ -397,14 +439,18 @@ def pools_card(m: dict, q_map: dict, form: dict, zh: dict, freq_table: dict) -> 
     if not cands:
         return {"code": code, "match": match,
                 "candidates": [], "flags": flags + ["no_candidates"]}
-    # CRS 分歧旗（spec D12·终审I1裁定落地）: CRS 候选 EV 为全场最高 且 |q−市场隐含|>阈值
-    # → 标 divergent=True（留候选展示并降级末位）；翻身推荐带剔除（模型傲慢不进决策链）
-    if cands[0]["pool"] == "crs" and cands[0]["ev"] >= max(c["ev"] for c in cands):
-        implied = 1.0 / (cands[0]["odds"] * MARKET_MARGIN_DIV)
-        if (cands[0]["q"] - implied) * 100 > DIVERGENCE_FLAG_PP:
-            flags.append("divergence")
-            cands[0]["divergent"] = True
-            cands.append(cands.pop(0))            # 降级到末位=第二推荐（展示口径）
+    # 分歧旗（spec D12·终审I1裁定；2026-09-04 批次3扩展全池+分池除数+全候选判定）：
+    # 逐候选 |q−市场隐含|>阈值 → divergent=True（留候选展示并沉底）；翻身推荐带剔除全部
+    # divergent（模型傲慢不进决策链）。此前仅 CRS 且只判 EV 最高一条——帕尔马 HAFU ha
+    # q16.4% vs 隐含 2.8%（Δ13.6pp）EV+475% 直进翻身腿实证漏旗；同场多键可同时分歧。
+    for c in cands:
+        implied = 1.0 / (c["odds"] * POOL_MARGIN_DIV.get(c["pool"], MARKET_MARGIN_DIV))
+        if (c["q"] - implied) * 100 > DIVERGENCE_FLAG_PP:
+            c["divergent"] = True
+            if "divergence" not in flags:
+                flags.append("divergence")
+    if any(c.get("divergent") for c in cands):
+        cands.sort(key=lambda c: c.get("divergent", False))       # 分歧沉底（稳定排序·展示口径）
     # 双行推荐: EV 相近带(差<0.1·演示档)内, 保底取q最高/翻身取赔率最高；
     # 翻身带只取非分歧候选（band=max EV among 非分歧），全分歧→最高q非CRS候选或None
     # （本场不出翻身腿）；保底带不受分歧旗影响（保底视角命中优先）
@@ -416,7 +462,9 @@ def pools_card(m: dict, q_map: dict, form: dict, zh: dict, freq_table: dict) -> 
         rec_upset = max((c for c in nd if c["ev"] >= max(c["ev"] for c in nd) - 0.1),
                         key=lambda c: c["odds"])
     else:
-        non_crs = [c for c in cands if c["pool"] != "crs"]
+        # 全分歧退路：非CRS非分歧候选兜底；divergent 一律不进翻身（I1 裁定无例外——
+        # 批次3修复：原 else 未滤 divergent，帕尔马类"唯一候选=分歧TTG/HAFU"仍漏进翻身带）
+        non_crs = [c for c in cands if c["pool"] != "crs" and not c.get("divergent")]
         rec_upset = max(non_crs, key=lambda c: c["q"]) if non_crs else None
     if "low_conf" in flags:                        # 结构兜底: 抽水低池优先(spec D9)
         low_vig = [c for c in band if c["pool"] in ("ttg", "hafu")]

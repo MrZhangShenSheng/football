@@ -334,6 +334,7 @@
    "inPlan": null,
    "note": "沙特升班马队DC无参数(队名未入拟合库);主11近10:2胜2平6负vs客4;市场客40%;无锚联赛铁律10禁保底胆;不推",
    "result": "2-2",
+   "half": "1:1",
    "directionHit": null,
    "scoreHit": null,
    "pinSource": "none",
@@ -364,6 +365,7 @@
    "inPlan": null,
    "note": "市场主57%;NEOM主5胜3平2负vs赛哈海湾客1胜5平4负平局多;沙特无锚禁保底胆;仅翻身池候选",
    "result": "3-0",
+   "half": "3:0",
    "directionHit": true,
    "scoreHit": true,
    "pinSource": "none",
@@ -406,6 +408,7 @@
    "inPlan": null,
    "note": "客58.9%三星;佐加顿斯排3近10:6胜2平2负客6胜2平2负vs米亚尔比排12近2胜1平7负崩;⚠瑞超无fd收盘锚铁律10禁保底胆——仅翻身池/加腿候选(T011先例);EV+0.1%持平",
    "result": "0-2",
+   "half": "0:0",
    "directionHit": true,
    "scoreHit": true,
    "pinSource": "none",
@@ -436,6 +439,7 @@
    "inPlan": null,
    "note": "迪里耶(升班马)insight近10全0+DC无参数;胡巴卡德=qadsiah但不在2627拟合库;D级排除",
    "result": "0-2",
+   "half": "0:0",
    "directionHit": null,
    "scoreHit": null,
    "pinSource": "none",
@@ -482,7 +486,23 @@
    "ev": 0.011,
    "inPlan": null,
    "note": "里尔排3客7胜1平2负强但R3开季修正后50.3%二星;DC客48%vs市场44.1%分歧4pp内;EV+1.1%边缘;不作胆可作4串加腿",
-   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
+   "result": "0-1",
+   "half": "0:0",
+   "directionHit": true,
+   "scoreHit": true,
+   "pinSource": "fd",
+   "preSnapshots": {
+    "matchId": 2041237,
+    "lastOddsAt": "2026-09-03T22:42:23+08:00",
+    "lastIntelAt": "2026-09-03T16:17:53+08:00"
+   },
+   "pinClose": [
+    0.2439,
+    0.2808,
+    0.4753
+   ],
+   "clv": -0.0446,
+   "clv_note": "pinClose精确口径(v2四键)"
   },
   {
    "idx": 12,
@@ -517,19 +537,22 @@
    "inPlan": "A稳版",
    "note": "主56.9%三星;皇社排13vs塞尔塔17;皇社近10:3胜1平6负差但主场4胜3平3负;DC50.3%vs市场48.2%分歧2pp内干净;CRS 1-0@8.0带内q12.5%入广西票",
    "result": "0-0",
+   "half": "0:0",
    "directionHit": false,
    "scoreHit": false,
    "pinSource": "fd",
+   "preSnapshots": {
+    "matchId": 2041238,
+    "lastOddsAt": "2026-09-03T22:42:23+08:00",
+    "lastIntelAt": "2026-09-03T16:19:02+08:00"
+   },
    "pinClose": [
     0.5308,
     0.258,
     0.2111
    ],
-   "preSnapshots": {
-    "matchId": 2041238,
-    "lastOddsAt": "2026-09-03T22:42:23+08:00",
-    "lastIntelAt": "2026-09-03T16:19:02+08:00"
-   }
+   "clv": -0.0233,
+   "clv_note": "pinClose精确口径(v2四键)"
   },
   {
    "idx": 13,
@@ -551,9 +574,16 @@
    "ev": -0.142,
    "inPlan": null,
    "note": "市场2.45/2.70/2.85三项极差<10pp胶着;巴西杯德比无DC;格雷米奥主场5胜2平3负vs巴西国际客2胜3平5负;避开",
-   "result": "不可得",
+   "result": "3-1",
+   "half": "2:0",
    "directionHit": null,
-   "backfillNote": "巴西杯 体彩/ESPN 均无赛果"
+   "scoreHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041239,
+    "lastOddsAt": "2026-09-03T22:42:23+08:00",
+    "lastIntelAt": "2026-09-03T16:19:56+08:00"
+   }
   }
  ],
  "boldplayOverride": {

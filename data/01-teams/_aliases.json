@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "updatedAt": "2026-09-02",
+  "updatedAt": "2026-09-04",
   "note": "规范ID=kebab-case英文，多数据源经此表解析。null=待对应fetch脚本首次运行时补全（勿手填猜测）。league=国内联赛目录名（杯赛参赛队挂国内联赛）。",
   "sources": {
    "zh": "体彩官方API中文名",
@@ -1009,7 +1009,10 @@
    "zh": "京都不死鸟",
    "clubelo": null,
    "understat": null,
-   "espn": "Kyoto Sanga"
+   "espn": "Kyoto Sanga",
+   "variants": [
+    "京都"
+   ]
   },
   "mito-hollyhock": {
    "zh": "水户蜀葵",
@@ -1253,6 +1256,20 @@
   },
   "grenoble": {
    "zh": "格勒诺布"
+  },
+  "brest": {
+   "zh": "布雷斯特",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Brest",
+   "fd": null
+  },
+  "troyes": {
+   "zh": "特鲁瓦",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Troyes",
+   "fd": null
   }
  },
  "netherlands": {
@@ -1431,6 +1448,13 @@
     "大宫阿尔迪加"
    ],
    "source": "sporttery-2026-08-28"
+  },
+  "montedio-yamagata": {
+   "zh": "山形山神",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Montedio Yamagata",
+   "fd": null
   }
  },
  "korea-k-league": {
@@ -1545,6 +1569,13 @@
   },
   "pec-zwolle": {
    "zh": "兹沃勒"
+  },
+  "heerenveen": {
+   "zh": "海伦芬",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Heerenveen",
+   "fd": null
   }
  },
  "germany-bundesliga": {
@@ -1586,7 +1617,8 @@
     "门兴格拉德巴赫"
    ],
    "source": "sporttery-2026-08-28",
-   "espn": "Borussia Mönchengladbach"
+   "espn": "Borussia Mönchengladbach",
+   "fd": "M'gladbach"
   },
   "frankfurt": {
    "zh": "法兰克福",
@@ -1594,7 +1626,8 @@
     "法兰克福"
    ],
    "source": "sporttery-2026-08-28",
-   "espn": "Eintracht Frankfurt"
+   "espn": "Eintracht Frankfurt",
+   "fd": "Ein Frankfurt"
   },
   "cologne": {
    "zh": "科隆",

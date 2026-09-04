@@ -74,6 +74,7 @@ def main() -> None:
         sh("odds_fetch.py", "--season", "2526", *codes)
         sh("odds_fetch.py", "--season", CURRENT_SEASON, *codes)
         sh("sporttery_fetch.py")
+        sh("sporttery_fetch.py", "dump-odds")   # P0-1: 日存档自动留档（boldplay 已改读实时清单，存档仅历史档）
         sh("build_index.py")
         sh("league_profile.py", "--all")
     elif cmd == "fit":

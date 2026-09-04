@@ -81,7 +81,8 @@ def main() -> None:
     for method in ("freq", "amix"):
         out["totals"][method] = {"legs": 0, "hits": 0, "odds_sum": 0.0, "tickets": 0,
                                  "tickets_hit": 0, "days_covered": 0}
-    for p in sorted(glob.glob("engine/cache/score_odds/*.json")):
+    # ROOT 绝对定位（2026-09-04 审计 P1：相对 glob 在 cwd=engine/scripts 下静默空扫）
+    for p in sorted(glob.glob(str(ROOT / "engine/cache/score_odds/*.json"))):
         day = Path(p).stem
         odds = json.loads(Path(p).read_text(encoding="utf-8"))
         day_odds = {"matches": [m for d in odds.get("matchDays", []) for m in d.get("matches", [])]}
@@ -110,7 +111,7 @@ def main() -> None:
         if t["legs"]:
             t["hit_rate"] = round(t["hits"] / t["legs"], 4)
             t["avg_odds"] = round(t["odds_sum"] / t["legs"], 2)
-    Path("data/04-summaries/freq_backtest.json").write_text(
+    (ROOT / "data/04-summaries/freq_backtest.json").write_text(
         json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
     for method, t in out["totals"].items():
         print(f"[freq-backtest] {method}: 腿{t['legs']} 中{t['hits']}"

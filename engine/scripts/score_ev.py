@@ -2,7 +2,7 @@
 import glob, json
 from collections import Counter
 from datetime import date
-from band_calibration import DIVS, SEASONS, fetch_rows, devid, band_of
+from band_calibration import DIVS, SEASONS, fetch_rows, devid, band_of, warn_source_gaps
 from common import ROOT
 
 PRIOR_STRENGTH = 50          # 收缩先验强度(场)
@@ -48,6 +48,7 @@ def build_freq_table() -> dict:
             try:
                 blob[norm_score(m["hg"], m["ag"])] += 1; blob["__n"] += 1
             except (KeyError, ValueError, TypeError): continue
+    warn_source_gaps("score-ev 频率模板")   # 2026-09-04 审计 P0：fd 网络断粮护栏
     return table
 
 def freq_for(table: dict, league: str, score: str) -> tuple:
@@ -85,7 +86,8 @@ def ev_scan(odds_day: dict, freq_table: dict) -> list:
 
 def main() -> None:
     table = build_freq_table()
-    latest = sorted(glob.glob("engine/cache/score_odds/*.json"))[-1]
+    # ROOT 绝对定位（2026-09-04 审计 P1：相对 glob 在 cwd=engine/scripts 下静默空→IndexError）
+    latest = sorted(glob.glob(str(ROOT / "engine/cache/score_odds/*.json")))[-1]
     odds = json.load(open(latest, encoding="utf-8"))
     rows = []
     for day in odds.get("matchDays", []):
@@ -98,7 +100,7 @@ def main() -> None:
            "n_positive_league_backed": len(backed),
            "n_positive_prior_only": len(positive) - len(backed),
            "positive_top": positive[:40], "all_top30": rows[:30]}
-    with open("data/04-summaries/score_ev.json", "w", encoding="utf-8") as f:
+    with open(ROOT / "data/04-summaries/score_ev.json", "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=1)
     print(f"[score-ev] 扫描 {len(rows)} 项, 正EV {len(positive)} 项 → data/04-summaries/score_ev.json")
 

@@ -13,6 +13,17 @@ from dc_predict import (score_matrix, ttg_dist, hafu_approx, devig as devig_n,
                         reweight_matrix, reweight_hafu, temper, load_half_params,
                         load_temperature, fuse)
 from score_ev import build_freq_table, ev_scan, map_league
+from odds_fetch import LEAGUE_CODES   # fd 收盘锚联赛表（铁律10 白名单单一来源，禁魔法值散布）
+
+# fd 收盘锚联赛（Pinnacle 收盘价可得的联赛全集=odds_fetch 刷新域）：LEAGUE_CODES 13 联赛
+# + 苏超/欧冠/欧罗巴三杯赛代码（fd CSV 以原代码命名，odds_SC0/EC0/EL0_*）。铁律10：保底
+# 胆必须是 fd 锚场次——map_league 无映射的联赛（日职/韩职/挪超/沙职/美职等）一律不入保底池。
+# ⚠ 桥接条目（#17 挂账）：map_league 与 LEAGUE_CODES 双源 ID 不一致——德乙
+# germany-2-bundesliga vs germany-bundesliga2、葡超 portugal-primeira vs portugal-liga，
+# 白名单须含 map_league 空间的变体 ID，否则德乙/葡超场被误滤（selftest 实证）；统一两套
+# ID 体系是独立工程，修前以并集兜底。
+FD_ANCHOR_LEAGUES = frozenset(LEAGUE_CODES.values()) | {
+    "SC0", "EC0", "EL0", "germany-2-bundesliga", "portugal-primeira"}
 from freq_band import (build_team_form, freq_legs, pools_card, shifted_q, league_base_rates,
                        lambdas, team_strength, _norm)
 
@@ -138,9 +149,53 @@ def _load_fusion() -> tuple[float, float]:
         return 0.4, 1.0
 
 
+def _live_day(cache_dir: Path = CACHE_DIR) -> dict:
+    """主数据流（P0-1，2026-09-04 事故根治，docs/2026-09-04-prediction-audit-fix-design.html）：
+    直接读 sporttery_matches.json 实时在售清单，键适配存档口径——code→matchNumStr、
+    crs s01s02→"1:2"、赔率 str→float（_pick_had_legs/_is_ab 的 min() 数值比较）。
+    与 _hafu_odds/_hhad_odds 同源同时刻；score_odds 日存档不再作数据源（陈旧存档曾致
+    整卡错轮：09-04 用 09-03 存档生成周五场错误卡），仅由 run.py update 末尾 dump-odds 留档。
+    开发者 sszhang"""
+    d = json.loads((cache_dir / "sporttery_matches.json").read_text(encoding="utf-8"))
+    matches = []
+    for m in d.get("matches") or []:
+        crs = {}
+        for k, v in (m.get("crs") or {}).items():
+            try:
+                i, j = k[1:].split("s")
+                crs[f"{int(i)}:{int(j)}"] = float(v)
+            except ValueError:
+                continue    # s1sh/s1sd/s1sa（胜/平/负其他）无冒号键，下游本就过滤
+        matches.append({
+            "matchNumStr": m.get("code"), "league": m.get("league"),
+            "home": m.get("home"), "away": m.get("away"),
+            "matchTime": m.get("matchTime"), "matchDate": m.get("matchDate"),
+            "had": {k: float(v) for k, v in (m.get("had") or {}).items() if v},
+            "crs": crs,
+            "ttg": {k: float(v) for k, v in (m.get("ttg") or {}).items() if v},
+            "hafu": {k: float(v) for k, v in (m.get("hafu") or {}).items() if v},
+            "poolSingle": m.get("poolSingle") or {},
+        })
+    return {"matches": matches, "fetchedAt": d.get("fetchedAt") or ""}
+
+
+_ALIAS_SRC_CACHE: dict | None = None   # tid → {fd, espn} 惰性缓存（三级匹配第2/3级数据源）
+
+
+def _alias_srcs() -> dict:
+    """load_aliases 惰性一次：tid → {fd, espn} 源名（P1-4 三级匹配数据底座）。开发者 sszhang"""
+    global _ALIAS_SRC_CACHE
+    if _ALIAS_SRC_CACHE is None:
+        _ALIAS_SRC_CACHE = {tid: {"fd": e.get("fd"), "espn": e.get("espn")}
+                            for tid, e in load_aliases().items()}
+    return _ALIAS_SRC_CACHE
+
+
 def _dc_params(m: dict, zh: dict, cache_dir: Path = CACHE_DIR):
-    """体彩场次 → (lh, la, rho) | None。中文→tid→DC缓存宽松匹配（去连字符/空格小写比较，
-    兼容本地库规范ID键'al-ahli'与fd原始名键'Aston Villa'两种缓存）。"""
+    """体彩场次 → (lh, la, rho) | None。中文→tid→DC缓存三级匹配（P1-4，2026-09-04 拍板）：
+    ① tid 规范ID ② _aliases 的 fd 原始名（"Nott'm Forest"/"Ath Madrid" 简写——tid 宽松匹配
+    曾漏 12 场）③ espn 名；norm 去连字符/空格/撇号/点号小写比较，兼容本地库规范ID键
+    'al-ahli' 与 fd 原始名键 'Aston Villa' 两种缓存。开发者 sszhang"""
     lg = map_league(m.get("league", ""))
     if not lg:
         return None
@@ -148,15 +203,16 @@ def _dc_params(m: dict, zh: dict, cache_dir: Path = CACHE_DIR):
     if not p.exists():
         return None
     dc = json.loads(p.read_text(encoding="utf-8"))
-    norm = lambda s: str(s).lower().replace("-", "").replace(" ", "")
+    norm = lambda s: str(s).lower().replace("-", "").replace(" ", "").replace("'", "").replace(".", "")
 
     def find(zh_name):
         tid = zh.get(zh_name)
         if not tid:
             return None
-        nt = norm(tid)
+        srcs = _alias_srcs().get(tid) or {}
+        cands = {norm(c) for c in (tid, srcs.get("fd"), srcs.get("espn")) if c}
         for t in dc["teams"]:
-            if norm(t) == nt:
+            if norm(t) in cands:
                 return t
         return None
 
@@ -322,6 +378,7 @@ def build_ticket(odds_day: dict, freq_table: dict, seq: int,
                                         + "（各腿池水连乘" + "/".join(sorted({l.get('play', 'crs') for l in upset})) + "）" if upset
                                         else "无腿"),
         "postTaxNote": "单注奖金超1万部分税20%;4串单注限额50万已反算倍数",
+        "approved": False,   # P1-6：legacy 卡同默认未拍板（历史卡无此键=按已采纳兼容）
     }
 
 SNAPSHOT_STEM_RE = re.compile(r"-r\d+-boldplay")   # -rN 过程快照（{date}-rN-boldplay.json，铁律7：同日主文件=真相）
@@ -418,34 +475,59 @@ def _filter_onsale(all_days: dict) -> dict:
     return out
 
 
-def _pick_had_legs(odds_day: dict) -> list:
-    """现 build_ticket base 档 HAD 选腿复用（行为不变）：入池=_is_ab，逐场取最低赔方向，
-    取前 4 腿（=现 base 第一注组 legs_pool[0:4]）；matchNumStr 缺时落 code 口径。开发者 sszhang"""
-    legs = []
+def _pick_had_legs(odds_day: dict, zh: dict | None = None,
+                   dc_params_fn=_dc_params, fusion: tuple[float, float] | None = None) -> list:
+    """保底档 HAD 选腿（大哥 2026-09-04 拍板·强胆保底）：had 齐全 + 铁律10 fd 锚白名单 +
+    单腿赔率 ≥1.10（超低赔胆放行——旧 _is_ab ≥1.55 门槛曾结构性排除强胆，保底池只剩
+    中赔三星边缘场：实测全中概率 29%→7%、至少中2关 94%→69%，容错结构+低概率腿两头不靠）；
+    逐场算 p_fused（有 DC 融合/无 DC 市场去水）按 max 概率**降序取前 4**（旧=编号序前4，
+    腿质量由场次排列决定不由信心决定）；每场取概率最高方向。开发者 sszhang"""
+    if zh is None:
+        zh = _zh_map()
+    a, b = fusion if fusion else _load_fusion()
+    pool = []
     for m in odds_day.get("matches", []):
-        if not _is_ab(m):
+        had = m.get("had") or {}
+        if not had or not all(had.get(k) for k in ("h", "d", "a")):
             continue
-        h = m["had"]
-        pick = min(h, key=h.get)
-        legs.append({"matchNumStr": m.get("matchNumStr") or m.get("code"),
-                     "match": f'{m.get("home")}-{m.get("away")}',
-                     "play": "had", "pick": {"h": "主胜", "d": "平", "a": "客胜"}[pick], "odds": h[pick]})
-        if len(legs) == 4:
-            break
-    return legs
+        if map_league(m.get("league", "")) not in FD_ANCHOR_LEAGUES:
+            continue                                   # 铁律10：无锚联赛禁入保底胆
+        o3 = [float(had["h"]), float(had["d"]), float(had["a"])]
+        if min(o3) < 1.10:
+            continue                                   # 合赔保护：四腿全超低赔则保底回款无意义
+        p_mkt = devig_n(o3)
+        params = dc_params_fn(m, zh)
+        p_f = p_mkt
+        if params:
+            lh, la, rho = params
+            matrix = score_matrix(lh, la, rho)
+            p_dc = [sum(float(matrix[i, j]) for i in range(7) for j in range(7) if i > j),
+                    sum(float(matrix[i, i]) for i in range(7)),
+                    sum(float(matrix[i, j]) for i in range(7) for j in range(7) if i < j)]
+            p_f = fuse(p_dc, p_mkt, a, b)
+        k = max(range(3), key=lambda i: p_f[i])
+        pool.append((p_f[k], o3[k], m, k))
+    pool.sort(key=lambda x: (-x[0], x[1]))             # 概率降序，平手按赔率升序
+    return [{"matchNumStr": m.get("matchNumStr") or m.get("code"),
+             "match": f'{m.get("home")}-{m.get("away")}',
+             "play": "had", "pick": ("主胜", "平", "客胜")[k],
+             "odds": o, "p": round(p, 4)} for p, o, m, k in pool[:4]]
 
 
-def _q_map_for(m: dict, freq_table: dict, form: dict, zh: dict) -> dict:
+def _q_map_for(m: dict, freq_table: dict, form: dict, zh: dict) -> tuple:
     """freq_legs 内部平移链薄封装：map_league→联赛模板→base rates→λ平移→shifted_q。
-    无联赛模板 → {}（pools_card low_conf 路径自兜底全局池）。开发者 sszhang"""
+    返回 (q_map, lam)：lam=None 即纯模板（pools_card 标 pure_template·比分推荐判断力
+    状态可追溯）。无联赛模板 → ({}, None)（pools_card low_conf 路径自兜底全局池）。
+    team_strength 传联赛 ID 启用上季全季先验（2026-09-04 拍板·开季段判断力恢复）。
+    开发者 sszhang"""
     lg = map_league(m.get("league", ""))
     blob = freq_table.get(lg) if lg else None
     if not (blob and blob.get("__n", 0)):
-        return {}
+        return {}, None
     lam = lambdas(league_base_rates(blob),
-                  team_strength(form, _norm(zh.get(m.get("home", ""), ""))),
-                  team_strength(form, _norm(zh.get(m.get("away", ""), ""))))
-    return shifted_q(blob, lam)
+                  team_strength(form, _norm(zh.get(m.get("home", ""), "")), lg),
+                  team_strength(form, _norm(zh.get(m.get("away", ""), "")), lg))
+    return shifted_q(blob, lam), lam
 
 
 def _card_view(m: dict, hafu_map: dict) -> dict:
@@ -456,13 +538,17 @@ def _card_view(m: dict, hafu_map: dict) -> dict:
 
 
 def _lottery_legs(odds_day: dict, zh: dict, hhad_map: dict | None = None,
-                  dc_params_fn=_dc_params, fusion: tuple[float, float] | None = None) -> list:
+                  dc_params_fn=_dc_params, fusion: tuple[float, float] | None = None,
+                  blocked: list | None = None) -> list:
     """彩票档选腿（docs/2026-09-02-lottery-tier-design.html §03）：逐场逐选项（HAD+HHAD 三向）
     合格判定 + 场内 EV 最优 + 同场去重（铁律9），EV 降序返回。
 
     合格 = p_fused≥0.55 或 超低赔≤1.25 且 p_fused≥0.50；p_fused = fuse(p_dc, p_mkt体彩去水, a, b)
     （出票时点无 Pinnacle 收盘，市场腿=体彩即时价去水，与 mix_candidates 同口径）。
-    无 DC 缓存/队名未入库/无 had → 该场不入池。开发者 sszhang"""
+    无 DC 缓存/队名未入库/无 had → 该场不入池。
+    P0-3 分歧熔断（2026-09-04 拍板）：|p_fused−p_mkt|≥DIVERGENCE_LIMIT 的选项不入档——
+    DC 升班马污染参数（弗洛西诺 p_dc=94% 实证）曾以 EV+63% 假阳性混入 8 串；
+    熔断腿经 blocked 参数（可选 list）回传供卡 warnings 归档。开发者 sszhang"""
     if hhad_map is None:
         hhad_map = _hhad_odds()
     a, b = fusion if fusion else _load_fusion()
@@ -502,6 +588,14 @@ def _lottery_legs(odds_day: dict, zh: dict, hhad_map: dict | None = None,
                      "hhad": ("让球主胜", "让球平", "让球客胜")}[play]
             for k in range(3):
                 p, o = p_f[k], o3[k]
+                if abs(p - p_mkt[k]) >= DIVERGENCE_LIMIT:        # P0-3 熔断：DC 污染腿不入档
+                    if blocked is not None:
+                        blocked.append({"matchNumStr": mid,
+                                        "match": f'{m.get("home")}-{m.get("away")}',
+                                        "play": play, "pick": names[k],
+                                        "p_fused": round(p, 4), "p_mkt": round(p_mkt[k], 4),
+                                        "diff_pp": round(abs(p - p_mkt[k]) * 100, 1)})
+                    continue
                 if not (p >= LOTTERY_MIN_P
                         or (o <= LOTTERY_LOW_ODDS and p >= LOTTERY_LOW_ODDS_MIN_P)):
                     continue
@@ -539,16 +633,19 @@ def build_three_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form:
     翻身多池引擎(seq轮换) + 彩票 N串1×1倍(2元,合格腿全上4~8,HAD/HHAD)。
     选腿: 保底=现HAD选腿(_pick_had_legs); 翻身=各场 pools_card rec_upset 候选(同场≤1腿,
     按EV降序); 彩票=_lottery_legs(p_fused≥0.55/超低赔通道)。开发者 sszhang"""
-    had_legs = _pick_had_legs(odds_day)
+    had_legs = _pick_had_legs(odds_day, zh=zh)   # 强胆保底（2026-09-04 拍板：p_fused 降序前4）
     bets = [{"legs": list(c), "multiplier": 1} for c in expand_combos(len(had_legs))]
     base = {"cost": 2 * len(bets), "legs": had_legs, "play": "had-4串11", "bets": bets,
             "note": "6×2串1+4×3串1+1×4串1 · 中2关回1注2串1"}
     if len(had_legs) < 4:
         base["degraded"] = True
     hafu_map = hafu_map if hafu_map is not None else _hafu_odds()
-    cards = [pools_card(_card_view(m, hafu_map), _q_map_for(m, freq_table, form, zh),
-                        form, zh, freq_table)
-             for m in odds_day.get("matches", []) if _is_ab(m)]
+    cards = []
+    for m in odds_day.get("matches", []):
+        if not _is_ab(m):
+            continue
+        q_map, lam = _q_map_for(m, freq_table, form, zh)
+        cards.append(pools_card(_card_view(m, hafu_map), q_map, form, zh, freq_table, lam=lam))
     # 翻身: seq 奇=跨池2串1×3 / 偶=跨池4串1×N; 腿=各场 rec_upset(同场≤1; 全分歧场
     # rec_upset=None → 不出翻身腿, freq_band pools_card I1 裁定)
     cand = sorted((c["rec_upset"] for c in cards if c.get("rec_upset")), key=lambda c: -c["ev"])
@@ -574,12 +671,21 @@ def build_three_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form:
                  "note": "跨池4串1(木桶≤4关)"}
     if upset["cost"] < 2:                                   # 腿不足关档(铁律8不硬凑)
         upset = {"shape": "closed", "cost": 0, "legs": legs, "note": "翻身候选腿不足·关档"}
-    lottery = _lottery_tier(_lottery_legs(odds_day, zh))
+    blocked_legs = []                                            # P0-3 熔断腿归档（卡 warnings）
+    lottery = _lottery_tier(_lottery_legs(odds_day, zh, blocked=blocked_legs))
     total_cost = base["cost"] + upset["cost"] + lottery["cost"]
     out = {"structure": "new", "date": str(date.today()), "seq": seq,
            "tiers": {"base": base, "upset": upset, "lottery": lottery},
            "totalCost": total_cost,
-           "cards": cards, "ranAt": str(date.today())}
+           "cards": cards, "ranAt": str(date.today()),
+           "approved": False}    # P1-6：默认未拍板——人工核后方可采纳；settle 跳过未拍板卡
+    if blocked_legs:
+        lottery["divergenceBlocked"] = blocked_legs
+        out["warnings"] = out.get("warnings", []) + [
+            f"dc_divergence_blocked: 彩票档熔断{len(blocked_legs)}选项(|p_fused−p_mkt|≥"
+            f"{DIVERGENCE_LIMIT:.0%})——"
+            + "、".join(f"{l['matchNumStr']}{l['pick']}{l['diff_pp']}pp"
+                        for l in blocked_legs[:8])]
     # 轮次预算红线（含彩票档，preference.json roundRedline 同步）
     if total_cost > ROUND_REDLINE:
         out["budgetWarning"] = f"totalCost {total_cost} > roundRedline {ROUND_REDLINE}"
@@ -614,13 +720,17 @@ def render_ticket(t: dict) -> str:
     for c in t.get("cards") or []:
         if not c.get("candidates"):
             continue
-        fl = ("⚠" if "divergence" in c["flags"] else "") + ("🟡" if "low_conf" in c["flags"] else "")
+        fl = (("⚠" if "divergence" in c["flags"] else "")
+              + ("🟡" if "low_conf" in c["flags"] else "")
+              + ("◇" if "pure_template" in c["flags"] else ""))
         rb, ru = c["rec_base"], c["rec_upset"]
         ru_txt = f"{ru['pool'].upper()} {ru['pick']}@{ru['odds']}" if ru else "—(分歧排除)"
         lines.append(f"│   {c['code']} {fl} 保底→{rb['pool'].upper()} {rb['pick']}(q{rb['q']:.0%})"
                      f" · 翻身→{ru_txt}")
     spend = upset_month_spend(str(date.today())[:7])
     warn = " ⚠月预算红线!" if spend >= MONTHLY_UPSET_CAP else ""
+    if t.get("approved") is False:
+        lines.append("│ ⚠未拍板(approved=false)·settle跳过未拍板卡·人工核后方可采纳出票")
     lines.append(f"└ 翻身月预算: {spend:.0f}/{MONTHLY_UPSET_CAP:.0f}元{warn} · 出票核对单见 v5.4.2 格式")
     return "\n".join(lines)
 
@@ -761,6 +871,9 @@ def cmd_settle() -> None:
             ticket = json.loads(p.read_text(encoding="utf-8"))
             if ticket.get("settle"):
                 print(f"[boldplay] {p.name} 已结算(payout={ticket['settle']['payout']:.0f})，跳过"); continue
+            if ticket.get("approved") is False:
+                # P1-6：未拍板卡不进结算（程序卡≠采纳方案；缺键的历史卡按已采纳兼容）
+                print(f"[boldplay] {p.name} 未拍板(approved=false)，跳过结算"); continue
             results = _load_results(ticket["date"])
             codes = set()
             for tier in ticket["tiers"].values():
@@ -799,28 +912,36 @@ def _selftest_three_tier():
         {"code": "周六007", "league": "日职", "home": "东京绿茵", "away": "冈山绿雉",
          "had": {"h": 1.62, "d": 3.7, "a": 4.4},
          "crs": {"1:1": 8.0}, "ttg": {"s3": 3.55}, "hafu": {"dd": 6.5, "hd": 9.0}},
-        {"code": "周六012", "league": "瑞超", "home": "哥德堡", "away": "天狼星",
+        {"code": "周六012", "league": "法乙", "home": "哥德堡", "away": "天狼星",
          "had": {"h": 2.05, "d": 3.3, "a": 3.2},
          "crs": {"1:1": 8.0}, "ttg": {"s3": 3.55}, "hafu": {"dd": 7.0}},
-        {"code": "周日009", "league": "挪超", "home": "维京", "away": "奥勒松",
+        {"code": "周日009", "league": "意乙", "home": "维京", "away": "奥勒松",
          "had": {"h": 1.68, "d": 3.8, "a": 3.9},
          "crs": {"1:1": 8.0}, "ttg": {"s3": 3.55}, "hafu": {"dd": 6.8}},
-        {"code": "周日015", "league": "韩职", "home": "全北现代", "away": "大田市民",
+        {"code": "周日015", "league": "英冠", "home": "全北现代", "away": "大田市民",
          "had": {"h": 1.58, "d": 3.9, "a": 4.2},
          "crs": {"1:1": 8.0}, "ttg": {"s3": 3.55}, "hafu": {"dd": 7.2}},
     ]}
+    # #16 白名单后 fixture 调整（2026-09-04）：瑞超/挪超/韩职→法乙/意乙/英冠（fd 锚凑
+    # 保底 4 腿），留芬超/日职 2 场作"无锚被滤"覆盖；队名保留（zh={} 无 DC 解析）。
     ft = {"germany-2-bundesliga": Counter({"1:1": 120, "2:2": 40, "__n": 200})}  # 德乙模板 n=200 免 low_conf
     t = build_three_tier(fake_day, ft, seq=9, zh={}, form={})
     assert t["structure"] == "new"
     base = t["tiers"]["base"]
     assert base["cost"] == 22 and len(base["legs"]) == 4            # 4串11=22元
     assert base["play"] == "had-4串11"
+    assert not ({"周一002", "周六007"} & {l["matchNumStr"] for l in base["legs"]})  # 铁律10：无锚腿不入保底
     up = t["tiers"]["upset"]
-    assert up["shape"] in ("pool-2x1x3", "pool-4x1")               # seq奇偶轮换
+    # 批次3（2026-09-04）：分歧旗全候选化后，zh={} 纯模板 q 与手造 fixture 赔率普遍差
+    # >5pp → 翻身腿被滤光 → closed 属合法常态（真实数据未必关档：当轮实测 pool-2x1x3·6元）
+    if up["shape"] != "closed":
+        assert up["shape"] in ("pool-2x1x3", "pool-4x1")           # seq奇偶轮换
+        assert 2 <= up["cost"] <= 8
+    else:
+        assert up["cost"] == 0
     codes = [l["matchNumStr"] for l in up["legs"]]
     assert len(codes) == len(set(codes))                            # 同场最多1腿(硬约束)
-    assert 2 <= up["cost"] <= 8
-    assert 24 <= t["totalCost"] <= 30                               # zh={} 无DC参数→彩票档关档cost=0
+    assert 22 <= t["totalCost"] <= 30                               # zh={} 无DC参数→彩票档关档cost=0(翻身可关)
     lot = t["tiers"]["lottery"]
     assert lot["shape"] == "closed" and lot["cost"] == 0            # 合格腿0<4 关档不硬凑
     txt = render_ticket(t)
@@ -1000,6 +1121,14 @@ def _selftest_dry_streak():
     print("[selftest] upset_dry_streak + halve_upset OK")
 
 
+def args_get(args: list, flag: str) -> str | None:
+    """--flag=value 形式取值（无则 None）。开发者 sszhang"""
+    for a in args:
+        if a.startswith(flag + "="):
+            return a.split("=", 1)[1]
+    return None
+
+
 def main() -> None:
     args = sys.argv[1:]
     if args and args[0] == "settle":
@@ -1013,19 +1142,39 @@ def main() -> None:
     method = "amix" if "--method=amix" in args else "freq"
     structure = "legacy" if "--structure=legacy" in args else "new"   # v2 两档默认，legacy 双轨对照一个月
     dry = "--dry" in args
-    # ROOT 绝对定位（cmd_settle 同款：cwd=engine/scripts 下裸相对 glob 落空）
-    latest = sorted(glob.glob(str(ROOT / "engine/cache/score_odds/*.json")))[-1]
-    odds = json.load(open(latest, encoding="utf-8"))
+    # 主数据流=实时在售清单（P0-1：score_odds 存档陈旧曾致整卡错轮——09-04 周五卡事故；
+    # 存档由 run.py update 末尾 dump-odds 自动留档，不再作 boldplay 数据源）
+    odds = _live_day()
     table = build_freq_table()
-    hist = [json.load(open(p, encoding="utf-8")) for p in glob.glob(str(ROOT / "data/03-predictions/*-boldplay.json"))]
+    # -rN 过程快照排除（2026-09-04 审计 P1）：seq 与 monthly_spend/upset_month_spend 口径归一。
+    # 修前 13 文件 seq=14 → 修后 11 文件 seq=12，偶→偶不翻翻身档轮换；未来快照数为奇时
+    # seq 奇偶翻转属预期行为变更，提交须注明。
+    hist = [json.load(open(p, encoding="utf-8"))
+            for p in glob.glob(str(ROOT / "data/03-predictions/*-boldplay.json"))
+            if not is_process_snapshot(Path(p))]
     seq = len(hist) + 1
     spend = monthly_spend(hist, str(date.today())[:7])
     if not budget_gate(spend):
         print(f"[boldplay] 月封顶触及: 本月已花 {spend:.0f}/{MONTHLY_CAP:.0f} 元, 本轮停")
         return
-    # 当轮=全部在售比赛日合并（2026-08-25 修复：原 matchDays[-1] 漏掉当晚场次）
-    all_days = {"matches": [m for d in odds.get("matchDays", []) for m in d.get("matches", [])]}
-    all_days = _filter_onsale(all_days)
+    # 当轮=实时清单全量（P0-1：原 matchDays 展平+存档合并废弃；_filter_onsale 对实时源
+    # 为白名单自筛幂等，保留作未来回退存档时的防线）
+    all_days = _filter_onsale(odds)
+    # 场次过滤（P2-10）：--matchday=周六,周日 保留 / --exclude=周五 剔除（已锁轮次不再出卡）
+    include = [x for x in (args_get(args, "--matchday") or "").split(",") if x]
+    exclude = [x for x in (args_get(args, "--exclude") or "").split(",") if x]
+    if include or exclude:
+        def _keep(m):
+            mid = m.get("matchNumStr") or ""
+            if exclude and any(mid.startswith(x) for x in exclude):
+                return False
+            if include and not any(mid.startswith(x) for x in include):
+                return False
+            return True
+        n_before = len(all_days["matches"])
+        all_days["matches"] = [m for m in all_days["matches"] if _keep(m)]
+        print(f"[boldplay] 场次过滤: include={include or '-'} exclude={exclude or '-'} "
+              f"{n_before}→{len(all_days['matches'])}场")
     if structure == "new":
         out = build_three_tier(all_days, table, seq, zh=_zh_map(), form=build_team_form())
         u_spend = upset_month_spend(str(date.today())[:7])
@@ -1044,12 +1193,15 @@ def main() -> None:
         print(f"[boldplay] legacy seq={out['seq']} {out['shape']} | 翻身档 {u['cost']}元 ×{u['multiplier']}倍 "
               f"合赔{u['expOdds']} 中即≈{u['winIfHit']:.0f}元 | 总投入 {out['totalCost']}元")
     out["ranAt"] = str(date.today())
-    # 数据新鲜度标记（CI 校验 + 下游可读）
-    _odds_stem = Path(latest).stem  # e.g. "2026-09-02"
-    out["dataAsOf"] = _odds_stem
-    _age_days = (date.today() - date.fromisoformat(_odds_stem)).days
-    if _age_days > 7:
-        out.setdefault("warnings", []).append(f"stale_cache: score_odds {(_age_days)}d old")
+    out["method"] = method      # 生成路径自描述（CI 校验/下游可读；三档制固定 freq 链，amix=legacy）
+    # 数据新鲜度标记（P0-1：实时源 fetchedAt 口径；非当日抓取即警示）
+    out["dataAsOf"] = (odds.get("fetchedAt") or "")[:10] or str(date.today())
+    if out["dataAsOf"] != str(date.today()):
+        out.setdefault("warnings", []).append(
+            f"stale_live: sporttery_matches fetchedAt={out['dataAsOf']} 非当日，建议先 run.py update")
+    if include or exclude:                      # P2-10：过滤范围随卡归档（审计可回溯）
+        out["matchdayFilter"] = {"include": include, "exclude": exclude,
+                                 "kept": len(all_days["matches"])}
     suffix = "-legacy" if structure == "legacy" else ""
     path = PRED_DIR / f"{date.today()}-boldplay{suffix}.json"
     if dry:
@@ -1059,4 +1211,13 @@ def main() -> None:
     print(f"[boldplay] → {path}")
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except SystemExit:
+        raise
+    except Exception:
+        # P0-1 附带：exit 255 静默失败根治——异常显式打印后以退出码 1 结束，
+        # 卡片渲染后段的写入/结算异常不再被吞（09-04 实测 traceback 丢失）。
+        import traceback
+        traceback.print_exc()
+        sys.exit(1)

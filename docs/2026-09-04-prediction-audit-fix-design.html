@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>预测流程审计修复设计 · 2026-09-04</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#1c2430;--sub:#5b6675;--line:#e3e7ec;--acc:#0f6fff;--ok:#0a8f56;--warn:#c07800;--bad:#c23a3a;--chip:#eef3fb}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.7 "Segoe UI","Microsoft YaHei",system-ui,sans-serif;padding:20px}
+.wrap{max-width:1020px;margin:0 auto}
+h1{font-size:20px;margin:0 0 4px}
+h2{font-size:16px;margin:26px 0 10px}
+h3{font-size:14px;margin:14px 0 6px}
+.sub{color:var(--sub);font-size:12.5px;margin-bottom:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:12px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:var(--chip);font-weight:600;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+code{background:var(--chip);border-radius:4px;padding:1px 5px;font-size:12.5px;font-family:Consolas,monospace}
+.tag{display:inline-block;padding:1px 8px;border-radius:10px;font-size:11.5px;margin:0 3px 3px 0;white-space:nowrap}
+.tag.p0{background:#fbe9e9;color:var(--bad)}
+.tag.p1{background:#fdf3e2;color:var(--warn)}
+.tag.p2{background:#e5f3ec;color:var(--ok)}
+ul{margin:6px 0;padding-left:20px}
+li{margin:4px 0}
+</style>
+</head><body><div class="wrap">
+<h1>预测流程审计修复设计（15 项 · 大哥逐项拍板）</h1>
+<div class="sub">来源：2026-09-04 周六日轮预测全程复盘（会话内 brainstorming）· 定稿 2026-09-04 · 执行分 4 批次</div>
+
+<h2>事故链背景（P0 因果）</h2>
+<div class="card"><code>run.py update</code> 只刷实时清单 <code>sporttery_matches.json</code>，不含 dump-odds；而 <code>boldplay.py:1017</code> 主数据流读 <code>score_odds/</code> 日存档（hhad/hafu 却读实时文件=混读）。09-04 裸跑 boldplay 拿到 09-03 存档（周五轮）生成错误卡（seq12、与已出票 T019 撞日、含无锚腿），且 exit 255 无 traceback 静默失败，错误卡已入 git。同日 DC 升班马污染（弗洛西诺 p_dc=94%）无程序熔断进了彩票档。三害同源于"坏数据无守门直接进票"。</div>
+
+<h2>批次 1 · boldplay 止血包 <span class="tag p0">P0</span></h2>
+<div class="card"><table>
+<tr><th>#</th><th>拍板</th><th>改动点</th><th>验收</th></tr>
+<tr><td>P0-2</td><td>删除两张错误卡</td><td>删 <code>2026-09-04-boldplay.json</code>（周五场错误卡）+ <code>2026-09-03-r2-boldplay.json</code>（今晨赛后无意义卡），commit 说明理由</td><td>glob 干净；settle 不再撞见</td></tr>
+<tr><td>P0-1</td><td>改读实时+接线留档</td><td>① boldplay 主数据流 HAD/CRS/TTG 改读 <code>sporttery_matches.json</code>（与 hhad/hafu 统一口径），存档仅历史留档；② <code>run.py update</code> 末尾自动 dump-odds；③ 异常 print 后 <code>sys.exit(1)</code>（修 exit 255 静默）</td><td>裸跑 boldplay 永远=当前在售场次；自测</td></tr>
+<tr><td>P0-3</td><td>熔断先行+拟合立项</td><td>彩票/保底选腿处：<code>abs(p_fused−p_mkt)≥5pp</code> 的腿不入档并记 warnings（SKILL 铁律程序化）</td><td>弗洛西诺案回归测试不进 8 串</td></tr>
+<tr><td>P1-6</td><td>approved 标记</td><td>卡生成默认 <code>approved:false</code>，人工拍板置 true；settle 只结算 approved 卡</td><td>未采纳卡不进结算</td></tr>
+<tr><td>P2-10</td><td>过滤参数</td><td><code>--matchday 周六,周日</code> / <code>--exclude 周五</code>（内存过滤，卡元数据记录过滤范围）</td><td>已锁轮次不再需要改数据文件</td></tr>
+</table></div>
+
+<h2>批次 2 · DC 链修复 <span class="tag p1">P1</span></h2>
+<div class="card"><table>
+<tr><th>#</th><th>拍板</th><th>改动点</th><th>验收</th></tr>
+<tr><td>P1-4</td><td>解析器三级匹配</td><td><code>_dc_params</code> 解析链 tid→fd 字段→espn 字段三级宽松匹配（读 _aliases 已有数据，改一个函数）</td><td>12 断链场恢复 DC（尤文/比利亚雷/诺丁汉/马竞等）</td></tr>
+<tr><td>P2-9</td><td>复用映射修误报</td><td>data_check 的 league_status 复用 <code>score_ev.map_league</code> 做中文→英文 ID 映射</td><td>10 联赛 missing 误报归零，真缺口如实显示</td></tr>
+</table></div>
+
+<h2>批次 3 · q 键位专项 <span class="tag p1">P1</span>（工作量最大，单独做）</h2>
+<div class="card"><ul>
+<li>P1-5 实证锚修复：三个回归锚案例——帕尔马 hafu ha q16.4%@35 EV+475%、门兴 53% 主胜推 aa（方向矛盾）、尤文 ttg s1 q31.4%（西甲均值 2.6 球下理论 ~17%）</li>
+<li>debug 链路：freq_band 联赛模板读取 / 键位映射 / 球队平移 λ</li>
+<li>纪律：pytest 全量重跑（memory: boldplay-q-key-misalignment-bug；修前每轮人工复核义务在修复合入后解除）</li>
+</ul></div>
+
+<h2>批次 4 · 规则与文档层 <span class="tag p2">P2</span></h2>
+<div class="card"><ul>
+<li>P1-7 SKILL.md：轮次判定=insight gameweek 先查 + standing 已赛场次一致性校验，ESPN 榜只做升降序参考（09-04 勘定法甲 R3 的流程定式）</li>
+<li>P1-8 SKILL.md 两条规则：①四星踩线（65~67%）+基面反向（近 5 场不胜/对手不败）→降半档标注 ②保底腿全含于彩票档→必须算耦合概率（共享腿展开，禁独立近似，v5.1 条款补执行）</li>
+<li>P2-11 CLAUDE.md：scratch 目录约定——临时分析脚本统一 <code>engine/scripts/scratch/</code>（会话末清理，不进 git），弃 python -c 内联（09-04 三次 PowerShell 转义坑）</li>
+<li>P2-12 考据债勾销：今晨 09:41 两文件来历不再深究（删卡已拍板）</li>
+<li>P0-3 立项挂账：dc_fit 小样本队（升班马）低置信参数治理——holdout 回测门槛验证后再上（不动拟合核心）</li>
+<li>SKILL.md 修改须双份同步（~/.claude/skills/ 与 D:\project\arsenal\，字节级一致）</li>
+</ul></div>
+
+<h2>执行顺序与纪律</h2>
+<div class="card"><b>批次 1 → 2 → 3 → 4</b>（boldplay 止血优先——今晚周六日轮开赛前链路换新）。每批次独立 commit；涉及 engine/cache 新 JSON 落盘必须 pytest 全量（engine/tests）+ boldplay --selftest；SKILL/CLAUDE 修改走双份同步 + cmp 校验。</div>
+</div></body></html>
