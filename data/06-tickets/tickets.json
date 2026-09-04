@@ -1,11 +1,11 @@
 {
   "meta": {
-    "lastUpdated": "2026-09-04",
+    "lastUpdated": "2026-09-05",
     "note": "实票账本:票=顶层实体(不按日期切分);实票=有结算记录的票,其余全是方案推演;出票后票面事实永不改写;派彩按形状算(4串11中2关只回1注2串1)",
     "totalTickets": 19,
-    "totalStake": 282,
+    "totalStake": 292,
     "totalPayout": 367.26,
-    "totalNet": 85.26,
+    "totalNet": 75.26,
     "disciplineEvents": [
       {
         "date": "2026-08-24",
@@ -519,7 +519,7 @@
           "result": "miss",
           "priceNote": null,
           "actual": "0:0(半0:0)",
-          "agreement": "pick_diff"
+          "agreement": "no_rec"
         },
         {
           "code": "周五010",
@@ -531,7 +531,7 @@
           "result": "miss",
           "priceNote": null,
           "actual": "2:2(半1:0)",
-          "agreement": "agree"
+          "agreement": "no_rec"
         },
         {
           "code": "周六028",
@@ -543,7 +543,7 @@
           "result": "hit",
           "priceNote": null,
           "actual": "1-3",
-          "agreement": "agree"
+          "agreement": "pick_diff"
         },
         {
           "code": "周六017",
@@ -555,7 +555,7 @@
           "result": "miss",
           "priceNote": null,
           "actual": "2:1(半0:1)",
-          "agreement": "agree"
+          "agreement": "pick_diff"
         },
         {
           "code": "周五001",
@@ -567,7 +567,7 @@
           "result": "hit",
           "priceNote": null,
           "actual": "3:5(半2:2)",
-          "agreement": "pick_diff"
+          "agreement": "no_rec"
         }
       ],
       "bets": [
@@ -639,7 +639,7 @@
           "result": "miss",
           "priceNote": null,
           "actual": "0:0(半0:0)",
-          "agreement": "pick_diff"
+          "agreement": "no_rec"
         },
         {
           "code": "周五010",
@@ -651,7 +651,7 @@
           "result": "miss",
           "priceNote": null,
           "actual": "2:2(半1:0)",
-          "agreement": "agree"
+          "agreement": "no_rec"
         },
         {
           "code": "周六028",
@@ -663,7 +663,7 @@
           "result": "hit",
           "priceNote": null,
           "actual": "1-3",
-          "agreement": "agree"
+          "agreement": "pick_diff"
         },
         {
           "code": "周六017",
@@ -675,7 +675,7 @@
           "result": "miss",
           "priceNote": null,
           "actual": "2:1(半0:1)",
-          "agreement": "agree"
+          "agreement": "pick_diff"
         }
       ],
       "bets": [
@@ -757,7 +757,7 @@
           "result": "miss",
           "priceNote": null,
           "actual": "2:2(半1:0)",
-          "agreement": "play_diff"
+          "agreement": "no_rec"
         },
         {
           "code": "周六022",
@@ -770,7 +770,7 @@
           "result": "miss",
           "priceNote": null,
           "actual": "0:3(半0:2)",
-          "agreement": "play_diff"
+          "agreement": "excluded"
         },
         {
           "code": "周六019",
@@ -874,7 +874,7 @@
           "note": "方案腿·freq-band纯模板(shifted=false)·票面@25冻结(体彩后调价至28)",
           "priceNote": null,
           "actual": "0-3",
-          "agreement": "agree"
+          "agreement": "excluded"
         },
         {
           "code": "周日004",
@@ -888,7 +888,7 @@
           "note": "方案腿·freq-band球队平移(shifted=true)",
           "priceNote": null,
           "actual": "1:2(半0:1)",
-          "agreement": "agree"
+          "agreement": "excluded"
         },
         {
           "code": "周一002",
@@ -916,7 +916,7 @@
           "note": "方案腿·freq-band球队平移(shifted=true)·与T009共享场次(T009买0-0@17)",
           "priceNote": null,
           "actual": "2-0",
-          "agreement": "agree"
+          "agreement": "excluded"
         }
       ],
       "bets": [
@@ -1787,9 +1787,10 @@
           "market": "HAD",
           "pick": "主胜",
           "odds": 1.38,
-          "result": "pending",
+          "result": "hit",
           "agreement": "agree",
-          "note": "系统同推-r1彩票档①;p69.1%;CLV-1.4%(1.40→1.38降水)"
+          "note": "系统同推-r1彩票档①;p69.1%;CLV-1.4%(1.40→1.38降水)",
+          "actual": "3-1"
         },
         {
           "code": "周五009",
@@ -1798,9 +1799,10 @@
           "market": "HAD",
           "pick": "客胜",
           "odds": 1.7,
-          "result": "pending",
-          "agreement": "agree",
-          "note": "系统同推-r1彩票档②;p58.8%;CLV=0%;⚠️H2H近6场0胜4平"
+          "result": "hit",
+          "agreement": "no_rec",
+          "note": "系统同推-r1彩票档②;p58.8%;CLV=0%;⚠️H2H近6场0胜4平",
+          "actual": "1-4"
         },
         {
           "code": "周五004",
@@ -1809,9 +1811,10 @@
           "market": "HAD",
           "pick": "客胜",
           "odds": 1.3,
-          "result": "pending",
-          "agreement": "agree",
-          "note": "系统同推-r1彩票档③;p76.3%;CLV-1.5%(1.32→1.30降水)"
+          "result": "hit",
+          "agreement": "no_rec",
+          "note": "系统同推-r1彩票档③;p76.3%;CLV-1.5%(1.32→1.30降水)",
+          "actual": "0-2"
         },
         {
           "code": "周五011",
@@ -1820,9 +1823,10 @@
           "market": "HAD",
           "pick": "客胜",
           "odds": 1.3,
-          "result": "pending",
-          "agreement": "agree",
-          "note": "系统同推-r1彩票档④;p76.1%;CLV=0%;⚠️H2H 50%平局率"
+          "result": "miss",
+          "agreement": "no_rec",
+          "note": "系统同推-r1彩票档④;p76.1%;CLV=0%;⚠️H2H 50%平局率",
+          "actual": "1-0"
         },
         {
           "code": "周五006",
@@ -1831,9 +1835,10 @@
           "market": "HAD",
           "pick": "主胜",
           "odds": 1.68,
-          "result": "pending",
-          "agreement": "agree",
-          "note": "系统同推-r1彩票档⑤;p58.8%;CLV=0%"
+          "result": "miss",
+          "agreement": "no_rec",
+          "note": "系统同推-r1彩票档⑤;p58.8%;CLV=0%",
+          "actual": "2-2"
         },
         {
           "code": "周五008",
@@ -1842,9 +1847,10 @@
           "market": "HAD",
           "pick": "主胜",
           "odds": 1.39,
-          "result": "pending",
-          "agreement": "agree",
-          "note": "系统同推-r1彩票档⑥;p63.6%;CLV=0%"
+          "result": "hit",
+          "agreement": "no_rec",
+          "note": "系统同推-r1彩票档⑥;p63.6%;CLV=0%",
+          "actual": "4-1"
         },
         {
           "code": "周五010",
@@ -1853,9 +1859,10 @@
           "market": "HAD",
           "pick": "客胜",
           "odds": 1.41,
-          "result": "pending",
-          "agreement": "agree",
-          "note": "系统同推-r1彩票档⑦;p64.6%;CLV=0%"
+          "result": "hit",
+          "agreement": "no_rec",
+          "note": "系统同推-r1彩票档⑦;p64.6%;CLV=0%",
+          "actual": "0-2"
         },
         {
           "code": "周五001",
@@ -1864,16 +1871,26 @@
           "market": "HAD",
           "pick": "主胜",
           "odds": 1.49,
-          "result": "pending",
-          "agreement": "agree",
-          "note": "系统同推-r1彩票档⑧;p62.5%;CLV=0%;⚠️DC-市场分歧21pp"
+          "result": "miss",
+          "agreement": "no_rec",
+          "note": "系统同推-r1彩票档⑧;p62.5%;CLV=0%;⚠️DC-市场分歧21pp",
+          "actual": "2-2"
         }
       ],
       "payoutShape": "8串1:全中才派彩2×合赔×5;断任一腿=0",
       "combinedOdds": 19.4511,
       "potentialWin": 194.51,
       "note": "出票合赔19.45 vs 方案冻结20.04(CLV-2.9%:002/004两腿降水);p_fused口径P(全中)5.1%/修正后3.6%;彩票定位断任一腿=0",
-      "reassess": null
+      "reassess": null,
+      "settled": {
+        "status": "settled",
+        "hits": 5,
+        "winUnits": 0,
+        "payout": 0.0,
+        "net": -10.0,
+        "roi": -100.0,
+        "settledAt": "2026-09-05 07:54"
+      }
     }
   ]
 }

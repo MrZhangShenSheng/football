@@ -1,5 +1,5 @@
 {
-  "fittedAt": "2026-09-04",
+  "fittedAt": "2026-09-05",
   "source": "fd 4季x13联赛 walk-forward 60%/40% split",
   "tGrid": [
     0.6,
@@ -30,39 +30,39 @@
       "T": 1.3,
       "enabled": true,
       "n_eval": 6012,
-      "ll_before": 18010.7415,
-      "ll_after": 17841.6063,
+      "ll_before": 18010.7464,
+      "ll_after": 17841.6062,
       "ci": [
-        0.019231,
+        0.019232,
         0.037314
       ],
-      "improvement": 169.1352,
+      "improvement": 169.1402,
       "reason": "CI 下界>0 且 |T-1|<=0.6"
     },
     "ttg": {
       "T": 1.3,
       "enabled": true,
       "n_eval": 6012,
-      "ll_before": 11333.5008,
-      "ll_after": 11272.5559,
+      "ll_before": 11333.5065,
+      "ll_after": 11272.5588,
       "ci": [
         0.005878,
-        0.014386
+        0.014387
       ],
-      "improvement": 60.9449,
+      "improvement": 60.9477,
       "reason": "CI 下界>0 且 |T-1|<=0.6"
     },
     "hafu": {
       "T": 1.3,
       "enabled": false,
       "n_eval": 6012,
-      "ll_before": 11594.0166,
-      "ll_after": 11481.1805,
+      "ll_before": 11594.0179,
+      "ll_after": 11481.1822,
       "ci": [
-        0.013692,
+        0.013693,
         0.024034
       ],
-      "improvement": 112.8362,
+      "improvement": 112.8358,
       "reason": "HAFU 暂不启用（设计 §5：线上 HAFU 无历史回溯，前瞻监控攒样本）"
     }
   }

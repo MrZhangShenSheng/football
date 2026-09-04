@@ -1,0 +1,347 @@
+{
+ "date": "2026-09-05",
+ "version": "v4.10-pointer",
+ "note": "T019(8串1×5倍)日期指针文件——周五轮(09-03-r1/r2为终审记录)赛果挂载,供settle_tickets编号对票;非独立预测轮",
+ "matches": [
+  {
+   "idx": 1,
+   "code": "周五001",
+   "league": "德乙(R4)",
+   "match": "汉诺威96 vs 卡斯鲁厄",
+   "pick": "HAD 主胜",
+   "odds": 1.49,
+   "star": 3,
+   "grade": "B",
+   "dc": [
+    0.384,
+    0.2574,
+    0.3586
+   ],
+   "fused": [
+    0.6385,
+    0.1721,
+    0.1894
+   ],
+   "final": 0.64,
+   "chain": "",
+   "lambdaHome": 1.174,
+   "lambdaAway": 1.123,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": -0.049,
+   "inPlan": "T019腿",
+   "note": " [T019结算指针:赛果自ESPN league results 09-04]",
+   "result": "2-2",
+   "directionHit": false,
+   "backfillNote": "德乙 体彩/ESPN 均无赛果",
+   "resultSource": "ESPN league results 09-04",
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041245,
+    "lastOddsAt": "2026-09-04T17:37:59+08:00",
+    "lastIntelAt": null
+   }
+  },
+  {
+   "idx": 2,
+   "code": "周五002",
+   "league": "法甲(R3)",
+   "match": "里昂 vs 欧塞尔",
+   "pick": "HAD 主胜",
+   "odds": 1.38,
+   "star": 4,
+   "grade": "B+",
+   "dc": [
+    0.847,
+    0.1016,
+    0.0514
+   ],
+   "fused": [
+    0.8376,
+    0.1064,
+    0.056
+   ],
+   "final": 0.853,
+   "chain": "R3×0.95+伤停×1.04",
+   "lambdaHome": 2.907,
+   "lambdaAway": 0.56,
+   "fusedPre": [
+    0.847,
+    0.102,
+    0.051
+   ],
+   "chainSteps": [
+    {
+     "name": "R3",
+     "factor": 0.95
+    },
+    {
+     "name": "伤停",
+     "factor": 1.04
+    }
+   ],
+   "ev": 0.177,
+   "inPlan": "保底胆+T019腿",
+   "note": "欧塞尔5人缺阵(4伤+Makosso停赛)+2连败失8球;里昂缺Duranville/Bidstrup/Merah [T019结算指针:赛果自ESPN league results 09-04]",
+   "result": "3-1",
+   "directionHit": true,
+   "scoreHit": true,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041246,
+    "lastOddsAt": null,
+    "lastIntelAt": null
+   }
+  },
+  {
+   "idx": 4,
+   "code": "周五004",
+   "league": "沙职(R5)",
+   "match": "利雅青年 vs 利雅新月",
+   "pick": "HAD 客胜",
+   "odds": 1.3,
+   "star": 4,
+   "grade": "B",
+   "dc": [
+    0.0613,
+    0.1434,
+    0.7953
+   ],
+   "fused": [
+    0.0594,
+    0.0978,
+    0.8428
+   ],
+   "final": 0.84,
+   "chain": "",
+   "lambdaHome": 0.82,
+   "lambdaAway": 3.032,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": 0.096,
+   "inPlan": "T019腿",
+   "note": "无锚联赛 [T019结算指针:赛果自ESPN league results 09-04]",
+   "result": "0-2",
+   "directionHit": true,
+   "scoreHit": true,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041248,
+    "lastOddsAt": null,
+    "lastIntelAt": null
+   }
+  },
+  {
+   "idx": 6,
+   "code": "周五006",
+   "league": "荷甲(R5)",
+   "match": "鹿斯巴达 vs 兹沃勒",
+   "pick": "HAD 主胜",
+   "odds": 1.68,
+   "star": 3,
+   "grade": "B",
+   "dc": [
+    0.5015,
+    0.2362,
+    0.2622
+   ],
+   "fused": [
+    0.6138,
+    0.1847,
+    0.2015
+   ],
+   "final": 0.61,
+   "chain": "",
+   "lambdaHome": 1.494,
+   "lambdaAway": 0.987,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": 0.031,
+   "inPlan": "T019腿",
+   "note": " [T019结算指针:赛果自ESPN league results 09-04]",
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑",
+   "result": "2-2",
+   "directionHit": false,
+   "resultSource": "ESPN league results 09-04",
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041250,
+    "lastOddsAt": "2026-09-04T17:53:27+08:00",
+    "lastIntelAt": null
+   }
+  },
+  {
+   "idx": 8,
+   "code": "周五008",
+   "league": "德甲(R2)",
+   "match": "斯图加特 vs 科隆",
+   "pick": "HAD 主胜",
+   "odds": 1.39,
+   "star": 4,
+   "grade": "B",
+   "dc": [
+    0.5618,
+    0.2209,
+    0.2173
+   ],
+   "fused": [
+    0.7368,
+    0.1422,
+    0.121
+   ],
+   "final": 0.69,
+   "chain": "R2×0.90",
+   "lambdaHome": 2.352,
+   "lambdaAway": 1.441,
+   "fusedPre": null,
+   "chainSteps": [
+    {
+     "name": "R2",
+     "factor": 0.9
+    }
+   ],
+   "ev": -0.035,
+   "inPlan": "保底胆+T019腿",
+   "note": "上轮1-5惨败后市场仍给1.39;H2H主场对科隆6战不败;伤停未核查(搜索限流) [T019结算指针:赛果自ESPN league results 09-04]",
+   "result": "4-1",
+   "directionHit": true,
+   "scoreHit": true,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041252,
+    "lastOddsAt": null,
+    "lastIntelAt": null
+   }
+  },
+  {
+   "idx": 9,
+   "code": "周五009",
+   "league": "意甲(R3)",
+   "match": "热那亚 vs 科莫",
+   "pick": "HAD 客胜",
+   "odds": 1.7,
+   "star": 3,
+   "grade": "B",
+   "dc": [
+    0.155,
+    0.2075,
+    0.6375
+   ],
+   "fused": [
+    0.1368,
+    0.2024,
+    0.6608
+   ],
+   "final": 0.64,
+   "chain": "R3×0.95",
+   "lambdaHome": 0.701,
+   "lambdaAway": 1.759,
+   "fusedPre": null,
+   "chainSteps": [
+    {
+     "name": "R3",
+     "factor": 0.95
+    }
+   ],
+   "ev": 0.081,
+   "inPlan": "T019腿",
+   "note": "热那亚2战0进球佐证DC方向;科莫1W1D第8 [T019结算指针:赛果自ESPN league results 09-04]",
+   "result": "1-4",
+   "directionHit": true,
+   "scoreHit": true,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041253,
+    "lastOddsAt": null,
+    "lastIntelAt": null
+   }
+  },
+  {
+   "idx": 10,
+   "code": "周五010",
+   "league": "英超(R2)",
+   "match": "伊普斯 vs 利物浦",
+   "pick": "HAD 客胜",
+   "odds": 1.41,
+   "star": 4,
+   "grade": "B",
+   "dc": [
+    0.3523,
+    0.1828,
+    0.4649
+   ],
+   "fused": [
+    0.1647,
+    0.1337,
+    0.7016
+   ],
+   "final": 0.66,
+   "chain": "R2×0.90",
+   "lambdaHome": 2.894,
+   "lambdaAway": 3.298,
+   "fusedPre": null,
+   "chainSteps": [
+    {
+     "name": "R2",
+     "factor": 0.9
+    }
+   ],
+   "ev": -0.069,
+   "inPlan": "保底胆+T019腿",
+   "note": "英超仅赛1轮(本轮R2非R4);利物浦2-2开局+Barcola新援在名单;伊普斯λ异常弃DC主胜分量 [T019结算指针:赛果自ESPN league results 09-04]",
+   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑",
+   "result": "0-2",
+   "directionHit": true,
+   "resultSource": "ESPN league results 09-04",
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041254,
+    "lastOddsAt": "2026-09-04T18:38:21+08:00",
+    "lastIntelAt": null
+   }
+  },
+  {
+   "idx": 11,
+   "code": "周五011",
+   "league": "西甲(R4)",
+   "match": "贝蒂斯 vs 皇马",
+   "pick": "HAD 客胜",
+   "odds": 1.3,
+   "star": 4,
+   "grade": "B+",
+   "dc": [
+    0.1676,
+    0.195,
+    0.6374
+   ],
+   "fused": [
+    0.0897,
+    0.1151,
+    0.7952
+   ],
+   "final": 0.744,
+   "chain": "伤停×0.93",
+   "lambdaHome": 1.258,
+   "lambdaAway": 2.531,
+   "fusedPre": null,
+   "chainSteps": [
+    {
+     "name": "伤停",
+     "factor": 0.93
+    }
+   ],
+   "ev": -0.033,
+   "inPlan": "保底胆+T019腿",
+   "note": "皇马3战全胜进10失2;缺Tchouameni+Bellingham停+Rodrygo/Militao/Guler/Kovacic约5人 [T019结算指针:赛果自ESPN league results 09-04]",
+   "result": "1-0",
+   "directionHit": false,
+   "scoreHit": false,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041255,
+    "lastOddsAt": null,
+    "lastIntelAt": null
+   }
+  }
+ ]
+}
