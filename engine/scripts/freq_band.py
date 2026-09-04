@@ -56,13 +56,17 @@ FORM_SEASONS = SEASONS + [CURRENT_SEASON]   # 近况拉取含当季（批次3：
                                             # "近10场"=上季收官段，λ 方向性崩坏——帕尔马上季
                                             # 末泥潭 0.8 球被当近况 → p_ft 客胜 64% vs 市场主胜 41%）
 CUR_YEAR_PREFIX = "20" + CURRENT_SEASON[:2]  # "2627" → "2026"（本地库行 date 年份判当季）
+PREV_SEASON = SEASONS[-1]                    # 上季（开季段当季不足时的全季先验源）
+PREV_MIN_MATCHES = 15                        # 上季全季先验最少场次（半季以上才有代表性）
 
 
 def build_team_form(fetch_rows_fn=fetch_rows,
                     league_glob=None,
                     aliases: dict | None = None) -> dict:
-    """fd CSV + 本地联赛库 → {norm队名: [(进球, 失球, 赛季), ...]}（源内按时间序，取尾即最近）。
-    行带季标签（批次3）：fd 行=fetch 的 season 参数；本地库行=date 年份前缀判当季。
+    """fd CSV + 本地联赛库 → {norm队名: [(进球, 失球, 赛季, 联赛ID), ...]}（源内按时间序）。
+    行带季+联赛标签（批次3季标签·批次5联赛标签）：fd 行=fetch 的 season/DIVS 值；本地库行
+    =date 年份判当季 + 库名。联赛标签供 team_strength 上季先验滤跨联赛（升班马上季低级
+    联赛数据不冒充顶级联赛近况——埃沃斯堡上季德乙 2.1 球实证）。
     fd 队名(HomeTeam/AwayTeam) 与本地 tid 统一 norm 化做键；fd 行经 aliases.fd 对照双写 tid 键
     （tid≠fd 名的队：bayern vs Bayern Munich——体彩中文→zh_map→tid 才能命中 fd 数据）。
     测试以 fetch_rows_fn/league_glob/aliases 注入隔离网络。"""
@@ -83,12 +87,12 @@ def build_team_form(fetch_rows_fn=fetch_rows,
 
     form = defaultdict(list)
     for season in FORM_SEASONS:
-        for div in DIVS:
+        for div, div_id in DIVS.items():
             for r in fetch_rows_fn(season, div):
                 try:
                     hg, ag = int(r["FTHG"]), int(r["FTAG"])
-                    add(r["HomeTeam"], (hg, ag, season))
-                    add(r["AwayTeam"], (ag, hg, season))
+                    add(r["HomeTeam"], (hg, ag, season, div_id))
+                    add(r["AwayTeam"], (ag, hg, season, div_id))
                 except (KeyError, ValueError, TypeError):
                     continue
     # ROOT 绝对定位（2026-09-03 修复，同 score_ev.build_freq_table：相对 glob 在
@@ -102,26 +106,34 @@ def build_team_form(fetch_rows_fn=fetch_rows,
         for m in rows:
             try:
                 tag = CURRENT_SEASON if str(m.get("date", "")).startswith(CUR_YEAR_PREFIX) else "old"
-                form[_norm(m["home"])].append((int(m["hg"]), int(m["ag"]), tag))
-                form[_norm(m["away"])].append((int(m["ag"]), int(m["hg"]), tag))
+                form[_norm(m["home"])].append((int(m["hg"]), int(m["ag"]), tag, key))
+                form[_norm(m["away"])].append((int(m["ag"]), int(m["hg"]), tag, key))
             except (KeyError, ValueError, TypeError):
                 continue
     warn_source_gaps("freq-band 球队近况")   # 2026-09-04 审计 P0：fd 网络断粮护栏
     return dict(form)
 
 
-def team_strength(form: dict, norm_name: str):
-    """norm队名 → 当季近 RECENT_WINDOW 场 (场均进, 场均失)；当季不足 FORM_MIN_MATCHES → None。
-    当季优先（批次3，2026-09-04）：行带季标签后只取当季行开窗口——上季收官段被当"近况"
-    曾致 λ 方向性崩坏（帕尔马/埃沃斯堡/AC米兰三案例）；当季样本不足时降级纯模板
-    （设计本义"近况不足不平移"，铁律8 零破坏）。开发者 sszhang"""
+def team_strength(form: dict, norm_name: str, cur_league: str | None = None):
+    """norm队名 → (场均进, 场均失)，三层降级（2026-09-04 拍板·比分推荐判断力恢复）：
+    ①当季 ≥FORM_MIN_MATCHES 场 → 当季近 RECENT_WINDOW 场（真近况，R5+ 生效）
+    ②当季不足且传 cur_league → **上季全季均值**（同联赛行 ≥PREV_MIN_MATCHES；跨联赛行
+    滤除——升班马上季低级联赛数据不冒充，如埃沃斯堡上季德乙 2.1 球；上季全季比上季
+    收官10场稳，收官段战意噪声大）
+    ③再不足 → None（纯模板零破坏降级，pools_card 标 pure_template）
+    开季段(②)让 λ 恢复球队差异化——此前纯模板下 CRS 推荐=联赛频率复读（平局换皮）。开发者 sszhang"""
     rows = form.get(norm_name) or []
     cur = [r for r in rows if r[2] == CURRENT_SEASON]
-    if len(cur) < FORM_MIN_MATCHES:
-        return None
-    recent = cur[-RECENT_WINDOW:]
-    return (sum(r[0] for r in recent) / len(recent),
-            sum(r[1] for r in recent) / len(recent))
+    if len(cur) >= FORM_MIN_MATCHES:
+        recent = cur[-RECENT_WINDOW:]
+        return (sum(r[0] for r in recent) / len(recent),
+                sum(r[1] for r in recent) / len(recent))
+    if cur_league:
+        prev = [r for r in rows if r[2] == PREV_SEASON and r[3] == cur_league]
+        if len(prev) >= PREV_MIN_MATCHES:
+            return (sum(r[0] for r in prev) / len(prev),
+                    sum(r[1] for r in prev) / len(prev))
+    return None
 
 
 def lambdas(base: tuple, home_str, away_str) -> tuple:
@@ -206,8 +218,8 @@ def freq_legs(odds_day: dict, freq_table: dict, form: dict, zh: dict, band: tupl
             continue                                   # 全局池也空 → 无数据不选
         base = league_base_rates(blob)
         lam = lambdas(base,
-                      team_strength(form, _norm(zh.get(m.get("home", ""), ""))),
-                      team_strength(form, _norm(zh.get(m.get("away", ""), ""))))
+                      team_strength(form, _norm(zh.get(m.get("home", ""), "")), lg),
+                      team_strength(form, _norm(zh.get(m.get("away", ""), "")), lg))
         q_pure = shifted_q(blob, None)
         q_rank = shifted_q(blob, lam)
         best = None                                    # (q, leg)
@@ -378,17 +390,22 @@ def _selftest_hafu():
     print(f"[selftest] hafu_alpha + hafu_agg OK (n={res['n']} 去重口径)")
 
 
-def pools_card(m: dict, q_map: dict, form: dict, zh: dict, freq_table: dict) -> dict:
+def pools_card(m: dict, q_map: dict, form: dict, zh: dict, freq_table: dict,
+               lam=None) -> dict:
     """单场三池玩法卡（spec §4.3 v1.2）：CRS带内top1 + TTG top2 + HAFU top2，
     EV=q×体彩赔率−1；双行推荐（保底=相近带q最高/翻身=相近带赔率最高）；
     CRS分歧旗（EV全场最高且|q−市场隐含|>5pp → 标divergent+翻身带剔除·I1裁定）；
-    低置信旗（模板缺失/样本<LOW_CONF_N，不砍池推荐走结构兜底=抽水低池优先）。开发者 sszhang"""
+    低置信旗（模板缺失/样本<LOW_CONF_N，不砍池推荐走结构兜底=抽水低池优先）；
+    纯模板旗（lam=None → pure_template·2026-09-04 拍板B：开季段λ无球队差异时
+    CRS/TTG 推荐是联赛频率复读=平局换皮，标注防误读为独立比分判断）。开发者 sszhang"""
     lg = map_league(m.get("league", ""))
     blob = freq_table.get(lg) if lg else None
     n_tpl = (blob or {}).get("__n", 0) if blob else 0
     flags = []
     if n_tpl < LOW_CONF_N:                         # 映射缺失(None)/空模板 → n_tpl=0 同样低置信
         flags.append("low_conf")
+    if lam is None:
+        flags.append("pure_template")
     # 联赛模板优先, 缺则全局池(freq_legs 同款降级); q_map 已含平移
     q_eff = q_map if q_map else shifted_q(global_pool(freq_table) if freq_table else Counter(), None)
     p_half, alpha_doc = half_three_way(), hafu_alpha()

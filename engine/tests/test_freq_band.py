@@ -25,7 +25,7 @@ def test_global_pool():
 
 
 def test_build_team_form_fd_and_local(tmp_path):
-    """fd 行 + 本地 league 库 → norm 键近况表（行带季标签·批次3）；离网注入隔离（phase1 铁律）。"""
+    """fd 行 + 本地 league 库 → norm 键近况表（行带季+联赛标签·批次3/5）；离网注入隔离。"""
     fd_rows = [{"HomeTeam": "Arsenal", "AwayTeam": "Man City", "FTHG": "2", "FTAG": "1"},
                {"HomeTeam": "Man City", "AwayTeam": "Arsenal", "FTHG": "3", "FTAG": "0"}]
     lg = tmp_path / "korea_matches.json"
@@ -33,22 +33,30 @@ def test_build_team_form_fd_and_local(tmp_path):
                   ' "date": "2026-08-30"}]}', encoding="utf-8")
     form = freq_band.build_team_form(fetch_rows_fn=lambda s, d: fd_rows if (d == "E0" and s == "2425") else [],
                                      league_glob=str(tmp_path / "*_matches.json"))
-    assert form["arsenal"] == [(2, 1, "2425"), (0, 3, "2425")]        # (进球, 失球, 赛季) 源内时序
-    assert form["mancity"] == [(1, 2, "2425"), (3, 0, "2425")]        # norm("Man City") == norm("man-city")
-    assert form["ulsan"] == [(2, 0, freq_band.CURRENT_SEASON)]        # 本地行 date=2026 → 当季标签
-    assert form["pohangsteelers"] == [(0, 2, freq_band.CURRENT_SEASON)]
+    assert form["arsenal"] == [(2, 1, "2425", "england-premier"), (0, 3, "2425", "england-premier")]
+    assert form["mancity"] == [(1, 2, "2425", "england-premier"), (3, 0, "2425", "england-premier")]
+    assert form["ulsan"] == [(2, 0, freq_band.CURRENT_SEASON, "korea")]   # date=2026→当季+库名标签
+    assert form["pohangsteelers"] == [(0, 2, freq_band.CURRENT_SEASON, "korea")]
 
 
 def test_team_strength_window_and_gate():
-    """当季近 RECENT_WINDOW 场均值；当季不足 FORM_MIN_MATCHES → None（降级不平移）；
-    上季行再多也不冒充当季近况（批次3回归锚：帕尔马上季收官≠当季近况）。"""
-    cur = freq_band.CURRENT_SEASON
-    form = {"x": [(1, 0, cur)] * (freq_band.RECENT_WINDOW - 1) + [(3, 1, cur)] * 2}
-    gf, ga = freq_band.team_strength(form, "x")      # 当季 12 场取近 10：8×(1,0)+2×(3,1)
+    """三层降级（2026-09-04 拍板）：当季≥5→当季近10；当季不足且传联赛→上季全季
+    （≥15 场·同联赛，跨联赛升班马行不冒充）；否则 None（纯模板）。"""
+    cur, prev, lg = freq_band.CURRENT_SEASON, freq_band.PREV_SEASON, "italy-serie-a"
+    # ① 当季 12 场取近 10：8×(1,0)+2×(3,1)
+    form = {"x": [(1, 0, cur, lg)] * (freq_band.RECENT_WINDOW - 1) + [(3, 1, cur, lg)] * 2}
+    gf, ga = freq_band.team_strength(form, "x")
     assert abs(gf - (8 + 6) / 10) < 1e-9 and abs(ga - 2 / 10) < 1e-9
-    assert freq_band.team_strength({"y": [(1, 1, cur)] * 4}, "y") is None
-    # 上季行 10 场全满但当季 0 场 → None（陈旧近况不进 λ）
-    assert freq_band.team_strength({"z": [(2, 0, "2526")] * 10}, "z") is None
+    # ② 当季 4 场不足 → 上季同联赛全季 18 场均值 (2.0, 1.0)（开季先验）
+    form2 = {"y": [(2, 1, prev, lg)] * 18 + [(1, 1, cur, lg)] * 4}
+    gf2, ga2 = freq_band.team_strength(form2, "y", lg)
+    assert abs(gf2 - 2.0) < 1e-9 and abs(ga2 - 1.0) < 1e-9
+    # ③ 跨联赛上季行不冒充（升班马上季低级联赛）/ 上季不足 15 / 不传联赛 → None
+    assert freq_band.team_strength({"z": [(2, 1, prev, "germany-2-bundesliga")] * 20
+                                    + [(1, 1, cur, lg)] * 2}, "z", lg) is None
+    assert freq_band.team_strength({"w": [(1, 1, prev, lg)] * 10}, "w", lg) is None
+    assert freq_band.team_strength({"v": [(1, 1, prev, lg)] * 20}, "v") is None
+    assert freq_band.team_strength({"u": [(1, 1, cur, lg)] * 4}, "u") is None
     assert freq_band.team_strength({}, "none") is None
 
 
@@ -61,10 +69,10 @@ def test_build_team_form_alias_dual_keys(tmp_path):
     form = freq_band.build_team_form(fetch_rows_fn=lambda s, d: fd_rows if (d == "D1" and s == "2526") else [],
                                      league_glob=str(tmp_path / "*_matches.json"),
                                      aliases=aliases)
-    assert form["bayernmunich"] == [(3, 0, "2526")]      # fd 名键（原始收录）
-    assert form["bayern"] == [(3, 0, "2526")]            # tid 键（别名对照复制）
-    assert form["bayerleverkusen"] == [(0, 3, "2526")]
-    assert form["leverkusen"] == [(0, 3, "2526")]
+    assert form["bayernmunich"] == [(3, 0, "2526", "germany-bundesliga")]      # fd 名键（原始收录）
+    assert form["bayern"] == [(3, 0, "2526", "germany-bundesliga")]            # tid 键（别名对照复制）
+    assert form["bayerleverkusen"] == [(0, 3, "2526", "germany-bundesliga")]
+    assert form["leverkusen"] == [(0, 3, "2526", "germany-bundesliga")]
 
 
 def test_league_coverage_fd_divs():
@@ -144,13 +152,13 @@ def test_freq_legs_survival_gate_and_shift_flag():
     table = {"italy-serie-a": Counter({"__n": 1000, "1:1": 300, "1:0": 280, "2:0": 5})}  # 2:0 q=0.5%
     zh = {"国际米兰": "inter", "威尼斯": "venezia"}
     legs = freq_band.freq_legs(_odds_day(), table,
-                               {"inter": [(2, 0, freq_band.CURRENT_SEASON)] * 10, "venezia": [(0, 2, freq_band.CURRENT_SEASON)] * 10}, zh,
+                               {"inter": [(2, 0, freq_band.CURRENT_SEASON, "italy-serie-a")] * 10, "venezia": [(0, 2, freq_band.CURRENT_SEASON, "italy-serie-a")] * 10}, zh,
                                band=(10.0, 17.0))
     assert legs == []                                          # 001 唯一带内 2:0 被生存阈拦 → 空手
     table2 = {"italy-serie-a": Counter({"__n": 1000, "1:1": 300, "1:0": 280, "2:1": 150,
                                         "0:1": 120, "1:2": 70, "0:0": 30, "2:0": 50})}
     legs2 = freq_band.freq_legs(_odds_day(), table2,
-                                {"inter": [(1, 1, freq_band.CURRENT_SEASON)] * 10, "venezia": [(1, 1, freq_band.CURRENT_SEASON)] * 10}, zh,
+                                {"inter": [(1, 1, freq_band.CURRENT_SEASON, "italy-serie-a")] * 10, "venezia": [(1, 1, freq_band.CURRENT_SEASON, "italy-serie-a")] * 10}, zh,
                                 band=(10.0, 17.0))
     assert legs2 and any(l["shifted"] for l in legs2)   # 有近况(T=2.27 vs 均值1.76·护栏内) → shifted
 

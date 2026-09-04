@@ -475,38 +475,59 @@ def _filter_onsale(all_days: dict) -> dict:
     return out
 
 
-def _pick_had_legs(odds_day: dict) -> list:
-    """现 build_ticket base 档 HAD 选腿复用：入池=_is_ab + 铁律10 fd锚联赛白名单（#16，
-    2026-09-04 程序化——此前无锚联赛腿按最低赔混入保底胆，09-01 周二十场全灭病根），
-    逐场取最低赔方向，取前 4 腿（=现 base 第一注组 legs_pool[0:4]）；matchNumStr 缺时落
-    code 口径。开发者 sszhang"""
-    legs = []
+def _pick_had_legs(odds_day: dict, zh: dict | None = None,
+                   dc_params_fn=_dc_params, fusion: tuple[float, float] | None = None) -> list:
+    """保底档 HAD 选腿（大哥 2026-09-04 拍板·强胆保底）：had 齐全 + 铁律10 fd 锚白名单 +
+    单腿赔率 ≥1.10（超低赔胆放行——旧 _is_ab ≥1.55 门槛曾结构性排除强胆，保底池只剩
+    中赔三星边缘场：实测全中概率 29%→7%、至少中2关 94%→69%，容错结构+低概率腿两头不靠）；
+    逐场算 p_fused（有 DC 融合/无 DC 市场去水）按 max 概率**降序取前 4**（旧=编号序前4，
+    腿质量由场次排列决定不由信心决定）；每场取概率最高方向。开发者 sszhang"""
+    if zh is None:
+        zh = _zh_map()
+    a, b = fusion if fusion else _load_fusion()
+    pool = []
     for m in odds_day.get("matches", []):
-        if not _is_ab(m):
+        had = m.get("had") or {}
+        if not had or not all(had.get(k) for k in ("h", "d", "a")):
             continue
         if map_league(m.get("league", "")) not in FD_ANCHOR_LEAGUES:
             continue                                   # 铁律10：无锚联赛禁入保底胆
-        h = m["had"]
-        pick = min(h, key=h.get)
-        legs.append({"matchNumStr": m.get("matchNumStr") or m.get("code"),
-                     "match": f'{m.get("home")}-{m.get("away")}',
-                     "play": "had", "pick": {"h": "主胜", "d": "平", "a": "客胜"}[pick], "odds": h[pick]})
-        if len(legs) == 4:
-            break
-    return legs
+        o3 = [float(had["h"]), float(had["d"]), float(had["a"])]
+        if min(o3) < 1.10:
+            continue                                   # 合赔保护：四腿全超低赔则保底回款无意义
+        p_mkt = devig_n(o3)
+        params = dc_params_fn(m, zh)
+        p_f = p_mkt
+        if params:
+            lh, la, rho = params
+            matrix = score_matrix(lh, la, rho)
+            p_dc = [sum(float(matrix[i, j]) for i in range(7) for j in range(7) if i > j),
+                    sum(float(matrix[i, i]) for i in range(7)),
+                    sum(float(matrix[i, j]) for i in range(7) for j in range(7) if i < j)]
+            p_f = fuse(p_dc, p_mkt, a, b)
+        k = max(range(3), key=lambda i: p_f[i])
+        pool.append((p_f[k], o3[k], m, k))
+    pool.sort(key=lambda x: (-x[0], x[1]))             # 概率降序，平手按赔率升序
+    return [{"matchNumStr": m.get("matchNumStr") or m.get("code"),
+             "match": f'{m.get("home")}-{m.get("away")}',
+             "play": "had", "pick": ("主胜", "平", "客胜")[k],
+             "odds": o, "p": round(p, 4)} for p, o, m, k in pool[:4]]
 
 
-def _q_map_for(m: dict, freq_table: dict, form: dict, zh: dict) -> dict:
+def _q_map_for(m: dict, freq_table: dict, form: dict, zh: dict) -> tuple:
     """freq_legs 内部平移链薄封装：map_league→联赛模板→base rates→λ平移→shifted_q。
-    无联赛模板 → {}（pools_card low_conf 路径自兜底全局池）。开发者 sszhang"""
+    返回 (q_map, lam)：lam=None 即纯模板（pools_card 标 pure_template·比分推荐判断力
+    状态可追溯）。无联赛模板 → ({}, None)（pools_card low_conf 路径自兜底全局池）。
+    team_strength 传联赛 ID 启用上季全季先验（2026-09-04 拍板·开季段判断力恢复）。
+    开发者 sszhang"""
     lg = map_league(m.get("league", ""))
     blob = freq_table.get(lg) if lg else None
     if not (blob and blob.get("__n", 0)):
-        return {}
+        return {}, None
     lam = lambdas(league_base_rates(blob),
-                  team_strength(form, _norm(zh.get(m.get("home", ""), ""))),
-                  team_strength(form, _norm(zh.get(m.get("away", ""), ""))))
-    return shifted_q(blob, lam)
+                  team_strength(form, _norm(zh.get(m.get("home", ""), "")), lg),
+                  team_strength(form, _norm(zh.get(m.get("away", ""), "")), lg))
+    return shifted_q(blob, lam), lam
 
 
 def _card_view(m: dict, hafu_map: dict) -> dict:
@@ -612,16 +633,19 @@ def build_three_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form:
     翻身多池引擎(seq轮换) + 彩票 N串1×1倍(2元,合格腿全上4~8,HAD/HHAD)。
     选腿: 保底=现HAD选腿(_pick_had_legs); 翻身=各场 pools_card rec_upset 候选(同场≤1腿,
     按EV降序); 彩票=_lottery_legs(p_fused≥0.55/超低赔通道)。开发者 sszhang"""
-    had_legs = _pick_had_legs(odds_day)
+    had_legs = _pick_had_legs(odds_day, zh=zh)   # 强胆保底（2026-09-04 拍板：p_fused 降序前4）
     bets = [{"legs": list(c), "multiplier": 1} for c in expand_combos(len(had_legs))]
     base = {"cost": 2 * len(bets), "legs": had_legs, "play": "had-4串11", "bets": bets,
             "note": "6×2串1+4×3串1+1×4串1 · 中2关回1注2串1"}
     if len(had_legs) < 4:
         base["degraded"] = True
     hafu_map = hafu_map if hafu_map is not None else _hafu_odds()
-    cards = [pools_card(_card_view(m, hafu_map), _q_map_for(m, freq_table, form, zh),
-                        form, zh, freq_table)
-             for m in odds_day.get("matches", []) if _is_ab(m)]
+    cards = []
+    for m in odds_day.get("matches", []):
+        if not _is_ab(m):
+            continue
+        q_map, lam = _q_map_for(m, freq_table, form, zh)
+        cards.append(pools_card(_card_view(m, hafu_map), q_map, form, zh, freq_table, lam=lam))
     # 翻身: seq 奇=跨池2串1×3 / 偶=跨池4串1×N; 腿=各场 rec_upset(同场≤1; 全分歧场
     # rec_upset=None → 不出翻身腿, freq_band pools_card I1 裁定)
     cand = sorted((c["rec_upset"] for c in cards if c.get("rec_upset")), key=lambda c: -c["ev"])
@@ -696,7 +720,9 @@ def render_ticket(t: dict) -> str:
     for c in t.get("cards") or []:
         if not c.get("candidates"):
             continue
-        fl = ("⚠" if "divergence" in c["flags"] else "") + ("🟡" if "low_conf" in c["flags"] else "")
+        fl = (("⚠" if "divergence" in c["flags"] else "")
+              + ("🟡" if "low_conf" in c["flags"] else "")
+              + ("◇" if "pure_template" in c["flags"] else ""))
         rb, ru = c["rec_base"], c["rec_upset"]
         ru_txt = f"{ru['pool'].upper()} {ru['pick']}@{ru['odds']}" if ru else "—(分歧排除)"
         lines.append(f"│   {c['code']} {fl} 保底→{rb['pool'].upper()} {rb['pick']}(q{rb['q']:.0%})"
