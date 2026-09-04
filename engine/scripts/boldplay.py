@@ -1017,7 +1017,12 @@ def main() -> None:
     latest = sorted(glob.glob(str(ROOT / "engine/cache/score_odds/*.json")))[-1]
     odds = json.load(open(latest, encoding="utf-8"))
     table = build_freq_table()
-    hist = [json.load(open(p, encoding="utf-8")) for p in glob.glob(str(ROOT / "data/03-predictions/*-boldplay.json"))]
+    # -rN 过程快照排除（2026-09-04 审计 P1）：seq 与 monthly_spend/upset_month_spend 口径归一。
+    # 修前 13 文件 seq=14 → 修后 11 文件 seq=12，偶→偶不翻翻身档轮换；未来快照数为奇时
+    # seq 奇偶翻转属预期行为变更，提交须注明。
+    hist = [json.load(open(p, encoding="utf-8"))
+            for p in glob.glob(str(ROOT / "data/03-predictions/*-boldplay.json"))
+            if not is_process_snapshot(Path(p))]
     seq = len(hist) + 1
     spend = monthly_spend(hist, str(date.today())[:7])
     if not budget_gate(spend):

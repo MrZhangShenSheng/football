@@ -99,14 +99,18 @@ def match_team(zh_name: str, zh_map: dict[str, str], espn_home: str, espn_away: 
     return None
 
 
-def fetch_sporttery_day(d: str) -> dict[str, dict]:
-    """体彩 zqsgkj 开奖口径单日赛果 → {场次编号: {score/halfScore/status}}（回填对票主链路）。"""
+def fetch_sporttery_day(d: str) -> dict[str, dict] | None:
+    """体彩 zqsgkj 开奖口径单日赛果 → {场次编号: {score/halfScore/status}}（回填对票主链路）。
+
+    抓取失败返回 None（2026-09-04 审计 P3：原静默 return {} 与"当日无赛事"不可区分，
+    回填结论'不可信'被伪装成'可信的空'）；None 与 {} 由调用方 match_sporttery 折叠进缓存。"""
     from sporttery_fetch import DRAW_RESULT_URL, get_json
     try:
         data = get_json(DRAW_RESULT_URL, {"matchBeginDate": d, "matchEndDate": d, "leagueId": "",
                                           "pageSize": 30, "pageNo": 1, "isFix": 0, "matchPage": 2, "pcOrWap": 1})
-    except Exception:
-        return {}
+    except Exception as e:
+        print(f"[backfill] ⚠ zqsgkj {d} 抓取失败: {type(e).__name__}: {e}", file=sys.stderr)
+        return None
     out = {}
     for m in data.get("value", {}).get("matchResult") or []:
         code = m.get("matchNumStr")
@@ -130,7 +134,9 @@ def match_sporttery(code: str | None, d: str, sp_cache: dict) -> dict | None:
     for delta in (-2, -1, 0, 1, 2, 3):
         dd = (base + timedelta(days=delta)).isoformat()
         if dd not in sp_cache:
-            sp_cache[dd] = fetch_sporttery_day(dd)
+            # None(抓取失败,已stderr告警)与{}(当日无赛事)折叠为{}防同日重复打点；
+            # 失败证据在 stderr，回填"不可信"不再被伪装成"可信的空"
+            sp_cache[dd] = fetch_sporttery_day(dd) or {}
         m = sp_cache[dd].get(code)
         if m:
             return m

@@ -3,6 +3,8 @@ import json, os, time
 from datetime import date, datetime
 import requests
 
+from common import ROOT
+
 UA = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"}
 
 def probe_result(source: str, ok: bool, detail: str) -> dict:
@@ -35,7 +37,8 @@ def main() -> None:
     results = [probe_odds_api(), probe_pinnacle()]
     out = {"ranAt": str(date.today()), "results": results, "verdict": verdict(results),
            "usage": "layer1_live → 层1 用临场价；layer1_prior → 层1 降级为上轮收盘先验"}
-    with open("engine/cache/live_odds_feasibility.json", "w", encoding="utf-8") as f:
+    # ROOT 绝对定位（2026-09-04 审计 P1：相对写在 cwd=engine/scripts 下响亮崩）
+    with open(ROOT / "engine/cache/live_odds_feasibility.json", "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=1)
     print(json.dumps(out, ensure_ascii=False, indent=1))
 

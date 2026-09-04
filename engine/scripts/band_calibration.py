@@ -1,8 +1,10 @@
 """概率带分联赛校准：fd 多季×8联赛，五带回报率 bootstrap CI。开发者 sszhang"""
-import csv, io, random
+import csv, io, random, sys, time
 from collections import defaultdict
 from datetime import date
 import requests
+
+from common import ROOT
 
 UA = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"}
 FD_URL = "https://www.football-data.co.uk/mmz4281/{season}/{div}.csv"
@@ -34,12 +36,43 @@ def judge(band: str, ci_lo: float, baseline: float) -> str:
     if band == "<0.15": return "排除带"
     return "可买带" if ci_lo > baseline else "不差带"
 
+FETCH_FAILURES: list[str] = []   # 网络失败源键 "season:div"（下游护栏读；CSV 真空/未发布不计入）
+
+
 def fetch_rows(season: str, div: str) -> list:
-    try:
-        txt = requests.get(FD_URL.format(season=season, div=div), headers=UA, timeout=20).text
-        return list(csv.DictReader(io.StringIO(txt)))
-    except Exception:
-        return []
+    """fd CSV 单源拉取。网络异常重试 1 次，再败计入 FETCH_FAILURES 并 stderr 警告后返回 []。
+
+    2026-09-04 审计 P0：原 except 静默 return []——实测 10/39 源瞬时抖动被吞（含整季 CSV），
+    score_ev/freq_band/temperature/half_params 四主链模块共享本函数，模板/近况无声缩水。
+    注意：HTTP 300/404（fd 未发布 CSV，如 R1/EC0 新季）requests 不抛异常、DictReader 解出空，
+    属"源真空"常态语义不计失败——只对连接层异常（超时/重置）重试，重试对 3xx 无害但语义不变。
+    """
+    for attempt in (1, 2):
+        try:
+            txt = requests.get(FD_URL.format(season=season, div=div), headers=UA, timeout=20).text
+            return list(csv.DictReader(io.StringIO(txt)))
+        except Exception as e:
+            if attempt == 1:
+                time.sleep(1)
+                continue
+            FETCH_FAILURES.append(f"{season}:{div}")
+            print(f"[band-calib] ⚠ fd {season}:{div} 拉取失败×2: {type(e).__name__}: {e}",
+                  file=sys.stderr)
+            return []
+
+
+def fetch_fail_ratio() -> float | None:
+    """进程内 fd 源网络失败率（主链单进程单轮≈本轮；build_freq_table/build_team_form 护栏用）。"""
+    total = len(SEASONS) * len(DIVS)
+    return len(FETCH_FAILURES) / total if total else None
+
+
+def warn_source_gaps(tag: str, threshold: float = 0.5) -> None:
+    """下游护栏：fd 网络失败率超阈值 stderr 警告（2026-09-04 审计 P0）。"""
+    r = fetch_fail_ratio()
+    if r is not None and r > threshold:
+        print(f"[{tag}] ⚠ fd 源网络失败率 {r:.0%}>{threshold:.0%}——数据残缺，本轮结果慎用",
+              file=sys.stderr)
 
 def main() -> None:
     import json
@@ -67,7 +100,8 @@ def main() -> None:
             blob[band] = {"n": len(rets), "ret": round(mean, 4),
                           "ci95": [round(lo, 4), round(hi, 4)], "verdict": judge(band, lo, baseline)}
         out["by_league"][lg] = blob
-    with open("data/04-summaries/band_calibration.json", "w", encoding="utf-8") as f:
+    # ROOT 绝对定位（2026-09-04 审计 P1：相对写在 cwd=engine/scripts 下响亮崩）
+    with open(ROOT / "data/04-summaries/band_calibration.json", "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=1)
     print(f"[band-calibration] baseline={baseline:.4f} → data/04-summaries/band_calibration.json")
 

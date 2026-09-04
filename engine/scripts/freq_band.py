@@ -5,7 +5,7 @@ import glob, json, math, re
 from collections import Counter, defaultdict
 from datetime import date
 from pathlib import Path
-from band_calibration import DIVS, SEASONS, fetch_rows
+from band_calibration import DIVS, SEASONS, fetch_rows, warn_source_gaps
 from common import ROOT
 from score_ev import map_league
 
@@ -93,6 +93,7 @@ def build_team_form(fetch_rows_fn=fetch_rows,
                 form[_norm(m["away"])].append((int(m["ag"]), int(m["hg"])))
             except (KeyError, ValueError, TypeError):
                 continue
+    warn_source_gaps("freq-band 球队近况")   # 2026-09-04 审计 P0：fd 网络断粮护栏
     return dict(form)
 
 
