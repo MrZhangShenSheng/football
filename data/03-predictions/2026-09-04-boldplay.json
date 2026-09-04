@@ -1,7 +1,7 @@
 {
  "structure": "new",
  "date": "2026-09-04",
- "seq": 13,
+ "seq": 12,
  "tiers": {
   "base": {
    "cost": 22,
@@ -128,8 +128,8 @@
    "note": "6×2串1+4×3串1+1×4串1 · 中2关回1注2串1"
   },
   "upset": {
-   "shape": "pool-2x1x3",
-   "cost": 6,
+   "shape": "pool-4x1",
+   "cost": 2,
    "legs": [
     {
      "matchNumStr": "周日003",
@@ -166,50 +166,21 @@
      "odds": 13.0,
      "q": 0.0888,
      "ev": 0.1544
-    },
-    {
-     "matchNumStr": "周六004",
-     "match": "纽卡斯尔 vs 伯恩茅斯",
-     "play": "crs",
-     "pick": "0:1",
-     "odds": 14.0,
-     "q": 0.0821,
-     "ev": 0.1494
-    },
-    {
-     "matchNumStr": "周六002",
-     "match": "山形山神 vs 甲府风林",
-     "play": "hafu",
-     "pick": "aa",
-     "odds": 5.7,
-     "q": 0.1876,
-     "ev": 0.0693
     }
    ],
+   "multiplier": 1,
    "bets": [
     {
      "legs": [
       0,
-      1
-     ],
-     "multiplier": 1
-    },
-    {
-     "legs": [
+      1,
       2,
       3
      ],
      "multiplier": 1
-    },
-    {
-     "legs": [
-      4,
-      5
-     ],
-     "multiplier": 1
     }
    ],
-   "note": "3注跨池2串1(同场≤1腿)"
+   "note": "跨池4串1(木桶≤4关)"
   },
   "lottery": {
    "shape": "lottery-8x1",
@@ -377,19 +348,10 @@
      "matchNumStr": "周六008",
      "match": "不来梅-莱红牛",
      "play": "had",
-     "pick": "主胜",
-     "p_fused": 0.1752,
-     "p_mkt": 0.2294,
-     "diff_pp": 5.4
-    },
-    {
-     "matchNumStr": "周六008",
-     "match": "不来梅-莱红牛",
-     "play": "had",
      "pick": "客胜",
-     "p_fused": 0.6066,
-     "p_mkt": 0.5465,
-     "diff_pp": 6.0
+     "p_fused": 0.6134,
+     "p_mkt": 0.5571,
+     "diff_pp": 5.6
     },
     {
      "matchNumStr": "周六008",
@@ -619,7 +581,7 @@
    ]
   }
  },
- "totalCost": 30,
+ "totalCost": 26,
  "cards": [
   {
    "code": "周六001",
@@ -3148,14 +3110,12 @@
  "ranAt": "2026-09-04",
  "approved": false,
  "warnings": [
-  "dc_divergence_blocked: 彩票档熔断34选项(|p_fused−p_mkt|≥5%)——周六006主胜5.3pp、周六006客胜6.1pp、周六006让球客胜6.2pp、周六007主胜9.8pp、周六007客胜9.6pp、周六007让球主胜6.7pp、周六007让球客胜10.8pp、周六008主胜5.4pp"
+  "dc_divergence_blocked: 彩票档熔断33选项(|p_fused−p_mkt|≥5%)——周六006主胜5.3pp、周六006客胜6.1pp、周六006让球客胜6.2pp、周六007主胜9.8pp、周六007客胜9.6pp、周六007让球主胜6.7pp、周六007让球客胜10.8pp、周六008客胜5.6pp"
  ],
+ "method": "freq",
  "dataAsOf": "2026-09-04",
  "matchdayFilter": {
-  "include": [
-   "周六",
-   "周日"
-  ],
+  "include": [],
   "exclude": [
    "周五"
   ],
