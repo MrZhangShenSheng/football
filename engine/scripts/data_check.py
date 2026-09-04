@@ -17,7 +17,10 @@ import sys
 from datetime import date, datetime
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).parent))
+
 from common import log, ROOT, TEAMS_DIR
+from score_ev import map_league   # P2-9：体彩中文名→英文ID 单一映射源（修 10 联赛 missing 误报）
 
 LEAGUES_DIR = ROOT / "data" / "00-leagues"
 TEAM_STALE_DAYS = 7
@@ -52,7 +55,11 @@ def team_status(team_id: str, league: str) -> dict:
 
 
 def league_status(league: str) -> dict:
-    p = LEAGUES_DIR / f"{league}.json"
+    # P2-9（2026-09-04 拍板）：体彩中文名（英超）→ 英文 ID（england-premier）经 map_league
+    # 解析后再查画像文件——此前中文名直查致 fd 联赛全量 missing 误报，淹没真缺口；
+    # 无映射联赛（日职/韩职等）维持原名直查（有画像即 ready，无则真 missing）。
+    lg_id = map_league(league) or league
+    p = LEAGUES_DIR / f"{lg_id}.json"
     if not p.exists():
         return {"status": "missing"}
     data = json.loads(p.read_text(encoding="utf-8"))

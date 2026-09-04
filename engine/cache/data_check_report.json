@@ -2,7 +2,10 @@
   "checkedAt": "2026-09-04",
   "leagues": {
     "日职": {
-      "status": "missing"
+      "status": "ready",
+      "roundsPlayed": 3,
+      "standingsSource": "espn",
+      "fdCovered": false
     },
     "日乙": {
       "status": "missing"
@@ -11,47 +14,54 @@
       "status": "missing"
     },
     "英超": {
-      "status": "missing"
+      "status": "ready",
+      "roundsPlayed": 61,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
     },
     "意甲": {
-      "status": "missing"
+      "status": "ready",
+      "roundsPlayed": 2,
+      "standingsSource": "espn",
+      "fdCovered": true
     },
     "德甲": {
-      "status": "missing"
+      "status": "ready",
+      "roundsPlayed": 1,
+      "standingsSource": "espn",
+      "fdCovered": true
     },
     "西甲": {
-      "status": "missing"
+      "status": "ready",
+      "roundsPlayed": 4,
+      "standingsSource": "espn",
+      "fdCovered": true
     },
     "法甲": {
-      "status": "missing"
+      "status": "ready",
+      "roundsPlayed": 3,
+      "standingsSource": "espn",
+      "fdCovered": true
     },
     "葡超": {
-      "status": "missing"
+      "status": "ready",
+      "roundsPlayed": 4,
+      "standingsSource": "espn",
+      "fdCovered": true
     },
     "荷甲": {
-      "status": "missing"
+      "status": "ready",
+      "roundsPlayed": 4,
+      "standingsSource": "espn",
+      "fdCovered": true
     }
   },
   "missingLeagues": [
-    "日职",
     "日乙",
-    "韩职",
-    "英超",
-    "意甲",
-    "德甲",
-    "西甲",
-    "法甲",
-    "葡超",
-    "荷甲"
+    "韩职"
   ],
   "staleLeagues": [],
-  "missingAlias": [
-    {
-      "team": "京都",
-      "league": "日职",
-      "match": "东京FC vs 京都"
-    }
-  ],
+  "missingAlias": [],
   "notReadyTeams": [
     {
       "team": "福冈黄蜂",
@@ -454,6 +464,12 @@
       "ageDays": 14
     },
     {
+      "team": "京都",
+      "teamId": "kyoto-sanga",
+      "league": "japan",
+      "status": "missing"
+    },
+    {
       "team": "海伦芬",
       "teamId": "heerenveen",
       "league": "netherlands-eredivisie",
@@ -663,7 +679,7 @@
     }
   ],
   "readyCount": {
-    "leagues": 0,
-    "teamsKnown": 441
+    "leagues": 8,
+    "teamsKnown": 442
   }
 }

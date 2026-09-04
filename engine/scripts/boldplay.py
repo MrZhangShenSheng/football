@@ -13,6 +13,17 @@ from dc_predict import (score_matrix, ttg_dist, hafu_approx, devig as devig_n,
                         reweight_matrix, reweight_hafu, temper, load_half_params,
                         load_temperature, fuse)
 from score_ev import build_freq_table, ev_scan, map_league
+from odds_fetch import LEAGUE_CODES   # fd 收盘锚联赛表（铁律10 白名单单一来源，禁魔法值散布）
+
+# fd 收盘锚联赛（Pinnacle 收盘价可得的联赛全集=odds_fetch 刷新域）：LEAGUE_CODES 13 联赛
+# + 苏超/欧冠/欧罗巴三杯赛代码（fd CSV 以原代码命名，odds_SC0/EC0/EL0_*）。铁律10：保底
+# 胆必须是 fd 锚场次——map_league 无映射的联赛（日职/韩职/挪超/沙职/美职等）一律不入保底池。
+# ⚠ 桥接条目（#17 挂账）：map_league 与 LEAGUE_CODES 双源 ID 不一致——德乙
+# germany-2-bundesliga vs germany-bundesliga2、葡超 portugal-primeira vs portugal-liga，
+# 白名单须含 map_league 空间的变体 ID，否则德乙/葡超场被误滤（selftest 实证）；统一两套
+# ID 体系是独立工程，修前以并集兜底。
+FD_ANCHOR_LEAGUES = frozenset(LEAGUE_CODES.values()) | {
+    "SC0", "EC0", "EL0", "germany-2-bundesliga", "portugal-primeira"}
 from freq_band import (build_team_form, freq_legs, pools_card, shifted_q, league_base_rates,
                        lambdas, team_strength, _norm)
 
@@ -168,9 +179,23 @@ def _live_day(cache_dir: Path = CACHE_DIR) -> dict:
     return {"matches": matches, "fetchedAt": d.get("fetchedAt") or ""}
 
 
+_ALIAS_SRC_CACHE: dict | None = None   # tid → {fd, espn} 惰性缓存（三级匹配第2/3级数据源）
+
+
+def _alias_srcs() -> dict:
+    """load_aliases 惰性一次：tid → {fd, espn} 源名（P1-4 三级匹配数据底座）。开发者 sszhang"""
+    global _ALIAS_SRC_CACHE
+    if _ALIAS_SRC_CACHE is None:
+        _ALIAS_SRC_CACHE = {tid: {"fd": e.get("fd"), "espn": e.get("espn")}
+                            for tid, e in load_aliases().items()}
+    return _ALIAS_SRC_CACHE
+
+
 def _dc_params(m: dict, zh: dict, cache_dir: Path = CACHE_DIR):
-    """体彩场次 → (lh, la, rho) | None。中文→tid→DC缓存宽松匹配（去连字符/空格小写比较，
-    兼容本地库规范ID键'al-ahli'与fd原始名键'Aston Villa'两种缓存）。"""
+    """体彩场次 → (lh, la, rho) | None。中文→tid→DC缓存三级匹配（P1-4，2026-09-04 拍板）：
+    ① tid 规范ID ② _aliases 的 fd 原始名（"Nott'm Forest"/"Ath Madrid" 简写——tid 宽松匹配
+    曾漏 12 场）③ espn 名；norm 去连字符/空格/撇号/点号小写比较，兼容本地库规范ID键
+    'al-ahli' 与 fd 原始名键 'Aston Villa' 两种缓存。开发者 sszhang"""
     lg = map_league(m.get("league", ""))
     if not lg:
         return None
@@ -178,15 +203,16 @@ def _dc_params(m: dict, zh: dict, cache_dir: Path = CACHE_DIR):
     if not p.exists():
         return None
     dc = json.loads(p.read_text(encoding="utf-8"))
-    norm = lambda s: str(s).lower().replace("-", "").replace(" ", "")
+    norm = lambda s: str(s).lower().replace("-", "").replace(" ", "").replace("'", "").replace(".", "")
 
     def find(zh_name):
         tid = zh.get(zh_name)
         if not tid:
             return None
-        nt = norm(tid)
+        srcs = _alias_srcs().get(tid) or {}
+        cands = {norm(c) for c in (tid, srcs.get("fd"), srcs.get("espn")) if c}
         for t in dc["teams"]:
-            if norm(t) == nt:
+            if norm(t) in cands:
                 return t
         return None
 
@@ -450,12 +476,16 @@ def _filter_onsale(all_days: dict) -> dict:
 
 
 def _pick_had_legs(odds_day: dict) -> list:
-    """现 build_ticket base 档 HAD 选腿复用（行为不变）：入池=_is_ab，逐场取最低赔方向，
-    取前 4 腿（=现 base 第一注组 legs_pool[0:4]）；matchNumStr 缺时落 code 口径。开发者 sszhang"""
+    """现 build_ticket base 档 HAD 选腿复用：入池=_is_ab + 铁律10 fd锚联赛白名单（#16，
+    2026-09-04 程序化——此前无锚联赛腿按最低赔混入保底胆，09-01 周二十场全灭病根），
+    逐场取最低赔方向，取前 4 腿（=现 base 第一注组 legs_pool[0:4]）；matchNumStr 缺时落
+    code 口径。开发者 sszhang"""
     legs = []
     for m in odds_day.get("matches", []):
         if not _is_ab(m):
             continue
+        if map_league(m.get("league", "")) not in FD_ANCHOR_LEAGUES:
+            continue                                   # 铁律10：无锚联赛禁入保底胆
         h = m["had"]
         pick = min(h, key=h.get)
         legs.append({"matchNumStr": m.get("matchNumStr") or m.get("code"),
@@ -856,22 +886,25 @@ def _selftest_three_tier():
         {"code": "周六007", "league": "日职", "home": "东京绿茵", "away": "冈山绿雉",
          "had": {"h": 1.62, "d": 3.7, "a": 4.4},
          "crs": {"1:1": 8.0}, "ttg": {"s3": 3.55}, "hafu": {"dd": 6.5, "hd": 9.0}},
-        {"code": "周六012", "league": "瑞超", "home": "哥德堡", "away": "天狼星",
+        {"code": "周六012", "league": "法乙", "home": "哥德堡", "away": "天狼星",
          "had": {"h": 2.05, "d": 3.3, "a": 3.2},
          "crs": {"1:1": 8.0}, "ttg": {"s3": 3.55}, "hafu": {"dd": 7.0}},
-        {"code": "周日009", "league": "挪超", "home": "维京", "away": "奥勒松",
+        {"code": "周日009", "league": "意乙", "home": "维京", "away": "奥勒松",
          "had": {"h": 1.68, "d": 3.8, "a": 3.9},
          "crs": {"1:1": 8.0}, "ttg": {"s3": 3.55}, "hafu": {"dd": 6.8}},
-        {"code": "周日015", "league": "韩职", "home": "全北现代", "away": "大田市民",
+        {"code": "周日015", "league": "英冠", "home": "全北现代", "away": "大田市民",
          "had": {"h": 1.58, "d": 3.9, "a": 4.2},
          "crs": {"1:1": 8.0}, "ttg": {"s3": 3.55}, "hafu": {"dd": 7.2}},
     ]}
+    # #16 白名单后 fixture 调整（2026-09-04）：瑞超/挪超/韩职→法乙/意乙/英冠（fd 锚凑
+    # 保底 4 腿），留芬超/日职 2 场作"无锚被滤"覆盖；队名保留（zh={} 无 DC 解析）。
     ft = {"germany-2-bundesliga": Counter({"1:1": 120, "2:2": 40, "__n": 200})}  # 德乙模板 n=200 免 low_conf
     t = build_three_tier(fake_day, ft, seq=9, zh={}, form={})
     assert t["structure"] == "new"
     base = t["tiers"]["base"]
     assert base["cost"] == 22 and len(base["legs"]) == 4            # 4串11=22元
     assert base["play"] == "had-4串11"
+    assert not ({"周一002", "周六007"} & {l["matchNumStr"] for l in base["legs"]})  # 铁律10：无锚腿不入保底
     up = t["tiers"]["upset"]
     assert up["shape"] in ("pool-2x1x3", "pool-4x1")               # seq奇偶轮换
     codes = [l["matchNumStr"] for l in up["legs"]]
