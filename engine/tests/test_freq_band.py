@@ -72,13 +72,18 @@ def test_league_coverage_fd_divs():
 
 
 def test_lambdas_multiplicative_and_clamp():
-    """λh=主进×客失/模板主场场均；λa 对称；缺强度/零基准→None；clamp 生效。"""
+    """λh=主进×客失/混合基准（ca8a069 2026-09-03 分母口径修复后语义，旧单侧基准断言随之废弃）；
+    缺强度/零基准→None；clamp 上下限生效；T轴护栏(|T−模板均值|>40%)→None 降级纯模板。"""
     base = (1.5, 1.0)
-    assert freq_band.lambdas(base, (2.0, 0.8), (0.9, 1.5)) == (2.0 * 1.5 / 1.5, 0.9 * 0.8 / 1.0)
+    mixed = (1.5 + 1.0) / 2
+    assert freq_band.lambdas(base, (2.0, 0.8), (0.9, 1.5)) == (2.0 * 1.5 / mixed, 0.9 * 0.8 / mixed)
     assert freq_band.lambdas(base, None, (0.9, 1.5)) is None      # 近况缺失降级
     assert freq_band.lambdas((0.0, 1.0), (2.0, 1.0), (1.0, 1.0)) is None  # 空基准
-    assert freq_band.lambdas(base, (9.0, 0.1), (0.2, 9.0))[0] <= freq_band.LAMBDA_CLAMP[1]
-    assert freq_band.lambdas(base, (0.05, 0.1), (0.05, 0.1)) == (freq_band.LAMBDA_CLAMP[0],) * 2
+    hi = freq_band.lambdas((2.5, 2.0), (5.0, 0.5), (0.5, 3.0))    # 高分模板域：λh越上限
+    assert hi[0] == freq_band.LAMBDA_CLAMP[1] and hi[1] == freq_band.LAMBDA_CLAMP[0]
+    lo = freq_band.lambdas((0.35, 0.30), (0.05, 0.1), (0.05, 0.1))  # 低分模板域：λ双双触底
+    assert lo == (freq_band.LAMBDA_CLAMP[0],) * 2
+    assert freq_band.lambdas(base, (9.0, 0.1), (0.2, 9.0)) is None  # T轴护栏拦极端平移(T偏88%)
 
 
 def _mini_blob():
@@ -127,18 +132,21 @@ def test_freq_legs_three_gates():
 
 
 def test_freq_legs_survival_gate_and_shift_flag():
-    """q<1% 的带内比分出局；有近况输入 → shifted 标记。"""
+    """q<1% 的带内比分出局；有近况输入且过T轴护栏 → shifted 标记。
+    （ca8a069 λ混合分母+T轴护栏后：极端近况(2:0全胜)被护栏降级纯模板，
+    shifted 断言改用温和对称近况+更真实模板基准。）"""
     table = {"italy-serie-a": Counter({"__n": 1000, "1:1": 300, "1:0": 280, "2:0": 5})}  # 2:0 q=0.5%
     zh = {"国际米兰": "inter", "威尼斯": "venezia"}
     legs = freq_band.freq_legs(_odds_day(), table,
                                {"inter": [(2, 0)] * 10, "venezia": [(0, 2)] * 10}, zh,
                                band=(10.0, 17.0))
     assert legs == []                                          # 001 唯一带内 2:0 被生存阈拦 → 空手
-    table2 = {"italy-serie-a": Counter({"__n": 1000, "1:1": 300, "1:0": 280, "2:0": 50})}
+    table2 = {"italy-serie-a": Counter({"__n": 1000, "1:1": 300, "1:0": 280, "2:1": 150,
+                                        "0:1": 120, "1:2": 70, "0:0": 30, "2:0": 50})}
     legs2 = freq_band.freq_legs(_odds_day(), table2,
-                                {"inter": [(2, 0)] * 10, "venezia": [(0, 2)] * 10}, zh,
+                                {"inter": [(1, 1)] * 10, "venezia": [(1, 1)] * 10}, zh,
                                 band=(10.0, 17.0))
-    assert legs2 and legs2[0]["shifted"] is True
+    assert legs2 and any(l["shifted"] for l in legs2)   # 有近况(T=2.27 vs 均值1.76·护栏内) → shifted
 
 
 def test_build_ticket_freq_default_and_gate():
