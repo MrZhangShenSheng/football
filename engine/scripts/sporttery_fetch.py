@@ -356,6 +356,7 @@ def cmd_dump_odds(outdir: str = "engine/cache/score_odds") -> str:
                      "matches": [extract_odds(m) for m in day.get("subMatchList", [])]})
     out = {"fetchedAt": str(date.today()), "source": "sporttery getMatchCalculatorV1",
            "matchDays": days}
+    outdir = str(ROOT / outdir) if not Path(outdir).is_absolute() else outdir  # 锚定仓库根（run.py sh cwd=scripts/ 致嵌套路径 09-05 实证）
     Path(outdir).mkdir(parents=True, exist_ok=True)
     path = f"{outdir}/{date.today()}.json"
     with open(path, "w", encoding="utf-8") as f:
