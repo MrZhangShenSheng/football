@@ -1,0 +1,74 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>阶段1.5 大样本历史回放报告 · 窗口偏差检验 · 2026-09-05</title>
+<style>
+  :root{--bg:#101418;--card:#1a2028;--line:#2a323d;--tx:#d8dee6;--dim:#8a94a0;--ok:#4caf7d;--bad:#e05252;--warn:#e0a84f;--acc:#5b9bd5}
+  body{background:var(--bg);color:var(--tx);font:14px/1.7 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;margin:0;padding:28px}
+  .wrap{max-width:1060px;margin:0 auto}
+  h1{font-size:22px;margin:0 0 4px}h2{font-size:17px;margin:30px 0 10px;color:var(--acc);border-bottom:1px solid var(--line);padding-bottom:6px}
+  .sub{color:var(--dim);font-size:12px;margin-bottom:16px}
+  table{width:100%;border-collapse:collapse;background:var(--card);border-radius:8px;overflow:hidden;font-size:13px;margin:10px 0}
+  th,td{padding:7px 11px;border-bottom:1px solid var(--line);text-align:left}
+  th{background:#202833;color:var(--dim);font-weight:500;font-size:12px}
+  .ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}.dim{color:var(--dim)}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:12px 0}
+  code{background:#202833;padding:1px 6px;border-radius:4px;font-size:12px}
+  .foot{margin-top:28px;color:var(--dim);font-size:11px;border-top:1px solid var(--line);padding-top:12px}
+  .pos{color:var(--ok)}.neg{color:var(--bad)}
+</style></head><body><div class="wrap">
+<svg style="display:none"><symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3v18M5 21h14M3 7l4 6H-1zM21 7l4 6h-8zM3 7h18" fill="none" stroke="currentColor" stroke-width="2" transform="translate(1,0) scale(0.9)"/></symbol><symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3L1 21h22L12 3z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 10v5M12 18v.5" stroke="currentColor" stroke-width="2"/></symbol><symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V4M4 20h16M8 16v-5M12 16V8M16 16v-8M20 16V6" fill="none" stroke="currentColor" stroke-width="2"/></symbol></svg>
+
+<h1><svg width="22" height="22" style="color:var(--acc)"><use href="#i-scale"/></svg> 阶段1.5 大样本历史回放 · 窗口偏差检验</h1>
+<div class="sub">spec 变更#15 · 决策：大哥 · 2026-09-05 · 三口径：13轮体彩 / fd-pin 321轮（2425~2627三季8062腿，低抽水~2.5%）/ 体彩开奖历史65轮（6~8月回采619腿，真实可买价含抽水~12.9%）</div>
+
+<div class="panel"><svg width="15" height="15" style="color:var(--warn)"><use href="#i-warn"/></svg> <b>一句话结论</b>：13 轮中期报告的全部正收益头条均为<b>窗口伪影</b>；大样本上 ROI 无一显著为正（两口径 vs_market 严锚均仅"胶着-三选2串1"过闸且它是净亏方案）；<b>跨口径稳健的只有"回款率"（形状天性）与"负向结论"（胶着复式/ev族）</b>。</div>
+
+<h2>一、三口径全景对照（窗口偏差检验主表）</h2>
+<table>
+<tr><th>方案</th><th>13轮体彩 ROI</th><th>fd-pin 321轮</th><th>体彩历史65轮</th><th>回款率(fd/st)</th><th>判定</th></tr>
+<tr><td><b>8串1</b></td><td class="pos">+357.7%</td><td class="neg">−1.3%</td><td class="neg"><b>−100%</b></td><td class="dim">12%/0%</td><td class="bad">窗口伪影·完全反转</td></tr>
+<tr><td>4串1</td><td class="pos">+90.0%</td><td class="pos">+10.9%</td><td class="pos">+18.7%</td><td class="dim">41%/41%</td><td>方向存活·幅度收敛80pp·CI跨0</td></tr>
+<tr><td>4串11</td><td class="pos">+52.5%</td><td class="pos">+3.6%</td><td class="pos">+4.8%</td><td class="dim">95%/97%</td><td>方向存活·近零</td></tr>
+<tr><td>4串1+2双选</td><td class="pos">+29.8%</td><td class="pos">+1.4%</td><td class="neg">−18.2%</td><td class="dim">47%/43%</td><td class="bad">体彩口径反转负</td></tr>
+<tr><td>全2关-6</td><td class="pos">+24.8%</td><td class="pos">+1.6%</td><td class="neg">−11.1%</td><td class="dim">98%/98%</td><td class="bad">fd近零·体彩负（抽水吃掉薄利）</td></tr>
+<tr><td>全2关-4</td><td class="pos">+15.5%</td><td class="pos">+3.3%</td><td class="neg">−17.3%</td><td class="dim">89%/85%</td><td class="bad">同上</td></tr>
+<tr><td>胶着-三选2串1</td><td class="neg">−18.8%</td><td class="neg">−7.0%</td><td class="neg">−15.1%</td><td class="dim">100%/100%</td><td class="ok">负向三口径稳健（命题①持续证伪）</td></tr>
+<tr><td>胶着-双选全2关</td><td class="neg">−37.9%</td><td class="neg">−5.7%</td><td class="neg">−20.7%</td><td class="dim">66%/61%</td><td class="ok">负向稳健</td></tr>
+<tr><td>ev-8串1</td><td class="neg">−100%</td><td class="neg">−100%</td><td class="neg">−100%</td><td class="dim">0%/0%</td><td class="ok">三口径全灭（命题④证伪强化）</td></tr>
+</table>
+
+<h2>二、窗口偏差检验专项（大哥命题的直接回答）</h2>
+<div class="panel">
+<b>主案例 8串1</b>：13 轮 +357.7%（n=5，其中 3 轮 8/8 全中）→ fd 321 轮 −1.3%（n=124）→ 体彩 65 轮 <b>−100%（零全中）</b>。13 轮窗口恰逢模型 top 腿 81% 超常命中+强队扎堆月——fd 的 in13/out13 子层（+55% vs −3%）证明<b>窗口本身即热段</b>，热段之外 8串1 就是全灭彩票。<br><br>
+<b>逐方案分类</b>：窗口伪影组（8串1/4串1+2双选/全2关系）= 13轮正→大样本归零或反转；幅度收敛组（4串1/4串11）= 方向存活但 CI 全跨 0；跨季摆动 ±40pt（fd 分层）= 小窗口 ROI 不可作票型结论。<br>
+<b>13 轮结论存活清单</b>：①回款率排序（4串11≈95-97% &gt; 全2关≈85-98% &gt; 串1系≈0-47%）三口径一致——<b>回款率是形状天性，可预测可跨口径</b>；②胶着复式负向、ev 族负向——稳健。
+</div>
+
+<h2>三、双口径洞察：抽水墙</h2>
+<div class="panel">
+fd-pin（抽水~2.5%）下全部 HAD 形状 ROI ∈ [−7%, +11%] 且 CI 跨 0——<b>无抽水世界里没有免费午餐，Pinnacle 收盘市场高度有效</b>；体彩（抽水 12.9%）下同形状普遍再跌 10~20pp（全2关 +1.6%→−11.1%）——<b>抽水就是那道墙</b>。"每轮不空手"的体验（全2关 98% 回款率）在体彩口径的真实代价 = 每轮 −11%~−17% ROI。4串1 是体彩口径唯一正（+18.7%，n=65 CI 跨 0 不显著）——阶段 2 paper trading 的重点观察对象。
+</div>
+
+<h2>四、门槛现状（严锚=vs market，spec 严格档）</h2>
+<table>
+<tr><th>口径</th><th>vs_market 过闸</th><th>vs_random 过闸</th><th>判读</th></tr>
+<tr><td>fd 321轮</td><td>胶着-三选2串1（净亏−7%·"显著没那么差"）</td><td>9 方案</td><td rowspan="2">严锚实质 0 过闸（过闸者是负 ROI 的相对优）——<b>无方案证明稳定跑赢市场</b>；random 松锚不可作门槛（Task6 已裁定）</td></tr>
+<tr><td>体彩 65轮</td><td>胶着-三选2串1（−15.1%）</td><td>5 方案</td></tr>
+</table>
+
+<h2>五、口径警示</h2>
+<div class="panel">
+<ul>
+<li><b>ROI 不可跨口径横比</b>：fd=pin 成交（低抽水验形状纯效应）/ 体彩=真实可买价（验实战回报）——本报告所有跨口径比较只取<b>方向</b>，不比幅度</li>
+<li>fd in13/out13 交集仅 10 轮（子层 n=4-10 只作方向参考）；体彩历史单源（无双源交叉，gate_strict 不适用）；C/D 族（TTG/CRS）在两历史源均无池价→跳过（体彩存档 08-24 起的 12 轮仍是其唯一口径）</li>
+<li>ev 族在去水口径下三向 EV≡常数，argmax 退化浮点噪声（fd 报告疑虑②）——ev 系数字仅形状参考不作结论</li>
+<li>本报告为<b>中期参考，不作优化依据</b>（spec §六）；判定仍以阶段 3 三条件为准（大样本=条件A的样本量达标：fd 321 轮 ≫ 30 轮门槛，但时间外验证条件 B 仍需 paper trading）</li>
+</ul>
+</div>
+
+<h2>六、快照指纹与复现</h2>
+<div class="panel">
+fd：<code>6ccb61a5:fd:9d37785e</code>（321轮/8062腿，双跑 md5 一致）· 体彩：<code>6ccb61a5:st:1bddc138</code>（65轮/619腿，双跑 md5 <code>eaa86159…</code> 一致）· 结果文件 <code>results/fd_replay_k50.json</code> + <code>st_replay_k50.json</code> + <code>three_caliber.json</code>（scratch 归档）· 选腿口径=市场去水（历史无模型，消除"模型超常期"混杂）· seed 规则同 v2（sha256(轮日期+spec名)）· 回采数据 20 文件已落 engine/cache/sporttery_results_2026-0[678]*.json（待晚间 verify 一并 commit）
+</div>
+
+<div class="foot">产出链：data_fd.py/data_st.py 适配器（去重：fd 763 行/体彩周边界重复）→ run_fd_replay.py/run_st_replay.py（复用 shapes/baseline/stats 零重造）→ 三口径对照 → 本报告 · 开发者 sszhang · 数据截至 2026-09-05 15:50</div>
+</div></body></html>
