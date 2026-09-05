@@ -41,6 +41,10 @@
       {
         "date": "2026-09-04",
         "event": "单轮三票合计72元,超roundRedline(30元)2.4倍:T020保底30元(4串11改4串1×15倍·容错弃用)+T021彩票20元(1倍→10倍)+T022翻身22元(4串1改4串11);腿全=系统同推,选股层无偏离,超的是金额不是选股;🟡已警示未拦截;T022 agreement勘误:classify误判excluded(方向排除≠玩法排除,boldplay翻身腿同推)"
+      },
+      {
+        "date": "2026-09-05",
+        "event": "T021登记勘误(系统侧事故):初登按彩票档L臆断票面,大哥报真实票面后修正——4/8腿为系统排除场(003/001无锚+010/012胶着,含3条HHAD),agreement=4agree+4excluded;排除场照买历史0%命中(T004/5/6),🚫已红字提示"
       }
     ]
   },
@@ -1977,17 +1981,17 @@
       "id": "T021",
       "source": "manual",
       "placedAt": "2026-09-04",
-      "placedAtNote": "大哥口述'八串一买了20元'(09-05报票);与T019(周五8串×5倍=10元已结算)独立,本票周六日场次",
+      "placedAtNote": "09-05大哥报票面勘误:原按彩票档L臆断8腿登记错误(事故级·git留痕),真实票面=4同推+4自选混串;赔率=出票价(合赔23.039×20=460.8与票面理论奖金吻合)",
       "stake": 20,
       "unitStake": 2,
       "units": 1,
       "multiplier": 10,
-      "shape": "HAD 8串1×10倍",
+      "shape": "HAD/HHAD 混串8串1×10倍",
       "matchDays": [
         "2026-09-05",
         "2026-09-06"
       ],
-      "origin": "方案转正:09-04彩票档L(8串1×1倍=2元)→实买×10倍;大哥拍板",
+      "origin": "混合票:4腿系统同推(017/013/016/022=彩票档L腿)+4腿大哥自选(003/001/010/012,均为系统排除场·含3条HHAD让球腿)",
       "combos": "1×8串1",
       "bets": [
         {
@@ -2006,26 +2010,15 @@
       ],
       "legs": [
         {
-          "code": "周日013",
-          "league": "西甲(R4)",
-          "match": "巴伦西亚 vs 巴萨",
-          "market": "HAD",
-          "pick": "客胜",
-          "odds": 1.18,
+          "code": "周六003",
+          "league": "韩职",
+          "match": "济州SK vs 蔚山现代",
+          "market": "HHAD",
+          "pick": "主胜(+1)",
+          "odds": 1.6,
           "result": "pending",
-          "agreement": "agree",
-          "note": "系统同推-彩票档L①;出票=方案冻结价"
-        },
-        {
-          "code": "周六023",
-          "league": "葡超(R5)",
-          "match": "马里迪莫 vs 本菲卡",
-          "market": "HAD",
-          "pick": "客胜",
-          "odds": 1.14,
-          "result": "pending",
-          "agreement": "agree",
-          "note": "系统同推-彩票档L②;出票=方案冻结价"
+          "agreement": "excluded",
+          "note": "系统排除:无锚+极差12pp胶着(韩职·铁律10无锚联赛);大哥自选让球腿"
         },
         {
           "code": "周六017",
@@ -2036,29 +2029,51 @@
           "odds": 1.33,
           "result": "pending",
           "agreement": "agree",
-          "note": "系统同推-彩票档L③;出票=方案冻结价"
+          "note": "系统同推-保底档B胆3/彩票档L③;p65.4%⭐4踩线"
         },
         {
-          "code": "周六011",
+          "code": "周日001",
+          "league": "日职",
+          "match": "鹿岛鹿角 vs 浦和红钻",
+          "market": "HAD",
+          "pick": "主胜",
+          "odds": 1.69,
+          "result": "pending",
+          "agreement": "excluded",
+          "note": "系统排除:无锚联赛(日职·铁律10);大哥自选;DC看主63%vs市场55%"
+        },
+        {
+          "code": "周日010",
+          "league": "意甲(R3)",
+          "match": "帕尔马 vs 蒙扎",
+          "market": "HHAD",
+          "pick": "客胜(-1后,蒙扎+1胜)",
+          "odds": 1.53,
+          "result": "pending",
+          "agreement": "excluded",
+          "note": "系统排除:意甲R3+极差10pp;大哥自选让球腿;原登记误作他场已勘误"
+        },
+        {
+          "code": "周日012",
           "league": "德甲(R2)",
-          "match": "勒沃库森 vs 柏林联合",
-          "market": "HAD",
-          "pick": "主胜",
-          "odds": 1.33,
+          "match": "汉堡 vs 美因茨",
+          "market": "HHAD",
+          "pick": "主胜(+1)",
+          "odds": 1.45,
           "result": "pending",
-          "agreement": "agree",
-          "note": "系统同推-彩票档L④(勒沃库森);出票=方案冻结价"
+          "agreement": "excluded",
+          "note": "系统排除:德甲R2+极差7pp最胶着场·升班马德比;大哥自选让球腿"
         },
         {
-          "code": "周六028",
+          "code": "周日013",
           "league": "西甲(R4)",
-          "match": "比利亚雷 vs 拉科",
+          "match": "巴伦西亚 vs 巴萨",
           "market": "HAD",
-          "pick": "主胜",
-          "odds": 1.37,
+          "pick": "客胜",
+          "odds": 1.18,
           "result": "pending",
           "agreement": "agree",
-          "note": "系统同推-彩票档L⑤;出票=方案冻结价"
+          "note": "系统同推-保底档B胆1/彩票档L①;p79%⭐4"
         },
         {
           "code": "周日016",
@@ -2069,18 +2084,7 @@
           "odds": 1.52,
           "result": "pending",
           "agreement": "agree",
-          "note": "系统同推-彩票档L⑥(阿森纳);出票=方案冻结价"
-        },
-        {
-          "code": "周六018",
-          "league": "意甲(R3)",
-          "match": "国际米兰 vs 那不勒斯",
-          "market": "HAD",
-          "pick": "主胜",
-          "odds": 1.46,
-          "result": "pending",
-          "agreement": "agree",
-          "note": "系统同推-彩票档L⑦(国米);出票=方案冻结价"
+          "note": "系统同推-彩票档L⑥(阿森纳)"
         },
         {
           "code": "周日022",
@@ -2091,12 +2095,12 @@
           "odds": 1.61,
           "result": "pending",
           "agreement": "agree",
-          "note": "系统同推-彩票档L⑧(马赛);出票=方案冻结价"
+          "note": "系统同推-彩票档L⑧(马赛)"
         }
       ],
-      "combinedOdds": 11.6475,
+      "combinedOdds": 23.0393,
       "payoutShape": "8串1全中才派彩;断任一腿=0",
-      "potentialWin": 232.95
+      "potentialWin": 460.8
     },
     {
       "id": "T022",
