@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-09-04",
+ "fetchedAt": "2026-09-05",
  "source": "sporttery",
  "matchId": 2041308,
  "match": {
@@ -39,8 +39,109 @@
   }
  },
  "injuries": {
-  "home": [],
-  "away": []
+  "home": [
+   {
+    "name": "马菲奥",
+    "pos": "后卫",
+    "no": "24",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 2,
+    "starts": 1
+   },
+   {
+    "name": "Luis Rioja",
+    "pos": "前锋",
+    "no": "11",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 2,
+    "starts": 1
+   },
+   {
+    "name": "罗德里格斯",
+    "pos": "中场",
+    "no": "2",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 2,
+    "starts": 2
+   },
+   {
+    "name": "U. Sadiq",
+    "pos": "前锋",
+    "no": "6",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 3,
+    "starts": 1
+   },
+   {
+    "name": "J. de Haas",
+    "pos": "后卫",
+    "no": "12",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 1,
+    "starts": 1
+   },
+   {
+    "name": "Copete",
+    "pos": "后卫",
+    "no": "3",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 0,
+    "starts": 0
+   },
+   {
+    "name": "Diego López",
+    "pos": "前锋",
+    "no": "16",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 0,
+    "starts": 0
+   }
+  ],
+  "away": [
+   {
+    "name": "加维",
+    "pos": "中场",
+    "no": "6",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 1,
+    "starts": 1
+   },
+   {
+    "name": "R. Bardghji",
+    "pos": "前锋",
+    "no": "19",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 0,
+    "starts": 0
+   },
+   {
+    "name": "Pau Cubarsí",
+    "pos": "后卫",
+    "no": "5",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 2,
+    "starts": 2
+   },
+   {
+    "name": "J. Bisiwu",
+    "pos": "前锋",
+    "no": "0",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 0,
+    "starts": 0
+   }
+  ]
  },
  "form": {
   "goalAvg": {
@@ -245,7 +346,7 @@
      "goalAvgCnt": "0.3",
      "goalCnt": 1,
      "goalProbability": "100%",
-     "injuryFlag": 0,
+     "injuryFlag": 1,
      "personId": 383985,
      "personName": "U. Sadiq",
      "playerPositionCode": "Forward",
