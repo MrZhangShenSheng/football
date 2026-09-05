@@ -220,8 +220,28 @@ def agreement_rows(stats: dict) -> str:
 
 
 def render(data: dict) -> str:
-    tickets = data.get("tickets", [])
+    tickets_all = data.get("tickets", [])
     meta = data.get("meta", {})
+    # testGroup 分栏（2026-09-05 大哥批的主链例外#2）：测试票正常登记结算，
+    # 但不进实票口径统计（曲线/玩法/一致率/KPI 均为 live）——分栏呈现保透明。
+    tickets = [t for t in tickets_all if not t.get("testGroup")]
+    test = [t for t in tickets_all if t.get("testGroup")]
+    live_stake = sum(t.get("stake", 0) for t in tickets)
+    live_net = sum((t.get("settled") or {}).get("net", 0) for t in tickets if t.get("settled"))
+    test_settled = [t for t in test if t.get("settled")]
+    test_stake = sum(t.get("stake", 0) for t in test)
+    test_pay = sum((t.get("settled") or {}).get("payout", 0) for t in test_settled)
+    test_panel = ""
+    if test:
+        test_panel = f"""
+<h2>⑥ 复式测试票（testGroup 分栏 · 隔离统计）</h2>
+<table><tr><th>ID</th><th>形状</th><th>本金</th><th>结算</th><th>净</th></tr>
+{''.join(f'<tr><td>{t.get("id")}</td><td>{t.get("shape","")}</td><td>{t.get("stake",0)}</td>'
+         f'<td>{(t.get("settled") or {}).get("status", "pending")}</td>'
+         f'<td>{(t.get("settled") or {}).get("net", "—")}</td></tr>' for t in test)}</table>
+<p class="sub">测试票 {len(test)} 张 · 本金 {test_stake:.0f} 元 · 已结算 {len(test_settled)} 张回款 {test_pay:.1f} 元 ——
+不计入上方实票口径（阶段2 complex-test 专用，spec 变更#12/#15）</p>
+"""
     pts = cum_points(tickets)
     mkt = market_attribution(tickets)
     bars = sorted(mkt.items(), key=lambda kv: -kv[1])
@@ -267,9 +287,9 @@ th{{background:var(--bg);font-weight:600}}
 <div class="kpis">
 <div class="kpi"><span>实票</span><b>{len(tickets)}<i style="font-size:13px;font-style:normal"> 张</i></b></div>
 <div class="kpi"><span>已结算/待结算</span><b>{n_settled}<i style="font-size:13px;font-style:normal"> / {n_pending}</i></b></div>
-<div class="kpi"><span>累计本金</span><b>{meta.get("totalStake", 0):.0f}<i style="font-size:13px;font-style:normal"> 元</i></b></div>
-<div class="kpi"><span>累计净利</span><b class="{"pos" if meta.get("totalNet", 0) >= 0 else "neg"}">{meta.get("totalNet", 0):+.1f}<i style="font-size:13px;font-style:normal"> 元</i></b></div>
-<div class="kpi"><span>整体ROI</span><b>{(meta.get("totalNet", 0) / meta["totalStake"] * 100):+.1f}%</b></div>
+<div class="kpi"><span>累计本金(实票)</span><b>{live_stake:.0f}<i style="font-size:13px;font-style:normal"> 元</i></b></div>
+<div class="kpi"><span>累计净利(实票)</span><b class="{"pos" if live_net >= 0 else "neg"}">{live_net:+.1f}<i style="font-size:13px;font-style:normal"> 元</i></b></div>
+<div class="kpi"><span>整体ROI(实票)</span><b>{(live_net / live_stake * 100) if live_stake else 0:+.1f}%</b></div>
 </div>
 
 <h2>① 资金曲线（累计净利，按结算时序）</h2>
@@ -295,6 +315,7 @@ th{{background:var(--bg);font-weight:600}}
 <b class="{"pos" if ag["lo"]["net"] >= 0 else "neg"}">{ag["lo"]["net"]:+.1f}</b> ——
 盈利集中在跟系统一致的票；登记回执警示数字以本块最新值为准</p>
 
+{test_panel}
 <p class="src">数据来源：data/06-tickets/tickets.json（{meta.get("lastUpdated", "")} 刷新）· 设计：docs/2026-08-25-tickets-design.html + docs/2026-09-03-ticket-recommend-alignment-design.html（⑤）·
 色对经 dataviz validate_palette.js 验证（蓝/橙 diverging，protan ΔE≥21）</p>
 </main></body></html>
