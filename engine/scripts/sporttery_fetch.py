@@ -326,11 +326,23 @@ def extract_odds(m: dict) -> dict:
         return f"{int(raw[1:3])}:{int(raw[4:6])}"          # s01s00 → 1:0
 
     crs_raw = m.get("crs") or {}
+
+    def hhad_out() -> dict:
+        raw = m.get("hhad") or {}
+        out = slim(raw)
+        gl = raw.get("goalLine")
+        if gl not in (None, ""):
+            out["goalLine"] = gl            # 让球线必须保留（HHAD 结算依赖）
+        return out
+
     return {
         "matchNumStr": m.get("matchNumStr"), "league": m.get("leagueAbbName"),
         "home": m.get("homeTeamAbbName"), "away": m.get("awayTeamAbbName"),
         "matchTime": m.get("matchTime"), "sellStatus": m.get("sellStatus"),
         "had": slim(m.get("had")), "crs": slim(crs_raw, crs_key), "ttg": slim(m.get("ttg")),
+        "hhad": hhad_out(),
+        # 2026-09-05 实测 hafu 原始键混入 id/f后缀垃圾键，按 HAFU_KEYS 过滤守 9 键契约
+        "hafu": {k: v for k, v in slim(m.get("hafu")).items() if k in HAFU_KEYS},
         "oddsUpdatedAt": f"{crs_raw.get('updateDate','')} {crs_raw.get('updateTime','')}".strip(),
     }
 
