@@ -17,7 +17,7 @@
 </style></head><body><div class="wrap">
 <svg style="display:none"><symbol id="i-grid" viewBox="0 0 24 24"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z" fill="none" stroke="currentColor" stroke-width="2"/></symbol><symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 11V7a4 4 0 018 0v4" fill="none" stroke="currentColor" stroke-width="2"/></symbol><symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4h12l-3 4 3 4H5" fill="none" stroke="currentColor" stroke-width="2"/></symbol></svg>
 
-<h1><svg width="22" height="22" style="color:var(--acc)"><use href="#i-grid"/></svg> 竞彩全玩法系统性测试方案 v2.0</h1>
+<h1><svg width="22" height="22" style="color:var(--acc)"><use href="#i-grid"/></svg> 竞彩全玩法系统性测试方案 v2.1</h1>
 <div class="sub">决策人：大哥 ｜ 设计：Claude（sszhang）｜ 2026-09-05 冻结 ｜ 前身：同会话三轮 ad-hoc 测试（理论计算→10轮回测→14轮模拟）的系统性重设计</div>
 
 <h2>一、背景与命题</h2>
@@ -33,8 +33,8 @@
 <tr><td>主指标</td><td><b>回款率</b>（每轮回报率口径：该轮回款&gt;0 的轮次占比）+ <b>累计盈利金额</b>（元，绝对数，全程净额）</td></tr>
 <tr><td>胜率双口径</td><td>①票级回款率（回款&gt;0 轮次占比）②腿级命中率（命中腿/总腿）——两列并列呈现</td></tr>
 <tr><td>辅指标</td><td>轮均净额、回款分位数分布（P25/P50/P75）、最差轮、最长连亏</td></tr>
-<tr><td><b>等成本原则</b><br>（变更#1 09-05）</td><td><b>全部参测方案统一预算档 30 元/轮</b>（对齐轮红线；倍数=⌊30/(注数×2)⌋自动调节，实际成本如实呈现）——杜绝跨方案成本失真对比；paper trading 实测档仍为 2 元×1 倍不变</td></tr>
-<tr><td>输出格式锁定<br>（变更#2 09-05）</td><td>最终排行榜每方案必含：票面构成 / 每轮实际成本 / <b>胜率（回款率+腿命中率）</b> / <b>累计盈利金额（元）</b> / 轮均净 / 95%CI / 最差轮</td></tr>
+<tr><td><b>同预算上限档</b><br>（变更#1·#8）</td><td><b>全部参测方案统一预算上限 30 元/轮</b>（对齐轮红线；倍数=⌊30/(注数×2)⌋自动调节）——注数少的形状实际成本低于上限（如 4串11=22 元），属预算上限档而非精确等成本；<b>排行榜增加收益率归一列（净额/成本）</b>消除残余成本差；paper trading 实测档仍为 2 元×1 倍不变</td></tr>
+<tr><td>输出格式锁定<br>（变更#2）</td><td>最终排行榜每方案必含：票面构成 / 每轮实际成本 / <b>胜率（回款率+腿命中率）</b> / <b>累计盈利金额（元）</b> / 轮均净 / 收益率(净/成本) / 95%CI / 最差轮</td></tr>
 <tr><td>命题①</td><td>胶着场复式（双选/三选）vs 强腿单选：回款率差异是否真实</td></tr>
 <tr><td>命题②</td><td>容错形状（4串11/全2关/8串9）+复式组合 vs 纯单选串</td></tr>
 <tr><td>命题③</td><td>TTG/CRS/HAFU 高抽水池的串关/复式/单关真实回款行为（验证木桶规则与抽水表）</td></tr>
@@ -46,7 +46,8 @@
 <ul>
 <li><b>代码</b>：全部测试工具在 <code>engine/scripts/scratch/</code>（已 gitignore；会话结束清理前归档结论到本方案目录）</li>
 <li><b>数据</b>：只读主库（data/02-results、04-summaries、engine/cache），<b>零写回</b></li>
-<li><b>实测</b>：paper trading 票走 <code>scratch/paper_tickets.json</code> 影子账本，<b>不进 tickets.json 正账</b>（与实票账本物理隔离）</li>
+<li><b>实测票归账（变更#2·#12 修正矛盾）</b>：paper trading <b>真实购买的票按账本纪律进 tickets.json 正账</b>（git 历史=出票凭证不可违背），票体带 <code>testGroup:"complex-test"</code> 标记，统计独立呈现、不混入实票偏好口径；<b>纯影子票</b>（不购买的对照形状）才走 <code>scratch/paper_tickets.json</code> 影子账本</li>
+<li><b>可复现性条款（变更#4·防伪造技术保证）</b>：①所有随机过程（bootstrap/随机基线）<b>固定 seed</b>（seed=轮次日期 hash，写死在工具与结果中）；②每轮回放输出附<b>数据快照指纹</b>（所读主库文件的 git commit hash）；③结果 JSON 全量归档 scratch/——<b>任何人重跑同 seed+同快照必须得到逐位相同的结果</b>，不可复现=结论作废</li>
 <li><b>流程</b>：门槛未过前，boldplay/预测链一行不动；任何优化=新任务，须引用本测试证据立项</li>
 <li><b>唯一例外</b>（大哥已批）：dump-odds 采集补 hafu 池字段——数据采集层微改，不碰预测逻辑</li>
 </ul></div>
@@ -55,12 +56,13 @@
 <table>
 <tr><th>池</th><th>概率回放源（防泄漏）</th><th>赔率历史</th><th>结算源</th><th>可测性</th></tr>
 <tr><td>HAD/HHAD</td><td>fused 存档（14轮221场，当时真实预测）</td><td>pinClose 135场纯净 + 86场近似(0.871/fused)</td><td>比分</td><td class="ok">✅ 立即全测</td></tr>
-<tr><td>TTG</td><td>freq-band q（历史频率+球队平移，无泄漏）</td><td>体彩存档 08-24起12轮</td><td>比分→进球档</td><td class="ok">✅ 立即（12轮起步）</td></tr>
-<tr><td>CRS</td><td>freq-band q</td><td>体彩存档 12轮（31项全）</td><td>比分</td><td class="ok">✅ 立即（12轮起步）</td></tr>
-<tr><td>HAFU</td><td>half_share 半场占比分解</td><td class="bad">❌ 无存档→dump-odds 补采即日起积累</td><td>half 字段（覆盖良好）</td><td class="warn">⚠️ 近似口径先行+实测积累，判定延后至约10月中（补采样本≥20轮）</td></tr>
+<tr><td>TTG</td><td>freq-band q——<b>变更#1·泄漏修复</b>：被测轮次用<b>该轮开赛前截止的频率快照</b>（每轮独立重算）或退化用当季前历史赛季频率（不含当季）；禁止用当前时点频率表回放历史</td><td>体彩存档 08-24起12轮</td><td>比分→进球档</td><td class="ok">✅ 立即（12轮起步）</td></tr>
+<tr><td>CRS</td><td>freq-band q（同上泄漏修复口径）</td><td>体彩存档 12轮（31项全）</td><td>比分</td><td class="ok">✅ 立即（12轮起步）</td></tr>
+<tr><td>HAFU</td><td>half_share 半场占比分解</td><td class="bad">❌ 无存档→dump-odds 补采即日起积累</td><td>half 字段（覆盖良好）</td><td class="warn">⚠️ <b>变更#9·近似口径降级探索性</b>：反推赔率对长尾分布（9键）失真 20%+，仅探索参考、<b>不进主排行</b>；真实判定待补采样本≥20轮（约10月中）</td></tr>
 <tr><td>混串</td><td>上述组合</td><td>交集窗口</td><td>比分+half</td><td class="ok">✅ 交集窗口</td></tr>
 </table>
-<div class="panel"><b>泄漏防线</b>：选腿/胶着判定（三向极差&lt;10pp 主口径，12pp 敏感性组）/复式决策只用当时 fused 或 freq 历史频率；赔率用收盘/存档价；paper trading 用出票时点冻结价；结算用真实赛果。</div>
+<div class="panel"><b>泄漏防线</b>：选腿/胶着判定（三向极差&lt;10pp 主口径，12pp 敏感性组）/复式决策只用当时 fused 或按轮截断的频率快照；赔率用收盘/存档价；paper trading 用出票时点冻结价；结算用真实赛果。<br>
+<b>数据质量门（变更#11）</b>：结算样本须通过<b>体彩/ESPN 双源比分一致</b>校验；单源场次单独标注、可进探索表不进门槛判定（防回填误标污染，如 014 纽约城误标循环的教训）。</div>
 
 <h2>五、全景测试矩阵（参测方案清单 · 冻结版）</h2>
 <table>
@@ -70,7 +72,7 @@
 <tr><td>4/6/8场全2关</td><td>前三轮冠军候选复验</td></tr>
 <tr><td>8串9（8串1+8×7串1）</td><td>补齐——仅理论测过</td></tr>
 <tr><td>单关（poolSimple 合格场）</td><td>新增最小形状</td></tr>
-<tr><td rowspan="4">B 新面孔<br>（大哥命题正确测法）</td><td>S2 胶着池专属（极差&lt;10pp 单独成池）</td><td>原始命题：复式消化胶着场</td></tr>
+<tr><td rowspan="4">B 新面孔<br>（大哥命题正确测法）</td><td>S2 胶着池专属（极差&lt;10pp 单独成池，<b>变更#6·形状按当轮腿数自适应</b>：≥4腿用4串11/全2关、2~3腿用2串1复式/单关复式、&lt;2腿关档并记录）</td><td>原始命题：复式消化胶着场</td></tr>
 <tr><td>S3 混编（强腿单选+胶着腿复式）</td><td>"买2个胜负"混串形态</td></tr>
 <tr><td>三选全包</td><td>首次纳入</td></tr>
 <tr><td>复式×容错组合（4串11+双选 / 全2关+双选）</td><td>理论表 99.8% 档进模拟验证</td></tr>
@@ -87,8 +89,11 @@
 
 <h2>六、统计方法</h2>
 <ul>
-<li>回款率/轮均净：<b>95% percentile 置信区间</b>（bootstrap 1000 次）</li>
-<li>纯净口径（pinClose）为主，近似口径敏感性组</li>
+<li>回款率/轮均净：<b>95% percentile 置信区间</b>（bootstrap 1000 次，固定 seed）</li>
+<li><b>口径铁律（变更#3）</b>：<b>门槛判定只认纯净口径</b>（pinClose / 体彩存档真实赔率 / 双源一致赛果）；近似口径（0.871/fused 反推）仅作探索参考、<b>禁止进入任何门槛判定</b>——防"模型既当运动员又当裁判"（模型高估的腿经反推赔率会系统性放大期望返还）</li>
+<li><b>CI 边界声明（变更#10）</b>：CI 只防护抽样噪声，<b>不防护样本期系统性偏差</b>（如 8 月下旬 top 腿 81% 命中的超常期）——时间外验证（paper trading）是防此类偏差的唯一防线</li>
+<li><b>多重比较防护（变更#5）</b>：全景矩阵数十方案必出"运气第一名"——排行榜前两名 CI 重叠即判并列；<b>门槛判定只对预注册命题①~④生效</b>，排行靠后方案的偶发亮点不立项</li>
+<li><b>随机基线"双随机"定义（变更#7）</b>：场次从该轮可买池（有真实赔率+双源赛果）均匀抽取 + 选项三向均匀抽取；1000 次重抽取分布</li>
 <li>胶着阈值 10pp 主口径 / 12pp 敏感性组</li>
 <li>高抽水池期望返还理论表（HAD 0.871 / TTG·HAFU 0.796 / CRS 0.661 的幂律）作为机理对照</li>
 </ul>
@@ -118,8 +123,8 @@
   </g>
 </svg>
 <ul>
-<li><b>paper trading</b>：下周起，2元×1倍，形状取阶段1中期排行 TOP 2~3，影子账本结算</li>
-<li>每轮回填后自动重跑回放增量（scratch 工具，只读主库）</li>
+<li><b>paper trading</b>：下周起，2元×1倍，形状取阶段1中期排行 TOP 2~3——<b>真实购买的票进正账+testGroup 标记</b>（变更#2），纯影子对照走影子账本</li>
+<li>每轮回填后<b>会话内重跑</b>回放增量（scratch 工具手动触发，只读主库——变更#12：隔离原则下不改主链无自动载体，诚实改为手动）</li>
 <li>中期参考结论（当前样本）可指导 paper trading 选形，<b>不得</b>作为优化依据</li>
 </ul>
 </div>
@@ -145,5 +150,5 @@
 <tr><td>隔离</td><td>结论直接建议优化</td><td>门槛未过零影响主流程</td></tr>
 </table>
 
-<div class="foot">方案冻结于 2026-09-05 会话（决策链：paper trading=2元实测 ✓ / 胶着=10pp+12pp敏感性 ✓ / 门槛=严格档 ✓ / 范围=全景矩阵 ✓ / HAFU=补采 ✓ / 模型口径=第二阶段 ✓）｜ 变更记录：#1 等成本原则（统一30元/轮档，09-05大哥）· #2 输出锁定胜率+累计盈利金额（09-05大哥）｜ 修订须走方案变更记录</div>
+<div class="foot">方案冻结于 2026-09-05 会话（决策链：paper trading=2元实测 ✓ / 胶着=10pp+12pp敏感性 ✓ / 门槛=严格档 ✓ / 范围=全景矩阵 ✓ / HAFU=补采 ✓ / 模型口径=第二阶段 ✓）｜ 变更记录：#1 同预算上限档30元（09-05大哥）· #2 输出锁定胜率+累计盈利金额（09-05大哥）· <b>#3~#14 对抗性自审12项修正（09-05大哥确认）</b>：#3近似口径禁入门槛判定 / #4可复现性条款(seed·快照指纹·结果归档) / #5多重比较防护 / #6胶着池形状自适应 / #7双随机基线定义 / #8同预算上限档正名+收益率归一列 / #9 HAFU近似降级探索性 / #10 CI边界声明 / #11数据质量门(双源一致) / #12实测票进正账+testGroup / #13 freq按轮截断防泄漏 / #14手动重跑 ｜ 修订须走方案变更记录</div>
 </div></body></html>
