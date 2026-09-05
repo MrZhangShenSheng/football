@@ -104,7 +104,25 @@ B 族全线负：ev-8串1/ev-8串9 <span class="bad">-100%</span>（0 回款轮�
 <tr><td>2026-08-22</td><td>5</td><td class="dim">a34578ea:c93e4955:c2839c0a</td></tr><tr><td>2026-08-23</td><td>27</td><td class="dim">a34578ea:639cd78a:c2839c0a</td></tr><tr><td>2026-08-24</td><td>9</td><td class="dim">a34578ea:2c1caf09:c2839c0a</td></tr><tr><td>2026-08-25</td><td>16</td><td class="dim">a34578ea:be7bb1c1:c2839c0a</td></tr><tr><td>2026-08-26</td><td>4</td><td class="dim">a34578ea:c71df64f:c2839c0a</td></tr><tr><td>2026-08-27</td><td>8</td><td class="dim">a34578ea:ff0fd27e:c2839c0a</td></tr><tr><td>2026-08-28</td><td>48</td><td class="dim">a34578ea:473564bf:c2839c0a</td></tr><tr><td>2026-08-29</td><td>31</td><td class="dim">a34578ea:a2dc346b:c2839c0a</td></tr><tr><td>2026-08-30</td><td>25</td><td class="dim">a34578ea:b9945b3a:c2839c0a</td></tr><tr><td>2026-08-31</td><td>10</td><td class="dim">a34578ea:3567a4cd:c2839c0a</td></tr><tr><td>2026-09-01</td><td>16</td><td class="dim">a34578ea:05a6abe8:c2839c0a</td></tr><tr><td>2026-09-02</td><td>7</td><td class="dim">a34578ea:076ae532:c2839c0a</td></tr><tr><td>2026-09-03</td><td>7</td><td class="dim">a34578ea:933e8117:c2839c0a</td></tr>
 </table>
 
-<h2><svg width="16" height="16" style="color:var(--warn)"><use href="#i-flag"/></svg> 七、下一步（阶段 2）</h2>
+<h2>七、结论解读：这些数字能反映什么问题（三层可信度分级）</h2>
+<div class="panel">
+本节回答"跑下来的结论能反映一定的问题吗"——能，但必须分层取用。<b>9-05 大哥问答沉淀。</b>
+</div>
+<table>
+<tr><th>层级</th><th>结论</th><th>为什么</th></tr>
+<tr><td rowspan="4" class="ok"><b>一、高可信</b><br>（两轮独立测试方向一致）</td><td>容错形状（全2关/4串11）回款率显著优于串1系</td><td>9-05 晨 ad-hoc 回测与本次 v2 全景独立复现同向；结构性差异（中2关即回 vs 全中才回）不依赖样本期运气</td></tr>
+<tr><td>三基线分离有效（random −62.5% ≪ market +3.7% &lt; pure +31.1%）</td><td>框架能区分选腿能力，回放非噪声</td></tr>
+<tr><td>命题④ EV 混串全线负</td><td>负结论也是结论——验证"高抽水池腿慎入长串"既有铁律</td></tr>
+<tr><td>8串1 两极性</td><td>T019 实票 + 回放 4中2灭反复验证</td></tr>
+<tr><td rowspan="3" class="warn"><b>二、方向可信<br>数字不可信</b><br>（窗口偏差污染）</td><td>8串1 +357.7% / 4串1 +90%</td><td>样本期模型 top 腿命中 81%（校准低估14pp 的超常期）——数字是"8月的模型状态"不是"方案价值"；不入选 paper trading</td></tr>
+<tr><td>market 严锚 1/19 过闸</td><td>"几乎无方案稳定跑赢无脑买热门"方向可信，具体闸数不可信</td></tr>
+<tr><td>TTG/CRS 族绝对 roi</td><td>派赔为返还率反推近似——相对对比可用，绝对值有返还率级系统偏差</td></tr>
+<tr><td rowspan="1" class="bad"><b>三、未测到</b></td><td>命题①（胶着复式原始命题）零样本</td><td>13 轮无一轮 ≥4 胶着腿——非巧合：<b>预测流的方向排除纪律天然不推胶着场</b>，历史记录稀疏；命题要成立需阶段 2 主动为胶着场留采集，不能等历史数据</td></tr>
+</table>
+<div class="panel"><b>五个真问题</b>：① 所有正收益泡在模型超常期里——10 月严格档判定的意义就是洗掉这段；② 对手是市场不是零（market 基线 13 轮 +3.7% 几乎打平，方案价值=跑赢无脑买热门的部分）；③ 容错&gt;串1 是真的——当前唯一可指导 paper trading 选形的结论；④ 复式命题的瓶颈在数据结构不在统计；⑤ 各方案轮数不可比（build 门槛自筛选）——比较看收益率归一列而非累计额。</div>
+<div class="panel"><b>paper trading 直接含义</b>：选形从容错系挑（4串11/全2关）；胶着复式等专项数据；串1系一律不碰。</div>
+
+<h2><svg width="16" height="16" style="color:var(--warn)"><use href="#i-flag"/></svg> 八、下一步（阶段 2）</h2>
 <div class="panel"><ul>
 <li><b>paper trading 选形建议（本轮唯一用途）</b>：TOP3 候选 = 4串1（CI 全正最稳）/ 4串11（CI 全正+100% 回款率，回款体验最好）/ 全2关-6（10 轮 100% 回款）；8串1 并列†但 n=5 CI 巨宽，只作观察不入选。</li>
 <li>样本积累至 ≥30 轮（约 9 月底）后重跑本回放，CI 收窄再对预注册命题判定；胶着族 ≥4 腿样本为零的问题依赖赛程自然出现，不做数据凑数。</li>
