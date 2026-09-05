@@ -54,7 +54,7 @@
 <tr><td>HAD/HHAD</td><td>fused 存档（14轮221场，当时真实预测）</td><td>pinClose 135场纯净 + 86场近似(0.871/fused)</td><td>比分</td><td class="ok">✅ 立即全测</td></tr>
 <tr><td>TTG</td><td>freq-band q（历史频率+球队平移，无泄漏）</td><td>体彩存档 08-24起12轮</td><td>比分→进球档</td><td class="ok">✅ 立即（12轮起步）</td></tr>
 <tr><td>CRS</td><td>freq-band q</td><td>体彩存档 12轮（31项全）</td><td>比分</td><td class="ok">✅ 立即（12轮起步）</td></tr>
-<tr><td>HAFU</td><td>half_share 半场占比分解</td><td class="bad">❌ 无存档→dump-odds 补采即日起积累</td><td>half 字段（覆盖良好）</td><td class="warn">⚠️ 近似口径先行+实测积累，判定延后</td></tr>
+<tr><td>HAFU</td><td>half_share 半场占比分解</td><td class="bad">❌ 无存档→dump-odds 补采即日起积累</td><td>half 字段（覆盖良好）</td><td class="warn">⚠️ 近似口径先行+实测积累，判定延后至约10月中（补采样本≥20轮）</td></tr>
 <tr><td>混串</td><td>上述组合</td><td>交集窗口</td><td>比分+half</td><td class="ok">✅ 交集窗口</td></tr>
 </table>
 <div class="panel"><b>泄漏防线</b>：选腿/胶着判定（三向极差&lt;10pp 主口径，12pp 敏感性组）/复式决策只用当时 fused 或 freq 历史频率；赔率用收盘/存档价；paper trading 用出票时点冻结价；结算用真实赛果。</div>
