@@ -2,8 +2,8 @@
   "meta": {
     "lastUpdated": "2026-09-05",
     "note": "实票账本:票=顶层实体(不按日期切分);实票=有结算记录的票,其余全是方案推演;出票后票面事实永不改写;派彩按形状算(4串11中2关只回1注2串1)",
-    "totalTickets": 19,
-    "totalStake": 292,
+    "totalTickets": 22,
+    "totalStake": 364,
     "totalPayout": 367.26,
     "totalNet": 75.26,
     "disciplineEvents": [
@@ -37,6 +37,10 @@
         "event": "T017/T018/T019三票各10元(×5倍)共30元:①搏奖档A①+A②合计20元超v4.6档内预算带(≤10元)100%,倍数1→5为加注;②总仓30元贴roundRedline上限未超(对照T015/T016超2元先例);③T019提前出票=放弃周五临场终审修订窗口(锁当前价)",
         "actualNet": null,
         "verdict": "大哥知情拍板;金额红线明示:贴线30元;回填后核算5倍加注边际损益(对比1倍方案推演)"
+      },
+      {
+        "date": "2026-09-04",
+        "event": "单轮三票合计72元,超roundRedline(30元)2.4倍:T020保底30元(4串11改4串1×15倍·容错弃用)+T021彩票20元(1倍→10倍)+T022翻身22元(4串1改4串11);腿全=系统同推,选股层无偏离,超的是金额不是选股;🟡已警示未拦截;T022 agreement勘误:classify误判excluded(方向排除≠玩法排除,boldplay翻身腿同推)"
       }
     ]
   },
@@ -1891,6 +1895,359 @@
         "roi": -100.0,
         "settledAt": "2026-09-05 07:54"
       }
+    },
+    {
+      "id": "T020",
+      "source": "manual",
+      "placedAt": "2026-09-04",
+      "placedAtNote": "大哥口述'保本4场直接买4串1 30元'(09-05报票,票面时点09-04);出票价=09-04方案冻结价",
+      "stake": 30,
+      "unitStake": 2,
+      "units": 1,
+      "multiplier": 15,
+      "shape": "HAD 4串1×15倍",
+      "matchDays": [
+        "2026-09-05",
+        "2026-09-06"
+      ],
+      "origin": "方案转正变形:09-04保底档B(4串11=22元)→实买4串1×15倍;容错结构弃用(全中才派彩)",
+      "combos": "1×4串1",
+      "bets": [
+        {
+          "legs": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "multiplier": 15
+        }
+      ],
+      "legs": [
+        {
+          "code": "周日013",
+          "league": "西甲(R4)",
+          "match": "巴伦西亚 vs 巴萨",
+          "market": "HAD",
+          "pick": "客胜",
+          "odds": 1.18,
+          "result": "pending",
+          "agreement": "agree",
+          "note": "系统同推-保底档B胆1;p79%⭐4;出票=方案冻结价"
+        },
+        {
+          "code": "周六023",
+          "league": "葡超(R5)",
+          "match": "马里迪莫 vs 本菲卡",
+          "market": "HAD",
+          "pick": "客胜",
+          "odds": 1.14,
+          "result": "pending",
+          "agreement": "agree",
+          "note": "系统同推-保底档B胆2;p78%⭐4;出票=方案冻结价"
+        },
+        {
+          "code": "周六017",
+          "league": "法甲(R3)",
+          "match": "朗斯 vs 洛里昂",
+          "market": "HAD",
+          "pick": "主胜",
+          "odds": 1.33,
+          "result": "pending",
+          "agreement": "agree",
+          "note": "系统同推-保底档B胆3;p65.4%⭐4踩线;出票=方案冻结价"
+        },
+        {
+          "code": "周六028",
+          "league": "西甲(R4)",
+          "match": "比利亚雷 vs 拉科",
+          "market": "HAD",
+          "pick": "主胜",
+          "odds": 1.37,
+          "result": "pending",
+          "agreement": "agree",
+          "note": "系统同推-保底档B胆4;p65%⭐4踩线·基面警示;出票=方案冻结价"
+        }
+      ],
+      "combinedOdds": 2.4511,
+      "payoutShape": "4串1全中才派彩;断任一关=0",
+      "potentialWin": 73.53
+    },
+    {
+      "id": "T021",
+      "source": "manual",
+      "placedAt": "2026-09-04",
+      "placedAtNote": "大哥口述'八串一买了20元'(09-05报票);与T019(周五8串×5倍=10元已结算)独立,本票周六日场次",
+      "stake": 20,
+      "unitStake": 2,
+      "units": 1,
+      "multiplier": 10,
+      "shape": "HAD 8串1×10倍",
+      "matchDays": [
+        "2026-09-05",
+        "2026-09-06"
+      ],
+      "origin": "方案转正:09-04彩票档L(8串1×1倍=2元)→实买×10倍;大哥拍板",
+      "combos": "1×8串1",
+      "bets": [
+        {
+          "legs": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "multiplier": 10
+        }
+      ],
+      "legs": [
+        {
+          "code": "周日013",
+          "league": "西甲(R4)",
+          "match": "巴伦西亚 vs 巴萨",
+          "market": "HAD",
+          "pick": "客胜",
+          "odds": 1.18,
+          "result": "pending",
+          "agreement": "agree",
+          "note": "系统同推-彩票档L①;出票=方案冻结价"
+        },
+        {
+          "code": "周六023",
+          "league": "葡超(R5)",
+          "match": "马里迪莫 vs 本菲卡",
+          "market": "HAD",
+          "pick": "客胜",
+          "odds": 1.14,
+          "result": "pending",
+          "agreement": "agree",
+          "note": "系统同推-彩票档L②;出票=方案冻结价"
+        },
+        {
+          "code": "周六017",
+          "league": "法甲(R3)",
+          "match": "朗斯 vs 洛里昂",
+          "market": "HAD",
+          "pick": "主胜",
+          "odds": 1.33,
+          "result": "pending",
+          "agreement": "agree",
+          "note": "系统同推-彩票档L③;出票=方案冻结价"
+        },
+        {
+          "code": "周六011",
+          "league": "德甲(R2)",
+          "match": "勒沃库森 vs 柏林联合",
+          "market": "HAD",
+          "pick": "主胜",
+          "odds": 1.33,
+          "result": "pending",
+          "agreement": "agree",
+          "note": "系统同推-彩票档L④(勒沃库森);出票=方案冻结价"
+        },
+        {
+          "code": "周六028",
+          "league": "西甲(R4)",
+          "match": "比利亚雷 vs 拉科",
+          "market": "HAD",
+          "pick": "主胜",
+          "odds": 1.37,
+          "result": "pending",
+          "agreement": "agree",
+          "note": "系统同推-彩票档L⑤;出票=方案冻结价"
+        },
+        {
+          "code": "周日016",
+          "league": "英超(R3)",
+          "match": "阿森纳 vs 切尔西",
+          "market": "HAD",
+          "pick": "主胜",
+          "odds": 1.52,
+          "result": "pending",
+          "agreement": "agree",
+          "note": "系统同推-彩票档L⑥(阿森纳);出票=方案冻结价"
+        },
+        {
+          "code": "周六018",
+          "league": "意甲(R3)",
+          "match": "国际米兰 vs 那不勒斯",
+          "market": "HAD",
+          "pick": "主胜",
+          "odds": 1.46,
+          "result": "pending",
+          "agreement": "agree",
+          "note": "系统同推-彩票档L⑦(国米);出票=方案冻结价"
+        },
+        {
+          "code": "周日022",
+          "league": "法甲(R3)",
+          "match": "马赛 vs 巴黎FC",
+          "market": "HAD",
+          "pick": "主胜",
+          "odds": 1.61,
+          "result": "pending",
+          "agreement": "agree",
+          "note": "系统同推-彩票档L⑧(马赛);出票=方案冻结价"
+        }
+      ],
+      "combinedOdds": 11.6475,
+      "payoutShape": "8串1全中才派彩;断任一腿=0",
+      "potentialWin": 232.95
+    },
+    {
+      "id": "T022",
+      "source": "manual",
+      "placedAt": "2026-09-04",
+      "placedAtNote": "大哥口述'搏奖4场比分2*3*4 22元'(09-05报票);2*3*4=4串11口径(2串×6+3串×4+4串×1)=偏好档案形状",
+      "stake": 22,
+      "unitStake": 2,
+      "units": 11,
+      "multiplier": 1,
+      "shape": "CRS 4串11容错(6×2串1+4×3串1+1×4串1)",
+      "matchDays": [
+        "2026-09-05",
+        "2026-09-06"
+      ],
+      "origin": "方案转正变形:09-04翻身档(跨池4串1×1倍=2元)→实买4串11=22元(大哥偏好容错形状);中2关即回款",
+      "combos": "6×2串1+4×3串1+1×4串1",
+      "bets": [
+        {
+          "legs": [
+            0,
+            1
+          ],
+          "multiplier": 1
+        },
+        {
+          "legs": [
+            0,
+            2
+          ],
+          "multiplier": 1
+        },
+        {
+          "legs": [
+            0,
+            3
+          ],
+          "multiplier": 1
+        },
+        {
+          "legs": [
+            1,
+            2
+          ],
+          "multiplier": 1
+        },
+        {
+          "legs": [
+            1,
+            3
+          ],
+          "multiplier": 1
+        },
+        {
+          "legs": [
+            2,
+            3
+          ],
+          "multiplier": 1
+        },
+        {
+          "legs": [
+            0,
+            1,
+            2
+          ],
+          "multiplier": 1
+        },
+        {
+          "legs": [
+            0,
+            1,
+            3
+          ],
+          "multiplier": 1
+        },
+        {
+          "legs": [
+            0,
+            2,
+            3
+          ],
+          "multiplier": 1
+        },
+        {
+          "legs": [
+            1,
+            2,
+            3
+          ],
+          "multiplier": 1
+        },
+        {
+          "legs": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "multiplier": 1
+        }
+      ],
+      "legs": [
+        {
+          "code": "周日003",
+          "league": "韩职",
+          "match": "安养FC vs 江原FC",
+          "market": "CRS",
+          "pick": "2:3",
+          "odds": 28.0,
+          "result": "pending",
+          "agreement": "agree",
+          "note": "系统同推-翻身档EV①+85.6%(韩职);出票=方案冻结价;agreement人工勘误:classify初判excluded系只读方向层(排除:胶着/无锚≠玩法排除),本腿=boldplay翻身档CRS正式腿,gateRule池卡同推成立"
+        },
+        {
+          "code": "周六016",
+          "league": "西甲(R4)",
+          "match": "毕尔巴鄂 vs 马竞",
+          "market": "CRS",
+          "pick": "0:2",
+          "odds": 11.5,
+          "result": "pending",
+          "agreement": "agree",
+          "note": "系统同推-翻身档EV②+19.1%;出票=方案冻结价;agreement人工勘误:classify初判excluded系只读方向层(排除:胶着/无锚≠玩法排除),本腿=boldplay翻身档CRS正式腿,gateRule池卡同推成立"
+        },
+        {
+          "code": "周六015",
+          "league": "英超(R3)",
+          "match": "富勒姆 vs 水晶宫",
+          "market": "CRS",
+          "pick": "0:1",
+          "odds": 10.5,
+          "result": "pending",
+          "agreement": "agree",
+          "note": "系统同推-翻身档EV③+17.6%;出票=方案冻结价;agreement人工勘误:classify初判excluded系只读方向层(排除:胶着/无锚≠玩法排除),本腿=boldplay翻身档CRS正式腿,gateRule池卡同推成立"
+        },
+        {
+          "code": "周六020",
+          "league": "英超(R3)",
+          "match": "赫尔城 vs 维拉",
+          "market": "CRS",
+          "pick": "2:1",
+          "odds": 13.0,
+          "result": "pending",
+          "agreement": "agree",
+          "note": "系统同推-翻身档EV④+15.4%;出票=方案冻结价;agreement人工勘误:classify初判excluded系只读方向层(排除:胶着/无锚≠玩法排除),本腿=boldplay翻身档CRS正式腿,gateRule池卡同推成立"
+        }
+      ],
+      "combinedOdds": 43953.0,
+      "payoutShape": "按形状派彩:中2关回1注2串1,中3关回3串1+3注2串1,全中回全部11注",
+      "potentialWin": 116597.0
     }
   ]
 }
