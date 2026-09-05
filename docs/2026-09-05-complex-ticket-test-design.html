@@ -1,0 +1,146 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>竞彩全玩法系统性测试方案 v2.0 · 2026-09-05</title>
+<style>
+  :root{--bg:#101418;--card:#1a2028;--line:#2a323d;--tx:#d8dee6;--dim:#8a94a0;--ok:#4caf7d;--bad:#e05252;--warn:#e0a84f;--acc:#5b9bd5}
+  body{background:var(--bg);color:var(--tx);font:14px/1.7 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;margin:0;padding:28px}
+  .wrap{max-width:1020px;margin:0 auto}
+  h1{font-size:22px;margin:0 0 4px}h2{font-size:17px;margin:30px 0 10px;color:var(--acc);border-bottom:1px solid var(--line);padding-bottom:6px}
+  .sub{color:var(--dim);font-size:12px;margin-bottom:16px}
+  table{width:100%;border-collapse:collapse;background:var(--card);border-radius:8px;overflow:hidden;font-size:13px;margin:10px 0}
+  th,td{padding:7px 11px;border-bottom:1px solid var(--line);text-align:left}
+  th{background:#202833;color:var(--dim);font-weight:500;font-size:12px}
+  .ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}.dim{color:var(--dim)}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:12px 0}
+  ul{margin:6px 0;padding-left:20px}li{margin:5px 0}
+  code{background:#202833;padding:1px 6px;border-radius:4px;font-size:12px}
+  .foot{margin-top:28px;color:var(--dim);font-size:11px;border-top:1px solid var(--line);padding-top:12px}
+</style></head><body><div class="wrap">
+<svg style="display:none"><symbol id="i-grid" viewBox="0 0 24 24"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z" fill="none" stroke="currentColor" stroke-width="2"/></symbol><symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 11V7a4 4 0 018 0v4" fill="none" stroke="currentColor" stroke-width="2"/></symbol><symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4h12l-3 4 3 4H5" fill="none" stroke="currentColor" stroke-width="2"/></symbol></svg>
+
+<h1><svg width="22" height="22" style="color:var(--acc)"><use href="#i-grid"/></svg> 竞彩全玩法系统性测试方案 v2.0</h1>
+<div class="sub">决策人：大哥 ｜ 设计：Claude（sszhang）｜ 2026-09-05 冻结 ｜ 前身：同会话三轮 ad-hoc 测试（理论计算→10轮回测→14轮模拟）的系统性重设计</div>
+
+<h2>一、背景与命题</h2>
+<div class="panel">
+<b>起源</b>：大哥提出"胶着场有人买复式票——胜平负都买或买 2 个胜负"，要求解决 8 串全中率低（实测 2.7%）的问题，口径定为<b>每轮回报率</b>（不算长期 EV）。<br>
+<b>前三轮测试的偏差（本方案修正对象）</b>：①复式只测了"强腿池弱腿补第二选项"——胶着场（复式的真正目标场）在 p 降序选腿下从未进入腿池；②三选全包从未测过；③无随机/市场基线，"形状价值"与"选腿能力"混淆；④无置信区间，14 轮小样本结论无统计效力；⑤TTG/HAFU/CRS 池完全未纳入。<br>
+<b>本方案定位</b>：<b>系统性测试框架</b>——五池×串形×复式×混串全景矩阵，统一评估、三基线对照、严格门槛；测试与主预测流程完全隔离，<b>验证通过才允许立项优化模型</b>。
+</div>
+
+<h2>二、测试目标与预注册指标（防事后挑指标）</h2>
+<table>
+<tr><th>项</th><th>内容</th></tr>
+<tr><td>主指标</td><td><b>回款率</b>（每轮回报率口径：该轮回款&gt;0 的轮次占比）</td></tr>
+<tr><td>辅指标</td><td>轮均净额、回款分位数分布（P25/P50/P75）、最差轮、最长连亏</td></tr>
+<tr><td>命题①</td><td>胶着场复式（双选/三选）vs 强腿单选：回款率差异是否真实</td></tr>
+<tr><td>命题②</td><td>容错形状（4串11/全2关/8串9）+复式组合 vs 纯单选串</td></tr>
+<tr><td>命题③</td><td>TTG/CRS/HAFU 高抽水池的串关/复式/单关真实回款行为（验证木桶规则与抽水表）</td></tr>
+<tr><td>命题④</td><td>混串（各场 EV 最优池混编）vs 纯 HAD 同形状</td></tr>
+</table>
+
+<h2>三、隔离架构（不影响主分支预测流程）</h2>
+<div class="panel"><svg width="15" height="15" style="color:var(--warn)"><use href="#i-lock"/></svg>
+<ul>
+<li><b>代码</b>：全部测试工具在 <code>engine/scripts/scratch/</code>（已 gitignore；会话结束清理前归档结论到本方案目录）</li>
+<li><b>数据</b>：只读主库（data/02-results、04-summaries、engine/cache），<b>零写回</b></li>
+<li><b>实测</b>：paper trading 票走 <code>scratch/paper_tickets.json</code> 影子账本，<b>不进 tickets.json 正账</b>（与实票账本物理隔离）</li>
+<li><b>流程</b>：门槛未过前，boldplay/预测链一行不动；任何优化=新任务，须引用本测试证据立项</li>
+<li><b>唯一例外</b>（大哥已批）：dump-odds 采集补 hafu 池字段——数据采集层微改，不碰预测逻辑</li>
+</ul></div>
+
+<h2>四、数据底盘与防泄漏（实测盘点 2026-09-05）</h2>
+<table>
+<tr><th>池</th><th>概率回放源（防泄漏）</th><th>赔率历史</th><th>结算源</th><th>可测性</th></tr>
+<tr><td>HAD/HHAD</td><td>fused 存档（14轮221场，当时真实预测）</td><td>pinClose 135场纯净 + 86场近似(0.871/fused)</td><td>比分</td><td class="ok">✅ 立即全测</td></tr>
+<tr><td>TTG</td><td>freq-band q（历史频率+球队平移，无泄漏）</td><td>体彩存档 08-24起12轮</td><td>比分→进球档</td><td class="ok">✅ 立即（12轮起步）</td></tr>
+<tr><td>CRS</td><td>freq-band q</td><td>体彩存档 12轮（31项全）</td><td>比分</td><td class="ok">✅ 立即（12轮起步）</td></tr>
+<tr><td>HAFU</td><td>half_share 半场占比分解</td><td class="bad">❌ 无存档→dump-odds 补采即日起积累</td><td>half 字段（覆盖良好）</td><td class="warn">⚠️ 近似口径先行+实测积累，判定延后</td></tr>
+<tr><td>混串</td><td>上述组合</td><td>交集窗口</td><td>比分+half</td><td class="ok">✅ 交集窗口</td></tr>
+</table>
+<div class="panel"><b>泄漏防线</b>：选腿/胶着判定（三向极差&lt;10pp 主口径，12pp 敏感性组）/复式决策只用当时 fused 或 freq 历史频率；赔率用收盘/存档价；paper trading 用出票时点冻结价；结算用真实赛果。</div>
+
+<h2>五、全景测试矩阵（参测方案清单 · 冻结版）</h2>
+<table>
+<tr><th>族</th><th>方案</th><th>来源说明</th></tr>
+<tr><td rowspan="5">A 老面孔复测<br>（强腿池 HAD/HHAD）</td><td>8串1 / 6串1 / 4串1 单选</td><td>串1家族对照（T020/T021型）</td></tr>
+<tr><td>4串11（偏好形状）</td><td>前三轮冠军候选复验</td></tr>
+<tr><td>4/6/8场全2关</td><td>前三轮冠军候选复验</td></tr>
+<tr><td>8串9（8串1+8×7串1）</td><td>补齐——仅理论测过</td></tr>
+<tr><td>单关（poolSimple 合格场）</td><td>新增最小形状</td></tr>
+<tr><td rowspan="4">B 新面孔<br>（大哥命题正确测法）</td><td>S2 胶着池专属（极差&lt;10pp 单独成池）</td><td>原始命题：复式消化胶着场</td></tr>
+<tr><td>S3 混编（强腿单选+胶着腿复式）</td><td>"买2个胜负"混串形态</td></tr>
+<tr><td>三选全包</td><td>首次纳入</td></tr>
+<tr><td>复式×容错组合（4串11+双选 / 全2关+双选）</td><td>理论表 99.8% 档进模拟验证</td></tr>
+<tr><td rowspan="5">C 高抽水池<br>（TTG/HAFU/CRS）</td><td>TTG 单关/2串1/复式双档</td><td>≤6关按官方上限裁剪</td></tr>
+<tr><td>CRS 单关/2串1/复式多比分打包</td><td>≤4关；freq-band 选法 vs 随机</td></tr>
+<tr><td>HAFU 单关（近似口径）</td><td>赔率积累后升级</td></tr>
+<tr><td>混串：各场 EV 最优池混编 2-4 串</td><td>铁律9 混串优化的首次实证</td></tr>
+<tr><td>超低赔单关叠串对照</td><td>彩票档合格腿规则的验证</td></tr>
+<tr><td rowspan="3">D 基线族<br>（三基线）</td><td>随机选腿（同形状同腿数，1000次 bootstrap）</td><td>分离"形状价值"vs"选腿能力"</td></tr>
+<tr><td>市场最热（无脑买最低赔）</td><td>零能力基线</td></tr>
+<tr><td>纯 HAD 同形状</td><td>池间对照锚</td></tr>
+</table>
+<div class="panel dim">不进本方案：强腿池+双选（前三轮判死且机制不成立：强腿次选项低概率高赔率纯放大抽水——其正确用法已由 B 族 S2/S3 接手）；模型概率口径对照（校准修正 vs fused vs 纯市场）——第二阶段任务。</div>
+
+<h2>六、统计方法</h2>
+<ul>
+<li>回款率/轮均净：<b>95% percentile 置信区间</b>（bootstrap 1000 次）</li>
+<li>纯净口径（pinClose）为主，近似口径敏感性组</li>
+<li>胶着阈值 10pp 主口径 / 12pp 敏感性组</li>
+<li>高抽水池期望返还理论表（HAD 0.871 / TTG·HAFU 0.796 / CRS 0.661 的幂律）作为机理对照</li>
+</ul>
+
+<h2>七、验证门槛（严格档 · 大哥拍板）</h2>
+<table>
+<tr><th>#</th><th>条件</th><th>标准</th></tr>
+<tr><td>A</td><td>统计显著</td><td>回放窗口结论 95% CI 不跨随机基线，且样本 ≥30 轮或对应腿 ≥120 场</td></tr>
+<tr><td>B</td><td>时间外复现</td><td>paper trading 实测方向一致（回款率偏差 &lt;15pp）</td></tr>
+<tr><td>C</td><td>人审</td><td>大哥拍板</td></tr>
+</table>
+<div class="panel"><b>三条件全满足</b> → 立项优化（另立任务，走设计→计划→实施）；<b>任一不满足</b> → 维持现状，结论归档。严禁跳过门槛直接改预测流程。</div>
+
+<h2>八、执行流程与时间线</h2>
+<div class="panel">
+<svg viewBox="0 0 920 120" width="100%" style="color:var(--acc)">
+  <line x1="30" y1="45" x2="890" y2="45" stroke="var(--line)" stroke-width="2"/>
+  <g fill="currentColor">
+    <circle cx="60" cy="45" r="7"/><circle cx="270" cy="45" r="7"/><circle cx="480" cy="45" r="7"/><circle cx="690" cy="45" r="7"/><circle cx="860" cy="45" r="7"/>
+  </g>
+  <g font-size="12" fill="var(--tx)">
+    <text x="30" y="25">阶段0 方案冻结</text><text x="30" y="72" fill="var(--dim)" font-size="11">09-05 本文档</text>
+    <text x="225" y="25">阶段0.5 数据基建</text><text x="225" y="72" fill="var(--dim)" font-size="11">dump-odds补HAFU·回放工具v2</text>
+    <text x="440" y="25">阶段1 回放模拟</text><text x="440" y="72" fill="var(--dim)" font-size="11">全景矩阵·14/12轮=中期参考</text>
+    <text x="650" y="25">阶段2 双轨并行</text><text x="650" y="72" fill="var(--dim)" font-size="11">样本→30轮(约9月底)·paper trading 3~4轮</text>
+    <text x="830" y="25">阶段3 判定</text><text x="830" y="72" fill="var(--dim)" font-size="11">约10月初·三条件</text>
+  </g>
+</svg>
+<ul>
+<li><b>paper trading</b>：下周起，2元×1倍，形状取阶段1中期排行 TOP 2~3，影子账本结算</li>
+<li>每轮回填后自动重跑回放增量（scratch 工具，只读主库）</li>
+<li>中期参考结论（当前样本）可指导 paper trading 选形，<b>不得</b>作为优化依据</li>
+</ul>
+</div>
+
+<h2>九、产出物</h2>
+<ul>
+<li>本文档（方案冻结基线）</li>
+<li><code>scratch/replay_sim_v2.py</code>：全景矩阵回放（五池+复式+混串+三基线+bootstrap CI）</li>
+<li><code>scratch/paper_tickets.json</code>：影子账本</li>
+<li>dump-odds hafu 补采（主链数据层微改，单独 commit）</li>
+<li>阶段3 判定报告（含全部门槛证据链）</li>
+</ul>
+
+<h2>十、附：与前三轮 ad-hoc 测试的差异对照</h2>
+<table>
+<tr><th>维度</th><th>前三轮</th><th>本方案 v2.0</th></tr>
+<tr><td>腿池</td><td>仅强腿池（p降序）</td><td>+胶着池+混编+EV最优+市场最热</td></tr>
+<tr><td>复式</td><td>强腿弱腿补第二选项（测歪了）</td><td>胶着场双选/三选（原始命题）+TTG/CRS复式</td></tr>
+<tr><td>玩法池</td><td>HAD/HHAD</td><td>五池+混串</td></tr>
+<tr><td>基线</td><td>无</td><td>随机+市场最热+纯HAD 三基线</td></tr>
+<tr><td>统计</td><td>点估计</td><td>95% CI + 最小样本门槛</td></tr>
+<tr><td>验证</td><td>无</td><td>严格档三条件 + paper trading</td></tr>
+<tr><td>隔离</td><td>结论直接建议优化</td><td>门槛未过零影响主流程</td></tr>
+</table>
+
+<div class="foot">方案冻结于 2026-09-05 会话（决策链：paper trading=2元实测 ✓ / 胶着=10pp+12pp敏感性 ✓ / 门槛=严格档 ✓ / 范围=全景矩阵 ✓ / HAFU=补采 ✓ / 模型口径=第二阶段 ✓）｜ 修订须走方案变更记录</div>
+</div></body></html>
