@@ -199,3 +199,71 @@ class TestRegenSameDay:
             (tmp_path / name).write_text('{"date": "x", "seq": 1}')
         monkeypatch.setattr(bp, "PRED_DIR", tmp_path)
         assert bp._next_seq() == 3        # 2个自然日 → seq=3(而非文件数4)
+
+
+def test_cmd_settle_skips_superseded_card(tmp_path, monkeypatch, capsys):
+    """T3 遗留补强：归档卡(superseded=True)不进结算——防污染回款/连败统计。
+    对照卡(同日非 superseded)正常结算，证明跳过确因 superseded 而非环境损坏。"""
+    import boldplay
+    pred = tmp_path / "data" / "03-predictions"; pred.mkdir(parents=True)
+    res_dir = tmp_path / "data" / "02-results"; res_dir.mkdir(parents=True)
+    (res_dir / "2026-09-06.json").write_text(json.dumps({"date": "2026-09-06",
+        "matches": [{"code": "周日001", "result": "2-0"}]}), encoding="utf-8")
+    (pred / "2026-09-06-r1-boldplay.json").write_text(json.dumps(
+        {"date": "2026-09-06", "totalCost": 4, "superseded": True,
+         "tiers": {"upset": {"cost": 4, "multiplier": 1,
+           "legs": [{"matchNumStr": "周日001", "play": "had", "pick": "主胜", "odds": 1.98}]}}}),
+        encoding="utf-8")
+    (pred / "2026-09-05-boldplay.json").write_text(json.dumps(
+        {"date": "2026-09-06", "totalCost": 4,
+         "tiers": {"upset": {"cost": 4, "multiplier": 1,
+           "legs": [{"matchNumStr": "周日001", "play": "had", "pick": "主胜", "odds": 1.98}]}}}),
+        encoding="utf-8")
+    monkeypatch.setattr(boldplay, "ROOT", tmp_path)
+    boldplay.cmd_settle()
+    out = capsys.readouterr().out
+    assert "已作废(superseded)，跳过" in out       # 跳过日志
+    card = json.loads((pred / "2026-09-06-r1-boldplay.json").read_text(encoding="utf-8"))
+    assert "settle" not in card                    # 赛果齐也不结算
+    ctrl = json.loads((pred / "2026-09-05-boldplay.json").read_text(encoding="utf-8"))
+    assert ctrl["settle"]["legHits"]["upset"] == [[True]]   # 对照卡正常结算
+
+
+def test_main_dry_zero_side_effect(tmp_path, monkeypatch, capsys):
+    """T3 遗留补强：--dry 纯预览零副作用——不归档(archive_stale_card 零调用)不落盘。
+    先跑非 dry 对照(归档被调 1 次+落盘)证明记录器接线有效，再跑 dry 断言零调用。"""
+    import boldplay as bp
+    pred = tmp_path / "data" / "03-predictions"; pred.mkdir(parents=True)
+    calls = []
+
+    def _spy_archive(*a, **k):
+        calls.append(a)
+        return None
+
+    monkeypatch.setattr(bp, "ROOT", tmp_path)
+    monkeypatch.setattr(bp, "PRED_DIR", pred)
+    monkeypatch.setattr(bp, "_live_day",
+                        lambda *a, **k: {"matches": [], "fetchedAt": "2026-09-06T00:00:00"})
+    monkeypatch.setattr(bp, "build_freq_table", lambda: {})
+    monkeypatch.setattr(bp, "_zh_map", lambda: {})
+    monkeypatch.setattr(bp, "build_team_form", lambda: {})
+    monkeypatch.setattr(bp, "build_three_tier", lambda *a, **k: {
+        "seq": 1, "totalCost": 0,
+        "tiers": {"base": {"cost": 0, "legs": []}, "upset": {"cost": 0, "legs": []}}})
+    monkeypatch.setattr(bp, "upset_month_spend", lambda month, pred_dir=None: 0)
+    monkeypatch.setattr(bp, "upset_dry_streak", lambda month, pred_dir=None: 0)
+    monkeypatch.setattr(bp, "render_ticket", lambda t: "")
+    monkeypatch.setattr(bp, "archive_stale_card", _spy_archive)
+
+    monkeypatch.setattr(sys, "argv", ["boldplay.py"])          # 对照: 正常落盘路径
+    bp.main()
+    assert len(calls) == 1 and list(pred.glob("*boldplay*.json"))   # 归档1次+落盘
+    calls.clear()
+    for p in pred.glob("*boldplay*.json"):
+        p.unlink()
+
+    monkeypatch.setattr(sys, "argv", ["boldplay.py", "--dry"])
+    bp.main()
+    assert calls == []                                             # dry: 归档零调用
+    assert not list(pred.glob("*boldplay*.json"))                  # 也不落盘
+    assert "--dry 未落盘" in capsys.readouterr().out
