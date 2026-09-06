@@ -24,6 +24,7 @@
     （同目录临时文件 + os.replace，中断不毁账）
 开发者 sszhang"""
 import datetime
+import datetime as _datetime   # L247/L310 无参调用 str(_datetime.date.today()) 的别名修复
 import json
 import os
 import shutil
