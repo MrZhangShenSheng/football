@@ -35,6 +35,20 @@ def settled_tickets(tickets: list) -> list:
                   key=lambda t: t["settled"].get("settledAt", ""))
 
 
+def has_new_kpi(tickets: list) -> bool:
+    """新KPI列存在性(兼容面①): 全部旧票→False, 渲染层跳过新行. 开发者 sszhang"""
+    return any(t.get("coverGate") or str(t.get("playType", "")).startswith("N-")
+               for t in tickets)
+
+
+def count_breakthrough(tickets: list) -> int:
+    return sum(1 for t in tickets if "突破覆盖" in (t.get("note") or ""))
+
+
+def narrative_tickets(tickets: list) -> list:
+    return [t for t in tickets if str(t.get("playType", "")).startswith("N-")]
+
+
 def cum_points(tickets: list) -> list:
     """结算时序累计净利点列：[('起点',0), (id, 累计)]。"""
     pts, acc = [("起点", 0.0)], 0.0
@@ -248,6 +262,33 @@ def render(data: dict) -> str:
     ag = agreement_stats(tickets)
     n_settled = len(settled_tickets(tickets))
     n_pending = len(tickets) - n_settled
+    # 批次5 观察看板（confidence-tiering 设计·兼容面①）：全中覆盖率/突破覆盖频次/叙事命中
+    # 三列仅当票面带新字段（coverGate / N- 前缀）才渲染——22 张旧票不渲染不报错
+    new_kpi_html, narrative_panel = "", ""
+    if has_new_kpi(tickets):
+        gated = [t for t in tickets if t.get("coverGate")]
+        if gated:                                  # 覆盖率列: 票有 coverGate 才渲染
+            ok_n = sum(1 for t in gated if (t.get("coverGate") or {}).get("ok"))
+            new_kpi_html += (f'<div class="kpi"><span>全中覆盖率(覆盖闸)</span>'
+                             f'<b>{ok_n / len(gated):.0%}<i style="font-size:13px;font-style:normal">'
+                             f' {ok_n}/{len(gated)}</i></b></div>')
+        bt = count_breakthrough(tickets)           # 突破覆盖频次: note 含"突破覆盖"才计数
+        new_kpi_html += (f'<div class="kpi"><span>突破覆盖频次</span><b>{bt}'
+                         f'<i style="font-size:13px;font-style:normal"> 次</i></b></div>')
+        nts = narrative_tickets(tickets)
+        if nts:                                    # 叙事票单独分栏(轨道N·设计批次5)
+            n_set = [t for t in nts if (t.get("settled") or {}).get("status") == "settled"]
+            n_hit = sum(1 for t in n_set if (t.get("settled") or {}).get("net", 0) > 0)
+            n_net = sum((t.get("settled") or {}).get("net", 0) for t in n_set)
+            narrative_panel = f"""
+<h2>⑦ 叙事票（轨道N · playType N-前缀分栏）</h2>
+<table><tr><th>ID</th><th>玩法</th><th>本金</th><th>结算</th><th>净</th></tr>
+{''.join(f'<tr><td>{t.get("id")}</td><td>{t.get("playType","")}</td><td>{t.get("stake",0)}</td>'
+         f'<td>{(t.get("settled") or {}).get("status", "pending")}</td>'
+         f'<td>{(t.get("settled") or {}).get("net", "—")}</td></tr>' for t in nts)}</table>
+<p class="sub">叙事票 {len(nts)} 张 · 已结算 {len(n_set)} 张命中 {n_hit} 张 · 净 {n_net:+.1f} 元 ——
+playType 以 N- 开头的票单列观察（叙事命中率，设计批次5）</p>
+"""
     return f"""<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
 <title>实票账本 · tickets</title>
 <style>
@@ -290,6 +331,7 @@ th{{background:var(--bg);font-weight:600}}
 <div class="kpi"><span>累计本金(实票)</span><b>{live_stake:.0f}<i style="font-size:13px;font-style:normal"> 元</i></b></div>
 <div class="kpi"><span>累计净利(实票)</span><b class="{"pos" if live_net >= 0 else "neg"}">{live_net:+.1f}<i style="font-size:13px;font-style:normal"> 元</i></b></div>
 <div class="kpi"><span>整体ROI(实票)</span><b>{(live_net / live_stake * 100) if live_stake else 0:+.1f}%</b></div>
+{new_kpi_html}
 </div>
 
 <h2>① 资金曲线（累计净利，按结算时序）</h2>
@@ -316,6 +358,7 @@ th{{background:var(--bg);font-weight:600}}
 盈利集中在跟系统一致的票；登记回执警示数字以本块最新值为准</p>
 
 {test_panel}
+{narrative_panel}
 <p class="src">数据来源：data/06-tickets/tickets.json（{meta.get("lastUpdated", "")} 刷新）· 设计：docs/2026-08-25-tickets-design.html + docs/2026-09-03-ticket-recommend-alignment-design.html（⑤）·
 色对经 dataviz validate_palette.js 验证（蓝/橙 diverging，protan ΔE≥21）</p>
 </main></body></html>
