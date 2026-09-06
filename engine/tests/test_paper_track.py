@@ -2,6 +2,10 @@
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts" / "scratch" / "replay_v2"))
+import pytest
+# paper.py 顶层 import shapes——shapes.py/data.py 属 scratch(已 gitignore 不入库)，
+# fresh clone 缺 shapes 时跳过本模块而非炸全仓收集(final-fix I-1)
+pytest.importorskip("shapes")
 import paper
 
 def test_old_ticket_defaults_track_a():
