@@ -204,15 +204,33 @@ svg{vertical-align:middle}
 <h2>十、实施批次</h2>
 <div class="card"><table>
 <tr><th>批次</th><th>内容</th><th>改动面</th></tr>
-<tr><td><b>批次1 立即</b> <span class="tag p0">P0</span></td><td>preference.json 新结构（保底3*4*5/叙事仓/覆盖闸/星级映射/踩线降级1.35-0.68）+ boldplay 保底档重构（4串11→3*4*5+胆材分层+覆盖闸校验）+ 报告"本档历史命中"列</td><td>preference.json、boldplay.py、报告模板</td></tr>
+<tr><td><b>批次1 立即</b> <span class="tag p0">P0</span></td><td>preference.json 新结构（保底3*4*5/叙事仓/覆盖闸/星级映射/踩线降级1.35-0.68·<b>schemaVersion=2 + 旧键保留过渡</b>）+ boldplay 保底档重构（4串11→3*4*5+胆材分层+覆盖闸校验）+ 报告"本档历史命中"列</td><td>preference.json、boldplay.py、报告模板</td></tr>
 <tr><td><b>批次2 立即</b> <span class="tag p0">P0</span></td><td>同日重出机制（归档命名/superseded/seq修正/实票保护闸）</td><td>boldplay.py 落盘段</td></tr>
-<tr><td><b>批次3 慢工</b> <span class="tag p1">P1</span></td><td>recalibrate.py（校准曲线+isotonic 挂回填链）+ conf_tiers.json 滚动修正 + 影子层 CRS/AB 协议</td><td>新脚本、backfill 链尾、影子层</td></tr>
+<tr><td><b>批次3 慢工</b> <span class="tag p1">P1</span></td><td>recalibrate.py（校准曲线+isotonic 挂回填链）+ conf_tiers.json 滚动修正 + 影子层 CRS/AB 协议；<b>run.py verify 编排加 <code>sh("recalibrate.py")</code> 一行</b></td><td>新脚本、run.py verify、影子层</td></tr>
 <tr><td><b>批次4 叙事轨</b> <span class="tag p1">P1</span></td><td>轨道N落地：叙事链生成器（五层）+ 玩法映射（CRS/HAFU/混串·票面形状标记）+ 星级评分 + ESPN伤停/首发数据源接入</td><td>新脚本 narrative.py、espn_fetch.py 扩端点、boldplay 叙事档</td></tr>
-<tr><td><b>批次5 观察</b> <span class="tag p2">P2</span></td><td>验证指标看板（ticket_report 扩列：覆盖率/突破频次/叙事命中）+ 熔断线程序化检查</td><td>ticket_report.py</td></tr>
+<tr><td><b>批次5 观察</b> <span class="tag p2">P2</span></td><td>验证指标看板（ticket_report 扩列：覆盖率/突破频次/叙事命中·<b>旧票缺列不渲染</b>）+ 熔断线程序化检查</td><td>ticket_report.py</td></tr>
 </table>
 <ul>
 <li>测试纪律：批次1/2/4 走 TDD（回归锚：朗斯踩线案、9-06 重出案、09-05 保底6腿案、覆盖闸边界案）；批次3 语料小不设切换目标</li>
 <li>本设计为 brainstorming 定稿，实施计划由 writing-plans 技能另行产出</li>
+</ul></div>
+
+<h2>十.五、老版本兼容性与升级 <span class="tag new">2026-09-06 审核追加</span></h2>
+<div class="card">
+<b>审核范围</b>：7 个兼容面逐一核验（实票账本 22 票/偏好档案/boldplay 旧卡 15 张/影子票 44 张/新缓存冷启动/安装升级脚本/verify 编排链）。
+<table>
+<tr><th>兼容面</th><th>现状</th><th>结论与要求</th></tr>
+<tr><td>① tickets.json 旧票</td><td>22 票 19 种旧形状（4串11/8串1/CRS串关等）</td><td>✅ 安全——已结算票永不重算（票面事实铁律）；唯一要求：ticket_report 新 KPI 列（覆盖率/突破频次/叙事命中）对旧票<b>缺列不渲染</b>，禁止报错</td></tr>
+<tr><td>② preference.json 迁移</td><td>现 9 键（shapes/stake/playTaste…）将被三轨结构取代</td><td>⚠️ 要求——加 <code>schemaVersion: 2</code>，<b>旧键保留一个过渡期</b>（skill 会话读此文件，代码不读），旧键标注 deprecated 而非删除</td></tr>
+<tr><td>③ boldplay 旧卡（15 张）</td><td>settle 链扫全部历史卡</td><td>✅ 安全——已结算卡按 settle 字段跳过、未拍板卡按 approved=false 跳过（现有逻辑）；新代码读 superseded/track 必须 <code>.get()</code> 兜底，旧卡无此键不得崩</td></tr>
+<tr><td>④ 影子层旧影子票（44 张）</td><td>paper_tickets.json 全部无 track 字段</td><td>⚠️ 要求——settle-all 对无 track 的旧影子票默认 <code>track="A"</code>（EV 版），新影子票强制带 track；分轨统计时旧票归 A 轨</td></tr>
+<tr><td>⑤ 新缓存冷启动</td><td>conf_tiers.json / calibration_curve.json 均不存在</td><td>✅ 免预置——缺失时用代码内置默认值（0.75/0.60/0.55 分层线），首次 recalibrate 自动落盘（与 fusion.json 先例同模式）</td></tr>
+<tr><td>⑥ install.sh / update.sh</td><td>install=pip+软链+run.py all+体彩+espn history+dc_fit；update=git pull+verify+pytest</td><td>✅ <b>本体零改动</b>——recalibrate 挂 run.py verify 编排（update 第 6 步已覆盖）；narrative 属"帮我预测"链不属安装；新测试文件（test_narrative.py 等）落 engine/tests/ 被 update 第 7 步 pytest 自动拾取</td></tr>
+<tr><td>⑦ run.py verify 编排</td><td>现 8 步链（backfill→boldplay settle→corpus→attribute→trend→calibrate→ablate→temperature）</td><td>⚠️ 一行改动——verify 链尾追加 <code>sh("recalibrate.py")</code>（幂等：语料增量&lt;10 场自跳过），批次3 交付</td></tr>
+</table>
+<ul>
+<li><b>升级路径</b>：用户侧 <code>./update.sh</code> 一条命令完成（git pull 拉新代码 → verify 链自动跑 recalibrate → pytest 回归）；无需重装、无需手动迁移任何数据文件</li>
+<li><b>回滚路径</b>：新缓存文件均为新增（不覆盖旧文件），git revert 代码即回滚；preference 旧键保留保证回滚后 skill 会话仍可读</li>
 </ul></div>
 
 <h2>十一、轨道 N：叙事彩票模型总纲 <span class="tag new">2026-09-06 追加</span></h2>
