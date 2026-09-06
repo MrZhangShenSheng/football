@@ -87,23 +87,30 @@ svg{vertical-align:middle}
 <h2>四、新出票结构（26 元/轮贴线）</h2>
 <div class="card"><table>
 <tr><th>仓</th><th>形状</th><th>金额</th><th>腿源</th><th>期望回款率</th></tr>
-<tr><td><b>保底仓</b></td><td>HAD/HHAD 4串11容错</td><td class="num">22元</td><td>p≥0.65 方向腿前4（p≥0.75 优先做胆）</td><td class="num">~96%（4条0.77腿至少中2关）</td></tr>
-<tr><td><b>验证仓</b></td><td>HAD/HHAD 4串1×1注</td><td class="num">2元</td><td>p 0.55~0.65 段 EV 最高 4 条</td><td class="num">~35%（博正·大样本唯一方向存活形状）</td></tr>
+<tr><td><b>保底仓</b></td><td>HAD/HHAD 4串11容错</td><td class="num">22元</td><td>p≥0.60 方向腿前4（p≥0.75 优先做胆）</td><td class="num">~96%（4条0.77腿至少中2关）</td></tr>
+<tr><td><b>验证仓</b></td><td>HAD/HHAD 4串1×1注</td><td class="num">2元</td><td>p 0.55~0.60 段 EV 最高 4 条</td><td class="num">~35%（博正·大样本唯一方向存活形状）</td></tr>
 <tr><td><b>体感仓</b></td><td>CRS 单关×1注</td><td class="num">2元</td><td>boldplay 翻身档 EV 第一名</td><td class="num">~10%（原月预算40元冻结，只留此仓）</td></tr>
 </table>
 <ul>
 <li><b>砍掉</b>：8串1（体彩口径 −100% 实证）、CRS 串关（33腿中2）</li>
 <li><b>踩线降级规则</b>：赔率&lt;1.30 且 p&lt;0.70 的腿不入保底（朗斯案教训——1.4~1.7 段实票 25% 命中），自动降级到验证仓</li>
-<li><b>零腿轮</b>：p≥0.65 方向腿不足 4 条时保底仓关档不硬凑，当轮只出验证+体感（4元），省下 18 元滚入月内池</li>
+<li><b>零腿轮</b>：p≥0.60 方向腿不足 4 条时保底仓关档不硬凑，当轮只出验证+体感（4元），省下 18 元滚入月内池</li>
 <li><b>预算</b>：轮红线 30 元不变（26×9轮≈234 ≤ 月封顶 240）</li>
+</ul>
+<h3>阈值 0.65→0.60 的落地推演依据（2026-09-06 大哥拍板）</h3>
+<ul>
+<li>0.65 阈值下语料 14 轮只开 5 轮（36%），09-06 实卡仅 3 条合格腿→关档，"每轮不空手"体验打折</li>
+<li>0.60~0.65 段语料实测命中 <b>74%（17/23）</b>——比 0.55~0.65 段的 70% 明显好，0.60 是真实置信度分界</li>
+<li>敏感性回测：阈 0.60 出轮率 43%、腿命中 88%、语料 ROI +25.1%（vs 0.65 的 95%/+47.4%——n=20 vs n=24，统计上无显著差异，出轮率+7pp 是净收益）</li>
+<li>踩线降级规则（赔率&lt;1.30 且 p&lt;0.70）继续兜底防朗斯类翻车，0.60 阈值下依然生效</li>
 </ul></div>
 
 <h2>五、置信度分层规则 <span class="tag new">核心</span></h2>
 <div class="card"><table>
 <tr><th>p_max 分层</th><th>级名</th><th>去向</th><th>档内实测命中</th></tr>
 <tr><td class="num">p ≥ 0.75</td><td><b>胆级</b></td><td>保底仓优先腿</td><td class="num">96%（n=24）</td></tr>
-<tr><td class="num">0.65 ≤ p &lt; 0.75</td><td><b>标准级</b></td><td>保底仓普通腿</td><td class="num">77%</td></tr>
-<tr><td class="num">0.55 ≤ p &lt; 0.65</td><td><b>观察级</b></td><td>只进验证仓/影子层</td><td class="num">70%</td></tr>
+<tr><td class="num">0.60 ≤ p &lt; 0.75</td><td><b>标准级</b></td><td>保底仓普通腿</td><td class="num">74%~77%（0.60-0.65段74%·0.65-0.75段77%）</td></tr>
+<tr><td class="num">0.55 ≤ p &lt; 0.60</td><td><b>观察级</b></td><td>只进验证仓/影子层</td><td class="num">~70%（0.55-0.65合并段）</td></tr>
 <tr><td class="num">p &lt; 0.55</td><td><b>参考级</b></td><td>报告显示，标注"不入票"</td><td class="num">49%</td></tr>
 </table>
 <ul>
