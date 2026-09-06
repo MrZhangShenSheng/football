@@ -1,10 +1,11 @@
 """boldplay settle 逐 leg 判定测试（phase2-plan 任务 6 · TDD 先行）。开发者 sszhang"""
+import json
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
-from boldplay import settle  # noqa: E402
+from boldplay import archive_stale_card, settle  # noqa: E402
 
 TICKET = {"totalCost": 18, "tiers": {
     "base": {"cost": 4, "legs": [[{"matchNumStr": "001", "play": "had", "pick": "主胜", "odds": 1.8},
@@ -154,3 +155,47 @@ def test_cmd_settle_loops_all_cards(tmp_path, monkeypatch, capsys):
     assert settled["settle"]["legHits"]["upset"] == [[True]]  # 旧卡被循环捞回结算
     pending = _json.loads((pred / "2026-08-28-boldplay.json").read_text(encoding="utf-8"))
     assert "settle" not in pending                             # 未完赛卡不写 settle
+
+
+class TestRegenSameDay:
+    """同日重出(设计§八): 归档命名/superseded/seq按日去重/实票保护闸"""
+    def test_archive_renames_and_marks(self, tmp_path):
+        main = tmp_path / "2026-09-07-boldplay.json"
+        main.write_text(json.dumps({"date": "2026-09-07", "seq": 16, "approved": False},
+                                   ensure_ascii=False), encoding="utf-8")
+        archived = archive_stale_card(main, tickets_path=tmp_path / "nope.json")
+        assert archived is not None and archived.name == "2026-09-07-r1-boldplay.json"
+        card = json.loads(archived.read_text(encoding="utf-8"))
+        assert card["superseded"] is True and card["supersededBy"] == "r1"
+        assert not main.exists()          # 旧主卡已改名, 落盘段将写新主卡
+
+    def test_archive_blocked_when_ticket_aligned(self, tmp_path):
+        # 实票保护闸(设计§八): approved卡有票对齐→拒绝静默归档
+        main = tmp_path / "2026-09-07-boldplay.json"
+        main.write_text(json.dumps({"date": "2026-09-07", "seq": 16, "approved": True},
+                                   ensure_ascii=False), encoding="utf-8")
+        tickets = tmp_path / "tickets.json"
+        tickets.write_text(json.dumps({"tickets": [
+            {"id": "T023", "source": "boldplay", "placedAt": "2026-09-07",
+             "stake": 32, "legs": []}]}, ensure_ascii=False), encoding="utf-8")
+        archived = archive_stale_card(main, tickets_path=tickets, force=False)
+        assert archived is None           # 拒绝, 主卡原样保留
+        assert main.exists()
+
+    def test_force_overrides_protection(self, tmp_path):
+        main = tmp_path / "2026-09-07-boldplay.json"
+        main.write_text(json.dumps({"date": "2026-09-07", "approved": True},
+                                   ensure_ascii=False), encoding="utf-8")
+        tickets = tmp_path / "tickets.json"
+        tickets.write_text('{"tickets": [{"id": "T023", "placedAt": "2026-09-07"}]}')
+        archived = archive_stale_card(main, tickets_path=tickets, force=True)
+        assert archived is not None
+
+    def test_seq_counts_unique_dates(self, tmp_path, monkeypatch):
+        # seq按自然日去重(设计§八): 同日r1快照不递增seq
+        import boldplay as bp
+        for name in ("2026-09-06-boldplay.json", "2026-09-06-r1-boldplay.json",
+                     "2026-09-05-boldplay.json"):
+            (tmp_path / name).write_text('{"date": "x", "seq": 1}')
+        monkeypatch.setattr(bp, "PRED_DIR", tmp_path)
+        assert bp._next_seq() == 3        # 2个自然日 → seq=3(而非文件数4)

@@ -398,6 +398,46 @@ def is_process_snapshot(p: Path) -> bool:
     return bool(SNAPSHOT_STEM_RE.search(p.stem))
 
 
+def _next_seq() -> int:
+    """seq按自然日去重计数(设计§八): 同日rN快照不递增, 防翻身档轮换奇偶被打乱.
+    自然日取文件名日期段（铁律7同日主文件=真相, 主卡名={date}-boldplay.json 恒成立；
+    不读卡片内容——内容date非规范时会把多日折叠成一天, 文件名才是身份）。开发者 sszhang"""
+    dates = set()
+    for p in PRED_DIR.glob("*-boldplay*.json"):
+        if is_process_snapshot(p):
+            continue
+        dates.add(p.stem.split("-boldplay")[0])
+    return len(dates) + 1
+
+
+def archive_stale_card(main_path: Path, tickets_path: Path, force: bool = False) -> Path | None:
+    """同日重出归档(设计§八): 旧主卡改名{date}-rN-boldplay.json+superseded标记.
+    实票保护闸: 旧卡approved且有票对齐→拒绝(force=False时), 返回None.
+    旧卡无date键时以主卡文件名日期段兜底(兼容面③: .get()兜底)。开发者 sszhang"""
+    if not main_path.exists():
+        return None
+    card = json.loads(main_path.read_text(encoding="utf-8"))
+    if card.get("approved") and not force:
+        try:
+            tickets = json.loads(tickets_path.read_text(encoding="utf-8"))
+            placed = {t.get("placedAt", "")[:10] for t in tickets.get("tickets", [])}
+            if card.get("date") in placed:
+                print(f"[boldplay] {main_path.name} 已approved且当日有实票——重出需 --force")
+                return None
+        except FileNotFoundError:
+            pass
+    card_date = card.get("date") or main_path.stem.split("-boldplay")[0]
+    n = 1
+    while (main_path.parent / f"{card_date}-r{n}-boldplay.json").exists():
+        n += 1
+    card["superseded"] = True
+    card["supersededBy"] = f"r{n}"
+    archived = main_path.parent / f"{card_date}-r{n}-boldplay.json"
+    main_path.rename(archived)
+    archived.write_text(json.dumps(card, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    return archived
+
+
 def upset_month_spend(month: str, pred_dir: Path = PRED_DIR) -> float:
     """当月翻身档累计投入：扫 data/03-predictions/{month}-*-boldplay*.json 的 tiers.upset.cost
     （-rN 过程快照排除，铁律7 同日主文件=真相）。开发者 sszhang"""
@@ -918,6 +958,9 @@ def cmd_settle() -> None:
             if ticket.get("approved") is False:
                 # P1-6：未拍板卡不进结算（程序卡≠采纳方案；缺键的历史卡按已采纳兼容）
                 print(f"[boldplay] {p.name} 未拍板(approved=false)，跳过结算"); continue
+            if ticket.get("superseded"):
+                # T3 同日重出：归档卡已作废，不进结算（防污染回款/连败统计）
+                print(f"[boldplay] {p.name} 已作废(superseded)，跳过"); continue
             results = _load_results(ticket["date"])
             codes = set()
             for tier in ticket["tiers"].values():
@@ -1207,17 +1250,17 @@ def main() -> None:
     method = "amix" if "--method=amix" in args else "freq"
     structure = "legacy" if "--structure=legacy" in args else "new"   # v2 两档默认，legacy 双轨对照一个月
     dry = "--dry" in args
+    force = "--force" in args   # T3 同日重出实票保护闸的显式突破开关
     # 主数据流=实时在售清单（P0-1：score_odds 存档陈旧曾致整卡错轮——09-04 周五卡事故；
     # 存档由 run.py update 末尾 dump-odds 自动留档，不再作 boldplay 数据源）
     odds = _live_day()
     table = build_freq_table()
-    # -rN 过程快照排除（2026-09-04 审计 P1）：seq 与 monthly_spend/upset_month_spend 口径归一。
-    # 修前 13 文件 seq=14 → 修后 11 文件 seq=12，偶→偶不翻翻身档轮换；未来快照数为奇时
-    # seq 奇偶翻转属预期行为变更，提交须注明。
+    # -rN 过程快照排除（2026-09-04 审计 P1）：hist 供 monthly_spend（月封顶 gate）。
+    # seq 改按自然日去重（T3 设计§八：同日 rN 快照/归档卡不递增，防翻身档轮换奇偶被打乱）。
     hist = [json.load(open(p, encoding="utf-8"))
             for p in glob.glob(str(ROOT / "data/03-predictions/*-boldplay.json"))
             if not is_process_snapshot(Path(p))]
-    seq = len(hist) + 1
+    seq = _next_seq()
     spend = monthly_spend(hist, str(date.today())[:7])
     if not budget_gate(spend):
         print(f"[boldplay] 月封顶触及: 本月已花 {spend:.0f}/{MONTHLY_CAP:.0f} 元, 本轮停")
@@ -1272,6 +1315,10 @@ def main() -> None:
     if dry:
         print(f"[boldplay] --dry 未落盘（seq={out['seq']} 总投入 {out['totalCost']}元）")
         return
+    # T3 同日重出（设计§八）：落盘前旧主卡归档为 {date}-rN-boldplay.json（superseded 标记，
+    # settle 不再结算）；approved 卡当日有实票时拒绝归档，需 --force 显式突破。dry 不落盘
+    # 也不归档（纯预览无副作用）。
+    archive_stale_card(path, ROOT / "data/06-tickets/tickets.json", force=force)
     path.write_text(json.dumps(out, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     print(f"[boldplay] → {path}")
 
