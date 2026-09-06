@@ -379,19 +379,23 @@
     0.256,
     0.353
    ],
-   "final": 0.598,
+   "final": 0.58,
    "chain": "R3×0.95/平×1.1",
    "chainSteps": [
     {
      "name": "开季修正R3",
      "factor": 0.95
+    },
+    {
+     "name": "伤停差值d=-1(蒙扎缺瓦雷拉)",
+     "factor": 0.97
     }
    ],
    "lambdaHome": 1.303,
    "lambdaAway": 1.616,
    "ev": -0.115,
    "inPlan": "彩票",
-   "note": "divergence=0.05 fdAnchor=True"
+   "note": "divergence=0.05 fdAnchor=True | 修订:p 60%→58%仍过线(蒙扎主力瓦雷拉缺阵)"
   },
   {
    "idx": 11,
@@ -500,7 +504,7 @@
    "lambdaAway": 3.147,
    "ev": 0.055,
    "inPlan": "彩票",
-   "note": "divergence=0.145 fdAnchor=True"
+   "note": "divergence=0.145 fdAnchor=True | 伤停核验:主力口径d=0不修正(巴萨缺中卫库巴西=零封小利空,记note)"
   },
   {
    "idx": 14,
@@ -811,18 +815,22 @@
     0.14
    ],
    "final": 0.09,
-   "chain": "R3×0.95/平×1.1",
+   "chain": "R3×0.95/平×1.1 + 伤停差值×0.97",
    "chainSteps": [
     {
      "name": "开季修正R3",
      "factor": 0.95
+    },
+    {
+     "name": "伤停差值d=-1(主力口径:巴黎FC缺阿泰德/帕吉斯2主力攻击手)",
+     "factor": 0.97
     }
    ],
    "lambdaHome": null,
    "lambdaAway": null,
-   "ev": 0.215,
+   "ev": 0.177,
    "inPlan": "翻身",
-   "note": "divergence=0.169 fdAnchor=True"
+   "note": "divergence=0.169 fdAnchor=True | 修订:q 9.0%→8.7% EV+21.5%→+18%(insight 2041317 2026-09-06拉取,insight复活后首采)"
   },
   {
    "idx": 23,
