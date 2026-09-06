@@ -30,8 +30,8 @@ svg{vertical-align:middle}
 
 <svg width="0" height="0" style="position:absolute"><symbol id="i-shield" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6z"/></symbol><symbol id="i-chart" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 20h16M7 16v-5m5 5V6m5 10v-8"/></symbol><symbol id="i-refresh" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M20 12a8 8 0 1 1-2.3-5.6M20 3v4h-4"/></symbol><symbol id="i-ghost" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M5 21V9a7 7 0 0 1 14 0v12l-2.3-2-2.4 2-2.3-2-2.3 2-2.4-2zM9 10h.01M15 10h.01"/></symbol></svg>
 
-<h1><svg width="20" height="20" style="color:var(--acc)"><use href="#i-shield"/></svg> 置信度分层出票设计（方案 A+C · 大哥拍板）</h1>
-<div class="sub">来源：2026-09-06 brainstorming 会话（实票胜率下滑诊断 → 方案选型）· 定稿 2026-09-06 · 决策：大哥 · 开发者 sszhang</div>
+<h1><svg width="20" height="20" style="color:var(--acc)"><use href="#i-shield"/></svg> 置信度分层出票设计（A+C+N 三轨 · 大哥拍板）</h1>
+<div class="sub">来源：2026-09-06 brainstorming 会话（实票胜率下滑诊断 → 方案选型 → 叙事彩票模型追加 → 保底重构 3*4*5*n）· 定稿 2026-09-06 · 决策：大哥 · 开发者 sszhang</div>
 
 <h2>一、问题诊断（数据实证）</h2>
 <div class="card"><table>
@@ -60,10 +60,11 @@ svg{vertical-align:middle}
 <li>结论：<b>模型不是不准，是好腿没用对地方</b>——96% 的腿在影子层空转，49% 的腿混进实票</li>
 </ul></div>
 
-<h2>三、方案总览（A+C 双轨）</h2>
+<h2>三、方案总览（A+C+N 三轨）</h2>
 <div class="card">
 <b>轨道 A（立即生效）：置信度分层出票</b>——模型零改动，动"谁配上实票"。<br>
-<b>轨道 C（慢工）：离线重校准任务</b>——挂回填链尾自动跑，影子层 AB 验证 30 轮，赢了才切主链路。<br><br>
+<b>轨道 C（慢工）：离线重校准任务</b>——挂回填链尾自动跑，影子层 AB 验证 30 轮，赢了才切主链路。<br>
+<b>轨道 N（叙事彩票模型·2026-09-06 追加拍板）：非 EV 驱动的剧本推导出票</b>——球队强弱/球员状态/赛事风格/战术叙事链推导比赛走向与比分，落高赔玩法，替换旧验证/体感仓（见第十一~十四节）。<br><br>
 <svg width="640" height="120" viewBox="0 0 640 120" style="color:var(--sub);max-width:100%">
   <rect x="10" y="30" width="170" height="56" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
   <text x="95" y="52" text-anchor="middle" font-size="12" fill="var(--ink)">corpus 语料库</text>
@@ -78,45 +79,76 @@ svg{vertical-align:middle}
   <path d="M410 33 H450 V85 H470" stroke="currentColor" stroke-width="1.5" fill="none" marker-end="url(#a1)"/>
   <path d="M410 89 H450 V33 H470" stroke="currentColor" stroke-width="1.5" fill="none" marker-end="url(#a1)"/>
   <rect x="470" y="40" width="160" height="44" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
-  <text x="550" y="58" text-anchor="middle" font-size="12" fill="var(--ink)">实票 26元/轮</text>
-  <text x="550" y="75" text-anchor="middle" font-size="11" fill="currentColor">保底22 + 验证2 + 体感2</text>
+  <text x="550" y="58" text-anchor="middle" font-size="12" fill="var(--ink)">实票 = 保底32n + 叙事N</text>
+  <text x="550" y="75" text-anchor="middle" font-size="11" fill="currentColor">3*4*5五场容错 + 剧本票·不限额</text>
   <defs><marker id="a1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6z" fill="currentColor"/></marker></defs>
 </svg>
 </div>
 
-<h2>四、新出票结构（26 元/轮贴线）</h2>
+<h2>四、新出票结构（保底重构 3*4*5*n + 叙事仓 · 大哥拍板不限额）</h2>
 <div class="card"><table>
-<tr><th>仓</th><th>形状</th><th>金额</th><th>腿源</th><th>期望回款率</th></tr>
-<tr><td><b>保底仓</b></td><td>HAD/HHAD 4串11容错</td><td class="num">22元</td><td>p≥0.60 方向腿前4（p≥0.75 优先做胆）</td><td class="num">~96%（4条0.77腿至少中2关）</td></tr>
-<tr><td><b>验证仓</b></td><td>HAD/HHAD 4串1×1注</td><td class="num">2元</td><td>p 0.55~0.60 段 EV 最高 4 条</td><td class="num">~35%（博正·大样本唯一方向存活形状）</td></tr>
-<tr><td><b>体感仓</b></td><td>CRS 单关×1注</td><td class="num">2元</td><td>boldplay 翻身档 EV 第一名</td><td class="num">~10%（原月预算40元冻结，只留此仓）</td></tr>
+<tr><th>仓</th><th>形状</th><th>金额</th><th>腿源</th><th>关键指标</th></tr>
+<tr><td><b>保底仓</b> <span class="tag new">重构</span></td><td>HAD/HHAD <b>3*4*5 五场容错</b><br>（3串1×10 + 4串1×5 + 5串1×1 = 16注）</td><td class="num">32×n 元<br>（n=倍数，默认1）</td><td><b>2胆+3腿</b>：p≥0.75 胆级优先占2席（实测96%），p≥0.60 标准腿占3席（实测74%~77%）</td><td class="num">回款率89%（中3关起回）<br>全中回款109~208元<br>全中概率28%（胆材版）</td></tr>
+<tr><td><b>叙事仓</b> <span class="tag new">轨道N</span></td><td>CRS 2串1 / HAFU 3串1 / 混串<br>（票面强制标记玩法形状）</td><td class="num">N 元<br>（剧本星级驱动，<b>无上限</b>）</td><td>叙事链推导的剧本比分/半全场（第十一~十二节）</td><td class="num">CRS 2串1 ≈12倍<br>HAFU 3串1 ≈216倍</td></tr>
 </table>
 <ul>
-<li><b>砍掉</b>：8串1（体彩口径 −100% 实证）、CRS 串关（33腿中2）</li>
-<li><b>踩线降级规则</b>：赔率&lt;1.30 且 p&lt;0.70 的腿不入保底（朗斯案教训——1.4~1.7 段实票 25% 命中），自动降级到验证仓</li>
-<li><b>零腿轮</b>：p≥0.60 方向腿不足 4 条时保底仓关档不硬凑，当轮只出验证+体感（4元），省下 18 元滚入月内池</li>
-<li><b>预算</b>：轮红线 30 元不变（26×9轮≈234 ≤ 月封顶 240）</li>
+<li><b>预算红线全取消</b>（大哥拍板"彻底不限额"）：轮红线30元/月封顶240元/翻身月预算40元全部废除；纪律由<b>覆盖闸+星级映射+叙事质量熔断</b>三机制替代（见下）</li>
+<li><b>砍掉</b>：8串1（体彩口径 −100% 实证）、CRS 串关旧翻身档（33腿中2）、验证仓、体感仓（被叙事仓取代）</li>
+<li><b>踩线降级规则（护栏升级）</b>：赔率&lt;1.35 且 p&lt;0.68 的腿不入保底（朗斯案教训——1.4~1.7 段实票 25% 命中），自动降级不入票</li>
+<li><b>零腿轮</b>：合格保底腿（含胆）不足 5 条时保底仓关档不硬凑——5场结构对单腿命中率更敏感（盈亏平衡 66.9%），硬凑=砸平衡点，只出叙事仓</li>
 </ul>
-<h3>阈值 0.65→0.60 的落地推演依据（2026-09-06 大哥拍板）</h3>
+
+<h3>4.1 覆盖闸（大哥核心要求程序化：保底中了覆盖整轮全部投注）</h3>
+<ul>
+<li>口径=<b>保底全中回款 ≥ 当轮总投入</b>（32n + N）——数学验证：中3关仅回~6.7元、中4关回~33元，只有全中（概率28%）能兑现覆盖，此为唯一可行口径</li>
+<li>出票时程序按当轮 5 条腿实际赔率计算全中回款 P_full，约束 <code>P_full ≥ 32n + N</code> → 叙事仓隐含上限 = P_full − 32n</li>
+<li>n 联动规则：叙事仓需求 ≤100 元 → n=1；100~200 → n=2（每+1倍覆盖空间约+100元）；需求 >360 元时程序提示"升六场版 3*4*5*6（42注84元·覆盖366元）更划算"</li>
+<li><b>突破闸</b>：大哥显式拍板可突破覆盖闸，票面记"突破覆盖"标记（观察项，ticket_report 列示频次）</li>
+</ul>
+
+<h3>4.2 星级→注数基准映射（叙事仓定价，非硬顶）</h3>
+<table>
+<tr><th>剧本星级</th><th>基准注数</th><th>单轮常见金额</th></tr>
+<tr><td>★★★★★（五层叙事链全硬）</td><td class="num">10注×2元</td><td class="num">20元</td></tr>
+<tr><td>★★★★</td><td class="num">5注</td><td class="num">10元</td></tr>
+<tr><td>★★★</td><td class="num">2注</td><td class="num">4元</td></tr>
+<tr><td>★★以下</td><td colspan="2">只进影子层，0实票</td></tr>
+</table>
+<p style="margin:4px 0 0">基准只是建议，最终注数大哥口述可调——设计上无硬顶，唯一程序闸=覆盖闸（可显式突破）。</p>
+
+<h3>4.3 保底结构选型依据（3*4*5 变体对比 · 2026-09-06 会话推演）</h3>
+<table>
+<tr><th>方案</th><th>投入</th><th>回款率</th><th>全中回款</th><th>覆盖空间</th><th>判定</th></tr>
+<tr><td>4串11（旧保底）</td><td class="num">22</td><td class="num">94%</td><td class="num">48~83</td><td class="num">26~61</td><td>被3*4*5取代——覆盖能力不足</td></tr>
+<tr><td><b>3*4*5 + 胆材分层</b></td><td class="num"><b>32</b></td><td class="num"><b>89%</b></td><td class="num"><b>109~208</b></td><td class="num"><b>77~176</b></td><td>✅ 采纳——同成本 ROI 最优（+49%）</td></tr>
+<tr><td>2*3*4*5（含2串）</td><td class="num">52</td><td class="num">98%</td><td class="num">132</td><td class="num">80</td><td>❌ 体验税不值——+20元买"中2关也回款"意义有限</td></tr>
+<tr><td>3*4*5*6 六场版</td><td class="num">84</td><td class="num">96%</td><td class="num">450</td><td class="num">366</td><td>⭕ 备选档——仅大叙事仓（300+元）时程序提示升档</td></tr>
+</table>
+<ul>
+<li><b>盈亏平衡点（关键数字）</b>：3*4*5 结构下单腿命中 66.9% 回本；市场对这些腿定价均值 ~58%，语料实测 74%（n=24）——7pp 优势是正 ROI 全部来源，随样本扩大会回归，故护栏（踩线降级+关档）从严</li>
+<li><b>胆材分层效应</b>：2胆(0.85实测)+3腿(0.70) vs 均匀0.74——全中概率 22%→28%、ROI +42%→+49%、代价是全中回款 132→109（覆盖空间略降可接受）</li>
+<li><b>中3关回款弱（6.7元/32元）已知悉</b>：89%回款率中约27%轮次是象征性回款，接受——右尾职责在叙事仓，保底职责是覆盖</li>
+</ul>
+
+<h3>4.4 阈值 0.65→0.60 的落地推演依据（2026-09-06 大哥拍板）</h3>
 <ul>
 <li>0.65 阈值下语料 14 轮只开 5 轮（36%），09-06 实卡仅 3 条合格腿→关档，"每轮不空手"体验打折</li>
 <li>0.60~0.65 段语料实测命中 <b>74%（17/23）</b>——比 0.55~0.65 段的 70% 明显好，0.60 是真实置信度分界</li>
 <li>敏感性回测：阈 0.60 出轮率 43%、腿命中 88%、语料 ROI +25.1%（vs 0.65 的 95%/+47.4%——n=20 vs n=24，统计上无显著差异，出轮率+7pp 是净收益）</li>
-<li>踩线降级规则（赔率&lt;1.30 且 p&lt;0.70）继续兜底防朗斯类翻车，0.60 阈值下依然生效</li>
 </ul></div>
 
 <h2>五、置信度分层规则 <span class="tag new">核心</span></h2>
 <div class="card"><table>
 <tr><th>p_max 分层</th><th>级名</th><th>去向</th><th>档内实测命中</th></tr>
-<tr><td class="num">p ≥ 0.75</td><td><b>胆级</b></td><td>保底仓优先腿</td><td class="num">96%（n=24）</td></tr>
-<tr><td class="num">0.60 ≤ p &lt; 0.75</td><td><b>标准级</b></td><td>保底仓普通腿</td><td class="num">74%~77%（0.60-0.65段74%·0.65-0.75段77%）</td></tr>
-<tr><td class="num">0.55 ≤ p &lt; 0.60</td><td><b>观察级</b></td><td>只进验证仓/影子层</td><td class="num">~70%（0.55-0.65合并段）</td></tr>
+<tr><td class="num">p ≥ 0.75</td><td><b>胆级</b></td><td>保底仓胆席（2席·优先）</td><td class="num">96%（n=24）</td></tr>
+<tr><td class="num">0.60 ≤ p &lt; 0.75</td><td><b>标准级</b></td><td>保底仓普通席（3席）</td><td class="num">74%~77%（0.60-0.65段74%·0.65-0.75段77%）</td></tr>
+<tr><td class="num">0.55 ≤ p &lt; 0.60</td><td><b>观察级</b></td><td>只进影子层（旧验证仓已删）</td><td class="num">~70%（0.55-0.65合并段）</td></tr>
 <tr><td class="num">p &lt; 0.55</td><td><b>参考级</b></td><td>报告显示，标注"不入票"</td><td class="num">49%</td></tr>
 </table>
 <ul>
 <li>分层阈值<b>非常量魔法值</b>：存 <code>engine/cache/conf_tiers.json</code>，由重校准任务滚动修正（语料每 +10 轮重估各档实际命中，偏差&gt;8pp 才调）</li>
 <li>预测报告每条腿新增"本档历史命中"列（如胆级显示"档内实际 96%·n=24"），用实测替代声称概率</li>
-<li>CRS/TTG/HAFU 腿不参与分层（无方向概率），按原 boldplay EV 逻辑只进体感仓/影子层</li>
+<li>CRS/TTG/HAFU 腿不参与分层（无方向概率），按轨道 N 叙事链处理（第十一~十二节）</li>
 <li>铁律继承：分歧熔断（|p_fused−p_mkt|≥5pp 不入档）、fd 锚白名单、市场锚≥65% 合规线照旧</li>
 </ul></div>
 
@@ -150,30 +182,68 @@ svg{vertical-align:middle}
 </ul>
 <b>改动范围</b>：boldplay.py 落盘段（~1210）+ seq 计数一行 + settle 的 superseded 检查（复用现有快照排除）；backfill/ticket_report 零改动。</div>
 
-<h2>九、验证指标与熔断</h2>
+<h2>九、验证指标与熔断（不限额版·大哥拍板重构）</h2>
 <div class="card"><table>
-<tr><th>指标</th><th>现状基线</th><th>4 周目标</th><th>数据源</th></tr>
-<tr><td>回款票率</td><td class="num" style="color:var(--bad)">0%（9月后）</td><td class="num">≥70%</td><td>tickets.json</td></tr>
-<tr><td>保底仓单腿实际命中</td><td class="num">27%</td><td class="num">≥75%（对齐档内实测）</td><td>tickets.json</td></tr>
-<tr><td>1.4~1.7 赔率段腿量</td><td class="num">25% 命中</td><td class="num">该段腿 ≤1/轮 或命中回升</td><td>tickets.json</td></tr>
-<tr><td>验证仓 4串1 累计 ROI</td><td>—</td><td>观察项不设目标（攒 n）</td><td>tickets.json</td></tr>
+<tr><th>指标</th><th>现状基线</th><th>目标</th><th>数据源</th></tr>
+<tr><td><b>全中覆盖率</b> <span class="tag new">覆盖闸</span></td><td>—</td><td class="num">每轮 P_full/(32n+N) ≥ 100%</td><td>出票程序自动校验</td></tr>
+<tr><td>突破覆盖频次</td><td>—</td><td>观察项（拍板记录在案）</td><td>tickets.json 票面标记</td></tr>
+<tr><td>回款票率（保底中3关+）</td><td class="num" style="color:var(--bad)">0%（9月后）</td><td class="num">≥85%（对齐89%理论值）</td><td>tickets.json</td></tr>
+<tr><td>保底仓单腿实际命中</td><td class="num">27%</td><td class="num">≥74%（对齐档内实测·守住66.9%平衡点）</td><td>tickets.json</td></tr>
+<tr><td>1.4~1.7 赔率段腿量</td><td class="num">25% 命中</td><td class="num">踩线规则(1.35/0.68)后趋零</td><td>tickets.json</td></tr>
+<tr><td><b>累计净盈亏</b> <span class="tag p0">主仪表盘</span></td><td>—</td><td>无预算墙后唯一硬考核——暴露真实成本的仪表盘</td><td>tickets.json</td></tr>
+<tr><td>叙事命中率（CRS）</td><td class="num">实票 6%</td><td class="num">观察能否上双</td><td>tickets.json+影子层</td></tr>
+<tr><td>剧本方向命中</td><td>—</td><td class="num">≥55%</td><td>叙事链第⑤层</td></tr>
 <tr><td>CRS 影子命中率</td><td class="num">实票 6%</td><td class="num">≥12% 才谈恢复</td><td>影子层</td></tr>
 </table>
 <div style="margin-top:8px;padding:8px 10px;background:#fbe9e9;border-radius:6px;color:var(--bad)">
-<b>熔断</b>：新方案连续 6 轮保底仓 0 回款 → 回退到只出验证仓 2 元/轮，全量进影子层复盘。
+<b>熔断（叙事质量型，替代金额型——大哥拍板删月损失锁）</b>：① 连续 8 轮剧本方向命中 &lt;40% → 叙事链第⑤层回炉（风格模板重拟合），暂停实票只跑影子；② 保底连续 6 轮 0 回款 → 保底关档复盘（腿源质量问题，全量进影子层）。
 </div></div>
 
 <h2>十、实施批次</h2>
 <div class="card"><table>
 <tr><th>批次</th><th>内容</th><th>改动面</th></tr>
-<tr><td><b>批次1 立即</b> <span class="tag p0">P0</span></td><td>preference.json 新结构（三仓/分层/踩线降级）+ boldplay 选腿规则改造（p≥0.65 保底、观察级进验证仓、砍8串1）+ 报告"本档历史命中"列</td><td>preference.json、boldplay.py、报告模板</td></tr>
+<tr><td><b>批次1 立即</b> <span class="tag p0">P0</span></td><td>preference.json 新结构（保底3*4*5/叙事仓/覆盖闸/星级映射/踩线降级1.35-0.68）+ boldplay 保底档重构（4串11→3*4*5+胆材分层+覆盖闸校验）+ 报告"本档历史命中"列</td><td>preference.json、boldplay.py、报告模板</td></tr>
 <tr><td><b>批次2 立即</b> <span class="tag p0">P0</span></td><td>同日重出机制（归档命名/superseded/seq修正/实票保护闸）</td><td>boldplay.py 落盘段</td></tr>
 <tr><td><b>批次3 慢工</b> <span class="tag p1">P1</span></td><td>recalibrate.py（校准曲线+isotonic 挂回填链）+ conf_tiers.json 滚动修正 + 影子层 CRS/AB 协议</td><td>新脚本、backfill 链尾、影子层</td></tr>
-<tr><td><b>批次4 观察</b> <span class="tag p2">P2</span></td><td>验证指标看板（ticket_report 扩列）+ 熔断线程序化检查</td><td>ticket_report.py</td></tr>
+<tr><td><b>批次4 叙事轨</b> <span class="tag p1">P1</span></td><td>轨道N落地：叙事链生成器（五层）+ 玩法映射（CRS/HAFU/混串·票面形状标记）+ 星级评分 + ESPN伤停/首发数据源接入</td><td>新脚本 narrative.py、espn_fetch.py 扩端点、boldplay 叙事档</td></tr>
+<tr><td><b>批次5 观察</b> <span class="tag p2">P2</span></td><td>验证指标看板（ticket_report 扩列：覆盖率/突破频次/叙事命中）+ 熔断线程序化检查</td><td>ticket_report.py</td></tr>
 </table>
 <ul>
-<li>测试纪律：批次1/2 走 TDD（回归锚：朗斯踩线案、9-06 重出案、09-05 保底6腿案）；批次3 语料小不设切换目标</li>
+<li>测试纪律：批次1/2/4 走 TDD（回归锚：朗斯踩线案、9-06 重出案、09-05 保底6腿案、覆盖闸边界案）；批次3 语料小不设切换目标</li>
 <li>本设计为 brainstorming 定稿，实施计划由 writing-plans 技能另行产出</li>
+</ul></div>
+
+<h2>十一、轨道 N：叙事彩票模型总纲 <span class="tag new">2026-09-06 追加</span></h2>
+<div class="card">
+<b>定位</b>：与 EV 体系完全并行、互不引用——EV 体系回答"怎么不亏"，轨道 N 回答"剧本成立时赚多少"。<b>不算 EV、不参考市场赔率定价</b>（只在最后查官方赔率算票面倍数），这是对"不再计算 EV"要求的忠实实现。<br><br>
+<b>选场信号=剧本分歧度（非 EV）</b>：叙事链推导的剧本 vs 市场定价的主流剧本，差异最大的场次优先——分歧度只用于选场排序，不用于期望收益计算。<br><br>
+<b>数据边界（大哥拍板 1+2 结合）</b>：现有资产（强弱/状态/风格/伤停因子）先跑通 + 补齐伤停/首发源（ESPN injury/lineups 端点，espn_fetch.py 已有骨架加端点）落 <code>data/01-teams/*/injuries.json</code>；战术层暂缓（无稳定免费源，第⑤层先用风格模板+λ推导顶——league_profile 的 score_counter 分布已隐含战术风格）。
+<table style="margin-top:8px">
+<tr><th>叙事层</th><th>内容</th><th>数据源（现有）</th></tr>
+<tr><td>① 强弱层</td><td>积分榜位差/GD差/主客场分裂</td><td>00-leagues（主客场 w/d/l 已有）</td></tr>
+<tr><td>② 状态层</td><td>近10场 form + 场均进失球</td><td>01-teams formSummary</td></tr>
+<tr><td>③ 缺阵层</td><td>伤停差值因子</td><td>insight 链（已程序化）+ 新增 ESPN 伤停源</td></tr>
+<tr><td>④ 风格层</td><td>联赛剧本模板（慢热/爆冷率/平局率/比分分布）</td><td>league_profile（upsets/draws/score_counter）</td></tr>
+<tr><td>⑤ 剧本层</td><td>合成推演：λ主/λ客 → score_matrix → 剧本比分</td><td>dc_predict（只取矩阵不取市场融合）</td></tr>
+</table></div>
+
+<h2>十二、叙事链结构与玩法映射</h2>
+<div class="card">
+<b>叙事链=chainSteps 升级</b>：从数值因子链升级为可读剧本推导链，五层全落盘可审计（02-results 的 chainSteps 结构天然契合）。<br><br>
+<b>玩法映射（大哥拍板：多方案并存，票面强制标记玩法形状）</b>：
+<table>
+<tr><th>方案</th><th>玩法</th><th>结构</th><th>倍数</th><th>角色</th></tr>
+<tr><td>甲</td><td>CRS 2串1</td><td>剧本最硬的两场比分</td><td class="num">~12倍</td><td>主推——与偏好档案 CRS 小比分胜方型审美一致</td></tr>
+<tr><td>乙</td><td>HAFU 3串1</td><td>半场/全场走向剧本（如 hd=半平全主胜）</td><td class="num">~216倍</td><td>剧本票——叙事推导比赛走向天然匹配</td></tr>
+<tr><td>丙</td><td>混串 2串1</td><td>同场 CRS + 另一场 TTG</td><td class="num">视票面</td><td>覆盖票——任一中即回</td></tr>
+</table>
+<p style="margin:4px 0"><b>票面标记格式</b>（落 tickets.json 的 playType 字段，结算/复盘链自动归类）：</p>
+<pre style="background:var(--chip);padding:8px;border-radius:6px;font-size:12px">[N-甲] 玩法:CRS 2串1 | 剧本:周六016 毕尔巴鄂2-0 × 周日012 汉堡1-0
+       倍数:@12×@9=108倍(2元回216) | 叙事链:⑤层置信★★★☆☆ | 投入:2元
+playType: "N-CRS-2x1" / "N-HAFU-3x1" / "N-MIX-2x1"</pre>
+<ul>
+<li>影子层同步登记：每轮全部候选方案（含未买的丙）都进影子层，实票只买剧本置信排序前的星级映射注数</li>
+<li>叙事仓结算与保底分离——CRS/HAFU 命中即回款，不与保底腿耦合</li>
 </ul></div>
 
 </div></body></html>
