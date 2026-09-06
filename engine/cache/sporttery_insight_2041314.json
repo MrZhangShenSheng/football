@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-09-04",
+ "fetchedAt": "2026-09-06",
  "source": "sporttery",
  "matchId": 2041314,
  "match": {
@@ -16,7 +16,7 @@
   "away": {
    "groupName": "",
    "phaseName": "Regular Season",
-   "ranking": "5",
+   "ranking": "6",
    "sAwayDrawMatchCnt": "0",
    "sAwayLossGoalMatchCnt": "0",
    "sAwayWinGoalMatchCnt": "1",
@@ -28,7 +28,7 @@
   "home": {
    "groupName": "",
    "phaseName": "Regular Season",
-   "ranking": "4",
+   "ranking": "5",
    "sDrawMatchCnt": "1",
    "sHomeDrawMatchCnt": "0",
    "sHomeLossGoalMatchCnt": "0",
@@ -39,8 +39,55 @@
   }
  },
  "injuries": {
-  "home": [],
-  "away": []
+  "home": [
+   {
+    "name": "F. Garcés",
+    "pos": "后卫",
+    "no": "2",
+    "injury": 0,
+    "suspension": 1,
+    "apps": 0,
+    "starts": 0
+   },
+   {
+    "name": "M. Díaz",
+    "pos": "前锋",
+    "no": "9",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 3,
+    "starts": 0
+   },
+   {
+    "name": "Toni Martínez",
+    "pos": "前锋",
+    "no": "11",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 3,
+    "starts": 3
+   },
+   {
+    "name": "Mikel Rodríguez",
+    "pos": "中场",
+    "no": "18",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 3,
+    "starts": 2
+   }
+  ],
+  "away": [
+   {
+    "name": "V. Rosier",
+    "pos": "后卫",
+    "no": "19",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 0,
+    "starts": 0
+   }
+  ]
  },
  "form": {
   "goalAvg": {
@@ -245,7 +292,7 @@
      "goalAvgCnt": "0.7",
      "goalCnt": 2,
      "goalProbability": "40%",
-     "injuryFlag": 0,
+     "injuryFlag": 1,
      "personId": 206423,
      "personName": "M. Díaz",
      "playerPositionCode": "Forward",
@@ -281,7 +328,7 @@
      "goalAvgCnt": "0.3",
      "goalCnt": 1,
      "goalProbability": "20%",
-     "injuryFlag": 0,
+     "injuryFlag": 1,
      "personId": 802646,
      "personName": "Mikel Rodríguez",
      "playerPositionCode": "Midfielder",
