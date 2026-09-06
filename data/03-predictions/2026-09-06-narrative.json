@@ -83,46 +83,6 @@
    "divergence": 0.0174
   },
   {
-   "code": "周日007",
-   "match": "海伦芬-阿尔克马",
-   "layers": [
-    {
-     "layer": "strength",
-     "homePos": null,
-     "awayPos": null,
-     "drawRate": null,
-     "upsetRate": null
-    },
-    {
-     "layer": "form",
-     "homeLast10": null,
-     "awayLast10": null,
-     "homeGoalAvg": null,
-     "awayGoalAvg": null
-    },
-    {
-     "layer": "absence",
-     "factor": 1.0,
-     "source": "placeholder-until-espn"
-    },
-    {
-     "layer": "style",
-     "topScores": {}
-    },
-    {
-     "layer": "script",
-     "score": "1:0"
-    }
-   ],
-   "script": {
-    "score": "1:0",
-    "hafu": "hh",
-    "dir": "主胜"
-   },
-   "star": 5,
-   "divergence": -0.0225
-  },
-  {
    "code": "周日008",
    "match": "埃弗顿-曼联",
    "layers": [
@@ -160,11 +120,11 @@
     "dir": "主胜"
    },
    "star": 5,
-   "divergence": -0.053
+   "divergence": -0.0301
   },
   {
-   "code": "周日002",
-   "match": "名古屋鲸-町田泽维",
+   "code": "周日007",
+   "match": "海伦芬-阿尔克马",
    "layers": [
     {
      "layer": "strength",
@@ -200,7 +160,7 @@
     "dir": "主胜"
    },
    "star": 5,
-   "divergence": -0.0645
+   "divergence": -0.0382
   },
   {
    "code": "周日024",
@@ -240,47 +200,7 @@
     "dir": "主胜"
    },
    "star": 5,
-   "divergence": -0.0665
-  },
-  {
-   "code": "周日003",
-   "match": "安养FC-江原FC",
-   "layers": [
-    {
-     "layer": "strength",
-     "homePos": null,
-     "awayPos": null,
-     "drawRate": null,
-     "upsetRate": null
-    },
-    {
-     "layer": "form",
-     "homeLast10": null,
-     "awayLast10": null,
-     "homeGoalAvg": null,
-     "awayGoalAvg": null
-    },
-    {
-     "layer": "absence",
-     "factor": 1.0,
-     "source": "placeholder-until-espn"
-    },
-    {
-     "layer": "style",
-     "topScores": {}
-    },
-    {
-     "layer": "script",
-     "score": "1:0"
-    }
-   ],
-   "script": {
-    "score": "1:0",
-    "hafu": "hh",
-    "dir": "主胜"
-   },
-   "star": 5,
-   "divergence": -0.0736
+   "divergence": -0.053
   },
   {
    "code": "周日011",
@@ -320,47 +240,7 @@
     "dir": "主胜"
    },
    "star": 5,
-   "divergence": -0.0913
-  },
-  {
-   "code": "周日006",
-   "match": "伯明翰-伍尔弗",
-   "layers": [
-    {
-     "layer": "strength",
-     "homePos": null,
-     "awayPos": null,
-     "drawRate": null,
-     "upsetRate": null
-    },
-    {
-     "layer": "form",
-     "homeLast10": null,
-     "awayLast10": null,
-     "homeGoalAvg": null,
-     "awayGoalAvg": null
-    },
-    {
-     "layer": "absence",
-     "factor": 1.0,
-     "source": "placeholder-until-espn"
-    },
-    {
-     "layer": "style",
-     "topScores": {}
-    },
-    {
-     "layer": "script",
-     "score": "1:0"
-    }
-   ],
-   "script": {
-    "score": "1:0",
-    "hafu": "hh",
-    "dir": "主胜"
-   },
-   "star": 5,
-   "divergence": -0.1021
+   "divergence": -0.1071
   },
   {
    "code": "周一006",
@@ -480,11 +360,11 @@
     "dir": "主胜"
    },
    "star": 5,
-   "divergence": -0.1468
+   "divergence": -0.1346
   },
   {
-   "code": "周日009",
-   "match": "弗洛西诺-威尼斯",
+   "code": "周日010",
+   "match": "帕尔马-蒙扎",
    "layers": [
     {
      "layer": "strength",
@@ -520,7 +400,7 @@
     "dir": "主胜"
    },
    "star": 5,
-   "divergence": -0.15
+   "divergence": -0.1582
   },
   {
    "code": "周一002",
@@ -563,6 +443,46 @@
    "divergence": -0.1774
   },
   {
+   "code": "周日009",
+   "match": "弗洛西诺-威尼斯",
+   "layers": [
+    {
+     "layer": "strength",
+     "homePos": null,
+     "awayPos": null,
+     "drawRate": null,
+     "upsetRate": null
+    },
+    {
+     "layer": "form",
+     "homeLast10": null,
+     "awayLast10": null,
+     "homeGoalAvg": null,
+     "awayGoalAvg": null
+    },
+    {
+     "layer": "absence",
+     "factor": 1.0,
+     "source": "placeholder-until-espn"
+    },
+    {
+     "layer": "style",
+     "topScores": {}
+    },
+    {
+     "layer": "script",
+     "score": "1:0"
+    }
+   ],
+   "script": {
+    "score": "1:0",
+    "hafu": "hh",
+    "dir": "主胜"
+   },
+   "star": 5,
+   "divergence": -0.181
+  },
+  {
    "code": "周日020",
    "match": "马拉加-莱万特",
    "layers": [
@@ -601,46 +521,6 @@
    },
    "star": 5,
    "divergence": -0.1886
-  },
-  {
-   "code": "周日010",
-   "match": "帕尔马-蒙扎",
-   "layers": [
-    {
-     "layer": "strength",
-     "homePos": null,
-     "awayPos": null,
-     "drawRate": null,
-     "upsetRate": null
-    },
-    {
-     "layer": "form",
-     "homeLast10": null,
-     "awayLast10": null,
-     "homeGoalAvg": null,
-     "awayGoalAvg": null
-    },
-    {
-     "layer": "absence",
-     "factor": 1.0,
-     "source": "placeholder-until-espn"
-    },
-    {
-     "layer": "style",
-     "topScores": {}
-    },
-    {
-     "layer": "script",
-     "score": "1:0"
-    }
-   ],
-   "script": {
-    "score": "1:0",
-    "hafu": "hh",
-    "dir": "主胜"
-   },
-   "star": 5,
-   "divergence": -0.1905
   },
   {
    "code": "周一007",
@@ -720,7 +600,7 @@
     "dir": "主胜"
    },
    "star": 5,
-   "divergence": -0.2262
+   "divergence": -0.2217
   },
   {
    "code": "周日023",
@@ -763,6 +643,46 @@
    "divergence": -0.2262
   },
   {
+   "code": "周日021",
+   "match": "尤文图斯-AC米兰",
+   "layers": [
+    {
+     "layer": "strength",
+     "homePos": null,
+     "awayPos": null,
+     "drawRate": null,
+     "upsetRate": null
+    },
+    {
+     "layer": "form",
+     "homeLast10": null,
+     "awayLast10": null,
+     "homeGoalAvg": null,
+     "awayGoalAvg": null
+    },
+    {
+     "layer": "absence",
+     "factor": 1.0,
+     "source": "placeholder-until-espn"
+    },
+    {
+     "layer": "style",
+     "topScores": {}
+    },
+    {
+     "layer": "script",
+     "score": "1:0"
+    }
+   ],
+   "script": {
+    "score": "1:0",
+    "hafu": "hh",
+    "dir": "主胜"
+   },
+   "star": 5,
+   "divergence": -0.2475
+  },
+  {
    "code": "周一009",
    "match": "维多利亚-格雷米奥",
    "layers": [
@@ -801,86 +721,6 @@
    },
    "star": 5,
    "divergence": -0.2655
-  },
-  {
-   "code": "周日021",
-   "match": "尤文图斯-AC米兰",
-   "layers": [
-    {
-     "layer": "strength",
-     "homePos": null,
-     "awayPos": null,
-     "drawRate": null,
-     "upsetRate": null
-    },
-    {
-     "layer": "form",
-     "homeLast10": null,
-     "awayLast10": null,
-     "homeGoalAvg": null,
-     "awayGoalAvg": null
-    },
-    {
-     "layer": "absence",
-     "factor": 1.0,
-     "source": "placeholder-until-espn"
-    },
-    {
-     "layer": "style",
-     "topScores": {}
-    },
-    {
-     "layer": "script",
-     "score": "1:0"
-    }
-   ],
-   "script": {
-    "score": "1:0",
-    "hafu": "hh",
-    "dir": "主胜"
-   },
-   "star": 5,
-   "divergence": -0.2763
-  },
-  {
-   "code": "周日018",
-   "match": "博洛尼亚-萨索洛",
-   "layers": [
-    {
-     "layer": "strength",
-     "homePos": null,
-     "awayPos": null,
-     "drawRate": null,
-     "upsetRate": null
-    },
-    {
-     "layer": "form",
-     "homeLast10": null,
-     "awayLast10": null,
-     "homeGoalAvg": null,
-     "awayGoalAvg": null
-    },
-    {
-     "layer": "absence",
-     "factor": 1.0,
-     "source": "placeholder-until-espn"
-    },
-    {
-     "layer": "style",
-     "topScores": {}
-    },
-    {
-     "layer": "script",
-     "score": "1:0"
-    }
-   ],
-   "script": {
-    "score": "1:0",
-    "hafu": "hh",
-    "dir": "主胜"
-   },
-   "star": 5,
-   "divergence": -0.2819
   },
   {
    "code": "周一001",
@@ -923,6 +763,46 @@
    "divergence": -0.2964
   },
   {
+   "code": "周日018",
+   "match": "博洛尼亚-萨索洛",
+   "layers": [
+    {
+     "layer": "strength",
+     "homePos": null,
+     "awayPos": null,
+     "drawRate": null,
+     "upsetRate": null
+    },
+    {
+     "layer": "form",
+     "homeLast10": null,
+     "awayLast10": null,
+     "homeGoalAvg": null,
+     "awayGoalAvg": null
+    },
+    {
+     "layer": "absence",
+     "factor": 1.0,
+     "source": "placeholder-until-espn"
+    },
+    {
+     "layer": "style",
+     "topScores": {}
+    },
+    {
+     "layer": "script",
+     "score": "1:0"
+    }
+   ],
+   "script": {
+    "score": "1:0",
+    "hafu": "hh",
+    "dir": "主胜"
+   },
+   "star": 5,
+   "divergence": -0.3087
+  },
+  {
    "code": "周日014",
    "match": "圣克拉拉-里奥阿维",
    "layers": [
@@ -960,7 +840,7 @@
     "dir": "主胜"
    },
    "star": 5,
-   "divergence": -0.315
+   "divergence": -0.3214
   },
   {
    "code": "周日022",
@@ -1003,46 +883,6 @@
    "divergence": -0.3382
   },
   {
-   "code": "周日017",
-   "match": "法兰克福-奥格斯堡",
-   "layers": [
-    {
-     "layer": "strength",
-     "homePos": null,
-     "awayPos": null,
-     "drawRate": null,
-     "upsetRate": null
-    },
-    {
-     "layer": "form",
-     "homeLast10": null,
-     "awayLast10": null,
-     "homeGoalAvg": null,
-     "awayGoalAvg": null
-    },
-    {
-     "layer": "absence",
-     "factor": 1.0,
-     "source": "placeholder-until-espn"
-    },
-    {
-     "layer": "style",
-     "topScores": {}
-    },
-    {
-     "layer": "script",
-     "score": "1:0"
-    }
-   ],
-   "script": {
-    "score": "1:0",
-    "hafu": "hh",
-    "dir": "主胜"
-   },
-   "star": 5,
-   "divergence": -0.3488
-  },
-  {
    "code": "周一003",
    "match": "马尔默-索尔纳",
    "layers": [
@@ -1083,8 +923,8 @@
    "divergence": -0.3488
   },
   {
-   "code": "周日001",
-   "match": "鹿岛鹿角-浦和红钻",
+   "code": "周日017",
+   "match": "法兰克福-奥格斯堡",
    "layers": [
     {
      "layer": "strength",
@@ -1120,7 +960,7 @@
     "dir": "主胜"
    },
    "star": 5,
-   "divergence": -0.3673
+   "divergence": -0.3561
   },
   {
    "code": "周日016",
@@ -1160,87 +1000,7 @@
     "dir": "主胜"
    },
    "star": 5,
-   "divergence": -0.3994
-  },
-  {
-   "code": "周日005",
-   "match": "东京FC-京都",
-   "layers": [
-    {
-     "layer": "strength",
-     "homePos": null,
-     "awayPos": null,
-     "drawRate": null,
-     "upsetRate": null
-    },
-    {
-     "layer": "form",
-     "homeLast10": null,
-     "awayLast10": null,
-     "homeGoalAvg": null,
-     "awayGoalAvg": null
-    },
-    {
-     "layer": "absence",
-     "factor": 1.0,
-     "source": "placeholder-until-espn"
-    },
-    {
-     "layer": "style",
-     "topScores": {}
-    },
-    {
-     "layer": "script",
-     "score": "1:0"
-    }
-   ],
-   "script": {
-    "score": "1:0",
-    "hafu": "hh",
-    "dir": "主胜"
-   },
-   "star": 5,
-   "divergence": -0.4257
-  },
-  {
-   "code": "周日004",
-   "match": "金泉尚武-光州FC",
-   "layers": [
-    {
-     "layer": "strength",
-     "homePos": null,
-     "awayPos": null,
-     "drawRate": null,
-     "upsetRate": null
-    },
-    {
-     "layer": "form",
-     "homeLast10": null,
-     "awayLast10": null,
-     "homeGoalAvg": null,
-     "awayGoalAvg": null
-    },
-    {
-     "layer": "absence",
-     "factor": 1.0,
-     "source": "placeholder-until-espn"
-    },
-    {
-     "layer": "style",
-     "topScores": {}
-    },
-    {
-     "layer": "script",
-     "score": "1:0"
-    }
-   ],
-   "script": {
-    "score": "1:0",
-    "hafu": "hh",
-    "dir": "主胜"
-   },
-   "star": 5,
-   "divergence": -0.4349
+   "divergence": -0.3952
   },
   {
    "code": "周日015",
@@ -1280,7 +1040,7 @@
     "dir": "主胜"
    },
    "star": 5,
-   "divergence": -0.5764
+   "divergence": -0.5975
   }
  ],
  "plays": [
