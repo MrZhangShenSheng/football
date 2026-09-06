@@ -781,7 +781,8 @@ def render_ticket(t: dict) -> str:
     ①顶部摘要行(结构/seq/总成本/两档成本)；②每档一节、逐腿一行
       `编号 │ 对阵 │ 玩法 pick @赔率 │ EV`（列宽对齐，│分隔）；
     ③三池卡候选区每场两行(保底视角/翻身视角)；④旗标用 emoji 前缀(⚠分歧/🟡低置信)；
-    ⑤结尾预算行(月翻身累计x/40·红线提示)；⑥与 v5.4.2 出票核对单同款式(编号│对阵)。
+    ⑤结尾行：new 三轨卡=纪律三机制(月预算线废除·设计§四"彻底不限额")，
+    legacy 对照卡=月翻身累计x/40·红线提示；⑥与 v5.4.2 出票核对单同款式(编号│对阵)。
     开发者 sszhang"""
     lot = t["tiers"].get("lottery") or {}
     lines = [f"┌ 阶梯出票卡 v2 · seq{t['seq']} · 总成本 {t['totalCost']}元 "
@@ -811,11 +812,15 @@ def render_ticket(t: dict) -> str:
         ru_txt = f"{ru['pool'].upper()} {ru['pick']}@{ru['odds']}" if ru else "—(分歧排除)"
         lines.append(f"│   {c['code']} {fl} 保底→{rb['pool'].upper()} {rb['pick']}(q{rb['q']:.0%})"
                      f" · 翻身→{ru_txt}")
-    spend = upset_month_spend(str(date.today())[:7])
-    warn = " ⚠月预算红线!" if spend >= MONTHLY_UPSET_CAP else ""
     if t.get("approved") is False:
         lines.append("│ ⚠未拍板(approved=false)·settle跳过未拍板卡·人工核后方可采纳出票")
-    lines.append(f"└ 翻身月预算: {spend:.0f}/{MONTHLY_UPSET_CAP:.0f}元{warn} · 出票核对单见 v5.4.2 格式")
+    if t.get("structure") == "new":
+        # T9（设计§四"彻底不限额"）：new 三轨卡不再显示月预算行——纪律=覆盖闸+星级+叙事熔断
+        lines.append("└ 纪律=覆盖闸+星级+叙事质量熔断(不限额) · 出票核对单见 v5.4.2 格式")
+    else:
+        spend = upset_month_spend(str(date.today())[:7])
+        warn = " ⚠月预算红线!" if spend >= MONTHLY_UPSET_CAP else ""
+        lines.append(f"└ 翻身月预算: {spend:.0f}/{MONTHLY_UPSET_CAP:.0f}元{warn} · 出票核对单见 v5.4.2 格式")
     return "\n".join(lines)
 
 
@@ -1262,7 +1267,9 @@ def main() -> None:
             if not is_process_snapshot(Path(p))]
     seq = _next_seq()
     spend = monthly_spend(hist, str(date.today())[:7])
-    if not budget_gate(spend):
+    # T9（设计§四"彻底不限额"）：月封顶闸仅 --structure=legacy 对照卡生效，new 三轨制
+    # 跳过——纪律改由覆盖闸+星级映射+叙事质量熔断承担（budget_gate/MONTHLY_CAP 保留不动）
+    if structure == "legacy" and not budget_gate(spend):
         print(f"[boldplay] 月封顶触及: 本月已花 {spend:.0f}/{MONTHLY_CAP:.0f} 元, 本轮停")
         return
     # 当轮=实时清单全量（P0-1：原 matchDays 展平+存档合并废弃；_filter_onsale 对实时源
@@ -1285,12 +1292,8 @@ def main() -> None:
               f"{n_before}→{len(all_days['matches'])}场")
     if structure == "new":
         out = build_three_tier(all_days, table, seq, zh=_zh_map(), form=build_team_form())
-        u_spend = upset_month_spend(str(date.today())[:7])
-        if u_spend >= MONTHLY_UPSET_CAP and out["tiers"]["upset"]["cost"] > 0:
-            out["tiers"]["upset"] = {"shape": "closed", "cost": 0,
-                                     "legs": out["tiers"]["upset"].get("legs") or [],
-                                     "note": f"翻身月预算红线 {u_spend:.0f}/{MONTHLY_UPSET_CAP:.0f}元 · 关档"}
-            out["totalCost"] = out["tiers"]["base"]["cost"]
+        # T9（设计§四"彻底不限额"）：翻身月预算关档闸（u_spend≥MONTHLY_UPSET_CAP → 关档）
+        # 对 new 三轨卡废除——纪律=覆盖闸+星级+叙事质量熔断；常量与 legacy 对照口径保留
         streak = upset_dry_streak(str(date.today())[:7])   # v5.5: 连续4轮0回款降半仓
         if streak >= 4 and out["tiers"]["upset"]["cost"] > 0 and halve_upset(out):
             out["upsetHalved"] = streak   # 仅实降落存证（最低仓/关档 False 不写·评审裁定）
