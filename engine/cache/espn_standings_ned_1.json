@@ -1,11 +1,23 @@
 {
- "fetchedAt": "2026-09-04",
+ "fetchedAt": "2026-09-06",
  "source": "espn",
  "leagueCode": "ned.1",
- "season": "2026",
+ "season": null,
  "standings": [
   {
    "pos": 1,
+   "team": "PSV Eindhoven",
+   "played": 5,
+   "won": 4,
+   "drawn": 1,
+   "lost": 0,
+   "gf": 18,
+   "ga": 6,
+   "gd": 12,
+   "pts": 13
+  },
+  {
+   "pos": 2,
    "team": "AZ Alkmaar",
    "played": 4,
    "won": 4,
@@ -17,43 +29,43 @@
    "pts": 12
   },
   {
-   "pos": 2,
-   "team": "PSV Eindhoven",
-   "played": 4,
-   "won": 3,
-   "drawn": 1,
-   "lost": 0,
-   "gf": 15,
-   "ga": 5,
-   "gd": 10,
-   "pts": 10
-  },
-  {
    "pos": 3,
    "team": "Feyenoord Rotterdam",
-   "played": 4,
-   "won": 2,
+   "played": 5,
+   "won": 3,
    "drawn": 2,
    "lost": 0,
-   "gf": 10,
-   "ga": 6,
-   "gd": 4,
-   "pts": 8
+   "gf": 13,
+   "ga": 7,
+   "gd": 6,
+   "pts": 11
   },
   {
    "pos": 4,
-   "team": "Ajax Amsterdam",
-   "played": 3,
-   "won": 2,
-   "drawn": 1,
-   "lost": 0,
-   "gf": 8,
-   "ga": 2,
-   "gd": 6,
-   "pts": 7
+   "team": "Excelsior",
+   "played": 4,
+   "won": 3,
+   "drawn": 0,
+   "lost": 1,
+   "gf": 10,
+   "ga": 3,
+   "gd": 7,
+   "pts": 9
   },
   {
    "pos": 5,
+   "team": "Ajax Amsterdam",
+   "played": 4,
+   "won": 2,
+   "drawn": 1,
+   "lost": 1,
+   "gf": 9,
+   "ga": 5,
+   "gd": 4,
+   "pts": 7
+  },
+  {
+   "pos": 6,
    "team": "Go Ahead Eagles",
    "played": 4,
    "won": 2,
@@ -65,7 +77,7 @@
    "pts": 7
   },
   {
-   "pos": 6,
+   "pos": 7,
    "team": "Fortuna Sittard",
    "played": 4,
    "won": 2,
@@ -77,20 +89,8 @@
    "pts": 7
   },
   {
-   "pos": 7,
-   "team": "NEC Nijmegen",
-   "played": 3,
-   "won": 2,
-   "drawn": 0,
-   "lost": 1,
-   "gf": 8,
-   "ga": 4,
-   "gd": 4,
-   "pts": 6
-  },
-  {
    "pos": 8,
-   "team": "Excelsior",
+   "team": "FC Twente",
    "played": 3,
    "won": 2,
    "drawn": 0,
@@ -102,14 +102,14 @@
   },
   {
    "pos": 9,
-   "team": "FC Twente",
-   "played": 3,
+   "team": "NEC Nijmegen",
+   "played": 4,
    "won": 2,
    "drawn": 0,
-   "lost": 1,
-   "gf": 7,
-   "ga": 3,
-   "gd": 4,
+   "lost": 2,
+   "gf": 9,
+   "ga": 7,
+   "gd": 2,
    "pts": 6
   },
   {
@@ -139,17 +139,29 @@
   {
    "pos": 12,
    "team": "Sparta Rotterdam",
-   "played": 4,
+   "played": 5,
    "won": 1,
-   "drawn": 1,
+   "drawn": 2,
    "lost": 2,
-   "gf": 7,
-   "ga": 7,
+   "gf": 9,
+   "ga": 9,
    "gd": 0,
-   "pts": 4
+   "pts": 5
   },
   {
    "pos": 13,
+   "team": "PEC Zwolle",
+   "played": 5,
+   "won": 1,
+   "drawn": 1,
+   "lost": 3,
+   "gf": 6,
+   "ga": 10,
+   "gd": -4,
+   "pts": 4
+  },
+  {
+   "pos": 14,
    "team": "Telstar",
    "played": 3,
    "won": 1,
@@ -161,31 +173,7 @@
    "pts": 3
   },
   {
-   "pos": 14,
-   "team": "PEC Zwolle",
-   "played": 4,
-   "won": 1,
-   "drawn": 0,
-   "lost": 3,
-   "gf": 4,
-   "ga": 8,
-   "gd": -4,
-   "pts": 3
-  },
-  {
    "pos": 15,
-   "team": "Willem II",
-   "played": 3,
-   "won": 0,
-   "drawn": 1,
-   "lost": 2,
-   "gf": 4,
-   "ga": 10,
-   "gd": -6,
-   "pts": 1
-  },
-  {
-   "pos": 16,
    "team": "ADO Den Haag",
    "played": 4,
    "won": 0,
@@ -197,7 +185,7 @@
    "pts": 1
   },
   {
-   "pos": 17,
+   "pos": 16,
    "team": "FC Utrecht",
    "played": 4,
    "won": 0,
@@ -205,6 +193,18 @@
    "lost": 3,
    "gf": 6,
    "ga": 15,
+   "gd": -9,
+   "pts": 1
+  },
+  {
+   "pos": 17,
+   "team": "Willem II",
+   "played": 4,
+   "won": 0,
+   "drawn": 1,
+   "lost": 3,
+   "gf": 4,
+   "ga": 13,
    "gd": -9,
    "pts": 1
   },

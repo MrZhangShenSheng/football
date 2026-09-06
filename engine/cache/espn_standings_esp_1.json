@@ -1,8 +1,8 @@
 {
- "fetchedAt": "2026-09-04",
+ "fetchedAt": "2026-09-06",
  "source": "espn",
  "leagueCode": "esp.1",
- "season": "2026",
+ "season": null,
  "standings": [
   {
    "pos": 1,
@@ -19,29 +19,41 @@
   {
    "pos": 2,
    "team": "Real Madrid",
-   "played": 3,
+   "played": 4,
    "won": 3,
    "drawn": 0,
-   "lost": 0,
+   "lost": 1,
    "gf": 10,
-   "ga": 2,
-   "gd": 8,
+   "ga": 3,
+   "gd": 7,
    "pts": 9
   },
   {
    "pos": 3,
-   "team": "Atlético Madrid",
-   "played": 3,
-   "won": 2,
-   "drawn": 1,
-   "lost": 0,
-   "gf": 7,
-   "ga": 3,
-   "gd": 4,
-   "pts": 7
+   "team": "Real Betis",
+   "played": 4,
+   "won": 3,
+   "drawn": 0,
+   "lost": 1,
+   "gf": 5,
+   "ga": 5,
+   "gd": 0,
+   "pts": 9
   },
   {
    "pos": 4,
+   "team": "Deportivo",
+   "played": 4,
+   "won": 2,
+   "drawn": 2,
+   "lost": 0,
+   "gf": 8,
+   "ga": 5,
+   "gd": 3,
+   "pts": 8
+  },
+  {
+   "pos": 5,
    "team": "Alavés",
    "played": 3,
    "won": 2,
@@ -53,7 +65,7 @@
    "pts": 7
   },
   {
-   "pos": 5,
+   "pos": 6,
    "team": "Osasuna",
    "played": 3,
    "won": 2,
@@ -65,7 +77,31 @@
    "pts": 7
   },
   {
-   "pos": 6,
+   "pos": 7,
+   "team": "Atlético Madrid",
+   "played": 4,
+   "won": 2,
+   "drawn": 1,
+   "lost": 1,
+   "gf": 7,
+   "ga": 6,
+   "gd": 1,
+   "pts": 7
+  },
+  {
+   "pos": 8,
+   "team": "Athletic Club",
+   "played": 4,
+   "won": 2,
+   "drawn": 0,
+   "lost": 2,
+   "gf": 6,
+   "ga": 5,
+   "gd": 1,
+   "pts": 6
+  },
+  {
+   "pos": 9,
    "team": "Sevilla",
    "played": 3,
    "won": 2,
@@ -77,31 +113,7 @@
    "pts": 6
   },
   {
-   "pos": 7,
-   "team": "Real Betis",
-   "played": 3,
-   "won": 2,
-   "drawn": 0,
-   "lost": 1,
-   "gf": 4,
-   "ga": 5,
-   "gd": -1,
-   "pts": 6
-  },
-  {
-   "pos": 8,
-   "team": "Deportivo",
-   "played": 3,
-   "won": 1,
-   "drawn": 2,
-   "lost": 0,
-   "gf": 5,
-   "ga": 3,
-   "gd": 2,
-   "pts": 5
-  },
-  {
-   "pos": 9,
+   "pos": 10,
    "team": "Levante",
    "played": 3,
    "won": 1,
@@ -113,19 +125,31 @@
    "pts": 4
   },
   {
-   "pos": 10,
+   "pos": 11,
    "team": "Racing Santander",
-   "played": 3,
+   "played": 4,
    "won": 1,
    "drawn": 1,
-   "lost": 1,
-   "gf": 5,
-   "ga": 5,
-   "gd": 0,
+   "lost": 2,
+   "gf": 7,
+   "ga": 8,
+   "gd": -1,
    "pts": 4
   },
   {
-   "pos": 11,
+   "pos": 12,
+   "team": "Rayo Vallecano",
+   "played": 4,
+   "won": 1,
+   "drawn": 1,
+   "lost": 2,
+   "gf": 7,
+   "ga": 10,
+   "gd": -3,
+   "pts": 4
+  },
+  {
+   "pos": 13,
    "team": "Real Sociedad",
    "played": 4,
    "won": 1,
@@ -137,7 +161,7 @@
    "pts": 4
   },
   {
-   "pos": 12,
+   "pos": 14,
    "team": "Espanyol",
    "played": 3,
    "won": 1,
@@ -149,19 +173,7 @@
    "pts": 3
   },
   {
-   "pos": 13,
-   "team": "Athletic Club",
-   "played": 3,
-   "won": 1,
-   "drawn": 0,
-   "lost": 2,
-   "gf": 3,
-   "ga": 5,
-   "gd": -2,
-   "pts": 3
-  },
-  {
-   "pos": 14,
+   "pos": 15,
    "team": "Getafe",
    "played": 3,
    "won": 1,
@@ -173,19 +185,19 @@
    "pts": 3
   },
   {
-   "pos": 15,
+   "pos": 16,
    "team": "Villarreal",
-   "played": 3,
+   "played": 4,
    "won": 0,
    "drawn": 2,
-   "lost": 1,
-   "gf": 4,
-   "ga": 5,
-   "gd": -1,
+   "lost": 2,
+   "gf": 6,
+   "ga": 8,
+   "gd": -2,
    "pts": 2
   },
   {
-   "pos": 16,
+   "pos": 17,
    "team": "Celta Vigo",
    "played": 4,
    "won": 0,
@@ -197,7 +209,7 @@
    "pts": 2
   },
   {
-   "pos": 17,
+   "pos": 18,
    "team": "Valencia",
    "played": 3,
    "won": 0,
@@ -206,18 +218,6 @@
    "gf": 1,
    "ga": 4,
    "gd": -3,
-   "pts": 1
-  },
-  {
-   "pos": 18,
-   "team": "Rayo Vallecano",
-   "played": 3,
-   "won": 0,
-   "drawn": 1,
-   "lost": 2,
-   "gf": 4,
-   "ga": 8,
-   "gd": -4,
    "pts": 1
   },
   {
