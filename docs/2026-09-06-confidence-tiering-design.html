@@ -1,0 +1,172 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>置信度分层出票设计 · 2026-09-06</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#1c2430;--sub:#5b6675;--line:#e3e7ec;--acc:#0f6fff;--ok:#0a8f56;--warn:#c07800;--bad:#c23a3a;--chip:#eef3fb}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.7 "Segoe UI","Microsoft YaHei",system-ui,sans-serif;padding:20px}
+.wrap{max-width:1020px;margin:0 auto}
+h1{font-size:20px;margin:0 0 4px}
+h2{font-size:16px;margin:26px 0 10px}
+h3{font-size:14px;margin:14px 0 6px}
+.sub{color:var(--sub);font-size:12.5px;margin-bottom:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:12px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:var(--chip);font-weight:600;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+code{background:var(--chip);border-radius:4px;padding:1px 5px;font-size:12.5px;font-family:Consolas,monospace}
+.tag{display:inline-block;padding:1px 8px;border-radius:10px;font-size:11.5px;margin:0 3px 3px 0;white-space:nowrap}
+.tag.p0{background:#fbe9e9;color:var(--bad)}
+.tag.p1{background:#fdf3e2;color:var(--warn)}
+.tag.p2{background:#e5f3ec;color:var(--ok)}
+.tag.new{background:#e8eaf6;color:#3949ab}
+ul{margin:6px 0;padding-left:20px}
+li{margin:4px 0}
+.num{font-variant-numeric:tabular-nums}
+svg{vertical-align:middle}
+</style>
+</head><body><div class="wrap">
+
+<svg width="0" height="0" style="position:absolute"><symbol id="i-shield" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6z"/></symbol><symbol id="i-chart" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 20h16M7 16v-5m5 5V6m5 10v-8"/></symbol><symbol id="i-refresh" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M20 12a8 8 0 1 1-2.3-5.6M20 3v4h-4"/></symbol><symbol id="i-ghost" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M5 21V9a7 7 0 0 1 14 0v12l-2.3-2-2.4 2-2.3-2-2.3 2-2.4-2zM9 10h.01M15 10h.01"/></symbol></svg>
+
+<h1><svg width="20" height="20" style="color:var(--acc)"><use href="#i-shield"/></svg> 置信度分层出票设计（方案 A+C · 大哥拍板）</h1>
+<div class="sub">来源：2026-09-06 brainstorming 会话（实票胜率下滑诊断 → 方案选型）· 定稿 2026-09-06 · 决策：大哥 · 开发者 sszhang</div>
+
+<h2>一、问题诊断（数据实证）</h2>
+<div class="card"><table>
+<tr><th>指标</th><th>8-22~9-01（前14票）</th><th>9-02之后（后8票）</th><th>判读</th></tr>
+<tr><td>腿命中率</td><td class="num">30%（16/54）</td><td class="num">27%（9/33）</td><td>只降 3pp，模型没崩</td></tr>
+<tr><td>回款票率</td><td class="num">36%（5/14）</td><td class="num"><b style="color:var(--bad)">0%（0/5）</b></td><td><b>真正崩掉的指标</b></td></tr>
+<tr><td>净盈亏</td><td class="num" style="color:var(--ok)">+137.3</td><td class="num" style="color:var(--bad)">−134.0</td><td>T020~T022（72元）已注定全灭</td></tr>
+</table>
+<ul>
+<li><b>出血点①：CRS 腿</b>——全账本 33 条 CRS 腿只中 2 条（6%）；前期盈利靠 8-24 两张 CRS 票（+229），此后翻身档 CRS 持续全灭（T004/9/10/12/13/16/17/22 全灭）</li>
+<li><b>出血点②：形状漂移</b>——赢钱期主力 4串11（回款率 95-97%，中 2 关即回款）；9 月后漂向 8串1×5/×10倍、4串1×15倍等"全中才回款"形状；8串1 在大样本回放（阶段1.5）为体彩口径 <b>−100%</b></li>
+<li><b>出血点③：1.4~1.7 赔率段</b>——实票 8 条只中 2（25%，市场隐含 65%）；朗斯 p=0.7012 踩线翻车为典型</li>
+<li><b>抽水墙（大样本已证）</b>——体彩 12.9% 抽水下无形状 ROI 显著为正；4串1 为唯一方向存活（+18.7%，CI 跨 0）；跨口径稳健的只有"回款率"（形状天性）</li>
+</ul></div>
+
+<h2>二、模型准确率真相（corpus 459 条 · 25 轮）</h2>
+<div class="card"><table>
+<tr><th>模型置信度 p_max</th><th>实际方向命中</th><th>判读</th></tr>
+<tr><td class="num">≥0.75</td><td class="num"><b style="color:var(--ok)">96%（23/24）</b></td><td>极准，但几乎不出实票</td></tr>
+<tr><td class="num">0.65~0.75</td><td class="num">77%</td><td>很准</td></tr>
+<tr><td class="num">0.55~0.65</td><td class="num">70%</td><td>尚可，EV 薄</td></tr>
+<tr><td class="num">&lt;0.55</td><td class="num"><b style="color:var(--bad)">49%（44/89）</b></td><td>≈抛硬币，却占预测总量 43%</td></tr>
+</table>
+<ul>
+<li>整体方向命中 63.9%（131/205）；校准曲线<b>全线右偏</b>：声称 p=0.65 实际 0.74、声称 0.85 实际 1.00——模型<b>系统性低估自己</b>（与消融报告"校准低估 12pp"吻合）</li>
+<li>结论：<b>模型不是不准，是好腿没用对地方</b>——96% 的腿在影子层空转，49% 的腿混进实票</li>
+</ul></div>
+
+<h2>三、方案总览（A+C 双轨）</h2>
+<div class="card">
+<b>轨道 A（立即生效）：置信度分层出票</b>——模型零改动，动"谁配上实票"。<br>
+<b>轨道 C（慢工）：离线重校准任务</b>——挂回填链尾自动跑，影子层 AB 验证 30 轮，赢了才切主链路。<br><br>
+<svg width="640" height="120" viewBox="0 0 640 120" style="color:var(--sub);max-width:100%">
+  <rect x="10" y="30" width="170" height="56" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="95" y="52" text-anchor="middle" font-size="12" fill="var(--ink)">corpus 语料库</text>
+  <text x="95" y="70" text-anchor="middle" font-size="11" fill="currentColor">459条 · 25轮</text>
+  <path d="M180 58 H220" stroke="currentColor" stroke-width="1.5" marker-end="url(#a1)"/>
+  <rect x="220" y="10" width="190" height="46" rx="8" fill="none" stroke="var(--acc)" stroke-width="1.5"/>
+  <text x="315" y="29" text-anchor="middle" font-size="12" fill="var(--acc)">轨道A：分层出票</text>
+  <text x="315" y="46" text-anchor="middle" font-size="11" fill="currentColor">boldplay/preference 立即改</text>
+  <rect x="220" y="66" width="190" height="46" rx="8" fill="none" stroke="var(--ok)" stroke-width="1.5"/>
+  <text x="315" y="85" text-anchor="middle" font-size="12" fill="var(--ok)">轨道C：重校准任务</text>
+  <text x="315" y="102" text-anchor="middle" font-size="11" fill="currentColor">回填链尾自动 · 影子AB 30轮</text>
+  <path d="M410 33 H450 V85 H470" stroke="currentColor" stroke-width="1.5" fill="none" marker-end="url(#a1)"/>
+  <path d="M410 89 H450 V33 H470" stroke="currentColor" stroke-width="1.5" fill="none" marker-end="url(#a1)"/>
+  <rect x="470" y="40" width="160" height="44" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="550" y="58" text-anchor="middle" font-size="12" fill="var(--ink)">实票 26元/轮</text>
+  <text x="550" y="75" text-anchor="middle" font-size="11" fill="currentColor">保底22 + 验证2 + 体感2</text>
+  <defs><marker id="a1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6z" fill="currentColor"/></marker></defs>
+</svg>
+</div>
+
+<h2>四、新出票结构（26 元/轮贴线）</h2>
+<div class="card"><table>
+<tr><th>仓</th><th>形状</th><th>金额</th><th>腿源</th><th>期望回款率</th></tr>
+<tr><td><b>保底仓</b></td><td>HAD/HHAD 4串11容错</td><td class="num">22元</td><td>p≥0.65 方向腿前4（p≥0.75 优先做胆）</td><td class="num">~96%（4条0.77腿至少中2关）</td></tr>
+<tr><td><b>验证仓</b></td><td>HAD/HHAD 4串1×1注</td><td class="num">2元</td><td>p 0.55~0.65 段 EV 最高 4 条</td><td class="num">~35%（博正·大样本唯一方向存活形状）</td></tr>
+<tr><td><b>体感仓</b></td><td>CRS 单关×1注</td><td class="num">2元</td><td>boldplay 翻身档 EV 第一名</td><td class="num">~10%（原月预算40元冻结，只留此仓）</td></tr>
+</table>
+<ul>
+<li><b>砍掉</b>：8串1（体彩口径 −100% 实证）、CRS 串关（33腿中2）</li>
+<li><b>踩线降级规则</b>：赔率&lt;1.30 且 p&lt;0.70 的腿不入保底（朗斯案教训——1.4~1.7 段实票 25% 命中），自动降级到验证仓</li>
+<li><b>零腿轮</b>：p≥0.65 方向腿不足 4 条时保底仓关档不硬凑，当轮只出验证+体感（4元），省下 18 元滚入月内池</li>
+<li><b>预算</b>：轮红线 30 元不变（26×9轮≈234 ≤ 月封顶 240）</li>
+</ul></div>
+
+<h2>五、置信度分层规则 <span class="tag new">核心</span></h2>
+<div class="card"><table>
+<tr><th>p_max 分层</th><th>级名</th><th>去向</th><th>档内实测命中</th></tr>
+<tr><td class="num">p ≥ 0.75</td><td><b>胆级</b></td><td>保底仓优先腿</td><td class="num">96%（n=24）</td></tr>
+<tr><td class="num">0.65 ≤ p &lt; 0.75</td><td><b>标准级</b></td><td>保底仓普通腿</td><td class="num">77%</td></tr>
+<tr><td class="num">0.55 ≤ p &lt; 0.65</td><td><b>观察级</b></td><td>只进验证仓/影子层</td><td class="num">70%</td></tr>
+<tr><td class="num">p &lt; 0.55</td><td><b>参考级</b></td><td>报告显示，标注"不入票"</td><td class="num">49%</td></tr>
+</table>
+<ul>
+<li>分层阈值<b>非常量魔法值</b>：存 <code>engine/cache/conf_tiers.json</code>，由重校准任务滚动修正（语料每 +10 轮重估各档实际命中，偏差&gt;8pp 才调）</li>
+<li>预测报告每条腿新增"本档历史命中"列（如胆级显示"档内实际 96%·n=24"），用实测替代声称概率</li>
+<li>CRS/TTG/HAFU 腿不参与分层（无方向概率），按原 boldplay EV 逻辑只进体感仓/影子层</li>
+<li>铁律继承：分歧熔断（|p_fused−p_mkt|≥5pp 不入档）、fd 锚白名单、市场锚≥65% 合规线照旧</li>
+</ul></div>
+
+<h2>六、离线重校准任务（轨道 C）</h2>
+<div class="card">
+<b>新增 <code>recalibrate.py</code></b>（现有 <code>calibrate.py</code> 只重校融合系数 a/b，不动它）：
+<ul>
+<li><b>挂点</b>：backfill 回填链尾自动执行（幂等；语料增量&lt;10 场跳过）</li>
+<li><b>做两件事</b>：① 用 corpus 全量已回填记录重算校准曲线（各 p 档声称 vs 实际）写 <code>engine/cache/calibration_curve.json</code>；② 语料 n≥400 且某档偏差连续 3 次&gt;8pp 时做 isotonic 保序回归，产出 <code>p_corrected = f(p_final)</code> 查表函数——<b>只标注不生效</b></li>
+<li><b>切换条件</b>：影子层 AB 双跑（原始 p vs 修正 p 各一套影子票）对比 30 轮，修正方 RPS 赢了才切主链路</li>
+<li><b>护栏继承</b>：修正系数进 history 可回滚、改善&lt;1% 不动、a 封顶 0.6</li>
+</ul></div>
+
+<h2>七、影子层协议升级</h2>
+<div class="card"><ul>
+<li><b>CRS 全量影子</b>：boldplay 翻身档 6 腿照常生成、照常 settle，但 0 实票——攒够 30 轮或 CRS 档实际命中率 ≥12%（q 均值口径）才重新评审恢复实票</li>
+<li><b>校准 AB 影子</b>：轨道 C 的修正 p 影子票与主链路影子票同轮结算对比</li>
+<li>影子票沿用 ticket_report 的 testGroup 分栏，不进实票 KPI（T020 前架构不变）</li>
+</ul></div>
+
+<h2>八、同日重出机制（追加 · 2026-09-06 会话补拍板）</h2>
+<div class="card">
+<b>现状问题</b>（boldplay.py:1208 实证）：主卡路径固定 <code>{date}-boldplay.json</code>，重跑<b>静默覆盖</b>旧卡——旧方案腿/赔率/seq 丢失无存档；seq 按主卡文件数计数（:1154）同日重出会污染翻身档轮换奇偶；已出实票的卡被覆盖后结算链断链（9-05 T021 登记勘误同根因）；git 有 09-06 卡重生成事故先例。<br><br>
+<b>设计原则：方案永远只追加，不覆盖；新版本作废旧版本，结算只认最新已拍板版。</b>
+<ul>
+<li><b>归档命名</b>：重出时旧卡自动改名 <code>{date}-r{N}-boldplay.json</code>（N 递增），主卡路径永远指向当前生效版</li>
+<li><b>superseded 标记</b>：归档卡打 <code>superseded: true, supersededBy: r{N}</code>；settle 与影子层跳过（现有 <code>is_process_snapshot</code> 正则已识别 <code>-rN-</code> 前缀，天然兼容，结算逻辑零改动）</li>
+<li><b>seq 修正</b>：seq 按自然日去重计数（同日重出不递增），避免翻身档轮换被打乱</li>
+<li><b>实票保护闸</b>：重出前检查旧卡——旧卡 approved=true 且 tickets.json 有票指向它 → 拒绝静默重出，提示需显式 <code>--force</code>；force 时归档并在票面 note 补"方案已重出 r{N}，票面按原价结算"。旧卡未拍板 → 直接归档重出（9-06 事故场景从此为安全操作）</li>
+<li><b>预算口径</b>：<code>monthly_spend</code>/<code>upset_month_spend</code> 已排除 <code>-rN</code> 快照（:1147 注释实证），归档后自动不双计</li>
+</ul>
+<b>改动范围</b>：boldplay.py 落盘段（~1210）+ seq 计数一行 + settle 的 superseded 检查（复用现有快照排除）；backfill/ticket_report 零改动。</div>
+
+<h2>九、验证指标与熔断</h2>
+<div class="card"><table>
+<tr><th>指标</th><th>现状基线</th><th>4 周目标</th><th>数据源</th></tr>
+<tr><td>回款票率</td><td class="num" style="color:var(--bad)">0%（9月后）</td><td class="num">≥70%</td><td>tickets.json</td></tr>
+<tr><td>保底仓单腿实际命中</td><td class="num">27%</td><td class="num">≥75%（对齐档内实测）</td><td>tickets.json</td></tr>
+<tr><td>1.4~1.7 赔率段腿量</td><td class="num">25% 命中</td><td class="num">该段腿 ≤1/轮 或命中回升</td><td>tickets.json</td></tr>
+<tr><td>验证仓 4串1 累计 ROI</td><td>—</td><td>观察项不设目标（攒 n）</td><td>tickets.json</td></tr>
+<tr><td>CRS 影子命中率</td><td class="num">实票 6%</td><td class="num">≥12% 才谈恢复</td><td>影子层</td></tr>
+</table>
+<div style="margin-top:8px;padding:8px 10px;background:#fbe9e9;border-radius:6px;color:var(--bad)">
+<b>熔断</b>：新方案连续 6 轮保底仓 0 回款 → 回退到只出验证仓 2 元/轮，全量进影子层复盘。
+</div></div>
+
+<h2>十、实施批次</h2>
+<div class="card"><table>
+<tr><th>批次</th><th>内容</th><th>改动面</th></tr>
+<tr><td><b>批次1 立即</b> <span class="tag p0">P0</span></td><td>preference.json 新结构（三仓/分层/踩线降级）+ boldplay 选腿规则改造（p≥0.65 保底、观察级进验证仓、砍8串1）+ 报告"本档历史命中"列</td><td>preference.json、boldplay.py、报告模板</td></tr>
+<tr><td><b>批次2 立即</b> <span class="tag p0">P0</span></td><td>同日重出机制（归档命名/superseded/seq修正/实票保护闸）</td><td>boldplay.py 落盘段</td></tr>
+<tr><td><b>批次3 慢工</b> <span class="tag p1">P1</span></td><td>recalibrate.py（校准曲线+isotonic 挂回填链）+ conf_tiers.json 滚动修正 + 影子层 CRS/AB 协议</td><td>新脚本、backfill 链尾、影子层</td></tr>
+<tr><td><b>批次4 观察</b> <span class="tag p2">P2</span></td><td>验证指标看板（ticket_report 扩列）+ 熔断线程序化检查</td><td>ticket_report.py</td></tr>
+</table>
+<ul>
+<li>测试纪律：批次1/2 走 TDD（回归锚：朗斯踩线案、9-06 重出案、09-05 保底6腿案）；批次3 语料小不设切换目标</li>
+<li>本设计为 brainstorming 定稿，实施计划由 writing-plans 技能另行产出</li>
+</ul></div>
+
+</div></body></html>
