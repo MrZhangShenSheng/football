@@ -79,7 +79,7 @@ python3 freq_backtest.py                            # freq vs amix 对照回测�
 python3 ticket_report.py                            # 实票账本报告（资金曲线/票务清单/玩法分解/纪律对照）
 python3 goal_engine.py --compare                    # 进球引擎P0:修正/裸DC/朴素static+rolling四线对照+消融(09-27评审数据底子;⚠️重跑会抹报告walkForward/bypassPool节,之后须重跑walk-forward与bypass_pool_check)
 python3 goal_engine.py --walk-forward --league spain-laliga   # 干净口径三线(60场分段重拟合;生死线=corrected/bareDc vs naiveRolling)
-python -m pytest tests -q                           # 232 用例回归（改代码必跑）
+python -m pytest tests -q                           # 269 用例回归（改代码必跑）
 ```
 
 ## 预测日全流程
