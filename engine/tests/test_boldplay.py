@@ -1,6 +1,6 @@
 import pytest
 from boldplay import (band_ok, cap_multiplier, monthly_spend, budget_gate,
-                      pick_upset_legs, build_ticket, SHAPES)
+                      pick_upset_legs, build_ticket, build_three_tier, SHAPES)
 
 def test_band_ok_rules():
     assert band_ok({"h": 1.2, "d": 6.0, "a": 15.0}) == "偏好"     # 主胜去水 >= 0.60
@@ -313,3 +313,86 @@ class TestBaseTieredLegs:
         import boldplay as bp
         legs = bp._base_legs(_tiered_day_few(), zh={}, dc_params_fn=lambda m, z: None)
         assert len(legs) < 5
+
+    def test_single_dan_backfill_with_std(self):
+        # T1 审查 Minor-1 补测(审核修订B): 单胆轮——1条胆级@1.15 + 5条标准档,
+        # 胆不足2席时高p标准腿按标准档口径补位: dans==1 且第5条腿(补位末席)tier=="std"
+        import boldplay as bp
+        day = {"matches": [
+            _mk_had(1, 1.15, 6.00, 12.0),   # 唯一胆级 p≈0.777
+            _mk_had(2, 1.35, 4.50, 8.0),    # 标准档 p≈0.681
+            _mk_had(3, 1.38, 4.40, 7.8),    # 标准档 p≈0.671
+            _mk_had(4, 1.40, 4.30, 7.6),    # 标准档 p≈0.662
+            _mk_had(5, 1.45, 4.20, 7.5),    # 标准档 p≈0.650
+            _mk_had(6, 1.55, 4.00, 7.0),    # 标准档 p≈0.622
+        ]}
+        legs = bp._base_legs(day, zh={}, dc_params_fn=lambda m, z: None)
+        assert len(legs) == 5
+        assert sum(1 for l in legs if l["tier"] == "dan") == 1   # 胆仅1条不虚标
+        assert legs[4]["tier"] == "std"                          # 补位腿按标准档口径
+
+
+# ---------- 保底档 3*4*5 重构 + 覆盖闸（设计§四/§4.1·Task 2 2026-09-06）----------
+# 16 注 32 元（3串1×10+4串1×5+5串1×1）bets 显式声明；覆盖闸 coverGate
+# (P_full≥32n+N，n=1 无叙事仓)；轮红线检查废除（legacy 档保留旧预算逻辑）。开发者 sszhang
+
+
+def _fake_day():
+    """build_three_tier 入口假数据 = T1 分层 fixture（恰 5 条合格腿：2胆+3标准 →
+    保底 3*4*5 开档；@1.70 场 p<0.60 不入保底；周六006/007 兼作 A/B 三池卡场）。"""
+    return _tiered_day()
+
+
+def _fake_table():
+    """freq 模板假数据：英超 n=200 免 low_conf（selftest 德乙模板同源口径）。"""
+    from collections import Counter
+    return {"england-premier": Counter({"1:1": 120, "2:2": 40, "__n": 200})}
+
+
+class TestThreeByFourByFive:
+    """保底3*4*5重构(设计§四): 16注32元·bets显式·覆盖闸P_full>=32n+N"""
+
+    def test_base_shape_16_bets(self):
+        t = build_three_tier(_fake_day(), _fake_table(), seq=9, zh={}, form={})
+        base = t["tiers"]["base"]
+        assert base["play"] == "had-3*4*5"
+        assert base["cost"] == 32
+        assert len(base["bets"]) == 16            # C(5,3)+C(5,4)+C(5,5)=10+5+1
+        sizes = {len(b["legs"]) for b in base["bets"]}
+        assert sizes == {3, 4, 5}                 # 3串1×10+4串1×5+5串1×1
+        assert len(base["legs"]) == 5             # 全消费 5 腿（T1 过渡[:4]切片已移除）
+
+    def test_cover_gate_ok(self):
+        t = build_three_tier(_fake_day(), _fake_table(), seq=9, zh={}, form={})
+        gate = t["tiers"]["base"]["coverGate"]
+        assert "pFull" in gate and "cap" in gate and gate["ok"] in (True, False)
+        # n=1无叙事仓时: P_full >= 32 必然成立(设计§4.1)
+        assert gate["pFull"] >= 32 or not gate["ok"]
+
+    def test_cover_gate_narrative_cap(self):
+        # 覆盖闸(设计§4.1): 叙事仓上限 = P_full - 32n
+        t = build_three_tier(_fake_day(), _fake_table(), seq=9, zh={}, form={})
+        gate = t["tiers"]["base"]["coverGate"]
+        assert gate["cap"] == round(gate["pFull"] - 32, 2)
+
+    def test_payout_full_hit(self):
+        from boldplay import payout_full_hit
+        legs = [{"odds": 1.3}, {"odds": 1.4}, {"odds": 1.5}, {"odds": 1.6}, {"odds": 1.7}]
+        p = payout_full_hit(legs, unit=2.0, mult=1)
+        assert abs(p - (2*(1.3*1.4*1.5 + 1.3*1.4*1.6 + 1.3*1.4*1.7 + 1.3*1.5*1.6 + 1.3*1.5*1.7 + 1.3*1.6*1.7 + 1.4*1.5*1.6 + 1.4*1.5*1.7 + 1.4*1.6*1.7 + 1.5*1.6*1.7
+                          + 1.3*1.4*1.5*1.6 + 1.3*1.4*1.5*1.7 + 1.3*1.4*1.6*1.7 + 1.3*1.5*1.6*1.7 + 1.4*1.5*1.6*1.7
+                          + 1.3*1.4*1.5*1.6*1.7))) < 0.01
+
+    def test_base_closed_when_legs_short(self):
+        # 零腿轮关档(设计§四): 合格腿<5 → cost=0 · coverGate=None · 不硬凑
+        t = build_three_tier(_tiered_day_few(), _fake_table(), seq=9, zh={}, form={})
+        base = t["tiers"]["base"]
+        assert base["play"] == "had-3*4*5"
+        assert base["cost"] == 0 and base["coverGate"] is None
+        assert not base.get("bets")
+
+    def test_round_redline_removed(self):
+        # 设计§四: 轮红线废除——totalCost 32 已超旧红线 30，也不再落 budgetWarning
+        t = build_three_tier(_fake_day(), _fake_table(), seq=9, zh={}, form={})
+        assert t["totalCost"] >= 32
+        assert "budgetWarning" not in t

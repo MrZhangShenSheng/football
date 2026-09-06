@@ -37,6 +37,8 @@ BASE_TIER_DAN_P = 0.75        # 胆级线(设计§五: 实测96%·n=24)
 BASE_TIER_STD_P = 0.60        # 标准级线(设计§4.4: 0.60-0.65段实测74%)
 BASE_TREADLINE_ODDS = 1.35    # 踩线护栏(设计§四·审核C: 朗斯@1.36个案,1.35-1.70段实测72%)
 BASE_TREADLINE_P = 0.68
+BASE_UNIT_STAKE = 2.0         # 保底3*4*5单注本金(设计§四·T2: 16注×2元=32元)
+BASE_COMBOS_MIN = 3           # 保底组合3串1起点(设计§四: C(5,3)+C(5,4)+C(5,5)=16注)
 ODDS_RANGE = (2.0, 40.0)  # A-MIX 单腿赔率合理域：排除 550 级长尾（经验频率/DC 尾部噪声 × 绝对pp分歧=假阳性，2026-08-25 探针实测 4:0@550 EV+845% 被放行）
 POOL_KEEP = {"had": 0.871, "hhad": 0.871, "ttg": 0.796, "hafu": 0.796, "crs": 0.661}  # 体彩池水期望返还（skill v4.9 实测）
 SINGLE_LIMIT = 500_000.0        # 4-5 串单注奖金限额（官方规则）
@@ -531,6 +533,20 @@ def _base_legs(odds_day: dict, zh: dict | None = None,
             for p, o, m, k in chosen]
 
 
+def payout_full_hit(legs: list, unit: float = BASE_UNIT_STAKE, mult: int = 1) -> float:
+    """保底3*4*5全中回款(设计§4.1覆盖闸): Σ size>=3 全组合单注奖金, 税前口径
+    (单注<1万免税, 5串1低赔腿乘积远低于起征线). 开发者 sszhang"""
+    from itertools import combinations
+    total = 0.0
+    for size in range(BASE_COMBOS_MIN, len(legs) + 1):
+        for c in combinations(range(len(legs)), size):
+            odds = 1.0
+            for i in c:
+                odds *= legs[i]["odds"]
+            total += unit * mult * odds
+    return round(total, 2)
+
+
 def _q_map_for(m: dict, freq_table: dict, form: dict, zh: dict) -> tuple:
     """freq_legs 内部平移链薄封装：map_league→联赛模板→base rates→λ平移→shifted_q。
     返回 (q_map, lam)：lam=None 即纯模板（pools_card 标 pure_template·比分推荐判断力
@@ -641,23 +657,33 @@ def _lottery_tier(legs: list) -> dict:
     return {"shape": f"lottery-{len(legs)}x1", "cost": 2, "legs": legs,
             "bets": [{"legs": list(range(len(legs))), "multiplier": 1}],
             "expOdds": round(total, 1), "winIfHit": round(2 * total, 0),
-            "note": f"{len(legs)}串1×1倍=2元 · 全中≈{2 * total:.0f}元 · 计入轮次红线{ROUND_REDLINE}元"}
+            "note": f"{len(legs)}串1×1倍=2元 · 全中≈{2 * total:.0f}元 · 无预算管理(设计§四红线废除)"}
 
 
 def build_three_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form: dict,
                      hafu_map: dict | None = None) -> dict:
-    """三档结构（spec §4.1 两档 + docs/2026-09-02 彩票档）：保底 HAD 4串11(22元) +
-    翻身多池引擎(seq轮换) + 彩票 N串1×1倍(2元,合格腿全上4~8,HAD/HHAD)。
-    选腿: 保底=分层选腿(_base_legs·T1 2026-09-06 取5腿2胆+3标准,本档 3*4*5 重构在 Task 2);
-    翻身=各场 pools_card rec_upset 候选(同场≤1腿,
+    """三档结构（spec §4.1 两档 + docs/2026-09-02 彩票档）：保底 HAD 3*4*5(16注32元,
+    T2 2026-09-06 五场容错·覆盖闸coverGate) + 翻身多池引擎(seq轮换) + 彩票
+    N串1×1倍(2元,合格腿全上4~8,HAD/HHAD)。选腿: 保底=_base_legs 分层5腿(2胆+3标准,
+    胆不足高p标准腿补位); 翻身=各场 pools_card rec_upset 候选(同场≤1腿,
     按EV降序); 彩票=_lottery_legs(p_fused≥0.55/超低赔通道)。开发者 sszhang"""
-    had_legs = _base_legs(odds_day, zh=zh)[:4]   # T1 过渡：选腿层已分层取5腿，保底档 4串11
-    # 消费口径维持不变（expand_combos(5)=26注52元超红线），Task 2 重构 3*4*5 时消费全5腿
-    bets = [{"legs": list(c), "multiplier": 1} for c in expand_combos(len(had_legs))]
-    base = {"cost": 2 * len(bets), "legs": had_legs, "play": "had-4串11", "bets": bets,
-            "note": "6×2串1+4×3串1+1×4串1 · 中2关回1注2串1"}
-    if len(had_legs) < 4:
-        base["degraded"] = True
+    base_legs = _base_legs(odds_day, zh=zh)
+    if len(base_legs) >= 5:
+        from itertools import combinations
+        bets_345 = [{"legs": list(c), "multiplier": 1}
+                    for size in range(BASE_COMBOS_MIN, len(base_legs) + 1)
+                    for c in combinations(range(len(base_legs)), size)]
+        base_cost = int(BASE_UNIT_STAKE * len(bets_345))     # 16注×2元=32元
+        p_full = payout_full_hit(base_legs)
+        base = {"cost": base_cost, "legs": base_legs,
+                "play": "had-3*4*5", "bets": bets_345,
+                "coverGate": {"pFull": p_full, "cap": round(p_full - base_cost, 2),
+                              "ok": True},   # n=1无叙事仓: P_full≥32 结构性成立(§4.1)
+                "note": "3串1×10+4串1×5+5串1×1 · 中3关起回款 · 覆盖闸P_full≥32n"}
+    else:
+        base = {"cost": 0, "legs": base_legs, "play": "had-3*4*5",
+                "note": f"保底关档（合格腿{len(base_legs)}<5，不硬凑）",
+                "coverGate": None}   # 零腿轮关档(设计§四), 只出叙事档
     hafu_map = hafu_map if hafu_map is not None else _hafu_odds()
     cards = []
     for m in odds_day.get("matches", []):
@@ -705,9 +731,8 @@ def build_three_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form:
             f"{DIVERGENCE_LIMIT:.0%})——"
             + "、".join(f"{l['matchNumStr']}{l['pick']}{l['diff_pp']}pp"
                         for l in blocked_legs[:8])]
-    # 轮次预算红线（含彩票档，preference.json roundRedline 同步）
-    if total_cost > ROUND_REDLINE:
-        out["budgetWarning"] = f"totalCost {total_cost} > roundRedline {ROUND_REDLINE}"
+    # 轮红线检查已废除（T2 2026-09-06 设计§四：纪律=覆盖闸coverGate）；ROUND_REDLINE
+    # 常量与 budget_gate/MONTHLY_CAP 调用保留给 --structure=legacy 旧结构对照卡
     return out
 
 
@@ -941,8 +966,9 @@ def _selftest_three_tier():
          "had": {"h": 1.58, "d": 3.9, "a": 4.2},
          "crs": {"1:1": 8.0}, "ttg": {"s3": 3.55}, "hafu": {"dd": 7.2}},
         # T1 分层选腿（2026-09-06）：原 6 场 had 去水 p 全<0.60，新门槛下保底空腿——
-        # 追加 4 场低赔 fd 锚主胜（2胆@1.15/@1.18 + 2标准@1.35/@1.45）凑保底 4 腿；
-        # min had<1.55 不入 A/B 三池卡，原 6 场（TTG 锚/无锚覆盖）行为零改动。
+        # 追加 5 场低赔 fd 锚主胜（2胆@1.15/@1.18 + 3标准@1.35/@1.45/@1.55）凑保底
+        # 5 腿（T2 3*4*5 开档）；min had<1.55 不入 A/B 三池卡（@1.55 场恰好压线入卡，
+        # 无联赛模板走 low_conf 自兜底），原 6 场（TTG 锚/无锚覆盖）行为零改动。
         {"code": "周六021", "league": "英冠", "home": "米德尔斯堡", "away": "利兹",
          "had": {"h": 1.15, "d": 6.0, "a": 12.0}},
         {"code": "周六022", "league": "法乙", "home": "敦刻尔克", "away": "马迪圭",
@@ -951,15 +977,21 @@ def _selftest_three_tier():
          "had": {"h": 1.35, "d": 4.5, "a": 8.0}},
         {"code": "周六024", "league": "英冠", "home": "桑德兰", "away": "牛津联",
          "had": {"h": 1.45, "d": 4.2, "a": 7.5}},
+        {"code": "周六025", "league": "英冠", "home": "西布罗姆维奇", "away": "考文垂",
+         "had": {"h": 1.55, "d": 4.0, "a": 7.0}},
     ]}
     # #16 白名单后 fixture 调整（2026-09-04）：瑞超/挪超/韩职→法乙/意乙/英冠（fd 锚凑
-    # 保底 4 腿），留芬超/日职 2 场作"无锚被滤"覆盖；队名保留（zh={} 无 DC 解析）。
+    # 保底腿），留芬超/日职 2 场作"无锚被滤"覆盖；队名保留（zh={} 无 DC 解析）。
     ft = {"germany-2-bundesliga": Counter({"1:1": 120, "2:2": 40, "__n": 200})}  # 德乙模板 n=200 免 low_conf
     t = build_three_tier(fake_day, ft, seq=9, zh={}, form={})
     assert t["structure"] == "new"
     base = t["tiers"]["base"]
-    assert base["cost"] == 22 and len(base["legs"]) == 4            # 4串11=22元
-    assert base["play"] == "had-4串11"
+    assert base["cost"] == 32 and len(base["legs"]) == 5            # 3*4*5=16注32元
+    assert base["play"] == "had-3*4*5"
+    assert len(base["bets"]) == 16                                  # C(5,3)+C(5,4)+C(5,5)
+    gate = base["coverGate"]                                        # 覆盖闸(设计§4.1)
+    assert gate["pFull"] == payout_full_hit(base["legs"]) >= 32     # n=1: P_full≥32
+    assert gate["cap"] == round(gate["pFull"] - 32, 2) and gate["ok"] is True
     assert not ({"周一002", "周六007"} & {l["matchNumStr"] for l in base["legs"]})  # 铁律10：无锚腿不入保底
     up = t["tiers"]["upset"]
     # 批次3（2026-09-04）：分歧旗全候选化后，zh={} 纯模板 q 与手造 fixture 赔率普遍差
@@ -971,7 +1003,8 @@ def _selftest_three_tier():
         assert up["cost"] == 0
     codes = [l["matchNumStr"] for l in up["legs"]]
     assert len(codes) == len(set(codes))                            # 同场最多1腿(硬约束)
-    assert 22 <= t["totalCost"] <= 30                               # zh={} 无DC参数→彩票档关档cost=0(翻身可关)
+    assert 32 <= t["totalCost"] <= 40                               # 保底32 + 翻身≤8(彩票zh={}关档cost=0)
+    assert "budgetWarning" not in t                                 # T2: 轮红线检查废除
     lot = t["tiers"]["lottery"]
     assert lot["shape"] == "closed" and lot["cost"] == 0            # 合格腿0<4 关档不硬凑
     txt = render_ticket(t)
