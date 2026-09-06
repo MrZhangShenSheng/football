@@ -32,6 +32,11 @@ SHAPES = {"guilin": {"band": (10.0, 17.0), "multiplier": 4, "cost": 8},
 CACHE_DIR = ROOT / "engine/cache"   # 绝对定位（2026-09-02：相对路径在 cwd=engine/scripts 的 run.py 调用链下落空——彩票档 _dc_params 首次踩中，_hafu_odds/_hhad_odds/_load_fusion 同修）
 PRED_DIR = ROOT / "data" / "03-predictions"
 DIVERGENCE_LIMIT = 0.05   # |p_model - p市场| 合规线（skill 铁律 8 / 8-25 会话口径）
+# 保底分层选腿常量（docs/2026-09-06-confidence-tiering-design.html §四/§五·Task 1）
+BASE_TIER_DAN_P = 0.75        # 胆级线(设计§五: 实测96%·n=24)
+BASE_TIER_STD_P = 0.60        # 标准级线(设计§4.4: 0.60-0.65段实测74%)
+BASE_TREADLINE_ODDS = 1.35    # 踩线护栏(设计§四·审核C: 朗斯@1.36个案,1.35-1.70段实测72%)
+BASE_TREADLINE_P = 0.68
 ODDS_RANGE = (2.0, 40.0)  # A-MIX 单腿赔率合理域：排除 550 级长尾（经验频率/DC 尾部噪声 × 绝对pp分歧=假阳性，2026-08-25 探针实测 4:0@550 EV+845% 被放行）
 POOL_KEEP = {"had": 0.871, "hhad": 0.871, "ttg": 0.796, "hafu": 0.796, "crs": 0.661}  # 体彩池水期望返还（skill v4.9 实测）
 SINGLE_LIMIT = 500_000.0        # 4-5 串单注奖金限额（官方规则）
@@ -152,7 +157,7 @@ def _load_fusion() -> tuple[float, float]:
 def _live_day(cache_dir: Path = CACHE_DIR) -> dict:
     """主数据流（P0-1，2026-09-04 事故根治，docs/2026-09-04-prediction-audit-fix-design.html）：
     直接读 sporttery_matches.json 实时在售清单，键适配存档口径——code→matchNumStr、
-    crs s01s02→"1:2"、赔率 str→float（_pick_had_legs/_is_ab 的 min() 数值比较）。
+    crs s01s02→"1:2"、赔率 str→float（_base_legs/_is_ab 的 min() 数值比较）。
     与 _hafu_odds/_hhad_odds 同源同时刻；score_odds 日存档不再作数据源（陈旧存档曾致
     整卡错轮：09-04 用 09-03 存档生成周五场错误卡），仅由 run.py update 末尾 dump-odds 留档。
     开发者 sszhang"""
@@ -475,13 +480,15 @@ def _filter_onsale(all_days: dict) -> dict:
     return out
 
 
-def _pick_had_legs(odds_day: dict, zh: dict | None = None,
-                   dc_params_fn=_dc_params, fusion: tuple[float, float] | None = None) -> list:
-    """保底档 HAD 选腿（大哥 2026-09-04 拍板·强胆保底）：had 齐全 + 铁律10 fd 锚白名单 +
-    单腿赔率 ≥1.10（超低赔胆放行——旧 _is_ab ≥1.55 门槛曾结构性排除强胆，保底池只剩
-    中赔三星边缘场：实测全中概率 29%→7%、至少中2关 94%→69%，容错结构+低概率腿两头不靠）；
-    逐场算 p_fused（有 DC 融合/无 DC 市场去水）按 max 概率**降序取前 4**（旧=编号序前4，
-    腿质量由场次排列决定不由信心决定）；每场取概率最高方向。开发者 sszhang"""
+def _base_legs(odds_day: dict, zh: dict | None = None,
+               dc_params_fn=_dc_params, fusion: tuple[float, float] | None = None) -> list:
+    """保底档 HAD 分层选腿（2026-09-06 置信度分层·设计§四/§五；旧名 _pick_had_legs）：
+    had 齐全 + 铁律10 fd 锚白名单 + 单腿赔率 ≥1.10 合赔保护（超低赔胆放行——旧 _is_ab
+    ≥1.55 门槛曾结构性排除强胆）；逐场算 p_fused（有 DC 融合/无 DC 市场去水）每场取
+    概率最高方向；**分层取 5 腿**＝胆级 p≥BASE_TIER_DAN_P 优先 2 席→标准级
+    p≥BASE_TIER_STD_P 补满（胆不足 2 条时高 p 标准腿补位·审核修订B）；踩线护栏
+    （赔率<BASE_TREADLINE_ODDS 且 p<BASE_TREADLINE_P，朗斯案）不入保底；合格腿<5
+    返回短列表（关档由调用方判断）。每条腿带 tier: dan|std。开发者 sszhang"""
     if zh is None:
         zh = _zh_map()
     a, b = fusion if fusion else _load_fusion()
@@ -508,10 +515,20 @@ def _pick_had_legs(odds_day: dict, zh: dict | None = None,
         k = max(range(3), key=lambda i: p_f[i])
         pool.append((p_f[k], o3[k], m, k))
     pool.sort(key=lambda x: (-x[0], x[1]))             # 概率降序，平手按赔率升序
-    return [{"matchNumStr": m.get("matchNumStr") or m.get("code"),
-             "match": f'{m.get("home")}-{m.get("away")}',
-             "play": "had", "pick": ("主胜", "平", "客胜")[k],
-             "odds": o, "p": round(p, 4)} for p, o, m, k in pool[:4]]
+    # 分层取腿(设计§四): 胆级>=0.75优先2席→标准级>=0.60补满5席; 踩线(赔率<1.35且p<0.68)排除
+    dans = [x for x in pool if x[0] >= BASE_TIER_DAN_P][:2]
+    rest = [x for x in pool
+            if x not in dans
+            and x[0] >= BASE_TIER_STD_P
+            and not (x[1] < BASE_TREADLINE_ODDS and x[0] < BASE_TREADLINE_P)]
+    chosen = dans + rest[:5 - len(dans)]
+    def _leg(p, o, m, k, tier):
+        return {"matchNumStr": m.get("matchNumStr") or m.get("code"),
+                "match": f'{m.get("home")}-{m.get("away")}',
+                "play": "had", "pick": ("主胜", "平", "客胜")[k],
+                "odds": o, "p": round(p, 4), "tier": tier}
+    return [_leg(p, o, m, k, "dan" if (p, o, m, k) in dans else "std")
+            for p, o, m, k in chosen]
 
 
 def _q_map_for(m: dict, freq_table: dict, form: dict, zh: dict) -> tuple:
@@ -631,9 +648,11 @@ def build_three_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form:
                      hafu_map: dict | None = None) -> dict:
     """三档结构（spec §4.1 两档 + docs/2026-09-02 彩票档）：保底 HAD 4串11(22元) +
     翻身多池引擎(seq轮换) + 彩票 N串1×1倍(2元,合格腿全上4~8,HAD/HHAD)。
-    选腿: 保底=现HAD选腿(_pick_had_legs); 翻身=各场 pools_card rec_upset 候选(同场≤1腿,
+    选腿: 保底=分层选腿(_base_legs·T1 2026-09-06 取5腿2胆+3标准,本档 3*4*5 重构在 Task 2);
+    翻身=各场 pools_card rec_upset 候选(同场≤1腿,
     按EV降序); 彩票=_lottery_legs(p_fused≥0.55/超低赔通道)。开发者 sszhang"""
-    had_legs = _pick_had_legs(odds_day, zh=zh)   # 强胆保底（2026-09-04 拍板：p_fused 降序前4）
+    had_legs = _base_legs(odds_day, zh=zh)[:4]   # T1 过渡：选腿层已分层取5腿，保底档 4串11
+    # 消费口径维持不变（expand_combos(5)=26注52元超红线），Task 2 重构 3*4*5 时消费全5腿
     bets = [{"legs": list(c), "multiplier": 1} for c in expand_combos(len(had_legs))]
     base = {"cost": 2 * len(bets), "legs": had_legs, "play": "had-4串11", "bets": bets,
             "note": "6×2串1+4×3串1+1×4串1 · 中2关回1注2串1"}
@@ -921,6 +940,17 @@ def _selftest_three_tier():
         {"code": "周日015", "league": "英冠", "home": "全北现代", "away": "大田市民",
          "had": {"h": 1.58, "d": 3.9, "a": 4.2},
          "crs": {"1:1": 8.0}, "ttg": {"s3": 3.55}, "hafu": {"dd": 7.2}},
+        # T1 分层选腿（2026-09-06）：原 6 场 had 去水 p 全<0.60，新门槛下保底空腿——
+        # 追加 4 场低赔 fd 锚主胜（2胆@1.15/@1.18 + 2标准@1.35/@1.45）凑保底 4 腿；
+        # min had<1.55 不入 A/B 三池卡，原 6 场（TTG 锚/无锚覆盖）行为零改动。
+        {"code": "周六021", "league": "英冠", "home": "米德尔斯堡", "away": "利兹",
+         "had": {"h": 1.15, "d": 6.0, "a": 12.0}},
+        {"code": "周六022", "league": "法乙", "home": "敦刻尔克", "away": "马迪圭",
+         "had": {"h": 1.18, "d": 5.5, "a": 11.0}},
+        {"code": "周六023", "league": "意乙", "home": "巴勒莫", "away": "史泰比亚",
+         "had": {"h": 1.35, "d": 4.5, "a": 8.0}},
+        {"code": "周六024", "league": "英冠", "home": "桑德兰", "away": "牛津联",
+         "had": {"h": 1.45, "d": 4.2, "a": 7.5}},
     ]}
     # #16 白名单后 fixture 调整（2026-09-04）：瑞超/挪超/韩职→法乙/意乙/英冠（fd 锚凑
     # 保底 4 腿），留芬超/日职 2 场作"无锚被滤"覆盖；队名保留（zh={} 无 DC 解析）。
@@ -945,7 +975,9 @@ def _selftest_three_tier():
     lot = t["tiers"]["lottery"]
     assert lot["shape"] == "closed" and lot["cost"] == 0            # 合格腿0<4 关档不硬凑
     txt = render_ticket(t)
-    for kw in ("出票核对单", "周日004", "圣保利", "TTG", "彩票档关档", "│"):  # 可读性规范锚点
+    # T1（2026-09-06）：保底腿换成分层 fixture 低赔 4 场，队名锚点 圣保利→米德尔斯堡
+    # （周六021 胆腿·同为验证保底腿段渲染队名）；周日004/TTG 锚（三池卡片段）不变。
+    for kw in ("出票核对单", "周日004", "米德尔斯堡", "TTG", "彩票档关档", "│"):  # 可读性规范锚点
         assert kw in txt, kw
     print("[selftest] build_three_tier + render_ticket OK")
 

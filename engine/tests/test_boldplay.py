@@ -240,3 +240,76 @@ def test_lottery_settle_all_hit_payout_and_break_zero():
     broke = bp.settle(tk, {l["matchNumStr"]: ("2:0" if i else "0:2")
                            for i, l in enumerate(legs)})          # 第0腿断
     assert broke["tierPayout"]["lottery"] == 0.0
+
+
+# ---------- 保底分层选腿（docs/2026-09-06-confidence-tiering-design.html §四/§五）----------
+# T1: 2胆(p>=0.75)+3腿(p>=0.60)共5条·tier字段·踩线护栏(1.35/0.68)。
+# had 赔率按 devig 反推档位（dc_params_fn=None → p=纯市场去水）。开发者 sszhang
+
+
+def _tiered_day():
+    """7场假数据（联赛全 fd 锚·英超）：2胆(@1.15→p≈0.777/@1.18→p≈0.757) + 1踩线
+    (@1.32→p≈0.663<0.68) + 3标准(@1.35→0.681/@1.45→0.650/@1.55→0.622) + 1低门槛
+    (@1.70→p≈0.581<0.60)——胆/标准/踩线/门槛四态全覆盖。"""
+    return {"matches": [
+        _mk_had(1, 1.15, 6.00, 12.0),   # dan
+        _mk_had(2, 1.18, 5.50, 11.0),   # dan
+        _mk_had(3, 1.32, 3.90, 7.8),    # 踩线: o<1.35 且 p<0.68 → 排除
+        _mk_had(4, 1.35, 4.50, 8.0),    # std
+        _mk_had(5, 1.45, 4.20, 7.5),    # std
+        _mk_had(6, 1.55, 4.00, 7.0),    # std
+        _mk_had(7, 1.70, 3.80, 6.2),    # p<0.60 → 不入保底
+    ]}
+
+
+def _tiered_day_few():
+    """少场次轮：仅 3 场合格（1胆+2标准）+低门槛+踩线+无锚噪声——短列表返回。"""
+    return {"matches": [
+        _mk_had(1, 1.15, 6.00, 12.0),
+        _mk_had(2, 1.45, 4.20, 7.5),
+        _mk_had(3, 1.55, 4.00, 7.0),
+        _mk_had(4, 1.70, 3.80, 6.2),                          # p<0.60 不合格
+        _mk_had(5, 1.32, 3.90, 7.8),                          # 踩线不合格
+        {**_mk_had(6, 1.15, 6.00, 12.0), "league": "日职"},   # 无 fd 锚被滤（铁律10）
+    ]}
+
+
+class TestBaseTieredLegs:
+    """保底3*4*5分层选腿(设计§四/§五): 2胆+3腿·5条返回·踩线过滤·补位规则"""
+
+    def test_returns_five_legs_with_tier_field(self):
+        import boldplay as bp
+        legs = bp._base_legs(_tiered_day(), zh={}, dc_params_fn=lambda m, z: None)
+        assert len(legs) == 5
+        assert all("tier" in l for l in legs)
+        dans = [l for l in legs if l["tier"] == "dan"]
+        stds = [l for l in legs if l["tier"] == "std"]
+        # 胆级优先2席; 不足2条胆时高p标准腿补位(补位腿tier=std, 审核修订B)
+        assert len(dans) == 2
+        assert len(dans) + len(stds) == 5
+
+    def test_dan_requires_p075(self):
+        import boldplay as bp
+        legs = bp._base_legs(_tiered_day(), zh={}, dc_params_fn=lambda m, z: None)
+        for l in legs:
+            if l["tier"] == "dan":
+                assert l["p"] >= bp.BASE_TIER_DAN_P
+
+    def test_treadline_filter(self):
+        # 踩线降级(设计§四): 赔率<1.35 且 p<0.68 不入保底(朗斯案护栏)
+        import boldplay as bp
+        legs = bp._base_legs(_tiered_day(), zh={}, dc_params_fn=lambda m, z: None)
+        for l in legs:
+            assert not (l["odds"] < bp.BASE_TREADLINE_ODDS and l["p"] < bp.BASE_TREADLINE_P)
+
+    def test_std_threshold_060(self):
+        # 标准腿门槛 p>=0.60(设计§4.4: 0.60-0.65段实测74%)
+        import boldplay as bp
+        legs = bp._base_legs(_tiered_day(), zh={}, dc_params_fn=lambda m, z: None)
+        assert all(l["p"] >= bp.BASE_TIER_STD_P for l in legs)
+
+    def test_fewer_than_five_closes(self):
+        # 零腿轮(设计§四): 合格腿<5返回短列表(关档由调用方判断)
+        import boldplay as bp
+        legs = bp._base_legs(_tiered_day_few(), zh={}, dc_params_fn=lambda m, z: None)
+        assert len(legs) < 5
