@@ -4,6 +4,7 @@
 推导比赛走向与比分→CRS/HAFU/混串玩法映射. 不算EV不参考市场定价(分歧度仅排序用).
 开发者 sszhang"""
 import json
+import sys
 from datetime import date
 from pathlib import Path
 from common import ROOT
@@ -20,6 +21,11 @@ FACTOR_STAR_THRESHOLD = 0.9     # 层因子≥此值计一星(硬判定, v0 全�
 STAR_BASE_BOOST = 2             # 星级基线加成(粗估公式: 4硬层全过+2=5星)
 STAR_FLOOR, STAR_CEIL = 1, 5    # 星域 1-5
 PLAY_TYPE_CRS_2X1 = "N-CRS-2x1"  # N-前缀=轨道N票面标记(影子层spec命名同规)
+TRACK_N = "N"                   # 轨道N标记(影子层track分轨·设计§七兼容面④)
+SHADOW_DIR = Path(__file__).parent / "scratch" / "replay_v2"   # 影子层脚本目录(scratch 不入库)
+CRS_POOL_KEY_LEN = 6            # 体彩 crs 池键 's01s00' 定长
+SHADOW_MULT_DEFAULT = 1         # v0 mult=None→1倍(shapes.settle 的 BET_UNIT*mult 需数值)
+SHADOW_BET_UNIT = 2             # 单注 2 元(与影子层 shapes.BET_UNIT 同源)
 
 def _strength_layer(m, profile):
     st = profile.get("standings") or []
@@ -79,15 +85,96 @@ def build_narrative(matches, profiles, teams, seq):
                "legs": [top[0], top[1]] if len(top) >= 2 else top,
                "mult": None, "star": top[0]["star"]}] if top else [])
     return {"date": str(date.today()), "seq": seq, "candidates": cands, "plays": plays,
-            "track": "N"}
+            "track": TRACK_N}
+
+
+# ── 轨道N影子票最小桥(final-fix I-2): 落卡→paper.register 登记 track="N" ──
+def _crs_odds(match_by_code: dict, code: str, score: str):
+    """自体彩缓存 crs 池取比分赔率('s01s00'→'1:0' 口径, 与 paper.shadow_all 同规);
+    缺场/缺价/非数值 → None. 开发者 sszhang"""
+    pool = (match_by_code.get(code) or {}).get("crs") or {}
+    for k, v in pool.items():
+        if (k.startswith("s") and len(k) == CRS_POOL_KEY_LEN and k[3] == "s"
+                and k[1:3].isdigit() and k[4:6].isdigit()
+                and f"{int(k[1:3])}:{int(k[4:6])}" == score):
+            try:
+                return float(v)
+            except (TypeError, ValueError):
+                return None
+    return None
+
+
+def _load_paper():
+    """导入 scratch 影子层 paper 模块(其顶层 import shapes——shapes.py 属 scratch
+    不入库, fresh clone 缺 shapes 时此处抛 ImportError, 由 _shadow_bridge 兜底)"""
+    sys.path.insert(0, str(SHADOW_DIR))
+    import paper
+    return paper
+
+
+def register_shadow(card: dict, match_by_code: dict, paper_mod=None) -> list:
+    """叙事卡 → 轨道N影子票登记(最小桥): N-CRS-2x1 每腿 crs 价自体彩当刻池冻结,
+    spec_name = f"{playType}-{date}"(playType 自带 N- 前缀·与 EV 轨 spec 不撞,
+    (spec_name,date) 为幂等键——register 自身不查重, 由本桥自查), track="N"。
+    腿 crs 池缺价 → 整票跳过(不登记结算时 odds[key] 取键会 KeyError 的残票)。
+    paper_mod 注入点供测试替身(不写真账本). 开发者 sszhang"""
+    if paper_mod is None:
+        paper_mod = _load_paper()
+    done = {(t.get("spec_name"), t.get("date")) for t in paper_mod.load_tickets()}
+    registered = []
+    for play in card.get("plays", []):
+        if play.get("playType") != PLAY_TYPE_CRS_2X1:   # v0 唯一桥接玩法, HAFU/MIX 待 P1.5
+            print(f"[narrative] 影子跳过(玩法未桥接): {play.get('playType')}")
+            continue
+        spec_name = f"{play['playType']}-{card['date']}"
+        if (spec_name, card["date"]) in done:
+            continue                                  # 幂等: 同卡重复跑不产生重复影子票
+        legs, pairs, ok = [], [], True
+        for i, cand in enumerate(play["legs"]):
+            score = cand["script"]["score"]
+            odds = _crs_odds(match_by_code, cand["code"], score)
+            if odds is None:
+                print(f"[narrative] 影子跳过({spec_name}): {cand['code']} crs 池缺 {score} 价")
+                ok = False
+                break
+            legs.append({"code": cand["code"], "match": cand["match"],
+                         "market": "crs", "pick": [score], "odds": {score: odds}})
+            pairs.append([i, score])                   # [腿序号, 选项] pair(账本冻结形态)
+        if not ok:
+            continue
+        bets = [{"legs": pairs}]                      # CRS 2串1 = 1 注
+        mult = play.get("mult") or SHADOW_MULT_DEFAULT
+        paper_mod.register(spec_name=spec_name, date=card["date"], legs=legs, bets=bets,
+                           mult=mult, cost=SHADOW_BET_UNIT * mult * len(bets),
+                           track=card.get("track", TRACK_N))
+        registered.append(spec_name)
+    return registered
+
+
+def _shadow_bridge(card: dict, matches: list) -> list:
+    """main 落卡成功后调用: 登记 track="N" 影子票; scratch 影子层不可用(缺 shapes 等
+    ImportError)时 print 警告跳过, 不炸 CLI. 开发者 sszhang"""
+    try:
+        paper_mod = _load_paper()
+    except ImportError as e:
+        print(f"[narrative] 影子登记跳过(scratch 影子层不可用): {e}")
+        return []
+    by_code = {m.get("matchNumStr") or m.get("code"): m for m in matches}
+    registered = register_shadow(card, by_code, paper_mod=paper_mod)
+    for name in registered:
+        print(f"[narrative] 影子票已登记: {name}")
+    return registered
+
 
 def main() -> None:
     data = json.loads(MATCHES_CACHE.read_text(encoding="utf-8"))
-    card = build_narrative(data.get("matches", []), {}, {}, seq=1)
+    matches = data.get("matches", [])
+    card = build_narrative(matches, {}, {}, seq=1)
     NARRATIVE_DIR.mkdir(parents=True, exist_ok=True)
     out = NARRATIVE_DIR / f"{date.today()}-narrative.json"
     out.write_text(json.dumps(card, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"[narrative] → {out}")
+    _shadow_bridge(card, matches)
 
 if __name__ == "__main__":
     main()
