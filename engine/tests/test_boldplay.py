@@ -1,6 +1,6 @@
 import pytest
 from boldplay import (band_ok, cap_multiplier, monthly_spend, budget_gate,
-                      pick_upset_legs, build_ticket, SHAPES)
+                      pick_upset_legs, build_ticket, build_three_tier, SHAPES)
 
 def test_band_ok_rules():
     assert band_ok({"h": 1.2, "d": 6.0, "a": 15.0}) == "偏好"     # 主胜去水 >= 0.60
@@ -240,3 +240,159 @@ def test_lottery_settle_all_hit_payout_and_break_zero():
     broke = bp.settle(tk, {l["matchNumStr"]: ("2:0" if i else "0:2")
                            for i, l in enumerate(legs)})          # 第0腿断
     assert broke["tierPayout"]["lottery"] == 0.0
+
+
+# ---------- 保底分层选腿（docs/2026-09-06-confidence-tiering-design.html §四/§五）----------
+# T1: 2胆(p>=0.75)+3腿(p>=0.60)共5条·tier字段·踩线护栏(1.35/0.68)。
+# had 赔率按 devig 反推档位（dc_params_fn=None → p=纯市场去水）。开发者 sszhang
+
+
+def _tiered_day():
+    """7场假数据（联赛全 fd 锚·英超）：2胆(@1.15→p≈0.777/@1.18→p≈0.757) + 1踩线
+    (@1.32→p≈0.663<0.68) + 3标准(@1.35→0.681/@1.45→0.650/@1.55→0.622) + 1低门槛
+    (@1.70→p≈0.581<0.60)——胆/标准/踩线/门槛四态全覆盖。"""
+    return {"matches": [
+        _mk_had(1, 1.15, 6.00, 12.0),   # dan
+        _mk_had(2, 1.18, 5.50, 11.0),   # dan
+        _mk_had(3, 1.32, 3.90, 7.8),    # 踩线: o<1.35 且 p<0.68 → 排除
+        _mk_had(4, 1.35, 4.50, 8.0),    # std
+        _mk_had(5, 1.45, 4.20, 7.5),    # std
+        _mk_had(6, 1.55, 4.00, 7.0),    # std
+        _mk_had(7, 1.70, 3.80, 6.2),    # p<0.60 → 不入保底
+    ]}
+
+
+def _tiered_day_few():
+    """少场次轮：仅 3 场合格（1胆+2标准）+低门槛+踩线+无锚噪声——短列表返回。"""
+    return {"matches": [
+        _mk_had(1, 1.15, 6.00, 12.0),
+        _mk_had(2, 1.45, 4.20, 7.5),
+        _mk_had(3, 1.55, 4.00, 7.0),
+        _mk_had(4, 1.70, 3.80, 6.2),                          # p<0.60 不合格
+        _mk_had(5, 1.32, 3.90, 7.8),                          # 踩线不合格
+        {**_mk_had(6, 1.15, 6.00, 12.0), "league": "日职"},   # 无 fd 锚被滤（铁律10）
+    ]}
+
+
+class TestBaseTieredLegs:
+    """保底3*4*5分层选腿(设计§四/§五): 2胆+3腿·5条返回·踩线过滤·补位规则"""
+
+    def test_returns_five_legs_with_tier_field(self):
+        import boldplay as bp
+        legs = bp._base_legs(_tiered_day(), zh={}, dc_params_fn=lambda m, z: None)
+        assert len(legs) == 5
+        assert all("tier" in l for l in legs)
+        dans = [l for l in legs if l["tier"] == "dan"]
+        stds = [l for l in legs if l["tier"] == "std"]
+        # 胆级优先2席; 不足2条胆时高p标准腿补位(补位腿tier=std, 审核修订B)
+        assert len(dans) == 2
+        assert len(dans) + len(stds) == 5
+
+    def test_dan_requires_p075(self):
+        import boldplay as bp
+        legs = bp._base_legs(_tiered_day(), zh={}, dc_params_fn=lambda m, z: None)
+        for l in legs:
+            if l["tier"] == "dan":
+                assert l["p"] >= bp.BASE_TIER_DAN_P
+
+    def test_treadline_filter(self):
+        # 踩线降级(设计§四): 赔率<1.35 且 p<0.68 不入保底(朗斯案护栏)
+        import boldplay as bp
+        legs = bp._base_legs(_tiered_day(), zh={}, dc_params_fn=lambda m, z: None)
+        for l in legs:
+            assert not (l["odds"] < bp.BASE_TREADLINE_ODDS and l["p"] < bp.BASE_TREADLINE_P)
+
+    def test_std_threshold_060(self):
+        # 标准腿门槛 p>=0.60(设计§4.4: 0.60-0.65段实测74%)
+        import boldplay as bp
+        legs = bp._base_legs(_tiered_day(), zh={}, dc_params_fn=lambda m, z: None)
+        assert all(l["p"] >= bp.BASE_TIER_STD_P for l in legs)
+
+    def test_fewer_than_five_closes(self):
+        # 零腿轮(设计§四): 合格腿<5返回短列表(关档由调用方判断)
+        import boldplay as bp
+        legs = bp._base_legs(_tiered_day_few(), zh={}, dc_params_fn=lambda m, z: None)
+        assert len(legs) < 5
+
+    def test_single_dan_backfill_with_std(self):
+        # T1 审查 Minor-1 补测(审核修订B): 单胆轮——1条胆级@1.15 + 5条标准档,
+        # 胆不足2席时高p标准腿按标准档口径补位: dans==1 且第5条腿(补位末席)tier=="std"
+        import boldplay as bp
+        day = {"matches": [
+            _mk_had(1, 1.15, 6.00, 12.0),   # 唯一胆级 p≈0.777
+            _mk_had(2, 1.35, 4.50, 8.0),    # 标准档 p≈0.681
+            _mk_had(3, 1.38, 4.40, 7.8),    # 标准档 p≈0.671
+            _mk_had(4, 1.40, 4.30, 7.6),    # 标准档 p≈0.662
+            _mk_had(5, 1.45, 4.20, 7.5),    # 标准档 p≈0.650
+            _mk_had(6, 1.55, 4.00, 7.0),    # 标准档 p≈0.622
+        ]}
+        legs = bp._base_legs(day, zh={}, dc_params_fn=lambda m, z: None)
+        assert len(legs) == 5
+        assert sum(1 for l in legs if l["tier"] == "dan") == 1   # 胆仅1条不虚标
+        assert legs[4]["tier"] == "std"                          # 补位腿按标准档口径
+
+
+# ---------- 保底档 3*4*5 重构 + 覆盖闸（设计§四/§4.1·Task 2 2026-09-06）----------
+# 16 注 32 元（3串1×10+4串1×5+5串1×1）bets 显式声明；覆盖闸 coverGate
+# (P_full≥32n+N，n=1 无叙事仓)；轮红线检查废除（legacy 档保留旧预算逻辑）。开发者 sszhang
+
+
+def _fake_day():
+    """build_three_tier 入口假数据 = T1 分层 fixture（恰 5 条合格腿：2胆+3标准 →
+    保底 3*4*5 开档；@1.70 场 p<0.60 不入保底；周六006/007 兼作 A/B 三池卡场）。"""
+    return _tiered_day()
+
+
+def _fake_table():
+    """freq 模板假数据：英超 n=200 免 low_conf（selftest 德乙模板同源口径）。"""
+    from collections import Counter
+    return {"england-premier": Counter({"1:1": 120, "2:2": 40, "__n": 200})}
+
+
+class TestThreeByFourByFive:
+    """保底3*4*5重构(设计§四): 16注32元·bets显式·覆盖闸P_full>=32n+N"""
+
+    def test_base_shape_16_bets(self):
+        t = build_three_tier(_fake_day(), _fake_table(), seq=9, zh={}, form={})
+        base = t["tiers"]["base"]
+        assert base["play"] == "had-3*4*5"
+        assert base["cost"] == 32
+        assert len(base["bets"]) == 16            # C(5,3)+C(5,4)+C(5,5)=10+5+1
+        sizes = {len(b["legs"]) for b in base["bets"]}
+        assert sizes == {3, 4, 5}                 # 3串1×10+4串1×5+5串1×1
+        assert len(base["legs"]) == 5             # 全消费 5 腿（T1 过渡[:4]切片已移除）
+
+    def test_cover_gate_ok(self):
+        t = build_three_tier(_fake_day(), _fake_table(), seq=9, zh={}, form={})
+        gate = t["tiers"]["base"]["coverGate"]
+        assert "pFull" in gate and "cap" in gate and gate["ok"] in (True, False)
+        # n=1无叙事仓时: P_full >= 32 必然成立(设计§4.1)
+        assert gate["pFull"] >= 32 or not gate["ok"]
+
+    def test_cover_gate_narrative_cap(self):
+        # 覆盖闸(设计§4.1): 叙事仓上限 = P_full - 32n
+        t = build_three_tier(_fake_day(), _fake_table(), seq=9, zh={}, form={})
+        gate = t["tiers"]["base"]["coverGate"]
+        assert gate["cap"] == round(gate["pFull"] - 32, 2)
+
+    def test_payout_full_hit(self):
+        from boldplay import payout_full_hit
+        legs = [{"odds": 1.3}, {"odds": 1.4}, {"odds": 1.5}, {"odds": 1.6}, {"odds": 1.7}]
+        p = payout_full_hit(legs, unit=2.0, mult=1)
+        assert abs(p - (2*(1.3*1.4*1.5 + 1.3*1.4*1.6 + 1.3*1.4*1.7 + 1.3*1.5*1.6 + 1.3*1.5*1.7 + 1.3*1.6*1.7 + 1.4*1.5*1.6 + 1.4*1.5*1.7 + 1.4*1.6*1.7 + 1.5*1.6*1.7
+                          + 1.3*1.4*1.5*1.6 + 1.3*1.4*1.5*1.7 + 1.3*1.4*1.6*1.7 + 1.3*1.5*1.6*1.7 + 1.4*1.5*1.6*1.7
+                          + 1.3*1.4*1.5*1.6*1.7))) < 0.01
+
+    def test_base_closed_when_legs_short(self):
+        # 零腿轮关档(设计§四): 合格腿<5 → cost=0 · coverGate=None · 不硬凑
+        t = build_three_tier(_tiered_day_few(), _fake_table(), seq=9, zh={}, form={})
+        base = t["tiers"]["base"]
+        assert base["play"] == "had-3*4*5"
+        assert base["cost"] == 0 and base["coverGate"] is None
+        assert not base.get("bets")
+
+    def test_round_redline_removed(self):
+        # 设计§四: 轮红线废除——totalCost 32 已超旧红线 30，也不再落 budgetWarning
+        t = build_three_tier(_fake_day(), _fake_table(), seq=9, zh={}, form={})
+        assert t["totalCost"] >= 32
+        assert "budgetWarning" not in t

@@ -1,21 +1,6 @@
 {
   "checkedAt": "2026-09-06",
   "leagues": {
-    "日职": {
-      "status": "ready",
-      "roundsPlayed": 3,
-      "standingsSource": "espn",
-      "fdCovered": false
-    },
-    "韩职": {
-      "status": "missing"
-    },
-    "英冠": {
-      "status": "ready",
-      "roundsPlayed": 72,
-      "standingsSource": "fd-derived",
-      "fdCovered": true
-    },
     "荷甲": {
       "status": "ready",
       "roundsPlayed": 54,
@@ -66,79 +51,18 @@
     },
     "瑞超": {
       "status": "ready",
-      "roundsPlayed": 19,
+      "roundsPlayed": 20,
       "standingsSource": "espn",
       "fdCovered": false
     }
   },
   "missingLeagues": [
-    "韩职",
     "挪超",
     "巴甲"
   ],
   "staleLeagues": [],
   "missingAlias": [],
   "notReadyTeams": [
-    {
-      "team": "浦和红钻",
-      "teamId": "urawa-reds",
-      "league": "japan",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 15
-    },
-    {
-      "team": "名古屋鲸",
-      "teamId": "nagoya-grampus",
-      "league": "japan",
-      "status": "missing"
-    },
-    {
-      "team": "安养FC",
-      "teamId": "anyang",
-      "league": "korea-k-league",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 15
-    },
-    {
-      "team": "江原FC",
-      "teamId": "gangwon",
-      "league": "korea-k-league",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 15
-    },
-    {
-      "team": "金泉尚武",
-      "teamId": "gimcheon-sangmu",
-      "league": "korea-k-league",
-      "status": "stale",
-      "lastUpdated": "2026-08-23",
-      "ageDays": 14
-    },
-    {
-      "team": "光州FC",
-      "teamId": "gwangju-fc",
-      "league": "korea-k-league",
-      "status": "stale",
-      "lastUpdated": "2026-08-23",
-      "ageDays": 14
-    },
-    {
-      "team": "东京FC",
-      "teamId": "fc-tokyo",
-      "league": "japan",
-      "status": "stale",
-      "lastUpdated": "2026-08-21",
-      "ageDays": 16
-    },
-    {
-      "team": "京都",
-      "teamId": "kyoto-sanga",
-      "league": "japan",
-      "status": "missing"
-    },
     {
       "team": "海伦芬",
       "teamId": "heerenveen",
@@ -455,7 +379,7 @@
     }
   ],
   "readyCount": {
-    "leagues": 10,
+    "leagues": 8,
     "teamsKnown": 442
   }
 }

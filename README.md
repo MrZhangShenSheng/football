@@ -73,13 +73,13 @@ python3 run.py corpus                               # ★学习语料汇总+就�
 python3 run.py predict spain-laliga Vallecano Alaves --market 2.05,3.4,3.9
 python3 run.py predict japan kashima-antlers avispa-fukuoka   # 日职/沙特/瑞超本地模型也可用
 python3 run.py backtest spain-laliga 2526
-python3 boldplay.py                                 # ★v5.6 阶梯出票卡三档制（保底HAD 4串11+翻身多池引擎seq轮换+彩票档HAD/HHAD N串1×1倍=2元,p_fused≥0.55/超低赔≤1.25门槛,合格腿全上4~8串<4关档,无预算管理;09-04起:主数据流读sporttery实时清单+--matchday/--exclude场次过滤+彩票档DC分歧熔断≥5pp+保底档强胆排序p_fused降序前4+卡默认approved=false未经拍板settle跳过;--method=amix仅legacy对照路径）
+python3 boldplay.py                                 # ★v6 三轨制：轨道A保底3*4*5五场容错（2胆+3腿·32n元·覆盖闸P_full≥32n+N）+轨道N叙事仓（CRS/HAFU剧本票·星级映射·不限额）+轨道C离线重校准（recalibrate挂verify链）;预算红线废除,纪律=覆盖闸+星级+叙事质量熔断;卡内仍含翻身多池seq轮换+彩票档N串1×1倍;09-04起:主数据流读sporttery实时清单+--matchday/--exclude场次过滤+彩票档DC分歧熔断≥5pp+卡默认approved=false未经拍板settle跳过;--structure=legacy对照一个月·--method=amix仅legacy对照路径）
 python3 boldplay.py settle                          # 阶梯卡推演结算：逐leg判定（CRS/TTG/HAFU/HHAD让球自动判,HAFU需backfill落盘半场;彩票档全中才派彩;无半场旧档仍人工；approved=false未拍板卡跳过），legHits入层4实测库（实票走"我买了"登记账本）
 python3 freq_backtest.py                            # freq vs amix 对照回测（score_odds 存档日 × 两法选腿 × 赛果判定 → freq_backtest.json）
 python3 ticket_report.py                            # 实票账本报告（资金曲线/票务清单/玩法分解/纪律对照）
 python3 goal_engine.py --compare                    # 进球引擎P0:修正/裸DC/朴素static+rolling四线对照+消融(09-27评审数据底子;⚠️重跑会抹报告walkForward/bypassPool节,之后须重跑walk-forward与bypass_pool_check)
 python3 goal_engine.py --walk-forward --league spain-laliga   # 干净口径三线(60场分段重拟合;生死线=corrected/bareDc vs naiveRolling)
-python -m pytest tests -q                           # 232 用例回归（改代码必跑）
+python -m pytest tests -q                           # 269 用例回归（改代码必跑）
 ```
 
 ## 预测日全流程
@@ -89,7 +89,7 @@ python -m pytest tests -q                           # 232 用例回归（改代�
 2. 触发 /football-betting-prediction       # Claude 走 skill：
    体彩API(赛程/五池赔率/单关资格) + fd缓存(Pinnacle锚) + 本地球队画像
    → dc_predict 概率(含 ttg总进球/hafu半全场) → logit融合 → EV比选 → 修正系数 → 报告(03-predictions/)
-3. 出票前 skill 自动走 Step 6.5 临场终审；v5.0 起默认输出 boldplay 阶梯出票卡（v5.6 三档：保底4串11+翻身多池+彩票N串，替换旧🚀/⚖️/🛡️三段式；v5.3 起翻身档比分=freq-band：数据说话，赔率只做门槛不做排序；v5.6 起彩票档=HAD/HHAD 合格腿全上 4~8 串右尾档；**09-04 起程序卡默认 approved=false 未拍板——人工核后方可采纳，settle 跳过未拍板卡**）
+3. 出票前 skill 自动走 Step 6.5 临场终审；v5.0 起默认输出 boldplay 阶梯出票卡（v6 三轨：轨道A保底3*4*5五场容错+轨道N叙事仓+轨道C离线重校准，卡内仍含翻身多池+彩票N串，预算红线废除·纪律=覆盖闸+星级+叙事质量熔断，替换旧🚀/⚖️/🛡️三段式；v5.3 起翻身档比分=freq-band：数据说话，赔率只做门槛不做排序；v5.6 起彩票档=HAD/HHAD 合格腿全上 4~8 串右尾档；**09-04 起程序卡默认 approved=false 未拍板——人工核后方可采纳，settle 跳过未拍板卡**）
 3.5 实际出票后说"我买了" → 实票登记入账本（git 历史=出票凭证），回填时自动结算
 4. 赛果出来后"回填赛果" → run.py verify 一键闭环（回填→语料+断言→重校→消融）→ learn版本发布 → 04-summaries/
 5. git commit（预测与赛果入库 = 可验证历史）

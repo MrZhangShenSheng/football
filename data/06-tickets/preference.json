@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastUpdated": "2026-09-03",
+    "lastUpdated": "2026-09-07",
     "sampleSize": 6,
     "sampleRange": ["T001", "T006"],
     "maintainMode": "static-manual",
@@ -69,5 +69,26 @@
   "hedging": "双票同骨架只换1条腿(T002/T003换第4关,T005/T006换008腿)",
   "leagueFocus": "西甲重仓(近期票全西甲);样本6票,联赛权重仅供参考",
   "payoutStyle": "按形状结算:中2关回1注2串1即视为部分回收",
-  "notes": "6/6手动自选;系统方案仅作骨架参考;战绩88投293回/净+205.4,CRS为主要盈利来源；boldplay v2: 翻身月预算40元gate(boldplay自动执行)+连续4轮0回款降半仓"
+  "notes": "6/6手动自选;系统方案仅作骨架参考;战绩88投293回/净+205.4,CRS为主要盈利来源；boldplay v2: 翻身月预算40元gate(boldplay自动执行)+连续4轮0回款降半仓",
+  "schemaVersion": 2,
+  "deprecated": {"shapes": "v3轨道A取代", "stake": "预算红线已废除(设计§四)", "playTaste": "轨道N叙事仓取代"},
+  "tracks": {
+    "A_base": {
+      "shape": "3*4*5",
+      "combos": "3串1×10+4串1×5+5串1×1=16注",
+      "unitStake": 2,
+      "costPerMult": 32,
+      "danSeats": 2,
+      "stdSeats": 3,
+      "danP": 0.75,
+      "stdP": 0.6,
+      "treadline": [1.35, 0.68],
+      "coverGate": "P_full>=32n+N·突破需显式拍板标记"
+    },
+    "N_narrative": {
+      "starStake": {"5": 10, "4": 5, "3": 2, "lt3": 0},
+      "plays": ["N-CRS-2x1", "N-HAFU-3x1", "N-MIX-2x1"],
+      "note": "金额=注数×2元·无上限·覆盖闸约束·★★以下只进影子"
+    }
+  }
 }
