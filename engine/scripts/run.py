@@ -114,6 +114,7 @@ def main() -> None:
         sh("calibrate.py")
         sh("ablate.py")
         sh("temperature.py", "--check")   # 温度状态断言（T/CI/fittedAt 自检，缺文件警告不阻断）
+        sh("recalibrate.py")       # 轨道C校准曲线(幂等: 增量<10跳过)
     elif cmd == "learn":
         # 非fd联赛闭环：当年 espn history 增量采集 → --source local 拟合 → 版本发布
         # 例: python run.py learn / python run.py learn japan
