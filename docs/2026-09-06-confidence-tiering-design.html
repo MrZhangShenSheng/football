@@ -31,7 +31,7 @@ svg{vertical-align:middle}
 <svg width="0" height="0" style="position:absolute"><symbol id="i-shield" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6z"/></symbol><symbol id="i-chart" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 20h16M7 16v-5m5 5V6m5 10v-8"/></symbol><symbol id="i-refresh" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M20 12a8 8 0 1 1-2.3-5.6M20 3v4h-4"/></symbol><symbol id="i-ghost" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M5 21V9a7 7 0 0 1 14 0v12l-2.3-2-2.4 2-2.3-2-2.3 2-2.4-2zM9 10h.01M15 10h.01"/></symbol></svg>
 
 <h1><svg width="20" height="20" style="color:var(--acc)"><use href="#i-shield"/></svg> 置信度分层出票设计（A+C+N 三轨 · 大哥拍板）</h1>
-<div class="sub">来源：2026-09-06 brainstorming 会话（实票胜率下滑诊断 → 方案选型 → 叙事彩票模型追加 → 保底重构 3*4*5*n）· 定稿 2026-09-06 · 决策：大哥 · 开发者 sszhang</div>
+<div class="sub">来源：2026-09-06 brainstorming 会话（实票胜率下滑诊断 → 方案选型 → 叙事彩票模型追加 → 保底重构 3*4*5*n）· 定稿 2026-09-06 · 决策：大哥 · 开发者 sszhang · <b>独立审核修订版</b>（8 项数据验证 + 5 处修订 A~E，审核记录见会话）</div>
 
 <h2>一、问题诊断（数据实证）</h2>
 <div class="card"><table>
@@ -88,13 +88,13 @@ svg{vertical-align:middle}
 <h2>四、新出票结构（保底重构 3*4*5*n + 叙事仓 · 大哥拍板不限额）</h2>
 <div class="card"><table>
 <tr><th>仓</th><th>形状</th><th>金额</th><th>腿源</th><th>关键指标</th></tr>
-<tr><td><b>保底仓</b> <span class="tag new">重构</span></td><td>HAD/HHAD <b>3*4*5 五场容错</b><br>（3串1×10 + 4串1×5 + 5串1×1 = 16注）</td><td class="num">32×n 元<br>（n=倍数，默认1）</td><td><b>2胆+3腿</b>：p≥0.75 胆级优先占2席（实测96%），p≥0.60 标准腿占3席（实测74%~77%）</td><td class="num">回款率89%（中3关起回）<br>全中回款109~208元<br>全中概率28%（胆材版）</td></tr>
+<tr><td><b>保底仓</b> <span class="tag new">重构</span></td><td>HAD/HHAD <b>3*4*5 五场容错</b><br>（3串1×10 + 4串1×5 + 5串1×1 = 16注）</td><td class="num">32×n 元<br>（n=倍数，默认1）</td><td><b>2胆+3腿</b>：p≥0.75 胆级优先占2席（实测96%），p≥0.60 标准腿占3席（实测74%~77%）；胆不足2条时最高p标准腿补位（按腿口径）</td><td class="num">回款率89%~97%（均匀版89%·胆材版97%）<br>全中回款109~208元<br>全中概率25%~37%（胆质量区间·审核修订A）</td></tr>
 <tr><td><b>叙事仓</b> <span class="tag new">轨道N</span></td><td>CRS 2串1 / HAFU 3串1 / 混串<br>（票面强制标记玩法形状）</td><td class="num">N 元<br>（剧本星级驱动，<b>无上限</b>）</td><td>叙事链推导的剧本比分/半全场（第十一~十二节）</td><td class="num">CRS 2串1 ≈12倍<br>HAFU 3串1 ≈216倍</td></tr>
 </table>
 <ul>
 <li><b>预算红线全取消</b>（大哥拍板"彻底不限额"）：轮红线30元/月封顶240元/翻身月预算40元全部废除；纪律由<b>覆盖闸+星级映射+叙事质量熔断</b>三机制替代（见下）</li>
 <li><b>砍掉</b>：8串1（体彩口径 −100% 实证）、CRS 串关旧翻身档（33腿中2）、验证仓、体感仓（被叙事仓取代）</li>
-<li><b>踩线降级规则（护栏升级）</b>：赔率&lt;1.35 且 p&lt;0.68 的腿不入保底（朗斯案教训——1.4~1.7 段实票 25% 命中），自动降级不入票</li>
+<li><b>踩线降级规则（护栏升级）</b>：赔率&lt;1.35 且 p&lt;0.68 的腿不入保底（朗斯案教训——1.4~1.7 段实票 25% 命中），自动降级不入票。<b>审核注明（C/E）</b>：朗斯@1.36 本身在规则区间外（两版规则均放行）——语料 1.35~1.70 段实测命中 72%（n=25）> 66.9% 平衡点，朗斯属个案而非区域病；被排除区（p 0.60~0.68 & 赔率&lt;1.35）实测命中 86%（n=7，小样本）——两处均待语料扩样复验后决定收紧或放宽</li>
 <li><b>零腿轮</b>：合格保底腿（含胆）不足 5 条时保底仓关档不硬凑——5场结构对单腿命中率更敏感（盈亏平衡 66.9%），硬凑=砸平衡点，只出叙事仓</li>
 </ul>
 
@@ -126,8 +126,9 @@ svg{vertical-align:middle}
 </table>
 <ul>
 <li><b>盈亏平衡点（关键数字）</b>：3*4*5 结构下单腿命中 66.9% 回本；市场对这些腿定价均值 ~58%，语料实测 74%（n=24）——7pp 优势是正 ROI 全部来源，随样本扩大会回归，故护栏（踩线降级+关档）从严</li>
-<li><b>胆材分层效应</b>：2胆(0.85实测)+3腿(0.70) vs 均匀0.74——全中概率 22%→28%、ROI +42%→+49%、代价是全中回款 132→109（覆盖空间略降可接受）</li>
-<li><b>中3关回款弱（6.7元/32元）已知悉</b>：89%回款率中约27%轮次是象征性回款，接受——右尾职责在叙事仓，保底职责是覆盖</li>
+<li><b>胆材分层效应（审核修订A：数字口径校正）</b>：全中概率区间 25%（胆弱假设 0.85²×0.70³）~37%（实测胆级 0.96²×0.74³）——原文档"28%"出处模糊已废；回款率胆材版实测推演 97%（均匀版 89%）；代价是胆赔率低（@1.15~1.2）压低全中回款 132→109（覆盖空间略降可接受）</li>
+<li><b>胆供给不足补位规则（审核修订B）</b>：语料 12 有效轮中胆级腿仅 0~1 条的占 7 轮（58%）——胆级腿不足 2 条时，用最高 p 的标准腿补位；<b>补位腿按标准腿口径</b>（不享胆级标注），全中概率按当轮实际胆数重算并落票面</li>
+<li><b>中3关回款弱（6.7元/32元）已知悉</b>：回款率中约3%轮次（胆材版）~11%（均匀版）为0回款，中3关轮次是象征性回款，接受——右尾职责在叙事仓，保底职责是覆盖</li>
 </ul>
 
 <h3>4.4 阈值 0.65→0.60 的落地推演依据（2026-09-06 大哥拍板）</h3>
@@ -166,6 +167,7 @@ svg{vertical-align:middle}
 <div class="card"><ul>
 <li><b>CRS 全量影子</b>：boldplay 翻身档 6 腿照常生成、照常 settle，但 0 实票——攒够 30 轮或 CRS 档实际命中率 ≥12%（q 均值口径）才重新评审恢复实票</li>
 <li><b>校准 AB 影子</b>：轨道 C 的修正 p 影子票与主链路影子票同轮结算对比</li>
+<li><b>来源轨道标注（审核修订D）</b>：CRS 影子票两套并行（boldplay EV 版 + 轨道 N 叙事版）——影子票落盘必须带 <code>track: "A"|"N"</code> 字段，结算与命中率指标分轨统计，禁止混口径</li>
 <li>影子票沿用 ticket_report 的 testGroup 分栏，不进实票 KPI（T020 前架构不变）</li>
 </ul></div>
 
