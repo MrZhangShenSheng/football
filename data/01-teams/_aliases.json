@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "updatedAt": "2026-09-04",
+  "updatedAt": "2026-09-08",
   "note": "规范ID=kebab-case英文，多数据源经此表解析。null=待对应fetch脚本首次运行时补全（勿手填猜测）。league=国内联赛目录名（杯赛参赛队挂国内联赛）。",
   "sources": {
    "zh": "体彩官方API中文名",
@@ -384,14 +384,16 @@
   },
   "getafe": {
    "zh": "赫塔费",
-   "fd": "Getafe"
+   "fd": "Getafe",
+   "espn": "Getafe"
   },
   "racing-santander": {
    "zh": "桑坦德"
   },
   "elche": {
    "zh": "埃尔切",
-   "fd": "Elche"
+   "fd": "Elche",
+   "espn": "Elche"
   },
   "barcelona": {
    "zh": "巴萨",
@@ -817,7 +819,8 @@
   },
   "arouca": {
    "zh": "阿罗卡",
-   "fd": "Arouca"
+   "fd": "Arouca",
+   "espn": "Arouca"
   },
   "casa-pia": {
    "zh": "卡萨皮亚",

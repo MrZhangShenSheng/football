@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>2026-09-08 周一轮复盘</title>
+<style>
+  :root { --accent:#c0392b; --ink:#2c3e50; --muted:#7f8c8d; --line:#dcdde1; }
+  body { font-family:"PingFang SC","Microsoft YaHei",sans-serif; color:var(--ink); max-width:960px; margin:0 auto; padding:22px 20px; line-height:1.7; }
+  h1 { font-size:1.4em; border-bottom:3px solid var(--accent); padding-bottom:8px; }
+  h2 { font-size:1.12em; margin-top:1.8em; border-left:4px solid var(--accent); padding-left:10px; }
+  table { border-collapse:collapse; width:100%; margin:10px 0; font-size:.92em; }
+  th,td { border:1px solid var(--line); padding:5px 10px; text-align:left; }
+  th { background:#f0f0f0; }
+  .hit { color:#1e8449; font-weight:bold; } .miss { color:var(--accent); font-weight:bold; }
+  .meta { color:var(--muted); font-size:.88em; }
+  .warn { border-left:4px solid var(--accent); background:#fdf0ee; padding:8px 12px; margin:10px 0; font-size:.94em; }
+</style>
+</head>
+<body>
+
+<h1>2026-09-08 周一轮复盘（销售日口径：周一晚 9 场挂 09-08）</h1>
+<p class="meta">生成 2026-09-08 · 数据源：ESPN 赛果（恢复）· 体彩 zqsgkj 全窗口 567（外部故障）· fd 503（在案）· 影子层 engine/shadow · 开发者 sszhang</p>
+
+<h2>§一 摘要卡</h2>
+<table>
+  <tr><th>指标</th><th>值</th><th>注</th></tr>
+  <tr><td>回填覆盖</td><td>8/9 场</td><td>周一009 维多利亚vs格雷米奥 ESPN 状态 STATUS_SCHEDULED（未赛/未录），留 verify 幂等救</td></tr>
+  <tr><td>方向命中</td><td>4/6（66.7%）</td><td>已判 6 场（001✅002✅004✅006✅ / 003❌005❌；007 回避、008 hhad 未判）</td></tr>
+  <tr><td>T025（32元 4串5双选）</td><td class="miss">注定 0 派彩</td><td>乌迪内斯让球双选两腿全 miss（1-2 让后平）→ 16 注全灭；票级 pending 等周二008 欧冠腿终态</td></tr>
+  <tr><td>CLV</td><td>不可算</td><td>fd 503 → pinClose 缺（296 场待补），如实标注</td></tr>
+  <tr><td>影子层</td><td>track A 26票 回款47/750 · track N 1票 0/2</td><td>09-08 结算 2 票；09-09 欧冠 12 票 pending</td></tr>
+</table>
+
+<h2>§二 周一轮明细（8 场已回填）</h2>
+<table>
+  <tr><th>场次</th><th>对阵</th><th>赛果</th><th>预测</th><th>方向</th></tr>
+  <tr><td>周一001</td><td>卡利亚里 vs 莱切</td><td>1-0</td><td>HAD 主胜</td><td class="hit">✅</td></tr>
+  <tr><td>周一002</td><td>赫塔费 vs 塞尔塔</td><td>1-1</td><td>HAD 平局</td><td class="hit">✅（平局轨第3次被 poolSingle.HAD=0 拦截，本可命中）</td></tr>
+  <tr><td>周一003</td><td>马尔默 vs 索尔纳</td><td>0-0</td><td>HAD 主胜</td><td class="miss">❌</td></tr>
+  <tr><td>周一004</td><td>卡尔马 vs 佐加顿斯</td><td>0-1</td><td>HAD 客胜</td><td class="hit">✅（T025 佐客腿 hit）</td></tr>
+  <tr><td>周一005</td><td>利雅新月 vs 新未来SC</td><td>0-2</td><td>HAD 主胜</td><td class="miss">❌（胆位翻车·市场也错的方向）</td></tr>
+  <tr><td>周一006</td><td>乌迪内斯 vs 拉齐奥</td><td>1-2</td><td>HAD 客胜</td><td class="hit">✅（但 T025 让球双选两腿全 miss：让后 2-2 平）</td></tr>
+  <tr><td>周一007</td><td>埃斯托里 vs 阿罗卡</td><td>0-0</td><td>回避</td><td>—（DC 参数污染熔断回避）</td></tr>
+  <tr><td>周一008</td><td>埃尔切 vs 皇家社会</td><td>2-3</td><td>HHAD+1 让球主胜</td><td>让后 3-3 平（彩票档腿 miss·方向判定 hhad 未判）</td></tr>
+  <tr><td>周一009</td><td>维多利亚 vs 格雷米奥</td><td>未赛/未录</td><td>HAD 平局</td><td>—（ESPN STATUS_SCHEDULED）</td></tr>
+</table>
+
+<h2>§三 教训</h2>
+<ul>
+  <li><b>T025 让球双选边界</b>：HHAD+1 下"客让净胜2+"腿（拉齐奥 1-2 净胜1）差一球全灭——双选对冲买的是"主让一球不败"的两端，中间态（让后平）恰是双杀区，双选≠保险。</li>
+  <li><b>周一002 平局轨第 3 次拦截复现</b>：poolSingle.HAD=0 资格前置拦下的平局 pick 本轮命中（1-1）——平局轨五条的第五条连续三轮挡中票，规则松动压力 +1，留消融验证。</li>
+  <li><b>周一005 新月胆位翻车</b>：p_fused 0.786 胆位 0-2 完败——沙特联客场数据薄（434 场本地源），胆位置信度虚高归因 F5 待查。</li>
+  <li><b>数据源地震日</b>：体彩 zqsgkj 全窗口 567 + fd 503 持续 → 本次回填全靠 ESPN 恢复兜底。三路数据源两路挂，回填链单点依赖 ESPN，若 ESPN 再抖动则断链——pinClose 296 场积压待 fd 恢复。</li>
+</ul>
+
+<h2>§四 学习与模型</h2>
+<ul>
+  <li>corpus：语料 522 条（506 已回填 · CLV 84 · p_final 406），门槛 ✅可校准 ✅可消融</li>
+  <li>归因：F1 主因 6 场（λ判向 avgGap 0.42）· F5 2 场 · F3 1 场；<b>F9 列消融候选（nPrimary≥20）</b></li>
+  <li>learn：巴西/挪威/丹麦/美职 local 源增量拟合+版本发布；fd 联赛因 CSV 503 无增量（跳过，如实标注）</li>
+  <li>trend：n=229 场/29 轮，各项指标正常区间，无告警</li>
+</ul>
+
+<h2>§五 本轮回填基建修复（顺手入档）</h2>
+<ul>
+  <li>ESPN 赛果接口恢复（2026-08-22 停摆以来首次实测可用）→ backfill ESPN_UNAVAILABLE 移除"巴甲"、LEAGUE_ESPN 补"巴甲→bra.1"</li>
+  <li>_aliases 补三队 espn 映射（getafe/arouca/elche，取自 ESPN 实盘队名，非猜测）——修复 002/007/008 三场匹配失败</li>
+  <li>backfill 的 STATUS_FULL_TIME 过滤立功：拒把未赛占位 0-0（周一009）当真比分</li>
+</ul>
+
+<h2>§六 数据来源清单</h2>
+<ul class="meta">
+  <li>engine/cache/espn_results_*.json（ita.1/esp.1/swe.1/ksa.1/por.1/bra.1，2026-09-07~08）</li>
+  <li>data/02-results/2026-09-08.json（v8 预测归档+回填赛果）· data/06-tickets/tickets.json · engine/shadow/paper_tickets.json</li>
+  <li>data/04-summaries/corpus.json / attribution.json / trend.html · engine/cache/models/（learn 新版本）</li>
+</ul>
+
+</body>
+</html>
