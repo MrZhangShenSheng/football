@@ -237,12 +237,15 @@ def _lambdas_from(dc: dict, h_key: str, a_key: str) -> tuple[float, float]:
 
 def match_lambdas(league: str, home: str, away: str) -> tuple[float, float] | None:
     """赛前 λ 计算入口（统一比分分布引擎·剧本轨芯）：读 engine/cache/{league}_dc.json →
-    _find_team 两级匹配 → (λh, λa)。缓存缺/两级均未匹配 → None（narrative 剧本层据此
+    _find_team 两级匹配 → (λh, λa)。缓存缺/损坏/两级均未匹配 → None（narrative 剧本层据此
     降级风格模板；main 自身因报告需 h_key/a_key，直接用 _find_team/_lambdas_from 同源件）。"""
     dc_path = CACHE_DIR / f"{league}_dc.json"
     if not dc_path.exists():
         return None
-    dc = json.loads(dc_path.read_text(encoding="utf-8"))
+    try:
+        dc = json.loads(dc_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None   # 坏缓存护栏：与 _alias_find 同口径，调用方降级不崩溃
     h_key, a_key = _find_team(dc["teams"], home), _find_team(dc["teams"], away)
     if not h_key or not a_key:
         return None

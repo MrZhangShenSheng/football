@@ -144,3 +144,51 @@ def test_build_candidate_records_script_source():
     without_dc = nr.build_candidate(FAKE_MATCH, FAKE_PROFILE, teams)
     assert with_dc["script_source"] == "matrix"
     assert without_dc["script_source"] == "style"
+
+
+# ── 终审Fix1: _dc_context ρ二次裸读坏缓存护栏(健康缓存行为零变化) ──
+import json
+
+import common
+
+_DC_FIXTURE = {"teams": {"alpha-fc": {"attack": 0.2, "defense": -0.1},
+                         "beta-fc": {"attack": -0.3, "defense": 0.15}},
+               "homeAdv": 0.25, "rho": -0.1}
+_DC_MATCH = {"league": "西甲", "home": "甲队", "away": "乙队", "had": {"h": 2.5}}
+
+
+def _wire_dc(monkeypatch, tmp_path, lambda_text, rho_text):
+    """λ 读取(dc_predict.CACHE_DIR)与 ρ 补读(nr.ROOT)分别指向 tmp fixture, 别名表同挂
+    tmp(中文队名走别名级)——真实 engine/cache 与 data/01-teams 零接触."""
+    cache = tmp_path / "cache"
+    cache.mkdir()
+    (cache / "testliga_dc.json").write_text(lambda_text, encoding="utf-8")
+    root = tmp_path / "root"
+    (root / "engine" / "cache").mkdir(parents=True)
+    (root / "engine" / "cache" / "testliga_dc.json").write_text(rho_text, encoding="utf-8")
+    aliases = tmp_path / "_aliases.json"
+    aliases.write_text(json.dumps(
+        {"testliga": {"alpha-fc": {"zh": "甲队"}, "beta-fc": {"zh": "乙队"}}},
+        ensure_ascii=False), encoding="utf-8")
+    monkeypatch.setattr(dc_predict, "CACHE_DIR", cache)
+    monkeypatch.setattr(nr, "ROOT", root)
+    monkeypatch.setattr(nr, "map_league", lambda name: "testliga")
+    monkeypatch.setattr(common, "ALIASES_PATH", aliases)
+
+
+def test_dc_context_healthy_cache_zero_change(monkeypatch, tmp_path):
+    # 健康缓存: λ+ρ 读通 → {'lh','la','rho'}, 行为零变化
+    body = json.dumps(_DC_FIXTURE, ensure_ascii=False)
+    _wire_dc(monkeypatch, tmp_path, body, body)
+    lam = dc_predict.match_lambdas("testliga", "甲队", "乙队")
+    assert nr._dc_context(_DC_MATCH) == {"lh": lam[0], "la": lam[1], "rho": -0.1}
+
+
+def test_dc_context_corrupt_rho_read_degrades(monkeypatch, tmp_path):
+    # Fix1: λ 已取到但 ρ 二次裸读撞坏缓存(两次读之间被写坏) → 不炸整卡,
+    # _dc_context 返回 None → 剧本层降级风格模板旧路径(script_source=style)
+    healthy = json.dumps(_DC_FIXTURE, ensure_ascii=False)
+    _wire_dc(monkeypatch, tmp_path, healthy, '{"rho": ')   # 截断 JSON
+    assert nr._dc_context(_DC_MATCH) is None
+    cand = nr.build_candidate(_DC_MATCH, FAKE_PROFILE, {}, dc=nr._dc_context(_DC_MATCH))
+    assert cand["script_source"] == "style"

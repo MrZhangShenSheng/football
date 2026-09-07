@@ -131,3 +131,92 @@ class TestRps:
         """三向有序：错到相邻类比错到对角扣分少。"""
         p = [0.5, 0.3, 0.2]
         assert rps(p, 1) < rps(p, 2)  # 平局(相邻) vs 客胜(远端)
+
+
+# ── 终审Fix1/Fix2: match_lambdas 坏缓存护栏 + 队名两级抽取逻辑(fixture隔离·不碰真实缓存) ──
+import json
+
+import common
+import dc_predict as dcp
+
+DC_FIXTURE = {
+    "teams": {
+        "alpha-fc": {"attack": 0.2, "defense": -0.1},
+        "beta-fc": {"attack": -0.3, "defense": 0.15},
+        "beta-fc-2": {"attack": 0.0, "defense": 0.0},
+    },
+    "homeAdv": 0.25,
+    "rho": -0.1,
+}
+ALIASES_FIXTURE = {
+    "testliga": {
+        "alpha-fc": {"zh": "甲队", "variants": ["阿尔法"]},
+        "beta-fc": {"zh": "乙队"},
+    },
+    # 后写块: "甲队"被 beta-fc-2 的 variant 二次认领 → zh_map 后写覆盖 testliga 主名
+    "otherliga": {"beta-fc-2": {"zh": "贝塔二队", "variants": ["甲队"]}},
+}
+
+
+def _isolate_caches(monkeypatch, tmp_path, dc_body=None):
+    """CACHE_DIR/ALIASES_PATH 指向 tmp fixture（dc_body=None 时只装别名表），
+    真实 engine/cache 与 data/01-teams 零接触。"""
+    cache = tmp_path / "cache"
+    cache.mkdir()
+    if dc_body is not None:
+        (cache / "testliga_dc.json").write_text(dc_body, encoding="utf-8")
+    aliases = tmp_path / "_aliases.json"
+    aliases.write_text(json.dumps(ALIASES_FIXTURE, ensure_ascii=False), encoding="utf-8")
+    monkeypatch.setattr(dcp, "CACHE_DIR", cache)
+    monkeypatch.setattr(common, "ALIASES_PATH", aliases)
+    return cache
+
+
+class TestTeamExtraction:
+    """_find_team/_alias_find 两级队名抽取（fixture 单测，终审 Fix2）。"""
+
+    def test_zh_alias_hit(self, monkeypatch, tmp_path):
+        """中文主名命中：别名表 zh → 规范ID → 缓存键归一匹配（一级宽松匹配先落空）。"""
+        _isolate_caches(monkeypatch, tmp_path)
+        assert dcp._find_team(DC_FIXTURE["teams"], "乙队") == "beta-fc"
+
+    def test_variant_name_hit(self, monkeypatch, tmp_path):
+        """variant 别名命中：variants 列表同样进 zh_map。"""
+        _isolate_caches(monkeypatch, tmp_path)
+        assert dcp._find_team(DC_FIXTURE["teams"], "阿尔法") == "alpha-fc"
+
+    def test_unknown_name_returns_none(self, monkeypatch, tmp_path):
+        """未收录队名 → 两级均未命中 → None（调用方降级）。"""
+        _isolate_caches(monkeypatch, tmp_path)
+        assert dcp._alias_find(DC_FIXTURE["teams"], "火星队") is None
+        assert dcp._find_team(DC_FIXTURE["teams"], "火星队") is None
+
+    def test_zh_conflict_later_write_wins(self, monkeypatch, tmp_path):
+        """zh 主名冲突时后写优先：otherliga 在 JSON 中后出现，其 variant 认领的
+        "甲队" 覆盖 testliga 主名（dc_predict.py 注释"主名后写，冲突时优先"）。"""
+        _isolate_caches(monkeypatch, tmp_path)
+        assert dcp._find_team(DC_FIXTURE["teams"], "甲队") == "beta-fc-2"
+
+
+class TestMatchLambdas:
+    """match_lambdas/_lambdas_from 入口（健康路径零变化 + 坏缓存护栏，终审 Fix1）。"""
+
+    def test_lambdas_from_formula(self):
+        """λ 公式单一来源：λh=exp(attack_h+defense_a+homeAdv)，λa=exp(attack_a+defense_h)。"""
+        lh, la = dcp._lambdas_from(DC_FIXTURE, "alpha-fc", "beta-fc")
+        th, ta = DC_FIXTURE["teams"]["alpha-fc"], DC_FIXTURE["teams"]["beta-fc"]
+        assert lh == pytest.approx(math.exp(th["attack"] + ta["defense"] + DC_FIXTURE["homeAdv"]))
+        assert la == pytest.approx(math.exp(ta["attack"] + th["defense"]))
+
+    def test_healthy_cache_end_to_end(self, monkeypatch, tmp_path):
+        """健康缓存：别名级队名 → (λh, λa)，与 _lambdas_from 同源件一致（行为零变化）。"""
+        _isolate_caches(monkeypatch, tmp_path,
+                        dc_body=json.dumps(DC_FIXTURE, ensure_ascii=False))
+        assert (dcp.match_lambdas("testliga", "乙队", "阿尔法")
+                == dcp._lambdas_from(DC_FIXTURE, "beta-fc", "alpha-fc"))
+
+    def test_corrupt_cache_returns_none(self, monkeypatch, tmp_path):
+        """Fix1：截断 JSON → None（与缓存缺文件同降级口径），不抛 JSONDecodeError。"""
+        _isolate_caches(monkeypatch, tmp_path, dc_body='{"teams": {"alpha-fc": {"attack"')
+        assert dcp.match_lambdas("testliga", "乙队", "阿尔法") is None
+        assert dcp.match_lambdas("no-such-league", "乙队", "阿尔法") is None  # 缺文件旧口径

@@ -27,3 +27,20 @@ def test_latest_dc_version_by_league():
     v = _latest_dc_version('japan')   # latest.json 实测含 japan
     assert isinstance(v, int) and v >= 1
     assert _latest_dc_version('不存在的联赛') is None
+
+def test_latest_dc_version_cwd_independent(monkeypatch, tmp_path):
+    # 终审Fix3回归: latest.json 走 ROOT 绝对路径常量, CWD 漂移(根目录外执行)仍可读;
+    # 旧相对路径 'engine/cache/models/latest.json' 漂移后 OSError→None
+    import common
+    import score_engine
+    assert score_engine.MODELS_LATEST_JSON.is_absolute()
+    assert score_engine.MODELS_LATEST_JSON == common.ROOT / "engine" / "cache" / "models" / "latest.json"
+    latest = tmp_path / "latest.json"
+    latest.write_text('{"japan": 7}', encoding="utf-8")
+    monkeypatch.setattr(score_engine, "MODELS_LATEST_JSON", latest)
+    elsewhere = tmp_path / "elsewhere"
+    elsewhere.mkdir()
+    monkeypatch.chdir(elsewhere)
+    from score_engine import _latest_dc_version
+    assert _latest_dc_version('japan') == 7
+    assert _latest_dc_version('no-such-league') is None

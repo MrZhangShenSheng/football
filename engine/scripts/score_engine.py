@@ -2,17 +2,19 @@
 λ空间log加权融合(市场主导) → 7×7矩阵. source=fused|dc_only, 全程带dcVersion(防对照期版本混杂·设计§七). 开发者 sszhang"""
 import json
 import math
+from common import ROOT
 import dc_predict
 from market_matrix import FIT_ERR_GATE   # 与拟合侧同源门槛(勿复写字面量)
 
 W_DC_INIT = 0.29   # 初始启发式: HAD侧0.4/1.0归一移植, 段A回测重标定(设计§三权重声明)
+MODELS_LATEST_JSON = ROOT / "engine" / "cache" / "models" / "latest.json"   # 绝对路径, CWD无关
 
 def _latest_dc_version(league):
     """latest.json = {联赛slug: int版本} → 按联赛键取; 读不到返回None. 开发者 sszhang"""
     if not league:
         return None
     try:
-        with open('engine/cache/models/latest.json', encoding='utf-8') as f:
+        with open(MODELS_LATEST_JSON, encoding='utf-8') as f:
             latest = json.load(f)
         v = latest.get(league)
         return v if isinstance(v, int) else None

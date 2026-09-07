@@ -107,7 +107,10 @@ def _dc_context(m: dict) -> dict | None:
     if lam is None:
         return None
     dc_path = ROOT / "engine/cache" / f"{lg}_dc.json"
-    rho = float(json.loads(dc_path.read_text(encoding="utf-8")).get("rho", 0.0))
+    try:
+        rho = float(json.loads(dc_path.read_text(encoding="utf-8")).get("rho", 0.0))
+    except (OSError, json.JSONDecodeError):
+        return None   # 二次裸读护栏: 坏缓存(如两次读之间被重拟合写坏)→降级dc=None不炸整卡
     return {"lh": lam[0], "la": lam[1], "rho": rho}
 
 def build_candidate(m: dict, profile: dict, teams: dict, dc: dict | None = None) -> dict:
