@@ -1,0 +1,2392 @@
+{
+ "date": "2026-09-08",
+ "version": "v8",
+ "generatedAt": "2026-09-07",
+ "mode": "single-anchor (fd 503)",
+ "plans": {
+  "base": {
+   "play": "had-3*4*5",
+   "cost": 0,
+   "note": "保底关档第2轮连续（合格腿0<5）：fd断粮单锚模式+开季λ模板化+分歧熔断，无合格腿不硬凑"
+  },
+  "upset": {
+   "shape": "pool-2x1x3",
+   "cost": 6,
+   "bets": [
+    "周二002 CRS 0:1@14.0 × 周一008 CRS 1:0@11.0",
+    "周二003 CRS 1:0@10.5 × 周二009 CRS 1:0@10.0",
+    "周一003 TTG s2@4.5 × 周一006 CRS 2:0@13.0"
+   ],
+   "note": "3注跨池2串1(同场≤1腿)；freq口径EV排序"
+  },
+  "lottery": {
+   "shape": "lottery-4x1",
+   "cost": 2,
+   "legs": [
+    "周一008 HHAD+1让球主胜@1.66 EV-4%",
+    "周一004 HAD客胜@1.49 EV-11%",
+    "周一005 HAD主胜@1.12 EV-12%",
+    "周一006 HHAD+1让球主胜@1.40 EV-17%"
+   ],
+   "note": "4串1×1倍=2元 全中≈8元"
+  },
+  "trackN": {
+   "spec": "N-CRS-2x1-2026-09-09",
+   "cost": 2,
+   "legs": [
+    "周二011 波尔图-曼城 CRS 1:0@17.0",
+    "周一004 卡尔马-佐加顿斯 CRS 1:0@15.0"
+   ],
+   "note": "narrative剧本轨自动登记（P014日期已修正09-07→09-09）"
+  },
+  "shadow": {
+   "count": 14,
+   "cost": 374,
+   "note": "P001-P013(2026-09-08销售日,周一编号9场)+P014(2026-09-09,跨日票)；今日shadow-all幂等重登+周二编号场新登记"
+  },
+  "divergenceBlocked": [
+   "周一002 让球客胜 5.2pp",
+   "周一007 主胜 11.9pp",
+   "周一007 客胜 8.5pp",
+   "周一007 让球主胜 9.4pp",
+   "周一007 让球客胜 10.4pp"
+  ],
+  "mode": "单锚模式（fd 2526+2627 CSV 全503，市场腿=体彩即时价去水；融合=dc_predict.fuse对数意见池 p∝p_dc^0.286·p_mkt^0.714(a=0.4,b=1.0归一)）"
+ },
+ "matches": [
+  {
+   "idx": 1,
+   "code": "周一001",
+   "league": "意甲",
+   "match": "卡利亚里 vs 莱切",
+   "kickoff": "2026-09-08 00:30",
+   "pick": "had 主胜",
+   "odds": "1.86",
+   "star": 2,
+   "grade": "C",
+   "dc": [
+    0.5295,
+    0.2492,
+    0.2213
+   ],
+   "fused": [
+    0.4915,
+    0.2836,
+    0.2249
+   ],
+   "fusedPre": [
+    0.4915,
+    0.2836,
+    0.2249
+   ],
+   "final": 0.4915,
+   "chain": null,
+   "lambdaHome": 1.407,
+   "lambdaAway": 0.783,
+   "ev": -0.0858,
+   "inPlan": null,
+   "note": "中游混战无战意极值；fused主0.49与市场0.48基本一致；top比分1-0/2-0小胜；双方伤停均轻",
+   "mkt3": [
+    0.476,
+    0.2981,
+    0.2259
+   ],
+   "topScores": [
+    [
+     "1-0",
+     0.1699
+    ],
+    [
+     "1-1",
+     0.1111
+    ],
+    [
+     "2-0",
+     0.1108
+    ],
+    [
+     "0-1",
+     0.1001
+    ],
+    [
+     "0-0",
+     0.0996
+    ],
+    [
+     "2-1",
+     0.0868
+    ]
+   ],
+   "hhad": {
+    "goalLine": "-1",
+    "dc3": [
+     0.2554,
+     0.2741,
+     0.4705
+    ],
+    "mkt3": [
+     0.2214,
+     0.2667,
+     0.5119
+    ],
+    "fused3": [
+     0.2308,
+     0.2691,
+     0.5001
+    ],
+    "odds": {
+     "h": "4.00",
+     "d": "3.32",
+     "a": "1.73"
+    }
+   },
+   "insight": {
+    "home": {
+     "rank": "11",
+     "seasonWDL": "1-0-1",
+     "injuries": 2,
+     "injNames": [
+      "Y. Mina(后卫,替)",
+      "R. Idrissi(后卫,替)"
+     ],
+     "last10": "5-3-2",
+     "venue10": "5-2-3",
+     "gpg10": "1.0"
+    },
+    "away": {
+     "rank": "12",
+     "seasonWDL": "1-0-1",
+     "injuries": 1,
+     "injNames": [
+      "热贝尔(前锋,替)"
+     ],
+     "last10": "6-1-3",
+     "venue10": "4-1-5",
+     "gpg10": "1.5"
+    },
+    "h2h": {
+     "statistics": {
+      "drawMatchCnt": 4,
+      "drawProbability": "40%",
+      "goalCnt": 0,
+      "lossGoalCnt": 0,
+      "lossGoalMatchCnt": 3,
+      "lossProbability": "30%",
+      "netGoal": 0,
+      "sportteryTeamId": 0,
+      "teamId": 0,
+      "teamShortName": "卡利亚里",
+      "totalLegCnt": 10,
+      "winGoalMatchCnt": 3,
+      "winProbability": "30%"
+     },
+     "matches": [
+      {
+       "date": "2026-02-17",
+       "home": "卡利亚里",
+       "score": "0:2",
+       "ht": "0:0",
+       "away": "莱切",
+       "winner": "away"
+      },
+      {
+       "date": "2025-09-20",
+       "home": "莱切",
+       "score": "1:2",
+       "ht": "1:1",
+       "away": "卡利亚里",
+       "winner": "home"
+      },
+      {
+       "date": "2025-01-19",
+       "home": "卡利亚里",
+       "score": "4:1",
+       "ht": "0:1",
+       "away": "莱切",
+       "winner": "home"
+      },
+      {
+       "date": "2024-09-01",
+       "home": "莱切",
+       "score": "1:0",
+       "ht": "1:0",
+       "away": "卡利亚里",
+       "winner": "away"
+      },
+      {
+       "date": "2024-05-05",
+       "home": "卡利亚里",
+       "score": "1:1",
+       "ht": "1:0",
+       "away": "莱切",
+       "winner": "draw"
+      },
+      {
+       "date": "2024-01-07",
+       "home": "莱切",
+       "score": "1:1",
+       "ht": "1:0",
+       "away": "卡利亚里",
+       "winner": "draw"
+      },
+      {
+       "date": "2020-07-13",
+       "home": "卡利亚里",
+       "score": "0:0",
+       "ht": "0:0",
+       "away": "莱切",
+       "winner": "draw"
+      },
+      {
+       "date": "2019-11-25",
+       "home": "莱切",
+       "score": "2:2",
+       "ht": "0:1",
+       "away": "卡利亚里",
+       "winner": "draw"
+      },
+      {
+       "date": "2012-02-26",
+       "home": "卡利亚里",
+       "score": "1:2",
+       "ht": "0:1",
+       "away": "莱切",
+       "winner": "away"
+      },
+      {
+       "date": "2011-10-02",
+       "home": "莱切",
+       "score": "0:2",
+       "ht": "0:2",
+       "away": "卡利亚里",
+       "winner": "home"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "idx": 2,
+   "code": "周一002",
+   "league": "西甲",
+   "match": "赫塔费 vs 塞尔塔",
+   "kickoff": "2026-09-08 01:00",
+   "pick": "had 平局",
+   "odds": "2.58",
+   "star": 3,
+   "grade": "B",
+   "dc": [
+    0.2297,
+    0.4244,
+    0.3459
+   ],
+   "fused": [
+    0.3286,
+    0.3686,
+    0.3028
+   ],
+   "fusedPre": [
+    0.3286,
+    0.3686,
+    0.3028
+   ],
+   "final": 0.3686,
+   "chain": null,
+   "lambdaHome": 0.573,
+   "lambdaAway": 0.764,
+   "ev": -0.049,
+   "inPlan": null,
+   "note": "DC极度看平：λh=0.573超低攻+0-0比分27.9%居首+dc平0.42 vs 市场平0.34；赫塔费近10主场7-0-3但赛季1-0-2；平局轨方向，poolSingle资格查报告",
+   "mkt3": [
+    0.3737,
+    0.3433,
+    0.283
+   ],
+   "topScores": [
+    [
+     "0-0",
+     0.2794
+    ],
+    [
+     "0-1",
+     0.1837
+    ],
+    [
+     "1-0",
+     0.1337
+    ],
+    [
+     "1-1",
+     0.1318
+    ],
+    [
+     "0-2",
+     0.0766
+    ],
+    [
+     "1-2",
+     0.0439
+    ]
+   ],
+   "hhad": {
+    "goalLine": "-1",
+    "dc3": [
+     0.0605,
+     0.1692,
+     0.7703
+    ],
+    "mkt3": [
+     0.1501,
+     0.2393,
+     0.6106
+    ],
+    "fused3": [
+     0.1175,
+     0.22,
+     0.6625
+    ],
+    "odds": {
+     "h": "5.90",
+     "d": "3.70",
+     "a": "1.45"
+    }
+   },
+   "insight": {
+    "home": {
+     "rank": "15",
+     "seasonWDL": "1-0-2",
+     "injuries": 3,
+     "injNames": [
+      "Juanmi(前锋,替)",
+      "A. Abqar(后卫,替)",
+      "C. Uche(中场,替)"
+     ],
+     "last10": "3-2-5",
+     "venue10": "7-0-3",
+     "gpg10": "0.9"
+    },
+    "away": {
+     "rank": "17",
+     "seasonWDL": "0-2-2",
+     "injuries": 2,
+     "injNames": [
+      "Aleix Febas(中场,替)",
+      "Borja Iglesias(前锋,替)"
+     ],
+     "last10": "3-5-2",
+     "venue10": "2-5-3",
+     "gpg10": "1.1"
+    },
+    "h2h": {
+     "statistics": {
+      "drawMatchCnt": 3,
+      "drawProbability": "30%",
+      "goalCnt": 0,
+      "lossGoalCnt": 0,
+      "lossGoalMatchCnt": 3,
+      "lossProbability": "30%",
+      "netGoal": 0,
+      "sportteryTeamId": 0,
+      "teamId": 0,
+      "teamShortName": "赫塔费",
+      "totalLegCnt": 10,
+      "winGoalMatchCnt": 4,
+      "winProbability": "40%"
+     },
+     "matches": [
+      {
+       "date": "2026-02-02",
+       "home": "赫塔费",
+       "score": "0:0",
+       "ht": "0:0",
+       "away": "塞尔塔",
+       "winner": "draw"
+      },
+      {
+       "date": "2025-08-17",
+       "home": "塞尔塔",
+       "score": "0:2",
+       "ht": "0:0",
+       "away": "赫塔费",
+       "winner": "home"
+      },
+      {
+       "date": "2025-05-25",
+       "home": "赫塔费",
+       "score": "1:2",
+       "ht": "1:1",
+       "away": "塞尔塔",
+       "winner": "away"
+      },
+      {
+       "date": "2024-11-05",
+       "home": "塞尔塔",
+       "score": "1:0",
+       "ht": "1:0",
+       "away": "赫塔费",
+       "winner": "away"
+      },
+      {
+       "date": "2024-02-11",
+       "home": "赫塔费",
+       "score": "3:2",
+       "ht": "2:0",
+       "away": "塞尔塔",
+       "winner": "home"
+      },
+      {
+       "date": "2023-10-09",
+       "home": "塞尔塔",
+       "score": "2:2",
+       "ht": "2:2",
+       "away": "赫塔费",
+       "winner": "draw"
+      },
+      {
+       "date": "2023-05-04",
+       "home": "赫塔费",
+       "score": "1:0",
+       "ht": "1:0",
+       "away": "塞尔塔",
+       "winner": "home"
+      },
+      {
+       "date": "2022-10-25",
+       "home": "塞尔塔",
+       "score": "1:1",
+       "ht": "0:1",
+       "away": "赫塔费",
+       "winner": "draw"
+      },
+      {
+       "date": "2022-04-21",
+       "home": "塞尔塔",
+       "score": "0:2",
+       "ht": "0:1",
+       "away": "赫塔费",
+       "winner": "home"
+      },
+      {
+       "date": "2021-10-26",
+       "home": "赫塔费",
+       "score": "0:3",
+       "ht": "0:0",
+       "away": "塞尔塔",
+       "winner": "away"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "idx": 3,
+   "code": "周一003",
+   "league": "瑞超",
+   "match": "马尔默 vs 索尔纳",
+   "kickoff": "2026-09-08 01:00",
+   "pick": "had 主胜",
+   "odds": "1.67",
+   "star": 2,
+   "grade": "C",
+   "dc": [
+    0.4994,
+    0.2444,
+    0.2562
+   ],
+   "fused": [
+    0.5216,
+    0.2342,
+    0.2442
+   ],
+   "fusedPre": [
+    0.5216,
+    0.2342,
+    0.2442
+   ],
+   "final": 0.5216,
+   "chain": null,
+   "lambdaHome": 1.798,
+   "lambdaAway": 1.232,
+   "ev": -0.1289,
+   "inPlan": "翻身",
+   "note": "模型主0.52 vs 马尔默主场近10仅3-1-6、索尔纳近10 8-1-1客场6-3-1——模型-近况背离F9警示；翻身档入TTG s2(总2球)非方向腿",
+   "mkt3": [
+    0.5305,
+    0.2301,
+    0.2394
+   ],
+   "topScores": [
+    [
+     "1-1",
+     0.1135
+    ],
+    [
+     "2-1",
+     0.0965
+    ],
+    [
+     "1-0",
+     0.081
+    ],
+    [
+     "2-0",
+     0.0783
+    ],
+    [
+     "1-2",
+     0.0661
+    ],
+    [
+     "2-2",
+     0.0594
+    ]
+   ],
+   "hhad": {
+    "goalLine": "-1",
+    "dc3": [
+     0.2789,
+     0.2205,
+     0.5006
+    ],
+    "mkt3": [
+     0.3057,
+     0.2396,
+     0.4547
+    ],
+    "fused3": [
+     0.2981,
+     0.2342,
+     0.4677
+    ],
+    "odds": {
+     "h": "2.90",
+     "d": "3.70",
+     "a": "1.95"
+    }
+   },
+   "insight": {
+    "home": {
+     "rank": "7",
+     "seasonWDL": "9-2-8",
+     "injuries": 1,
+     "injNames": [
+      "扬松(后卫,主)"
+     ],
+     "last10": "6-1-3",
+     "venue10": "3-1-6",
+     "gpg10": "1.8"
+    },
+    "away": {
+     "rank": "6",
+     "seasonWDL": "9-4-5",
+     "injuries": 0,
+     "injNames": [],
+     "last10": "8-1-1",
+     "venue10": "6-3-1",
+     "gpg10": "2.2"
+    },
+    "h2h": {
+     "statistics": {
+      "drawMatchCnt": 5,
+      "drawProbability": "50%",
+      "goalCnt": 0,
+      "lossGoalCnt": 0,
+      "lossGoalMatchCnt": 1,
+      "lossProbability": "10%",
+      "netGoal": 0,
+      "sportteryTeamId": 0,
+      "teamId": 0,
+      "teamShortName": "马尔默",
+      "totalLegCnt": 10,
+      "winGoalMatchCnt": 4,
+      "winProbability": "40%"
+     },
+     "matches": [
+      {
+       "date": "2026-04-28",
+       "home": "索尔纳",
+       "score": "0:1",
+       "ht": "0:1",
+       "away": "马尔默",
+       "winner": "home"
+      },
+      {
+       "date": "2025-05-23",
+       "home": "马尔默",
+       "score": "0:0",
+       "ht": "0:0",
+       "away": "索尔纳",
+       "winner": "draw"
+      },
+      {
+       "date": "2025-04-15",
+       "home": "索尔纳",
+       "score": "0:0",
+       "ht": "0:0",
+       "away": "马尔默",
+       "winner": "draw"
+      },
+      {
+       "date": "2024-09-15",
+       "home": "索尔纳",
+       "score": "0:0",
+       "ht": "0:0",
+       "away": "马尔默",
+       "winner": "draw"
+      },
+      {
+       "date": "2024-04-28",
+       "home": "马尔默",
+       "score": "5:0",
+       "ht": "3:0",
+       "away": "索尔纳",
+       "winner": "home"
+      },
+      {
+       "date": "2023-07-23",
+       "home": "索尔纳",
+       "score": "0:0",
+       "ht": "0:0",
+       "away": "马尔默",
+       "winner": "draw"
+      },
+      {
+       "date": "2023-05-07",
+       "home": "马尔默",
+       "score": "3:1",
+       "ht": "3:1",
+       "away": "索尔纳",
+       "winner": "home"
+      },
+      {
+       "date": "2022-05-12",
+       "home": "索尔纳",
+       "score": "2:0",
+       "ht": "1:0",
+       "away": "马尔默",
+       "winner": "away"
+      },
+      {
+       "date": "2022-04-17",
+       "home": "马尔默",
+       "score": "3:0",
+       "ht": "2:0",
+       "away": "索尔纳",
+       "winner": "home"
+      },
+      {
+       "date": "2022-03-15",
+       "home": "马尔默",
+       "score": "2:2",
+       "ht": "0:0",
+       "away": "索尔纳",
+       "winner": "draw"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "idx": 4,
+   "code": "周一004",
+   "league": "瑞超",
+   "match": "卡尔马 vs 佐加顿斯",
+   "kickoff": "2026-09-08 01:00",
+   "pick": "had 客胜",
+   "odds": "1.49",
+   "star": 3,
+   "grade": "B",
+   "dc": [
+    0.1489,
+    0.2403,
+    0.6108
+   ],
+   "fused": [
+    0.1763,
+    0.2241,
+    0.5996
+   ],
+   "fusedPre": [
+    0.1763,
+    0.2241,
+    0.5996
+   ],
+   "final": 0.5996,
+   "chain": null,
+   "lambdaHome": 0.757,
+   "lambdaAway": 1.78,
+   "ev": -0.1066,
+   "inPlan": "彩票",
+   "note": "佐加顿斯第3近10 7-1-2客胜fused 0.60；赔率1.49市场已定价EV-11%作彩票腿；HHAD+1模型市场一致",
+   "mkt3": [
+    0.1884,
+    0.2175,
+    0.5941
+   ],
+   "topScores": [
+    [
+     "0-1",
+     0.1351
+    ],
+    [
+     "0-2",
+     0.1256
+    ],
+    [
+     "1-1",
+     0.113
+    ],
+    [
+     "1-2",
+     0.0951
+    ],
+    [
+     "0-0",
+     0.0855
+    ],
+    [
+     "0-3",
+     0.0745
+    ]
+   ],
+   "hhad": {
+    "goalLine": "+1",
+    "dc3": [
+     0.3892,
+     0.2541,
+     0.3567
+    ],
+    "mkt3": [
+     0.3993,
+     0.2462,
+     0.3545
+    ],
+    "fused3": [
+     0.3964,
+     0.2484,
+     0.3552
+    ],
+    "odds": {
+     "h": "2.22",
+     "d": "3.60",
+     "a": "2.50"
+    }
+   },
+   "insight": {
+    "home": {
+     "rank": "13",
+     "seasonWDL": "5-4-10",
+     "injuries": 0,
+     "injNames": [],
+     "last10": "3-3-4",
+     "venue10": "5-3-2",
+     "gpg10": "1.7"
+    },
+    "away": {
+     "rank": "3",
+     "seasonWDL": "11-2-6",
+     "injuries": 0,
+     "injNames": [],
+     "last10": "7-1-2",
+     "venue10": "6-2-2",
+     "gpg10": "2.4"
+    },
+    "h2h": {
+     "statistics": {
+      "drawMatchCnt": 1,
+      "drawProbability": "10%",
+      "goalCnt": 0,
+      "lossGoalCnt": 0,
+      "lossGoalMatchCnt": 6,
+      "lossProbability": "60%",
+      "netGoal": 0,
+      "sportteryTeamId": 0,
+      "teamId": 0,
+      "teamShortName": "卡尔马",
+      "totalLegCnt": 10,
+      "winGoalMatchCnt": 3,
+      "winProbability": "30%"
+     },
+     "matches": [
+      {
+       "date": "2026-04-12",
+       "home": "佐加顿斯",
+       "score": "3:2",
+       "ht": "2:2",
+       "away": "卡尔马",
+       "winner": "away"
+      },
+      {
+       "date": "2024-10-06",
+       "home": "佐加顿斯",
+       "score": "1:1",
+       "ht": "0:1",
+       "away": "卡尔马",
+       "winner": "draw"
+      },
+      {
+       "date": "2024-07-20",
+       "home": "卡尔马",
+       "score": "2:1",
+       "ht": "1:1",
+       "away": "佐加顿斯",
+       "winner": "home"
+      },
+      {
+       "date": "2023-11-12",
+       "home": "卡尔马",
+       "score": "2:1",
+       "ht": "0:0",
+       "away": "佐加顿斯",
+       "winner": "home"
+      },
+      {
+       "date": "2023-05-09",
+       "home": "佐加顿斯",
+       "score": "3:1",
+       "ht": "2:0",
+       "away": "卡尔马",
+       "winner": "away"
+      },
+      {
+       "date": "2022-08-14",
+       "home": "佐加顿斯",
+       "score": "3:2",
+       "ht": "2:0",
+       "away": "卡尔马",
+       "winner": "away"
+      },
+      {
+       "date": "2022-05-22",
+       "home": "卡尔马",
+       "score": "1:0",
+       "ht": "0:0",
+       "away": "佐加顿斯",
+       "winner": "home"
+      },
+      {
+       "date": "2022-03-12",
+       "home": "卡尔马",
+       "score": "0:2",
+       "ht": "0:2",
+       "away": "佐加顿斯",
+       "winner": "away"
+      },
+      {
+       "date": "2021-10-23",
+       "home": "佐加顿斯",
+       "score": "3:2",
+       "ht": "3:0",
+       "away": "卡尔马",
+       "winner": "away"
+      },
+      {
+       "date": "2021-07-25",
+       "home": "卡尔马",
+       "score": "0:1",
+       "ht": "0:0",
+       "away": "佐加顿斯",
+       "winner": "away"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "idx": 5,
+   "code": "周一005",
+   "league": "沙职",
+   "match": "利雅新月 vs 新未来SC",
+   "kickoff": "2026-09-08 02:00",
+   "pick": "had 主胜",
+   "odds": "1.12",
+   "star": 4,
+   "grade": "A",
+   "dc": [
+    0.7629,
+    0.1842,
+    0.0528
+   ],
+   "fused": [
+    0.7857,
+    0.1459,
+    0.0684
+   ],
+   "fusedPre": [
+    0.7857,
+    0.1459,
+    0.0684
+   ],
+   "final": 0.7857,
+   "chain": null,
+   "lambdaHome": 2.301,
+   "lambdaAway": 0.513,
+   "ev": -0.12,
+   "inPlan": "彩票",
+   "note": "新月5-0-0领跑+近10全胜场均2.6，胆p=0.79@1.12超低赔通道；HHAD-2让两球fused 0.36@2.35为搏深盘备选",
+   "mkt3": [
+    0.7921,
+    0.1324,
+    0.0755
+   ],
+   "topScores": [
+    [
+     "2-0",
+     0.1603
+    ],
+    [
+     "1-0",
+     0.1253
+    ],
+    [
+     "3-0",
+     0.123
+    ],
+    [
+     "1-1",
+     0.0855
+    ],
+    [
+     "2-1",
+     0.0822
+    ],
+    [
+     "0-0",
+     0.0747
+    ]
+   ],
+   "hhad": {
+    "goalLine": "-2",
+    "dc3": [
+     0.3043,
+     0.2334,
+     0.4623
+    ],
+    "mkt3": [
+     0.3776,
+     0.2154,
+     0.407
+    ],
+    "fused3": [
+     0.3559,
+     0.2209,
+     0.4232
+    ],
+    "odds": {
+     "h": "2.35",
+     "d": "4.12",
+     "a": "2.18"
+    }
+   },
+   "insight": {
+    "home": {
+     "rank": "1",
+     "seasonWDL": "5-0-0",
+     "injuries": 1,
+     "injNames": [
+      "哈桑·塔姆巴蒂(后卫,替)"
+     ],
+     "last10": "10-0-0",
+     "venue10": "7-3-0",
+     "gpg10": "2.6"
+    },
+    "away": {
+     "rank": "7",
+     "seasonWDL": "3-0-2",
+     "injuries": 1,
+     "injNames": [
+      "默罕默德·阿尔·布拉克(后卫,主)"
+     ],
+     "last10": "6-1-3",
+     "venue10": "4-2-4",
+     "gpg10": "1.2"
+    },
+    "h2h": {
+     "statistics": {
+      "drawMatchCnt": 0,
+      "drawProbability": "0%",
+      "goalCnt": 0,
+      "lossGoalCnt": 0,
+      "lossGoalMatchCnt": 0,
+      "lossProbability": "0%",
+      "netGoal": 0,
+      "sportteryTeamId": 0,
+      "teamId": 0,
+      "teamShortName": "利雅新月",
+      "totalLegCnt": 2,
+      "winGoalMatchCnt": 2,
+      "winProbability": "100%"
+     },
+     "matches": [
+      {
+       "date": "2026-05-17",
+       "home": "利雅新月",
+       "score": "2:0",
+       "ht": "1:0",
+       "away": "新未来SC",
+       "winner": "home"
+      },
+      {
+       "date": "2026-01-19",
+       "home": "新未来SC",
+       "score": "1:2",
+       "ht": "1:0",
+       "away": "利雅新月",
+       "winner": "home"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "idx": 6,
+   "code": "周一006",
+   "league": "意甲",
+   "match": "乌迪内斯 vs 拉齐奥",
+   "kickoff": "2026-09-08 02:45",
+   "pick": "had 客胜",
+   "odds": "2.47",
+   "star": 3,
+   "grade": "B",
+   "dc": [
+    0.204,
+    0.2818,
+    0.5142
+   ],
+   "fused": [
+    0.2915,
+    0.306,
+    0.4025
+   ],
+   "fusedPre": [
+    0.2915,
+    0.306,
+    0.4025
+   ],
+   "final": 0.4025,
+   "chain": null,
+   "lambdaHome": 0.624,
+   "lambdaAway": 1.206,
+   "ev": -0.0058,
+   "inPlan": "翻身",
+   "note": "拉齐奥2-0-0开局近10 8-0-2客胜fused 0.40 EV-0.6%近零边际；HHAD+1主不败dc 0.49 vs 市场0.63分歧14.7pp——该玩法警示不入；乌迪内斯伤停5均替补",
+   "mkt3": [
+    0.3305,
+    0.3108,
+    0.3586
+   ],
+   "topScores": [
+    [
+     "0-1",
+     0.2055
+    ],
+    [
+     "0-0",
+     0.1484
+    ],
+    [
+     "0-2",
+     0.1166
+    ],
+    [
+     "1-0",
+     0.1122
+    ],
+    [
+     "1-1",
+     0.1087
+    ],
+    [
+     "1-2",
+     0.0728
+    ]
+   ],
+   "hhad": {
+    "goalLine": "+1",
+    "dc3": [
+     0.4858,
+     0.2881,
+     0.2261
+    ],
+    "mkt3": [
+     0.6324,
+     0.227,
+     0.1405
+    ],
+    "fused3": [
+     0.5921,
+     0.2453,
+     0.1625
+    ],
+    "odds": {
+     "h": "1.40",
+     "d": "3.90",
+     "a": "6.30"
+    }
+   },
+   "insight": {
+    "home": {
+     "rank": "9",
+     "seasonWDL": "1-1-0",
+     "injuries": 5,
+     "injNames": [
+      "恰克韦塔泽(中场,替)",
+      "N. Zaniolo(中场,替)",
+      "扎诺利(后卫,替)",
+      "J. Arizala(中场,替)",
+      "M. Palma(后卫,替)"
+     ],
+     "last10": "3-3-4",
+     "venue10": "3-3-4",
+     "gpg10": "1.3"
+    },
+    "away": {
+     "rank": "6",
+     "seasonWDL": "2-0-0",
+     "injuries": 5,
+     "injNames": [
+      "D. Cataldi(中场,替)",
+      "Luca Pellegrini(后卫,替)",
+      "F.德勒-巴希鲁(中场,替)",
+      "N·罗维拉(中场,替)",
+      "A.Furlanetto(守门员,替)"
+     ],
+     "last10": "8-0-2",
+     "venue10": "6-1-3",
+     "gpg10": "2.4"
+    },
+    "h2h": {
+     "statistics": {
+      "drawMatchCnt": 6,
+      "drawProbability": "60%",
+      "goalCnt": 0,
+      "lossGoalCnt": 0,
+      "lossGoalMatchCnt": 2,
+      "lossProbability": "20%",
+      "netGoal": 0,
+      "sportteryTeamId": 0,
+      "teamId": 0,
+      "teamShortName": "乌迪内斯",
+      "totalLegCnt": 10,
+      "winGoalMatchCnt": 2,
+      "winProbability": "20%"
+     },
+     "matches": [
+      {
+       "date": "2026-04-28",
+       "home": "拉齐奥",
+       "score": "3:3",
+       "ht": "0:1",
+       "away": "乌迪内斯",
+       "winner": "draw"
+      },
+      {
+       "date": "2025-12-28",
+       "home": "乌迪内斯",
+       "score": "1:1",
+       "ht": "0:0",
+       "away": "拉齐奥",
+       "winner": "draw"
+      },
+      {
+       "date": "2025-03-11",
+       "home": "拉齐奥",
+       "score": "1:1",
+       "ht": "1:1",
+       "away": "乌迪内斯",
+       "winner": "draw"
+      },
+      {
+       "date": "2024-08-25",
+       "home": "乌迪内斯",
+       "score": "2:1",
+       "ht": "1:0",
+       "away": "拉齐奥",
+       "winner": "home"
+      },
+      {
+       "date": "2024-03-12",
+       "home": "拉齐奥",
+       "score": "1:2",
+       "ht": "0:0",
+       "away": "乌迪内斯",
+       "winner": "home"
+      },
+      {
+       "date": "2024-01-07",
+       "home": "乌迪内斯",
+       "score": "1:2",
+       "ht": "0:1",
+       "away": "拉齐奥",
+       "winner": "away"
+      },
+      {
+       "date": "2023-05-22",
+       "home": "乌迪内斯",
+       "score": "0:1",
+       "ht": "0:0",
+       "away": "拉齐奥",
+       "winner": "away"
+      },
+      {
+       "date": "2022-10-16",
+       "home": "拉齐奥",
+       "score": "0:0",
+       "ht": "0:0",
+       "away": "乌迪内斯",
+       "winner": "draw"
+      },
+      {
+       "date": "2022-02-21",
+       "home": "乌迪内斯",
+       "score": "1:1",
+       "ht": "1:1",
+       "away": "拉齐奥",
+       "winner": "draw"
+      },
+      {
+       "date": "2022-01-19",
+       "home": "拉齐奥",
+       "score": "0:0",
+       "ht": "0:0",
+       "away": "乌迪内斯",
+       "winner": "draw"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "idx": 7,
+   "code": "周一007",
+   "league": "葡超",
+   "match": "埃斯托里 vs 阿罗卡",
+   "kickoff": "2026-09-08 03:15",
+   "pick": "回避",
+   "odds": null,
+   "star": 1,
+   "grade": "D",
+   "dc": [
+    0.7647,
+    0.1331,
+    0.1021
+   ],
+   "fused": [
+    0.4963,
+    0.2389,
+    0.2649
+   ],
+   "fusedPre": [
+    0.4963,
+    0.2389,
+    0.2649
+   ],
+   "final": null,
+   "chain": null,
+   "lambdaHome": 3.308,
+   "lambdaAway": 1.194,
+   "ev": null,
+   "inPlan": null,
+   "note": "DC参数污染场：λh=3.31 dc主0.76 vs 市场0.38（分歧11.9pp熔断4选项）——埃斯托里开季0-1-3崩盘未进DC样本；本场禁用DC只信市场（主0.38/客0.35均势），回避",
+   "mkt3": [
+    0.3771,
+    0.2727,
+    0.3503
+   ],
+   "topScores": [
+    [
+     "3-1",
+     0.0842
+    ],
+    [
+     "2-1",
+     0.0764
+    ],
+    [
+     "3-0",
+     0.0705
+    ],
+    [
+     "4-1",
+     0.0696
+    ],
+    [
+     "2-0",
+     0.0639
+    ],
+    [
+     "4-0",
+     0.0583
+    ]
+   ],
+   "hhad": {
+    "goalLine": "-1",
+    "dc3": [
+     0.5811,
+     0.1837,
+     0.2353
+    ],
+    "mkt3": [
+     0.1641,
+     0.2162,
+     0.6197
+    ],
+    "fused3": [
+     0.2583,
+     0.2263,
+     0.5154
+    ],
+    "odds": {
+     "h": "5.40",
+     "d": "4.10",
+     "a": "1.43"
+    }
+   },
+   "insight": {
+    "home": {
+     "rank": "17",
+     "seasonWDL": "0-1-3",
+     "injuries": 1,
+     "injNames": [
+      "谢卡(中场,主)"
+     ],
+     "last10": "1-4-5",
+     "venue10": "2-3-5",
+     "gpg10": "0.8"
+    },
+    "away": {
+     "rank": "5",
+     "seasonWDL": "3-0-1",
+     "injuries": 0,
+     "injNames": [],
+     "last10": "6-2-2",
+     "venue10": "3-2-5",
+     "gpg10": "1.6"
+    },
+    "h2h": {
+     "statistics": {
+      "drawMatchCnt": 1,
+      "drawProbability": "10%",
+      "goalCnt": 0,
+      "lossGoalCnt": 0,
+      "lossGoalMatchCnt": 5,
+      "lossProbability": "50%",
+      "netGoal": 0,
+      "sportteryTeamId": 0,
+      "teamId": 0,
+      "teamShortName": "埃斯托里",
+      "totalLegCnt": 10,
+      "winGoalMatchCnt": 4,
+      "winProbability": "40%"
+     },
+     "matches": [
+      {
+       "date": "2026-04-07",
+       "home": "阿罗卡",
+       "score": "3:2",
+       "ht": "2:2",
+       "away": "埃斯托里",
+       "winner": "away"
+      },
+      {
+       "date": "2025-11-08",
+       "home": "埃斯托里",
+       "score": "4:3",
+       "ht": "2:2",
+       "away": "阿罗卡",
+       "winner": "home"
+      },
+      {
+       "date": "2025-03-16",
+       "home": "阿罗卡",
+       "score": "1:1",
+       "ht": "1:0",
+       "away": "埃斯托里",
+       "winner": "draw"
+      },
+      {
+       "date": "2024-10-26",
+       "home": "埃斯托里",
+       "score": "4:1",
+       "ht": "2:1",
+       "away": "阿罗卡",
+       "winner": "home"
+      },
+      {
+       "date": "2024-01-20",
+       "home": "埃斯托里",
+       "score": "1:2",
+       "ht": "1:2",
+       "away": "阿罗卡",
+       "winner": "away"
+      },
+      {
+       "date": "2023-08-14",
+       "home": "阿罗卡",
+       "score": "4:3",
+       "ht": "1:1",
+       "away": "埃斯托里",
+       "winner": "away"
+      },
+      {
+       "date": "2023-05-16",
+       "home": "埃斯托里",
+       "score": "2:0",
+       "ht": "0:0",
+       "away": "阿罗卡",
+       "winner": "home"
+      },
+      {
+       "date": "2023-01-07",
+       "home": "阿罗卡",
+       "score": "2:0",
+       "ht": "1:0",
+       "away": "埃斯托里",
+       "winner": "away"
+      },
+      {
+       "date": "2022-01-28",
+       "home": "埃斯托里",
+       "score": "1:2",
+       "ht": "1:0",
+       "away": "阿罗卡",
+       "winner": "away"
+      },
+      {
+       "date": "2021-08-07",
+       "home": "阿罗卡",
+       "score": "0:2",
+       "ht": "0:1",
+       "away": "埃斯托里",
+       "winner": "home"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "idx": 8,
+   "code": "周一008",
+   "league": "西甲",
+   "match": "埃尔切 vs 皇家社会",
+   "kickoff": "2026-09-08 03:30",
+   "pick": "hhad 让球主胜(+1)",
+   "odds": "1.66",
+   "star": 2,
+   "grade": "C",
+   "dc": [
+    0.3707,
+    0.311,
+    0.3183
+   ],
+   "fused": [
+    0.3022,
+    0.2824,
+    0.4154
+   ],
+   "fusedPre": [
+    0.3022,
+    0.2824,
+    0.4154
+   ],
+   "final": 0.578,
+   "chain": null,
+   "lambdaHome": 1.278,
+   "lambdaAway": 1.169,
+   "ev": -0.0405,
+   "inPlan": "彩票+翻身",
+   "note": "埃尔切升班马主场受让+1：hhad主不败fused 0.58@1.66为彩票档最高EV腿(-4%)；翻身档CRS 1:0@11.0；top比分1-1(14.8%)——实际是低进球胶着场，让球腿风险中等",
+   "mkt3": [
+    0.2751,
+    0.2684,
+    0.4565
+   ],
+   "topScores": [
+    [
+     "1-1",
+     0.1483
+    ],
+    [
+     "0-0",
+     0.1056
+    ],
+    [
+     "1-0",
+     0.0918
+    ],
+    [
+     "2-1",
+     0.0827
+    ],
+    [
+     "0-1",
+     0.0823
+    ],
+    [
+     "1-2",
+     0.0756
+    ]
+   ],
+   "hhad": {
+    "goalLine": "+1",
+    "dc3": [
+     0.6817,
+     0.1793,
+     0.139
+    ],
+    "mkt3": [
+     0.5335,
+     0.2394,
+     0.2271
+    ],
+    "fused3": [
+     0.578,
+     0.2226,
+     0.1994
+    ],
+    "odds": {
+     "h": "1.66",
+     "d": "3.70",
+     "a": "3.90"
+    }
+   },
+   "insight": {
+    "home": {
+     "rank": "19",
+     "seasonWDL": "0-1-2",
+     "injuries": 1,
+     "injNames": [
+      "Yago Alonso(前锋,替)"
+     ],
+     "last10": "3-5-2",
+     "venue10": "5-4-1",
+     "gpg10": "1.4"
+    },
+    "away": {
+     "rank": "14",
+     "seasonWDL": "1-1-2",
+     "injuries": 3,
+     "injNames": [
+      "Álvaro Odriozola(后卫,替)",
+      "Carlos Soler(中场,替)",
+      "Pablo Marín(中场,替)"
+     ],
+     "last10": "3-2-5",
+     "venue10": "2-2-6",
+     "gpg10": "1.3"
+    },
+    "h2h": {
+     "statistics": {
+      "drawMatchCnt": 1,
+      "drawProbability": "10%",
+      "goalCnt": 0,
+      "lossGoalCnt": 0,
+      "lossGoalMatchCnt": 8,
+      "lossProbability": "80%",
+      "netGoal": 0,
+      "sportteryTeamId": 0,
+      "teamId": 0,
+      "teamShortName": "埃尔切",
+      "totalLegCnt": 10,
+      "winGoalMatchCnt": 1,
+      "winProbability": "10%"
+     },
+     "matches": [
+      {
+       "date": "2026-02-08",
+       "home": "皇家社会",
+       "score": "3:1",
+       "ht": "2:1",
+       "away": "埃尔切",
+       "winner": "away"
+      },
+      {
+       "date": "2025-11-08",
+       "home": "埃尔切",
+       "score": "1:1",
+       "ht": "0:0",
+       "away": "皇家社会",
+       "winner": "draw"
+      },
+      {
+       "date": "2023-03-19",
+       "home": "皇家社会",
+       "score": "2:0",
+       "ht": "0:0",
+       "away": "埃尔切",
+       "winner": "away"
+      },
+      {
+       "date": "2022-08-27",
+       "home": "埃尔切",
+       "score": "0:1",
+       "ht": "0:1",
+       "away": "皇家社会",
+       "winner": "away"
+      },
+      {
+       "date": "2022-04-11",
+       "home": "埃尔切",
+       "score": "1:2",
+       "ht": "1:2",
+       "away": "皇家社会",
+       "winner": "away"
+      },
+      {
+       "date": "2021-09-27",
+       "home": "皇家社会",
+       "score": "1:0",
+       "ht": "0:0",
+       "away": "埃尔切",
+       "winner": "away"
+      },
+      {
+       "date": "2021-05-08",
+       "home": "皇家社会",
+       "score": "2:0",
+       "ht": "0:0",
+       "away": "埃尔切",
+       "winner": "away"
+      },
+      {
+       "date": "2020-09-27",
+       "home": "埃尔切",
+       "score": "0:3",
+       "ht": "0:0",
+       "away": "皇家社会",
+       "winner": "away"
+      },
+      {
+       "date": "2015-04-21",
+       "home": "埃尔切",
+       "score": "1:0",
+       "ht": "1:0",
+       "away": "皇家社会",
+       "winner": "home"
+      },
+      {
+       "date": "2014-11-29",
+       "home": "皇家社会",
+       "score": "3:0",
+       "ht": "2:0",
+       "away": "埃尔切",
+       "winner": "away"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "idx": 9,
+   "code": "周一009",
+   "league": "巴甲",
+   "match": "维多利亚 vs 格雷米奥",
+   "kickoff": "2026-09-08 07:00",
+   "pick": "had 平局",
+   "odds": "3.10",
+   "star": 2,
+   "grade": "C",
+   "dc": null,
+   "fused": [
+    0.4411,
+    0.286,
+    0.2728
+   ],
+   "fusedPre": [
+    0.4411,
+    0.286,
+    0.2728
+   ],
+   "final": 0.286,
+   "chain": null,
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": -0.1134,
+   "inPlan": null,
+   "note": "巴甲保级六分战（14 vs 15）；维多利亚近10 2-0-8崩但主场7-0-3，格雷米奥4-3-3；场均0.6/1.1低进球平局价值；无DC市场锚",
+   "mkt3": [
+    0.4411,
+    0.286,
+    0.2728
+   ],
+   "topScores": null,
+   "hhad": null,
+   "insight": {
+    "home": {
+     "rank": "14",
+     "seasonWDL": "8-5-12",
+     "injuries": 1,
+     "injNames": [
+      "Cacá(后卫,主)"
+     ],
+     "last10": "2-0-8",
+     "venue10": "7-0-3",
+     "gpg10": "0.6"
+    },
+    "away": {
+     "rank": "15",
+     "seasonWDL": "7-7-10",
+     "injuries": 1,
+     "injNames": [
+      "Marlon Xavier(后卫,主)"
+     ],
+     "last10": "4-3-3",
+     "venue10": "3-3-4",
+     "gpg10": "1.1"
+    },
+    "h2h": {
+     "statistics": {
+      "drawMatchCnt": 4,
+      "drawProbability": "40%",
+      "goalCnt": 0,
+      "lossGoalCnt": 0,
+      "lossGoalMatchCnt": 6,
+      "lossProbability": "60%",
+      "netGoal": 0,
+      "sportteryTeamId": 0,
+      "teamId": 0,
+      "teamShortName": "维多利亚",
+      "totalLegCnt": 10,
+      "winGoalMatchCnt": 0,
+      "winProbability": "0%"
+     },
+     "matches": [
+      {
+       "date": "2026-03-20",
+       "home": "格雷米奥",
+       "score": "2:0",
+       "ht": "1:0",
+       "away": "维多利亚",
+       "winner": "away"
+      },
+      {
+       "date": "2025-09-28",
+       "home": "格雷米奥",
+       "score": "3:1",
+       "ht": "1:0",
+       "away": "维多利亚",
+       "winner": "away"
+      },
+      {
+       "date": "2025-04-28",
+       "home": "维多利亚",
+       "score": "1:1",
+       "ht": "0:1",
+       "away": "格雷米奥",
+       "winner": "draw"
+      },
+      {
+       "date": "2024-12-05",
+       "home": "维多利亚",
+       "score": "1:1",
+       "ht": "0:1",
+       "away": "格雷米奥",
+       "winner": "draw"
+      },
+      {
+       "date": "2024-07-21",
+       "home": "格雷米奥",
+       "score": "2:0",
+       "ht": "0:0",
+       "away": "维多利亚",
+       "winner": "away"
+      },
+      {
+       "date": "2021-08-04",
+       "home": "格雷米奥",
+       "score": "1:0",
+       "ht": "1:0",
+       "away": "维多利亚",
+       "winner": "away"
+      },
+      {
+       "date": "2021-07-28",
+       "home": "维多利亚",
+       "score": "0:3",
+       "ht": "0:1",
+       "away": "格雷米奥",
+       "winner": "away"
+      },
+      {
+       "date": "2018-11-26",
+       "home": "维多利亚",
+       "score": "0:0",
+       "ht": "0:0",
+       "away": "格雷米奥",
+       "winner": "draw"
+      },
+      {
+       "date": "2018-08-13",
+       "home": "格雷米奥",
+       "score": "4:0",
+       "ht": "2:0",
+       "away": "维多利亚",
+       "winner": "away"
+      },
+      {
+       "date": "2017-11-13",
+       "home": "格雷米奥",
+       "score": "1:1",
+       "ht": "1:1",
+       "away": "维多利亚",
+       "winner": "draw"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "idx": 10,
+   "code": "周二002",
+   "league": "欧冠",
+   "match": "雅典AEK vs LASK林茨",
+   "kickoff": "2026-09-09 00:45",
+   "pick": "had 主胜",
+   "odds": "1.68",
+   "star": 2,
+   "grade": "C",
+   "dc": null,
+   "fused": [
+    0.5272,
+    0.2427,
+    0.2301
+   ],
+   "fusedPre": [
+    0.5272,
+    0.2427,
+    0.2301
+   ],
+   "final": 0.5272,
+   "chain": null,
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": -0.1143,
+   "inPlan": "翻身",
+   "note": "欧冠首轮市场锚；AEK主场7-2-1；LASK奥甲近10 9-0-1场均3.4但奥甲→欧冠跨强度存疑；翻身档CRS 0:1@14.0为freq q全池EV峰值——欧冠无DC该q可靠性低，人审必看",
+   "mkt3": [
+    0.5272,
+    0.2427,
+    0.2301
+   ],
+   "topScores": null,
+   "hhad": null,
+   "insight": {
+    "home": {
+     "rank": "",
+     "seasonWDL": "--",
+     "injuries": 0,
+     "injNames": [],
+     "last10": "6-3-1",
+     "venue10": "7-2-1",
+     "gpg10": "2.5"
+    },
+    "away": {
+     "rank": "",
+     "seasonWDL": "--",
+     "injuries": 0,
+     "injNames": [],
+     "last10": "9-0-1",
+     "venue10": "7-1-2",
+     "gpg10": "3.4"
+    },
+    "h2h": {
+     "statistics": {
+      "drawMatchCnt": 0,
+      "drawProbability": "0%",
+      "goalCnt": 0,
+      "lossGoalCnt": 0,
+      "lossGoalMatchCnt": 0,
+      "lossProbability": "0%",
+      "netGoal": 0,
+      "sportteryTeamId": 0,
+      "teamId": 0,
+      "teamShortName": "雅典AEK",
+      "totalLegCnt": 0,
+      "winGoalMatchCnt": 0,
+      "winProbability": "0%"
+     },
+     "matches": []
+    }
+   }
+  },
+  {
+   "idx": 11,
+   "code": "周二003",
+   "league": "欧冠",
+   "match": "布鲁日 vs 维拉",
+   "kickoff": "2026-09-09 00:45",
+   "pick": "观察",
+   "odds": null,
+   "star": 1,
+   "grade": "D",
+   "dc": null,
+   "fused": [
+    0.3411,
+    0.2647,
+    0.3942
+   ],
+   "fusedPre": [
+    0.3411,
+    0.2647,
+    0.3942
+   ],
+   "final": null,
+   "chain": null,
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": null,
+   "inPlan": "翻身",
+   "note": "情报-市场背离场：维拉近10 2-1-7崩盘 vs 市场仍客胜0.39最高；布鲁日主场8-1-1；翻身档CRS 1:0@10.5为叙事腿；纯观察不加重",
+   "mkt3": [
+    0.3411,
+    0.2647,
+    0.3942
+   ],
+   "topScores": null,
+   "hhad": null,
+   "insight": {
+    "home": {
+     "rank": "",
+     "seasonWDL": "--",
+     "injuries": 0,
+     "injNames": [],
+     "last10": "5-1-4",
+     "venue10": "8-1-1",
+     "gpg10": "1.6"
+    },
+    "away": {
+     "rank": "",
+     "seasonWDL": "--",
+     "injuries": 0,
+     "injNames": [],
+     "last10": "2-1-7",
+     "venue10": "4-1-5",
+     "gpg10": "1.2"
+    },
+    "h2h": {
+     "statistics": {
+      "drawMatchCnt": 0,
+      "drawProbability": "0%",
+      "goalCnt": 0,
+      "lossGoalCnt": 0,
+      "lossGoalMatchCnt": 2,
+      "lossProbability": "67%",
+      "netGoal": 0,
+      "sportteryTeamId": 0,
+      "teamId": 0,
+      "teamShortName": "布鲁日",
+      "totalLegCnt": 3,
+      "winGoalMatchCnt": 1,
+      "winProbability": "33%"
+     },
+     "matches": [
+      {
+       "date": "2025-03-13",
+       "home": "维拉",
+       "score": "3:0",
+       "ht": "0:0",
+       "away": "布鲁日",
+       "winner": "away"
+      },
+      {
+       "date": "2025-03-05",
+       "home": "布鲁日",
+       "score": "1:3",
+       "ht": "1:1",
+       "away": "维拉",
+       "winner": "away"
+      },
+      {
+       "date": "2024-11-07",
+       "home": "布鲁日",
+       "score": "1:0",
+       "ht": "0:0",
+       "away": "维拉",
+       "winner": "home"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "idx": 12,
+   "code": "周二008",
+   "league": "欧冠",
+   "match": "皇马 vs 国际米兰",
+   "kickoff": "2026-09-09 03:00",
+   "pick": "had 主胜",
+   "odds": "1.45",
+   "star": 3,
+   "grade": "B",
+   "dc": null,
+   "fused": [
+    0.6104,
+    0.2107,
+    0.1788
+   ],
+   "fusedPre": [
+    0.6104,
+    0.2107,
+    0.1788
+   ],
+   "final": 0.6104,
+   "chain": null,
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": -0.1149,
+   "inPlan": null,
+   "note": "焦点战：皇马近10 8-1-1伯纳乌主胜0.61；国米6-4-0不败有韧性；欧冠场市场锚自参照EV≈0——作为串关相对稳胆材料而非单场价值",
+   "mkt3": [
+    0.6104,
+    0.2107,
+    0.1788
+   ],
+   "topScores": null,
+   "hhad": null,
+   "insight": {
+    "home": {
+     "rank": "",
+     "seasonWDL": "--",
+     "injuries": 0,
+     "injNames": [],
+     "last10": "8-1-1",
+     "venue10": "7-2-1",
+     "gpg10": "2.3"
+    },
+    "away": {
+     "rank": "",
+     "seasonWDL": "--",
+     "injuries": 0,
+     "injNames": [],
+     "last10": "6-4-0",
+     "venue10": "6-4-0",
+     "gpg10": "1.9"
+    },
+    "h2h": {
+     "statistics": {
+      "drawMatchCnt": 0,
+      "drawProbability": "0%",
+      "goalCnt": 0,
+      "lossGoalCnt": 0,
+      "lossGoalMatchCnt": 0,
+      "lossProbability": "0%",
+      "netGoal": 0,
+      "sportteryTeamId": 0,
+      "teamId": 0,
+      "teamShortName": "皇马",
+      "totalLegCnt": 5,
+      "winGoalMatchCnt": 5,
+      "winProbability": "100%"
+     },
+     "matches": [
+      {
+       "date": "2021-12-08",
+       "home": "皇马",
+       "score": "2:0",
+       "ht": "1:0",
+       "away": "国际米兰",
+       "winner": "home"
+      },
+      {
+       "date": "2021-09-16",
+       "home": "国际米兰",
+       "score": "0:1",
+       "ht": "0:0",
+       "away": "皇马",
+       "winner": "home"
+      },
+      {
+       "date": "2020-11-26",
+       "home": "国际米兰",
+       "score": "0:2",
+       "ht": "0:1",
+       "away": "皇马",
+       "winner": "home"
+      },
+      {
+       "date": "2020-11-04",
+       "home": "皇马",
+       "score": "3:2",
+       "ht": "2:1",
+       "away": "国际米兰",
+       "winner": "home"
+      },
+      {
+       "date": "2015-07-27",
+       "home": "国际米兰",
+       "score": "0:3",
+       "ht": "0:1",
+       "away": "皇马",
+       "winner": "home"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "idx": 13,
+   "code": "周二009",
+   "league": "欧冠",
+   "match": "多特蒙德 vs 比利亚雷",
+   "kickoff": "2026-09-09 03:00",
+   "pick": "had 主胜",
+   "odds": "1.65",
+   "star": 2,
+   "grade": "C",
+   "dc": null,
+   "fused": [
+    0.5368,
+    0.2331,
+    0.2301
+   ],
+   "fusedPre": [
+    0.5368,
+    0.2331,
+    0.2301
+   ],
+   "final": 0.5368,
+   "chain": null,
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": -0.1143,
+   "inPlan": "翻身",
+   "note": "多特主场6-1-3主胜0.54；黄潜近10 4-2-4不稳；翻身档CRS 1:0@10.0",
+   "mkt3": [
+    0.5368,
+    0.2331,
+    0.2301
+   ],
+   "topScores": null,
+   "hhad": null,
+   "insight": {
+    "home": {
+     "rank": "",
+     "seasonWDL": "--",
+     "injuries": 0,
+     "injNames": [],
+     "last10": "6-1-3",
+     "venue10": "6-1-3",
+     "gpg10": "2.1"
+    },
+    "away": {
+     "rank": "",
+     "seasonWDL": "--",
+     "injuries": 0,
+     "injNames": [],
+     "last10": "4-2-4",
+     "venue10": "2-4-4",
+     "gpg10": "1.8"
+    },
+    "h2h": {
+     "statistics": {
+      "drawMatchCnt": 0,
+      "drawProbability": "0%",
+      "goalCnt": 0,
+      "lossGoalCnt": 0,
+      "lossGoalMatchCnt": 1,
+      "lossProbability": "50%",
+      "netGoal": 0,
+      "sportteryTeamId": 0,
+      "teamId": 0,
+      "teamShortName": "多特蒙德",
+      "totalLegCnt": 2,
+      "winGoalMatchCnt": 1,
+      "winProbability": "50%"
+     },
+     "matches": [
+      {
+       "date": "2025-11-26",
+       "home": "多特蒙德",
+       "score": "4:0",
+       "ht": "1:0",
+       "away": "比利亚雷",
+       "winner": "home"
+      },
+      {
+       "date": "2022-07-23",
+       "home": "多特蒙德",
+       "score": "0:2",
+       "ht": "0:1",
+       "away": "比利亚雷",
+       "winner": "away"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "idx": 14,
+   "code": "周二010",
+   "league": "欧冠",
+   "match": "里尔 vs 贝蒂斯",
+   "kickoff": "2026-09-09 03:00",
+   "pick": "had 主胜",
+   "odds": "1.90",
+   "star": 2,
+   "grade": "C",
+   "dc": null,
+   "fused": [
+    0.4659,
+    0.2683,
+    0.2658
+   ],
+   "fusedPre": [
+    0.4659,
+    0.2683,
+    0.2658
+   ],
+   "final": 0.4659,
+   "chain": null,
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": -0.1148,
+   "inPlan": null,
+   "note": "里尔主场3-4-3平局偏多主胜0.47；贝蒂斯客场5-1-4不弱；均势场无极值",
+   "mkt3": [
+    0.4659,
+    0.2683,
+    0.2658
+   ],
+   "topScores": null,
+   "hhad": null,
+   "insight": {
+    "home": {
+     "rank": "",
+     "seasonWDL": "--",
+     "injuries": 0,
+     "injNames": [],
+     "last10": "5-3-2",
+     "venue10": "3-4-3",
+     "gpg10": "1.8"
+    },
+    "away": {
+     "rank": "",
+     "seasonWDL": "--",
+     "injuries": 0,
+     "injNames": [],
+     "last10": "6-1-3",
+     "venue10": "5-1-4",
+     "gpg10": "1.5"
+    },
+    "h2h": {
+     "statistics": {
+      "drawMatchCnt": 1,
+      "drawProbability": "100%",
+      "goalCnt": 0,
+      "lossGoalCnt": 0,
+      "lossGoalMatchCnt": 0,
+      "lossProbability": "0%",
+      "netGoal": 0,
+      "sportteryTeamId": 0,
+      "teamId": 0,
+      "teamShortName": "里尔",
+      "totalLegCnt": 1,
+      "winGoalMatchCnt": 0,
+      "winProbability": "0%"
+     },
+     "matches": [
+      {
+       "date": "2018-07-29",
+       "home": "贝蒂斯",
+       "score": "2:2",
+       "ht": "-:-",
+       "away": "里尔",
+       "winner": "draw"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "idx": 15,
+   "code": "周二011",
+   "league": "欧冠",
+   "match": "波尔图 vs 曼城",
+   "kickoff": "2026-09-09 03:00",
+   "pick": "had 客胜",
+   "odds": "1.48",
+   "star": 2,
+   "grade": "C",
+   "dc": null,
+   "fused": [
+    0.1827,
+    0.2187,
+    0.5986
+   ],
+   "fusedPre": [
+    0.1827,
+    0.2187,
+    0.5986
+   ],
+   "final": 0.5986,
+   "chain": null,
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": -0.1141,
+   "inPlan": "N轨",
+   "note": "曼城客胜0.60；波尔图主场8-2-0豪门含金量存疑；N轨叙事票P014选CRS 1:0主胜为纯剧本轨与方向相反——影子数据用",
+   "mkt3": [
+    0.1827,
+    0.2187,
+    0.5986
+   ],
+   "topScores": null,
+   "hhad": null,
+   "insight": {
+    "home": {
+     "rank": "",
+     "seasonWDL": "--",
+     "injuries": 0,
+     "injNames": [],
+     "last10": "8-1-1",
+     "venue10": "8-2-0",
+     "gpg10": "1.7"
+    },
+    "away": {
+     "rank": "",
+     "seasonWDL": "--",
+     "injuries": 0,
+     "injNames": [],
+     "last10": "6-2-2",
+     "venue10": "6-3-1",
+     "gpg10": "1.7"
+    },
+    "h2h": {
+     "statistics": {
+      "drawMatchCnt": 1,
+      "drawProbability": "50%",
+      "goalCnt": 0,
+      "lossGoalCnt": 0,
+      "lossGoalMatchCnt": 1,
+      "lossProbability": "50%",
+      "netGoal": 0,
+      "sportteryTeamId": 0,
+      "teamId": 0,
+      "teamShortName": "波尔图",
+      "totalLegCnt": 2,
+      "winGoalMatchCnt": 0,
+      "winProbability": "0%"
+     },
+     "matches": [
+      {
+       "date": "2020-12-02",
+       "home": "波尔图",
+       "score": "0:0",
+       "ht": "0:0",
+       "away": "曼城",
+       "winner": "draw"
+      },
+      {
+       "date": "2020-10-22",
+       "home": "曼城",
+       "score": "3:1",
+       "ht": "1:1",
+       "away": "波尔图",
+       "winner": "away"
+      }
+     ]
+    }
+   }
+  }
+ ]
+}

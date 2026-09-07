@@ -164,7 +164,7 @@ def strip_play(pick: str) -> str:
     directionHit 判 None（2026-08-23 周六028 5-0 主胜漏判事故）。
     """
     parts = pick.split(" ", 1)
-    body = parts[1].strip() if parts[0] in PLAY_PREFIXES and len(parts) == 2 else pick
+    body = parts[1].strip() if parts[0].upper() in PLAY_PREFIXES and len(parts) == 2 else pick
     body = re.sub(r"[（(][^（）()]*[)）]", " ", body)
     return body.replace("维持", "").replace("存续", "").strip()
 
@@ -417,8 +417,10 @@ def leg_hit(leg: dict, score: tuple[int, int], half: tuple[int | None, int | Non
 
 
 def hhad_hit(pick: str, hg: int, ag: int) -> bool | None:
-    """让球腿判定：让球线取 pick 括号内数字（-2=主让2），主队 +line vs 客队后判三向。"""
-    m_line = re.search(r"[（(]\s*([+-]?\d+)\s*[)）]", pick)
+    """让球腿判定：让球线取 pick 首个括号内数字（-2=主让2，允许括号内带注释如
+    '(+2,巴萨净胜3+)'——T024 周日013 腿注释污染旧全括号正则致卡 pending 教训），
+    主队 +line vs 客队后判三向。"""
+    m_line = re.search(r"[（(]\s*([+-]?\d+)", pick)
     if not m_line:
         return None
     line = int(m_line.group(1))

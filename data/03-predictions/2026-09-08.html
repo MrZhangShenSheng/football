@@ -1,0 +1,196 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2026-09-08 轮预测 v8 · 周一晚~周二欧冠</title><style>
+:root{--bg:#10141c;--card:#1a2030;--card2:#141926;--tx:#e8ecf4;--tx2:#9aa7bd;--line:#2a3450;
+--acc:#4da3ff;--ok:#3ecf8e;--warn:#ffb454;--bad:#ff6b7a;--gold:#e8c36a;--purple:#b48aff}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font:14px/1.65 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;padding:24px}
+.wrap{max-width:1120px;margin:0 auto}
+h1{font-size:21px;margin-bottom:4px}h2{font-size:16px;margin:26px 0 10px;display:flex;align-items:center;gap:8px}
+.sub{color:var(--tx2);font-size:12.5px;margin-bottom:18px}
+.banner{background:linear-gradient(135deg,#20304a,#1a2438);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:18px;font-size:13px}
+.banner b{color:var(--warn)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:14px}
+.tier{border-left:3px solid var(--acc)}
+.tier.close{border-left-color:var(--tx2)}
+.tier.upset{border-left-color:var(--purple)}
+.tier.lotto{border-left-color:var(--gold)}
+.tier.draw{border-left-color:var(--ok)}
+.tier h3{font-size:15px;margin-bottom:6px;display:flex;gap:8px;align-items:center}
+.tier .stake{color:var(--warn);font-weight:600}
+.tag{display:inline-block;font-size:11px;padding:1px 8px;border-radius:10px;background:#26304a;color:var(--tx2);margin-left:6px}
+table{width:100%;border-collapse:collapse;font-size:12.8px}
+th{color:var(--tx2);text-align:left;font-weight:500;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:6px 8px;border-bottom:1px solid #202840;vertical-align:top}
+tr:last-child td{border-bottom:none}
+.num{font-variant-numeric:tabular-nums}
+.ev+{color:var(--ok)}.ev-{color:var(--bad)}
+.star{color:var(--gold);letter-spacing:1px}
+.exc{color:var(--tx2)}
+.legs td:first-child{color:var(--acc);white-space:nowrap}
+.note{font-size:12px;color:var(--tx2);margin-top:8px;padding-top:8px;border-top:1px dashed #26304a}
+.src{font-size:11.5px;color:var(--tx2)}
+.mtch-hd{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px}
+.mtch-hd .code{color:var(--acc);font-weight:600}
+.pill{font-size:11px;padding:1px 7px;border-radius:9px}
+.pill.A{background:#123524;color:var(--ok)}.pill.B{background:#3a2e12;color:var(--warn)}.pill.C{background:#26304a;color:var(--tx2)}.pill.D{background:#3a1620;color:var(--bad)}
+.pbar{display:flex;height:14px;border-radius:7px;overflow:hidden;margin:6px 0;font-size:10px;color:#0d1117;font-weight:600}
+.pbar div{display:flex;align-items:center;justify-content:center;min-width:0}
+.pb-h{background:var(--acc)}.pb-d{background:var(--tx2)}.pb-a{background:var(--bad)}
+.kv{display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px;color:var(--tx2);margin-top:6px}
+.kv b{color:var(--tx)}
+svg.ic{width:15px;height:15px;vertical-align:-2px}
+</style></head><body>
+<svg style="display:none">
+<symbol id="i-ticket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v3a3 3 0 0 0 0 6v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a3 3 0 0 0 0-6z"/><path d="M13 5v2M13 11v2M13 17v2"/></symbol>
+<symbol id="i-pick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 3v6c0 4.5-3.5 8-8 9-4.5-1-8-4.5-8-9V6z"/></symbol>
+<symbol id="i-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17.5v.5"/></symbol>
+<symbol id="i-data" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></symbol>
+</svg>
+<div class="wrap">
+<h1><svg class="ic"><use href="#i-data"/></svg> 2026-09-08 轮预测 · v8 <span class="tag">周一晚9场 + 周二欧冠6场</span></h1>
+<div class="sub">生成 2026-09-07 17:00 前后 · 数据截至 16:49 体彩采集 + insight 15 场 · 融合=dc_predict.fuse 对数意见池(a=0.4,b=1.0) · <b>单锚模式（fd 2526+2627 CSV 全 503，市场腿=体彩即时价去水）</b></div>
+
+<div class="banner"><svg class="ic"><use href="#i-warn"/></svg> <b>轮次定性：</b>保底档连续第 2 轮关档（合格腿 0&lt;5）——fd 断粮下 DC 开季 λ 模板化+分歧熔断按设计工作，无合格腿不硬凑。欧冠 6 场全部无 DC 市场锚自参照（EV≈-11.4%=体彩水位，无边际）。周一007 葡超 DC 参数污染场（λ=3.31）回避。出票卡 approved=false 待拍板；影子层 14 张 374 元已登记（P014 日期口径已修正 09-07→09-09）。</div>
+
+<h2><svg class="ic"><use href="#i-ticket"/></svg> 第1层 · 出单摘要卡（本轮推演 8 元 = 翻身6 + 彩票2 · 另 N轨2）</h2>
+
+<div class="card tier close">
+<h3><svg class="ic"><use href="#i-shield"/></svg>保底档 <span class="tag">had-3*4*5</span><span class="stake" style="margin-left:auto">0元(关档)</span></h3>
+<table class="legs"><tr><td colspan=2 class=exc>（关档无腿）</td></tr></table>
+<div class="note">合格腿0&lt;5关档：意甲/西甲/葡超 fd 锚白名单场全被分歧熔断或低EV卡住·周一007参数污染4选项熔断(主胜11.9pp最重)·周一002让球客胜5.2pp熔断·铁律10无锚场(瑞超/沙职/巴甲/欧冠)禁入</div>
+</div>
+
+<div class="card tier upset">
+<h3><svg class="ic"><use href="#i-ticket"/></svg>翻身档 <span class="tag">跨池2串1×3注</span><span class="stake" style="margin-left:auto">6元(2元×3注)</span></h3>
+<table class="legs">
+<tr><td>注①</td><td>周二002 CRS 0:1@14.0 (q=0.0899 EV+25.9%) × 周一008 CRS 1:0@11.0 (q=0.1032 EV+13.5%) · 合赔154 · 回款308</td></tr>
+<tr><td>注②</td><td>周二003 CRS 1:0@10.5 (q=0.1032 EV+8.4%) × 周二009 CRS 1:0@10.0 (q=0.1032 EV+3.2%) · 合赔105 · 回款210</td></tr>
+<tr><td>注③</td><td>周一003 TTG s2@4.5 (q=0.2264 EV+1.9%) × 周一006 CRS 2:0@13.0 (q=0.0776 EV+0.9%) · 合赔58.5 · 回款117</td></tr>
+</table>
+<div class="note">freq 口径 EV 排序·同场≤1腿·seq15 奇=2串1轮·<b>警示：周二002/003 欧冠场 freq q 来自全局池收缩，无 DC 交叉验证，可靠性低于联赛场</b></div>
+</div>
+
+<div class="card tier lotto">
+<h3><svg class="ic"><use href="#i-ticket"/></svg>彩票档 <span class="tag">had+hhad-4串1×1倍</span><span class="stake" style="margin-left:auto">2元</span></h3>
+<table class="legs">
+<tr><td>周一008</td><td>HHAD 让球主胜(让+1) @1.66 q/p=0.578 EV <span class="ev- num">-4.1%</span></td></tr>
+<tr><td>周一004</td><td>HAD 客胜@1.49 q/p=0.5996 EV <span class="ev- num">-10.7%</span></td></tr>
+<tr><td>周一005</td><td>HAD 主胜@1.12 q/p=0.7857 EV <span class="ev- num">-12.0%</span></td></tr>
+<tr><td>周一006</td><td>HHAD 让球主胜(让+1) @1.40 q/p=0.5921 EV <span class="ev- num">-17.1%</span></td></tr>
+</table>
+<div class="note">全中≈7.7元(合赔3.87)·卡口径 p 全中≈16.1%·彩票性质EV全线为负(体彩水位11~17%)·周一005 新月0.786为唯一A级胆</div>
+</div>
+
+<div class="card tier draw">
+<h3><svg class="ic"><use href="#i-ticket"/></svg>平局轨 <span class="tag">had平单关</span><span class="stake" style="margin-left:auto">0元(关档)</span></h3>
+<table class="legs"><tr><td colspan=2 class=exc>（关档无腿）</td></tr></table>
+<div class="note">周一002赫塔费 DC平42.4%极差8.1pp四条过但 poolSingle.HAD=0 第五条拦截——<b>09-04周四001实证平腿命中被混串捆绑 + 09-06复盘后第三次复现，规则不硬凑</b></div>
+</div>
+
+<div class="card"><h3>方案层概率</h3>
+<div class="kv">
+<span>彩票4串全中 <b>≈16.1%</b> → 7.7元</span>
+<span>翻身注①/②/③ <b>0.93% / 1.07% / 1.76%</b>（回款308/210/117元）</span>
+<span>翻身至少中一注 <b>≈3.7%</b></span>
+<span>N轨CRS 2串1（波尔图1:0×卡尔马1:0）<b>叙事轨不计p</b> → 回款510元</span></div>
+<div class="note">耦合说明：周一008 彩票腿 HHAD+1(主不败) 与翻身注① CRS 1:0 <b>同向正相关</b>（1:0 发生时让+1必中）；周一006 彩票腿与注③ CRS 2:0 同理。翻身注与 N 轨方向独立。</div></div>
+
+<h2><svg class="ic"><use href="#i-pick"/></svg> 第2层 · 15 场评级总表</h2>
+
+<div class="card">
+<table>
+<tr><th>场次</th><th>对阵</th><th>评级</th><th>方向</th><th>@赔率</th><th>fused</th><th>EV</th><th>入档</th><th>判语</th></tr>
+<tr><td>周一001</td><td>卡利亚里 vs 莱切</td><td><span class="pill C">C·★★</span></td><td>had 主胜</td><td class="num">1.86</td><td class="num">0.49</td><td class="num ev-">-8.6%</td><td>—</td><td>中游混战，模型市场一致</td></tr>
+<tr><td>周一002</td><td>赫塔费 vs 塞尔塔</td><td><span class="pill B">B·★★★</span></td><td>had 平局</td><td class="num">2.58</td><td class="num">0.37</td><td class="num ev-">-4.9%</td><td>平局轨拦截</td><td>DC λh=0.57超低攻+0-0比分27.9%居首</td></tr>
+<tr><td>周一003</td><td>马尔默 vs 索尔纳</td><td><span class="pill C">C·★★</span></td><td>had 主胜</td><td class="num">1.67</td><td class="num">0.52</td><td class="num ev-">-12.9%</td><td>翻身(注③)</td><td>模型-近况背离F9警示（主队主场近10仅3-1-6）</td></tr>
+<tr><td>周一004</td><td>卡尔马 vs 佐加顿斯</td><td><span class="pill B">B·★★★</span></td><td>had 客胜</td><td class="num">1.49</td><td class="num">0.60</td><td class="num ev-">-10.7%</td><td>彩票</td><td>佐加顿斯第3近10 7-1-2，市场已定价</td></tr>
+<tr><td>周一005</td><td>利雅新月 vs 新未来SC</td><td><span class="pill A">A·★★★★</span></td><td>had 主胜</td><td class="num">1.12</td><td class="num">0.79</td><td class="num ev-">-12.0%</td><td>彩票</td><td>5-0-0领跑近10全胜场均2.6，唯一胆</td></tr>
+<tr><td>周一006</td><td>乌迪内斯 vs 拉齐奥</td><td><span class="pill B">B·★★★</span></td><td>had 客胜</td><td class="num">2.47</td><td class="num">0.40</td><td class="num ev-">-0.6%</td><td>彩票+翻身</td><td>拉齐奥2-0-0近10 8-0-2，近零边际</td></tr>
+<tr><td>周一007</td><td>埃斯托里 vs 阿罗卡</td><td><span class="pill D">D·★</span></td><td>回避</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td>—</td><td>DC参数污染（λ=3.31 主0.76 vs 市场0.38）</td></tr>
+<tr><td>周一008</td><td>埃尔切 vs 皇家社会</td><td><span class="pill C">C·★★</span></td><td>hhad 让+1主胜</td><td class="num">1.66</td><td class="num">0.58</td><td class="num ev-">-4.1%</td><td>彩票+翻身</td><td>升班马主场受让不败保护带，top比分1-1</td></tr>
+<tr><td>周一009</td><td>维多利亚 vs 格雷米奥</td><td><span class="pill C">C·★★</span></td><td>had 平局</td><td class="num">3.10</td><td class="num">0.29</td><td class="num ev-">-11.3%</td><td>—</td><td>巴甲保级六分战低进球，无DC市场锚</td></tr>
+<tr><td>周二002</td><td>雅典AEK vs LASK林茨</td><td><span class="pill C">C·★★</span></td><td>had 主胜</td><td class="num">1.68</td><td class="num">0.53</td><td class="num ev-">-11.4%</td><td>翻身(注①)</td><td>欧冠首轮无DC；LASK奥甲9-0-1跨强度存疑</td></tr>
+<tr><td>周二003</td><td>布鲁日 vs 维拉</td><td><span class="pill D">D·★</span></td><td>观察</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td>翻身(注②)</td><td>维拉近10 2-1-7崩盘 vs 市场仍客胜0.39——情报-市场背离</td></tr>
+<tr><td>周二008</td><td>皇马 vs 国际米兰</td><td><span class="pill B">B·★★★</span></td><td>had 主胜</td><td class="num">1.45</td><td class="num">0.61</td><td class="num ev-">-11.5%</td><td>—</td><td>伯纳乌焦点战，国米6-4-0不败有韧性</td></tr>
+<tr><td>周二009</td><td>多特蒙德 vs 比利亚雷</td><td><span class="pill C">C·★★</span></td><td>had 主胜</td><td class="num">1.65</td><td class="num">0.54</td><td class="num ev-">-11.4%</td><td>翻身(注②)</td><td>多特主场6-1-3，黄潜不稳</td></tr>
+<tr><td>周二010</td><td>里尔 vs 贝蒂斯</td><td><span class="pill C">C·★★</span></td><td>had 主胜</td><td class="num">1.90</td><td class="num">0.47</td><td class="num ev-">-11.5%</td><td>—</td><td>里尔主场3-4-3平局偏多，均势无极值</td></tr>
+<tr><td>周二011</td><td>波尔图 vs 曼城</td><td><span class="pill C">C·★★</span></td><td>had 客胜</td><td class="num">1.48</td><td class="num">0.60</td><td class="num ev-">-11.4%</td><td>N轨</td><td>波尔图主场8-2-0含金量存疑；N轨反手1:0叙事</td></tr>
+</table>
+<div class="note">欧冠 6 场 EV 恒为-11.4%=体彩含水（市场锚自参照无边际）——只作影子层数据积累与串关材料参考。<br>HHAD 让球线口径：作用于主队（让+1=主队受让，让球主胜=主队不败；让-1=主队让球）。</div>
+</div>
+
+<h2><svg class="ic"><use href="#i-eye"/></svg> 第3层 · 五个关键信号场</h2>
+
+<div class="card">
+<div class="mtch-hd"><div><span class="code">周一002</span> · 西甲(R3) · 赫塔费 vs 塞尔塔 <span class="pill B">B级</span></div>
+<div><span class="star">★★★</span> <b>had 平局</b> @2.58 · EV <span class="ev- num">-4.9%</span> · fused 36.9%</div></div>
+<div class="pbar"><div class="pb-h" style="width:33%">33</div><div class="pb-d" style="width:37%">37</div><div class="pb-a" style="width:30%">30</div></div>
+<div class="kv"><span>DC [0.230, 0.424, 0.346]</span><span>λ 0.573/0.764</span><span>0-0 比分概率 <b>27.9% 居首</b></span><span>体彩 2.37/2.58/3.13</span></div>
+<div class="note">赫塔费赛季1-0-2进攻哑火（场均0.9球）+主场近10 7-0-3韧性型——DC 极度看平。可惜 poolSingle.HAD=0 无单关资格，平局轨连续第三次被第五条拦截。若入混串必被捆绑，纪律优先。</div>
+</div>
+
+<div class="card">
+<div class="mtch-hd"><div><span class="code">周一005</span> · 沙职(R6) · 利雅新月 vs 新未来SC <span class="pill A">A级</span></div>
+<div><span class="star">★★★★</span> <b>had 主胜</b> @1.12 · EV <span class="ev- num">-12.0%</span> · fused 78.6%</div></div>
+<div class="pbar"><div class="pb-h" style="width:79%">79</div><div class="pb-d" style="width:15%">15</div><div class="pb-a" style="width:7%">7</div></div>
+<div class="kv"><span>DC [0.763, 0.184, 0.053]</span><span>λ 2.301/0.513</span><span>新月 5-0-0 领跑 · 近10全胜场均2.6</span><span>HHAD -2 让两球 (2.35/4.12/2.18)</span></div>
+<div class="note">本轮唯一A级胆（沙职本地源 DC 434场拟合 holdout 0.953）。1.12 超低赔走彩票档合格通道；搏深盘可看 HHAD-2 让球主胜 fused 0.36@2.35（升指备选，未入档）。</div>
+</div>
+
+<div class="card">
+<div class="mtch-hd"><div><span class="code">周一007</span> · 葡超(R4) · 埃斯托里 vs 阿罗卡 <span class="pill D">D级</span></div>
+<div><span class="star">★</span> <b>回避</b></div></div>
+<div class="pbar"><div class="pb-h" style="width:50%">50</div><div class="pb-d" style="width:24%">24</div><div class="pb-a" style="width:26%">26</div></div>
+<div class="kv"><span>DC [0.765, 0.133, 0.102]</span><span>市场去水 [0.377, 0.273, 0.350]</span><span>λh=<b>3.308 参数污染</b></span><span>top比分 3-1/2-1/3-0 全主队大胜=污染痕迹</span></div>
+<div class="note">埃斯托里开季 0-1-3 崩盘未进 DC 样本（缓存153场新鲜但含旧季参数），dc主胜0.76 vs 市场0.38 差11.9pp——彩票档 4 选项全部熔断。top 比分全是大胜形态，参数不可信。本场只信市场（均势），回避。</div>
+</div>
+
+<div class="card">
+<div class="mtch-hd"><div><span class="code">周一003</span> · 瑞超(R20) · 马尔默 vs 索尔纳 <span class="pill C">C级</span></div>
+<div><span class="star">★★</span> <b>had 主胜</b> @1.67 · EV <span class="ev- num">-12.9%</span> · fused 52.2%</div></div>
+<div class="pbar"><div class="pb-h" style="width:52%">52</div><div class="pb-d" style="width:23%">23</div><div class="pb-a" style="width:24%">24</div></div>
+<div class="kv"><span>DC [0.499, 0.244, 0.256]</span><span>马尔默主场近10 <b>3-1-6</b></span><span>索尔纳近10 <b>8-1-1</b> 客场6-3-1</span><span>伤停：马尔默主力后卫扬松</span></div>
+<div class="note">F9 背离警示场：模型主胜 0.52 与近况严重矛盾（马尔默主场崩+索尔纳状态火热）。翻身档只取 TTG s2 总2球@4.5（中性进球叙事，不押方向）。方向腿不建议跟。</div>
+</div>
+
+<div class="card">
+<div class="mtch-hd"><div><span class="code">周二003</span> · 欧冠联赛阶段R1 · 布鲁日 vs 维拉 <span class="pill D">D级</span></div>
+<div><span class="star">★</span> <b>观察</b> · 市场客胜 0.394</div></div>
+<div class="pbar"><div class="pb-h" style="width:34%">34</div><div class="pb-d" style="width:26%">26</div><div class="pb-a" style="width:39%">39</div></div>
+<div class="kv"><span>市场去水 [0.341, 0.265, 0.394]</span><span>布鲁日主场近10 <b>8-1-1</b></span><span>维拉近10 <b>2-1-7 崩盘</b></span><span>翻身注② CRS 1:0@10.5</span></div>
+<div class="note">情报-市场背离场：维拉状态崩盘但市场仍以英超实力差定价客胜。无 DC 无法仲裁，纯观察。翻身注②取 1:0 主胜为 freq 池叙事腿——欧冠 q 全局池收缩，人审留意。</div>
+</div>
+
+<h2><svg class="ic"><use href="#i-warn"/></svg> 第4层 · 风险与纪律对照</h2>
+<div class="card">
+<table>
+<tr><th>项</th><th>状态</th><th>说明</th></tr>
+<tr><td>DC分歧熔断</td><td><span class="pill B">5选项</span></td><td>周一002让球客胜5.2pp·周一007主胜11.9pp/客胜8.5pp/让球主胜9.4pp/让球客胜10.4pp——全不入档</td></tr>
+<tr><td>欧冠6场无DC</td><td><span class="pill B">市场锚</span></td><td>EC0非欧冠（fd英低级别）；欧冠联赛阶段R1开打前无赛程样本，设计内走全局池+市场去水，EV自参照≈-水位</td></tr>
+<tr><td>freq q 欧冠可靠性</td><td><span class="pill B">低</span></td><td>翻身档4条CRS腿中3条为欧冠场，q 来自全局池收缩无联赛频率支撑——影子层积累数据，实票不跟</td></tr>
+<tr><td>单锚模式</td><td><span class="pill B">持续</span></td><td>fd 2526+2627 CSV 全503（Pinnacle收盘锚断粮），市场腿=体彩即时价去水，锚偏差≈5pp已按设计降档（保底连关2轮）</td></tr>
+<tr><td>影子层</td><td><span class="pill C">14张374元</span></td><td>P001-P013挂2026-09-08销售日（周一编号9场）+P014挂2026-09-09（narrative跨日票，日期已修正）</td></tr>
+<tr><td>实票仓位</td><td><span class="pill C">0元</span></td><td>本轮无实票建议（保底关档+翻身/彩票为推演卡 approved=false）；T024 周一008 HHAD+1 @1.53 一腿待今晚定生死</td></tr>
+</table>
+</div>
+
+<h2><svg class="ic"><use href="#i-data"/></svg> 数据来源清单</h2>
+<div class="card src">
+<ul style="list-style:none">
+<li>· engine/cache/sporttery_matches.json（15场赛程+五池赔率，体彩 2026-09-07 16:49）</li>
+<li>· engine/cache/score_odds/2026-09-07.json（全玩法赔率日存档）</li>
+<li>· engine/cache/sporttery_insight_20413{20~28,46,47,52,53,76,54}.json（单场情报15场：伤停/近10/H2H/排名，zqdz口径）</li>
+<li>· engine/cache/{italy-serie-a,spain-laliga,portugal-primeira,brazil}_dc.json（fd两季联拟缓存）+ {sweden,saudi}_dc.json（本地源09-07重拟合 396/434场）</li>
+<li>· engine/cache/round_20260908-pred.json（本轮DC矩阵/融合/HHAD推导中间产物）</li>
+<li>· data/01-teams/*.json（30队画像 2026-09-07 insight 刷新，3队冷启动创建）</li>
+<li>· data/00-leagues/*.json（19联赛画像，update 重建）</li>
+<li>· data/03-predictions/2026-09-07-boldplay.json（阶梯出票卡 v5.6 三档制·method=freq）+ 2026-09-07-narrative.json（N轨剧本）</li>
+<li>· data/02-results/2026-09-08.json（本轮预测归档，v8）</li>
+</ul>
+</div>
+
+<div class="sub" style="margin-top:14px">生成：Claude（engine/scripts 全链路+人工评级层）· 开发者 sszhang · 2026-09-07</div>
+</div></body></html>

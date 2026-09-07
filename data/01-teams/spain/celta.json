@@ -3,8 +3,8 @@
  "name": "Celta Vigo",
  "nameZh": "塞尔塔",
  "league": "spain",
- "lastUpdated": "2026-09-03",
- "source": "cold-start: league standings + manual name map",
+ "lastUpdated": "2026-09-07",
+ "source": "sporttery insight 2026-09-07",
  "standing": {
   "pos": 12,
   "played": 0,
@@ -18,8 +18,19 @@
  },
  "elo": null,
  "form": [],
- "injuries": [],
- "notes": "冷启动基础画像（积分榜），待深度采集补充",
+ "injuries": [
+  {
+   "name": "Aleix Febas",
+   "pos": "中场",
+   "starter": true
+  },
+  {
+   "name": "Borja Iglesias",
+   "pos": "前锋",
+   "starter": false
+  }
+ ],
+ "notes": "西甲R4 排名17（0胜2平2负）；近10 3胜5平2负；近10客场 2胜5平3负；近10场均进1.1球；伤停2人(主力1)",
  "team": "塞尔塔",
  "insight": {
   "fetchedAt": "2026-09-03",
@@ -50,5 +61,12 @@
     }
    ]
   }
- }
+ },
+ "season": "2026",
+ "rank": "17",
+ "leagueRound": "西甲R4",
+ "last10": "3胜5平2负",
+ "last10home": "2胜5平3负",
+ "goalsPerGame10": "1.1",
+ "starterInjuries": 1
 }

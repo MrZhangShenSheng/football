@@ -1,12 +1,8 @@
 # engine/tests/test_paper_track.py
 import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).parent.parent / "scripts" / "scratch" / "replay_v2"))
-import pytest
-# paper.py 顶层 import shapes——shapes.py/data.py 属 scratch(已 gitignore 不入库)，
-# fresh clone 缺 shapes 时跳过本模块而非炸全仓收集(final-fix I-1)
-pytest.importorskip("shapes")
-import paper
+sys.path.insert(0, str(Path(__file__).parent.parent / "shadow"))
+import paper   # 2026-09-07 迁址后 shapes 懒加载——track 单测不再依赖 shapes.py（已丢失待重建）
 
 def test_old_ticket_defaults_track_a():
     t = {"id": "S001", "spec_name": "x", "legs": [], "cost": 2}   # 旧影子票无track

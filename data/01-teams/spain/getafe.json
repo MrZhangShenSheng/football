@@ -3,8 +3,8 @@
  "name": "Getafe",
  "nameZh": "赫塔费",
  "league": "spain",
- "lastUpdated": "2026-08-22",
- "source": "cold-start + espn/fd recent results",
+ "lastUpdated": "2026-09-07",
+ "source": "sporttery insight 2026-09-07",
  "standing": {
   "pos": 20,
   "played": 1,
@@ -33,6 +33,30 @@
    "result": "L"
   }
  ],
- "injuries": [],
- "notes": "冷启动基础画像（积分榜），待深度采集补充"
+ "injuries": [
+  {
+   "name": "Juanmi",
+   "pos": "前锋",
+   "starter": false
+  },
+  {
+   "name": "A. Abqar",
+   "pos": "后卫",
+   "starter": true
+  },
+  {
+   "name": "C. Uche",
+   "pos": "中场",
+   "starter": false
+  }
+ ],
+ "notes": "西甲R4 排名15（1胜0平2负）；近10 3胜2平5负；近10主场 7胜0平3负；近10场均进0.9球；伤停3人(主力1)",
+ "team": "赫塔费",
+ "season": "2026",
+ "rank": "15",
+ "leagueRound": "西甲R4",
+ "last10": "3胜2平5负",
+ "last10home": "7胜0平3负",
+ "goalsPerGame10": "0.9",
+ "starterInjuries": 1
 }

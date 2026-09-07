@@ -28,7 +28,7 @@ STAR_BASE_BOOST = 2             # 星级基线加成(粗估公式: 4硬层全过
 STAR_FLOOR, STAR_CEIL = 1, 5    # 星域 1-5
 PLAY_TYPE_CRS_2X1 = "N-CRS-2x1"  # N-前缀=轨道N票面标记(影子层spec命名同规)
 TRACK_N = "N"                   # 轨道N标记(影子层track分轨·设计§七兼容面④)
-SHADOW_DIR = Path(__file__).parent / "scratch" / "replay_v2"   # 影子层脚本目录(scratch 不入库)
+SHADOW_DIR = Path(__file__).parent.parent / "shadow"   # 影子层脚本目录(2026-09-07 迁 engine/shadow 纳管 git)
 CRS_POOL_KEY_LEN = 6            # 体彩 crs 池键 's01s00' 定长
 SHADOW_MULT_DEFAULT = 1         # v0 mult=None→1倍(shapes.settle 的 BET_UNIT*mult 需数值)
 SHADOW_BET_UNIT = 2             # 单注 2 元(与影子层 shapes.BET_UNIT 同源)
@@ -165,8 +165,8 @@ def _crs_odds(match_by_code: dict, code: str, score: str):
 
 
 def _load_paper():
-    """导入 scratch 影子层 paper 模块(其顶层 import shapes——shapes.py 属 scratch
-    不入库, fresh clone 缺 shapes 时此处抛 ImportError, 由 _shadow_bridge 兜底)"""
+    """导入影子层 paper 模块(engine/shadow·2026-09-07 迁址纳管 git；shapes 已改懒加载,
+    缺失时 register_shadow 内部 RuntimeError, 由 _shadow_bridge 兜底)"""
     sys.path.insert(0, str(SHADOW_DIR))
     import paper
     return paper
