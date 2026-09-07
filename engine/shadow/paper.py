@@ -4,6 +4,12 @@
 真实购买的票走正账 data/06-tickets/tickets.json（testGroup="complex-test" 标记，
 由会话内实票登记流程完成）——本工具只管影子票：测试方案的纯影子对照形状（不购买）。
 
+2026-09-07 迁址事故处置（大哥拍板）：原居 engine/scripts/scratch/replay_v2/（gitignore
+不入库），同目录 shapes.py（回放引擎）/data.py/qcache 与账本 paper_tickets.json 被
+scratch 清理误删且无 git 副本——本文件迁 engine/shadow/ 纳管 git；shapes 改懒加载
+（缺失时报明确错误），账本丢失后从空账重新积累；不凭记忆重建 shapes（口径漂移比
+缺数据更糟）。历史影子票仅 commit message 层面可追溯。
+
 口径：
   - 票结构同 build_ticket 输出（bets/mult/cost 逐字段透传），账本条目 =
     {id, spec_name, track, date, legs, bets, n_bets, mult, cost, result, payout, settledAt}
@@ -24,18 +30,27 @@
     （同目录临时文件 + os.replace，中断不毁账）
 开发者 sszhang"""
 import datetime
-import datetime as _datetime   # L247/L310 无参调用 str(_datetime.date.today()) 的别名修复
+import datetime as _datetime   # shadow_all/settle-all CLI 无参调用 str(_datetime.date.today()) 的别名修复
 import json
 import os
 import shutil
 
-import shapes
-
 HERE = os.path.dirname(os.path.abspath(__file__))
-REPO = os.path.abspath(os.path.join(HERE, '..', '..', '..', '..'))
+REPO = os.path.abspath(os.path.join(HERE, '..', '..'))   # engine/shadow → 仓库根（迁移前 replay_v2 4 层）
 PAPER_FILE = os.path.join(HERE, 'paper_tickets.json')
 ID_PREFIX = 'P'   # 影子票前缀（正账 TNNN，影子 PNNN）
 TRACK_A = 'A'     # 轨道A=EV版（默认轨：旧影子票无 track 与未标轨 spec 均归此；N=叙事版）
+SHADOW_LOST_NOTE = ('shapes.py 已于 2026-09-07 确认丢失（scratch 清理误删·未进 git）——'
+                    '影子层引擎待重建，见本文件头部迁址记录')
+
+
+def _require_shapes():
+    """懒加载 shapes（迁址后引擎文件丢失——缺失时报明确错误而非裸 ImportError 崩全文件）。"""
+    try:
+        import shapes
+    except ImportError:
+        raise RuntimeError(SHADOW_LOST_NOTE) from None
+    return shapes
 
 
 # ── 账本读写（I-3：损坏备份+raise / 原子写）──
@@ -204,7 +219,7 @@ def settle_all(round_results, date=None, path=None):
         if view is None:
             continue                        # 缺赛果保持 pending
         legs, ticket_view = view
-        t['payout'] = shapes.settle(legs, ticket_view)
+        t['payout'] = _require_shapes().settle(legs, ticket_view)
         t['result'] = 'settled'
         t['settledAt'] = datetime.datetime.now().isoformat(timespec='seconds')
         settled.append(t)
@@ -244,7 +259,7 @@ def shadow_all(date=None, out=None):
     幂等：同日同 spec 已登记则跳过。
     """
     import glob as _glob
-    import shapes as _shapes
+    _shapes = _require_shapes()
     date = date or str(_datetime.date.today())
     sm = json.load(open(os.path.join(REPO, 'engine', 'cache', 'sporttery_matches.json')))
     # 当日轮腿构造（HAD 三向去水 + 池价透传）
@@ -306,7 +321,11 @@ if __name__ == '__main__' and len(__import__('sys').argv) > 1 and __import__('sy
 
 if __name__ == '__main__' and len(__import__('sys').argv) > 1 and __import__('sys').argv[1] == 'settle-all':
     # settle-all <比赛日>：影子票对真实赛果结算（赛果自 02-results 主文件/体彩缓存自动对票）
-    import data as _data, glob as _glob, os as _os
+    try:
+        import data as _data   # replay_v2 轮次装载器（2026-09-07 随事故丢失，待随 shapes 重建）
+    except ImportError:
+        raise SystemExit('[settle-all] ' + SHADOW_LOST_NOTE)
+    import glob as _glob, os as _os
     import sys as _sys
     day = _sys.argv[2] if len(_sys.argv) > 2 else str(_datetime.date.today())
     rounds = {r['date']: r['legs'] for r in _data.load_rounds()}
