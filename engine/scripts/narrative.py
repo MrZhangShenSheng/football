@@ -123,13 +123,14 @@ def build_candidate(m: dict, profile: dict, teams: dict, dc: dict | None = None)
                and l.get("layer") != "script")
     had = m.get("had") or {}
     p_mkt = 1.0 / float(had.get("h") or DEFAULT_HAD_ODDS) if had.get("h") else FLAT_P_MKT
-    divergence = SCRIPT_PROB_EST - p_mkt   # 剧本概率粗估-市场隐含(排序用, 非EV)
+    divScore = SCRIPT_PROB_EST - p_mkt   # 剧本概率粗估-市场隐含(排序用, 非EV)——局部变量
+    # 勿与模块级 divergence() 函数同名(遮蔽后函数内再调用 divergence() 会 UnboundLocalError)
     return {"code": m.get("matchNumStr") or m.get("code"), "match": f'{m["home"]}-{m["away"]}',
             "layers": layers, "script": {"score": script_l["score"], "hafu": hafu,
             "dir": "主胜" if hi > ai else "平" if hi == ai else "客胜"},
             "script_source": script_l["source"],
             "star": min(STAR_CEIL, max(STAR_FLOOR, star + STAR_BASE_BOOST)),
-            "divergence": round(divergence, 4)}
+            "divergence": round(divScore, 4)}
 
 def build_narrative(matches, profiles, teams, seq):
     # P1: 逐场接 dc(match_lambdas 失败→None→剧本层降级风格模板), script_source 逐场可追溯

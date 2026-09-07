@@ -113,7 +113,7 @@
   <tr><td>体彩五池存档</td><td class="bad">仅 14 天（08-24~09-06）</td><td>✅ 在售场次全有价</td><td>❌ 只能影子前向积累</td></tr>
   <tr><td>体彩 CRS 池水位</td><td class="bad">33.9%（6场实测 33.6~34.0%）</td><td colspan="2">去水法选型是头号技术风险（侦察1）</td></tr>
   <tr><td>HAD/TTG 池水位</td><td>12.9% / 20.4%</td><td colspan="2">五池水位不一，联立去水分池处理</td></tr>
-  <tr><td>fd Pinnacle 收盘（代理源）</td><td>多季可拉（三向 PSCH/D/A + OU2.5）</td><td>—（赛后才有）</td><td>✅ 但无比分池、无体彩独有联赛（侦察2）</td></tr>
+  <tr><td>fd Pinnacle 收盘（代理源）</td><td>多季可拉（三向 PPCH/PPCD/PPCA + OU2.5）</td><td>—（赛后才有）</td><td>✅ 但无比分池、无体彩独有联赛（侦察2）</td></tr>
   <tr><td>DC 输入（赛果）</td><td class="ok">fd 多季 + league 库</td><td colspan="2">✅ dc_fit 基建成熟</td></tr>
   <tr><td>影子层</td><td>track A|N 已有，无口径维度</td><td colspan="2">双口径靠 spec_name，聚合统计小改（计划B）</td></tr>
 </table>
@@ -143,6 +143,17 @@
   <tr><td>2324</td><td colspan="6">未测（fd 503 + 无本地缓存）</td></tr>
 </table>
 判读：① <b>列完整性非瓶颈</b>——2425 全季五联赛 n 恰等于各联赛理论场次（380/380/306/380/306），即三向收盘与 OU2.5 同时完整率 100%（OU 内 Pinnacle 源 94.7%~100%，B365 fallback 每联赛仅补 0~9 场）；"老赛季列缺失须缩季"的担忧未出现。② <b>样本量 2654 ≥ 2500 过线</b>（2425 全季 1752 + 2526 半季快照 902）；稳健口径仅完整赛季 1752 未独立过线，但 2526 缺口属源端快照截断（整齐停在 1 月上旬，非列问题），fd 恢复后全季应至 1752、2324 补测预期同构（两季满配 3504）。③ <b>段A落地姿势</b>：2425 全季先行开跑，2526/2324 待 fd 限流恢复后 odds_fetch --season 补拉（walk-forward 按赛季分段，防截断快照混入时序）；fd 供数连续性（503 已持续两天）列为段A排期的一号外部依赖。（脚本：engine/scripts/scratch/fd_probe.py，一次性不进 git）
+</div>
+<div style="border-top: 1px dashed #d4ac0d; margin-top: 10px; padding-top: 8px;">
+<b>P0 冒烟结论（2026-09-08 实测回填）：<span class="ok">全链走通——2026-09-06 五池存档 25 场（周日17+周一8）逐场 λ_dc→五池拟合→融合三步全通，fused 覆盖 25/25（100%），fit_err 全程在门槛内，降级分支人造验证正确触发；计划B（段A四线对照）触发条件满足</span></b><br>
+实测口径：Task 3/4/5 接口原样串联（match_lambdas + ρ 缓存补读 → fit_lambdas(crs/had/ttg) → score_engine.matrix(w_dc=0.29) → 剧本域 argmax + divergence），存档 matchDays 两天全部场次，联赛 slug 经 score_ev.map_league（单一映射源）。
+<table>
+  <tr><th>检查项</th><th>实测</th><th>判读</th></tr>
+  <tr><td>fused 覆盖率</td><td class="ok">25/25 = 100%（λ_dc 可得 25 + 五池价可得 25；canonical 口径 22/25 = 88%，挪超/巴甲 3 场 scratch 补映射跑通）</td><td>λ_dc 可得且五池价齐 → 融合链无断点</td></tr>
+  <tr><td>fit_err 分布</td><td class="ok">min 0.0051 / 中位 0.0073 / max 0.0124（门槛 0.02，真实场次 0 超线）</td><td>人造跨池矛盾（had 改 1.30/9.0/14.0）fit_err 0.0404 → dc_only 降级正确触发</td></tr>
+  <tr><td>剧本 vs 真果 sanity</td><td>有真果 12 场方向一致 9/12；强主队例：周日016 阿森纳 λ_fused 1.96|0.91 → 剧本 2:0 → 真果主胜✓、周日015 莫尔德 2:0 → 主胜✓</td><td>方向正（纯 sanity 非指标）；1:1 为最频剧本（18/25），与市场 λ 均衡区一致</td></tr>
+</table>
+发现的问题（入计划B清单）：① <b>map_league 缺挪超/巴甲</b>——生产链 narrative/boldplay 对此 λ_dc=None 降级，但 norway/brazil DC 缓存与版本发布（latest.json norway v4/brazil v4）俱在，统一映射源列计划B首项；② <b>fd 八联赛无 models/ 版本存档 → dc_version=None</b>（25 场中 22 场；仅 norway=4/brazil=4/sweden=11 有版本号）——"防版本混杂"字段在 fd 联赛缺位，段A回测须以 lastFit 缓存指纹或补建版本存档兜底；③ <b>新升班马 λ_DC 极端</b>（周日009 弗洛西诺内 λa=0.025）经融合拉回 0.468、分歧度 0.1901 全场最高——融合对 DC 侧小样本极值阻尼有效，同时印证"分歧度只做排序展示、不算 EV"边界。（脚本：engine/scripts/scratch/smoke_score_engine.py，一次性不进 git）
 </div></div>
 
 <h2>§五 三出口设计</h2>
