@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>统一比分分布引擎 score-engine 设计</title>
+<style>
+  :root { --accent: #c0392b; --ink: #2c3e50; --muted: #7f8c8d; --line: #dcdde1; --bg: #fafafa; }
+  body { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; color: var(--ink); max-width: 980px; margin: 0 auto; padding: 24px 20px; line-height: 1.7; }
+  h1 { font-size: 1.5em; border-bottom: 3px solid var(--accent); padding-bottom: 8px; }
+  h2 { font-size: 1.2em; margin-top: 2em; border-left: 4px solid var(--accent); padding-left: 10px; }
+  h3 { font-size: 1.05em; margin-top: 1.5em; }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.92em; }
+  th, td { border: 1px solid var(--line); padding: 6px 10px; text-align: left; vertical-align: top; }
+  th { background: #f0f0f0; }
+  code { background: #eee; padding: 1px 5px; border-radius: 3px; font-size: 0.9em; }
+  .warn { border-left: 4px solid var(--accent); background: #fdf0ee; padding: 10px 14px; margin: 12px 0; }
+  .ok { color: #1e8449; font-weight: bold; } .bad { color: var(--accent); font-weight: bold; } .mid { color: #d68910; font-weight: bold; }
+  .meta { color: var(--muted); font-size: 0.88em; }
+  figure { margin: 16px 0; } figcaption { color: var(--muted); font-size: 0.85em; text-align: center; margin-top: 6px; }
+  .todo { background: #fef9e7; border: 1px dashed #d4ac0d; padding: 8px 12px; margin: 10px 0; font-size: 0.92em; }
+</style>
+</head>
+<body>
+
+<h1>统一比分分布引擎 score-engine 设计</h1>
+<p class="meta">日期 2026-09-07 · 状态：架构已拍板（大哥 2026-09-07 评审通过），数据地基两项侦察待回填（§四） · 实施计划：docs/plans/2026-09-07-score-engine-p0-plan.html · 开发者 sszhang</p>
+
+<h2>§一 背景与目标</h2>
+<p>当前比分预测分散在两条哲学对立的轨道，且各有短板：</p>
+<ul>
+  <li><b>EV/频率链</b>（freq_band + score_ev）：形状来自联赛真实赛果频率（经验贝叶斯三层收缩 + λ平移高斯核），但位置估计 λ 用手写乘法模型，精度有限。</li>
+  <li><b>剧本链</b>（narrative.py 轨道N）：五层叙事链的第五层"剧本层"只有风格模板粗估（<code>SCRIPT_PROB_EST = 0.25</code>），P1.5 的"λ推导接 dc_predict"未落地——<b>缺的就是比分分布引擎这块芯</b>。</li>
+</ul>
+<p><b>目标：建统一比分分布引擎 score-engine，全链唯一的比分矩阵出口（7×7），三场景共用</b>：</p>
+<ol>
+  <li>剧本轨（narrative）：剧本比分从矩阵推导，分歧度有了精确计算基础；</li>
+  <li>EV轨（freq_band）：平移目标 λ 升级（形状哲学不变）；</li>
+  <li>独立比分报告：每场 Top3/5 比分 + 概率 + 体彩 CRS 赔率对照。</li>
+</ol>
+
+<h2>§二 网络调研摘要（2026-09-07）</h2>
+<table>
+  <tr><th>主流方案</th><th>代表</th><th>本仓对应</th><th>结论</th></tr>
+  <tr><td>双泊松/Dixon-Coles 系</td><td>dashee87 博客、opisthokonta 系列、Koopman &amp; Lit 2015 动态双变量泊松</td><td>dc_fit/dc_predict</td><td class="ok">已有，行业标准</td></tr>
+  <tr><td>市场反推系（机构视角）</td><td>opisthokonta "Expected goals from bookmaker odds"、PenaltyBlog、alexandrugris</td><td>无（仅三向融合）</td><td class="bad">空白，本设计补齐</td></tr>
+  <tr><td>ML/DL 系</td><td>XGBoost 胜平负~65%，比分更差</td><td>goal_engine（评审中）</td><td class="mid">正交，09-27 评审另论</td></tr>
+  <tr><td>实战共识（r/SoccerBetting、r/algobetting）</td><td>泊松矩阵打底 + 比分组（Top3/5/10）打法 + 价值来自赔率错位</td><td>CRS TOP1/3/5 口径</td><td class="ok">对齐</td></tr>
+  <tr><td>经验频率非参数</td><td>几乎无人走</td><td>freq_band</td><td class="ok">本仓特色路线保留</td></tr>
+</table>
+
+<h2>§三 架构：分层混合（市场主导 + DC 兜底）</h2>
+<p>大哥拍板：方案一（分层混合架构）+ 方案三精神（机构视角优先）——有市场定价的场次市场主导，DC 做先验与兜底。复刻 HAD 侧 fusion（DC 0.4 / Pinnacle 1.0）的市场主导实证。</p>
+
+<h3>口径分层</h3>
+<table>
+  <tr><th>场次类型</th><th>矩阵口径</th><th>source 标记</th></tr>
+  <tr><td>有体彩五池价（在售场次全有，含韩职日职）</td><td>λ空间 log 加权融合：λ<sub>fused</sub> = λ<sub>DC</sub><sup>0.29</sup> × λ<sub>市场</sub><sup>0.71</sup></td><td><code>fused</code></td></tr>
+  <tr><td>无五池价（停售/缺价/数据缺失）</td><td>纯 DC 矩阵（λ<sub>DC</sub>, ρ<sub>DC</sub>）</td><td><code>dc_only</code></td></tr>
+</table>
+<div class="warn"><b>权重声明</b>：0.29/0.71 是 HAD 侧三向 logit 空间标定值（0.4/1.0 归一）的移植，<b>λ空间无理论依据，只作初始值</b>，段A回测重标定（§六）。</div>
+
+<figure>
+<svg viewBox="0 0 920 360" xmlns="http://www.w3.org/2000/svg" style="width:100%;color:#2c3e50">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="currentColor"/></marker>
+  </defs>
+  <!-- 输入层 -->
+  <rect x="20" y="30" width="220" height="64" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="130" y="56" text-anchor="middle" font-size="13" font-weight="bold">体彩五池赔率（赛前实时）</text>
+  <text x="130" y="76" text-anchor="middle" font-size="11">dump-odds 日存档 engine/cache/score_odds/</text>
+  <rect x="20" y="150" width="220" height="64" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="130" y="176" text-anchor="middle" font-size="13" font-weight="bold">DC 模型（全联赛）</text>
+  <text x="130" y="196" text-anchor="middle" font-size="11">dc_predict.score_matrix(lh,la,rho)</text>
+  <!-- market_matrix -->
+  <rect x="330" y="60" width="230" height="76" rx="6" fill="none" stroke="#c0392b" stroke-width="2"/>
+  <text x="445" y="86" text-anchor="middle" font-size="13" font-weight="bold">market_matrix.py（新）</text>
+  <text x="445" y="104" text-anchor="middle" font-size="11">五池去水（分池幂次）</text>
+  <text x="445" y="120" text-anchor="middle" font-size="11">拟合 (λm主, λm客, ρm)</text>
+  <!-- score_engine -->
+  <rect x="640" y="90" width="240" height="80" rx="6" fill="none" stroke="#1e8449" stroke-width="2.5"/>
+  <text x="760" y="116" text-anchor="middle" font-size="13" font-weight="bold">score_engine.py（新）</text>
+  <text x="760" y="134" text-anchor="middle" font-size="11">λ log加权融合 → 7×7矩阵</text>
+  <text x="760" y="150" text-anchor="middle" font-size="11">source: fused | dc_only + dcVersion</text>
+  <!-- 出口 -->
+  <rect x="640" y="230" width="240" height="60" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="760" y="254" text-anchor="middle" font-size="12" font-weight="bold">① 剧本轨 narrative</text>
+  <text x="760" y="272" text-anchor="middle" font-size="11">剧本比分+分歧度（不算EV）</text>
+  <rect x="640" y="300" width="240" height="60" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="760" y="324" text-anchor="middle" font-size="12" font-weight="bold">② EV轨 freq_band（λ升级）</text>
+  <text x="760" y="342" text-anchor="middle" font-size="11">形状仍联赛频率·铁律不破</text>
+  <rect x="20" y="260" width="230" height="60" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="135" y="284" text-anchor="middle" font-size="12" font-weight="bold">③ 独立比分报告（HTML）</text>
+  <text x="135" y="302" text-anchor="middle" font-size="11">Top3/5 比分+概率+CRS对照</text>
+  <!-- 箭头 -->
+  <line x1="240" y1="62" x2="330" y2="90" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="330" y1="122" x2="640" y2="118" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="240" y1="182" x2="640" y2="140" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="760" y1="170" x2="760" y2="230" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="760" y1="170" x2="760" y2="230" stroke="currentColor" stroke-width="0"/>
+  <line x1="760" y1="170" x2="760" y2="230" stroke="currentColor" stroke-width="0"/>
+  <line x1="760" y1="170" x2="760" y2="300" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)" transform="translate(20,0)"/>
+  <line x1="640" y1="290" x2="250" y2="290" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+  <!-- 验证层注释 -->
+  <text x="445" y="250" text-anchor="middle" font-size="11" fill="#7f8c8d">段A回测代理源：fd Pinnacle 收盘（三向+OU2.5）</text>
+  <text x="445" y="268" text-anchor="middle" font-size="11" fill="#7f8c8d">无比分池 → 与实战五池口径差须明示（§六）</text>
+</svg>
+<figcaption>图1 · score-engine 数据流：五池+DC 双输入 → market_matrix 拟合 → 融合出口 → 三场景</figcaption>
+</figure>
+
+<h2>§四 数据地基（2026-09-07 现场核查）</h2>
+<table>
+  <tr><th>数据</th><th>存量实测</th><th>实战支持</th><th>回测支持</th></tr>
+  <tr><td>体彩五池存档</td><td class="bad">仅 14 天（08-24~09-06）</td><td>✅ 在售场次全有价</td><td>❌ 只能影子前向积累</td></tr>
+  <tr><td>体彩 CRS 池水位</td><td class="bad">33.9%（6场实测 33.6~34.0%）</td><td colspan="2">去水法选型是头号技术风险（侦察1）</td></tr>
+  <tr><td>HAD/TTG 池水位</td><td>12.9% / 20.4%</td><td colspan="2">五池水位不一，联立去水分池处理</td></tr>
+  <tr><td>fd Pinnacle 收盘（代理源）</td><td>多季可拉（三向 PSCH/D/A + OU2.5）</td><td>—（赛后才有）</td><td>✅ 但无比分池、无体彩独有联赛（侦察2）</td></tr>
+  <tr><td>DC 输入（赛果）</td><td class="ok">fd 多季 + league 库</td><td colspan="2">✅ dc_fit 基建成熟</td></tr>
+  <tr><td>影子层</td><td>track A|N 已有，无口径维度</td><td colspan="2">双口径靠 spec_name，聚合统计小改（计划B）</td></tr>
+</table>
+<div class="todo"><b>待侦察回填</b>：<br>
+侦察1（水位结构实测）→ 决定去水法与 CRS 池在融合中的地位（若冷热抽水扭曲严重，CRS 池降级为分歧度参考，拟合只用 HAD+TTG）<br>
+侦察2（fd 多季拉取验证）→ 决定段A回测样本量（列完整性）<br>
+结论回填本节，设计分支随之定稿。</div>
+
+<h2>§五 三出口设计</h2>
+<table>
+  <tr><th>出口</th><th>输入</th><th>产出</th><th>边界</th></tr>
+  <tr><td>① 剧本轨（P1 落地）</td><td>score_matrix + 剧本域</td><td>剧本比分 = SCRIPT_UNIVERSE 内 argmax；分歧度 = 叙事矩阵 vs 市场矩阵 JSD（只做选场排序）</td><td class="bad">仍不算 EV、不参考市场定价出票——市场矩阵只喂分歧度，边界写死</td></tr>
+  <tr><td>② EV轨（freq_band λ升级）</td><td>λ_fused</td><td>平移目标 λ 从手写乘法模型 → λ_fused；形状仍联赛真实频率；SURVIVE_Q/T_AXIS_GUARD 护栏不动</td><td>降级链：λ_fused 不可得 → 退手写乘法模型 + 标旗</td></tr>
+  <tr><td>③ 独立比分报告</td><td>score_engine.matrix 全量</td><td>每场 Top3/5 比分 + 概率 + 体彩 CRS 赔率对照 + EV（报告轨可算，单独标注）</td><td>口径标记 fused/dc_only 逐场展示；产出节奏：独立命令起步</td></tr>
+</table>
+
+<h2>§六 验证：两段式结构 + 生死线</h2>
+<div class="warn"><b>为什么两段式</b>：体彩五池存档仅 14 天，fused/market_only 线的长历史 walk-forward 做不了；历史市场源只有 fd 收盘（无比分池）。一段式验证在设计上不成立。</div>
+<table>
+  <tr><th>段</th><th>数据</th><th>市场源</th><th>回答</th></tr>
+  <tr><td>段A 历史代理回测</td><td>fd 联赛多季赛果</td><td>fd Pinnacle 收盘（三向+OU2.5 反推）</td><td>方向对不对（fused / market_only / dc_only / freq_band现状 四线，CRS TOP1/3/5 命中率 + TTG 带 RPS）</td></tr>
+  <tr><td>段B 影子前向对照</td><td>体彩在售场次，一个月起</td><td>体彩五池反推（真实出票口径）</td><td>体彩口径下转不转正（影子票 CLV/命中率，A/B 双口径 spec_name 区分）</td></tr>
+</table>
+<h3>判据（含降级条款）</h3>
+<ol>
+  <li><b>生死线</b>：段A中 fused 不敌 market_only 或 dc_only 任一基线 → 消融铁律回退最简单口径，score_engine 只保留报告出口；</li>
+  <li><b>CLV 判据降级声明</b>：fd 无 Pinnacle 比分收盘，<b>CRS-CLV 永远无真值锚</b>——用三向/大小边缘 CLV 代理 + fused 矩阵 vs pinClose 三向分布偏差校验，报告注明；</li>
+  <li><b>样本功效</b>：CRS TOP3 命中率 ~35%，月百场标准误 ±4~5pp，一个月分不出显著——段B 判据降级为"不显著劣 + 方向正"，或延长对照期；</li>
+  <li>λ融合权重以段A重标定为准，0.29/0.71 仅作初始值。</li>
+</ol>
+
+<h2>§七 兼容性边界（八项）</h2>
+<table>
+  <tr><th>接触面</th><th>处置</th></tr>
+  <tr><td>实票账本 tickets.json</td><td class="ok">零接触（结算按形状算，与口径无关）</td></tr>
+  <tr><td>HAD 层融合 fusion.json</td><td class="bad">fused 矩阵三向边缘禁止回流 HAD 层（防双重融合）；score_engine 只喂比分层玩法 CRS/TTG/HAFU</td></tr>
+  <tr><td>boldplay 推荐卡主链</td><td>对照期内口径完全冻结 legacy，λ 不换</td></tr>
+  <tr><td>goal_engine 09-27 评审</td><td class="ok">正交（它是 λ_DC 上游，复活则自动受益）</td></tr>
+  <tr><td>DC 模型版本 models/</td><td>影子票 + 报告记录 dcVersion（防对照期版本混杂）</td></tr>
+  <tr><td>熔断机制（DC vs 体彩 18pp）</td><td class="ok">不动，仍用裸 DC vs 体彩三向</td></tr>
+  <tr><td>影子层 paper.py</td><td>双口径靠 spec_name 区分，settle 加口径聚合（计划B）</td></tr>
+  <tr><td>SKILL.md 工作流</td><td>v5.8 → v5.9 加报告节点（报告出口上线时）</td></tr>
+</table>
+
+<h2>§八 上线路径（影子是必经站）</h2>
+<table>
+  <tr><th>出口</th><th>路径</th></tr>
+  <tr><td>剧本轨</td><td>直接进影子层（track:"N" 本在影子验证期）</td></tr>
+  <tr><td>EV轨 freq_band λ升级</td><td>影子对照一个月 A/B（新旧口径并行冻结结算），不动推荐卡主链</td></tr>
+  <tr><td>报告</td><td>直接产出，不设门槛（纯信息，逐场标口径）</td></tr>
+</table>
+<p><b>入推荐卡切换判据（三条全过）</b>：① 段A四线对照 fused 不输任一基线；② 段B影子对照不劣于现状口径；③ 两条都过 → freq_band 切 λ 源 + 剧本轨矩阵转正。任一不过 → 消融铁律回退，只留报告出口。</p>
+
+<h2>§九 交付切分</h2>
+<table>
+  <tr><th>阶段</th><th>内容</th><th>计划</th></tr>
+  <tr><td>P0（本计划）</td><td>侦察1+2 → P1 narrative 接 score_matrix（剧本轨芯） → P2 market_matrix（去水+拟合） → score_engine 融合出口 + 冒烟</td><td>docs/plans/2026-09-07-score-engine-p0-plan.html</td></tr>
+  <tr><td>P3/P4（计划B，条件触发）</td><td>段A回测四线对照 + freq_band λ升级 + 影子 A/B 聚合改造 + 报告出口 + 对照期</td><td>侦察结果+P2 成果出来后立项</td></tr>
+</table>
+<div class="warn"><b>切分理由</b>：侦察1 结果可能把 CRS 池降级为分歧度参考（改变 P2 拟合输入），侦察2 结果决定段A样本量——现在写死 P3 全部细节是纸上谈兵，违背"数据说话"。</div>
+
+<h2>§十 风险清单</h2>
+<table>
+  <tr><th>#</th><th>风险</th><th>缓释</th></tr>
+  <tr><td>1</td><td>34% 水位去水失真（冷热比分抽水不均）</td><td>侦察1 实测先行；不过关则 CRS 池降级、拟合只用 HAD+TTG</td></tr>
+  <tr><td>2</td><td>段A/段B 口径差不收敛</td><td>两段结论分别报告，不得混引；段B 权重更高</td></tr>
+  <tr><td>3</td><td>一个月对照样本功效不足</td><td>判据"不显著劣+方向正"或延期</td></tr>
+  <tr><td>4</td><td>λ权重移植无理论依据</td><td>段A重标定</td></tr>
+  <tr><td>5</td><td>对照期 DC 版本混杂</td><td>dcVersion 全程记录</td></tr>
+  <tr><td>6</td><td>体彩调价时点选价偏差</td><td>统一用出票时点最新价（影子冻结价同口径）</td></tr>
+</table>
+
+<h2>§十一 数据来源清单（忠实度抽查用）</h2>
+<ul class="meta">
+  <li>docs/2026-09-06-confidence-tiering-design.html（轨道N §十一/十二）、docs/2026-08-27-freq-band-design.html、docs/2026-08-24-boldplay-design.html §六、docs/2026-09-01-dual-track-prediction-design.html 第五节</li>
+  <li>engine/scripts/：narrative.py、freq_band.py、score_ev.py、goal_engine.py、dc_predict.py、paper.py（scratch/replay_v2/）</li>
+  <li>engine/cache/score_odds/2026-08-24~09-06.json（14天实测：水位/结构）</li>
+  <li>data/04-summaries/goal-engine-report.json（四线对照口径先例）</li>
+  <li>网络调研：dashee87.github.io、opisthokonta.net（?p=1760、?cat=48）、pena.lt/y、alexandrugris.github.io、predictionengine.app、r/SoccerBetting、r/algobetting（链接见 §二）</li>
+</ul>
+
+</body>
+</html>

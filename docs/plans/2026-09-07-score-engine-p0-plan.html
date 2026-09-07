@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>score-engine P0 实施计划</title>
+<style>
+  :root { --accent: #c0392b; --ink: #2c3e50; --muted: #7f8c8d; --line: #dcdde1; }
+  body { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; color: var(--ink); max-width: 980px; margin: 0 auto; padding: 24px 20px; line-height: 1.65; }
+  h1 { font-size: 1.45em; border-bottom: 3px solid var(--accent); padding-bottom: 8px; }
+  h2 { font-size: 1.15em; margin-top: 2em; border-left: 4px solid var(--accent); padding-left: 10px; }
+  h3 { font-size: 1.05em; margin-top: 1.4em; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 0.92em; }
+  th, td { border: 1px solid var(--line); padding: 5px 10px; text-align: left; vertical-align: top; }
+  th { background: #f0f0f0; }
+  code { background: #eee; padding: 1px 5px; border-radius: 3px; font-size: 0.88em; }
+  pre { background: #2c3e50; color: #ecf0f1; padding: 12px 16px; border-radius: 6px; overflow-x: auto; font-size: 0.82em; line-height: 1.5; }
+  pre code { background: none; color: inherit; padding: 0; }
+  .meta { color: var(--muted); font-size: 0.88em; }
+  .task { border: 1px solid var(--line); border-radius: 8px; padding: 4px 18px 14px; margin: 18px 0; }
+  .task > h3 { margin-top: 0.8em; }
+  input[type=checkbox] { margin-right: 6px; }
+  .warn { border-left: 4px solid var(--accent); background: #fdf0ee; padding: 8px 12px; margin: 10px 0; font-size: 0.94em; }
+</style>
+</head>
+<body>
+
+<h1>score-engine P0 实施计划</h1>
+<p class="meta">2026-09-07 · 执行方式：逐任务执行（subagent-driven 或 executing-plans），每任务独立测试+提交 · Spec：docs/2026-09-07-score-engine-design.html（执行者必读 §三架构/§四数据地基/§六验证） · 开发者 sszhang</p>
+
+<p><b>目标</b>：落地统一比分分布引擎 P0——两个侦察（水位结构/fd代理源）+ 剧本轨接 DC 矩阵（P1.5 消账）+ market_matrix 五池拟合 + score_engine 融合出口。</p>
+<p><b>架构</b>：体彩五池 + DC 双输入 → market_matrix 拟合市场 λ → score_engine λ空间融合（市场主导 0.71/DC 0.29 初始）→ 7×7 矩阵出口。P3/P4（回测/λ升级/报告）另立计划B。</p>
+<p><b>技术栈</b>：Python 3 + numpy/scipy（requirements.txt 已有）+ pytest。命令一律 <code>python engine/scripts/...</code>（run.py 路径铁律同源）。</p>
+
+<h2>全局约束</h2>
+<ul>
+  <li>内部文件 JSON/纯文本；用户报告 HTML 须 <code>&lt;meta charset="utf-8"&gt;</code>；本计划不改任何用户报告。</li>
+  <li>剧本轨边界：narrative <b>不算 EV、不参考市场定价出票</b>；市场分布只喂分歧度（选场排序）。</li>
+  <li>HAD 层边界：fused 矩阵三向边缘禁止回流 HAD 融合（防双重融合）。</li>
+  <li>对照期内 boldplay/freq_band 主链口径冻结不动（本 P0 不触碰 freq_band.py 业务逻辑）。</li>
+  <li>常量命名 UPPER_SNAKE_CASE，变量 camelCase；魔法值禁用（入常量）。</li>
+  <li>侦察脚本放 <code>engine/scripts/scratch/</code>（gitignore，一次性）；结论回写设计文档 HTML。</li>
+  <li>每任务 TDD：失败测试 → 实现 → 通过 → commit。</li>
+</ul>
+
+<h2>文件结构</h2>
+<table>
+  <tr><th>文件</th><th>职责</th></tr>
+  <tr><td>Create <code>engine/scripts/market_matrix.py</code></td><td>五池去水（分池幂次）+ DC 参数拟合 → 市场 λ/ρ</td></tr>
+  <tr><td>Create <code>engine/scripts/score_engine.py</code></td><td>统一矩阵出口：λ融合 / dc_only 降级 / dcVersion 标记</td></tr>
+  <tr><td>Modify <code>engine/scripts/narrative.py</code></td><td>剧本层接 score_matrix；分歧度 JSD（体彩 CRS 粗基准起步）</td></tr>
+  <tr><td>Modify <code>engine/tests/test_narrative.py</code>（追加）</td><td>剧本层矩阵化 + 分歧度测试</td></tr>
+  <tr><td>Create <code>engine/tests/test_market_matrix.py</code> / <code>engine/tests/test_score_engine.py</code></td><td>新模块测试</td></tr>
+  <tr><td>Create <code>engine/scripts/scratch/water_probe.py</code> / <code>fd_probe.py</code></td><td>侦察1/2 一次性脚本（不进 git）</td></tr>
+  <tr><td>Modify <code>docs/2026-09-07-score-engine-design.html</code></td><td>侦察结论回填 §四</td></tr>
+</table>
+
+<!-- ==================== Task 1 ==================== -->
+<div class="task">
+<h3>Task 1 · 侦察1：体彩 CRS 池水位结构实测</h3>
+<p><b>Files</b>：Create <code>engine/scripts/scratch/water_probe.py</code>（gitignore 目录，不提交）；Modify <code>docs/2026-09-07-score-engine-design.html</code> §四（结论回填，提交）。无 pytest 测试（一次性研究），验证=输出数值自检。</p>
+<p><b>Produces</b>：<code>ALPHA_SELECTED</code>（幂次去水指数选型，写入设计文档 §四，Task 4 的 <code>devig_pool</code> 默认 alpha 从此来）。</p>
+<input type="checkbox"><b>Step 1</b>：先探 14 天存档的 CRS 键全集（兜底项键名确认）：<br>
+<pre><code>python3 -c "
+import json,glob
+ks=set()
+for f in glob.glob('engine/cache/score_odds/*.json'):
+    for md in json.load(open(f))['matchDays']:
+        for m in md['matches']:
+            ks |= set(m.get('crs',{}).keys())
+print(sorted(ks))"</code></pre>
+<p>预期：31 项 = 28 个 <code>h:a</code> 比分 + 3 个兜底（键名可能是 <code>胜其他</code>/<code>平其他</code>/<code>负其他</code>，以实际输出为准，后续代码用实测键名）。</p>
+<input type="checkbox"><b>Step 2</b>：写 <code>engine/scripts/scratch/water_probe.py</code>：<br>
+<pre><code>"""侦察1: 体彩CRS池水位结构实测(设计§四).
+冷热比分抽水是否均匀 → 幂次去水 alpha 选型.
+判据: CRS去水分布的三向/TTG边缘 vs HAD/TTG池去水分布, JSD 最小者胜."""
+import json, glob, math
+
+ALPHAS = [1.0, 0.9, 0.8, 0.7]          # 幂次扫描: 1.0=等比例
+SUPPORTED_OTHER_KEYS = ('胜其他', '平其他', '负其他')  # 以 Step1 实测为准替换
+
+def load_matches():
+    rows = []
+    for f in sorted(glob.glob('engine/cache/score_odds/*.json')):
+        for md in json.load(open(f)).get('matchDays', []):
+            for m in md.get('matches', []):
+                if m.get('crs') and m.get('had') and m.get('ttg'):
+                    rows.append(m)
+    return rows
+
+def devig_pool(odds: dict, alpha: float) -> dict:
+    """幂次去水: p_i ∝ (1/o_i)^alpha 再归一. alpha=1 等比例."""
+    w = {k: (1.0 / float(v)) ** alpha for k, v in odds.items()}
+    s = sum(w.values())
+    return {k: v / s for k, v in w.items()}
+
+def outcome_of(key: str) -> str:
+    """比分/兜底键 → 'H'|'D'|'A'."""
+    if key in SUPPORTED_OTHER_KEYS:
+        return {'胜其他': 'H', '平其他': 'D', '负其他': 'A'}[key]
+    h, a = (int(x) for x in key.split(':'))
+    return 'H' if h > a else ('D' if h == a else 'A')
+
+def crs_margins(p_crs: dict) -> dict:
+    out = {'H': 0.0, 'D': 0.0, 'A': 0.0}
+    for k, v in p_crs.items():
+        out[outcome_of(k)] += v
+    return out
+
+def jsd(p: dict, q: dict) -> float:
+    """Jensen-Shannon 散度(bit). p,q 同键集."""
+    m = {k: (p[k] + q[k]) / 2 for k in p}
+    def kl(a, b):
+        return sum(a[k] * math.log2(a[k] / b[k]) for k in a if a[k] > 0)
+    return 0.5 * (kl(p, m) + kl(q, m))
+
+def main():
+    rows = load_matches()
+    print(f"[water_probe] 场次={len(rows)}")
+    for alpha in ALPHAS:
+        ds_had, ds_ttg = [], []
+        for m in rows:
+            p_crs = crs_margins(devig_pool(m['crs'], alpha))
+            p_had = devig_pool(m['had'], alpha)
+            ds_had.append(jsd({k: p_crs[k] for k in 'HDA'},
+                              {k: p_had.get(k, p_had.get(k.upper(), 0.0)) for k in 'HDA'}))
+            # TTG 边缘对照: CRS按总进球聚合 vs TTG池(键集以实测为准)
+            p_t = devig_pool(m['ttg'], alpha)
+            t_crs = {}
+            for k, v in devig_pool(m['crs'], alpha).items():
+                if ':' in k:
+                    t = min(int(k.split(':')[0]) + int(k.split(':')[1]), 7)
+                    t_crs[t] = t_crs.get(t, 0.0) + v
+            t_pool = {int(k): v for k, v in p_t.items() if str(k).isdigit()}
+            ks = set(t_crs) & set(t_pool)
+            if ks:
+                ds_ttg.append(jsd({k: t_crs[k] for k in ks}, {k: t_pool[k] for k in ks}))
+        ds_had.sort(); ds_ttg.sort()
+        med_h = ds_had[len(ds_had)//2]; med_t = ds_ttg[len(ds_ttg)//2] if ds_ttg else -1
+        print(f"alpha={alpha}: HAD边缘JSD中位={med_h:.4f}  TTG边缘JSD中位={med_t:.4f}")
+    print("[water_probe] 选型: JSD 最小且明显优于等比例(alpha=1.0)者 → ALPHA_SELECTED; 否则 1.0")
+
+if __name__ == '__main__':
+    main()</code></pre>
+<p><b>注意</b>：<code>had</code>/<code>ttg</code> 池的键名（H/D/A 或 胜/平/负）以存档实测为准，先 <code>python3 -c "print(list(m['had'].items())[:5])"</code> 看一眼再对齐键。</p>
+<input type="checkbox"><b>Step 3</b>：跑 <code>python engine/scripts/scratch/water_probe.py</code>，记录四档 alpha 的两组 JSD 中位数。</p>
+<input type="checkbox"><b>Step 4</b>：<b>判读与回填</b>：(a) 若某 alpha JSD 中位数 &lt; 0.01 且明显低于 1.0 → 选它，CRS 池可用进融合；(b) 若全部 alpha 下 JSD 中位数 ≥ 0.03（冷热抽水扭曲）→ CRS 池降级为分歧度参考，拟合输入只用 HAD+TTG（Task 4 相应裁剪）。结论（含数值表）写进设计文档 §四「侦察1 结论」块。</p>
+<input type="checkbox"><b>Step 5</b>：commit：`git add docs/2026-09-07-score-engine-design.html && git commit -m "docs(score-engine): 侦察1水位结构实测结论回填"`（scratch 脚本不进 git）。</p>
+</div>
+
+<!-- ==================== Task 2 ==================== -->
+<div class="task">
+<h3>Task 2 · 侦察2：fd Pinnacle 收盘多季列完整性验证</h3>
+<p><b>Files</b>：Create <code>engine/scripts/scratch/fd_probe.py</code>（不提交）；Modify 设计文档 §四（结论回填，提交）。</p>
+<p><b>Produces</b>：段A回测样本量表（几季 × 几场 × 完整率），决定计划B段A的可行规模。</p>
+<input type="checkbox"><b>Step 1</b>：看 <code>engine/scripts/odds_fetch.py</code> 顶部的联赛代码表与 <code>fetch_league_csv(code, season)</code>/<code>normalize_row</code> 实际签名（本计划按 grep 已知：<code>fetch_league_csv(code, season) -> list[dict] | None</code>；行含 OU2.5 三键，无 Pinnacle 三向收盘则 None——以源码为准）。</p>
+<input type="checkbox"><b>Step 2</b>：写 <code>engine/scripts/scratch/fd_probe.py</code>：<br>
+<pre><code>"""侦察2: fd Pinnacle收盘多季列完整性(设计§四).
+段A代理源可行性: PSCH/PSD/PSCA + OU2.5 三键的非空完整率."""
+import sys
+sys.path.insert(0, 'engine/scripts')
+from odds_fetch import fetch_league_csv   # 签名以 Step1 实读为准
+
+SEASONS = ['2324', '2425', '2526']
+LEAGUES = ['E0', 'SP1', 'D1', 'I1', 'F1']   # 五大联赛先行, 以 odds_fetch 顶部代码表为准
+
+def probe():
+    for lg in LEAGUES:
+        for season in SEASONS:
+            rows = fetch_league_csv(lg, season) or []
+            if not rows:
+                print(f"{lg} {season}: 无数据"); continue
+            def has(r, keys): return all(r.get(k) not in (None, '', 'NA') for k in keys)
+            n = len(rows)
+            n_psc = sum(1 for r in rows if has(r, ('PSCH', 'PSCD', 'PSCA')))
+            n_ou  = sum(1 for r in rows if has(r, ('B365>2.5', 'B365<2.5')) or
+                        has(r, ('PPTSHH',)) or has(r, ('PC>2.5', 'PC<2.5')))
+            print(f"{lg} {season}: 总{n} Pinnacle三向收盘={n_psc}({n_psc/n:.0%}) 大小2.5={n_ou}({n_ou/n:.0%})")
+
+if __name__ == '__main__':
+    probe()</code></pre>
+<p><b>注意</b>：OU2.5 的列名以 <code>normalize_row</code> 实际读取的列为准（fd 历年列名有变动，Step1 读源码时一并确认；上面是候选集）。</p>
+<input type="checkbox"><b>Step 3</b>：跑 <code>python engine/scripts/scratch/fd_probe.py</code>（网络直连 fd，每季一次请求）。记录：各联赛各季完整率。</p>
+<input type="checkbox"><b>Step 4</b>：<b>判读与回填</b>：Pinnacle 三向 + 大小 2.5 同时完整的场次数 × 季数。若五大联赛 3 季合计 ≥ 2500 场 → 段A样本充足；若老赛季列缺失严重 → 段A缩到近两季。结论写设计文档 §四「侦察2 结论」块。</p>
+<input type="checkbox"><b>Step 5</b>：commit：`git add docs/2026-09-07-score-engine-design.html && git commit -m "docs(score-engine): 侦察2 fd代理源完整性结论回填"`。</p>
+</div>
+
+<!-- ==================== Task 3 ==================== -->
+<div class="task">
+<h3>Task 3 · P1：narrative 剧本层接 DC 矩阵（剧本轨芯落地）</h3>
+<p><b>Files</b>：Modify <code>engine/scripts/narrative.py</code>（<code>_script_layer</code> 改造 + 新增 <code>divergence()</code>）；Test 追加 <code>engine/tests/test_narrative.py</code>。</p>
+<p><b>Interfaces</b>：<br>
+Consumes：<code>dc_predict.score_matrix(lh: float, la: float, rho: float) -> np.ndarray</code>（7×7，已存在）。<br>
+Produces：<code>_script_layer(match, style, dc: dict|None) -> dict</code>（键 <code>score/prob/source</code>，<code>source='matrix'|'style'</code>）；<code>divergence(mat: np.ndarray, crs_odds: dict, alpha: float=1.0) -> float</code>（JSD，Task 6 与后续市场矩阵复用）。</p>
+<input type="checkbox"><b>Step 1</b>：定位赛前 λ 计算入口——通读 <code>dc_predict.py</code> 的 <code>main()</code>：若 λ 计算内联在 main 中（无独立函数），先抽公共函数 <code>match_lambdas(league_id, home, away) -> tuple[float, float] | None</code>（读 <code>engine/cache/{league}_dc.json</code> 参数 + 队名经 <code>_aliases.json</code> 解析；解析失败返回 None）。<b>只抽不改</b>，main 调用它，行为不变（跑 <code>pytest engine/tests/test_unit.py -k dc -q</code> 确认无回归）。</p>
+<input type="checkbox"><b>Step 2</b>：写失败测试（追加到 test_narrative.py）：<br>
+<pre><code>import numpy as np
+from narrative import SCRIPT_UNIVERSE, _script_layer, divergence
+
+def _fake_matrix(lh=1.8, la=0.9, rho=0.0):
+    import dc_predict
+    return dc_predict.score_matrix(lh, la, rho)
+
+def test_script_layer_matrix_beats_style():
+    dc = {'lh': 1.8, 'la': 0.9, 'rho': 0.0}
+    out = _script_layer({'home': 'x', 'away': 'y'}, style={}, dc=dc)
+    mat = _fake_matrix()
+    best = max(SCRIPT_UNIVERSE, key=lambda s: mat[int(s[0]), int(s[2])])
+    assert out['score'] == best and out['source'] == 'matrix'
+    assert 0.0 &lt; out['prob'] &lt;= 1.0
+
+def test_script_layer_fallback_style():
+    out = _script_layer({'home': 'x', 'away': 'y'}, style={'top': ('1:1', 0.12)}, dc=None)
+    assert out['source'] == 'style' and out['score'] == '1:1'
+
+def test_divergence_zero_when_identical():
+    mat = _fake_matrix()
+    # 用矩阵自身剧本域分布构造 crs_odds, JSD 应为 0
+    p = {s: mat[int(s[0]), int(s[2])] for s in SCRIPT_UNIVERSE}
+    odds = {s: 1.0 / v for s, v in p.items()}
+    assert divergence(mat, odds) &lt; 1e-9</code></pre>
+<input type="checkbox"><b>Step 3</b>：跑 <code>python -m pytest engine/tests/test_narrative.py -q</code>，确认新测试 FAIL（旧测试仍 PASS）。</p>
+<input type="checkbox"><b>Step 4</b>：实现（narrative.py）：<br>
+<pre><code>import math
+import numpy as np
+from dc_predict import score_matrix
+
+def _script_layer(m, style, dc=None):
+    """⑤剧本层(P1落地·设计§五①): λ→score_matrix→剧本域argmax.
+    dc={'lh','la','rho'}缺→降级风格模板(旧路径), source标记口径."""
+    if dc and dc.get('lh') and dc.get('la'):
+        mat = score_matrix(dc['lh'], dc['la'], dc.get('rho', 0.0))
+        best = max(SCRIPT_UNIVERSE, key=lambda s: mat[int(s[0]), int(s[2])])
+        p = float(mat[int(best[0]), int(best[2])])
+        return {'score': best, 'prob': p, 'source': 'matrix'}
+    top = style.get('top') or ('1:1', SCRIPT_PROB_EST)
+    return {'score': top[0], 'prob': top[1], 'source': 'style'}
+
+def divergence(mat, crs_odds, alpha=1.0):
+    """叙事矩阵 vs 体彩CRS去水分布 JSD——只做选场排序,不算EV(设计§五①边界)."""
+    w = {k: (1.0 / float(v)) ** alpha for k, v in crs_odds.items()}
+    s = sum(w.values())
+    q = {k: v / s for k, v in w.items()}
+    jsd_v, support = 0.0, 0.0
+    for k, qk in q.items():
+        if ':' in k:
+            p = float(mat[int(k[0]), int(k[2])])
+            m = (p + qk) / 2
+            if p > 0: jsd_v += 0.5 * p * math.log2(p / m)
+            if qk > 0: jsd_v += 0.5 * qk * math.log2(qk / m)
+            support += p + qk
+    return jsd_v / support if support > 0 else 0.0</code></pre>
+<p>接线：<code>build_candidate</code> 调用处传入 dc（来自 Step 1 的 <code>match_lambdas</code>，失败传 None）；λ 来源逐场记录进候选 dict（<code>script_source</code> 字段，影子票 spec 可追溯）。</p>
+<input type="checkbox"><b>Step 5</b>：跑 <code>python -m pytest engine/tests/test_narrative.py engine/tests/test_paper_track.py -q</code> 全 PASS → commit：`git commit -m "feat(narrative): 剧本层接DC矩阵(P1.5消账)+分歧度JSD·dc缺省降级风格模板"`。</p>
+</div>
+
+<!-- ==================== Task 4 ==================== -->
+<div class="task">
+<h3>Task 4 · P2：market_matrix 五池去水 + DC 参数拟合</h3>
+<p><b>Files</b>：Create <code>engine/scripts/market_matrix.py</code> + <code>engine/tests/test_market_matrix.py</code>。</p>
+<p><b>Interfaces</b>：<br>
+Consumes：<code>dc_predict.score_matrix</code>；侦察1 的 ALPHA_SELECTED（Task 4 常量 <code>ALPHA_DEFAULT</code> 取该值；若侦察1 判 CRS 池降级，则 <code>USE_CRS=False</code> 路径）。<br>
+Produces：<code>devig_pool(odds: dict, alpha: float) -> dict[str, float]</code>；<code>fit_lambdas(crs: dict|None, had: dict, ttg: dict, alpha: float=ALPHA_DEFAULT) -> dict</code>（键 <code>lh/la/rho/fit_err</code>；fit_err>阈值调用方须降级）。</p>
+<input type="checkbox"><b>Step 1</b>：写失败测试：<br>
+<pre><code>import numpy as np
+from market_matrix import devig_pool, fit_lambdas
+
+def test_devig_pool_normalizes():
+    odds = {'1:0': 4.0, '1:1': 4.0}
+    p = devig_pool(odds, alpha=1.0)
+    assert abs(sum(p.values()) - 1.0) &lt; 1e-9 and abs(p['1:0'] - 0.5) &lt; 1e-9
+
+def test_fit_recovers_lambdas_roundtrip():
+    # 用已知λ生成的一致赔率反推, 应近似还原
+    from dc_predict import score_matrix
+    lh, la, rho = 1.6, 1.1, -0.05
+    mat = score_matrix(lh, la, rho)
+    crs = {}
+    for h in range(6):
+        for a in range(6):
+            if mat[h, a] > 1e-4:
+                crs[f"{h}:{a}"] = float(1.0 / mat[h, a])
+    had = {'H': 1.0/float(mat[np.tril_indices(0)] if False else np.tril(mat, -1).sum()),
+           'D': 1.0/float(np.trace(mat)), 'A': 1.0/float(np.triu(mat, 1).sum())}
+    ttg = {}
+    for t in range(8):
+        q = sum(mat[h, a] for h in range(7) for a in range(7) if h + a == t)
+        if q > 1e-4: ttg[str(t)] = 1.0 / q
+    fit = fit_lambdas(crs, had, ttg, alpha=1.0)
+    assert abs(fit['lh'] - lh) &lt; 0.15 and abs(fit['la'] - la) &lt; 0.15
+    assert fit['fit_err'] &lt; 0.01</code></pre>
+<p>（had 键名以存档实测为准统一；测试构造里矩阵下三角=主胜 H、迹=平、上三角=客胜 A。）</p>
+<input type="checkbox"><b>Step 2</b>：跑 <code>python -m pytest engine/tests/test_market_matrix.py -q</code> FAIL（模块不存在）。</p>
+<input type="checkbox"><b>Step 3</b>：实现：<br>
+<pre><code>"""market_matrix: 体彩五池→市场比分分布参数(设计§三·P2).
+分池幂次去水(alpha=侦察1选型) + DC参数(λm主,λm客,ρm)拟合复现五池价.
+CRS池降级开关: 侦察1若判冷热抽水扭曲, USE_CRS=False只拟合HAD+TTG."""
+import numpy as np
+from scipy.optimize import minimize
+from dc_predict import score_matrix
+
+ALPHA_DEFAULT = 1.0        # ← 侦察1 ALPHA_SELECTED 回填
+USE_CRS = True             # ← 侦察1 若降级改 False
+FIT_ERR_GATE = 0.02        # 拟合误差门槛, 超出调用方降级 dc_only
+LAMBDA_BOUNDS = (0.2, 4.5) # 与 freq_band LAMBDA_CLAMP 同源
+RHO_BOUNDS = (-0.2, 0.2)
+W_CRS, W_HAD, W_TTG = 1.0, 1.0, 0.5   # 池权重: CRS信息最多, TTG边缘部分冗余
+
+def devig_pool(odds, alpha=ALPHA_DEFAULT):
+    """幂次去水: p_i ∝ (1/o_i)^alpha 归一(与侦察1 water_probe 同式)."""
+    w = {k: (1.0 / float(v)) ** alpha for k, v in odds.items()}
+    s = sum(w.values())
+    return {k: v / s for k, v in w.items()}
+
+def _matrix_prices(lh, la, rho):
+    """DC矩阵 → {'crs':{比分:概率}, 'HDA':{...}, 'ttg':{...}} 供loss比对."""
+    mat = score_matrix(lh, la, rho)
+    crs = {f"{h}:{a}": float(mat[h, a]) for h in range(6) for a in range(6)}
+    crs['胜其他'] = float(mat[np.tril(mat, -1)[6:, :].sum() if False else 0.0])  # 6+球域外和, 以7x7截断口径实现
+    hda = {'H': float(np.tril(mat, -1).sum()), 'D': float(np.trace(mat)),
+           'A': float(np.triu(mat, 1).sum())}
+    ttg = {str(t): float(sum(mat[h, a] for h in range(7) for a in range(7)
+                             if h + a == t)) for t in range(8)}
+    return crs, hda, ttg
+
+def fit_lambdas(crs, had, ttg, alpha=ALPHA_DEFAULT):
+    """→ {'lh','la','rho','fit_err'}; Nelder-Mead, x0=联赛先验或全局默认."""
+    p_had = devig_pool(had, alpha)
+    p_ttg = devig_pool(ttg, alpha)
+    p_crs = devig_pool(crs, alpha) if (USE_CRS and crs) else None
+
+    def loss(x):
+        lh, la, rho = x
+        if not (LAMBDA_BOUNDS[0] &lt;= lh &lt;= LAMBDA_BOUNDS[1] and
+                LAMBDA_BOUNDS[0] &lt;= la &lt;= LAMBDA_BOUNDS[1]):
+            return 1e3
+        rho = max(RHO_BOUNDS[0], min(RHO_BOUNDS[1], rho))
+        m_crs, m_hda, m_ttg = _matrix_prices(lh, la, rho)
+        e = W_HAD * sum(abs(m_hda[k] - p_had[k]) for k in m_hda)
+        e += W_TTG * sum(abs(m_ttg[k] - p_ttg[k]) for k in p_ttg if k in m_ttg)
+        if p_crs:
+            e += W_CRS * sum(abs(m_crs[k] - p_crs[k]) for k in m_crs if k in p_crs)
+        return e
+
+    res = minimize(loss, x0=[1.3, 1.1, -0.05], method='Nelder-Mead',
+                   options={'xatol': 1e-4, 'fatol': 1e-6, 'maxiter': 800})
+    lh, la, rho = (float(res.x[0]), float(res.x[1]),
+                   max(RHO_BOUNDS[0], min(RHO_BOUNDS[1], float(res.x[2]))))
+    return {'lh': lh, 'la': la, 'rho': rho, 'fit_err': float(res.fun)}</code></pre>
+<p><b>注意</b>：<code>_matrix_prices</code> 里"胜其他"的域外概率实现以 7×7 截断口径写干净（上面示意留了一处待清理表达式——实现时按 6×6 主域 + 域外和补全，测试覆盖到即可）；HAD/TTG 键名与存档实测对齐。</p>
+<input type="checkbox"><b>Step 4</b>：跑 <code>python -m pytest engine/tests/test_market_matrix.py -q</code> PASS；再加真实数据单测：取 <code>engine/cache/score_odds/2026-09-06.json</code> 任一场跑 <code>fit_lambdas</code>，断言 fit_err &lt; FIT_ERR_GATE 且 λ∈(0.2,4.5)（不过就修 loss/去水直到过——这是拟合质量的硬验收）。</p>
+<input type="checkbox"><b>Step 5</b>：commit：`git add engine/scripts/market_matrix.py engine/tests/test_market_matrix.py && git commit -m "feat(market_matrix): 五池分池幂次去水+DC参数拟合·CRS降级开关"`。</p>
+</div>
+
+<!-- ==================== Task 5 ==================== -->
+<div class="task">
+<h3>Task 5 · score_engine 统一融合出口</h3>
+<p><b>Files</b>：Create <code>engine/scripts/score_engine.py</code> + <code>engine/tests/test_score_engine.py</code>。</p>
+<p><b>Interfaces</b>：<br>
+Consumes：<code>market_matrix.fit_lambdas</code> 输出 dict；<code>dc_predict.score_matrix</code>；<code>engine/cache/models/latest.json</code>（dcVersion）。<br>
+Produces：<code>matrix(lh_dc: float, la_dc: float, rho_dc: float, mkt: dict|None, w_dc: float=W_DC_INIT, dc_version: str|None=None) -> dict</code>（键 <code>matrix(7×7 np.ndarray)/source('fused'|'dc_only')/lambda{'lh','la'}/w_dc/dc_version</code>——Task 6 与计划B全部依赖此签名）。</p>
+<input type="checkbox"><b>Step 1</b>：写失败测试：<br>
+<pre><code>import numpy as np
+from score_engine import matrix, W_DC_INIT
+
+def test_dc_only_when_no_market():
+    out = matrix(1.5, 1.0, -0.05, mkt=None)
+    assert out['source'] == 'dc_only'
+    assert abs(out['matrix'].sum() - 1.0) &lt; 1e-6
+    assert out['lambda'] == {'lh': 1.5, 'la': 1.0}
+
+def test_fused_lambda_geometric_weight():
+    mkt = {'lh': 2.0, 'la': 0.5, 'rho': 0.0, 'fit_err': 0.001}
+    out = matrix(1.0, 1.0, 0.0, mkt=mkt, w_dc=0.29)
+    assert out['source'] == 'fused'
+    wm = 1.0 - 0.29
+    assert abs(out['lambda']['lh'] - 1.0**0.29 * 2.0**wm) &lt; 1e-9
+    assert abs(out['lambda']['la'] - 0.5**wm) &lt; 1e-9
+
+def test_market_fit_err_gate_falls_back():
+    from score_engine import FIT_ERR_GATE
+    mkt = {'lh': 2.0, 'la': 0.5, 'rho': 0.0, 'fit_err': FIT_ERR_GATE + 1}
+    out = matrix(1.5, 1.0, -0.05, mkt=mkt)
+    assert out['source'] == 'dc_only'</code></pre>
+<input type="checkbox"><b>Step 2</b>：跑 <code>python -m pytest engine/tests/test_score_engine.py -q</code> FAIL。</p>
+<input type="checkbox"><b>Step 3</b>：实现：<br>
+<pre><code>"""score_engine: 统一比分分布出口(设计§三).
+λ空间log加权融合(市场主导) → 7×7矩阵. source=fused|dc_only, 全程带dcVersion(防对照期版本混杂·设计§七)."""
+import json
+import math
+import dc_predict
+from market_matrix import FIT_ERR_GATE   # 与拟合侧同源门槛
+
+W_DC_INIT = 0.29   # 初始启发式: HAD侧0.4/1.0归一移植, 段A回测重标定(设计§三权重声明)
+
+def _latest_dc_version() -> str | None:
+    try:
+        with open('engine/cache/models/latest.json', encoding='utf-8') as f:
+            return json.load(f).get('version') or json.load(f).get('published')
+    except Exception:
+        return None
+
+def matrix(lh_dc, la_dc, rho_dc, mkt=None, w_dc=W_DC_INIT, dc_version=None):
+    """统一出口: mkt=None或fit_err超门槛 → dc_only降级(设计§三降级链)."""
+    dc_version = dc_version or _latest_dc_version()
+    if mkt is None or mkt.get('fit_err', FIT_ERR_GATE) > FIT_ERR_GATE:
+        return {'matrix': dc_predict.score_matrix(lh_dc, la_dc, rho_dc),
+                'source': 'dc_only', 'lambda': {'lh': lh_dc, 'la': la_dc},
+                'w_dc': 0.0, 'dc_version': dc_version}
+    w_m = 1.0 - w_dc
+    lh = math.exp(w_dc * math.log(lh_dc) + w_m * math.log(mkt['lh']))
+    la = math.exp(w_dc * math.log(la_dc) + w_m * math.log(mkt['la']))
+    rho = mkt.get('rho', rho_dc)
+    return {'matrix': dc_predict.score_matrix(lh, la, rho),
+            'source': 'fused', 'lambda': {'lh': lh, 'la': la},
+            'w_dc': w_dc, 'dc_version': dc_version}</code></pre>
+<p><b>注意</b>：<code>_latest_dc_version</code> 的字段名以 <code>engine/cache/models/latest.json</code> 实测结构为准（执行时先 cat 一次），读不到返回 None 并在出口 dict 保留键。</p>
+<input type="checkbox"><b>Step 4</b>：跑 <code>python -m pytest engine/tests/test_score_engine.py -q</code> PASS。</p>
+<input type="checkbox"><b>Step 5</b>：commit：`git add engine/scripts/score_engine.py engine/tests/test_score_engine.py && git commit -m "feat(score_engine): 统一比分矩阵出口·λ融合+fit_err降级门+dcVersion"`。</p>
+</div>
+
+<!-- ==================== Task 6 ==================== -->
+<div class="task">
+<h3>Task 6 · 集成冒烟：真实比赛日全链走通</h3>
+<p><b>Files</b>：Create <code>engine/scripts/scratch/smoke_score_engine.py</code>（不提交）；结论贴进设计文档 §四（提交）。</p>
+<p><b>Interfaces</b>：Consumes Task 3/4/5 全部产物。</p>
+<input type="checkbox"><b>Step 1</b>：写冒烟脚本：读 <code>engine/cache/score_odds/2026-09-06.json</code> 全部场次 → 每场 <code>fit_lambdas</code> → <code>matrix()</code>（DC 侧 λ 用 Task 3 的 <code>match_lambdas</code>，取不到则 dc_only）→ 输出表：场次 / source / λ_dc / λ_mkt / λ_fused / 剧本比分(Task3) / 分歧度 / fit_err。</p>
+<input type="checkbox"><b>Step 2</b>：跑通后人工检查三件事：(a) fused 场次占比（λ_dc 可得且有五池价的比例）；(b) fit_err 分布（超门槛的是否被正确降级）；(c) 剧本比分 vs 实际赛果（02-results/2026-09-06* 有真果，纯 sanity 不算指标）。</p>
+<input type="checkbox"><b>Step 3</b>：冒烟结论（fused 覆盖率、fit_err 中位数、发现的问题）写进设计文档 §四「P0 冒烟结论」块；触发计划B立项（段A回测 + freq_band λ升级 + 影子 A/B + 报告出口）。</p>
+<input type="checkbox"><b>Step 4</b>：跑全量回归 <code>python -m pytest engine/tests/ -q</code> 全 PASS。</p>
+<input type="checkbox"><b>Step 5</b>：commit：`git add docs/2026-09-07-score-engine-design.html && git commit -m "docs(score-engine): P0冒烟结论回填·计划B触发"`。</p>
+</div>
+
+<h2>Self-Review 记录（2026-09-07）</h2>
+<ul>
+  <li><b>Spec 覆盖</b>：§三架构→Task 4/5；§五出口①→Task 3（出口②③属计划B，spec §九已切分）；§四侦察→Task 1/2；§六验证→段A在计划B（spec §九）；§七 dcVersion→Task 5。无缺口。</li>
+  <li><b>占位符</b>：Task 4 <code>_matrix_prices</code> 的"胜其他"表达式与 Task 2 OU 列名标注了"以实测为准"——这是数据未知项的显式侦察步骤，非偷懒占位；执行者须先跑探测再对齐。</li>
+  <li><b>类型一致性</b>：<code>fit_lambdas → dict(lh/la/rho/fit_err)</code> 在 Task 4/5/6 一致；<code>matrix() → dict(matrix/source/lambda/w_dc/dc_version)</code> 在 Task 5/6 一致；<code>devig_pool(odds, alpha)</code> 在 Task 1（scratch 同式）与 Task 4 一致。</li>
+  <li><b>已知留白（显式）</b>：rho 融合用市场值直取（不做加权，市场 ρ 估计本身噪声大，融合规则段A回测时再议）。</li>
+</ul>
+
+</body>
+</html>
