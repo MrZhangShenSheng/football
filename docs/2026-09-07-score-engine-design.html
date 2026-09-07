@@ -118,9 +118,21 @@
   <tr><td>影子层</td><td>track A|N 已有，无口径维度</td><td colspan="2">双口径靠 spec_name，聚合统计小改（计划B）</td></tr>
 </table>
 <div class="todo"><b>待侦察回填</b>：<br>
-侦察1（水位结构实测）→ 决定去水法与 CRS 池在融合中的地位（若冷热抽水扭曲严重，CRS 池降级为分歧度参考，拟合只用 HAD+TTG）<br>
+侦察1（水位结构实测）→ 决定去水法与 CRS 池在融合中的地位（若冷热抽水扭曲严重，CRS 池降级为分歧度参考，拟合只用 HAD+TTG）——<span class="ok">已回填（下节）</span><br>
 侦察2（fd 多季拉取验证）→ 决定段A回测样本量（列完整性）<br>
-结论回填本节，设计分支随之定稿。</div>
+结论回填本节，设计分支随之定稿。
+<div style="border-top: 1px dashed #d4ac0d; margin-top: 10px; padding-top: 8px;">
+<b>侦察1 结论（2026-09-07 实测回填）：<span class="ok">ALPHA_SELECTED = 1.0（等比例去水），CRS 池可用进融合，不降级</span></b><br>
+实测口径：14 天存档（08-24~09-06）中 crs/had/ttg 三池齐全共 <b>382 场</b>；键名实测 crs = 28 个 <code>h:a</code> 比分 + 兜底 <code>胜其他/平其他/负其他</code>，had = <code>h/d/a</code>（小写），ttg = <code>s0~s7</code>。幂次去水扫描（p<sub>i</sub> ∝ (1/o<sub>i</sub>)<sup>alpha</sup>，CRS 去水后按三向/总进球聚合，对照 HAD/TTG 池同 alpha 去水分布，JSD 单位 bit）：
+<table>
+  <tr><th>alpha</th><th>HAD 边缘 JSD 中位</th><th>TTG 边缘 JSD 中位</th></tr>
+  <tr><td><b>1.0（等比例）</b></td><td class="ok">0.0004</td><td class="ok">0.0072</td></tr>
+  <tr><td>0.9</td><td>0.0011</td><td>0.0083</td></tr>
+  <tr><td>0.8</td><td>0.0024</td><td>0.0098</td></tr>
+  <tr><td>0.7</td><td>0.0041</td><td>0.0119</td></tr>
+</table>
+判读：alpha=1.0 两组 JSD 中位数均为四档最小，且随 alpha 递减单调上升——无任何幂次优于等比例，未发现冷热比分抽水不均的结构性扭曲；两组数值远低于 0.03 降级线（判据 b 不触发），alpha=1.0 自身即满足 &lt;0.01 门槛。CRS 33.9% 高水位属全池均匀压缩：等比例去水后 CRS 三向边缘与 HAD 池几乎完全相干（JSD 0.0004），TTG 边缘亦只差 0.0072——五池内部定价一致，水位差异（33.9% vs 12.9%/20.4%）由分池独立去水消化即可。<b>Task 4 的 devig_pool 默认 alpha=1.0，CRS 池保留为 market_matrix 拟合输入。</b>（脚本：engine/scripts/scratch/water_probe.py，一次性不进 git）
+</div></div>
 
 <h2>§五 三出口设计</h2>
 <table>
