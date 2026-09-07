@@ -101,3 +101,46 @@ def test_shadow_bridge_tolerates_missing_shapes(monkeypatch):
         raise ImportError("No module named 'shapes'")
     monkeypatch.setattr(nr, "_load_paper", _boom)
     assert nr._shadow_bridge(_card_with(_play_crs()), []) == []
+
+
+# ── P1 剧本层接DC矩阵(设计§五①): matrix口径/风格降级/JSD分歧度 ──
+import dc_predict
+
+
+def _fake_matrix(lh=1.8, la=0.9, rho=0.0):
+    return dc_predict.score_matrix(lh, la, rho)
+
+
+def test_script_layer_matrix_beats_style():
+    dc = {"lh": 1.8, "la": 0.9, "rho": 0.0}
+    out = nr._script_layer({"home": "x", "away": "y"}, style={}, dc=dc)
+    mat = _fake_matrix()
+    best = max(nr.SCRIPT_UNIVERSE, key=lambda s: mat[int(s[0]), int(s[2])])
+    assert out["score"] == best and out["source"] == "matrix"
+    assert 0.0 < out["prob"] <= 1.0
+
+
+def test_script_layer_fallback_style():
+    # style 实际结构=_style_layer 产出 {'topScores': {'1-1': 10}} 短横线键(brief 示意的
+    # 'top' 元组不存在, 以现有代码为准): 域内最高频模板比分胜出, source 标记降级口径
+    style = {"layer": "style", "topScores": {"1-1": 10, "2-0": 9}}
+    out = nr._script_layer({"home": "x", "away": "y"}, style, dc=None)
+    assert out["source"] == "style" and out["score"] == "1:1"
+
+
+def test_divergence_zero_when_identical():
+    mat = _fake_matrix()
+    # 用矩阵自身剧本域分布构造 crs_odds, JSD 应为 0
+    p = {s: mat[int(s[0]), int(s[2])] for s in nr.SCRIPT_UNIVERSE}
+    odds = {s: 1.0 / v for s, v in p.items()}
+    assert nr.divergence(mat, odds) < 1e-9
+
+
+def test_build_candidate_records_script_source():
+    # 接线: dc 有效→matrix 口径; dc 缺省→降级 style(旧路径), script_source 逐场可追溯
+    teams = {"毕尔巴鄂": FAKE_TEAM, "马竞": FAKE_TEAM}
+    with_dc = nr.build_candidate(FAKE_MATCH, FAKE_PROFILE, teams,
+                                 dc={"lh": 1.8, "la": 0.9, "rho": 0.0})
+    without_dc = nr.build_candidate(FAKE_MATCH, FAKE_PROFILE, teams)
+    assert with_dc["script_source"] == "matrix"
+    assert without_dc["script_source"] == "style"

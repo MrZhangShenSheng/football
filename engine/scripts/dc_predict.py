@@ -14,7 +14,7 @@ from pathlib import Path
 
 import numpy as np
 
-from common import log, ROOT
+from common import load_aliases, log, ROOT
 
 CACHE_DIR = ROOT / "engine" / "cache"
 FUSION = CACHE_DIR / "fusion.json"
@@ -186,6 +186,69 @@ def fuse(p_dc: list[float], p_mkt: list[float], a: float, b: float,
     return [v / t for v in e]
 
 
+def _norm_name(s: str) -> str:
+    """队名归一比较：去连字符/空格/撇号/点号+小写（兼容规范ID 'al-ahli' 与 fd 原始名
+    'Aston Villa' 两种缓存键，与 boldplay._dc_params 同口径）。"""
+    return str(s).lower().replace("-", "").replace(" ", "").replace("'", "").replace(".", "")
+
+
+def _alias_find(dc_teams: dict, name: str) -> str | None:
+    """别名级队名匹配（第二级，narrative 中文票面口径）：_aliases.json zh/variants →
+    规范ID → {规范ID/fd/espn 名} 归一比较；未收录/缓存无该队/别名表损坏 → None
+    （调用方降级，不影响第一级宽松匹配）。"""
+    try:
+        flat = load_aliases()
+    except (OSError, json.JSONDecodeError):
+        return None
+    zh_map = {}
+    for tid, srcs in flat.items():
+        if not isinstance(srcs, dict):
+            continue
+        for v in srcs.get("variants") or ():
+            zh_map[v] = tid
+        if srcs.get("zh"):
+            zh_map[srcs["zh"]] = tid   # 主名后写，冲突时优先
+    tid = zh_map.get(name)
+    if not tid:
+        return None
+    srcs = flat.get(tid) or {}
+    cands = {_norm_name(c) for c in (tid, srcs.get("fd"), srcs.get("espn")) if c}
+    for t in dc_teams:
+        if _norm_name(t) in cands:
+            return t
+    return None
+
+
+def _find_team(dc_teams: dict, name: str) -> str | None:
+    """队名两级匹配：一级=宽松匹配（fd 命名大小写/缩写，main 原行为）；
+    二级=_alias_find 别名表（中文队名经 _aliases.json 解析）。"""
+    for t in dc_teams:
+        if t.lower() == name.lower() or t.lower().startswith(name.lower()[:6]):
+            return t
+    return _alias_find(dc_teams, name)
+
+
+def _lambdas_from(dc: dict, h_key: str, a_key: str) -> tuple[float, float]:
+    """拟合参数 + 已匹配缓存键 → (λh, λa)（λ 公式单一来源）。"""
+    th, ta = dc["teams"][h_key], dc["teams"][a_key]
+    return (math.exp(th["attack"] + ta["defense"] + dc["homeAdv"]),
+            math.exp(ta["attack"] + th["defense"]))
+
+
+def match_lambdas(league: str, home: str, away: str) -> tuple[float, float] | None:
+    """赛前 λ 计算入口（统一比分分布引擎·剧本轨芯）：读 engine/cache/{league}_dc.json →
+    _find_team 两级匹配 → (λh, λa)。缓存缺/两级均未匹配 → None（narrative 剧本层据此
+    降级风格模板；main 自身因报告需 h_key/a_key，直接用 _find_team/_lambdas_from 同源件）。"""
+    dc_path = CACHE_DIR / f"{league}_dc.json"
+    if not dc_path.exists():
+        return None
+    dc = json.loads(dc_path.read_text(encoding="utf-8"))
+    h_key, a_key = _find_team(dc["teams"], home), _find_team(dc["teams"], away)
+    if not h_key or not a_key:
+        return None
+    return _lambdas_from(dc, h_key, a_key)
+
+
 def main() -> None:
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     market = None
@@ -202,21 +265,13 @@ def main() -> None:
         log("dc_predict", f"无 {dc_path.name}（先跑 dc_fit.py）")
         return
     dc = json.loads(dc_path.read_text(encoding="utf-8"))
-    # 队名宽松匹配：fd 命名大小写/缩写
-    def find(name):
-        for t in dc["teams"]:
-            if t.lower() == name.lower() or t.lower().startswith(name.lower()[:6]):
-                return t
-        return None
-    h_key, a_key = find(home), find(away)
+    h_key, a_key = _find_team(dc["teams"], home), _find_team(dc["teams"], away)
     if not h_key or not a_key:
         log("dc_predict", f"球队未在拟合参数中：{home}={'找到' if h_key else h_key}, {away}={a_key}")
         log("dc_predict", "可用: " + ", ".join(sorted(dc["teams"])[:12]) + " ...")
         return
 
-    th, ta = dc["teams"][h_key], dc["teams"][a_key]
-    lh = math.exp(th["attack"] + ta["defense"] + dc["homeAdv"])
-    la = math.exp(ta["attack"] + th["defense"])
+    lh, la = _lambdas_from(dc, h_key, a_key)
     p = score_matrix(lh, la, dc["rho"])
     s_lg, rho_h = load_half_params(league)
 

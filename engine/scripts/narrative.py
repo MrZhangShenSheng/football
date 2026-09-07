@@ -4,10 +4,16 @@
 推导比赛走向与比分→CRS/HAFU/混串玩法映射. 不算EV不参考市场定价(分歧度仅排序用).
 开发者 sszhang"""
 import json
+import math
 import sys
 from datetime import date
 from pathlib import Path
+
+import numpy as np
+
 from common import ROOT
+from dc_predict import match_lambdas, score_matrix
+from score_ev import map_league
 
 SCRIPT_UNIVERSE = {"1:0", "2:0", "2:1", "0:0", "1:1", "0:1", "1:2", "2:2"}   # 小比分剧本域
 HAFU_KEYS = ("hh", "hd", "ha", "dh", "dd", "da", "ah", "ad", "aa")
@@ -15,7 +21,7 @@ NARRATIVE_DIR = ROOT / "data/03-predictions"
 MATCHES_CACHE = ROOT / "engine/cache/sporttery_matches.json"
 FALLBACK_SCORE = "1:0"          # 风格模板缺位时的兜底剧本(∈SCRIPT_UNIVERSE)
 DEFAULT_HAD_ODDS = 3.0          # had.h 缺失时的兜底主胜赔率
-SCRIPT_PROB_EST = 0.25          # 剧本概率粗估(v0 骨架, 接dc_predict后细化)
+SCRIPT_PROB_EST = 0.25          # 剧本概率粗估(style降级路径用; matrix路径取矩阵格概率)
 FLAT_P_MKT = 0.33               # 市场价缺失时的平先验隐含概率
 FACTOR_STAR_THRESHOLD = 0.9     # 层因子≥此值计一星(硬判定, v0 全默认1.0)
 STAR_BASE_BOOST = 2             # 星级基线加成(粗估公式: 4硬层全过+2=5星)
@@ -48,19 +54,66 @@ def _style_layer(m, profile):
     top = profile.get("scoreTop") or {}
     return {"layer": "style", "topScores": top}
 
-def _script_layer(m, style):
-    # 风格模板最高频比分→剧本(λ推导接dc_predict是P1.5, 先模板版跑通链路)
-    # scoreTop键为短横线格式("1-0", 联赛画像/测试夹具同口径)→归一化冒号并限定剧本域
+def _script_layer(m, style, dc=None):
+    """⑤剧本层(P1落地·设计§五①): dc={'lh','la','rho'} → dc_predict.score_matrix 7×7 →
+    剧本域 argmax; dc 缺/λ解析失败 → 降级风格模板(旧路径行为不变), source 标记口径
+    (matrix|style, build_candidate 落 script_source 字段逐场可追溯)."""
+    if dc and dc.get("lh") and dc.get("la"):
+        mat = score_matrix(float(dc["lh"]), float(dc["la"]), float(dc.get("rho", 0.0)))
+        best = max(SCRIPT_UNIVERSE, key=lambda s: mat[int(s[0]), int(s[2])])
+        return {"layer": "script", "score": best,
+                "prob": float(mat[int(best[0]), int(best[2])]), "source": "matrix"}
+    # 降级: 风格模板最高频比分→剧本(scoreTop 短横线键→归一化冒号并限定剧本域)
     top = style.get("topScores") or {}
     in_domain = {k.replace("-", ":"): v for k, v in top.items()
                  if k.replace("-", ":") in SCRIPT_UNIVERSE}
     score = max(in_domain, key=in_domain.get) if in_domain else FALLBACK_SCORE
-    return {"layer": "script", "score": score}
+    return {"layer": "script", "score": score, "prob": SCRIPT_PROB_EST, "source": "style"}
 
-def build_candidate(m: dict, profile: dict, teams: dict) -> dict:
+
+def divergence(mat: np.ndarray, crs_odds: dict, alpha: float = 1.0) -> float:
+    """叙事矩阵 vs 体彩CRS去水分布 JSD——只做选场排序, 不算EV(设计§五①边界).
+    域=crs_odds 的 ':' 比分键('胜其他/平其他/负其他'非比分键双方剔除), 两侧各自域内
+    归一后 JSD(log2 底, 值域[0,1], 同分布→0); alpha=1 标准去水, alpha≠1 幂次加权
+    (Task 6 市场矩阵复用). 开发者 sszhang"""
+    w = {k: (1.0 / float(v)) ** alpha for k, v in crs_odds.items() if ":" in k}
+    s = sum(w.values())
+    if s <= 0:
+        return 0.0
+    q = {k: v / s for k, v in w.items()}
+    p_sum = sum(float(mat[int(k[0]), int(k[2])]) for k in q)
+    if p_sum <= 0:
+        return 0.0
+    jsd = 0.0
+    for k, qk in q.items():
+        pk = float(mat[int(k[0]), int(k[2])]) / p_sum
+        m = (pk + qk) / 2
+        if pk > 0:
+            jsd += 0.5 * pk * math.log2(pk / m)
+        if qk > 0:
+            jsd += 0.5 * qk * math.log2(qk / m)
+    return jsd
+
+
+def _dc_context(m: dict) -> dict | None:
+    """体彩场次 → dc 参数 {'lh','la','rho'} | None(P1 剧本层接线): 中文联赛名经
+    score_ev.map_league(单一映射源) → λ 经 dc_predict.match_lambdas(中文队名走别名级)
+    → rho 自联赛缓存补读(ρ 低分修正对剧本域 argmax 敏感, 实测 rho=-0.146 翻转
+    argmax 1:0→1:1, 不可省); 任一步失败 → None, 剧本层降级风格模板. 开发者 sszhang"""
+    lg = map_league(m.get("league", ""))
+    if not lg:
+        return None
+    lam = match_lambdas(lg, m.get("home", ""), m.get("away", ""))
+    if lam is None:
+        return None
+    dc_path = ROOT / "engine/cache" / f"{lg}_dc.json"
+    rho = float(json.loads(dc_path.read_text(encoding="utf-8")).get("rho", 0.0))
+    return {"lh": lam[0], "la": lam[1], "rho": rho}
+
+def build_candidate(m: dict, profile: dict, teams: dict, dc: dict | None = None) -> dict:
     layers = [_strength_layer(m, profile), _form_layer(m, teams),
               _absence_layer(m), _style_layer(m, profile)]
-    script_l = _script_layer(m, layers[3])
+    script_l = _script_layer(m, layers[3], dc=dc)
     layers.append(script_l)
     h, a = script_l["score"].split(":")
     hi, ai = int(h), int(a)
@@ -74,11 +127,14 @@ def build_candidate(m: dict, profile: dict, teams: dict) -> dict:
     return {"code": m.get("matchNumStr") or m.get("code"), "match": f'{m["home"]}-{m["away"]}',
             "layers": layers, "script": {"score": script_l["score"], "hafu": hafu,
             "dir": "主胜" if hi > ai else "平" if hi == ai else "客胜"},
+            "script_source": script_l["source"],
             "star": min(STAR_CEIL, max(STAR_FLOOR, star + STAR_BASE_BOOST)),
             "divergence": round(divergence, 4)}
 
 def build_narrative(matches, profiles, teams, seq):
-    cands = [build_candidate(m, profiles.get(m.get("league"), {}), teams) for m in matches]
+    # P1: 逐场接 dc(match_lambdas 失败→None→剧本层降级风格模板), script_source 逐场可追溯
+    cands = [build_candidate(m, profiles.get(m.get("league"), {}), teams, dc=_dc_context(m))
+             for m in matches]
     cands.sort(key=lambda c: -c["divergence"])          # 剧本分歧度选场(设计§十一)
     top = cands[:3]
     plays = ([{"name": "N-甲", "playType": PLAY_TYPE_CRS_2X1,
