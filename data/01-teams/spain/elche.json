@@ -3,8 +3,8 @@
  "name": "Elche",
  "nameZh": "埃尔切",
  "league": "spain",
- "lastUpdated": "2026-08-22",
- "source": "cold-start + espn/fd recent results",
+ "lastUpdated": "2026-09-07",
+ "source": "sporttery insight 2026-09-07",
  "standing": {
   "pos": 8,
   "played": 1,
@@ -33,6 +33,20 @@
    "result": "D"
   }
  ],
- "injuries": [],
- "notes": "冷启动基础画像（积分榜），待深度采集补充"
+ "injuries": [
+  {
+   "name": "Yago Alonso",
+   "pos": "前锋",
+   "starter": false
+  }
+ ],
+ "notes": "西甲R4 排名19（0胜1平2负）；近10 3胜5平2负；近10主场 5胜4平1负；近10场均进1.4球；伤停1人(主力0)",
+ "team": "埃尔切",
+ "season": "2026",
+ "rank": "19",
+ "leagueRound": "西甲R4",
+ "last10": "3胜5平2负",
+ "last10home": "5胜4平1负",
+ "goalsPerGame10": "1.4",
+ "starterInjuries": 0
 }
