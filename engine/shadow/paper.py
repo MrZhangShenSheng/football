@@ -261,7 +261,8 @@ def shadow_all(date=None, out=None):
     import glob as _glob
     _shapes = _require_shapes()
     date = date or str(_datetime.date.today())
-    sm = json.load(open(os.path.join(REPO, 'engine', 'cache', 'sporttery_matches.json')))
+    sm = json.load(open(os.path.join(REPO, 'engine', 'cache', 'sporttery_matches.json'),
+                        encoding='utf-8'))
     # 当日轮腿构造（HAD 三向去水 + 池价透传）
     legs = []
     for m in sm.get('matches', []):
@@ -331,7 +332,7 @@ if __name__ == '__main__' and len(__import__('sys').argv) > 1 and __import__('sy
     rounds = {r['date']: r['legs'] for r in _data.load_rounds()}
     # 体彩开奖缓存补充（覆盖 02-results 未回填日）
     for f in _glob.glob(_os.path.join(REPO, 'engine/cache/sporttery_results_*.json')):
-        try: d = json.load(open(f))
+        try: d = json.load(open(f, encoding='utf-8'))
         except Exception: continue
         for m in d.get('matches', []):
             dt = m.get('matchDate')
