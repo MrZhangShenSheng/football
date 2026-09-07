@@ -119,7 +119,7 @@
 </table>
 <div class="todo"><b>待侦察回填</b>：<br>
 侦察1（水位结构实测）→ 决定去水法与 CRS 池在融合中的地位（若冷热抽水扭曲严重，CRS 池降级为分歧度参考，拟合只用 HAD+TTG）——<span class="ok">已回填（下节）</span><br>
-侦察2（fd 多季拉取验证）→ 决定段A回测样本量（列完整性）<br>
+侦察2（fd 多季拉取验证）→ 决定段A回测样本量（列完整性）——<span class="ok">已回填（下节）</span><br>
 结论回填本节，设计分支随之定稿。
 <div style="border-top: 1px dashed #d4ac0d; margin-top: 10px; padding-top: 8px;">
 <b>侦察1 结论（2026-09-07 实测回填）：<span class="ok">ALPHA_SELECTED = 1.0（等比例去水），CRS 池可用进融合，不降级</span></b><br>
@@ -132,6 +132,17 @@
   <tr><td>0.7</td><td>0.0041</td><td>0.0119</td></tr>
 </table>
 判读：alpha=1.0 两组 JSD 中位数均为四档最小，且随 alpha 递减单调上升——无任何幂次优于等比例，未发现冷热比分抽水不均的结构性扭曲；两组数值远低于 0.03 降级线（判据 b 不触发），alpha=1.0 自身即满足 &lt;0.01 门槛。CRS 33.9% 高水位属全池均匀压缩：等比例去水后 CRS 三向边缘与 HAD 池几乎完全相干（JSD 0.0004），TTG 边缘亦只差 0.0072——五池内部定价一致，水位差异（33.9% vs 12.9%/20.4%）由分池独立去水消化即可。<b>Task 4 的 devig_pool 默认 alpha=1.0，CRS 池保留为 market_matrix 拟合输入。</b>（脚本：engine/scripts/scratch/water_probe.py，一次性不进 git）
+</div>
+<div style="border-top: 1px dashed #d4ac0d; margin-top: 10px; padding-top: 8px;">
+<b>侦察2 结论（2026-09-07 实测回填）：<span class="ok">段A样本充足——五联赛两季实测"三向收盘+OU2.5"同时完整 2654 场 ≥ 2500 门槛；列完整性零缺失，真实瓶颈是 fd 限流供数而非列结构</span></b><br>
+实测口径：fd 全站自 09-06 起 HTTP 503 限流（本侦察 15 次直测 0 通，commit db62b5f/dcd20a7 在案），2324 季无法直测，降级走本地缓存 odds_{league}_{season}.json（odds_fetch.main 的 normalize_row 产物——三向收盘非空才入 matches，故 n 即三向完整场次数）。列名以 odds_fetch 实读为准：<b>三向收盘 = PPCH/PPCD/PPCA</b>（老季 Psh 系 fallback），本表原写 PSCH/D/A 系未在 repo 链路使用；<b>OU2.5 = P&gt;2.5/P&lt;2.5</b>（Pinnacle 主源）+ B365&gt;2.5/B365&lt;2.5（fallback）。
+<table>
+  <tr><th>赛季</th><th>E0</th><th>SP1</th><th>D1</th><th>I1</th><th>F1</th><th>同时完整合计</th></tr>
+  <tr><td>2425（全季，拉于 09-02）</td><td>380</td><td>380</td><td>306</td><td>380</td><td>306</td><td class="ok">1752</td></tr>
+  <tr><td>2526（快照截断于 26-01-04~15）</td><td>210</td><td>189</td><td>150</td><td>200</td><td>153</td><td>902</td></tr>
+  <tr><td>2324</td><td colspan="6">未测（fd 503 + 无本地缓存）</td></tr>
+</table>
+判读：① <b>列完整性非瓶颈</b>——2425 全季五联赛 n 恰等于各联赛理论场次（380/380/306/380/306），即三向收盘与 OU2.5 同时完整率 100%（OU 内 Pinnacle 源 94.7%~100%，B365 fallback 每联赛仅补 0~9 场）；"老赛季列缺失须缩季"的担忧未出现。② <b>样本量 2654 ≥ 2500 过线</b>（2425 全季 1752 + 2526 半季快照 902）；稳健口径仅完整赛季 1752 未独立过线，但 2526 缺口属源端快照截断（整齐停在 1 月上旬，非列问题），fd 恢复后全季应至 1752、2324 补测预期同构（两季满配 3504）。③ <b>段A落地姿势</b>：2425 全季先行开跑，2526/2324 待 fd 限流恢复后 odds_fetch --season 补拉（walk-forward 按赛季分段，防截断快照混入时序）；fd 供数连续性（503 已持续两天）列为段A排期的一号外部依赖。（脚本：engine/scripts/scratch/fd_probe.py，一次性不进 git）
 </div></div>
 
 <h2>§五 三出口设计</h2>
