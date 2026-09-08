@@ -13,8 +13,12 @@ class TestAliases:
         assert len(aliases) >= 30  # 36 队起步，只增不减
 
     def test_every_team_has_zh_and_league(self):
+        # zh 允许 null（_meta 约定：null=待 fetch 首次运行补全，勿手填猜测——09-08 espn
+        # 历史队条目首次暴露既有矛盾）；但键必须存在且非 zh 以外垃圾值
         for team_id, info in load_aliases().items():
-            assert info.get("zh"), f"{team_id} 缺中文名"
+            assert "zh" in info, f"{team_id} 缺 zh 键"
+            assert info.get("zh") is None or isinstance(info.get("zh"), str), \
+                f"{team_id} zh 类型异常: {info.get('zh')!r}"
             assert info.get("league"), f"{team_id} 缺联赛目录"
 
     def test_ids_are_kebab_case(self):

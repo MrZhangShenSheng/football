@@ -24,9 +24,12 @@ def test_map_league_known():
     assert map_league("意甲") == "italy-serie-a"
     assert map_league("英超") == "england-premier"
     assert map_league("沙职") == "saudi" and map_league("瑞超") == "sweden"
+    # 09-08 本地库四联赛接入（espn-history 镜像）
+    assert map_league("巴甲") == "brazil" and map_league("挪超") == "norway"
+    assert map_league("丹超") == "denmark" and map_league("美职") == "usa"
 
 def test_map_league_unknown_returns_none():
-    assert map_league("欧冠") is None and map_league("巴甲") is None
+    assert map_league("欧冠") is None and map_league("英联赛杯") is None
 
 def test_build_freq_table_reads_league_dict_structure(monkeypatch, tmp_path):
     import json as _json

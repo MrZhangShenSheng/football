@@ -14,7 +14,9 @@ LEAGUE_MAP = {          # 体彩中文缩写 → fd 英文 id（2026-08-24 存�
     "沙职": "saudi", "瑞超": "sweden", "日职": "japan", "韩职": "korea",
     "英冠": "england-championship", "德乙": "germany-2-bundesliga",
     "荷乙": "netherlands-eerste", "西乙": "spain-laliga2", "意乙": "italy-serie-b",
-}                       # 巴甲/欧冠等无对应 → None → 全局池（设计内）
+    # 09-08 补本地库四联赛（体彩裸名实测自 02-results league 字段；无 fd 对应）
+    "巴甲": "brazil", "丹超": "denmark", "挪超": "norway", "美职": "usa",
+}                       # 欧冠/杯赛等无对应 → None → 全局池（设计内）
 
 def map_league(name: str):
     """体彩中文联赛名 → fd id；无映射返回 None（调用方落全局池）。"""
@@ -26,8 +28,20 @@ def shrink(freq: float, n: int, prior: float, strength: int = PRIOR_STRENGTH) ->
 def norm_score(hg, ag) -> str:
     return f"{int(hg)}:{int(ag)}"
 
+# 本地赛果库联赛（fd 不覆盖，无条件进频率池；与 freq_band.LEAGUE_STORE 口径一致——
+# 09-08 扩容 espn-history 回填的巴丹挪美；杯赛库 coppa-italia/dfb-pokal/libertadores
+# 跨联赛队源混杂不做模板，设计内排除）
+LOCAL_POOL = ("japan", "korea", "sweden", "saudi", "brazil", "denmark", "norway", "usa")
+FD_BACKED = frozenset(DIVS.values())   # fd 覆盖联赛键集（镜像库仅 fd 断粮时导入防双算）
+
+
 def build_freq_table() -> dict:
-    """fd 8联赛多季 + league库(日韩瑞沙) → {league: Counter({'__n': 总场, '1:0': 场次, ...})}"""
+    """fd 多季 + 本地 league 库 → {league: Counter({'__n': 总场, '1:0': 场次, ...})}。
+
+    本地库导入规则（2026-09-08 espn-history 镜像设计）：
+    - fd 不覆盖联赛（LOCAL_POOL 8 个）→ 无条件导入；
+    - fd 覆盖联赛（英西德意法荷葡）→ 仅该联赛 fd 行为空（503 断粮）时导入镜像，
+      fd 正常时零行为变化、镜像静默退位，永不双算。"""
     table = {}
     for season in SEASONS:
         for div, league in DIVS.items():
@@ -40,7 +54,11 @@ def build_freq_table() -> dict:
     # 静默丢掉日韩瑞沙 ~2300 场——boldplay.py:21 2026-09-02 同类修复的漏网之鱼）
     for path in glob.glob(str(ROOT / "data/02-results/league/*_matches.json")):
         key = path.replace("\\", "/").split("/")[-1].replace("_matches.json", "")  # Windows glob 返回反斜杠，先归一再取文件名（2026-08-25 本地1948场静默丢失修复）
-        if key not in ("japan", "korea", "sweden", "saudi"): continue
+        if key in FD_BACKED:
+            if (table.get(key) or Counter()).get("__n", 0):
+                continue                               # fd 活着 → 跳过镜像防双算
+        elif key not in LOCAL_POOL:
+            continue                                   # 杯赛库不进频率池（设计内）
         blob = table.setdefault(key, Counter())
         data = json.load(open(path, encoding="utf-8"))
         rows = data.get("matches", []) if isinstance(data, dict) else (data or [])

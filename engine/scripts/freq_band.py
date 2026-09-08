@@ -18,7 +18,10 @@ SIGMA_FLOOR = 0.5           # 核带宽下限（防极端单点分布 σ→0）
 T_AXIS_GUARD = 0.4          # T轴护栏：平移目标 T=λh+λa 偏离模板总进球均值超40% → 降级纯模板
                             # （2026-09-03 周四006事故：λ客÷纯客场基准虚高→T=4.35 vs 西甲均值2.6，
                             #  高斯核远距平移把 s7 质量从2.1%抬到28.6%@37 EV+959%）
-LEAGUE_STORE = ("japan", "korea", "sweden", "saudi")   # 本地赛果库联赛（与 score_ev 口径一致）
+LEAGUE_STORE = ("japan", "korea", "sweden", "saudi", "brazil", "denmark", "norway", "usa")
+# 本地赛果库联赛=fd 不覆盖 8 个（与 score_ev.LOCAL_POOL 口径一致——09-08 espn-history
+# 扩容巴丹挪美；杯赛库不做 form 源同设计内排除）
+FD_BACKED = frozenset(DIVS.values())   # fd 覆盖联赛键集（espn-history 镜像仅断粮时导入）
 BAND_DEFAULT = (10.0, 28.0)   # CRS 形状带（桂林-梅州合并带，与 boldplay 现状一致；boldplay.band_ok 是 had 方向带不可复用）
 DIVERGENCE_FLAG_PP = 5        # |q − 市场隐含| 超此值(百分点)触发分歧旗（spec D12）
 MARKET_MARGIN_DIV = 1.13      # 体彩三向去水除数近似（HAD 口径）
@@ -86,6 +89,7 @@ def build_team_form(fetch_rows_fn=fetch_rows,
             form[tid_key].append(row)     # fd 名 → tid 双键（同一行两键各存一份）
 
     form = defaultdict(list)
+    fd_counts = Counter()                          # 联赛级 fd 行数（镜像闸门判据）
     for season in FORM_SEASONS:
         for div, div_id in DIVS.items():
             for r in fetch_rows_fn(season, div):
@@ -93,14 +97,21 @@ def build_team_form(fetch_rows_fn=fetch_rows,
                     hg, ag = int(r["FTHG"]), int(r["FTAG"])
                     add(r["HomeTeam"], (hg, ag, season, div_id))
                     add(r["AwayTeam"], (ag, hg, season, div_id))
+                    fd_counts[div_id] += 1
                 except (KeyError, ValueError, TypeError):
                     continue
     # ROOT 绝对定位（2026-09-03 修复，同 score_ev.build_freq_table：相对 glob 在
     # cwd=engine/scripts 下静默丢失日韩瑞沙近况 → team_strength 返回 None → 平移静默降级）
+    # 镜像闸门（2026-09-08，同 build_freq_table 语义）：fd 覆盖联赛仅 fd 断粮（该联赛
+    # fd 行=0）时导入 espn-history 库，fd 正常时跳过防近10场窗口双算重复场次。
+    # 注：本地库行当季 tag=自然年 2026（含上季 2526 后半段），降级源语义下近况窗口
+    # 混入上季尾巴可接受；fd 正常态当季近况走 fd 精确赛季行。
     for path in glob.glob(league_glob or str(ROOT / "data/02-results/league/*_matches.json")):
         key = path.replace("\\", "/").split("/")[-1].replace("_matches.json", "")
-        if key not in LEAGUE_STORE:
-            continue
+        if key in fd_counts and fd_counts[key] > 0:
+            continue                       # fd 覆盖联赛且 fd 活着 → 跳过镜像
+        if key not in LEAGUE_STORE and key not in FD_BACKED:
+            continue                       # 杯赛库不进 form 源（设计内）
         data = json.loads(Path(path).read_text(encoding="utf-8"))
         rows = data.get("matches", []) if isinstance(data, dict) else (data or [])
         for m in rows:
