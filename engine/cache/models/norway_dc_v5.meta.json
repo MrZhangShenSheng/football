@@ -1,17 +1,17 @@
 {
-  "league": "brazil",
+  "league": "norway",
   "version": 5,
   "source": "local",
-  "nTrain": 626,
+  "nTrain": 1112,
   "dateRange": [
-    "2025-03-29",
-    "2026-09-07"
+    "2022-04-02",
+    "2026-09-06"
   ],
   "xi": 0.005,
-  "holdoutLogloss": 1.0436,
+  "holdoutLogloss": 0.9733,
   "replacedVersion": 4,
-  "replacedBy": 6,
-  "reason": "626场 local 源拟合",
+  "replacedBy": null,
+  "reason": "1112场 local 源拟合",
   "createdBy": "sszhang pipeline",
   "createdAt": "2026-09-08"
 }
