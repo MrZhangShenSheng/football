@@ -37,7 +37,8 @@ LEAGUE_RESULTS_DIR = ROOT / "data" / "02-results" / "league"
 
 # ESPN 联赛代码 → 本项目 data/00-leagues 目录名（与现有文件对齐：日职/瑞超等用短名）
 ESPN_LEAGUES = {
-    "esp.1": "spain-laliga", "gbr.1": "england-premier", "ger.1": "germany-bundesliga",
+    "esp.1": "spain-laliga", "eng.1": "england-premier",   # gbr.1 已被 ESPN 弃用（2026-09-08 实测 400）
+    "ger.1": "germany-bundesliga",
     "ita.1": "italy-serie-a", "fra.1": "france-ligue1", "ned.1": "netherlands-eredivisie",
     "por.1": "portugal-primeira", "jpn.1": "japan", "jpn.2": "japan-j2",
     "swe.1": "sweden", "nor.1": "norway", "den.1": "denmark", "ksa.1": "saudi",
