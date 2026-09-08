@@ -53,6 +53,15 @@ PLAN_FAMILIES = [
     {'family': 'D', 'name': 'crs-4串1',    'pool': 'crs',      'shape': '4串1',  'n_legs': 4, 'options': 'single', 'track': 'A'},
     {'family': 'D', 'name': 'crs-双选2串1', 'pool': 'crs',     'shape': '全2关', 'n_legs': 3, 'options': 'dual', 'track': 'A'},
     {'family': 'D', 'name': 'crs-双选单关', 'pool': 'crs',     'shape': '单关',  'n_legs': 7, 'options': 'dual', 'track': 'A'},
+    # G 族：右尾贪心（2026-09-09 大哥拍板新增）——概率预算背包贪心近似：
+    # 预算容量 W=-ln(p_budget) 内按密度 d=ln(o)/(-ln(p)) 贪心装入（每损失 1 单位概率
+    # 换回最多赔率对数收益）；候选=每场 {HAD 主选项 ∪ CRS top-1 ∪ TTG top-1}，
+    # 同场取密度最高（铁律9 同场限一玩法）。关数不预设（2~n_legs 由预算自然决定——
+    # 密度腿"概率重量"大 w=-ln(p)，紧预算装 4 条必超，锁关数会强制选低密度腿违背贪心本意）；
+    # 装<2 腿关档不硬凑。对照位=A 族 4串1（全中~10%/合赔~5）与 D 族 crs-4串1（全中~万分之一）
+    # 之间——右尾显著肥于 A、回款可观测性远好于 D（1% 预算锚）。
+    {'family': 'G', 'name': 'g-tail-贪心串1', 'pool': 'tail_greedy', 'shape': 'N串1',
+     'n_legs': 4, 'options': 'single', 'track': 'A', 'p_budget': 0.01},
 ]
 
 
@@ -148,6 +157,66 @@ def _skeleton(shape, n):
     return None
 
 
+def _tail_candidates(legs, qc):
+    """右尾贪心候选展开：每场 {HAD 主选项 ∪ CRS top-1 ∪ TTG top-1} → 同场取密度最高。
+    概率口径混合（HAD=体彩去水单锚 / CRS·TTG=freq q 模板，与 D/C 族同源）；
+    密度 d=ln(o)/(-ln(p))——CRS 高赔腿天然占优，正是右尾贪心要的排序。"""
+    import math
+    cands = []          # [ {src, kind, pick, p, o, d} ]
+    for i, leg in enumerate(legs):
+        best = None
+        # HAD 主选项
+        try:
+            k = max(range(3), key=lambda j: leg['fused'][j])
+            p, o = leg['fused'][k], leg['odds'][k]
+            if p > 0 and o > 1.0:
+                best = {'src': i, 'kind': 'had', 'pick': k, 'p': p, 'o': o,
+                        'd': math.log(o) / -math.log(p)}
+        except (KeyError, IndexError, ValueError):
+            pass
+        # CRS/TTG top-1（q 快照 + 体彩真实池价）
+        for kind in ('crs', 'ttg'):
+            ranked = (qc.get(leg.get('code')) or {}).get(kind) or []
+            if not ranked:
+                continue
+            pick, q = ranked[0]
+            pool_odds = dict((leg.get('pools') or {}).get(kind) or {})
+            if kind == 'crs':                 # 体彩原始键 s01s01 → '1:1'
+                pool_odds = {(f"{int(k[1:3])}:{int(k[4:6])}" if k.startswith('s') and k[3] == 's' else k): v
+                             for k, v in pool_odds.items()}
+            try:
+                o = float(pool_odds.get(pick))
+            except (TypeError, ValueError):
+                continue
+            if q <= 0 or o <= 1.0:
+                continue
+            c = {'src': i, 'kind': kind, 'pick': pick, 'p': q, 'o': o,
+                 'd': math.log(o) / -math.log(q)}
+            if best is None or c['d'] > best['d']:
+                best = c
+        if best:
+            cands.append(best)
+    return cands
+
+
+def _pick_tail(legs, spec, qc):
+    """G 族贪心装包：密度降序装入直到 n_legs 上限/预算耗尽（0-1 背包贪心近似，诚实标注）。
+    关数自适应：装≥2 腿即出票（<2 关档不硬凑）；超预算的腿跳过不回填（贪心不做交换优化）。"""
+    import math
+    cands = sorted(_tail_candidates(legs, qc), key=lambda c: -c['d'])
+    W = -math.log(spec['p_budget'])
+    used, chosen = 0.0, []
+    for c in cands:
+        w = -math.log(c['p'])
+        if used + w > W or c['src'] in (x['src'] for x in chosen):
+            continue
+        chosen.append(c)
+        used += w
+        if len(chosen) >= spec['n_legs']:
+            break
+    return chosen if len(chosen) >= 2 else None
+
+
 def build_ticket(legs, spec, qc=None):
     """legs（shadow_all 口径：code/match/fused/odds/pools）+ PlanSpec → 票 or None。
 
@@ -156,6 +225,35 @@ def build_ticket(legs, spec, qc=None):
     即 miss，odds 结构本身编码买了什么）；bets=[{legs: [(tleg_idx, pick), ...]}]（选项组合
     逐注展开，n_bets=len(bets)）；mult=max(1, BUDGET//(n_bets*BET_UNIT))；cost=乘积。
     """
+    if spec['pool'] == 'tail_greedy':         # G 族：贪心装包自构 tlegs（绕过池排序/选项展开）
+        if not qc:
+            return None
+        chosen = _pick_tail(legs, spec, qc)
+        if not chosen:
+            return None
+        tlegs, tleg_picks = [], []
+        for c in chosen:
+            if c['kind'] == 'had':
+                odds = [leg if idx == c['pick'] else None
+                        for idx, leg in enumerate(legs[c['src']]['odds'])]
+                pick_v = int(c['pick'])
+            else:
+                pool_odds = dict((legs[c['src']].get('pools') or {}).get(c['kind']) or {})
+                if c['kind'] == 'crs':         # 体彩原始键 s01s01 → '1:1'（paper.freeze 同口径）
+                    pool_odds = {(f"{int(k[1:3])}:{int(k[4:6])}" if k.startswith('s') and k[3] == 's' else k): v
+                                 for k, v in pool_odds.items()}
+                odds = {str(c['pick']): float(pool_odds[c['pick']])}
+                pick_v = c['pick']
+            tlegs.append({'src': c['src'], 'kind': c['kind'], 'picks': [pick_v], 'odds': odds})
+            tleg_picks.append([pick_v])
+        from itertools import product
+        sk = [tuple(range(len(tlegs)))]      # G 族 N串1 自适应关数（2~4 由预算决定）
+        bets = [{'legs': [(i, p) for i, p in zip(combo, picks)]}
+                for combo in sk for picks in product(*[tleg_picks[i] for i in combo])]
+        n_bets = len(bets)
+        mult = max(1, BUDGET // (n_bets * BET_UNIT))
+        return {'tlegs': tlegs, 'bets': bets, 'n_bets': n_bets,
+                'mult': mult, 'cost': n_bets * BET_UNIT * mult}
     if spec['pool'] in ('ttg', 'crs'):
         if not qc:
             return None                     # 无 q 快照整族跳过（qcache 随事故丢失待重建）
