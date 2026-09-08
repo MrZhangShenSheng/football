@@ -120,7 +120,7 @@ svg text { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; }
 <tr><td>half_engine 读 half_share.json（k=s）→ HAFU 推演出口（纯 k 版，无比分态修正）</td><td class="ok">立即可做</td></tr>
 <tr><td>redteam.py R1-R4/R6 事前卡</td><td class="ok">立即可做（零依赖）</td></tr>
 <tr><td>段A walk-forward 框架搭建（共享 score-engine）</td><td class="ok">立即可做</td></tr>
-<tr><td>段A 五线对照<b>逐场结算</b>（需逐场 HTHG/HTAG 真果对答案）</td><td class="bad">挂 fd 恢复——恢复后 <code>scratch/fd_alive_probe.py</code> 直跑落盘（脚本已含五联赛两季拉取+落盘逻辑）</td></tr>
+<tr><td>段A 五线对照<b>逐场结算</b>（需逐场 HTHG/HTAG 真果对答案）</td><td class="bad">挂 fd 恢复——恢复后 <code>odds_fetch.py --season 2425/2526 E0 SP1 D1 I1 F1</code> 拉历史季，hthg/htag 已收列自动持久化进缓存</td></tr>
 <tr><td>odds_fetch.normalize_row 收 HTHG/HTAG 列（一行白名单）</td><td class="ok">立即可做——fd 恢复后每次 update 自动持久化半场列，一劳永逸补上本缺口</td></tr>
 </table>
 <p class="meta">（脚本：engine/scripts/scratch/ht_probe.py + fd_alive_probe.py，一次性不进 git）</p>
