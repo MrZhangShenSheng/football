@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026-09-08 预测报告 v9 · 32 场终审</title>
+<style>
+:root{
+  --bg:#f6f5f2; --card:#ffffff; --ink:#1c2430; --muted:#6b7684; --line:#e2e0da;
+  --acc:#0e6e5c; --warn:#b3641a; --bad:#a83232; --soft:#f0ede6; --gold:#8a6d1f;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#14181d; --card:#1c2128; --ink:#e8e6e1; --muted:#98a2ae; --line:#2e353d;
+  --acc:#4fc3a1; --warn:#e0a458; --bad:#e07b7b; --soft:#232a32; --gold:#d4b45a;
+}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:14px/1.65 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif;padding:24px 12px}
+.wrap{max-width:980px;margin:0 auto}
+h1{font-size:21px;margin-bottom:4px}
+h2{font-size:16px;margin:26px 0 10px;padding-left:10px;border-left:4px solid var(--acc)}
+.sub{color:var(--muted);font-size:12.5px;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-bottom:14px}
+.badge{display:inline-flex;align-items:center;gap:4px;border-radius:20px;padding:1px 10px;font-size:12px;font-weight:600}
+.b-anchor{background:var(--warn);color:#fff}
+.b-off{background:var(--soft);color:var(--muted);border:1px solid var(--line)}
+.b-on{background:var(--acc);color:#fff}
+.b-warn{background:var(--bad);color:#fff}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--soft);color:var(--muted);font-weight:600;text-align:left;padding:6px 8px;white-space:nowrap;border-bottom:2px solid var(--line)}
+td{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.s3{color:var(--acc);font-weight:700}
+.s2{color:var(--gold)}
+.s1{color:var(--muted)}
+.playcell{font-size:12.5px;color:var(--muted)}
+.tag{display:inline-block;font-size:11.5px;border-radius:4px;padding:0 6px;margin-right:4px}
+.t-in{background:color-mix(in srgb,var(--acc) 16%,transparent);color:var(--acc)}
+.t-out{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
+.t-watch{background:var(--soft);color:var(--muted)}
+.notice{border-left:4px solid var(--bad);background:color-mix(in srgb,var(--bad) 7%,transparent);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0;font-size:13px}
+.src{font-size:12px;color:var(--muted)}
+.src li{margin:2px 0 2px 18px}
+svg{color:inherit}
+@media(max-width:720px){ .scroll{overflow-x:auto} }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-on" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M4.5 8.2l2.4 2.4 4.6-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-off" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5.2 5.2l5.6 5.6M10.8 5.2l-5.6 5.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 16 16"><path d="M8 1.8L15 14H1z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 6v3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="8" cy="11.9" r="0.9" fill="currentColor"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 16 16"><path d="M1.5 8S4 3.8 8 3.8 14.5 8 14.5 8 12 12.2 8 12.2 1.5 8 1.5 8z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="8" r="2" fill="currentColor"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 16 16"><path d="M3.5 1.8v12.4M3.5 2.5h8.2l-1.8 2.6 1.8 2.6H3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+<div class="wrap">
+
+<h1>竞彩预测报告 · 2026-09-08（v9 终审）</h1>
+<div class="sub">生成 2026-09-08 12:40 · 覆盖周一/周二/周三三销售日 32 场 · 融合铁律：import dc_predict.fuse（σ(logit) 手写禁用）
+  <span class="badge b-anchor"><svg width="13" height="13"><use href="#i-warn"/></svg>单锚模式（fd 503 断粮·星级上限⭐⭐⭐）</span>
+</div>
+
+<div class="card">
+<h2 style="margin-top:0">摘要卡</h2>
+<p style="margin:6px 0">本轮（v9 增补 17 场）总投入 <b class="num">4 元</b>：翻身档 <b class="num">2</b> + 平局轨 <b class="num">2</b>；保底档与彩票档连续关档（铁律 10：全无锚无合格腿，不硬凑）。</p>
+<div class="notice">
+<svg width="14" height="14" style="vertical-align:-2px;color:var(--bad)"><use href="#i-warn"/></svg>
+<b>boldplay seq16 未拍板（approved=false）</b>——翻身档跨池 4 串 1 与彩票档关档结论均出自该卡，settle 会跳过未拍板卡；出票前须大哥人工核卡拍板。<b>平局轨</b>为独立 2 元单关建议，不受拍板状态影响。
+</div>
+<table>
+<tr><th>档位</th><th>状态</th><th>内容</th></tr>
+<tr><td>🛡️ 保底档</td><td><span class="badge b-off"><svg width="12" height="12"><use href="#i-off"/></svg>关档</span></td><td>had-3*4*5 · 0 元 · 第 3 轮连续关档：fd 断粮全无锚，铁律 10 禁保底胆，合格腿 0&lt;5</td></tr>
+<tr><td>🔥 翻身档</td><td><span class="badge b-warn"><svg width="12" height="12"><use href="#i-warn"/></svg>2 元·待拍板</span></td><td>跨池 4 串 1（seq16）：周三006 CRS 0:1@16.0 EV+44% ＋ 周三008 CRS 0:1@15.0 EV+35% ＋ 周三014 CRS 1:2@17.0 EV+29% ＋ 周三007 CRS 1:0@12.5 EV+29%（freq 链 q 排序选高赔冷门比分，全部全中才回 ~655 元）</td></tr>
+<tr><td>🎯 彩票档</td><td><span class="badge b-off"><svg width="12" height="12"><use href="#i-off"/></svg>关档</span></td><td>合格腿仅 1 条（周三001 HHAD 让+1 @1.41 EV-10%），1&lt;4 不硬凑</td></tr>
+<tr><td>⚖️ 平局轨</td><td><span class="badge b-on"><svg width="12" height="12"><use href="#i-on"/></svg>2 元·建议</span></td><td>周三001 江原FC vs 全北现代 <b>HAD 平 @2.92 单关</b>——五条全过：p平 0.327≥28% / 三向极差 4.0pp&lt;12 / R28 / poolSingle.HAD=1 / 非开季。EV≈-4.6% 只标注不拦截（平局轨门槛职责是选股）</td></tr>
+</table>
+<p class="playcell" style="margin-top:8px">方向三星候选线（不出正式票，供大哥参考）：周二004 奈梅亨主胜 0.559 ／ 周二012 弗鲁米嫩主胜 0.580（标伤停衰减）／ 周三011 切尔西主胜 0.569 ／ 周三013 帕梅拉斯主胜 0.718（超低赔骨架 ≤1.25 只做串关骨）。全部为单锚场，EV 天然为负（体彩抽水 12.9%），无保底资格。</p>
+</div>
+
+<h2>阶梯出票卡结构（seq16）</h2>
+<div class="card scroll">
+<svg viewBox="0 0 700 316" width="100%" style="min-width:560px;font-family:inherit">
+  <defs></defs>
+  <!-- 保底档 -->
+  <rect x="8" y="8" width="684" height="56" rx="8" fill="none" stroke="currentColor" stroke-opacity="0.35"/>
+  <rect x="8" y="8" width="96" height="56" rx="8" fill="currentColor" fill-opacity="0.06"/>
+  <text x="30" y="32" font-size="14" font-weight="700" fill="currentColor">保底档</text>
+  <text x="30" y="52" font-size="12" fill="currentColor" opacity="0.65">had-3*4*5</text>
+  <text x="120" y="32" font-size="13" fill="currentColor">第 3 轮连续关档 —— fd 断粮（503）全无锚，铁律 10 禁保底胆</text>
+  <text x="120" y="52" font-size="12" fill="currentColor" opacity="0.6">合格腿 0 &lt; 5 · 不硬凑</text>
+  <line x1="666" y1="20" x2="690" y2="44" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  <line x1="690" y1="20" x2="666" y2="44" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  <path d="M350 64 v18" stroke="currentColor" stroke-dasharray="3 4" opacity="0.5"/>
+  <!-- 翻身档 -->
+  <rect x="8" y="82" width="684" height="120" rx="8" fill="none" stroke="currentColor" stroke-width="1.6"/>
+  <rect x="8" y="82" width="96" height="120" rx="8" fill="currentColor" fill-opacity="0.08"/>
+  <text x="30" y="106" font-size="14" font-weight="700" fill="currentColor">翻身档</text>
+  <text x="30" y="126" font-size="12" fill="currentColor" opacity="0.65">跨池 4 串 1</text>
+  <text x="30" y="146" font-size="13" font-weight="700" fill="currentColor">2 元</text>
+  <text x="120" y="106" font-size="13" fill="currentColor">周三006 里斯本 CRS 0:1 @16.0 · EV+44%</text>
+  <text x="120" y="130" font-size="13" fill="currentColor">周三008 利物浦 CRS 0:1 @15.0 · EV+35%</text>
+  <text x="120" y="154" font-size="13" fill="currentColor">周三014 拉普大学 CRS 1:2 @17.0 · EV+29%</text>
+  <text x="120" y="178" font-size="13" fill="currentColor">周三007 那不勒斯 CRS 1:0 @12.5 · EV+29%</text>
+  <text x="120" y="196" font-size="11.5" fill="currentColor" opacity="0.6">⚠ approved=false 未拍板 · freq 链 q 排序高赔冷门比分 · 方向与 HAD 热门无关</text>
+  <path d="M350 202 v18" stroke="currentColor" stroke-dasharray="3 4" opacity="0.5"/>
+  <!-- 彩票档 -->
+  <rect x="8" y="220" width="684" height="42" rx="8" fill="none" stroke="currentColor" stroke-opacity="0.35"/>
+  <rect x="8" y="220" width="96" height="42" rx="8" fill="currentColor" fill-opacity="0.06"/>
+  <text x="30" y="246" font-size="14" font-weight="700" fill="currentColor">彩票档</text>
+  <text x="120" y="246" font-size="13" fill="currentColor">关档 —— 合格腿 1 &lt; 4（周三001 HHAD 让+1 @1.41 EV-10% 唯一候选，不足）</text>
+  <path d="M350 262 v18" stroke="currentColor" stroke-dasharray="3 4" opacity="0.5"/>
+  <!-- 平局轨 -->
+  <rect x="8" y="280" width="684" height="30" rx="8" fill="currentColor" fill-opacity="0.08"/>
+  <text x="30" y="300" font-size="13" font-weight="700" fill="currentColor">平局轨</text>
+  <text x="120" y="300" font-size="12.5" fill="currentColor">周三001 江原FC vs 全北现代 HAD 平 @2.92 单关 2 元 · 五条全过（p平0.327·极差4pp·R28·单关资格·非开季）</text>
+</svg>
+</div>
+
+<h2>本轮新增 17 场（v9 终审）</h2>
+<div class="card scroll">
+<table>
+<tr><th>编号</th><th>联赛</th><th>对阵</th><th>开赛</th><th>体彩赔率</th><th>方向</th><th class="num">final</th><th>星级</th><th class="num">EV</th><th>建议</th></tr>
+<tr><td class="num">周二001</td><td>韩职</td><td>蔚山现代 vs 首尔FC</td><td class="num">09-08 18:30</td><td class="num">3.21/3.50/1.88</td><td>客胜</td><td class="num">0.505</td><td class="s2">★★</td><td class="num">-5.0%</td><td class="playcell">观察:胶着不入串</td></tr>
+<tr><td class="num">周二004</td><td>荷甲</td><td>奈梅亨 vs SBV精英</td><td class="num">09-09 00:45</td><td class="num">1.48/4.30/4.55</td><td>主胜</td><td class="num">0.559</td><td class="s3">★★★</td><td class="num">-17.3%</td><td class="playcell"><span class="tag t-watch">候选</span>主伤8(d+4)×0.93；DC+市场双锚一致</td></tr>
+<tr><td class="num">周二005</td><td>沙职</td><td>胡巴卡德 vs 吉达国民</td><td class="num">09-09 02:00</td><td class="num">1.75/3.80/3.40</td><td>主胜</td><td class="num">0.491</td><td class="s2">★★</td><td class="num">-14.0%</td><td class="playcell">观察:单锚数据薄</td></tr>
+<tr><td class="num">周二006</td><td>英冠</td><td>南安普敦 vs 斯旺西</td><td class="num">09-09 02:45</td><td class="num">1.67/3.60/3.95</td><td>—</td><td class="num">—</td><td class="s1">★</td><td class="num">—</td><td class="playcell"><span class="tag t-out">排除</span>融合-5.9pp+排名反向(主19客1)</td></tr>
+<tr><td class="num">周二007</td><td>英联赛杯</td><td>桑德兰 vs 赫尔城</td><td class="num">09-09 02:45</td><td class="num">1.53/3.65/5.00</td><td>主胜</td><td class="num">0.585</td><td class="s2">★★</td><td class="num">-10.5%</td><td class="playcell">观察:三星线踩线但杯赛轮换不可测</td></tr>
+<tr><td class="num">周二012</td><td>解放者杯</td><td>弗鲁米嫩 vs 普拉滕斯</td><td class="num">09-09 06:00</td><td class="num">1.38/3.55/8.25</td><td>主胜</td><td class="num">0.580</td><td class="s3">★★★</td><td class="num">-19.9%</td><td class="playcell"><span class="tag t-watch">候选</span>主伤8(d+7)最重×0.93，标衰减风险</td></tr>
+<tr><td class="num">周三001</td><td>韩职</td><td>江原FC vs 全北现代</td><td class="num">09-09 18:30</td><td class="num">2.65/2.92/2.44</td><td><b>平局</b></td><td class="num">0.327</td><td class="s2">★★</td><td class="num">-4.6%</td><td class="playcell"><span class="tag t-in">入轨</span>平局轨单关@2.92·五条全过</td></tr>
+<tr><td class="num">周三003</td><td>欧冠</td><td>巴萨 vs 费耶诺德</td><td class="num">09-10 00:45</td><td class="num">让-3: 2.45/4.80/1.95</td><td>—</td><td class="num">—</td><td class="s2">★★</td><td class="num">—</td><td class="playcell">观察:HAD未售仅让球盘</td></tr>
+<tr><td class="num">周三004</td><td>欧冠</td><td>斯图加特 vs 维京</td><td class="num">09-10 00:45</td><td class="num">让-2: 2.18/4.25/2.30</td><td>—</td><td class="num">—</td><td class="s2">★★</td><td class="num">—</td><td class="playcell">观察:仅让球盘口径</td></tr>
+<tr><td class="num">周三005</td><td>荷甲</td><td>特温特 vs 特尔斯达</td><td class="num">09-10 00:45</td><td class="num">让-2: 2.29/4.10/2.23</td><td>—</td><td class="num">—</td><td class="s1">★</td><td class="num">—</td><td class="playcell"><span class="tag t-out">排除</span>让球盘融合分歧-5.3pp&gt;5</td></tr>
+<tr><td class="num">周三006</td><td>欧冠</td><td>里斯本 vs 加拉塔萨</td><td class="num">09-10 03:00</td><td class="num">1.58/3.75/4.35</td><td>主胜</td><td class="num">0.544</td><td class="s2">★★</td><td class="num">-14.1%</td><td class="playcell">观察:距三星线0.6pp；翻身档CRS腿另计</td></tr>
+<tr><td class="num">周三007</td><td>欧冠</td><td>那不勒斯 vs 阿森纳</td><td class="num">09-10 03:00</td><td class="num">4.40/3.38/1.65</td><td>客胜</td><td class="num">0.521</td><td class="s2">★★</td><td class="num">-14.1%</td><td class="playcell">观察:强强胶着；翻身档CRS 1:0腿另计</td></tr>
+<tr><td class="num">周三008</td><td>欧冠</td><td>利物浦 vs 马竞</td><td class="num">09-10 03:00</td><td class="num">1.63/3.70/4.07</td><td>主胜</td><td class="num">0.527</td><td class="s2">★★</td><td class="num">-14.1%</td><td class="playcell">观察:边缘偏下；翻身档CRS腿另计</td></tr>
+<tr><td class="num">周三009</td><td>欧冠</td><td>巴黎圣曼 vs 布拉迪斯</td><td class="num">09-10 03:00</td><td class="num">让-3: 1.90/4.75/2.55</td><td>—</td><td class="num">—</td><td class="s2">★★</td><td class="num">—</td><td class="playcell">观察:仅让球盘口径</td></tr>
+<tr><td class="num">周三011</td><td>英联赛杯</td><td>切尔西 vs 利兹联</td><td class="num">09-10 03:00</td><td class="num">1.51/3.85/4.85</td><td>主胜</td><td class="num">0.569</td><td class="s3">★★★</td><td class="num">-14.1%</td><td class="playcell"><span class="tag t-watch">候选</span>杯赛轮换风险标注</td></tr>
+<tr><td class="num">周三013</td><td>解放者杯</td><td>帕梅拉斯 vs 基多体大</td><td class="num">09-10 06:00</td><td class="num">1.20/4.95/11.00</td><td>主胜</td><td class="num">0.718</td><td class="s3">★★★</td><td class="num">-13.8%</td><td class="playcell"><span class="tag t-watch">骨架</span>超低赔≤1.25只做串关骨不做单关</td></tr>
+<tr><td class="num">周三014</td><td>解放者杯</td><td>拉普大学 vs 科林蒂安</td><td class="num">09-10 08:30</td><td class="num">2.00/2.58/4.15</td><td>—</td><td class="num">—</td><td class="s2">★★</td><td class="num">—</td><td class="playcell">观察:单锚胶着；翻身档CRS腿另计</td></tr>
+</table>
+<p class="playcell" style="margin-top:8px">口径注：全 17 场均为单锚模式（fd 收盘价 503 断粮，概率锚=体彩去水×0.97 毛利修正，星级上限 ⭐⭐⭐）；DC 覆盖场（周二001/004/006 + 周三001）走 dc_predict 融合链；欧冠/解放者/沙职无 DC 直接市场锚。EV=final×体彩赔率−1，无锚场天然负值，仅翻身档 freq 链高赔冷门比分为正。</p>
+</div>
+
+<h2>周一/周二场维持结论（v8 · 15 场，赔率复扫变动 &lt;5%）</h2>
+<div class="card scroll">
+<table>
+<tr><th>编号</th><th>联赛</th><th>对阵</th><th>方向</th><th class="num">final</th><th>星级</th><th>v9 复审</th></tr>
+<tr><td class="num">周一001</td><td>意甲</td><td>卡利亚里 vs 莱切</td><td>主胜</td><td class="num">0.492</td><td class="s2">★★</td><td class="playcell">维持观察</td></tr>
+<tr><td class="num">周一002</td><td>西甲</td><td>赫塔费 vs 塞尔塔</td><td>平局</td><td class="num">0.369</td><td class="s3">★★★</td><td class="playcell">平局轨方向未入轨（资格核验未过）</td></tr>
+<tr><td class="num">周一003</td><td>瑞超</td><td>马尔默 vs 索尔纳</td><td>主胜</td><td class="num">0.522</td><td class="s2">★★</td><td class="playcell">模型-近况背离F9；翻身档TTG腿维持</td></tr>
+<tr><td class="num">周一004</td><td>瑞超</td><td>卡尔马 vs 佐加顿斯</td><td>客胜</td><td class="num">0.600</td><td class="s3">★★★</td><td class="playcell">彩票档腿维持</td></tr>
+<tr><td class="num">周一005</td><td>沙职</td><td>利雅新月 vs 新未来SC</td><td>主胜</td><td class="num">0.786</td><td class="s3">★★★★</td><td class="playcell">超低赔@1.12彩票腿维持</td></tr>
+<tr><td class="num">周一006</td><td>意甲</td><td>乌迪内斯 vs 拉齐奥</td><td>客胜</td><td class="num">0.403</td><td class="s3">★★★</td><td class="playcell">EV-0.6%近零边际；HHAD警示不入维持</td></tr>
+<tr><td class="num">周一007</td><td>葡超</td><td>埃斯托里 vs 阿罗卡</td><td>回避</td><td class="num">—</td><td class="s1">★</td><td class="playcell">DC参数污染+分歧熔断维持回避</td></tr>
+<tr><td class="num">周一008</td><td>西甲</td><td>埃尔切 vs 皇家社会</td><td>让球主胜(+1)</td><td class="num">0.578</td><td class="s2">★★</td><td class="playcell">彩票+翻身腿维持</td></tr>
+<tr><td class="num">周一009</td><td>巴甲</td><td>维多利亚 vs 格雷米奥</td><td>平局</td><td class="num">0.286</td><td class="s2">★★</td><td class="playcell">平局轨未入轨维持观察</td></tr>
+<tr><td class="num">周二002</td><td>欧冠</td><td>雅典AEK vs LASK林茨</td><td>主胜</td><td class="num">0.527</td><td class="s2">★★</td><td class="playcell">翻身档CRS腿维持（q可靠性低已标）</td></tr>
+<tr><td class="num">周二003</td><td>欧冠</td><td>布鲁日 vs 维拉</td><td>观察</td><td class="num">—</td><td class="s1">★</td><td class="playcell">情报-市场背离维持观察</td></tr>
+<tr><td class="num">周二008</td><td>欧冠</td><td>皇马 vs 国际米兰</td><td>主胜</td><td class="num">0.610</td><td class="s3">★★★</td><td class="playcell">焦点战稳胆材料·保底关档未组串维持</td></tr>
+<tr><td class="num">周二009</td><td>欧冠</td><td>多特蒙德 vs 比利亚雷</td><td>主胜</td><td class="num">0.537</td><td class="s2">★★</td><td class="playcell">翻身档CRS腿维持</td></tr>
+<tr><td class="num">周二010</td><td>欧冠</td><td>里尔 vs 贝蒂斯</td><td>主胜</td><td class="num">0.466</td><td class="s2">★★</td><td class="playcell">均势维持观察</td></tr>
+<tr><td class="num">周二011</td><td>欧冠</td><td>波尔图 vs 曼城</td><td>客胜</td><td class="num">0.599</td><td class="s2">★★</td><td class="playcell">N轨叙事票 P014 维持（影子数据）</td></tr>
+</table>
+</div>
+
+<h2>纪律与风险</h2>
+<div class="card">
+<ul style="padding-left:20px;font-size:13px">
+<li>seq16 未拍板：翻身档出票前必须大哥核卡拍板（approved 置 true），否则 settle 跳过该卡、影子层照常登记。</li>
+<li>平局轨 @2.92 单关 EV≈-4.6%：门槛职责是选股，EV 不拦截；每轮 ≤2 注纪律内本轮仅 1 注。</li>
+<li>翻身档 4 腿全中概率按 q 链极低（跨池 CRS 冷门比分设计本意=以小博大），回款依赖四腿全中，中任一腿即整注归零。</li>
+<li>三星候选线均无锚：即使大哥拍板出票，也不得转为保底胆（铁律 10），只能进搏奖/彩票结构。</li>
+<li>双排除场（周二006/周三005）为分歧熔断，照买历史 0% 命中，维持排除不放宽。</li>
+</ul>
+</div>
+
+<h2>数据来源清单（忠实度抽查用）</h2>
+<div class="card">
+<ul class="src">
+<li>体彩官方 API（sporttery_fetch.py 实时清单 + insight × 17 场）→ engine/cache/sporttery_matches.json / data/05-trends/2026-09-08-intel.json</li>
+<li>DC 参数：engine/cache/korea_dc.json、netherlands-eredivisie_dc.json、england-championship_dc.json（匹配失败自动降级）；融合系数 engine/cache/fusion.json（a=0.4/b=1.0，经 dc_predict.fuse）</li>
+<li>Pinnacle 收盘价：football-data.co.uk 503 断粮 → 本轮全无外部市场锚，概率锚降级为体彩去水</li>
+<li>预测记录：data/02-results/2026-09-08.json（v9 = v8 15 场 + 新 17 场增量合并，plansV8 保留）</li>
+<li>出票卡：data/03-predictions/2026-09-08-boldplay.json（seq16 · approved=false）</li>
+</ul>
+</div>
+
+</div>
+</body>
+</html>
