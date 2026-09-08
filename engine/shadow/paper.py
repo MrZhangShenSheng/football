@@ -286,6 +286,13 @@ def shadow_all(date=None, out=None):
     if len(legs) < 4:
         return {'error': f'当日({date})可用场 {len(legs)} <4，不成轮', 'registered': 0}
     qc = _shapes.load_qcache(date)
+    if qc is None:                              # 快照缺失 → freq_snap 自动生成（2026-09-08 重建接线）
+        try:
+            import freq_snap
+            freq_snap.snap(date)
+            qc = _shapes.load_qcache(date)
+        except Exception:
+            qc = None                           # 诚实降级：ttg/crs 族跳过（build_ticket 收 None 同现状）
     tickets = load_tickets(out)
     done = {(t.get('spec_name'), t.get('date')) for t in tickets}
     n = 0

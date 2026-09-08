@@ -14,8 +14,8 @@
 - 结算键格式（本版定义）：had pick=int(0/1/2) 直索引 odds 三槽 list；
   ttg pick='s0'~'s7'（体彩池键，s7=7+球）；crs pick='h:a' 精确键或'胜其他/平其他/负其他'
   （其他键按方向匹配，高比分语义近似）；
-- qcache 引擎（freq_snap）未重建：qcache/{date}.json 缺失 → load_qcache 返回 None →
-  ttg/crs spec build_ticket 返回 None 跳过（诚实降级，未来重建生成器后自动恢复）。
+- qcache 快照由 freq_snap.py 生成（2026-09-08 重建，同 boldplay 平移链口径）：
+  shadow_all 发现缺失时自动生成；生成失败/当日无场次 → ttg/crs spec 诚实跳过。
 开发者 sszhang
 """
 import json
@@ -58,7 +58,7 @@ PLAN_FAMILIES = [
 
 def load_qcache(date: str):
     """当日 freq q 快照 → dict；qcache/{date}.json 缺失返回 None（ttg/crs 族诚实跳过）。
-    生成器 freq_snap 未随本版重建——旧快照随事故丢失，重建生成器后本函数自动生效。"""
+    快照由 shadow_all 调 freq_snap.snap(date) 自动生成（缺失才写=赛前冻结语义）。"""
     p = os.path.join(QCACHE_DIR, f'{date}.json')
     if not os.path.exists(p):
         return None
