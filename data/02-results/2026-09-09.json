@@ -1,0 +1,654 @@
+{
+ "date": "2026-09-09",
+ "version": "v9",
+ "generatedAt": "2026-09-08 23:35",
+ "mode": "全局",
+ "plans": [],
+ "matches": [
+  {
+   "idx": 1,
+   "code": "周二002",
+   "league": "欧冠",
+   "match": "雅典AEK vs LASK林茨",
+   "kickoff": "2026-09-09 00:45",
+   "pick": "排除:无锚杯赛R1",
+   "odds": null,
+   "star": 2,
+   "grade": "A",
+   "dc": null,
+   "fused": [
+    0.5641,
+    0.2225,
+    0.2134
+   ],
+   "fusedPre": [
+    0.5641,
+    0.2225,
+    0.2134
+   ],
+   "final": null,
+   "chain": null,
+   "chainSteps": [
+    {
+     "name": "单锚降级",
+     "factor": 0.97,
+     "side": "all"
+    }
+   ],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": null,
+   "inPlan": null,
+   "note": "市场主胜56.4%但LASK近10客9胜0平1负场均3.4球状态爆表(基面反向);雅典主场欧冠氛围;CRS 0:1@18为翻身档模板腿(逆市场q7.4%质量存疑);欧冠R1波动(EC0画像冷门率29.2%)",
+   "mkt3": [
+    0.5641,
+    0.2225,
+    0.2134
+   ],
+   "play": "排除:无锚杯赛R1"
+  },
+  {
+   "idx": 2,
+   "code": "周二003",
+   "league": "欧冠",
+   "match": "布鲁日 vs 维拉",
+   "kickoff": "2026-09-09 00:45",
+   "pick": "排除:对称胶着",
+   "odds": null,
+   "star": 2,
+   "grade": "A",
+   "dc": null,
+   "fused": [
+    0.3677,
+    0.2645,
+    0.3677
+   ],
+   "fusedPre": [
+    0.3677,
+    0.2645,
+    0.3677
+   ],
+   "final": null,
+   "chain": null,
+   "chainSteps": [
+    {
+     "name": "单锚降级",
+     "factor": 0.97,
+     "side": "all"
+    }
+   ],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": null,
+   "inPlan": null,
+   "note": "三向36.8/26.4/36.8对称(极差10.4pp微胶着);维拉近10客2胜1平7负崩盘vs布鲁日主场——市场却完全对称=信息对冲态;维拉5伤全边缘;无锚杯赛R1",
+   "mkt3": [
+    0.3677,
+    0.2645,
+    0.3677
+   ],
+   "play": "排除:对称胶着"
+  },
+  {
+   "idx": 3,
+   "code": "周二004",
+   "league": "荷甲",
+   "match": "奈梅亨 vs SBV精英",
+   "kickoff": "2026-09-09 00:45",
+   "pick": "had 主胜",
+   "odds": 1.51,
+   "star": 3,
+   "grade": "A",
+   "dc": [
+    0.6056,
+    0.1897,
+    0.2047
+   ],
+   "fused": [
+    0.5724,
+    0.2147,
+    0.2129
+   ],
+   "fusedPre": [
+    0.5923,
+    0.2047,
+    0.203
+   ],
+   "final": 0.5552,
+   "chain": "开季修正R30.95×伤停差值d=+10.97",
+   "chainSteps": [
+    {
+     "name": "开季修正R3",
+     "factor": 0.95,
+     "side": "h"
+    },
+    {
+     "name": "伤停差值d=+1",
+     "factor": 0.97,
+     "side": "h"
+    },
+    {
+     "name": "单锚降级",
+     "factor": 0.97,
+     "side": "all"
+    }
+   ],
+   "lambdaHome": 2.072,
+   "lambdaAway": 1.097,
+   "ev": -0.1616,
+   "inPlan": "彩票档候选(EV-11%关档不硬凑)",
+   "note": "市场58.7%+DC60.6%同向(λ2.07/1.10)融合59.2%;R3开季修正+伤停d=+1(主3主力缺:Nejašmić/Fonville×2)压至54.5%;基面反向警示:主队近10=3胜2平5负+8伤vs升班马8胜1平1负火热——市场与基面背离,三星踩线单选标注风险,不入保底(无四星)",
+   "mkt3": [
+    0.5868,
+    0.211,
+    0.2023
+   ],
+   "play": "had 主胜"
+  },
+  {
+   "idx": 4,
+   "code": "周二005",
+   "league": "沙职",
+   "match": "胡巴卡德 vs 吉达国民",
+   "kickoff": "2026-09-09 02:00",
+   "pick": "排除:无锚+DC分歧",
+   "odds": null,
+   "star": 2,
+   "grade": "A",
+   "dc": [
+    0.4168,
+    0.2875,
+    0.2957
+   ],
+   "fused": [
+    0.4702,
+    0.2503,
+    0.2795
+   ],
+   "fusedPre": [
+    0.4702,
+    0.2503,
+    0.2795
+   ],
+   "final": null,
+   "chain": null,
+   "chainSteps": [
+    {
+     "name": "单锚降级",
+     "factor": 0.97,
+     "side": "all"
+    }
+   ],
+   "lambdaHome": 1.572,
+   "lambdaAway": 1.3,
+   "ev": null,
+   "inPlan": null,
+   "note": "市场主胜49.1%vs DC三向41.7/28.8/29.6近乎均等(分歧7.4pp未到熔断但同向警示);沙职无fd收盘锚(铁律10禁保底);H2H主队仅30%胜;铁律10:只可入翻身池不推方向",
+   "mkt3": [
+    0.4917,
+    0.236,
+    0.2723
+   ],
+   "play": "排除:无锚+DC分歧"
+  },
+  {
+   "idx": 5,
+   "code": "周二006",
+   "league": "英冠",
+   "match": "南安普敦 vs 斯旺西",
+   "kickoff": "2026-09-09 02:45",
+   "pick": "排除:模型市场严重分歧",
+   "odds": null,
+   "star": 2,
+   "grade": "A",
+   "dc": [
+    0.331,
+    0.3251,
+    0.344
+   ],
+   "fused": [
+    0.4714,
+    0.2709,
+    0.2577
+   ],
+   "fusedPre": [
+    0.4714,
+    0.2709,
+    0.2577
+   ],
+   "final": null,
+   "chain": null,
+   "chainSteps": [
+    {
+     "name": "单锚降级",
+     "factor": 0.97,
+     "side": "all"
+    }
+   ],
+   "lambdaHome": 1.213,
+   "lambdaAway": 1.24,
+   "ev": null,
+   "inPlan": null,
+   "note": "市场主胜53.0%vs DC三向33/32.5/34.4均等(分歧20pp,boldplay熔断拦主胜+让球客胜两选项);DC说胶着市场说主胜——必有一错,纪律=不站队;H2H南安60%胜(弱参考);圣徒近10=6胜2平2负回勇",
+   "mkt3": [
+    0.53,
+    0.2459,
+    0.2241
+   ],
+   "play": "排除:模型市场严重分歧"
+  },
+  {
+   "idx": 6,
+   "code": "周二007",
+   "league": "英联赛杯",
+   "match": "桑德兰 vs 赫尔城",
+   "kickoff": "2026-09-09 02:45",
+   "pick": "排除:杯赛无锚",
+   "odds": null,
+   "star": 2,
+   "grade": "A",
+   "dc": null,
+   "fused": [
+    0.5603,
+    0.2494,
+    0.1904
+   ],
+   "fusedPre": [
+    0.5603,
+    0.2494,
+    0.1904
+   ],
+   "final": null,
+   "chain": null,
+   "chainSteps": [
+    {
+     "name": "单锚降级",
+     "factor": 0.97,
+     "side": "all"
+    }
+   ],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": null,
+   "inPlan": null,
+   "note": "市场主胜56.0%;赫尔城8伤全边缘(apps≤1)+杯赛轮换双变量;英联杯无DC无锚;杯赛R3轮换常态波动;玩法卡low_conf路径(HAFU aa q18%)",
+   "mkt3": [
+    0.5603,
+    0.2494,
+    0.1904
+   ],
+   "play": "排除:杯赛无锚"
+  },
+  {
+   "idx": 7,
+   "code": "周二008",
+   "league": "欧冠",
+   "match": "皇马 vs 国际米兰",
+   "kickoff": "2026-09-09 03:00",
+   "pick": "had 主胜",
+   "odds": 1.42,
+   "star": 3,
+   "grade": "A",
+   "dc": null,
+   "fused": [
+    0.6235,
+    0.2012,
+    0.1753
+   ],
+   "fusedPre": [
+    0.6235,
+    0.2012,
+    0.1753
+   ],
+   "final": 0.6048,
+   "chain": null,
+   "chainSteps": [
+    {
+     "name": "单锚降级",
+     "factor": 0.97,
+     "side": "all"
+    }
+   ],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": -0.1412,
+   "inPlan": "无(市场锚三星,系统彩票档不收无DC场——覆盖口子人工审补:与T025 pending腿同向)",
+   "note": "市场62.4%(1.42)单锚×0.97=60.5%三星(无四星);皇马近10=8胜1平1负进球率83%vs国米近10客6胜4平0负不败——基面同向;H2H皇马5连胜国米(2020-21欧冠三届,弱参考);伤停皇马3国米2全边缘d=0;伯纳乌欧冠揭幕;T025唯一pending腿=本场HAD主胜@1.45(T025活注[0,3,4]组合=佐客✅+皇马+赫平✅,皇马赢则回款10.85元非全灭)",
+   "mkt3": [
+    0.6235,
+    0.2012,
+    0.1753
+   ],
+   "play": "had 主胜"
+  },
+  {
+   "idx": 8,
+   "code": "周二009",
+   "league": "欧冠",
+   "match": "多特蒙德 vs 比利亚雷",
+   "kickoff": "2026-09-09 03:00",
+   "pick": "排除:边缘三星+杯赛R1",
+   "odds": null,
+   "star": 2,
+   "grade": "A",
+   "dc": null,
+   "fused": [
+    0.55,
+    0.2242,
+    0.2259
+   ],
+   "fusedPre": [
+    0.55,
+    0.2242,
+    0.2259
+   ],
+   "final": null,
+   "chain": null,
+   "chainSteps": [
+    {
+     "name": "单锚降级",
+     "factor": 0.97,
+     "side": "all"
+    }
+   ],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": null,
+   "inPlan": null,
+   "note": "市场55.0%×0.97=53.3%三星下沿;多特5伤含Guirassy(新援apps0未出场)vs黄潜4胜2平4负平庸;威斯特法伦主场;杯赛R1波动+无锚→不推方向",
+   "mkt3": [
+    0.55,
+    0.2242,
+    0.2259
+   ],
+   "play": "排除:边缘三星+杯赛R1"
+  },
+  {
+   "idx": 9,
+   "code": "周二010",
+   "league": "欧冠",
+   "match": "里尔 vs 贝蒂斯",
+   "kickoff": "2026-09-09 03:00",
+   "pick": "hafu aa",
+   "odds": null,
+   "star": 2,
+   "grade": "A",
+   "dc": null,
+   "fused": [
+    0.4569,
+    0.277,
+    0.2662
+   ],
+   "fusedPre": [
+    0.4569,
+    0.277,
+    0.2662
+   ],
+   "final": null,
+   "chain": null,
+   "chainSteps": [
+    {
+     "name": "单锚降级",
+     "factor": 0.97,
+     "side": "all"
+    }
+   ],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": null,
+   "inPlan": "翻身档seq17腿6(HAFU aa@5.75)",
+   "note": "三向45.7/27.7/26.6主未过半;平局轨踩线27.7<28不入轨;两队状态接近(5胜3平2负vs6胜1平3负);翻身档腿HAFU aa@5.75(q18.4%EV+6%)=贝蒂斯半全场双杀剧本,基面:贝蒂斯近10客6胜;aa(half=客/ft=客)键序标注",
+   "mkt3": [
+    0.4569,
+    0.277,
+    0.2662
+   ],
+   "play": "hafu aa"
+  },
+  {
+   "idx": 10,
+   "code": "周二011",
+   "league": "欧冠",
+   "match": "波尔图 vs 曼城",
+   "kickoff": "2026-09-09 03:00",
+   "pick": "had 客胜",
+   "odds": 1.48,
+   "star": 3,
+   "grade": "A",
+   "dc": null,
+   "fused": [
+    0.1827,
+    0.2187,
+    0.5986
+   ],
+   "fusedPre": [
+    0.1827,
+    0.2187,
+    0.5986
+   ],
+   "final": 0.5806,
+   "chain": null,
+   "chainSteps": [
+    {
+     "name": "单锚降级",
+     "factor": 0.97,
+     "side": "all"
+    }
+   ],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": -0.1407,
+   "inPlan": null,
+   "note": "市场曼城客胜59.9%(1.48)×0.97=58.1%三星;波尔图近10=8胜1平1负火热+巨龙球场(风险因子主因)vs曼城6胜2平2负;H2H波尔图0胜50%平(2场);欧冠R1层级差=核心逻辑,曼城阵容深度新赛季磨合2轮联赛;伤停波尔图3曼城2(多库apps0)全边缘d=0",
+   "mkt3": [
+    0.1827,
+    0.2187,
+    0.5986
+   ],
+   "play": "had 客胜"
+  },
+  {
+   "idx": 11,
+   "code": "周二012",
+   "league": "解放者杯",
+   "match": "弗鲁米嫩 vs 普拉滕斯",
+   "kickoff": "2026-09-09 06:00",
+   "pick": "排除:无锚杯赛+平局轨踩线",
+   "odds": null,
+   "star": 2,
+   "grade": "A",
+   "dc": null,
+   "fused": [
+    0.5834,
+    0.2819,
+    0.1347
+   ],
+   "fusedPre": [
+    0.5908,
+    0.2769,
+    0.1323
+   ],
+   "final": null,
+   "chain": "伤停差值d=+10.97",
+   "chainSteps": [
+    {
+     "name": "伤停差值d=+1",
+     "factor": 0.97,
+     "side": "h"
+    },
+    {
+     "name": "单锚降级",
+     "factor": 0.97,
+     "side": "all"
+    }
+   ],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": null,
+   "inPlan": null,
+   "note": "市场主胜59.0%但:①解放者杯无fd锚无DC(铁律10禁保底)②主队2主力伤(卡诺比奥a8/阿拉纳a6)d=+1③弗鲁米嫩近10=3胜6平1负平局机器+场均1.2球;平局轨27.7<28踩线不过+HAD单关=0;TTG低进球方向(双方场均合2.0球)可玩性标注",
+   "mkt3": [
+    0.5908,
+    0.2769,
+    0.1323
+   ],
+   "play": "排除:无锚杯赛+平局轨踩线"
+  }
+ ],
+ "plansV8": {
+  "base": {
+   "cost": 0,
+   "legs": [],
+   "play": "had-3*4*5",
+   "note": "保底关档（合格腿0<5，不硬凑）",
+   "coverGate": null
+  },
+  "upset": {
+   "shape": "pool-2x1x3",
+   "cost": 6,
+   "legs": [
+    {
+     "matchNumStr": "周二002",
+     "match": "雅典AEK vs LASK林茨",
+     "play": "crs",
+     "pick": "0:1",
+     "odds": 18.0,
+     "q": 0.0737,
+     "ev": 0.3266
+    },
+    {
+     "matchNumStr": "周三014",
+     "match": "拉普大学 vs 科林蒂安",
+     "play": "crs",
+     "pick": "1:2",
+     "odds": 17.0,
+     "q": 0.0725,
+     "ev": 0.2325
+    },
+    {
+     "matchNumStr": "周三007",
+     "match": "那不勒斯 vs 阿森纳",
+     "play": "crs",
+     "pick": "1:0",
+     "odds": 12.5,
+     "q": 0.0956,
+     "ev": 0.195
+    },
+    {
+     "matchNumStr": "周三006",
+     "match": "里斯本 vs 加拉塔萨",
+     "play": "crs",
+     "pick": "0:1",
+     "odds": 16.0,
+     "q": 0.0737,
+     "ev": 0.1792
+    },
+    {
+     "matchNumStr": "周三008",
+     "match": "利物浦 vs 马竞",
+     "play": "crs",
+     "pick": "0:1",
+     "odds": 15.0,
+     "q": 0.0737,
+     "ev": 0.1055
+    },
+    {
+     "matchNumStr": "周二010",
+     "match": "里尔 vs 贝蒂斯",
+     "play": "hafu",
+     "pick": "aa",
+     "odds": 5.75,
+     "q": 0.1844,
+     "ev": 0.0603
+    }
+   ],
+   "bets": [
+    {
+     "legs": [
+      0,
+      1
+     ],
+     "multiplier": 1
+    },
+    {
+     "legs": [
+      2,
+      3
+     ],
+     "multiplier": 1
+    },
+    {
+     "legs": [
+      4,
+      5
+     ],
+     "multiplier": 1
+    }
+   ],
+   "note": "3注跨池2串1(同场≤1腿)"
+  },
+  "lottery": {
+   "shape": "closed",
+   "cost": 0,
+   "legs": [
+    {
+     "matchNumStr": "周三001",
+     "match": "江原FC-全北现代",
+     "play": "hhad",
+     "pick": "让球主胜",
+     "odds": 1.41,
+     "p": 0.6382,
+     "ev": -0.1002,
+     "goalLine": 1.0
+    },
+    {
+     "matchNumStr": "周二004",
+     "match": "奈梅亨-SBV精英",
+     "play": "had",
+     "pick": "主胜",
+     "odds": 1.51,
+     "p": 0.5923,
+     "ev": -0.1057
+    }
+   ],
+   "note": "彩票档关档（合格腿2<4，不硬凑）",
+   "divergenceBlocked": [
+    {
+     "matchNumStr": "周二006",
+     "match": "南安普敦-斯旺西",
+     "play": "had",
+     "pick": "主胜",
+     "p_fused": 0.4714,
+     "p_mkt": 0.53,
+     "diff_pp": 5.9
+    },
+    {
+     "matchNumStr": "周二006",
+     "match": "南安普敦-斯旺西",
+     "play": "hhad",
+     "pick": "让球客胜",
+     "p_fused": 0.5231,
+     "p_mkt": 0.4611,
+     "diff_pp": 6.2
+    }
+   ]
+  },
+  "trackN": {
+   "status": "closed",
+   "note": "平局轨无合格场:周二010里尔p平27.7%/周二012弗鲁米嫩27.7%均踩线<28%不入轨;本轮0注"
+  },
+  "shadow": {
+   "cmd": "paper.py shadow-all 2026-09-09",
+   "legs": 12,
+   "registered": 6,
+   "note": "销售日09-09影子票冻结赛前五池真实价,阶段2 complex-test"
+  },
+  "divergenceBlocked": [
+   "dc_divergence_blocked: 彩票档熔断2选项(|p_fused−p_mkt|≥5%)——周二006主胜5.9pp、周二006让球客胜6.2pp"
+  ],
+  "mode": "freq",
+  "seq": 17
+ },
+ "anchorNote": "单锚模式:欧冠R1无DC缓存(EC0 2627仅资格赛24场)+Pinnacle实时价被墙——概率锚=体彩去水×0.97,星级上限三星(本轮无四星);fd 503恢复(荷甲33场/英冠48场当季CSV已回)",
+ "t025Note": "T025活注勘误:16注非全灭——[0,3,4]组合(佐加顿斯客胜✅+皇马pending+赫塔费平✅)不含乌迪内斯腿,皇马主胜则回款2×1.45×1.45×2.58≈10.85元"
+}
