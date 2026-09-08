@@ -81,6 +81,7 @@ def normalize_row(r: dict) -> dict | None:
     return {
         "date": g("Date"), "home": g("HomeTeam"), "away": g("AwayTeam"),
         "fthg": g("FTHG"), "ftag": g("FTAG"),
+        "hthg": g("HTHG"), "htag": g("HTAG"),  # 半场真果（wargame 侦察3：2026-09-08 收列）
         "pin_h": pin_c_h, "pin_d": pin_c_d, "pin_a": pin_c_a,
         "pin_open_h": g("PPH"), "pin_open_d": g("PPD"), "pin_open_a": g("PPA"),
         "b365c_h": g("B365CH"), "b365c_d": g("B365CD"), "b365c_a": g("B365CA"),
