@@ -110,6 +110,22 @@ svg text { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; }
 </table>
 <p><b>侦察3 定义</b>：实测本地 <code>odds_{league}_{season}.json</code> 的 HTHG/HTAG 列完整性（2425 全季 + 2526 快照）。fd 原始 CSV 半场列为标准配置，风险低；若本地缺列，等 fd 恢复补拉（外部依赖与 score-engine 段A 同一条，合并后只扛一次）。</p>
 
+<div class="warn">
+<p><b>侦察3 结论（2026-09-08 实测回填）</b>：本地无逐场半场真果（三条路径全断），但 <b>k 参数基建已现成（half_params.py = k 拟合器，half_share.json = k 值域）</b>；段A 逐场结算部分挂 fd 恢复，P0-w 其余全部可先行</p>
+<p>实测口径：① 本地 53 个 <code>odds_*.json</code> 缓存全量扫描——<b>零半场键</b>（odds_fetch.normalize_row 白名单未收 HTHG/HTAG，样本键仅 fthg/ftag/pin_*/b365c_*/ou_*）；② 仓库全域零 CSV（<code>band_calibration.fetch_rows</code> HTTP 直拉+内存解析不落盘）；③ fd 连通性今晨实测 HTTP 503（09-06 起限流持续，489 B 应答）。</p>
+<p><b>重大发现</b>：<code>engine/cache/half_share.json</code>（2026-08-26 生成，<code>half_params.py</code>）就是本设计 k 参数的现成拟合器产物——<b>s 即 k</b>（半场进球占比 λ_half/λ_full）：global s=0.4446 / 联赛级 8+ 条（英超 0.4431 n=1520 · 意甲 0.4376 n=1520 · 德甲 0.4621 n=1223 …），n=10898 场，β收缩 200 球 + clamp[0.3,0.6] + 全局自检（S_SANITY 0.40~0.50）全套与本设计 §二 k 拟合规格逐条对齐——<b>half_engine 直接读 half_share.json 作 k 初始值，不重写拟合</b>；rho_half 同取（DC 矩阵半场版相关性参数现成）。</p>
+<p><b>对 P0-w 的排程修正</b>：</p>
+<table>
+<tr><th>事项</th><th>状态</th></tr>
+<tr><td>half_engine 读 half_share.json（k=s）→ HAFU 推演出口（纯 k 版，无比分态修正）</td><td class="ok">立即可做</td></tr>
+<tr><td>redteam.py R1-R4/R6 事前卡</td><td class="ok">立即可做（零依赖）</td></tr>
+<tr><td>段A walk-forward 框架搭建（共享 score-engine）</td><td class="ok">立即可做</td></tr>
+<tr><td>段A 五线对照<b>逐场结算</b>（需逐场 HTHG/HTAG 真果对答案）</td><td class="bad">挂 fd 恢复——恢复后 <code>scratch/fd_alive_probe.py</code> 直跑落盘（脚本已含五联赛两季拉取+落盘逻辑）</td></tr>
+<tr><td>odds_fetch.normalize_row 收 HTHG/HTAG 列（一行白名单）</td><td class="ok">立即可做——fd 恢复后每次 update 自动持久化半场列，一劳永逸补上本缺口</td></tr>
+</table>
+<p class="meta">（脚本：engine/scripts/scratch/ht_probe.py + fd_alive_probe.py，一次性不进 git）</p>
+</div>
+
 <h2>§四 验证路径：两段式 + 生死线（复刻 score-engine 纪律）</h2>
 <table>
 <tr><th>段</th><th>数据</th><th>对照线</th><th>回答</th></tr>
