@@ -1,0 +1,169 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>wargame 兵棋推演引擎设计（两阶段推演 + 红队审查）</title>
+<style>
+:root { --accent: #4e5d3a; --ink: #2c3e50; --muted: #7f8c8d; --line: #dcdde1; --bg: #fafafa; }
+body { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; color: var(--ink); max-width: 980px; margin: 0 auto; padding: 24px 20px; line-height: 1.7; background: var(--bg); }
+h1 { font-size: 1.5em; border-bottom: 3px solid var(--accent); padding-bottom: 8px; }
+h2 { font-size: 1.2em; margin-top: 2em; border-left: 4px solid var(--accent); padding-left: 10px; }
+h3 { font-size: 1.05em; margin-top: 1.5em; }
+table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.92em; }
+th, td { border: 1px solid var(--line); padding: 6px 10px; text-align: left; vertical-align: top; }
+th { background: #f0f0f0; }
+code { background: #eee; padding: 1px 5px; border-radius: 3px; font-size: 0.9em; }
+.warn { border-left: 4px solid #c0392b; background: #fdf0ee; padding: 10px 14px; margin: 12px 0; }
+.ok { color: #1e8449; font-weight: bold; }
+.bad { color: #c0392b; font-weight: bold; }
+.mid { color: #d68910; font-weight: bold; }
+.meta { color: var(--muted); font-size: 0.88em; }
+figure { margin: 16px 0; }
+figcaption { color: var(--muted); font-size: 0.85em; text-align: center; margin-top: 6px; }
+svg text { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; }
+</style>
+</head>
+<body>
+
+<h1>wargame 兵棋推演引擎设计（两阶段推演 + 红队审查）</h1>
+<p class="meta">日期 2026-09-08 · 状态：设计已拍板（大哥 2026-09-08 评审通过，四连拍板：方向=D 组合 / 红队=C 双向闭环 / 口径=A 方案一+三混合 / 排程=A 合并段A）· P0 立项待开工 · 开发者 sszhang</p>
+
+<h2>§一 背景与军事推演逻辑映射</h2>
+<p>大哥提出：借鉴<b>军事推演（wargaming）</b>的逻辑推演足球赛事走向。经概念映射与可行性甄别，得出三条真增量线与两个陷阱区：</p>
+<table>
+<tr><th>军事推演概念</th><th>足球对应</th><th>本仓现状与判定</th></tr>
+<tr><td>两阶段/多阶段裁决（先推阶段一，按态势推阶段二）</td><td>上半场 → 下半场；HAFU 玩法天然对应</td><td class="ok">真增量①——hafu 现为"三向条件分解"<b>派生</b>，非真两阶段推演；fd 自带 HTHG/HTAG 半场真果列，数据地基成立</td></tr>
+<tr><td>分支与续章（branch &amp; sequel）</td><td>半场比分态 → 走向分化</td><td class="ok">真增量②——narrative 剧本层仅 argmax 单剧本（实测 1:1 占 18/25），剧本树信息量大一个量级</td></tr>
+<tr><td>红蓝对抗 + 裁决</td><td>出票前"红队"攻击自己方案</td><td class="ok">真增量③——信息边际三定律有雏形，无结构化反证流程</td></tr>
+<tr><td>预警指标体系（I&amp;W）</td><td>赔率异动/伤停/首发 → 分支重估</td><td class="mid">intel-timeline 已有数据底子，本设计暂不展开（R3 反证先吃红利）</td></tr>
+<tr><td>指挥官意图建模</td><td>战意/轮换/留力</td><td class="bad">陷阱——战意状态机 2026-08-29 已消融证伪（n=9 无正增益降级叙事标注），意图做概率乘子必重蹈覆辙</td></tr>
+<tr><td>蒙特卡洛推演</td><td>万次模拟比分</td><td class="bad">陷阱——DC 矩阵已是解析解，纯模拟无增量；分钟级事件模拟另因<b>本仓无事件流数据源</b>不可行（列未来方向）</td></tr>
+</table>
+
+<h2>§二 总体架构：两条腿 + 一套语言</h2>
+<p>项目代号 <b>wargame</b>。两个新模块（<code>half_engine.py</code> 模型层 / <code>redteam.py</code> 流程层）+ 一个共用表示（剧本树 scenario_tree）。</p>
+<p><b>剧本树 = 模型层与流程层的共用语言</b>：half_engine 产出分支（半场三向第一层 → 各分支下全场走向 top 路径），红队反证挂分支（"反证 X 成立 → 走向偏移到分支 Y"）。两模块通过树结构解耦、互不依赖、互不阻塞。</p>
+
+<figure>
+<svg viewBox="0 0 920 420" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;color:#2c3e50" role="img" aria-label="wargame 数据流架构图">
+<defs>
+<marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" opacity="0.7"/></marker>
+</defs>
+<!-- 输入层 -->
+<text x="20" y="28" font-size="14" font-weight="bold" fill="currentColor">输入层（全部复用，零新数据源）</text>
+<rect x="20" y="40" width="270" height="46" rx="6" fill="none" stroke="currentColor" stroke-width="1.2"/>
+<text x="155" y="58" font-size="12" text-anchor="middle" fill="currentColor">fd HTHG/HTAG 多季半场真果</text>
+<text x="155" y="76" font-size="10.5" text-anchor="middle" fill="currentColor" opacity="0.75">侦察3 实测列完整性（外部依赖：fd 503）</text>
+<rect x="20" y="106" width="270" height="46" rx="6" fill="none" stroke="currentColor" stroke-width="1.2"/>
+<text x="155" y="124" font-size="12" text-anchor="middle" fill="currentColor">体彩 hafu 池 9 键存档（14 天起）</text>
+<text x="155" y="142" font-size="10.5" text-anchor="middle" fill="currentColor" opacity="0.75">market_matrix 扩展拟合市场隐含半场参数</text>
+<rect x="20" y="172" width="270" height="46" rx="6" fill="none" stroke="currentColor" stroke-width="1.2"/>
+<text x="155" y="190" font-size="12" text-anchor="middle" fill="currentColor">score_engine λ_fused / dcVersion</text>
+<text x="155" y="208" font-size="10.5" text-anchor="middle" fill="currentColor" opacity="0.75">直接复用不重算 · fused / dc_only 分层沿用</text>
+<!-- 引擎层 -->
+<text x="360" y="28" font-size="14" font-weight="bold" fill="currentColor">引擎层（新）</text>
+<rect x="350" y="80" width="250" height="100" rx="8" fill="#eef1e8" stroke="#4e5d3a" stroke-width="1.5"/>
+<text x="475" y="104" font-size="13" font-weight="bold" text-anchor="middle" fill="currentColor">half_engine.py</text>
+<text x="475" y="126" font-size="11" text-anchor="middle" fill="currentColor">λ_half = k · λ_full（联赛级 β 收缩）</text>
+<text x="475" y="144" font-size="11" text-anchor="middle" fill="currentColor">比分态下半场修正（消融把关）</text>
+<text x="475" y="164" font-size="11" text-anchor="middle" fill="currentColor">fd 拟合版 ⊕ 市场反推版融合</text>
+<!-- 出口层 -->
+<text x="670" y="28" font-size="14" font-weight="bold" fill="currentColor">出口层</text>
+<rect x="660" y="40" width="240" height="54" rx="6" fill="none" stroke="currentColor" stroke-width="1.2"/>
+<text x="780" y="60" font-size="12" text-anchor="middle" fill="currentColor">① HAFU 9 键推演概率</text>
+<text x="780" y="78" font-size="10.5" text-anchor="middle" fill="currentColor" opacity="0.75">对照期内不切 boldplay 主链（冻结）</text>
+<rect x="660" y="112" width="240" height="54" rx="6" fill="none" stroke="currentColor" stroke-width="1.2"/>
+<text x="780" y="132" font-size="12" text-anchor="middle" fill="currentColor">② 剧本树 scenario_tree</text>
+<text x="780" y="150" font-size="10.5" text-anchor="middle" fill="currentColor" opacity="0.75">argmax 单剧本的上位替代 · 报告轨</text>
+<rect x="660" y="184" width="240" height="54" rx="6" fill="none" stroke="currentColor" stroke-width="1.2"/>
+<text x="780" y="204" font-size="12" text-anchor="middle" fill="currentColor">③ 红队反证挂载点（R5）</text>
+<text x="780" y="222" font-size="10.5" text-anchor="middle" fill="currentColor" opacity="0.75">树分支概率非最优/低于阈值 → 反证触发</text>
+<!-- 流程层 -->
+<text x="20" y="262" font-size="14" font-weight="bold" fill="currentColor">流程层（新，与模型层互不阻塞）</text>
+<rect x="20" y="274" width="410" height="110" rx="8" fill="#eef1e8" stroke="#4e5d3a" stroke-width="1.5"/>
+<text x="225" y="298" font-size="13" font-weight="bold" text-anchor="middle" fill="currentColor">redteam.py 事前（Step 6.5 强化）</text>
+<text x="225" y="320" font-size="11" text-anchor="middle" fill="currentColor">R1 伤停反向 / R2 基面反向 / R3 市场异动（强）</text>
+<text x="225" y="338" font-size="11" text-anchor="middle" fill="currentColor">R4 模型分歧 / R5 剧本树背离（中）/ R6 H2H（弱）</text>
+<text x="225" y="362" font-size="11" text-anchor="middle" fill="currentColor">≥2 强反证 → ⚠软警示（不拦截不降档）</text>
+<rect x="470" y="274" width="430" height="110" rx="8" fill="#eef1e8" stroke="#4e5d3a" stroke-width="1.5"/>
+<text x="685" y="298" font-size="13" font-weight="bold" text-anchor="middle" fill="currentColor">redteam.py 事后（verify 链新增结算步）</text>
+<text x="685" y="320" font-size="11" text-anchor="middle" fill="currentColor">逐反证判说中/误报 → data/04-summaries/redteam.json</text>
+<text x="685" y="338" font-size="11" text-anchor="middle" fill="currentColor">按类型聚合说中率 · 挂预测 JSON matches[].redteam</text>
+<text x="685" y="362" font-size="11" text-anchor="middle" fill="currentColor">n≥30 且显著 → 届时再请大哥拍板是否升级硬闸</text>
+<!-- 箭头 -->
+<line x1="290" y1="63" x2="350" y2="110" stroke="currentColor" stroke-width="1.2" marker-end="url(#arr)"/>
+<line x1="290" y1="129" x2="350" y2="130" stroke="currentColor" stroke-width="1.2" marker-end="url(#arr)"/>
+<line x1="290" y1="195" x2="350" y2="155" stroke="currentColor" stroke-width="1.2" marker-end="url(#arr)"/>
+<line x1="600" y1="100" x2="660" y2="70" stroke="currentColor" stroke-width="1.2" marker-end="url(#arr)"/>
+<line x1="600" y1="125" x2="660" y2="135" stroke="currentColor" stroke-width="1.2" marker-end="url(#arr)"/>
+<line x1="600" y1="165" x2="660" y2="205" stroke="currentColor" stroke-width="1.2" marker-end="url(#arr)"/>
+<line x1="780" y1="238" x2="780" y2="274" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+</svg>
+<figcaption>图1 · wargame 数据流：复用输入 → half_engine 融合出口 → 三出口 + redteam 双向闭环（虚线=R5 反证依赖剧本树）</figcaption>
+</figure>
+
+<h2>§三 数据地基与侦察3</h2>
+<table>
+<tr><th>数据</th><th>现状</th><th>角色</th></tr>
+<tr><td>fd HTHG/HTAG 半场比分列（多季）</td><td>侦察2 已证三向+OU2.5 完整率 100%，<b>但半场列未实测</b>——侦察3 立项第一步</td><td>半场参数 k 与比分态修正的拟合真果（段A 回测基座）</td></tr>
+<tr><td>体彩 hafu 池 9 键存档</td><td>14 天（08-24~09-06）持续积累</td><td>市场反推版半场参数（实战口径）；历史短 → 只服务段B</td></tr>
+<tr><td>score_engine 产物</td><td>P0 已冒烟通过（25/25 全链）</td><td>λ_fused / dcVersion 直接复用；wargame 是它在时间轴上的延伸</td></tr>
+<tr><td>2425 全季本地缓存</td><td>五联赛 1752 场（侦察2 实测）</td><td>fd 503 限流期间段A 开跑的底线样本</td></tr>
+</table>
+<p><b>侦察3 定义</b>：实测本地 <code>odds_{league}_{season}.json</code> 的 HTHG/HTAG 列完整性（2425 全季 + 2526 快照）。fd 原始 CSV 半场列为标准配置，风险低；若本地缺列，等 fd 恢复补拉（外部依赖与 score-engine 段A 同一条，合并后只扛一次）。</p>
+
+<h2>§四 验证路径：两段式 + 生死线（复刻 score-engine 纪律）</h2>
+<table>
+<tr><th>段</th><th>数据</th><th>对照线</th><th>回答</th></tr>
+<tr><td>段A 历史回测</td><td>fd 多季半场真果，walk-forward 赛季分段</td><td><b>五线</b>：wargame 推演版 / 现状派生版 / 市场反推版 / 纯 DC / 市场基准</td><td>推演版 HAFU 9 键 RPS 能否打赢派生版</td></tr>
+<tr><td>段B 影子前向</td><td>体彩在售场次 hafu 池口径，一个月起</td><td>影子票 spec_name 标口径（A/B 轨机制复用）</td><td>体彩实战口径转不转正</td></tr>
+</table>
+<p><b>生死线</b>：段A 中 wargame 推演版 HAFU RPS 不敌<b>现状派生版</b>（派生版是现状基线；市场基准是天花板非生死线）→ half_engine 回退只留剧本树展示出口，HAFU 概率维持派生口径。<b>比分态修正系数单独消融</b>：过拟合嫌疑第一名，无正增益即删，退回纯 k 比例法。<b>影子是必经站</b>：对照期内 boldplay 三池卡 HAFU 概率口径完全冻结。</p>
+
+<h2>§五 红队审查流程层</h2>
+<p>事前举证卡（Step 6.5 强化，每入串场次必生成），反证清单<b>全部来自已有字段，零新采集</b>：</p>
+<table>
+<tr><th>类型</th><th>数据源</th><th>强度</th></tr>
+<tr><td>R1 伤停反向</td><td>insight injuries 差值 d 反向解读</td><td>强</td></tr>
+<tr><td>R2 基面反向</td><td>己队近5不胜 / 对手近5不败（踩线降档规则泛化）</td><td>强</td></tr>
+<tr><td>R3 市场异动</td><td>05-trends odds diff 链：赔率向不利我方 pick 方向移动</td><td>强</td></tr>
+<tr><td>R4 模型分歧</td><td>DC vs 市场分歧 &gt;5pp 且方向反我方 pick</td><td>中</td></tr>
+<tr><td>R5 剧本树背离</td><td>wargame 树上 pick 所在分支非最优 / 概率低于阈值</td><td>中</td></tr>
+<tr><td>R6 H2H 反向</td><td>交锋劣势叙事（弱参考标注）</td><td>弱</td></tr>
+</table>
+<p><b>警示规则（软）</b>：≥2 条强反证 → 出票核对单加"⚠红队警示"行 + 落盘预测 JSON <code>matches[].redteam</code>。不拦截不降档——"纪律层只软拦截"拍板（2026-09-07）不动。<b>事后结算</b>：run.py verify 链新增一步，逐反证判说中/误报写 <code>data/04-summaries/redteam.json</code>，按类型聚合说中率。<b>转正判据</b>：n≥30 且某类型说中率显著高于该强度误报基线 → 届时再请大哥拍板是否升级硬闸；不达标永久警示态。R5 依赖 wargame 上线，先行版自动跳过（R1-R4+R6 先跑）。</p>
+
+<h2>§六 兼容边界</h2>
+<table>
+<tr><th>接触面</th><th>处置</th></tr>
+<tr><td>boldplay 三池卡 HAFU 口径</td><td>对照期完全冻结（派生版），wargame 只做影子与报告</td></tr>
+<tr><td>tickets.json 实票账本</td><td>零接触</td></tr>
+<tr><td>score_engine 主链</td><td>只读 λ_fused/dcVersion，禁止回流（防双重融合）</td></tr>
+<tr><td>half_share.json / temperature hafu 链</td><td>共存——派生版继续用旧链，wargame 推演版独立出口，段A 五线对照即两者对决</td></tr>
+<tr><td>影子层 paper.py</td><td>spec_name 标口径（复用 score-engine 计划B 同款机制）</td></tr>
+<tr><td>SKILL.md</td><td>v5.8 → 出口上线时加节点（v5.9）</td></tr>
+</table>
+
+<h2>§七 实施切分与排程（拍板：合并段A）</h2>
+<p><b>与 score-engine P3/P4（计划B）合并段A</b>：walk-forward 回测框架一次搭好两处用——score-engine 四线对照 + wargame 五线对照共享数据装载与赛季分段逻辑，同一批 2425 数据跑两次分析，fd 503 外部依赖只扛一次。</p>
+<table>
+<tr><th>阶段</th><th>内容</th></tr>
+<tr><td>P0-w</td><td>侦察3（HTHG/HTAG 列完整性）→ half_engine k 拟合 + HAFU 推演出口 → <b>redteam.py R1-R4/R6 事前卡（不等模型，立即可用）</b> → 段A 五线回测（共享框架）</td></tr>
+<tr><td>P1-w</td><td>比分态修正消融 + hafu 池市场反推融合（fused/dc_only 分层）→ 影子 spec 登记</td></tr>
+<tr><td>P2-w</td><td>剧本树展示出口（HTML+SVG 走势图）+ 报告轨</td></tr>
+</table>
+
+<h2>§八 风险清单</h2>
+<table>
+<tr><th>#</th><th>风险</th><th>缓释</th></tr>
+<tr><td>1</td><td>本地缓存 HTHG/HTAG 缺列</td><td>侦察3 先行实测；缺则 fd 恢复后补拉（合并依赖只扛一次）</td></tr>
+<tr><td>2</td><td>比分态修正过拟合</td><td>单独消融，无正增益即删（退纯 k 比例法）</td></tr>
+<tr><td>3</td><td>hafu 池 20.4% 水位去水噪声</td><td>市场反推版只做融合输入非独立出口；侦察1 已证等比例去水 JSD 最小</td></tr>
+<tr><td>4</td><td>红队反证类型间相关性（R1/R2 同源）</td><td>按类型分别结算说中率，聚合时去重同源反证</td></tr>
+<tr><td>5</td><td>红队一个月样本功效不足</td><td>与段B 同款降级判据："不显著劣+方向正"或延期；n≥30 才谈硬闸</td></tr>
+<tr><td>6</td><td>推演版与派生版结论混引</td><td>两段结论分别报告；对照期任何报告标注口径来源</td></tr>
+</table>
+
+<h2>§九 数据来源清单（忠实度抽查用）</h2>
+<p class="meta">docs/2026-09-07-score-engine-design.html（侦察1/2 结论、两段式验证先例、兼容边界八项）· docs/2026-08-27-freq-band-design.html · docs/2026-09-01-dual-track-prediction-design.html · engine/scripts/：narrative.py（剧本层 argmax 现状）、freq_band.py、score_ev.py、dc_predict.py、market_matrix/score_engine（P0 新模块）· engine/cache/score_odds/（hafu 池存档 14 天）· 战意状态机证伪记录（SKILL.md 修正系数 8，2026-08-29）· 本设计 brainstorming 四连拍板对话（2026-09-08）</p>
+
+</body>
+</html>
