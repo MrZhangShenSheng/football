@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026-09-08 freq 数据补齐计划</title>
+<style>
+:root{
+  --bg:#f6f5f2; --card:#ffffff; --ink:#1c2430; --muted:#6b7684; --line:#e2e0da;
+  --acc:#0e6e5c; --warn:#b3641a; --bad:#a83232; --soft:#f0ede6; --gold:#8a6d1f;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#14181d; --card:#1c2128; --ink:#e8e6e1; --muted:#98a2ae; --line:#2e353d;
+  --acc:#4fc3a1; --warn:#e0a458; --bad:#e07b7b; --soft:#232a32; --gold:#d4b45a;
+}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:14px/1.7 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif;padding:24px 12px}
+.wrap{max-width:980px;margin:0 auto}
+h1{font-size:21px;margin-bottom:4px}
+h2{font-size:16px;margin:26px 0 10px;padding-left:10px;border-left:4px solid var(--acc)}
+.sub{color:var(--muted);font-size:12.5px;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--soft);color:var(--muted);font-weight:600;text-align:left;padding:6px 8px;white-space:nowrap;border-bottom:2px solid var(--line)}
+td{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.ok{color:var(--acc);font-weight:700}
+.miss{color:var(--bad);font-weight:700}
+.warn{color:var(--warn);font-weight:700}
+.tag{display:inline-block;font-size:11.5px;border-radius:4px;padding:0 6px;margin-right:4px}
+.t-p0{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
+.t-p1{background:color-mix(in srgb,var(--warn) 16%,transparent);color:var(--warn)}
+.t-p2{background:color-mix(in srgb,var(--acc) 14%,transparent);color:var(--acc)}
+.t-out{background:var(--soft);color:var(--muted)}
+ul{padding-left:20px}
+li{margin:4px 0}
+svg{color:inherit}
+.notice{border-left:4px solid var(--warn);background:color-mix(in srgb,var(--warn) 8%,transparent);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0;font-size:13px}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-db" viewBox="0 0 16 16"><ellipse cx="8" cy="4" rx="6" ry="2.4" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M2 4v8c0 1.3 2.7 2.4 6 2.4s6-1.1 6-2.4V4" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M2 8c0 1.3 2.7 2.4 6 2.4S14 9.3 14 8" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+  <symbol id="i-map" viewBox="0 0 16 16"><path d="M6 2.5l4 1.2 4-1.4v10.2l-4 1.4-4-1.2-4 1.4V3.9z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M6 2.5v10.2M10 3.7v10.3" fill="none" stroke="currentColor" stroke-width="1.2"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 16 16"><path d="M8 1.8L15 14H1z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 6v3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="8" cy="11.9" r="0.9" fill="currentColor"/></symbol>
+  <symbol id="i-check" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M4.5 8.2l2.4 2.4 4.6-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-test" viewBox="0 0 16 16"><path d="M3 2h10v3.5c0 2.5-2 4.5-4.4 4.5H7.4C5 10 3 8 3 5.5z" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 10v3M5.5 13.5h5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M3 4h10" stroke="currentColor" stroke-width="1.2"/></symbol>
+</svg>
+<div class="wrap">
+
+<h1>freq 链数据补齐计划 · 2026-09-08</h1>
+<div class="sub">触发：大哥拍板「写个补齐计划 按照计划今天全部补」· 起因：周二004 奈梅亨三池卡三旗全亮暴露荷甲 freq 模板 __n=0（fd 503 断粮）+ 系统性盘点 5 项缺口</div>
+
+<h2>一、补什么（范围拍板）</h2>
+<div class="card">
+<table>
+<tr><th>#</th><th>缺口</th><th>规模/现状</th><th>今日动作</th><th>优先级</th></tr>
+<tr><td class="num">A</td><td>荷甲 freq 模板 + 本地赛果库</td><td>fd 链 N1 实时拉取断粮即空；本地库无文件；espn 别名仅 5/22 队</td><td>espn-history 多季回填 + 别名补全 + 白名单扩容</td><td><span class="tag t-p0">P0</span></td></tr>
+<tr><td class="num">B</td><td>巴甲/丹超/挪超/美职已有库不收</td><td>brazil 626 / denmark 325 / norway 391 / usa 843 场今晨已刷新，白名单+LEAGUE_MAP 双卡口拦截</td><td>LEAGUE_MAP 补 4 映射 + 白名单扩容（零采集）</td><td><span class="tag t-p0">P0</span></td></tr>
+<tr><td class="num">C</td><td>fd 主流 6 联赛断粮无镜像</td><td>英西德意法葡 freq 模板全空（欧冠 13 场母联赛），下周末主流联赛轮直接受害</td><td>espn-history 镜像回填（降级源语义，不与 fd 叠加）</td><td><span class="tag t-p1">P1</span></td></tr>
+<tr><td class="num">D</td><td>防重复计数改造</td><td>荷甲/葡超等 fd 覆盖联赛若同时有 fd 行+本地镜像行 → build_freq_table 重复计数污染 q</td><td>本地库导入改「fd 空（__n=0）才导入」降级逻辑（score_ev + freq_band 两处）</td><td><span class="tag t-p0">P0</span></td></tr>
+<tr><td class="num">E</td><td>日瑞沙库单季增厚</td><td>现有模板联赛只有 2026 自然年一季</td><td>顺带拉 2022~2025（espn 有数据则收，无则跳过）</td><td><span class="tag t-p2">P2</span></td></tr>
+</table>
+<div class="notice"><svg width="14" height="14" style="vertical-align:-2px"><use href="#i-warn"/></svg> <b>不在今日范围</b>：杯赛模板（欧冠/英联赛杯/解放者杯——跨联赛队源混杂，全局兜底设计内）；Pinnacle 收盘锚（只能等 fd 恢复）；次级联赛镜像（英冠/德乙/西乙/意乙——ESPN 代码未映射+别名覆盖近零，性价比不成立）；DC 层（已有缓存不受影响，不重拟合）。</div>
+</div>
+
+<h2>二、执行顺序（依赖链）</h2>
+<div class="card">
+<svg viewBox="0 0 920 150" width="100%" style="min-width:700px" font-size="12.5">
+  <defs><marker id="ar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="currentColor"/></marker></defs>
+  <g fill="none" stroke="currentColor" stroke-opacity=".55" marker-end="url(#ar)">
+    <path d="M172 62h36"/><path d="M364 62h36"/><path d="M556 62h36"/><path d="M748 62h36"/>
+  </g>
+  <g>
+    <rect x="8" y="30" width="164" height="64" rx="8" fill="currentColor" fill-opacity=".08" stroke="currentColor"/>
+    <text x="90" y="54" text-anchor="middle" font-weight="700" fill="currentColor">阶段1 别名补全</text>
+    <text x="90" y="74" text-anchor="middle" fill="currentColor" opacity=".7">espn displayName 对照</text>
+    <text x="90" y="88" text-anchor="middle" fill="currentColor" opacity=".7">回填 _aliases.json</text>
+
+    <rect x="200" y="30" width="164" height="64" rx="8" fill="currentColor" fill-opacity=".08" stroke="currentColor"/>
+    <text x="282" y="54" text-anchor="middle" font-weight="700" fill="currentColor">阶段2 赛果库回填</text>
+    <text x="282" y="74" text-anchor="middle" fill="currentColor" opacity=".7">espn-history 多季</text>
+    <text x="282" y="88" text-anchor="middle" fill="currentColor" opacity=".7">荷甲新库 + fd6 镜像 + 增季</text>
+
+    <rect x="392" y="30" width="164" height="64" rx="8" fill="currentColor" fill-opacity=".08" stroke="currentColor"/>
+    <text x="474" y="54" text-anchor="middle" font-weight="700" fill="currentColor">阶段3 代码改造</text>
+    <text x="474" y="74" text-anchor="middle" fill="currentColor" opacity=".7">白名单→降级源语义</text>
+    <text x="474" y="88" text-anchor="middle" fill="currentColor" opacity=".7">LEAGUE_MAP +4 映射</text>
+
+    <rect x="584" y="30" width="164" height="64" rx="8" fill="currentColor" fill-opacity=".08" stroke="currentColor"/>
+    <text x="666" y="54" text-anchor="middle" font-weight="700" fill="currentColor">阶段4 验证</text>
+    <text x="666" y="74" text-anchor="middle" fill="currentColor" opacity=".7">pytest 全量 + 奈梅亨卡复跑</text>
+    <text x="666" y="88" text-anchor="middle" fill="currentColor" opacity=".7">freq_table 键集抽查</text>
+
+    <rect x="776" y="30" width="136" height="64" rx="8" fill="currentColor" fill-opacity=".08" stroke="currentColor"/>
+    <text x="844" y="54" text-anchor="middle" font-weight="700" fill="currentColor">阶段5 归档</text>
+    <text x="844" y="74" text-anchor="middle" fill="currentColor" opacity=".7">CLAUDE.md 口径</text>
+    <text x="844" y="88" text-anchor="middle" fill="currentColor" opacity=".7">git commit</text>
+  </g>
+  <text x="8" y="122" fill="currentColor" opacity=".6">依赖关系：别名是回填的前置（映射不上即丢弃）；回填是白名单生效的前提；改造与回填可并行但验证必须在两者之后。</text>
+</svg>
+</div>
+
+<h2>三、各阶段细节</h2>
+<div class="card">
+<h3 style="font-size:14px;margin-bottom:8px"><svg width="14" height="14" style="vertical-align:-2px"><use href="#i-map"/></svg> 阶段1 · espn 别名补全（前置卡点）</h3>
+<ul>
+<li><b>现状</b>：荷甲两分组 22 队仅 5 队有 espn 字段（NEC/AZ/前进之鹰/海伦芬/埃因霍温FC 系）；「勿手填猜测」纪律禁止瞎写</li>
+<li><b>方法</b>：写 scratch 脚本拉 ESPN standings（ned.1 等 11 个联赛代码）→ 提取 team.displayName 全集 → 与 _aliases.json 对应分组对照 → 确定性匹配（kebab 化精确匹配/首词唯一匹配）自动建议 + 模糊项列人工确认清单 → 确认后写回</li>
+<li><b>合规性</b>：displayName 为 ESPN 实测值，映射到已有规范 ID 是确定性对照，不属猜测；确认不了的留 null 不硬填</li>
+<li><b>兜底</b>：standings 缺队时用 history 第一遍的 dropped 日志清单（脚本已内建「丢弃样本（补 espn 字段可恢复）」提示）补第二遍</li>
+</ul>
+</div>
+
+<div class="card">
+<h3 style="font-size:14px;margin-bottom:8px"><svg width="14" height="14" style="vertical-align:-2px"><use href="#i-db"/></svg> 阶段2 · 赛果库回填（espn history 多季）</h3>
+<table>
+<tr><th>动作</th><th>命令口径</th><th>说明</th></tr>
+<tr><td>荷甲新库</td><td class="num">history ned.1 2022 … 2026 逐年</td><td>写入 netherlands-eredivisie_matches.json；ESPN 自然年口径对频率池无碍（池不看季界）</td></tr>
+<tr><td>fd 6 联赛镜像</td><td class="num">history esp.1 / gbr.1 / ger.1 / ita.1 / fra.1 / por.1 同法</td><td>断粮降级源；ESPN_LEAGUES 映射已就位无需改</td></tr>
+<tr><td>既有库增季</td><td class="num">bra/den/nor/usa + 日瑞沙 各补 2022~2025</td><td>老年份 ESPN 若无数据则跳过（宁缺毋滥）；korea 体彩源不动</td></tr>
+</table>
+<ul>
+<li><b>风险</b>：ESPN 老年份 scoreboard 完整性未知——先试拉一年看场数再批量；队名映射率目标 ≥90%，低于则停下补别名再跑</li>
+<li><b>幂等</b>：cmd_history 同 date+home+away 追加去重，重复跑安全</li>
+</ul>
+</div>
+
+<div class="card">
+<h3 style="font-size:14px;margin-bottom:8px"><svg width="14" height="14" style="vertical-align:-2px"><use href="#i-warn"/></svg> 阶段3 · 代码改造（两文件三处）</h3>
+<ul>
+<li><b>score_ev.py</b>：① LEAGUE_MAP 补「巴甲→brazil / 丹超→denmark / 挪超→norway / 美职→usa」（中文名以 sporttery_matches.json 实测 league 字段为准，防想当然）② 白名单硬编码 <code>("japan","korea","sweden","saudi")</code> → 语义改造</li>
+<li><b>freq_band.py</b>：LEAGUE_STORE 同步同语义（两处口径一致注释保留）</li>
+<li><b>防重复计数设计</b>：</li>
+</ul>
+<svg viewBox="0 0 920 120" width="100%" style="min-width:700px" font-size="12.5">
+  <g>
+    <rect x="8" y="16" width="220" height="88" rx="8" fill="none" stroke="currentColor" stroke-opacity=".4"/>
+    <text x="118" y="38" text-anchor="middle" font-weight="700" fill="currentColor">build_freq_table 导入规则</text>
+    <text x="20" y="60" fill="currentColor">fd 不覆盖联赛（日韩瑞沙巴丹挪美）</text>
+    <text x="34" y="78" fill="var(--acc)">→ 无条件导入本地库</text>
+    <text x="20" y="96" fill="currentColor">fd 覆盖联赛（英西德意法荷葡…）</text>
+  </g>
+  <g>
+    <rect x="250" y="30" width="200" height="60" rx="8" fill="none" stroke="currentColor" stroke-opacity=".4"/>
+    <text x="350" y="54" text-anchor="middle" fill="currentColor">fd fetch_rows 先跑</text>
+    <text x="350" y="74" text-anchor="middle" fill="currentColor" opacity=".7">__n &gt; 0 ？（fd 活着吗）</text>
+  </g>
+  <g stroke="currentColor" stroke-opacity=".55" fill="none" marker-end="url(#ar)">
+    <path d="M228 60h18"/><path d="M450 46h40"/><path d="M450 74h40"/>
+  </g>
+  <g>
+    <rect x="494" y="16" width="180" height="44" rx="8" fill="currentColor" fill-opacity=".08"/>
+    <text x="584" y="34" text-anchor="middle" fill="var(--acc)" font-weight="700">是 → 跳过本地镜像</text>
+    <text x="584" y="50" text-anchor="middle" fill="currentColor" opacity=".7">纯 fd 4 季（现状口径）</text>
+    <rect x="494" y="66" width="180" height="44" rx="8" fill="currentColor" fill-opacity=".08"/>
+    <text x="584" y="84" text-anchor="middle" fill="var(--warn)" font-weight="700">否（__n=0 断粮）→ 导入镜像</text>
+    <text x="584" y="100" text-anchor="middle" fill="currentColor" opacity=".7">espn-history 库兜底</text>
+  </g>
+  <text x="692" y="40" fill="currentColor" opacity=".65">效果：fd 正常 = 零行为变化；</text>
+  <text x="692" y="58" fill="currentColor" opacity=".65">fd 断粮 = 镜像顶上，永不双算。</text>
+  <text x="692" y="76" fill="currentColor" opacity=".65">run.py update 链不动，</text>
+  <text x="692" y="94" fill="currentColor" opacity=".65">espn-history 库日常增量照旧。</text>
+</svg>
+<ul>
+<li><b>生效链自动</b>：boldplay `_q_map_for` 走 map_league→freq_table.get，键一致即通；form 链 build_team_form 同步解锁 λ 平移</li>
+</ul>
+</div>
+
+<div class="card">
+<h3 style="font-size:14px;margin-bottom:8px"><svg width="14" height="14" style="vertical-align:-2px"><use href="#i-test"/></svg> 阶段4 · 验证（三条验收线）</h3>
+<ul>
+<li><b>pytest 全量</b>：engine/tests 必须全绿（改动涉及 score_ev/freq_band 公共链，312 基线）</li>
+<li><b>奈梅亨卡复跑</b>：supp 脚本重跑——荷甲模板 n&gt;0、q_map 非空、low_conf 旗灭、CRS 带内参照表出数据</li>
+<li><b>键集抽查</b>：build_freq_table 输出含 netherlands-eredivisie/brazil/denmark/norway/usa/英西德意法葡，且 fd 断粮期 __n&gt;0</li>
+<li>已有联赛（韩职/沙特等）q 值回归对照——改造不应改变非 fd 联赛任何数字</li>
+</ul>
+</div>
+
+<div class="card">
+<h3 style="font-size:14px;margin-bottom:8px"><svg width="14" height="14" style="vertical-align:-2px"><use href="#i-check"/></svg> 阶段5 · 归档</h3>
+<ul>
+<li>CLAUDE.md：数据源表 + freq 模板源口径更新（espn-history 镜像=断粮降级源）；run.py LOCAL_LEAGUES 若扩荷甲则同步注释</li>
+<li>git commit（计划文档+代码+数据一揽子）；scratch 脚本会话结束清理（不进 git）</li>
+<li>seq16 出票卡已冻结不动——本计划只修数据链分析层，不触发重出票</li>
+</ul>
+</div>
+
+<h2>四、预期收益（补完后）</h2>
+<div class="card">
+<table>
+<tr><th>场景</th><th>补前</th><th>补后</th></tr>
+<tr><td>荷甲场次（周二004/周三005 类）</td><td class="miss">三旗全亮·全局兜底</td><td class="ok">联赛模板数百场·λ平移视别名覆盖解锁</td></tr>
+<tr><td>巴甲/丹超/挪超/美职场次</td><td class="miss">全局兜底（库已有但不收）</td><td class="ok">626/325/391/843 场模板直接生效</td></tr>
+<tr><td>fd 主流联赛轮（周末大轮）</td><td class="miss">fd 503 → 模板全空</td><td class="ok">espn 镜像兜底（样本单年 vs fd 4 季，q 稳度差异在卡上如实标注）</td></tr>
+<tr><td>fd 恢复后</td><td class="warn">镜像与 fd 并存</td><td class="ok">自动切回纯 fd，镜像静默退位，零重复计数</td></tr>
+</table>
+<p style="margin-top:8px;color:var(--muted);font-size:12.5px">口径诚实提醒：espn 镜像是<b>降级源</b>——样本量（自然年单季）与 fd 4 季有量级差，q 置信度低于 fd 正常态；卡面旗标机制不变，样本不足仍会亮 low_conf，不因补数据而隐藏。</p>
+</div>
+
+</div>
+</body>
+</html>
