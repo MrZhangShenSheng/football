@@ -66,7 +66,7 @@
         "pinSource": "fd",
         "oddsDrift": {
           "pickOdds": 1.62,
-          "laterOdds": 4.7
+          "laterOdds": 4.9
         }
       },
       "confidence": "high",
@@ -946,13 +946,28 @@
       "confidence": "low",
       "source": "rule",
       "confirmed": true
+    },
+    "2026-09-08|周一009|had": {
+      "primary": "F9",
+      "secondary": [],
+      "evidence": {
+        "pfinalPick": null,
+        "dcBest": null,
+        "fusedBest": null,
+        "pickIdx": null,
+        "resultIdx": 0,
+        "result": "1-0"
+      },
+      "confidence": "low",
+      "source": "rule",
+      "confirmed": true
     }
   },
   "factorStats": {
     "F9": {
-      "nPrimary": 42,
+      "nPrimary": 43,
       "nSecondary": 0,
-      "avgProbGap": 0.3874
+      "avgProbGap": 0.3784
     },
     "F5": {
       "nPrimary": 2,
