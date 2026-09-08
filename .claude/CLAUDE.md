@@ -25,7 +25,7 @@
 
 - `data/00-leagues/`: 联赛画像 JSON（积分榜/场均进球/主胜率/冷门率/TOP比分/争冠保级格局；league_profile.py 自动生成，预测时 ESPN 实时覆盖）
 - `data/01-teams/`: 球队画像 JSON（Elo/xG/近况/伤停/主客场/休息天数）+ `_aliases.json` 实体映射表 + `_index.json` 路由索引
-- `data/02-results/`: 赛果回填 JSON（**主文件=出票冻结终审版，`-rN`=过程快照，corpus 同场覆盖以主文件为准**；`_archive/` 空壳归档）+ `league/` 本地赛果库（espn history 回填，供非fd联赛 DC 拟合；韩职走体彩 league-results）+ `_h2h_index.json`（仅叙事参考）
+- `data/02-results/`: 赛果回填 JSON（**主文件=出票冻结终审版，`-rN`=过程快照，corpus 同场覆盖以主文件为准**；`_archive/` 空壳归档）+ `league/` 本地赛果库（espn history 回填，供非fd联赛 DC 拟合 + **freq 链频率模板：fd 不覆盖 8 联赛无条件导入，fd 覆盖 7 联赛镜像=断粮降级源（fd 503 时自动顶上，恢复即退位防双算，score_ev.LOCAL_POOL/FD_BACKED 闸门）；韩职走体彩 league-results；杯赛库不做模板**）+ `_h2h_index.json`（仅叙事参考）
 - `data/03-predictions/`: 预测报告 HTML（仅用户输出用 HTML+SVG）
 - `data/04-summaries/`: 五维统计 `_stats.json` + 复盘 HTML + `corpus.json` 语料就绪度 / `attribution.json` 偏差归因账本 / `ablate-report.json` 系数消融 / `goal-engine-report.json` 进球引擎对照统计（09-27 评审数据底子：四线对照+消融+walkForward+bypassPool 四节；读口径警示见 notes）
 - `data/05-trends/`: 赛前情报时序库 intel-timeline（odds 五池 diff 链/intel 摘要/livescan 扫描事件；刷新自动落盘+回填挂 preSnapshots 桥；设计=docs/2026-08-30-intel-timeline-design.html）
@@ -57,7 +57,7 @@
 | 源 | 状态 | 用途 |
 |:---|:---|:---|
 | 体彩官方 API | ✅ WebFetch 可用 | 赛程 + 赔率（**dump-odds 子命令：全玩法赔率日存档 engine/cache/score_odds/，含比分31项/总进球/半全场/胜平负+调价时间戳**）+ **赛果**（sporttery_fetch.py：`league-results` 联赛历史=zqlszl 口径 90天分段；`results` 开奖口径=zqsgkj 按场次编号"周六028"对票，ESPN 互备；含韩职 korea=86 等 fd/ESPN 缺失联赛）+ **单场情报 `insight <matchId>`**（zqdz 口径：伤停/近10场/即时排名/H2H/射手，伤停首选源免搜索配额） |
-| football-data.co.uk | ✅ requests 直连（engine/scripts/odds_fetch.py） | **Pinnacle 收盘价（PPCH/PPCD/PPCA）+ B365 收盘 + xG（HxG/AxG）+ 比分**，主流联赛当季 CSV |
+| football-data.co.uk | ✅ requests 直连（engine/scripts/odds_fetch.py） | **Pinnacle 收盘价（PPCH/PPCD/PPCA）+ B365 收盘 + xG（HxG/AxG）+ 比分**，主流联赛当季 CSV（**503 断粮期 freq 模板/近况由 espn-history 镜像顶上，概率锚与 CLV 无兜底**） |
 | ESPN API | ⚠️ 赛果接口 2026-08-22 起停摆（backfill 已切体彩编号对票主链路，恢复后 ESPN 自动回为兜底）；requests 直连（engine/scripts/espn_fetch.py，**勿加浏览器 UA 会 403**） | 赛果（按日期）、实时积分榜；覆盖日职 jpn.1/瑞超 swe.1/挪超/丹超/沙特 ksa.1/荷甲/葡超等 fd 不含联赛 |
 | titan007（球探体育） | ✅ requests 直连（engine/scripts/cn_fetch.py，须带浏览器 UA+Referer 否则 442；国内速度快，ESPN 不可达时兜底） | 联赛积分榜（JS 数组直取）+ 中英文队名对照（teams 子命令补别名用）。ID：36英超 31西甲 8德甲 11法甲 16荷甲 23葡超 25日职 26瑞超 22挪超 7丹超 13芬超 292沙特 |
 | clubelo.com | ⚠️ api 子域被墙；主域可达（elo_fetch.py 双链路自动切换：api CSV → 主域 HTML 正则） | Elo；主域仅"近期有比赛"的活跃队有页面，休赛期队失败属正常（21/25 实测成功） |
