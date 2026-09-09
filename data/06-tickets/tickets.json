@@ -2,10 +2,10 @@
   "meta": {
     "lastUpdated": "2026-09-09",
     "note": "实票账本:票=顶层实体(不按日期切分);实票=有结算记录的票,其余全是方案推演;出票后票面事实永不改写;派彩按形状算(4串11中2关只回1注2串1)",
-    "totalTickets": 25,
-    "totalStake": 430,
-    "totalPayout": 390.97,
-    "totalNet": -39.03,
+    "totalTickets": 26,
+    "totalStake": 460,
+    "totalPayout": 477.97,
+    "totalNet": 17.97,
     "disciplineEvents": [
       {
         "date": "2026-08-24",
@@ -1313,7 +1313,7 @@
           "odds": 15.0,
           "result": "miss",
           "actual": "2-1",
-          "agreement": "no_rec"
+          "agreement": "excluded"
         }
       ],
       "payoutShape": "按形状结算:命中回15.00×2×5=150元;未中全灭",
@@ -1419,7 +1419,7 @@
           "odds": 1.79,
           "result": "miss",
           "actual": "4-2",
-          "agreement": "no_rec"
+          "agreement": "excluded"
         },
         {
           "code": "周三004",
@@ -1430,7 +1430,7 @@
           "odds": 1.71,
           "result": "hit",
           "actual": "2-1",
-          "agreement": "no_rec"
+          "agreement": "excluded"
         }
       ],
       "payoutShape": "按形状结算(出票实价1.35/1.48/1.79/1.71):全中5注全回=4注3串1(14.31+13.67+16.53+18.12)+1注4串1(24.46)≈87.14(大哥票面为准);中3关回1注3串1(13.67~18.12);各注<1万不税",
@@ -1682,7 +1682,7 @@
           "pick": "0:0",
           "odds": 16.5,
           "result": "miss",
-          "agreement": "play_diff",
+          "agreement": "excluded",
           "note": "系统同推:周四轮方案腿+池卡rec_base同推;q9.2%(freq-band)EV+51.8%;CLV=0%(16.50→16.50零异动)",
           "actual": "3:0(半3:0)"
         }
@@ -2972,7 +2972,9 @@
           "pick": "平",
           "odds": 2.9,
           "agreement": "agree",
-          "note": "平局轨方案腿(融合平32.55%·极差8.9pp·伤停0/0)·kickoff 2026-09-09 18:30·体彩销售日09-10"
+          "note": "平局轨方案腿(融合平32.55%·极差8.9pp·伤停0/0)·kickoff 2026-09-09 18:30·体彩销售日09-10",
+          "result": "hit",
+          "actual": "1-1(半0:1)"
         }
       ],
       "meta": {
@@ -2989,7 +2991,13 @@
         "alignReceipt": "1选项=1agree(周三001HAD平=系统平局轨唯一推荐票·poolSingle.HAD=1单关合法)·一致率100%"
       },
       "settled": {
-        "status": "pending"
+        "status": "settled",
+        "hits": 1,
+        "winUnits": 1,
+        "payout": 87.0,
+        "net": 57.0,
+        "roi": 190.0,
+        "settledAt": "2026-09-09 22:21"
       }
     }
   ]
