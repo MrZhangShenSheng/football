@@ -1,0 +1,102 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>影子票排除收益率分析 · 32票两轮</title>
+<style>
+:root{--bg:#f7f8fa;--card:#fff;--ink:#1c2430;--sub:#5b6675;--line:#e3e7ee;--ok:#0a7d43;--bad:#c0392b;--warn:#b07d00;--acc:#2456c4}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#14181f;--card:#1d232d;--ink:#e8ecf2;--sub:#98a3b3;--line:#2c3440;--ok:#3ecf7c;--bad:#ef7b6d;--warn:#e0b341;--acc:#6b9aff}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.65 "Microsoft YaHei",system-ui,sans-serif;padding:24px}
+.wrap{max-width:960px;margin:0 auto}h1{font-size:20px;margin:0 0 4px}.meta{color:var(--sub);font-size:12px;margin-bottom:18px}
+h2{font-size:15px;margin:26px 0 10px;padding-left:9px;border-left:3px solid var(--acc)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:12px 0}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.kpi .v{font-size:22px;font-weight:700}.kpi .l{color:var(--sub);font-size:12px}.kpi .d{font-size:11px}
+.ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}
+table{border-collapse:collapse;width:100%;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:13px}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left}th{background:color-mix(in srgb,var(--acc) 8%,var(--card));font-weight:600}tr:last-child td{border-bottom:none}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.note{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:10px 14px;margin:10px 0}
+.svg{width:15px;height:15px;vertical-align:-2px;margin-right:5px}
+svg text{font-family:"Microsoft YaHei",system-ui,sans-serif}
+.chart{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 10px 6px;margin:10px 0;overflow-x:auto}
+</style></head><body><div class="wrap">
+<svg width="0" height="0" style="position:absolute"><symbol id="i-f" viewBox="0 0 16 16"><path d="M3 13.5 6 5l4 5 3-8.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></symbol><symbol id="i-fil" viewBox="0 0 16 16"><path d="M2 3h12M4 3v10M12 3v6M7 3v3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol><symbol id="i-sh" viewBox="0 0 16 16"><path d="M8 1.5 13 3.5v4c0 3.5-2.2 6.2-5 7-2.8-.8-5-3.5-5-7v-4z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m5.5 8 1.8 1.8L10.5 6.5" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol></svg>
+
+<h1><svg class="svg"><use href="#i-f"/></svg> 影子票排除收益率分析 · 哪些场景关档能提高收益</h1>
+<div class="meta">生成 2026-09-09 · 样本=已结算 32 票（09-08 周一轮 13 + 09-09 周二轮 19）· 结算口径=settle 同源判定 · 回本率=回款/投入</div>
+
+<h2><svg class="svg"><use href="#i-fil"/></svg>基线盘</h2>
+<div class="grid">
+<div class="kpi"><div class="l">已结算票</div><div class="v">32</div><div class="d">腿级 163 腿中 99（61%）</div></div>
+<div class="kpi"><div class="l">总投入</div><div class="v">916</div><div class="d">推演资金·非实票</div></div>
+<div class="kpi"><div class="l">总回款</div><div class="v">1071.12</div><div class="d">最大单票 P016 +148.46</div></div>
+<div class="kpi"><div class="l">净额 / 回本率</div><div class="v ok">+155.12</div><div class="d">116.9%</div></div>
+</div>
+
+<h2>排除模拟 · 完整榜单</h2>
+<table><tr><th>排除场景</th><th class="num">票数</th><th class="num">子集净额</th><th class="num">子集回本率</th><th class="num">剩余回本率</th><th class="num">Δ提升</th><th>判定</th></tr>
+<tr><td><b>8串1 族</b>（含 ev-8串1）</td><td class="num">4</td><td class="num bad">-120.00</td><td class="num">0%</td><td class="num">134.6%</td><td class="num ok">+17.6pp</td><td>◆◆ 结构性</td></tr>
+<tr><td><b>腿数≥6 长串票</b></td><td class="num">11</td><td class="num bad">-80.49</td><td class="num">73.7%</td><td class="num">138.6%</td><td class="num ok">+21.7pp</td><td>◆◆ 最强单一维度</td></tr>
+<tr><td>周一轮（09-08 联赛日）</td><td class="num">13</td><td class="num bad">-126.16</td><td class="num">66.1%</td><td class="num">151.7%</td><td class="num ok">+34.8pp</td><td class="warn">⚠ 事后维度不可操作</td></tr>
+<tr><td><b>胶着族</b>（对称盘口三选/双选）</td><td class="num">6</td><td class="num bad">-62.60</td><td class="num">66.0%</td><td class="num">129.7%</td><td class="num ok">+12.8pp</td><td>◆ 结构性·小样本</td></tr>
+<tr><td><b>crs 比分池族</b></td><td class="num">3</td><td class="num bad">-48.50</td><td class="num">40.9%</td><td class="num">124.4%</td><td class="num ok">+7.5pp</td><td>◆◆ 腿级14%命中率</td></tr>
+<tr><td>ev-双选全2关-4</td><td class="num">2</td><td class="num bad">-33.90</td><td class="num">64.7%</td><td class="num">123.1%</td><td class="num ok">+6.1pp</td><td>噪声档（仅2票）</td></tr>
+<tr><td>杯赛腿占比 100% 的票</td><td class="num">5</td><td class="num ok">+10.15</td><td class="num">107.4%</td><td class="num">118.6%</td><td class="num">+1.7pp</td><td>子集不亏·无效</td></tr>
+<tr style="color:var(--sub)"><td>（反向）4串族</td><td class="num">6</td><td class="num ok">+164.02</td><td class="num">207.9%</td><td class="num">98.8%</td><td class="num bad">-18.1pp</td><td>赚钱·勿排除</td></tr>
+<tr style="color:var(--sub)"><td>（反向）全2关族</td><td class="num">4</td><td class="num ok">+88.11</td><td class="num">181.6%</td><td class="num">108.3%</td><td class="num bad">-8.6pp</td><td>赚钱·勿排除</td></tr>
+<tr style="color:var(--sub)"><td>（反向）ttg 总进球池族</td><td class="num">3</td><td class="num ok">+64.15</td><td class="num">176.4%</td><td class="num">110.9%</td><td class="num bad">-6.0pp</td><td>赚钱·勿排除</td></tr>
+<tr style="color:var(--sub)"><td>（反向）ev 族</td><td class="num">4</td><td class="num ok">+62.40</td><td class="num">144.6%</td><td class="num">111.9%</td><td class="num bad">-5.0pp</td><td>赚钱·勿排除</td></tr>
+<tr style="color:var(--sub)"><td>（反向）周二轮（杯赛夜）</td><td class="num">19</td><td class="num ok">+281.28</td><td class="num">151.7%</td><td class="num">66.1%</td><td class="num bad">-50.8pp</td><td>赚钱·勿排除</td></tr>
+</table>
+
+<div class="chart">
+<svg viewBox="0 0 920 330" style="min-width:760px;width:100%" role="img" aria-label="排除后剩余回本率对比条形图">
+<text x="10" y="22" font-size="13" font-weight="700" fill="currentColor">排除某场景后 · 剩余盘回本率</text>
+<g style="color:var(--sub)" fill="currentColor" font-size="11.5">
+<text x="10" y="46">组合：8串1+crs+胶着</text><text x="10" y="76">周一轮（不可操作⚠）</text><text x="10" y="106">腿数≥6 长串</text><text x="10" y="136">8串1 族</text><text x="10" y="166">胶着族</text><text x="10" y="196">crs 池族</text><text x="10" y="226">基线（不排除）</text>
+</g>
+<g>
+<rect x="185" y="32"  width="614" height="20" rx="4" fill="var(--acc)" opacity="0.92"/>
+<rect x="185" y="62"  width="541" height="20" rx="4" fill="var(--warn)" opacity="0.75"/>
+<rect x="185" y="92"  width="495" height="20" rx="4" fill="var(--acc)" opacity="0.85"/>
+<rect x="185" y="122" width="480" height="20" rx="4" fill="var(--acc)" opacity="0.85"/>
+<rect x="185" y="152" width="463" height="20" rx="4" fill="var(--acc)" opacity="0.7"/>
+<rect x="185" y="182" width="445" height="20" rx="4" fill="var(--acc)" opacity="0.7"/>
+<rect x="185" y="212" width="418" height="20" rx="4" fill="none" stroke="var(--sub)" stroke-dasharray="5 4" stroke-width="1.5"/>
+<line x1="603" y1="26" x2="603" y2="246" stroke="var(--bad)" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text x="603" y="260" font-size="11" fill="var(--bad)" text-anchor="middle">基线 116.9%</text>
+</g>
+<g fill="currentColor" font-size="11.5">
+<text x="807" y="47">172.9%</text><text x="734" y="77">151.7%</text><text x="688" y="107">138.6%</text>
+<text x="673" y="137">134.6%</text><text x="656" y="167">129.7%</text><text x="638" y="197">124.4%</text>
+<text x="613" y="227" fill="var(--sub)">116.9%</text>
+</g>
+<line x1="185" y1="26" x2="185" y2="246" stroke="var(--line)" stroke-width="1"/>
+<text x="185" y="262" font-size="10.5" fill="var(--sub)" text-anchor="middle">0%</text>
+<text x="899" y="262" font-size="10.5" fill="var(--sub)" text-anchor="end">180%</text>
+<text x="10" y="290" font-size="11" fill="var(--sub)">柱长=剩余盘回款/剩余盘投入；虚线框=基线盘不排除任何场景；红色虚线=基线 116.9% 参考位</text>
+<text x="10" y="310" font-size="11" fill="var(--sub)">组合排除（8串1+crs+胶着）共裁 13 票、剔除净亏 -231.10，剩余 19 票回本率 172.9%（较基线 +56.0pp）</text>
+</svg>
+</div>
+
+<h2>三个结构性场景的机理</h2>
+<table><tr><th>场景</th><th>证据</th><th>机理</th></tr>
+<tr><td><b>crs 比分池</b></td><td>腿级命中 <b class="bad">2/14 = 14%</b>（对照 had 80% / ttg 70%）；13 张 crs 票只活 2 张</td><td>影子 crs spec="每场 CRS top1"机械选腿，<b>不走 freq-band EV 筛</b>——比分天然低概率，选法不带 EV 过滤即负期望。与主链 freq-band crs 选法是两回事</td></tr>
+<tr><td><b>8串1 / 长串</b></td><td>4 张 8串1 <b>全灭 0 回款</b>；泛化腿数≥6 后 11 票回本率 73.7%</td><td>6~8 腿全中是概率乘法灾难；40 元预算摊在高赔长串上=纯彩票形状，期望损耗最大</td></tr>
+<tr><td><b>胶着族</b></td><td>6 票净 -62.60（回本率 66.0%）</td><td>对称盘口场次方向本就难判，三选/双选形状在胶着场景叠加低命中与低赔</td></tr></table>
+
+<h2>反向警示 · 这些看着该排其实不能排</h2>
+<div class="note">
+<b>杯赛夜票是赚钱主力（+281.28），别被"杯赛腿命中率 59% &lt; 联赛腿 79%"骗了。</b>亏的不是杯赛方向（皇马/曼城等强队杯赛方向腿低赔高命中），是杯赛里的 crs/hafu 花式腿。同理 4 串族（+207.9%）、全2关（+181.6%）、ttg 池（+176.4%）、ev 族（+144.6%）全是正贡献——排除任何一个都会让总盘变差。<b>"周一轮"维度看着提升最大（+34.8pp）但属事后归因</b>：13 票每张恰好一条 ✗ 腿卡死，单轮运气混杂，无法事前操作，不立项。
+</div>
+
+<h2>决策建议（按冷门因子四轮证伪的老规矩）</h2>
+<table><tr><th>动作</th><th>内容</th></tr>
+<tr><td><b>现在不动</b></td><td>32 票/两轮是小样本（胶着族 6 票、crs 族 3 票尤甚）。影子层保持全 spec 继续跑 <b>2~4 周</b>积累对照数据</td></tr>
+<tr><td>触发线 A</td><td>crs 池腿命中持续 <b>20%</b>（当前 14%，若 3~4 轮后仍 &lt;20%）→ shapes.py 裁撤/降权 crs 族 spec</td></tr>
+<tr><td>触发线 B</td><td>8串1 族累计 0 回款持续 <b>≥3 轮</b>（当前两轮全灭）→ 关档 8 串形状</td></tr>
+<tr><td>触发线 C</td><td>胶着族累计回本率 <b>&lt;80%</b> 且样本 ≥15 票 → 降权或改造（加 EV 门槛）</td></tr>
+<tr><td>对照原则</td><td>任何裁撤决策前重跑本分析（脚本口径：settle 同源判定 + 02-results 联赛标注），确认提升方向未反转</td></tr></table>
+
+<h2>数据来源</h2>
+<div class="meta">engine/shadow/paper_tickets.json（32/54 已结算票）· data/02-results/2026-09-08~09-09.json + -r1 快照（联赛/杯赛标注）· engine/cache/sporttery_results_*.json（体彩开奖缓存）· 判定引擎=engine/shadow/shapes.py _pick_price 同源 · 生成会话 2026-09-09 上午</div>
+</div></body></html>
