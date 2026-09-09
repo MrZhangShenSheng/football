@@ -49,9 +49,15 @@
       {
         "date": "2026-09-05",
         "event": "T021二勘(翻案):真实票面=boldplay引擎彩票档8/8原样·大哥零偏离·agreement全agree;前判'4腿排除场'系对照源错位——classify只读主文件HAD方向层(排除),而boldplay彩票档HHAD池腿为合格推荐(p≥0.55);登记事故根因=误读主文件手写plans作票面源;沉淀:实票对照源以boldplay卡为权威,主文件plans手写与引擎不同步需修"
+      },
+      {
+        "date": "2026-09-09",
+        "event": "T026平局轨单关30元=方案基准注2元的15倍·亦超历史单票带(8~22元):大哥问'想买30元合适吗'后拍板出票·价格冻结16:01复扫价2.90·二次终审维持(38eddcb)",
+        "actualNet": null,
+        "verdict": "pending·🟡警示不拦截(纪律层09-07拍板)·回填后核算加注边际损益(对比2元方案推演)"
       }
     ],
-    "lastRegistered": "T024"
+    "lastRegistered": "T026"
   },
   "tickets": [
     {
@@ -2932,6 +2938,58 @@
         "net": -21.15,
         "roi": -66.1,
         "settledAt": "2026-09-09 09:44"
+      }
+    },
+    {
+      "id": "T026",
+      "source": "方案转正",
+      "placedAt": "2026-09-09 16:45",
+      "placedAtNote": "大哥对话拍板'我想买30元'后登记·价格冻结16:01临场复扫价2.90·二次终审维持(38eddcb)·金额为对话推定口径,若实票票面不符速报修正",
+      "stake": 30,
+      "unitStake": 2,
+      "units": 15,
+      "multiplier": 15,
+      "shape": "HAD 平局单关×15倍",
+      "matchDays": [
+        "2026-09-09"
+      ],
+      "origin": "平局轨v5.7:09-10销售轮唯一推荐票(周三001江原HAD平·入轨五条全过·poolSingle.HAD=1)",
+      "combos": "1×单关",
+      "bets": [
+        {
+          "legs": [
+            0
+          ],
+          "multiplier": 15
+        }
+      ],
+      "legs": [
+        {
+          "code": "周三001",
+          "league": "韩职",
+          "match": "江原FC vs 全北现代",
+          "market": "HAD",
+          "pick": "平",
+          "odds": 2.9,
+          "agreement": "agree",
+          "note": "平局轨方案腿(融合平32.55%·极差8.9pp·伤停0/0)·kickoff 2026-09-09 18:30·体彩销售日09-10"
+        }
+      ],
+      "meta": {
+        "pFull": 0.3255,
+        "pFullNote": "单关pFull=融合平概率32.55%(DC平37.86%×市场锚logit融合)",
+        "hitAtLeastOne": 0.3255,
+        "payoutIf": 87.0,
+        "evFused": -0.056,
+        "evNote": "融合口径0.3255×2.90-1=-5.6%·DC口径0.3786×2.90-1=+9.8%·平局轨EV只标注不拦截",
+        "keyRisk": "归零概率67.5%(融合口径)~40%(回测极差口径)·回测60%命中率样本小有过拟合嫌疑",
+        "disciplineEvents": [
+          "金额超基准:30元=平局轨方案基准注2元的15倍·亦超历史单票带(8~22元)·roundRedline已废除制度下大哥主动加注·🟡警示不拦截(纪律层09-07拍板)"
+        ],
+        "alignReceipt": "1选项=1agree(周三001HAD平=系统平局轨唯一推荐票·poolSingle.HAD=1单关合法)·一致率100%"
+      },
+      "settled": {
+        "status": "pending"
       }
     }
   ]
