@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-09-08",
+ "fetchedAt": "2026-09-09",
  "source": "sporttery",
  "matchId": 2041368,
  "match": {
@@ -39,7 +39,35 @@
   }
  },
  "injuries": {
-  "home": [],
+  "home": [
+   {
+    "name": "Paulinho",
+    "pos": "前锋",
+    "no": "10",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 3,
+    "starts": 0
+   },
+   {
+    "name": "索萨",
+    "pos": "前锋",
+    "no": "19",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 5,
+    "starts": 3
+   },
+   {
+    "name": "Jefté",
+    "pos": "后卫",
+    "no": "6",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 2,
+    "starts": 0
+   }
+  ],
   "away": []
  },
  "form": {
@@ -217,7 +245,7 @@
      "goalAvgCnt": "0.4",
      "goalCnt": 2,
      "goalProbability": "17%",
-     "injuryFlag": 0,
+     "injuryFlag": 1,
      "personId": 648749,
      "personName": "索萨",
      "playerPositionCode": "Forward",

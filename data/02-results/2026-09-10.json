@@ -1,0 +1,62 @@
+{
+  "date": "2026-09-10",
+  "saleDay": "2026-09-10",
+  "version": "v1",
+  "generatedAt": "2026-09-09 12:00",
+  "mode": "全局",
+  "anchorNote": "单锚模式延续:fd 503全天断(2526/2627季CSV全503)·欧冠EC0无DC缓存·Pinnacle实时价被墙——概率锚=体彩去水×0.97,星级上限三星;有DC联赛场(韩职/荷甲/英冠/葡超/美职/沙职)DC+体彩双锚;画像层8/21后未更新大面积缺失,情报主力=体彩insight 22场全采(伤停/近10/H2H/排名)",
+  "dataSources": [
+    "engine/cache/sporttery_matches.json (2026-09-09 update刷新·22场五池)",
+    "engine/cache/score_odds/2026-09-09.json (dump-odds全玩法存档)",
+    "engine/cache/sporttery_insight_2041356~2041378 (22场insight·伤停/排名/H2H)",
+    "data/00-leagues/*.json (league_profile 20联赛画像·update刷新)",
+    "engine/cache/korea_dc.json v1 / netherlands-eredivisie_dc / england-championship_dc / portugal-primeira_dc / usa_dc / saudi_dc (9/7~9/9拟合)",
+    "data/04-summaries/backtest_*_2526.json (七联赛walk-forward回测:market全线最优·dc开季垫底)",
+    "data/04-summaries/2026-09-09-shadow-exclusion-analysis.html (排除分析:crs池腿14%命中/无锚杯赛CRS腿红灯)"
+  ],
+  "matches": [
+    {"idx": 1, "code": "周三001", "league": "韩职", "match": "江原FC vs 全北现代", "kickoff": "2026-09-09 18:30", "pick": "HAD 平局@2.92(平局轨)", "odds": 2.92, "star": 2, "grade": "A", "dc": [0.2741, 0.3884, 0.3375], "fused": [0.274, 0.342, 0.384], "final": 0.342, "note": "λ0.81/0.925低进球场·DC平38.8%三线同向·top比分0-0@20.3%全场最高·平局轨五条全过(DC≥35%✓联赛✓三线同向✓极差11.4pp胶着✓poolSingle.HAD=1✓)·伤停主0/客0干净"},
+    {"idx": 2, "code": "周三002", "league": "沙职", "match": "拉斯永恒 vs 利雅青年", "kickoff": "2026-09-09 23:55", "pick": "排除:均势胶着", "odds": null, "star": 1, "grade": "B", "dc": [0.4148, 0.2625, 0.3227], "fused": [0.391, 0.287, 0.322], "final": null, "note": "DC三向极差9.2pp均势·HAD 2.51/3.35/2.31无纵深"},
+    {"idx": 3, "code": "周三003", "league": "欧冠(联赛阶段R1)", "match": "巴萨 vs 费耶诺德", "kickoff": "2026-09-10 00:45", "pick": "排除:无锚杯赛+深盘-3", "odds": null, "star": 2, "grade": "A", "dc": null, "fused": [0.75, 0.14, 0.11], "final": null, "note": "单锚体彩去水·HHAD-3深盘(主2.35/客2.02)让三球赢盘需净胜4+·巴萨伤3/费耶诺德伤5"},
+    {"idx": 4, "code": "周三004", "league": "欧冠(联赛阶段R1)", "match": "斯图加特 vs 维京", "kickoff": "2026-09-10 00:45", "pick": "排除:主队伤停6人", "odds": null, "star": 1, "grade": "B", "dc": null, "fused": [0.58, 0.21, 0.21], "final": null, "note": "insight主伤6人大面积伤停·HHAD-2·维京挪超榜首"},
+    {"idx": 5, "code": "周三005", "league": "荷甲", "match": "特温特 vs 特尔斯达", "kickoff": "2026-09-10 00:45", "pick": "排除:深盘让2无干净价", "odds": null, "star": 3, "grade": "A", "dc": [0.7158, 0.1832, 0.101], "fused": [0.712, 0.181, 0.107], "final": 0.712, "note": "本轮最强方向场:DC主71.6%(荷甲两季联拟)·升班马特尔斯达·HHAD-2@2.29需净胜3+约27%不划算·HAD不售"},
+    {"idx": 6, "code": "周三006", "league": "欧冠(联赛阶段R1)", "match": "里斯本 vs 加拉塔萨", "kickoff": "2026-09-10 03:00", "pick": "排除:无锚杯赛CRS逆市场", "odds": null, "star": 2, "grade": "A", "dc": null, "fused": [0.61, 0.22, 0.17], "final": null, "note": "HAD主1.58市场热·seq17候选CRS 0:1@16 EV+18%被人工审拦(无锚杯赛模板腿·复盘教训3)·主伤3/客伤4"},
+    {"idx": 7, "code": "周三007", "league": "欧冠(联赛阶段R1)", "match": "那不勒斯 vs 阿森纳", "kickoff": "2026-09-10 03:00", "pick": "排除:均势强强", "odds": null, "star": 3, "grade": "A", "dc": null, "fused": [0.24, 0.22, 0.54], "final": null, "note": "客1.51阿森纳市场热·那不勒斯伤4人·H2H4场·三星方向场但单锚无纵深不入选"},
+    {"idx": 8, "code": "周三008", "league": "欧冠(联赛阶段R1)", "match": "利物浦 vs 马竞", "kickoff": "2026-09-10 03:00", "pick": "排除:主队伤停6人+无锚", "odds": null, "star": 2, "grade": "A", "dc": null, "fused": [0.59, 0.21, 0.20], "final": null, "note": "利物浦伤6人大面积伤停(insight)·HAD主1.60·seq17候选CRS 0:1@15被拦(无锚+伤停红灯)"},
+    {"idx": 9, "code": "周三009", "league": "欧冠(联赛阶段R1)", "match": "巴黎圣曼 vs 布拉迪斯", "kickoff": "2026-09-10 03:00", "pick": "排除:无锚杯赛+深盘-3", "odds": null, "star": 2, "grade": "A", "dc": null, "fused": [0.77, 0.12, 0.11], "final": null, "note": "HHAD-3@1.90超低赔·HAD不售·欧冠无锚"},
+    {"idx": 10, "code": "周三010", "league": "英冠", "match": "查尔顿 vs 女王巡游", "kickoff": "2026-09-10 03:00", "pick": "排除:主队伤停7人", "odds": null, "star": 1, "grade": "B", "dc": null, "fused": [0.46, 0.26, 0.28], "final": null, "note": "英冠市场自身最弱赛区(回测RPS0.2228)·查尔顿伤7·seq17候选CRS 2:0@15 EV+5%边缘存疑未采纳"},
+    {"idx": 11, "code": "周三011", "league": "英联赛杯", "match": "切尔西 vs 利兹联", "kickoff": "2026-09-10 03:00", "pick": "排除:杯赛无锚", "odds": null, "star": 1, "grade": "B", "dc": null, "fused": [0.62, 0.21, 0.17], "final": null, "note": "EL0无DC·主1.51·H2H 10场"},
+    {"idx": 12, "code": "周三012", "league": "葡超", "match": "摩雷伦斯 vs 本菲卡", "kickoff": "2026-09-10 03:45", "pick": "排除:HHAD+2深盘无干净价", "odds": null, "star": 3, "grade": "A", "dc": [0.1278, 0.2162, 0.656], "fused": [0.133, 0.215, 0.652], "final": 0.652, "note": "DC客65.6%强方向·HAD不售·HHAD+2客2.15需本菲卡净胜3+约30%不划算"},
+    {"idx": 13, "code": "周三013", "league": "解放者杯", "match": "帕梅拉斯 vs 基多体大", "kickoff": "2026-09-10 06:00", "pick": "排除:超低赔1.20+无锚", "odds": null, "star": 2, "grade": "A", "dc": null, "fused": [0.81, 0.12, 0.07], "final": null, "note": "HAD主1.20超低赔·HHAD-1@1.81·解放者杯无锚·排名主2/客1"},
+    {"idx": 14, "code": "周三014", "league": "解放者杯", "match": "拉普大学 vs 科林蒂安", "kickoff": "2026-09-10 08:30", "pick": "排除:无锚杯赛CRS", "odds": null, "star": 2, "grade": "A", "dc": null, "fused": [0.47, 0.26, 0.27], "final": null, "note": "seq17候选CRS 1:2@17 EV+23%被拦(无锚杯赛+昨晚r1同款腿今晚验证中)·客伤6人"},
+    {"idx": 15, "code": "周三015", "league": "美职", "match": "芝加哥 vs 迈国际", "kickoff": "2026-09-10 08:30", "pick": "排除:方向分歧", "odds": null, "star": 1, "grade": "B", "dc": null, "fused": [0.43, 0.24, 0.33], "final": null, "note": "美职有DC但画像缺失·HAD 2.23/4.06/2.30均势·seq17候选CRS 1:1@10.5 EV+12%未采纳(翻身档整体不拍板)"},
+    {"idx": 16, "code": "周四001", "league": "欧冠(联赛阶段R1)", "match": "费内巴切 vs 罗马", "kickoff": "2026-09-11 00:45", "pick": "排除:无锚杯赛", "odds": null, "star": 2, "grade": "A", "dc": null, "fused": [0.35, 0.25, 0.40], "final": null, "note": "明晚场·HAD 3.03/3.35/2.00"},
+    {"idx": 17, "code": "周四002", "league": "欧冠(联赛阶段R1)", "match": "科莫 vs 莱红牛", "kickoff": "2026-09-11 03:00", "pick": "排除:无锚杯赛", "odds": null, "star": 2, "grade": "A", "dc": null, "fused": [0.52, 0.22, 0.26], "final": null, "note": "seq17候选CRS 0:1@15被拦(无锚)"},
+    {"idx": 18, "code": "周四003", "league": "欧冠(联赛阶段R1)", "match": "拜仁 vs 博德闪耀", "kickoff": "2026-09-11 03:00", "pick": "排除:无锚+深盘-3", "odds": null, "star": 2, "grade": "A", "dc": null, "fused": [0.76, 0.13, 0.11], "final": null, "note": "HHAD-3深盘"},
+    {"idx": 19, "code": "周四004", "league": "欧冠(联赛阶段R1)", "match": "斯拉维亚 vs 朗斯", "kickoff": "2026-09-11 03:00", "pick": "排除:无锚杯赛", "odds": null, "star": 2, "grade": "A", "dc": null, "fused": [0.37, 0.26, 0.37], "final": null, "note": "斯拉维亚别名缺口待补"},
+    {"idx": 20, "code": "周四005", "league": "欧冠(联赛阶段R1)", "match": "曼联 vs 萨巴赫", "kickoff": "2026-09-11 03:00", "pick": "排除:无锚+深盘-2", "odds": null, "star": 2, "grade": "A", "dc": null, "fused": [0.70, 0.15, 0.15], "final": null, "note": "HHAD-2@1.71超低赔"},
+    {"idx": 21, "code": "周四006", "league": "葡超", "match": "阿马多拉 vs 布拉加", "kickoff": "2026-09-11 03:15", "pick": "排除:DC参数缺失", "odds": null, "star": 1, "grade": "B", "dc": null, "fused": [0.25, 0.24, 0.51], "final": null, "note": "布拉加不在primeira拟合参数(153场样本未覆盖)·HAD客1.48"},
+    {"idx": 22, "code": "周四007", "league": "解放者杯", "match": "德尔瓦耶 vs 弗拉门戈", "kickoff": "2026-09-11 08:30", "pick": "排除:无锚杯赛", "odds": null, "star": 2, "grade": "A", "dc": null, "fused": [0.37, 0.27, 0.36], "final": null, "note": "排名主1/客1强强·德尔瓦耶别名缺口待补"}
+  ],
+  "plans": [
+    {
+      "plan": "平局轨",
+      "type": "HAD 平单关（v5.7 入轨五条全过·两日复核一致）",
+      "stake": "2元(2元×1注)",
+      "legs": ["周三001 HAD 平局@2.92 p_fused平=34.2% DC平38.8% EV(DC口径)+13%/(融合口径)-0.1%"],
+      "odds": 2.92,
+      "payoutIf": 5.84,
+      "note": "昨晚r1会话入轨推荐·今晨DC复核λ0.81/0.925·三线同向·本轮唯一推荐票"
+    },
+    {
+      "plan": "翻身档(不拍板·人工审拦下)",
+      "type": "seq17 boldplay 卡 3注×2元 跨池2串1",
+      "stake": "0元(未拍板)",
+      "legs": ["014 拉普CRS 1:2@17 EV+23%(无锚杯赛·拦)", "006 里斯本CRS 0:1@16 EV+18%(无锚·拦)", "015 芝加哥CRS 1:1@10.5 EV+12%(有DC锚)", "008 利物浦CRS 0:1@15 EV+11%(无锚+主伤6·拦)", "周四002 科莫CRS 0:1@15 EV+11%(无锚·拦)", "010 查尔顿CRS 2:0@15 EV+5%(主伤7·存疑)"],
+      "note": "6腿中4腿无锚杯赛=复盘教训3红灯(昨晚002 AEK CRS 0:1同款已死)·有锚仅2腿凑不成3注形状→整卡不拍板·待今晚014腿赛果验证freq杯赛模板可信度"
+    }
+  ],
+  "plansV8": null,
+  "shadowNote": "影子层09-10轮今晨已登记20票(P028~P040早会话13+P048~P054本会话freq7含g-tail)·本轮幂等复核registered=0属设计内",
+  "note": "周三晚欧冠大轮15场+周四7场·单锚模式(fd503+欧冠无DC)·四星级无(上限三星)·保底/彩票双关档(合格腿2<4与0<5不硬凑)·排除了全部seq17无锚杯赛CRS腿(排除分析+昨日教训)·平局轨江原为唯一出票推荐·明晚欧冠5场周四轮再复扫"
+}
