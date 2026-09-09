@@ -107,18 +107,9 @@
      "p": 0.6382,
      "ev": -0.1002,
      "goalLine": 1.0
-    },
-    {
-     "matchNumStr": "周二004",
-     "match": "奈梅亨-SBV精英",
-     "play": "had",
-     "pick": "主胜",
-     "odds": 1.51,
-     "p": 0.5923,
-     "ev": -0.1057
     }
    ],
-   "note": "彩票档关档（合格腿2<4，不硬凑）",
+   "note": "彩票档关档（合格腿1<4，不硬凑）",
    "divergenceBlocked": [
     {
      "matchNumStr": "周二006",
@@ -1058,5 +1049,7 @@
   "dc_divergence_blocked: 彩票档熔断2选项(|p_fused−p_mkt|≥5%)——周二006主胜5.9pp、周二006让球客胜6.2pp"
  ],
  "method": "freq",
- "dataAsOf": "2026-09-08"
+ "dataAsOf": "2026-09-08",
+ "superseded": true,
+ "supersededBy": "r2"
 }

@@ -8369,7 +8369,7 @@
      "s2"
     ],
     "odds": {
-     "s2": 2.95
+     "s2": 3.05
     }
    },
    {
@@ -8454,7 +8454,7 @@
      "s3"
     ],
     "odds": {
-     "s2": 2.95,
+     "s2": 3.05,
      "s3": 4.35
     }
    }
@@ -8648,7 +8648,7 @@
      "s2"
     ],
     "odds": {
-     "s2": 2.95
+     "s2": 3.05
     }
    }
   ],
@@ -9179,6 +9179,56 @@
   "n_bets": 14,
   "mult": 1,
   "cost": 28,
+  "result": "pending",
+  "payout": null,
+  "settledAt": null
+ },
+ {
+  "id": "P047",
+  "spec_name": "g-tail-贪心串1",
+  "track": "A",
+  "date": "2026-09-09",
+  "legs": [
+   {
+    "code": "周三001",
+    "match": "江原FC vs 全北现代",
+    "market": "crs",
+    "pick": [
+     "0:0"
+    ],
+    "odds": {
+     "0:0": 8.5
+    }
+   },
+   {
+    "code": "周二005",
+    "match": "胡巴卡德 vs 吉达国民",
+    "market": "crs",
+    "pick": [
+     "1:0"
+    ],
+    "odds": {
+     "1:0": 12.0
+    }
+   }
+  ],
+  "bets": [
+   {
+    "legs": [
+     [
+      0,
+      "0:0"
+     ],
+     [
+      1,
+      "1:0"
+     ]
+    ]
+   }
+  ],
+  "n_bets": 1,
+  "mult": 15,
+  "cost": 30,
   "result": "pending",
   "payout": null,
   "settledAt": null
