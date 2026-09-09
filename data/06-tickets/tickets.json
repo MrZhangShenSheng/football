@@ -1,11 +1,11 @@
 {
   "meta": {
-    "lastUpdated": "2026-09-08",
+    "lastUpdated": "2026-09-09",
     "note": "实票账本:票=顶层实体(不按日期切分);实票=有结算记录的票,其余全是方案推演;出票后票面事实永不改写;派彩按形状算(4串11中2关只回1注2串1)",
     "totalTickets": 25,
-    "totalStake": 398,
-    "totalPayout": 380.12,
-    "totalNet": -17.88,
+    "totalStake": 430,
+    "totalPayout": 390.97,
+    "totalNet": -39.03,
     "disciplineEvents": [
       {
         "date": "2026-08-24",
@@ -315,7 +315,7 @@
           "revoked": false,
           "result": "miss",
           "actual": "2:3(半2:0)",
-          "agreement": "no_rec"
+          "agreement": "excluded"
         },
         {
           "code": "周二006",
@@ -1307,7 +1307,7 @@
           "odds": 15.0,
           "result": "miss",
           "actual": "2-1",
-          "agreement": "agree"
+          "agreement": "no_rec"
         }
       ],
       "payoutShape": "按形状结算:命中回15.00×2×5=150元;未中全灭",
@@ -1391,7 +1391,7 @@
           "odds": 1.35,
           "result": "hit",
           "actual": "3:0(半2:0)",
-          "agreement": "agree"
+          "agreement": "pick_diff"
         },
         {
           "code": "周二007",
@@ -1402,7 +1402,7 @@
           "odds": 1.48,
           "result": "hit",
           "actual": "3:2(半1:1)",
-          "agreement": "agree"
+          "agreement": "excluded"
         },
         {
           "code": "周三003",
@@ -1413,7 +1413,7 @@
           "odds": 1.79,
           "result": "miss",
           "actual": "4-2",
-          "agreement": "agree"
+          "agreement": "no_rec"
         },
         {
           "code": "周三004",
@@ -1424,7 +1424,7 @@
           "odds": 1.71,
           "result": "hit",
           "actual": "2-1",
-          "agreement": "play_diff"
+          "agreement": "no_rec"
         }
       ],
       "payoutShape": "按形状结算(出票实价1.35/1.48/1.79/1.71):全中5注全回=4注3串1(14.31+13.67+16.53+18.12)+1注4串1(24.46)≈87.14(大哥票面为准);中3关回1注3串1(13.67~18.12);各注<1万不税",
@@ -2880,9 +2880,10 @@
           "market": "HAD",
           "pick": "主胜",
           "odds": 1.45,
-          "result": "pending",
+          "result": "hit",
           "agreement": "agree",
-          "note": "跨轮场(09-09销售日)·09-08轮预测无覆盖·欧冠无DC市场锚·EV-11.5%纯水位"
+          "note": "跨轮场(09-09销售日)·09-08轮预测无覆盖·欧冠无DC市场锚·EV-11.5%纯水位",
+          "actual": "2:1(半2:0)"
         },
         {
           "code": "周一002",
@@ -2922,6 +2923,15 @@
           "形状档案外:双选复式(4串5)首次入实票·preference.json shapes无此形状·待沉淀"
         ],
         "alignReceipt": "6选项=3agree(佐客/乌主/赫平)+2pick_diff(乌客/赫客·同场同玩法另一选项)+1no_rec(皇马跨轮场)·一致率50%"
+      },
+      "settled": {
+        "status": "settled",
+        "hits": 3,
+        "winUnits": 1,
+        "payout": 10.85,
+        "net": -21.15,
+        "roi": -66.1,
+        "settledAt": "2026-09-09 09:44"
       }
     }
   ]
