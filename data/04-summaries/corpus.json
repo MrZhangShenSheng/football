@@ -1,13 +1,13 @@
 {
  "generatedAt": "2026-09-10",
- "n_total": 582,
- "n_rounds": 32,
+ "n_total": 589,
+ "n_rounds": 33,
  "readiness": {
   "n_result": 571,
   "n_clv": 84,
-  "n_pfinal": 462,
+  "n_pfinal": 469,
   "n_dedup_merged": 61,
-  "n_dedup_diff_pick_kept": 82,
+  "n_dedup_diff_pick_kept": 87,
   "calibrateReady": true,
   "calibrateGap": 0,
   "ablateReady": true,
@@ -15,9 +15,9 @@
    "西甲": 72,
    "意甲": 64,
    "英超": 47,
-   "欧冠": 42,
+   "欧冠": 47,
    "德甲": 36,
-   "葡超": 31,
+   "葡超": 32,
    "法甲": 30,
    "荷甲": 28,
    "日职": 25,
@@ -27,9 +27,9 @@
    "沙职": 19,
    "巴甲": 12,
    "欧罗巴": 12,
+   "解放者杯": 11,
    "法乙": 10,
    "德乙": 10,
-   "解放者杯": 10,
    "美职": 7,
    "英联赛杯": 7,
    "荷乙": 6,
@@ -48,7 +48,7 @@
   },
   "by_star": {
    "1": 51,
-   "2": 246,
+   "2": 251,
    "3": 122,
    "4": 34
   }
@@ -15499,6 +15499,36 @@
    "round": "2026-09-10"
   },
   {
+   "date": "2026-09-11",
+   "code": "周四001",
+   "league": "欧冠",
+   "match": "费内巴切 vs 罗马",
+   "stars": 2,
+   "grade": 4,
+   "pick": "排除:方向⭐⭐无边际(罗马客胜45.1%参考·不入串)",
+   "play": null,
+   "odds": 1.92,
+   "p_final": [
+    0.278,
+    0.261,
+    0.461
+   ],
+   "ev": -0.134,
+   "in_plan": null,
+   "chain": [
+    "伤停d=+1主胜×0.97",
+    "单锚×0.97"
+   ],
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "round": "2026-09-11"
+  },
+  {
    "date": "2026-09-10",
    "code": "周四001",
    "league": "欧冠",
@@ -15553,6 +15583,35 @@
    "round": "2026-09-10"
   },
   {
+   "date": "2026-09-11",
+   "code": "周四003",
+   "league": "欧冠",
+   "match": "拜仁 vs 博德闪耀",
+   "stars": 0,
+   "grade": 4,
+   "pick": "排除:跨联赛模板失真",
+   "play": null,
+   "odds": null,
+   "p_final": [
+    0.403,
+    0.177,
+    0.42
+   ],
+   "ev": null,
+   "in_plan": null,
+   "chain": [
+    "让球盘处理(HHAD-3直读)"
+   ],
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "round": "2026-09-11"
+  },
+  {
    "date": "2026-09-10",
    "code": "周四003",
    "league": "欧冠",
@@ -15578,6 +15637,33 @@
    "clv_approx_dk": null,
    "clv_note": null,
    "round": "2026-09-10"
+  },
+  {
+   "date": "2026-09-11",
+   "code": "周四004",
+   "league": "欧冠",
+   "match": "斯拉维亚 vs 朗斯",
+   "stars": 2,
+   "grade": 4,
+   "pick": "排除:胶着",
+   "play": null,
+   "odds": null,
+   "p_final": [
+    0.357,
+    0.27,
+    0.372
+   ],
+   "ev": null,
+   "in_plan": null,
+   "chain": [],
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "round": "2026-09-11"
   },
   {
    "date": "2026-09-10",
@@ -15607,6 +15693,35 @@
    "round": "2026-09-10"
   },
   {
+   "date": "2026-09-11",
+   "code": "周四005",
+   "league": "欧冠",
+   "match": "曼联 vs 萨巴赫",
+   "stars": 0,
+   "grade": 4,
+   "pick": "排除:踩线+基面反向",
+   "play": null,
+   "odds": null,
+   "p_final": [
+    0.543,
+    0.197,
+    0.26
+   ],
+   "ev": null,
+   "in_plan": null,
+   "chain": [
+    "让球盘处理(HHAD-2直读)"
+   ],
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "round": "2026-09-11"
+  },
+  {
    "date": "2026-09-10",
    "code": "周四005",
    "league": "欧冠",
@@ -15632,6 +15747,36 @@
    "clv_approx_dk": null,
    "clv_note": null,
    "round": "2026-09-10"
+  },
+  {
+   "date": "2026-09-11",
+   "code": "周四006",
+   "league": "葡超",
+   "match": "阿马多拉 vs 布拉加",
+   "stars": 2,
+   "grade": 4,
+   "pick": "排除:方向参考布拉加客胜54.2%(EV负不买HAD)",
+   "play": null,
+   "odds": 1.48,
+   "p_final": [
+    0.1848,
+    0.2308,
+    0.5843
+   ],
+   "ev": -0.198,
+   "in_plan": null,
+   "chain": [
+    "R3强队胜×0.95/平×1.10",
+    "单锚×0.97"
+   ],
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "round": "2026-09-11"
   },
   {
    "date": "2026-09-10",
@@ -15686,6 +15831,66 @@
    "clv_approx_dk": null,
    "clv_note": null,
    "round": "2026-09-10"
+  },
+  {
+   "date": "2026-09-11",
+   "code": "周四002",
+   "league": "欧冠",
+   "match": "科莫 vs 莱红牛",
+   "stars": 2,
+   "grade": 4,
+   "pick": "0:1",
+   "play": "CRS",
+   "odds": 17.5,
+   "p_final": [
+    0.547,
+    0.226,
+    0.227
+   ],
+   "ev": 0.29,
+   "in_plan": "翻身A",
+   "chain": [
+    "freq-band全局池q=7.37%(带平移)"
+   ],
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "round": "2026-09-11"
+  },
+  {
+   "date": "2026-09-11",
+   "code": "周四007",
+   "league": "解放者杯",
+   "match": "德尔瓦耶 vs 弗拉门戈",
+   "stars": 2,
+   "grade": 4,
+   "pick": "d(平局)",
+   "play": "HAD",
+   "odds": 2.85,
+   "p_final": [
+    0.35,
+    0.311,
+    0.339
+   ],
+   "ev": -0.06,
+   "in_plan": "翻身A",
+   "chain": [
+    "伤停d=-2主胜×1.04/客胜×0.93",
+    "首回合平局保护主胜×0.92平+4pp",
+    "单锚×0.97"
+   ],
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "round": "2026-09-11"
   },
   {
    "seq": 10,
@@ -17517,6 +17722,32 @@
     "010 查尔顿CRS 2:0@15 EV+5%(主伤7·存疑)"
    ],
    "note": "6腿中4腿无锚杯赛=复盘教训3红灯(昨晚002 AEK CRS 0:1同款已死)·有锚仅2腿凑不成3注形状→整卡不拍板·待今晚014腿赛果验证freq杯赛模板可信度"
+  },
+  "2026-09-11:翻身A(人工优化·主推)": {
+   "plan": "翻身A(人工优化·主推)",
+   "type": "跨池混串2串1(CRS+HAD·铁律9混串优化)",
+   "stake": "2元(2元×1注)",
+   "legs": [
+    "周四002 科莫vs莱红牛 CRS 0:1@17.5 q7.4% EV+29%(全卡最高·带平移)",
+    "周四007 德尔瓦耶vs弗拉门戈 HAD 平@2.85 p33.0% EV-6%(修正链最完整)"
+   ],
+   "odds": 49.88,
+   "payoutIf": 99.75,
+   "note": "人工复核后主推：命中概率2.43%(1/41)·EV连乘+21.3%(独立近似)·至少回款概率vs程序4串(0.005%)高516倍·approved=false待大哥拍板·出票前须走Step6.5临场终审(今晚欧冠首发公布窗口)"
+  },
+  "2026-09-11:翻身seq18(程序卡·对照)": {
+   "plan": "翻身seq18(程序卡·对照)",
+   "type": "跨池4串1(CRS×4)",
+   "stake": "2元(2元×1注)",
+   "legs": [
+    "周四002 CRS 0:1@17.5 EV+29%",
+    "周四001 CRS 1:0@12.5 EV+19.5%",
+    "周四004 CRS 1:0@10.0 EV-4.4%",
+    "周四007 CRS 2:0@12.0 EV-16%"
+   ],
+   "odds": 26250,
+   "payoutIf": 52500,
+   "note": "boldplay seq18程序生成·approved=false·人工复核否决3腿(001模板虚高/004负EV胶着/007逆首回合逻辑)保留002·全中概率0.005%(1/21000)·归档供层4实测库对照"
   }
  }
 }
