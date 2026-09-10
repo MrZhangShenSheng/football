@@ -135,6 +135,7 @@ def normalize_record(r: dict, round_id: str) -> dict | None:
             "play": pick.split(" ", 1)[0] if " " in pick else None,  # 玩法代码（HAD/TTG/HAFU/CRS）
             "odds": r.get("odds"),
             "p_final": r.get("fused") or r.get("dc"),
+            "p_dc": r.get("dc"),   # DC 裸三向透传（calibrate.py a-sweep 的模型侧输入）
             "ev": r.get("ev"),
             "in_plan": r.get("inPlan"),
             "chain": r.get("chain"),
@@ -146,6 +147,9 @@ def normalize_record(r: dict, round_id: str) -> dict | None:
             "clv": r.get("clv"),
             "clv_approx_dk": r.get("clv_approx_dk"),
             "clv_note": r.get("clv_note"),
+            # 回填增补字段（pin_close.py 四键匹配）透传——下方 p_pinnacle 判定才非死代码
+            "pinClose": r.get("pinClose"),
+            "pinSource": r.get("pinSource"),
         }
         # 独立市场锚：pinClose（Pinnacle 去水三向）→ p_pinnacle
         pin = out.get("pinClose")
