@@ -353,7 +353,16 @@ if __name__ == '__main__' and len(__import__('sys').argv) > 1 and __import__('sy
                     'half': (tuple(int(x) for x in str(m.get('halfScore') or '0:0').split(':')) if ':' in str(m.get('halfScore') or '') else None),
                 })
     # rounds[date]=legs list（load_rounds 口径）→ settle_all 期望 {code:(outcome,score)}
-    legs_raw = rounds.get(day) or []
+    # 邻日轮合并：登记按体彩 matchDate（完赛自然日）、load_rounds 按销售日文件，两口径对晚场
+    # 错位一天（如 09-09 18:30 完赛的江原 matchDate=09-09 而销售日=09-10）——单日轮会让
+    # 跨口径票（P047：date=09-09 + 江原腿在 09-10 轮）结构性缺赛果永远 pending。合并
+    # day±1 后由 dict 后写覆盖保证 day 本日优先，跨周同编号歧义仍由 settle_all 守卫兜底
+    _d0 = _datetime.date.fromisoformat(day)
+    legs_raw = []
+    for _dd in ((_d0 - _datetime.timedelta(days=1)).isoformat(),
+                (_d0 + _datetime.timedelta(days=1)).isoformat(),
+                day):                     # day 最后灌入 → dict 后写覆盖 → 本日轮优先
+        legs_raw.extend(rounds.get(_dd) or [])
     round_results = {l['code']: (l['outcome'], l.get('score')) for l in legs_raw}
     done = paper_settle = settle_all(round_results, date=day) if round_results else []
     print(json.dumps({'date': day, 'settled': len(paper_settle),
