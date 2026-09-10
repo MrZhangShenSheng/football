@@ -228,7 +228,9 @@
     },
     "2026-08-28|周五002|HAD": {
       "primary": "F9",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": null,
         "dcBest": null,
@@ -236,7 +238,11 @@
         "pickIdx": 0,
         "resultIdx": 2,
         "result": "0-1",
-        "pinSource": "fd"
+        "pinSource": "fd",
+        "oddsDrift": {
+          "pickOdds": 1.51,
+          "laterOdds": 4.95
+        }
       },
       "confidence": "high",
       "source": "rule",
@@ -279,7 +285,7 @@
         "pinSource": "fd",
         "oddsDrift": {
           "pickOdds": 1.46,
-          "laterOdds": 1.76
+          "laterOdds": 2.85
         }
       },
       "confidence": "high",
@@ -301,7 +307,7 @@
         "pinSource": "none",
         "oddsDrift": {
           "pickOdds": 1.96,
-          "laterOdds": 2.52
+          "laterOdds": 2.84
         }
       },
       "confidence": "high",
@@ -310,7 +316,9 @@
     },
     "2026-08-28|周五010|HAD": {
       "primary": "F9",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": 0.5207,
         "dcBest": 0,
@@ -318,7 +326,11 @@
         "pickIdx": 2,
         "resultIdx": 1,
         "result": "2-2",
-        "pinSource": "fd"
+        "pinSource": "fd",
+        "oddsDrift": {
+          "pickOdds": 1.55,
+          "laterOdds": 4.7
+        }
       },
       "confidence": "high",
       "source": "rule",
@@ -326,7 +338,9 @@
     },
     "2026-08-28|周五012|HAD": {
       "primary": "F9",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": 0.459,
         "dcBest": 0,
@@ -334,7 +348,11 @@
         "pickIdx": 0,
         "resultIdx": 2,
         "result": "1-2",
-        "pinSource": "fd"
+        "pinSource": "fd",
+        "oddsDrift": {
+          "pickOdds": 2.3,
+          "laterOdds": 2.89
+        }
       },
       "confidence": "high",
       "source": "rule",
@@ -886,7 +904,7 @@
         "pickIdx": 0,
         "resultIdx": 2,
         "result": "2-3",
-        "pinSource": "none"
+        "pinSource": "fd"
       },
       "confidence": "high",
       "source": "rule",
