@@ -21,12 +21,14 @@ class TestLeagueMap:
     def test_known(self):
         assert fd_league_name("英超") == "england-premier"
         assert fd_league_name("德乙(R3)") == "germany-bundesliga2"   # strip 轮次后缀
-        assert fd_league_name("欧冠") == "EC0"
 
-    def test_ucl_qualifiers_variant(self):
-        # I-2：'欧冠资格赛(次回合生死战)' 剥后缀 → 欧冠资格赛 → EC0（真实错题 3 场救回）
-        assert fd_league_name("欧冠资格赛(次回合生死战)") == "EC0"
-        assert fd_league_name("欧冠附加赛") == "EC0"
+    def test_euro_codes_removed(self):
+        # 09-10 修复：fd 无欧战 code（EC0/EL0 服务器 fallback 返回 E0/EC 内容=脏数据）
+        # → 映射移除；原 I-2"欧冠资格赛后缀→EC0"断言随映射废止——救回用的是英超影子价
+        assert fd_league_name("欧冠") is None
+        assert fd_league_name("欧冠资格赛(次回合生死战)") is None
+        assert fd_league_name("欧冠附加赛") is None
+        assert fd_league_name("欧罗巴") is None
 
     def test_unknown_returns_none(self):
         assert fd_league_name("日职") is None          # fd 不覆盖

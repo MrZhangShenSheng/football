@@ -29,9 +29,9 @@ FD_LEAGUE_MAP = {
     "荷甲": "netherlands-eredivisie", "比甲": "belgium-first-a",
     "葡超": "portugal-liga", "土超": "turkey-super-lig",
     "希腊超": "greece-super", "俄超": "russia-premier",
-    "欧冠": "EC0", "欧冠资格赛": "EC0", "欧冠附加赛": "EC0",
-    "欧罗巴": "EL0",   # fd 侧 EL0 缓存未拉过（glob 空→none，拉了自动激活）
     "苏超": "SC0",
+    # 欧战（欧冠/欧罗巴）不映射：fd 无欧战 code，EC0/EL0 是服务器 fallback 脏数据
+    # （返回 E0/EC 英格兰内容，09-10 回测查明）——欧战场次 pinClose=none 诚实降级
 }
 _SUFFIX = re.compile(r"[（(].*?[)）]$")
 

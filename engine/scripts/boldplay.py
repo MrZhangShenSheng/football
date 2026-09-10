@@ -16,14 +16,15 @@ from score_ev import build_freq_table, ev_scan, map_league
 from odds_fetch import LEAGUE_CODES   # fd 收盘锚联赛表（铁律10 白名单单一来源，禁魔法值散布）
 
 # fd 收盘锚联赛（Pinnacle 收盘价可得的联赛全集=odds_fetch 刷新域）：LEAGUE_CODES 13 联赛
-# + 苏超/欧冠/欧罗巴三杯赛代码（fd CSV 以原代码命名，odds_SC0/EC0/EL0_*）。铁律10：保底
+# + 苏超代码（fd CSV 以原代码命名，odds_SC0_*；EC0/EL0 欧战 code 09-10 移除——fd 无欧战
+# code，服务器 fallback 返回 E0/EC 内容=脏数据）。铁律10：保底
 # 胆必须是 fd 锚场次——map_league 无映射的联赛（日职/韩职/挪超/沙职/美职等）一律不入保底池。
 # ⚠ 桥接条目（#17 挂账）：map_league 与 LEAGUE_CODES 双源 ID 不一致——德乙
 # germany-2-bundesliga vs germany-bundesliga2、葡超 portugal-primeira vs portugal-liga，
 # 白名单须含 map_league 空间的变体 ID，否则德乙/葡超场被误滤（selftest 实证）；统一两套
 # ID 体系是独立工程，修前以并集兜底。
 FD_ANCHOR_LEAGUES = frozenset(LEAGUE_CODES.values()) | {
-    "SC0", "EC0", "EL0", "germany-2-bundesliga", "portugal-primeira"}
+    "SC0", "germany-2-bundesliga", "portugal-primeira"}
 from freq_band import (build_team_form, freq_legs, pools_card, shifted_q, league_base_rates,
                        lambdas, team_strength, _norm)
 

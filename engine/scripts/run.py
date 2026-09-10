@@ -28,12 +28,13 @@ import sys
 from common import log
 from odds_fetch import LEAGUE_CODES
 
-# Pinnacle 收盘刷新范围：odds_fetch 全表 + 杯赛/苏超特殊码
-# （对齐 pin_close.FD_LEAGUE_MAP 17 联赛——归因引擎 F3/F4 的 pinClose 数据源，P2 2026-08-29；
+# Pinnacle 收盘刷新范围：odds_fetch 全表 + 苏超特殊码
+# （对齐 pin_close.FD_LEAGUE_MAP——归因引擎 F3/F4 的 pinClose 数据源，P2 2026-08-29；
 #   fit 仍只用 LEAGUES 主流 6 联赛，互不影响）
-# EL0（欧罗巴）：2026-09-02 层2 修复补入——此前从未拉取致欧罗巴语料 pinClose 全 none
-#   （fd 实测 2526=380 场 / 2627=20 场在售）
-PIN_CODES = [*LEAGUE_CODES, "EC0", "SC0", "EL0"]
+# EC0/EL0（欧战）：2026-09-10 移除——fd 根本无欧战 code，服务器对未知 code fallback
+#   返回 E0（英超）/EC（英联杯）内容，此前拉到的全是影子脏数据（09-10 回测查明，
+#   odds_EL0_*/EC0_* 及派生回测、画像已 git rm；欧战场次 pinClose=none 诚实降级）
+PIN_CODES = [*LEAGUE_CODES, "SC0"]
 
 # 常用联赛：fd 代码 → (全名, 建议拟合赛季)；两季联拟（2627 单季样本薄，2026-08-31 覆盖教训）
 LEAGUES = {
