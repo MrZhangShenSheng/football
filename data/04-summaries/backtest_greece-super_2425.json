@@ -1,0 +1,31 @@
+{
+  "league": "greece-super",
+  "season": "2425",
+  "refitEvery": 30,
+  "fusion": {
+    "a": 0.4,
+    "b": 1.0
+  },
+  "ranAt": "2026-09-10",
+  "metrics": {
+    "market_only": {
+      "rps": 0.2064,
+      "logloss": 0.9752,
+      "acc": 0.527,
+      "n": 203
+    },
+    "dc_only": {
+      "rps": 0.2247,
+      "logloss": 1.053,
+      "acc": 0.532,
+      "n": 203
+    },
+    "fused": {
+      "rps": 0.2081,
+      "logloss": 0.9845,
+      "acc": 0.537,
+      "n": 203
+    }
+  },
+  "records": 203
+}

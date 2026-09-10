@@ -1,0 +1,31 @@
+{
+  "league": "belgium-first-a",
+  "season": "2425",
+  "refitEvery": 30,
+  "fusion": {
+    "a": 0.4,
+    "b": 1.0
+  },
+  "ranAt": "2026-09-10",
+  "metrics": {
+    "market_only": {
+      "rps": 0.1905,
+      "logloss": 0.9853,
+      "acc": 0.541,
+      "n": 281
+    },
+    "dc_only": {
+      "rps": 0.2157,
+      "logloss": 1.0758,
+      "acc": 0.452,
+      "n": 281
+    },
+    "fused": {
+      "rps": 0.1945,
+      "logloss": 0.996,
+      "acc": 0.52,
+      "n": 281
+    }
+  },
+  "records": 281
+}

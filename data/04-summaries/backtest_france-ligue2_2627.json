@@ -1,0 +1,31 @@
+{
+  "league": "france-ligue2",
+  "season": "2627",
+  "refitEvery": 30,
+  "fusion": {
+    "a": 0.4,
+    "b": 1.0
+  },
+  "ranAt": "2026-09-10",
+  "metrics": {
+    "market_only": {
+      "rps": 0.1613,
+      "logloss": 1.0033,
+      "acc": 0.533,
+      "n": 15
+    },
+    "dc_only": {
+      "rps": 0.2705,
+      "logloss": 1.4785,
+      "acc": 0.4,
+      "n": 15
+    },
+    "fused": {
+      "rps": 0.1802,
+      "logloss": 1.0513,
+      "acc": 0.467,
+      "n": 15
+    }
+  },
+  "records": 15
+}

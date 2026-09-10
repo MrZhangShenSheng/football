@@ -1,0 +1,31 @@
+{
+  "league": "germany-bundesliga2",
+  "season": "2627",
+  "refitEvery": 30,
+  "fusion": {
+    "a": 0.4,
+    "b": 1.0
+  },
+  "ranAt": "2026-09-10",
+  "metrics": {
+    "market_only": {
+      "rps": 0.2293,
+      "logloss": 1.0298,
+      "acc": 0.667,
+      "n": 6
+    },
+    "dc_only": {
+      "rps": 0.3338,
+      "logloss": 1.8363,
+      "acc": 0.333,
+      "n": 6
+    },
+    "fused": {
+      "rps": 0.2485,
+      "logloss": 1.1616,
+      "acc": 0.5,
+      "n": 6
+    }
+  },
+  "records": 6
+}

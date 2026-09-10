@@ -1,0 +1,31 @@
+{
+  "league": "portugal-liga",
+  "season": "2425",
+  "refitEvery": 30,
+  "fusion": {
+    "a": 0.4,
+    "b": 1.0
+  },
+  "ranAt": "2026-09-10",
+  "metrics": {
+    "market_only": {
+      "rps": 0.185,
+      "logloss": 0.9431,
+      "acc": 0.547,
+      "n": 276
+    },
+    "dc_only": {
+      "rps": 0.2117,
+      "logloss": 1.0695,
+      "acc": 0.486,
+      "n": 276
+    },
+    "fused": {
+      "rps": 0.1914,
+      "logloss": 0.9653,
+      "acc": 0.514,
+      "n": 276
+    }
+  },
+  "records": 276
+}

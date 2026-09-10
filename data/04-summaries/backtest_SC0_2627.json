@@ -1,0 +1,31 @@
+{
+  "league": "SC0",
+  "season": "2627",
+  "refitEvery": 30,
+  "fusion": {
+    "a": 0.4,
+    "b": 1.0
+  },
+  "ranAt": "2026-09-10",
+  "metrics": {
+    "market_only": {
+      "rps": 0.3409,
+      "logloss": 1.2352,
+      "acc": 0.0,
+      "n": 1
+    },
+    "dc_only": {
+      "rps": 0.43,
+      "logloss": 1.4417,
+      "acc": 0.0,
+      "n": 1
+    },
+    "fused": {
+      "rps": 0.3648,
+      "logloss": 1.2898,
+      "acc": 0.0,
+      "n": 1
+    }
+  },
+  "records": 1
+}
