@@ -1,23 +1,32 @@
 {
-  "team": "马赛",
-  "season": "2026-27",
-  "dcParams": {
-    "attack": 0.38,
-    "rank": "法甲第2(2526拟合)",
-    "lastFit": "2026-08-21"
-  },
-  "notes": "上季第5；攻击力法甲第2；主场强(home_adv 0.428)；交锋史对斯特拉斯堡近15次仅1负；换帅Genésio",
-  "motivationTag": "高动力",
-  "source": "2026-08-21 DC拟合+研究沉淀",
-  "league": "france",
-  "lastUpdated": "2026-08-21",
-  "elo": {
-    "rating": 1766,
-    "rank": null,
-    "country": null,
-    "level": null,
-    "from": null,
-    "source": "clubelo.com-main",
-    "fetchedAt": "2026-08-21"
-  }
+ "teamId": "marseille",
+ "name": "Marseille",
+ "nameZh": "马赛",
+ "league": "france",
+ "lastUpdated": "2026-09-10",
+ "source": "sporttery-insight",
+ "standing": {
+  "pos": 10,
+  "leagueTable": "法甲",
+  "season": "2026/2027",
+  "played": 3,
+  "record": "1胜0平2负"
+ },
+ "elo": {
+  "rating": 1766,
+  "rank": null,
+  "country": null,
+  "level": null,
+  "from": null,
+  "source": "clubelo.com-main",
+  "fetchedAt": "2026-08-21"
+ },
+ "form": [],
+ "formSummary": {
+  "last10": "6胜0平4负",
+  "goalAvg": "2.1"
+ },
+ "injuries": [],
+ "h2hNote": "H2H视角2胜1平7负",
+ "notes": "insight回填(周五009 法甲R4)"
 }

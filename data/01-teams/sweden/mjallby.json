@@ -1,8 +1,17 @@
 {
- "team": "米亚尔比",
+ "teamId": "mjallby",
+ "name": "Mjallby",
+ "nameZh": "米亚尔比",
  "league": "sweden",
- "season": null,
- "lastUpdated": "2026-09-03",
+ "lastUpdated": "2026-09-10",
+ "source": "sporttery-insight",
+ "standing": {
+  "pos": 12,
+  "leagueTable": "瑞超",
+  "season": "2026",
+  "played": 19,
+  "record": "5胜5平9负"
+ },
  "elo": {
   "rating": 1548,
   "rank": null,
@@ -12,17 +21,12 @@
   "source": "clubelo.com-main",
   "fetchedAt": "2026-08-21"
  },
- "insight": {
-  "fetchedAt": "2026-09-03",
-  "matchCode": "周四003",
-  "gameweek": "10",
-  "season": "2026",
-  "leagueZh": "瑞超",
-  "home": {
-   "rank": "12",
-   "form10": "W2DNoneL7",
-   "goalAvg": "0.9",
-   "injuries": []
-  }
- }
+ "form": [],
+ "formSummary": {
+  "last10": "1胜1平8负",
+  "goalAvg": "0.6"
+ },
+ "injuries": [],
+ "h2hNote": "H2H视角4胜1平5负",
+ "notes": "insight回填(周五004 瑞超R21)"
 }

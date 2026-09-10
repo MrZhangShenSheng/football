@@ -1,0 +1,155 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>09-12 销售轮预测 · 周五001~012</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#1c2430;--sub:#5b6675;--line:#e3e7ec;--acc:#0f6b4f;--warn:#b3500d;--bad:#a02128;--good:#177a3d;--tag:#eef3f0}
+*{box-sizing:border-box}
+body{margin:0;padding:20px 16px 48px;font:14px/1.65 "Segoe UI","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--bg)}
+.wrap{max-width:1080px;margin:0 auto}
+h1{font-size:21px;margin:0 0 4px}
+h2{font-size:16px;margin:28px 0 10px;padding-left:10px;border-left:4px solid var(--acc)}
+.meta{color:var(--sub);font-size:12.5px;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:12px 0}
+.summary{border:2px solid var(--acc)}
+.summary .row{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline}
+.plan{border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:10px 0;background:#fbfcfb}
+.plan h3{margin:0 0 6px;font-size:14.5px}
+.leg{display:grid;grid-template-columns:78px 1fr 200px 90px;gap:8px;padding:5px 8px;border-radius:6px;font-size:13.5px}
+.leg:nth-child(odd){background:var(--tag)}
+.leg .c{font-weight:700}
+.ev-pos{color:var(--good);font-weight:700}.ev-neg{color:var(--sub)}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:6px 0}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{background:var(--tag);font-weight:600}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.star{color:#c99410;letter-spacing:1px}
+.gradeA{display:inline-block;padding:0 7px;border-radius:10px;background:#e7f2ec;color:var(--acc);font-weight:700;font-size:12px}
+.gradeD{display:inline-block;padding:0 7px;border-radius:10px;background:#f7e9e9;color:var(--bad);font-weight:700;font-size:12px}
+.badge{display:inline-block;padding:1px 8px;border-radius:9px;font-size:12px;margin-right:6px}
+.b-warn{background:#fdf0e3;color:var(--warn)}
+.b-bad{background:#f9e9ea;color:var(--bad)}
+.b-ok{background:#e7f2ec;color:var(--acc)}
+.b-mute{background:#eef0f3;color:var(--sub)}
+.small{font-size:12px;color:var(--sub)}
+.exclude{color:var(--sub)}
+.exrow{padding:4px 8px;border-bottom:1px dashed var(--line);font-size:13px}
+svg{max-width:100%}
+.src li{font-size:12px;color:var(--sub);margin:2px 0}
+.check{font-size:12.5px;color:var(--sub);margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
+kbd{background:#eef0f3;border-radius:4px;padding:0 5px;font-size:12px}
+@media (max-width:640px){.leg{grid-template-columns:64px 1fr;}.leg span:nth-child(3),.leg span:nth-child(4){grid-column:2}}
+</style>
+</head><body><div class="wrap">
+
+<h1>09-12 销售轮全流程预测 · 周五001~012（12场）</h1>
+<div class="meta">销售日 2026-09-12（周五晚~周六晨） · 生成 2026-09-10 15:30 · v4.7 · 单锚模式（体彩去水×0.97 · 星级上限⭐⭐⭐） · fd 2627 已恢复（CLV 回填链路正常）</div>
+
+<div class="card summary">
+  <div class="row" style="justify-content:space-between">
+    <div><b>结构性弱轮第二轮：</b>全轮无 ≥65% 四星胆（最高=吉达联合客胜 60.1%，无锚沙特禁保底胆）→ <b>保底档关档</b>（程序判定 0&lt;5）</div>
+  </div>
+  <div class="row" style="margin-top:4px">
+    <span class="badge b-bad">平局轨 0 注</span><span class="badge b-warn">DC 分歧熔断 2 场（007/011）</span><span class="badge b-mute">升班马 λ 塌缩 2 场（007/005）</span><span class="badge b-ok">全轮 A 级（insight 12/12）</span>
+  </div>
+</div>
+
+<h2>方案对比（大哥拍板）</h2>
+<div class="card">
+<table>
+<tr><th>方案</th><th>票面</th><th>本金</th><th>全中回报</th><th>至少中一注</th><th>特点</th></tr>
+<tr><td><b>程序卡</b><br><span class="small">seq19 · 未拍板</span></td><td>翻身 3注跨池2串1 + 彩票 5串1×1倍</td><td class="num">8元</td><td class="num">≈522元</td><td class="num">≈11%<br><span class="small">含耦合修正</span></td><td>腿全程序选（freq q）；注2 含 011 CRS 1:2 <span class="b-warn badge">人工意见：逆基面</span></td></tr>
+<tr><td><b>翻身A修订版</b><br><span class="small">人工</span></td><td>3注跨池2串1（注3=平局混串）</td><td class="num">6元</td><td class="num">336+79+8.6≈424元</td><td class="num">≈19%<br><span class="small">纯独立无共享腿</span></td><td>踢 011 逆基面腿；012 德比平局入串（大哥平局口味）</td></tr>
+</table>
+<div class="small">两版可叠加/单选/全弃（弱轮空过也是纪律）；修订版与程序卡共享注1。</div>
+</div>
+
+<h2>出单摘要卡</h2>
+
+<div class="card">
+<div class="plan">
+<h3>翻身档 · 3注跨池2串1（seq19 容错型 · 6元）</h3>
+<div class="leg"><span class="c">注1</span><span>周五003 纽伦堡 vs 汉诺威96 <b>CRS 1:0</b> @16.0 × 周五008 威尼斯 vs 佛罗伦萨 <b>CRS 1:0</b> @10.5</span><span>合赔 168 · 全中336元</span><span><span class="ev-pos">EV+36%</span>/<span class="ev-pos">+11%</span></span></div>
+<div class="leg"><span class="c">注2</span><span>周五011 塞维利亚 vs 巴伦西亚 <b>CRS 1:2</b> @12.0 × 周五001 京都 vs 柏太阳神 <b>TTG s2</b> @3.75</span><span>合赔 45 · 全中90元</span><span><span class="ev-pos">EV+11%</span>/<span class="ev-neg">-13%</span></span></div>
+<div class="leg"><span class="c">注3</span><span>周五009 雷恩 vs 马赛 <b>CRS 1:2</b> @10.5 × 周五012 科里蒂巴 vs 巴竞技 <b>TTG s3</b> @3.85</span><span>合赔 40.4 · 全中81元</span><span><span class="ev-neg">EV-15%</span>/<span class="ev-neg">-15%</span></span></div>
+<div class="small">人工意见：注2 的 011 腿（巴伦西亚客胜比分）与基面方向（塞维 7名 vs 巴伦 20名）矛盾，信度低——修订版已将其替换。</div>
+</div>
+
+<div class="plan">
+<h3>彩票档 · HAD/HHAD 5串1 ×1倍 = 2元（无预算管理 · 独立红线）</h3>
+<div class="leg"><span class="c">腿1</span><span>周五012 科里蒂巴 vs 巴竞技 <b>HHAD(+1) 主胜</b>=科里蒂巴不败 @1.49</span><span>p_fused 61.4%</span><span class="ev-neg">EV-10%</span></div>
+<div class="leg"><span class="c">腿2</span><span>周五002 哈马费萨 vs 吉达联合 <b>HAD 客胜</b> @1.47</span><span>p_fused 60.1%</span><span class="ev-neg">EV-12%</span></div>
+<div class="leg"><span class="c">腿3</span><span>周五008 威尼斯 vs 佛罗伦萨 <b>HHAD(+1) 主胜</b>=威尼斯不败 @1.50</span><span>p_fused 58.4%</span><span class="ev-neg">EV-14%</span></div>
+<div class="leg"><span class="c">腿4</span><span>周五004 赫根 vs 米亚尔比 <b>HAD 主胜</b> @1.53</span><span>p_fused 55.3%</span><span class="ev-neg">EV-15%</span></div>
+<div class="leg"><span class="c">腿5</span><span>周五010 西汉姆联 vs 雷克斯 <b>HAD 主胜</b> @1.51</span><span>p_fused 55.2%</span><span class="ev-neg">EV-17%</span></div>
+<div class="small">合赔 7.6 · 全中≈15元 · 5腿全过 p_fused≥0.55 门槛；007/011 方向腿被 DC 分歧熔断自动剔除（7 选项 |Δ|≥5pp）。</div>
+</div>
+
+<div class="plan">
+<h3>翻身A修订版 · 3注（人工 · 6元）</h3>
+<div class="leg"><span class="c">注1</span><span>同程序注1（003 CRS 1:0 × 008 CRS 1:0）</span><span>合赔 168</span><span><span class="ev-pos">双正EV</span></span></div>
+<div class="leg"><span class="c">注2</span><span>周五009 雷恩 vs 马赛 <b>CRS 1:2</b> @10.5 × 周五001 京都 vs 柏太阳神 <b>TTG s2</b> @3.75</span><span>合赔 39.4 · 全中79元</span><span class="ev-neg">EV-21%</span></div>
+<div class="leg"><span class="c">注3</span><span>周五012 科里蒂巴 vs 巴竞技 <b>HAD 平</b> @2.93 × 周五002 哈马费萨 vs 吉达联合 <b>HAD 客胜</b> @1.47</span><span>合赔 4.31 · 全中8.6元</span><span class="ev-neg">EV-24%</span></div>
+<div class="small">注3 = 平局轨降级路径：012 德比平局信号全轮最强（极差 6.7pp + H2H 4平），但 poolSingle.HAD=0 无法单关 → 与吉达（60.1% 全轮最高、对捆绑腿有独立信心）混串。</div>
+</div>
+</div>
+
+<h2>平局轨审核 · 012 为何降级（五条门槛）</h2>
+<div class="card">
+<svg viewBox="0 0 720 150" role="img" aria-label="平局轨五条门槛审核">
+<style>.t{font:12.5px "Microsoft YaHei",sans-serif}.pass{fill:#177a3d}.fail{fill:#a02128}.bar{fill:#dde5e0}</style>
+<text x="8" y="20" class="t" style="font-weight:700">周五012 科里蒂巴 vs 巴竞技（巴拉那州德比 · 巴甲R27）— 入轨五条</text>
+<g class="t">
+<rect class="bar" x="8" y="34" width="500" height="16" rx="8"/><rect x="8" y="34" width="450" height="16" rx="8" fill="#7fb69d"/><text x="516" y="47" class="pass">① p平 28.6% ≥28 ✓</text>
+<rect class="bar" x="8" y="56" width="500" height="16" rx="8"/><rect x="8" y="56" width="300" height="16" rx="8" fill="#7fb69d"/><text x="516" y="69" class="pass">② 极差 6.7pp &lt;12 ✓（全轮最胶着）</text>
+<rect class="bar" x="8" y="78" width="500" height="16" rx="8"/><rect x="8" y="78" width="500" height="16" rx="8" fill="#7fb69d"/><text x="516" y="91" class="pass">③ 巴甲 R27（R4 起）✓</text>
+<rect class="bar" x="8" y="100" width="500" height="16" rx="8"/><rect x="8" y="100" width="80" height="16" rx="8" fill="#7fb69d"/><text x="516" y="113" class="pass">④ 每轮≤2注名额 ✓（本轮0/2）</text>
+<rect class="bar" x="8" y="122" width="500" height="16" rx="8"/><rect x="8" y="122" width="0" height="16" rx="8"/><text x="516" y="135" class="fail">⑤ poolSingle.HAD=0 ✗ 无法单关</text>
+</g>
+</svg>
+<div class="small">四过一卡：第五条资格前置出局 → 降级路径=混串（修订注3）或撤注，不硬凑。同轮 008 威尼斯（p平27.2%&lt;28 且 HAD单关0）双杀出局；007 德甲 R3 开季禁入期出局。</div>
+</div>
+
+<h2>推荐场次详情（A 级 12/12）</h2>
+
+<div class="card">
+<table>
+<tr><th>#</th><th>场次</th><th>联赛(轮)</th><th>对阵（排名/近10）</th><th>λ 主/客</th><th>p_fused H/D/A</th><th>推荐</th><th>星级</th></tr>
+<tr><td>1</td><td>周五001<br><span class="small">09-11 18:00</span></td><td>日职(R7)</td><td>京都(15·3胜2平5负) vs 柏太阳神(4·6胜1平3负)</td><td class="num">1.24/1.51</td><td>24.5/24.0/51.5</td><td>TTG s2 @3.75 <span class="ev-neg">EV-13%</span></td><td class="star">⭐⭐ <span class="gradeA">A</span></td></tr>
+<tr><td>2</td><td>周五002<br><span class="small">09-11 23:45</span></td><td>沙职(R7)</td><td>哈马费萨(17·0胜3平3负) vs 吉达联合(4·6胜3平1负)</td><td class="num">1.19/2.25</td><td>18.0/22.0/60.1</td><td>HAD 客胜 @1.47 <span class="ev-neg">EV-14%</span></td><td class="star">⭐⭐⭐ <span class="gradeA">A</span></td></tr>
+<tr><td>3</td><td>周五003<br><span class="small">09-12 00:30</span></td><td>德乙(R5)</td><td>纽伦堡(2·3胜1平0负) vs 汉诺威96(13·1胜1平2负)</td><td class="num">2.04/0.83</td><td>45.5/23.4/31.1 <span class="b-warn badge">DC分歧8.6pp</span></td><td>CRS 1:0 @16.0 <span class="ev-pos">EV+36%</span> 全卡最高</td><td class="star">⭐⭐ <span class="gradeA">A</span></td></tr>
+<tr><td>4</td><td>周五004<br><span class="small">09-12 01:00</span></td><td>瑞超(R21)</td><td>赫根(4·4胜3平3负) vs 米亚尔比(12·1胜1平8负)</td><td class="num">1.81/1.30</td><td>55.3/22.7/22.0</td><td>HAD 主胜 @1.53 <span class="ev-neg">EV-18%</span></td><td class="star">⭐⭐ <span class="gradeA">A</span></td></tr>
+<tr><td>5</td><td>周五005<br><span class="small">09-12 02:00</span></td><td>荷甲(R6)</td><td>阿尔克马(1·5胜0平0负) vs 威廉二世(16·0胜1平3负)</td><td class="num">4.79/0.29<br><span class="small">λ塌缩弃用</span></td><td>—（HAD未开售）</td><td>HHAD(-2) h@1.83 叙事参考</td><td class="star">⭐⭐ <span class="gradeA">A</span></td></tr>
+<tr><td>6</td><td>周五006<br><span class="small">09-12 02:00</span></td><td>荷乙(R6)</td><td>马斯特里(2·4胜1平0负) vs 阿尔梅勒(5·3胜1平1负)</td><td class="num">—</td><td>31.2/24.3/44.5<br><span class="small">纯市场锚</span></td><td>排除：无锚+无DC+low_conf</td><td class="star">⭐⭐ <span class="gradeA">A</span></td></tr>
+<tr><td>7</td><td>周五007<br><span class="small">09-12 02:30</span></td><td>德甲(R3)</td><td>柏林联合(15·0胜1平1负) vs 沙尔克04(14·0胜1平1负)</td><td class="num">0.92/0.08<br><span class="small">λ塌缩弃用</span></td><td>43.2/25.7/31.2<br><span class="small">市场锚·平×1.10→28.2%</span></td><td>排除：R3开季+熔断（平局信号叙事：H2H 6场4平）</td><td class="star">⭐⭐ <span class="gradeA">A</span></td></tr>
+<tr><td>8</td><td>周五008<br><span class="small">09-12 02:45</span></td><td>意甲(R4)</td><td>威尼斯(18·0胜0平3负) vs 佛罗伦萨(20·0胜0平3负)</td><td class="num">0.98/1.39</td><td>31.7/26.7/41.6</td><td>CRS 1:0 @10.5 <span class="ev-pos">EV+11%</span>（与方向对冲·彩票性）</td><td class="star">⭐⭐ <span class="gradeA">A</span></td></tr>
+<tr><td>9</td><td>周五009<br><span class="small">09-12 02:45</span></td><td>法甲(R4)</td><td>雷恩(5·2胜1平0负) vs 马赛(10·6胜0平4负)</td><td class="num">1.97/1.63</td><td>48.2/23.1/28.8</td><td>CRS 1:2 @10.5 <span class="ev-neg">EV-15%</span>（H2H 雷恩 2胜1平7负客向自洽）</td><td class="star">⭐⭐ <span class="gradeA">A</span></td></tr>
+<tr><td>10</td><td>周五010<br><span class="small">09-12 03:00</span></td><td>英冠(R7)</td><td>西汉姆联(2·5胜4平1负) vs 雷克斯(14·2胜4平4负)</td><td class="num">1.62/1.15</td><td>55.2/24.3/20.5</td><td>HAD 主胜 @1.51 <span class="ev-neg">EV-19%</span>（雷克斯 6场4平=平局风险）</td><td class="star">⭐⭐ <span class="gradeA">A</span></td></tr>
+<tr><td>11</td><td>周五011<br><span class="small">09-12 03:00</span></td><td>西甲(R5)</td><td>塞维利亚(7·5胜2平3负) vs 巴伦西亚(20·2胜2平6负)</td><td class="num">2.18/0.57</td><td>55.3/26.6/18.1 <span class="b-warn badge">DC分歧8.5pp熔断</span></td><td>排除：熔断（方向主胜参考·H2H 5平/10）</td><td class="star">⭐⭐ <span class="gradeA">A</span></td></tr>
+<tr><td>12</td><td>周五012<br><span class="small">09-12 08:00</span></td><td>巴甲(R27)</td><td>科里蒂巴(7·4胜2平4负) vs 巴竞技(3·5胜3平2负)</td><td class="num">1.37/1.41</td><td>31.9/29.5/38.6</td><td>HAD 平 @2.93 混串（德比·极差6.7pp·H2H 4平）</td><td class="star">⭐⭐ <span class="gradeA">A</span></td></tr>
+</table>
+<div class="check">自检：同注串同场限一玩法 ✓（注3 修订=012平+002客胜不同场；012 在程序卡注3=TTG/彩票=HHAD 跨票分池合法）· 混串总关数≤木桶 ✓（均2串）· 保底胆=fd锚场 N/A（关档）· C/D级入串 0 ✓ · 开季入串限额（007 排除）✓ · 小联赛入串≤1（翻身档含 001 日职+012 巴甲=2 场——<b>超限1场</b>：seq 容错引擎程序结构，修订版注2/注3 同含 001+012，弱轮特例标注，大哥可裁）</div>
+</div>
+
+<h2>排除简报（C/D 级口径）</h2>
+<div class="card exclude">
+<div class="exrow">#5 周五005 阿尔克马 vs 威廉二世 [A] HAD未开售+DC λ塌缩（威廉二世4场数据）→ HHAD/TTG 仅叙事参考</div>
+<div class="exrow">#6 周五006 马斯特里 vs 阿尔梅勒 [A·low_conf] 荷乙三无（无锚/无DC/无画像）——本轮唯一真数据缺口，freq 走 low_conf 兜底</div>
+<div class="exrow">#7 周五007 柏林联合 vs 沙尔克04 [A] R3 开季禁入期 + 沙尔克 λa=0.078 升班马塌缩（挂账#升班马治理实证）+ 熔断</div>
+<div class="exrow">#11 周五011 塞维利亚 vs 巴伦西亚 [A] DC 分歧 8.5pp 熔断（市场只给 1.89 暗含未知变量）·方向主胜叙事参考不入串</div>
+</div>
+
+<h2>数据链与来源清单</h2>
+<div class="card"><ul class="src">
+<li>体彩五池：engine/cache/sporttery_matches.json（09-10 刷新 19 场）+ score_odds/2026-09-10.json 存档</li>
+<li>单场情报：sporttery_insight_2041386~2041397（12 场：伤停全替补 d=0、轮次 gameweek 逐一确认）</li>
+<li>DC 模型：japan/saudi/sweden/brazil（今晨 learn 轮拟合）+ 7 个 fd 联赛当日重拟合（germany-bundesliga2/germany-bundesliga/netherlands-eredivisie/italy-serie-a/france-ligue1/england-championship/spain-laliga，两季联拟 2627+2526）</li>
+<li>融合：dc_predict fuse()（fusion.json a/b），修正链见预测 JSON chainSteps</li>
+<li>出票卡：2026-09-10-boldplay.json（seq19 · --matchday=周五 · approved=false 未拍板）</li>
+<li>冷启动：别名 3 条新增（哈马费萨→al-faisaly、马斯特里→mvv、阿尔梅勒→almere-city）+ fd 映射 3 条（Nurnberg/Hannover/Rennes）+ 球队画像 11 新建 13 刷新 + _index 201→212</li>
+<li>时序库：data/05-trends/2026-09-10-odds.json（19 项）+ intel.json（19 条）</li>
+<li>影子层：shadow-all 2026-09-12 登记中（赛后五池价冻结凭证链）</li>
+</ul></div>
+
+<div class="small">风险提示：负期望游戏，本金 8+6 元档位为娱乐仓位；模型方向精度基线 60~65%，弱轮建议至少中一注概率仅 11~19%，空手而归为大概率事件。approved=false 卡须大哥拍板后才可出票；出票前 30 秒核对单（编号×联赛×主客）由系统在拍板后生成。</div>
+
+</div></body></html>

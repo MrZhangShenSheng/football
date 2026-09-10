@@ -1,0 +1,230 @@
+{
+ "fetchedAt": "2026-09-10",
+ "source": "sporttery",
+ "matchId": 2041392,
+ "match": {
+  "code": "周五007",
+  "league": "德甲",
+  "gameweek": "3",
+  "season": "2026/2027",
+  "home": "柏林联合",
+  "away": "沙尔克04",
+  "kickoff": "2026-09-12 02:30",
+  "uniformMatchId": 2506835
+ },
+ "standing": {
+  "away": {
+   "groupName": "",
+   "phaseName": "Regular Season",
+   "ranking": "14",
+   "sAwayDrawMatchCnt": "0",
+   "sAwayLossGoalMatchCnt": "1",
+   "sAwayWinGoalMatchCnt": "0",
+   "sDrawMatchCnt": "1",
+   "sLossGoalMatchCnt": "1",
+   "sWinGoalMatchCnt": "0",
+   "seasonName": "2026/2027"
+  },
+  "home": {
+   "groupName": "",
+   "phaseName": "Regular Season",
+   "ranking": "15",
+   "sDrawMatchCnt": "1",
+   "sHomeDrawMatchCnt": "1",
+   "sHomeLossGoalMatchCnt": "0",
+   "sHomeWinGoalMatchCnt": "0",
+   "sLossGoalMatchCnt": "1",
+   "sWinGoalMatchCnt": "0",
+   "seasonName": "2026/2027"
+  }
+ },
+ "injuries": {
+  "home": [],
+  "away": [
+   {
+    "name": "R. Schallenberg",
+    "pos": "中场",
+    "no": "6",
+    "injury": 0,
+    "suspension": 1,
+    "apps": 1,
+    "starts": 1
+   }
+  ]
+ },
+ "form": {
+  "goalAvg": {
+   "awayGoalAvgCnt": "1.7",
+   "awayGoalAvgCntRatio": "53.1",
+   "homeGoalAvgCnt": "1.5",
+   "homeGoalAvgCntRatio": "46.9",
+   "totalLegCnt": 10
+  },
+  "last10": {
+   "awayDrawMatchCnt": 2,
+   "awayLossGoalMatchCnt": 4,
+   "awayScoreRatio": "47",
+   "awayWinGoalMatchCnt": 4,
+   "homeDrawMatchCnt": 4,
+   "homeLossGoalMatchCnt": 5,
+   "homeScoreRatio": "23",
+   "homeWinGoalMatchCnt": 1,
+   "totalLegCnt": 10
+  },
+  "last10HomeAway": {
+   "awayDrawMatchCnt": 1,
+   "awayLossGoalMatchCnt": 4,
+   "awayScoreRatio": "53",
+   "awayWinGoalMatchCnt": 5,
+   "homeDrawMatchCnt": 5,
+   "homeLossGoalMatchCnt": 3,
+   "homeScoreRatio": "37",
+   "homeWinGoalMatchCnt": 2,
+   "totalLegCnt": 10
+  }
+ },
+ "h2h": {
+  "statistics": {
+   "drawMatchCnt": 4,
+   "drawProbability": "67%",
+   "goalCnt": 0,
+   "lossGoalCnt": 0,
+   "lossGoalMatchCnt": 1,
+   "lossProbability": "17%",
+   "netGoal": 0,
+   "sportteryTeamId": 0,
+   "teamId": 0,
+   "teamShortName": "柏林联合",
+   "totalLegCnt": 6,
+   "winGoalMatchCnt": 1,
+   "winProbability": "17%"
+  },
+  "matches": [
+   {
+    "date": "2023-02-19",
+    "home": "柏林联合",
+    "score": "0:0",
+    "ht": "0:0",
+    "away": "沙尔克04",
+    "winner": "draw"
+   },
+   {
+    "date": "2022-08-27",
+    "home": "沙尔克04",
+    "score": "1:6",
+    "ht": "1:3",
+    "away": "柏林联合",
+    "winner": "home"
+   },
+   {
+    "date": "2021-02-14",
+    "home": "柏林联合",
+    "score": "0:0",
+    "ht": "0:0",
+    "away": "沙尔克04",
+    "winner": "draw"
+   },
+   {
+    "date": "2020-10-19",
+    "home": "沙尔克04",
+    "score": "1:1",
+    "ht": "0:0",
+    "away": "柏林联合",
+    "winner": "draw"
+   },
+   {
+    "date": "2020-06-07",
+    "home": "柏林联合",
+    "score": "1:1",
+    "ht": "1:1",
+    "away": "沙尔克04",
+    "winner": "draw"
+   },
+   {
+    "date": "2019-11-30",
+    "home": "沙尔克04",
+    "score": "2:1",
+    "ht": "1:1",
+    "away": "柏林联合",
+    "winner": "away"
+   }
+  ]
+ },
+ "scorers": {
+  "away": {
+   "playerList": [],
+   "sportteryTeamId": 151,
+   "teamId": 966,
+   "teamShortName": "沙尔克04",
+   "uniformTeamId": 191
+  },
+  "home": {
+   "playerList": [
+    {
+     "appearanceCnt": 1,
+     "assistAvgCnt": "1.0",
+     "assistCnt": 1,
+     "assistProbability": "33%",
+     "goalAvgCnt": "1.0",
+     "goalCnt": 1,
+     "goalProbability": "33%",
+     "injuryFlag": 0,
+     "personId": 627416,
+     "personName": "奎尔费尔德",
+     "playerPositionCode": "Defender",
+     "playerPositionDesc": "后卫",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "14"
+    },
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "33%",
+     "injuryFlag": 0,
+     "personId": 409561,
+     "personName": "斯卡克",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 0,
+     "substituteMatchCnt": 2,
+     "suspensionFlag": 0,
+     "uniformNo": "21"
+    },
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "33%",
+     "injuryFlag": 0,
+     "personId": 454245,
+     "personName": "拉特",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 2,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "29"
+    }
+   ],
+   "sportteryTeamId": 1270,
+   "teamId": 1026,
+   "teamShortName": "柏林联合",
+   "uniformTeamId": 348
+  },
+  "seasonId": 15235,
+  "seasonName": "2026/2027",
+  "tournamentId": 78,
+  "tournamentShortName": "德甲",
+  "uniformLeagueId": 1803,
+  "uniformMatchId": 2506835
+ }
+}

@@ -1,7 +1,7 @@
 {
  "structure": "new",
  "date": "2026-09-10",
- "seq": 18,
+ "seq": 19,
  "tiers": {
   "base": {
    "cost": 0,
@@ -11,290 +11,445 @@
    "coverGate": null
   },
   "upset": {
-   "shape": "pool-4x1",
+   "shape": "pool-2x1x3",
+   "cost": 6,
+   "legs": [
+    {
+     "matchNumStr": "周五003",
+     "match": "纽伦堡 vs 汉诺威96",
+     "play": "crs",
+     "pick": "1:0",
+     "odds": 16.0,
+     "q": 0.0847,
+     "ev": 0.3552
+    },
+    {
+     "matchNumStr": "周五008",
+     "match": "威尼斯 vs 佛罗伦萨",
+     "play": "crs",
+     "pick": "1:0",
+     "odds": 10.5,
+     "q": 0.1059,
+     "ev": 0.1119
+    },
+    {
+     "matchNumStr": "周五011",
+     "match": "塞维利亚 vs 巴伦西亚",
+     "play": "crs",
+     "pick": "1:2",
+     "odds": 12.0,
+     "q": 0.0926,
+     "ev": 0.1112
+    },
+    {
+     "matchNumStr": "周五001",
+     "match": "京都 vs 柏太阳神",
+     "play": "ttg",
+     "pick": "s2",
+     "odds": 3.75,
+     "q": 0.2329,
+     "ev": -0.1266
+    },
+    {
+     "matchNumStr": "周五009",
+     "match": "雷恩 vs 马赛",
+     "play": "crs",
+     "pick": "1:2",
+     "odds": 10.5,
+     "q": 0.0813,
+     "ev": -0.1463
+    },
+    {
+     "matchNumStr": "周五012",
+     "match": "科里蒂巴 vs 巴竞技",
+     "play": "ttg",
+     "pick": "s3",
+     "odds": 3.85,
+     "q": 0.2199,
+     "ev": -0.1534
+    }
+   ],
+   "bets": [
+    {
+     "legs": [
+      0,
+      1
+     ],
+     "multiplier": 1
+    },
+    {
+     "legs": [
+      2,
+      3
+     ],
+     "multiplier": 1
+    },
+    {
+     "legs": [
+      4,
+      5
+     ],
+     "multiplier": 1
+    }
+   ],
+   "note": "3注跨池2串1(同场≤1腿)"
+  },
+  "lottery": {
+   "shape": "lottery-5x1",
    "cost": 2,
    "legs": [
     {
-     "matchNumStr": "周四002",
-     "match": "科莫 vs 莱红牛",
-     "play": "crs",
-     "pick": "0:1",
-     "odds": 17.5,
-     "q": 0.0737,
-     "ev": 0.2897
+     "matchNumStr": "周五012",
+     "match": "科里蒂巴-巴竞技",
+     "play": "hhad",
+     "pick": "让球主胜",
+     "odds": 1.49,
+     "p": 0.6048,
+     "ev": -0.0988,
+     "goalLine": 1.0
     },
     {
-     "matchNumStr": "周四001",
-     "match": "费内巴切 vs 罗马",
-     "play": "crs",
-     "pick": "1:0",
-     "odds": 12.5,
-     "q": 0.0956,
-     "ev": 0.195
+     "matchNumStr": "周五002",
+     "match": "哈马费萨-吉达联合",
+     "play": "had",
+     "pick": "客胜",
+     "odds": 1.47,
+     "p": 0.6008,
+     "ev": -0.1169
     },
     {
-     "matchNumStr": "周四004",
-     "match": "斯拉维亚 vs 朗斯",
-     "play": "crs",
-     "pick": "1:0",
-     "odds": 10.0,
-     "q": 0.0956,
-     "ev": -0.044
+     "matchNumStr": "周五008",
+     "match": "威尼斯-佛罗伦萨",
+     "play": "hhad",
+     "pick": "让球主胜",
+     "odds": 1.5,
+     "p": 0.5725,
+     "ev": -0.1412,
+     "goalLine": 1.0
     },
     {
-     "matchNumStr": "周四007",
-     "match": "德尔瓦耶 vs 弗拉门戈",
-     "play": "crs",
-     "pick": "2:0",
-     "odds": 12.0,
-     "q": 0.0701,
-     "ev": -0.1588
+     "matchNumStr": "周五004",
+     "match": "赫根-米亚尔比",
+     "play": "had",
+     "pick": "主胜",
+     "odds": 1.53,
+     "p": 0.5533,
+     "ev": -0.1534
+    },
+    {
+     "matchNumStr": "周五010",
+     "match": "西汉姆联-雷克斯",
+     "play": "had",
+     "pick": "主胜",
+     "odds": 1.51,
+     "p": 0.5518,
+     "ev": -0.1668
     }
    ],
-   "multiplier": 1,
    "bets": [
     {
      "legs": [
       0,
       1,
       2,
-      3
+      3,
+      4
      ],
      "multiplier": 1
     }
    ],
-   "note": "跨池4串1(木桶≤4关)"
-  },
-  "lottery": {
-   "shape": "closed",
-   "cost": 0,
-   "legs": [],
-   "note": "彩票档关档（合格腿0<4，不硬凑）"
+   "expOdds": 7.6,
+   "winIfHit": 15.0,
+   "note": "5串1×1倍=2元 · 全中≈15元 · 无预算管理(设计§四红线废除)",
+   "divergenceBlocked": [
+    {
+     "matchNumStr": "周五007",
+     "match": "柏林联合-沙尔克04",
+     "play": "had",
+     "pick": "主胜",
+     "p_fused": 0.5099,
+     "p_mkt": 0.4318,
+     "diff_pp": 7.8
+    },
+    {
+     "matchNumStr": "周五007",
+     "match": "柏林联合-沙尔克04",
+     "play": "had",
+     "pick": "平",
+     "p_fused": 0.3184,
+     "p_mkt": 0.2566,
+     "diff_pp": 6.2
+    },
+    {
+     "matchNumStr": "周五007",
+     "match": "柏林联合-沙尔克04",
+     "play": "had",
+     "pick": "客胜",
+     "p_fused": 0.1716,
+     "p_mkt": 0.3117,
+     "diff_pp": 14.0
+    },
+    {
+     "matchNumStr": "周五011",
+     "match": "塞维利亚-巴伦西亚",
+     "play": "had",
+     "pick": "主胜",
+     "p_fused": 0.5533,
+     "p_mkt": 0.4685,
+     "diff_pp": 8.5
+    },
+    {
+     "matchNumStr": "周五011",
+     "match": "塞维利亚-巴伦西亚",
+     "play": "had",
+     "pick": "客胜",
+     "p_fused": 0.1812,
+     "p_mkt": 0.2459,
+     "diff_pp": 6.5
+    },
+    {
+     "matchNumStr": "周五011",
+     "match": "塞维利亚-巴伦西亚",
+     "play": "hhad",
+     "pick": "让球主胜",
+     "p_fused": 0.281,
+     "p_mkt": 0.211,
+     "diff_pp": 7.0
+    },
+    {
+     "matchNumStr": "周五011",
+     "match": "塞维利亚-巴伦西亚",
+     "play": "hhad",
+     "pick": "让球客胜",
+     "p_fused": 0.4513,
+     "p_mkt": 0.5244,
+     "diff_pp": 7.3
+    }
+   ]
   }
  },
- "totalCost": 2,
+ "totalCost": 8,
  "cards": [
   {
-   "code": "周四001",
-   "match": "费内巴切 vs 罗马",
+   "code": "周五001",
+   "match": "京都 vs 柏太阳神",
    "candidates": [
     {
-     "code": "周四001",
-     "match": "费内巴切 vs 罗马",
-     "pool": "crs",
-     "pick": "1:0",
-     "q": 0.0956,
-     "odds": 12.5,
-     "ev": 0.195
-    },
-    {
-     "code": "周四001",
-     "match": "费内巴切 vs 罗马",
+     "code": "周五001",
+     "match": "京都 vs 柏太阳神",
      "pool": "ttg",
      "pick": "s2",
-     "q": 0.2299,
-     "odds": 3.85,
-     "ev": -0.1149
+     "q": 0.2329,
+     "odds": 3.75,
+     "ev": -0.1266
     },
     {
-     "code": "周四001",
-     "match": "费内巴切 vs 罗马",
+     "code": "周五001",
+     "match": "京都 vs 柏太阳神",
      "pool": "ttg",
      "pick": "s3",
-     "q": 0.227,
-     "odds": 3.6,
-     "ev": -0.1828
-    },
-    {
-     "code": "周四001",
-     "match": "费内巴切 vs 罗马",
-     "pool": "hafu",
-     "pick": "aa",
-     "q": 0.1807,
-     "odds": 3.2,
-     "ev": -0.4218
-    },
-    {
-     "code": "周四001",
-     "match": "费内巴切 vs 罗马",
-     "pool": "hafu",
-     "pick": "hh",
-     "q": 0.2586,
-     "odds": 5.3,
-     "ev": 0.3706,
-     "divergent": true
-    }
-   ],
-   "rec_base": {
-    "code": "周四001",
-    "match": "费内巴切 vs 罗马",
-    "pool": "hafu",
-    "pick": "hh",
-    "q": 0.2586,
-    "odds": 5.3,
-    "ev": 0.3706,
-    "divergent": true
-   },
-   "rec_upset": {
-    "code": "周四001",
-    "match": "费内巴切 vs 罗马",
-    "pool": "crs",
-    "pick": "1:0",
-    "q": 0.0956,
-    "odds": 12.5,
-    "ev": 0.195
-   },
-   "flags": [
-    "low_conf",
-    "pure_template",
-    "divergence"
-   ]
-  },
-  {
-   "code": "周四002",
-   "match": "科莫 vs 莱红牛",
-   "candidates": [
-    {
-     "code": "周四002",
-     "match": "科莫 vs 莱红牛",
-     "pool": "crs",
-     "pick": "0:1",
-     "q": 0.0737,
-     "odds": 17.5,
-     "ev": 0.2897
-    },
-    {
-     "code": "周四002",
-     "match": "科莫 vs 莱红牛",
-     "pool": "ttg",
-     "pick": "s2",
-     "q": 0.2299,
-     "odds": 4.35,
-     "ev": 0.0001
-    },
-    {
-     "code": "周四002",
-     "match": "科莫 vs 莱红牛",
-     "pool": "ttg",
-     "pick": "s3",
-     "q": 0.227,
-     "odds": 3.7,
-     "ev": -0.1601
-    },
-    {
-     "code": "周四002",
-     "match": "科莫 vs 莱红牛",
-     "pool": "hafu",
-     "pick": "hh",
-     "q": 0.2586,
-     "odds": 2.55,
-     "ev": -0.3406
-    },
-    {
-     "code": "周四002",
-     "match": "科莫 vs 莱红牛",
-     "pool": "hafu",
-     "pick": "aa",
-     "q": 0.1807,
-     "odds": 7.0,
-     "ev": 0.2649,
-     "divergent": true
-    }
-   ],
-   "rec_base": {
-    "code": "周四002",
-    "match": "科莫 vs 莱红牛",
-    "pool": "hafu",
-    "pick": "aa",
-    "q": 0.1807,
-    "odds": 7.0,
-    "ev": 0.2649,
-    "divergent": true
-   },
-   "rec_upset": {
-    "code": "周四002",
-    "match": "科莫 vs 莱红牛",
-    "pool": "crs",
-    "pick": "0:1",
-    "q": 0.0737,
-    "odds": 17.5,
-    "ev": 0.2897
-   },
-   "flags": [
-    "low_conf",
-    "pure_template",
-    "divergence"
-   ]
-  },
-  {
-   "code": "周四004",
-   "match": "斯拉维亚 vs 朗斯",
-   "candidates": [
-    {
-     "code": "周四004",
-     "match": "斯拉维亚 vs 朗斯",
-     "pool": "crs",
-     "pick": "1:0",
-     "q": 0.0956,
-     "odds": 10.0,
-     "ev": -0.044
-    },
-    {
-     "code": "周四004",
-     "match": "斯拉维亚 vs 朗斯",
-     "pool": "ttg",
-     "pick": "s2",
-     "q": 0.2299,
-     "odds": 3.7,
-     "ev": -0.1494
-    },
-    {
-     "code": "周四004",
-     "match": "斯拉维亚 vs 朗斯",
-     "pool": "ttg",
-     "pick": "s3",
-     "q": 0.227,
+     "q": 0.2285,
      "odds": 3.55,
-     "ev": -0.1942
+     "ev": -0.1888
     },
     {
-     "code": "周四004",
-     "match": "斯拉维亚 vs 朗斯",
+     "code": "周五001",
+     "match": "京都 vs 柏太阳神",
      "pool": "hafu",
      "pick": "aa",
-     "q": 0.1807,
-     "odds": 4.1,
-     "ev": -0.2591
+     "q": 0.1903,
+     "odds": 2.6,
+     "ev": -0.5052
     },
     {
-     "code": "周四004",
-     "match": "斯拉维亚 vs 朗斯",
+     "code": "周五001",
+     "match": "京都 vs 柏太阳神",
+     "pool": "crs",
+     "pick": "1:0",
+     "q": 0.1051,
+     "odds": 14.5,
+     "ev": 0.5239,
+     "divergent": true
+    },
+    {
+     "code": "周五001",
+     "match": "京都 vs 柏太阳神",
      "pool": "hafu",
      "pick": "hh",
-     "q": 0.2586,
-     "odds": 4.2,
-     "ev": 0.0861,
+     "q": 0.2472,
+     "odds": 7.5,
+     "ev": 0.854,
      "divergent": true
     }
    ],
    "rec_base": {
-    "code": "周四004",
-    "match": "斯拉维亚 vs 朗斯",
+    "code": "周五001",
+    "match": "京都 vs 柏太阳神",
     "pool": "hafu",
     "pick": "hh",
-    "q": 0.2586,
-    "odds": 4.2,
-    "ev": 0.0861,
+    "q": 0.2472,
+    "odds": 7.5,
+    "ev": 0.854,
     "divergent": true
    },
    "rec_upset": {
-    "code": "周四004",
-    "match": "斯拉维亚 vs 朗斯",
+    "code": "周五001",
+    "match": "京都 vs 柏太阳神",
+    "pool": "ttg",
+    "pick": "s2",
+    "q": 0.2329,
+    "odds": 3.75,
+    "ev": -0.1266
+   },
+   "flags": [
+    "pure_template",
+    "divergence"
+   ]
+  },
+  {
+   "code": "周五003",
+   "match": "纽伦堡 vs 汉诺威96",
+   "candidates": [
+    {
+     "code": "周五003",
+     "match": "纽伦堡 vs 汉诺威96",
+     "pool": "crs",
+     "pick": "1:0",
+     "q": 0.0847,
+     "odds": 16.0,
+     "ev": 0.3552
+    },
+    {
+     "code": "周五003",
+     "match": "纽伦堡 vs 汉诺威96",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2541,
+     "odds": 3.7,
+     "ev": -0.0598
+    },
+    {
+     "code": "周五003",
+     "match": "纽伦堡 vs 汉诺威96",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.2553,
+     "odds": 3.75,
+     "ev": -0.0426
+    },
+    {
+     "code": "周五003",
+     "match": "纽伦堡 vs 汉诺威96",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.1777,
+     "odds": 4.0,
+     "ev": -0.2892
+    },
+    {
+     "code": "周五003",
+     "match": "纽伦堡 vs 汉诺威96",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2267,
+     "odds": 4.55,
+     "ev": 0.0315,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周五003",
+    "match": "纽伦堡 vs 汉诺威96",
     "pool": "crs",
     "pick": "1:0",
-    "q": 0.0956,
-    "odds": 10.0,
-    "ev": -0.044
+    "q": 0.0847,
+    "odds": 16.0,
+    "ev": 0.3552
+   },
+   "rec_upset": {
+    "code": "周五003",
+    "match": "纽伦堡 vs 汉诺威96",
+    "pool": "crs",
+    "pick": "1:0",
+    "q": 0.0847,
+    "odds": 16.0,
+    "ev": 0.3552
+   },
+   "flags": [
+    "divergence"
+   ]
+  },
+  {
+   "code": "周五006",
+   "match": "马斯特里 vs 阿尔梅勒",
+   "candidates": [
+    {
+     "code": "周五006",
+     "match": "马斯特里 vs 阿尔梅勒",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2256,
+     "odds": 3.65,
+     "ev": -0.1766
+    },
+    {
+     "code": "周五006",
+     "match": "马斯特里 vs 阿尔梅勒",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.1765,
+     "odds": 3.2,
+     "ev": -0.4352
+    },
+    {
+     "code": "周五006",
+     "match": "马斯特里 vs 阿尔梅勒",
+     "pool": "crs",
+     "pick": "1:0",
+     "q": 0.1015,
+     "odds": 16.0,
+     "ev": 0.624,
+     "divergent": true
+    },
+    {
+     "code": "周五006",
+     "match": "马斯特里 vs 阿尔梅勒",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2336,
+     "odds": 4.6,
+     "ev": 0.0746,
+     "divergent": true
+    },
+    {
+     "code": "周五006",
+     "match": "马斯特里 vs 阿尔梅勒",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2562,
+     "odds": 4.7,
+     "ev": 0.2041,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周五006",
+    "match": "马斯特里 vs 阿尔梅勒",
+    "pool": "crs",
+    "pick": "1:0",
+    "q": 0.1015,
+    "odds": 16.0,
+    "ev": 0.624,
+    "divergent": true
+   },
+   "rec_upset": {
+    "code": "周五006",
+    "match": "马斯特里 vs 阿尔梅勒",
+    "pool": "ttg",
+    "pick": "s3",
+    "q": 0.2256,
+    "odds": 3.65,
+    "ev": -0.1766
    },
    "flags": [
     "low_conf",
@@ -303,84 +458,390 @@
    ]
   },
   {
-   "code": "周四007",
-   "match": "德尔瓦耶 vs 弗拉门戈",
+   "code": "周五007",
+   "match": "柏林联合 vs 沙尔克04",
    "candidates": [
     {
-     "code": "周四007",
-     "match": "德尔瓦耶 vs 弗拉门戈",
+     "code": "周五007",
+     "match": "柏林联合 vs 沙尔克04",
      "pool": "crs",
      "pick": "2:0",
-     "q": 0.0701,
-     "odds": 12.0,
-     "ev": -0.1588
+     "q": 0.0654,
+     "odds": 12.5,
+     "ev": -0.1825
     },
     {
-     "code": "周四007",
-     "match": "德尔瓦耶 vs 弗拉门戈",
+     "code": "周五007",
+     "match": "柏林联合 vs 沙尔克04",
      "pool": "ttg",
      "pick": "s2",
-     "q": 0.2299,
-     "odds": 3.2,
-     "ev": -0.2643
+     "q": 0.2198,
+     "odds": 3.9,
+     "ev": -0.1428
     },
     {
-     "code": "周四007",
-     "match": "德尔瓦耶 vs 弗拉门戈",
+     "code": "周五007",
+     "match": "柏林联合 vs 沙尔克04",
      "pool": "ttg",
      "pick": "s3",
-     "q": 0.227,
-     "odds": 3.8,
-     "ev": -0.1374
+     "q": 0.2042,
+     "odds": 3.6,
+     "ev": -0.2649
     },
     {
-     "code": "周四007",
-     "match": "德尔瓦耶 vs 弗拉门戈",
-     "pool": "hafu",
-     "pick": "aa",
-     "q": 0.1807,
-     "odds": 4.6,
-     "ev": -0.1688
-    },
-    {
-     "code": "周四007",
-     "match": "德尔瓦耶 vs 弗拉门戈",
+     "code": "周五007",
+     "match": "柏林联合 vs 沙尔克04",
      "pool": "hafu",
      "pick": "hh",
-     "q": 0.2586,
+     "q": 0.2525,
+     "odds": 3.45,
+     "ev": -0.1289
+    },
+    {
+     "code": "周五007",
+     "match": "柏林联合 vs 沙尔克04",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.184,
+     "odds": 4.75,
+     "ev": -0.126
+    }
+   ],
+   "rec_base": {
+    "code": "周五007",
+    "match": "柏林联合 vs 沙尔克04",
+    "pool": "hafu",
+    "pick": "hh",
+    "q": 0.2525,
+    "odds": 3.45,
+    "ev": -0.1289
+   },
+   "rec_upset": {
+    "code": "周五007",
+    "match": "柏林联合 vs 沙尔克04",
+    "pool": "crs",
+    "pick": "2:0",
+    "q": 0.0654,
+    "odds": 12.5,
+    "ev": -0.1825
+   },
+   "flags": [
+    "pure_template"
+   ]
+  },
+  {
+   "code": "周五008",
+   "match": "威尼斯 vs 佛罗伦萨",
+   "candidates": [
+    {
+     "code": "周五008",
+     "match": "威尼斯 vs 佛罗伦萨",
+     "pool": "crs",
+     "pick": "1:0",
+     "q": 0.1059,
+     "odds": 10.5,
+     "ev": 0.1119
+    },
+    {
+     "code": "周五008",
+     "match": "威尼斯 vs 佛罗伦萨",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2625,
+     "odds": 3.7,
+     "ev": -0.0287
+    },
+    {
+     "code": "周五008",
+     "match": "威尼斯 vs 佛罗伦萨",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.225,
+     "odds": 3.7,
+     "ev": -0.1675
+    },
+    {
+     "code": "周五008",
+     "match": "威尼斯 vs 佛罗伦萨",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.1855,
+     "odds": 3.85,
+     "ev": -0.2858
+    },
+    {
+     "code": "周五008",
+     "match": "威尼斯 vs 佛罗伦萨",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.237,
      "odds": 4.4,
-     "ev": 0.1378,
+     "ev": 0.0428,
      "divergent": true
     }
    ],
    "rec_base": {
-    "code": "周四007",
-    "match": "德尔瓦耶 vs 弗拉门戈",
+    "code": "周五008",
+    "match": "威尼斯 vs 佛罗伦萨",
     "pool": "hafu",
     "pick": "hh",
-    "q": 0.2586,
+    "q": 0.237,
     "odds": 4.4,
-    "ev": 0.1378,
+    "ev": 0.0428,
     "divergent": true
    },
    "rec_upset": {
-    "code": "周四007",
-    "match": "德尔瓦耶 vs 弗拉门戈",
+    "code": "周五008",
+    "match": "威尼斯 vs 佛罗伦萨",
     "pool": "crs",
-    "pick": "2:0",
-    "q": 0.0701,
-    "odds": 12.0,
-    "ev": -0.1588
+    "pick": "1:0",
+    "q": 0.1059,
+    "odds": 10.5,
+    "ev": 0.1119
    },
    "flags": [
-    "low_conf",
     "pure_template",
+    "divergence"
+   ]
+  },
+  {
+   "code": "周五009",
+   "match": "雷恩 vs 马赛",
+   "candidates": [
+    {
+     "code": "周五009",
+     "match": "雷恩 vs 马赛",
+     "pool": "crs",
+     "pick": "1:2",
+     "q": 0.0813,
+     "odds": 10.5,
+     "ev": -0.1463
+    },
+    {
+     "code": "周五009",
+     "match": "雷恩 vs 马赛",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2181,
+     "odds": 3.65,
+     "ev": -0.2039
+    },
+    {
+     "code": "周五009",
+     "match": "雷恩 vs 马赛",
+     "pool": "ttg",
+     "pick": "s4",
+     "q": 0.1966,
+     "odds": 4.6,
+     "ev": -0.0956
+    },
+    {
+     "code": "周五009",
+     "match": "雷恩 vs 马赛",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.1932,
+     "odds": 2.8,
+     "ev": -0.459
+    },
+    {
+     "code": "周五009",
+     "match": "雷恩 vs 马赛",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.2788,
+     "odds": 5.5,
+     "ev": 0.5334,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周五009",
+    "match": "雷恩 vs 马赛",
+    "pool": "hafu",
+    "pick": "aa",
+    "q": 0.2788,
+    "odds": 5.5,
+    "ev": 0.5334,
+    "divergent": true
+   },
+   "rec_upset": {
+    "code": "周五009",
+    "match": "雷恩 vs 马赛",
+    "pool": "crs",
+    "pick": "1:2",
+    "q": 0.0813,
+    "odds": 10.5,
+    "ev": -0.1463
+   },
+   "flags": [
+    "divergence"
+   ]
+  },
+  {
+   "code": "周五011",
+   "match": "塞维利亚 vs 巴伦西亚",
+   "candidates": [
+    {
+     "code": "周五011",
+     "match": "塞维利亚 vs 巴伦西亚",
+     "pool": "crs",
+     "pick": "1:2",
+     "q": 0.0926,
+     "odds": 12.0,
+     "ev": 0.1112
+    },
+    {
+     "code": "周五011",
+     "match": "塞维利亚 vs 巴伦西亚",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2481,
+     "odds": 3.25,
+     "ev": -0.1937
+    },
+    {
+     "code": "周五011",
+     "match": "塞维利亚 vs 巴伦西亚",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2397,
+     "odds": 3.95,
+     "ev": -0.0532
+    },
+    {
+     "code": "周五011",
+     "match": "塞维利亚 vs 巴伦西亚",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2063,
+     "odds": 3.05,
+     "ev": -0.3708
+    },
+    {
+     "code": "周五011",
+     "match": "塞维利亚 vs 巴伦西亚",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.2314,
+     "odds": 6.75,
+     "ev": 0.5619,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周五011",
+    "match": "塞维利亚 vs 巴伦西亚",
+    "pool": "hafu",
+    "pick": "aa",
+    "q": 0.2314,
+    "odds": 6.75,
+    "ev": 0.5619,
+    "divergent": true
+   },
+   "rec_upset": {
+    "code": "周五011",
+    "match": "塞维利亚 vs 巴伦西亚",
+    "pool": "crs",
+    "pick": "1:2",
+    "q": 0.0926,
+    "odds": 12.0,
+    "ev": 0.1112
+   },
+   "flags": [
+    "divergence"
+   ]
+  },
+  {
+   "code": "周五012",
+   "match": "科里蒂巴 vs 巴竞技",
+   "candidates": [
+    {
+     "code": "周五012",
+     "match": "科里蒂巴 vs 巴竞技",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2199,
+     "odds": 3.85,
+     "ev": -0.1534
+    },
+    {
+     "code": "周五012",
+     "match": "科里蒂巴 vs 巴竞技",
+     "pool": "crs",
+     "pick": "0:3",
+     "q": 0.0781,
+     "odds": 24.0,
+     "ev": 0.8744,
+     "divergent": true
+    },
+    {
+     "code": "周五012",
+     "match": "科里蒂巴 vs 巴竞技",
+     "pool": "ttg",
+     "pick": "s4",
+     "q": 0.1912,
+     "odds": 6.5,
+     "ev": 0.2428,
+     "divergent": true
+    },
+    {
+     "code": "周五012",
+     "match": "科里蒂巴 vs 巴竞技",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.4127,
+     "odds": 3.9,
+     "ev": 0.6095,
+     "divergent": true
+    },
+    {
+     "code": "周五012",
+     "match": "科里蒂巴 vs 巴竞技",
+     "pool": "hafu",
+     "pick": "da",
+     "q": 0.2049,
+     "odds": 5.6,
+     "ev": 0.1474,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周五012",
+    "match": "科里蒂巴 vs 巴竞技",
+    "pool": "crs",
+    "pick": "0:3",
+    "q": 0.0781,
+    "odds": 24.0,
+    "ev": 0.8744,
+    "divergent": true
+   },
+   "rec_upset": {
+    "code": "周五012",
+    "match": "科里蒂巴 vs 巴竞技",
+    "pool": "ttg",
+    "pick": "s3",
+    "q": 0.2199,
+    "odds": 3.85,
+    "ev": -0.1534
+   },
+   "flags": [
     "divergence"
    ]
   }
  ],
  "ranAt": "2026-09-10",
  "approved": false,
+ "warnings": [
+  "dc_divergence_blocked: 彩票档熔断7选项(|p_fused−p_mkt|≥5%)——周五007主胜7.8pp、周五007平6.2pp、周五007客胜14.0pp、周五011主胜8.5pp、周五011客胜6.5pp、周五011让球主胜7.0pp、周五011让球客胜7.3pp"
+ ],
  "method": "freq",
- "dataAsOf": "2026-09-10"
+ "dataAsOf": "2026-09-10",
+ "matchdayFilter": {
+  "include": [
+   "周五"
+  ],
+  "exclude": [],
+  "kept": 12
+ }
 }

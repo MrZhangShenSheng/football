@@ -1,44 +1,24 @@
 {
  "teamId": "az-alkmaar",
- "name": "AZ Alkmaar",
+ "name": "Az Alkmaar",
  "nameZh": "阿尔克马",
  "league": "netherlands-eredivisie",
- "lastUpdated": "2026-08-22",
- "source": "cold-start + espn/fd recent results",
+ "lastUpdated": "2026-09-10",
+ "source": "sporttery-insight",
  "standing": {
   "pos": 1,
-  "played": 2,
-  "won": 2,
-  "drawn": 0,
-  "lost": 0,
-  "gf": 6,
-  "ga": 1,
-  "pts": 6
+  "leagueTable": "荷甲",
+  "season": "2026/2027",
+  "played": 5,
+  "record": "5胜0平0负"
  },
  "elo": null,
- "form": [
-  {
-   "date": "08/08/2026",
-   "opp": "Den Haag",
-   "venue": "H",
-   "score": "2-0",
-   "result": "W"
-  },
-  {
-   "date": "15/08/2026",
-   "opp": "Utrecht",
-   "venue": "A",
-   "score": "4-1",
-   "result": "W"
-  },
-  {
-   "date": "2026-08-15",
-   "opp": "FC Utrecht",
-   "venue": "A",
-   "score": "4-1",
-   "result": "W"
-  }
- ],
+ "form": [],
+ "formSummary": {
+  "last10": "7胜2平1负",
+  "goalAvg": "2.7"
+ },
  "injuries": [],
- "notes": "冷启动基础画像（仅积分榜），待深度采集补充"
+ "h2hNote": "H2H视角4胜3平3负",
+ "notes": "insight回填(周五005 荷甲R6)"
 }

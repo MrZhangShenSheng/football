@@ -1,125 +1,82 @@
 {
   "checkedAt": "2026-09-10",
   "leagues": {
-    "欧冠": {
+    "日职": {
+      "status": "ready",
+      "roundsPlayed": 6,
+      "standingsSource": "espn",
+      "fdCovered": false
+    },
+    "沙职": {
+      "status": "ready",
+      "roundsPlayed": 4,
+      "standingsSource": "espn",
+      "fdCovered": false
+    },
+    "德乙": {
       "status": "missing"
     },
-    "葡超": {
+    "瑞超": {
       "status": "ready",
-      "roundsPlayed": 17,
+      "roundsPlayed": 20,
+      "standingsSource": "espn",
+      "fdCovered": false
+    },
+    "荷甲": {
+      "status": "ready",
+      "roundsPlayed": 55,
       "standingsSource": "fd-derived",
       "fdCovered": true
     },
-    "解放者杯": {
+    "荷乙": {
       "status": "missing"
+    },
+    "德甲": {
+      "status": "ready",
+      "roundsPlayed": 53,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "意甲": {
+      "status": "ready",
+      "roundsPlayed": 61,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "法甲": {
+      "status": "ready",
+      "roundsPlayed": 54,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "英冠": {
+      "status": "ready",
+      "roundsPlayed": 73,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "西甲": {
+      "status": "ready",
+      "roundsPlayed": 62,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "巴甲": {
+      "status": "ready",
+      "roundsPlayed": 25,
+      "standingsSource": "espn",
+      "fdCovered": false
     }
   },
   "missingLeagues": [
-    "欧冠",
-    "解放者杯"
+    "德乙",
+    "荷乙"
   ],
   "staleLeagues": [],
   "missingAlias": [],
-  "notReadyTeams": [
-    {
-      "team": "费内巴切",
-      "teamId": "fenerbahce",
-      "league": "turkey",
-      "status": "missing"
-    },
-    {
-      "team": "罗马",
-      "teamId": "roma",
-      "league": "italy",
-      "status": "stale",
-      "lastUpdated": "2026-08-24",
-      "ageDays": 17
-    },
-    {
-      "team": "科莫",
-      "teamId": "como",
-      "league": "italy",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 19
-    },
-    {
-      "team": "莱红牛",
-      "teamId": "leipzig",
-      "league": "germany-bundesliga",
-      "status": "missing"
-    },
-    {
-      "team": "拜仁",
-      "teamId": "bayern",
-      "league": "germany-bundesliga",
-      "status": "stale",
-      "lastUpdated": "2026-09-01",
-      "ageDays": 9
-    },
-    {
-      "team": "博德闪耀",
-      "teamId": "bodo-glimt",
-      "league": "norway",
-      "status": "stale",
-      "lastUpdated": "2026-08-24",
-      "ageDays": 17
-    },
-    {
-      "team": "斯拉维亚",
-      "teamId": "slavia-praha",
-      "league": "czechia",
-      "status": "missing"
-    },
-    {
-      "team": "朗斯",
-      "teamId": "lens",
-      "league": "france",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 19
-    },
-    {
-      "team": "曼联",
-      "teamId": "man-united",
-      "league": "england",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 19
-    },
-    {
-      "team": "萨巴赫",
-      "teamId": "sabah-fk",
-      "league": "azerbaijan",
-      "status": "missing"
-    },
-    {
-      "team": "阿马多拉",
-      "teamId": "estrela",
-      "league": "portugal",
-      "status": "missing"
-    },
-    {
-      "team": "布拉加",
-      "teamId": "braga",
-      "league": "portugal",
-      "status": "missing"
-    },
-    {
-      "team": "德尔瓦耶",
-      "teamId": "indep-del-valle",
-      "league": "ecuador",
-      "status": "missing"
-    },
-    {
-      "team": "弗拉门戈",
-      "teamId": "flamengo",
-      "league": "brazil",
-      "status": "missing"
-    }
-  ],
+  "notReadyTeams": [],
   "readyCount": {
-    "leagues": 1,
-    "teamsKnown": 509
+    "leagues": 10,
+    "teamsKnown": 511
   }
 }

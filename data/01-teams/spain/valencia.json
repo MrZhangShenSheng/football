@@ -3,21 +3,22 @@
  "name": "Valencia",
  "nameZh": "巴伦西亚",
  "league": "spain",
- "lastUpdated": "2026-08-22",
- "source": "cold-start: league standings + manual name map",
+ "lastUpdated": "2026-09-10",
+ "source": "sporttery-insight",
  "standing": {
-  "pos": 17,
-  "played": 0,
-  "won": 0,
-  "drawn": 0,
-  "lost": 0,
-  "gf": 0,
-  "ga": 0,
-  "pts": 0,
-  "leagueTable": "spain-laliga"
+  "pos": 20,
+  "leagueTable": "西甲",
+  "season": "2026/2027",
+  "played": 4,
+  "record": "0胜1平3负"
  },
  "elo": null,
  "form": [],
+ "formSummary": {
+  "last10": "2胜2平6负",
+  "goalAvg": "1.0"
+ },
  "injuries": [],
- "notes": "冷启动基础画像（积分榜），待深度采集补充"
+ "h2hNote": "H2H视角2胜5平3负",
+ "notes": "insight回填(周五011 西甲R5)"
 }

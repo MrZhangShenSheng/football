@@ -3,36 +3,30 @@
  "name": "Sevilla",
  "nameZh": "塞维利亚",
  "league": "spain",
- "lastUpdated": "2026-08-22",
- "source": "cold-start + espn/fd recent results",
+ "lastUpdated": "2026-09-10",
+ "source": "sporttery-insight",
  "standing": {
-  "pos": 4,
-  "played": 1,
-  "won": 1,
-  "drawn": 0,
-  "lost": 0,
-  "gf": 2,
-  "ga": 1,
-  "pts": 3,
-  "leagueTable": "spain-laliga"
+  "pos": 7,
+  "leagueTable": "西甲",
+  "season": "2026/2027",
+  "played": 4,
+  "record": "2胜1平1负"
  },
  "elo": null,
- "form": [
+ "form": [],
+ "formSummary": {
+  "last10": "5胜2平3负",
+  "goalAvg": "1.3"
+ },
+ "injuries": [
   {
-   "date": "15/08/2026",
-   "opp": "Vallecano",
-   "venue": "H",
-   "score": "2-1",
-   "result": "W"
-  },
-  {
-   "date": "2026-08-15",
-   "opp": "Rayo Vallecano",
-   "venue": "H",
-   "score": "2-1",
-   "result": "W"
+   "name": null,
+   "pos": null,
+   "apps": null,
+   "starts": null,
+   "type": "伤停"
   }
  ],
- "injuries": [],
- "notes": "冷启动基础画像（积分榜），待深度采集补充"
+ "h2hNote": "H2H视角2胜5平3负",
+ "notes": "insight回填(周五011 西甲R5)"
 }

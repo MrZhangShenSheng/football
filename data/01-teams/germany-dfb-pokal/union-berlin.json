@@ -1,23 +1,24 @@
 {
  "teamId": "union-berlin",
- "name": "1. FC Union Berlin",
+ "name": "Union Berlin",
  "nameZh": "柏林联合",
  "league": "germany-dfb-pokal",
- "lastUpdated": "2026-08-22",
- "source": "cold-start: league standings + manual name map",
+ "lastUpdated": "2026-09-10",
+ "source": "sporttery-insight",
  "standing": {
-  "pos": 17,
-  "played": 0,
-  "won": 0,
-  "drawn": 0,
-  "lost": 0,
-  "gf": 0,
-  "ga": 0,
-  "pts": 0,
-  "leagueTable": "germany-bundesliga"
+  "pos": 15,
+  "leagueTable": "德甲",
+  "season": "2026/2027",
+  "played": 2,
+  "record": "0胜1平1负"
  },
  "elo": null,
  "form": [],
+ "formSummary": {
+  "last10": "1胜4平5负",
+  "goalAvg": "1.5"
+ },
  "injuries": [],
- "notes": "冷启动基础画像（积分榜），待深度采集补充"
+ "h2hNote": "H2H视角1胜4平1负",
+ "notes": "insight回填(周五007 德甲R3)"
 }
