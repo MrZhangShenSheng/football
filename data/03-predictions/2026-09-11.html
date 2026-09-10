@@ -1,0 +1,136 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026-09-11 销售轮预测（欧冠R1第二批+葡超+解放者杯）</title>
+<style>
+:root{--ink:#1a2233;--sub:#5a6478;--line:#e3e7ef;--bg:#f6f7fa;--card:#fff;--accent:#1f5eff;--good:#0a7d43;--bad:#c0392b;--warn:#b7791f;--chip:#eef2fb}
+*{box-sizing:border-box}
+body{margin:0;padding:18px 16px 40px;font:14px/1.65 "Segoe UI","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--bg)}
+.wrap{max-width:960px;margin:0 auto}
+h1{font-size:19px;margin:0 0 4px}
+h2{font-size:16px;margin:26px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--line)}
+.meta{color:var(--sub);font-size:12.5px;margin-bottom:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
+.hero{border-left:4px solid var(--accent)}
+.tag{display:inline-block;padding:1px 8px;border-radius:10px;background:var(--chip);font-size:12px;color:var(--accent);margin-right:6px}
+.tag.gray{color:var(--sub);background:#f0f1f5}
+.tag.red{color:var(--bad);background:#fdeceb}
+.tag.green{color:var(--good);background:#e8f5ee}
+.tag.warn{color:var(--warn);background:#fbf3e4}
+table{width:100%;border-collapse:collapse;font-size:13px;background:var(--card)}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#f0f3fa;font-weight:600}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.small{font-size:12px;color:var(--sub)}
+.kbox{background:#0e1626;color:#d8e2f5;border-radius:10px;padding:12px 14px;font:12.5px/1.7 Consolas,"Microsoft YaHei",monospace;white-space:pre;overflow-x:auto;margin:10px 0}
+.ev-p{color:var(--good);font-weight:600}.ev-n{color:var(--bad)}
+svg.ic{width:15px;height:15px;vertical-align:-2px;margin-right:4px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:640px){.grid2{grid-template-columns:1fr}}
+ul{margin:6px 0;padding-left:20px}
+.mrow{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
+.pill{background:#f0f3fa;border-radius:8px;padding:6px 10px;font-size:12.5px}
+</style>
+</head><body><div class="wrap">
+
+<h1><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>2026-09-11 销售轮预测</h1>
+<div class="meta">生成 2026-09-10 12:30 · 7 场（欧冠 R1 第二批 5 + 葛超 R3 1 + 解放者杯 1/4 决赛首回合 1）· <b>单锚模式</b>（fd 503 断粮 · Pinnacle 缺失 · 体彩去水为概率锚 · ×0.97 · 星级上限三星）· 数据等级 7/7 全 A（insight 覆盖）</div>
+
+<div class="card hero">
+<b><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h7l-1 8 11-13h-7z"/></svg>本轮格局：结构性弱轮 —— 全轮无三星胆（最高 53.0%），保底档 / 彩票档双关档，平局轨三重出局</b>
+<ul>
+<li>保底档（HAD 4串11）：关档 —— 合格腿 0&lt;5，不硬凑</li>
+<li>彩票档（N串1）：关档 —— 唯一融合达标腿 006 布拉加 p_fused 58.4% 被 <b>DC 分歧熔断</b>（DC 54.6% vs 市场 59.8%，差 5.2pp&gt;5pp）</li>
+<li>平局轨：006 p_fused平 23.1%&lt;28% + R3 开季禁入 + poolSingle.HAD=0；007 p平 31.1%✓ 极差 3.9pp✓ 杯赛放行✓ 但 <b>poolSingle.HAD=0 第五条资格前置出局</b>；004 p平 27.0% 差 1pp</li>
+<li>主输出：<b>翻身A 混串 2串1（2 元）</b>——详见下方方案区；seq18 程序 4 串卡保留对照（approved=false，人工否决 3 腿）</li>
+</ul>
+</div>
+
+<h2>① 总览（# 序号 × 体彩编号 · 09-11 开赛）</h2>
+<table>
+<tr><th>#</th><th>编号</th><th>联赛</th><th>对阵</th><th>开赛</th><th class="num">市场去水 h/d/a</th><th class="num">极差</th><th>星级</th><th>结论</th></tr>
+<tr><td>1</td><td>周四001</td><td>欧冠R1</td><td>费内巴切 vs 罗马</td><td>00:45</td><td class="num">27.8 / 26.1 / 46.1</td><td class="num">20.2pp</td><td>⭐⭐</td><td>排除（罗马客胜 45.1% 参考无边际）</td></tr>
+<tr><td>2</td><td>周四002</td><td>欧冠R1</td><td>科莫 vs 莱红牛</td><td>03:00</td><td class="num">54.7 / 22.6 / 22.7</td><td class="num">32.0pp</td><td>⭐⭐</td><td><b>翻身A：CRS 0:1 @17.5</b></td></tr>
+<tr><td>3</td><td>周四003</td><td>欧冠R1</td><td>拜仁 vs 博德闪耀</td><td>03:00</td><td class="num">HHAD-3：40.3 / 17.7 / 42.0</td><td class="num">24.3pp</td><td>—</td><td>排除（跨联赛模板失真）</td></tr>
+<tr><td>4</td><td>周四004</td><td>欧冠R1</td><td>斯拉维亚 vs 朗斯</td><td>03:00</td><td class="num">35.7 / 27.0 / 37.2</td><td class="num">10.2pp</td><td>⭐⭐</td><td>排除（胶着）</td></tr>
+<tr><td>5</td><td>周四005</td><td>欧冠R1</td><td>曼联 vs 萨巴赫</td><td>03:00</td><td class="num">HHAD-2：54.3 / 19.7 / 26.0</td><td class="num">34.6pp</td><td>—</td><td>排除（踩线+基面反向）</td></tr>
+<tr><td>6</td><td>周四006</td><td>葡超R3</td><td>阿马多拉 vs 布拉加</td><td>03:15</td><td class="num">16.9 / 23.3 / 59.8</td><td class="num">37.3pp</td><td>⭐⭐</td><td>排除（方向参考布拉加 54.2% · EV-19.8% 不买）</td></tr>
+<tr><td>7</td><td>周四007</td><td>解放者杯</td><td>德尔瓦耶 vs 弗拉门戈</td><td>08:30</td><td class="num">35.0 / 31.1 / 33.9</td><td class="num">4.7pp</td><td>⭐⭐</td><td><b>翻身A：HAD 平 @2.85</b>（修正后平 34.0% 成最高项）</td></tr>
+</table>
+<div class="small">欧冠 GW1 不触发开季修正：各队国内联赛已打 3-4 轮，「开季未稳」效应不存在（chain 标注）。周四006 葡超 R3 触发（强队客胜×0.95/平×1.10）。周四007 触发系数5 首回合平局保护（解放者杯 1/4 决赛两回合制，WebSearch 三源确认，次回合 9-15/17）。</div>
+
+<h2>② 方案对比（大哥拍板用）</h2>
+<table>
+<tr><th>方案</th><th>票面</th><th class="num">本金</th><th class="num">合赔</th><th class="num">全中回报</th><th class="num">命中概率</th><th>EV（连乘）</th></tr>
+<tr><td><b>翻身A（主推）</b></td><td>002 CRS 0:1 + 007 HAD 平 · 混合2串1×1倍</td><td class="num">2元</td><td class="num">49.9</td><td class="num">99.8元</td><td class="num">2.43%（1/41）</td><td class="ev-p">+21.3%</td></tr>
+<tr><td>seq18（对照·已否决）</td><td>002/001/004/007 全 CRS · 4串1×1倍</td><td class="num">2元</td><td class="num">26250</td><td class="num">52500元</td><td class="num">0.005%（1/21000）</td><td class="ev-p">+23.9%</td></tr>
+</table>
+<div class="small">两方案 EV 相近但命中概率差 516 倍：seq18 的 4 串全 CRS（期望返还 19.1%）是「两万分之一」的纯彩票；翻身A 用最强两腿（002 全卡最高 EV + 007 修正链最完整）换 41 分之一的真实回报机会。人工否决 seq18 三腿的理由：001 CRS q=9.56% 纯模板虚高（费内场均 1.6 vs 罗马 2.4 不对称未进 q）；004 胶着场负 EV；007 CRS 2:0 与首回合平局保护逻辑直接矛盾。</div>
+
+<div class="kbox">┌ 出票核对单（终端编号以此为准·approved=false 待拍板）────────
+│ 周四002 | 欧冠     | 科莫 vs 莱红牛       | CRS 0:1 @17.5
+│ 周四007 | 解放者杯 | 德尔瓦耶 vs 弗拉门戈 | HAD 平 @2.85
+│ 票面：混合2串1（CRS+HAD） × 1倍 = 1注 × 2元 = 2元
+└ 出票时逐条对照，发现不一致立即停 ──────────────</div>
+<div class="small"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>拍板后须走 Step 6.5 临场终审再出票（今晚欧冠首发公布窗口 22:00-23:30）；007 为早场 08:30（明晨），时差充裕。</div>
+
+<h2>③ 入串/推荐场详情</h2>
+
+<div class="card">
+<b>#2 周四002 · 欧冠 R1 · 科莫 vs 莱红牛 · 09-11 03:00</b> <span class="tag green">翻身A 腿</span>
+<table>
+<tr><th>项</th><th>内容</th></tr>
+<tr><td>方向层</td><td>科莫主胜 54.7%（市场锚 · 单锚×0.97 后 53.0% ⭐⭐）——近 10 主场 5胜3平2负 vs 莱红牛客场 4胜0平6负（<b>0 平局</b>极端化：要么赢要么输）</td></tr>
+<tr><td>伤停</td><td>主 2 / 客 6，全部 apps=0 不判主力（d=0 不修正）。叙事：莱红牛 6 人伤停名单含 Baumgartner/卢克巴/Gruda，但本赛季零出场=影响已被近况战绩包含</td></tr>
+<tr><td>翻身腿</td><td><b>CRS 0:1 @17.5</b> · q=7.37%（freq-band 全局池<b>带平移</b>：科莫主场攻强压低 0:1 频率，非模板值 9.56%）· <b class="ev-p">EV +29.0%（全卡最高）</b> · 客胜 22.7% 中 0:1 占比 32% 与莱红牛「小负即溃」客场结构一致</td></tr>
+<tr><td>风险</td><td>与方向判断（主胜）对冲——该腿赌的是「莱红牛要么大胜要么输」的另一半；17.5 落桂林(10-17)/梅州(18-28)带缝，程序合并带放行，人工复核接受</td></tr>
+</table>
+</div>
+
+<div class="card">
+<b>#6 周四006 · 葡超 R3 · 阿马多拉 vs 布拉加 · 09-11 03:15</b> <span class="tag gray">方向参考不买</span>
+<table>
+<tr><th>项</th><th>内容</th></tr>
+<tr><td>DC 融合</td><td>本轮唯一 DC 场（portugal-primeira）：λ 1.251 / 2.021 · p_dc [23.0/22.4/54.6] · 市场 [16.9/23.3/59.8] · <b>p_fused [18.5/23.1/58.4]</b></td></tr>
+<tr><td>修正链</td><td>R3 开季（强队客胜×0.95/平×1.10）→ 55.9% → 单锚×0.97 → <b>54.2% ⭐⭐</b> · EV = 0.542×1.48-1 = <span class="ev-n">-19.8%</span>（我们概率低于市场定价，无购买价值）</td></tr>
+<tr><td>彩票档熔断</td><td>p_fused 58.4%≥0.55 唯一达标腿，但 |DC−市场| = 5.2pp &gt; 5pp 熔断线 → 彩票档合格腿 0</td></tr>
+<tr><td>信号</td><td>H2H 7 场 4 平 3 布拉加胜 0 主胜（弱参考）；近 2 次交锋 2:2 / 3:3 全平；布拉加后防 4 人伤（开季 apps&lt;2 判级失灵，叙事标注）；平局轨三重出局（p_fused平 23.1%&lt;28% + R3 禁入 + HAD 单关 0）</td></tr>
+<tr><td>玩法</td><td>TTG 峰值 2-3 球（22.1%/22.3%）@3.70/3.55 —— EV = 22.1×3.70-1 = -18.2% 无正值；HAFU aa 34.8%@2.20 EV-23.4%。<b>全玩法无正值，排除</b></td></tr>
+</table>
+</div>
+
+<div class="card">
+<b>#7 周四007 · 解放者杯 1/4 决赛首回合 · 德尔瓦耶 vs 弗拉门戈 · 09-11 08:30</b> <span class="tag green">翻身A 腿</span>
+<table>
+<tr><th>项</th><th>内容</th></tr>
+<tr><td>修正链</td><td>市场 [35.0/31.1/33.9] → 伤停 d=-2（弗拉门戈主力 2 人：山德罗 + Evertton Araújo）主胜×1.04/客胜×0.93 → 首回合平局保护（系数5）主胜×0.92/<b>平+4pp</b> → [33.5/<b>35.1</b>/31.4] → 单锚×0.97 → <b>平 33.0%</b></td></tr>
+<tr><td>信号</td><td>两队各自小组第 1 出线（德尔瓦耶 H 组 / 弗拉门戈 A 组总榜首，卫冕冠军）；德尔瓦耶近 10 场 8胜1平1负；H2H 6 场 2胜1平3负但<b>主场 2胜1平 0 负</b>（1:0/5:0/2:2 不怵）</td></tr>
+<tr><td>玩法</td><td><b>HAD 平 @2.85</b>（修正后平局成最高概率项）· EV = 0.330×2.85-1 = <span class="ev-n">-6.0%</span>（首回合+4pp 边际被单锚惩罚部分抵消）· poolSingle.HAD=0 <b>无法单关</b> → 降级路径=混串（与 002 组翻身A，对捆绑腿有独立信心 EV+29%）</td></tr>
+<tr><td>否决记录</td><td>程序卡 CRS 2:0 @12.0（EV-16%）被人工否决：首回合净胜 2 球把握下降 + 伤停抬主胜的剧本是小比分/平局，2:0 自相矛盾</td></tr>
+</table>
+</div>
+
+<h2>④ 排除简报（4 场）</h2>
+<table>
+<tr><th>#</th><th>编号</th><th>对阵</th><th>级别</th><th>原因</th></tr>
+<tr><td>1</td><td>周四001</td><td>费内巴切 vs 罗马</td><td>[A]</td><td>⭐⭐ 无边际：罗马客胜 45.1%（伤停 d=+1 后 46.5%×0.97）· EV-13.4%；CRS 1:0 腿 q 纯模板虚高否决</td></tr>
+<tr><td>3</td><td>周四003</td><td>拜仁 vs 博德闪耀</td><td>[A]</td><td>跨联赛模板失真：HHAD-3 拜仁赢3+仅 40.3%；闪耀挪超 3.1 场均在欧冠层级不可比；体彩 ttg s7@3.45 极端定价（7+球全场最低赔）无锚可验</td></tr>
+<tr><td>4</td><td>周四004</td><td>斯拉维亚 vs 朗斯</td><td>[A]</td><td>胶着：极差 10.2pp（35.7/27.0/37.2）边缘；朗斯 5 伤全 apps0（4 后卫堆积·叙事）；CRS 1:0 EV-4.4% 负值否决</td></tr>
+<tr><td>5</td><td>周四005</td><td>曼联 vs 萨巴赫</td><td>[A]</td><td>踩线+基面反向：HHAD-2 曼联赢2+ 54.3% 踩线下沿且曼联近 10 仅 4 胜（4胜3平3负）；萨巴赫近 10 场 8 胜 0 平</td></tr>
+</table>
+
+<h2>⑤ 数据来源清单</h2>
+<div class="small">
+<ul>
+<li>体彩五池赔率：engine/cache/sporttery_matches.json（2026-09-10 刷新 7 场）+ score_odds/2026-09-10.json 存档</li>
+<li>单场情报（伤停/近10/排名/H2H）：sporttery_insight_2041371~2041378 ×7（A 级判级来源）</li>
+<li>DC 拟合：engine/cache/portugal-primeira_dc.json（09-07 拟合 · 18 队 · Estrela/Sp Braga 含）</li>
+<li>联赛画像：data/00-leagues/EC0.json（欧冠 24 场样本）；葡超画像 fd-derived</li>
+<li>时序库：data/05-trends/2026-09-10-odds.json（diff 6 项）+ 2026-09-10-intel.json（7 场）</li>
+<li>赛制确认：WebSearch（ESPN / FOX Sports / Goal.com 三源：解放者杯 1/4 决赛首回合）</li>
+<li>冷启动落盘：8 队画像（como/leipzig/estrela/braga/indep-del-valle/flamengo/fenerbahce/roma）+ 别名 4 条（斯拉维亚/萨巴赫/阿马多拉/德尔瓦耶）</li>
+</ul>
+</div>
+
+<div class="small" style="margin-top:18px;color:var(--sub)">影子层：09-11 轮 shadow-all 20 张已于 09-10 晨登记（6813f2e），本轮定稿后复跑验证幂等。fd 断粮期 CLV 无 Pinnacle 兜底，回填时只有 clv_approx_dk 口径。预测记录：data/02-results/2026-09-11.json（v4.7 schema 含 lambdaHome/fusedPre/chainSteps）。</div>
+
+</div></body></html>

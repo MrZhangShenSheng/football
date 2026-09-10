@@ -3,21 +3,32 @@
  "name": "Como",
  "nameZh": "科莫",
  "league": "italy",
- "lastUpdated": "2026-08-22",
- "source": "cold-start: league standings + manual name map",
+ "lastUpdated": "2026-09-10",
+ "source": "sporttery-insight cold refresh (09-11 轮)",
  "standing": {
-  "pos": 5,
-  "played": 0,
-  "won": 0,
-  "drawn": 0,
-  "lost": 0,
-  "gf": 0,
-  "ga": 0,
-  "pts": 0,
-  "leagueTable": "italy-serie-a"
+  "pos": 15,
+  "phase": "League Stage",
+  "leagueLabel": "欧冠",
+  "season": "2026/2027"
  },
  "elo": null,
- "form": [],
- "injuries": [],
- "notes": "冷启动基础画像（积分榜），待深度采集补充"
+ "form": {
+  "last10": "WWWWWWDDDL",
+  "goalAvg": "1.7"
+ },
+ "injuries": [
+  {
+   "name": "J. Addai",
+   "pos": "前锋",
+   "apps": 0,
+   "starts": 0
+  },
+  {
+   "name": "N. Paz",
+   "pos": "中场",
+   "apps": 0,
+   "starts": 0
+  }
+ ],
+ "notes": "近10场 WWWWWWDDDL；伤停 2 人；09-11 轮 insight 刷新"
 }

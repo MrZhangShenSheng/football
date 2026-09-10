@@ -1,0 +1,386 @@
+{
+ "structure": "new",
+ "date": "2026-09-10",
+ "seq": 18,
+ "tiers": {
+  "base": {
+   "cost": 0,
+   "legs": [],
+   "play": "had-3*4*5",
+   "note": "保底关档（合格腿0<5，不硬凑）",
+   "coverGate": null
+  },
+  "upset": {
+   "shape": "pool-4x1",
+   "cost": 2,
+   "legs": [
+    {
+     "matchNumStr": "周四002",
+     "match": "科莫 vs 莱红牛",
+     "play": "crs",
+     "pick": "0:1",
+     "odds": 17.5,
+     "q": 0.0737,
+     "ev": 0.2897
+    },
+    {
+     "matchNumStr": "周四001",
+     "match": "费内巴切 vs 罗马",
+     "play": "crs",
+     "pick": "1:0",
+     "odds": 12.5,
+     "q": 0.0956,
+     "ev": 0.195
+    },
+    {
+     "matchNumStr": "周四004",
+     "match": "斯拉维亚 vs 朗斯",
+     "play": "crs",
+     "pick": "1:0",
+     "odds": 10.0,
+     "q": 0.0956,
+     "ev": -0.044
+    },
+    {
+     "matchNumStr": "周四007",
+     "match": "德尔瓦耶 vs 弗拉门戈",
+     "play": "crs",
+     "pick": "2:0",
+     "odds": 12.0,
+     "q": 0.0701,
+     "ev": -0.1588
+    }
+   ],
+   "multiplier": 1,
+   "bets": [
+    {
+     "legs": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "multiplier": 1
+    }
+   ],
+   "note": "跨池4串1(木桶≤4关)"
+  },
+  "lottery": {
+   "shape": "closed",
+   "cost": 0,
+   "legs": [],
+   "note": "彩票档关档（合格腿0<4，不硬凑）"
+  }
+ },
+ "totalCost": 2,
+ "cards": [
+  {
+   "code": "周四001",
+   "match": "费内巴切 vs 罗马",
+   "candidates": [
+    {
+     "code": "周四001",
+     "match": "费内巴切 vs 罗马",
+     "pool": "crs",
+     "pick": "1:0",
+     "q": 0.0956,
+     "odds": 12.5,
+     "ev": 0.195
+    },
+    {
+     "code": "周四001",
+     "match": "费内巴切 vs 罗马",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2299,
+     "odds": 3.85,
+     "ev": -0.1149
+    },
+    {
+     "code": "周四001",
+     "match": "费内巴切 vs 罗马",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.227,
+     "odds": 3.6,
+     "ev": -0.1828
+    },
+    {
+     "code": "周四001",
+     "match": "费内巴切 vs 罗马",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.1807,
+     "odds": 3.2,
+     "ev": -0.4218
+    },
+    {
+     "code": "周四001",
+     "match": "费内巴切 vs 罗马",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2586,
+     "odds": 5.3,
+     "ev": 0.3706,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周四001",
+    "match": "费内巴切 vs 罗马",
+    "pool": "hafu",
+    "pick": "hh",
+    "q": 0.2586,
+    "odds": 5.3,
+    "ev": 0.3706,
+    "divergent": true
+   },
+   "rec_upset": {
+    "code": "周四001",
+    "match": "费内巴切 vs 罗马",
+    "pool": "crs",
+    "pick": "1:0",
+    "q": 0.0956,
+    "odds": 12.5,
+    "ev": 0.195
+   },
+   "flags": [
+    "low_conf",
+    "pure_template",
+    "divergence"
+   ]
+  },
+  {
+   "code": "周四002",
+   "match": "科莫 vs 莱红牛",
+   "candidates": [
+    {
+     "code": "周四002",
+     "match": "科莫 vs 莱红牛",
+     "pool": "crs",
+     "pick": "0:1",
+     "q": 0.0737,
+     "odds": 17.5,
+     "ev": 0.2897
+    },
+    {
+     "code": "周四002",
+     "match": "科莫 vs 莱红牛",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2299,
+     "odds": 4.35,
+     "ev": 0.0001
+    },
+    {
+     "code": "周四002",
+     "match": "科莫 vs 莱红牛",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.227,
+     "odds": 3.7,
+     "ev": -0.1601
+    },
+    {
+     "code": "周四002",
+     "match": "科莫 vs 莱红牛",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2586,
+     "odds": 2.55,
+     "ev": -0.3406
+    },
+    {
+     "code": "周四002",
+     "match": "科莫 vs 莱红牛",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.1807,
+     "odds": 7.0,
+     "ev": 0.2649,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周四002",
+    "match": "科莫 vs 莱红牛",
+    "pool": "hafu",
+    "pick": "aa",
+    "q": 0.1807,
+    "odds": 7.0,
+    "ev": 0.2649,
+    "divergent": true
+   },
+   "rec_upset": {
+    "code": "周四002",
+    "match": "科莫 vs 莱红牛",
+    "pool": "crs",
+    "pick": "0:1",
+    "q": 0.0737,
+    "odds": 17.5,
+    "ev": 0.2897
+   },
+   "flags": [
+    "low_conf",
+    "pure_template",
+    "divergence"
+   ]
+  },
+  {
+   "code": "周四004",
+   "match": "斯拉维亚 vs 朗斯",
+   "candidates": [
+    {
+     "code": "周四004",
+     "match": "斯拉维亚 vs 朗斯",
+     "pool": "crs",
+     "pick": "1:0",
+     "q": 0.0956,
+     "odds": 10.0,
+     "ev": -0.044
+    },
+    {
+     "code": "周四004",
+     "match": "斯拉维亚 vs 朗斯",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2299,
+     "odds": 3.7,
+     "ev": -0.1494
+    },
+    {
+     "code": "周四004",
+     "match": "斯拉维亚 vs 朗斯",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.227,
+     "odds": 3.55,
+     "ev": -0.1942
+    },
+    {
+     "code": "周四004",
+     "match": "斯拉维亚 vs 朗斯",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.1807,
+     "odds": 4.1,
+     "ev": -0.2591
+    },
+    {
+     "code": "周四004",
+     "match": "斯拉维亚 vs 朗斯",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2586,
+     "odds": 4.2,
+     "ev": 0.0861,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周四004",
+    "match": "斯拉维亚 vs 朗斯",
+    "pool": "hafu",
+    "pick": "hh",
+    "q": 0.2586,
+    "odds": 4.2,
+    "ev": 0.0861,
+    "divergent": true
+   },
+   "rec_upset": {
+    "code": "周四004",
+    "match": "斯拉维亚 vs 朗斯",
+    "pool": "crs",
+    "pick": "1:0",
+    "q": 0.0956,
+    "odds": 10.0,
+    "ev": -0.044
+   },
+   "flags": [
+    "low_conf",
+    "pure_template",
+    "divergence"
+   ]
+  },
+  {
+   "code": "周四007",
+   "match": "德尔瓦耶 vs 弗拉门戈",
+   "candidates": [
+    {
+     "code": "周四007",
+     "match": "德尔瓦耶 vs 弗拉门戈",
+     "pool": "crs",
+     "pick": "2:0",
+     "q": 0.0701,
+     "odds": 12.0,
+     "ev": -0.1588
+    },
+    {
+     "code": "周四007",
+     "match": "德尔瓦耶 vs 弗拉门戈",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2299,
+     "odds": 3.2,
+     "ev": -0.2643
+    },
+    {
+     "code": "周四007",
+     "match": "德尔瓦耶 vs 弗拉门戈",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.227,
+     "odds": 3.8,
+     "ev": -0.1374
+    },
+    {
+     "code": "周四007",
+     "match": "德尔瓦耶 vs 弗拉门戈",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.1807,
+     "odds": 4.6,
+     "ev": -0.1688
+    },
+    {
+     "code": "周四007",
+     "match": "德尔瓦耶 vs 弗拉门戈",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2586,
+     "odds": 4.4,
+     "ev": 0.1378,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周四007",
+    "match": "德尔瓦耶 vs 弗拉门戈",
+    "pool": "hafu",
+    "pick": "hh",
+    "q": 0.2586,
+    "odds": 4.4,
+    "ev": 0.1378,
+    "divergent": true
+   },
+   "rec_upset": {
+    "code": "周四007",
+    "match": "德尔瓦耶 vs 弗拉门戈",
+    "pool": "crs",
+    "pick": "2:0",
+    "q": 0.0701,
+    "odds": 12.0,
+    "ev": -0.1588
+   },
+   "flags": [
+    "low_conf",
+    "pure_template",
+    "divergence"
+   ]
+  }
+ ],
+ "ranAt": "2026-09-10",
+ "approved": false,
+ "method": "freq",
+ "dataAsOf": "2026-09-10"
+}
