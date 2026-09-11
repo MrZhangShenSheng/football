@@ -133,8 +133,24 @@ li{margin:3px 0}
 </ol>
 </div>
 
-<h2>⑥ 方法与数据来源</h2>
+<h2>⑥ 追加 · 排除逻辑阶梯对照（v2，大哥 09-11 追加）</h2>
+<table>
+<tr><th>阶梯</th><th class="num">轮数</th><th class="num">4串1 净额</th><th class="num">4串11 净额</th><th class="num">全2关 净额</th><th>触发</th></tr>
+<tr><td>基线 p55top4</td><td class="num">374</td><td class="num">+92.07</td><td class="num">+58.01</td><td class="num">+70.56</td><td>—</td></tr>
+<tr><td>+R1 胶着排除（极差&lt;10pp）</td><td class="num">374</td><td class="num">+92.07</td><td class="num">+58.01</td><td class="num">+70.56</td><td class="bad">0 触发（冗余）</td></tr>
+<tr><td>+R2 开季限1（每队前3场·每轮≤1腿）</td><td class="num">340</td><td class="num bad">-151.99</td><td class="num bad">-2.59</td><td class="num">+31.04</td><td class="bad">丢 34 轮（负贡献）</td></tr>
+<tr><td>+R3 超低赔通道（≤1.25 且 p≥0.50）</td><td class="num">340</td><td class="num">-151.99</td><td class="num">-2.59</td><td class="num">+31.04</td><td class="bad">0 触发（死代码）</td></tr>
+</table>
+<ul>
+<li><strong>全加 vs 基线配对差</strong>（340 共同轮）：4串1 +0.30pp CI[-2.1,+3.1] / 4串11 +0.10pp / 全2关 +0.00pp——<b>全不显著</b>，排除逻辑包不改变回报率</li>
+<li><strong>R1 冗余机理</strong>：胶着场（极差&lt;10pp）进不了"全池最热 top4"——该规则防人工挑场失误，不防热度排序</li>
+<li><strong>R2 负贡献机理</strong>：共同轮换腿仅 +0.3pp，损失全部来自扔掉的 34 个开季轮——8 月大热门（1.20 级）是高命中赚钱腿，限 1 清场了它们。<b>但该纪律的设计动机是保护模型预测（开季 DC 失真），非市场回报，不在纯市场口径回测的废立范围内</b>——结论限定为"开季热门腿市场回报不差，纪律机会成本真实"</li>
+<li><strong>R3 死代码机理</strong>：≤1.25 隐含 p≈0.75+ 早超 0.55 主门槛，通道窄缝（p∈[0.50,0.55)）为空——彩票档超低赔通道在 B365 收盘世界从不触发</li>
+<li><strong>不可复现清单</strong>（fd 无数据，诚实跳过）：伤停差值 / 保级平局保护 / 战意 / 踩线基面反向 / DC 分歧熔断</li>
+</ul>
+
+<h2>⑦ 方法与数据来源</h2>
 <div class="src">
 孪生票配对设计：同日同 4 腿三形状同时出票（BUDGET=30 等成本：4串1×15倍/4串11×1倍/全2关-4×2倍）；成轮=自然比赛日跨联赛混轮 ≥4 合格腿；结算 100% 复用 engine/shadow/shapes.py 的 _skeleton/settle（outcome=int 0/1/2 对齐 paper.py:351 实盘口径）；随机基线=同轮重抽×10；配对差 bootstrap=300 次重抽（seed 42/7 固定可复现）。<br>
-数据：football-data.co.uk 16 联赛×4 季 CSV（缓存 engine/cache/shape_backtest/，共 16414 场 B365 收盘齐备）· JSON 底子 data/04-summaries/shape-backtest-report.json · 2026-09-11 大哥拍板双口径+三完整季+2627。
+数据：football-data.co.uk 16 联赛×4 季 CSV（缓存 engine/cache/shape_backtest/，共 16414 场 B365 收盘齐备）· JSON 底子 data/04-summaries/shape-backtest-report.json + shape-backtest-v2-report.json（排除逻辑阶梯）· v2 脚本 engine/scripts/research/shape_backtest_v2.py · 2026-09-11 大哥拍板双口径+三完整季+2627。
 </div>
