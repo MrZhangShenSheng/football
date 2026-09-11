@@ -1,94 +1,157 @@
 {
-  "meta": {
-    "lastUpdated": "2026-09-07",
-    "sampleSize": 6,
-    "sampleRange": ["T001", "T006"],
-    "maintainMode": "static-manual",
-    "note": "实票偏好档案:静态手写,skill会话出方案/组票时读;boldplay/backfill代码不读不写;口味变化用户口述更新;设计=docs/2026-08-27-ticket-preference-design.html"
-  },
-  "shapes": [
-    {
-      "name": "4串11容错",
-      "legsCount": 4,
-      "combos": "6×2串1+4×3串1+1×4串1",
-      "unitStake": 2,
-      "cost": 22,
-      "units": 11
-    },
-    {
-      "name": "3场混串",
-      "legsCount": 3,
-      "combos": "2串1×3注+3串1×1注",
-      "unitStake": 2,
-      "cost": 8,
-      "units": 4
-    }
+ "meta": {
+  "lastUpdated": "2026-09-11",
+  "sampleSize": 6,
+  "sampleRange": [
+   "T001",
+   "T006"
   ],
-  "stake": {
-    "unitStake": 2,
-    "ticketBand": [8, 22],
-    "roundRedline": 30,
-    "upsetMonthlyCap": 40
+  "maintainMode": "static-manual",
+  "note": "实票偏好档案:静态手写,skill会话出方案/组票时读;boldplay/backfill代码不读不写;口味变化用户口述更新;设计=docs/2026-08-27-ticket-preference-design.html·09-11大哥拍板:T002/T003对冲容错结构立为组票第一优先(skill组票时主动出该结构票面)"
+ },
+ "shapes": [
+  {
+   "name": "T002/T003对冲容错(实票验证·第一优先)",
+   "legsCount": 4,
+   "combos": "6×2串1+4×3串1+1×4串1 ×2票",
+   "unitStake": 2,
+   "cost": 44,
+   "units": 22,
+   "structure": "同骨架4场×2票·第4关双保险换腿(两个不同玩法选项如同场CRS 1:1+HAFU dd)·中2关即回1注2串1",
+   "evidence": "T002/T003实票各净+114.5/+114(2026-08-24中2/4关派彩136.5/136)·636轮形状回测容错族回款轮96.8%vs全中断零38.5%(09-11)",
+   "verified": "2026-09-11大哥拍板立为shapes第一优先"
   },
-  "playTaste": {
-    "priority": ["CRS", "HAFU", "TTG", "HAD"],
-    "gateRule": "高抽水池玩法腿(CRS/TTG/HAFU)入票须系统同推——池卡 rec_base/rec_upset 含该场该玩法、或 boldplay 翻身/彩票腿含之;系统未同推该场,自动落系统推荐玩法;HAD 方向腿按系统方向。priority 保留 CRS 优先(同推多玩法时 CRS 先入)。依据(2026-09-03 十六票60腿对齐分析,docs/2026-09-03-ticket-recommend-alignment-design.html):偏离系统自选腿命中14%(2/14) vs 一致40%(12/30);零一致票净-75.6 vs 高一致票+212.9;排除场照买全亏(T004/T005/T006)",
-    "byPlay": {
-      "CRS": {
-        "universe": "31项(比分29+胜其他/平其他/负其他)",
-        "band": "小比分胜方型:净胜≤2且总进球≤3(2-0为主力,兼容1-0/0-1/2-1/1-1/3-0)",
-        "history": {"2-0": 6, "1-1": 1, "0-1": 1, "2-1": 1, "1-0": 1, "3-0": 1},
-        "avoid": ["胜其他/平其他/负其他长尾", "大比分4-0+"]
-      },
-      "HAFU": {
-        "universe": "9项(半场主/平/客×全场主/平/客)",
-        "band": "dd(半平/全平)为主力,aa(客/客)次之",
-        "history": {"dd": 4, "aa": 1},
-        "avoid": ["反转组ad/da", "hh强队慢热陷阱(8-26教训:dd路径x0.85观察)"]
-      },
-      "TTG": {
-        "universe": "8档(0球~7+球)",
-        "band": "两端极端:0球/5球",
-        "history": {"0球": 3, "5球": 1},
-        "avoid": ["中间档2-3球(低赔低EV,从未入票)"]
-      },
-      "HAD": {
-        "universe": "3项(主/平/客)",
-        "band": "仅高赔价值主胜或串内托底腿",
-        "history": {"主胜@4.05": 2},
-        "avoid": ["低赔热门做腿(巴萨1.70级仅串内托底,不单独成票)"]
-      },
-      "HHAD": {
-        "universe": "让球胜平负",
-        "history": {},
-        "status": "从未入票;开放尝试(EV>0且分歧合规才进,不作默认)"
-      }
-    }
+  {
+   "name": "4串11容错",
+   "legsCount": 4,
+   "combos": "6×2串1+4×3串1+1×4串1",
+   "unitStake": 2,
+   "cost": 22,
+   "units": 11
   },
-  "structure": "2条高赔奖金引擎腿+1条稳腿托底;场均腿赔~7.9",
-  "hedging": "双票同骨架只换1条腿(T002/T003换第4关,T005/T006换008腿)",
-  "leagueFocus": "西甲重仓(近期票全西甲);样本6票,联赛权重仅供参考",
-  "payoutStyle": "按形状结算:中2关回1注2串1即视为部分回收",
-  "notes": "6/6手动自选;系统方案仅作骨架参考;战绩88投293回/净+205.4,CRS为主要盈利来源；boldplay v2: 翻身月预算40元gate(boldplay自动执行)+连续4轮0回款降半仓",
-  "schemaVersion": 2,
-  "deprecated": {"shapes": "v3轨道A取代", "stake": "预算红线已废除(设计§四)", "playTaste": "轨道N叙事仓取代"},
-  "tracks": {
-    "A_base": {
-      "shape": "3*4*5",
-      "combos": "3串1×10+4串1×5+5串1×1=16注",
-      "unitStake": 2,
-      "costPerMult": 32,
-      "danSeats": 2,
-      "stdSeats": 3,
-      "danP": 0.75,
-      "stdP": 0.6,
-      "treadline": [1.35, 0.68],
-      "coverGate": "P_full>=32n+N·突破需显式拍板标记"
-    },
-    "N_narrative": {
-      "starStake": {"5": 10, "4": 5, "3": 2, "lt3": 0},
-      "plays": ["N-CRS-2x1", "N-HAFU-3x1", "N-MIX-2x1"],
-      "note": "金额=注数×2元·无上限·覆盖闸约束·★★以下只进影子"
-    }
+  {
+   "name": "3场混串",
+   "legsCount": 3,
+   "combos": "2串1×3注+3串1×1注",
+   "unitStake": 2,
+   "cost": 8,
+   "units": 4
   }
+ ],
+ "stake": {
+  "unitStake": 2,
+  "ticketBand": [
+   8,
+   22
+  ],
+  "roundRedline": 30,
+  "upsetMonthlyCap": 40
+ },
+ "playTaste": {
+  "priority": [
+   "CRS",
+   "HAFU",
+   "TTG",
+   "HAD"
+  ],
+  "gateRule": "高抽水池玩法腿(CRS/TTG/HAFU)入票须系统同推——池卡 rec_base/rec_upset 含该场该玩法、或 boldplay 翻身/彩票腿含之;系统未同推该场,自动落系统推荐玩法;HAD 方向腿按系统方向。priority 保留 CRS 优先(同推多玩法时 CRS 先入)。依据(2026-09-03 十六票60腿对齐分析,docs/2026-09-03-ticket-recommend-alignment-design.html):偏离系统自选腿命中14%(2/14) vs 一致40%(12/30);零一致票净-75.6 vs 高一致票+212.9;排除场照买全亏(T004/T005/T006)",
+  "byPlay": {
+   "CRS": {
+    "universe": "31项(比分29+胜其他/平其他/负其他)",
+    "band": "小比分胜方型:净胜≤2且总进球≤3(2-0为主力,兼容1-0/0-1/2-1/1-1/3-0)",
+    "history": {
+     "2-0": 6,
+     "1-1": 1,
+     "0-1": 1,
+     "2-1": 1,
+     "1-0": 1,
+     "3-0": 1
+    },
+    "avoid": [
+     "胜其他/平其他/负其他长尾",
+     "大比分4-0+"
+    ]
+   },
+   "HAFU": {
+    "universe": "9项(半场主/平/客×全场主/平/客)",
+    "band": "dd(半平/全平)为主力,aa(客/客)次之",
+    "history": {
+     "dd": 4,
+     "aa": 1
+    },
+    "avoid": [
+     "反转组ad/da",
+     "hh强队慢热陷阱(8-26教训:dd路径x0.85观察)"
+    ]
+   },
+   "TTG": {
+    "universe": "8档(0球~7+球)",
+    "band": "两端极端:0球/5球",
+    "history": {
+     "0球": 3,
+     "5球": 1
+    },
+    "avoid": [
+     "中间档2-3球(低赔低EV,从未入票)"
+    ]
+   },
+   "HAD": {
+    "universe": "3项(主/平/客)",
+    "band": "仅高赔价值主胜或串内托底腿",
+    "history": {
+     "主胜@4.05": 2
+    },
+    "avoid": [
+     "低赔热门做腿(巴萨1.70级仅串内托底,不单独成票)"
+    ]
+   },
+   "HHAD": {
+    "universe": "让球胜平负",
+    "history": {},
+    "status": "从未入票;开放尝试(EV>0且分歧合规才进,不作默认)"
+   }
+  }
+ },
+ "structure": "2条高赔奖金引擎腿+1条稳腿托底;场均腿赔~7.9",
+ "hedging": "双票同骨架只换1条腿(T002/T003换第4关,T005/T006换008腿)",
+ "leagueFocus": "西甲重仓(近期票全西甲);样本6票,联赛权重仅供参考",
+ "payoutStyle": "按形状结算:中2关回1注2串1即视为部分回收",
+ "notes": "6/6手动自选;系统方案仅作骨架参考;战绩88投293回/净+205.4,CRS为主要盈利来源；boldplay v2: 翻身月预算40元gate(boldplay自动执行)+连续4轮0回款降半仓",
+ "schemaVersion": 2,
+ "deprecated": {
+  "shapes": "2026-09-11大哥拍板部分恢复:shapes第一优先(T002/T003对冲容错)重新生效,其余条目仍为历史参考",
+  "stake": "预算红线已废除(设计§四)",
+  "playTaste": "轨道N叙事仓取代"
+ },
+ "tracks": {
+  "A_base": {
+   "shape": "3*4*5",
+   "combos": "3串1×10+4串1×5+5串1×1=16注",
+   "unitStake": 2,
+   "costPerMult": 32,
+   "danSeats": 2,
+   "stdSeats": 3,
+   "danP": 0.75,
+   "stdP": 0.6,
+   "treadline": [
+    1.35,
+    0.68
+   ],
+   "coverGate": "P_full>=32n+N·突破需显式拍板标记"
+  },
+  "N_narrative": {
+   "starStake": {
+    "5": 10,
+    "4": 5,
+    "3": 2,
+    "lt3": 0
+   },
+   "plays": [
+    "N-CRS-2x1",
+    "N-HAFU-3x1",
+    "N-MIX-2x1"
+   ],
+   "note": "金额=注数×2元·无上限·覆盖闸约束·★★以下只进影子"
+  }
+ }
 }
