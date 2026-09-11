@@ -1,0 +1,497 @@
+{
+ "generatedAt": "2026-09-11T10:42",
+ "design": "孪生票配对：同日同腿三形状；BUDGET=30 等成本；shapes.py 结算复用",
+ "bias": "B365 抽水 ~5% < 体彩 12.9%，绝对回收率偏乐观；相对排序同源有效",
+ "avgMarginB365": 0.0641,
+ "variants": {
+  "A_无门槛top4": {
+   "rounds": 636,
+   "byShape": {
+    "4串1": {
+     "rounds": 636,
+     "cost": 19080,
+     "payout": 19801.76,
+     "ret": 1.0378,
+     "ret_med": 0.0,
+     "ret_p25": 0.0,
+     "ret_p75": 1.8537,
+     "hit_all": 178,
+     "hit_3": 224,
+     "hit_le2": 234,
+     "pay_rounds": 178,
+     "max_streak0": 14,
+     "max_dd": -1133.03,
+     "net": 721.76
+    },
+    "4串11": {
+     "rounds": 636,
+     "cost": 13992,
+     "payout": 14164.14,
+     "ret": 1.0123,
+     "ret_med": 0.6864,
+     "ret_p25": 0.2309,
+     "ret_p75": 1.5664,
+     "hit_all": 178,
+     "hit_3": 224,
+     "hit_le2": 234,
+     "pay_rounds": 576,
+     "max_streak0": 3,
+     "max_dd": -532.7,
+     "net": 172.14
+    },
+    "全2关-4": {
+     "rounds": 636,
+     "cost": 15264,
+     "payout": 15433.23,
+     "ret": 1.0111,
+     "ret_med": 0.8842,
+     "ret_p25": 0.4229,
+     "ret_p75": 1.4454,
+     "hit_all": 178,
+     "hit_3": 224,
+     "hit_le2": 234,
+     "pay_rounds": 576,
+     "max_streak0": 3,
+     "max_dd": -444.54,
+     "net": 169.23
+    }
+   },
+   "pair_1_minus_4串1_retDiff": {
+    "mean": -0.0255,
+    "ci95": [
+     -0.1302,
+     0.0629
+    ]
+   },
+   "pair_2_minus_4串1_retDiff": {
+    "mean": -0.0267,
+    "ci95": [
+     -0.1611,
+     0.0857
+    ]
+   },
+   "randomBaseline": {
+    "4串1": {
+     "rounds": 6360,
+     "cost": 190800,
+     "payout": 153588.7,
+     "ret": 0.805,
+     "ret_med": 0.0,
+     "ret_p25": 0.0,
+     "ret_p75": 0.0,
+     "hit_all": 435,
+     "hit_3": 1685,
+     "hit_le2": 4240,
+     "pay_rounds": 435,
+     "max_streak0": 172,
+     "max_dd": -37338.56,
+     "net": -37211.3
+    },
+    "4串11": {
+     "rounds": 6360,
+     "cost": 139920,
+     "payout": 124163.0,
+     "ret": 0.8874,
+     "ret_med": 0.3277,
+     "ret_p25": 0.0,
+     "ret_p75": 1.2523,
+     "hit_all": 435,
+     "hit_3": 1685,
+     "hit_le2": 4240,
+     "pay_rounds": 4614,
+     "max_streak0": 15,
+     "max_dd": -15814.36,
+     "net": -15757.0
+    },
+    "全2关-4": {
+     "rounds": 6360,
+     "cost": 152640,
+     "payout": 140545.25,
+     "ret": 0.9208,
+     "ret_med": 0.6012,
+     "ret_p25": 0.0,
+     "ret_p75": 1.4796,
+     "hit_all": 435,
+     "hit_3": 1685,
+     "hit_le2": 4240,
+     "pay_rounds": 4614,
+     "max_streak0": 15,
+     "max_dd": -12191.84,
+     "net": -12094.75
+    }
+   }
+  },
+  "B_p55门槛": {
+   "rounds": 374,
+   "byShape": {
+    "4串1": {
+     "rounds": 374,
+     "cost": 11220,
+     "payout": 11312.07,
+     "ret": 1.0082,
+     "ret_med": 0.0,
+     "ret_p25": 0.0,
+     "ret_p75": 2.0823,
+     "hit_all": 144,
+     "hit_3": 144,
+     "hit_le2": 86,
+     "pay_rounds": 144,
+     "max_streak0": 10,
+     "max_dd": -689.17,
+     "net": 92.07
+    },
+    "4串11": {
+     "rounds": 374,
+     "cost": 8228,
+     "payout": 8286.01,
+     "ret": 1.0071,
+     "ret_med": 0.7286,
+     "ret_p25": 0.5064,
+     "ret_p75": 1.6086,
+     "hit_all": 144,
+     "hit_3": 144,
+     "hit_le2": 86,
+     "pay_rounds": 362,
+     "max_streak0": 1,
+     "max_dd": -297.2,
+     "net": 58.01
+    },
+    "全2关-4": {
+     "rounds": 374,
+     "cost": 8976,
+     "payout": 9046.56,
+     "ret": 1.0079,
+     "ret_med": 0.92,
+     "ret_p25": 0.6704,
+     "ret_p75": 1.445,
+     "hit_all": 144,
+     "hit_3": 144,
+     "hit_le2": 86,
+     "pay_rounds": 362,
+     "max_streak0": 1,
+     "max_dd": -264.6,
+     "net": 70.56
+    }
+   },
+   "pair_1_minus_4串1_retDiff": {
+    "mean": -0.0012,
+    "ci95": [
+     -0.0821,
+     0.0724
+    ]
+   },
+   "pair_2_minus_4串1_retDiff": {
+    "mean": -0.0003,
+    "ci95": [
+     -0.1074,
+     0.0945
+    ]
+   },
+   "randomBaseline": {
+    "4串1": {
+     "rounds": 3740,
+     "cost": 112200,
+     "payout": 100073.47,
+     "ret": 0.8919,
+     "ret_med": 0.0,
+     "ret_p25": 0.0,
+     "ret_p75": 0.0,
+     "hit_all": 787,
+     "hit_3": 1568,
+     "hit_le2": 1385,
+     "pay_rounds": 787,
+     "max_streak0": 84,
+     "max_dd": -15095.3,
+     "net": -12126.53
+    },
+    "4串11": {
+     "rounds": 3740,
+     "cost": 82280,
+     "payout": 77781.73,
+     "ret": 0.9453,
+     "ret_med": 0.7564,
+     "ret_p25": 0.1936,
+     "ret_p75": 1.0364,
+     "hit_all": 787,
+     "hit_3": 1568,
+     "hit_le2": 1385,
+     "pay_rounds": 3417,
+     "max_streak0": 11,
+     "max_dd": -5352.04,
+     "net": -4498.27
+    },
+    "全2关-4": {
+     "rounds": 3740,
+     "cost": 89760,
+     "payout": 86468.99,
+     "ret": 0.9633,
+     "ret_med": 0.9517,
+     "ret_p25": 0.3546,
+     "ret_p75": 1.2458,
+     "hit_all": 787,
+     "hit_3": 1568,
+     "hit_le2": 1385,
+     "pay_rounds": 3417,
+     "max_streak0": 11,
+     "max_dd": -3948.33,
+     "net": -3291.01
+    }
+   }
+  }
+ },
+ "pinSensitivity": {
+  "rounds": 314,
+  "byShape": {
+   "4串1": {
+    "rounds": 314,
+    "cost": 9420,
+    "payout": 9834.21,
+    "ret": 1.044,
+    "ret_med": 0.0,
+    "ret_p25": 0.0,
+    "ret_p75": 2.1397,
+    "hit_all": 123,
+    "hit_3": 117,
+    "hit_le2": 74,
+    "pay_rounds": 123,
+    "max_streak0": 12,
+    "max_dd": -666.19,
+    "net": 414.21
+   },
+   "4串11": {
+    "rounds": 314,
+    "cost": 6908,
+    "payout": 7068.29,
+    "ret": 1.0232,
+    "ret_med": 0.7336,
+    "ret_p25": 0.4891,
+    "ret_p75": 1.6364,
+    "hit_all": 123,
+    "hit_3": 117,
+    "hit_le2": 74,
+    "pay_rounds": 303,
+    "max_streak0": 1,
+    "max_dd": -288.65,
+    "net": 160.29
+   },
+   "全2关-4": {
+    "rounds": 314,
+    "cost": 7536,
+    "payout": 7675.87,
+    "ret": 1.0186,
+    "ret_med": 0.9263,
+    "ret_p25": 0.6496,
+    "ret_p75": 1.4638,
+    "hit_all": 123,
+    "hit_3": 117,
+    "hit_le2": 74,
+    "pay_rounds": 303,
+    "max_streak0": 1,
+    "max_dd": -257.46,
+    "net": 139.87
+   }
+  }
+ },
+ "bySeason": {
+  "2324": {
+   "4串1": {
+    "rounds": 125,
+    "cost": 3750,
+    "payout": 3835.89,
+    "ret": 1.0229,
+    "ret_med": 0.0,
+    "ret_p25": 0.0,
+    "ret_p75": 2.0807,
+    "hit_all": 50,
+    "hit_3": 47,
+    "hit_le2": 28,
+    "pay_rounds": 50,
+    "max_streak0": 6,
+    "max_dd": -304.08,
+    "net": 85.89
+   },
+   "4串11": {
+    "rounds": 125,
+    "cost": 2750,
+    "payout": 2823.11,
+    "ret": 1.0266,
+    "ret_med": 0.745,
+    "ret_p25": 0.5314,
+    "ret_p75": 1.6082,
+    "hit_all": 50,
+    "hit_3": 47,
+    "hit_le2": 28,
+    "pay_rounds": 124,
+    "max_streak0": 1,
+    "max_dd": -112.9,
+    "net": 73.11
+   },
+   "全2关-4": {
+    "rounds": 125,
+    "cost": 3000,
+    "payout": 3089.75,
+    "ret": 1.0299,
+    "ret_med": 0.9379,
+    "ret_p25": 0.6992,
+    "ret_p75": 1.445,
+    "hit_all": 50,
+    "hit_3": 47,
+    "hit_le2": 28,
+    "pay_rounds": 124,
+    "max_streak0": 1,
+    "max_dd": -86.79,
+    "net": 89.75
+   }
+  },
+  "2425": {
+   "4串1": {
+    "rounds": 121,
+    "cost": 3630,
+    "payout": 3613.22,
+    "ret": 0.9954,
+    "ret_med": 0.0,
+    "ret_p25": 0.0,
+    "ret_p75": 2.0667,
+    "hit_all": 44,
+    "hit_3": 49,
+    "hit_le2": 28,
+    "pay_rounds": 44,
+    "max_streak0": 9,
+    "max_dd": -689.17,
+    "net": -16.78
+   },
+   "4串11": {
+    "rounds": 121,
+    "cost": 2662,
+    "payout": 2634.3,
+    "ret": 0.9896,
+    "ret_med": 0.6918,
+    "ret_p25": 0.4877,
+    "ret_p75": 1.6,
+    "hit_all": 44,
+    "hit_3": 49,
+    "hit_le2": 28,
+    "pay_rounds": 115,
+    "max_streak0": 1,
+    "max_dd": -297.2,
+    "net": -27.7
+   },
+   "全2关-4": {
+    "rounds": 121,
+    "cost": 2904,
+    "payout": 2870.77,
+    "ret": 0.9886,
+    "ret_med": 0.88,
+    "ret_p25": 0.6483,
+    "ret_p75": 1.4392,
+    "hit_all": 44,
+    "hit_3": 49,
+    "hit_le2": 28,
+    "pay_rounds": 115,
+    "max_streak0": 1,
+    "max_dd": -264.6,
+    "net": -33.23
+   }
+  },
+  "2526": {
+   "4串1": {
+    "rounds": 114,
+    "cost": 3420,
+    "payout": 3464.78,
+    "ret": 1.0131,
+    "ret_med": 0.0,
+    "ret_p25": 0.0,
+    "ret_p75": 2.088,
+    "hit_all": 45,
+    "hit_3": 44,
+    "hit_le2": 25,
+    "pay_rounds": 45,
+    "max_streak0": 10,
+    "max_dd": -627.39,
+    "net": 44.78
+   },
+   "4串11": {
+    "rounds": 114,
+    "cost": 2508,
+    "payout": 2552.83,
+    "ret": 1.0179,
+    "ret_med": 0.765,
+    "ret_p25": 0.5595,
+    "ret_p75": 1.6109,
+    "hit_all": 45,
+    "hit_3": 44,
+    "hit_le2": 25,
+    "pay_rounds": 110,
+    "max_streak0": 1,
+    "max_dd": -219.18,
+    "net": 44.83
+   },
+   "全2关-4": {
+    "rounds": 114,
+    "cost": 2736,
+    "payout": 2786.49,
+    "ret": 1.0185,
+    "ret_med": 0.96,
+    "ret_p25": 0.7313,
+    "ret_p75": 1.4458,
+    "hit_all": 45,
+    "hit_3": 44,
+    "hit_le2": 25,
+    "pay_rounds": 110,
+    "max_streak0": 1,
+    "max_dd": -151.37,
+    "net": 50.49
+   }
+  },
+  "2627": {
+   "4串1": {
+    "rounds": 14,
+    "cost": 420,
+    "payout": 398.18,
+    "ret": 0.948,
+    "ret_med": 0.0,
+    "ret_p25": 0.0,
+    "ret_p75": 2.378,
+    "hit_all": 5,
+    "hit_3": 4,
+    "hit_le2": 5,
+    "pay_rounds": 5,
+    "max_streak0": 3,
+    "max_dd": -90.0,
+    "net": -21.82
+   },
+   "4串11": {
+    "rounds": 14,
+    "cost": 308,
+    "payout": 275.77,
+    "ret": 0.8954,
+    "ret_med": 0.7041,
+    "ret_p25": 0.1541,
+    "ret_p75": 1.7691,
+    "hit_all": 5,
+    "hit_3": 4,
+    "hit_le2": 5,
+    "pay_rounds": 13,
+    "max_streak0": 1,
+    "max_dd": -58.61,
+    "net": -32.23
+   },
+   "全2关-4": {
+    "rounds": 14,
+    "cost": 336,
+    "payout": 299.55,
+    "ret": 0.8915,
+    "ret_med": 0.8942,
+    "ret_p25": 0.2829,
+    "ret_p75": 1.56,
+    "hit_all": 5,
+    "hit_3": 4,
+    "hit_le2": 5,
+    "pay_rounds": 13,
+    "max_streak0": 1,
+    "max_dd": -57.2,
+    "net": -36.45
+   }
+  }
+ }
+}

@@ -1,0 +1,140 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>形状回测报告 · 三形状孪生票 636 轮</title>
+<style>
+:root{--bg:#f7f8fa;--card:#fff;--ink:#1c2430;--sub:#5a6676;--line:#e3e7ee;--ok:#0a7d43;--bad:#c0392b;--gold:#b8860b;--acc:#1f5fbf}
+[data-theme="dark"]{--bg:#14181f;--card:#1c222c;--ink:#e8ecf2;--sub:#98a4b3;--line:#2c3542;--ok:#3ecf7a;--bad:#ff6b5e;--gold:#e2b93b;--acc:#5b9dff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.65 "Segoe UI","Microsoft YaHei",system-ui,sans-serif;padding:20px 16px}
+.wrap{max-width:1080px;margin:0 auto}
+h1{font-size:20px;margin:0 0 4px}
+h2{font-size:15px;margin:26px 0 10px;padding-left:9px;border-left:3px solid var(--acc)}
+.sub{color:var(--sub);font-size:12.5px;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.kpi .n{font-size:22px;font-weight:700}
+.kpi .l{font-size:12px;color:var(--sub)}
+.kpi .d{font-size:11.5px;margin-top:2px}
+.ok{color:var(--ok)}.bad{color:var(--bad)}.gold{color:var(--gold)}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;white-space:nowrap}
+th{color:var(--sub);font-weight:600;background:transparent}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:9px;border:1px solid var(--line);color:var(--sub)}
+.tag.hit{color:var(--ok);border-color:var(--ok)}
+.tag.miss{color:var(--bad);border-color:var(--bad)}
+.tag.wait{color:var(--gold);border-color:var(--gold)}
+.ic{width:15px;height:15px;vertical-align:-2.5px;margin-right:4px}
+ul{margin:6px 0;padding-left:20px}
+li{margin:3px 0}
+.note{font-size:12px;color:var(--sub);background:var(--card);border:1px dashed var(--line);border-radius:8px;padding:10px 12px;margin-top:10px}
+.src{font-size:11.5px;color:var(--sub)}
+.fig{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;margin:10px 0}
+.fig svg{width:100%;height:auto;display:block}
+.fig .cap{font-size:11.5px;color:var(--sub);margin-top:6px}
+@media(max-width:640px){td,th{padding:4px 5px;font-size:11.5px}}
+</style></head><body><div class="wrap">
+
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="i-chart" viewBox="0 0 16 16"><path fill="currentColor" d="M2 13V2h1.5v9.5H14V13H2zm3-3l2.5-3 2 2L13 5l1 1-4.5 5-2-2L6 11 5 10z"/></symbol>
+<symbol id="i-fix" viewBox="0 0 16 16"><path fill="currentColor" d="M9.1 1.7l5.2 5.2-1.4 1.4-1-.4-2.3 2.3.4 1-4 4-2.5-2.5 4-4 1 .4 2.3-2.3-.4-1 1.4-1.4zM1 14l2.5-2.5 1 1L2 15z"/></symbol>
+<symbol id="i-shield" viewBox="0 0 16 16"><path fill="currentColor" d="M8 1l6 2v5c0 3.5-2.5 6.5-6 7-3.5-.5-6-3.5-6-7V3l6-2zm0 1.6L3.5 4.4v3.6c0 2.7 1.9 5 4.5 5.5 2.6-.5 4.5-2.8 4.5-5.5V4.4L8 2.6z"/></symbol>
+<symbol id="i-alert" viewBox="0 0 16 16"><path fill="currentColor" d="M8 1.5L15 14H1L8 1.5zm-.9 4.4h1.8v4.2H7.1V5.9zm0 5.5h1.8v1.8H7.1v-1.8z"/></symbol>
+</defs></svg>
+
+<h1><svg class="ic"><use href="#i-chart"/></svg>形状回测报告 · 三形状孪生票配对（636 轮历史）</h1>
+<div class="sub">生成 2026-09-11 · fd 四季 16 联赛 16414 场（B365 收盘齐备口径）· 大哥拍板：双口径选腿 + 三完整季+2627 · 脚本 engine/scripts/research/shape_backtest.py</div>
+
+<div class="note"><strong><svg class="ic"><use href="#i-alert"/></svg>偏差声明（先读这个再看数字）</strong>：
+①赔率源=B365 收盘，平均抽水 <b>6.41%</b>，体彩 HAD 池 12.9%——绝对回收率换算体彩约需每关再扣 ~6pp，<b>本报告绝对数字不可外推到体彩加注决策</b>，三形状同源对比的相对结论有效；
+②收盘价成交无滑点假设；③fd 不含日职/沙特/北欧（影子实盘有）；④2627 季 fd 仅到 8 月底（14 轮）。</div>
+
+<h2>① 主结果 · 期望维度三形状打平，方差维度容错族碾压</h2>
+<table>
+<tr><th>口径</th><th>形状</th><th class="num">轮数</th><th class="num">回收率</th><th class="num">净额</th><th class="num">全中/中3/断≤2</th><th class="num">轮回报中位</th><th class="num">回款轮占比</th><th class="num">最长连灭</th><th class="num">最大回撤</th></tr>
+<tr><td rowspan="3"><b>A 无门槛 top4</b></td><td>4串1 ×15倍=30元</td><td class="num">636</td><td class="num">103.8%</td><td class="num ok">+721.76</td><td class="num">178/224/234</td><td class="num">0%</td><td class="num bad">28.0%</td><td class="num bad">14</td><td class="num bad">-1133</td></tr>
+<tr><td>4串11 ×1倍=22元</td><td class="num">636</td><td class="num">101.2%</td><td class="num ok">+172.14</td><td class="num">178/224/234</td><td class="num">69%</td><td class="num ok">90.6%</td><td class="num ok">3</td><td class="num">-533</td></tr>
+<tr><td>全2关-4 ×2倍=24元</td><td class="num">636</td><td class="num">101.1%</td><td class="num ok">+169.23</td><td class="num">178/224/234</td><td class="num">88%</td><td class="num ok">90.6%</td><td class="num ok">3</td><td class="num ok">-445</td></tr>
+<tr><td rowspan="3"><b>B p≥0.55 门槛</b></td><td>4串1 ×15倍=30元</td><td class="num">374</td><td class="num">100.8%</td><td class="num ok">+92.07</td><td class="num">144/144/86</td><td class="num">0%</td><td class="num bad">38.5%</td><td class="num bad">10</td><td class="num bad">-689</td></tr>
+<tr><td>4串11 ×1倍=22元</td><td class="num">374</td><td class="num">100.7%</td><td class="num ok">+58.01</td><td class="num">144/144/86</td><td class="num">73%</td><td class="num ok">96.8%</td><td class="num ok">1</td><td class="num">-297</td></tr>
+<tr><td>全2关-4 ×2倍=24元</td><td class="num">374</td><td class="num">100.8%</td><td class="num ok">+70.56</td><td class="num">144/144/86</td><td class="num">92%</td><td class="num ok">96.8%</td><td class="num ok">1</td><td class="num ok">-265</td></tr>
+</table>
+
+<div class="fig">
+<svg viewBox="0 0 720 250" role="img" aria-label="三形状方差三指标对比">
+<style>.lbl{font:11px "Segoe UI",sans-serif;fill:var(--sub)}.val{font:12px "Segoe UI",sans-serif;font-weight:700}.ax{stroke:var(--line);stroke-width:1}</style>
+<!-- 回款轮占比 -->
+<text x="10" y="20" class="lbl">回款轮占比（越高越好）</text>
+<rect x="10" y="30" width="90" height="22" fill="var(--bad)" opacity="0.75" rx="3"/>
+<text x="106" y="46" class="val" fill="var(--bad)">4串1 38.5%</text>
+<rect x="10" y="60" width="227" height="22" fill="var(--ok)" opacity="0.75" rx="3"/>
+<text x="243" y="76" class="val" fill="var(--ok)">4串11 96.8%</text>
+<rect x="10" y="90" width="227" height="22" fill="var(--ok)" opacity="0.75" rx="3"/>
+<text x="243" y="106" class="val" fill="var(--ok)">全2关-4 96.8%</text>
+<!-- 连灭 -->
+<text x="10" y="140" class="lbl">最长连灭轮（越低越好，口径B）</text>
+<rect x="10" y="150" width="200" height="22" fill="var(--bad)" opacity="0.75" rx="3"/>
+<text x="216" y="166" class="val" fill="var(--bad)">4串1 ×10</text>
+<rect x="10" y="180" width="20" height="22" fill="var(--ok)" opacity="0.75" rx="3"/>
+<text x="36" y="196" class="val" fill="var(--ok)">4串11 / 全2关 ×1</text>
+<!-- 回撤 -->
+<text x="380" y="140" class="lbl">最大回撤（元，越浅越好，口径B）</text>
+<rect x="380" y="150" width="240" height="22" fill="var(--bad)" opacity="0.75" rx="3"/>
+<text x="626" y="166" class="val" fill="var(--bad)">4串1 -689</text>
+<rect x="380" y="180" width="104" height="22" fill="var(--ok)" opacity="0.75" rx="3"/>
+<text x="490" y="196" class="val" fill="var(--ok)">4串11 -297 / 全2关 -265</text>
+</svg>
+<div class="cap">口径B（p≥0.55）数据；回款轮占比 = 单轮 payout&gt;0 的轮次占比。4串1 每 5 轮约 3 轮归零，容错族 30 轮仅 1 轮归零。</div>
+</div>
+
+<h2>② 统计显著性 · 形状间期望差异 CI 全跨 0</h2>
+<table>
+<tr><th>配对差（轮级回收率）</th><th class="num">口径A 均值</th><th class="num">CI95</th><th class="num">口径B 均值</th><th class="num">CI95</th></tr>
+<tr><td>4串11 − 4串1</td><td class="num">-2.55pp</td><td class="num">[-13.0, +6.3] 跨0</td><td class="num">-0.12pp</td><td class="num">[-8.2, +7.2] 跨0</td></tr>
+<tr><td>全2关-4 − 4串1</td><td class="num">-2.67pp</td><td class="num">[-16.1, +8.6] 跨0</td><td class="num">-0.03pp</td><td class="num">[-10.7, +9.5] 跨0</td></tr>
+</table>
+<div class="note"><strong>4串1 的点估计领先（口径A +2.6pp）在 636 轮下仍不显著</strong>——全中率波动（38.5%）产生的方差远大于形状间均值差。孪生票配对已最大化检验力，CI 还是这么宽：形状间期望差异即使存在也小到没有决策意义。</div>
+
+<h2>③ 随机基线对照 · 回报的真正来源是选腿热度集中，不是形状</h2>
+<table>
+<tr><th>口径</th><th>形状</th><th class="num">top4 选腿</th><th class="num">随机选腿基线</th><th class="num">选腿增量 α</th></tr>
+<tr><td rowspan="3">A 无门槛</td><td>4串1</td><td class="num">103.8%</td><td class="num">80.5%</td><td class="num ok">+23.3pp</td></tr>
+<tr><td>4串11</td><td class="num">101.2%</td><td class="num">88.7%</td><td class="num ok">+12.5pp</td></tr>
+<tr><td>全2关-4</td><td class="num">101.1%</td><td class="num">92.1%</td><td class="num ok">+9.0pp</td></tr>
+<tr><td rowspan="3">B p≥0.55</td><td>4串1</td><td class="num">100.8%</td><td class="num">89.2%</td><td class="num ok">+11.6pp</td></tr>
+<tr><td>4串11</td><td class="num">100.7%</td><td class="num">94.5%</td><td class="num ok">+6.2pp</td></tr>
+<tr><td>全2关-4</td><td class="num">100.8%</td><td class="num">96.3%</td><td class="num ok">+4.5pp</td></tr>
+</table>
+<div class="note">随机基线 = 同轮合格池内随机抽 4 场（每场仍买热门方向）。<strong>top4 集中度贡献 +4.5~+23pp，全部形状间差异（≤2.7pp）在它面前是零头</strong>。机理：B365 收盘在超热腿上系统性"慷慨"（favorite-longshot bias 强形式）——口径B 全中率 38.5% vs 去水理论 ~21%，热门实际命中率远超隐含。此 α 属于 B365 收盘世界的经验事实，换体彩赔率（+6.5pp/关抽水差）后是否存活<b>本回测无法回答</b>。</div>
+
+<h2>④ 稳健性 · 分季与 Pinnacle 敏感性</h2>
+<table>
+<tr><th>赛季（口径B）</th><th class="num">轮数</th><th class="num">4串1</th><th class="num">4串11</th><th class="num">全2关-4</th></tr>
+<tr><td>2324</td><td class="num">125</td><td class="num">102.3%</td><td class="num">102.7%</td><td class="num">103.0%</td></tr>
+<tr><td>2425</td><td class="num">121</td><td class="num">99.5%</td><td class="num">99.0%</td><td class="num">98.9%</td></tr>
+<tr><td>2526</td><td class="num">114</td><td class="num">101.3%</td><td class="num">101.8%</td><td class="num">101.8%</td></tr>
+<tr><td>2627（截至8月底）</td><td class="num">14</td><td class="num bad">94.8%</td><td class="num bad">89.5%</td><td class="num bad">89.1%</td></tr>
+</table>
+<ul>
+<li><strong>Pinnacle 敏感性</strong>（314 轮子样本，双价齐备行）：104.4% / 102.3% / 101.9%——排序与 B365 一致，结论不改</li>
+<li>2324/2526 三形状齐过 100%，2425 齐低头（99%），<strong>形状冠军逐季轮换</strong>（2324 全2关最高、2526 4串11 并列最高）——再次支持期望无差异</li>
+<li>2627 开季 14 轮全形状 89-95%：开季热度失真 + 小样本噪声，与影子层 09-11 轮 -142 的体感一致</li>
+</ul>
+
+<h2>⑤ 结论</h2>
+<div class="card">
+<ol>
+<li><strong>回答"哪个方案回报率最高"：统计上没有</strong>。4串1 点估计最高（103.8%），但 636 轮配对 CI 全跨 0；形状间期望差异 &lt;2.7pp 且逐季不稳定。</li>
+<li><strong>形状的真实差异全在方差</strong>：同等期望下，4串11/全2关 把回款轮占比从 38.5% 抬到 96.8%、连灭从 10 降到 1、回撤从 -689 减到 -265~-297。等成本预算下 = <strong>同回报、断崖式低波动、回款体验完整</strong>。</li>
+<li><strong>回报的来源是选腿不是形状</strong>：top4 热度集中贡献 +4.5~23pp（vs 随机），远超形状间差异。<b>保底档 v5.6 选 4串11 做骨架的实证依据是"同等回报下的路径质量"，不是更高回报</b>——与 SKILL 设计叙事自洽。</li>
+<li><strong>体彩外推红线</strong>：B365 抽水 6.41% vs 体彩 12.9%，回收率绝对值不可平移；"B365 超热腿近零抽水"现象是否在体彩价上存活，需实盘 CLV 数据验证（已有 102 条 CLV 语料继续积累）。</li>
+<li><strong>过程事故存档</strong>：首版 bets 构造踩 dict-comprehension 陷阱（每注只剩最后一腿，三形状全测成单腿倍投），已修复并复验单轮（中3关 4串1 正确归零）。教训：复用结算器必须先单轮对拍再全量。</li>
+</ol>
+</div>
+
+<h2>⑥ 方法与数据来源</h2>
+<div class="src">
+孪生票配对设计：同日同 4 腿三形状同时出票（BUDGET=30 等成本：4串1×15倍/4串11×1倍/全2关-4×2倍）；成轮=自然比赛日跨联赛混轮 ≥4 合格腿；结算 100% 复用 engine/shadow/shapes.py 的 _skeleton/settle（outcome=int 0/1/2 对齐 paper.py:351 实盘口径）；随机基线=同轮重抽×10；配对差 bootstrap=300 次重抽（seed 42/7 固定可复现）。<br>
+数据：football-data.co.uk 16 联赛×4 季 CSV（缓存 engine/cache/shape_backtest/，共 16414 场 B365 收盘齐备）· JSON 底子 data/04-summaries/shape-backtest-report.json · 2026-09-11 大哥拍板双口径+三完整季+2627。
+</div>
