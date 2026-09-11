@@ -3231,6 +3231,80 @@
      "result": null
     }
    ]
+  },
+  {
+   "id": "T030",
+   "source": "方案转正",
+   "placedAt": "2026-09-11 15:20",
+   "placedAtNote": "大哥确认方案A后登记：候选H·A并法=热刺0:0×蔚山场双选(1:1+0:0)·2串1复式2注×5倍=20元·赔率冻结=14:45复扫缓存价·热刺池别登记为TTG(与CRS 0:0同事件同价@14.00,口味带0球×3;若终端实际走CRS池同价不影响结算金额)·蔚山/热刺均周六15:30后开赛,出票时限合规",
+   "stake": 20,
+   "unitStake": 2,
+   "units": 10,
+   "multiplier": 5,
+   "shape": "CRS+TTG 跨池混串 2串1 复式(蔚山双选)×5倍",
+   "matchDays": [
+    "2026-09-12",
+    "2026-09-13"
+   ],
+   "origin": "候选H改良链终版(A并法)·freq全量复算EV+8.6%·三腿模型对市场分歧全部≤5pp纪律线合规",
+   "combos": "2×2串1（蔚山0:0/1:1复式 × 热刺0球）",
+   "bets": [
+    {
+     "legs": [
+      0,
+      2
+     ],
+     "multiplier": 5,
+     "combinedOdds": 84.0,
+     "payoutIf": 840.0
+    },
+    {
+     "legs": [
+      1,
+      2
+     ],
+     "multiplier": 5,
+     "combinedOdds": 154.0,
+     "payoutIf": 1540.0
+    }
+   ],
+   "legs": [
+    {
+     "code": "周六001",
+     "league": "韩职(R29)",
+     "match": "蔚山现代 vs 仁川联",
+     "market": "CRS",
+     "pick": "1:1",
+     "odds": 6.0,
+     "agreement": "pick_diff",
+     "receiptNote": "池卡CRS推荐=0:1(带内q10.6%)；本腿1:1为全池q第一12.92%(audit全31项复算·对隐含12.44%+0.5pp合规)·pick_diff只提示不拦",
+     "result": null
+    },
+    {
+     "code": "周六001",
+     "league": "韩职(R29)",
+     "match": "蔚山现代 vs 仁川联",
+     "market": "CRS",
+     "pick": "0:0",
+     "odds": 11.0,
+     "agreement": "pick_diff",
+     "receiptNote": "池卡CRS推荐=0:1；0:0 q8.89%对隐含6.79%+2.1pp合规·DC双平(13.67%)与freq同向·pick_diff只提示不拦",
+     "result": null
+    },
+    {
+     "code": "周六022",
+     "league": "英超(R4)",
+     "match": "热刺 vs 埃弗顿",
+     "market": "TTG",
+     "pick": "0球",
+     "odds": 14.0,
+     "agreement": "pick_diff",
+     "receiptNote": "池卡翻身TTG推荐=s2@3.5；0球=CRS0:0同事件同价@14·q8.85%对隐含5.34%+3.5pp合规·热刺赛季零进球+under共识支撑·玩法级TTG同推✓·pick_diff只提示不拦",
+     "result": null
+    }
+   ],
+   "evFreq": 0.086,
+   "settle": null
   }
  ]
 }
