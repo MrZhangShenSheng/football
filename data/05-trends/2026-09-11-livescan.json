@@ -1,0 +1,49 @@
+{
+ "date": "2026-09-11",
+ "type": "livescan",
+ "schemaVersion": 1,
+ "scans": [
+  {
+   "at": "2026-09-11T18:12:35+08:00",
+   "trigger": "出票后监控",
+   "note": "09-12销售轮复核复扫（晚提交终审）：insight伤停复核+赔率diff 12项+实票腿价格对照。T028/T029/T030维持判定：新信息不触及已出票腿；两腿价格向有利（柏太阳神1.64→1.62、威尼斯平3.25→3.18）",
+   "matches": [
+    {
+     "matchId": 2041413,
+     "code": "周六009",
+     "threat": "high",
+     "signal": "多特伤停7人含吉拉西(头号射手)+本瑟拜尼(主力中卫)；seq19/20保底腿p=0.7127，开季R3×0.95+伤停d=+3×0.93修正后≈0.63跌破标准级——未出票腿，保底档建议剔除或换腿",
+     "source": "sporttery insight 2041416批"
+    },
+    {
+     "matchId": 2041420,
+     "code": "周六016",
+     "threat": "high",
+     "signal": "利物浦伤停7人含加克波/Ekitike/基耶萨攻击线；@1.37不宜入保底骨架——未出票腿",
+     "source": "sporttery insight"
+    },
+    {
+     "matchId": 2041453,
+     "code": "周日020",
+     "threat": "midhigh",
+     "signal": "巴黎圣曼开季0胜2平1负(R4第13位)基面反向；保底腿p=0.6859未踩线区间，保留但警示大哥可否决",
+     "source": "sporttery insight"
+    },
+    {
+     "matchId": 2041416,
+     "code": "周六012",
+     "threat": "mid",
+     "signal": "切尔西主伤4(凯塞多等)但赫尔城客伤9含门将巴特兰德；d=-5对主胜×1.04；骨架最强腿p≈0.82",
+     "source": "sporttery insight"
+    },
+    {
+     "matchId": 2041406,
+     "code": "周六002",
+     "threat": "low",
+     "signal": "全北vs首尔gw=29首尔榜首18胜5平5负vs全北第3；p_fused平=0.2956极差10.1pp——与T029已出全北平@3.20共振，正向支持",
+     "source": "dc_predict korea --market"
+    }
+   ]
+  }
+ ]
+}

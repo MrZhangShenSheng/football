@@ -1,7 +1,7 @@
 {
  "structure": "new",
  "date": "2026-09-11",
- "seq": 20,
+ "seq": 19,
  "tiers": {
   "base": {
    "cost": 32,
@@ -198,8 +198,8 @@
    "note": "3串1×10+4串1×5+5串1×1 · 中3关起回款 · 覆盖闸P_full≥32n"
   },
   "upset": {
-   "shape": "pool-4x1",
-   "cost": 2,
+   "shape": "pool-2x1x3",
+   "cost": 6,
    "legs": [
     {
      "matchNumStr": "周六018",
@@ -236,21 +236,50 @@
      "odds": 18.0,
      "q": 0.0727,
      "ev": 0.3086
+    },
+    {
+     "matchNumStr": "周日021",
+     "match": "皇家社会 vs 马竞",
+     "play": "crs",
+     "pick": "0:2",
+     "odds": 12.0,
+     "q": 0.0979,
+     "ev": 0.1748
+    },
+    {
+     "matchNumStr": "周五008",
+     "match": "威尼斯 vs 佛罗伦萨",
+     "play": "crs",
+     "pick": "1:0",
+     "odds": 10.5,
+     "q": 0.1059,
+     "ev": 0.1119
     }
    ],
-   "multiplier": 1,
    "bets": [
     {
      "legs": [
       0,
-      1,
+      1
+     ],
+     "multiplier": 1
+    },
+    {
+     "legs": [
       2,
       3
      ],
      "multiplier": 1
+    },
+    {
+     "legs": [
+      4,
+      5
+     ],
+     "multiplier": 1
     }
    ],
-   "note": "跨池4串1(木桶≤4关)"
+   "note": "3注跨池2串1(同场≤1腿)"
   },
   "lottery": {
    "shape": "lottery-8x1",
@@ -358,63 +387,63 @@
      "match": "柏林联合-沙尔克04",
      "play": "had",
      "pick": "主胜",
-     "p_fused": 0.4945,
-     "p_mkt": 0.41,
-     "diff_pp": 8.4
+     "p_fused": 0.5099,
+     "p_mkt": 0.4318,
+     "diff_pp": 7.8
     },
     {
      "matchNumStr": "周五007",
      "match": "柏林联合-沙尔克04",
      "play": "had",
      "pick": "平",
-     "p_fused": 0.3273,
-     "p_mkt": 0.2644,
-     "diff_pp": 6.3
+     "p_fused": 0.3184,
+     "p_mkt": 0.2566,
+     "diff_pp": 6.2
     },
     {
      "matchNumStr": "周五007",
      "match": "柏林联合-沙尔克04",
      "play": "had",
      "pick": "客胜",
-     "p_fused": 0.1782,
-     "p_mkt": 0.3256,
-     "diff_pp": 14.7
+     "p_fused": 0.1716,
+     "p_mkt": 0.3117,
+     "diff_pp": 14.0
     },
     {
      "matchNumStr": "周五011",
      "match": "塞维利亚-巴伦西亚",
      "play": "had",
      "pick": "主胜",
-     "p_fused": 0.5658,
-     "p_mkt": 0.4868,
-     "diff_pp": 7.9
+     "p_fused": 0.5533,
+     "p_mkt": 0.4685,
+     "diff_pp": 8.5
     },
     {
      "matchNumStr": "周五011",
      "match": "塞维利亚-巴伦西亚",
      "play": "had",
      "pick": "客胜",
-     "p_fused": 0.1729,
-     "p_mkt": 0.2319,
-     "diff_pp": 5.9
+     "p_fused": 0.1812,
+     "p_mkt": 0.2459,
+     "diff_pp": 6.5
     },
     {
      "matchNumStr": "周五011",
      "match": "塞维利亚-巴伦西亚",
      "play": "hhad",
      "pick": "让球主胜",
-     "p_fused": 0.2955,
-     "p_mkt": 0.2283,
-     "diff_pp": 6.7
+     "p_fused": 0.281,
+     "p_mkt": 0.211,
+     "diff_pp": 7.0
     },
     {
      "matchNumStr": "周五011",
      "match": "塞维利亚-巴伦西亚",
      "play": "hhad",
      "pick": "让球客胜",
-     "p_fused": 0.4356,
-     "p_mkt": 0.5033,
-     "diff_pp": 6.8
+     "p_fused": 0.4513,
+     "p_mkt": 0.5244,
+     "diff_pp": 7.3
     },
     {
      "matchNumStr": "周六005",
@@ -698,7 +727,7 @@
    ]
   }
  },
- "totalCost": 36,
+ "totalCost": 40,
  "cards": [
   {
    "code": "周五001",
@@ -710,8 +739,8 @@
      "pool": "ttg",
      "pick": "s2",
      "q": 0.2329,
-     "odds": 3.85,
-     "ev": -0.1033
+     "odds": 3.75,
+     "ev": -0.1266
     },
     {
      "code": "周五001",
@@ -719,8 +748,8 @@
      "pool": "ttg",
      "pick": "s3",
      "q": 0.2285,
-     "odds": 3.5,
-     "ev": -0.2002
+     "odds": 3.55,
+     "ev": -0.1888
     },
     {
      "code": "周五001",
@@ -728,8 +757,8 @@
      "pool": "hafu",
      "pick": "aa",
      "q": 0.188,
-     "odds": 2.65,
-     "ev": -0.5018
+     "odds": 2.6,
+     "ev": -0.5112
     },
     {
      "code": "周五001",
@@ -737,8 +766,8 @@
      "pool": "crs",
      "pick": "1:0",
      "q": 0.1051,
-     "odds": 15.5,
-     "ev": 0.629,
+     "odds": 14.5,
+     "ev": 0.5239,
      "divergent": true
     },
     {
@@ -747,8 +776,8 @@
      "pool": "hafu",
      "pick": "hh",
      "q": 0.246,
-     "odds": 7.6,
-     "ev": 0.8696,
+     "odds": 7.5,
+     "ev": 0.845,
      "divergent": true
     }
    ],
@@ -758,8 +787,8 @@
     "pool": "hafu",
     "pick": "hh",
     "q": 0.246,
-    "odds": 7.6,
-    "ev": 0.8696,
+    "odds": 7.5,
+    "ev": 0.845,
     "divergent": true
    },
    "rec_upset": {
@@ -768,8 +797,8 @@
     "pool": "ttg",
     "pick": "s2",
     "q": 0.2329,
-    "odds": 3.85,
-    "ev": -0.1033
+    "odds": 3.75,
+    "ev": -0.1266
    },
    "flags": [
     "pure_template",
@@ -795,27 +824,8 @@
      "pool": "ttg",
      "pick": "s3",
      "q": 0.2541,
-     "odds": 3.8,
-     "ev": -0.0344
-    },
-    {
-     "code": "周五003",
-     "match": "纽伦堡 vs 汉诺威96",
-     "pool": "hafu",
-     "pick": "hh",
-     "q": 0.1768,
-     "odds": 3.85,
-     "ev": -0.3193
-    },
-    {
-     "code": "周五003",
-     "match": "纽伦堡 vs 汉诺威96",
-     "pool": "ttg",
-     "pick": "s2",
-     "q": 0.2267,
-     "odds": 4.85,
-     "ev": 0.0995,
-     "divergent": true
+     "odds": 3.7,
+     "ev": -0.0598
     },
     {
      "code": "周五003",
@@ -823,8 +833,26 @@
      "pool": "hafu",
      "pick": "aa",
      "q": 0.2523,
+     "odds": 3.75,
+     "ev": -0.0539
+    },
+    {
+     "code": "周五003",
+     "match": "纽伦堡 vs 汉诺威96",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.1768,
      "odds": 4.0,
-     "ev": 0.0092,
+     "ev": -0.2928
+    },
+    {
+     "code": "周五003",
+     "match": "纽伦堡 vs 汉诺威96",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2267,
+     "odds": 4.55,
+     "ev": 0.0315,
      "divergent": true
     }
    ],
@@ -860,8 +888,8 @@
      "pool": "ttg",
      "pick": "s3",
      "q": 0.2257,
-     "odds": 3.7,
-     "ev": -0.1649
+     "odds": 3.65,
+     "ev": -0.1762
     },
     {
      "code": "周五006",
@@ -888,8 +916,8 @@
      "pool": "ttg",
      "pick": "s2",
      "q": 0.2336,
-     "odds": 4.4,
-     "ev": 0.0278,
+     "odds": 4.6,
+     "ev": 0.0746,
      "divergent": true
     },
     {
@@ -919,8 +947,8 @@
     "pool": "ttg",
     "pick": "s3",
     "q": 0.2257,
-    "odds": 3.7,
-    "ev": -0.1649
+    "odds": 3.65,
+    "ev": -0.1762
    },
    "flags": [
     "low_conf",
@@ -965,8 +993,8 @@
      "pool": "hafu",
      "pick": "hh",
      "q": 0.2513,
-     "odds": 3.7,
-     "ev": -0.0702
+     "odds": 3.45,
+     "ev": -0.133
     },
     {
      "code": "周五007",
@@ -974,8 +1002,8 @@
      "pool": "hafu",
      "pick": "aa",
      "q": 0.1818,
-     "odds": 4.5,
-     "ev": -0.1819
+     "odds": 4.75,
+     "ev": -0.1365
     }
    ],
    "rec_base": {
@@ -984,17 +1012,17 @@
     "pool": "hafu",
     "pick": "hh",
     "q": 0.2513,
-    "odds": 3.7,
-    "ev": -0.0702
+    "odds": 3.45,
+    "ev": -0.133
    },
    "rec_upset": {
     "code": "周五007",
     "match": "柏林联合 vs 沙尔克04",
-    "pool": "ttg",
-    "pick": "s2",
-    "q": 0.2198,
-    "odds": 3.9,
-    "ev": -0.1428
+    "pool": "crs",
+    "pick": "2:0",
+    "q": 0.0654,
+    "odds": 12.5,
+    "ev": -0.1825
    },
    "flags": [
     "pure_template"
@@ -1010,8 +1038,8 @@
      "pool": "crs",
      "pick": "1:0",
      "q": 0.1059,
-     "odds": 11.0,
-     "ev": 0.1649
+     "odds": 10.5,
+     "ev": 0.1119
     },
     {
      "code": "周五008",
@@ -1019,8 +1047,8 @@
      "pool": "ttg",
      "pick": "s2",
      "q": 0.2625,
-     "odds": 3.5,
-     "ev": -0.0812
+     "odds": 3.7,
+     "ev": -0.0287
     },
     {
      "code": "周五008",
@@ -1028,8 +1056,8 @@
      "pool": "ttg",
      "pick": "s3",
      "q": 0.225,
-     "odds": 3.6,
-     "ev": -0.19
+     "odds": 3.7,
+     "ev": -0.1675
     },
     {
      "code": "周五008",
@@ -1037,8 +1065,8 @@
      "pool": "hafu",
      "pick": "aa",
      "q": 0.1833,
-     "odds": 3.95,
-     "ev": -0.276
+     "odds": 3.85,
+     "ev": -0.2943
     },
     {
      "code": "周五008",
@@ -1046,19 +1074,20 @@
      "pool": "hafu",
      "pick": "hh",
      "q": 0.2359,
-     "odds": 4.45,
-     "ev": 0.0498,
+     "odds": 4.4,
+     "ev": 0.038,
      "divergent": true
     }
    ],
    "rec_base": {
     "code": "周五008",
     "match": "威尼斯 vs 佛罗伦萨",
-    "pool": "crs",
-    "pick": "1:0",
-    "q": 0.1059,
-    "odds": 11.0,
-    "ev": 0.1649
+    "pool": "hafu",
+    "pick": "hh",
+    "q": 0.2359,
+    "odds": 4.4,
+    "ev": 0.038,
+    "divergent": true
    },
    "rec_upset": {
     "code": "周五008",
@@ -1066,8 +1095,8 @@
     "pool": "crs",
     "pick": "1:0",
     "q": 0.1059,
-    "odds": 11.0,
-    "ev": 0.1649
+    "odds": 10.5,
+    "ev": 0.1119
    },
    "flags": [
     "pure_template",
@@ -1093,8 +1122,8 @@
      "pool": "ttg",
      "pick": "s3",
      "q": 0.2181,
-     "odds": 3.4,
-     "ev": -0.2585
+     "odds": 3.65,
+     "ev": -0.2039
     },
     {
      "code": "周五009",
@@ -1102,8 +1131,8 @@
      "pool": "ttg",
      "pick": "s4",
      "q": 0.1966,
-     "odds": 4.15,
-     "ev": -0.1841
+     "odds": 4.6,
+     "ev": -0.0956
     },
     {
      "code": "周五009",
@@ -1167,8 +1196,8 @@
      "pool": "ttg",
      "pick": "s2",
      "q": 0.2481,
-     "odds": 3.35,
-     "ev": -0.1689
+     "odds": 3.25,
+     "ev": -0.1937
     },
     {
      "code": "周五011",
@@ -1176,8 +1205,8 @@
      "pool": "ttg",
      "pick": "s3",
      "q": 0.2397,
-     "odds": 3.85,
-     "ev": -0.0772
+     "odds": 3.95,
+     "ev": -0.0532
     },
     {
      "code": "周五011",
@@ -1185,8 +1214,8 @@
      "pool": "hafu",
      "pick": "hh",
      "q": 0.2053,
-     "odds": 3.25,
-     "ev": -0.3328
+     "odds": 3.05,
+     "ev": -0.3738
     },
     {
      "code": "周五011",
@@ -1194,8 +1223,8 @@
      "pool": "hafu",
      "pick": "aa",
      "q": 0.2286,
-     "odds": 7.2,
-     "ev": 0.6459,
+     "odds": 6.75,
+     "ev": 0.5431,
      "divergent": true
     }
    ],
@@ -1205,8 +1234,8 @@
     "pool": "hafu",
     "pick": "aa",
     "q": 0.2286,
-    "odds": 7.2,
-    "ev": 0.6459,
+    "odds": 6.75,
+    "ev": 0.5431,
     "divergent": true
    },
    "rec_upset": {
@@ -1232,8 +1261,8 @@
      "pool": "ttg",
      "pick": "s3",
      "q": 0.2199,
-     "odds": 3.9,
-     "ev": -0.1424
+     "odds": 3.85,
+     "ev": -0.1534
     },
     {
      "code": "周五012",
@@ -1251,8 +1280,8 @@
      "pool": "ttg",
      "pick": "s4",
      "q": 0.1912,
-     "odds": 7.0,
-     "ev": 0.3384,
+     "odds": 6.5,
+     "ev": 0.2428,
      "divergent": true
     },
     {
@@ -1292,8 +1321,8 @@
     "pool": "ttg",
     "pick": "s3",
     "q": 0.2199,
-    "odds": 3.9,
-    "ev": -0.1424
+    "odds": 3.85,
+    "ev": -0.1534
    },
    "flags": [
     "divergence"
@@ -3071,8 +3100,10 @@
  "ranAt": "2026-09-11",
  "approved": false,
  "warnings": [
-  "dc_divergence_blocked: 彩票档熔断38选项(|p_fused−p_mkt|≥5%)——周五007主胜8.4pp、周五007平6.3pp、周五007客胜14.7pp、周五011主胜7.9pp、周五011客胜5.9pp、周五011让球主胜6.7pp、周五011让球客胜6.8pp、周六005客胜5.3pp"
+  "dc_divergence_blocked: 彩票档熔断38选项(|p_fused−p_mkt|≥5%)——周五007主胜7.8pp、周五007平6.2pp、周五007客胜14.0pp、周五011主胜8.5pp、周五011客胜6.5pp、周五011让球主胜7.0pp、周五011让球客胜7.3pp、周六005客胜5.3pp"
  ],
  "method": "freq",
- "dataAsOf": "2026-09-11"
+ "dataAsOf": "2026-09-11",
+ "superseded": true,
+ "supersededBy": "r1"
 }

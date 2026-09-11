@@ -93,18 +93,7 @@
     "日乙"
   ],
   "staleLeagues": [],
-  "missingAlias": [
-    {
-      "team": "仙台七夕",
-      "league": "日乙",
-      "match": "仙台七夕 vs 札幌冈萨"
-    },
-    {
-      "team": "札幌冈萨",
-      "league": "日乙",
-      "match": "仙台七夕 vs 札幌冈萨"
-    }
-  ],
+  "missingAlias": [],
   "notReadyTeams": [
     {
       "team": "蔚山现代",
@@ -465,6 +454,18 @@
       "status": "missing"
     },
     {
+      "team": "仙台七夕",
+      "teamId": "vegalta-sendai",
+      "league": "japan",
+      "status": "missing"
+    },
+    {
+      "team": "札幌冈萨",
+      "teamId": "consadole-sapporo",
+      "league": "japan",
+      "status": "missing"
+    },
+    {
       "team": "马拉加",
       "teamId": "malaga",
       "league": "spain",
@@ -621,6 +622,6 @@
   ],
   "readyCount": {
     "leagues": 12,
-    "teamsKnown": 511
+    "teamsKnown": 513
   }
 }
