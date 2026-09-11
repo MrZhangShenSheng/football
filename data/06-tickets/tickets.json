@@ -3158,7 +3158,7 @@
   {
    "source": "方案转正",
    "placedAt": "2026-09-11 15:05",
-   "placedAtNote": "大哥口述'我买了 F G 各10元'后登记·候选F/G各4串1×5倍=10元·赔率冻结=r1候选归档价(与终端核对义务在大哥,偏差以票面为结算权威)",
+   "placedAtNote": "大哥口述'我买了 F G 各10元'后登记·候选F/G各4串1×5倍=10元·赔率冻结=r1候选归档价(与终端核对义务在大哥,偏差以票面为结算权威)·【09-11晚回执修正】蔚山/威尼斯两腿pick_diff改agree：大哥指出会话复核平局一致组在案，根因=回执对照r1早间字段未同步复核结论",
    "stake": 10,
    "unitStake": 2,
    "units": 5,
@@ -3215,8 +3215,8 @@
      "market": "HAD",
      "pick": "平",
      "odds": 3.13,
-     "agreement": "pick_diff",
-     "receiptNote": "系统方向pick=H·本场未入平局轨(drawTrack=false·p平30.2%)",
+     "agreement": "agree",
+     "receiptNote": "【09-11晚修正】原标pick_diff系回执对照了r1.json早间字段(方向pick=H/未入轨)，未反映下午复核结论——会话复核已列蔚山入平局一致组(DC 1-1 15.7%/0-0 13.7%双平+OddsPedia预测1-1)，改判agree(复核口径)；与T030蔚山1:1/0:0同源风险已另注",
      "result": null
     },
     {
@@ -3226,8 +3226,8 @@
      "market": "HAD",
      "pick": "平",
      "odds": 3.25,
-     "agreement": "pick_diff",
-     "receiptNote": "系统方向pick=A·本场未入平局轨(drawTrack=false·p平27.2%)",
+     "agreement": "agree",
+     "receiptNote": "【09-11晚修正】原标pick_diff系回执对照滞后字段——会话复核已列威尼斯入平局一致组(佛罗伦萨9场8不胜场均0.67球+外网1-1主流)，改判agree(复核口径)；平局轨门槛差0.8pp未入轨是轨设计不是信号否定",
      "result": null
     }
    ]
