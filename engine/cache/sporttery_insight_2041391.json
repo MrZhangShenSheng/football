@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-09-10",
+ "fetchedAt": "2026-09-11",
  "source": "sporttery",
  "matchId": 2041391,
  "match": {
@@ -40,7 +40,17 @@
  },
  "injuries": {
   "home": [],
-  "away": []
+  "away": [
+   {
+    "name": "F. Druijf",
+    "pos": "前锋",
+    "no": "9",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 5,
+    "starts": 4
+   }
+  ]
  },
  "form": {
   "goalAvg": {
@@ -183,7 +193,7 @@
      "goalAvgCnt": "1.0",
      "goalCnt": 5,
      "goalProbability": "45%",
-     "injuryFlag": 0,
+     "injuryFlag": 1,
      "personId": 454471,
      "personName": "F. Druijf",
      "playerPositionCode": "Forward",

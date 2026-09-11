@@ -1,7 +1,7 @@
 {
   "league": "portugal-liga",
   "season": "2026-27",
-  "generatedAt": "2026-09-10",
+  "generatedAt": "2026-09-11",
   "roundsPlayed": 56,
   "standings": [
     {
@@ -53,22 +53,22 @@
     {
       "pos": 3,
       "team": "Benfica",
-      "played": 55,
-      "won": 39,
+      "played": 56,
+      "won": 40,
       "drawn": 12,
       "lost": 4,
-      "gf": 134,
+      "gf": 138,
       "ga": 42,
-      "gd": 92,
-      "pts": 129,
-      "form": "WDWWW",
+      "gd": 96,
+      "pts": 132,
+      "form": "DWWWW",
       "homeRecord": {
         "w": 20,
         "d": 7,
         "l": 1
       },
       "awayRecord": {
-        "w": 19,
+        "w": 20,
         "d": 5,
         "l": 3
       }
@@ -76,15 +76,15 @@
     {
       "pos": 4,
       "team": "Sp Braga",
-      "played": 54,
+      "played": 55,
       "won": 28,
       "drawn": 16,
-      "lost": 10,
-      "gf": 91,
-      "ga": 51,
-      "gd": 40,
+      "lost": 11,
+      "gf": 92,
+      "ga": 53,
+      "gd": 39,
       "pts": 100,
-      "form": "DDDWW",
+      "form": "DDWWL",
       "homeRecord": {
         "w": 14,
         "d": 7,
@@ -93,7 +93,7 @@
       "awayRecord": {
         "w": 14,
         "d": 9,
-        "l": 5
+        "l": 6
       }
     },
     {
@@ -168,19 +168,19 @@
     {
       "pos": 8,
       "team": "Moreirense",
-      "played": 55,
+      "played": 56,
       "won": 19,
       "drawn": 14,
-      "lost": 22,
+      "lost": 23,
       "gf": 70,
-      "ga": 82,
-      "gd": -12,
+      "ga": 86,
+      "gd": -16,
       "pts": 71,
-      "form": "WDLWL",
+      "form": "DLWLL",
       "homeRecord": {
         "w": 11,
         "d": 10,
-        "l": 5
+        "l": 6
       },
       "awayRecord": {
         "w": 8,
@@ -305,6 +305,29 @@
     },
     {
       "pos": 14,
+      "team": "Estrela",
+      "played": 56,
+      "won": 13,
+      "drawn": 18,
+      "lost": 25,
+      "gf": 58,
+      "ga": 86,
+      "gd": -28,
+      "pts": 57,
+      "form": "DDWDW",
+      "homeRecord": {
+        "w": 8,
+        "d": 10,
+        "l": 11
+      },
+      "awayRecord": {
+        "w": 5,
+        "d": 8,
+        "l": 14
+      }
+    },
+    {
+      "pos": 15,
       "team": "Nacional",
       "played": 56,
       "won": 14,
@@ -324,29 +347,6 @@
         "w": 4,
         "d": 9,
         "l": 16
-      }
-    },
-    {
-      "pos": 15,
-      "team": "Estrela",
-      "played": 55,
-      "won": 12,
-      "drawn": 18,
-      "lost": 25,
-      "gf": 56,
-      "ga": 85,
-      "gd": -29,
-      "pts": 54,
-      "form": "DDDWD",
-      "homeRecord": {
-        "w": 7,
-        "d": 10,
-        "l": 11
-      },
-      "awayRecord": {
-        "w": 5,
-        "d": 8,
-        "l": 14
       }
     },
     {
@@ -512,10 +512,10 @@
     }
   ],
   "leagueStats": {
-    "avgGoals": 2.619,
-    "homeWinRate": 0.413,
-    "drawRate": 0.265,
-    "upsetRate": 0.22,
+    "avgGoals": 2.622,
+    "homeWinRate": 0.414,
+    "drawRate": 0.264,
+    "upsetRate": 0.221,
     "topScores": [
       {
         "score": "1-1",
@@ -531,7 +531,7 @@
       }
     ],
     "computedFrom": "fd",
-    "matchesUsed": 501,
+    "matchesUsed": 503,
     "seasonsMerged": [
       "2425",
       "2526",
