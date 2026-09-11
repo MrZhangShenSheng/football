@@ -1,11 +1,11 @@
 {
   "meta": {
-    "lastUpdated": "2026-09-10",
+    "lastUpdated": "2026-09-11",
     "note": "实票账本:票=顶层实体(不按日期切分);实票=有结算记录的票,其余全是方案推演;出票后票面事实永不改写;派彩按形状算(4串11中2关只回1注2串1)",
     "totalTickets": 27,
-    "totalStake": 480,
+    "totalStake": 460,
     "totalPayout": 477.97,
-    "totalNet": -2.03,
+    "totalNet": 17.97,
     "disciplineEvents": [
       {
         "date": "2026-08-24",
@@ -544,7 +544,7 @@
           "result": "miss",
           "priceNote": null,
           "actual": "0:0(半0:0)",
-          "agreement": "no_rec"
+          "agreement": "excluded"
         },
         {
           "code": "周五010",
@@ -556,7 +556,7 @@
           "result": "miss",
           "priceNote": null,
           "actual": "2:2(半1:0)",
-          "agreement": "no_rec"
+          "agreement": "pick_diff"
         },
         {
           "code": "周六028",
@@ -592,7 +592,7 @@
           "result": "hit",
           "priceNote": null,
           "actual": "3:5(半2:2)",
-          "agreement": "no_rec"
+          "agreement": "play_diff"
         }
       ],
       "bets": [
@@ -664,7 +664,7 @@
           "result": "miss",
           "priceNote": null,
           "actual": "0:0(半0:0)",
-          "agreement": "no_rec"
+          "agreement": "excluded"
         },
         {
           "code": "周五010",
@@ -676,7 +676,7 @@
           "result": "miss",
           "priceNote": null,
           "actual": "2:2(半1:0)",
-          "agreement": "no_rec"
+          "agreement": "pick_diff"
         },
         {
           "code": "周六028",
@@ -782,7 +782,7 @@
           "result": "miss",
           "priceNote": null,
           "actual": "2:2(半1:0)",
-          "agreement": "no_rec"
+          "agreement": "play_diff"
         },
         {
           "code": "周六022",
@@ -1688,7 +1688,7 @@
           "pick": "0:0",
           "odds": 16.5,
           "result": "miss",
-          "agreement": "excluded",
+          "agreement": "pick_diff",
           "note": "系统同推:周四轮方案腿+池卡rec_base同推;q9.2%(freq-band)EV+51.8%;CLV=0%(16.50→16.50零异动)",
           "actual": "3:0(半3:0)"
         }
@@ -1813,7 +1813,7 @@
           "pick": "主胜",
           "odds": 1.38,
           "result": "hit",
-          "agreement": "agree",
+          "agreement": "pick_diff",
           "note": "系统同推-r1彩票档①;p69.1%;CLV-1.4%(1.40→1.38降水)",
           "actual": "3-1"
         },
@@ -1825,7 +1825,7 @@
           "pick": "客胜",
           "odds": 1.7,
           "result": "hit",
-          "agreement": "no_rec",
+          "agreement": "play_diff",
           "note": "系统同推-r1彩票档②;p58.8%;CLV=0%;⚠️H2H近6场0胜4平",
           "actual": "1-4"
         },
@@ -1837,7 +1837,7 @@
           "pick": "客胜",
           "odds": 1.3,
           "result": "hit",
-          "agreement": "no_rec",
+          "agreement": "pick_diff",
           "note": "系统同推-r1彩票档③;p76.3%;CLV-1.5%(1.32→1.30降水)",
           "actual": "0-2"
         },
@@ -1849,7 +1849,7 @@
           "pick": "客胜",
           "odds": 1.3,
           "result": "miss",
-          "agreement": "no_rec",
+          "agreement": "excluded",
           "note": "系统同推-r1彩票档④;p76.1%;CLV=0%;⚠️H2H 50%平局率",
           "actual": "1-0"
         },
@@ -1861,7 +1861,7 @@
           "pick": "主胜",
           "odds": 1.68,
           "result": "miss",
-          "agreement": "no_rec",
+          "agreement": "excluded",
           "note": "系统同推-r1彩票档⑤;p58.8%;CLV=0%",
           "actual": "2-2"
         },
@@ -1873,7 +1873,7 @@
           "pick": "主胜",
           "odds": 1.39,
           "result": "hit",
-          "agreement": "no_rec",
+          "agreement": "play_diff",
           "note": "系统同推-r1彩票档⑥;p63.6%;CLV=0%",
           "actual": "4-1"
         },
@@ -1885,7 +1885,7 @@
           "pick": "客胜",
           "odds": 1.41,
           "result": "hit",
-          "agreement": "no_rec",
+          "agreement": "pick_diff",
           "note": "系统同推-r1彩票档⑦;p64.6%;CLV=0%",
           "actual": "0-2"
         },
@@ -1897,7 +1897,7 @@
           "pick": "主胜",
           "odds": 1.49,
           "result": "miss",
-          "agreement": "no_rec",
+          "agreement": "play_diff",
           "note": "系统同推-r1彩票档⑧;p62.5%;CLV=0%;⚠️DC-市场分歧21pp",
           "actual": "2-2"
         }
@@ -3039,7 +3039,9 @@
           "pick": "0:1",
           "odds": 18.0,
           "agreement": "agree",
-          "note": "EV错价票非信心票:q=7.37%·92.6%死·EV+32.7%@18.0票面价(全卡最高·带平移)·方向层实为科莫主胜54.7%(外部56%确认),0:1是客胜分支被市场低估格子(莱红牛客场4胜0平6负极端化)"
+          "note": "EV错价票非信心票:q=7.37%·92.6%死·EV+32.7%@18.0票面价(全卡最高·带平移)·方向层实为科莫主胜54.7%(外部56%确认),0:1是客胜分支被市场低估格子(莱红牛客场4胜0平6负极端化)",
+          "result": "miss",
+          "actual": "4:1(半2:0)"
         },
         {
           "code": "周四007",
@@ -3048,7 +3050,7 @@
           "market": "HAD",
           "pick": "平",
           "odds": 2.78,
-          "agreement": "agree",
+          "agreement": "pick_diff",
           "note": "修正后p=34.0%全场最高(伤停d=-2×0.93+首回合保护×0.92/平+4pp+单锚×0.97)·EV-8.3%负·三向极差3.9pp极度胶着·基多海拔~2800m(Jardim公开权衡疲劳+高原)·poolSingle.HAD=0被锁单关故混串捆绑002"
         }
       ],

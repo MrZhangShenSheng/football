@@ -1,0 +1,111 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>09-11 销售日复盘 · T027 断腿待落账</title>
+<style>
+:root{--bg:#f7f8fa;--card:#fff;--ink:#1c2430;--sub:#5a6676;--line:#e3e7ee;--ok:#0a7d43;--bad:#c0392b;--gold:#b8860b;--acc:#1f5fbf}
+[data-theme="dark"]{--bg:#14181f;--card:#1c222c;--ink:#e8ecf2;--sub:#98a4b3;--line:#2c3542;--ok:#3ecf7a;--bad:#ff6b5e;--gold:#e2b93b;--acc:#5b9dff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.65 "Segoe UI","Microsoft YaHei",system-ui,sans-serif;padding:20px 16px}
+.wrap{max-width:1080px;margin:0 auto}
+h1{font-size:20px;margin:0 0 4px}
+h2{font-size:15px;margin:26px 0 10px;padding-left:9px;border-left:3px solid var(--acc)}
+.sub{color:var(--sub);font-size:12.5px;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.kpi .n{font-size:22px;font-weight:700}
+.kpi .l{font-size:12px;color:var(--sub)}
+.kpi .d{font-size:11.5px;margin-top:2px}
+.ok{color:var(--ok)}.bad{color:var(--bad)}.gold{color:var(--gold)}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;white-space:nowrap}
+th{color:var(--sub);font-weight:600;background:transparent}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:9px;border:1px solid var(--line);color:var(--sub)}
+.tag.hit{color:var(--ok);border-color:var(--ok)}
+.tag.miss{color:var(--bad);border-color:var(--bad)}
+.tag.wait{color:var(--gold);border-color:var(--gold)}
+.ic{width:15px;height:15px;vertical-align:-2.5px;margin-right:4px}
+ul{margin:6px 0;padding-left:20px}
+li{margin:3px 0}
+.note{font-size:12px;color:var(--sub);background:var(--card);border:1px dashed var(--line);border-radius:8px;padding:10px 12px;margin-top:10px}
+.src{font-size:11.5px;color:var(--sub)}
+@media(max-width:640px){td,th{padding:4px 5px;font-size:11.5px}}
+</style></head><body><div class="wrap">
+
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="i-fix" viewBox="0 0 16 16"><path fill="currentColor" d="M9.1 1.7l5.2 5.2-1.4 1.4-1-.4-2.3 2.3.4 1-4 4-2.5-2.5 4-4 1 .4 2.3-2.3-.4-1 1.4-1.4zM1 14l2.5-2.5 1 1L2 15z"/></symbol>
+<symbol id="i-chart" viewBox="0 0 16 16"><path fill="currentColor" d="M2 13V2h1.5v9.5H14V13H2zm3-3l2.5-3 2 2L13 5l1 1-4.5 5-2-2L6 11 5 10z"/></symbol>
+<symbol id="i-clock" viewBox="0 0 16 16"><path fill="currentColor" d="M8 1.5A6.5 6.5 0 1 1 1.5 8 6.5 6.5 0 0 1 8 1.5zM8 3a5 5 0 1 0 5 5 5 5 0 0 0-5-5zm-.8 2h1.6v3.3l2.4 1.4-.8 1.4L7.2 9.4V5z"/></symbol>
+<symbol id="i-shield" viewBox="0 0 16 16"><path fill="currentColor" d="M8 1l6 2v5c0 3.5-2.5 6.5-6 7-3.5-.5-6-3.5-6-7V3l6-2zm0 1.6L3.5 4.4v3.6c0 2.7 1.9 5 4.5 5.5 2.6-.5 4.5-2.8 4.5-5.5V4.4L8 2.6z"/></symbol>
+</defs></svg>
+
+<h1><svg class="ic"><use href="#i-chart"/></svg>2026-09-11 销售日复盘 · T027 断腿待落账</h1>
+<div class="sub">复盘生成 2026-09-11 10:4x · 回填口径：体彩销售日 09-11（周四晚欧冠/欧联 R1 第二批+解放者杯）· 7 场中 6 场已回填，周四007 进行中（62' 0-1）待晚间重跑</div>
+
+<h2>① 出票结果 · T027 腿①断 · 数学死亡待落账</h2>
+<div class="grid">
+<div class="kpi"><div class="l">T027 票面</div><div class="n">002 CRS + 007 HAD平</div><div class="d">跨池2串1 ×10倍 · 20元 · 翻身A</div></div>
+<div class="kpi"><div class="l">腿① 科莫 CRS 0:1</div><div class="n bad">@17.5 ✗</div><div class="d">实际 4-1 · q 7.37% 彩票腿未兑现</div></div>
+<div class="kpi"><div class="l">腿② 007 HAD 平</div><div class="n gold">@2.78 进行中</div><div class="d">IDV 0-1 FLA（62'·ESPN 实时）</div></div>
+<div class="kpi"><div class="l">票判定</div><div class="n bad">-20 元</div><div class="d">2串1 断腿即废 · 等 007 完赛正式落账</div></div>
+</div>
+<div class="note">
+<strong>腿①复盘：方向层判断是对的，票死在对冲腿的结构假设。</strong>科莫主胜 54.7%（市场锚）兑现为 4-1；CRS 0:1 是「与方向判断对冲的彩票性质腿」（登记 note 原文），其依据「莱红牛客场 4胜0平6负=要么赢要么输的小负结构」被科莫主场血洗证伪。EV+29% 全卡最高的 q=7.37% 单腿证伪不改 freq-band 链路（等 freq_backtest 月度对照再评）；教训记入：极端化客场样本（0 平局）在小样本下的"结构纯度"是伪置信。
+</div>
+
+<h2>② 预测验证 · 推荐场 0/1 · 排除场 4✓1✗</h2>
+<table>
+<tr><th>编号</th><th>对阵</th><th>判定</th><th>赛果</th><th>验证</th></tr>
+<tr><td>周四002</td><td>科莫 vs 莱红牛</td><td><span class="tag miss">CRS 0:1</span></td><td>4-1</td><td>方向层主胜54.7%✓ · CRS腿✗</td></tr>
+<tr><td>周四001</td><td>费内巴切 vs 罗马</td><td><span class="tag">排除:⭐⭐无边际</span></td><td>1-1</td><td class="ok">✓ 平局，客胜参考未出</td></tr>
+<tr><td>周四003</td><td>拜仁 vs 博德闪耀</td><td><span class="tag">排除:跨联赛模板失真</span></td><td>5-0</td><td class="ok">✓ 超低赔主胜，负EV</td></tr>
+<tr><td>周四004</td><td>斯拉维亚 vs 朗斯</td><td><span class="tag">排除:胶着</span></td><td>2-3</td><td class="ok">✓ 胶着分出胜负，方向随机</td></tr>
+<tr><td>周四005</td><td>曼联 vs 萨巴赫</td><td><span class="tag miss">排除:踩线+基面反向</span></td><td>4-0</td><td class="bad">✗ 主胜大胜，踩线降档误伤②</td></tr>
+<tr><td>周四006</td><td>阿马多拉 vs 布拉加</td><td><span class="tag">排除:客胜54.2% EV负</span></td><td>2-1</td><td class="ok">✓ 主胜爆冷，方向参考反了</td></tr>
+<tr><td>周四007</td><td>德尔瓦耶 vs 弗拉门戈</td><td><span class="tag wait">HAD 平(挂账)</span></td><td>0-1 (62')</td><td class="gold">进行中 · 完赛后重跑 verify</td></tr>
+</table>
+<div class="note">
+<strong>②踩线+基面反向降半档：第二次实战误伤，维持观察。</strong>09-04 比利亚雷 65% 踩线被降档（当轮未买）、本轮曼联 HHAD-2 54.3% 踩线+近10仅4胜基面反向被全玩法排除，实际 4-0 兑现赢2+。两例中该规则均指向"错杀"，但样本 n=2 且踩线场本就低赔（错过的是串骨架而非正EV单关），不改规则、记入 ablate 观察清单等消融样本。<br>
+<strong>周四006 是本轮唯一 DC 融合场且方向 miss</strong>（p_fused 客胜 58.4% → 实际主胜 2-1），EV-19.8% 排除救场——「EV负不买」纪律的价值样本；归因入 F5/F9。
+</div>
+
+<h2>③ 影子层 · 09-10 挂账清零 + 09-11 半结算</h2>
+<div class="grid">
+<div class="kpi"><div class="l">09-10 挂账清理</div><div class="n">10 票</div><div class="d">投入 302 · 回款 222.65 · 净 -79.35</div></div>
+<div class="kpi"><div class="l">09-11 轮已结算</div><div class="n">10 票</div><div class="d">投入 268 · 回款 125.65 · 净 -142.35</div></div>
+<div class="kpi"><div class="l">账本全量</div><div class="n">94 票</div><div class="d">settled 64 / pending 30</div></div>
+<div class="kpi"><div class="l">09-12 轮已登记</div><div class="n">20 张</div><div class="d">周五 12 场五池价冻结待赛</div></div>
+</div>
+<div class="note">
+09-10 的 10 张 pending 系昨晚复盘已知挂账（含周三014 进行中腿），今晨赛果回填后 settle-all 2026-09-10 全部清零；09-11 轮 10 张已结、余 10 张全部含周四007 腿（未完赛保持 pending，6813f2e 邻日合并口径工作正常）。
+</div>
+
+<h2>④ 闭环学习指标（verify + learn 输出）</h2>
+<div class="grid">
+<div class="kpi"><div class="l">语料 corpus</div><div class="n">601 条</div><div class="d">回填 587 · CLV 102 · ✅可校准 ✅可消融</div></div>
+<div class="kpi"><div class="l">错题归因</div><div class="n">55 场</div><div class="d">F9 主因 46（消融候选）· F1 6 · F5 2 · F3 1</div></div>
+<div class="kpi"><div class="l">融合校准</div><div class="n">a=0.4 维持</div><div class="d">n=256 · 最优 a=0.1 改善 0.74%&lt;1% 护栏</div></div>
+<div class="kpi"><div class="l">增量学习</div><div class="n">8 联赛</div><div class="d">1421 场入库 · 0 版本发布（门槛守住）</div></div>
+</div>
+<ul>
+<li>learn：japan/saudi/sweden/denmark holdout 劣于现版被拒发布，brazil/norway/usa 训练集相同跳过——版本发布门槛全部正常工作，现版仍最优</li>
+<li>temperature：crs/ttg T=1.30 CI 通过（6012 场评估集）、hafu disabled 维持</li>
+<li>校准警示（历史遗留观察项）：0~40% 桶实际 55% vs 预测 37% 低估 17pp——持续观察不动系数</li>
+<li>开季修正：维持（CI 跨 0）；其余系数样本不足继续观察</li>
+<li>CLV 本轮空值：6 场全欧战/杯赛，fd 无收盘锚（pinSource=none 单锚轮常态）</li>
+</ul>
+
+<h2>⑤ 挂账与后续</h2>
+<ul>
+<li><svg class="ic"><use href="#i-clock"/></svg><strong>周四007（IDV vs 弗拉门戈，62' 0-1）</strong>：完赛后重跑 verify → 赛果回填 + T027 落账（已数学死亡，只等正式结算）+ 09-11 轮余 10 张影子票结算</li>
+<li><strong>pinClose 74 场待补</strong>：fd 当日行英国下午更新，晚间重跑 verify 救回（幂等）</li>
+<li><svg class="ic"><use href="#i-shield"/></svg><strong>实票账本</strong>：T027 落账后净利 +17.97 → -2.03（480 投 / 478 回 · 27 票）</li>
+<li><strong>09-12 轮（周五 12 场）</strong>：预测已就绪（2026-09-12.html + 影子 20 票登记），今晚开赛</li>
+<li><strong>踩线+基面反向规则</strong>：n=2 连续误伤，记入观察，等消融样本或第三例再议</li>
+</ul>
+
+<h2>⑥ 数据来源清单</h2>
+<div class="src">
+data/02-results/2026-09-11.json（预测记录+赛果回填）· data/06-tickets/tickets.json（T027 待落账）· engine/shadow/paper_tickets.json（影子账本 94 票）· data/04-summaries/corpus.json / attribution.json / ablate-report.json · 体彩 zqsgkj 开奖口径（周四001~006 回填）· ESPN API 实时（周四007 进行中比分·event 401912543）· espn history 8 联赛增量（jpn/ksa/swe/bra/nor/den/usa）
+</div>
