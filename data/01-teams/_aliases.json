@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "updatedAt": "2026-09-08",
+    "updatedAt": "2026-09-12",
     "note": "规范ID=kebab-case英文，多数据源经此表解析。null=待对应fetch脚本首次运行时补全（勿手填猜测）。league=国内联赛目录名（杯赛参赛队挂国内联赛）。",
     "sources": {
       "zh": "体彩官方API中文名",
@@ -67,7 +67,10 @@
       "zh": "布赖代合作",
       "clubelo": null,
       "understat": null,
-      "espn": "Al Taawoun"
+      "espn": "Al Taawoun",
+      "variants": [
+        "布赖合作"
+      ]
     },
     "al-ettifaq": {
       "zh": "达曼协作",
@@ -827,7 +830,10 @@
       "zh": "布洛马波卡纳",
       "clubelo": null,
       "understat": null,
-      "espn": "IF Brommapojkarna"
+      "espn": "IF Brommapojkarna",
+      "variants": [
+        "布鲁马波"
+      ]
     },
     "degerfors-if": {
       "zh": "德格尔福什",
@@ -1062,7 +1068,8 @@
       "zh": "布拉加",
       "clubelo": null,
       "understat": null,
-      "espn": "Braga"
+      "espn": "Braga",
+      "fd": "Sp Braga"
     },
     "moreirense": {
       "zh": "摩雷伦斯",
@@ -1419,6 +1426,14 @@
       "clubelo": null,
       "understat": null,
       "espn": "TPS Turku"
+    },
+    "vps-vaasa": {
+      "zh": "瓦萨",
+      "espn": null,
+      "clubelo": null,
+      "understat": null,
+      "fd": null,
+      "titan007": "Vaasa VPS"
     }
   },
   "france": {
@@ -1624,6 +1639,13 @@
       "clubelo": null,
       "understat": null,
       "espn": "Le Mans"
+    },
+    "red-star-fc": {
+      "zh": "圣旺红星",
+      "espn": null,
+      "clubelo": null,
+      "understat": null,
+      "fd": "Red Star"
     }
   },
   "netherlands": {
@@ -2201,7 +2223,10 @@
     },
     "chicago-fire": {
       "zh": "芝加哥火焰",
-      "espn": "Chicago Fire FC"
+      "espn": "Chicago Fire FC",
+      "variants": [
+        "芝加哥"
+      ]
     },
     "colorado-rapids": {
       "zh": "科罗拉多",
@@ -2322,7 +2347,10 @@
     },
     "ham-kam": {
       "zh": "哈姆卡姆",
-      "espn": "Hamarkameratene"
+      "espn": "Hamarkameratene",
+      "variants": [
+        "汉坎"
+      ]
     },
     "haugesund": {
       "zh": "海于格松",
@@ -2358,7 +2386,10 @@
     },
     "sandefjord": {
       "zh": "桑德菲杰",
-      "espn": "Sandefjord"
+      "espn": "Sandefjord",
+      "variants": [
+        "桑纳菲"
+      ]
     },
     "sarpsborg": {
       "zh": "萨尔普斯堡",

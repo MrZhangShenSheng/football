@@ -1,0 +1,963 @@
+{
+ "date": "2026-09-12",
+ "saleDay": "2026-09-13",
+ "version": "v5.8",
+ "note": "09-13增量轮·22场新增场次(昨天54场之外)·预测执行2026-09-12·boldplay=2026-09-12-boldplay.json(seq20未拍板)",
+ "plans": [
+  {
+   "plan": "🛡️保底档",
+   "type": "HAD 3*4*5五腿16注",
+   "stake": "32元",
+   "legs": [
+    "周一008 HAD 主胜@1.15",
+    "周一003 HAD 主胜@1.14",
+    "周日009 HAD 主胜@1.27(R3×0.95)",
+    "周一004 HAD 客胜@1.47",
+    "周一012 HAD 主胜@1.35"
+   ],
+   "odds": null,
+   "evEach": false
+  },
+  {
+   "plan": "🚀翻身档",
+   "type": "CRS跨池4串1",
+   "stake": "2元",
+   "legs": [
+    "周日011 CRS 1:4@21.0 EV+60%",
+    "周日013 CRS 0:2@13.5 EV+24%",
+    "周一009 CRS 0:0@11.0 EV+21%",
+    "周日024 CRS 1:2@11.0 EV+10%"
+   ],
+   "odds": null,
+   "evEach": true
+  },
+  {
+   "plan": "🎫彩票档",
+   "type": "8串1×1倍",
+   "stake": "2元",
+   "legs": [
+    "周日009 主胜@1.27",
+    "周一010 HHAD让客(-1)@1.52",
+    "周一008 主胜@1.15",
+    "周日023 主胜@1.21",
+    "周一003 主胜@1.14",
+    "周六019 客胜@1.18",
+    "周六011 HHAD让客(-1)@1.51",
+    "周一005 主胜@1.46"
+   ],
+   "odds": null,
+   "evEach": false
+  }
+ ],
+ "drawTrack": {
+  "note": "本轮22场无平局轨入轨场(p平最高27%差1pp·极差16pp超线)·空轮声明",
+  "legs": []
+ },
+ "matches": [
+  {
+   "idx": 1,
+   "code": "周六011",
+   "league": "德甲(R3)",
+   "match": "霍芬海姆 vs 斯图加特",
+   "matchDate": "2026-09-12",
+   "matchTime": "21:30:00",
+   "pick": "排除:R3开季+三向极差29pp方向混战",
+   "odds": null,
+   "star": 2,
+   "grade": "B",
+   "dc": [
+    0.4657,
+    0.2003,
+    0.3341
+   ],
+   "fused": [
+    0.4693,
+    0.1767,
+    0.354
+   ],
+   "lambdaHome": 2.573,
+   "lambdaAway": 2.185,
+   "fusedPre": [
+    0.4693,
+    0.1767,
+    0.354
+   ],
+   "chainSteps": [
+    {
+     "name": "开季修正R3",
+     "factor": [
+      0.95,
+      1.1,
+      0.95
+     ]
+    }
+   ],
+   "final": null,
+   "ev": null,
+   "inPlan": null,
+   "note": "",
+   "poolSingle": {
+    "HHAD": 0,
+    "HAFU": 1,
+    "CRS": 1,
+    "TTG": 1,
+    "HAD": 0
+   }
+  },
+  {
+   "idx": 2,
+   "code": "周六019",
+   "league": "沙职(R7)",
+   "match": "布赖合作 vs 利雅新月",
+   "matchDate": "2026-09-12",
+   "matchTime": "23:50:00",
+   "pick": "HAD 客胜",
+   "odds": 1.18,
+   "star": 4,
+   "grade": "B",
+   "dc": [
+    0.1019,
+    0.2135,
+    0.6846
+   ],
+   "fused": [
+    0.0458,
+    0.1024,
+    0.8519
+   ],
+   "lambdaHome": 0.766,
+   "lambdaAway": 2.202,
+   "fusedPre": [
+    0.0458,
+    0.1024,
+    0.8519
+   ],
+   "chainSteps": [],
+   "final": 0.85,
+   "ev": null,
+   "inPlan": "lottery",
+   "note": "无锚联赛(沙职)不入保底胆·彩票档腿",
+   "poolSingle": {
+    "HHAD": 0,
+    "HAFU": 1,
+    "CRS": 1,
+    "TTG": 1,
+    "HAD": 0
+   }
+  },
+  {
+   "idx": 3,
+   "code": "周六021",
+   "league": "挪超(R21)",
+   "match": "罗森博格 vs 特罗姆瑟",
+   "matchDate": "2026-09-13",
+   "matchTime": "00:00:00",
+   "pick": "HAD 主胜",
+   "odds": 1.61,
+   "star": 3,
+   "grade": "B",
+   "dc": [
+    0.487,
+    0.2509,
+    0.2621
+   ],
+   "fused": [
+    0.6316,
+    0.1874,
+    0.1809
+   ],
+   "lambdaHome": 1.745,
+   "lambdaAway": 1.228,
+   "fusedPre": [
+    0.6316,
+    0.1874,
+    0.1809
+   ],
+   "chainSteps": [
+    {
+     "name": "伤停差值d=-1(客缺主力前锋)",
+     "factor": [
+      1.03,
+      1.0,
+      0.97
+     ]
+    }
+   ],
+   "final": 0.646,
+   "ev": null,
+   "inPlan": null,
+   "note": "挪超无锚·修正后0.65踩线不入保底",
+   "poolSingle": {
+    "HHAD": 0,
+    "HAFU": 1,
+    "CRS": 1,
+    "TTG": 1,
+    "HAD": 0
+   }
+  },
+  {
+   "idx": 4,
+   "code": "周日004",
+   "league": "瑞超(R21)",
+   "match": "哈马比 vs 布鲁马波",
+   "matchDate": "2026-09-13",
+   "matchTime": "20:00:00",
+   "pick": "排除:HAD未开售+无锚瑞超low_conf",
+   "odds": null,
+   "star": 1,
+   "grade": "C",
+   "dc": [
+    0.7427,
+    0.1616,
+    0.0957
+   ],
+   "fused": null,
+   "lambdaHome": 2.678,
+   "lambdaAway": 0.885,
+   "fusedPre": null,
+   "chainSteps": [],
+   "final": null,
+   "ev": null,
+   "inPlan": null,
+   "note": "",
+   "poolSingle": {
+    "HHAD": 0,
+    "HAFU": 1,
+    "CRS": 1,
+    "TTG": 1
+   }
+  },
+  {
+   "idx": 5,
+   "code": "周日005",
+   "league": "芬超(R2)",
+   "match": "库奥皮奥 vs 赫尔辛基",
+   "matchDate": "2026-09-13",
+   "matchTime": "20:00:00",
+   "pick": "排除:芬超无DC无锚",
+   "odds": null,
+   "star": 1,
+   "grade": "C",
+   "dc": null,
+   "fused": null,
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": null,
+   "chainSteps": [],
+   "final": null,
+   "ev": null,
+   "inPlan": null,
+   "note": "",
+   "poolSingle": {
+    "HHAD": 0,
+    "HAFU": 1,
+    "CRS": 1,
+    "TTG": 1,
+    "HAD": 0
+   }
+  },
+  {
+   "idx": 6,
+   "code": "周日009",
+   "league": "德甲(R3)",
+   "match": "莱红牛 vs 汉堡",
+   "matchDate": "2026-09-13",
+   "matchTime": "21:30:00",
+   "pick": "HAD 主胜",
+   "odds": 1.27,
+   "star": 4,
+   "grade": "A",
+   "dc": [
+    0.8367,
+    0.123,
+    0.0403
+   ],
+   "fused": [
+    0.8654,
+    0.0917,
+    0.0429
+   ],
+   "lambdaHome": 2.831,
+   "lambdaAway": 0.523,
+   "fusedPre": [
+    0.8654,
+    0.0917,
+    0.0429
+   ],
+   "chainSteps": [
+    {
+     "name": "开季修正R3",
+     "factor": [
+      0.95,
+      1.1,
+      0.95
+     ]
+    }
+   ],
+   "final": 0.829,
+   "ev": null,
+   "inPlan": "base+lottery",
+   "note": "汉堡升班马样本失真标注",
+   "poolSingle": {
+    "HHAD": 0,
+    "HAFU": 1,
+    "CRS": 1,
+    "TTG": 1,
+    "HAD": 0
+   }
+  },
+  {
+   "idx": 7,
+   "code": "周日011",
+   "league": "挪超(R21)",
+   "match": "汉坎 vs 莫尔德",
+   "matchDate": "2026-09-13",
+   "matchTime": "23:00:00",
+   "pick": "CRS 1:4(翻身)",
+   "odds": null,
+   "star": 3,
+   "grade": "B",
+   "dc": [
+    0.3064,
+    0.2404,
+    0.4532
+   ],
+   "fused": [
+    0.1995,
+    0.1719,
+    0.6286
+   ],
+   "lambdaHome": 1.479,
+   "lambdaAway": 1.834,
+   "fusedPre": [
+    0.1995,
+    0.1719,
+    0.6286
+   ],
+   "chainSteps": [],
+   "final": null,
+   "ev": null,
+   "inPlan": "upset",
+   "note": "挪超无锚·客胜0.62",
+   "poolSingle": {
+    "HHAD": 0,
+    "HAFU": 1,
+    "CRS": 1,
+    "TTG": 1,
+    "HAD": 0
+   }
+  },
+  {
+   "idx": 8,
+   "code": "周日012",
+   "league": "法甲(R4)",
+   "match": "勒芒 vs 朗斯",
+   "matchDate": "2026-09-13",
+   "matchTime": "23:15:00",
+   "pick": "HAD 客胜",
+   "odds": 1.51,
+   "star": 3,
+   "grade": "A",
+   "dc": [
+    0.3066,
+    0.2339,
+    0.4595
+   ],
+   "fused": [
+    0.1656,
+    0.1759,
+    0.6585
+   ],
+   "lambdaHome": 1.258,
+   "lambdaAway": 1.601,
+   "fusedPre": [
+    0.1656,
+    0.1759,
+    0.6585
+   ],
+   "chainSteps": [
+    {
+     "name": "伤停差值d=-1(客缺2主力)",
+     "factor": [
+      1.0,
+      1.0,
+      0.97
+     ]
+    }
+   ],
+   "final": 0.646,
+   "ev": null,
+   "inPlan": null,
+   "note": "修正后0.64跌破四星线·三星对待",
+   "poolSingle": {
+    "HHAD": 0,
+    "HAFU": 1,
+    "CRS": 1,
+    "TTG": 1,
+    "HAD": 0
+   }
+  },
+  {
+   "idx": 9,
+   "code": "周日013",
+   "league": "英超(R4)",
+   "match": "曼联 vs 曼城",
+   "matchDate": "2026-09-13",
+   "matchTime": "23:30:00",
+   "pick": "CRS 0:2(翻身)",
+   "odds": null,
+   "star": 2,
+   "grade": "A",
+   "dc": [
+    0.1938,
+    0.214,
+    0.5922
+   ],
+   "fused": [
+    0.246,
+    0.1927,
+    0.5613
+   ],
+   "lambdaHome": 1.43,
+   "lambdaAway": 2.517,
+   "fusedPre": [
+    0.246,
+    0.1927,
+    0.5613
+   ],
+   "chainSteps": [
+    {
+     "name": "伤停差值d=-2(客缺2主力)",
+     "factor": [
+      1.04,
+      1.0,
+      0.93
+     ]
+    }
+   ],
+   "final": null,
+   "ev": null,
+   "inPlan": "upset",
+   "note": "德比方向0.52不建议HAD·CRS错价腿",
+   "poolSingle": {
+    "HHAD": 0,
+    "HAFU": 1,
+    "CRS": 1,
+    "TTG": 1,
+    "HAD": 1
+   }
+  },
+  {
+   "idx": 10,
+   "code": "周日014",
+   "league": "德甲(R3)",
+   "match": "埃沃斯堡 vs 拜仁",
+   "matchDate": "2026-09-13",
+   "matchTime": "23:30:00",
+   "pick": "排除:HAD未开售+R3开季·HHAD让球候选",
+   "odds": null,
+   "star": 2,
+   "grade": "B",
+   "dc": [
+    0.1675,
+    0.1379,
+    0.6946
+   ],
+   "fused": null,
+   "lambdaHome": 2.336,
+   "lambdaAway": 4.532,
+   "fusedPre": null,
+   "chainSteps": [
+    {
+     "name": "开季修正R3",
+     "factor": [
+      0.95,
+      1.1,
+      0.95
+     ]
+    }
+   ],
+   "final": null,
+   "ev": null,
+   "inPlan": null,
+   "note": "",
+   "poolSingle": {
+    "HHAD": 0,
+    "HAFU": 1,
+    "CRS": 1,
+    "TTG": 1
+   }
+  },
+  {
+   "idx": 11,
+   "code": "周日023",
+   "league": "巴甲(R27)",
+   "match": "弗拉门戈 vs 科林蒂安",
+   "matchDate": "2026-09-14",
+   "matchTime": "04:30:00",
+   "pick": "HAD 主胜",
+   "odds": 1.21,
+   "star": 4,
+   "grade": "B",
+   "dc": [
+    0.6941,
+    0.2174,
+    0.0885
+   ],
+   "fused": [
+    0.8373,
+    0.1257,
+    0.037
+   ],
+   "lambdaHome": 1.92,
+   "lambdaAway": 0.546,
+   "fusedPre": [
+    0.8373,
+    0.1257,
+    0.037
+   ],
+   "chainSteps": [],
+   "final": 0.84,
+   "ev": null,
+   "inPlan": "lottery",
+   "note": "巴甲无fd锚·只入彩票档不入保底",
+   "poolSingle": {
+    "HHAD": 0,
+    "HAFU": 1,
+    "CRS": 1,
+    "TTG": 1,
+    "HAD": 0
+   }
+  },
+  {
+   "idx": 12,
+   "code": "周日024",
+   "league": "美职(R?)",
+   "match": "芝加哥 vs 新英格兰",
+   "matchDate": "2026-09-14",
+   "matchTime": "05:30:00",
+   "pick": "CRS 1:2(翻身)",
+   "odds": null,
+   "star": 3,
+   "grade": "B",
+   "dc": [
+    0.5372,
+    0.2537,
+    0.209
+   ],
+   "fused": [
+    0.6163,
+    0.1907,
+    0.193
+   ],
+   "lambdaHome": 1.792,
+   "lambdaAway": 1.044,
+   "fusedPre": [
+    0.6163,
+    0.1907,
+    0.193
+   ],
+   "chainSteps": [],
+   "final": null,
+   "ev": null,
+   "inPlan": "upset",
+   "note": "美职无锚",
+   "poolSingle": {
+    "HHAD": 0,
+    "HAFU": 1,
+    "CRS": 1,
+    "TTG": 1,
+    "HAD": 0
+   }
+  },
+  {
+   "idx": 13,
+   "code": "周一002",
+   "league": "芬超(R2)",
+   "match": "国际图尔 vs 瓦萨",
+   "matchDate": "2026-09-14",
+   "matchTime": "23:00:00",
+   "pick": "排除:芬超无DC无锚",
+   "odds": null,
+   "star": 1,
+   "grade": "C",
+   "dc": null,
+   "fused": null,
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": null,
+   "chainSteps": [],
+   "final": null,
+   "ev": null,
+   "inPlan": null,
+   "note": "",
+   "poolSingle": {
+    "HHAD": 0,
+    "HAFU": 1,
+    "CRS": 1,
+    "TTG": 1,
+    "HAD": 0
+   }
+  },
+  {
+   "idx": 14,
+   "code": "周一003",
+   "league": "意甲(R4)",
+   "match": "科莫 vs 帕尔马",
+   "matchDate": "2026-09-15",
+   "matchTime": "00:30:00",
+   "pick": "HAD 主胜",
+   "odds": 1.14,
+   "star": 4,
+   "grade": "A",
+   "dc": [
+    0.7096,
+    0.2179,
+    0.0724
+   ],
+   "fused": [
+    0.8701,
+    0.1019,
+    0.0279
+   ],
+   "lambdaHome": 1.616,
+   "lambdaAway": 0.311,
+   "fusedPre": [
+    0.8701,
+    0.1019,
+    0.0279
+   ],
+   "chainSteps": [],
+   "final": 0.87,
+   "ev": null,
+   "inPlan": "base+lottery",
+   "note": "超低赔1.14串关骨架",
+   "poolSingle": {
+    "HHAD": 0,
+    "HAFU": 1,
+    "CRS": 1,
+    "TTG": 1,
+    "HAD": 0
+   }
+  },
+  {
+   "idx": 15,
+   "code": "周一004",
+   "league": "意甲(R4)",
+   "match": "都灵 vs 罗马",
+   "matchDate": "2026-09-15",
+   "matchTime": "00:30:00",
+   "pick": "HAD 客胜",
+   "odds": 1.47,
+   "star": 4,
+   "grade": "A",
+   "dc": [
+    0.0722,
+    0.1459,
+    0.7819
+   ],
+   "fused": [
+    0.0755,
+    0.1388,
+    0.7857
+   ],
+   "lambdaHome": 0.509,
+   "lambdaAway": 2.292,
+   "fusedPre": [
+    0.0755,
+    0.1388,
+    0.7857
+   ],
+   "chainSteps": [],
+   "final": 0.778,
+   "ev": null,
+   "inPlan": "base",
+   "note": "罗马rank1客战",
+   "poolSingle": {
+    "HHAD": 0,
+    "HAFU": 1,
+    "CRS": 1,
+    "TTG": 1,
+    "HAD": 1
+   }
+  },
+  {
+   "idx": 16,
+   "code": "周一005",
+   "league": "瑞超(R21)",
+   "match": "佐加顿斯 vs 盖斯",
+   "matchDate": "2026-09-15",
+   "matchTime": "01:00:00",
+   "pick": "HAD 主胜",
+   "odds": 1.46,
+   "star": 3,
+   "grade": "B",
+   "dc": [
+    0.5243,
+    0.2895,
+    0.1862
+   ],
+   "fused": [
+    0.6968,
+    0.1826,
+    0.1206
+   ],
+   "lambdaHome": 1.439,
+   "lambdaAway": 0.752,
+   "fusedPre": [
+    0.6968,
+    0.1826,
+    0.1206
+   ],
+   "chainSteps": [],
+   "final": 0.698,
+   "ev": null,
+   "inPlan": "lottery",
+   "note": "瑞超无锚·彩票档腿",
+   "poolSingle": {
+    "HHAD": 0,
+    "HAFU": 1,
+    "CRS": 1,
+    "TTG": 1,
+    "HAD": 0
+   }
+  },
+  {
+   "idx": 17,
+   "code": "周一006",
+   "league": "挪超(R21)",
+   "match": "博德闪耀 vs 桑纳菲",
+   "matchDate": "2026-09-15",
+   "matchTime": "01:00:00",
+   "pick": "排除:HAD未开售+无锚挪超low_conf",
+   "odds": null,
+   "star": 1,
+   "grade": "C",
+   "dc": [
+    0.7942,
+    0.149,
+    0.0568
+   ],
+   "fused": null,
+   "lambdaHome": 2.495,
+   "lambdaAway": 0.539,
+   "fusedPre": null,
+   "chainSteps": [],
+   "final": null,
+   "ev": null,
+   "inPlan": null,
+   "note": "",
+   "poolSingle": {
+    "HHAD": 0,
+    "HAFU": 1,
+    "CRS": 1,
+    "TTG": 1
+   }
+  },
+  {
+   "idx": 18,
+   "code": "周一008",
+   "league": "意甲(R4)",
+   "match": "国际米兰 vs 乌迪内斯",
+   "matchDate": "2026-09-15",
+   "matchTime": "02:45:00",
+   "pick": "HAD 主胜",
+   "odds": 1.15,
+   "star": 4,
+   "grade": "A",
+   "dc": [
+    0.7904,
+    0.1224,
+    0.0872
+   ],
+   "fused": [
+    0.8882,
+    0.0762,
+    0.0356
+   ],
+   "lambdaHome": 2.937,
+   "lambdaAway": 0.866,
+   "fusedPre": [
+    0.8882,
+    0.0762,
+    0.0356
+   ],
+   "chainSteps": [],
+   "final": 0.89,
+   "ev": null,
+   "inPlan": "base+lottery",
+   "note": "超低赔1.15串关骨架",
+   "poolSingle": {
+    "HHAD": 0,
+    "HAFU": 1,
+    "CRS": 1,
+    "TTG": 1,
+    "HAD": 0
+   }
+  },
+  {
+   "idx": 19,
+   "code": "周一009",
+   "league": "法乙(R6)",
+   "match": "圣旺红星 vs 梅斯",
+   "matchDate": "2026-09-15",
+   "matchTime": "02:45:00",
+   "pick": "CRS 0:0(翻身)",
+   "odds": null,
+   "star": 2,
+   "grade": "B",
+   "dc": [
+    0.186,
+    0.2948,
+    0.5192
+   ],
+   "fused": [
+    0.2998,
+    0.2745,
+    0.4258
+   ],
+   "lambdaHome": 0.675,
+   "lambdaAway": 1.325,
+   "fusedPre": [
+    0.2998,
+    0.2745,
+    0.4258
+   ],
+   "chainSteps": [],
+   "final": null,
+   "ev": null,
+   "inPlan": "upset",
+   "note": "法乙胶着(极差16pp)·p平27%差1pp未入平局轨",
+   "poolSingle": {
+    "HHAD": 0,
+    "HAFU": 1,
+    "CRS": 1,
+    "TTG": 1,
+    "HAD": 0
+   }
+  },
+  {
+   "idx": 20,
+   "code": "周一010",
+   "league": "英超(R4)",
+   "match": "利兹联 vs 纽卡斯尔",
+   "matchDate": "2026-09-15",
+   "matchTime": "03:00:00",
+   "pick": "HHAD 让球客胜(-1)(彩票)",
+   "odds": null,
+   "star": 2,
+   "grade": "A",
+   "dc": [
+    0.3686,
+    0.2982,
+    0.3333
+   ],
+   "fused": [
+    0.4347,
+    0.2489,
+    0.3163
+   ],
+   "lambdaHome": 1.458,
+   "lambdaAway": 1.38,
+   "fusedPre": [
+    0.4347,
+    0.2489,
+    0.3163
+   ],
+   "chainSteps": [],
+   "final": 0.32,
+   "ev": null,
+   "inPlan": "lottery",
+   "note": "HAD胶着避开·让球盘承担方向",
+   "poolSingle": {
+    "HHAD": 0,
+    "HAFU": 1,
+    "CRS": 1,
+    "TTG": 1,
+    "HAD": 1
+   }
+  },
+  {
+   "idx": 21,
+   "code": "周一011",
+   "league": "西甲(R5)",
+   "match": "比利亚雷 vs 贝蒂斯",
+   "matchDate": "2026-09-15",
+   "matchTime": "03:00:00",
+   "pick": "HAD 主胜",
+   "odds": 1.77,
+   "star": 3,
+   "grade": "A",
+   "dc": [
+    0.508,
+    0.2597,
+    0.2323
+   ],
+   "fused": [
+    0.5897,
+    0.2038,
+    0.2065
+   ],
+   "lambdaHome": 1.794,
+   "lambdaAway": 1.158,
+   "fusedPre": [
+    0.5897,
+    0.2038,
+    0.2065
+   ],
+   "chainSteps": [],
+   "final": 0.588,
+   "ev": null,
+   "inPlan": null,
+   "note": "0.59三星上沿",
+   "poolSingle": {
+    "HHAD": 0,
+    "HAFU": 1,
+    "CRS": 1,
+    "TTG": 1,
+    "HAD": 1
+   }
+  },
+  {
+   "idx": 22,
+   "code": "周一012",
+   "league": "葡超(R6)",
+   "match": "布拉加 vs 埃斯托里",
+   "matchDate": "2026-09-15",
+   "matchTime": "03:45:00",
+   "pick": "HAD 主胜",
+   "odds": 1.35,
+   "star": 4,
+   "grade": "A",
+   "dc": [
+    0.6132,
+    0.222,
+    0.1647
+   ],
+   "fused": [
+    0.7657,
+    0.1493,
+    0.0851
+   ],
+   "lambdaHome": 1.755,
+   "lambdaAway": 0.767,
+   "fusedPre": [
+    0.7657,
+    0.1493,
+    0.0851
+   ],
+   "chainSteps": [],
+   "final": 0.769,
+   "ev": null,
+   "inPlan": "base",
+   "note": "踩线护栏1.35过线(0.77>0.68)",
+   "poolSingle": {
+    "HHAD": 0,
+    "HAFU": 1,
+    "CRS": 1,
+    "TTG": 1,
+    "HAD": 0
+   }
+  }
+ ]
+}
