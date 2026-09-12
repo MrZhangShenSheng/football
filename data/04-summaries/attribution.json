@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-11",
+  "generatedAt": "2026-09-12",
   "records": {
     "2026-08-23|周日015|HAD": {
       "primary": "F9",
@@ -241,7 +241,7 @@
         "pinSource": "fd",
         "oddsDrift": {
           "pickOdds": 1.51,
-          "laterOdds": 4.95
+          "laterOdds": 5.3
         }
       },
       "confidence": "high",
@@ -307,7 +307,7 @@
         "pinSource": "none",
         "oddsDrift": {
           "pickOdds": 1.96,
-          "laterOdds": 2.84
+          "laterOdds": 2.72
         }
       },
       "confidence": "high",
@@ -329,7 +329,7 @@
         "pinSource": "fd",
         "oddsDrift": {
           "pickOdds": 1.55,
-          "laterOdds": 4.7
+          "laterOdds": 5.35
         }
       },
       "confidence": "high",
@@ -351,7 +351,7 @@
         "pinSource": "fd",
         "oddsDrift": {
           "pickOdds": 2.3,
-          "laterOdds": 2.89
+          "laterOdds": 3.15
         }
       },
       "confidence": "high",
@@ -395,7 +395,7 @@
         "pinSource": "none",
         "oddsDrift": {
           "pickOdds": 1.75,
-          "laterOdds": 3.45
+          "laterOdds": 3.1
         }
       },
       "confidence": "high",
@@ -404,9 +404,7 @@
     },
     "2026-08-28|周六003|HAD": {
       "primary": "F9",
-      "secondary": [
-        "F10"
-      ],
+      "secondary": [],
       "evidence": {
         "pfinalPick": null,
         "dcBest": null,
@@ -414,11 +412,7 @@
         "pickIdx": 0,
         "resultIdx": 1,
         "result": "2-2",
-        "pinSource": "none",
-        "oddsDrift": {
-          "pickOdds": 1.85,
-          "laterOdds": 2.96
-        }
+        "pinSource": "none"
       },
       "confidence": "high",
       "source": "rule",
@@ -439,7 +433,7 @@
         "pinSource": "fd",
         "oddsDrift": {
           "pickOdds": 1.37,
-          "laterOdds": 1.92
+          "laterOdds": 1.94
         }
       },
       "confidence": "high",
@@ -461,7 +455,7 @@
         "pinSource": "fd",
         "oddsDrift": {
           "pickOdds": 1.5,
-          "laterOdds": 1.69
+          "laterOdds": 8.75
         }
       },
       "confidence": "high",
@@ -470,7 +464,9 @@
     },
     "2026-08-28|周六012|HAD": {
       "primary": "F9",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": 0.2604,
         "dcBest": 2,
@@ -479,7 +475,11 @@
         "resultIdx": 0,
         "result": "3-2",
         "pickDeviation": true,
-        "pinSource": "ambiguous"
+        "pinSource": "fd",
+        "oddsDrift": {
+          "pickOdds": 3.57,
+          "laterOdds": 6.4
+        }
       },
       "confidence": "high",
       "source": "rule",
@@ -487,7 +487,9 @@
     },
     "2026-08-28|周六013|HAD": {
       "primary": "F9",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": null,
         "dcBest": null,
@@ -495,7 +497,11 @@
         "pickIdx": 0,
         "resultIdx": 1,
         "result": "0-0",
-        "pinSource": "fd"
+        "pinSource": "fd",
+        "oddsDrift": {
+          "pickOdds": 1.5,
+          "laterOdds": 2.33
+        }
       },
       "confidence": "high",
       "source": "rule",
@@ -503,9 +509,7 @@
     },
     "2026-08-28|周六015|HAD": {
       "primary": "F9",
-      "secondary": [
-        "F10"
-      ],
+      "secondary": [],
       "evidence": {
         "pfinalPick": 0.4503,
         "dcBest": 0,
@@ -513,11 +517,7 @@
         "pickIdx": 0,
         "resultIdx": 1,
         "result": "1-1",
-        "pinSource": "fd",
-        "oddsDrift": {
-          "pickOdds": 1.87,
-          "laterOdds": 2.02
-        }
+        "pinSource": "fd"
       },
       "confidence": "high",
       "source": "rule",
@@ -525,7 +525,9 @@
     },
     "2026-08-28|周六016|HAD": {
       "primary": "F9",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": 0.4599,
         "dcBest": 2,
@@ -533,7 +535,11 @@
         "pickIdx": 2,
         "resultIdx": 0,
         "result": "5-2",
-        "pinSource": "fd"
+        "pinSource": "fd",
+        "oddsDrift": {
+          "pickOdds": 2.1,
+          "laterOdds": 5.7
+        }
       },
       "confidence": "high",
       "source": "rule",
@@ -554,7 +560,7 @@
         "pinSource": "fd",
         "oddsDrift": {
           "pickOdds": 1.96,
-          "laterOdds": 6.2
+          "laterOdds": 3.32
         }
       },
       "confidence": "high",
@@ -593,7 +599,7 @@
         "pinSource": "fd",
         "oddsDrift": {
           "pickOdds": 1.5,
-          "laterOdds": 1.85
+          "laterOdds": 1.9
         }
       },
       "confidence": "high",
@@ -615,7 +621,7 @@
         "pinSource": "none",
         "oddsDrift": {
           "pickOdds": 1.85,
-          "laterOdds": 1.99
+          "laterOdds": 4.26
         }
       },
       "confidence": "high",
@@ -624,7 +630,9 @@
     },
     "2026-08-28|周日003|HAD": {
       "primary": "F5",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": 0.3905,
         "dcBest": 1,
@@ -633,7 +641,11 @@
         "resultIdx": 1,
         "result": "1-1",
         "pinSource": "none",
-        "replay": "dc_approx"
+        "replay": "dc_approx",
+        "oddsDrift": {
+          "pickOdds": 2.19,
+          "laterOdds": 5.05
+        }
       },
       "confidence": "low",
       "source": "rule",
@@ -887,7 +899,7 @@
         "pinSource": "fd",
         "oddsDrift": {
           "pickOdds": 1.33,
-          "laterOdds": 1.36
+          "laterOdds": 2.0
         }
       },
       "confidence": "high",
@@ -896,7 +908,9 @@
     },
     "2026-09-04|周六028|HAD": {
       "primary": "F9",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": 0.6464,
         "dcBest": null,
@@ -904,7 +918,11 @@
         "pickIdx": 0,
         "resultIdx": 2,
         "result": "2-3",
-        "pinSource": "fd"
+        "pinSource": "fd",
+        "oddsDrift": {
+          "pickOdds": 1.37,
+          "laterOdds": 2.6
+        }
       },
       "confidence": "high",
       "source": "rule",
@@ -926,7 +944,7 @@
         "lambdaGap": 2.08,
         "oddsDrift": {
           "pickOdds": 1.61,
-          "laterOdds": 1.7
+          "laterOdds": 5.5
         }
       },
       "confidence": "high",
@@ -935,7 +953,9 @@
     },
     "2026-09-05|周日001|HAD": {
       "primary": "F1",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": 0.661,
         "dcBest": null,
@@ -944,7 +964,11 @@
         "resultIdx": 2,
         "result": "0-1",
         "pinSource": "none",
-        "lambdaGap": 2.22
+        "lambdaGap": 2.22,
+        "oddsDrift": {
+          "pickOdds": 1.69,
+          "laterOdds": 2.1
+        }
       },
       "confidence": "high",
       "source": "rule",
@@ -1054,13 +1078,29 @@
       "confidence": "low",
       "source": "rule",
       "confirmed": true
+    },
+    "2026-09-12|周五004|HAD": {
+      "primary": "F9",
+      "secondary": [],
+      "evidence": {
+        "pfinalPick": 0.5533,
+        "dcBest": 0,
+        "fusedBest": 0,
+        "pickIdx": 0,
+        "resultIdx": 1,
+        "result": "1-1",
+        "pinSource": "none"
+      },
+      "confidence": "high",
+      "source": "rule",
+      "confirmed": true
     }
   },
   "factorStats": {
     "F9": {
-      "nPrimary": 46,
+      "nPrimary": 47,
       "nSecondary": 0,
-      "avgProbGap": 0.3537
+      "avgProbGap": 0.3557
     },
     "F5": {
       "nPrimary": 2,

@@ -184,7 +184,8 @@ def discipline_rows(meta: dict) -> str:
         an, cn = e.get("actualNet") or 0, e.get("counterfactualNet") or 0   # 手工维护可能为 null（2026-08-30 结算撞线）
         cost = round(cn - an, 1)
         cls = "pos" if cost >= 0 else "neg"
-        rows.append(f'<tr><td>{e["date"]}</td><td>{e["event"]}</td>'
+        when = e.get("date") or e.get("at") or ""      # 09-11 起登记用 at/ticket 新 schema，兼容旧 date
+        rows.append(f'<tr><td>{when}</td><td>{e["event"]}</td>'
                     f'<td>{an:+.1f}</td><td>{cn:+.1f}</td>'
                     f'<td class="{cls}">{cost:+.1f}</td><td class="sub">{e.get("verdict", "")}</td></tr>')
     return "".join(rows)

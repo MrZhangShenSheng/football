@@ -16,116 +16,671 @@
   "data/03-predictions/2026-09-10-boldplay.json（三档卡 seq19·--matchday=周五）"
  ],
  "plans": [
-  {"plan": "程序卡（对照·未拍板）", "type": "三档制 seq19", "stake": "8元(翻身6+彩票2)",
+  {
+   "plan": "程序卡（对照·未拍板）",
+   "type": "三档制 seq19",
+   "stake": "8元(翻身6+彩票2)",
    "legs": [
     "翻身注1: 周五003 CRS 1:0@16.0 × 周五008 CRS 1:0@10.5 (合赔168·EV: 腿1+36%/腿2+11%)",
     "翻身注2: 周五011 CRS 1:2@12.0 × 周五001 TTG s2@3.75 (合赔45·EV: 腿1+11%/腿2-13%) ⚠人工意见:011腿逆基面方向",
     "翻身注3: 周五009 CRS 1:2@10.5 × 周五012 TTG s3@3.85 (合赔40.4·EV: 腿1-15%/腿2-15%)",
     "彩票档5串1×1倍=2元: 012 HHAD+1主胜@1.49/002 HAD客胜@1.47/008 HHAD+1主胜@1.50/004 HAD主胜@1.53/010 HAD主胜@1.51 (合赔7.6·全中≈15元)"
-   ], "odds": null, "evEach": true},
-  {"plan": "翻身A修订版（人工）", "type": "3注跨池2串1", "stake": "6元",
+   ],
+   "odds": null,
+   "evEach": true
+  },
+  {
+   "plan": "翻身A修订版（人工）",
+   "type": "3注跨池2串1",
+   "stake": "6元",
    "legs": [
     "注1: 周五003 CRS 1:0@16.0 × 周五008 CRS 1:0@10.5 (合赔168·双正EV腿)",
     "注2: 周五009 CRS 1:2@10.5 × 周五001 TTG s2@3.75 (合赔39.4)",
     "注3: 周五012 HAD平@2.93 × 周五002 HAD客胜@1.47 (合赔4.31·平局混串·德比+极差6.7pp+H2H4平·poolSingle.HAD=0降级路径)"
-   ], "odds": null, "evEach": true}
+   ],
+   "odds": null,
+   "evEach": true
+  }
  ],
  "matches": [
   {
-   "idx": 1, "code": "周五001", "league": "日职(R7)", "match": "京都 vs 柏太阳神", "kickoff": "2026-09-11 18:00",
-   "pick": "TTG s2", "odds": 3.75, "star": 2, "grade": "A",
-   "dc": [0.3234, 0.2293, 0.4473], "fused": [0.2451, 0.2402, 0.5147], "fusedPre": [0.2451, 0.2402, 0.5147],
-   "final": 0.247, "chain": ["单锚×0.97"], "chainSteps": [{"name": "单锚降级", "factor": 0.97}],
-   "lambdaHome": 1.236, "lambdaAway": 1.509, "ev": -0.13, "inPlan": "程序翻身注2/修订注2",
-   "note": "京都15名1胜2平3负近10 3胜2平5负vs柏4名4胜0平2负近10 6胜1平3负·λ1.24/1.51合计2.74→2球档·日职场均2.4低分锚·方向层客胜49.9%⭐⭐无锚日职不入串·H2H 10场5平(50%)但平局赔率3.65隐含24%无边际·无伤停"
+   "idx": 1,
+   "code": "周五001",
+   "league": "日职(R7)",
+   "match": "京都 vs 柏太阳神",
+   "kickoff": "2026-09-11 18:00",
+   "pick": "TTG s2",
+   "odds": 3.75,
+   "star": 2,
+   "grade": "A",
+   "dc": [
+    0.3234,
+    0.2293,
+    0.4473
+   ],
+   "fused": [
+    0.2451,
+    0.2402,
+    0.5147
+   ],
+   "fusedPre": [
+    0.2451,
+    0.2402,
+    0.5147
+   ],
+   "final": 0.247,
+   "chain": [
+    "单锚×0.97"
+   ],
+   "chainSteps": [
+    {
+     "name": "单锚降级",
+     "factor": 0.97
+    }
+   ],
+   "lambdaHome": 1.236,
+   "lambdaAway": 1.509,
+   "ev": -0.13,
+   "inPlan": "程序翻身注2/修订注2",
+   "note": "京都15名1胜2平3负近10 3胜2平5负vs柏4名4胜0平2负近10 6胜1平3负·λ1.24/1.51合计2.74→2球档·日职场均2.4低分锚·方向层客胜49.9%⭐⭐无锚日职不入串·H2H 10场5平(50%)但平局赔率3.65隐含24%无边际·无伤停",
+   "result": "2-3",
+   "half": "2:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041386,
+    "lastOddsAt": "2026-09-11T17:31:33+08:00",
+    "lastIntelAt": "2026-09-11T11:34:36+08:00"
+   }
   },
   {
-   "idx": 2, "code": "周五002", "league": "沙职(R7)", "match": "哈马费萨 vs 吉达联合", "kickoff": "2026-09-11 23:45",
-   "pick": "HAD 客胜", "odds": 1.47, "star": 3, "grade": "A",
-   "dc": [0.1811, 0.2223, 0.5966], "fused": [0.1795, 0.2197, 0.6008], "fusedPre": [0.1795, 0.2197, 0.6008],
-   "final": 0.583, "chain": ["单锚×0.97"], "chainSteps": [{"name": "单锚降级", "factor": 0.97}],
-   "lambdaHome": 1.194, "lambdaAway": 2.252, "ev": -0.143, "inPlan": "彩票档/修订注3",
-   "note": "全轮最高置信：DC与市场零分歧(0.1pp)·吉达4名4胜2平0负不败近10 6胜3平1负vs哈马费萨17名0胜3平3负·客替补Doumbia伤停不修正(d=0)·沙职无锚禁保底胆(铁律10)但彩票档/混串合法·EV-14.3%高抽水内"
+   "idx": 2,
+   "code": "周五002",
+   "league": "沙职(R7)",
+   "match": "哈马费萨 vs 吉达联合",
+   "kickoff": "2026-09-11 23:45",
+   "pick": "HAD 客胜",
+   "odds": 1.47,
+   "star": 3,
+   "grade": "A",
+   "dc": [
+    0.1811,
+    0.2223,
+    0.5966
+   ],
+   "fused": [
+    0.1795,
+    0.2197,
+    0.6008
+   ],
+   "fusedPre": [
+    0.1795,
+    0.2197,
+    0.6008
+   ],
+   "final": 0.583,
+   "chain": [
+    "单锚×0.97"
+   ],
+   "chainSteps": [
+    {
+     "name": "单锚降级",
+     "factor": 0.97
+    }
+   ],
+   "lambdaHome": 1.194,
+   "lambdaAway": 2.252,
+   "ev": -0.143,
+   "inPlan": "彩票档/修订注3",
+   "note": "全轮最高置信：DC与市场零分歧(0.1pp)·吉达4名4胜2平0负不败近10 6胜3平1负vs哈马费萨17名0胜3平3负·客替补Doumbia伤停不修正(d=0)·沙职无锚禁保底胆(铁律10)但彩票档/混串合法·EV-14.3%高抽水内",
+   "result": "1-3",
+   "half": "0:2",
+   "directionHit": true,
+   "scoreHit": true,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041387,
+    "lastOddsAt": "2026-09-11T17:31:33+08:00",
+    "lastIntelAt": "2026-09-11T11:34:38+08:00"
+   }
   },
   {
-   "idx": 3, "code": "周五003", "league": "德乙(R5)", "match": "纽伦堡 vs 汉诺威96", "kickoff": "2026-09-12 00:30",
-   "pick": "CRS 1:0", "odds": 16.0, "star": 2, "grade": "A",
-   "dc": [0.6619, 0.184, 0.1542], "fused": [0.4549, 0.2339, 0.3112], "fusedPre": [0.4549, 0.2339, 0.3112],
-   "final": 0.085, "chain": ["freq-band q=8.5%(德乙模板+平移)", "单锚×0.97"], "chainSteps": [{"name": "freq-band", "factor": 1.0}, {"name": "单锚降级", "factor": 0.97}],
-   "lambdaHome": 2.037, "lambdaAway": 0.832, "ev": 0.36, "inPlan": "程序翻身注1/修订注1",
-   "note": "全轮最高EV腿+36%：q=8.5%带平移(纽伦堡2名3胜1平攻击力+0.46德乙TOP3·λ2.04/0.83)·16.0落桂林带10-17✓·⚠方向层DC分歧8.6pp熔断(DC 66.2%主胜vs市场36.9%·德乙升班马/两季拟合对R5开局过敏感)·HAD主胜不入串防模型自大·CRS池走freq与DC无关"
+   "idx": 3,
+   "code": "周五003",
+   "league": "德乙(R5)",
+   "match": "纽伦堡 vs 汉诺威96",
+   "kickoff": "2026-09-12 00:30",
+   "pick": "CRS 1:0",
+   "odds": 16.0,
+   "star": 2,
+   "grade": "A",
+   "dc": [
+    0.6619,
+    0.184,
+    0.1542
+   ],
+   "fused": [
+    0.4549,
+    0.2339,
+    0.3112
+   ],
+   "fusedPre": [
+    0.4549,
+    0.2339,
+    0.3112
+   ],
+   "final": 0.085,
+   "chain": [
+    "freq-band q=8.5%(德乙模板+平移)",
+    "单锚×0.97"
+   ],
+   "chainSteps": [
+    {
+     "name": "freq-band",
+     "factor": 1.0
+    },
+    {
+     "name": "单锚降级",
+     "factor": 0.97
+    }
+   ],
+   "lambdaHome": 2.037,
+   "lambdaAway": 0.832,
+   "ev": 0.36,
+   "inPlan": "程序翻身注1/修订注1",
+   "note": "全轮最高EV腿+36%：q=8.5%带平移(纽伦堡2名3胜1平攻击力+0.46德乙TOP3·λ2.04/0.83)·16.0落桂林带10-17✓·⚠方向层DC分歧8.6pp熔断(DC 66.2%主胜vs市场36.9%·德乙升班马/两季拟合对R5开局过敏感)·HAD主胜不入串防模型自大·CRS池走freq与DC无关",
+   "result": "2-1",
+   "half": "1:1",
+   "directionHit": null,
+   "scoreHit": false,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041388,
+    "lastOddsAt": "2026-09-11T17:31:33+08:00",
+    "lastIntelAt": "2026-09-11T17:55:37+08:00"
+   }
   },
   {
-   "idx": 4, "code": "周五004", "league": "瑞超(R21)", "match": "赫根 vs 米亚尔比", "kickoff": "2026-09-12 01:00",
-   "pick": "HAD 主胜", "odds": 1.53, "star": 2, "grade": "A",
-   "dc": [0.4861, 0.2459, 0.268], "fused": [0.5533, 0.2272, 0.2195], "fusedPre": [0.5533, 0.2272, 0.2195],
-   "final": 0.537, "chain": ["单锚×0.97"], "chainSteps": [{"name": "单锚降级", "factor": 0.97}],
-   "lambdaHome": 1.807, "lambdaAway": 1.295, "ev": -0.178, "inPlan": "彩票档",
-   "note": "赫根4名近10 4胜3平3负vs米亚尔比12名近10 1胜1平8负(客场8负崩盘)·λ1.81/1.30·DC分歧-2.6pp健康·瑞超无锚禁保底胆·彩票档p_fused55.3%≥0.55干净腿✓·H2H赫根4胜1平5负反被压·EV-17.8%"
+   "idx": 4,
+   "code": "周五004",
+   "league": "瑞超(R21)",
+   "match": "赫根 vs 米亚尔比",
+   "kickoff": "2026-09-12 01:00",
+   "pick": "HAD 主胜",
+   "odds": 1.53,
+   "star": 2,
+   "grade": "A",
+   "dc": [
+    0.4861,
+    0.2459,
+    0.268
+   ],
+   "fused": [
+    0.5533,
+    0.2272,
+    0.2195
+   ],
+   "fusedPre": [
+    0.5533,
+    0.2272,
+    0.2195
+   ],
+   "final": 0.537,
+   "chain": [
+    "单锚×0.97"
+   ],
+   "chainSteps": [
+    {
+     "name": "单锚降级",
+     "factor": 0.97
+    }
+   ],
+   "lambdaHome": 1.807,
+   "lambdaAway": 1.295,
+   "ev": -0.178,
+   "inPlan": "彩票档",
+   "note": "赫根4名近10 4胜3平3负vs米亚尔比12名近10 1胜1平8负(客场8负崩盘)·λ1.81/1.30·DC分歧-2.6pp健康·瑞超无锚禁保底胆·彩票档p_fused55.3%≥0.55干净腿✓·H2H赫根4胜1平5负反被压·EV-17.8%",
+   "result": "1-1",
+   "half": "0:1",
+   "directionHit": false,
+   "scoreHit": false,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041389,
+    "lastOddsAt": "2026-09-11T17:31:33+08:00",
+    "lastIntelAt": "2026-09-11T11:34:40+08:00"
+   }
   },
   {
-   "idx": 5, "code": "周五005", "league": "荷甲(R6)", "match": "阿尔克马 vs 威廉二世", "kickoff": "2026-09-12 02:00",
-   "pick": "排除:HAD未开售+λ塌缩", "odds": 1.83, "star": 2, "grade": "A",
-   "dc": [0.9731, 0.021, 0.0059], "fused": null, "fusedPre": null,
-   "final": null, "chain": ["让球盘处理(HHAD-2直读)", "DCλ塌缩弃用"], "chainSteps": [{"name": "让球盘处理", "factor": 1.0}, {"name": "DC弃用", "factor": 1.0}],
-   "lambdaHome": 4.788, "lambdaAway": 0.289, "ev": null, "inPlan": null,
-   "note": "HAD未开售仅HHAD-2·榜首5连胜vs16名0胜1平3负差距真实但DC λa=0.289塌缩(威廉二世2627仅4场数据·升班马治理同款问题)→HHAD-2 h@1.83(阿尔克马赢3+)真实概率~40-45%体彩隐含50%·EV微负不推·TTG方向3-4球档@4.30叙事参考·TOP比分4-0/5-0/3-0为λ夸大产物不可信"
+   "idx": 5,
+   "code": "周五005",
+   "league": "荷甲(R6)",
+   "match": "阿尔克马 vs 威廉二世",
+   "kickoff": "2026-09-12 02:00",
+   "pick": "排除:HAD未开售+λ塌缩",
+   "odds": 1.83,
+   "star": 2,
+   "grade": "A",
+   "dc": [
+    0.9731,
+    0.021,
+    0.0059
+   ],
+   "fused": null,
+   "fusedPre": null,
+   "final": null,
+   "chain": [
+    "让球盘处理(HHAD-2直读)",
+    "DCλ塌缩弃用"
+   ],
+   "chainSteps": [
+    {
+     "name": "让球盘处理",
+     "factor": 1.0
+    },
+    {
+     "name": "DC弃用",
+     "factor": 1.0
+    }
+   ],
+   "lambdaHome": 4.788,
+   "lambdaAway": 0.289,
+   "ev": null,
+   "inPlan": null,
+   "note": "HAD未开售仅HHAD-2·榜首5连胜vs16名0胜1平3负差距真实但DC λa=0.289塌缩(威廉二世2627仅4场数据·升班马治理同款问题)→HHAD-2 h@1.83(阿尔克马赢3+)真实概率~40-45%体彩隐含50%·EV微负不推·TTG方向3-4球档@4.30叙事参考·TOP比分4-0/5-0/3-0为λ夸大产物不可信",
+   "result": "1-1",
+   "half": "1:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041390,
+    "lastOddsAt": "2026-09-11T17:31:33+08:00",
+    "lastIntelAt": "2026-09-11T11:34:41+08:00"
+   }
   },
   {
-   "idx": 6, "code": "周五006", "league": "荷乙(R6)", "match": "马斯特里 vs 阿尔梅勒", "kickoff": "2026-09-12 02:00",
-   "pick": "排除:无锚+无DC+low_conf", "odds": 1.98, "star": 2, "grade": "A",
-   "dc": null, "fused": [0.312, 0.243, 0.445], "fusedPre": [0.312, 0.243, 0.445],
-   "final": 0.432, "chain": ["市场锚(荷乙无DC)", "单锚×0.97"], "chainSteps": [{"name": "纯市场锚", "factor": 1.0}, {"name": "单锚降级", "factor": 0.97}],
-   "lambdaHome": null, "lambdaAway": null, "ev": null, "inPlan": null,
-   "note": "荷乙真缺口：fd不覆盖(N2无CSV)·league库无·DC无·联赛画像缺(data_check missing)·freq-band走low_conf兜底·马斯特里2名4胜1平vs阿尔梅勒5名3胜1平1负两队开局俱佳市场却给客热1.98·无本地数据验证方向·三池卡🟡low_conf·排除"
+   "idx": 6,
+   "code": "周五006",
+   "league": "荷乙(R6)",
+   "match": "马斯特里 vs 阿尔梅勒",
+   "kickoff": "2026-09-12 02:00",
+   "pick": "排除:无锚+无DC+low_conf",
+   "odds": 1.98,
+   "star": 2,
+   "grade": "A",
+   "dc": null,
+   "fused": [
+    0.312,
+    0.243,
+    0.445
+   ],
+   "fusedPre": [
+    0.312,
+    0.243,
+    0.445
+   ],
+   "final": 0.432,
+   "chain": [
+    "市场锚(荷乙无DC)",
+    "单锚×0.97"
+   ],
+   "chainSteps": [
+    {
+     "name": "纯市场锚",
+     "factor": 1.0
+    },
+    {
+     "name": "单锚降级",
+     "factor": 0.97
+    }
+   ],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": null,
+   "inPlan": null,
+   "note": "荷乙真缺口：fd不覆盖(N2无CSV)·league库无·DC无·联赛画像缺(data_check missing)·freq-band走low_conf兜底·马斯特里2名4胜1平vs阿尔梅勒5名3胜1平1负两队开局俱佳市场却给客热1.98·无本地数据验证方向·三池卡🟡low_conf·排除",
+   "result": "0-4",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041391,
+    "lastOddsAt": "2026-09-11T17:31:33+08:00",
+    "lastIntelAt": "2026-09-11T11:34:43+08:00"
+   }
   },
   {
-   "idx": 7, "code": "周五007", "league": "德甲(R3)", "match": "柏林联合 vs 沙尔克04", "kickoff": "2026-09-12 02:30",
-   "pick": "排除:R3开季+DC塌缩", "odds": 3.45, "star": 2, "grade": "A",
-   "dc": [0.5691, 0.4025, 0.0285], "fused": [0.4318, 0.2566, 0.3117], "fusedPre": [0.5099, 0.3184, 0.1716],
-   "final": 0.282, "chain": ["R3开季平×1.10", "DC升班马λ塌缩弃用(市场锚替代融合)", "单锚×0.97"], "chainSteps": [{"name": "开季修正R3平×1.10", "factor": 1.1}, {"name": "DC弃用走市场锚", "factor": 1.0}, {"name": "单锚降级", "factor": 0.97}],
-   "lambdaHome": 0.916, "lambdaAway": 0.078, "ev": null, "inPlan": null,
-   "note": "全轮模型警示场：DC λa=0.078塌缩(沙尔克升班马2627仅2场·0胜1平1负·挂账升班马治理)→p_fused弃用走市场锚43.2/25.7/31.2·R3开季平×1.10→平28.2%·boldplay熔断拦7选项·H2H 6场4平+两队皆0胜=平局信号强但R3禁入平局轨·两队近10合6平·0-0/1-1高发叙事"
+   "idx": 7,
+   "code": "周五007",
+   "league": "德甲(R3)",
+   "match": "柏林联合 vs 沙尔克04",
+   "kickoff": "2026-09-12 02:30",
+   "pick": "排除:R3开季+DC塌缩",
+   "odds": 3.45,
+   "star": 2,
+   "grade": "A",
+   "dc": [
+    0.5691,
+    0.4025,
+    0.0285
+   ],
+   "fused": [
+    0.4318,
+    0.2566,
+    0.3117
+   ],
+   "fusedPre": [
+    0.5099,
+    0.3184,
+    0.1716
+   ],
+   "final": 0.282,
+   "chain": [
+    "R3开季平×1.10",
+    "DC升班马λ塌缩弃用(市场锚替代融合)",
+    "单锚×0.97"
+   ],
+   "chainSteps": [
+    {
+     "name": "开季修正R3平×1.10",
+     "factor": 1.1
+    },
+    {
+     "name": "DC弃用走市场锚",
+     "factor": 1.0
+    },
+    {
+     "name": "单锚降级",
+     "factor": 0.97
+    }
+   ],
+   "lambdaHome": 0.916,
+   "lambdaAway": 0.078,
+   "ev": null,
+   "inPlan": null,
+   "note": "全轮模型警示场：DC λa=0.078塌缩(沙尔克升班马2627仅2场·0胜1平1负·挂账升班马治理)→p_fused弃用走市场锚43.2/25.7/31.2·R3开季平×1.10→平28.2%·boldplay熔断拦7选项·H2H 6场4平+两队皆0胜=平局信号强但R3禁入平局轨·两队近10合6平·0-0/1-1高发叙事",
+   "result": "1-3",
+   "half": "0:1",
+   "directionHit": null,
+   "scoreHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041392,
+    "lastOddsAt": "2026-09-11T17:31:33+08:00",
+    "lastIntelAt": "2026-09-11T11:34:44+08:00"
+   }
   },
   {
-   "idx": 8, "code": "周五008", "league": "意甲(R4)", "match": "威尼斯 vs 佛罗伦萨", "kickoff": "2026-09-12 02:45",
-   "pick": "CRS 1:0", "odds": 10.5, "star": 2, "grade": "A",
-   "dc": [0.2745, 0.2529, 0.4726], "fused": [0.3168, 0.2674, 0.4158], "fusedPre": [0.3168, 0.2674, 0.4158],
-   "final": 0.105, "chain": ["freq-band q=10.5%(意甲模板+平移)", "单锚×0.97"], "chainSteps": [{"name": "freq-band", "factor": 1.0}, {"name": "单锚降级", "factor": 0.97}],
-   "lambdaHome": 0.978, "lambdaAway": 1.387, "ev": 0.11, "inPlan": "程序翻身注1/修订注1",
-   "note": "双0胜队奇观：威尼斯18名0胜0平3负vs佛罗伦萨20名0胜0平3负(必有一队止败或双双首平)·λ0.98/1.39低分·1:0=意甲TOP2比分+威尼斯主场平移q=10.5%·@10.5带内✓EV+11%·⚠与方向层(客胜40.4%微弱倾向)对冲=彩票性质·平局轨p平27.2%<28✗且HAD单关0双杀·彩票档威尼斯+1不败腿58.4%✓"
+   "idx": 8,
+   "code": "周五008",
+   "league": "意甲(R4)",
+   "match": "威尼斯 vs 佛罗伦萨",
+   "kickoff": "2026-09-12 02:45",
+   "pick": "CRS 1:0",
+   "odds": 10.5,
+   "star": 2,
+   "grade": "A",
+   "dc": [
+    0.2745,
+    0.2529,
+    0.4726
+   ],
+   "fused": [
+    0.3168,
+    0.2674,
+    0.4158
+   ],
+   "fusedPre": [
+    0.3168,
+    0.2674,
+    0.4158
+   ],
+   "final": 0.105,
+   "chain": [
+    "freq-band q=10.5%(意甲模板+平移)",
+    "单锚×0.97"
+   ],
+   "chainSteps": [
+    {
+     "name": "freq-band",
+     "factor": 1.0
+    },
+    {
+     "name": "单锚降级",
+     "factor": 0.97
+    }
+   ],
+   "lambdaHome": 0.978,
+   "lambdaAway": 1.387,
+   "ev": 0.11,
+   "inPlan": "程序翻身注1/修订注1",
+   "note": "双0胜队奇观：威尼斯18名0胜0平3负vs佛罗伦萨20名0胜0平3负(必有一队止败或双双首平)·λ0.98/1.39低分·1:0=意甲TOP2比分+威尼斯主场平移q=10.5%·@10.5带内✓EV+11%·⚠与方向层(客胜40.4%微弱倾向)对冲=彩票性质·平局轨p平27.2%<28✗且HAD单关0双杀·彩票档威尼斯+1不败腿58.4%✓",
+   "result": "2-4",
+   "half": "1:2",
+   "directionHit": null,
+   "scoreHit": false,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041393,
+    "lastOddsAt": "2026-09-11T17:31:33+08:00",
+    "lastIntelAt": "2026-09-11T12:40:32+08:00"
+   }
   },
   {
-   "idx": 9, "code": "周五009", "league": "法甲(R4)", "match": "雷恩 vs 马赛", "kickoff": "2026-09-12 02:45",
-   "pick": "CRS 1:2", "odds": 10.5, "star": 2, "grade": "A",
-   "dc": [0.4645, 0.2083, 0.3272], "fused": [0.4815, 0.2306, 0.2879], "fusedPre": [0.4815, 0.2306, 0.2879],
-   "final": 0.081, "chain": ["freq-band q=8.1%(法甲模板+平移)", "单锚×0.97"], "chainSteps": [{"name": "freq-band", "factor": 1.0}, {"name": "单锚降级", "factor": 0.97}],
-   "lambdaHome": 1.972, "lambdaAway": 1.626, "ev": -0.15, "inPlan": "程序翻身注3/修订注2",
-   "note": "雷恩5名2胜1平0负vs马赛10名1胜0平2负但近10 6胜0平4负状态回暖·λ1.97/1.63对攻局·H2H雷恩视角2胜1平7负马赛克星(叙事参考不进权重但CRS客胜方向与H2H自洽)·方向层主胜46.7%⭐⭐H2H反向不入串·1:2@10.5带内·德比级对攻1:2合理"
+   "idx": 9,
+   "code": "周五009",
+   "league": "法甲(R4)",
+   "match": "雷恩 vs 马赛",
+   "kickoff": "2026-09-12 02:45",
+   "pick": "CRS 1:2",
+   "odds": 10.5,
+   "star": 2,
+   "grade": "A",
+   "dc": [
+    0.4645,
+    0.2083,
+    0.3272
+   ],
+   "fused": [
+    0.4815,
+    0.2306,
+    0.2879
+   ],
+   "fusedPre": [
+    0.4815,
+    0.2306,
+    0.2879
+   ],
+   "final": 0.081,
+   "chain": [
+    "freq-band q=8.1%(法甲模板+平移)",
+    "单锚×0.97"
+   ],
+   "chainSteps": [
+    {
+     "name": "freq-band",
+     "factor": 1.0
+    },
+    {
+     "name": "单锚降级",
+     "factor": 0.97
+    }
+   ],
+   "lambdaHome": 1.972,
+   "lambdaAway": 1.626,
+   "ev": -0.15,
+   "inPlan": "程序翻身注3/修订注2",
+   "note": "雷恩5名2胜1平0负vs马赛10名1胜0平2负但近10 6胜0平4负状态回暖·λ1.97/1.63对攻局·H2H雷恩视角2胜1平7负马赛克星(叙事参考不进权重但CRS客胜方向与H2H自洽)·方向层主胜46.7%⭐⭐H2H反向不入串·1:2@10.5带内·德比级对攻1:2合理",
+   "result": "1-0",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": false,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041394,
+    "lastOddsAt": "2026-09-11T17:31:33+08:00",
+    "lastIntelAt": "2026-09-11T11:34:46+08:00"
+   }
   },
   {
-   "idx": 10, "code": "周五010", "league": "英冠(R7)", "match": "西汉姆联 vs 雷克斯", "kickoff": "2026-09-12 03:00",
-   "pick": "HAD 主胜", "odds": 1.51, "star": 2, "grade": "A",
-   "dc": [0.4622, 0.2894, 0.2484], "fused": [0.5518, 0.2429, 0.2053], "fusedPre": [0.5518, 0.2429, 0.2053],
-   "final": 0.535, "chain": ["单锚×0.97"], "chainSteps": [{"name": "单锚降级", "factor": 0.97}],
-   "lambdaHome": 1.62, "lambdaAway": 1.145, "ev": -0.192, "inPlan": "彩票档",
-   "note": "西汉姆(英超降班马)2名3胜2平1负近10 5胜4平1负vs雷克斯14名1胜4平1负(升班马平局大王6场4平)·DC攻击力西汉姆+0.30/Wrexham+0.18·H2H 0场(雷克斯百年首进英冠第二级)·英冠平局率27.9%高+雷克斯平局属性=主胜最大风险·彩票档p_fused55.2%✓·EV-19.2%全池最深抽水"
+   "idx": 10,
+   "code": "周五010",
+   "league": "英冠(R7)",
+   "match": "西汉姆联 vs 雷克斯",
+   "kickoff": "2026-09-12 03:00",
+   "pick": "HAD 主胜",
+   "odds": 1.51,
+   "star": 2,
+   "grade": "A",
+   "dc": [
+    0.4622,
+    0.2894,
+    0.2484
+   ],
+   "fused": [
+    0.5518,
+    0.2429,
+    0.2053
+   ],
+   "fusedPre": [
+    0.5518,
+    0.2429,
+    0.2053
+   ],
+   "final": 0.535,
+   "chain": [
+    "单锚×0.97"
+   ],
+   "chainSteps": [
+    {
+     "name": "单锚降级",
+     "factor": 0.97
+    }
+   ],
+   "lambdaHome": 1.62,
+   "lambdaAway": 1.145,
+   "ev": -0.192,
+   "inPlan": "彩票档",
+   "note": "西汉姆(英超降班马)2名3胜2平1负近10 5胜4平1负vs雷克斯14名1胜4平1负(升班马平局大王6场4平)·DC攻击力西汉姆+0.30/Wrexham+0.18·H2H 0场(雷克斯百年首进英冠第二级)·英冠平局率27.9%高+雷克斯平局属性=主胜最大风险·彩票档p_fused55.2%✓·EV-19.2%全池最深抽水",
+   "result": "6-0",
+   "half": "2:0",
+   "directionHit": true,
+   "scoreHit": true,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041395,
+    "lastOddsAt": "2026-09-11T17:31:33+08:00",
+    "lastIntelAt": "2026-09-11T11:34:47+08:00"
+   }
   },
   {
-   "idx": 11, "code": "周五011", "league": "西甲(R5)", "match": "塞维利亚 vs 巴伦西亚", "kickoff": "2026-09-12 03:00",
-   "pick": "排除:DC分歧熔断", "odds": 1.89, "star": 2, "grade": "A",
-   "dc": [0.733, 0.1932, 0.0738], "fused": [0.5533, 0.2655, 0.1812], "fusedPre": [0.5533, 0.2655, 0.1812],
-   "final": 0.469, "chain": ["DC分歧8.5pp熔断(降回市场口径)", "单锚×0.97"], "chainSteps": [{"name": "DC分歧熔断", "factor": 1.0}, {"name": "单锚降级", "factor": 0.97}],
-   "lambdaHome": 2.18, "lambdaAway": 0.573, "ev": -0.114, "inPlan": null,
-   "note": "熔断场：DC主胜73.3%vs市场46.9%分歧8.5pp(西甲home_adv0.333+塞维攻击参数或高估·巴伦西亚20名0胜1平3负市场仍只给1.89=市场知道些什么)·boldplay拦主胜/客胜/HHAD共4选项·基面(主7名2胜1平1负vs客20名近10 2胜2平6负)倾向主胜·H2H 10场5平平局高发·方向主胜参考⭐⭐不入串·程序翻身CRS 1:2@12(q=9.2%)人工意见:逆基面方向信度低(修订版已替换)"
+   "idx": 11,
+   "code": "周五011",
+   "league": "西甲(R5)",
+   "match": "塞维利亚 vs 巴伦西亚",
+   "kickoff": "2026-09-12 03:00",
+   "pick": "排除:DC分歧熔断",
+   "odds": 1.89,
+   "star": 2,
+   "grade": "A",
+   "dc": [
+    0.733,
+    0.1932,
+    0.0738
+   ],
+   "fused": [
+    0.5533,
+    0.2655,
+    0.1812
+   ],
+   "fusedPre": [
+    0.5533,
+    0.2655,
+    0.1812
+   ],
+   "final": 0.469,
+   "chain": [
+    "DC分歧8.5pp熔断(降回市场口径)",
+    "单锚×0.97"
+   ],
+   "chainSteps": [
+    {
+     "name": "DC分歧熔断",
+     "factor": 1.0
+    },
+    {
+     "name": "单锚降级",
+     "factor": 0.97
+    }
+   ],
+   "lambdaHome": 2.18,
+   "lambdaAway": 0.573,
+   "ev": -0.114,
+   "inPlan": null,
+   "note": "熔断场：DC主胜73.3%vs市场46.9%分歧8.5pp(西甲home_adv0.333+塞维攻击参数或高估·巴伦西亚20名0胜1平3负市场仍只给1.89=市场知道些什么)·boldplay拦主胜/客胜/HHAD共4选项·基面(主7名2胜1平1负vs客20名近10 2胜2平6负)倾向主胜·H2H 10场5平平局高发·方向主胜参考⭐⭐不入串·程序翻身CRS 1:2@12(q=9.2%)人工意见:逆基面方向信度低(修订版已替换)",
+   "result": "1-0",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041396,
+    "lastOddsAt": "2026-09-11T17:31:33+08:00",
+    "lastIntelAt": "2026-09-11T11:34:48+08:00"
+   }
   },
   {
-   "idx": 12, "code": "周五012", "league": "巴甲(R27)", "match": "科里蒂巴 vs 巴竞技", "kickoff": "2026-09-12 08:00",
-   "pick": "HAD 平(混串)", "odds": 2.93, "star": 2, "grade": "A",
-   "dc": [0.352, 0.2768, 0.3713], "fused": [0.319, 0.2949, 0.3861], "fusedPre": [0.319, 0.2949, 0.3861],
-   "final": 0.286, "chain": ["单锚×0.97"], "chainSteps": [{"name": "单锚降级", "factor": 0.97}],
-   "lambdaHome": 1.365, "lambdaAway": 1.407, "ev": -0.162, "inPlan": "修订注3(平局混串)",
-   "note": "本轮最典型平局场：巴拉那州德比(Coritiba vs Athletico-PR)·三向极差6.7pp全轮最胶着·H2H 10场3胜4平3负(4平)·巴甲平局率高·λ1.37/1.41均衡·DC分歧1.3pp健康·平局轨五条审:p平28.6%✓极差✓R27✓名额✓poolSingle.HAD=0✗✗第五条资格前置出局→降级混串路径(与002吉达客胜组2串1合赔4.31·须对捆绑腿独立信心·吉达60.1%全轮最高✓)·彩票档科里蒂巴+1不败61.4%✓"
+   "idx": 12,
+   "code": "周五012",
+   "league": "巴甲(R27)",
+   "match": "科里蒂巴 vs 巴竞技",
+   "kickoff": "2026-09-12 08:00",
+   "pick": "HAD 平(混串)",
+   "odds": 2.93,
+   "star": 2,
+   "grade": "A",
+   "dc": [
+    0.352,
+    0.2768,
+    0.3713
+   ],
+   "fused": [
+    0.319,
+    0.2949,
+    0.3861
+   ],
+   "fusedPre": [
+    0.319,
+    0.2949,
+    0.3861
+   ],
+   "final": 0.286,
+   "chain": [
+    "单锚×0.97"
+   ],
+   "chainSteps": [
+    {
+     "name": "单锚降级",
+     "factor": 0.97
+    }
+   ],
+   "lambdaHome": 1.365,
+   "lambdaAway": 1.407,
+   "ev": -0.162,
+   "inPlan": "修订注3(平局混串)",
+   "note": "本轮最典型平局场：巴拉那州德比(Coritiba vs Athletico-PR)·三向极差6.7pp全轮最胶着·H2H 10场3胜4平3负(4平)·巴甲平局率高·λ1.37/1.41均衡·DC分歧1.3pp健康·平局轨五条审:p平28.6%✓极差✓R27✓名额✓poolSingle.HAD=0✗✗第五条资格前置出局→降级混串路径(与002吉达客胜组2串1合赔4.31·须对捆绑腿独立信心·吉达60.1%全轮最高✓)·彩票档科里蒂巴+1不败61.4%✓",
+   "result": "3-3",
+   "directionHit": true,
+   "scoreHit": true,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041397,
+    "lastOddsAt": "2026-09-11T17:31:33+08:00",
+    "lastIntelAt": "2026-09-11T11:34:49+08:00"
+   }
   }
-]
+ ]
 }
