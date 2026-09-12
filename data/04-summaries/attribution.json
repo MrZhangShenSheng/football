@@ -66,7 +66,7 @@
         "pinSource": "fd",
         "oddsDrift": {
           "pickOdds": 1.62,
-          "laterOdds": 4.9
+          "laterOdds": 5.2
         }
       },
       "confidence": "high",
@@ -395,7 +395,7 @@
         "pinSource": "none",
         "oddsDrift": {
           "pickOdds": 1.75,
-          "laterOdds": 3.1
+          "laterOdds": 3.18
         }
       },
       "confidence": "high",
@@ -455,7 +455,7 @@
         "pinSource": "fd",
         "oddsDrift": {
           "pickOdds": 1.5,
-          "laterOdds": 8.75
+          "laterOdds": 9.5
         }
       },
       "confidence": "high",
@@ -478,7 +478,7 @@
         "pinSource": "fd",
         "oddsDrift": {
           "pickOdds": 3.57,
-          "laterOdds": 6.4
+          "laterOdds": 6.6
         }
       },
       "confidence": "high",
@@ -538,7 +538,7 @@
         "pinSource": "fd",
         "oddsDrift": {
           "pickOdds": 2.1,
-          "laterOdds": 5.7
+          "laterOdds": 5.9
         }
       },
       "confidence": "high",
@@ -569,7 +569,9 @@
     },
     "2026-08-28|周六019|HAD": {
       "primary": "F5",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": 0.4049,
         "dcBest": 2,
@@ -578,7 +580,11 @@
         "resultIdx": 2,
         "result": "0-2",
         "pinSource": "fd",
-        "replay": "dc_approx"
+        "replay": "dc_approx",
+        "oddsDrift": {
+          "pickOdds": 2.06,
+          "laterOdds": 9.1
+        }
       },
       "confidence": "low",
       "source": "rule",
@@ -740,9 +746,7 @@
     },
     "2026-08-28|周日024|HAD": {
       "primary": "F9",
-      "secondary": [
-        "F10"
-      ],
+      "secondary": [],
       "evidence": {
         "pfinalPick": 0.3959,
         "dcBest": 2,
@@ -750,11 +754,7 @@
         "pickIdx": 0,
         "resultIdx": 1,
         "result": "0-0",
-        "pinSource": "none",
-        "oddsDrift": {
-          "pickOdds": 1.93,
-          "laterOdds": 3.4
-        }
+        "pinSource": "none"
       },
       "confidence": "high",
       "source": "rule",
