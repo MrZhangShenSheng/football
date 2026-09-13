@@ -1,42 +1,42 @@
 {
-  "generatedAt": "2026-09-12",
-  "n_filled": 257,
+  "generatedAt": "2026-09-13",
+  "n_filled": 268,
   "gateReady": true,
   "humanReview": true,
   "report": [
     {
       "coeff": "开季修正",
-      "n_trigger": 90,
-      "n_base": 167,
-      "hit_trigger": 0.7,
-      "hit_base": 0.641,
-      "rps_trigger": 0.1547,
-      "rps_base": 0.1863,
-      "logloss_trigger": 0.7709,
-      "logloss_base": 0.9014,
-      "n_prob": 83,
+      "n_trigger": 91,
+      "n_base": 177,
+      "hit_trigger": 0.692,
+      "hit_base": 0.633,
+      "rps_trigger": 0.1579,
+      "rps_base": 0.1868,
+      "logloss_trigger": 0.7784,
+      "logloss_base": 0.9103,
+      "n_prob": 84,
       "rps_diff_ci95": [
-        -0.0688,
-        0.0089
+        -0.0661,
+        0.0123
       ],
-      "status": "维持：RPS diff CI95 [-0.0688, 0.0089] 跨 0（方向性证据不足，命中率 70% vs 64% 仅展示）"
+      "status": "维持：RPS diff CI95 [-0.0661, 0.0123] 跨 0（方向性证据不足，命中率 69% vs 63% 仅展示）"
     },
     {
       "coeff": "联赛波动",
       "n_trigger": 5,
-      "n_base": 252,
+      "n_base": 263,
       "hit_trigger": 0.8,
-      "hit_base": 0.659,
+      "hit_base": 0.65,
       "rps_trigger": 0.0719,
-      "rps_base": 0.1764,
+      "rps_base": 0.1782,
       "logloss_trigger": 0.4328,
-      "logloss_base": 0.8606,
+      "logloss_base": 0.8705,
       "n_prob": 3,
       "rps_diff_ci95": [
-        -0.1281,
-        -0.0785
+        -0.1292,
+        -0.0818
       ],
-      "status": "概率样本不足（触发 n_prob=3/对照 231，<10），继续观察（CI [-0.1281, -0.0785] 仅参考）"
+      "status": "概率样本不足（触发 n_prob=3/对照 242，<10），继续观察（CI [-0.1292, -0.0818] 仅参考）"
     },
     {
       "coeff": "保级平局保护",
@@ -51,19 +51,19 @@
     {
       "coeff": "战意状态机",
       "n_trigger": 9,
-      "n_base": 248,
+      "n_base": 259,
       "hit_trigger": 0.556,
-      "hit_base": 0.665,
+      "hit_base": 0.656,
       "rps_trigger": 0.1592,
-      "rps_base": 0.1757,
+      "rps_base": 0.1775,
       "logloss_trigger": 0.8763,
-      "logloss_base": 0.8544,
+      "logloss_base": 0.8647,
       "n_prob": 8,
       "rps_diff_ci95": [
-        -0.0836,
-        0.0603
+        -0.0815,
+        0.0584
       ],
-      "status": "概率样本不足（触发 n_prob=8/对照 226，<10），继续观察（CI [-0.0836, 0.0603] 仅参考）"
+      "status": "概率样本不足（触发 n_prob=8/对照 237，<10），继续观察（CI [-0.0815, 0.0584] 仅参考）"
     },
     {
       "coeff": "平局率修正",
@@ -73,19 +73,19 @@
     {
       "coeff": "伤停差值",
       "n_trigger": 5,
-      "n_base": 252,
+      "n_base": 263,
       "hit_trigger": 0.8,
-      "hit_base": 0.659,
+      "hit_base": 0.65,
       "rps_trigger": 0.1066,
-      "rps_base": 0.1766,
+      "rps_base": 0.1784,
       "logloss_trigger": 0.6924,
-      "logloss_base": 0.8587,
+      "logloss_base": 0.8687,
       "n_prob": 5,
       "rps_diff_ci95": [
-        -0.1046,
-        -0.0314
+        -0.1052,
+        -0.0317
       ],
-      "status": "概率样本不足（触发 n_prob=5/对照 229，<10），继续观察（CI [-0.1046, -0.0314] 仅参考）"
+      "status": "概率样本不足（触发 n_prob=5/对照 240，<10），继续观察（CI [-0.1052, -0.0317] 仅参考）"
     }
   ]
 }
