@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-13",
+  "generatedAt": "2026-09-14",
   "records": {
     "2026-08-23|周日015|HAD": {
       "primary": "F9",
@@ -650,7 +650,7 @@
         "replay": "dc_approx",
         "oddsDrift": {
           "pickOdds": 2.19,
-          "laterOdds": 5.05
+          "laterOdds": 5.25
         }
       },
       "confidence": "low",
@@ -707,7 +707,9 @@
     },
     "2026-08-28|周日016|HAD": {
       "primary": "F9",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": 0.4144,
         "dcBest": 0,
@@ -715,7 +717,11 @@
         "pickIdx": 0,
         "resultIdx": 2,
         "result": "1-2",
-        "pinSource": "none"
+        "pinSource": "none",
+        "oddsDrift": {
+          "pickOdds": 2.22,
+          "laterOdds": 2.47
+        }
       },
       "confidence": "high",
       "source": "rule",
@@ -944,7 +950,7 @@
         "lambdaGap": 2.08,
         "oddsDrift": {
           "pickOdds": 1.61,
-          "laterOdds": 5.5
+          "laterOdds": 6.0
         }
       },
       "confidence": "high",
