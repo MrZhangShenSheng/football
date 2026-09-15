@@ -409,6 +409,18 @@ def leg_hit(leg: dict, score: tuple[int, int], half: tuple[int | None, int | Non
     HHAD 让球腿 pick 带让球线（'让球主胜(-2)'），括号会被 strip_play 清掉 → 走 hhad_hit。"""
     market = str(leg.get("market") or "").upper()
     pick_raw = str(leg.get("pick") or "")
+    if isinstance(leg.get("pick"), list):
+        # 多选腿（T032 科莫双选）：任一选项命中即 hit；全 miss 即 miss；
+        # 任一选项数据不足（无半场等）且无命中 → None。str(列表) 是 repr
+        # 提不出比分，必须逐项判（09-15 T032 卡 pending 教训）。
+        outs = [option_hit({"pick": f"{market} {str(p).replace('球', '').strip()}"},
+                           score[0], score[1], half[0], half[1])
+                for p in leg["pick"]]
+        if any(o is True for o in outs):
+            return True
+        if all(o is False for o in outs):
+            return False
+        return None
     if market == "HHAD":
         return hhad_hit(pick_raw, score[0], score[1])
     pick = pick_raw.replace("球", "").strip()
@@ -451,6 +463,28 @@ def after_tax(gross: float) -> float:
     return gross if gross <= TAX_THRESHOLD else TAX_THRESHOLD + (gross - TAX_THRESHOLD) * (1 - TAX_RATE)
 
 
+def _norm_bet_legs(raw: list) -> list[tuple[int, str | None]]:
+    """注腿规范化：int → (腿索引, None)（旧形态 T031）；[索引, 选项] → 拆对
+    （T032 多选腿注结构——注只锁该腿的具体选项）。开发者 sszhang"""
+    return [(e, None) if isinstance(e, int) else (int(e[0]), str(e[1])) for e in raw]
+
+
+def _bet_leg_won(leg: dict, opt: str | None) -> bool:
+    """注级腿命中：无选项走腿级 result；带选项按该选项独立判（多选腿 hit ≠ 该注中）。
+    比分/半场从腿 actual 提取（settle 链腿终态时同步写入）。开发者 sszhang"""
+    if opt is None:
+        return leg.get("result") == "hit"
+    actual = str(leg.get("actual") or "")
+    sc = parse_score(actual.split("(", 1)[0].strip())
+    if not sc:
+        return False
+    hm = re.search(r"半\s*(\d+)\s*[:\-：]\s*(\d+)", actual)
+    half = (int(hm.group(1)), int(hm.group(2))) if hm else (None, None)
+    market = str(leg.get("market") or "").upper()
+    return option_hit({"pick": f"{market} {opt.replace('球', '').strip()}"},
+                      sc[0], sc[1], half[0], half[1]) is True
+
+
 def settle_payout(ticket: dict) -> dict:
     """按形状算派彩：命中注=子集腿全 hit，派彩=Σ(单注税后奖金)。
 
@@ -468,14 +502,15 @@ def settle_payout(ticket: dict) -> dict:
             raise ValueError(f"{ticket.get('id')}: bets={bets} 为注数口径但 units={ticket.get('units')}，"
                              "缺注组合（[{legs,multiplier}]）无法按形状结算")
         bets = [{"legs": list(range(len(legs))), "multiplier": ticket.get("multiplier", 1)}]
-    combos = ([(tuple(b["legs"]), b.get("multiplier", 1)) for b in bets]
-              if bets else [(c, 1) for c in expand_combos(len(legs))])
+    combos = ([(tuple(_norm_bet_legs(b["legs"])), b.get("multiplier", 1)) for b in bets]
+              if bets else [(tuple((i, None) for i in c), 1) for c in expand_combos(len(legs))])
     payout, win_units = 0.0, 0
-    for idxs, mult in combos:
-        if all(legs[i].get("result") == "hit" for i in idxs):
+    for pairs, mult in combos:
+        if all(_bet_leg_won(legs[i], opt) for i, opt in pairs):
             odds = 1.0
-            for i in idxs:
-                odds *= legs[i]["odds"]
+            for i, opt in pairs:
+                o = legs[i]["odds"]
+                odds *= o[opt] if (opt and isinstance(o, dict)) else o
             payout += after_tax(unit * mult * odds)
             win_units += 1
     stake = ticket["stake"]
