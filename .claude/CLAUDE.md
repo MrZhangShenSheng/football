@@ -43,7 +43,7 @@
 1. 预测时先查本地 `data/01-teams/_index.json`，只搜本地缺的数据（联赛分组批量）
 2. Dixon-Coles 缓存过期（新增比赛 ≥5 场）→ 调 `engine/scripts/dc_fit.py` 重拟合（ξ=0.005 默认）
 3. 概率锚 = Pinnacle 收盘价去水；体彩赔率只用于可买性/奖金/CLV 计算
-4. 融合：p_final = σ(0.4·logit(p_DC) + 1.0·logit(p_pinnacle))，系数存 engine/cache/fusion.json
+4. 融合：p_final = σ(0.4·logit(p_DC) + 1.0·logit(p_pinnacle))，系数存 engine/cache/fusion.json；**leagueOverrides 联赛级 a 分层（2026-09-15 荷甲降 a 立项）**：荷甲 a=0（2526 walk-forward DC 方向单调负贡献，a=0 纯市场锚 RPS 0.1834 vs 0.2098 改善 12.6% 超 1% 护栏）——DC 负贡献联赛方向全听市场、比分玩法仍用 DC 矩阵；统一读 common.load_fusion_ab(league)，dc_predict/boldplay/backtest 三链生效
 5. H2H 交锋仅叙事参考，不进预测权重（学术验证预测力垫底）
 6. 多源球队名经 `data/01-teams/_aliases.json` 规范 ID 解析；球队文件名用英文规范 ID（如 lech-poznan.json）
 6.5 HTML 文件必须含 `<meta charset="utf-8">`（开头 `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">`），否则浏览器 GBK 乱码

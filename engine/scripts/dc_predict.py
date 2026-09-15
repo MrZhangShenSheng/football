@@ -14,10 +14,9 @@ from pathlib import Path
 
 import numpy as np
 
-from common import load_aliases, log, ROOT
+from common import load_aliases, load_fusion_ab, log, ROOT
 
 CACHE_DIR = ROOT / "engine" / "cache"
-FUSION = CACHE_DIR / "fusion.json"
 
 
 def dc_tau(x: int, y: int, lh: float, la: float, rho: float) -> float:
@@ -300,13 +299,13 @@ def main() -> None:
 
     if market:
         p_mkt = devig(market)
-        fus = {"a": 0.4, "b": 1.0}
-        if FUSION.exists():
-            fus = json.loads(FUSION.read_text(encoding="utf-8"))
-        p_f = fuse(three, p_mkt, fus["a"], fus["b"])
+        fus_a, fus_b = load_fusion_ab(league)   # 联赛级 override（荷甲降 a 立项）
+        p_f = fuse(three, p_mkt, fus_a, fus_b)
         result["market"] = [round(v, 4) for v in p_mkt]
         result["p_fused"] = [round(v, 4) for v in p_f]
-        result["fusion"] = {"a": fus["a"], "b": fus["b"]}
+        result["fusion"] = {"a": fus_a, "b": fus_b,
+                            "source": "engine/cache/fusion.json"
+                                      + ("+leagueOverrides" if fus_a != 0.4 or fus_b != 1.0 else "")}
         diffs = [round(f - m, 4) for f, m in zip(p_f, p_mkt)]
         result["fusion_diff_pp"] = [round(d * 100, 1) for d in diffs]
 

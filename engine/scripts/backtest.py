@@ -18,7 +18,7 @@ from datetime import date
 
 import numpy as np
 
-from common import log, ROOT
+from common import log, load_fusion_ab, ROOT
 from dc_fit import load_matches, fit, dc_tau
 from dc_predict import devig, fuse
 
@@ -104,11 +104,7 @@ def main() -> None:
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     league = args[0] if args else "spain-laliga"
     season = args[1] if len(args) > 1 else "2526"
-    a, b = FUSION_DEFAULT["a"], FUSION_DEFAULT["b"]
-    fus_path = CACHE_DIR / "fusion.json"
-    if fus_path.exists():
-        f = json.loads(fus_path.read_text(encoding="utf-8"))
-        a, b = f["a"], f["b"]
+    a, b = load_fusion_ab(league)   # 联赛级 override（荷甲降 a 立项）·损坏回退默认
 
     raw_path = CACHE_DIR / f"odds_{league}_{season}.json"
     raw = json.loads(raw_path.read_text(encoding="utf-8"))

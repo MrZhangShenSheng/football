@@ -8,7 +8,7 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 from backfill import expand_combos   # 4串11=大小≥2全组合(结算引擎同源)
 from band_calibration import devid
-from common import ROOT, load_aliases
+from common import ROOT, load_aliases, load_fusion_ab
 from dc_predict import (score_matrix, ttg_dist, hafu_approx, devig as devig_n,
                         reweight_matrix, reweight_hafu, temper, load_half_params,
                         load_temperature, fuse)
@@ -148,13 +148,10 @@ def _hhad_odds() -> dict:
     return out
 
 
-def _load_fusion() -> tuple[float, float]:
-    """fusion.json → (a, b) 融合系数，缺失/损坏回退检索铁律4 默认 (0.4, 1.0)。开发者 sszhang"""
-    try:
-        f = json.loads((CACHE_DIR / "fusion.json").read_text(encoding="utf-8"))
-        return float(f["a"]), float(f["b"])
-    except (OSError, json.JSONDecodeError, KeyError, ValueError):
-        return 0.4, 1.0
+def _load_fusion(league: str | None = None) -> tuple[float, float]:
+    """fusion.json → (a, b) 融合系数，league 命中 leagueOverrides 时部分覆盖
+    （联赛级 a 分层·荷甲降 a 立项）；缺失/损坏回退检索铁律4 默认 (0.4, 1.0)。开发者 sszhang"""
+    return load_fusion_ab(league)
 
 
 def _live_day(cache_dir: Path = CACHE_DIR) -> dict:
@@ -534,13 +531,13 @@ def _base_legs(odds_day: dict, zh: dict | None = None,
     返回短列表（关档由调用方判断）。每条腿带 tier: dan|std。开发者 sszhang"""
     if zh is None:
         zh = _zh_map()
-    a, b = fusion if fusion else _load_fusion()
     pool = []
     for m in odds_day.get("matches", []):
         had = m.get("had") or {}
         if not had or not all(had.get(k) for k in ("h", "d", "a")):
             continue
-        if map_league(m.get("league", "")) not in FD_ANCHOR_LEAGUES:
+        lg_fd = map_league(m.get("league", ""))
+        if lg_fd not in FD_ANCHOR_LEAGUES:
             continue                                   # 铁律10：无锚联赛禁入保底胆
         o3 = [float(had["h"]), float(had["d"]), float(had["a"])]
         if min(o3) < 1.10:
@@ -554,7 +551,8 @@ def _base_legs(odds_day: dict, zh: dict | None = None,
             p_dc = [sum(float(matrix[i, j]) for i in range(7) for j in range(7) if i > j),
                     sum(float(matrix[i, i]) for i in range(7)),
                     sum(float(matrix[i, j]) for i in range(7) for j in range(7) if i < j)]
-            p_f = fuse(p_dc, p_mkt, a, b)
+            a_m, b_m = fusion if fusion else _load_fusion(lg_fd)   # 联赛级 override（荷甲降 a）
+            p_f = fuse(p_dc, p_mkt, a_m, b_m)
         k = max(range(3), key=lambda i: p_f[i])
         pool.append((p_f[k], o3[k], m, k))
     pool.sort(key=lambda x: (-x[0], x[1]))             # 概率降序，平手按赔率升序
@@ -625,7 +623,6 @@ def _lottery_legs(odds_day: dict, zh: dict, hhad_map: dict | None = None,
     熔断腿经 blocked 参数（可选 list）回传供卡 warnings 归档。开发者 sszhang"""
     if hhad_map is None:
         hhad_map = _hhad_odds()
-    a, b = fusion if fusion else _load_fusion()
     legs = []
     for m in odds_day.get("matches", []):
         mid = m.get("matchNumStr") or m.get("code")
@@ -635,6 +632,7 @@ def _lottery_legs(odds_day: dict, zh: dict, hhad_map: dict | None = None,
             continue
         lh, la, rho = params
         matrix = score_matrix(lh, la, rho)
+        a_m, b_m = fusion if fusion else _load_fusion(map_league(m.get("league", "")))  # 联赛级 override
         pools = [("had", {"h": had.get("h"), "d": had.get("d"), "a": had.get("a")}, 0.0)]
         hh = hhad_map.get(mid)
         if hh:
@@ -657,7 +655,7 @@ def _lottery_legs(odds_day: dict, zh: dict, hhad_map: dict | None = None,
             for i in range(7):
                 for j in range(7):
                     p_dc[bucket(i, j)] += float(matrix[i, j])
-            p_f = fuse(p_dc, p_mkt, a, b)
+            p_f = fuse(p_dc, p_mkt, a_m, b_m)
             names = {"had": ("主胜", "平", "客胜"),
                      "hhad": ("让球主胜", "让球平", "让球客胜")}[play]
             for k in range(3):

@@ -1,6 +1,11 @@
 {
-  "a": 0.4,
-  "b": 1.0,
-  "lastTuned": null,
-  "note": "log-odds 融合系数初始值（模型贡献~30%）。backtest.py 积累>=100场后最小化RPS重校；无回测数据前不得调大a"
+ "a": 0.4,
+ "b": 1.0,
+ "leagueOverrides": {
+  "netherlands-eredivisie": {
+   "a": 0.0
+  }
+ },
+ "lastTuned": null,
+ "note": "log-odds 融合系数初始值（模型贡献~30%）。backtest.py 积累>=100场后最小化RPS重校；无回测数据前不得调大a。leagueOverrides=联赛级a分层（2026-09-15荷甲降a立项·2526 walk-forward扫描a∈[0,0.4]单调劣化·a=0纯市场锚最优0.1834 vs 0.4时0.2098改善12.6%超1%护栏）；DC负贡献联赛方向全听市场·比分玩法仍用DC矩阵不受影响；消费方=dc_predict/boldplay(_load_fusion)/backtest经common.load_fusion_ab统一读取"
 }
