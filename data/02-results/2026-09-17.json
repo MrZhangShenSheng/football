@@ -1,0 +1,284 @@
+{
+ "date": "2026-09-17",
+ "saleDay": "2026-09-17",
+ "version": "v5.8",
+ "generatedAt": "2026-09-15T12:21",
+ "mode": "全局",
+ "anchorNote": "杯赛轮（13/22）单锚常态：亚冠/亚运/英联赛杯/解放者杯无DC无画像走体彩insight+市场去水+频率模板；联赛9场（西甲7/荷甲1/英冠1）fd双锚+DC融合；荷甲a=0纯市场锚（leagueOverrides）；出票时点无Pinnacle收盘价，市场腿=体彩即时价去水（口径与boldplay一致）",
+ "dataSources": [
+  "engine/cache/sporttery_matches.json（体彩22场+五池赔率）",
+  "engine/cache/score_odds/2026-09-15.json（dump-odds全玩法存档）",
+  "engine/cache/sporttery_insight_*.json x22（伤停/近10场/排名/H2H）",
+  "data/03-predictions/2026-09-15-boldplay.json（seq21三档卡）",
+  "engine/cache/{spain-laliga,netherlands-eredivisie,england-championship}_dc.json（DC参数）",
+  "data/00-leagues/{spain-laliga,netherlands-eredivisie,england-championship}.json（联赛画像+ESPN实时榜）",
+  "data/01-teams/england-championship/{middlesbrough,millwall}.json（本轮冷启动新建）"
+ ],
+ "plans": {
+  "seq": 21,
+  "structure": "new",
+  "保底档": "关档（HAD干净腿2<5：马竞/米堡——杯赛轮结构性腿荒）",
+  "翻身档": "6元=3注跨池2串1（seq21奇·容错形态43.7%回款率）·CRS腿6条：001叻武里1:0/002全北1:0/012考文垂1:0/017科林蒂安1:2/014莱万特0:3/011利物浦1:0",
+  "彩票档": "2元4串1合赔4.10：007西班牙人让球客(让-1)@1.56+005拉科受让主(让+1)@1.41+006马竞主@1.31+010米堡主@1.44·全中≈8.2元",
+  "平局轨": "关档（HAD单关6场p平全<28%·最高周二008差0.3pp且该场已熔断绕行）",
+  "approved": false
+ },
+ "matches": [
+  {
+   "idx": 1,
+   "code": "周三002",
+   "league": "亚冠精英(R1)",
+   "match": "全北现代 vs 柏太阳神",
+   "kickoff": "2026-09-16 18:00:00",
+   "pick": "CRS 1:0",
+   "odds": 11.0,
+   "star": 1,
+   "grade": "C",
+   "dc": null,
+   "fused": null,
+   "fusedPre": null,
+   "final": null,
+   "chain": [
+    "杯赛无DC纯市场/模板"
+   ],
+   "chainSteps": [],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": null,
+   "inPlan": "翻身:crs 1:0@11.0",
+   "note": "亚冠纯模板·全北(3)主场 vs 柏(12)·翻身CRS 1:0@11 EV+11%·全北亚冠主场传统强势=模板与叙事弱一致",
+   "preSnapshots": {
+    "matchId": 2041495
+   }
+  },
+  {
+   "idx": 2,
+   "code": "周三005",
+   "league": "西甲(R6)",
+   "match": "拉科 vs 塞维利亚",
+   "kickoff": "2026-09-17 01:00:00",
+   "pick": "HHAD 让球主胜(让+1)",
+   "odds": 1.41,
+   "star": 3,
+   "grade": "B+",
+   "dc": [
+    0.4959,
+    0.243,
+    0.2611
+   ],
+   "fused": [
+    0.4959,
+    0.243,
+    0.2611
+   ],
+   "fusedPre": [
+    0.4959,
+    0.243,
+    0.2611
+   ],
+   "final": 0.496,
+   "chain": [
+    "logit融合(出票时点市场腿=体彩去水)"
+   ],
+   "chainSteps": [],
+   "lambdaHome": 2.14,
+   "lambdaAway": 1.538,
+   "ev": null,
+   "inPlan": "彩票:hhad-让球主胜@1.41",
+   "note": "拉科(7)升班马主场 vs 塞维利亚(6)·受让1球主胜=拉科赢或平@1.41 p_fused=0.6631 EV-6.5%·divergence警示未达熔断·彩票档腿·拉科主场是西甲传统堡垒(里亚索)",
+   "preSnapshots": {
+    "matchId": 2041498
+   }
+  },
+  {
+   "idx": 3,
+   "code": "周三006",
+   "league": "西甲(R6)",
+   "match": "马竞 vs 奥萨苏纳",
+   "kickoff": "2026-09-17 01:00:00",
+   "pick": "HAD 主胜",
+   "odds": 1.31,
+   "star": 3,
+   "grade": "A",
+   "dc": [
+    0.7637,
+    0.1715,
+    0.0648
+   ],
+   "fused": [
+    0.7637,
+    0.1715,
+    0.0648
+   ],
+   "fusedPre": [
+    0.7637,
+    0.1715,
+    0.0648
+   ],
+   "final": 0.764,
+   "chain": [
+    "logit融合(出票时点市场腿=体彩去水)"
+   ],
+   "chainSteps": [],
+   "lambdaHome": 2.593,
+   "lambdaAway": 0.695,
+   "ev": null,
+   "inPlan": "保底候选:had-主胜；彩票:had-主胜@1.31",
+   "note": "全轮最高信心·马竞(5)主场 vs 奥萨苏纳(11)·p_fused=0.7041@1.31全轮最高·马竞主场近况稳·保底+彩票双档腿·万达大都会主场优势",
+   "preSnapshots": {
+    "matchId": 2041499
+   }
+  },
+  {
+   "idx": 4,
+   "code": "周三012",
+   "league": "英联赛杯",
+   "match": "考文垂 vs 维拉",
+   "kickoff": "2026-09-17 03:00:00",
+   "pick": "CRS 1:0",
+   "odds": 11.0,
+   "star": 1,
+   "grade": "C+",
+   "dc": null,
+   "fused": null,
+   "fusedPre": null,
+   "final": null,
+   "chain": [
+    "杯赛无DC纯市场/模板"
+   ],
+   "chainSteps": [],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": null,
+   "inPlan": "翻身:crs 1:0@11.0",
+   "note": "英联赛杯·维拉客场大轮换预期(联赛杯优先级低)·考文垂英冠第6档主场·翻身CRS 1:0@11=轮换博弈口子·杯赛轮换情报是唯一边际",
+   "preSnapshots": {
+    "matchId": 2041503
+   }
+  },
+  {
+   "idx": 5,
+   "code": "周三013",
+   "league": "西甲(R6)",
+   "match": "巴萨 vs 桑坦德",
+   "kickoff": "2026-09-17 03:30:00",
+   "pick": "HHAD 让球主胜(让-3)",
+   "odds": null,
+   "star": 2,
+   "grade": "A-",
+   "dc": [
+    0.9477,
+    0.037,
+    0.0153
+   ],
+   "fused": null,
+   "fusedPre": null,
+   "final": null,
+   "chain": [
+    "杯赛无DC纯市场/模板"
+   ],
+   "chainSteps": [],
+   "lambdaHome": 6.276,
+   "lambdaAway": 1.002,
+   "ev": null,
+   "inPlan": "不入档",
+   "note": "HAD未开售·巴萨(1)榜首15分 vs 桑坦德(10)升班马·-3深盘@1.93隐含48%·巴萨火力(莱万+亚马尔)但3球净胜门槛高·CRS 3:0/3:1模板·方向无悬念深度有悬念",
+   "preSnapshots": {
+    "matchId": 2041504
+   }
+  },
+  {
+   "idx": 6,
+   "code": "周三014",
+   "league": "西甲(R6)",
+   "match": "莱万特 vs 毕尔巴鄂",
+   "kickoff": "2026-09-17 03:30:00",
+   "pick": "HAD 客胜(叙事)",
+   "odds": 17.0,
+   "star": 2,
+   "grade": "B-",
+   "dc": [
+    0.3744,
+    0.3181,
+    0.3075
+   ],
+   "fused": [
+    0.3744,
+    0.3181,
+    0.3075
+   ],
+   "fusedPre": [
+    0.3744,
+    0.3181,
+    0.3075
+   ],
+   "final": 0.374,
+   "chain": [
+    "logit融合(出票时点市场腿=体彩去水)"
+   ],
+   "chainSteps": [],
+   "lambdaHome": 1.338,
+   "lambdaAway": 1.196,
+   "ev": null,
+   "inPlan": "翻身:crs 0:3@17.0",
+   "note": "分歧熔断2项(DC客胜43.0%vs市场48.2%)·毕尔巴鄂(9)客战莱万特(13)升班马·市场锚客胜·翻身CRS 0:3@17激进口子·HHAD让球主胜p_fused56.3%被熔断绕行",
+   "preSnapshots": {
+    "matchId": 2041505
+   }
+  },
+  {
+   "idx": 7,
+   "code": "周三015",
+   "league": "解放者杯",
+   "match": "基多体大 vs 帕梅拉斯",
+   "kickoff": "2026-09-17 06:00:00",
+   "pick": "HAFU hh",
+   "odds": null,
+   "star": 1,
+   "grade": "C",
+   "dc": null,
+   "fused": null,
+   "fusedPre": null,
+   "final": null,
+   "chain": [
+    "杯赛无DC纯市场/模板"
+   ],
+   "chainSteps": [],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": null,
+   "inPlan": "不入档",
+   "note": "解放者杯·基多体大(1)高原主场海拔2850m经典主场优势 vs 帕梅拉斯(2)巴甲豪门·HAFU hh q25%·高原因素模板不含=潜在低估项·翻身池",
+   "preSnapshots": {
+    "matchId": 2041506
+   }
+  },
+  {
+   "idx": 8,
+   "code": "周三017",
+   "league": "解放者杯",
+   "match": "科林蒂安 vs 拉普大学",
+   "kickoff": "2026-09-17 08:30:00",
+   "pick": "CRS 1:2",
+   "odds": 15.0,
+   "star": 1,
+   "grade": "C",
+   "dc": null,
+   "fused": null,
+   "fusedPre": null,
+   "final": null,
+   "chain": [
+    "杯赛无DC纯市场/模板"
+   ],
+   "chainSteps": [],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": null,
+   "inPlan": "翻身:crs 1:2@15.0",
+   "note": "解放者杯·科林蒂安(1)主场 vs 拉普大学(2)·翻身CRS 1:2@15 EV+8%·南美客场进球难但拉普大学淘汰赛客场韧性·纯模板",
+   "preSnapshots": {
+    "matchId": 2041508
+   }
+  }
+ ]
+}
