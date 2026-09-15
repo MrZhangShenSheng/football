@@ -1,0 +1,1183 @@
+{
+ "structure": "new",
+ "date": "2026-09-15",
+ "seq": 22,
+ "tiers": {
+  "base": {
+   "cost": 0,
+   "legs": [
+    {
+     "matchNumStr": "周三006",
+     "match": "马竞-奥萨苏纳",
+     "play": "had",
+     "pick": "主胜",
+     "odds": 1.31,
+     "p": 0.7041,
+     "tier": "std"
+    },
+    {
+     "matchNumStr": "周二010",
+     "match": "米堡-米尔沃尔",
+     "play": "had",
+     "pick": "主胜",
+     "odds": 1.44,
+     "p": 0.6136,
+     "tier": "std"
+    }
+   ],
+   "play": "had-3*4*5",
+   "note": "保底关档（合格腿2<5，不硬凑）",
+   "coverGate": null
+  },
+  "upset": {
+   "shape": "pool-4x1",
+   "cost": 2,
+   "legs": [
+    {
+     "matchNumStr": "周二001",
+     "match": "叻武里 vs 上海海港",
+     "play": "crs",
+     "pick": "1:0",
+     "odds": 11.0,
+     "q": 0.1013,
+     "ev": 0.1143
+    },
+    {
+     "matchNumStr": "周三002",
+     "match": "全北现代 vs 柏太阳神",
+     "play": "crs",
+     "pick": "1:0",
+     "odds": 11.0,
+     "q": 0.1013,
+     "ev": 0.1143
+    },
+    {
+     "matchNumStr": "周三012",
+     "match": "考文垂 vs 维拉",
+     "play": "crs",
+     "pick": "1:0",
+     "odds": 11.0,
+     "q": 0.1013,
+     "ev": 0.1143
+    },
+    {
+     "matchNumStr": "周三017",
+     "match": "科林蒂安 vs 拉普大学",
+     "play": "crs",
+     "pick": "1:2",
+     "odds": 15.0,
+     "q": 0.0722,
+     "ev": 0.083
+    }
+   ],
+   "multiplier": 1,
+   "bets": [
+    {
+     "legs": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "multiplier": 1
+    }
+   ],
+   "note": "跨池4串1(木桶≤4关)"
+  },
+  "lottery": {
+   "shape": "lottery-4x1",
+   "cost": 2,
+   "legs": [
+    {
+     "matchNumStr": "周二007",
+     "match": "巴列卡诺-西班牙人",
+     "play": "hhad",
+     "pick": "让球客胜",
+     "odds": 1.56,
+     "p": 0.6165,
+     "ev": -0.0382,
+     "goalLine": -1.0
+    },
+    {
+     "matchNumStr": "周三005",
+     "match": "拉科-塞维利亚",
+     "play": "hhad",
+     "pick": "让球主胜",
+     "odds": 1.41,
+     "p": 0.6631,
+     "ev": -0.065,
+     "goalLine": 1.0
+    },
+    {
+     "matchNumStr": "周三006",
+     "match": "马竞-奥萨苏纳",
+     "play": "had",
+     "pick": "主胜",
+     "odds": 1.31,
+     "p": 0.7041,
+     "ev": -0.0777
+    },
+    {
+     "matchNumStr": "周二010",
+     "match": "米堡-米尔沃尔",
+     "play": "had",
+     "pick": "主胜",
+     "odds": 1.44,
+     "p": 0.6136,
+     "ev": -0.1165
+    }
+   ],
+   "bets": [
+    {
+     "legs": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "multiplier": 1
+    }
+   ],
+   "expOdds": 4.1,
+   "winIfHit": 8.0,
+   "note": "4串1×1倍=2元 · 全中≈8元 · 无预算管理(设计§四红线废除)",
+   "divergenceBlocked": [
+    {
+     "matchNumStr": "周二008",
+     "match": "阿拉维斯-巴伦西亚",
+     "play": "had",
+     "pick": "主胜",
+     "p_fused": 0.5959,
+     "p_mkt": 0.5305,
+     "diff_pp": 6.5
+    },
+    {
+     "matchNumStr": "周二008",
+     "match": "阿拉维斯-巴伦西亚",
+     "play": "had",
+     "pick": "客胜",
+     "p_fused": 0.1359,
+     "p_mkt": 0.1926,
+     "diff_pp": 5.7
+    },
+    {
+     "matchNumStr": "周二008",
+     "match": "阿拉维斯-巴伦西亚",
+     "play": "hhad",
+     "pick": "让球主胜",
+     "p_fused": 0.3198,
+     "p_mkt": 0.2684,
+     "diff_pp": 5.1
+    },
+    {
+     "matchNumStr": "周二008",
+     "match": "阿拉维斯-巴伦西亚",
+     "play": "hhad",
+     "pick": "让球客胜",
+     "p_fused": 0.4052,
+     "p_mkt": 0.459,
+     "diff_pp": 5.4
+    }
+   ]
+  }
+ },
+ "totalCost": 4,
+ "cards": [
+  {
+   "code": "周二001",
+   "match": "叻武里 vs 上海海港",
+   "candidates": [
+    {
+     "code": "周二001",
+     "match": "叻武里 vs 上海海港",
+     "pool": "crs",
+     "pick": "1:0",
+     "q": 0.1013,
+     "odds": 11.0,
+     "ev": 0.1143
+    },
+    {
+     "code": "周二001",
+     "match": "叻武里 vs 上海海港",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2337,
+     "odds": 3.8,
+     "ev": -0.1119
+    },
+    {
+     "code": "周二001",
+     "match": "叻武里 vs 上海海港",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2257,
+     "odds": 3.55,
+     "ev": -0.1988
+    },
+    {
+     "code": "周二001",
+     "match": "叻武里 vs 上海海港",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.1726,
+     "odds": 3.75,
+     "ev": -0.3528
+    },
+    {
+     "code": "周二001",
+     "match": "叻武里 vs 上海海港",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2494,
+     "odds": 4.3,
+     "ev": 0.0724,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周二001",
+    "match": "叻武里 vs 上海海港",
+    "pool": "hafu",
+    "pick": "hh",
+    "q": 0.2494,
+    "odds": 4.3,
+    "ev": 0.0724,
+    "divergent": true
+   },
+   "rec_upset": {
+    "code": "周二001",
+    "match": "叻武里 vs 上海海港",
+    "pool": "crs",
+    "pick": "1:0",
+    "q": 0.1013,
+    "odds": 11.0,
+    "ev": 0.1143
+   },
+   "flags": [
+    "low_conf",
+    "pure_template",
+    "divergence"
+   ]
+  },
+  {
+   "code": "周二002",
+   "match": "大田市民 vs 京都",
+   "candidates": [
+    {
+     "code": "周二002",
+     "match": "大田市民 vs 京都",
+     "pool": "crs",
+     "pick": "0:1",
+     "q": 0.0753,
+     "odds": 11.0,
+     "ev": -0.1717
+    },
+    {
+     "code": "周二002",
+     "match": "大田市民 vs 京都",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2337,
+     "odds": 3.6,
+     "ev": -0.1587
+    },
+    {
+     "code": "周二002",
+     "match": "大田市民 vs 京都",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2257,
+     "odds": 3.65,
+     "ev": -0.1762
+    },
+    {
+     "code": "周二002",
+     "match": "大田市民 vs 京都",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2494,
+     "odds": 3.25,
+     "ev": -0.1895
+    },
+    {
+     "code": "周二002",
+     "match": "大田市民 vs 京都",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.1726,
+     "odds": 5.5,
+     "ev": -0.0507
+    }
+   ],
+   "rec_base": {
+    "code": "周二002",
+    "match": "大田市民 vs 京都",
+    "pool": "hafu",
+    "pick": "aa",
+    "q": 0.1726,
+    "odds": 5.5,
+    "ev": -0.0507
+   },
+   "rec_upset": {
+    "code": "周二002",
+    "match": "大田市民 vs 京都",
+    "pool": "hafu",
+    "pick": "aa",
+    "q": 0.1726,
+    "odds": 5.5,
+    "ev": -0.0507
+   },
+   "flags": [
+    "low_conf",
+    "pure_template"
+   ]
+  },
+  {
+   "code": "周二005",
+   "match": "北京国安 vs 浦项制铁",
+   "candidates": [
+    {
+     "code": "周二005",
+     "match": "北京国安 vs 浦项制铁",
+     "pool": "crs",
+     "pick": "0:1",
+     "q": 0.0753,
+     "odds": 13.0,
+     "ev": -0.0211
+    },
+    {
+     "code": "周二005",
+     "match": "北京国安 vs 浦项制铁",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2337,
+     "odds": 3.65,
+     "ev": -0.147
+    },
+    {
+     "code": "周二005",
+     "match": "北京国安 vs 浦项制铁",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2257,
+     "odds": 3.55,
+     "ev": -0.1988
+    },
+    {
+     "code": "周二005",
+     "match": "北京国安 vs 浦项制铁",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2494,
+     "odds": 2.78,
+     "ev": -0.3067
+    },
+    {
+     "code": "周二005",
+     "match": "北京国安 vs 浦项制铁",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.1726,
+     "odds": 6.6,
+     "ev": 0.1392,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周二005",
+    "match": "北京国安 vs 浦项制铁",
+    "pool": "hafu",
+    "pick": "aa",
+    "q": 0.1726,
+    "odds": 6.6,
+    "ev": 0.1392,
+    "divergent": true
+   },
+   "rec_upset": {
+    "code": "周二005",
+    "match": "北京国安 vs 浦项制铁",
+    "pool": "crs",
+    "pick": "0:1",
+    "q": 0.0753,
+    "odds": 13.0,
+    "ev": -0.0211
+   },
+   "flags": [
+    "low_conf",
+    "pure_template",
+    "divergence"
+   ]
+  },
+  {
+   "code": "周二006",
+   "match": "阿布艾因 vs 利雅胜利",
+   "candidates": [
+    {
+     "code": "周二006",
+     "match": "阿布艾因 vs 利雅胜利",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2257,
+     "odds": 3.6,
+     "ev": -0.1875
+    },
+    {
+     "code": "周二006",
+     "match": "阿布艾因 vs 利雅胜利",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.1726,
+     "odds": 2.55,
+     "ev": -0.5599
+    },
+    {
+     "code": "周二006",
+     "match": "阿布艾因 vs 利雅胜利",
+     "pool": "crs",
+     "pick": "1:0",
+     "q": 0.1013,
+     "odds": 16.0,
+     "ev": 0.6208,
+     "divergent": true
+    },
+    {
+     "code": "周二006",
+     "match": "阿布艾因 vs 利雅胜利",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2337,
+     "odds": 4.45,
+     "ev": 0.04,
+     "divergent": true
+    },
+    {
+     "code": "周二006",
+     "match": "阿布艾因 vs 利雅胜利",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2494,
+     "odds": 6.4,
+     "ev": 0.5962,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周二006",
+    "match": "阿布艾因 vs 利雅胜利",
+    "pool": "hafu",
+    "pick": "hh",
+    "q": 0.2494,
+    "odds": 6.4,
+    "ev": 0.5962,
+    "divergent": true
+   },
+   "rec_upset": {
+    "code": "周二006",
+    "match": "阿布艾因 vs 利雅胜利",
+    "pool": "ttg",
+    "pick": "s3",
+    "q": 0.2257,
+    "odds": 3.6,
+    "ev": -0.1875
+   },
+   "flags": [
+    "low_conf",
+    "pure_template",
+    "divergence"
+   ]
+  },
+  {
+   "code": "周二007",
+   "match": "巴列卡诺 vs 西班牙人",
+   "candidates": [
+    {
+     "code": "周二007",
+     "match": "巴列卡诺 vs 西班牙人",
+     "pool": "crs",
+     "pick": "1:2",
+     "q": 0.0737,
+     "odds": 11.0,
+     "ev": -0.1893
+    },
+    {
+     "code": "周二007",
+     "match": "巴列卡诺 vs 西班牙人",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2513,
+     "odds": 3.3,
+     "ev": -0.1707
+    },
+    {
+     "code": "周二007",
+     "match": "巴列卡诺 vs 西班牙人",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2329,
+     "odds": 3.75,
+     "ev": -0.1266
+    },
+    {
+     "code": "周二007",
+     "match": "巴列卡诺 vs 西班牙人",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2624,
+     "odds": 3.65,
+     "ev": -0.0422
+    },
+    {
+     "code": "周二007",
+     "match": "巴列卡诺 vs 西班牙人",
+     "pool": "hafu",
+     "pick": "dh",
+     "q": 0.1774,
+     "odds": 5.2,
+     "ev": -0.0775
+    }
+   ],
+   "rec_base": {
+    "code": "周二007",
+    "match": "巴列卡诺 vs 西班牙人",
+    "pool": "hafu",
+    "pick": "hh",
+    "q": 0.2624,
+    "odds": 3.65,
+    "ev": -0.0422
+   },
+   "rec_upset": {
+    "code": "周二007",
+    "match": "巴列卡诺 vs 西班牙人",
+    "pool": "hafu",
+    "pick": "dh",
+    "q": 0.1774,
+    "odds": 5.2,
+    "ev": -0.0775
+   },
+   "flags": [
+    "pure_template"
+   ]
+  },
+  {
+   "code": "周二008",
+   "match": "阿拉维斯 vs 巴伦西亚",
+   "candidates": [
+    {
+     "code": "周二008",
+     "match": "阿拉维斯 vs 巴伦西亚",
+     "pool": "crs",
+     "pick": "3:0",
+     "q": 0.0399,
+     "odds": 13.0,
+     "ev": -0.4813
+    },
+    {
+     "code": "周二008",
+     "match": "阿拉维斯 vs 巴伦西亚",
+     "pool": "ttg",
+     "pick": "s7",
+     "q": 0.5955,
+     "odds": 50.0,
+     "ev": 28.775,
+     "divergent": true
+    },
+    {
+     "code": "周二008",
+     "match": "阿拉维斯 vs 巴伦西亚",
+     "pool": "ttg",
+     "pick": "s6",
+     "q": 0.1703,
+     "odds": 33.0,
+     "ev": 4.6199,
+     "divergent": true
+    },
+    {
+     "code": "周二008",
+     "match": "阿拉维斯 vs 巴伦西亚",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.5603,
+     "odds": 2.75,
+     "ev": 0.5408,
+     "divergent": true
+    },
+    {
+     "code": "周二008",
+     "match": "阿拉维斯 vs 巴伦西亚",
+     "pool": "hafu",
+     "pick": "dh",
+     "q": 0.3788,
+     "odds": 4.25,
+     "ev": 0.6099,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周二008",
+    "match": "阿拉维斯 vs 巴伦西亚",
+    "pool": "ttg",
+    "pick": "s7",
+    "q": 0.5955,
+    "odds": 50.0,
+    "ev": 28.775,
+    "divergent": true
+   },
+   "rec_upset": {
+    "code": "周二008",
+    "match": "阿拉维斯 vs 巴伦西亚",
+    "pool": "crs",
+    "pick": "3:0",
+    "q": 0.0399,
+    "odds": 13.0,
+    "ev": -0.4813
+   },
+   "flags": [
+    "divergence"
+   ]
+  },
+  {
+   "code": "周二011",
+   "match": "利物浦 vs 热刺",
+   "candidates": [
+    {
+     "code": "周二011",
+     "match": "利物浦 vs 热刺",
+     "pool": "crs",
+     "pick": "1:0",
+     "q": 0.1013,
+     "odds": 10.5,
+     "ev": 0.0636
+    },
+    {
+     "code": "周二011",
+     "match": "利物浦 vs 热刺",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2337,
+     "odds": 4.3,
+     "ev": 0.0049
+    },
+    {
+     "code": "周二011",
+     "match": "利物浦 vs 热刺",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2257,
+     "odds": 3.65,
+     "ev": -0.1762
+    },
+    {
+     "code": "周二011",
+     "match": "利物浦 vs 热刺",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2494,
+     "odds": 2.55,
+     "ev": -0.364
+    },
+    {
+     "code": "周二011",
+     "match": "利物浦 vs 热刺",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.1726,
+     "odds": 7.0,
+     "ev": 0.2082,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周二011",
+    "match": "利物浦 vs 热刺",
+    "pool": "hafu",
+    "pick": "aa",
+    "q": 0.1726,
+    "odds": 7.0,
+    "ev": 0.2082,
+    "divergent": true
+   },
+   "rec_upset": {
+    "code": "周二011",
+    "match": "利物浦 vs 热刺",
+    "pool": "crs",
+    "pick": "1:0",
+    "q": 0.1013,
+    "odds": 10.5,
+    "ev": 0.0636
+   },
+   "flags": [
+    "low_conf",
+    "pure_template",
+    "divergence"
+   ]
+  },
+  {
+   "code": "周二014",
+   "match": "普拉滕斯 vs 弗鲁米嫩",
+   "candidates": [
+    {
+     "code": "周二014",
+     "match": "普拉滕斯 vs 弗鲁米嫩",
+     "pool": "crs",
+     "pick": "1:2",
+     "q": 0.0722,
+     "odds": 10.0,
+     "ev": -0.278
+    },
+    {
+     "code": "周二014",
+     "match": "普拉滕斯 vs 弗鲁米嫩",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2337,
+     "odds": 3.15,
+     "ev": -0.2638
+    },
+    {
+     "code": "周二014",
+     "match": "普拉滕斯 vs 弗鲁米嫩",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2257,
+     "odds": 4.0,
+     "ev": -0.0972
+    },
+    {
+     "code": "周二014",
+     "match": "普拉滕斯 vs 弗鲁米嫩",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.1726,
+     "odds": 5.0,
+     "ev": -0.137
+    },
+    {
+     "code": "周二014",
+     "match": "普拉滕斯 vs 弗鲁米嫩",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2494,
+     "odds": 4.25,
+     "ev": 0.0599,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周二014",
+    "match": "普拉滕斯 vs 弗鲁米嫩",
+    "pool": "hafu",
+    "pick": "hh",
+    "q": 0.2494,
+    "odds": 4.25,
+    "ev": 0.0599,
+    "divergent": true
+   },
+   "rec_upset": {
+    "code": "周二014",
+    "match": "普拉滕斯 vs 弗鲁米嫩",
+    "pool": "hafu",
+    "pick": "aa",
+    "q": 0.1726,
+    "odds": 5.0,
+    "ev": -0.137
+   },
+   "flags": [
+    "low_conf",
+    "pure_template",
+    "divergence"
+   ]
+  },
+  {
+   "code": "周三002",
+   "match": "全北现代 vs 柏太阳神",
+   "candidates": [
+    {
+     "code": "周三002",
+     "match": "全北现代 vs 柏太阳神",
+     "pool": "crs",
+     "pick": "1:0",
+     "q": 0.1013,
+     "odds": 11.0,
+     "ev": 0.1143
+    },
+    {
+     "code": "周三002",
+     "match": "全北现代 vs 柏太阳神",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2337,
+     "odds": 3.45,
+     "ev": -0.1937
+    },
+    {
+     "code": "周三002",
+     "match": "全北现代 vs 柏太阳神",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2257,
+     "odds": 3.65,
+     "ev": -0.1762
+    },
+    {
+     "code": "周三002",
+     "match": "全北现代 vs 柏太阳神",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.1726,
+     "odds": 3.0,
+     "ev": -0.4822
+    },
+    {
+     "code": "周三002",
+     "match": "全北现代 vs 柏太阳神",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2494,
+     "odds": 5.85,
+     "ev": 0.459,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周三002",
+    "match": "全北现代 vs 柏太阳神",
+    "pool": "hafu",
+    "pick": "hh",
+    "q": 0.2494,
+    "odds": 5.85,
+    "ev": 0.459,
+    "divergent": true
+   },
+   "rec_upset": {
+    "code": "周三002",
+    "match": "全北现代 vs 柏太阳神",
+    "pool": "crs",
+    "pick": "1:0",
+    "q": 0.1013,
+    "odds": 11.0,
+    "ev": 0.1143
+   },
+   "flags": [
+    "low_conf",
+    "pure_template",
+    "divergence"
+   ]
+  },
+  {
+   "code": "周三005",
+   "match": "拉科 vs 塞维利亚",
+   "candidates": [
+    {
+     "code": "周三005",
+     "match": "拉科 vs 塞维利亚",
+     "pool": "crs",
+     "pick": "2:2",
+     "q": 0.0567,
+     "odds": 13.5,
+     "ev": -0.2346
+    },
+    {
+     "code": "周三005",
+     "match": "拉科 vs 塞维利亚",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2394,
+     "odds": 3.9,
+     "ev": -0.0663
+    },
+    {
+     "code": "周三005",
+     "match": "拉科 vs 塞维利亚",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2169,
+     "odds": 3.25,
+     "ev": -0.2951
+    },
+    {
+     "code": "周三005",
+     "match": "拉科 vs 塞维利亚",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.1876,
+     "odds": 4.3,
+     "ev": -0.1933
+    },
+    {
+     "code": "周三005",
+     "match": "拉科 vs 塞维利亚",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2498,
+     "odds": 4.45,
+     "ev": 0.1116,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周三005",
+    "match": "拉科 vs 塞维利亚",
+    "pool": "hafu",
+    "pick": "hh",
+    "q": 0.2498,
+    "odds": 4.45,
+    "ev": 0.1116,
+    "divergent": true
+   },
+   "rec_upset": {
+    "code": "周三005",
+    "match": "拉科 vs 塞维利亚",
+    "pool": "ttg",
+    "pick": "s3",
+    "q": 0.2394,
+    "odds": 3.9,
+    "ev": -0.0663
+   },
+   "flags": [
+    "divergence"
+   ]
+  },
+  {
+   "code": "周三012",
+   "match": "考文垂 vs 维拉",
+   "candidates": [
+    {
+     "code": "周三012",
+     "match": "考文垂 vs 维拉",
+     "pool": "crs",
+     "pick": "1:0",
+     "q": 0.1013,
+     "odds": 11.0,
+     "ev": 0.1143
+    },
+    {
+     "code": "周三012",
+     "match": "考文垂 vs 维拉",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2337,
+     "odds": 3.75,
+     "ev": -0.1236
+    },
+    {
+     "code": "周三012",
+     "match": "考文垂 vs 维拉",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2257,
+     "odds": 3.7,
+     "ev": -0.1649
+    },
+    {
+     "code": "周三012",
+     "match": "考文垂 vs 维拉",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.1726,
+     "odds": 3.8,
+     "ev": -0.3441
+    },
+    {
+     "code": "周三012",
+     "match": "考文垂 vs 维拉",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2494,
+     "odds": 4.5,
+     "ev": 0.1223,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周三012",
+    "match": "考文垂 vs 维拉",
+    "pool": "hafu",
+    "pick": "hh",
+    "q": 0.2494,
+    "odds": 4.5,
+    "ev": 0.1223,
+    "divergent": true
+   },
+   "rec_upset": {
+    "code": "周三012",
+    "match": "考文垂 vs 维拉",
+    "pool": "crs",
+    "pick": "1:0",
+    "q": 0.1013,
+    "odds": 11.0,
+    "ev": 0.1143
+   },
+   "flags": [
+    "low_conf",
+    "pure_template",
+    "divergence"
+   ]
+  },
+  {
+   "code": "周三015",
+   "match": "基多体大 vs 帕梅拉斯",
+   "candidates": [
+    {
+     "code": "周三015",
+     "match": "基多体大 vs 帕梅拉斯",
+     "pool": "crs",
+     "pick": "2:0",
+     "q": 0.07,
+     "odds": 10.5,
+     "ev": -0.265
+    },
+    {
+     "code": "周三015",
+     "match": "基多体大 vs 帕梅拉斯",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2337,
+     "odds": 3.2,
+     "ev": -0.2522
+    },
+    {
+     "code": "周三015",
+     "match": "基多体大 vs 帕梅拉斯",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2257,
+     "odds": 3.75,
+     "ev": -0.1536
+    },
+    {
+     "code": "周三015",
+     "match": "基多体大 vs 帕梅拉斯",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2494,
+     "odds": 3.8,
+     "ev": -0.0523
+    },
+    {
+     "code": "周三015",
+     "match": "基多体大 vs 帕梅拉斯",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.1726,
+     "odds": 5.2,
+     "ev": -0.1025
+    }
+   ],
+   "rec_base": {
+    "code": "周三015",
+    "match": "基多体大 vs 帕梅拉斯",
+    "pool": "hafu",
+    "pick": "hh",
+    "q": 0.2494,
+    "odds": 3.8,
+    "ev": -0.0523
+   },
+   "rec_upset": {
+    "code": "周三015",
+    "match": "基多体大 vs 帕梅拉斯",
+    "pool": "hafu",
+    "pick": "aa",
+    "q": 0.1726,
+    "odds": 5.2,
+    "ev": -0.1025
+   },
+   "flags": [
+    "low_conf",
+    "pure_template"
+   ]
+  },
+  {
+   "code": "周三017",
+   "match": "科林蒂安 vs 拉普大学",
+   "candidates": [
+    {
+     "code": "周三017",
+     "match": "科林蒂安 vs 拉普大学",
+     "pool": "crs",
+     "pick": "1:2",
+     "q": 0.0722,
+     "odds": 15.0,
+     "ev": 0.083
+    },
+    {
+     "code": "周三017",
+     "match": "科林蒂安 vs 拉普大学",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2337,
+     "odds": 3.1,
+     "ev": -0.2755
+    },
+    {
+     "code": "周三017",
+     "match": "科林蒂安 vs 拉普大学",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2494,
+     "odds": 3.35,
+     "ev": -0.1645
+    },
+    {
+     "code": "周三017",
+     "match": "科林蒂安 vs 拉普大学",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2257,
+     "odds": 4.75,
+     "ev": 0.0721,
+     "divergent": true
+    },
+    {
+     "code": "周三017",
+     "match": "科林蒂安 vs 拉普大学",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.1726,
+     "odds": 8.0,
+     "ev": 0.3808,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周三017",
+    "match": "科林蒂安 vs 拉普大学",
+    "pool": "hafu",
+    "pick": "aa",
+    "q": 0.1726,
+    "odds": 8.0,
+    "ev": 0.3808,
+    "divergent": true
+   },
+   "rec_upset": {
+    "code": "周三017",
+    "match": "科林蒂安 vs 拉普大学",
+    "pool": "crs",
+    "pick": "1:2",
+    "q": 0.0722,
+    "odds": 15.0,
+    "ev": 0.083
+   },
+   "flags": [
+    "low_conf",
+    "pure_template",
+    "divergence"
+   ]
+  }
+ ],
+ "ranAt": "2026-09-15",
+ "approved": false,
+ "warnings": [
+  "dc_divergence_blocked: 彩票档熔断4选项(|p_fused−p_mkt|≥5%)——周二008主胜6.5pp、周二008客胜5.7pp、周二008让球主胜5.1pp、周二008让球客胜5.4pp"
+ ],
+ "method": "freq",
+ "dataAsOf": "2026-09-15",
+ "matchdayFilter": {
+  "include": [],
+  "exclude": [
+   "周三014"
+  ],
+  "kept": 21
+ },
+ "superseded": true,
+ "supersededBy": "r2"
+}

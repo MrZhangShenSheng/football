@@ -39,16 +39,18 @@ td.num,th.num{text-align:center;white-space:nowrap}
 <div class="meta">生成 2026-09-15 · 销售 2026-09-16/17 两日 · 22 场（杯赛 13 + 联赛 9）· approved=false 待拍板 · 数据截至 09-15 体彩午后价</div>
 
 <div class="flex">
-<div class="kpi"><div class="v">8 元</div><div class="k">总成本（保底0+翻身6+彩票2）</div></div>
+<div class="kpi"><div class="v">2 元</div><div class="k">总成本（仅彩票档；保底/翻身双关档）</div></div>
 <div class="kpi"><div class="v">4.10</div><div class="k">彩票档合赔（全中≈8.2元）</div></div>
-<div class="kpi"><div class="v">2/5</div><div class="k">保底档干净腿（关档）</div></div>
+<div class="kpi"><div class="v">2/5</div><div class="k">保底档干净腿（结构性关档）</div></div>
 <div class="kpi"><div class="v">6</div><div class="k">DC 分歧熔断选项（008×4+014×2）</div></div>
 </div>
+
+<div class="warn"><svg class="ic"><use href="#i-warn"/></svg><b>v2 修订（比分现实性检验后）</b>：翻身档由 6 元容错 → <b>人工关档 0 元</b>，总成本 8→2 元。触发=用本季 fd 赛果逐场检验比分候选，周三014 莱万特 0:3 被证否（本季西甲仅 1 次 · 毕尔巴鄂客场从未进 3 球 · 莱万特主场 8胜0平2负）；其余五腿为杯赛纯模板、无联赛库不可检验——<b>「未被证否」不等于「可买」</b>，按此收敛整档。seq 偶数轮=4串1 形态属设计内奇偶轮换（boldplay.py:744），非撤腿副作用。</div>
 
 <h2>三档方案（boldplay seq21）</h2>
 <div class="card">
 <div class="tier"><b><svg class="ic"><use href="#i-tk"/></svg>保底档</b><div><span class="tag t-gray">关档</span>HAD 4串11 不出——干净腿仅 2&lt;5：<b>周三006 马竞主胜@1.31</b>（p=0.704）+ <b>周二010 米堡主胜@1.44</b>（p=0.614）。杯赛轮结构性腿荒：皇马/巴萨/阿贾克斯场 HAD 未开售（深盘只开让球），杯赛场无 DC 不入池。</div></div>
-<div class="tier"><b>翻身档</b><div><span class="tag t-blue">6元 · 3注跨池2串1</span>seq21 奇=容错形态（回款率 43.7%）。CRS 六腿：周二001 叻武里 1:0@11 · 周三002 全北 1:0@11 · 周三012 考文垂 1:0@11 · 周三017 科林蒂安 1:2@15 · 周三014 莱万特 0:3@17 · 周二011 利物浦 1:0@10.5（六腿纯模板频率价差，EV +6%~+11%）</div></div>
+<div class="tier"><b>翻身档</b><div><span class="tag t-red">人工关档 · 0元</span>引擎原输出 4串1×1倍 2元（001/002/012/017 四腿 CRS，EV +8%~+11%）。<b>关档理由</b>：四腿全为杯赛纯全局池模板腿——无联赛模板即无本场两队实力信息，EV 来自「模板不知道谁强」的频率价差，非信息优势；同批的周三014 0:3 已被本季赛果直接证否，其余四腿只是无联赛库<b>无法检验</b>，不构成可买依据。</div></div>
 <div class="tier"><b>彩票档</b><div><span class="tag t-gold">2元 · 4串1×1倍</span>合赔 4.10，全中≈8.2元：周二007 <b>西班牙人让球客胜(让-1)@1.56</b>（p=0.617）+ 周三005 <b>拉科受让主胜(让+1)@1.41</b>（p=0.663）+ 周三006 <b>马竞主胜@1.31</b>（p=0.704）+ 周二010 <b>米堡主胜@1.44</b>（p=0.614）。右尾票：断任何一场=0。</div></div>
 <div class="tier"><b>平局轨</b><div><span class="tag t-gray">关档</span>HAD 可单关 6 场（001/005/008/011/002/006）逐场核验 p平 全部&lt;28%——最高周二008 27.7% 差 0.3pp，且该场已因 DC 分歧熔断整场绕行。合法关档。</div></div>
 </div>
@@ -87,6 +89,31 @@ td.num,th.num{text-align:center;white-space:nowrap}
 <tr><td class="num">周三017</td><td>解放者杯</td><td>科林蒂安(1) vs 拉普大学(2)</td><td class="num"><span class="grade gC">C</span></td><td>翻身 CRS 1:2@15</td></tr>
 </table>
 
+<h2>比分现实性检验（本季 fd 赛果 vs 模板候选）</h2>
+<div class="small" style="margin-bottom:8px">口径纪律：全池=31 项 q 全量排名，带内=形状带 [10,28] 过滤后——两者禁互换表述。检验法=用本季（2627）逐场真实比分核对「这两支队真能踢出来吗」。</div>
+<table>
+<tr><th class="num">场次</th><th>候选</th><th>本季实际证据</th><th class="num">判断</th></tr>
+<tr><td class="num">周三006</td><td>马竞 3:0@9.0（带外）/ 4:0@16</td><td>3:0 本季西甲 3 次(5.9%)；奥萨苏纳客场 3 场共进 1 球(场均0.33)；马竞客场打出过 3:0</td><td class="num"><span class="grade gA">唯一<br>可买</span></td></tr>
+<tr><td class="num">周三014</td><td>莱万特 0:3@17</td><td>本季仅 1 次(2.0%) vs 模板 6.3%；毕尔巴鄂客场场均进 1 球、<b>从未进 3 球</b>；莱万特主场 insight 近10 <b>8胜0平2负</b>(进球率80%)</td><td class="num"><span class="grade gD">证否<br>已撤</span></td></tr>
+<tr><td class="num">周二010</td><td>米堡 0:1@18 / 0:0@17</td><td>米堡主场 3 场 2:1/3:1/4:3，<b>场均进3球、零封0次</b>；与本场方向层(主胜0.614)直接打架</td><td class="num"><span class="grade gD">排除</span></td></tr>
+<tr><td class="num">周二008</td><td>阿拉维斯 7:0（模板 q=35.2%）</td><td><b>本季西甲出现 0 次</b>；λ=3.36/0.20 参数已坏</td><td class="num"><span class="grade gD">整场<br>绕行</span></td></tr>
+<tr><td class="num">周三013</td><td>巴萨 1:0@23（EV+194%）</td><td>1:0 本季 6 次(11.8%)、模板 12.8% 精准——错的是前提：巴萨场均进 3.5+ 球(客场4.67)</td><td class="num"><span class="grade gC">队级<br>假阳</span></td></tr>
+<tr><td class="num">周二009</td><td>阿贾克斯 1:1@18（EV+97%）</td><td>本季荷甲 2 次(3.8%) vs 模板 10.9%，<b>高估近三倍</b></td><td class="num"><span class="grade gC">排除</span></td></tr>
+</table>
+<div class="warn"><svg class="ic"><use href="#i-warn"/></svg><b>纯模板 EV 假阳性机制</b>：周三013/周二013/周二009 的三位数 EV 全部来自 λ=None 纯模板场——q 只用联赛历史比分频率，<b>不含本场两队实力信息</b>。「巴萨 1:0 q=12.8%」实为「西甲任意一场 1:0 的频率」，与巴萨打升班马会 3:0 还是 1:0 无关。市场开 23 倍是对的，模板才是错的一方。</div>
+<div class="small">样本限制：本季第 6 轮，每队仅 5 场。该检验足以否掉「本季 0 次」与「与球队踢法直接相反」两类候选（本轮多数候选的处境），但不足以精确排序。杯赛 13 场无联赛模板，无法用此法检验。</div>
+
+<h2>主流声浪对照（赛前公开预期）</h2>
+<table>
+<tr><th class="num">场次</th><th>主流共识</th><th>本模型</th><th class="num">对照</th></tr>
+<tr><td class="num">周二010</td><td>forebet 主胜 59%；多家称 clear favorites @1.60、三连主场胜（上轮 4:3 胜诺维奇）</td><td>p_fused 61.4%</td><td class="num"><span class="grade gA">吻合</span></td></tr>
+<tr><td class="num">周三006</td><td>dimers 62.5% / betmines 63%；leaguelane 推比分 2:0@7.50</td><td>p_fused 70.4%</td><td class="num"><span class="grade gB">同向<br>我偏高7pp</span></td></tr>
+<tr><td class="num">周二007</td><td>西班牙人被称 value pick（3 场仅丢 4 球）；sportytrader 亦推客胜</td><td>让-1 客胜 61.7%</td><td class="num"><span class="grade gA">吻合</span></td></tr>
+<tr><td class="num">周三014</td><td>dimers 毕巴 45.8% vs 莱万特 29.2%；但多家强调莱万特主场极强、建议双重机会</td><td>DC 客胜 43.0% <b>已熔断</b></td><td class="num"><span class="grade gC">熔断<br>正确</span></td></tr>
+<tr><td class="num">周二008</td><td>无一家提及大比分</td><td>模板 7:0 q=35.2%</td><td class="num"><span class="grade gD">模型<br>坏值</span></td></tr>
+</table>
+<div class="ok"><svg class="ic"><use href="#i-ok"/></svg><b>两处外部印证改变了结论</b>：① 莱万特主场强度经 insight last10HomeAway 确认 8胜0平2负，与主流「近10主场9胜」量级一致——我先前基于 fd 本季 2 场的判断方向对但强度严重低估，0:3 因此更不可买；② 巴列卡诺伤 6 人含 Jorge De Frutos（主力边锋）+ Luiz Felipe（中卫），确认主力层伤缺而非边缘球员，叠加周末 1:4 负皇马，坠势成立。</div>
+
 <h2>结构说明与风险</h2>
 <div class="card">
 <ul style="margin:0;padding-left:18px">
@@ -94,6 +121,8 @@ td.num,th.num{text-align:center;white-space:nowrap}
 <li><b>单锚常态</b>：出票时点无 Pinnacle 收盘价，市场腿=体彩即时价去水（与 boldplay 同口径）；杯赛场纯模板频率。星级上限受单锚降级约束。</li>
 <li><b>荷甲 a=0 生效</b>：周二009 方向全听市场（2526 walk-forward DC 负贡献实证），比分玩法仍用 DC 矩阵。</li>
 <li><b>彩票档 EV 全负</b>（-4%~-12%）：体彩 12.9% 抽水结构性所致，右尾票定位=方差娱乐非期望收益；全中≈8.2 元。</li>
+<li><b>本轮唯一在买的是彩票档 2 元</b>：四腿中米堡、马竞两条经主流与本季数据双重印证，拉科受让+1、西班牙人让-1 方向与主流一致。定位仍是右尾方差票（EV 全负 -4%~-12%，体彩 12.9% 抽水结构性所致），断任一场归零。</li>
+<li><b>马竞 3:0@9.0 未采纳</b>：它是全轮唯一模板/方向/本季样本三者同向的比分，但 9.0 低于形状带下限 10.0，采纳即破纪律（铁律 8「&lt;4 腿关档不硬凑」的精神是宁缺勿滥）。如需该腿须单列为带外例外并记录，便于复盘归因。</li>
 <li><b>出票前必做</b>：临场复核（信息边际三定律）+ 终端实盘三重核对（编号×联赛×主客）+ poolSingle 单关资格核对。</li>
 </ul>
 </div>
