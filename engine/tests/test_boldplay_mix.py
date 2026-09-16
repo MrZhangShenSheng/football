@@ -21,19 +21,19 @@ def _odds_day():
     ]}
 
 
-def test_mix_odds_range_and_no_dc_skip():
-    """赔率域过滤：ODDS_RANGE 外的极端长尾不入选（550 级假阳性拦截）；无 DC 场次整场跳过。"""
+def test_mix_odds_range_lower_bound_only():
+    """赔率域:上限已撤(175/550 级长尾放行),下限 4.0 挡低赔腿。"""
     day = _odds_day()
-    day["matches"][0]["crs"]["4:0"] = 550.0   # DC 全压2:0下4:0概率≈0,但即使EV假正也被赔率域拦
+    day["matches"][0]["crs"]["4:0"] = 550.0    # 高赔长尾:现在必须放行
+    day["matches"][0]["crs"]["1:1"] = 3.2      # 低于下限 4.0:必须被挡
     zh = {"皇马": "real-madrid", "社会": "real-sociedad"}
 
     def fake_dc(m, z):
         return (1.8, 0.9, -0.1) if m["matchNumStr"] == "001" else None
 
     legs = mix_candidates(day, {}, zh, {}, dc_params_fn=fake_dc)
-    assert all(l["odds"] <= boldplay.ODDS_RANGE[1] for l in legs)
-    assert all(l["source"] == "dc" for l in legs)          # freq 经验腿不进 A-MIX
-    assert all(l["matchNumStr"] == "001" for l in legs)    # 002 无 DC → 跳过
+    assert all(l["odds"] >= 4.0 for l in legs)
+    assert boldplay.ODDS_RANGE[1] == float("inf")
 
 
 def test_mix_ttg_positive_ev_wins():

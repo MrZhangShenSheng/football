@@ -22,7 +22,8 @@ LEAGUE_STORE = ("japan", "korea", "sweden", "saudi", "brazil", "denmark", "norwa
 # 本地赛果库联赛=fd 不覆盖 8 个（与 score_ev.LOCAL_POOL 口径一致——09-08 espn-history
 # 扩容巴丹挪美；杯赛库不做 form 源同设计内排除）
 FD_BACKED = frozenset(DIVS.values())   # fd 覆盖联赛键集（espn-history 镜像仅断粮时导入）
-BAND_DEFAULT = (10.0, 28.0)   # CRS 形状带（桂林-梅州合并带，与 boldplay 现状一致；boldplay.band_ok 是 had 方向带不可复用）
+BAND_DEFAULT = (4.0, float("inf"))   # CRS 形状带：上限撤销、下限降 4（2026-09-16 拍板，spec §1.1）；
+# 原 (10.0, 28.0) 桂林-梅州合并带降级为参考标签，不再过滤
 DIVERGENCE_FLAG_PP = 5        # |q − 市场隐含| 超此值(百分点)触发分歧旗（spec D12）
 MARKET_MARGIN_DIV = 1.13      # 体彩三向去水除数近似（HAD 口径）
 POOL_MARGIN_DIV = {"crs": 1.512, "ttg": 1.256, "hafu": 1.256}   # 分池抽水除数（skill v4.9：
