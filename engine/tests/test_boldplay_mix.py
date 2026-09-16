@@ -271,10 +271,12 @@ def test_pending_legs_blocked_and_warned():
 
 
 def test_no_library_legs_deduped_per_match(monkeypatch):
-    """同场互斥腿不得同入候选池（铁律9：一场只有一个比分，同注互斥腿=结构性必输）。
+    """候选池保留同场全部合规腿；铁律9 由组注层 dedup_same_match 执行。
 
-    Task 2 撤掉分歧门后，无库场次的 _odds_only_legs 会放行同场多条 CRS 腿
-    （4:0/3:0/2:0），审查实测它们能同时进 mix[:4]。本断言锁住每场至多一腿。"""
+    2026-09-16 终审推翻了原「候选池每场只留最高赔一腿」的裁定：实测 19 场在售
+    全被选成 0:5@1000 / 5:0@700 这类「血洗大热门」比分——同场赔率最高恒等于庄家
+    认为最不可能发生的比分,阿布艾因 3:0@60、巴列卡诺 4:0@50 反被挤掉,等于把
+    撤赔率上限想救的腿换个方式继续拦。同场多腿分放不同注是合法分散。"""
     monkeypatch.setattr(boldplay, "load_temperature",
                         lambda: {"crs": 1.0, "ttg": 1.0, "hafu": 1.0})
     day = {"matches": [
@@ -283,8 +285,11 @@ def test_no_library_legs_deduped_per_match(monkeypatch):
          "crs": {"4:0": 175.0, "3:0": 30.0, "2:0": 12.0}, "ttg": {}},
     ]}
     legs = mix_candidates(day, {}, {}, {}, dc_params_fn=lambda m, z: None)
-    assert len(legs) == 1, f"同场应只留 1 腿，实得 {[l['pick'] for l in legs]}"
-    assert legs[0]["pick"] == "4:0", "同场保留赔率最高者（以小博大取长尾）"
+    picks = [l["pick"] for l in legs]
+    assert picks == ["4:0", "3:0", "2:0"], f"候选池须留同场全部腿，实得 {picks}"
+    # 组注层才压同场冲突
+    from hypothesis import dedup_same_match
+    assert len(dedup_same_match(legs)) == 1, "一注内同场至多 1 腿"
 
 
 def test_no_library_leg_survives_pool_truncation(monkeypatch):

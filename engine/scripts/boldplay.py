@@ -27,7 +27,8 @@ FD_ANCHOR_LEAGUES = frozenset(LEAGUE_CODES.values()) | {
     "SC0", "germany-2-bundesliga", "portugal-primeira"}
 from freq_band import (build_team_form, freq_legs, pools_card, shifted_q, league_base_rates,
                        lambdas, team_strength, _norm)
-from hypothesis import make_hypothesis, filter_buyable, check_shared_legs
+from hypothesis import (make_hypothesis, filter_buyable, check_shared_legs,
+                        dedup_same_match, sort_by_hypothesis)
 
 SHAPES = {"guilin": {"band": (10.0, 17.0), "multiplier": 4, "cost": 8},
           "meizhou": {"band": (18.0, 28.0), "multiplier": 5, "cost": 10}}
@@ -245,9 +246,11 @@ def _odds_only_legs(m: dict) -> list:
     """无 DC 场次的候选腿：只有赔率、无概率无 EV 无分歧值（spec §1.6）。
     选腿依据交假设层——主客强弱差/远征距离时差/赛制压力/伤停/轮换动机。
 
-    每场只返回赔率最高的一腿（铁律9·Task 6）：一场比赛只有一个比分，同场互斥腿
-    （4:0/3:0/2:0）同入一注 N串1 = 结构性必输；Task 2 撤掉分歧门后审查实测它们
-    能同时占满 mix[:4]。保留最高赔者符合以小博大取长尾的意图。开发者 sszhang"""
+    同场**全部**合规比分都返回（2026-09-16 终审修正）。此处曾用 `[:1]` 只留最高赔者,
+    实测 19 场在售清一色选出 0:5@1000/5:0@700 这类"血洗大热门"——同场赔率最高恒等于
+    庄家认为最不可能发生的比分,巴列卡诺 4:0@50、阿布艾因 3:0@60 全被挤掉,等于把
+    撤上限要救的腿换了个方式继续拦。铁律9(同场互斥腿不同入一注)是组注层约束,
+    由 dedup_same_match 在成注时执行,不在候选池层预筛。开发者 sszhang"""
     mid = m.get("matchNumStr") or m.get("code")
     match = f'{m.get("home")}-{m.get("away")}'
     out = []
@@ -261,7 +264,7 @@ def _odds_only_legs(m: dict) -> list:
                     "matchNumStr": mid, "match": match,
                     "hypothesis": make_hypothesis("")})
     out.sort(key=lambda l: -l["odds"])
-    return out[:1]   # 同场至多 1 腿（铁律9）
+    return out
 
 
 def mix_candidates(odds_day: dict, freq_table: dict, zh: dict, hafu: dict,
@@ -363,6 +366,8 @@ def build_ticket(odds_day: dict, freq_table: dict, seq: int,
         rows = ev_scan(odds_day, freq_table)
         # upset 腿三链：A-MIX（v5.1 至 8-27 默认）→ CRS 形状带 → 经验频率退路
         mix = mix_candidates(odds_day, freq_table, _zh_map(), _hafu_odds())
+        # 铁律9 组注层执行（2026-09-16 终审）：候选池已保留同场全部腿，成注前压同场冲突
+        mix = dedup_same_match(mix)
         if len(mix) >= 2:
             upset = mix[:4]
             play = f"mix-{len(upset)}串1"
@@ -670,7 +675,8 @@ def _odds_only_had_legs(m: dict, mid, had: dict) -> list:
     k = max(o3, key=o3.get)
     return [{"matchNumStr": mid, "match": f'{m.get("home")}-{m.get("away")}',
              "play": "had", "pick": {"h": "主胜", "d": "平", "a": "客胜"}[k],
-             "odds": o3[k], "modelSupport": "none"}]
+             "odds": o3[k], "modelSupport": "none",
+             "hypothesis": make_hypothesis("")}]
 
 
 def _lottery_legs(odds_day: dict, zh: dict, hhad_map: dict | None = None,
@@ -750,7 +756,8 @@ def _lottery_legs(odds_day: dict, zh: dict, hhad_map: dict | None = None,
                 leg = {"matchNumStr": mid, "match": f'{m.get("home")}-{m.get("away")}',
                        "play": play, "pick": names[k], "odds": o,
                        "p": round(p, 4), "ev": round(ev, 4), "modelSupport": "dc",
-                       "divergence": round(d, 4), "divergenceFlag": d_flag}
+                       "divergence": round(d, 4), "divergenceFlag": d_flag,
+                       "hypothesis": make_hypothesis("")}
                 if play == "hhad":
                     leg["goalLine"] = gl
                 if best is None or ev > best[0]:
@@ -803,6 +810,11 @@ def _bets_with_leg_keys(tier: dict) -> list:
     return out
 
 
+def _is_combinatorial(tier: dict) -> bool:
+    """复式档判定：形状里含 '*'（如 had-3*4*5）即全组合投注。"""
+    return "*" in str(tier.get("play") or tier.get("shape") or "")
+
+
 def annotate_hypothesis_warnings(t: dict) -> None:
     """卡级假设层告警（spec §二/§三）：共用腿跨注复用 + pending/refuted 腿清单。
 
@@ -813,8 +825,11 @@ def annotate_hypothesis_warnings(t: dict) -> None:
     for name, tier in (t.get("tiers") or {}).items():
         if not isinstance(tier, dict):
             continue
-        for w in check_shared_legs(_bets_with_leg_keys(tier)):
-            t["warnings"].append(f"[{name}] {w}")
+        # 组合式档（3*4*5 复式）跳过伪分散检查：腿跨注复用是它的设计本意——部分命中
+        # 即回款。T033 伪分散指手工挑三注却共用同一条腿（表面分散实为单点），语义不同。
+        if not _is_combinatorial(tier):
+            for w in check_shared_legs(_bets_with_leg_keys(tier)):
+                t["warnings"].append(f"[{name}] {w}")
         buyable, blocked = filter_buyable(tier.get("legs") or [])
         if blocked:
             tier["blockedByHypothesis"] = [
@@ -916,8 +931,13 @@ def render_legs_grouped(legs: list) -> str:
     闸门全撤后候选腿可达数百条,不定义排序则「只看最上面几条」会成隐性门槛,
     等于用阅读顺序悄悄复活了被撤掉的过滤。开发者 sszhang"""
     from itertools import groupby
-    rows = sorted(legs, key=lambda l: (l.get("matchNumStr") or "",
-                                       -float(l.get("odds") or 0)))
+    # 场次分组保持编号序；组内按假设优先（survived→pending→refuted，段内赔率降序）。
+    # 纯赔率降序会把 0:5@1000 这类最荒谬比分永久顶在每场最前（2026-09-16 实证）。
+    rows = sorted(legs, key=lambda l: (
+        l.get("matchNumStr") or "",
+        {"survived": 0, "pending": 1, "refuted": 2}.get(
+            (l.get("hypothesis") or {}).get("verdict"), 1),
+        -float(l.get("odds") or 0)))
     out = []
     for code, grp in groupby(rows, key=lambda l: l.get("matchNumStr")):
         grp = list(grp)

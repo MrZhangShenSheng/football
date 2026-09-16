@@ -428,6 +428,95 @@ class TestThreeByFourByFive:
         assert "budgetWarning" not in t
 
 
+# ---------- 终审补测（2026-09-16）：索引→腿键转换路径 ----------
+
+
+def test_bets_index_refs_converted_to_leg_keys():
+    """bets[].legs 是**索引整数**时须转成规范腿键。
+
+    原共用腿测试用字符串腿 ['A','X'] 且 tier 无 legs 列表，走的是非索引透传分支,
+    索引转换代码从未被覆盖（终审变异实验：整行退回裸透传，358 全过）。
+    索引不转换会把不同档的索引 0 当成同一条腿而误报共用。"""
+    tier = {"legs": [{"matchNumStr": "001", "play": "crs", "pick": "4:0"},
+                     {"matchNumStr": "002", "play": "crs", "pick": "2:1"}],
+            "bets": [{"legs": [0, 1]}, {"legs": [1]}]}
+    bets = bp._bets_with_leg_keys(tier)
+    assert bets[0]["legs"] == ["001|crs|4:0", "002|crs|2:1"]
+    assert bets[1]["legs"] == ["002|crs|2:1"]
+    warns = bp.check_shared_legs(bets)
+    assert any("002|crs|2:1" in w for w in warns), "索引 1 被两注复用须告警"
+    assert not any("4:0" in w for w in warns), "索引 0 只用一次不得告警"
+
+
+def test_leg_key_includes_match_code():
+    """腿键须含场次段——不同场的同一比分不是共用腿。
+
+    终审变异：_leg_key 退回只用 pick，358 全过 = 无覆盖。"""
+    a = bp._leg_key({"matchNumStr": "001", "play": "crs", "pick": "2:1"})
+    b = bp._leg_key({"matchNumStr": "007", "play": "crs", "pick": "2:1"})
+    assert a != b, "不同场次的 2:1 必须是不同腿键"
+    assert bp.check_shared_legs([{"legs": [a]}, {"legs": [b]}]) == []
+
+
+def test_lottery_high_divergence_leg_not_excluded():
+    """彩票档高分歧腿只标注不排除（Task 2 撤熔断，终审 C4 补测）。
+
+    终审变异：还原 P0-3 的 `continue` 熔断，358 全过 = 撤销从未被锁住。
+    分歧值无法区分「敢跟市场对赌」与「DC 参数算坏」，故降级为标注 + 假设层人工否证。"""
+    m = {"matchNumStr": "006", "league": "西甲", "home": "马竞", "away": "奥萨苏纳",
+         "had": {"h": 1.30, "d": 5.0, "a": 9.0}}
+    day = {"matches": [m]}
+    blocked = []
+    legs = bp._lottery_legs(day, {}, dc_params_fn=lambda mm, z: (3.2, 0.35, 0.0),
+                            blocked=blocked)   # p_fused 0.786 vs p_mkt → 7.4pp > 5pp 线
+    flagged = [l for l in legs if l.get("divergenceFlag")]
+    assert flagged, "高分歧腿须仍在候选池（标注不排除）"
+    assert blocked, "高分歧须归档供卡面 warnings 展示"
+    codes = {l["matchNumStr"] for l in legs}
+    assert "006" in codes, "该场不得因分歧被整场剔除"
+
+
+def test_combinatorial_tier_no_false_shared_leg_warning():
+    """组合式档（3*4*5 复式）的腿共用是设计本意，不得报伪分散（终审 C6）。
+
+    T033 伪分散指手工挑三注却共用同一条腿——表面分散实为单点。3*4*5 是复式全组合,
+    部分命中即回款，腿必然跨注复用。实测复活保底档会喷 5 条误报告警。"""
+    from itertools import combinations
+    legs = [{"matchNumStr": f"00{i}", "play": "had", "pick": "主胜", "odds": 1.5}
+            for i in range(1, 6)]
+    bets = [{"legs": list(c), "multiplier": 1}
+            for n in (3, 4, 5) for c in combinations(range(5), n)]
+    t = {"tiers": {"base": {"play": "had-3*4*5", "cost": 30,
+                            "legs": legs, "bets": bets}}}
+    bp.annotate_hypothesis_warnings(t)
+    shared = [w for w in (t.get("warnings") or []) if "伪分散" in w]
+    assert shared == [], f"组合式档不得报伪分散，实得 {len(shared)} 条"
+
+
+def test_handpicked_tier_still_warns_shared_leg():
+    """非组合式档仍须报伪分散——别把 T033 的真告警一起关掉。"""
+    legs = [{"matchNumStr": "001", "play": "crs", "pick": "4:0", "odds": 50.0},
+            {"matchNumStr": "010", "play": "crs", "pick": "2:1", "odds": 7.25},
+            {"matchNumStr": "003", "play": "crs", "pick": "3:0", "odds": 60.0}]
+    bets = [{"legs": [0, 1]}, {"legs": [2, 1]}]       # 索引 1 被两注复用
+    t = {"tiers": {"upset": {"play": "mix-2串1", "cost": 4,
+                             "legs": legs, "bets": bets}}}
+    bp.annotate_hypothesis_warnings(t)
+    assert any("伪分散" in w and "010|crs|2:1" in w for w in t["warnings"])
+
+
+def test_lottery_legs_carry_hypothesis():
+    """彩票档两处腿生产点都须带 hypothesis 容器（终审 C5）。
+
+    靠 filter_buyable「无字段视为 pending」兜底虽不漏放行，但卡面数据里没有
+    assumption/checks 容器可回填功课，等于假设层对彩票档失效。"""
+    m = {"matchNumStr": "003", "home": "阿布艾因", "away": "沙迦"}
+    legs = bp._odds_only_had_legs(m, "003", {"h": 2.0, "d": 3.3, "a": 4.5})
+    assert legs and "hypothesis" in legs[0], "_odds_only_had_legs 缺 hypothesis"
+    assert legs[0]["hypothesis"]["verdict"] == "pending"
+    assert "checks" in legs[0]["hypothesis"], "须有 checks 容器可回填"
+
+
 # ---------- Task 7（2026-09-16）：卡面排序与呈现（spec §三）----------
 
 

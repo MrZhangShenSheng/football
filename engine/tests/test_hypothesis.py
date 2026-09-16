@@ -80,3 +80,49 @@ def test_shared_leg_across_bets_warns():
 def test_independent_bets_no_warning():
     bets = [{"legs": ["A", "B"]}, {"legs": ["C", "D"]}]
     assert check_shared_legs(bets) == []
+
+
+# ---------- 终审修正（2026-09-16）：铁律9 约束下移 + 假设优先排序 ----------
+
+
+def _leg(code, pick, odds, verdict="pending"):
+    return {"matchNumStr": code, "match": "A-B", "play": "crs", "pick": pick,
+            "odds": odds, "hypothesis": make_hypothesis("x", verdict=verdict)}
+
+
+def test_dedup_same_match_keeps_one_per_bet():
+    """铁律9 在组注层执行：一注内同场至多 1 腿。
+
+    候选池不再预筛（终审实证：预筛取最高赔 → 19 场清一色 0:5@1000，撤上限白撤），
+    约束下移到成注时。同场多腿分放不同注是合法分散，此处只禁同注冲突。"""
+    from hypothesis import dedup_same_match
+    legs = [_leg("004", "4:0", 50.0), _leg("004", "3:0", 60.0), _leg("007", "2:1", 7.0)]
+    kept = dedup_same_match(legs)
+    codes = [l["matchNumStr"] for l in kept]
+    assert len(codes) == len(set(codes)), "一注内不得含同场两腿"
+    assert "007" in codes
+    assert kept[0]["pick"] == "3:0", "同场保留赔率最高者（组注层内部裁决）"
+
+
+def test_dedup_preserves_all_matches():
+    """去重只压同场冲突，不得丢场次——3 场应留 3 腿。"""
+    from hypothesis import dedup_same_match
+    legs = [_leg("001", "1:0", 6.0), _leg("001", "4:0", 50.0),
+            _leg("002", "2:1", 7.0), _leg("003", "0:2", 12.0)]
+    kept = dedup_same_match(legs)
+    assert sorted(l["matchNumStr"] for l in kept) == ["001", "002", "003"]
+
+
+def test_sort_survived_before_pending():
+    """假设优先排序（大哥 2026-09-16 选项 C）：做过功课的腿浮顶，没做的沉底。
+
+    同 verdict 内才按赔率降序。这样卡面顶部不再是 0:5@1000 这类最荒谬比分。"""
+    from hypothesis import sort_by_hypothesis
+    legs = [_leg("001", "0:5", 1000.0, "pending"),
+            _leg("002", "2:1", 7.0, "survived"),
+            _leg("003", "3:3", 60.0, "refuted"),
+            _leg("004", "4:0", 50.0, "survived")]
+    order = [l["pick"] for l in sort_by_hypothesis(legs)]
+    assert order[0] == "4:0" and order[1] == "2:1", "survived 段内赔率降序且居首"
+    assert order[-1] == "3:3", "refuted 沉底"
+    assert order.index("0:5") > order.index("2:1"), "pending 排在 survived 之后"

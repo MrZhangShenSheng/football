@@ -47,6 +47,33 @@ def filter_buyable(legs: list) -> tuple:
     return buyable, blocked
 
 
+def dedup_same_match(legs: list) -> list:
+    """铁律9 的组注层执行：一注内同场至多 1 腿，同场保留赔率最高者。
+
+    候选池层不做这件事（2026-09-16 终审）：在候选池预筛会让每场只剩最高赔比分，
+    而同场赔率最高恒等于庄家认为最不可能的比分——实测 19 场在售全变成
+    0:5@1000/5:0@700，撤赔率上限想救的 4:0@50、3:0@60 反被挤掉。
+    同场多腿分放**不同注**是合法分散，故只在成注时压同注冲突。"""
+    best = {}
+    for l in legs:
+        code = l.get("matchNumStr")
+        if code not in best or float(l.get("odds") or 0) > float(best[code].get("odds") or 0):
+            best[code] = l
+    return [l for l in legs if best.get(l.get("matchNumStr")) is l]
+
+
+def sort_by_hypothesis(legs: list) -> list:
+    """假设优先排序（大哥 2026-09-16 拍板选项 C）：survived → pending → refuted，
+    段内按赔率降序。
+
+    卡面顶部应是做过功课的腿，不是赔率最高的腿。纯赔率降序会把 0:5@1000 这类
+    最荒谬比分永久顶在最前，等于用阅读顺序复活了被撤掉的过滤。"""
+    rank = {"survived": 0, "pending": 1, "refuted": 2}
+    return sorted(legs, key=lambda l: (
+        rank.get((l.get("hypothesis") or {}).get("verdict"), 1),
+        -float(l.get("odds") or 0)))
+
+
 def check_shared_legs(bets: list) -> list:
     """共用腿跨注复用告警（spec §二）：T033 三注共用米堡2:1，表面3注实为1个失效点。"""
     from collections import Counter
