@@ -1,451 +1,521 @@
 {
-  "date": "2026-09-16",
-  "saleDay": "2026-09-16",
-  "version": "v2-revised",
-  "generatedAt": "2026-09-15T12:21",
-  "mode": "全局",
-  "anchorNote": "杯赛轮（13/22）单锚常态：亚冠/亚运/英联赛杯/解放者杯无DC无画像走体彩insight+市场去水+频率模板；联赛9场（西甲7/荷甲1/英冠1）fd双锚+DC融合；荷甲a=0纯市场锚（leagueOverrides）；出票时点无Pinnacle收盘价，市场腿=体彩即时价去水（口径与boldplay一致）",
-  "dataSources": [
-    "engine/cache/sporttery_matches.json（体彩22场+五池赔率）",
-    "engine/cache/score_odds/2026-09-15.json（dump-odds全玩法存档）",
-    "engine/cache/sporttery_insight_*.json x22（伤停/近10场/排名/H2H）",
-    "data/03-predictions/2026-09-15-boldplay.json（seq21三档卡）",
-    "engine/cache/{spain-laliga,netherlands-eredivisie,england-championship}_dc.json（DC参数）",
-    "data/00-leagues/{spain-laliga,netherlands-eredivisie,england-championship}.json（联赛画像+ESPN实时榜）",
-    "data/01-teams/england-championship/{middlesbrough,millwall}.json（本轮冷启动新建）"
-  ],
-  "plans": {
-    "seq": 21,
-    "structure": "new",
-    "保底档": "关档（HAD干净腿2<5：马竞/米堡——杯赛轮结构性腿荒）",
-    "翻身档": "6元=3注跨池2串1（seq21奇·容错形态43.7%回款率）·CRS腿6条：001叻武里1:0/002全北1:0/012考文垂1:0/017科林蒂安1:2/014莱万特0:3/011利物浦1:0",
-    "彩票档": "2元4串1合赔4.10：007西班牙人让球客(让-1)@1.56+005拉科受让主(让+1)@1.41+006马竞主@1.31+010米堡主@1.44·全中≈8.2元",
-    "平局轨": "关档（HAD单关6场p平全<28%·最高周二008差0.3pp且该场已熔断绕行）",
-    "approved": false
+ "date": "2026-09-16",
+ "saleDay": "2026-09-16",
+ "version": "v2-revised",
+ "generatedAt": "2026-09-15T12:21",
+ "mode": "全局",
+ "anchorNote": "杯赛轮（13/22）单锚常态：亚冠/亚运/英联赛杯/解放者杯无DC无画像走体彩insight+市场去水+频率模板；联赛9场（西甲7/荷甲1/英冠1）fd双锚+DC融合；荷甲a=0纯市场锚（leagueOverrides）；出票时点无Pinnacle收盘价，市场腿=体彩即时价去水（口径与boldplay一致）",
+ "dataSources": [
+  "engine/cache/sporttery_matches.json（体彩22场+五池赔率）",
+  "engine/cache/score_odds/2026-09-15.json（dump-odds全玩法存档）",
+  "engine/cache/sporttery_insight_*.json x22（伤停/近10场/排名/H2H）",
+  "data/03-predictions/2026-09-15-boldplay.json（seq21三档卡）",
+  "engine/cache/{spain-laliga,netherlands-eredivisie,england-championship}_dc.json（DC参数）",
+  "data/00-leagues/{spain-laliga,netherlands-eredivisie,england-championship}.json（联赛画像+ESPN实时榜）",
+  "data/01-teams/england-championship/{middlesbrough,millwall}.json（本轮冷启动新建）"
+ ],
+ "plans": {
+  "seq": 21,
+  "structure": "new",
+  "保底档": "关档（HAD干净腿2<5：马竞/米堡——杯赛轮结构性腿荒）",
+  "翻身档": "6元=3注跨池2串1（seq21奇·容错形态43.7%回款率）·CRS腿6条：001叻武里1:0/002全北1:0/012考文垂1:0/017科林蒂安1:2/014莱万特0:3/011利物浦1:0",
+  "彩票档": "2元4串1合赔4.10：007西班牙人让球客(让-1)@1.56+005拉科受让主(让+1)@1.41+006马竞主@1.31+010米堡主@1.44·全中≈8.2元",
+  "平局轨": "关档（HAD单关6场p平全<28%·最高周二008差0.3pp且该场已熔断绕行）",
+  "approved": false
+ },
+ "matches": [
+  {
+   "idx": 1,
+   "code": "周二001",
+   "league": "亚冠精英(R1)",
+   "match": "叻武里 vs 上海海港",
+   "kickoff": "2026-09-15 18:00:00",
+   "pick": "CRS 1:0",
+   "odds": 11.0,
+   "star": 1,
+   "grade": "C",
+   "dc": null,
+   "fused": null,
+   "fusedPre": null,
+   "final": null,
+   "chain": [
+    "杯赛无DC纯市场/模板"
+   ],
+   "chainSteps": [],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": null,
+   "inPlan": "翻身档候选-已关档(决策C)",
+   "note": "亚冠无DC无画像纯模板·市场去水34.7/26.4/38.9客微优·海港(4)客战叻武里(15)但中超队亚冠客场无必胜把握·翻身档模板口子EV+11%属频率价差非信息边际",
+   "preSnapshots": {
+    "matchId": 2041514
+   },
+   "result": "4-6",
+   "half": "0:3",
+   "directionHit": null,
+   "scoreHit": false,
+   "pinSource": "none"
   },
-  "matches": [
-    {
-      "idx": 1,
-      "code": "周二001",
-      "league": "亚冠精英(R1)",
-      "match": "叻武里 vs 上海海港",
-      "kickoff": "2026-09-15 18:00:00",
-      "pick": "CRS 1:0",
-      "odds": 11.0,
-      "star": 1,
-      "grade": "C",
-      "dc": null,
-      "fused": null,
-      "fusedPre": null,
-      "final": null,
-      "chain": [
-        "杯赛无DC纯市场/模板"
-      ],
-      "chainSteps": [],
-      "lambdaHome": null,
-      "lambdaAway": null,
-      "ev": null,
-      "inPlan": "翻身档候选-已关档(决策C)",
-      "note": "亚冠无DC无画像纯模板·市场去水34.7/26.4/38.9客微优·海港(4)客战叻武里(15)但中超队亚冠客场无必胜把握·翻身档模板口子EV+11%属频率价差非信息边际",
-      "preSnapshots": {
-        "matchId": 2041514
-      }
-    },
-    {
-      "idx": 2,
-      "code": "周二002",
-      "league": "亚冠精英(R1)",
-      "match": "大田市民 vs 京都",
-      "kickoff": "2026-09-15 18:00:00",
-      "pick": "HAFU aa",
-      "odds": null,
-      "star": 1,
-      "grade": "C",
-      "dc": null,
-      "fused": null,
-      "fusedPre": null,
-      "final": null,
-      "chain": [
-        "杯赛无DC纯市场/模板"
-      ],
-      "chainSteps": [],
-      "lambdaHome": null,
-      "lambdaAway": null,
-      "ev": null,
-      "inPlan": "不参与",
-      "note": "亚冠纯模板·大田K5 vs 京都J14·HAFU aa q17%模板价3.75-5.5带·无信息腿仅翻身池",
-      "preSnapshots": {
-        "matchId": 2041522
-      }
-    },
-    {
-      "idx": 3,
-      "code": "周二003",
-      "league": "亚运男足",
-      "match": "卡塔尔亚 vs 韩国亚",
-      "kickoff": "2026-09-15 18:30:00",
-      "pick": "跳过",
-      "odds": null,
-      "star": 0,
-      "grade": "D",
-      "dc": null,
-      "fused": null,
-      "fusedPre": null,
-      "final": null,
-      "chain": [
-        "杯赛无DC纯市场/模板"
-      ],
-      "chainSteps": [],
-      "lambdaHome": null,
-      "lambdaAway": null,
-      "ev": null,
-      "inPlan": "不参与",
-      "note": "亚运男足国字号无画像无池卡·杯赛轮换名单不可测·D级全场跳过",
-      "preSnapshots": {
-        "matchId": 2041482
-      }
-    },
-    {
-      "idx": 4,
-      "code": "周二004",
-      "league": "亚冠精英(R1)",
-      "match": "柔佛 vs 布里兰",
-      "kickoff": "2026-09-15 20:15:00",
-      "pick": "跳过",
-      "odds": null,
-      "star": 0,
-      "grade": "D",
-      "dc": null,
-      "fused": null,
-      "fusedPre": null,
-      "final": null,
-      "chain": [
-        "杯赛无DC纯市场/模板"
-      ],
-      "chainSteps": [],
-      "lambdaHome": null,
-      "lambdaAway": null,
-      "ev": null,
-      "inPlan": "不参与",
-      "note": "亚冠纯模板·布里兰(1)状态热但柔佛主场·无三池正EV口子·跳过",
-      "preSnapshots": {
-        "matchId": 2041483
-      }
-    },
-    {
-      "idx": 5,
-      "code": "周二005",
-      "league": "亚冠精英(R1)",
-      "match": "北京国安 vs 浦项制铁",
-      "kickoff": "2026-09-15 20:15:00",
-      "pick": "HAFU aa",
-      "odds": null,
-      "star": 1,
-      "grade": "C",
-      "dc": null,
-      "fused": null,
-      "fusedPre": null,
-      "final": null,
-      "chain": [
-        "杯赛无DC纯市场/模板"
-      ],
-      "chainSteps": [],
-      "lambdaHome": null,
-      "lambdaAway": null,
-      "ev": null,
-      "inPlan": "不参与",
-      "note": "亚冠纯模板·国安(10) vs 浦项(11)五五开·HAFU aa q17%+CRS 0:1@13·国字号间歇期后首战状态未知",
-      "preSnapshots": {
-        "matchId": 2041484
-      }
-    },
-    {
-      "idx": 6,
-      "code": "周二006",
-      "league": "亚冠精英(R1)",
-      "match": "阿布艾因 vs 利雅胜利",
-      "kickoff": "2026-09-16 00:00:00",
-      "pick": "HAFU hh",
-      "odds": null,
-      "star": 1,
-      "grade": "C",
-      "dc": null,
-      "fused": null,
-      "fusedPre": null,
-      "final": null,
-      "chain": [
-        "杯赛无DC纯市场/模板"
-      ],
-      "chainSteps": [],
-      "lambdaHome": null,
-      "lambdaAway": null,
-      "ev": null,
-      "inPlan": "不参与",
-      "note": "亚冠纯模板·利雅胜利(12)开局低迷C罗年龄+·阿布艾因(9)主场·HAFU hh q25%@4.3·模板腿",
-      "preSnapshots": {
-        "matchId": 2041485
-      }
-    },
-    {
-      "idx": 7,
-      "code": "周二007",
-      "league": "西甲(R6)",
-      "match": "巴列卡诺 vs 西班牙人",
-      "kickoff": "2026-09-16 01:00:00",
-      "pick": "HHAD 让球客胜(让-1)",
-      "odds": 1.56,
-      "star": 3,
-      "grade": "A-",
-      "dc": [
-        0.2725,
-        0.332,
-        0.3955
-      ],
-      "fused": [
-        0.2725,
-        0.332,
-        0.3955
-      ],
-      "fusedPre": [
-        0.2725,
-        0.332,
-        0.3955
-      ],
-      "final": 0.396,
-      "chain": [
-        "logit融合(出票时点市场腿=体彩去水)"
-      ],
-      "chainSteps": [],
-      "lambdaHome": 1.034,
-      "lambdaAway": 1.285,
-      "ev": null,
-      "inPlan": "彩票档(在买)",
-      "note": "西班牙人(8)客战巴列卡诺(16)主队伤6人重创·p_fused=0.6165@1.56 EV-4%·西甲DC轻客λ1.03/1.29·彩票档腿·让1球深盘风险=西班牙人客场净胜2球能力",
-      "preSnapshots": {
-        "matchId": 2041486
-      }
-    },
-    {
-      "idx": 8,
-      "code": "周二008",
-      "league": "西甲(R6)",
-      "match": "阿拉维斯 vs 巴伦西亚",
-      "kickoff": "2026-09-16 02:00:00",
-      "pick": "全池绕行",
-      "odds": null,
-      "star": 0,
-      "grade": "C-",
-      "dc": [
-        0.7236,
-        0.2248,
-        0.0516
-      ],
-      "fused": [
-        0.7236,
-        0.2248,
-        0.0516
-      ],
-      "fusedPre": [
-        0.7236,
-        0.2248,
-        0.0516
-      ],
-      "final": 0.225,
-      "chain": [
-        "logit融合(出票时点市场腿=体彩去水)"
-      ],
-      "chainSteps": [],
-      "lambdaHome": 1.871,
-      "lambdaAway": 0.377,
-      "ev": null,
-      "inPlan": "不参与",
-      "note": "DC分歧熔断4选项(主胜p_fused59.6%vs市场53.0%差6.5pp)=升班马阿拉维斯参数污染嫌疑·三池TTG s7 q=59.6%@50倍属模板桶错位数据异常·本轮整场绕行不参与",
-      "preSnapshots": {
-        "matchId": 2041487
-      }
-    },
-    {
-      "idx": 9,
-      "code": "周二009",
-      "league": "荷甲(R3)",
-      "match": "阿贾克斯 vs 威廉二世",
-      "kickoff": "2026-09-16 02:00:00",
-      "pick": "HHAD 让球主胜(让-2)",
-      "odds": null,
-      "star": 2,
-      "grade": "A-",
-      "dc": [
-        0.9358,
-        0.0517,
-        0.0124
-      ],
-      "fused": null,
-      "fusedPre": null,
-      "final": null,
-      "chain": [
-        "杯赛无DC纯市场/模板"
-      ],
-      "chainSteps": [],
-      "lambdaHome": 3.787,
-      "lambdaAway": 0.355,
-      "ev": null,
-      "inPlan": "不参与",
-      "note": "HAD未开售·阿贾克斯(5)DC攻击+0.73 vs 威廉二世(17)伤6人·荷甲a=0纯市场锚·-2盘@1.77隐含52%不够格不入档·叙事方向=阿贾克斯大胜但深盘无正EV·2球以上胜差是门槛",
-      "preSnapshots": {
-        "matchId": 2041488
-      }
-    },
-    {
-      "idx": 10,
-      "code": "周二010",
-      "league": "英冠(R6)",
-      "match": "米堡 vs 米尔沃尔",
-      "kickoff": "2026-09-16 02:45:00",
-      "pick": "HAD 主胜",
-      "odds": 1.44,
-      "star": 3,
-      "grade": "A",
-      "dc": [
-        0.6099,
-        0.2316,
-        0.1584
-      ],
-      "fused": [
-        0.6099,
-        0.2316,
-        0.1584
-      ],
-      "fusedPre": [
-        0.6099,
-        0.2316,
-        0.1584
-      ],
-      "final": 0.61,
-      "chain": [
-        "logit融合(出票时点市场腿=体彩去水)"
-      ],
-      "chainSteps": [],
-      "lambdaHome": 2.108,
-      "lambdaAway": 1.008,
-      "ev": null,
-      "inPlan": "彩票档(在买)",
-      "note": "全轮最干净腿·米堡(4)主场3胜0平0负近10场6胜2平2负DC攻击英冠TOP5 vs 米尔沃尔(13)伤10人重创(门将Jensen/射手科伯恩/中场德诺尔全缺)·p_fused=0.6136@1.44·保底+彩票双档腿",
-      "preSnapshots": {
-        "matchId": 2041489
-      }
-    },
-    {
-      "idx": 11,
-      "code": "周二011",
-      "league": "英联赛杯",
-      "match": "利物浦 vs 热刺",
-      "kickoff": "2026-09-16 03:00:00",
-      "pick": "CRS 1:0",
-      "odds": 10.5,
-      "star": 2,
-      "grade": "B-",
-      "dc": null,
-      "fused": null,
-      "fusedPre": null,
-      "final": null,
-      "chain": [
-        "杯赛无DC纯市场/模板"
-      ],
-      "chainSteps": [],
-      "lambdaHome": null,
-      "lambdaAway": null,
-      "ev": null,
-      "inPlan": "不参与",
-      "note": "英联赛杯双残(利物浦伤6/热刺伤5)杯赛轮换不可测·市场主胜54.6%·翻身CRS 1:0@10.5纯模板·杯赛大轮换=冷门温床仅翻身池小注",
-      "preSnapshots": {
-        "matchId": 2041490
-      }
-    },
-    {
-      "idx": 12,
-      "code": "周二012",
-      "league": "英联赛杯",
-      "match": "伊普斯 vs 阿森纳",
-      "kickoff": "2026-09-16 03:00:00",
-      "pick": "HAD 客胜(叙事)",
-      "odds": null,
-      "star": 3,
-      "grade": "B",
-      "dc": null,
-      "fused": null,
-      "fusedPre": null,
-      "final": null,
-      "chain": [
-        "杯赛无DC纯市场/模板"
-      ],
-      "chainSteps": [],
-      "lambdaHome": null,
-      "lambdaAway": null,
-      "ev": null,
-      "inPlan": "不参与",
-      "note": "阿森纳客战英冠伊普斯实力差两档·HAD客胜@1.30隐含73%·杯赛无DC不入池·联赛杯阿森纳历来大轮换(青年军)是主要风险·不入档叙事推荐",
-      "preSnapshots": {
-        "matchId": 2041491
-      }
-    },
-    {
-      "idx": 13,
-      "code": "周二013",
-      "league": "西甲(R6)",
-      "match": "埃尔切 vs 皇马",
-      "kickoff": "2026-09-16 03:30:00",
-      "pick": "HHAD 让球客胜(让+2)",
-      "odds": null,
-      "star": 3,
-      "grade": "B+",
-      "dc": [
-        0.1064,
-        0.189,
-        0.7046
-      ],
-      "fused": null,
-      "fusedPre": null,
-      "final": null,
-      "chain": [
-        "杯赛无DC纯市场/模板"
-      ],
-      "chainSteps": [],
-      "lambdaHome": 0.985,
-      "lambdaAway": 2.623,
-      "ev": null,
-      "inPlan": "不参与",
-      "note": "HAD未开售·皇马(2) vs 埃尔切(19)升班马垫底·+2盘客胜@2.23隐含~45%·皇马国家队间歇后状态+欧冠下周开打轮换风险·CRS 0:2模板口子·不入档叙事推荐",
-      "preSnapshots": {
-        "matchId": 2041492
-      }
-    },
-    {
-      "idx": 14,
-      "code": "周二014",
-      "league": "解放者杯",
-      "match": "普拉滕斯 vs 弗鲁米嫩",
-      "kickoff": "2026-09-16 06:00:00",
-      "pick": "HAFU hh",
-      "odds": null,
-      "star": 1,
-      "grade": "C",
-      "dc": null,
-      "fused": null,
-      "fusedPre": null,
-      "final": null,
-      "chain": [
-        "杯赛无DC纯市场/模板"
-      ],
-      "chainSteps": [],
-      "lambdaHome": null,
-      "lambdaAway": null,
-      "ev": null,
-      "inPlan": "不参与",
-      "note": "解放者杯·弗鲁米嫩(2)伤9人重创但客场韧性·普拉滕斯(2)阿甲中游·HAFU hh q25%@4.3+aa@5.0·南美无DC纯模板·翻身池",
-      "preSnapshots": {
-        "matchId": 2041493
-      }
-    }
-  ],
-  "revisionNote": "2026-09-15 比分现实性检验后修订：翻身档人工关档(决策C)，总成本 8→2 元。周三014 莱万特0:3 经本季 fd 赛果证否(西甲1次/毕巴客场从未进3球/莱万特主场8-0-2)；其余四腿杯赛纯模板不可检验，'未被证否≠可买'。在买仅彩票档 4串1 2元。"
+  {
+   "idx": 2,
+   "code": "周二002",
+   "league": "亚冠精英(R1)",
+   "match": "大田市民 vs 京都",
+   "kickoff": "2026-09-15 18:00:00",
+   "pick": "HAFU aa",
+   "odds": null,
+   "star": 1,
+   "grade": "C",
+   "dc": null,
+   "fused": null,
+   "fusedPre": null,
+   "final": null,
+   "chain": [
+    "杯赛无DC纯市场/模板"
+   ],
+   "chainSteps": [],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": null,
+   "inPlan": "不参与",
+   "note": "亚冠纯模板·大田K5 vs 京都J14·HAFU aa q17%模板价3.75-5.5带·无信息腿仅翻身池",
+   "preSnapshots": {
+    "matchId": 2041522
+   },
+   "result": "1-0",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": false,
+   "pinSource": "none"
+  },
+  {
+   "idx": 3,
+   "code": "周二003",
+   "league": "亚运男足",
+   "match": "卡塔尔亚 vs 韩国亚",
+   "kickoff": "2026-09-15 18:30:00",
+   "pick": "跳过",
+   "odds": null,
+   "star": 0,
+   "grade": "D",
+   "dc": null,
+   "fused": null,
+   "fusedPre": null,
+   "final": null,
+   "chain": [
+    "杯赛无DC纯市场/模板"
+   ],
+   "chainSteps": [],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": null,
+   "inPlan": "不参与",
+   "note": "亚运男足国字号无画像无池卡·杯赛轮换名单不可测·D级全场跳过",
+   "preSnapshots": {
+    "matchId": 2041482
+   },
+   "result": "1-4",
+   "half": "0:3",
+   "directionHit": null,
+   "scoreHit": null,
+   "pinSource": "none"
+  },
+  {
+   "idx": 4,
+   "code": "周二004",
+   "league": "亚冠精英(R1)",
+   "match": "柔佛 vs 布里兰",
+   "kickoff": "2026-09-15 20:15:00",
+   "pick": "跳过",
+   "odds": null,
+   "star": 0,
+   "grade": "D",
+   "dc": null,
+   "fused": null,
+   "fusedPre": null,
+   "final": null,
+   "chain": [
+    "杯赛无DC纯市场/模板"
+   ],
+   "chainSteps": [],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": null,
+   "inPlan": "不参与",
+   "note": "亚冠纯模板·布里兰(1)状态热但柔佛主场·无三池正EV口子·跳过",
+   "preSnapshots": {
+    "matchId": 2041483
+   },
+   "result": "1-1",
+   "half": "1:1",
+   "directionHit": null,
+   "scoreHit": null,
+   "pinSource": "none"
+  },
+  {
+   "idx": 5,
+   "code": "周二005",
+   "league": "亚冠精英(R1)",
+   "match": "北京国安 vs 浦项制铁",
+   "kickoff": "2026-09-15 20:15:00",
+   "pick": "HAFU aa",
+   "odds": null,
+   "star": 1,
+   "grade": "C",
+   "dc": null,
+   "fused": null,
+   "fusedPre": null,
+   "final": null,
+   "chain": [
+    "杯赛无DC纯市场/模板"
+   ],
+   "chainSteps": [],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": null,
+   "inPlan": "不参与",
+   "note": "亚冠纯模板·国安(10) vs 浦项(11)五五开·HAFU aa q17%+CRS 0:1@13·国字号间歇期后首战状态未知",
+   "preSnapshots": {
+    "matchId": 2041484
+   },
+   "result": "3-1",
+   "half": "2:1",
+   "directionHit": null,
+   "scoreHit": false,
+   "pinSource": "none"
+  },
+  {
+   "idx": 6,
+   "code": "周二006",
+   "league": "亚冠精英(R1)",
+   "match": "阿布艾因 vs 利雅胜利",
+   "kickoff": "2026-09-16 00:00:00",
+   "pick": "HAFU hh",
+   "odds": null,
+   "star": 1,
+   "grade": "C",
+   "dc": null,
+   "fused": null,
+   "fusedPre": null,
+   "final": null,
+   "chain": [
+    "杯赛无DC纯市场/模板"
+   ],
+   "chainSteps": [],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": null,
+   "inPlan": "不参与",
+   "note": "亚冠纯模板·利雅胜利(12)开局低迷C罗年龄+·阿布艾因(9)主场·HAFU hh q25%@4.3·模板腿",
+   "preSnapshots": {
+    "matchId": 2041485
+   },
+   "result": "4-0",
+   "half": "1:0",
+   "directionHit": null,
+   "scoreHit": true,
+   "pinSource": "none"
+  },
+  {
+   "idx": 7,
+   "code": "周二007",
+   "league": "西甲(R6)",
+   "match": "巴列卡诺 vs 西班牙人",
+   "kickoff": "2026-09-16 01:00:00",
+   "pick": "HHAD 让球客胜(让-1)",
+   "odds": 1.56,
+   "star": 3,
+   "grade": "A-",
+   "dc": [
+    0.2725,
+    0.332,
+    0.3955
+   ],
+   "fused": [
+    0.2725,
+    0.332,
+    0.3955
+   ],
+   "fusedPre": [
+    0.2725,
+    0.332,
+    0.3955
+   ],
+   "final": 0.396,
+   "chain": [
+    "logit融合(出票时点市场腿=体彩去水)"
+   ],
+   "chainSteps": [],
+   "lambdaHome": 1.034,
+   "lambdaAway": 1.285,
+   "ev": null,
+   "inPlan": "彩票档(在买)",
+   "note": "西班牙人(8)客战巴列卡诺(16)主队伤6人重创·p_fused=0.6165@1.56 EV-4%·西甲DC轻客λ1.03/1.29·彩票档腿·让1球深盘风险=西班牙人客场净胜2球能力",
+   "preSnapshots": {
+    "matchId": 2041486
+   },
+   "result": "2-1",
+   "half": "2:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "pinSource": "none"
+  },
+  {
+   "idx": 8,
+   "code": "周二008",
+   "league": "西甲(R6)",
+   "match": "阿拉维斯 vs 巴伦西亚",
+   "kickoff": "2026-09-16 02:00:00",
+   "pick": "全池绕行",
+   "odds": null,
+   "star": 0,
+   "grade": "C-",
+   "dc": [
+    0.7236,
+    0.2248,
+    0.0516
+   ],
+   "fused": [
+    0.7236,
+    0.2248,
+    0.0516
+   ],
+   "fusedPre": [
+    0.7236,
+    0.2248,
+    0.0516
+   ],
+   "final": 0.225,
+   "chain": [
+    "logit融合(出票时点市场腿=体彩去水)"
+   ],
+   "chainSteps": [],
+   "lambdaHome": 1.871,
+   "lambdaAway": 0.377,
+   "ev": null,
+   "inPlan": "不参与",
+   "note": "DC分歧熔断4选项(主胜p_fused59.6%vs市场53.0%差6.5pp)=升班马阿拉维斯参数污染嫌疑·三池TTG s7 q=59.6%@50倍属模板桶错位数据异常·本轮整场绕行不参与",
+   "preSnapshots": {
+    "matchId": 2041487
+   },
+   "result": "0-1",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "pinSource": "none"
+  },
+  {
+   "idx": 9,
+   "code": "周二009",
+   "league": "荷甲(R3)",
+   "match": "阿贾克斯 vs 威廉二世",
+   "kickoff": "2026-09-16 02:00:00",
+   "pick": "HHAD 让球主胜(让-2)",
+   "odds": null,
+   "star": 2,
+   "grade": "A-",
+   "dc": [
+    0.9358,
+    0.0517,
+    0.0124
+   ],
+   "fused": null,
+   "fusedPre": null,
+   "final": null,
+   "chain": [
+    "杯赛无DC纯市场/模板"
+   ],
+   "chainSteps": [],
+   "lambdaHome": 3.787,
+   "lambdaAway": 0.355,
+   "ev": null,
+   "inPlan": "不参与",
+   "note": "HAD未开售·阿贾克斯(5)DC攻击+0.73 vs 威廉二世(17)伤6人·荷甲a=0纯市场锚·-2盘@1.77隐含52%不够格不入档·叙事方向=阿贾克斯大胜但深盘无正EV·2球以上胜差是门槛",
+   "preSnapshots": {
+    "matchId": 2041488
+   },
+   "result": "5-1",
+   "half": "2:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "pinSource": "none"
+  },
+  {
+   "idx": 10,
+   "code": "周二010",
+   "league": "英冠(R6)",
+   "match": "米堡 vs 米尔沃尔",
+   "kickoff": "2026-09-16 02:45:00",
+   "pick": "HAD 主胜",
+   "odds": 1.44,
+   "star": 3,
+   "grade": "A",
+   "dc": [
+    0.6099,
+    0.2316,
+    0.1584
+   ],
+   "fused": [
+    0.6099,
+    0.2316,
+    0.1584
+   ],
+   "fusedPre": [
+    0.6099,
+    0.2316,
+    0.1584
+   ],
+   "final": 0.61,
+   "chain": [
+    "logit融合(出票时点市场腿=体彩去水)"
+   ],
+   "chainSteps": [],
+   "lambdaHome": 2.108,
+   "lambdaAway": 1.008,
+   "ev": null,
+   "inPlan": "彩票档(在买)",
+   "note": "全轮最干净腿·米堡(4)主场3胜0平0负近10场6胜2平2负DC攻击英冠TOP5 vs 米尔沃尔(13)伤10人重创(门将Jensen/射手科伯恩/中场德诺尔全缺)·p_fused=0.6136@1.44·保底+彩票双档腿",
+   "preSnapshots": {
+    "matchId": 2041489
+   },
+   "result": "2-2",
+   "half": "0:2",
+   "directionHit": false,
+   "scoreHit": false,
+   "pinSource": "none"
+  },
+  {
+   "idx": 11,
+   "code": "周二011",
+   "league": "英联赛杯",
+   "match": "利物浦 vs 热刺",
+   "kickoff": "2026-09-16 03:00:00",
+   "pick": "CRS 1:0",
+   "odds": 10.5,
+   "star": 2,
+   "grade": "B-",
+   "dc": null,
+   "fused": null,
+   "fusedPre": null,
+   "final": null,
+   "chain": [
+    "杯赛无DC纯市场/模板"
+   ],
+   "chainSteps": [],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": null,
+   "inPlan": "不参与",
+   "note": "英联赛杯双残(利物浦伤6/热刺伤5)杯赛轮换不可测·市场主胜54.6%·翻身CRS 1:0@10.5纯模板·杯赛大轮换=冷门温床仅翻身池小注",
+   "preSnapshots": {
+    "matchId": 2041490
+   },
+   "result": "3-1",
+   "half": "1:0",
+   "directionHit": null,
+   "scoreHit": false,
+   "pinSource": "none"
+  },
+  {
+   "idx": 12,
+   "code": "周二012",
+   "league": "英联赛杯",
+   "match": "伊普斯 vs 阿森纳",
+   "kickoff": "2026-09-16 03:00:00",
+   "pick": "HAD 客胜(叙事)",
+   "odds": null,
+   "star": 3,
+   "grade": "B",
+   "dc": null,
+   "fused": null,
+   "fusedPre": null,
+   "final": null,
+   "chain": [
+    "杯赛无DC纯市场/模板"
+   ],
+   "chainSteps": [],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": null,
+   "inPlan": "不参与",
+   "note": "阿森纳客战英冠伊普斯实力差两档·HAD客胜@1.30隐含73%·杯赛无DC不入池·联赛杯阿森纳历来大轮换(青年军)是主要风险·不入档叙事推荐",
+   "preSnapshots": {
+    "matchId": 2041491
+   },
+   "result": "2-4",
+   "half": "0:2",
+   "directionHit": true,
+   "scoreHit": true,
+   "pinSource": "none"
+  },
+  {
+   "idx": 13,
+   "code": "周二013",
+   "league": "西甲(R6)",
+   "match": "埃尔切 vs 皇马",
+   "kickoff": "2026-09-16 03:30:00",
+   "pick": "HHAD 让球客胜(让+2)",
+   "odds": null,
+   "star": 3,
+   "grade": "B+",
+   "dc": [
+    0.1064,
+    0.189,
+    0.7046
+   ],
+   "fused": null,
+   "fusedPre": null,
+   "final": null,
+   "chain": [
+    "杯赛无DC纯市场/模板"
+   ],
+   "chainSteps": [],
+   "lambdaHome": 0.985,
+   "lambdaAway": 2.623,
+   "ev": null,
+   "inPlan": "不参与",
+   "note": "HAD未开售·皇马(2) vs 埃尔切(19)升班马垫底·+2盘客胜@2.23隐含~45%·皇马国家队间歇后状态+欧冠下周开打轮换风险·CRS 0:2模板口子·不入档叙事推荐",
+   "preSnapshots": {
+    "matchId": 2041492
+   },
+   "result": "2-3",
+   "half": "0:2",
+   "directionHit": null,
+   "scoreHit": null,
+   "pinSource": "none"
+  },
+  {
+   "idx": 14,
+   "code": "周二014",
+   "league": "解放者杯",
+   "match": "普拉滕斯 vs 弗鲁米嫩",
+   "kickoff": "2026-09-16 06:00:00",
+   "pick": "HAFU hh",
+   "odds": null,
+   "star": 1,
+   "grade": "C",
+   "dc": null,
+   "fused": null,
+   "fusedPre": null,
+   "final": null,
+   "chain": [
+    "杯赛无DC纯市场/模板"
+   ],
+   "chainSteps": [],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": null,
+   "inPlan": "不参与",
+   "note": "解放者杯·弗鲁米嫩(2)伤9人重创但客场韧性·普拉滕斯(2)阿甲中游·HAFU hh q25%@4.3+aa@5.0·南美无DC纯模板·翻身池",
+   "preSnapshots": {
+    "matchId": 2041493
+   },
+   "result": "2-1",
+   "half": "2:0",
+   "directionHit": null,
+   "scoreHit": true,
+   "pinSource": "none"
+  }
+ ],
+ "revisionNote": "2026-09-15 比分现实性检验后修订：翻身档人工关档(决策C)，总成本 8→2 元。周三014 莱万特0:3 经本季 fd 赛果证否(西甲1次/毕巴客场从未进3球/莱万特主场8-0-2)；其余四腿杯赛纯模板不可检验，'未被证否≠可买'。在买仅彩票档 4串1 2元。"
 }
