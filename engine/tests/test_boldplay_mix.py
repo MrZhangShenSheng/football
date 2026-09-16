@@ -26,19 +26,25 @@ def test_mix_odds_range_lower_bound_only():
 
     两条断言都必须能证伪(审查实证:旧版 `1:1@3.2` 探针实际是被 DIVERGENCE_LIMIT 挡的,
     退回旧下限 2.0 断言照样通过,无区分力;同理旧版只断言常量自身，没有验证行为)：
-    - 001 场 4:0@550 长尾腿：EV=17.38、分歧仅 0.39pp，唯一能挡它的只有旧上限 40 ——
+    - 001 场 4:0@550 长尾腿：EV=17.38、分歧 2.87pp（p_dc=0.03342 vs p_mkt=0.00469），
+      唯一能挡它的只有旧上限 40 ——
       若上限退回 40.0，`mix_candidates` 会转而选中 ttg 5球@11.0（同样 >=4.0），
       `any(l["odds"] == 550.0 ...)` 才是唯一能捕获"上限被撤销"的断言。
     - 002 场 0:0@3.6 干净低赔探针：DC 给该场强主队优势(λ主0.6/λ客0.3/ρ0)，0:0 概率天然
-      偏高，实测 EV=+0.17、分歧仅 2.07pp（远低于 DIVERGENCE_LIMIT=0.05），除赔率外全部
+      偏高，实测 EV=+0.17、分歧仅 2.01pp（远低于 DIVERGENCE_LIMIT=0.05；本任务起分歧已
+      降级为标注不再过滤，该腿不入选只由赔率下限 4.0 决定，与分歧值无关），除赔率外全部
       合规；退回旧下限 2.0 该腿会入选（已手工验证），故"该腿不入选"只能是下限 4.0 的作用。
       `6:6@1.58` 只是配平隐含概率之和的填充项，该比分 DC 概率≈0（EV=-1），永不会被选中。
+      load_temperature mock 锚定 crs.T=1.3，脱离生产缓存 temperature.json 取值漂移
+      （2026-09-16 复审：若 T 重拟合为 1.0，探针分歧会从 2.01pp 升到 10.16pp，但已不影响
+      本测试断言，因为分歧不再是门槛；mock 仅为保持文档数值可复现）。
     """
     day = _odds_day()
     day["matches"][0]["crs"]["4:0"] = 550.0                    # 高赔长尾:现在必须放行
     day["matches"][1]["crs"] = {"0:0": 3.6, "6:6": 1.58}       # 干净低赔探针 + 配平填充
     day["matches"][1]["ttg"] = {}
     zh = {"皇马": "real-madrid", "社会": "real-sociedad"}
+    boldplay.load_temperature = lambda: {"crs": 1.3, "ttg": 1.0, "hafu": 1.0}
 
     def fake_dc(m, z):
         if m["matchNumStr"] == "001":
@@ -89,3 +95,27 @@ def test_dc_params_team_matching(tmp_path):
     assert abs(lh - 2.718281828 ** (0.3 - 0.3 + 0.2)) < 1e-9
     # 无映射联赛/未入库队 → None
     assert boldplay._dc_params({"league": "欧冠", "home": "x", "away": "y"}, zh, cache_dir=cache) is None
+
+
+def test_divergence_annotated_not_excluded():
+    """分歧超 5pp 的腿必须入选并带标注（原为排除）。"""
+    day = _odds_day()
+    zh = {"皇马": "real-madrid", "社会": "real-sociedad"}
+    # 锁 T=1.0：脱离生产缓存 temperature.json（同 test_mix_odds_range_lower_bound_only 的
+    # mock 范式）——不锁的话 crs.T=1.3/ttg.T=1.3 会让 CRS 2:0(温度前EV0.37)被 TTG
+    # 6球(温度后EV0.31)反超成为唯一候选,其分歧仅2.63pp<5pp,断言无区分力（复审实证）。
+    boldplay.load_temperature = lambda: {"crs": 1.0, "ttg": 1.0, "hafu": 1.0}
+    # 复位 score_matrix/ttg_dist：test_mix_ttg_positive_ev_wins 在本文件先跑且未还原
+    # monkeypatch，跨测试污染会让本测试在全量跑时失败（隔离跑通过）；与本任务的
+    # 分歧改动无关，这里只做自保不修那个既有问题（见任务报告 concerns）。
+    import dc_predict as _dcp
+    boldplay.score_matrix = _dcp.score_matrix
+    boldplay.ttg_dist = _dcp.ttg_dist
+
+    def fake_dc(m, z):
+        return (2.6, 0.4, -0.1) if m["matchNumStr"] == "001" else None
+
+    legs = mix_candidates(day, {}, zh, {}, dc_params_fn=fake_dc)
+    assert legs, "分歧腿不应被滤光"
+    assert all("divergence" in l and "divergenceFlag" in l for l in legs)
+    assert any(l["divergenceFlag"] for l in legs), "λ=2.6 对市场应产生 >5pp 分歧腿"

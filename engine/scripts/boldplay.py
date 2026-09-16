@@ -238,7 +238,9 @@ def mix_candidates(odds_day: dict, freq_table: dict, zh: dict, hafu: dict,
     """A-MIX 候选腿：每场 CRS/TTG/HAFU 三池 EV 最优合规项，按 EV 降序。
 
     概率源统一 DC 模型（score_matrix 49 比分 + ttg_dist/hafu_approx 聚合）——8-25 会话
-    验证口径；合规三门槛：EV>0 且 |p_dc−p市场(去水)|<5pp 且单腿赔率∈ODDS_RANGE。
+    验证口径；合规两门槛：EV>0 且单腿赔率∈ODDS_RANGE。分歧（|p_dc−p市场(去水)|）
+    2026-09-16 降级为标注：每条候选腿带 divergence/divergenceFlag，不再据此排除
+    （spec §1.2：5pp 分歧无法区分"敢跟市场对赌"与"DC 参数算坏"）。
     经验频率只服务 fallback 链（pick_upset_legs），不进 A-MIX（尾部噪声假阳性）。
     freq_table 仅保留签名兼容。
     """
@@ -272,9 +274,11 @@ def mix_candidates(odds_day: dict, freq_table: dict, zh: dict, hafu: dict,
                     continue
                 x, y = (int(t) for t in k.split(":"))
                 p_mkt = (1.0 / o) / inv
-                if abs(crs_p[(x, y)] - p_mkt) < DIVERGENCE_LIMIT:
-                    offer(crs_p[(x, y)] * o - 1,
-                          {"play": "crs", "pick": k, "odds": o, "source": "dc-reweighted" if adj else "dc"})
+                d = abs(crs_p[(x, y)] - p_mkt)
+                offer(crs_p[(x, y)] * o - 1,
+                      {"play": "crs", "pick": k, "odds": o,
+                       "source": "dc-reweighted" if adj else "dc",
+                       "divergence": round(d, 4), "divergenceFlag": d >= DIVERGENCE_LIMIT})
         ttg_o = m.get("ttg") or {}
         if len(ttg_o) == 8:
             p_mkt = devig_n([float(ttg_o[f"s{i}"]) for i in range(8)])
@@ -282,10 +286,12 @@ def mix_candidates(odds_day: dict, freq_table: dict, zh: dict, hafu: dict,
             p_dc = temper(p_dc, tpool["ttg"])
             for i in range(8):
                 o = float(ttg_o[f"s{i}"])
-                if ODDS_RANGE[0] <= o <= ODDS_RANGE[1] and abs(p_dc[i] - p_mkt[i]) < DIVERGENCE_LIMIT:
+                if ODDS_RANGE[0] <= o <= ODDS_RANGE[1]:
+                    d = abs(p_dc[i] - p_mkt[i])
                     offer(p_dc[i] * o - 1,
                           {"play": "ttg", "pick": f"{i}球" if i < 7 else "7+球", "odds": o,
-                           "source": "dc-reweighted" if adj else "dc"})
+                           "source": "dc-reweighted" if adj else "dc",
+                           "divergence": round(d, 4), "divergenceFlag": d >= DIVERGENCE_LIMIT})
         hf = hafu.get(mid) or {}
         if len(hf) == 9:
             keys = [a + b for a in "hda" for b in "hda"]
@@ -296,9 +302,11 @@ def mix_candidates(odds_day: dict, freq_table: dict, zh: dict, hafu: dict,
             p_dc9 = temper([p_dc0[k] for k in keys], tpool["hafu"])
             p_dc = dict(zip(keys, p_dc9))
             for k in keys:
-                if ODDS_RANGE[0] <= hf[k] <= ODDS_RANGE[1] and abs(p_dc[k] - p_mkt[keys.index(k)]) < DIVERGENCE_LIMIT:
+                if ODDS_RANGE[0] <= hf[k] <= ODDS_RANGE[1]:
+                    d = abs(p_dc[k] - p_mkt[keys.index(k)])
                     offer(p_dc[k] * hf[k] - 1,
-                          {"play": "hafu", "pick": k, "odds": hf[k], "source": "dc-reweighted" if adj else "dc"})
+                          {"play": "hafu", "pick": k, "odds": hf[k], "source": "dc-reweighted" if adj else "dc",
+                           "divergence": round(d, 4), "divergenceFlag": d >= DIVERGENCE_LIMIT})
         if best:
             ev, leg = best
             legs.append({**leg, "matchNumStr": mid, "match": f'{m.get("home")}-{m.get("away")}',
@@ -621,9 +629,12 @@ def _lottery_legs(odds_day: dict, zh: dict, hhad_map: dict | None = None,
     合格 = p_fused≥0.55 或 超低赔≤1.25 且 p_fused≥0.50；p_fused = fuse(p_dc, p_mkt体彩去水, a, b)
     （出票时点无 Pinnacle 收盘，市场腿=体彩即时价去水，与 mix_candidates 同口径）。
     无 DC 缓存/队名未入库/无 had → 该场不入池。
-    P0-3 分歧熔断（2026-09-04 拍板）：|p_fused−p_mkt|≥DIVERGENCE_LIMIT 的选项不入档——
-    DC 升班马污染参数（弗洛西诺 p_dc=94% 实证）曾以 EV+63% 假阳性混入 8 串；
-    熔断腿经 blocked 参数（可选 list）回传供卡 warnings 归档。开发者 sszhang"""
+    P0-3 分歧熔断 2026-09-16 降级为标注（spec §1.2）：|p_fused−p_mkt|≥DIVERGENCE_LIMIT
+    的选项不再排除，改为标 divergence/divergenceFlag 入档——原熔断曾拦下 DC 升班马
+    污染参数（弗洛西诺 p_dc=94% 实证，EV+63% 假阳性混入 8 串），但同样的门槛也会
+    拦掉真机会（阿布艾因 4:0@175），无法区分两者，故防噪声职责转移给卡面标注+
+    假设层人工否证。blocked 参数（可选 list）语义相应改为「高分歧腿清单」（仍入档，
+    仅额外回传供卡 warnings 归档），不再是「被排除的腿」。开发者 sszhang"""
     if hhad_map is None:
         hhad_map = _hhad_odds()
     legs = []
@@ -663,21 +674,25 @@ def _lottery_legs(odds_day: dict, zh: dict, hhad_map: dict | None = None,
                      "hhad": ("让球主胜", "让球平", "让球客胜")}[play]
             for k in range(3):
                 p, o = p_f[k], o3[k]
-                if abs(p - p_mkt[k]) >= DIVERGENCE_LIMIT:        # P0-3 熔断：DC 污染腿不入档
-                    if blocked is not None:
-                        blocked.append({"matchNumStr": mid,
-                                        "match": f'{m.get("home")}-{m.get("away")}',
-                                        "play": play, "pick": names[k],
-                                        "p_fused": round(p, 4), "p_mkt": round(p_mkt[k], 4),
-                                        "diff_pp": round(abs(p - p_mkt[k]) * 100, 1)})
-                    continue
+                d = abs(p - p_mkt[k])
+                d_flag = d >= DIVERGENCE_LIMIT
+                # P0-3 熔断降级为标注（2026-09-16，spec §1.2）：该熔断原拦 DC 升班马污染
+                # （弗洛西诺 p_dc=94% EV+63% 假阳性）。5pp 分歧无法区分「敢跟市场对赌」与
+                # 「DC 参数算坏」，故不再排除，改由卡面标注 + 假设层人工否证。
+                if d_flag and blocked is not None:
+                    blocked.append({"matchNumStr": mid,
+                                    "match": f'{m.get("home")}-{m.get("away")}',
+                                    "play": play, "pick": names[k],
+                                    "p_fused": round(p, 4), "p_mkt": round(p_mkt[k], 4),
+                                    "diff_pp": round(d * 100, 1)})
                 if not (p >= LOTTERY_MIN_P
                         or (o <= LOTTERY_LOW_ODDS and p >= LOTTERY_LOW_ODDS_MIN_P)):
                     continue
                 ev = p * o - 1
                 leg = {"matchNumStr": mid, "match": f'{m.get("home")}-{m.get("away")}',
                        "play": play, "pick": names[k], "odds": o,
-                       "p": round(p, 4), "ev": round(ev, 4)}
+                       "p": round(p, 4), "ev": round(ev, 4),
+                       "divergence": round(d, 4), "divergenceFlag": d_flag}
                 if play == "hhad":
                     leg["goalLine"] = gl
                 if best is None or ev > best[0]:
@@ -758,7 +773,7 @@ def build_three_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form:
                  "note": "跨池4串1(木桶≤4关)"}
     if upset["cost"] < 2:                                   # 腿不足关档(铁律8不硬凑)
         upset = {"shape": "closed", "cost": 0, "legs": legs, "note": "翻身候选腿不足·关档"}
-    blocked_legs = []                                            # P0-3 熔断腿归档（卡 warnings）
+    blocked_legs = []           # 高分歧腿清单（2026-09-16 降级：不再排除，仅归档供卡 warnings 展示）
     lottery = _lottery_tier(_lottery_legs(odds_day, zh, blocked=blocked_legs))
     total_cost = base["cost"] + upset["cost"] + lottery["cost"]
     out = {"structure": "new", "date": str(date.today()), "seq": seq,
@@ -769,8 +784,8 @@ def build_three_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form:
     if blocked_legs:
         lottery["divergenceBlocked"] = blocked_legs
         out["warnings"] = out.get("warnings", []) + [
-            f"dc_divergence_blocked: 彩票档熔断{len(blocked_legs)}选项(|p_fused−p_mkt|≥"
-            f"{DIVERGENCE_LIMIT:.0%})——"
+            f"dc_divergence_high: 彩票档{len(blocked_legs)}选项高分歧(|p_fused−p_mkt|≥"
+            f"{DIVERGENCE_LIMIT:.0%})，已标注未排除——"
             + "、".join(f"{l['matchNumStr']}{l['pick']}{l['diff_pp']}pp"
                         for l in blocked_legs[:8])]
     # 轮红线检查已废除（T2 2026-09-06 设计§四：纪律=覆盖闸coverGate）；ROUND_REDLINE
