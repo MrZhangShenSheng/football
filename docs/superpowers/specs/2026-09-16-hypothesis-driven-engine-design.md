@@ -70,7 +70,7 @@
 - 马竞 2:0@6.5、米堡 2:1@7.25(T033 原腿)
 - 巴列卡诺 2:1@7.75、阿布艾因 4:0@175(X033 两条腿)
 
-**作用域:全局,含保底档。** 这会使保底档关档,属预期结果,详见 §1.4。
+**作用域:三池候选腿(`mix_candidates`/`freq_legs`)。** 保底档另由显式开关关闭,不靠本节的下限连带,详见 §1.4。
 
 ### 1.3.1 撤销赔率上限的已知代价
 
@@ -84,7 +84,9 @@
 
 大哥 2026-09-16 定调:「资金小量不保本其实无所谓。」保底档的设计目的就是保本,与此直接冲突,因此**关档**。
 
-保底档是 HAD 方向层 5 腿 3\*4\*5 结构(16 注 32 元),依赖的正是 1.3~2.0 的低赔腿凑覆盖闸。下限提到 4.0 后它选不出 5 条合格腿,自然关闭。
+保底档是 HAD 方向层 5 腿 3\*4\*5 结构(16 注 32 元),依赖的正是 1.3~2.0 的低赔腿凑覆盖闸。
+
+**关档必须显式,不能靠赔率下限连带。** 设计审核(2026-09-16)查证:`_base_legs` 有自己的独立门槛 `min(o3) < 1.10`,不读 `ODDS_RANGE`,所以把三池下限提到 4.0 **不会**让保底档自然关闭。改法是加模块级总开关 `BASE_TIER_ENABLED = False`,`build_three_tier` 据此跳过选腿并走关档分支。
 
 **这会打崩三处自检断言**,须同步改:
 
@@ -95,9 +97,9 @@ assert gate["pFull"] == payout_full_hit(base["legs"]) >= 32   # 崩:无腿无 pF
 assert gate["cap"] == round(gate["pFull"] - 32, 2) and gate["ok"] is True
 ```
 
-改法:保底档零腿时 `tiers.base` 走已有的关档分支(`boldplay.py:725` 已有 `"coverGate": None` 的零腿路径),断言改为允许关档态。**不硬凑腿**——这是 freq-band 既有铁律(`boldplay.py:337` "合格腿<4 不硬凑"),沿用即可。
+改法:`BASE_TIER_ENABLED = False` 时 `build_three_tier` 不调 `_base_legs`,`tiers.base` 走关档分支(`cost=0` / `coverGate=None` / 无 `bets`),note 标明关档依据。既有开档断言(16 注 32 元、覆盖闸、铁律 10 无锚腿不入保底)移到测试里经 `monkeypatch` 显式开档运行,保留复活路径的机制覆盖;模块内嵌自检只守关档契约。**不硬凑腿**——这是 freq-band 既有铁律(`boldplay.py` "合格腿<4 不硬凑"),沿用即可。
 
-`coverGate` 机制本身不删,仅在保底档关档时不生效。若日后大哥要恢复保本档,放开下限即可复活。
+`coverGate` / `payout_full_hit` / `_base_legs` 机制本身全部保留,仅在关档时不生效。若日后大哥要恢复保本档,把 `BASE_TIER_ENABLED` 改回 `True` 即可复活(不需要改赔率域)。
 
 ### 1.5 预算纪律不动
 
@@ -251,8 +253,9 @@ assert all(l["matchNumStr"] == "001" for l in legs)             # 无库跳过�
 
 保底档关档测试(§1.4):
 
-- 下限 4.0 下保底档正常关档,不抛断言错误
-- 关档时 `tiers.base.coverGate` 为 `None`,不硬凑腿
+- `BASE_TIER_ENABLED=False` 默认态下保底档关档,不抛断言错误
+- 关档时 `tiers.base.coverGate` 为 `None`、`cost=0`、无 `bets`,不硬凑腿
+- 开档机制断言经 `monkeypatch` 显式置 `True` 后仍全绿(复活路径可用)
 
 卡面排序测试(§三):
 

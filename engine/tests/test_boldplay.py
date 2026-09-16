@@ -1,4 +1,5 @@
 import pytest
+import boldplay as bp
 from boldplay import (band_ok, cap_multiplier, monthly_spend, budget_gate,
                       pick_upset_legs, build_ticket, build_three_tier, SHAPES)
 
@@ -357,9 +358,21 @@ def _fake_table():
 
 
 class TestThreeByFourByFive:
-    """保底3*4*5重构(设计§四): 16注32元·bets显式·覆盖闸P_full>=32n+N"""
+    """保底3*4*5机制(设计§四): 16注32元·bets显式·覆盖闸P_full>=32n+N。
+    2026-09-16 起默认关档(spec §1.4·BASE_TIER_ENABLED=False·大哥「不保本无所谓」),
+    本类开档断言改经 monkeypatch 显式开档运行——保留复活路径的机制覆盖。"""
 
-    def test_base_shape_16_bets(self):
+    def test_base_tier_closed_by_default(self):
+        # spec §1.4: 大哥「资金小量不保本其实无所谓」——保底档设计目的即保本,冲突故关。
+        # 显式开关关档:_base_legs 有独立门槛 min(o3)<1.10 不读 ODDS_RANGE,改赔率域不会自动关它。
+        t = build_three_tier(_fake_day(), _fake_table(), seq=9, zh={}, form={})
+        base = t["tiers"]["base"]
+        assert base["cost"] == 0 and base["coverGate"] is None
+        assert "关档" in base["note"]
+        assert not base.get("bets")              # 关档不产生注
+
+    def test_base_shape_16_bets(self, monkeypatch):
+        monkeypatch.setattr(bp, "BASE_TIER_ENABLED", True)   # 显式开档测机制
         t = build_three_tier(_fake_day(), _fake_table(), seq=9, zh={}, form={})
         base = t["tiers"]["base"]
         assert base["play"] == "had-3*4*5"
@@ -369,15 +382,17 @@ class TestThreeByFourByFive:
         assert sizes == {3, 4, 5}                 # 3串1×10+4串1×5+5串1×1
         assert len(base["legs"]) == 5             # 全消费 5 腿（T1 过渡[:4]切片已移除）
 
-    def test_cover_gate_ok(self):
+    def test_cover_gate_ok(self, monkeypatch):
+        monkeypatch.setattr(bp, "BASE_TIER_ENABLED", True)
         t = build_three_tier(_fake_day(), _fake_table(), seq=9, zh={}, form={})
         gate = t["tiers"]["base"]["coverGate"]
         assert "pFull" in gate and "cap" in gate and gate["ok"] in (True, False)
         # n=1无叙事仓时: P_full >= 32 必然成立(设计§4.1)
         assert gate["pFull"] >= 32 or not gate["ok"]
 
-    def test_cover_gate_narrative_cap(self):
+    def test_cover_gate_narrative_cap(self, monkeypatch):
         # 覆盖闸(设计§4.1): 叙事仓上限 = P_full - 32n
+        monkeypatch.setattr(bp, "BASE_TIER_ENABLED", True)
         t = build_three_tier(_fake_day(), _fake_table(), seq=9, zh={}, form={})
         gate = t["tiers"]["base"]["coverGate"]
         assert gate["cap"] == round(gate["pFull"] - 32, 2)
@@ -398,8 +413,10 @@ class TestThreeByFourByFive:
         assert base["cost"] == 0 and base["coverGate"] is None
         assert not base.get("bets")
 
-    def test_round_redline_removed(self):
-        # 设计§四: 轮红线废除——totalCost 32 已超旧红线 30，也不再落 budgetWarning
+    def test_round_redline_removed(self, monkeypatch):
+        # 设计§四: 轮红线废除。2026-09-16 起保底默认关档,开档断言经 monkeypatch 显式开档:
+        # totalCost 32 已超旧红线 30，也不再落 budgetWarning
+        monkeypatch.setattr(bp, "BASE_TIER_ENABLED", True)
         t = build_three_tier(_fake_day(), _fake_table(), seq=9, zh={}, form={})
         assert t["totalCost"] >= 32
         assert "budgetWarning" not in t

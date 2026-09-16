@@ -40,6 +40,10 @@ BASE_TREADLINE_ODDS = 1.35    # 踩线护栏(设计§四·审核C: 朗斯@1.36�
 BASE_TREADLINE_P = 0.68
 BASE_UNIT_STAKE = 2.0         # 保底3*4*5单注本金(设计§四·T2: 16注×2元=32元)
 BASE_COMBOS_MIN = 3           # 保底组合3串1起点(设计§四: C(5,3)+C(5,4)+C(5,5)=16注)
+BASE_TIER_ENABLED = False     # 保底档总开关(2026-09-16 拍板「资金小量不保本其实无所谓」,spec §1.4):
+# 保底档的设计目的就是保本(3串1×10+4串1×5+5串1×1 中3关起回款),与该拍板直接冲突故关档。
+# 必须显式关：_base_legs 有独立门槛 min(o3)<1.10,不读 ODDS_RANGE,改赔率域不会让它自然关档。
+# 机制代码(_base_legs/payout_full_hit/覆盖闸)全部保留,复活只需把本开关改回 True。
 ODDS_RANGE = (4.0, float("inf"))  # 单腿赔率域：上限撤销（2026-09-16 拍板：以小博大，高赔长尾放行——
 # 阿布艾因 4:0@175 曾被 40 上限拦截）；下限 4.0 挡方向层低赔腿（HAD 主胜 1.31/1.44 赔不动）。
 # 撤上限的已知代价：8-25 探针的 4:0@550 EV+845% 假阳性会重新出现，与真机会数学上不可区分，
@@ -769,8 +773,8 @@ def build_three_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form:
     N串1×1倍(2元,合格腿全上4~8,HAD/HHAD)。选腿: 保底=_base_legs 分层5腿(2胆+3标准,
     胆不足高p标准腿补位); 翻身=各场 pools_card rec_upset 候选(同场≤1腿,
     按EV降序); 彩票=_lottery_legs(p_fused≥0.55/超低赔通道)。开发者 sszhang"""
-    base_legs = _base_legs(odds_day, zh=zh)
-    if len(base_legs) >= 5:
+    base_legs = _base_legs(odds_day, zh=zh) if BASE_TIER_ENABLED else []
+    if BASE_TIER_ENABLED and len(base_legs) >= 5:
         from itertools import combinations
         bets_345 = [{"legs": list(c), "multiplier": 1}
                     for size in range(BASE_COMBOS_MIN, len(base_legs) + 1)
@@ -783,9 +787,12 @@ def build_three_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form:
                               "ok": True},   # n=1无叙事仓: P_full≥32 结构性成立(§4.1)
                 "note": "3串1×10+4串1×5+5串1×1 · 中3关起回款 · 覆盖闸P_full≥32n"}
     else:
+        note = ("保底关档（2026-09-16 拍板：资金小量不保本无所谓 · spec §1.4）"
+                if not BASE_TIER_ENABLED
+                else f"保底关档（合格腿{len(base_legs)}<5，不硬凑）")
         base = {"cost": 0, "legs": base_legs, "play": "had-3*4*5",
-                "note": f"保底关档（合格腿{len(base_legs)}<5，不硬凑）",
-                "coverGate": None}   # 零腿轮关档(设计§四), 只出叙事档
+                "note": note,
+                "coverGate": None}   # 关档(总开关/零腿轮·设计§四), 只出叙事档
     hafu_map = hafu_map if hafu_map is not None else _hafu_odds()
     cards = []
     for m in odds_day.get("matches", []):
@@ -1096,13 +1103,12 @@ def _selftest_three_tier():
     t = build_three_tier(fake_day, ft, seq=9, zh={}, form={})
     assert t["structure"] == "new"
     base = t["tiers"]["base"]
-    assert base["cost"] == 32 and len(base["legs"]) == 5            # 3*4*5=16注32元
-    assert base["play"] == "had-3*4*5"
-    assert len(base["bets"]) == 16                                  # C(5,3)+C(5,4)+C(5,5)
-    gate = base["coverGate"]                                        # 覆盖闸(设计§4.1)
-    assert gate["pFull"] == payout_full_hit(base["legs"]) >= 32     # n=1: P_full≥32
-    assert gate["cap"] == round(gate["pFull"] - 32, 2) and gate["ok"] is True
-    assert not ({"周一002", "周六007"} & {l["matchNumStr"] for l in base["legs"]})  # 铁律10：无锚腿不入保底
+    # 保底档 2026-09-16 起默认关档(BASE_TIER_ENABLED=False·spec §1.4): cost=0·无 bets·闸 None。
+    # 开档机制(16注32元/覆盖闸/铁律10 无锚腿不入保底)的断言移至 test_boldplay.py
+    # TestThreeByFourByFive(经 monkeypatch 显式开档),此处只守关档契约。
+    assert base["cost"] == 0 and base["coverGate"] is None
+    assert base["play"] == "had-3*4*5" and not base.get("bets")
+    assert "关档" in base["note"]
     up = t["tiers"]["upset"]
     # 批次3（2026-09-04）：分歧旗全候选化后，zh={} 纯模板 q 与手造 fixture 赔率普遍差
     # >5pp → 翻身腿被滤光 → closed 属合法常态（真实数据未必关档：当轮实测 pool-2x1x3·6元）
@@ -1114,7 +1120,8 @@ def _selftest_three_tier():
     codes = [l["matchNumStr"] for l in up["legs"]]
     assert len(codes) == len(set(codes))                            # 同场最多1腿(硬约束)
     # Task3（2026-09-16）放行无库场次：彩票档 +2 元（11 场无库腿截前 8 开 8串1）
-    assert 34 <= t["totalCost"] <= 42                               # 保底32 + 翻身≤8 + 彩票2
+    # Task5（2026-09-16）保底关档：原区间 34-42 含保底 32,关档后仅 翻身≤8 + 彩票2
+    assert 2 <= t["totalCost"] <= 10                                # 翻身≤8 + 彩票2
     assert "budgetWarning" not in t                                 # T2: 轮红线检查废除
     lot = t["tiers"]["lottery"]
     # Task3（2026-09-16 spec §1.6）：zh={} 全场无 DC → 11 条无库腿（每场赔率最高一腿）
