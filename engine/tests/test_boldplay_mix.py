@@ -22,17 +22,37 @@ def _odds_day():
 
 
 def test_mix_odds_range_lower_bound_only():
-    """赔率域:上限已撤(175/550 级长尾放行),下限 4.0 挡低赔腿。"""
+    """赔率域:上限已撤(175/550 级长尾放行),下限 4.0 挡低赔腿。
+
+    两条断言都必须能证伪(审查实证:旧版 `1:1@3.2` 探针实际是被 DIVERGENCE_LIMIT 挡的,
+    退回旧下限 2.0 断言照样通过,无区分力;同理旧版只断言常量自身，没有验证行为)：
+    - 001 场 4:0@550 长尾腿：EV=17.38、分歧仅 0.39pp，唯一能挡它的只有旧上限 40 ——
+      若上限退回 40.0，`mix_candidates` 会转而选中 ttg 5球@11.0（同样 >=4.0），
+      `any(l["odds"] == 550.0 ...)` 才是唯一能捕获"上限被撤销"的断言。
+    - 002 场 0:0@3.6 干净低赔探针：DC 给该场强主队优势(λ主0.6/λ客0.3/ρ0)，0:0 概率天然
+      偏高，实测 EV=+0.17、分歧仅 2.07pp（远低于 DIVERGENCE_LIMIT=0.05），除赔率外全部
+      合规；退回旧下限 2.0 该腿会入选（已手工验证），故"该腿不入选"只能是下限 4.0 的作用。
+      `6:6@1.58` 只是配平隐含概率之和的填充项，该比分 DC 概率≈0（EV=-1），永不会被选中。
+    """
     day = _odds_day()
-    day["matches"][0]["crs"]["4:0"] = 550.0    # 高赔长尾:现在必须放行
-    day["matches"][0]["crs"]["1:1"] = 3.2      # 低于下限 4.0:必须被挡
+    day["matches"][0]["crs"]["4:0"] = 550.0                    # 高赔长尾:现在必须放行
+    day["matches"][1]["crs"] = {"0:0": 3.6, "6:6": 1.58}       # 干净低赔探针 + 配平填充
+    day["matches"][1]["ttg"] = {}
     zh = {"皇马": "real-madrid", "社会": "real-sociedad"}
 
     def fake_dc(m, z):
-        return (1.8, 0.9, -0.1) if m["matchNumStr"] == "001" else None
+        if m["matchNumStr"] == "001":
+            return (1.8, 0.9, -0.1)
+        if m["matchNumStr"] == "002":
+            return (0.6, 0.3, 0.0)   # 强主队优势(近0球) → 0:0 概率天然高,制造干净低赔探针
+        return None
 
     legs = mix_candidates(day, {}, zh, {}, dc_params_fn=fake_dc)
+    assert any(l["odds"] == 550.0 for l in legs), "撤上限后 550 级长尾必须能入选"
+    assert not any(l["matchNumStr"] == "002" for l in legs), \
+        "0:0@3.6 分歧<5pp 且 EV>0,唯一挡它的只能是下限 4.0"
     assert all(l["odds"] >= 4.0 for l in legs)
+    assert all(l["source"] == "dc" for l in legs)   # freq 经验腿不进 A-MIX（既有行为，本任务未改动）
     assert boldplay.ODDS_RANGE[1] == float("inf")
 
 
