@@ -62,16 +62,23 @@ def test_mix_odds_range_lower_bound_only():
     assert boldplay.ODDS_RANGE[1] == float("inf")
 
 
-def test_mix_ttg_positive_ev_wins():
-    """双门槛窗口验证：中高赔档（市场占比<~20%）才有 EV>0 且分歧<5pp 的窗口（低赔档数学不可能双过）。"""
+def test_mix_ttg_positive_ev_wins(monkeypatch):
+    """双门槛窗口验证：中高赔档（市场占比<~20%）才有 EV>0 且分歧<5pp 的窗口（低赔档数学不可能双过）。
+
+    monkeypatch.setattr 由 pytest 在测试结束后自动还原（Task 3 额外工作 A 根除
+    测试污染：原函数体内直接赋值改写 boldplay.score_matrix/ttg_dist 且不还原，
+    曾致 test_divergence_annotated_not_excluded 隔离跑 PASS 随文件跑 FAILED）。"""
     day = _odds_day()
     zh = {"皇马": "real-madrid", "社会": "real-sociedad"}
     hafu = {}
     import numpy as _np
     p2 = _np.zeros((7, 7)); p2[5, 0] = 1.0
-    boldplay.score_matrix = lambda lh, la, rho: p2
-    boldplay.load_temperature = lambda: {"crs": 1.0, "ttg": 1.0, "hafu": 1.0}  # 关温度：单点mock分布会被T≠1放大分歧(temper后p=1.0,分歧93pp被5pp门槛挡)；本用例聚焦EV双门槛
-    boldplay.ttg_dist = lambda p: [0.0, 0.0, 0.0, 0.0, 0.0, 0.10, 0.0, 0.0]  # 5球 10%：EV=0.1×11-1=+0.1, 市场≈7% 分歧3pp
+    monkeypatch.setattr(boldplay, "score_matrix", lambda lh, la, rho: p2)
+    # 关温度：单点mock分布会被T≠1放大分歧(temper后p=1.0,分歧93pp被5pp门槛挡)；本用例聚焦EV双门槛
+    monkeypatch.setattr(boldplay, "load_temperature",
+                        lambda: {"crs": 1.0, "ttg": 1.0, "hafu": 1.0})
+    monkeypatch.setattr(boldplay, "ttg_dist",
+                        lambda p: [0.0, 0.0, 0.0, 0.0, 0.0, 0.10, 0.0, 0.0])  # 5球 10%：EV=0.1×11-1=+0.1, 市场≈7% 分歧3pp
 
     def fake_dc(m, z):
         return 1.8, 0.9, -0.1 if m["matchNumStr"] == "001" else None
@@ -80,6 +87,50 @@ def test_mix_ttg_positive_ev_wins():
     leg1 = next((l for l in legs if l["matchNumStr"] == "001"), None)
     assert leg1 is not None and leg1["play"] == "ttg" and leg1["pick"] == "5球"
     assert leg1["odds"] == 11.0 and leg1["ev"] > 0
+
+
+def test_no_library_match_admitted_amix(monkeypatch):
+    """无 DC 场次必须入选并标 modelSupport:none(A-MIX 路径, boldplay.py:247)。"""
+    day = _odds_day()
+    zh = {"皇马": "real-madrid", "社会": "real-sociedad"}
+    # 锁 T=1.0（同 test_mix_ttg_positive_ev_wins 范式）：001 有库腿是否选出依赖生产
+    # temperature.json 取值，不锁则 has_lib 可能为空 → modelSupport:dc 断言空真无区分力。
+    monkeypatch.setattr(boldplay, "load_temperature",
+                        lambda: {"crs": 1.0, "ttg": 1.0, "hafu": 1.0})
+
+    def fake_dc(m, z):
+        # 001 参数 (2.6,0.4,-0.1)（Task 2 实证：T=1.0 下稳定选出 CRS 2:0 EV+0.35）——
+        # 简报原值 (1.8,0.9,-0.1) 下 001 三池 EV 全负选不出腿，modelSupport:dc 断言空真
+        return (2.6, 0.4, -0.1) if m["matchNumStr"] == "001" else None
+
+    legs = mix_candidates(day, {}, zh, {}, dc_params_fn=fake_dc)
+    codes = {l["matchNumStr"] for l in legs}
+    assert "002" in codes, "无 DC 场次 002 必须放行"
+    no_lib = [l for l in legs if l["matchNumStr"] == "002"]
+    assert all(l["modelSupport"] == "none" for l in no_lib)
+    assert all("divergence" not in l for l in no_lib), "无模型概率则无分歧值"
+    has_lib = [l for l in legs if l["matchNumStr"] == "001"]
+    assert has_lib, "001 有库场须出腿——否则 modelSupport:dc 断言空真无区分力"
+    assert all(l["modelSupport"] == "dc" for l in has_lib)
+
+
+def test_no_library_match_admitted_lottery(monkeypatch):
+    """无 DC 场次必须入选(彩票档路径, boldplay.py:631)。"""
+    day = _odds_day()
+    zh = {"皇马": "real-madrid", "社会": "real-sociedad"}
+
+    def fake_dc(m, z):
+        return (1.8, 0.9, -0.1) if m["matchNumStr"] == "001" else None
+
+    # hhad_map={} 显式传入：默认 None 会读生产 sporttery_matches.json（测试隔离铁律）
+    legs = boldplay._lottery_legs(day, zh=zh, hhad_map={}, dc_params_fn=fake_dc)
+    codes = {l["matchNumStr"] for l in legs}
+    assert "002" in codes, "彩票档同样须放行无库场次"
+    # 无库场彩票档腿结构：同场一腿(铁律9)、赔率最高项、无概率无分歧值
+    no_lib = [l for l in legs if l["matchNumStr"] == "002"]
+    assert len(no_lib) == 1, "彩票档 N串1 全中才回款——同场互斥腿=结构性必输，每场只一条"
+    assert no_lib[0]["modelSupport"] == "none" and no_lib[0]["odds"] == 4.0  # a=4.0 三向赔率最高
+    assert "divergence" not in no_lib[0] and "ev" not in no_lib[0]
 
 
 def test_dc_params_team_matching(tmp_path):
@@ -97,25 +148,33 @@ def test_dc_params_team_matching(tmp_path):
     assert boldplay._dc_params({"league": "欧冠", "home": "x", "away": "y"}, zh, cache_dir=cache) is None
 
 
-def test_divergence_annotated_not_excluded():
-    """分歧超 5pp 的腿必须入选并带标注（原为排除）。"""
+def test_divergence_annotated_not_excluded(monkeypatch):
+    """分歧超 5pp 的腿必须入选并带标注（原为排除）。
+
+    断言范围限定 modelSupport != "none" 的腿（Task 3 放行无库场次后，无库腿
+    无模型概率、算不出分歧值——填 0 会被误读为「与市场一致」，是错的信息，
+    故无库腿不含 divergence 字段，preflight R1 裁定）。"""
     day = _odds_day()
     zh = {"皇马": "real-madrid", "社会": "real-sociedad"}
     # 锁 T=1.0：脱离生产缓存 temperature.json（同 test_mix_odds_range_lower_bound_only 的
     # mock 范式）——不锁的话 crs.T=1.3/ttg.T=1.3 会让 CRS 2:0(温度前EV0.37)被 TTG
     # 6球(温度后EV0.31)反超成为唯一候选,其分歧仅2.63pp<5pp,断言无区分力（复审实证）。
-    boldplay.load_temperature = lambda: {"crs": 1.0, "ttg": 1.0, "hafu": 1.0}
-    # 复位 score_matrix/ttg_dist：test_mix_ttg_positive_ev_wins 在本文件先跑且未还原
-    # monkeypatch，跨测试污染会让本测试在全量跑时失败（隔离跑通过）；与本任务的
-    # 分歧改动无关，这里只做自保不修那个既有问题（见任务报告 concerns）。
-    import dc_predict as _dcp
-    boldplay.score_matrix = _dcp.score_matrix
-    boldplay.ttg_dist = _dcp.ttg_dist
+    monkeypatch.setattr(boldplay, "load_temperature",
+                        lambda: {"crs": 1.0, "ttg": 1.0, "hafu": 1.0})
+    # （2026-09-16 Task 3 根除：原「复位 score_matrix/ttg_dist 自保」两行已删——
+    # 污染源 test_mix_ttg_positive_ev_wins 已改用 monkeypatch.setattr 自动还原。）
 
     def fake_dc(m, z):
         return (2.6, 0.4, -0.1) if m["matchNumStr"] == "001" else None
 
     legs = mix_candidates(day, {}, zh, {}, dc_params_fn=fake_dc)
     assert legs, "分歧腿不应被滤光"
-    assert all("divergence" in l and "divergenceFlag" in l for l in legs)
-    assert any(l["divergenceFlag"] for l in legs), "λ=2.6 对市场应产生 >5pp 分歧腿"
+    assert all("divergence" in l and "divergenceFlag" in l
+               for l in legs if l.get("modelSupport") != "none")
+    assert any(l["divergenceFlag"] for l in legs
+               if l.get("modelSupport") != "none"), "λ=2.6 对市场应产生 >5pp 分歧腿"
+    # 无库腿（002 放行）：标 modelSupport:none 且确实没有 divergence 字段
+    no_lib = [l for l in legs if l.get("modelSupport") == "none"]
+    assert no_lib, "002 无库场次须放行出腿"
+    assert all("divergence" not in l and "divergenceFlag" not in l for l in no_lib), \
+        "无模型概率则无分歧值——填 0 会被误读为与市场一致"

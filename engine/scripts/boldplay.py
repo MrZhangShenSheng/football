@@ -233,6 +233,24 @@ def _dc_params(m: dict, zh: dict, cache_dir: Path = CACHE_DIR):
     return lh, la, dc["rho"]
 
 
+def _odds_only_legs(m: dict) -> list:
+    """无 DC 场次的候选腿：只有赔率、无概率无 EV 无分歧值（spec §1.6）。
+    选腿依据交假设层——主客强弱差/远征距离时差/赛制压力/伤停/轮换动机。开发者 sszhang"""
+    mid = m.get("matchNumStr") or m.get("code")
+    match = f'{m.get("home")}-{m.get("away")}'
+    out = []
+    for k, v in (m.get("crs") or {}).items():
+        if ":" not in k:
+            continue
+        o = float(v)
+        if o < ODDS_RANGE[0]:
+            continue
+        out.append({"play": "crs", "pick": k, "odds": o, "modelSupport": "none",
+                    "matchNumStr": mid, "match": match})
+    out.sort(key=lambda l: -l["odds"])
+    return out
+
+
 def mix_candidates(odds_day: dict, freq_table: dict, zh: dict, hafu: dict,
                    dc_params_fn=_dc_params, adjust_map: dict | None = None) -> list:
     """A-MIX 候选腿：每场 CRS/TTG/HAFU 三池 EV 最优合规项，按 EV 降序。
@@ -241,6 +259,9 @@ def mix_candidates(odds_day: dict, freq_table: dict, zh: dict, hafu: dict,
     验证口径；合规两门槛：EV>0 且单腿赔率∈ODDS_RANGE。分歧（|p_dc−p市场(去水)|）
     2026-09-16 降级为标注：每条候选腿带 divergence/divergenceFlag，不再据此排除
     （spec §1.2：5pp 分歧无法区分"敢跟市场对赌"与"DC 参数算坏"）。
+    有库腿标 modelSupport:dc；无库场次 2026-09-16 放行（spec §1.6）——经
+    _odds_only_legs 只按赔率入选、标 modelSupport:none，不给概率/EV/分歧值，
+    EV 排序时置队尾（无库腿排最后，有库 EV 腿优先）。
     经验频率只服务 fallback 链（pick_upset_legs），不进 A-MIX（尾部噪声假阳性）。
     freq_table 仅保留签名兼容。
     """
@@ -248,8 +269,11 @@ def mix_candidates(odds_day: dict, freq_table: dict, zh: dict, hafu: dict,
     for m in odds_day.get("matches", []):
         mid = m["matchNumStr"]
         params = dc_params_fn(m, zh)
+        # 2026-09-16 拍板放行无库场次（spec §1.6）：亚冠阿布艾因 4:0@175 曾因此永不入卡。
+        # 无 DC → 不给概率只给赔率，标 modelSupport:none，选腿依据交假设层
         if not params:
-            continue  # 无 DC 缓存/队名未入库 → 该场不入 A-MIX
+            legs.extend(_odds_only_legs(m))
+            continue
         lh, la, rho = params
         best = None  # (ev, leg)
 
@@ -278,6 +302,7 @@ def mix_candidates(odds_day: dict, freq_table: dict, zh: dict, hafu: dict,
                 offer(crs_p[(x, y)] * o - 1,
                       {"play": "crs", "pick": k, "odds": o,
                        "source": "dc-reweighted" if adj else "dc",
+                       "modelSupport": "dc",
                        "divergence": round(d, 4), "divergenceFlag": d >= DIVERGENCE_LIMIT})
         ttg_o = m.get("ttg") or {}
         if len(ttg_o) == 8:
@@ -291,6 +316,7 @@ def mix_candidates(odds_day: dict, freq_table: dict, zh: dict, hafu: dict,
                     offer(p_dc[i] * o - 1,
                           {"play": "ttg", "pick": f"{i}球" if i < 7 else "7+球", "odds": o,
                            "source": "dc-reweighted" if adj else "dc",
+                           "modelSupport": "dc",
                            "divergence": round(d, 4), "divergenceFlag": d >= DIVERGENCE_LIMIT})
         hf = hafu.get(mid) or {}
         if len(hf) == 9:
@@ -306,12 +332,13 @@ def mix_candidates(odds_day: dict, freq_table: dict, zh: dict, hafu: dict,
                     d = abs(p_dc[k] - p_mkt[keys.index(k)])
                     offer(p_dc[k] * hf[k] - 1,
                           {"play": "hafu", "pick": k, "odds": hf[k], "source": "dc-reweighted" if adj else "dc",
+                           "modelSupport": "dc",
                            "divergence": round(d, 4), "divergenceFlag": d >= DIVERGENCE_LIMIT})
         if best:
             ev, leg = best
             legs.append({**leg, "matchNumStr": mid, "match": f'{m.get("home")}-{m.get("away")}',
                          "ev": round(ev, 4)})
-    legs.sort(key=lambda l: -l["ev"])
+    legs.sort(key=lambda l: -l.get("ev", float("inf")))   # 无库腿无 ev → 队尾（有库 EV 腿优先）
     return legs
 
 
@@ -620,6 +647,19 @@ def _card_view(m: dict, hafu_map: dict) -> dict:
     return {**m, "code": mid, "hafu": m.get("hafu") or hafu_map.get(mid) or {}}
 
 
+def _odds_only_had_legs(m: dict, mid, had: dict) -> list:
+    """无 DC 场次的彩票档腿（spec §1.6）：只有赔率、无概率无 EV 无分歧值。
+    与 A-MIX _odds_only_legs 不同，每场只出赔率最高一条——彩票档 N串1 全中才
+    回款，同场互斥腿=结构性必输（铁律9 同场去重不变量须维持）。开发者 sszhang"""
+    if not all(had.get(k) for k in ("h", "d", "a")):
+        return []
+    o3 = {k: float(had[k]) for k in ("h", "d", "a")}
+    k = max(o3, key=o3.get)
+    return [{"matchNumStr": mid, "match": f'{m.get("home")}-{m.get("away")}',
+             "play": "had", "pick": {"h": "主胜", "d": "平", "a": "客胜"}[k],
+             "odds": o3[k], "modelSupport": "none"}]
+
+
 def _lottery_legs(odds_day: dict, zh: dict, hhad_map: dict | None = None,
                   dc_params_fn=_dc_params, fusion: tuple[float, float] | None = None,
                   blocked: list | None = None) -> list:
@@ -628,7 +668,9 @@ def _lottery_legs(odds_day: dict, zh: dict, hhad_map: dict | None = None,
 
     合格 = p_fused≥0.55 或 超低赔≤1.25 且 p_fused≥0.50；p_fused = fuse(p_dc, p_mkt体彩去水, a, b)
     （出票时点无 Pinnacle 收盘，市场腿=体彩即时价去水，与 mix_candidates 同口径）。
-    无 DC 缓存/队名未入库/无 had → 该场不入池。
+    无 mid/无 had → 该场不入池（没赔率无从下注）；无 DC 缓存/队名未入库 2026-09-16
+    放行（spec §1.6）——经 _odds_only_had_legs 只按赔率入选（每场赔率最高一腿）、
+    标 modelSupport:none，不算 p_fused 不给概率/EV/分歧值，EV 排序时置队尾。
     P0-3 分歧熔断 2026-09-16 降级为标注（spec §1.2）：|p_fused−p_mkt|≥DIVERGENCE_LIMIT
     的选项不再排除，改为标 divergence/divergenceFlag 入档——原熔断曾拦下 DC 升班马
     污染参数（弗洛西诺 p_dc=94% 实证，EV+63% 假阳性混入 8 串），但同样的门槛也会
@@ -641,8 +683,11 @@ def _lottery_legs(odds_day: dict, zh: dict, hhad_map: dict | None = None,
     for m in odds_day.get("matches", []):
         mid = m.get("matchNumStr") or m.get("code")
         had = m.get("had") or {}
+        if not (mid and had):
+            continue
         params = dc_params_fn(m, zh)
-        if not (mid and had and params):
+        if not params:                      # 无库放行（spec §1.6），只按赔率不算 p_fused
+            legs.extend(_odds_only_had_legs(m, mid, had))
             continue
         lh, la, rho = params
         matrix = score_matrix(lh, la, rho)
@@ -691,7 +736,7 @@ def _lottery_legs(odds_day: dict, zh: dict, hhad_map: dict | None = None,
                 ev = p * o - 1
                 leg = {"matchNumStr": mid, "match": f'{m.get("home")}-{m.get("away")}',
                        "play": play, "pick": names[k], "odds": o,
-                       "p": round(p, 4), "ev": round(ev, 4),
+                       "p": round(p, 4), "ev": round(ev, 4), "modelSupport": "dc",
                        "divergence": round(d, 4), "divergenceFlag": d_flag}
                 if play == "hhad":
                     leg["goalLine"] = gl
@@ -699,7 +744,7 @@ def _lottery_legs(odds_day: dict, zh: dict, hhad_map: dict | None = None,
                     best = (ev, leg)
         if best:
             legs.append(best[1])
-    legs.sort(key=lambda l: -l["ev"])
+    legs.sort(key=lambda l: -l.get("ev", float("inf")))   # 无库腿无 ev → 队尾（有库腿优先）
     return legs
 
 
@@ -1068,14 +1113,19 @@ def _selftest_three_tier():
         assert up["cost"] == 0
     codes = [l["matchNumStr"] for l in up["legs"]]
     assert len(codes) == len(set(codes))                            # 同场最多1腿(硬约束)
-    assert 32 <= t["totalCost"] <= 40                               # 保底32 + 翻身≤8(彩票zh={}关档cost=0)
+    # Task3（2026-09-16）放行无库场次：彩票档 +2 元（11 场无库腿截前 8 开 8串1）
+    assert 34 <= t["totalCost"] <= 42                               # 保底32 + 翻身≤8 + 彩票2
     assert "budgetWarning" not in t                                 # T2: 轮红线检查废除
     lot = t["tiers"]["lottery"]
-    assert lot["shape"] == "closed" and lot["cost"] == 0            # 合格腿0<4 关档不硬凑
+    # Task3（2026-09-16 spec §1.6）：zh={} 全场无 DC → 11 条无库腿（每场赔率最高一腿）
+    # 截前 8 开 8串1×1倍=2元——原「合格腿0<4 关档」不再成立（放行即设计意图）
+    assert lot["shape"] == "lottery-8x1" and lot["cost"] == 2
+    assert len(lot["legs"]) == 8 and all(l.get("modelSupport") == "none" for l in lot["legs"])
     txt = render_ticket(t)
     # T1（2026-09-06）：保底腿换成分层 fixture 低赔 4 场，队名锚点 圣保利→米德尔斯堡
     # （周六021 胆腿·同为验证保底腿段渲染队名）；周日004/TTG 锚（三池卡片段）不变。
-    for kw in ("出票核对单", "周日004", "米德尔斯堡", "TTG", "彩票档关档", "│"):  # 可读性规范锚点
+    # Task3：彩票档由关档变 lottery-8x1（无库腿放行），锚点同步换。
+    for kw in ("出票核对单", "周日004", "米德尔斯堡", "TTG", "lottery-8x1", "│"):  # 可读性规范锚点
         assert kw in txt, kw
     print("[selftest] build_three_tier + render_ticket OK")
 

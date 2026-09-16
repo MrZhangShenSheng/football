@@ -80,28 +80,35 @@ def test_build_ticket_base_degraded_four_pool():
     assert base["degraded"] is True
 
 def test_upset_legs_schema():
-    """Task 6 settle() 接口：每条翻身腿必须有 play=crs + pick=比分串（两条路径都覆盖）。"""
+    """Task 6 settle() 接口：每条翻身腿必须有 play=crs + pick=比分串（两条路径都覆盖）。
+
+    2026-09-16 Task3 放行无库场次后 mix 路径在本 fixture 激活（假队名全无库，
+    原走 fallback）：mix 腿带 pick 键、fallback 腿带 score+pick 键——settle._leg_hit
+    结算口径 = pick or score，两 schema 均合法，断言按结算兼容性写而非锁死单一键名。"""
     odds_day = {"matches": [
         {"matchNumStr": f"周一00{i}", "league": "意甲", "home": f"H{i}", "away": f"A{i}",
          "had": {"h": 1.6, "d": 4.0, "a": 6.0},
          "crs": {"2:0": 9.0, "3:1": 22.0, "1:1": 5.8, "1:0": 6.5, "2:1": 8.0}} for i in (1, 2, 3, 4)]}
     t = build_ticket(odds_day, {"italy-serie-a": {"__n": 1000, "2:0": 90, "3:1": 30, "1:1": 115, "1:0": 98, "2:1": 86}}, seq=1, method="amix")
-    assert all(l["play"] == "crs" and l["pick"] == l.get("score") for l in t["tiers"]["upset"]["legs"])
+    assert all(l["play"] == "crs" and ":" in str(l["pick"]) for l in t["tiers"]["upset"]["legs"])
     # pick_upset_legs 直取路径（带内 12.0）
     rows = [{"matchNumStr": "周一001", "leagueId": "italy-serie-a", "n": 400, "score": "2:0", "odds": 12.0, "ev": 0.4}]
     t2 = build_ticket({"matches": odds_day["matches"][:1] + [
         {"matchNumStr": f"周一00{i}", "league": "意甲", "home": f"H{i}", "away": f"A{i}",
          "had": {"h": 1.6, "d": 4.0, "a": 6.0}, "crs": {"2:0": 12.0, "1:1": 5.8}} for i in (2, 3, 4)]}, {}, seq=3, method="amix")
-    # freq_table 为空 → ev_scan 无带内行 → 走 fallback；断言兜底路径同样规范
-    assert all(l["play"] == "crs" and l["pick"] == l.get("score") for l in t2["tiers"]["upset"]["legs"])
+    # Task3 后无库场次直接进 mix（不再退 fallback）；mix 腿 schema=pick 键，同样可结算
+    assert all(l["play"] == "crs" and ":" in str(l["pick"]) for l in t2["tiers"]["upset"]["legs"])
     for l in pick_upset_legs(rows, "guilin"):
         assert l["score"] == "2:0"  # 原始字段保留，规范化在 build_ticket 完成
 
 def test_thin_pool_costs_truthful():
-    """池薄时成本真实化 + degraded 标注（实跑 1 腿场景）。"""
+    """池薄时成本真实化 + degraded 标注（实跑 1 腿场景）。
+
+    2026-09-16 Task3 放行无库场次后：1:1 赔率压到 3.6（低于下限 4.0）使其不入
+    mix——否则无库腿 1:0+1:1 两条进 mix[:4]，upset 变 2 腿，1 腿场景不成立。"""
     odds_day = {"matches": [
         {"matchNumStr": "周二005", "league": "欧冠", "home": "LASK", "away": "凯尔特人",
-         "had": {"h": 2.5, "d": 3.2, "a": 2.7}, "crs": {"1:0": 11.0, "1:1": 6.0}}]}
+         "had": {"h": 2.5, "d": 3.2, "a": 2.7}, "crs": {"1:0": 11.0, "1:1": 3.6}}]}
     t = build_ticket(odds_day, {}, seq=1, method="amix")
     assert t["tiers"]["base"]["cost"] == 2 and t["tiers"]["base"]["degraded"] is True   # 仅 1 非空注组
     assert t["tiers"]["mid"]["cost"] == 6 and t["tiers"]["mid"]["multiplier"] == 3      # 1 腿仍 ×3 倍真实成本
