@@ -1,0 +1,62 @@
+{
+ "date": "2026-09-16",
+ "type": "livescan",
+ "schemaVersion": 1,
+ "scans": [
+  {
+   "at": "2026-09-16T19:54:08+08:00",
+   "trigger": "用户要求",
+   "verdict": "错票腿①周三004 1:0 复核：Borja Iglesias 伤愈归队(insight伤停名单过时)为反向；但塞尔塔连续6场不胜+远征塞浦路斯+欧联首战轮换惯性+奥莫尼亚主场近6场1败+Diony 4场4球为正向。p(1:0)中心估计上修至~10%(市场5.97%/SportsMole 10.55%/我方Poisson修正8~13%)。价值未证实(无收盘锚·区间宽)，票已购仅复盘定性上修",
+   "matches": [
+    {
+     "code": "周三004",
+     "matchId": 2041497,
+     "tickets": [
+      {
+       "ticket": "T035",
+       "pick": "1:0",
+       "frozenOdds": 12.5
+      }
+     ],
+     "oddsNow": {
+      "had": {
+       "h": 4.2,
+       "d": 3.5,
+       "a": 1.65
+      },
+      "crs": {
+       "1:0": 12.5,
+       "0:1": 7.0,
+       "1:1": 7.5,
+       "0:0": 11.5
+      }
+     },
+     "signals": {
+      "keyPlayerReturn": {
+       "team": "away",
+       "player": "Borja Iglesias",
+       "detail": "小腿伤愈随队出征(RotoWire引俱乐部官宣)·上赛季14球队内最佳射手·体彩insight伤停名单仍列其伤缺=过时缓存"
+      },
+      "awaySlump": {
+       "team": "away",
+       "detail": "塞尔塔连续6场不胜(近3场不败)·上轮客场1:1平马拉加"
+      },
+      "rotationRisk": {
+       "team": "away",
+       "detail": "欧联首战客场远征尼科西亚·Giraldez双线轮换惯性"
+      },
+      "homeForm": {
+       "team": "home",
+       "detail": "奥莫尼亚主场近6场仅1败但主场3场不胜·上轮0:0平Apollon·联赛3场1胜2平·Diony 4场4球"
+      },
+      "modelCross": {
+       "detail": "SportsMole模型最可能比分含奥莫尼亚1:0(10.55%)与本票腿同向·WhoScored: Berg可能首发Ewandro Costa"
+      }
+     },
+     "threat": "mid",
+     "note": "调研来源: RotoWire(Iglesias归队)/Yahoo(SportsMole转引·上轮首发)/WhoScored预览摘要/体彩insight(近10场·射手·CRS池)。首发未公布(约23:45)·临场复核缺口=塞尔塔是否轮换锋线"
+    }
+   ]
+  }
+ ]
+}
