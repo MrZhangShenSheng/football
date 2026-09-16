@@ -198,6 +198,80 @@
         "status": "pending"
       },
       "partialSettle": "右尾2串1腿(米堡2:1)已死→该10元注归零；两注马竞单关待09-17赛果"
+    },
+    {
+      "id": "X033",
+      "forDate": "2026-09-15",
+      "type": "counterfactual-clerk-error",
+      "against": "T033",
+      "stake": 30,
+      "notPlaced": true,
+      "title": "彩票店老板打错编号形成的假设票(大哥当场拒收·未出票)",
+      "shape": "CRS 2串1×3注(阿布艾因零封系3选 × 巴列卡诺2:1)×5倍",
+      "clerkError": {
+        "intended": [
+          "周三006 西甲 马竞-奥萨苏纳",
+          "周二010 英冠 米堡-米尔沃尔"
+        ],
+        "typed": [
+          "周二006 亚冠精英 阿布艾因-利雅胜利",
+          "周二007 西甲 巴列卡诺-西班牙人"
+        ],
+        "note": "周三006→周二006、周二010→周二007，两个编号均误打为完全不同的比赛"
+      },
+      "bets": [
+        {
+          "combo": "阿布艾因4:0 × 巴列卡诺2:1",
+          "odds": [
+            175.0,
+            7.75
+          ],
+          "combinedOdds": 1356.25,
+          "cost": 10,
+          "payoutIfHit": 13562.5,
+          "result": "hit"
+        },
+        {
+          "combo": "阿布艾因3:0 × 巴列卡诺2:1",
+          "odds": [
+            60.0,
+            7.75
+          ],
+          "combinedOdds": 465.0,
+          "cost": 10,
+          "payoutIfHit": 4650.0,
+          "result": "miss"
+        },
+        {
+          "combo": "阿布艾因2:0 × 巴列卡诺2:1",
+          "odds": [
+            28.0,
+            7.75
+          ],
+          "combinedOdds": 217.0,
+          "cost": 10,
+          "payoutIfHit": 2170.0,
+          "result": "miss"
+        }
+      ],
+      "actuals": {
+        "周二006": "阿布艾因 4:0 利雅胜利",
+        "周二007": "巴列卡诺 2:1 西班牙人"
+      },
+      "sources": [
+        "https://www.the-afc.com/en/club/afc_champions_league_elite.html/news/md1-al-ain-fc-uae-4-0-al-nassr-club-ksa",
+        "https://www.espn.com/soccer/story/_/id/49951684/cristiano-ronaldo-al-nassr-asian-champions-league-al-ain",
+        "https://www.espn.com/soccer/match/_/gameId/401882868/espanyol-rayo-vallecano",
+        "https://www.rcdespanyol.com/en/new/match-report-21-loss-to-rayo-vallecano/20754"
+      ],
+      "settled": {
+        "status": "settled-counterfactual",
+        "hits": 1,
+        "payout": 13562.5,
+        "net": 13532.5
+      },
+      "attribution": "纯巧合，非方案有效性证据。我从未分析阿布艾因/巴列卡诺任一场，两场均不在本轮候选(亚冠无联赛库·周二007仅评估过HHAD让球客胜)。同一形状(零封系×2:1)套在弱主队身上赔率从16→175，1.35万回款完全来自赔率差而非判断力。禁止据此调整形状偏好或把高赔弱队CRS纳入候选——亚冠等杯赛无联赛库不可检验，正是09-15拍板关闭翻身档的原因。",
+      "disciplineNote": "不计入 tickets.json 战绩统计(未实际出票)；仅作运气与判断力分离的对照锚点"
     }
   ],
   "designNote": "核心结论：米堡2:1腿是T033 EV的主要拖累。同样30元，剔除它(S033A)EV从-29.6%升至-2.3%、命中率从3.04%升至30.57%。原因①米堡2:1单腿EV-27.9%(q=9.94%@7.25赔率过低) ②串关使抽水叠乘 ③马竞CRS可单关，本无必须串关的理由。已拒绝EV更高但不可执行的组合：马竞4:0×米堡0:0 EV+25.7%但q仅0.41%，且米堡0:0与H2H(四场均有进球)及本季主场场均3球双重矛盾，属模型盲区不予采用。"
