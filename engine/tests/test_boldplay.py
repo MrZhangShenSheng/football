@@ -413,6 +413,12 @@ class TestThreeByFourByFive:
         assert base["cost"] == 0 and base["coverGate"] is None
         assert not base.get("bets")
 
+    def test_hypothesis_warning_on_card(self, monkeypatch):
+        # Task 6 接入：卡上须有 pending 腿告警（闸门全撤后唯一拦截）
+        monkeypatch.setattr(bp, "BASE_TIER_ENABLED", True)
+        t = build_three_tier(_fake_day(), _fake_table(), seq=9, zh={}, form={})
+        assert any("假设未通过" in w for w in t.get("warnings", []))
+
     def test_round_redline_removed(self, monkeypatch):
         # 设计§四: 轮红线废除。2026-09-16 起保底默认关档,开档断言经 monkeypatch 显式开档:
         # totalCost 32 已超旧红线 30，也不再落 budgetWarning
@@ -420,3 +426,58 @@ class TestThreeByFourByFive:
         t = build_three_tier(_fake_day(), _fake_table(), seq=9, zh={}, form={})
         assert t["totalCost"] >= 32
         assert "budgetWarning" not in t
+
+
+# ---------- Task 7（2026-09-16）：卡面排序与呈现（spec §三）----------
+
+
+def _grouped_legs():
+    """同场两腿（长尾无模型 + 低赔 DC）+ 另一场一腿，验证分组与组内降序。"""
+    return [
+        {"matchNumStr": "001", "match": "A-B", "play": "crs", "pick": "1:0",
+         "odds": 6.5, "modelSupport": "dc", "divergenceFlag": False,
+         "hypothesis": {"verdict": "pending"}},
+        {"matchNumStr": "001", "match": "A-B", "play": "crs", "pick": "4:0",
+         "odds": 175.0, "modelSupport": "none", "divergenceFlag": False,
+         "hypothesis": {"verdict": "pending"}},
+        {"matchNumStr": "002", "match": "C-D", "play": "ttg", "pick": "s3",
+         "odds": 12.0, "modelSupport": "template", "divergenceFlag": True,
+         "hypothesis": {"verdict": "survived"}},
+    ]
+
+
+def test_card_groups_by_match_odds_desc():
+    """卡面按场次分组、组内赔率降序(spec §三)：排序用赔率决定先看到哪条，
+    选腿用假设决定买不买。不定义排序则'只看最上面几条'会成隐性门槛。"""
+    txt = bp.render_legs_grouped(_grouped_legs())
+    assert txt.index("4:0") < txt.index("1:0"), "组内须赔率降序"
+    assert txt.index("001") < txt.index("002"), "按场次编号分组"
+    assert "无模型" in txt and "DC" in txt and "模板" in txt   # 三种 modelSupport 都可辨
+
+
+def test_card_marks_verdict_and_divergence():
+    """每行标 verdict(✓survived/○pending) 与 ⚠分歧旗——卡面须能一眼看出功课状态。"""
+    txt = bp.render_legs_grouped(_grouped_legs())
+    lines = txt.splitlines()
+    tail = [l for l in lines if "s3" in l][0]
+    assert "✓" in tail and "⚠分歧" in tail        # survived + 分歧标注
+    pend = [l for l in lines if "4:0" in l][0]
+    assert "○" in pend                             # pending 标记
+
+
+def test_render_ticket_includes_grouped_section():
+    """render_ticket 候选区须调用分组渲染（否则新排序不上卡=白做）。
+
+    手造 tiers 直接喂 render_ticket——不依赖 build_three_tier 是否恰好选出腿
+    （条件断言 `if legs:` 在关档轮会静默跳过，等于没测）。"""
+    t = {"structure": "new", "seq": 9, "totalCost": 4, "cards": [],
+         "tiers": {"base": {"cost": 0, "legs": [], "play": "had-3*4*5", "note": "关档"},
+                   "upset": {"cost": 4, "play": "mix-2串1", "note": "",
+                             "legs": _grouped_legs()}},
+         "warnings": ["[upset] 2 腿假设未通过（pending/refuted），出票前须逐条验证"]}
+    txt = bp.render_ticket(t)
+    assert "候选腿" in txt, "卡面须含分组候选区"
+    assert txt.index("4:0") < txt.index("1:0"), "卡面组内赔率降序"
+    assert "无模型" in txt                                  # modelSupport 上卡
+    assert "假设未通过" in txt                               # 卡级告警上卡
+    assert "○待验证" in txt                                  # 图例说明

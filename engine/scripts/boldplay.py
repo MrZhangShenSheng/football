@@ -871,7 +871,9 @@ def build_three_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form:
             continue
         seen.add(code)
         legs.append({"matchNumStr": code, "match": c.get("match"), "play": c["pool"],
-                     "pick": c["pick"], "odds": c["odds"], "q": c["q"], "ev": c["ev"]})
+                     "pick": c["pick"], "odds": c["odds"], "q": c["q"], "ev": c["ev"],
+                     "modelSupport": "template",   # 三池卡 q 源自联赛模板频率(freq_band)
+                     "hypothesis": make_hypothesis("")})
     if seq % 2 == 1:                                        # 容错引擎: 3注独立2串1
         n = min(3, len(legs) // 2)
         upset = {"shape": "pool-2x1x3", "cost": n * 2, "legs": legs[:n * 2],
@@ -907,6 +909,33 @@ def build_three_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form:
     return out
 
 
+def render_legs_grouped(legs: list) -> str:
+    """按场次分组、组内赔率降序渲染（spec §三）。
+
+    排序用赔率决定阅读顺序,不决定入选资格——入选由假设层裁定(verdict)。
+    闸门全撤后候选腿可达数百条,不定义排序则「只看最上面几条」会成隐性门槛,
+    等于用阅读顺序悄悄复活了被撤掉的过滤。开发者 sszhang"""
+    from itertools import groupby
+    rows = sorted(legs, key=lambda l: (l.get("matchNumStr") or "",
+                                       -float(l.get("odds") or 0)))
+    out = []
+    for code, grp in groupby(rows, key=lambda l: l.get("matchNumStr")):
+        grp = list(grp)
+        out.append(f"── {code} {grp[0].get('match', '')}")
+        for l in grp:
+            sup = {"dc": "DC", "template": "模板", "none": "无模型"}.get(
+                l.get("modelSupport"), "?")
+            flags = "⚠分歧 " if l.get("divergenceFlag") else ""
+            vd = (l.get("hypothesis") or {}).get("verdict", "pending")
+            mark = {"survived": "✓", "refuted": "✗", "pending": "○"}.get(vd, "○")
+            pick = l.get("pick") or l.get("score") or ""
+            gl = f"(让{l['goalLine']:+g})" if l.get("goalLine") is not None else ""
+            ev = f" EV{l['ev']:+.0%}" if l.get("ev") is not None else ""
+            out.append(f"   {mark} {str(l.get('play', '')).upper():5} {str(pick) + gl:10} "
+                       f"@{float(l.get('odds') or 0):<7.2f} [{sup}]{ev} {flags}".rstrip())
+    return "\n".join(out)
+
+
 def render_ticket(t: dict) -> str:
     """出票卡文本渲染——可读性硬规范（大哥 2026-08-30 要求）：
     ①顶部摘要行(结构/seq/总成本/两档成本)；②每档一节、逐腿一行
@@ -922,16 +951,20 @@ def render_ticket(t: dict) -> str:
     rows = [("保底", t["tiers"]["base"]), ("翻身", t["tiers"]["upset"])]
     if lot:
         rows.append(("彩票", lot))
+    # 档内逐腿：按场次分组、组内赔率降序（Task 7·spec §三）。每行带 verdict 与
+    # modelSupport——闸门全撤后卡面靠这个区分「先看哪条」(赔率序)与「买不买」(假设)。
+    # 单独再开一个分组区会让同一批腿列两遍且两处顺序不一致，故直接改档内明细的序。
     for name, tier in rows:
         lines.append(f"│ {name}档 {tier['play'] if 'play' in tier else tier['shape']}"
                      f" · {tier['cost']}元 · {tier.get('note', '')}")
-        for l in tier.get("legs") or []:
-            gl_txt = f"(让{l['goalLine']:+g})" if l.get("goalLine") is not None else ""
-            lines.append(f"│   {l['matchNumStr']} │ {l.get('match', '')[:14]:14s} │ "
-                         f"{l['play'].upper()} {l['pick']}{gl_txt} @{l['odds']}"
-                         + (f" │ EV{l['ev']:+.0%}" if "ev" in l else ""))
+        tl = tier.get("legs") or []
+        if tl:
+            lines.append("│   候选腿(场次分组·组内赔率降序·○待验证 ✓已验证 ✗已否证):")
+            lines.extend(f"│  {ln}" for ln in render_legs_grouped(tl).splitlines())
     if t.get("upsetHalved"):
         lines.append(f"│ ⚠连续{t['upsetHalved']}轮翻身0回款·仓位减半")
+    for w in t.get("warnings") or []:
+        lines.append(f"│ ⚠{w}")
     lines.append("│ 三池推荐(A/B级场):")
     for c in t.get("cards") or []:
         if not c.get("candidates"):
