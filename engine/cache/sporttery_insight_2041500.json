@@ -1,0 +1,190 @@
+{
+ "fetchedAt": "2026-09-16",
+ "source": "sporttery",
+ "matchId": 2041500,
+ "match": {
+  "code": "周三007",
+  "league": "欧罗巴",
+  "gameweek": "1",
+  "season": "2026/2027",
+  "home": "AC米兰",
+  "away": "本菲卡",
+  "kickoff": "2026-09-17 03:00",
+  "uniformMatchId": 2507735
+ },
+ "standing": {
+  "away": {
+   "groupName": "",
+   "phaseName": "League Stage",
+   "ranking": "6",
+   "sAwayDrawMatchCnt": "0",
+   "sAwayLossGoalMatchCnt": "0",
+   "sAwayWinGoalMatchCnt": "0",
+   "sDrawMatchCnt": "0",
+   "sLossGoalMatchCnt": "0",
+   "sWinGoalMatchCnt": "0",
+   "seasonName": "2026/2027"
+  },
+  "home": {
+   "groupName": "",
+   "phaseName": "League Stage",
+   "ranking": "1",
+   "sDrawMatchCnt": "0",
+   "sHomeDrawMatchCnt": "0",
+   "sHomeLossGoalMatchCnt": "0",
+   "sHomeWinGoalMatchCnt": "0",
+   "sLossGoalMatchCnt": "0",
+   "sWinGoalMatchCnt": "0",
+   "seasonName": "2026/2027"
+  }
+ },
+ "injuries": {
+  "home": [],
+  "away": [
+   {
+    "name": "苏达科夫",
+    "pos": "中场",
+    "no": "10",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 6,
+    "starts": 6
+   }
+  ]
+ },
+ "form": {
+  "goalAvg": {
+   "awayGoalAvgCnt": "3.4",
+   "awayGoalAvgCntRatio": "66.7",
+   "homeGoalAvgCnt": "1.7",
+   "homeGoalAvgCntRatio": "33.3",
+   "totalLegCnt": 10
+  },
+  "last10": {
+   "awayDrawMatchCnt": 2,
+   "awayLossGoalMatchCnt": 0,
+   "awayScoreRatio": "87",
+   "awayWinGoalMatchCnt": 8,
+   "homeDrawMatchCnt": 4,
+   "homeLossGoalMatchCnt": 2,
+   "homeScoreRatio": "53",
+   "homeWinGoalMatchCnt": 4,
+   "totalLegCnt": 10
+  },
+  "last10HomeAway": {
+   "awayDrawMatchCnt": 3,
+   "awayLossGoalMatchCnt": 1,
+   "awayScoreRatio": "70",
+   "awayWinGoalMatchCnt": 6,
+   "homeDrawMatchCnt": 3,
+   "homeLossGoalMatchCnt": 4,
+   "homeScoreRatio": "40",
+   "homeWinGoalMatchCnt": 3,
+   "totalLegCnt": 10
+  }
+ },
+ "h2h": {
+  "statistics": {
+   "drawMatchCnt": 0,
+   "drawProbability": "0%",
+   "goalCnt": 0,
+   "lossGoalCnt": 0,
+   "lossGoalMatchCnt": 1,
+   "lossProbability": "100%",
+   "netGoal": 0,
+   "sportteryTeamId": 0,
+   "teamId": 0,
+   "teamShortName": "AC米兰",
+   "totalLegCnt": 1,
+   "winGoalMatchCnt": 0,
+   "winProbability": "0%"
+  },
+  "matches": [
+   {
+    "date": "2019-07-29",
+    "home": "AC米兰",
+    "score": "0:1",
+    "ht": "0:0",
+    "away": "本菲卡",
+    "winner": "away"
+   }
+  ]
+ },
+ "scorers": {
+  "away": {
+   "playerList": [
+    {
+     "appearanceCnt": 5,
+     "assistAvgCnt": "0.2",
+     "assistCnt": 1,
+     "assistProbability": "9%",
+     "goalAvgCnt": "1.2",
+     "goalCnt": 6,
+     "goalProbability": "32%",
+     "injuryFlag": 0,
+     "personId": 379089,
+     "personName": "E·帕弗利迪斯",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 5,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "14"
+    },
+    {
+     "appearanceCnt": 6,
+     "assistAvgCnt": "0.2",
+     "assistCnt": 1,
+     "assistProbability": "9%",
+     "goalAvgCnt": "0.7",
+     "goalCnt": 4,
+     "goalProbability": "21%",
+     "injuryFlag": 0,
+     "personId": 254988,
+     "personName": "Rafa Silva",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 5,
+     "substituteMatchCnt": 1,
+     "suspensionFlag": 0,
+     "uniformNo": "27"
+    },
+    {
+     "appearanceCnt": 4,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.8",
+     "goalCnt": 3,
+     "goalProbability": "16%",
+     "injuryFlag": 0,
+     "personId": 688904,
+     "personName": "G. Prestianni",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 3,
+     "substituteMatchCnt": 1,
+     "suspensionFlag": 0,
+     "uniformNo": "25"
+    }
+   ],
+   "sportteryTeamId": 267,
+   "teamId": 1679,
+   "teamShortName": "本菲卡",
+   "uniformTeamId": 220
+  },
+  "home": {
+   "playerList": [],
+   "sportteryTeamId": 116,
+   "teamId": 1240,
+   "teamShortName": "AC米兰",
+   "uniformTeamId": 125
+  },
+  "seasonId": 15335,
+  "seasonName": "2026/2027",
+  "tournamentId": 1103,
+  "tournamentShortName": "欧罗巴",
+  "uniformLeagueId": 23,
+  "uniformMatchId": 2507735
+ }
+}
