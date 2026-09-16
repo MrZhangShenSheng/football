@@ -338,7 +338,7 @@ def mix_candidates(odds_day: dict, freq_table: dict, zh: dict, hafu: dict,
             ev, leg = best
             legs.append({**leg, "matchNumStr": mid, "match": f'{m.get("home")}-{m.get("away")}',
                          "ev": round(ev, 4)})
-    legs.sort(key=lambda l: -l.get("ev", float("inf")))   # 无库腿无 ev → 队尾（有库 EV 腿优先）
+    legs.sort(key=lambda l: -l.get("ev", float("-inf")))  # 无库腿无 ev → 队尾（有库 EV 腿优先）
     return legs
 
 
@@ -744,7 +744,7 @@ def _lottery_legs(odds_day: dict, zh: dict, hhad_map: dict | None = None,
                     best = (ev, leg)
         if best:
             legs.append(best[1])
-    legs.sort(key=lambda l: -l.get("ev", float("inf")))   # 无库腿无 ev → 队尾（有库腿优先）
+    legs.sort(key=lambda l: -l.get("ev", float("-inf")))  # 无库腿无 ev → 队尾（有库腿优先）
     return legs
 
 

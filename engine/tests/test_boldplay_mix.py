@@ -21,7 +21,7 @@ def _odds_day():
     ]}
 
 
-def test_mix_odds_range_lower_bound_only():
+def test_mix_odds_range_lower_bound_only(monkeypatch):
     """赔率域:上限已撤(175/550 级长尾放行),下限 4.0 挡低赔腿。
 
     两条断言都必须能证伪(审查实证:旧版 `1:1@3.2` 探针实际是被 DIVERGENCE_LIMIT 挡的,
@@ -44,7 +44,8 @@ def test_mix_odds_range_lower_bound_only():
     day["matches"][1]["crs"] = {"0:0": 3.6, "6:6": 1.58}       # 干净低赔探针 + 配平填充
     day["matches"][1]["ttg"] = {}
     zh = {"皇马": "real-madrid", "社会": "real-sociedad"}
-    boldplay.load_temperature = lambda: {"crs": 1.3, "ttg": 1.0, "hafu": 1.0}
+    monkeypatch.setattr(boldplay, "load_temperature",
+                        lambda: {"crs": 1.3, "ttg": 1.0, "hafu": 1.0})
 
     def fake_dc(m, z):
         if m["matchNumStr"] == "001":
@@ -131,6 +132,35 @@ def test_no_library_match_admitted_lottery(monkeypatch):
     assert len(no_lib) == 1, "彩票档 N串1 全中才回款——同场互斥腿=结构性必输，每场只一条"
     assert no_lib[0]["modelSupport"] == "none" and no_lib[0]["odds"] == 4.0  # a=4.0 三向赔率最高
     assert "divergence" not in no_lib[0] and "ev" not in no_lib[0]
+
+
+def test_no_library_legs_sort_after_ev_legs(monkeypatch):
+    """无库腿（无 ev）必须排在有库腿之后——mix[:4]/彩票档截前 8 时有库腿优先。
+
+    审查 C1（2026-09-16）：sort 缺省值曾写反（float("inf") 取负=-inf 升序排最前），
+    无库腿反而挤占有库腿席位，与注释「队尾」相反；当时 335 全绿无一测试覆盖排序
+    方向。本测试按索引断言顺序，不只断言「在列表里」。开发者 sszhang"""
+    day = _odds_day()
+    zh = {"皇马": "real-madrid", "社会": "real-sociedad"}
+    monkeypatch.setattr(boldplay, "load_temperature",
+                        lambda: {"crs": 1.0, "ttg": 1.0, "hafu": 1.0})
+
+    def fake_dc(m, z):
+        return (2.6, 0.4, -0.1) if m["matchNumStr"] == "001" else None
+
+    # A-MIX：001 有库腿（CRS 2:0 EV+0.35）必须排在 002 无库腿之前
+    legs = mix_candidates(day, {}, zh, {}, dc_params_fn=fake_dc)
+    idx_dc = [i for i, l in enumerate(legs) if l["matchNumStr"] == "001"]
+    idx_none = [i for i, l in enumerate(legs) if l["matchNumStr"] == "002"]
+    assert idx_dc and idx_none, "须同时有有库腿与无库腿——断言方有区分力"
+    assert max(idx_dc) < min(idx_none), "无库腿必须全部排在有库 EV 腿之后（队尾）"
+    # 彩票档同向：001 有库腿（fusion 显式传参，不读生产 fusion.json）在前
+    lot = boldplay._lottery_legs(day, zh=zh, hhad_map={}, dc_params_fn=fake_dc,
+                                 fusion=(0.4, 1.0))
+    i_dc = [i for i, l in enumerate(lot) if l["matchNumStr"] == "001"]
+    i_none = [i for i, l in enumerate(lot) if l["matchNumStr"] == "002"]
+    assert i_dc and i_none
+    assert max(i_dc) < min(i_none), "彩票档无库腿同样须排在有库腿之后"
 
 
 def test_dc_params_team_matching(tmp_path):
