@@ -208,3 +208,131 @@ def test_divergence_annotated_not_excluded(monkeypatch):
     assert no_lib, "002 无库场次须放行出腿"
     assert all("divergence" not in l and "divergenceFlag" not in l for l in no_lib), \
         "无模型概率则无分歧值——填 0 会被误读为与市场一致"
+
+
+# ---------- Task 6（2026-09-16）：假设层接入出票路径 + 三项累积修订 ----------
+
+
+def _dc_all(m, z):
+    """两场都给 DC 参数（001 强主 / 002 均势），用于假设层接入类测试。"""
+    return (2.0, 0.6, -0.1) if m["matchNumStr"] == "001" else (1.4, 1.2, -0.1)
+
+
+def test_legs_carry_pending_hypothesis_by_default(monkeypatch):
+    """新生成的腿默认带 pending 假设，未经验证不得出票（spec §三）。
+
+    这是闸门全撤后唯一剩下的拦截：赔率上限、分歧过滤、无库跳过都已放开，
+    「这条腿做过功课吗」成为出票前的唯一硬门槛。"""
+    monkeypatch.setattr(boldplay, "load_temperature",
+                        lambda: {"crs": 1.0, "ttg": 1.0, "hafu": 1.0})
+    day = _odds_day()
+    zh = {"皇马": "real-madrid", "社会": "real-sociedad"}
+    legs = mix_candidates(day, {}, zh, {}, dc_params_fn=_dc_all)
+    assert legs, "候选腿不应为空"
+    assert all(l["hypothesis"]["verdict"] == "pending" for l in legs)
+    assert all(l["hypothesis"]["checks"] == [] for l in legs), "默认假设不预填功课"
+
+
+def test_no_library_legs_also_carry_hypothesis(monkeypatch):
+    """无库腿同样带 pending 假设——它们最需要人工背书（无模型概率支撑）。"""
+    monkeypatch.setattr(boldplay, "load_temperature",
+                        lambda: {"crs": 1.0, "ttg": 1.0, "hafu": 1.0})
+    day = _odds_day()
+    zh = {"皇马": "real-madrid", "社会": "real-sociedad"}
+    legs = mix_candidates(day, {}, zh, {},
+                          dc_params_fn=lambda m, z: (2.6, 0.4, -0.1) if m["matchNumStr"] == "001" else None)
+    no_lib = [l for l in legs if l.get("modelSupport") == "none"]
+    assert no_lib, "002 无库场次须放行出腿"
+    assert all(l["hypothesis"]["verdict"] == "pending" for l in no_lib)
+
+
+def test_shared_leg_warning_in_card():
+    """共用腿跨注复用须在卡 warnings 中告警（T033 教训：三注共用一腿，一断全灭）。"""
+    t = {"tiers": {"upset": {"bets": [{"legs": ["A", "X"]}, {"legs": ["B", "X"]}]}},
+         "warnings": []}
+    boldplay.annotate_hypothesis_warnings(t)
+    assert any("X" in w and "伪分散" in w for w in t["warnings"])
+
+
+def test_pending_legs_blocked_and_warned():
+    """pending/refuted 腿进 blockedByHypothesis 且卡级 warnings 提示（出票前须逐条验证）。"""
+    from hypothesis import make_hypothesis
+    survived = make_hypothesis("皇马轮换后仍强攻", checks=[
+        {"kind": "h2h", "matches": 6, "seasonComplete": True, "gaps": []}], verdict="survived")
+    t = {"tiers": {"upset": {"legs": [
+        {"pick": "2:0", "hypothesis": survived},
+        {"pick": "4:0", "hypothesis": make_hypothesis("")},          # pending
+    ]}}, "warnings": []}
+    boldplay.annotate_hypothesis_warnings(t)
+    blocked = t["tiers"]["upset"]["blockedByHypothesis"]
+    assert [b["pick"] for b in blocked] == ["4:0"]
+    assert blocked[0]["verdict"] == "pending"
+    assert any("假设未通过" in w for w in t["warnings"])
+
+
+def test_no_library_legs_deduped_per_match(monkeypatch):
+    """同场互斥腿不得同入候选池（铁律9：一场只有一个比分，同注互斥腿=结构性必输）。
+
+    Task 2 撤掉分歧门后，无库场次的 _odds_only_legs 会放行同场多条 CRS 腿
+    （4:0/3:0/2:0），审查实测它们能同时进 mix[:4]。本断言锁住每场至多一腿。"""
+    monkeypatch.setattr(boldplay, "load_temperature",
+                        lambda: {"crs": 1.0, "ttg": 1.0, "hafu": 1.0})
+    day = {"matches": [
+        {"matchNumStr": "003", "league": "亚冠", "home": "阿布艾因", "away": "沙迦",
+         "had": {"h": 2.0, "d": 3.3, "a": 3.5},
+         "crs": {"4:0": 175.0, "3:0": 30.0, "2:0": 12.0}, "ttg": {}},
+    ]}
+    legs = mix_candidates(day, {}, {}, {}, dc_params_fn=lambda m, z: None)
+    assert len(legs) == 1, f"同场应只留 1 腿，实得 {[l['pick'] for l in legs]}"
+    assert legs[0]["pick"] == "4:0", "同场保留赔率最高者（以小博大取长尾）"
+
+
+def test_no_library_leg_survives_pool_truncation(monkeypatch):
+    """无库高赔腿不得被有库 EV 腿挤出候选池（spec §1.6 动机：4:0@175 要能入卡）。
+
+    Task 3 fix 后无库腿排队尾（有库 EV 腿优先），但队尾不等于被丢弃——
+    mix_candidates 须完整返回，截断策略归调用方，且无库腿必须在返回值里可见。"""
+    monkeypatch.setattr(boldplay, "load_temperature",
+                        lambda: {"crs": 1.0, "ttg": 1.0, "hafu": 1.0})
+    day = _odds_day()
+    day["matches"].append(
+        {"matchNumStr": "003", "league": "亚冠", "home": "阿布艾因", "away": "沙迦",
+         "had": {"h": 2.0, "d": 3.3, "a": 3.5},
+         "crs": {"4:0": 175.0}, "ttg": {}})
+    zh = {"皇马": "real-madrid", "社会": "real-sociedad"}
+    legs = mix_candidates(day, {}, zh, {},
+                          dc_params_fn=lambda m, z: (2.0, 0.6, -0.1) if m["matchNumStr"] == "001" else None)
+    picks = [(l["matchNumStr"], l["pick"]) for l in legs]
+    assert ("003", "4:0") in picks, f"无库高赔腿须在候选池内，实得 {picks}"
+    idx_dc = [i for i, l in enumerate(legs) if l.get("modelSupport") == "dc"]
+    idx_none = [i for i, l in enumerate(legs) if l.get("modelSupport") == "none"]
+    assert idx_dc and idx_none
+    assert max(idx_dc) < min(idx_none), "有库 EV 腿优先，无库腿队尾"
+
+
+def test_freq_legs_marked_template():
+    """经验频率链的腿标 modelSupport:"template"（三值中此前无生产者，审查发现）。
+
+    卡面要能区分「DC 模型支撑」「联赛模板频率支撑」「纯赔率无支撑」三种腿，
+    否则 template 值形同虚设，T7 渲染无从映射。"""
+    # guilin 形状带 = (10.0, 17.0)，赔率须落在带内才会被选中
+    rows = [{"matchNumStr": "001", "match": "皇马-社会", "score": "1:1",
+             "odds": 12.0, "n": 120, "ev": 0.4},
+            {"matchNumStr": "002", "match": "凯尔特人-LASK", "score": "2:1",
+             "odds": 15.0, "n": 80, "ev": 0.2}]
+    picked = boldplay.pick_upset_legs(rows, "guilin")
+    assert picked, "形状带内应选出腿"
+    assert all(l["modelSupport"] == "template" for l in picked)
+    assert all(l["hypothesis"]["verdict"] == "pending" for l in picked)
+
+
+def test_fallback_legs_marked_template():
+    """经验频率退路腿同样标 template + pending（n=-1 先验噪声，最需人工背书）。"""
+    day = {"matches": [
+        {"matchNumStr": "001", "league": "西甲", "home": "皇马", "away": "社会",
+         "crs": {"1:1": 7.0, "2:1": 8.5}},
+    ]}
+    picked = boldplay._fallback_upset(day)
+    assert picked
+    assert all(l["modelSupport"] == "template" for l in picked)
+    assert all(l["hypothesis"]["verdict"] == "pending" for l in picked)

@@ -27,6 +27,7 @@ FD_ANCHOR_LEAGUES = frozenset(LEAGUE_CODES.values()) | {
     "SC0", "germany-2-bundesliga", "portugal-primeira"}
 from freq_band import (build_team_form, freq_legs, pools_card, shifted_q, league_base_rates,
                        lambdas, team_strength, _norm)
+from hypothesis import make_hypothesis, filter_buyable, check_shared_legs
 
 SHAPES = {"guilin": {"band": (10.0, 17.0), "multiplier": 4, "cost": 8},
           "meizhou": {"band": (18.0, 28.0), "multiplier": 5, "cost": 10}}
@@ -87,7 +88,9 @@ def pick_upset_legs(rows: list, shape: str) -> list:
         if (r.get("n", 0) <= 0 or mid in seen or not (lo <= r["odds"] <= hi)
                 or r.get("ev") is None or r["ev"] <= 0):
             continue
-        seen.add(mid); picked.append(r)
+        seen.add(mid)
+        # 经验频率链 → modelSupport:"template"（联赛模板频率支撑，非 DC 模型·Task 6）
+        picked.append({**r, "modelSupport": "template", "hypothesis": make_hypothesis("")})
         if len(picked) == 4:
             break
     return picked
@@ -100,7 +103,8 @@ def _fallback_upset(odds_day: dict) -> list:
         best = max((s for s in ("1:1", "1:0", "2:1") if s in crs), key=lambda s: crs[s], default=None)
         if best:
             picked.append({"matchNumStr": m["matchNumStr"], "match": f'{m.get("home")}-{m.get("away")}',
-                           "score": best, "odds": crs[best], "n": -1, "ev": None, "fallback": True})
+                           "score": best, "odds": crs[best], "n": -1, "ev": None, "fallback": True,
+                           "modelSupport": "template", "hypothesis": make_hypothesis("")})
         if len(picked) == 4:
             break
     return picked
@@ -239,7 +243,11 @@ def _dc_params(m: dict, zh: dict, cache_dir: Path = CACHE_DIR):
 
 def _odds_only_legs(m: dict) -> list:
     """无 DC 场次的候选腿：只有赔率、无概率无 EV 无分歧值（spec §1.6）。
-    选腿依据交假设层——主客强弱差/远征距离时差/赛制压力/伤停/轮换动机。开发者 sszhang"""
+    选腿依据交假设层——主客强弱差/远征距离时差/赛制压力/伤停/轮换动机。
+
+    每场只返回赔率最高的一腿（铁律9·Task 6）：一场比赛只有一个比分，同场互斥腿
+    （4:0/3:0/2:0）同入一注 N串1 = 结构性必输；Task 2 撤掉分歧门后审查实测它们
+    能同时占满 mix[:4]。保留最高赔者符合以小博大取长尾的意图。开发者 sszhang"""
     mid = m.get("matchNumStr") or m.get("code")
     match = f'{m.get("home")}-{m.get("away")}'
     out = []
@@ -250,9 +258,10 @@ def _odds_only_legs(m: dict) -> list:
         if o < ODDS_RANGE[0]:
             continue
         out.append({"play": "crs", "pick": k, "odds": o, "modelSupport": "none",
-                    "matchNumStr": mid, "match": match})
+                    "matchNumStr": mid, "match": match,
+                    "hypothesis": make_hypothesis("")})
     out.sort(key=lambda l: -l["odds"])
-    return out
+    return out[:1]   # 同场至多 1 腿（铁律9）
 
 
 def mix_candidates(odds_day: dict, freq_table: dict, zh: dict, hafu: dict,
@@ -341,7 +350,7 @@ def mix_candidates(odds_day: dict, freq_table: dict, zh: dict, hafu: dict,
         if best:
             ev, leg = best
             legs.append({**leg, "matchNumStr": mid, "match": f'{m.get("home")}-{m.get("away")}',
-                         "ev": round(ev, 4)})
+                         "ev": round(ev, 4), "hypothesis": make_hypothesis("")})
     legs.sort(key=lambda l: -l.get("ev", float("-inf")))  # 无库腿无 ev → 队尾（有库 EV 腿优先）
     return legs
 
@@ -766,6 +775,58 @@ def _lottery_tier(legs: list) -> dict:
             "note": f"{len(legs)}串1×1倍=2元 · 全中≈{2 * total:.0f}元 · 无预算管理(设计§四红线废除)"}
 
 
+def _leg_key(leg) -> str:
+    """腿的规范标识（Task 6）：check_shared_legs 靠字符串等值判共用，键必须唯一且稳定。
+    编号+玩法+选项三段——单用 pick 会让不同场次的同一比分("2:1")误判为共用腿。"""
+    if not isinstance(leg, dict):
+        return str(leg)
+    return (f'{leg.get("matchNumStr", "?")}|{leg.get("play", "crs")}|'
+            f'{leg.get("pick") or leg.get("score") or "?"}')
+
+
+def _bets_with_leg_keys(tier: dict) -> list:
+    """把 tier.bets 的腿引用统一成规范腿键。
+
+    bets[].legs 存的是 tier.legs 的**索引整数**（不是腿对象），直接喂
+    check_shared_legs 会把不同档的索引 0 当成同一条腿而误报；索引也无法跨档比较。
+    此处按索引取回腿对象再转 _leg_key；非索引（已是字符串腿）原样透传。"""
+    legs = tier.get("legs") or []
+    out = []
+    for b in tier.get("bets") or []:
+        keys = []
+        for ref in (b.get("legs") or []):
+            if isinstance(ref, int) and 0 <= ref < len(legs):
+                keys.append(_leg_key(legs[ref]))
+            else:
+                keys.append(_leg_key(ref))
+        out.append({**b, "legs": keys})
+    return out
+
+
+def annotate_hypothesis_warnings(t: dict) -> None:
+    """卡级假设层告警（spec §二/§三）：共用腿跨注复用 + pending/refuted 腿清单。
+
+    闸门全撤后这是唯一剩下的拦截：verdict 非 survived 的腿一律进 blockedByHypothesis,
+    出票前须逐条人工验证（2026-09-15 教训：据残缺 H2H 缓存断言"只有3场交手"漏判一场）。
+    共用腿告警源自 T033——三注共用一条腿，该腿断则三注全灭，是伪分散。开发者 sszhang"""
+    t.setdefault("warnings", [])
+    for name, tier in (t.get("tiers") or {}).items():
+        if not isinstance(tier, dict):
+            continue
+        for w in check_shared_legs(_bets_with_leg_keys(tier)):
+            t["warnings"].append(f"[{name}] {w}")
+        buyable, blocked = filter_buyable(tier.get("legs") or [])
+        if blocked:
+            tier["blockedByHypothesis"] = [
+                {"pick": l.get("pick") or l.get("score"),
+                 # 无 hypothesis 字段的腿（旧数据/手造卡）与 pending 同等对待：
+                 # filter_buyable 已按空假设挡下，verdict 落 None 会在卡面显示为空
+                 "verdict": (l.get("hypothesis") or {}).get("verdict") or "pending"}
+                for l in blocked]
+            t["warnings"].append(
+                f"[{name}] {len(blocked)} 腿假设未通过（pending/refuted），出票前须逐条验证")
+
+
 def build_three_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form: dict,
                      hafu_map: dict | None = None) -> dict:
     """三档结构（spec §4.1 两档 + docs/2026-09-02 彩票档）：保底 HAD 3*4*5(16注32元,
@@ -842,6 +903,7 @@ def build_three_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form:
                         for l in blocked_legs[:8])]
     # 轮红线检查已废除（T2 2026-09-06 设计§四：纪律=覆盖闸coverGate）；ROUND_REDLINE
     # 常量与 budget_gate/MONTHLY_CAP 调用保留给 --structure=legacy 旧结构对照卡
+    annotate_hypothesis_warnings(out)   # 假设层：唯一剩下的出票前拦截（Task 6·spec §三）
     return out
 
 
