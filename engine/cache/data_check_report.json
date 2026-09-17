@@ -1,15 +1,24 @@
 {
-  "checkedAt": "2026-09-15",
+  "checkedAt": "2026-09-17",
   "leagues": {
-    "亚冠精英": {
-      "status": "missing"
-    },
     "亚运男足": {
       "status": "missing"
     },
-    "西甲": {
+    "芬超": {
+      "status": "missing"
+    },
+    "德乙": {
+      "status": "missing"
+    },
+    "挪超": {
       "status": "ready",
-      "roundsPlayed": 63,
+      "roundsPlayed": 19,
+      "standingsSource": "espn",
+      "fdCovered": false
+    },
+    "法乙": {
+      "status": "ready",
+      "roundsPlayed": 51,
       "standingsSource": "fd-derived",
       "fdCovered": true
     },
@@ -19,103 +28,218 @@
       "standingsSource": "fd-derived",
       "fdCovered": true
     },
+    "荷乙": {
+      "status": "missing"
+    },
+    "德甲": {
+      "status": "ready",
+      "roundsPlayed": 54,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "意甲": {
+      "status": "ready",
+      "roundsPlayed": 62,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "法甲": {
+      "status": "ready",
+      "roundsPlayed": 55,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "英超": {
+      "status": "ready",
+      "roundsPlayed": 63,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
     "英冠": {
       "status": "ready",
       "roundsPlayed": 75,
       "standingsSource": "fd-derived",
       "fdCovered": true
     },
-    "英联赛杯": {
-      "status": "missing"
+    "西甲": {
+      "status": "ready",
+      "roundsPlayed": 63,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
     },
-    "解放者杯": {
-      "status": "missing"
+    "美职": {
+      "status": "ready",
+      "roundsPlayed": 23,
+      "standingsSource": "espn",
+      "fdCovered": false
     }
   },
   "missingLeagues": [
-    "亚冠精英",
     "亚运男足",
-    "英联赛杯",
-    "解放者杯"
+    "芬超",
+    "德乙",
+    "荷乙"
   ],
   "staleLeagues": [],
   "missingAlias": [
     {
-      "team": "叻武里",
-      "league": "亚冠精英",
-      "match": "叻武里 vs 上海海港"
-    },
-    {
-      "team": "上海海港",
-      "league": "亚冠精英",
-      "match": "叻武里 vs 上海海港"
+      "team": "沙特亚",
+      "league": "亚运男足",
+      "match": "沙特亚 vs 卡塔尔亚"
     },
     {
       "team": "卡塔尔亚",
       "league": "亚运男足",
-      "match": "卡塔尔亚 vs 韩国亚"
+      "match": "沙特亚 vs 卡塔尔亚"
     },
     {
-      "team": "韩国亚",
-      "league": "亚运男足",
-      "match": "卡塔尔亚 vs 韩国亚"
+      "team": "达姆施塔",
+      "league": "德乙",
+      "match": "沃夫斯堡 vs 达姆施塔"
     },
     {
-      "team": "柔佛",
-      "league": "亚冠精英",
-      "match": "柔佛 vs 布里兰"
+      "team": "萨普斯堡",
+      "league": "挪超",
+      "match": "萨普斯堡 vs 奥斯KFUM"
     },
     {
-      "team": "布里兰",
-      "league": "亚冠精英",
-      "match": "柔佛 vs 布里兰"
-    },
-    {
-      "team": "北京国安",
-      "league": "亚冠精英",
-      "match": "北京国安 vs 浦项制铁"
-    },
-    {
-      "team": "阿布艾因",
-      "league": "亚冠精英",
-      "match": "阿布艾因 vs 利雅胜利"
-    },
-    {
-      "team": "米堡",
-      "league": "英冠",
-      "match": "米堡 vs 米尔沃尔"
+      "team": "海尔蒙特",
+      "league": "荷乙",
+      "match": "登博思 vs 海尔蒙特"
     }
   ],
   "notReadyTeams": [
     {
-      "team": "大田市民",
-      "teamId": "daejeon",
-      "league": "korea-k-league",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 24
-    },
-    {
-      "team": "浦项制铁",
-      "teamId": "pohang-steelers",
-      "league": "korea-k-league",
-      "status": "stale",
-      "lastUpdated": "2026-08-23",
-      "ageDays": 23
-    },
-    {
-      "team": "利雅胜利",
-      "teamId": "al-nassr",
-      "league": "saudi",
+      "team": "赫尔火花",
+      "teamId": "gnistan-helsinki",
+      "league": "finland",
       "status": "missing"
     },
     {
-      "team": "巴列卡诺",
-      "teamId": "rayo-vallecano",
-      "league": "spain",
+      "team": "赫尔辛基",
+      "teamId": "hjk-helsinki",
+      "league": "finland",
+      "status": "missing"
+    },
+    {
+      "team": "沃夫斯堡",
+      "teamId": "wolfsburg",
+      "league": "germany-bundesliga2",
+      "status": "missing"
+    },
+    {
+      "team": "奥斯KFUM",
+      "teamId": "kfum-oslo",
+      "league": "norway",
+      "status": "missing"
+    },
+    {
+      "team": "兰斯",
+      "teamId": "reims",
+      "league": "france",
+      "status": "stale",
+      "lastUpdated": "2026-08-24",
+      "ageDays": 24
+    },
+    {
+      "team": "蒙彼利埃",
+      "teamId": "montpellier",
+      "league": "france",
       "status": "stale",
       "lastUpdated": "2026-08-21",
-      "ageDays": 25
+      "ageDays": 27
+    },
+    {
+      "team": "格罗宁根",
+      "teamId": "groningen",
+      "league": "netherlands-eredivisie",
+      "status": "stale",
+      "lastUpdated": "2026-08-22",
+      "ageDays": 26
+    },
+    {
+      "team": "兹沃勒",
+      "teamId": "pec-zwolle",
+      "league": "netherlands-eredivisie",
+      "status": "missing"
+    },
+    {
+      "team": "登博思",
+      "teamId": "den-bosch",
+      "league": "netherlands",
+      "status": "stale",
+      "lastUpdated": "2026-08-22",
+      "ageDays": 26
+    },
+    {
+      "team": "拜仁",
+      "teamId": "bayern",
+      "league": "germany-bundesliga",
+      "status": "stale",
+      "lastUpdated": "2026-09-01",
+      "ageDays": 16
+    },
+    {
+      "team": "蒙扎",
+      "teamId": "monza",
+      "league": "italy",
+      "status": "stale",
+      "lastUpdated": "2026-09-01",
+      "ageDays": 16
+    },
+    {
+      "team": "萨索洛",
+      "teamId": "sassuolo",
+      "league": "italy",
+      "status": "stale",
+      "lastUpdated": "2026-09-01",
+      "ageDays": 16
+    },
+    {
+      "team": "摩纳哥",
+      "teamId": "monaco",
+      "league": "france",
+      "status": "missing"
+    },
+    {
+      "team": "朗斯",
+      "teamId": "lens",
+      "league": "france",
+      "status": "stale",
+      "lastUpdated": "2026-08-22",
+      "ageDays": 26
+    },
+    {
+      "team": "布伦特",
+      "teamId": "brentford",
+      "league": "england",
+      "status": "stale",
+      "lastUpdated": "2026-08-22",
+      "ageDays": 26
+    },
+    {
+      "team": "切尔西",
+      "teamId": "chelsea",
+      "league": "england",
+      "status": "stale",
+      "lastUpdated": "2026-08-24",
+      "ageDays": 24
+    },
+    {
+      "team": "布城",
+      "teamId": "bristol-city",
+      "league": "england-championship",
+      "status": "stale",
+      "lastUpdated": "2026-09-01",
+      "ageDays": 16
+    },
+    {
+      "team": "沃特福德",
+      "teamId": "watford",
+      "league": "england-championship",
+      "status": "stale",
+      "lastUpdated": "2026-09-01",
+      "ageDays": 16
     },
     {
       "team": "西班牙人",
@@ -123,59 +247,7 @@
       "league": "spain",
       "status": "stale",
       "lastUpdated": "2026-08-22",
-      "ageDays": 24
-    },
-    {
-      "team": "阿拉维斯",
-      "teamId": "alaves",
-      "league": "spain",
-      "status": "stale",
-      "lastUpdated": "2026-08-21",
-      "ageDays": 25
-    },
-    {
-      "team": "阿贾克斯",
-      "teamId": "ajax",
-      "league": "netherlands-eredivisie",
-      "status": "missing"
-    },
-    {
-      "team": "米尔沃尔",
-      "teamId": "millwall",
-      "league": "england",
-      "status": "missing"
-    },
-    {
-      "team": "利物浦",
-      "teamId": "liverpool",
-      "league": "england",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 24
-    },
-    {
-      "team": "热刺",
-      "teamId": "tottenham",
-      "league": "england",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 24
-    },
-    {
-      "team": "伊普斯",
-      "teamId": "ipswich",
-      "league": "england",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 24
-    },
-    {
-      "team": "阿森纳",
-      "teamId": "arsenal",
-      "league": "england",
-      "status": "stale",
-      "lastUpdated": "2026-08-21",
-      "ageDays": 25
+      "ageDays": 26
     },
     {
       "team": "埃尔切",
@@ -183,135 +255,23 @@
       "league": "spain",
       "status": "stale",
       "lastUpdated": "2026-09-07",
-      "ageDays": 8
+      "ageDays": 10
     },
     {
-      "team": "皇马",
-      "teamId": "real-madrid",
-      "league": "spain",
-      "status": "stale",
-      "lastUpdated": "2026-09-07",
-      "ageDays": 8
-    },
-    {
-      "team": "普拉滕斯",
-      "teamId": "platense",
-      "league": "argentina",
+      "team": "纽约城",
+      "teamId": "new-york-city",
+      "league": "usa",
       "status": "missing"
     },
     {
-      "team": "弗鲁米嫩",
-      "teamId": "fluminense",
-      "league": "brazil",
-      "status": "missing"
-    },
-    {
-      "team": "全北现代",
-      "teamId": "jeonbuk",
-      "league": "korea-k-league",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 24
-    },
-    {
-      "team": "拉科",
-      "teamId": "deportivo",
-      "league": "spain",
-      "status": "stale",
-      "lastUpdated": "2026-08-24",
-      "ageDays": 22
-    },
-    {
-      "team": "马竞",
-      "teamId": "atletico-madrid",
-      "league": "spain",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 24
-    },
-    {
-      "team": "奥萨苏纳",
-      "teamId": "osasuna",
-      "league": "spain",
-      "status": "stale",
-      "lastUpdated": "2026-08-24",
-      "ageDays": 22
-    },
-    {
-      "team": "考文垂",
-      "teamId": "coventry",
-      "league": "england",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 24
-    },
-    {
-      "team": "维拉",
-      "teamId": "aston-villa",
-      "league": "england",
-      "status": "stale",
-      "lastUpdated": "2026-09-07",
-      "ageDays": 8
-    },
-    {
-      "team": "巴萨",
-      "teamId": "barcelona",
-      "league": "spain",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 24
-    },
-    {
-      "team": "桑坦德",
-      "teamId": "racing-santander",
-      "league": "spain",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 24
-    },
-    {
-      "team": "莱万特",
-      "teamId": "levante",
-      "league": "spain",
-      "status": "stale",
-      "lastUpdated": "2026-08-24",
-      "ageDays": 22
-    },
-    {
-      "team": "毕尔巴鄂",
-      "teamId": "athletic-bilbao",
-      "league": "spain",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 24
-    },
-    {
-      "team": "基多体大",
-      "teamId": "ldu-quito",
-      "league": "ecuador",
-      "status": "missing"
-    },
-    {
-      "team": "帕梅拉斯",
-      "teamId": "palmeiras",
-      "league": "brazil",
-      "status": "missing"
-    },
-    {
-      "team": "科林蒂安",
-      "teamId": "corinthians",
-      "league": "brazil",
-      "status": "missing"
-    },
-    {
-      "team": "拉普大学",
-      "teamId": "estudiantes-la-plata",
-      "league": "argentina",
+      "team": "纽约红牛",
+      "teamId": "ny-red-bulls",
+      "league": "usa",
       "status": "missing"
     }
   ],
   "readyCount": {
-    "leagues": 3,
-    "teamsKnown": 520
+    "leagues": 10,
+    "teamsKnown": 521
   }
 }

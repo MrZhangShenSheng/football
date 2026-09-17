@@ -1,0 +1,493 @@
+{
+ "date": "2026-09-19",
+ "saleDay": "2026-09-19（周五场14场）",
+ "version": "v5.10",
+ "generatedAt": "2026-09-17T15:30",
+ "mode": "全局",
+ "anchorNote": "欧罗巴周后联赛单轮：11场fd双锚/本地DC可用（德乙/法乙/荷甲/德甲/意甲/法甲/英超/英冠/西甲+挪超美职本地DC）+3场无锚（亚运/芬超/荷乙）。荷甲德甲意甲a=0纯市场锚(leagueOverrides)。出票时点无Pinnacle收盘价，市场腿=体彩即时价去水（口径与boldplay一致）。fd直连当日被本地代理拒(127.0.0.1:80)·freq模板走league/镜像库",
+ "dataSources": [
+  "engine/cache/sporttery_matches.json(在售14场)",
+  "insight×14(sporttery_insight_2041535~48)",
+  "engine/cache/{9联赛}_dc.json",
+  "engine/cache/fusion.json(a=0.4·leagueOverrides荷甲德甲意甲a=0)",
+  "data/00-leagues/(12联赛画像)",
+  "boldplay seq23(2026-09-17-boldplay.json)"
+ ],
+ "plans": {
+  "seq": 23,
+  "structure": "new",
+  "approved": false,
+  "保底档": "关档（2026-09-16拍板维持：资金小量不保本无所谓·spec §1.4）",
+  "翻身档": "人工关档：boldplay候选仅2腿(013 HAFU dh@4.55·014 HAFU dh@505)<3不成3注形态·014 EV-3%·连续4轮0回款降半仓期纪律",
+  "彩票档": "2元4串1合赔6.40全中≈12.8元：009蒙扎让+1主胜@1.47+011布伦特让+1主胜@1.54+013西班牙人主胜@1.65+014纽约城主胜@1.72。引擎8腿中前4条无模型高赔腿(001客/002主/003客/004客)人工refuted——003客胜@4.53与DC81%主胜全面反向=赔率降序artifact",
+  "平局轨": "关档（14场p平最高012布城27.9%差0.1pp未过28%门槛·且极差25pp>12pp灵魂条款）",
+  "对冲双票": "缺材降级不出（无双玩法同推对冲场——013双行同玩法HAFU dh非换玩法·014 CRS/HAFU双行但q13%<18%取材线）",
+  "人工裁定": "决策C同09-16先例：翻身档人工关档·在买=彩票档4串1 2元（approved=false待大哥拍板）"
+ },
+ "matches": [
+  {
+   "idx": 1,
+   "code": "周五001",
+   "league": "亚运男足",
+   "match": "沙特亚 vs 卡塔尔亚",
+   "kickoff": "2026-09-18 18:30:00",
+   "pick": "排除:无锚杯赛",
+   "odds": null,
+   "star": 1,
+   "grade": "C",
+   "dc": null,
+   "fused": null,
+   "fusedPre": null,
+   "final": null,
+   "chain": [
+    "无锚联赛(亚运)",
+    "杯赛无模板"
+   ],
+   "chainSteps": [],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "inPlan": null,
+   "note": "国亚队无俱乐部画像·insight近10主4胜2平4负·市场主热61%但无验证源·铁律10禁胆·彩票档引擎腿(客胜@5.55)人工refuted"
+  },
+  {
+   "idx": 2,
+   "code": "周五002",
+   "league": "芬超",
+   "match": "赫尔火花 vs 赫尔辛基",
+   "kickoff": "2026-09-19 00:00:00",
+   "pick": "排除:无锚小联赛",
+   "odds": null,
+   "star": 1,
+   "grade": "B",
+   "dc": null,
+   "fused": null,
+   "fusedPre": null,
+   "final": null,
+   "chain": [
+    "无锚联赛(芬超无DC缓存无fd)",
+    "近况反向(主近10主6胜3平1负vs市场客热53%)"
+   ],
+   "chainSteps": [],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "inPlan": null,
+   "note": "赫尔火花rank4主场6胜3平1负·赫尔辛基rank3·市场客热与主队近况反向·单模型无验证·彩票档引擎腿(主胜@3.80)人工refuted"
+  },
+  {
+   "idx": 3,
+   "code": "周五003",
+   "league": "德乙",
+   "match": "沃夫斯堡 vs 达姆施塔",
+   "kickoff": "2026-09-19 00:30:00",
+   "pick": "HAD 主胜",
+   "odds": 1.5,
+   "star": 4,
+   "grade": "A",
+   "dc": [
+    0.814,
+    0.123,
+    0.063
+   ],
+   "fused": [
+    0.7945,
+    0.1217,
+    0.0838
+   ],
+   "fusedPre": [
+    0.7945,
+    0.1217,
+    0.0838
+   ],
+   "final": 0.7945,
+   "chain": [
+    "fd双锚",
+    "DC 81.4%与市场59%同向·融合72.2%四星"
+   ],
+   "chainSteps": [],
+   "lambdaHome": 2.52,
+   "lambdaAway": 0.52,
+   "inPlan": "人工裁定(保底关档·独胆无处使用)",
+   "note": "本轮唯一四星胆：rank5v16·近10主5胜4平1负vs客4胜2平4负·DCλ2.52/0.52·保底档关档后独胆不入票(拍板维持)；彩票档引擎腿(客胜@4.53)与全部信号反向=纯赔率降序artifact·人工refuted"
+  },
+  {
+   "idx": 4,
+   "code": "周五004",
+   "league": "挪超",
+   "match": "萨普斯堡 vs 奥斯KFUM",
+   "kickoff": "2026-09-19 01:00:00",
+   "pick": "排除:无锚小联赛",
+   "odds": null,
+   "star": 1,
+   "grade": "B",
+   "dc": [
+    0.545,
+    0.272,
+    0.183
+   ],
+   "fused": [
+    0.7156,
+    0.1654,
+    0.119
+   ],
+   "fusedPre": [
+    0.7156,
+    0.1654,
+    0.119
+   ],
+   "final": null,
+   "chain": [
+    "无锚联赛(挪超无fd)",
+    "DC54.5%与市场62%同向"
+   ],
+   "chainSteps": [],
+   "lambdaHome": 1.58,
+   "lambdaAway": 0.81,
+   "inPlan": null,
+   "note": "本地DC可用但无市场锚双源·铁律10禁保底胆·彩票档引擎腿(客胜@5.00)人工refuted(市场主热62%)"
+  },
+  {
+   "idx": 5,
+   "code": "周五005",
+   "league": "法乙",
+   "match": "兰斯 vs 蒙彼利埃",
+   "kickoff": "2026-09-19 02:00:00",
+   "pick": "排除:胶着",
+   "odds": null,
+   "star": 2,
+   "grade": "B",
+   "dc": [
+    0.447,
+    0.257,
+    0.296
+   ],
+   "fused": [
+    0.5843,
+    0.2134,
+    0.2024
+   ],
+   "fusedPre": [
+    0.5843,
+    0.2134,
+    0.2024
+   ],
+   "final": null,
+   "chain": [
+    "fd双锚",
+    "三向接近(DC44.7/25.7/29.6·市场51.9/25.4/22.7)"
+   ],
+   "chainSteps": [],
+   "lambdaHome": 1.28,
+   "lambdaAway": 0.97,
+   "inPlan": null,
+   "note": "rank2v3实力近·融合主49.8%三星边缘·三池卡:保底HAFU aa·翻身CRS 1:1@7.0(q18%)"
+  },
+  {
+   "idx": 6,
+   "code": "周五006",
+   "league": "荷甲",
+   "match": "格罗宁根 vs 兹沃勒",
+   "kickoff": "2026-09-19 02:00:00",
+   "pick": "HAD 主胜(市场锚)",
+   "odds": 1.44,
+   "star": 3,
+   "grade": "B",
+   "dc": null,
+   "fused": [
+    0.6151,
+    0.206,
+    0.1789
+   ],
+   "fusedPre": [
+    0.6151,
+    0.206,
+    0.1789
+   ],
+   "final": 0.6151,
+   "chain": [
+    "荷甲a=0(leagueOverrides·方向纯市场)",
+    "兹沃勒不在DC拟合参数(升班马)·比分走freq模板"
+   ],
+   "chainSteps": [],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "inPlan": "彩票档候选(未入·人工裁定)",
+   "note": "rank9v16·兹沃勒近10客1胜1平8负·纯市场锚61.9%主胜三星"
+  },
+  {
+   "idx": 7,
+   "code": "周五007",
+   "league": "荷乙",
+   "match": "登博思 vs 海尔蒙特",
+   "kickoff": "2026-09-19 02:00:00",
+   "pick": "排除:无锚小联赛",
+   "odds": null,
+   "star": 1,
+   "grade": "B",
+   "dc": null,
+   "fused": null,
+   "fusedPre": null,
+   "final": null,
+   "chain": [
+    "无锚联赛(荷乙无fd无本地库)",
+    "无DC"
+   ],
+   "chainSteps": [],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "inPlan": null,
+   "note": "rank17v12中下游·三池卡low_conf:保底TTG s2(q23%)·翻身TTG s3@3.9·抽水警示"
+  },
+  {
+   "idx": 8,
+   "code": "周五008",
+   "league": "德甲",
+   "match": "拜仁 vs 柏林联合",
+   "kickoff": "2026-09-19 02:30:00",
+   "pick": "HHAD 让球主胜(让球线见note)",
+   "odds": null,
+   "star": 4,
+   "grade": "A",
+   "dc": [
+    0.961,
+    0.033,
+    0.005
+   ],
+   "fused": null,
+   "fusedPre": null,
+   "final": null,
+   "chain": [
+    "德甲a=0(方向纯市场)",
+    "HAD未开售仅让球盘",
+    "拜仁近10主9胜1平0负·λ4.91/0.43"
+   ],
+   "chainSteps": [],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "inPlan": "让球盘独立区块(未入串)",
+   "note": "HHAD让球盘见报告独立区块·DC口径主96%(方向不进权重)·让球线与三向赔率在报告②展示·超热场HHAD永不单关"
+  },
+  {
+   "idx": 9,
+   "code": "周五009",
+   "league": "意甲",
+   "match": "蒙扎 vs 萨索洛",
+   "kickoff": "2026-09-19 02:45:00",
+   "pick": "排除:胶着",
+   "odds": null,
+   "star": 2,
+   "grade": "B",
+   "dc": [
+    0.189,
+    0.157,
+    0.653
+   ],
+   "fused": [
+    0.3316,
+    0.2749,
+    0.3935
+   ],
+   "fusedPre": [
+    0.3316,
+    0.2749,
+    0.3935
+   ],
+   "final": null,
+   "chain": [
+    "意甲a=0(方向纯市场)",
+    "市场33.1/27.5/39.3极差6.2pp胶着"
+   ],
+   "chainSteps": [],
+   "lambdaHome": 1.56,
+   "lambdaAway": 2.95,
+   "inPlan": "彩票档腿①(让+1主胜@1.47)",
+   "note": "rank18v9·DC客65%与市场客39%同向但a=0听市场=胶着避开·彩票档腿=蒙扎+1不败(p融合0.346·EV-11%)·三池卡:保底TTG s2·翻身CRS 1:1@6.7"
+  },
+  {
+   "idx": 10,
+   "code": "周五010",
+   "league": "法甲",
+   "match": "摩纳哥 vs 朗斯",
+   "kickoff": "2026-09-19 02:45:00",
+   "pick": "HAD 主胜",
+   "odds": 1.98,
+   "star": 3,
+   "grade": "B",
+   "dc": [
+    0.549,
+    0.226,
+    0.226
+   ],
+   "fused": [
+    0.5517,
+    0.2027,
+    0.2456
+   ],
+   "fusedPre": [
+    0.5517,
+    0.2027,
+    0.2456
+   ],
+   "final": 0.5517,
+   "chain": [
+    "fd双锚",
+    "DC54.9%与市场44.7%同向·融合51.9%三星"
+   ],
+   "chainSteps": [],
+   "lambdaHome": 1.61,
+   "lambdaAway": 0.92,
+   "inPlan": null,
+   "note": "rank2v10·朗斯近10客5胜2平3负不弱·三池卡:保底TTG s2(q22%)·翻身HAFU aa@4.9"
+  },
+  {
+   "idx": 11,
+   "code": "周五011",
+   "league": "英超",
+   "match": "布伦特 vs 切尔西",
+   "kickoff": "2026-09-19 03:00:00",
+   "pick": "排除:胶着",
+   "odds": null,
+   "star": 2,
+   "grade": "B",
+   "dc": [
+    0.442,
+    0.231,
+    0.327
+   ],
+   "fused": [
+    0.377,
+    0.2029,
+    0.4201
+   ],
+   "fusedPre": [
+    0.377,
+    0.2029,
+    0.4201
+   ],
+   "final": null,
+   "chain": [
+    "fd双锚",
+    "市场33.4/24.8/41.8极差8.4pp胶着·DC主44%与市场33%分歧11pp"
+   ],
+   "chainSteps": [],
+   "lambdaHome": 2.23,
+   "lambdaAway": 1.91,
+   "inPlan": "彩票档腿②(让+1主胜@1.54)",
+   "note": "两队近况均强(主5胜5平0负·客6胜2平2负)·彩票档腿=布伦特+1不败(p融合~0.58·EV-7%)·三池卡:保底HAFU dh(q22%)·翻身CRS 2:1@9.0"
+  },
+  {
+   "idx": 12,
+   "code": "周五012",
+   "league": "英冠",
+   "match": "布城 vs 沃特福德",
+   "kickoff": "2026-09-19 03:00:00",
+   "pick": "排除:胶着+平局轨未达标",
+   "odds": null,
+   "star": 2,
+   "grade": "B",
+   "dc": [
+    0.485,
+    0.3,
+    0.215
+   ],
+   "fused": [
+    0.5884,
+    0.2303,
+    0.1814
+   ],
+   "fusedPre": [
+    0.5884,
+    0.2303,
+    0.1814
+   ],
+   "final": null,
+   "chain": [
+    "fd双锚",
+    "融合50.3%三星边缘·平局轨p平27.9%差0.1pp+极差25pp未达标"
+   ],
+   "chainSteps": [],
+   "lambdaHome": 1.48,
+   "lambdaAway": 0.91,
+   "inPlan": null,
+   "note": "rank13v17·两队近况均平庸·三池卡:保底HAFU aa(q18%)·翻身CRS 1:1@6.8"
+  },
+  {
+   "idx": 13,
+   "code": "周五013",
+   "league": "西甲",
+   "match": "西班牙人 vs 埃尔切",
+   "kickoff": "2026-09-19 03:00:00",
+   "pick": "HAD 主胜",
+   "odds": 1.65,
+   "star": 3,
+   "grade": "A",
+   "dc": [
+    0.637,
+    0.249,
+    0.115
+   ],
+   "fused": [
+    0.6687,
+    0.2041,
+    0.1205
+   ],
+   "fusedPre": [
+    0.6687,
+    0.2041,
+    0.1205
+   ],
+   "final": 0.6687,
+   "chain": [
+    "fd双锚",
+    "DC63.7%与市场53.6%同向·融合59.1%",
+    "伤停差值d=+1主伤重×0.97(El Hilali 6/6主力后卫)"
+   ],
+   "chainSteps": [
+    {
+     "name": "伤停差值d=+1主伤重",
+     "factor": 0.97
+    }
+   ],
+   "lambdaHome": 1.939,
+   "lambdaAway": 0.736,
+   "inPlan": "彩票档腿③+翻身档腿(HAFU dh@4.55)",
+   "note": "埃尔切rank20垫底近10客1胜5平4负·西甲R6·三池卡双行同推HAFU dh(q22%·半平全主胜)·假设survived(双模型同向)"
+  },
+  {
+   "idx": 14,
+   "code": "周五014",
+   "league": "美职",
+   "match": "纽约城 vs 纽约红牛",
+   "kickoff": "2026-09-19 07:30:00",
+   "pick": "HAD 主胜",
+   "odds": 1.72,
+   "star": 3,
+   "grade": "B",
+   "dc": [
+    0.6385,
+    0.2435,
+    0.118
+   ],
+   "fused": [
+    0.6609,
+    0.1883,
+    0.1507
+   ],
+   "fusedPre": [
+    0.6609,
+    0.1883,
+    0.1507
+   ],
+   "final": 0.6609,
+   "chain": [
+    "无锚联赛(美职无fd·本地DC可用)",
+    "DC63.9%与市场51.5%同向·融合57.2%"
+   ],
+   "chainSteps": [],
+   "lambdaHome": 1.748,
+   "lambdaAway": 0.617,
+   "inPlan": "彩票档腿④+翻身档腿(HAFU dh@5.05)",
+   "note": "纽约德比·红牛近10客2胜2平6负客场疲软·铁律10禁保底胆但彩票档/翻身允许·HAFU dh@5.05 EV-3%"
+  }
+ ],
+ "revisionNote": "2026-09-17生成。假设层：013/014主胜+HAFU dh双模型同向survived；引擎4条无模型腿refuted；保底独胆沃夫斯堡(72.2%四星)因保底关档不入票。体彩周五场上架于09-17午后(14场)。"
+}
