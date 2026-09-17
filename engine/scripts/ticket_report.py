@@ -31,8 +31,8 @@ MARKETS = ["HAD", "CRS", "TTG", "HAFU"]
 
 
 def settled_tickets(tickets: list) -> list:
-    return sorted((t for t in tickets if t.get("settled", {}).get("status") == "settled"),
-                  key=lambda t: t["settled"].get("settledAt", ""))
+    return sorted((t for t in tickets if (t.get("settled") or {}).get("status") == "settled"),
+                  key=lambda t: (t.get("settled") or {}).get("settledAt", ""))
 
 
 def has_new_kpi(tickets: list) -> bool:
@@ -154,7 +154,7 @@ def ticket_rows(tickets: list) -> str:
     """② 票务清单表（pending 票也列出，结算列示待结算）。"""
     rows = []
     for t in tickets:
-        st = t.get("settled", {})
+        st = t.get("settled") or {}
         legs = " / ".join(
             f'<span class="{"hit" if l.get("result") == "hit" else ("miss" if l.get("result") == "miss" else "pend")}">'
             f'{"<s>" if l.get("revoked") else ""}{l["code"]} {l["market"]} {l["pick"]}@{l["odds"]}'

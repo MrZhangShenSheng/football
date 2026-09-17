@@ -522,7 +522,7 @@ def settle_payout(ticket: dict) -> dict:
 
 def recalc_meta(data: dict) -> None:
     """按已结算票重算账本 meta 汇总。"""
-    done = [t for t in data.get("tickets", []) if t.get("settled", {}).get("status") == "settled"]
+    done = [t for t in data.get("tickets", []) if (t.get("settled") or {}).get("status") == "settled"]
     data["meta"].update({
         "totalTickets": len(data.get("tickets", [])),
         "totalStake": sum(t["stake"] for t in done),

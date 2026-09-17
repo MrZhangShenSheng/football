@@ -1052,20 +1052,38 @@ def _leg_hit(leg: dict, ent, default_play: str):
     return leg["pick"] == _direction(sc)
 
 
-def _tier_bets(blob: dict, flat_hits: list) -> tuple:
+def _tier_bets(blob: dict, flat_hits: list, results: dict | None = None) -> tuple:
     """两档 bets 结构单档结算 → (派彩, 全部注全中)。开发者 sszhang
 
     派彩=Σ全中注 2×倍数×Π腿赔率（推演对照口径，无税无上限，与 legacy 无税
     payout 一致）；空注/腿索引越界判不中（防 vacuous-True 假阳）；无 bets
-    （closed 关档）→ (0.0, False)。"""
+    （closed 关档）→ (0.0, False)。
+    bets[].legs 兼容两种形态：索引 int（对齐 tier.legs·flat_hits 判）或内嵌
+    腿对象 dict（crsDuo 型 tier.legs 为空、腿长在 bet 里——2026-09-15 卡
+    settle 崩溃教训），后者对 results 逐腿判。"""
     legs, bets = blob.get("legs") or [], blob.get("bets") or []
     payout, flags = 0.0, []
     for bet in bets:
-        idxs = bet.get("legs") or []
-        hit = bool(idxs) and all(0 <= i < len(legs) and flat_hits[i] is True for i in idxs)
+        refs = bet.get("legs") or []
+        odds, hit = 1.0, bool(refs)
+        for r in refs:
+            if isinstance(r, dict):
+                if _leg_hit(r, (results or {}).get(r.get("matchNumStr")),
+                            r.get("play") or "crs") is not True:
+                    hit = False
+                    break
+                odds *= r["odds"]
+            elif 0 <= r < len(legs):
+                if flat_hits[r] is not True:
+                    hit = False
+                    break
+                odds *= legs[r]["odds"]
+            else:
+                hit = False
+                break
         flags.append(hit)
         if hit:
-            payout += 2 * bet.get("multiplier", 1) * math.prod(legs[i]["odds"] for i in idxs)
+            payout += 2 * bet.get("multiplier", 1) * odds
     return payout, (bool(bets) and all(flags))
 
 
@@ -1092,8 +1110,14 @@ def settle(ticket: dict, results: dict) -> dict:
             hits = [_leg_hit(leg, results.get(leg["matchNumStr"]), default_play) for leg in note_legs]
             leg_hits[tier].append(hits)
             flat_hits.extend(hits)
+        if not raw_legs:
+            # crsDuo 型：腿内嵌在 bets 里（tier.legs 空），判定补进 legHits 供层4实测库
+            emb = [l for b in blob.get("bets") or [] for l in (b.get("legs") or []) if isinstance(l, dict)]
+            if emb:
+                leg_hits[tier].append([_leg_hit(l, results.get(l["matchNumStr"]), l.get("play") or "crs")
+                                       for l in emb])
         if is_new:
-            tier_payout[tier], hit_all = _tier_bets(blob, flat_hits)
+            tier_payout[tier], hit_all = _tier_bets(blob, flat_hits, results)
             if tier == "upset":
                 upset_hit = hit_all
     if is_new:
