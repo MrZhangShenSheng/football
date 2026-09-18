@@ -1,0 +1,122 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>2026-09-18-r1 全池重扫 · CRS 全展开 2/3/4串（原方案）</title>
+<style>
+:root{--ink:#1a2233;--sub:#5a6478;--line:#dde3ee;--bg:#f6f8fc;--card:#ffffff;--acc:#0f6fff;--pos:#0a8f4d;--neg:#d0342c;--warn:#b8860b}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#e8edf7;--sub:#98a3ba;--line:#2b3448;--bg:#12161f;--card:#1a2030;--acc:#5b9dff;--pos:#3ecf8e;--neg:#ff7a70;--warn:#e0b341}}
+:root[data-theme="dark"]{--ink:#e8edf7;--sub:#98a3ba;--line:#2b3448;--bg:#12161f;--card:#1a2030;--acc:#5b9dff;--pos:#3ecf8e;--neg:#ff7a70;--warn:#e0b341}
+body{font:14px/1.65 "Segoe UI","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--bg);margin:0;padding:24px 16px}
+.wrap{max-width:1060px;margin:0 auto}
+h1{font-size:20px;margin:0 0 4px}h2{font-size:16px;margin:28px 0 10px;border-left:4px solid var(--acc);padding-left:10px}
+.meta{color:var(--sub);font-size:12.5px;margin-bottom:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:12px 0}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:center;vertical-align:middle}
+th{background:rgba(15,111,255,.07)}
+.pos{color:var(--pos);font-weight:600}.neg{color:var(--neg);font-weight:600}.warn{color:var(--warn);font-weight:600}
+.tag{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:0 9px;font-size:11.5px;color:var(--sub);margin:1px 3px 1px 0}
+.tag.hit{border-color:var(--pos);color:var(--pos)}.tag.top1{border-color:var(--acc);color:var(--acc)}
+.stamp{display:inline-block;background:var(--acc);color:#fff;border-radius:6px;padding:2px 10px;font-size:12px;font-weight:600}
+.checklist{font-family:Consolas,"Microsoft YaHei",monospace;font-size:13px;background:rgba(15,111,255,.05);border:1px dashed var(--acc);border-radius:8px;padding:12px 16px;white-space:pre;overflow-x:auto}
+.small{font-size:12px;color:var(--sub)}
+ul{margin:6px 0;padding-left:20px}
+svg.ic{width:15px;height:15px;vertical-align:-2px;color:currentColor}
+</style></head><body><div class="wrap">
+
+<svg style="display:none"><symbol id="i-ball" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6L5.6 18.4"/></symbol><symbol id="i-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12.5l5.5 5.5L20 6.5"/></symbol><symbol id="i-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3L2 21h20L12 3z"/><path d="M12 10v5M12 18v.5"/></symbol></svg>
+
+<h1><svg class="ic"><use href="#i-ball"/></svg> 全池重扫 · CRS 全展开 2/3/4串（原方案）</h1>
+<div class="meta">预测日 2026-09-18 · 销售日 09-19/09-20（开赛 09-19 00:30 ~ 09-20 23:30）· <b>全池 51 场</b>（含周五 14 场，首版漏扫）· 赔率复扫 15:54 零异动 · <span class="stamp">原方案 · 待出票</span></div>
+
+<h2>① 出单摘要卡</h2>
+<div class="card">
+<table>
+<tr><th>日期</th><th>编号</th><th>联赛</th><th>对阵</th><th>比分方案</th><th>形状族</th><th>桶覆盖</th></tr>
+<tr><td>09-19 00:30</td><td><b>周五003</b></td><td>德乙</td><td style="text-align:left">沃夫斯堡 vs 达姆施塔</td><td><b>1:0</b>@11.00 / <b>2:0</b>@9.50</td><td>主胜零封</td><td>72%</td></tr>
+<tr><td>09-19 19:30</td><td><b>周六005</b></td><td>英超</td><td style="text-align:left">热刺 vs 维拉</td><td><b>0:0</b>@14.00</td><td>平局零封</td><td>100%</td></tr>
+<tr><td>09-19 22:00</td><td><b>周六016</b></td><td>英超</td><td style="text-align:left">纽卡斯尔 vs 赫尔城</td><td><b>2:1</b>@6.50 / <b>3:1</b>@10.50 / <b>3:2</b>@21.00</td><td>主胜丢球</td><td>75%</td></tr>
+<tr><td>09-20 23:30</td><td><b>周日020</b></td><td>英超</td><td style="text-align:left">富勒姆 vs 曼联</td><td><b>1:2</b>@7.50 / <b>2:3</b>@18.00 / <b>1:3</b>@12.00</td><td>客胜丢球</td><td>79%</td></tr>
+</table>
+<p style="margin:8px 0 2px"><b>票面：CRS · 2串1×6组 + 3串1×4组 + 4串1×1组 = 11 张票 · 86 注 × 2 元 × 1 倍 = 172 元</b></p>
+<p class="small">四腿分属四个不同形状族（主胜零封 / 平局零封 / 主胜丢球 / 客胜丢球），非零封集中、非伪分散。至少中一注 <b>7.166%（1/14）</b>。整票 EV 为负（CRS 池抽水 25.3% 串联复合），按铁律 12 只作披露不作取舍。</p>
+</div>
+
+<div class="checklist">┌ 出票核对单（终端编号以此为准 · 全部 1 倍）─────────────────────
+│
+│ 【A】周五003 | 德乙 | 沃夫斯堡 vs 达姆施塔   （09-19 00:30）
+│      CRS 1:0  @11.00     CRS 2:0  @9.50
+│
+│ 【B】周六005 | 英超 | 热刺 vs 维拉          （09-19 19:30）
+│      CRS 0:0  @14.00
+│
+│ 【C】周六016 | 英超 | 纽卡斯尔 vs 赫尔城     （09-19 22:00）
+│      CRS 2:1  @6.50      CRS 3:1  @10.50     CRS 3:2  @21.00
+│
+│ 【D】周日020 | 英超 | 富勒姆 vs 曼联        （09-20 23:30）
+│      CRS 1:2  @7.50      CRS 2:3  @18.00     CRS 1:3  @12.00
+│
+├ 串法（11 张票 · 每注 2 元 · 无倍数）────────────────────────
+│ A+B       2串1   2注   4元   回款    266 ~     308 元
+│ A+C       2串1   6注  12元   回款    124 ~     462 元
+│ A+D       2串1   6注  12元   回款    142 ~     396 元
+│ B+C       2串1   3注   6元   回款    182 ~     588 元
+│ B+D       2串1   3注   6元   回款    210 ~     504 元
+│ C+D       2串1   9注  18元   回款     98 ~     756 元
+│ A+B+C     3串1   6注  12元   回款  1,729 ~   6,468 元
+│ A+B+D     3串1   6注  12元   回款  1,995 ~   5,544 元
+│ A+C+D     3串1  18注  36元   回款    926 ~   8,316 元
+│ B+C+D     3串1   9注  18元   回款  1,365 ~  10,584 元
+│ A+B+C+D   4串1  18注  36元   回款 12,968 ~ 116,424 元
+│
+│ 票面：86 注 × 2 元 × 1 倍 = 172 元 · 四场 CRS 单关资格均 = 1
+└ 出票时逐条对照 编号×联赛×主客，发现不一致立即停 ────────────</div>
+
+<h2>② 四腿假设与失效条件（Step -1 假设层）</h2>
+<div class="card">
+<table>
+<tr><th>腿</th><th>假设（可证伪判断）</th><th>支撑证据</th><th>失效条件（错会错在哪）</th></tr>
+<tr><td><b>A</b><br>沃夫斯堡</td><td style="text-align:left">达姆施塔客场进不了球 → 沃夫斯堡零封取胜</td><td style="text-align:left">达姆施塔近 6 场哑火 <b>4 次</b>、零封 0 次、场均 0.7 球；H2H 七场均值 1.7 球、<b>中位 1.0</b>（含 0:1×2、1:0、0:0）</td><td style="text-align:left">沃夫斯堡自身伤停 5 人、近 6 场也哑火 2 次（0:0、0:1）→ 可能变 0:0；达姆施塔客场全样本 24 场零进球率仅 25%，近 6 场极端值未必延续</td></tr>
+<tr><td><b>B</b><br>热刺</td><td style="text-align:left">两队进攻双双瘫痪 → 谁都进不了球</td><td style="text-align:left">热刺近 6 场攻 <b>0.5</b>、维拉 <b>0.7</b>，<b>各哑火 4 次</b>；双方最近都刚踢出 0:0（热刺连续两场）；伤停 6/7 人</td><td style="text-align:left"><span class="warn">H2H 十场均值 3.1 球、≤2 球仅 2/10</span>——历史交锋是打开的。若错，最可能是交锋传统压过当前状态</td></tr>
+<tr><td><b>C</b><br>纽卡</td><td style="text-align:left">纽卡赢球但丢球（爆冷机制型）</td><td style="text-align:left">赫尔城近 4 场守 0.5、零封 3 次、能进球（攻 1.2）但<b>伤停 9 人</b>顶不满全场；纽卡近 6 场攻 2.2、<b>零封 0 次</b>（4:3/2:2/2:2/1:4）；H2H 七场均值 3.3 球、中位 4.0</td><td style="text-align:left">赫尔城伤停 9 人是巨大不确定性，可能直接崩成 3:0/4:0（落在零封族，本腿不覆盖）</td></tr>
+<tr><td><b>D</b><br>富勒姆</td><td style="text-align:left">双方都进球、曼联赢</td><td style="text-align:left">富勒姆主场近 3 场连丢 2-3 球（2:3/2:2/2:3）、守 1.7；曼联近 6 场攻 1.7 但<b>零封 0 次</b>；H2H 十场 <b>1:2 已出现两次</b>（另有 0:1×2）</td><td style="text-align:left">曼联近 6 场仅 1 胜（0:2、0:1 两负），客场成色不稳 → 可能被逼平（1:1 不在本腿覆盖）</td></tr>
+</table>
+</div>
+
+<h2>③ 容错设计：逻辑覆盖率</h2>
+<div class="card">
+<p style="margin:0 0 8px">容错不是多买，是补住「<b>推理对了但比分差一球</b>」的漏洞。每腿把假设翻译成<b>逻辑桶</b>（该推理成立时的全部可能比分），用本联赛真实赛果频率分配桶内占比，补到 ≥72%。</p>
+<table>
+<tr><th>腿</th><th>逻辑桶</th><th>P(推理成立)</th><th>桶内真实分布（本联赛实测）</th><th>买入</th><th>覆盖</th></tr>
+<tr><td><b>A</b></td><td>主胜零封（j=0, i≥1）</td><td>20.5%<br><span class="small">德乙 440 场 / 桶内 90 场</span></td><td style="text-align:left">1:0 <b>41.1%</b>（37次）· 2:0 <b>31.1%</b>（28次）· 3:0 17.8% · 5:0 4.4% · 4:0 3.3%</td><td>1:0 + 2:0</td><td class="pos">72.2%</td></tr>
+<tr><td><b>B</b></td><td>0:0（唯一格）</td><td>5.6%<br><span class="small">英超 630 场 / 桶内 35 场</span></td><td style="text-align:left">0:0 <b>100%</b>（桶=单格，无可补）</td><td>0:0</td><td class="pos">100%</td></tr>
+<tr><td><b>C</b></td><td>主胜且客队进球（j≥1, i&gt;j）</td><td>21.7%<br><span class="small">英超 630 场 / 桶内 137 场</span></td><td style="text-align:left">2:1 <b>41.6%</b>（57次）· 3:1 <b>21.2%</b>（29次）· 3:2 <b>12.4%</b>（17次）· 4:1 10.9% · 4:2 5.8%</td><td>2:1 + 3:1 + 3:2</td><td class="pos">75.2%</td></tr>
+<tr><td><b>D</b></td><td>客胜且主队进球（i≥1, j&gt;i）</td><td>14.4%<br><span class="small">英超 630 场 / 桶内 91 场</span></td><td style="text-align:left">1:2 <b>48.4%</b>（44次）· 2:3 <b>15.4%</b>（14次）· 1:3 <b>15.4%</b>（14次）· 1:4 7.7% · 2:4 3.3%</td><td>1:2 + 2:3 + 1:3</td><td class="pos">79.1%</td></tr>
+</table>
+<p class="small" style="margin-top:10px"><b>逻辑转化率 8.3% → 43.0%</b>：最初单注版每腿只押桶内第一格，四腿推理全对时仍有 <b>91.7%</b> 概率不中票（转化率仅 8.3%）。补格后推理全对时买到票的概率升至 43.0%。</p>
+</div>
+
+<h2>④ 结果分布（耦合口径 · 禁独立近似）</h2>
+<div class="card">
+<table>
+<tr><th>命中腿数</th><th>概率</th><th>中几串</th><th>回款区间</th></tr>
+<tr><td>中 2 腿</td><td class="pos"><b>6.6%</b></td><td>1 串</td><td>98 ~ 756 元</td></tr>
+<tr><td>中 3 腿</td><td>0.55%</td><td>4 串（2串+3串同中）</td><td>1,290 ~ 12,432 元</td></tr>
+<tr><td>中 4 腿</td><td>0.015%</td><td><b>11 串全中</b></td><td class="pos"><b>20,004 ~ 150,350 元</b></td></tr>
+<tr><td colspan="2"><b>至少中一注</b></td><td colspan="2" class="pos"><b>7.166%（1/14）</b></td></tr>
+</table>
+<p class="small">全展开后中 4 腿的回款上限（150,350 元）高于单张 4串1（116,424 元）——11 个串同时中奖叠加。唯一亏损区间：中 2 腿且落在最低三格（98/124/142 元 &lt; 172 元本金），其余 26 注 2串 组合全部盈利。</p>
+<p class="small"><b>2串1 按池区分</b>：09-11 废除的是 HAD 胜平负 2串1（两腿合赔约 2.5 倍=低赔碎注）；CRS 比分 2串1 单注最低合赔 <b>48.75 倍</b>、中位 132 倍，不属碎注范畴（09-18 大哥纠正）。</p>
+</div>
+
+<h2>⑤ 本轮纠错记录</h2>
+<div class="card">
+<ul>
+<li><b>漏扫周五 14 场</b>：首版只扫周六日 37 场，全池实为 51 场。补齐后周五 003 进入方案。</li>
+<li><b>λ 病态未过滤</b>：DC 给沃夫斯堡 λ=2.52，排序为 2:0 &gt; 3:0 &gt; 1:0。核查发现<b>沃夫斯堡主场库内仅 2 场</b>（0:0、4:4），4:4 把进攻参数拉爆（升班马小样本）。改用真实赛果频率后 1:0 才是首位（41.1% vs 31.1%）。</li>
+<li><b>条件频率区间套错</b>：score-odds-template 的 1:0=12.48% 限定「主胜 1.70-2.00」，我曾直接套到全部腿。沃夫斯堡主胜 1.41 实属 1.30-1.50 档、帕尔马客胜 2.25 实属 2.00-2.50 档，均不适用。</li>
+<li><b>全池 89 个「正 EV」候选三层证伪全灭</b>：① 联赛混合偏差（+220.6% 的特温特 0:0 拉回荷甲仅 61 场样本）② Wilson 95% 下界（德甲 n≈100 的 7% 事件区间宽至 [3.43%, 13.75%]，12/13 转负）③ 本场证据（唯一存活的斯图加特 0:0 被 H2H 均值 3.6 球、0:0 零出现否决）。结论：CRS 抽水 25.3% 下，现有样本分辨率（±5pp）小于所需边际。</li>
+<li><b>撤回的腿</b>：帕尔马 1:0（假设说帕尔马进不了球，1:0 却要它进球+零封，自相矛盾）· 博洛尼亚 1:0（近 6 场零封 0 次，要它零封缺依据）· 门兴 1:1 / 乌迪内斯 1:1 / 格罗宁根低比分 / 摩纳哥高比分 / 罗马 0:0 / 斯图加特 0:0（H2H 与当前状态互相打架）。</li>
+</ul>
+</div>
+
+<p class="small" style="margin-top:22px">生成：2026-09-18 · 全池 51 场重扫 · 赔率冻结于 15:54 临场复扫（四腿零异动）· 出票后跑 backfill 对照回执登记 tickets.json</p>
+</div></body></html>
