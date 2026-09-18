@@ -22,7 +22,26 @@
   "彩票档": "2元4串1合赔6.40全中≈12.8元：009蒙扎让+1主胜@1.47+011布伦特让+1主胜@1.54+013西班牙人主胜@1.65+014纽约城主胜@1.72。引擎8腿中前4条无模型高赔腿(001客/002主/003客/004客)人工refuted——003客胜@4.53与DC81%主胜全面反向=赔率降序artifact",
   "平局轨": "关档（14场p平最高012布城27.9%差0.1pp未过28%门槛·且极差25pp>12pp灵魂条款）",
   "对冲双票": "缺材降级不出（无双玩法同推对冲场——013双行同玩法HAFU dh非换玩法·014 CRS/HAFU双行但q13%<18%取材线）",
-  "人工裁定": "决策C同09-16先例：翻身档人工关档·在买=彩票档4串1 2元（approved=false待大哥拍板）"
+  "人工裁定": "决策C同09-16先例：翻身档人工关档·在买=彩票档4串1 2元（approved=false待大哥拍板）",
+  "周六日CRS_2x3x4": {
+   "plan": "周六日CRS 2x3x4",
+   "type": "CRS 2串1+3串1+4串1 嵌套（q降序①②/①②③/①②③④）",
+   "stake": "6元(2元x3注x1倍)",
+   "legs": [
+    "周日029 CRS 1:0@9.0 q16.4% EV+47.6%",
+    "周日013 CRS 0:0@7.5 q14.8% EV+10.9%",
+    "周六023 CRS 1:1@7.5 q14.3% EV+7.6%",
+    "周六013 CRS 1:1@8.0 q14.0% EV+11.6%"
+   ],
+   "odds": {
+    "2串1": 67.5,
+    "3串1": 506.3,
+    "4串1": 4050.0
+   },
+   "evEach": true,
+   "hitAtLeastOne": 0.0243,
+   "note": "假设驱动流程(EV/命中率不作门槛,09-16拍板);4腿全分歧旗(q>市场隐含5pp+),模型口径连乘EV+96.8%/市场校准口径约-35%;门兴主力前锋Kleindienst停赛市场已消化(HAD客热2.16+受让+1,定律3维持选点);大哥当日指令覆盖09-15 CRS禁串拍板; 腿序①=周日029②=周日013③=周六023④=周六013; 2串1=①②,3串1=①②③,4串1=①②③④"
+  }
  },
  "matches": [
   {
@@ -487,7 +506,115 @@
    "lambdaAway": 0.617,
    "inPlan": "彩票档腿④+翻身档腿(HAFU dh@5.05)",
    "note": "纽约德比·红牛近10客2胜2平6负客场疲软·铁律10禁保底胆但彩票档/翻身允许·HAFU dh@5.05 EV-3%"
+  },
+  {
+   "idx": 15,
+   "code": "周六013",
+   "league": "德甲(R4)",
+   "match": "门兴 vs 美因茨",
+   "pick": "CRS 1:1",
+   "odds": 8.0,
+   "star": 2,
+   "grade": "B",
+   "kickoff": "2026-09-19 21:30",
+   "dc": null,
+   "fused": null,
+   "final": 0.14,
+   "fusedPre": null,
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "chain": "freq-band q14.0% 带内第一",
+   "chainSteps": [
+    {
+     "name": "freq-band",
+     "factor": 1.0
+    }
+   ],
+   "ev": 0.116,
+   "inPlan": "周六日CRS",
+   "note": "insight: 主伤7(含Kleindienst停赛,3/3首发)客伤2,d=+5; HAD客热2.16受让+1,伤停市场已消化定律3维持; 开季3连败主17客8; 三池卡rec_base=ttg s2/rec_upset=hafu hh(CRS未同推,越闸门)"
+  },
+  {
+   "idx": 16,
+   "code": "周六023",
+   "league": "西甲",
+   "match": "塞尔塔 vs 桑坦德",
+   "pick": "CRS 1:1",
+   "odds": 7.5,
+   "star": 2,
+   "grade": "B",
+   "kickoff": "2026-09-19 22:15",
+   "dc": null,
+   "fused": null,
+   "final": 0.143,
+   "fusedPre": null,
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "chain": "freq-band q14.3% 带内第一",
+   "chainSteps": [
+    {
+     "name": "freq-band",
+     "factor": 1.0
+    }
+   ],
+   "ev": 0.076,
+   "inPlan": "周六日CRS",
+   "note": "insight: 伤停0/0干净,主17客10; 三池卡hafu aa q26.5@7.0 EV+85.8%强分歧; CRS未同推(rec_base=hafu aa/rec_upset=ttg s3),越闸门"
+  },
+  {
+   "idx": 17,
+   "code": "周日013",
+   "league": "意甲",
+   "match": "帕尔马 vs 热那亚",
+   "pick": "CRS 0:0",
+   "odds": 7.5,
+   "star": 2,
+   "grade": "B",
+   "kickoff": "2026-09-20 21:00",
+   "dc": null,
+   "fused": null,
+   "final": 0.148,
+   "fusedPre": null,
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "chain": "freq-band q14.8% 带内第一",
+   "chainSteps": [
+    {
+     "name": "freq-band",
+     "factor": 1.0
+    }
+   ],
+   "ev": 0.109,
+   "inPlan": "周六日CRS",
+   "note": "insight: 伤停0/0干净,主17客19保级区对话,0:0平局型符合下游对话画像; 0:0为大哥T036/T037口味点(影子实证平局型是CRS命中主力池); CRS未同推(rec_base=ttg s1),越闸门"
+  },
+  {
+   "idx": 18,
+   "code": "周日029",
+   "league": "葡超",
+   "match": "波尔图 vs 本菲卡",
+   "pick": "CRS 1:0",
+   "odds": 9.0,
+   "star": 2,
+   "grade": "B",
+   "kickoff": "2026-09-21 03:30",
+   "dc": null,
+   "fused": null,
+   "final": 0.164,
+   "fusedPre": null,
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "chain": "freq-band q16.4% 带内第一(全池q最高)",
+   "chainSteps": [
+    {
+     "name": "freq-band",
+     "factor": 1.0
+    }
+   ],
+   "ev": 0.476,
+   "inPlan": "周六日CRS",
+   "note": "insight: 伤停0/0干净,主1客2榜首国家德比,1:0=主场小胜零封型; CRS未同推(rec_base=ttg s1 q28.2@4.9 EV+38.3%亦强分歧),越闸门; shape_family=主胜零封族,其余三腿为平局族,跨族覆盖"
   }
  ],
- "revisionNote": "2026-09-17生成。假设层：013/014主胜+HAFU dh双模型同向survived；引擎4条无模型腿refuted；保底独胆沃夫斯堡(72.2%四星)因保底关档不入票。体彩周五场上架于09-17午后(14场)。"
+ "revisionNote": "2026-09-17生成。假设层：013/014主胜+HAFU dh双模型同向survived；引擎4条无模型腿refuted；保底独胆沃夫斯堡(72.2%四星)因保底关档不入票。体彩周五场上架于09-17午后(14场)。 | 09-18 增量：周六日CRS 2x3x4 票（大哥点名，假设驱动流程）+4场记录 idx15-18"
 }
