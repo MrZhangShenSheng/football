@@ -1,59 +1,60 @@
 {
- "generatedAt": "2026-09-17",
- "n_total": 715,
- "n_rounds": 39,
+ "generatedAt": "2026-09-18",
+ "n_total": 730,
+ "n_rounds": 40,
  "readiness": {
-  "n_result": 703,
-  "n_clv": 119,
-  "n_pfinal": 562,
+  "n_result": 714,
+  "n_clv": 120,
+  "n_pfinal": 573,
   "n_dedup_merged": 64,
   "n_dedup_diff_pick_kept": 92,
   "calibrateReady": true,
   "calibrateGap": 0,
   "ablateReady": true,
   "by_league": {
-   "西甲": 92,
-   "意甲": 75,
-   "英超": 56,
+   "西甲": 93,
+   "意甲": 76,
+   "英超": 57,
    "欧冠": 47,
-   "德甲": 46,
-   "法甲": 37,
+   "德甲": 47,
+   "法甲": 38,
    "葡超": 36,
-   "荷甲": 34,
+   "荷甲": 35,
    "日职": 30,
    "韩职": 26,
    "瑞超": 24,
+   "英冠": 24,
    "欧罗巴": 24,
-   "英冠": 23,
    "沙职": 21,
    "巴甲": 16,
    "解放者杯": 15,
-   "德乙": 12,
-   "法乙": 11,
+   "德乙": 13,
+   "法乙": 12,
    "英联赛杯": 10,
-   "挪超": 9,
-   "荷乙": 8,
-   "美职": 8,
-   "芬超": 7,
+   "挪超": 10,
+   "荷乙": 9,
+   "美职": 9,
+   "芬超": 8,
    "日乙": 6,
    "欧冠资格赛": 6,
    "巴西杯": 6,
    "亚冠精英": 6,
    "德国杯": 5,
    "沙特联": 4,
+   "亚运男足": 4,
    "英联杯": 3,
    "意大利杯": 3,
-   "亚运男足": 3,
    "德超杯": 2,
    "欧冠附加赛": 2,
    "日联赛杯": 1,
-   "亚运女足": 1
+   "亚运女足": 1,
+   "亚冠乙": 1
   },
   "by_star": {
-   "1": 89,
-   "2": 286,
-   "3": 152,
-   "4": 54
+   "1": 93,
+   "2": 290,
+   "3": 157,
+   "4": 56
   }
  },
  "records": [
@@ -24555,8 +24556,17 @@
    "clv": null,
    "clv_approx_dk": null,
    "clv_note": null,
-   "pinClose": null,
-   "pinSource": "none",
+   "pinClose": [
+    0.4208,
+    0.2986,
+    0.2805
+   ],
+   "pinSource": "fd",
+   "p_pinnacle": [
+    0.4208,
+    0.2986,
+    0.2805
+   ],
    "round": "2026-09-16"
   },
   {
@@ -24591,8 +24601,17 @@
    "clv": null,
    "clv_approx_dk": null,
    "clv_note": null,
-   "pinClose": null,
-   "pinSource": "none",
+   "pinClose": [
+    0.5435,
+    0.2717,
+    0.1848
+   ],
+   "pinSource": "fd",
+   "p_pinnacle": [
+    0.5435,
+    0.2717,
+    0.1848
+   ],
    "round": "2026-09-16"
   },
   {
@@ -24755,8 +24774,17 @@
    "clv": null,
    "clv_approx_dk": null,
    "clv_note": null,
-   "pinClose": null,
-   "pinSource": "none",
+   "pinClose": [
+    0.0771,
+    0.1322,
+    0.7907
+   ],
+   "pinSource": "fd",
+   "p_pinnacle": [
+    0.0771,
+    0.1322,
+    0.7907
+   ],
    "round": "2026-09-16"
   },
   {
@@ -24847,8 +24875,17 @@
    "clv": null,
    "clv_approx_dk": null,
    "clv_note": null,
-   "pinClose": null,
-   "pinSource": "none",
+   "pinClose": [
+    0.3433,
+    0.3196,
+    0.3371
+   ],
+   "pinSource": "fd",
+   "p_pinnacle": [
+    0.3433,
+    0.3196,
+    0.3371
+   ],
    "round": "2026-09-17"
   },
   {
@@ -24880,11 +24917,20 @@
    "result": "4-0",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.0555,
    "clv_approx_dk": null,
-   "clv_note": null,
-   "pinClose": null,
-   "pinSource": "none",
+   "clv_note": "pinClose精确口径(v2四键)",
+   "pinClose": [
+    0.721,
+    0.186,
+    0.093
+   ],
+   "pinSource": "fd",
+   "p_pinnacle": [
+    0.721,
+    0.186,
+    0.093
+   ],
    "round": "2026-09-17"
   },
   {
@@ -24947,8 +24993,17 @@
    "clv": null,
    "clv_approx_dk": null,
    "clv_note": null,
-   "pinClose": null,
-   "pinSource": "none",
+   "pinClose": [
+    0.8966,
+    0.0672,
+    0.0362
+   ],
+   "pinSource": "fd",
+   "p_pinnacle": [
+    0.8966,
+    0.0672,
+    0.0362
+   ],
    "round": "2026-09-17"
   },
   {
@@ -25033,14 +25088,14 @@
     "杯赛无DC纯市场/模板"
    ],
    "pools": null,
-   "result": null,
+   "result": "0-1",
    "directionHit": null,
-   "scoreHit": null,
+   "scoreHit": false,
    "clv": null,
    "clv_approx_dk": null,
    "clv_note": null,
    "pinClose": null,
-   "pinSource": null,
+   "pinSource": "none",
    "round": "2026-09-17"
   },
   {
@@ -25346,14 +25401,43 @@
     "EV=-25.2%"
    ],
    "pools": null,
-   "result": null,
+   "result": "1-1",
+   "directionHit": null,
+   "scoreHit": false,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "pinClose": null,
+   "pinSource": "none",
+   "round": "2026-09-18"
+  },
+  {
+   "date": "2026-09-18",
+   "code": "周四002",
+   "league": "亚冠乙",
+   "match": "上海申花 vs 淡宾尼士",
+   "stars": 3,
+   "grade": 3,
+   "pick": "不参与",
+   "play": null,
+   "odds": 1.22,
+   "p_final": null,
+   "p_dc": null,
+   "ev": null,
+   "in_plan": null,
+   "chain": [
+    "单锚体彩去水(HAD 1.22/5.30/8.30→0.726/0.167/0.107)",
+    "无锚联赛(亚冠乙·fd不覆盖·铁律10禁入保底胆)"
+   ],
+   "pools": null,
+   "result": "2-1",
    "directionHit": null,
    "scoreHit": null,
    "clv": null,
    "clv_approx_dk": null,
    "clv_note": null,
    "pinClose": null,
-   "pinSource": null,
+   "pinSource": "none",
    "round": "2026-09-18"
   },
   {
@@ -25376,14 +25460,14 @@
     "克里特teamId=0未入库"
    ],
    "pools": null,
-   "result": null,
+   "result": "2-0",
    "directionHit": null,
    "scoreHit": null,
    "clv": null,
    "clv_approx_dk": null,
    "clv_note": null,
    "pinClose": null,
-   "pinSource": null,
+   "pinSource": "none",
    "round": "2026-09-18"
   },
   {
@@ -25416,14 +25500,23 @@
     "假设 survived"
    ],
    "pools": null,
-   "result": null,
+   "result": "1-0",
    "directionHit": null,
-   "scoreHit": null,
+   "scoreHit": true,
    "clv": null,
    "clv_approx_dk": null,
    "clv_note": null,
-   "pinClose": null,
-   "pinSource": null,
+   "pinClose": [
+    0.6443,
+    0.232,
+    0.1237
+   ],
+   "pinSource": "fd",
+   "p_pinnacle": [
+    0.6443,
+    0.232,
+    0.1237
+   ],
    "round": "2026-09-18"
   },
   {
@@ -25446,14 +25539,14 @@
     "波兹南近10 8胜1平1负 > 水晶宫6胜0平4负"
    ],
    "pools": null,
-   "result": null,
+   "result": "4-0",
    "directionHit": null,
    "scoreHit": null,
    "clv": null,
    "clv_approx_dk": null,
    "clv_note": null,
    "pinClose": null,
-   "pinSource": null,
+   "pinSource": "none",
    "round": "2026-09-18"
   },
   {
@@ -25477,14 +25570,14 @@
     "三向极差13.8pp"
    ],
    "pools": null,
-   "result": null,
+   "result": "1-2",
    "directionHit": null,
    "scoreHit": null,
    "clv": null,
    "clv_approx_dk": null,
    "clv_note": null,
    "pinClose": null,
-   "pinSource": null,
+   "pinSource": "none",
    "round": "2026-09-18"
   },
   {
@@ -25507,14 +25600,14 @@
     "市场78.4%但EV-11.4%"
    ],
    "pools": null,
-   "result": null,
+   "result": "5-0",
    "directionHit": null,
    "scoreHit": null,
    "clv": null,
    "clv_approx_dk": null,
    "clv_note": null,
    "pinClose": null,
-   "pinSource": null,
+   "pinSource": "none",
    "round": "2026-09-18"
   },
   {
@@ -25538,14 +25631,14 @@
     "马赛近10 5胜0平5负"
    ],
    "pools": null,
-   "result": null,
+   "result": "4-1",
    "directionHit": null,
    "scoreHit": null,
    "clv": null,
    "clv_approx_dk": null,
    "clv_note": null,
    "pinClose": null,
-   "pinSource": null,
+   "pinSource": "none",
    "round": "2026-09-18"
   },
   {
@@ -25568,14 +25661,14 @@
     "利勒斯特主场4胜1平5负(负多于胜)"
    ],
    "pools": null,
-   "result": null,
+   "result": "1-2",
    "directionHit": null,
    "scoreHit": null,
    "clv": null,
    "clv_approx_dk": null,
    "clv_note": null,
    "pinClose": null,
-   "pinSource": null,
+   "pinSource": "none",
    "round": "2026-09-18"
   },
   {
@@ -25607,14 +25700,23 @@
     "方向未收敛"
    ],
    "pools": null,
-   "result": null,
+   "result": "1-3",
    "directionHit": null,
    "scoreHit": null,
    "clv": null,
    "clv_approx_dk": null,
    "clv_note": null,
-   "pinClose": null,
-   "pinSource": null,
+   "pinClose": [
+    0.2733,
+    0.2733,
+    0.4533
+   ],
+   "pinSource": "fd",
+   "p_pinnacle": [
+    0.2733,
+    0.2733,
+    0.4533
+   ],
    "round": "2026-09-18"
   },
   {
@@ -25647,6 +25749,498 @@
    "pinClose": null,
    "pinSource": null,
    "round": "2026-09-18"
+  },
+  {
+   "date": "2026-09-19",
+   "code": "周五001",
+   "league": "亚运男足",
+   "match": "沙特亚 vs 卡塔尔亚",
+   "stars": 1,
+   "grade": 2,
+   "pick": "排除:无锚杯赛",
+   "play": null,
+   "odds": null,
+   "p_final": null,
+   "p_dc": null,
+   "ev": null,
+   "in_plan": null,
+   "chain": [
+    "无锚联赛(亚运)",
+    "杯赛无模板"
+   ],
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "pinClose": null,
+   "pinSource": null,
+   "round": "2026-09-19"
+  },
+  {
+   "date": "2026-09-19",
+   "code": "周五002",
+   "league": "芬超",
+   "match": "赫尔火花 vs 赫尔辛基",
+   "stars": 1,
+   "grade": 3,
+   "pick": "排除:无锚小联赛",
+   "play": null,
+   "odds": null,
+   "p_final": null,
+   "p_dc": null,
+   "ev": null,
+   "in_plan": null,
+   "chain": [
+    "无锚联赛(芬超无DC缓存无fd)",
+    "近况反向(主近10主6胜3平1负vs市场客热53%)"
+   ],
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "pinClose": null,
+   "pinSource": null,
+   "round": "2026-09-19"
+  },
+  {
+   "date": "2026-09-19",
+   "code": "周五003",
+   "league": "德乙",
+   "match": "沃夫斯堡 vs 达姆施塔",
+   "stars": 4,
+   "grade": 4,
+   "pick": "主胜",
+   "play": "HAD",
+   "odds": 1.5,
+   "p_final": [
+    0.7945,
+    0.1217,
+    0.0838
+   ],
+   "p_dc": [
+    0.814,
+    0.123,
+    0.063
+   ],
+   "ev": null,
+   "in_plan": "人工裁定(保底关档·独胆无处使用)",
+   "chain": [
+    "fd双锚",
+    "DC 81.4%与市场59%同向·融合72.2%四星"
+   ],
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "pinClose": null,
+   "pinSource": null,
+   "round": "2026-09-19"
+  },
+  {
+   "date": "2026-09-19",
+   "code": "周五004",
+   "league": "挪超",
+   "match": "萨普斯堡 vs 奥斯KFUM",
+   "stars": 1,
+   "grade": 3,
+   "pick": "排除:无锚小联赛",
+   "play": null,
+   "odds": null,
+   "p_final": [
+    0.7156,
+    0.1654,
+    0.119
+   ],
+   "p_dc": [
+    0.545,
+    0.272,
+    0.183
+   ],
+   "ev": null,
+   "in_plan": null,
+   "chain": [
+    "无锚联赛(挪超无fd)",
+    "DC54.5%与市场62%同向"
+   ],
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "pinClose": null,
+   "pinSource": null,
+   "round": "2026-09-19"
+  },
+  {
+   "date": "2026-09-19",
+   "code": "周五005",
+   "league": "法乙",
+   "match": "兰斯 vs 蒙彼利埃",
+   "stars": 2,
+   "grade": 3,
+   "pick": "排除:胶着",
+   "play": null,
+   "odds": null,
+   "p_final": [
+    0.5843,
+    0.2134,
+    0.2024
+   ],
+   "p_dc": [
+    0.447,
+    0.257,
+    0.296
+   ],
+   "ev": null,
+   "in_plan": null,
+   "chain": [
+    "fd双锚",
+    "三向接近(DC44.7/25.7/29.6·市场51.9/25.4/22.7)"
+   ],
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "pinClose": null,
+   "pinSource": null,
+   "round": "2026-09-19"
+  },
+  {
+   "date": "2026-09-19",
+   "code": "周五006",
+   "league": "荷甲",
+   "match": "格罗宁根 vs 兹沃勒",
+   "stars": 3,
+   "grade": 3,
+   "pick": "主胜(市场锚)",
+   "play": "HAD",
+   "odds": 1.44,
+   "p_final": [
+    0.6151,
+    0.206,
+    0.1789
+   ],
+   "p_dc": null,
+   "ev": null,
+   "in_plan": "彩票档候选(未入·人工裁定)",
+   "chain": [
+    "荷甲a=0(leagueOverrides·方向纯市场)",
+    "兹沃勒不在DC拟合参数(升班马)·比分走freq模板"
+   ],
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "pinClose": null,
+   "pinSource": null,
+   "round": "2026-09-19"
+  },
+  {
+   "date": "2026-09-19",
+   "code": "周五007",
+   "league": "荷乙",
+   "match": "登博思 vs 海尔蒙特",
+   "stars": 1,
+   "grade": 3,
+   "pick": "排除:无锚小联赛",
+   "play": null,
+   "odds": null,
+   "p_final": null,
+   "p_dc": null,
+   "ev": null,
+   "in_plan": null,
+   "chain": [
+    "无锚联赛(荷乙无fd无本地库)",
+    "无DC"
+   ],
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "pinClose": null,
+   "pinSource": null,
+   "round": "2026-09-19"
+  },
+  {
+   "date": "2026-09-19",
+   "code": "周五008",
+   "league": "德甲",
+   "match": "拜仁 vs 柏林联合",
+   "stars": 4,
+   "grade": 4,
+   "pick": "让球主胜(让球线见note)",
+   "play": "HHAD",
+   "odds": null,
+   "p_final": [
+    0.961,
+    0.033,
+    0.005
+   ],
+   "p_dc": [
+    0.961,
+    0.033,
+    0.005
+   ],
+   "ev": null,
+   "in_plan": "让球盘独立区块(未入串)",
+   "chain": [
+    "德甲a=0(方向纯市场)",
+    "HAD未开售仅让球盘",
+    "拜仁近10主9胜1平0负·λ4.91/0.43"
+   ],
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "pinClose": null,
+   "pinSource": null,
+   "round": "2026-09-19"
+  },
+  {
+   "date": "2026-09-19",
+   "code": "周五009",
+   "league": "意甲",
+   "match": "蒙扎 vs 萨索洛",
+   "stars": 2,
+   "grade": 3,
+   "pick": "排除:胶着",
+   "play": null,
+   "odds": null,
+   "p_final": [
+    0.3316,
+    0.2749,
+    0.3935
+   ],
+   "p_dc": [
+    0.189,
+    0.157,
+    0.653
+   ],
+   "ev": null,
+   "in_plan": "彩票档腿①(让+1主胜@1.47)",
+   "chain": [
+    "意甲a=0(方向纯市场)",
+    "市场33.1/27.5/39.3极差6.2pp胶着"
+   ],
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "pinClose": null,
+   "pinSource": null,
+   "round": "2026-09-19"
+  },
+  {
+   "date": "2026-09-19",
+   "code": "周五010",
+   "league": "法甲",
+   "match": "摩纳哥 vs 朗斯",
+   "stars": 3,
+   "grade": 3,
+   "pick": "主胜",
+   "play": "HAD",
+   "odds": 1.98,
+   "p_final": [
+    0.5517,
+    0.2027,
+    0.2456
+   ],
+   "p_dc": [
+    0.549,
+    0.226,
+    0.226
+   ],
+   "ev": null,
+   "in_plan": null,
+   "chain": [
+    "fd双锚",
+    "DC54.9%与市场44.7%同向·融合51.9%三星"
+   ],
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "pinClose": null,
+   "pinSource": null,
+   "round": "2026-09-19"
+  },
+  {
+   "date": "2026-09-19",
+   "code": "周五011",
+   "league": "英超",
+   "match": "布伦特 vs 切尔西",
+   "stars": 2,
+   "grade": 3,
+   "pick": "排除:胶着",
+   "play": null,
+   "odds": null,
+   "p_final": [
+    0.377,
+    0.2029,
+    0.4201
+   ],
+   "p_dc": [
+    0.442,
+    0.231,
+    0.327
+   ],
+   "ev": null,
+   "in_plan": "彩票档腿②(让+1主胜@1.54)",
+   "chain": [
+    "fd双锚",
+    "市场33.4/24.8/41.8极差8.4pp胶着·DC主44%与市场33%分歧11pp"
+   ],
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "pinClose": null,
+   "pinSource": null,
+   "round": "2026-09-19"
+  },
+  {
+   "date": "2026-09-19",
+   "code": "周五012",
+   "league": "英冠",
+   "match": "布城 vs 沃特福德",
+   "stars": 2,
+   "grade": 3,
+   "pick": "排除:胶着+平局轨未达标",
+   "play": null,
+   "odds": null,
+   "p_final": [
+    0.5884,
+    0.2303,
+    0.1814
+   ],
+   "p_dc": [
+    0.485,
+    0.3,
+    0.215
+   ],
+   "ev": null,
+   "in_plan": null,
+   "chain": [
+    "fd双锚",
+    "融合50.3%三星边缘·平局轨p平27.9%差0.1pp+极差25pp未达标"
+   ],
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "pinClose": null,
+   "pinSource": null,
+   "round": "2026-09-19"
+  },
+  {
+   "date": "2026-09-19",
+   "code": "周五013",
+   "league": "西甲",
+   "match": "西班牙人 vs 埃尔切",
+   "stars": 3,
+   "grade": 4,
+   "pick": "主胜",
+   "play": "HAD",
+   "odds": 1.65,
+   "p_final": [
+    0.6687,
+    0.2041,
+    0.1205
+   ],
+   "p_dc": [
+    0.637,
+    0.249,
+    0.115
+   ],
+   "ev": null,
+   "in_plan": "彩票档腿③+翻身档腿(HAFU dh@4.55)",
+   "chain": [
+    "fd双锚",
+    "DC63.7%与市场53.6%同向·融合59.1%",
+    "伤停差值d=+1主伤重×0.97(El Hilali 6/6主力后卫)"
+   ],
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "pinClose": null,
+   "pinSource": null,
+   "round": "2026-09-19"
+  },
+  {
+   "date": "2026-09-19",
+   "code": "周五014",
+   "league": "美职",
+   "match": "纽约城 vs 纽约红牛",
+   "stars": 3,
+   "grade": 3,
+   "pick": "主胜",
+   "play": "HAD",
+   "odds": 1.72,
+   "p_final": [
+    0.6609,
+    0.1883,
+    0.1507
+   ],
+   "p_dc": [
+    0.6385,
+    0.2435,
+    0.118
+   ],
+   "ev": null,
+   "in_plan": "彩票档腿④+翻身档腿(HAFU dh@5.05)",
+   "chain": [
+    "无锚联赛(美职无fd·本地DC可用)",
+    "DC63.9%与市场51.5%同向·融合57.2%"
+   ],
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "pinClose": null,
+   "pinSource": null,
+   "round": "2026-09-19"
   },
   {
    "seq": 10,
@@ -27836,6 +28430,15 @@
   "2026-09-18:彩票档": "2元8串1合赔≈638。8腿含5条无锚腿(周三001/002/004+周三016/周四004方向腿)，其中周三005/006为上轮已出票场次(T033已结算)。人工裁定不采纳",
   "2026-09-18:平局轨": "关档（19场新增中仅周三001 p平≥28%，但极差13.8pp未过<12pp门槛且HAD无单关）",
   "2026-09-18:人工主推": "两条腿：周四004 CRS 1:0@5.40 + 周三016 CRS 1:1@8.00。形状=CRS单关×10（preference shapes[1]第二优先·5+5配注20元）或单关+2串1混合骨架（A×3+B×3+AB2串1×4=20元·期望+3.86元）",
-  "2026-09-18:approved": false
+  "2026-09-18:approved": false,
+  "2026-09-19:seq": 23,
+  "2026-09-19:structure": "new",
+  "2026-09-19:approved": false,
+  "2026-09-19:保底档": "关档（2026-09-16拍板维持：资金小量不保本无所谓·spec §1.4）",
+  "2026-09-19:翻身档": "人工关档：boldplay候选仅2腿(013 HAFU dh@4.55·014 HAFU dh@505)<3不成3注形态·014 EV-3%·连续4轮0回款降半仓期纪律",
+  "2026-09-19:彩票档": "2元4串1合赔6.40全中≈12.8元：009蒙扎让+1主胜@1.47+011布伦特让+1主胜@1.54+013西班牙人主胜@1.65+014纽约城主胜@1.72。引擎8腿中前4条无模型高赔腿(001客/002主/003客/004客)人工refuted——003客胜@4.53与DC81%主胜全面反向=赔率降序artifact",
+  "2026-09-19:平局轨": "关档（14场p平最高012布城27.9%差0.1pp未过28%门槛·且极差25pp>12pp灵魂条款）",
+  "2026-09-19:对冲双票": "缺材降级不出（无双玩法同推对冲场——013双行同玩法HAFU dh非换玩法·014 CRS/HAFU双行但q13%<18%取材线）",
+  "2026-09-19:人工裁定": "决策C同09-16先例：翻身档人工关档·在买=彩票档4串1 2元（approved=false待大哥拍板）"
  }
 }

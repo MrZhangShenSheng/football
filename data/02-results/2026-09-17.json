@@ -98,7 +98,12 @@
    "half": "0:0",
    "directionHit": null,
    "scoreHit": null,
-   "pinSource": "none"
+   "pinSource": "fd",
+   "pinClose": [
+    0.3433,
+    0.3196,
+    0.3371
+   ]
   },
   {
    "idx": 3,
@@ -142,7 +147,14 @@
    "half": "1:0",
    "directionHit": true,
    "scoreHit": true,
-   "pinSource": "none"
+   "pinSource": "fd",
+   "pinClose": [
+    0.721,
+    0.186,
+    0.093
+   ],
+   "clv": -0.0555,
+   "clv_note": "pinClose精确口径(v2四键)"
   },
   {
    "idx": 4,
@@ -210,7 +222,12 @@
    "half": "4:1",
    "directionHit": null,
    "scoreHit": null,
-   "pinSource": "none"
+   "pinSource": "fd",
+   "pinClose": [
+    0.8966,
+    0.0672,
+    0.0362
+   ]
   },
   {
    "idx": 6,
@@ -250,7 +267,7 @@
    "preSnapshots": {
     "matchId": 2041505
    },
-   "backfillNote": "ESPN 近 3 日赛果可能未更新（缓存延迟），可稍后重跑"
+   "backfillNote": "比赛延期举行(新华网2026-09-17报道·非数据缺口)·重赛日待定·恢复后重跑verify自动回填"
   },
   {
    "idx": 7,
@@ -309,7 +326,12 @@
    "note": "解放者杯·科林蒂安(1)主场 vs 拉普大学(2)·翻身CRS 1:2@15 EV+8%·南美客场进球难但拉普大学淘汰赛客场韧性·纯模板",
    "preSnapshots": {
     "matchId": 2041508
-   }
+   },
+   "result": "0-1",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": false,
+   "pinSource": "none"
   }
  ],
  "revisionNote": "2026-09-15 比分现实性检验后修订：翻身档人工关档(决策C)，总成本 8→2 元。周三014 莱万特0:3 经本季 fd 赛果证否(西甲1次/毕巴客场从未进3球/莱万特主场8-0-2)；其余四腿杯赛纯模板不可检验，'未被证否≠可买'。在买仅彩票档 4串1 2元。"

@@ -58,7 +58,17 @@
    "note": "本轮最稳腿。贝蒂斯主场7胜2平1负进球率77%，赫塔费客场1胜3平6负进球率仅20%；H2H近10贝蒂斯5胜3平2负。freq(20.28%)与DC(19.98%)对1:0判断几乎相同，EV+7.9~9.5%",
    "preSnapshots": {
     "matchId": 2041510
-   }
+   },
+   "result": "1-0",
+   "half": "1:0",
+   "directionHit": null,
+   "scoreHit": true,
+   "pinSource": "fd",
+   "pinClose": [
+    0.6443,
+    0.232,
+    0.1237
+   ]
   },
   {
    "idx": 2,
@@ -127,7 +137,12 @@
    "note": "假设本身站得住(H2H六战全胜，最近一次2026-03-06正好0:3)，但5.50的赔率对13.6%概率是负EV。假设过关不等于值得买",
    "preSnapshots": {
     "matchId": 2041509
-   }
+   },
+   "result": "1-1",
+   "half": "1:0",
+   "directionHit": null,
+   "scoreHit": false,
+   "pinSource": "none"
   },
   {
    "idx": 4,
@@ -161,7 +176,17 @@
    "note": "假设内部矛盾：马拉加主场2胜8平0负的极端平局倾向，同时支持0:1和0:0/1:1两个方向；freq把0:1排第一但0:2几乎并列(13.21%)。EV虽高但方向没做实，判pending",
    "preSnapshots": {
     "matchId": 2041512
-   }
+   },
+   "result": "1-3",
+   "half": "1:2",
+   "directionHit": null,
+   "scoreHit": null,
+   "pinSource": "fd",
+   "pinClose": [
+    0.2733,
+    0.2733,
+    0.4533
+   ]
   },
   {
    "idx": 5,
@@ -186,7 +211,12 @@
    "note": "铁律10：无锚不得作胆。且尤文近10场均仅1.3球、主场10场2负，碾压奈梅亨的假设本身不成立",
    "preSnapshots": {
     "matchId": 2041521
-   }
+   },
+   "result": "5-0",
+   "half": "3:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "pinSource": "none"
   },
   {
    "idx": 6,
@@ -211,7 +241,12 @@
    "note": "数据直接反对市场定价：波兹南客场7胜2平1负进球率77%，状态比水晶宫好。70.4%主胜是英超光环",
    "preSnapshots": {
     "matchId": 2041519
-   }
+   },
+   "result": "4-0",
+   "half": "3:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "pinSource": "none"
   },
   {
    "idx": 7,
@@ -266,7 +301,12 @@
    "note": "市场65.6%主胜与球队形态严重脱节：近10场3胜3平4负、主场负场多于胜场",
    "preSnapshots": {
     "matchId": 2041523
-   }
+   },
+   "result": "1-2",
+   "half": "0:1",
+   "directionHit": null,
+   "scoreHit": null,
+   "pinSource": "none"
   },
   {
    "idx": 9,
@@ -291,7 +331,12 @@
    "note": "铁律1无数据不预测：克里特为体彩新入库队，近10场totalLegCnt=0、standing全空",
    "preSnapshots": {
     "matchId": 2041518
-   }
+   },
+   "result": "2-0",
+   "half": "1:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "pinSource": "none"
   },
   {
    "idx": 10,
@@ -553,7 +598,12 @@
    "note": "皇社近10六负、主场2胜4平4负，但市场仍给34.4%；伯恩茅斯客胜39.7%无压倒优势。极差13.8pp=胶着，回避",
    "preSnapshots": {
     "matchId": 2041520
-   }
+   },
+   "result": "1-2",
+   "half": "0:2",
+   "directionHit": null,
+   "scoreHit": null,
+   "pinSource": "none"
   },
   {
    "idx": 19,
@@ -579,7 +629,12 @@
    "note": "贝西克塔主场8胜2负确实强，但欧罗巴无锚无模板，50.9%主胜的@1.74无超额空间",
    "preSnapshots": {
     "matchId": 2041511
-   }
+   },
+   "result": "4-1",
+   "half": "1:1",
+   "directionHit": null,
+   "scoreHit": null,
+   "pinSource": "none"
   },
   {
    "idx": 20,
@@ -599,7 +654,17 @@
     "无锚联赛(亚冠乙·fd不覆盖·铁律10禁入保底胆)"
    ],
    "inPlan": null,
-   "note": "09-17 增量补录(上架晚于09-16预测生成·10:24复扫时尚未在售)。判定全池不参与：①主胜1.22超低赔EV-2.4%(0.726×1.22-1)且无锚联赛不进保底/串骨架 ②平局轨p平16.7%<28%不入轨 ③亚冠乙杯赛无freq模板(CRS q无源·low_conf兜底也不出正值) ④TTG跨级别λ不可靠(淡宾尼场均2.6球是新加坡联赛口径)⑤彩票档资格够(≤1.25且p≥0.50)但本轮合格腿仅1条·池<4关档不硬凑。数据：insight覆盖(排名2v4/近10申花5胜0平5负·淡宾尼7胜1平2负/伤停0v0)；H2H零场❓；球队画像未建档(_aliases无·不参与场低初始化优先级)。让球盘-2：市场预期净胜1~2球区间(让后客1.78低赔侧)。"
+   "note": "09-17 增量补录(上架晚于09-16预测生成·10:24复扫时尚未在售)。判定全池不参与：①主胜1.22超低赔EV-2.4%(0.726×1.22-1)且无锚联赛不进保底/串骨架 ②平局轨p平16.7%<28%不入轨 ③亚冠乙杯赛无freq模板(CRS q无源·low_conf兜底也不出正值) ④TTG跨级别λ不可靠(淡宾尼场均2.6球是新加坡联赛口径)⑤彩票档资格够(≤1.25且p≥0.50)但本轮合格腿仅1条·池<4关档不硬凑。数据：insight覆盖(排名2v4/近10申花5胜0平5负·淡宾尼7胜1平2负/伤停0v0)；H2H零场❓；球队画像未建档(_aliases无·不参与场低初始化优先级)。让球盘-2：市场预期净胜1~2球区间(让后客1.78低赔侧)。",
+   "result": "2-1",
+   "half": "1:1",
+   "directionHit": null,
+   "scoreHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041517,
+    "lastOddsAt": "2026-09-17T19:25:07+08:00",
+    "lastIntelAt": "2026-09-17T11:10:59+08:00"
+   }
   }
  ],
  "revisionNote": "本轮19场新增场次全部完成insight拉取与逐场分析。12条候选腿过假设层：3条survived(周四004 CRS1:0 / 周三016 CRS1:1 / 周四001 CRS0:3)、4条pending(周四010/周四011/周三008/周三003)、5条refuted(周四007/005/009/003 + 周三009)。周四001虽假设survived但EV-25.2%，按\"假设过关≠值得买\"排除。最终主推2腿，均为freq与DC双模型同向且正EV。排除的高EV候选：周三016 HAFU aa@7.5(EV+57.2%)因freq对该场客胜估35.8%而DC/市场均约20%（差16pp）；周四004 TTG s1@4.0(EV+19.1%)因freq(29.8%)与DC(23.6%)跨越盈亏线。两者都是单模型高EV、跨模型不收敛，不买。 | 09-17 增量：周四002(上海申花vs淡宾尼士·亚冠乙)上架晚于09-16生成，09-17会话补录判定不参与(全池无正值·详见该场note)；其余19场维持finalReview终审结论。发现09-18销售日影子票漏登记(09-16会话未跑shadow-all)，本会话补登记。",

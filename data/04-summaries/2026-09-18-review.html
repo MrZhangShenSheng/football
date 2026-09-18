@@ -1,0 +1,96 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>2026-09-18 回填复盘</title>
+<style>
+:root{--bg:#f7f8fa;--card:#fff;--ink:#1c2430;--sub:#5b6675;--line:#e3e7ee;--ok:#1a7f4e;--bad:#c0392b;--warn:#b07a1a;--accent:#2b5fa8}
+@media (prefers-color-scheme:dark){:root{--bg:#14181f;--card:#1d232d;--ink:#dce3ec;--sub:#93a0b0;--line:#2c3542;--ok:#4cc98a;--bad:#ef7b6d;--warn:#e0b45c;--accent:#7aa9e8}}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.65 "Segoe UI","Microsoft YaHei",sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:24px 16px}
+h1{font-size:20px;margin:0 0 4px}.meta{color:var(--sub);font-size:12.5px;margin-bottom:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:14px 0}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.tile .k{color:var(--sub);font-size:12px}.tile .v{font-size:22px;font-weight:600;margin-top:2px}
+.tile .s{font-size:12px;color:var(--sub)}
+.ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}
+section{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:14px 0}
+h2{font-size:15px;margin:0 0 10px;display:flex;align-items:center;gap:7px;color:var(--accent)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--sub);font-weight:600;white-space:nowrap}
+.tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:9px;border:1px solid var(--line);white-space:nowrap}
+svg.ic{width:15px;height:15px;flex:none}
+ul{margin:6px 0;padding-left:20px}li{margin:3px 0}
+.small{font-size:12px;color:var(--sub)}
+</style></head><body><div class="wrap">
+
+<svg style="display:none"><symbol id="i-ball" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6L5.6 18.4"/></symbol><symbol id="i-ticket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/><path d="M13 6v12" stroke-dasharray="2 2.5"/></symbol><symbol id="i-lab" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3h6M10 3v6l-5.5 9A2 2 0 0 0 6.2 21h11.6a2 2 0 0 0 1.7-3L14 9V3"/><path d="M7.5 15h9"/></symbol><symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></symbol><symbol id="i-flag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 21V4m0 1h13l-3 4 3 4H5"/></symbol></svg>
+
+<h1>回填复盘 · 2026-09-18（周五）</h1>
+<div class="meta">回填窗口：销售日 2026-09-17（周三晚场）+ 2026-09-18（周四晚场）· 数据链：体彩对票 11 场 + WebSearch 兜底 · 流水：run.py verify ×2 → learn → dc_fit --auto → settle-all → 复盘</div>
+
+<div class="grid">
+<div class="tile"><div class="k">回填场次</div><div class="v">26<span class="s"> /28</span></div><div class="s">莱万特场延期 · 弗拉门戈进行中</div></div>
+<div class="tile"><div class="k">方向命中（HAD）</div><div class="v">1<span class="s"> /1</span></div><div class="s s ok">马竞 4-0 主胜 ✅ CLV −5.6%</div></div>
+<div class="tile"><div class="k">比分命中（CRS）</div><div class="v">1<span class="s"> /7 已判</span></div><div class="s">贝蒂斯 1:0 ✅ · 其余 6 miss</div></div>
+<div class="tile"><div class="k">实票结算</div><div class="v bad">−30<span class="s"> 元</span></div><div class="s">T034/T035/T037 全灭 · T036 待今晚</div></div>
+<div class="tile"><div class="k">影子层本轮回款</div><div class="v">+161.6<span class="s"> 元</span></div><div class="s">6 张结算 · 21 张被两场卡 pending</div></div>
+<div class="tile"><div class="k">语料库</div><div class="v">730<span class="s"> 条</span></div><div class="s">已回填 714 · CLV 120 · 门槛✅</div></div>
+</div>
+
+<section>
+<h2><svg class="ic"><use href="#i-ticket"/></svg>实票账本（本批结算）</h2>
+<table><tr><th>票</th><th>票面</th><th>腿判定</th><th>结果</th></tr>
+<tr><td>T034</td><td>2串1×5倍 10元（贝蒂斯 1:0 + 博塔弗戈 1:1）</td><td>贝蒂斯 1-0 <span class="ok">✅</span> · 博塔弗戈 3-2 <span class="bad">❌</span></td><td class="bad">−10 元</td></tr>
+<tr><td>T035</td><td>错票保留 2串1×5倍 10元（奥莫尼亚 1:0 + 博塔弗戈 1:1）</td><td>奥莫尼亚 <span class="ok">✅</span> · 博塔弗戈 <span class="bad">❌</span></td><td class="bad">−10 元</td></tr>
+<tr><td>T037</td><td>假设驱动首次落地 2串1×5倍 10元（尤文 1:0 + 马拉加 0:0）</td><td>尤文 5-0 <span class="bad">❌</span> · 马拉加 1-3 <span class="bad">❌</span></td><td class="bad">−10 元</td></tr>
+<tr><td>T036</td><td>贝蒂斯 CRS 复式2串1×3倍 24元（0:0/1:0 × 纽约城 1:1/2:1）</td><td>贝蒂斯 1-0 <span class="ok">✅复式含中</span> · 纽约城今晚开赛</td><td class="warn">pending</td></tr>
+</table>
+<p class="small">账本累计：37 票 · 投入 646 · 回款 477.97 · 净 −168.03。两日四票同押贝蒂斯/博塔弗戈方向面——博塔弗戈 3-2 断 T034/T035，尤文大胜断 T037（选点 1:0 被 5-0 打脸，大胜方向对但比分选点为假设驱动保守型）。</p>
+</section>
+
+<section>
+<h2><svg class="ic"><use href="#i-ball"/></svg>逐场明细（已回填）</h2>
+<table><tr><th>场次</th><th>对阵</th><th>赛果</th><th>系统口径</th><th>判定</th></tr>
+<tr><td>周三006</td><td>马竞 vs 奥萨苏纳</td><td>4-0</td><td>HAD 主胜</td><td class="ok">✅ CLV −5.6%</td></tr>
+<tr><td>周四004</td><td>贝蒂斯 vs 赫塔费</td><td>1-0</td><td>CRS 1:0（T036/T034 同推）</td><td class="ok">✅ 比分命中</td></tr>
+<tr><td>周三002</td><td>全北现代 vs 柏太阳神</td><td>2-1</td><td>CRS 1:0</td><td class="bad">❌ 方向对差一球</td></tr>
+<tr><td>周三012</td><td>考文垂 vs 维拉</td><td>1-3</td><td>CRS 1:0</td><td class="bad">❌ 客大胜反选</td></tr>
+<tr><td>周三017</td><td>科林蒂安 vs 拉普大学</td><td>0-1</td><td>CRS 1:2</td><td class="bad">❌ 方向对比分反</td></tr>
+<tr><td>周三016</td><td>博塔弗戈 vs 格雷米奥</td><td>3-2</td><td>CRS 1:1</td><td class="bad">❌ 对攻局误判胶着</td></tr>
+<tr><td>周四007</td><td>尤文 vs 奈梅亨</td><td>5-0</td><td>回避（T037 手选 1:0）</td><td class="warn">系统回避正确·手选 miss</td></tr>
+<tr><td>周四010</td><td>马拉加 vs 比利亚雷</td><td>1-3</td><td>观察 pending</td><td class="warn">T037 手选 0:0 miss</td></tr>
+</table>
+<p class="small">其余 18 场为排除/不参与/无玩法推荐场（含女亚锦、亚冠等），逐场记录在 02-results 主文件。</p>
+</section>
+
+<section>
+<h2><svg class="ic"><use href="#i-lab"/></svg>闭环学习（corpus / calibrate / ablate / learn）</h2>
+<ul>
+<li><b>校准 calibrate</b>：n=347 · 当前 a=0.4 RPS=0.1817 · 最优 a=0.05 改善 +0.92% <span class="warn">&lt;1% 护栏 → 维持 a=0.4</span>；242 场无 p_pinnacle 降级口径，pinClose 补全后复看</li>
+<li><b>趋势 trend</b>：<span class="warn">⚠ 0%~40% 桶实际 56% vs 预测 38%（低估 18pp）</span>——低置信区间系统性保守，与「假设驱动大胆端」互补的校准方向</li>
+<li><b>消融 ablate</b>：开季修正 CI 跨 0 维持；<span class="warn">F9（市场 vs 模型大分歧）累积 48 场主因触发消融候选线</span></li>
+<li><b>learn</b>：日职/沙特/瑞超/丹超 holdout 劣于当前版拒绝发布（门槛保护正常）；巴西/挪超/美职训练集无新数据跳过</li>
+<li><b>温度</b>：crs/ttg T=1.30 CI 下界&gt;0 稳定启用；西甲存档刷新含昨夜贝蒂斯/马拉加场，pinClose 救回 6 场（86→80）</li>
+</ul>
+</section>
+
+<section>
+<h2><svg class="ic"><use href="#i-clock"/></svg>挂账与晚间重跑清单</h2>
+<ul>
+<li><b>莱万特 vs 毕尔巴鄂（周三014）延期</b>：新华网 09-17 报道，重赛日待定——09-17 影子票 20 张（P189~P208）被此场结构性卡 pending，重赛回填后 settle-all 自动解锁</li>
+<li><b>弗拉门戈 vs 德尔瓦耶（周四011）进行中</b>：今晨 08:30 开赛（半场 0-0，ESPN 51' 显示 0-1 客队领先）——完赛进体彩公告后晚间重跑 verify 回填，09-18 影子票 15 张随之解锁</li>
+<li><b>fd pinClose 80 场待补</b>：英超/德甲/意甲等当日行英国下午更新——<b>晚间重跑 run.py verify 一次</b>（幂等）补收盘价 + CLV + dc_fit 复检</li>
+<li><b>T036 今晚结算</b>：纽约城 vs 纽约红牛（周五014）完赛后下轮回填自动结算——贝蒂斯腿已命中，2串1×3倍存活于第二腿</li>
+</ul>
+</section>
+
+<section>
+<h2><svg class="ic"><use href="#i-flag"/></svg>本轮教训</h2>
+<ul>
+<li><b>CRS 选点 1/7（14%）</b>：低于 26.3% 历史基线——小样本但连续两轮偏冷；shape 归因：3 场方向对比分反（全北 2-1/科林蒂安 0-1 方向对差一球、比分数字反），属形状族内偏差非方向错误</li>
+<li><b>T037 假设驱动首战全灭</b>：两场假设（尤文小胜 1:0 / 马拉加闷平 0:0）均选保守比分，实际 5-0 / 1-3 两极化——「未被否决的假设里选最高赔」流程执行无瑕疵，输在假设池本身（保守偏差）；样本 1 票不判流程死刑，继续观察</li>
+<li><b>博塔弗戈 3-2 单点断两票</b>：T034/T035 共享腿（1:1 胶着假设），实际对攻局——胶着假设在巴西南美客场的适用性存疑，记入 F9 观察池</li>
+</ul>
+</section>
+
+<p class="small">数据来源：data/02-results/2026-09-17.json · 2026-09-18.json · data/06-tickets/tickets.json · engine/shadow/paper_tickets.json · data/04-summaries/{corpus,attribution,ablate-report}.json · trend.html · 新华网（延期核实）· ESPN（弗拉门戈进行中）</p>
+</div></body></html>
