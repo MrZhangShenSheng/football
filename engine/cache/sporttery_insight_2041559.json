@@ -1,0 +1,251 @@
+{
+ "fetchedAt": "2026-09-18",
+ "source": "sporttery",
+ "matchId": 2041559,
+ "match": {
+  "code": "周六004",
+  "league": "日职",
+  "gameweek": "8",
+  "season": "2026",
+  "home": "横滨水手",
+  "away": "水户蜀葵",
+  "kickoff": "2026-09-19 18:30",
+  "uniformMatchId": 2508538
+ },
+ "standing": {
+  "away": {
+   "groupName": "",
+   "phaseName": "Regular Season",
+   "ranking": "11",
+   "sAwayDrawMatchCnt": "1",
+   "sAwayLossGoalMatchCnt": "1",
+   "sAwayWinGoalMatchCnt": "1",
+   "sDrawMatchCnt": "3",
+   "sLossGoalMatchCnt": "2",
+   "sWinGoalMatchCnt": "2",
+   "seasonName": "2026"
+  },
+  "home": {
+   "groupName": "",
+   "phaseName": "Regular Season",
+   "ranking": "9",
+   "sDrawMatchCnt": "2",
+   "sHomeDrawMatchCnt": "1",
+   "sHomeLossGoalMatchCnt": "1",
+   "sHomeWinGoalMatchCnt": "1",
+   "sLossGoalMatchCnt": "2",
+   "sWinGoalMatchCnt": "3",
+   "seasonName": "2026"
+  }
+ },
+ "injuries": {
+  "home": [],
+  "away": []
+ },
+ "form": {
+  "goalAvg": {
+   "awayGoalAvgCnt": "1.1",
+   "awayGoalAvgCntRatio": "40.7",
+   "homeGoalAvgCnt": "1.6",
+   "homeGoalAvgCntRatio": "59.3",
+   "totalLegCnt": 10
+  },
+  "last10": {
+   "awayDrawMatchCnt": 4,
+   "awayLossGoalMatchCnt": 4,
+   "awayScoreRatio": "33",
+   "awayWinGoalMatchCnt": 2,
+   "homeDrawMatchCnt": 3,
+   "homeLossGoalMatchCnt": 2,
+   "homeScoreRatio": "60",
+   "homeWinGoalMatchCnt": 5,
+   "totalLegCnt": 10
+  },
+  "last10HomeAway": {
+   "awayDrawMatchCnt": 4,
+   "awayLossGoalMatchCnt": 5,
+   "awayScoreRatio": "23",
+   "awayWinGoalMatchCnt": 1,
+   "homeDrawMatchCnt": 4,
+   "homeLossGoalMatchCnt": 3,
+   "homeScoreRatio": "43",
+   "homeWinGoalMatchCnt": 3,
+   "totalLegCnt": 10
+  }
+ },
+ "h2h": {
+  "statistics": {
+   "drawMatchCnt": 2,
+   "drawProbability": "67%",
+   "goalCnt": 0,
+   "lossGoalCnt": 0,
+   "lossGoalMatchCnt": 1,
+   "lossProbability": "33%",
+   "netGoal": 0,
+   "sportteryTeamId": 0,
+   "teamId": 0,
+   "teamShortName": "横滨水手",
+   "totalLegCnt": 3,
+   "winGoalMatchCnt": 0,
+   "winProbability": "0%"
+  },
+  "matches": [
+   {
+    "date": "2026-05-02",
+    "home": "横滨水手",
+    "score": "1:1",
+    "ht": "1:1",
+    "away": "水户蜀葵",
+    "winner": "draw"
+   },
+   {
+    "date": "2026-03-18",
+    "home": "水户蜀葵",
+    "score": "1:0",
+    "ht": "0:0",
+    "away": "横滨水手",
+    "winner": "away"
+   },
+   {
+    "date": "2024-07-10",
+    "home": "横滨水手",
+    "score": "2:2",
+    "ht": "2:1",
+    "away": "水户蜀葵",
+    "winner": "draw"
+   }
+  ]
+ },
+ "scorers": {
+  "away": {
+   "playerList": [
+    {
+     "appearanceCnt": 7,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.7",
+     "goalCnt": 5,
+     "goalProbability": "45%",
+     "injuryFlag": 0,
+     "personId": 501925,
+     "personName": "A. Watanabe",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 7,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "10"
+    },
+    {
+     "appearanceCnt": 7,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.3",
+     "goalCnt": 2,
+     "goalProbability": "18%",
+     "injuryFlag": 0,
+     "personId": 437034,
+     "personName": "Y. Kimoto",
+     "playerPositionCode": "Defender",
+     "playerPositionDesc": "后卫",
+     "startedMatchCnt": 7,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "15"
+    },
+    {
+     "appearanceCnt": 7,
+     "assistAvgCnt": "0.3",
+     "assistCnt": 2,
+     "assistProbability": "25%",
+     "goalAvgCnt": "0.1",
+     "goalCnt": 1,
+     "goalProbability": "9%",
+     "injuryFlag": 0,
+     "personId": 670652,
+     "personName": "Y. Torikai",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 7,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "11"
+    }
+   ],
+   "sportteryTeamId": 1016,
+   "teamId": 1345,
+   "teamShortName": "水户蜀葵",
+   "uniformTeamId": 377
+  },
+  "home": {
+   "playerList": [
+    {
+     "appearanceCnt": 7,
+     "assistAvgCnt": "0.1",
+     "assistCnt": 1,
+     "assistProbability": "14%",
+     "goalAvgCnt": "0.9",
+     "goalCnt": 6,
+     "goalProbability": "55%",
+     "injuryFlag": 0,
+     "personId": 738866,
+     "personName": "K. Tanimura",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 7,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "9"
+    },
+    {
+     "appearanceCnt": 7,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.3",
+     "goalCnt": 2,
+     "goalProbability": "18%",
+     "injuryFlag": 0,
+     "personId": 912125,
+     "personName": "三井寺真",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 5,
+     "substituteMatchCnt": 2,
+     "suspensionFlag": 0,
+     "uniformNo": "47"
+    },
+    {
+     "appearanceCnt": 7,
+     "assistAvgCnt": "0.1",
+     "assistCnt": 1,
+     "assistProbability": "14%",
+     "goalAvgCnt": "0.1",
+     "goalCnt": 1,
+     "goalProbability": "9%",
+     "injuryFlag": 0,
+     "personId": 841810,
+     "personName": "T. Inoue",
+     "playerPositionCode": "Defender",
+     "playerPositionDesc": "后卫",
+     "startedMatchCnt": 7,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "13"
+    }
+   ],
+   "sportteryTeamId": 562,
+   "teamId": 1322,
+   "teamShortName": "横滨水手",
+   "uniformTeamId": 266
+  },
+  "seasonId": 14253,
+  "seasonName": "2026",
+  "tournamentId": 50,
+  "tournamentShortName": "日职",
+  "uniformLeagueId": 28,
+  "uniformMatchId": 2508538
+ }
+}

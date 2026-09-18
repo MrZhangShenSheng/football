@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-09-17",
+ "fetchedAt": "2026-09-18",
  "source": "sporttery",
  "matchId": 2041539,
  "match": {
@@ -39,8 +39,46 @@
   }
  },
  "injuries": {
-  "home": [],
-  "away": []
+  "home": [
+   {
+    "name": "M. Daramy",
+    "pos": "前锋",
+    "no": "9",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 5,
+    "starts": 5
+   },
+   {
+    "name": "Y. Fofana",
+    "pos": "中场",
+    "no": "8",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 6,
+    "starts": 6
+   }
+  ],
+  "away": [
+   {
+    "name": "A. Gueguin",
+    "pos": "前锋",
+    "no": "22",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 0,
+    "starts": 0
+   },
+   {
+    "name": "N. Pays",
+    "pos": "前锋",
+    "no": "18",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 6,
+    "starts": 6
+   }
+  ]
  },
  "form": {
   "goalAvg": {
@@ -245,7 +283,7 @@
      "goalAvgCnt": "0.7",
      "goalCnt": 4,
      "goalProbability": "33%",
-     "injuryFlag": 0,
+     "injuryFlag": 1,
      "personId": 695566,
      "personName": "Y. Fofana",
      "playerPositionCode": "Midfielder",

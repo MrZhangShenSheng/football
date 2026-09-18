@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-09-17",
+ "fetchedAt": "2026-09-18",
  "source": "sporttery",
  "matchId": 2041540,
  "match": {
@@ -39,8 +39,82 @@
   }
  },
  "injuries": {
-  "home": [],
-  "away": []
+  "home": [
+   {
+    "name": "R.詹斯",
+    "pos": "守门员",
+    "no": "31",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 0,
+    "starts": 0
+   },
+   {
+    "name": "T. Hearnes",
+    "pos": "中场",
+    "no": "7",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 5,
+    "starts": 0
+   },
+   {
+    "name": "T. van Bergen",
+    "pos": "前锋",
+    "no": "26",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 6,
+    "starts": 6
+   },
+   {
+    "name": "M. Brandis",
+    "pos": "后卫",
+    "no": "12",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 3,
+    "starts": 0
+   },
+   {
+    "name": "M. Jeng",
+    "pos": "后卫",
+    "no": "21",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 0,
+    "starts": 0
+   },
+   {
+    "name": "T. Mercera",
+    "pos": "后卫",
+    "no": "29",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 1,
+    "starts": 0
+   }
+  ],
+  "away": [
+   {
+    "name": "Y. Namli",
+    "pos": "前锋",
+    "no": "7",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 0,
+    "starts": 0
+   },
+   {
+    "name": "弗洛伦斯",
+    "pos": "后卫",
+    "no": "2",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 3,
+    "starts": 3
+   }
+  ]
  },
  "form": {
   "goalAvg": {
@@ -263,7 +337,7 @@
      "goalAvgCnt": "0.5",
      "goalCnt": 3,
      "goalProbability": "27%",
-     "injuryFlag": 0,
+     "injuryFlag": 1,
      "personId": 697116,
      "personName": "T. van Bergen",
      "playerPositionCode": "Forward",
