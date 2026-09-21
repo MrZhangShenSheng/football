@@ -3,14 +3,29 @@
   "season": "2627",
   "refitEvery": 30,
   "fusion": {
-    "a": 0.4,
+    "a": 0.0,
     "b": 1.0
   },
-  "ranAt": "2026-09-10",
+  "ranAt": "2026-09-21",
   "metrics": {
-    "market_only": null,
-    "dc_only": null,
-    "fused": null
+    "market_only": {
+      "rps": 0.2042,
+      "logloss": 0.946,
+      "acc": 0.5,
+      "n": 10
+    },
+    "dc_only": {
+      "rps": 0.2273,
+      "logloss": 1.0702,
+      "acc": 0.4,
+      "n": 10
+    },
+    "fused": {
+      "rps": 0.2042,
+      "logloss": 0.946,
+      "acc": 0.5,
+      "n": 10
+    }
   },
-  "records": 0
+  "records": 10
 }

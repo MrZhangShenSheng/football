@@ -6,11 +6,26 @@
     "a": 0.4,
     "b": 1.0
   },
-  "ranAt": "2026-09-10",
+  "ranAt": "2026-09-21",
   "metrics": {
-    "market_only": null,
-    "dc_only": null,
-    "fused": null
+    "market_only": {
+      "rps": 0.2205,
+      "logloss": 1.1717,
+      "acc": 0.4,
+      "n": 10
+    },
+    "dc_only": {
+      "rps": 0.147,
+      "logloss": 0.8702,
+      "acc": 0.5,
+      "n": 10
+    },
+    "fused": {
+      "rps": 0.1744,
+      "logloss": 0.9996,
+      "acc": 0.5,
+      "n": 10
+    }
   },
-  "records": 0
+  "records": 10
 }
