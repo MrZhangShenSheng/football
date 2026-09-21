@@ -65,6 +65,29 @@ def test_settle_4串11_partial_win():
     assert pay == round(expect, 2) and pay > 0
 
 
+def test_void_leg_settles_at_1_00():
+    """体彩无效场次腿按 1.00 计（官方兑付=等价剔除）：4串1 断 1 腿改 void → 剩余 3 腿照常过关派彩。"""
+    legs = _strong8()
+    t = shapes.build_ticket(legs, SPEC['4串1'])
+    res = [{'code': l['code'], 'outcome': 0, 'score': (2, 0)} for l in legs[:4]]
+    # 腿3 无效：全胜票回款应从 4 腿连乘降到 3 腿连乘（void=×1.00）
+    full = shapes.settle(res, {'tlegs': t['tlegs'], 'bets': t['bets'], 'mult': t['mult']})
+    res[3] = {'code': legs[3]['code'], 'void': True, 'outcome': None, 'score': None}
+    voided = shapes.settle(res, {'tlegs': t['tlegs'], 'bets': t['bets'], 'mult': t['mult']})
+    import math
+    expect = 2 * t['mult'] * math.prod(legs[i]['odds'][0] for i in range(3))   # 腿3 价 1.00
+    assert voided == round(expect, 2)
+    assert voided < full                                       # 少一腿价（若腿3价>1）
+    # 全 void 注（2串1 双 void）→ ∏=1.00 → 回款=本金×mult（体彩退款口径）
+    tview = {'tlegs': [{'src': 0, 'kind': 'had', 'odds': [1.5, None, None]},
+                       {'src': 1, 'kind': 'had', 'odds': [1.8, None, None]}],
+             'bets': [{'legs': [(0, 0), (1, 0)]}], 'mult': 1}
+    res2 = [{'code': legs[0]['code'], 'void': True, 'outcome': None, 'score': None},
+            {'code': legs[1]['code'], 'void': True, 'outcome': None, 'score': None}]
+    refund = shapes.settle(res2, tview)
+    assert refund == 2                                          # 2元 × 1.00 × 1.00 = 本金退回
+
+
 def test_dual_second_option_pays():
     """双选腿次选项命中应派彩（复式核心：未买槽 None 不误伤已买槽）。"""
     legs = _strong8()

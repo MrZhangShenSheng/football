@@ -329,6 +329,8 @@ def settle(legs, ticket) -> float:
         for ti, pick in bet['legs']:
             tleg = ticket['tlegs'][ti]
             rec = legs[tleg['src']]
+            if rec.get('void'):
+                continue               # 体彩无效场次腿按 1.00 计（官方兑付=等价剔除，剩余腿照常过关）
             price = _pick_price(tleg, pick, rec.get('outcome'), rec.get('score'))
             if price is None:
                 odds_prod = None

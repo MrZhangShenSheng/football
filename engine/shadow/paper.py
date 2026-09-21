@@ -165,10 +165,14 @@ def _settle_view(ticket, round_results):
             return None
         outcome, score = r
         score = tuple(score) if score else None
-        if leg['market'] != 'had' and score is None:
-            return None                    # ttg/crs 腿缺比分不可结算（shapes._hit_of 需 score）
-        legs_out.append({'code': leg['code'], 'outcome': outcome, 'score': score})
+        if outcome == 'void':
+            legs_out.append({'code': leg['code'], 'void': True, 'outcome': None, 'score': None})
+        else:
+            if leg['market'] != 'had' and score is None:
+                return None                # ttg/crs 腿缺比分不可结算（shapes._hit_of 需 score）
+            legs_out.append({'code': leg['code'], 'outcome': outcome, 'score': score})
         tlegs.append({'src': len(legs_out) - 1, 'kind': leg['market'], 'odds': leg['odds']})
+        # 体彩无效场次：腿按 1.00 计（shapes.settle void 分支），先于缺比分判定
     return legs_out, {'tlegs': tlegs, 'bets': ticket['bets'], 'mult': ticket['mult']}
 
 
@@ -344,7 +348,12 @@ if __name__ == '__main__' and len(__import__('sys').argv) > 1 and __import__('sy
         for m in d.get('matches', []):
             dt = m.get('matchDate')
             sc = str(m.get('score') or '')
-            if m.get('status') == 'Played' and ':' in sc and dt:
+            if m.get('status') == 'Played' and sc.startswith('无效') and dt:
+                rounds.setdefault(dt, []).append({
+                    'code': m.get('code'), 'match': f"{m.get('home','')} vs {m.get('away','')}",
+                    'outcome': 'void', 'score': None,   # 体彩无效场次：结算按官方兑付=腿 1.00 计
+                })
+            elif m.get('status') == 'Played' and ':' in sc and dt:
                 h, a = sc.split(':')
                 rounds.setdefault(dt, []).append({
                     'code': m.get('code'), 'match': f"{m.get('home','')} vs {m.get('away','')}",
