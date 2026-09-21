@@ -1,0 +1,287 @@
+{
+ "structure": "new",
+ "date": "2026-09-21",
+ "seq": 25,
+ "tiers": {
+  "base": {
+   "cost": 0,
+   "legs": [],
+   "play": "had-3*4*5",
+   "note": "保底关档（2026-09-16 拍板：资金小量不保本无所谓 · spec §1.4）",
+   "coverGate": null
+  },
+  "upset": {
+   "shape": "pool-2x1x3",
+   "cost": 2,
+   "legs": [
+    {
+     "matchNumStr": "周二004",
+     "match": "维冈 vs 布莱克浦",
+     "play": "crs",
+     "pick": "1:1",
+     "odds": 8.0,
+     "q": 0.1186,
+     "ev": -0.0512,
+     "modelSupport": "template",
+     "hypothesis": {
+      "assumption": "",
+      "checks": [],
+      "verdict": "pending"
+     }
+    },
+    {
+     "matchNumStr": "周二003",
+     "match": "诺茨郡 vs 格里姆",
+     "play": "crs",
+     "pick": "1:1",
+     "odds": 7.25,
+     "q": 0.1186,
+     "ev": -0.1401,
+     "modelSupport": "template",
+     "hypothesis": {
+      "assumption": "",
+      "checks": [],
+      "verdict": "pending"
+     }
+    }
+   ],
+   "bets": [
+    {
+     "legs": [
+      0,
+      1
+     ],
+     "multiplier": 1
+    }
+   ],
+   "note": "1注跨池2串1(同场≤1腿)",
+   "blockedByHypothesis": [
+    {
+     "pick": "1:1",
+     "verdict": "pending"
+    },
+    {
+     "pick": "1:1",
+     "verdict": "pending"
+    }
+   ]
+  },
+  "lottery": {
+   "shape": "closed",
+   "cost": 0,
+   "legs": [
+    {
+     "matchNumStr": "周二002",
+     "match": "米尔顿-克劳利",
+     "play": "had",
+     "pick": "客胜",
+     "odds": 4.88,
+     "modelSupport": "none",
+     "hypothesis": {
+      "assumption": "",
+      "checks": [],
+      "verdict": "pending"
+     }
+    },
+    {
+     "matchNumStr": "周二003",
+     "match": "诺茨郡-格里姆",
+     "play": "had",
+     "pick": "平",
+     "odds": 3.45,
+     "modelSupport": "none",
+     "hypothesis": {
+      "assumption": "",
+      "checks": [],
+      "verdict": "pending"
+     }
+    },
+    {
+     "matchNumStr": "周二004",
+     "match": "维冈-布莱克浦",
+     "play": "had",
+     "pick": "平",
+     "odds": 3.5,
+     "modelSupport": "none",
+     "hypothesis": {
+      "assumption": "",
+      "checks": [],
+      "verdict": "pending"
+     }
+    }
+   ],
+   "note": "彩票档关档（合格腿3<4，不硬凑）",
+   "blockedByHypothesis": [
+    {
+     "pick": "客胜",
+     "verdict": "pending"
+    },
+    {
+     "pick": "平",
+     "verdict": "pending"
+    },
+    {
+     "pick": "平",
+     "verdict": "pending"
+    }
+   ]
+  }
+ },
+ "totalCost": 2,
+ "cards": [
+  {
+   "code": "周二003",
+   "match": "诺茨郡 vs 格里姆",
+   "candidates": [
+    {
+     "code": "周二003",
+     "match": "诺茨郡 vs 格里姆",
+     "pool": "crs",
+     "pick": "1:1",
+     "q": 0.1186,
+     "odds": 7.25,
+     "ev": -0.1401
+    },
+    {
+     "code": "周二003",
+     "match": "诺茨郡 vs 格里姆",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2338,
+     "odds": 3.75,
+     "ev": -0.1232
+    },
+    {
+     "code": "周二003",
+     "match": "诺茨郡 vs 格里姆",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2257,
+     "odds": 3.55,
+     "ev": -0.1988
+    },
+    {
+     "code": "周二003",
+     "match": "诺茨郡 vs 格里姆",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2597,
+     "odds": 3.5,
+     "ev": -0.0911
+    },
+    {
+     "code": "周二003",
+     "match": "诺茨郡 vs 格里姆",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.1786,
+     "odds": 4.55,
+     "ev": -0.1874
+    }
+   ],
+   "rec_base": {
+    "code": "周二003",
+    "match": "诺茨郡 vs 格里姆",
+    "pool": "hafu",
+    "pick": "hh",
+    "q": 0.2597,
+    "odds": 3.5,
+    "ev": -0.0911
+   },
+   "rec_upset": {
+    "code": "周二003",
+    "match": "诺茨郡 vs 格里姆",
+    "pool": "crs",
+    "pick": "1:1",
+    "q": 0.1186,
+    "odds": 7.25,
+    "ev": -0.1401
+   },
+   "flags": [
+    "low_conf",
+    "pure_template"
+   ]
+  },
+  {
+   "code": "周二004",
+   "match": "维冈 vs 布莱克浦",
+   "candidates": [
+    {
+     "code": "周二004",
+     "match": "维冈 vs 布莱克浦",
+     "pool": "crs",
+     "pick": "1:1",
+     "q": 0.1186,
+     "odds": 8.0,
+     "ev": -0.0512
+    },
+    {
+     "code": "周二004",
+     "match": "维冈 vs 布莱克浦",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2338,
+     "odds": 4.15,
+     "ev": -0.0297
+    },
+    {
+     "code": "周二004",
+     "match": "维冈 vs 布莱克浦",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2257,
+     "odds": 3.6,
+     "ev": -0.1875
+    },
+    {
+     "code": "周二004",
+     "match": "维冈 vs 布莱克浦",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2597,
+     "odds": 3.35,
+     "ev": -0.13
+    },
+    {
+     "code": "周二004",
+     "match": "维冈 vs 布莱克浦",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.1786,
+     "odds": 4.55,
+     "ev": -0.1874
+    }
+   ],
+   "rec_base": {
+    "code": "周二004",
+    "match": "维冈 vs 布莱克浦",
+    "pool": "ttg",
+    "pick": "s2",
+    "q": 0.2338,
+    "odds": 4.15,
+    "ev": -0.0297
+   },
+   "rec_upset": {
+    "code": "周二004",
+    "match": "维冈 vs 布莱克浦",
+    "pool": "crs",
+    "pick": "1:1",
+    "q": 0.1186,
+    "odds": 8.0,
+    "ev": -0.0512
+   },
+   "flags": [
+    "low_conf",
+    "pure_template"
+   ]
+  }
+ ],
+ "ranAt": "2026-09-21",
+ "approved": false,
+ "warnings": [
+  "[upset] 2 腿假设未通过（pending/refuted），出票前须逐条验证",
+  "[lottery] 3 腿假设未通过（pending/refuted），出票前须逐条验证"
+ ],
+ "method": "freq",
+ "dataAsOf": "2026-09-21"
+}

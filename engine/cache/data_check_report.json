@@ -1,277 +1,49 @@
 {
-  "checkedAt": "2026-09-17",
+  "checkedAt": "2026-09-21",
   "leagues": {
-    "亚运男足": {
+    "英锦标赛": {
       "status": "missing"
-    },
-    "芬超": {
-      "status": "missing"
-    },
-    "德乙": {
-      "status": "missing"
-    },
-    "挪超": {
-      "status": "ready",
-      "roundsPlayed": 19,
-      "standingsSource": "espn",
-      "fdCovered": false
-    },
-    "法乙": {
-      "status": "ready",
-      "roundsPlayed": 51,
-      "standingsSource": "fd-derived",
-      "fdCovered": true
-    },
-    "荷甲": {
-      "status": "ready",
-      "roundsPlayed": 56,
-      "standingsSource": "fd-derived",
-      "fdCovered": true
-    },
-    "荷乙": {
-      "status": "missing"
-    },
-    "德甲": {
-      "status": "ready",
-      "roundsPlayed": 54,
-      "standingsSource": "fd-derived",
-      "fdCovered": true
-    },
-    "意甲": {
-      "status": "ready",
-      "roundsPlayed": 62,
-      "standingsSource": "fd-derived",
-      "fdCovered": true
-    },
-    "法甲": {
-      "status": "ready",
-      "roundsPlayed": 55,
-      "standingsSource": "fd-derived",
-      "fdCovered": true
-    },
-    "英超": {
-      "status": "ready",
-      "roundsPlayed": 63,
-      "standingsSource": "fd-derived",
-      "fdCovered": true
-    },
-    "英冠": {
-      "status": "ready",
-      "roundsPlayed": 75,
-      "standingsSource": "fd-derived",
-      "fdCovered": true
-    },
-    "西甲": {
-      "status": "ready",
-      "roundsPlayed": 63,
-      "standingsSource": "fd-derived",
-      "fdCovered": true
-    },
-    "美职": {
-      "status": "ready",
-      "roundsPlayed": 23,
-      "standingsSource": "espn",
-      "fdCovered": false
     }
   },
   "missingLeagues": [
-    "亚运男足",
-    "芬超",
-    "德乙",
-    "荷乙"
+    "英锦标赛"
   ],
   "staleLeagues": [],
   "missingAlias": [
     {
-      "team": "沙特亚",
-      "league": "亚运男足",
-      "match": "沙特亚 vs 卡塔尔亚"
+      "team": "米尔顿",
+      "league": "英锦标赛",
+      "match": "米尔顿 vs 克劳利"
     },
     {
-      "team": "卡塔尔亚",
-      "league": "亚运男足",
-      "match": "沙特亚 vs 卡塔尔亚"
+      "team": "克劳利",
+      "league": "英锦标赛",
+      "match": "米尔顿 vs 克劳利"
     },
     {
-      "team": "达姆施塔",
-      "league": "德乙",
-      "match": "沃夫斯堡 vs 达姆施塔"
+      "team": "诺茨郡",
+      "league": "英锦标赛",
+      "match": "诺茨郡 vs 格里姆"
     },
     {
-      "team": "萨普斯堡",
-      "league": "挪超",
-      "match": "萨普斯堡 vs 奥斯KFUM"
+      "team": "格里姆",
+      "league": "英锦标赛",
+      "match": "诺茨郡 vs 格里姆"
     },
     {
-      "team": "海尔蒙特",
-      "league": "荷乙",
-      "match": "登博思 vs 海尔蒙特"
+      "team": "维冈",
+      "league": "英锦标赛",
+      "match": "维冈 vs 布莱克浦"
+    },
+    {
+      "team": "布莱克浦",
+      "league": "英锦标赛",
+      "match": "维冈 vs 布莱克浦"
     }
   ],
-  "notReadyTeams": [
-    {
-      "team": "赫尔火花",
-      "teamId": "gnistan-helsinki",
-      "league": "finland",
-      "status": "missing"
-    },
-    {
-      "team": "赫尔辛基",
-      "teamId": "hjk-helsinki",
-      "league": "finland",
-      "status": "missing"
-    },
-    {
-      "team": "沃夫斯堡",
-      "teamId": "wolfsburg",
-      "league": "germany-bundesliga2",
-      "status": "missing"
-    },
-    {
-      "team": "奥斯KFUM",
-      "teamId": "kfum-oslo",
-      "league": "norway",
-      "status": "missing"
-    },
-    {
-      "team": "兰斯",
-      "teamId": "reims",
-      "league": "france",
-      "status": "stale",
-      "lastUpdated": "2026-08-24",
-      "ageDays": 24
-    },
-    {
-      "team": "蒙彼利埃",
-      "teamId": "montpellier",
-      "league": "france",
-      "status": "stale",
-      "lastUpdated": "2026-08-21",
-      "ageDays": 27
-    },
-    {
-      "team": "格罗宁根",
-      "teamId": "groningen",
-      "league": "netherlands-eredivisie",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 26
-    },
-    {
-      "team": "兹沃勒",
-      "teamId": "pec-zwolle",
-      "league": "netherlands-eredivisie",
-      "status": "missing"
-    },
-    {
-      "team": "登博思",
-      "teamId": "den-bosch",
-      "league": "netherlands",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 26
-    },
-    {
-      "team": "拜仁",
-      "teamId": "bayern",
-      "league": "germany-bundesliga",
-      "status": "stale",
-      "lastUpdated": "2026-09-01",
-      "ageDays": 16
-    },
-    {
-      "team": "蒙扎",
-      "teamId": "monza",
-      "league": "italy",
-      "status": "stale",
-      "lastUpdated": "2026-09-01",
-      "ageDays": 16
-    },
-    {
-      "team": "萨索洛",
-      "teamId": "sassuolo",
-      "league": "italy",
-      "status": "stale",
-      "lastUpdated": "2026-09-01",
-      "ageDays": 16
-    },
-    {
-      "team": "摩纳哥",
-      "teamId": "monaco",
-      "league": "france",
-      "status": "missing"
-    },
-    {
-      "team": "朗斯",
-      "teamId": "lens",
-      "league": "france",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 26
-    },
-    {
-      "team": "布伦特",
-      "teamId": "brentford",
-      "league": "england",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 26
-    },
-    {
-      "team": "切尔西",
-      "teamId": "chelsea",
-      "league": "england",
-      "status": "stale",
-      "lastUpdated": "2026-08-24",
-      "ageDays": 24
-    },
-    {
-      "team": "布城",
-      "teamId": "bristol-city",
-      "league": "england-championship",
-      "status": "stale",
-      "lastUpdated": "2026-09-01",
-      "ageDays": 16
-    },
-    {
-      "team": "沃特福德",
-      "teamId": "watford",
-      "league": "england-championship",
-      "status": "stale",
-      "lastUpdated": "2026-09-01",
-      "ageDays": 16
-    },
-    {
-      "team": "西班牙人",
-      "teamId": "espanyol",
-      "league": "spain",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 26
-    },
-    {
-      "team": "埃尔切",
-      "teamId": "elche",
-      "league": "spain",
-      "status": "stale",
-      "lastUpdated": "2026-09-07",
-      "ageDays": 10
-    },
-    {
-      "team": "纽约城",
-      "teamId": "new-york-city",
-      "league": "usa",
-      "status": "missing"
-    },
-    {
-      "team": "纽约红牛",
-      "teamId": "ny-red-bulls",
-      "league": "usa",
-      "status": "missing"
-    }
-  ],
+  "notReadyTeams": [],
   "readyCount": {
-    "leagues": 10,
+    "leagues": 0,
     "teamsKnown": 521
   }
 }
