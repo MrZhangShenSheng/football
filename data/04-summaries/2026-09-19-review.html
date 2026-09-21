@@ -1,0 +1,126 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>2026-09-19 轮复盘（09-18 全池重扫定稿轮 seq23）</title>
+<style>
+:root{--ink:#1c2733;--sub:#5b6b7a;--line:#dfe6ec;--bg:#f7f9fb;--ok:#1a7f4f;--bad:#c0392b;--warn:#b07d10;--acc:#2456a6}
+*{box-sizing:border-box}
+body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);margin:0;background:var(--bg);line-height:1.65}
+.wrap{max-width:960px;margin:0 auto;padding:28px 20px 60px}
+h1{font-size:22px;margin:0 0 4px}
+h2{font-size:17px;margin:34px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--line)}
+h2 .ico{vertical-align:-2px;margin-right:6px;color:var(--acc)}
+.meta{color:var(--sub);font-size:13px;margin-bottom:18px}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:12px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;text-align:center}
+.kpi .v{font-size:24px;font-weight:700}
+.kpi .l{font-size:12px;color:var(--sub)}
+.ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}
+table{width:100%;border-collapse:collapse;font-size:13px;background:#fff}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left}
+th{background:#eef3f7;font-weight:600}
+.tag{display:inline-block;font-size:11px;border-radius:4px;padding:1px 7px;border:1px solid}
+.t-ok{color:var(--ok);border-color:var(--ok)}
+.t-bad{color:var(--bad);border-color:var(--bad)}
+.t-na{color:var(--sub);border-color:var(--sub)}
+.note{font-size:12.5px;color:var(--sub)}
+ul{margin:6px 0;padding-left:20px}
+.bar{height:10px;border-radius:5px;background:#e8edf2;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--acc)}
+svg.i{width:15px;height:15px;vertical-align:-2px}
+</style></head>
+<body><div class="wrap">
+<svg style="display:none"><symbol id="i-doc" viewBox="0 0 16 16"><path fill="currentColor" d="M3 1.5A1.5 1.5 0 0 1 4.5 0h5L14 4.5v10A1.5 1.5 0 0 1 12.5 16h-8A1.5 1.5 0 0 1 3 14.5v-13Zm6 .9V4h1.6L9 2.4ZM5 7h6v1H5V7Zm0 3h6v1H5v-1Zm0 3h4v1H5v-1Z"/></symbol>
+<symbol id="i-target" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="1" fill="currentColor"/></symbol>
+<symbol id="i-ticket" viewBox="0 0 16 16"><path fill="currentColor" d="M1 3h14v3a2 2 0 0 0 0 4v3H1v-3a2 2 0 0 0 0-4V3Zm4 2v1.2h2V5H5Zm0 2.4v1.2h2V7.4H5Zm0 2.4V11h2V9.8H5Z"/></symbol>
+<symbol id="i-book" viewBox="0 0 16 16"><path fill="currentColor" d="M2 2.5A1.5 1.5 0 0 1 3.5 1H14v13H3.5a.5.5 0 0 0-.5.5V16H2V2.5ZM4 3v9h8V3H4Z"/></symbol>
+<symbol id="i-flame" viewBox="0 0 16 16"><path fill="currentColor" d="M8 0c1 3-2 4-2 6 0-1-1-1.5-1-1.5C4 6 3.5 7.5 3.5 9a4.5 4.5 0 0 0 9 0c0-3-2-4-2-6 0 0-1 .8-1 2 0-2-1-4-1.5-5Z"/></symbol>
+<symbol id="i-ghost" viewBox="0 0 16 16"><path fill="currentColor" d="M8 1a6 6 0 0 1 6 6v8l-2.4-1.6L9.2 15 8 14 6.8 15l-2.4-1.6L2 15V7a6 6 0 0 1 6-6Zm-2 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm4 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2Z"/></symbol>
+<symbol id="i-gear" viewBox="0 0 16 16"><path fill="currentColor" d="M8 5.5A2.5 2.5 0 1 0 8 10.5 2.5 2.5 0 0 0 8 5.5Zm6.6 3.7-.1 1.2 1.1.9-.9 1.9-1.4-.3-.9.8-.3 1.4-2.1.2-.5-1.3h-1.2l-.5 1.3-2.1-.2-.3-1.4-.9-.8-1.4.3-.9-1.9 1.1-.9-.1-1.2-1.2-.7.5-2 .9.2.9-.9.3-1.4 2.1-.4.8 1.1h1.2l.8-1.1 2.1.4.3 1.4.9.9.9-.2.5 2-1.2.7Z"/></symbol>
+</svg>
+
+<h1>2026-09-19 轮复盘</h1>
+<div class="meta">09-18 全池重扫定稿轮（seq23 · v5.10）· 51 场采集 → 18 场记录 · 报告数据截至 2026-09-21 晚</div>
+
+<div class="grid">
+<div class="kpi"><div class="v ok">2/3</div><div class="l">方向命中（可判定）</div></div>
+<div class="kpi"><div class="v bad">0/4</div><div class="l">CRS 比分命中</div></div>
+<div class="kpi"><div class="v warn">待补</div><div class="l">CLV（fd 收盘英国下午更新）</div></div>
+<div class="kpi"><div class="v">0 元</div><div class="l">实票投入（本轮未转正）</div></div>
+</div>
+
+<h2><svg class="i"><use href="#i-target"/></svg>一、五维命中</h2>
+<div class="card">
+<table>
+<tr><th>场次</th><th>对阵</th><th>推荐</th><th>赔率</th><th>赛果</th><th>方向</th><th>比分</th></tr>
+<tr><td>周五006</td><td>格罗宁根 vs 兹沃勒</td><td>HAD 主胜(市场锚)</td><td>1.44</td><td>3-0</td><td class="ok">✅</td><td class="note">—</td></tr>
+<tr><td>周五010</td><td>摩纳哥 vs 朗斯</td><td>HAD 主胜</td><td>1.98</td><td>2-1</td><td class="ok">✅</td><td class="note">—</td></tr>
+<tr><td>周五013</td><td>西班牙人 vs 埃尔切</td><td>HAD 主胜</td><td>1.65</td><td>1-3</td><td class="bad">❌ 保级客爆冷</td><td class="note">—</td></tr>
+<tr><td>周五008</td><td>拜仁 vs 柏林联合</td><td>HHAD 让球主胜</td><td>—</td><td>7-0</td><td colspan="2" class="note">backfill 不判 HHAD（人工看 7-0 让球大概率赢）</td></tr>
+<tr><td>周五003</td><td>沃夫斯堡 vs 达姆施塔</td><td>HAD 主胜</td><td>1.5</td><td>不可得</td><td colspan="2" class="note">体彩/ESPN 对票未中</td></tr>
+<tr><td>周五014</td><td>纽约城 vs 纽约红牛</td><td>HAD 主胜</td><td>1.72</td><td>不可得</td><td colspan="2" class="note">同上</td></tr>
+<tr><td>周六013</td><td>门兴 vs 美因茨</td><td>CRS 1:1</td><td>8.0</td><td>3-4</td><td class="note">—</td><td class="bad">❌</td></tr>
+<tr><td>周六023</td><td>塞尔塔 vs 桑坦德</td><td>CRS 1:1</td><td>7.5</td><td>5-0</td><td class="note">—</td><td class="bad">❌</td></tr>
+<tr><td>周日013</td><td>帕尔马 vs 热那亚</td><td>CRS 0:0</td><td>7.5</td><td>2-1</td><td class="note">—</td><td class="bad">❌</td></tr>
+<tr><td>周日029</td><td>波尔图 vs 本菲卡</td><td>CRS 1:0</td><td>9.0</td><td>3-1</td><td class="note">—</td><td class="bad">❌</td></tr>
+</table>
+<p class="note">方向口径：可判定 3 场中 2（66.7%，实战基线 63.2% 之上）；排除 8 场（胶着 4 / 无锚 4），其中可验证的周五009（2-1 主胜）/周五011（3-0 主胜）均为「排除:胶着」——避开决策本轮记 2 笔负面（单轮不下结论，入五维统计）。</p>
+</div>
+
+<h2><svg class="i"><use href="#i-ticket"/></svg>二、方案层结算（均未实买·推演口径）</h2>
+<div class="card">
+<table>
+<tr><th>方案</th><th>票面</th><th>腿判定</th><th>推演损益</th></tr>
+<tr><td>彩票档 4串1</td><td>2 元（009 蒙扎让+1@1.47 · 011 布伦特让+1@1.54 · 013 西班牙人@1.65 · 014 纽约城@1.72）</td><td>009 ✅ 2-1 · 011 ✅ 3-0 · <b class="bad">013 ❌ 1-3 断腿</b> · 014 结果不可得</td><td class="bad">-2 元（断腿全灭）</td></tr>
+<tr><td>周六日CRS_2x3x4</td><td>6 元（2串1+3串1+4串1 各 1 注 × 4 场 CRS）</td><td><b class="bad">4 腿全灭</b>（3-4 / 5-0 / 2-1 / 3-1）</td><td class="bad">-6 元</td></tr>
+<tr><td>保底档 / 翻身档 / 平局轨 / 对冲双票</td><td colspan="2">关档（资金小量不保本维持 · 翻身仅 2 腿不成形态 · 平局轨 012 布城 27.9% 差 0.1pp 未入轨 · 对冲缺材）</td><td>0 元</td></tr>
+</table>
+<p class="note">approved=false 未拍板、无实票登记（tickets.json 37 票 0 pending）——账面推演合计 -8 元，无真实资金损失。</p>
+</div>
+
+<h2><svg class="i"><use href="#i-flame"/></svg>三、核心教训：平局型 CRS 单轮证伪 vs 大球轮</h2>
+<div class="card">
+<p>本轮 4 条 CRS 腿 = 1:1×2 + 0:0 + 1:0（三条押「胶着/低净胜」剧本），实际赛果 <b>3-4 / 5-0 / 2-1 / 3-1</b>——连同拜仁 7-0，周末主流联赛呈<b>进球爆炸</b>形态：</p>
+<ul>
+<li><b>门兴 vs 美因茨 1:1 → 3-4</b>：莱茵德比对攻本性压过「势均力敌=平」假设——假设层应先验「德比战火药桶」剧本再谈平局</li>
+<li><b>塞尔塔 vs 桑坦德 1:1 → 5-0</b>：主场强队零封剧本属于「主胜零封族」（2:0/3:0 同族），选 1:1 是形状伪分散——score-odds-template 主胜 1.01–1.30 窗口应先查 2:0</li>
+<li><b>波尔图 vs 本菲卡 1:0 → 3-1</b>：国家德比 1:0 假设不弱，但 CLV/派彩角度 9.0 @16.4% 单腿本就是右尾赌博</li>
+<li>对照：09-15 拍板的「平局型 1:1 命中主力池」来自影子 168 票统计（15 中 12）——<b>单轮 0/4 不推翻池级统计，但连续性需追踪</b>；下轮 CRS 选法执行 score-odds-template 条件窗口预筛（主胜低赔窗口先查 2:0/1:0，勿默认平局型）</li>
+</ul>
+<p class="note">连带警示：trend 全量校准「0%~40% 桶实际 56% vs 预测 38%（低估 18pp）」——模型对冷门方向系统性低置信，与平局型选法被打脸同向：胶着场实际更常分出胜负。</p>
+</div>
+
+<h2><svg class="i"><use href="#i-ghost"/></svg>四、影子层结算（09-17~09-20 四销售日）</h2>
+<div class="card">
+<table>
+<tr><th>销售日</th><th>结算</th><th>备注</th></tr>
+<tr><td>2026-09-17</td><td class="warn">19 张 pending</td><td>全部卡周三014 莱万特 vs 毕尔巴鄂——体彩判<b>无效场次</b>（score=无效场次），影子票无「退款腿按 1.00」语义，如实保持 pending；shape 引擎待补 void 腿支持</td></tr>
+<tr><td>2026-09-18</td><td class="ok">14 张 settled</td><td>开奖缓存 09-16~21 补拉后结算</td></tr>
+<tr><td>2026-09-19</td><td class="ok">19 张 settled</td><td>本轮主结算窗</td></tr>
+<tr><td>2026-09-20</td><td class="ok">20 张 settled</td><td>周日轮全结</td></tr>
+</table>
+<p>三日 53 张结算，track A 回款 <b>3387 → 3813 元</b>（+426）；09-21（周一）轮 shadow-all 登记「可用场 0&lt;4 不成轮」——周一轮未跑预测即无凭证链，属流程缺口如实记录。</p>
+</div>
+
+<h2><svg class="i"><use href="#i-gear"/></svg>五、闭环学习</h2>
+<div class="card">
+<ul>
+<li><b>语料</b>：734 条（已回填 733 · 跨日合并 64）· 门槛 ✅可校准 ✅可消融</li>
+<li><b>归因</b>：58 场错题 → F9（市场分歧）49 场主因 avgGap 0.36 · F1（λ 失真）6 · F5（融合修正反向）2 · F3（市场锚缺失）1——F9 消融候选 n≥20 触发，人审待办</li>
+<li><b>calibrate</b>：n=361 · 最优 a=0.05 改善 +0.84% &lt; 1% 护栏不升级（255 场缺 p_pinnacle 待 pinClose 补全后重算）</li>
+<li><b>ablate</b>：开季修正维持（CI 跨 0）；联赛波动/伤停差值样本 &lt;10 继续观察</li>
+<li><b>learn</b>：8 联赛 DC 版本发布（jpn v2 / ksa v6 / swe v11 / kor v10 / bra v10 / nor v8 / den v6 / usa v9）· temperature 维持（crs/ttg T=1.30）</li>
+<li><b>pinClose</b>：0/18 待补——fd 当日行英国下午更新，晚间重跑 verify 幂等救回（88 场积压同批）</li>
+</ul>
+</div>
+
+<h2><svg class="i"><use href="#i-doc"/></svg>六、沉淀清单</h2>
+<div class="card">
+<ul>
+<li>CRS 选法：下轮执行 score-odds-template 条件窗口预筛，平局型不再默认主力（池级统计保留，选腿优先级重排）</li>
+<li>无效场次：周三014 已在 02-results 标注；影子层 void 腿语义列入引擎待办（不阻塞结算）</li>
+<li>F9 市场分歧 49 场主因——校准低估 18pp 同源，pinClose 补全后优先重跑 calibrate</li>
+<li>09-21 周一轮无预测无影子登记——流程缺口记录，下次周一轮预测时补 shadow-all</li>
+</ul>
+<p class="note">数据来源：data/02-results/2026-09-19.json（18 场全回填）· engine/shadow/paper_tickets.json（249 settled/19 pending）· data/04-summaries/corpus.json · attribution.json · ablate-report.json · trend.html · engine/cache/sporttery_results_2026-09-16~21.json</p>
+</div>
+</div></body></html>

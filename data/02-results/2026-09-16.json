@@ -348,7 +348,12 @@
    "half": "2:0",
    "directionHit": null,
    "scoreHit": null,
-   "pinSource": "none"
+   "pinSource": "fd",
+   "pinClose": [
+    0.8566,
+    0.0956,
+    0.0478
+   ]
   },
   {
    "idx": 10,
@@ -392,7 +397,14 @@
    "half": "0:2",
    "directionHit": false,
    "scoreHit": false,
-   "pinSource": "none"
+   "pinSource": "fd",
+   "pinClose": [
+    0.6754,
+    0.1934,
+    0.1312
+   ],
+   "clv": -0.0274,
+   "clv_note": "pinClose精确口径(v2四键)"
   },
   {
    "idx": 11,
