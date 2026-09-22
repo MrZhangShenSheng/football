@@ -1,0 +1,190 @@
+{
+  "date": "2026-09-22",
+  "saleDay": "2026-09-22",
+  "version": "v5.13",
+  "mode": "混合轮·英锦标赛3场增量终审（09-21 v5.11轮定稿维持）+ 亚运男足3场新上架补录（v5.13补录规矩首用）",
+  "boldplayNote": "boldplay 引擎卡本轮超时未出（网络阻塞）·方案按人工路线组装：体彩现价+insight+09-21概率层·couplingHit 经脚本化函数单独计算（v5.13 落地首次实战）",
+  "hypothesisFile": "data/03-predictions/2026-09-22-hypothesis.json",
+  "plans": [
+    {
+      "plan": "A·假设主推串（09-21定稿维持·现价更新）",
+      "type": "HAD 3串1×1倍",
+      "stake": "2元",
+      "legs": [
+        "周二002 HAD 平 @4.87（09-21现价4.25→4.87 市场远离平·零新信息定律3不调换）",
+        "周二003 HAD 平 @3.45（不变）",
+        "周二004 HAD 客 @2.56（09-21现价2.72→2.56 市场靠向我们方向）"
+      ],
+      "odds": 43.0,
+      "pModel": 0.0159,
+      "note": "假设沿用 09-21 hypothesis.json（survived×3）·赔率现价冻结"
+    },
+    {
+      "plan": "B·CRS单关×10（偏好档案第二优先）",
+      "type": "CRS 单关×5注×2场=10注",
+      "stake": "20元",
+      "legs": [
+        "周二003 CRS 1:1 @6.85 ×5注（09-21现价7.25→6.85）",
+        "周二004 CRS 1:1 @6.75 ×5注（09-21现价8.00→6.75）"
+      ],
+      "odds": null,
+      "evEach": true,
+      "note": "CRS 降价=市场向 1:1 移动·假设不变·单关×10 偏好形状"
+    },
+    {
+      "plan": "C·三平尾巴串（09-21定稿维持·现价更新）",
+      "type": "HAD 3串1×1倍",
+      "stake": "2元",
+      "legs": [
+        "周二002 HAD 平 @4.87",
+        "周二003 HAD 平 @3.45",
+        "周二004 HAD 平 @3.33（09-21现价3.50→3.33）"
+      ],
+      "odds": 55.9,
+      "pModel": 0.0123,
+      "note": "与票A共享002平+003平两腿"
+    },
+    {
+      "plan": "D·补录场加腿串（新增·v5.13补录规矩首用）",
+      "type": "HAD 4串1×1倍",
+      "stake": "2元",
+      "legs": [
+        "周二001 HAD 主 @1.21（亚运男足·韩国亚vs沙特亚·18:00开赛）",
+        "周二002 HAD 平 @4.87",
+        "周二003 HAD 平 @3.45",
+        "周二004 HAD 客 @2.56"
+      ],
+      "odds": 52.1,
+      "pModel": 0.0186,
+      "note": "001 假设survived（亚运免兵役机制+近10场9胜1平）·C级仅方向·与票A/C共享三腿（耦合已算）·同场限一玩法✓·HAD木桶4<8✓"
+    }
+  ],
+  "matches": [
+    {
+      "idx": 1,
+      "code": "周二001",
+      "league": "亚运男足(小组赛R3·Group D)",
+      "match": "韩国亚 vs 沙特亚",
+      "kickoff": "2026-09-22 18:00:00",
+      "pick": "HAD 主胜",
+      "play": "had 主",
+      "odds": 1.21,
+      "star": 1,
+      "grade": "C",
+      "dcUsed": false,
+      "dc": null,
+      "fused": null,
+      "fusedPre": null,
+      "final": 0.72,
+      "chain": ["补录场(上架晚于09-21预测)", "无锚杯赛(implied 1/1.21×0.871)", "C级仅方向"],
+      "chainSteps": [],
+      "lambdaHome": null,
+      "lambdaAway": null,
+      "inPlan": "D",
+      "matchPlay": {
+        "rotation": "小组赛R3出线关键轮·双方默认主力（无轮换情报·低置信标注）",
+        "tactics": "韩国控压+沙特防反（两队风格常识·低置信·无俱乐部画像）",
+        "goalSource": "韩国边路+定位球·沙特反击",
+        "script": "韩国上半场压破·2:0/2:1画面",
+        "specialVars": "韩国亚运夺冠免兵役机制（强动力·机制性变量）·18:00北京时间=当地晚场"
+      },
+      "hypothesis": "survived：韩国亚近10场9胜1平场均3.1球（insight）+亚运免兵役动力机制+市场主热1.21隐含78%同向——主胜方向",
+      "checkNote": "insight覆盖：近况✓排名✓H2H✓(2场2020年·弱参考)伤停0=无数据·数据源=体彩insight唯一（ESPN无亚运专项）",
+      "recordNote": "v5.13晚上架补录规矩首用：补足假设+验证后入票"
+    },
+    {
+      "idx": 2,
+      "code": "周二002",
+      "league": "英锦标赛(小组赛)",
+      "match": "米尔顿 vs 克劳利",
+      "pick": "HAD 平",
+      "play": "had 平",
+      "odds": 4.87,
+      "star": 1,
+      "grade": "B",
+      "final": 0.202,
+      "chain": "单锚×0.97",
+      "inPlan": "A,C,D",
+      "hypothesis": "沿用09-21 survived（米尔顿守平型烂+克劳利摆平拿点球分+H2H两连平）",
+      "livescanNote": "赔率复扫：平4.25→4.87市场远离平·无当日新信息·定律3维持不调换"
+    },
+    {
+      "idx": 3,
+      "code": "周二003",
+      "league": "英锦标赛(小组赛)",
+      "match": "诺茨郡 vs 格里姆",
+      "pick": "HAD 平",
+      "play": "had 平 / crs 1:1（跨票分池）",
+      "odds": 3.45,
+      "star": 1,
+      "grade": "B",
+      "final": 0.249,
+      "chain": "单锚×0.97",
+      "inPlan": "A,B,C,D",
+      "hypothesis": "沿用09-21 survived（格里姆客场平局机器+诺茨郡锋无力）",
+      "livescanNote": "赔率复扫：平3.45不动·CRS 1:1 7.25→6.85市场向1:1移动（顺我们）"
+    },
+    {
+      "idx": 4,
+      "code": "周二004",
+      "league": "英锦标赛(小组赛)",
+      "match": "维冈 vs 布莱克浦",
+      "pick": "HAD 客",
+      "play": "had 客 / crs 1:1（跨票分池）",
+      "odds": 2.56,
+      "star": 2,
+      "grade": "B",
+      "final": 0.316,
+      "chain": "单锚×0.97",
+      "inPlan": "A,B,C,D",
+      "hypothesis": "沿用09-21 survived（维冈垫底+近4次对布不胜+布莱克浦攻强）",
+      "livescanNote": "赔率复扫：客2.72→2.56市场靠向我们·CRS 1:1 8.0→6.75"
+    },
+    {
+      "idx": 5,
+      "code": "周三001",
+      "league": "亚运男足(小组赛R3·Group B)",
+      "match": "中国亚 vs 阿联酋亚",
+      "kickoff": "2026-09-23 13:30:00",
+      "pick": "排除:假设pending",
+      "play": "排除",
+      "odds": 2.02,
+      "star": 1,
+      "grade": "C",
+      "inPlan": null,
+      "chain": ["补录场", "无锚杯赛", "近况矛盾(中国锋无力场均0.8 vs 阿联酋客场5平+场均2.4球)"],
+      "matchPlay": {
+        "rotation": "R3出线轮·无情报默认主力（低置信）",
+        "tactics": "中国控但渗透弱·阿联酋防反摆平（客场5平惯性）",
+        "goalSource": "中国定位球·阿联酋反击",
+        "script": "低进球胶着0:0/1:1画面",
+        "specialVars": "中国队大赛压力变量·无更多情报"
+      },
+      "hypothesis": "pending：主队锋无力vs客队客场平局机器，方向不清被闸门挡（pending不出票）·大哥有队伍情报可推翻（铁律2用户反馈优先）"
+    },
+    {
+      "idx": 6,
+      "code": "周三002",
+      "league": "亚运男足(小组赛R3·Group A)",
+      "match": "日本亚 vs 泰国亚",
+      "kickoff": "2026-09-23 18:30:00",
+      "pick": "排除:HAD未开售",
+      "play": "排除",
+      "odds": null,
+      "star": 1,
+      "grade": "C",
+      "inPlan": null,
+      "chain": ["补录场", "无锚杯赛", "HAD未开售(赔率None)·C级禁比分/总进球→无可买玩法"],
+      "hypothesis": "未建（无可买玩法）·日本亚近10场9胜1平值得观察HAD开售后单场评估"
+    }
+  ],
+  "couplingHit": {"atLeastOne": 0.2427, "independent": 0.2523, "overestimatePp": 1.0, "method": "enum-2^7", "legs": 7, "bets": 5, "pSource": "model", "note": "v5.13 coupling_at_least_one 首次实战·A/B/C/D 五注共享腿耦合展开"},
+  "totalStake": "26元（A 2 + B 20 + C 2 + D 2）·红线30内",
+  "tierStatus": {"保底档": "关档（维持09-16拍板）", "彩票档": "引擎超时未出·人工判断：001主胜@1.21无模型腿不作彩票腿（implied仅0.72但单腿价值低）·如实留空", "影子层": "shadow-all 2026-09-22 待跑（销售日口径：周二场）"},
+  "sources": [
+    "engine/cache/sporttery_matches.json（体彩官方API 2026-09-22 17:27复扫·六场五池现价）",
+    "engine/cache/sporttery_insight_2041642/2041645/2041646.json（亚运三场insight·近10场/排名/H2H）",
+    "data/02-results/2026-09-21.json（英锦标赛09-21预测·假设层与概率层沿用）",
+    "data/05-trends/2026-09-22-odds.json（赔率diff快照）"
+  ]
+}
