@@ -211,7 +211,8 @@ def write_intel_entry(payload, code, day=None):
 def write_livescan(scan, day=None):
     """livescan 扫描事件校验后追加当日文件（skill 临场扫描唯一合法录入通道，SKILL Step 6.5）。
     校验: trigger ∈ SCAN_TRIGGERS; 每场 matchId+code 必填, threat ∈ THREAT_LEVELS。
-    开发者 sszhang"""
+    matches[].matchPlayRevision 为 v5.12 可选透传字段（推演回改:
+    {code, revised: [...], reason, at}），不校验不拒绝。开发者 sszhang"""
     if scan.get("trigger") not in SCAN_TRIGGERS:
         raise ValueError(f"trigger 非法: {scan.get('trigger')}（合法: {', '.join(SCAN_TRIGGERS)}）")
     for i, m in enumerate(scan.get("matches") or []):

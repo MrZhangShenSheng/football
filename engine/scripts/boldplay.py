@@ -840,6 +840,14 @@ def annotate_hypothesis_warnings(t: dict) -> None:
                 for l in blocked]
             t["warnings"].append(
                 f"[{name}] {len(blocked)} 腿假设未通过（pending/refuted），出票前须逐条验证")
+        # v5.12 无推演轻量标注（大哥 09-22 拍板）：survived 但缺 matchPlay 五槽位 =
+        # 假设可能是统计特征罗列冒充（09-21 判例），只标注不拦截
+        no_play = [l for l in buyable
+                   if not (l.get("hypothesis") or {}).get("matchPlay")]
+        if no_play:
+            t["warnings"].append(
+                f"[{name}] {len(no_play)} 腿无比赛推演（matchPlay 缺失）——"
+                "假设可能为统计罗列，出票前自查 matchPlay 五槽位")
 
 
 def build_three_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form: dict,
