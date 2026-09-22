@@ -1,11 +1,11 @@
 {
- "generatedAt": "2026-09-21",
- "n_total": 734,
- "n_rounds": 40,
+ "generatedAt": "2026-09-22",
+ "n_total": 737,
+ "n_rounds": 41,
  "readiness": {
   "n_result": 733,
   "n_clv": 121,
-  "n_pfinal": 577,
+  "n_pfinal": 580,
   "n_dedup_merged": 64,
   "n_dedup_diff_pick_kept": 92,
   "calibrateReady": true,
@@ -44,6 +44,7 @@
    "亚运男足": 4,
    "英联杯": 3,
    "意大利杯": 3,
+   "英锦标赛": 3,
    "德超杯": 2,
    "欧冠附加赛": 2,
    "日联赛杯": 1,
@@ -51,8 +52,8 @@
    "亚冠乙": 1
   },
   "by_star": {
-   "1": 93,
-   "2": 294,
+   "1": 95,
+   "2": 295,
    "3": 157,
    "4": 56
   }
@@ -26397,6 +26398,96 @@
    "round": "2026-09-19"
   },
   {
+   "date": "2026-09-21",
+   "code": "周二002",
+   "league": "英锦标赛",
+   "match": "米尔顿 vs 克劳利",
+   "stars": 1,
+   "grade": 3,
+   "pick": "平",
+   "play": "HAD",
+   "odds": 4.25,
+   "p_final": [
+    0.592,
+    0.202,
+    0.176
+   ],
+   "p_dc": null,
+   "ev": -0.142,
+   "in_plan": "A,C",
+   "chain": "单锚×0.97",
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "pinClose": null,
+   "pinSource": null,
+   "round": "2026-09-21"
+  },
+  {
+   "date": "2026-09-21",
+   "code": "周二003",
+   "league": "英锦标赛",
+   "match": "诺茨郡 vs 格里姆",
+   "stars": 1,
+   "grade": 3,
+   "pick": "平",
+   "play": "HAD",
+   "odds": 3.45,
+   "p_final": [
+    0.413,
+    0.249,
+    0.308
+   ],
+   "p_dc": null,
+   "ev": -0.141,
+   "in_plan": "A,B,C",
+   "chain": "单锚×0.97",
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "pinClose": null,
+   "pinSource": null,
+   "round": "2026-09-21"
+  },
+  {
+   "date": "2026-09-21",
+   "code": "周二004",
+   "league": "英锦标赛",
+   "match": "维冈 vs 布莱克浦",
+   "stars": 2,
+   "grade": 3,
+   "pick": "客",
+   "play": "HAD",
+   "odds": 2.72,
+   "p_final": [
+    0.409,
+    0.245,
+    0.316
+   ],
+   "p_dc": null,
+   "ev": -0.141,
+   "in_plan": "A,B",
+   "chain": "单锚×0.97",
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "pinClose": null,
+   "pinSource": null,
+   "round": "2026-09-21"
+  },
+  {
    "seq": 10,
    "code": "周五001",
    "league": "日职",
@@ -28619,6 +28710,47 @@
     "周六013 1:1": 0.0932,
     "周六023 1:1": 0.0919
    }
+  },
+  "2026-09-21:A·假设主推串": {
+   "plan": "A·假设主推串",
+   "type": "HAD 3串1×1倍",
+   "stake": "2元",
+   "legs": [
+    "周二002 HAD 平 @4.25（假设survived：米尔顿守平型烂+克劳利垫底摆平拿点球分+H2H两次全平）",
+    "周二003 HAD 平 @3.45（假设survived：格里姆客场70%平+诺茨郡锋无力场均0.8）",
+    "周二004 HAD 客 @2.72（假设survived：维冈垫底+近4次对布不胜+布莱克浦进13球攻强）"
+   ],
+   "odds": 39.89,
+   "pModel": 0.0159,
+   "ev": -0.367,
+   "note": "两平一客假设组合；同场限一玩法✓；003平与票B的003 CRS 1:1为跨票分池（铁律9合法）"
+  },
+  "2026-09-21:B·CRS单关×10（偏好档案第二优先）": {
+   "plan": "B·CRS单关×10（偏好档案第二优先）",
+   "type": "CRS 单关×5注×2场=10注",
+   "stake": "20元",
+   "legs": [
+    "周二003 CRS 1:1 @7.25 ×5注（假设主核+系统同推✓引擎翻身候选）",
+    "周二004 CRS 1:1 @8.00 ×5注（假设次核+系统同推✓引擎翻身候选）"
+   ],
+   "odds": null,
+   "pModel": null,
+   "evEach": true,
+   "note": "偏好档案09-15拍板：CRS只走单关禁入串关（影子168票实证串关零变现）；引擎2串1结构按偏好拆单关；002 1:1被gateRule挡（系统未同推002高抽水池）不入"
+  },
+  "2026-09-21:C·三平尾巴串": {
+   "plan": "C·三平尾巴串",
+   "type": "HAD 3串1×1倍",
+   "stake": "2元",
+   "legs": [
+    "周二002 HAD 平 @4.25",
+    "周二003 HAD 平 @3.45",
+    "周二004 HAD 平 @3.50（004假设'客胜为主平局次之'的次核对冲）"
+   ],
+   "odds": 51.31,
+   "pModel": 0.0123,
+   "ev": -0.369,
+   "note": "与票A共享002平+003平两腿（耦合），与票B的1:1腿正相关（1:1命中则平必命中）"
   }
  }
 }
