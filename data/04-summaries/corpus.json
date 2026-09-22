@@ -1,13 +1,13 @@
 {
  "generatedAt": "2026-09-22",
- "n_total": 737,
- "n_rounds": 41,
+ "n_total": 741,
+ "n_rounds": 42,
  "readiness": {
-  "n_result": 733,
-  "n_clv": 121,
+  "n_result": 734,
+  "n_clv": 125,
   "n_pfinal": 580,
-  "n_dedup_merged": 64,
-  "n_dedup_diff_pick_kept": 92,
+  "n_dedup_merged": 66,
+  "n_dedup_diff_pick_kept": 93,
   "calibrateReady": true,
   "calibrateGap": 0,
   "ablateReady": true,
@@ -35,16 +35,16 @@
    "荷乙": 9,
    "美职": 9,
    "芬超": 8,
+   "亚运男足": 7,
    "日乙": 6,
    "欧冠资格赛": 6,
    "巴西杯": 6,
    "亚冠精英": 6,
    "德国杯": 5,
    "沙特联": 4,
-   "亚运男足": 4,
+   "英锦标赛": 4,
    "英联杯": 3,
    "意大利杯": 3,
-   "英锦标赛": 3,
    "德超杯": 2,
    "欧冠附加赛": 2,
    "日联赛杯": 1,
@@ -52,8 +52,8 @@
    "亚冠乙": 1
   },
   "by_star": {
-   "1": 95,
-   "2": 295,
+   "1": 98,
+   "2": 296,
    "3": 157,
    "4": 56
   }
@@ -25857,11 +25857,20 @@
    "result": "5-1",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.0672,
    "clv_approx_dk": null,
-   "clv_note": null,
-   "pinClose": null,
-   "pinSource": "none",
+   "clv_note": "pinClose精确口径(v2四键)",
+   "pinClose": [
+    0.6219,
+    0.199,
+    0.1791
+   ],
+   "pinSource": "fd",
+   "p_pinnacle": [
+    0.6219,
+    0.199,
+    0.1791
+   ],
    "round": "2026-09-19"
   },
   {
@@ -25934,8 +25943,17 @@
    "clv": null,
    "clv_approx_dk": null,
    "clv_note": null,
-   "pinClose": null,
-   "pinSource": "none",
+   "pinClose": [
+    0.4189,
+    0.2905,
+    0.2905
+   ],
+   "pinSource": "fd",
+   "p_pinnacle": [
+    0.4189,
+    0.2905,
+    0.2905
+   ],
    "round": "2026-09-19"
   },
   {
@@ -25964,11 +25982,20 @@
    "result": "3-0",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": -0.1311,
    "clv_approx_dk": null,
-   "clv_note": null,
-   "pinClose": null,
-   "pinSource": "none",
+   "clv_note": "pinClose精确口径(v2四键)",
+   "pinClose": [
+    0.6034,
+    0.2155,
+    0.181
+   ],
+   "pinSource": "fd",
+   "p_pinnacle": [
+    0.6034,
+    0.2155,
+    0.181
+   ],
    "round": "2026-09-19"
   },
   {
@@ -26034,8 +26061,17 @@
    "clv": null,
    "clv_approx_dk": null,
    "clv_note": null,
-   "pinClose": null,
-   "pinSource": "none",
+   "pinClose": [
+    0.9239,
+    0.0529,
+    0.0232
+   ],
+   "pinSource": "fd",
+   "p_pinnacle": [
+    0.9239,
+    0.0529,
+    0.0232
+   ],
    "round": "2026-09-19"
   },
   {
@@ -26071,8 +26107,17 @@
    "clv": null,
    "clv_approx_dk": null,
    "clv_note": null,
-   "pinClose": null,
-   "pinSource": "none",
+   "pinClose": [
+    0.3314,
+    0.2899,
+    0.3787
+   ],
+   "pinSource": "fd",
+   "p_pinnacle": [
+    0.3314,
+    0.2899,
+    0.3787
+   ],
    "round": "2026-09-19"
   },
   {
@@ -26105,11 +26150,20 @@
    "result": "2-1",
    "directionHit": true,
    "scoreHit": true,
-   "clv": null,
+   "clv": 0.0258,
    "clv_approx_dk": null,
-   "clv_note": null,
-   "pinClose": null,
-   "pinSource": "none",
+   "clv_note": "pinClose精确口径(v2四键)",
+   "pinClose": [
+    0.5181,
+    0.2487,
+    0.2332
+   ],
+   "pinSource": "fd",
+   "p_pinnacle": [
+    0.5181,
+    0.2487,
+    0.2332
+   ],
    "round": "2026-09-19"
   },
   {
@@ -26145,8 +26199,17 @@
    "clv": null,
    "clv_approx_dk": null,
    "clv_note": null,
-   "pinClose": null,
-   "pinSource": "none",
+   "pinClose": [
+    0.3765,
+    0.2615,
+    0.362
+   ],
+   "pinSource": "fd",
+   "p_pinnacle": [
+    0.3765,
+    0.2615,
+    0.362
+   ],
    "round": "2026-09-19"
   },
   {
@@ -26182,8 +26245,17 @@
    "clv": null,
    "clv_approx_dk": null,
    "clv_note": null,
-   "pinClose": null,
-   "pinSource": "none",
+   "pinClose": [
+    0.5391,
+    0.2455,
+    0.2154
+   ],
+   "pinSource": "fd",
+   "p_pinnacle": [
+    0.5391,
+    0.2455,
+    0.2154
+   ],
    "round": "2026-09-19"
   },
   {
@@ -26217,11 +26289,20 @@
    "result": "1-3",
    "directionHit": false,
    "scoreHit": false,
-   "clv": null,
+   "clv": -0.1265,
    "clv_approx_dk": null,
-   "clv_note": null,
-   "pinClose": null,
-   "pinSource": "none",
+   "clv_note": "pinClose精确口径(v2四键)",
+   "pinClose": [
+    0.5294,
+    0.2647,
+    0.2059
+   ],
+   "pinSource": "fd",
+   "p_pinnacle": [
+    0.5294,
+    0.2647,
+    0.2059
+   ],
    "round": "2026-09-19"
   },
   {
@@ -26291,8 +26372,17 @@
    "clv": null,
    "clv_approx_dk": null,
    "clv_note": null,
-   "pinClose": null,
-   "pinSource": "none",
+   "pinClose": [
+    0.2909,
+    0.2659,
+    0.4432
+   ],
+   "pinSource": "fd",
+   "p_pinnacle": [
+    0.2909,
+    0.2659,
+    0.4432
+   ],
    "round": "2026-09-19"
   },
   {
@@ -26325,8 +26415,17 @@
    "clv": null,
    "clv_approx_dk": null,
    "clv_note": null,
-   "pinClose": null,
-   "pinSource": "none",
+   "pinClose": [
+    0.5327,
+    0.252,
+    0.2153
+   ],
+   "pinSource": "fd",
+   "p_pinnacle": [
+    0.5327,
+    0.252,
+    0.2153
+   ],
    "round": "2026-09-19"
   },
   {
@@ -26359,8 +26458,17 @@
    "clv": null,
    "clv_approx_dk": null,
    "clv_note": null,
-   "pinClose": null,
-   "pinSource": "none",
+   "pinClose": [
+    0.2871,
+    0.324,
+    0.3888
+   ],
+   "pinSource": "fd",
+   "p_pinnacle": [
+    0.2871,
+    0.324,
+    0.3888
+   ],
    "round": "2026-09-19"
   },
   {
@@ -26393,8 +26501,17 @@
    "clv": null,
    "clv_approx_dk": null,
    "clv_note": null,
-   "pinClose": null,
-   "pinSource": "none",
+   "pinClose": [
+    0.3396,
+    0.3012,
+    0.3592
+   ],
+   "pinSource": "fd",
+   "p_pinnacle": [
+    0.3396,
+    0.3012,
+    0.3592
+   ],
    "round": "2026-09-19"
   },
   {
@@ -26458,6 +26575,32 @@
    "round": "2026-09-21"
   },
   {
+   "date": "2026-09-22",
+   "code": "周二004",
+   "league": "英锦标赛",
+   "match": "维冈 vs 布莱克浦",
+   "stars": 2,
+   "grade": 3,
+   "pick": "客 / CRS 1:1（跨票分池）",
+   "play": "HAD",
+   "odds": 2.56,
+   "p_final": null,
+   "p_dc": null,
+   "ev": null,
+   "in_plan": "T1(HAD客),T2(CRS 1:1)",
+   "chain": "单锚×0.97",
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "pinClose": null,
+   "pinSource": null,
+   "round": "2026-09-22"
+  },
+  {
    "date": "2026-09-21",
    "code": "周二004",
    "league": "英锦标赛",
@@ -26486,6 +26629,97 @@
    "pinClose": null,
    "pinSource": null,
    "round": "2026-09-21"
+  },
+  {
+   "date": "2026-09-22",
+   "code": "周三001",
+   "league": "亚运男足",
+   "match": "中国亚 vs 阿联酋亚",
+   "stars": 1,
+   "grade": 2,
+   "pick": "排除:假设pending",
+   "play": null,
+   "odds": 2.02,
+   "p_final": null,
+   "p_dc": null,
+   "ev": null,
+   "in_plan": null,
+   "chain": [
+    "补录场",
+    "无锚杯赛",
+    "近况矛盾(中国锋无力场均0.8 vs 阿联酋客场5平+场均2.4球)"
+   ],
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "pinClose": null,
+   "pinSource": null,
+   "round": "2026-09-22"
+  },
+  {
+   "date": "2026-09-22",
+   "code": "周三002",
+   "league": "亚运男足",
+   "match": "日本亚 vs 泰国亚",
+   "stars": 1,
+   "grade": 2,
+   "pick": "排除:HAD未开售",
+   "play": null,
+   "odds": null,
+   "p_final": null,
+   "p_dc": null,
+   "ev": null,
+   "in_plan": null,
+   "chain": [
+    "补录场",
+    "无锚杯赛",
+    "HAD未开售(赔率None)·C级禁比分/总进球→无可买玩法"
+   ],
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "pinClose": null,
+   "pinSource": null,
+   "round": "2026-09-22"
+  },
+  {
+   "date": "2026-09-22",
+   "code": "周二001",
+   "league": "亚运男足",
+   "match": "韩国亚 vs 沙特亚",
+   "stars": 1,
+   "grade": 2,
+   "pick": "排除:开赛不可买",
+   "play": null,
+   "odds": 1.21,
+   "p_final": null,
+   "p_dc": null,
+   "ev": null,
+   "in_plan": null,
+   "chain": [
+    "补录场(上架晚于09-21预测)",
+    "无锚杯赛(implied 1/1.21×0.871)",
+    "C级仅方向",
+    "18:00开赛后买不了→从方案剔除"
+   ],
+   "pools": null,
+   "result": "2-0",
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "pinClose": null,
+   "pinSource": "none",
+   "round": "2026-09-22"
   },
   {
    "seq": 10,
