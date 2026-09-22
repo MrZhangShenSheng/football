@@ -59,9 +59,9 @@ MONTHLY_UPSET_CAP = 40.0        # 翻身月度彩票预算（spec §4.1 note·pr
 # 彩票档（docs/2026-09-02-lottery-tier-design.html）：HAD/HHAD N串1×1倍=2元，右尾优先，
 # 预算归属：彩票 2 元计入轮次总红线 ROUND_REDLINE（保底+翻身+彩票 ≤ 30 元）
 LOTTERY_MIN_P = 0.55            # 三星干净腿门槛（skill 星级口径）
-LOTTERY_LOW_ODDS = 1.25         # 超低赔通道：赔率≤1.25 且 p≥0.50 视同合格（合赔稳定器）
-LOTTERY_LOW_ODDS_MIN_P = 0.50
 LOTTERY_MIN_LEGS, LOTTERY_MAX_LEGS = 4, 8   # 出档腿数窗：合格腿全上 N∈[4,8]，池>8 取 EV 前 8
+# 超低赔通道（≤1.25 且 p≥0.50）2026-09-22 撤：636 轮孪生票回测 0 触发死代码
+# （≤1.25 隐含 p≈0.75+ 恒过主门槛），连同测试一并删除。
 
 def band_ok(had: dict) -> str:
     """体彩 had 自去水方向带：max>=0.60 偏好，否则中性。"""
@@ -383,15 +383,26 @@ def build_ticket(odds_day: dict, freq_table: dict, seq: int,
             play = "crs-4串1"
             upset_note = f"{shape}形状 带宽{SHAPES[shape]['band']}"
     else:
-        # ---- freq-band 默认路径（2026-08-27 重设计）：三步选法；<4 腿关档不硬凑 ----
+        # ---- freq-band 默认路径（2026-08-27 重设计）：三步选法；2026-09-22 放宽：
+        # 3 腿降级出 3串1 选项卡（标注+买否大哥定），<3 关档（铁律8 追查义务不变） ----
         legs = freq_legs(odds_day, freq_table, form if form is not None else build_team_form(),
                          _zh_map(), SHAPES[shape]["band"])
-        upset = ([dict(l, play="crs", pick=l["score"]) for l in legs[:4]]   # settle() schema
-                 if len(legs) >= 4 else [])
-        play = "crs-4串1"
+        if len(legs) >= 4:
+            upset = [dict(l, play="crs", pick=l["score"]) for l in legs[:4]]   # settle() schema
+            play = "crs-4串1"
+        elif len(legs) == 3:
+            upset = [dict(l, play="crs", pick=l["score"]) for l in legs]       # 降级 3串1 选项
+            play = "crs-3串1"
+        else:
+            upset = []
+            play = "crs-4串1"
         shifted_cnt = sum(1 for l in legs[:4] if l["shifted"])
         upset_note = (f"{shape}形状 freq-band 带宽{SHAPES[shape]['band']} · 球队平移{shifted_cnt}/{len(upset)}腿"
-                      if upset else f"{shape}形状 freq-band 关档（合格腿{len(legs)}<4，不硬凑）")
+                      if upset else
+                      f"{shape}形状 freq-band 关档（合格腿{len(legs)}<3，不硬凑；3 腿以上降级 3串1 选项已出）"
+                      if len(legs) < 3 else "")
+        if len(legs) == 3:
+            upset_note += " · 腿数不足3<4·09-22 放宽降级 3串1·买否大哥拍板"
     total_odds = 1.0
     for l in upset:
         total_odds *= l["odds"]
@@ -685,7 +696,8 @@ def _lottery_legs(odds_day: dict, zh: dict, hhad_map: dict | None = None,
     """彩票档选腿（docs/2026-09-02-lottery-tier-design.html §03）：逐场逐选项（HAD+HHAD 三向）
     合格判定 + 场内 EV 最优 + 同场去重（铁律9），EV 降序返回。
 
-    合格 = p_fused≥0.55 或 超低赔≤1.25 且 p_fused≥0.50；p_fused = fuse(p_dc, p_mkt体彩去水, a, b)
+    合格 = p_fused≥0.55（超低赔通道 ≤1.25 已于 2026-09-22 撤：0 触发死代码）；
+    p_fused = fuse(p_dc, p_mkt体彩去水, a, b)
     （出票时点无 Pinnacle 收盘，市场腿=体彩即时价去水，与 mix_candidates 同口径）。
     无 mid/无 had → 该场不入池（没赔率无从下注）；无 DC 缓存/队名未入库 2026-09-16
     放行（spec §1.6）——经 _odds_only_had_legs 只按赔率入选（每场赔率最高一腿）、
@@ -749,8 +761,7 @@ def _lottery_legs(odds_day: dict, zh: dict, hhad_map: dict | None = None,
                                     "play": play, "pick": names[k],
                                     "p_fused": round(p, 4), "p_mkt": round(p_mkt[k], 4),
                                     "diff_pp": round(d * 100, 1)})
-                if not (p >= LOTTERY_MIN_P
-                        or (o <= LOTTERY_LOW_ODDS and p >= LOTTERY_LOW_ODDS_MIN_P)):
+                if not (p >= LOTTERY_MIN_P):
                     continue
                 ev = p * o - 1
                 leg = {"matchNumStr": mid, "match": f'{m.get("home")}-{m.get("away")}',
@@ -770,16 +781,26 @@ def _lottery_legs(odds_day: dict, zh: dict, hhad_map: dict | None = None,
 
 def _lottery_tier(legs: list) -> dict:
     """彩票档组装：池≥4 出 N串1×1倍=2元（bets 全索引单注——派彩走 settle._tier_bets
-    同源链路：全中才回款）；池<4 关档不硬凑。无预算管理（设计拍板C）。开发者 sszhang"""
+    同源链路：全中才回款）。2026-09-22 放宽（大哥拍板）：3 腿降级出 3串1 选项卡
+    （标注腿数不足、买否大哥定），<3 才关档——2 腿 HAD 串=已废除的低赔碎注形状不出。
+    无预算管理（设计拍板C）。开发者 sszhang"""
     legs = legs[:LOTTERY_MAX_LEGS]
-    if len(legs) < LOTTERY_MIN_LEGS:
+    n = len(legs)
+    if 3 <= n < LOTTERY_MIN_LEGS:
+        total = math.prod(l["odds"] for l in legs)
+        return {"shape": f"lottery-{n}x1", "cost": 2, "legs": legs,
+                "bets": [{"legs": list(range(n)), "multiplier": 1}],
+                "expOdds": round(total, 1), "winIfHit": round(2 * total, 0),
+                "note": (f"彩票档降级 {n}串1×1倍=2元（合格腿{n}<{LOTTERY_MIN_LEGS}·09-22 放宽："
+                         f"标注不关档，右尾弱于标准 N串，买否大哥拍板）")}
+    if n < 3:
         return {"shape": "closed", "cost": 0, "legs": legs,
-                "note": f"彩票档关档（合格腿{len(legs)}<{LOTTERY_MIN_LEGS}，不硬凑）"}
+                "note": f"彩票档关档（合格腿{n}<3，不硬凑；2 腿 HAD 串=已废除低赔碎注形状）"}
     total = math.prod(l["odds"] for l in legs)
-    return {"shape": f"lottery-{len(legs)}x1", "cost": 2, "legs": legs,
-            "bets": [{"legs": list(range(len(legs))), "multiplier": 1}],
+    return {"shape": f"lottery-{n}x1", "cost": 2, "legs": legs,
+            "bets": [{"legs": list(range(n)), "multiplier": 1}],
             "expOdds": round(total, 1), "winIfHit": round(2 * total, 0),
-            "note": f"{len(legs)}串1×1倍=2元 · 全中≈{2 * total:.0f}元 · 无预算管理(设计§四红线废除)"}
+            "note": f"{n}串1×1倍=2元 · 全中≈{2 * total:.0f}元 · 无预算管理(设计§四红线废除)"}
 
 
 def _leg_key(leg) -> str:
@@ -848,6 +869,37 @@ def annotate_hypothesis_warnings(t: dict) -> None:
             t["warnings"].append(
                 f"[{name}] {len(no_play)} 腿无比赛推演（matchPlay 缺失）——"
                 "假设可能为统计罗列，出票前自查 matchPlay 五槽位")
+
+
+def validate_card_assertions(t: dict) -> None:
+    """出票卡机器断言（2026-09-22 大哥拍板'自查清单分流'）：人工自查清单中机器可查项
+    自动校验，违规写 t.warnings——控制不减、人工减。覆盖：同注同场限一玩法（官方第七条）、
+    混串木桶（CRS 总关≤4 / TTG·HAFU≤6 / HAD·HHAD≤8）、轮次总预算红线。
+    poolSingle 单关资格/键序标注等需外部数据的项仍走出票核对单人工查。开发者 sszhang"""
+    t.setdefault("warnings", [])
+    cap = {"crs": 4, "ttg": 6, "hafu": 6, "had": 8, "hhad": 8}
+    for name, tier in (t.get("tiers") or {}).items():
+        if not isinstance(tier, dict):
+            continue
+        legs = tier.get("legs") or []
+        for bi, b in enumerate(tier.get("bets") or []):
+            refs = b.get("legs") or []
+            objs = [legs[r] for r in refs if isinstance(r, int) and 0 <= r < len(legs)]
+            codes = [str(l.get("matchNumStr")) for l in objs]
+            dup = {c for c in codes if codes.count(c) > 1}
+            if dup:
+                t["warnings"].append(
+                    f"[{name}] 注{bi + 1} 同场多玩法违规（官方第七条）：{sorted(dup)}")
+            plays = {str(l.get("play", "crs")).split("-")[0].lower() for l in objs}
+            wood = min((cap.get(p, 8) for p in plays), default=8)
+            if len(objs) > wood:
+                t["warnings"].append(
+                    f"[{name}] 注{bi + 1} 木桶违规：{len(objs)} 关 > 上限 {wood}（玩法 {sorted(plays)}）")
+    total_cost = sum((tier or {}).get("cost", 0)
+                     for tier in (t.get("tiers") or {}).values() if isinstance(tier, dict))
+    if total_cost > ROUND_REDLINE:
+        t["warnings"].append(
+            f"[预算] 轮次总投入 {total_cost} 元 > 红线 {ROUND_REDLINE} 元")
 
 
 def build_three_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form: dict,
@@ -929,6 +981,7 @@ def build_three_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form:
     # 轮红线检查已废除（T2 2026-09-06 设计§四：纪律=覆盖闸coverGate）；ROUND_REDLINE
     # 常量与 budget_gate/MONTHLY_CAP 调用保留给 --structure=legacy 旧结构对照卡
     annotate_hypothesis_warnings(out)   # 假设层：唯一剩下的出票前拦截（Task 6·spec §三）
+    validate_card_assertions(out)       # 机器断言（09-22 自查清单分流：同场限一/木桶/预算红线）
     return out
 
 
@@ -1296,16 +1349,16 @@ def _selftest_lottery():
                        mk(5, 1.50, 3.80, 5.90)]}        # 5场低赔主胜 → 池=5 全上
     legs = _lottery_legs(day, zh={}, dc_params_fn=fake_dc, fusion=(0.4, 1.0))
     assert len(legs) == 5 and all(l["pick"] == "主胜" for l in legs)   # 全主胜入池
-    assert all(l["p"] >= LOTTERY_LOW_ODDS_MIN_P for l in legs)
+    assert all(l["p"] >= LOTTERY_MIN_P for l in legs)
     # 同场去重：hhad 让球主胜与 had 主胜同场 → 只留 EV 最高一条
     hhad_map = {"周六001": {"goalLine": -1.0, "h": 2.10, "d": 3.30, "a": 3.05}}
     legs2 = _lottery_legs(day, zh={}, hhad_map=hhad_map, dc_params_fn=fake_dc,
                           fusion=(0.4, 1.0))
     assert len(legs2) == 5
     assert sum(1 for l in legs2 if l["matchNumStr"] == "周六001") == 1
-    # 池<4 关档 / 池>8 截前 8
+    # 池3 腿降级 3串1 选项卡（09-22 放宽）/ 池>8 截前 8
     t3 = _lottery_tier(legs[:3])
-    assert t3["shape"] == "closed" and t3["cost"] == 0
+    assert t3["shape"] == "lottery-3x1" and t3["cost"] == 2 and "放宽" in t3["note"]
     day9 = {"matches": [mk(i, 1.40 + 0.015 * i, 3.80, 5.50) for i in range(1, 10)]}
     legs9 = _lottery_legs(day9, zh={}, dc_params_fn=fake_dc, fusion=(0.4, 1.0))
     t9 = _lottery_tier(legs9)

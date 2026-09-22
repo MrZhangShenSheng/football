@@ -170,8 +170,8 @@ def test_filter_onsale_falls_back_when_cache_missing(tmp_path, monkeypatch):
 
 
 # ---------- 彩票档（docs/2026-09-02-lottery-tier-design.html）----------
-# HAD/HHAD N串1×1倍=2元，合格腿全上 N∈[4,8]，p_fused≥0.55/超低赔≤1.25通道，
-# 无预算管理（拍板C）。开发者 sszhang
+# HAD/HHAD N串1×1倍=2元，合格腿全上 N∈[4,8]，p_fused≥0.55（超低赔通道 09-22 撤），
+# 无预算管理（拍板C）。2026-09-22 放宽：3 腿降级 3串1 选项卡，<3 关档。开发者 sszhang
 
 _FAKE_DC = lambda m, zh: (2.0, 0.85, -0.05)   # 主强λ：p_dc 主胜 ~0.72
 
@@ -182,9 +182,10 @@ def _mk_had(i, h, d, a):
 
 
 def test_lottery_constants_match_design():
-    """常量与设计文档 §02 一致：门槛 0.55 / 超低赔 1.25+0.50 / 腿数窗 [4,8]。"""
+    """常量与设计文档 §02 一致：门槛 0.55 / 腿数窗 [4,8]；超低赔通道已撤（0 触发死代码）。"""
     import boldplay as bp
-    assert (bp.LOTTERY_MIN_P, bp.LOTTERY_LOW_ODDS, bp.LOTTERY_LOW_ODDS_MIN_P) == (0.55, 1.25, 0.50)
+    assert bp.LOTTERY_MIN_P == 0.55
+    assert not hasattr(bp, "LOTTERY_LOW_ODDS")
     assert (bp.LOTTERY_MIN_LEGS, bp.LOTTERY_MAX_LEGS) == (4, 8)
 
 
@@ -198,18 +199,19 @@ def test_lottery_legs_pool_dedup_and_ev_order():
     assert len(legs) == 5                                             # 池=合格场数全上
     assert sum(1 for l in legs if l["matchNumStr"] == "周六001") == 1  # 同场≤1腿（铁律9）
     assert [l["ev"] for l in legs] == sorted((l["ev"] for l in legs), reverse=True)
-    assert all(l["p"] >= bp.LOTTERY_LOW_ODDS_MIN_P for l in legs)
+    assert all(l["p"] >= bp.LOTTERY_MIN_P for l in legs)
 
 
 def test_lottery_legs_below_threshold_excluded():
-    """p_fused<0.55 且非超低赔（均势场）→ 不入池。"""
+    """p_fused<0.55 → 不入池。"""
     import boldplay as bp
     day = {"matches": [_mk_had(1, 3.00, 3.20, 2.15)]}   # 市场主胜~0.29 vs DC~0.72 → p_fused~0.37
     assert bp._lottery_legs(day, zh={}, dc_params_fn=_FAKE_DC, fusion=(0.4, 1.0)) == []
 
 
 def test_lottery_tier_open_close_and_cap():
-    """池≥4 出 N串1×1倍=2元（bets 全索引单注）；<4 关档；>8 截前 8。"""
+    """池≥4 出 N串1×1倍=2元（bets 全索引单注）；3 腿降级 3串1 选项卡（09-22 放宽）；
+    <3 关档（2 腿 HAD 串=废除的低赔碎注形状）；>8 截前 8。"""
     import boldplay as bp
     leg = lambda i: {"matchNumStr": f"周六00{i}", "match": f"m{i}", "play": "had",
                      "pick": "主胜", "odds": 1.5, "p": 0.6, "ev": -0.1}
@@ -218,9 +220,37 @@ def test_lottery_tier_open_close_and_cap():
     assert t4["bets"] == [{"legs": [0, 1, 2, 3], "multiplier": 1}]
     assert t4["expOdds"] == 5.1 and t4["winIfHit"] == 10.0   # round 口径：1位/0位小数
     t3 = bp._lottery_tier([leg(i) for i in range(1, 4)])
-    assert t3["shape"] == "closed" and t3["cost"] == 0 and "不硬凑" in t3["note"]
+    assert t3["shape"] == "lottery-3x1" and t3["cost"] == 2 and "放宽" in t3["note"]
+    t2 = bp._lottery_tier([leg(i) for i in range(1, 3)])
+    assert t2["shape"] == "closed" and t2["cost"] == 0 and "不硬凑" in t2["note"]
     t9 = bp._lottery_tier([leg(i) for i in range(1, 10)])
     assert t9["shape"] == "lottery-8x1" and len(t9["legs"]) == 8
+
+
+def test_card_assertions_tier_rules():
+    """机器断言（09-22 清单分流）：同注同场限一玩法 / 混串木桶 / 预算红线。"""
+    import boldplay as bp
+    leg = lambda code, play, odds=1.5: {"matchNumStr": code, "match": "m", "play": play,
+                                        "pick": "x", "odds": odds, "p": 0.6, "ev": -0.1}
+    card = {
+        "tiers": {
+            "搏奖档": {"cost": 28, "legs": [leg("周一001", "crs"), leg("周一001", "had")],
+                     "bets": [{"legs": [0, 1], "multiplier": 1}]},
+            "翻身档": {"cost": 6, "legs": [leg("周二002", "crs"), leg("周三003", "crs"),
+                                       leg("周四004", "had"), leg("周五005", "had"), leg("周六006", "had")],
+                     "bets": [{"legs": [0, 1, 2, 3, 4], "multiplier": 1}]},
+        },
+    }
+    bp.validate_card_assertions(card)
+    joined = "\n".join(card["warnings"])
+    assert "同场多玩法违规" in joined                     # 官方第七条
+    assert "木桶违规" in joined                          # CRS 木桶 4 < 5 关
+    assert "红线" in joined                              # 28+6=34 > 30
+    clean = {"tiers": {"彩票档": {"cost": 2,
+                                "legs": [leg(f"周{i}001", "had") for i in ("一", "二", "三", "四")],
+                                "bets": [{"legs": [0, 1, 2, 3], "multiplier": 1}]}}}
+    bp.validate_card_assertions(clean)
+    assert clean["warnings"] == []
 
 
 def test_lottery_hhad_leg_hit_goal_line():
