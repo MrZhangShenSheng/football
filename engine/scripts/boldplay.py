@@ -902,6 +902,67 @@ def validate_card_assertions(t: dict) -> None:
             f"[预算] 轮次总投入 {total_cost} 元 > 红线 {ROUND_REDLINE} 元")
 
 
+def coupling_at_least_one(t: dict, max_legs: int = 20) -> dict:
+    """跨档耦合口径"至少中一注"（SKILL v5.1 条款脚本化，2026-09-22 大哥拍板）：
+    多注共享腿时独立近似 1−Π(1−p注) 系统性高估（8-25 实测 93%→实际 82%），按腿集合
+    枚举 2^L 精确展开 P(全灭)。腿唯一化跨档折叠——保底 4 腿全含于彩票 N 串时共享腿
+    自动同节点（09-04"资金耦合未计算"条款的根治）。概率取 leg.p / leg.q（freq），
+    缺失按 1/odds×池期望返还近似并标 pSource=implied。腿数>max_legs 降级独立近似
+    +note（当前卡形最大 ~16 腿，护栏不触发）。输出写入 out["couplingHit"]。开发者 sszhang"""
+    keys: list = []
+    probs: list = []
+    has_implied = False
+    bets: list = []
+    for tier in (t.get("tiers") or {}).values():
+        if not isinstance(tier, dict):
+            continue
+        legs = tier.get("legs") or []
+        for b in tier.get("bets") or []:
+            idxs = []
+            for r in (b.get("legs") or []):
+                if not (isinstance(r, int) and 0 <= r < len(legs)):
+                    continue
+                leg = legs[r]
+                k = _leg_key(leg)
+                if k not in keys:
+                    p = leg.get("p") or leg.get("q")
+                    if p is None:
+                        pool = str(leg.get("play", "had")).split("-")[0].lower()
+                        try:
+                            p = min(0.9, (1.0 / float(leg.get("odds") or 2.0))
+                                    * POOL_KEEP.get(pool, 0.871))
+                        except (TypeError, ZeroDivisionError):
+                            p = 0.5
+                        has_implied = True
+                    keys.append(k)
+                    probs.append(float(p))
+                idxs.append(keys.index(k))
+            if idxs:
+                bets.append(idxs)
+    n = len(keys)
+    if not bets or n == 0:
+        return {"atLeastOne": None, "note": "无注可算（全关档）"}
+    p_bet = [math.prod(probs[i] for i in b) for b in bets]
+    independent = 1.0 - math.prod(1.0 - p for p in p_bet)
+    if n > max_legs:
+        return {"atLeastOne": round(independent, 4), "independent": round(independent, 4),
+                "method": "independent-fallback", "legs": n, "bets": len(bets),
+                "note": f"腿数{n}>{max_legs} 降级独立近似（共享腿时高估风险）"}
+    dead = 0.0
+    for state in range(1 << n):
+        if any(all(state >> i & 1 for i in b) for b in bets):
+            continue                       # 该腿组合下至少一注命中 → 非全灭
+        w = 1.0
+        for i in range(n):
+            w *= probs[i] if state >> i & 1 else 1.0 - probs[i]
+        dead += w
+    at_least_one = 1.0 - dead
+    return {"atLeastOne": round(at_least_one, 4), "independent": round(independent, 4),
+            "overestimatePp": round((independent - at_least_one) * 100, 1),
+            "method": f"enum-2^{n}", "legs": n, "bets": len(bets),
+            "pSource": "mixed" if has_implied else "model"}
+
+
 def build_three_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form: dict,
                      hafu_map: dict | None = None) -> dict:
     """三档结构（spec §4.1 两档 + docs/2026-09-02 彩票档）：保底 HAD 3*4*5(16注32元,
@@ -982,6 +1043,7 @@ def build_three_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form:
     # 常量与 budget_gate/MONTHLY_CAP 调用保留给 --structure=legacy 旧结构对照卡
     annotate_hypothesis_warnings(out)   # 假设层：唯一剩下的出票前拦截（Task 6·spec §三）
     validate_card_assertions(out)       # 机器断言（09-22 自查清单分流：同场限一/木桶/预算红线）
+    out["couplingHit"] = coupling_at_least_one(out)   # 耦合"至少中一注"（v5.1 条款脚本化 09-22）
     return out
 
 

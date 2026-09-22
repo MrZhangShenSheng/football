@@ -253,6 +253,41 @@ def test_card_assertions_tier_rules():
     assert clean["warnings"] == []
 
 
+def test_coupling_at_least_one_shared_leg():
+    """耦合"至少中一注"精确对拍（SKILL v5.1 脚本化）：两注共享一腿的手算期望值。
+    A/B/C 各 p=0.5，注1={A,B} 注2={A,C}：P(全灭)=A灭(0.5)+A中B灭C灭(0.125)=0.625。"""
+    import boldplay as bp
+    mk = lambda c: {"matchNumStr": c, "match": "m", "play": "had", "pick": "主胜",
+                    "odds": 2.0, "p": 0.5, "ev": 0.0}
+    card = {"tiers": {"t": {"legs": [mk("001"), mk("002"), mk("003")],
+                            "bets": [{"legs": [0, 1], "multiplier": 1},
+                                     {"legs": [0, 2], "multiplier": 1}]}}}
+    r = bp.coupling_at_least_one(card)
+    assert r["atLeastOne"] == 0.375                       # 1-0.625 精确
+    assert r["independent"] == 0.4375                     # 1-0.75² 独立近似（高估）
+    assert r["overestimatePp"] == 6.2                     # round(6.25,1)
+    assert r["method"] == "enum-2^3" and r["pSource"] == "model"
+
+
+def test_coupling_cross_tier_dedup_and_implied():
+    """跨档共享腿折叠（保底⊂彩票同腿只算一次）+ 无概率腿 implied 兜底。"""
+    import boldplay as bp
+    shared = {"matchNumStr": "001", "match": "m", "play": "had", "pick": "主胜",
+              "odds": 2.0, "p": 0.5, "ev": 0.0}
+    bare = {"matchNumStr": "002", "match": "m", "play": "crs", "pick": "1:1", "odds": 8.0}
+    card = {"tiers": {
+        "a档": {"legs": [shared], "bets": [{"legs": [0], "multiplier": 1}]},
+        "b档": {"legs": [dict(shared), bare], "bets": [{"legs": [0, 1], "multiplier": 1}]},
+    }}
+    r = bp.coupling_at_least_one(card)
+    assert r["legs"] == 2                                  # shared 跨档折叠为同节点
+    assert r["pSource"] == "mixed"                         # bare 无 p → implied
+    # 手算：p(A)=0.5, p(bare)=1/8×0.661=0.082625；注1={A} 注2={A,bare}
+    # A 中则注1必中 → 至少中一注 = P(A) = 0.5（dead=A灭0.5×[bare灭0.917375+bare中0.082625]）
+    assert abs(r["atLeastOne"] - 0.5) < 0.0002
+    assert abs(r["independent"] - 0.5207) < 0.0002         # 1-(0.5×0.917375) 独立近似
+
+
 def test_lottery_hhad_leg_hit_goal_line():
     """HHAD 让球判定：goalLine=-1 → 1:0让平 / 2:0让主 / 0:1让客；无 goalLine=None 待人工。"""
     import boldplay as bp
