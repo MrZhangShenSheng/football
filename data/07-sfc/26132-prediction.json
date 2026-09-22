@@ -841,5 +841,64 @@
     "variantDoubleEye": 0.00011
    }
   }
+ },
+ "planV2": {
+  "method": "平局对齐出票：覆盖位对齐锚隐含平局期望3.25，不再以argmax方向表为主体",
+  "roles": {
+   "dan6": [
+    1,
+    5,
+    2,
+    12,
+    13,
+    4
+   ],
+   "single4": [
+    11,
+    14,
+    8,
+    9
+   ],
+   "doubleDraw3": [
+    6,
+    3,
+    10
+   ],
+   "drawEye1": [
+    7
+   ]
+  },
+  "cards": {
+   "B2_main": {
+    "stake": 16,
+    "notes": 8,
+    "structure": "11单选(argmax含#7主胜) × #6/#3/#10胜平双选全组合",
+    "pAtLeastOne": 0.000955
+   },
+   "B3_eye": {
+    "stake": 2,
+    "notes": 1,
+    "structure": "13场argmax + #7单选平(29%全场最高平局概率)",
+    "pAll": 0.000138
+   },
+   "combined": {
+    "stake": 18,
+    "pAtLeastOne": 0.001095,
+    "note": "B2与B3全对事件互斥(#7胜vs#7平)→直接相加；18元超设计上限16元2元待大哥点头"
+   }
+  },
+  "drawCoverage": {
+   "coveredSlots": 4,
+   "expectedDrawsCovered": 1.1,
+   "exposureSingles": 2.15,
+   "total": 3.25,
+   "note": "4覆盖位对齐期望3.25·剩余10单选场暴露2.15属数学现实"
+  },
+  "anchorRefresh": {
+   "at": "2026-09-22 23:19",
+   "moved": "#2澳巴 主7.0→7.5/客1.392→1.40（巴西67.1%+0.8pp·噪音级无边际）",
+   "sportteryListed": false,
+   "note": "竞彩未上架国家队场·周四上午复扫节点确认"
+  }
  }
 }

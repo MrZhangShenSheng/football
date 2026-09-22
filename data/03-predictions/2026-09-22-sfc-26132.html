@@ -44,7 +44,55 @@ svg.ic{width:14px;height:14px;vertical-align:-2px}
 
 <div class="warnbox"><svg class="ic"><use href="#i-warn"/></svg> <b>数据模式声明</b>：本期为国家队场次——DC联赛缓存/fd Pinnacle锚/俱乐部画像<b>全部不适用</b>；概率锚=DraftKings收盘去水（ESPN接口，13/14场），#1中国场无任何市场锚（闸②触发）。星级上限⭐⭐⭐（单锚降级纪律）。世界杯（7月结束）后的换帅潮是本期最大变量：荷兰=哈维、德国=克洛普、法国=齐达内均首秀，意大利=曼奇尼二进宫带8-9新人。</div>
 
-<h2>一、出票卡（大哥拍板用）</h2>
+<h2>一、出票卡 v2 · 平局对齐版（大哥拍板用 · 23:19 重跑）</h2>
+
+<h3>① 角色分层结构（覆盖位对齐平局期望 3.25）</h3>
+<div class="card">
+<table>
+<tr><th>角色</th><th>场次</th><th>选择</th><th>说明</th></tr>
+<tr><td><b>胆位 ×6</b><br><span class="small">高把握单选</span></td><td>#1中国 · #5葡萄牙 · #2巴西客 · #12瑞典 · #13法国客 · #4挪威</td><td class="pick">胜/负单选</td><td>把握 57%~85%（#4丹麦5主力缺阵加持）</td></tr>
+<tr><td><b>单选位 ×4</b><br><span class="small">中把握</span></td><td>#11波兰 · #14黑山 · #8亚美尼亚 · #9格鲁吉亚</td><td class="pick">主胜</td><td>把握 50%~56%，无平局活口</td></tr>
+<tr><td><b>双选平覆盖 ×3</b><br><span class="small">平局活口位</span></td><td>#6塞希 · #3荷德 · #10意比</td><td class="pickx">胜/平 双选</td><td>三场平局概率 25%~28%，双选全组合 2³=8 注</td></tr>
+<tr><td><b>平局眼 ×1</b><br><span class="small">B3 独立眼注</span></td><td>#7科索沃 vs 爱尔兰</td><td class="pickx">单选平</td><td>平 29% 全场最高 · pari-mutuel 稀注杠杆</td></tr>
+</table>
+<div class="small">平局账：4 个覆盖位期望 1.10 + 10 个单选场暴露 2.15 = 总期望 3.25（与市场锚隐含一致）。argmax 结构性 0 平局的缺陷在出票层修正——单选场剩余暴露是 16 元预算下的数学现实，非方法论漏洞。</div>
+</div>
+
+<h3>② 出票票面</h3>
+<div class="card">
+<table>
+<tr><th>卡</th><th>票面</th><th>注数×本金</th><th>至少一注全对</th></tr>
+<tr><td><b>B2 主卡</b></td><td>13场argmax单选（#7=主胜）+ #6/#3/#10 胜平双选全组合</td><td class="num">8注 × 16元</td><td class="num">0.096%</td></tr>
+<tr><td><b>B3 眼注</b></td><td>同上13场但 #7=平（单选平局眼）</td><td class="num">1注 × 2元</td><td class="num">0.014%</td></tr>
+<tr><td><b>合计</b></td><td>两卡 #7 互斥（胜vs平）→ 全对事件相加</td><td class="num">9注 × 18元</td><td class="num">0.11%</td></tr>
+</table>
+<div class="warnbox" style="margin:8px 0 4px"><svg class="ic"><use href="#i-warn"/></svg> 18 元超设计文档上限（16 元）2 元——需大哥点头；不超预算的替代=B2 单卡 16 元（0.096%）或 B2 换 B3 的 2+2 极简。</div>
+<div class="small">锚刷新 23:19：仅 #2 澳巴微动（主 7.0→7.5 / 客 1.392→1.40，巴西 67.1%，噪音级无信息边际，方向不变）；竞彩国家队场未上架，周四上午复扫（拿体彩价+insight 伤停终版）。</div>
+</div>
+
+<h3>③ 14 场三向把握总表</h3>
+<div class="card">
+<table class="t14">
+<tr><th>#</th><th style="text-align:left">对阵（开球）</th><th>主</th><th>平</th><th>客</th><th>argmax</th><th>覆盖角色</th></tr>
+<tr><td>1</td><td class="l">中国 vs 马尔代夫（周四 19:35）</td><td class="num">85*</td><td class="num">10</td><td class="num">5</td><td class="pick">胜</td><td>胆</td></tr>
+<tr><td>5</td><td class="l">葡萄牙 vs 威尔士（周五 02:45）</td><td class="num">78.5</td><td class="num">14.6</td><td class="num">6.9</td><td class="pick">胜</td><td>胆</td></tr>
+<tr><td>2</td><td class="l">澳大利亚 vs 巴西（周四 18:00）</td><td class="num">12.5</td><td class="num">20.4</td><td class="num">67.1</td><td class="pick">客胜</td><td>胆</td></tr>
+<tr><td>12</td><td class="l">瑞典 vs 罗马尼亚（周六 02:45）</td><td class="num">62.7</td><td class="num">21.4</td><td class="num">16.0</td><td class="pick">胜</td><td>胆</td></tr>
+<tr><td>13</td><td class="l">土耳其 vs 法国（周六 02:45）</td><td class="num">15.3</td><td class="num">22.8</td><td class="num">61.4</td><td class="pick">客胜</td><td>胆</td></tr>
+<tr><td>4</td><td class="l">挪威 vs 丹麦（周五 02:45）</td><td class="num">57.2</td><td class="num">22.9</td><td class="num">19.9</td><td class="pick">胜</td><td>胆</td></tr>
+<tr><td>11</td><td class="l">波兰 vs 波黑（周六 02:45）</td><td class="num">56.3</td><td class="num">24.7</td><td class="num">19.0</td><td class="pick">胜</td><td>单选</td></tr>
+<tr><td>14</td><td class="l">黑山 vs 塞浦路斯（周六 02:45）</td><td class="num">54.0</td><td class="num">25.3</td><td class="num">20.7</td><td class="pick">胜</td><td>单选</td></tr>
+<tr><td>8</td><td class="l">亚美尼亚 vs 拉脱维亚（周六 00:00）</td><td class="num">53.4</td><td class="num">25.8</td><td class="num">20.8</td><td class="pick">胜</td><td>单选</td></tr>
+<tr><td>9</td><td class="l">格鲁吉亚 vs 北爱尔兰（周六 00:00）</td><td class="num">49.8</td><td class="num">26.8</td><td class="num">23.4</td><td class="pick">胜</td><td>单选</td></tr>
+<tr><td>7</td><td class="l">科索沃 vs 爱尔兰（周五 02:45）</td><td class="num">41.5</td><td class="num pickx">29.0</td><td class="num">29.5</td><td>胜</td><td class="pickx">平局眼</td></tr>
+<tr><td>10</td><td class="l">意大利 vs 比利时（周六 02:45）</td><td class="num">43.5</td><td class="num pickx">26.5</td><td class="num">30.0</td><td>胜</td><td class="pickx">胜/平双选</td></tr>
+<tr><td>3</td><td class="l">荷兰 vs 德国（周五 02:45）</td><td class="num">40.2</td><td class="num pickx">25.0</td><td class="num">34.9</td><td>胜</td><td class="pickx">胜/平双选</td></tr>
+<tr><td>6</td><td class="l">塞尔维亚 vs 希腊（周五 02:45）</td><td class="num">36.9</td><td class="num pickx">28.4</td><td class="num">34.8</td><td>胜</td><td class="pickx">胜/平双选</td></tr>
+</table>
+<div class="small">*#1 中国场为 FIFA 排名差定性值（无市场锚，闸②）；三向=DraftKings 去水+情报修正（挪威+丹麦伤情、意比-曼奇尼重建）。平局列高亮=有活口的 4 场。</div>
+</div>
+
+<h2>一·旧版方案对比（保留参照）</h2>
 <div class="card">
 <table class="t14">
 <tr><th>#</th><th style="text-align:left">对阵（开球）</th><th>方向</th><th>把握</th><th colspan="3" style="text-align:center">市场去水 主/平/客</th><th>标记</th></tr>
@@ -77,7 +125,7 @@ svg.ic{width:14px;height:14px;vertical-align:-2px}
 <tr><td><b>D · 任9变体</b></td><td>同C，#9格鲁吉亚 ↔ #10意大利交换</td><td class="num">2元</td><td class="num">0.76%</td><td>防第9/10名边界踩雷</td></tr>
 <tr><td><b>E · 任9复式</b></td><td>同C，#9格鲁吉亚胜/平双选</td><td class="num">4元</td><td class="num">1.43%</td><td>单场双选增益比最高（0.498→0.766）；含平覆盖</td></tr>
 </table>
-<div class="small">组合建议：B2（16元）为主推；极简=A+B3（4元，argmax单式+一个平局眼对冲结构）。任9浮动奖池：上期（26131）任9 3,774元/注 · 一等 102万/11注。</div>
+<div class="small">组合建议（v2 口径）：B2+B3 合计 18 元（9 注·至少一注全对 0.11%·#7 两卡互斥相加）为完整组合；等预算替代=B2 单卡 16 元（0.096%）。任9浮动奖池：上期（26131）任9 3,774元/注 · 一等 102万/11注。</div>
 </div>
 
 <h2>二、背景情报（本期三大底色）</h2>
