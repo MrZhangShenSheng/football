@@ -58,16 +58,55 @@ svg.ic{width:14px;height:14px;vertical-align:-2px}
 <div class="small">平局账：4 个覆盖位期望 1.10 + 10 个单选场暴露 2.15 = 总期望 3.25（与市场锚隐含一致）。argmax 结构性 0 平局的缺陷在出票层修正——单选场剩余暴露是 16 元预算下的数学现实，非方法论漏洞。</div>
 </div>
 
-<h3>② 出票票面</h3>
+<h3>② 出票票面 · 投注单勾选视图（照此勾选）</h3>
+<div class="card">
+<style>.ball{display:inline-block;width:26px;height:26px;line-height:26px;border-radius:50%;background:#eef1f4;color:var(--mut);text-align:center;font-size:13px;font-weight:700}.ball.on{background:var(--acc);color:#fff}.ball.eye{background:var(--gold);color:#fff}</style>
+<b>票一 · B2 主卡</b>（一张复式票：11 场单勾 + 3 场双勾，系统自动 8 注）<span class="badge">8注 × 2元 = 16元</span>
+<table class="t14" style="margin-top:6px">
+<tr><th>场次</th><th style="text-align:left">对阵</th><th>胜</th><th>平</th><th>负</th></tr>
+<tr><td>1</td><td class="l">中国 vs 马尔代夫</td><td><span class="ball on">3</span></td><td><span class="ball">1</span></td><td><span class="ball">0</span></td></tr>
+<tr><td>2</td><td class="l">澳大利亚 vs 巴西</td><td><span class="ball">3</span></td><td><span class="ball">1</span></td><td><span class="ball on">0</span></td></tr>
+<tr><td>3</td><td class="l">荷兰 vs 德国</td><td><span class="ball on">3</span></td><td><span class="ball on">1</span></td><td><span class="ball">0</span></td></tr>
+<tr><td>4</td><td class="l">挪威 vs 丹麦</td><td><span class="ball on">3</span></td><td><span class="ball">1</span></td><td><span class="ball">0</span></td></tr>
+<tr><td>5</td><td class="l">葡萄牙 vs 威尔士</td><td><span class="ball on">3</span></td><td><span class="ball">1</span></td><td><span class="ball">0</span></td></tr>
+<tr><td>6</td><td class="l">塞尔维亚 vs 希腊</td><td><span class="ball on">3</span></td><td><span class="ball on">1</span></td><td><span class="ball">0</span></td></tr>
+<tr><td>7</td><td class="l">科索沃 vs 爱尔兰</td><td><span class="ball on">3</span></td><td><span class="ball">1</span></td><td><span class="ball">0</span></td></tr>
+<tr><td>8</td><td class="l">亚美尼亚 vs 拉脱维亚</td><td><span class="ball on">3</span></td><td><span class="ball">1</span></td><td><span class="ball">0</span></td></tr>
+<tr><td>9</td><td class="l">格鲁吉亚 vs 北爱尔兰</td><td><span class="ball on">3</span></td><td><span class="ball">1</span></td><td><span class="ball">0</span></td></tr>
+<tr><td>10</td><td class="l">意大利 vs 比利时</td><td><span class="ball on">3</span></td><td><span class="ball on">1</span></td><td><span class="ball">0</span></td></tr>
+<tr><td>11</td><td class="l">波兰 vs 波黑</td><td><span class="ball on">3</span></td><td><span class="ball">1</span></td><td><span class="ball">0</span></td></tr>
+<tr><td>12</td><td class="l">瑞典 vs 罗马尼亚</td><td><span class="ball on">3</span></td><td><span class="ball">1</span></td><td><span class="ball">0</span></td></tr>
+<tr><td>13</td><td class="l">土耳其 vs 法国</td><td><span class="ball">3</span></td><td><span class="ball">1</span></td><td><span class="ball on">0</span></td></tr>
+<tr><td>14</td><td class="l">黑山 vs 塞浦路斯</td><td><span class="ball on">3</span></td><td><span class="ball">1</span></td><td><span class="ball">0</span></td></tr>
+</table>
+<div class="small">●绿=勾选；3 号/6 号/10 号两勾=双选（共 2×2×2=8 注）；其余 11 场单勾。</div>
+
+<p style="margin-top:14px"><b>票二 · B3 眼注</b>（独立单式票，与票一唯一差别：<b>#7 科索沃 vs 爱尔兰只勾「平」不勾「胜」</b>，其余 13 场同票一的单勾）<span class="badge" style="background:#f5efdd;color:var(--gold)">1注 × 2元 = 2元</span></p>
+<table class="t14" style="margin-top:6px">
+<tr><th>差异场</th><th style="text-align:left">对阵</th><th>胜</th><th>平</th><th>负</th></tr>
+<tr><td>7</td><td class="l">科索沃 vs 爱尔兰</td><td><span class="ball">3</span></td><td><span class="ball eye">1</span></td><td><span class="ball">0</span></td></tr>
+</table>
+<div class="small">金色=眼注差异位。其余 13 场：#1/4/5/8/9/11/12/14 勾胜 · #2/13 勾负 · #3/6/10 只勾胜（单勾，不再双选）。</div>
+
+<div class="okbox" style="margin-top:12px"><b>合计 9 注 18 元 · 至少一注全对 0.109%</b>（13 场中=二等，每注独立计）。18 元超 16 元设计上限 2 元——不超预算替代：票一单独 16 元（0.096%）。</div>
+<div class="small">锚刷新 23:19：仅 #2 澳巴微动（巴西 67.1%，噪音级无边际）；竞彩国家队场未上架，周四上午复扫（体彩价+伤停终版）后此票面如无修订即为终版。</div>
+</div>
+
+<h3>②b 九注组合明细（核对用）</h3>
 <div class="card">
 <table>
-<tr><th>卡</th><th>票面</th><th>注数×本金</th><th>至少一注全对</th></tr>
-<tr><td><b>B2 主卡</b></td><td>13场argmax单选（#7=主胜）+ #6/#3/#10 胜平双选全组合</td><td class="num">8注 × 16元</td><td class="num">0.096%</td></tr>
-<tr><td><b>B3 眼注</b></td><td>同上13场但 #7=平（单选平局眼）</td><td class="num">1注 × 2元</td><td class="num">0.014%</td></tr>
-<tr><td><b>合计</b></td><td>两卡 #7 互斥（胜vs平）→ 全对事件相加</td><td class="num">9注 × 18元</td><td class="num">0.11%</td></tr>
+<tr><th>注</th><th>#3 荷德</th><th>#6 塞希</th><th>#10 意比</th><th>#7 科爱</th><th>单注全对</th><th>说明</th></tr>
+<tr><td>1</td><td>胜</td><td>胜</td><td>胜</td><td>胜</td><td class="num">0.0197%</td><td>全 argmax 基准注</td></tr>
+<tr><td>2</td><td>胜</td><td>胜</td><td class="pickx">平</td><td>胜</td><td class="num">0.0135%</td><td>意比平（曼奇尼重建遇体系成型）</td></tr>
+<tr><td>3</td><td>胜</td><td class="pickx">平</td><td>胜</td><td>胜</td><td class="num">0.0152%</td><td>塞希平（双低迷胶着）</td></tr>
+<tr><td>4</td><td>胜</td><td class="pickx">平</td><td class="pickx">平</td><td>胜</td><td class="num">0.0104%</td><td>双平</td></tr>
+<tr><td>5</td><td class="pickx">平</td><td>胜</td><td>胜</td><td>胜</td><td class="num">0.0123%</td><td>荷德平（双新帅首秀互抵）</td></tr>
+<tr><td>6</td><td class="pickx">平</td><td>胜</td><td class="pickx">平</td><td>胜</td><td class="num">0.0084%</td><td>双平</td></tr>
+<tr><td>7</td><td class="pickx">平</td><td class="pickx">平</td><td>胜</td><td>胜</td><td class="num">0.0094%</td><td>双平</td></tr>
+<tr><td>8</td><td class="pickx">平</td><td class="pickx">平</td><td class="pickx">平</td><td>胜</td><td class="num">0.0065%</td><td>三平（本轮平局最多的剧本）</td></tr>
+<tr><td>9·眼</td><td>胜</td><td>胜</td><td>胜</td><td class="pickx">平</td><td class="num">0.0138%</td><td>票二：科爱平（29% 全场最高平局概率）</td></tr>
 </table>
-<div class="warnbox" style="margin:8px 0 4px"><svg class="ic"><use href="#i-warn"/></svg> 18 元超设计文档上限（16 元）2 元——需大哥点头；不超预算的替代=B2 单卡 16 元（0.096%）或 B2 换 B3 的 2+2 极简。</div>
-<div class="small">锚刷新 23:19：仅 #2 澳巴微动（主 7.0→7.5 / 客 1.392→1.40，巴西 67.1%，噪音级无信息边际，方向不变）；竞彩国家队场未上架，周四上午复扫（拿体彩价+insight 伤停终版）。</div>
+<div class="small">注 1~8 = 票一（固定 11 场 + 三个双选位的全部组合）；注 9 = 票二眼注。平局活口：注 2~8 覆盖三场任意平局组合 + 注 9 押 #7 平——共 4 个平局覆盖位对齐锚期望 3.25。</div>
 </div>
 
 <h3>③ 14 场三向把握总表</h3>
