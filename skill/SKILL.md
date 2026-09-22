@@ -8,6 +8,7 @@ description: |
 # 竞彩足球混合过关预测 v5.11
 
 > 更新日期：2026-09-18（**v5.11 假设层补写进 skill**）：新增 `Step -1 假设层`作为决策入口 + 铁律 12「假设先行·EV 不选腿」；撤销"EV≤0 不得入选"硬门槛（降级为事后指标）。**根因**：2026-09-16 大哥拍板的假设驱动只写进 memory 未写进 skill，而 skill 806 行里"假设"仅出现 1 次（且指"关间独立假设"），13 步计算流程被当成决策流程使用 → 09-18 会话按 EV 降序捞腿冒充假设驱动。**skill 与 memory 冲突时以 memory 为准**（memory 是最新拍板，skill 可能滞后）。
+> 更新日期：2026-09-22（**v5.11 转正·大哥拍板**）：假设层撤销观察验证期，转正为正式版——周末大轮直接按正式流程跑（每场逐场落 hypothesis 字段）。首轮实证 09-21（3 场 hypothesis/fused/final/chainSteps 100% 落字段）；同日全链审计确认出票闸门完备（boldplay 引擎腿默认 pending、`filter_buyable` 挡无假设腿、卡面假设优先排序），并补两条执行规矩（无锚模板腿同等适用 / 晚上架补录场，见 Step -1 判定标准）。
 > 更新日期：2026-09-16（常见比分赔率条件模板）：新增 `skill/references/score-odds-template.md`，将1:0、0:1、2:0、2:1、0:2、1:2按胜平负热门赔率区间与形状族纳入比分预筛；历史条件频率只作基线，不得替代本场模型概率。
 
 > 更新日期：2026-09-15（比分形状校准补强）：方向与精确比分分离；强队零封集中、低估弱队进球、同形状候选伪分散纳入硬复盘字段；新增 `skill/references/score-calibration.md`，先影子比较 DC、freq-band 与校准混合链，样本达标前不替换生产概率源。
@@ -117,6 +118,8 @@ Step 8   赛果回填 + 五维复盘 + 闭环学习（corpus/attribute/trend/lea
 
 - `make_hypothesis(assumption, checks)` 建假设；`verdict ∈ ("survived","refuted","pending")`
 - **腿默认 `pending`；pending/refuted 一律进 `blockedByHypothesis` 不出票**——这是闸门全撤后唯一拦截
+- **无锚场（dc_used=false）同等适用 ★ 2026-09-22 转正补条款**：联赛频率模板 / n>0 / q 值不是本场证据，纯模板腿 = pending 不得入票（09-17 杯赛轮 6 条 dc=null 模板腿直接入票为反例；v5.11 转正后引擎腿已全默认 pending，闸门挡在出票前）
+- **晚上架补录场 ★ 2026-09-22 转正补条款**：出票前复扫发现新增上架场次，须补足假设 + 验证才可入票；来不及做功课的标"补录·未过假设层"禁入（09-18 周四002 上海申花上架晚于预测生成、10:24 复扫仅增量补录为反例）
 - `filter_buyable(legs)` → (可买腿, 被挡腿)；`sort_by_hypothesis` 用假设优先序（survived → pending → refuted），**不用赔率降序**
 - `check_shared_legs(bets)` 查共用腿伪分散（多注共用一腿 = 表面 N 注实为 1 个失效点）
 
