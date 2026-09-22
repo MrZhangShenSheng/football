@@ -55,6 +55,7 @@ def parse_issue(issue: int, html: str) -> dict:
         score = re.search(r'class="tdfx td7"[^>]*>\s*(\d+)\s*:\s*(\d+)', tr)
         result = re.search(r'class="tdfx font_red td8"[^>]*>\s*([013])', tr)
         mid = re.search(r'/soccer/match/(\d+)/', tr)
+        odds = [float(x) for x in re.findall(r'<em class="pltxt"[^>]*>\s*([\d.]+)\s*</em>', tr)]
         if not (no and league):
             continue
         matches.append({
@@ -67,6 +68,7 @@ def parse_issue(issue: int, html: str) -> dict:
             'rankAway': int(ranks[1]) if len(ranks) > 1 else None,
             'score': f'{score.group(1)}-{score.group(2)}' if score else None,
             'result': int(result.group(1)) if result else None,   # 3主胜/1平/0客胜
+            'odds': odds if len(odds) == 3 else None,             # 99家平均欧指 [主,平,客]
             'okoooMatchId': mid.group(1) if mid else None,
         })
     if len(matches) != 14:
