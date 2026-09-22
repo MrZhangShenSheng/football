@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>14场胜负平/任9 预测模型设计 · 2026-09-22</title>
+<style>
+  body { font-family: "Microsoft YaHei", sans-serif; margin: 0; background: #f6f7f9; color: #1f2328; line-height: 1.7; }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 24px 20px 60px; }
+  h1 { font-size: 26px; border-bottom: 3px solid #2f6fed; padding-bottom: 10px; }
+  h2 { font-size: 20px; margin-top: 36px; color: #2f6fed; border-left: 5px solid #2f6fed; padding-left: 10px; }
+  h3 { font-size: 16px; margin-top: 24px; }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; background: #fff; }
+  th, td { border: 1px solid #d8dce3; padding: 8px 10px; font-size: 14px; text-align: left; vertical-align: top; }
+  th { background: #eef2fb; }
+  code, pre { background: #f0f2f5; border-radius: 4px; font-family: Consolas, monospace; font-size: 13px; }
+  pre { padding: 12px; overflow-x: auto; }
+  .meta { color: #57606a; font-size: 13px; }
+  .tag { display: inline-block; background: #e7f0ff; color: #2f6fed; border-radius: 4px; padding: 1px 8px; font-size: 12px; margin-right: 6px; }
+  .warn { background: #fff7e6; border-left: 4px solid #e8a23b; padding: 10px 14px; margin: 12px 0; }
+  .svgbox { background: #fff; border: 1px solid #d8dce3; border-radius: 6px; padding: 16px; margin: 12px 0; }
+  .decision { background: #eafaf0; border-left: 4px solid #2da44e; padding: 10px 14px; margin: 12px 0; }
+  ul { margin: 6px 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-doc" viewBox="0 0 16 16"><path fill="currentColor" d="M4 1h6l3 3v11H4V1zm5 1v3h3L9 2zM5 8h6v1H5V8zm0 2h6v1H5v-1zm0 2h4v1H5v-1z"/></symbol>
+  <symbol id="i-db" viewBox="0 0 16 16"><path fill="currentColor" d="M8 1c3.3 0 6 .9 6 2v2c0 1.1-2.7 2-6 2S2 6.1 2 5V3c0-1.1 2.7-2 6-2zm6 5.5V9c0 1.1-2.7 2-6 2s-6-.9-6-2V6.5C3.4 7.4 5.6 8 8 8s4.6-.6 6-1.5zM8 12c2.4 0 4.6-.6 6-1.5V13c0 1.1-2.7 2-6 2s-6-.9-6-2v-2.5C3.4 11.4 5.6 12 8 12z"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 16 16"><path fill="currentColor" d="M8 5a3 3 0 100 6 3 3 0 000-6zm6.6 4.4l-1.4-.4a5.2 5.2 0 000-.9l1.4-.5a.6.6 0 00.4-.7l-.5-1.6a.6.6 0 00-.7-.4l-1.4.4a5.6 5.6 0 00-.7-.7l.4-1.4a.6.6 0 00-.4-.7L10 .9a.6.6 0 00-.7.4L8.8 2.7a5.2 5.2 0 00-.9 0L7.4 1.3A.6.6 0 006.7.9L5.1 1.4a.6.6 0 00-.4.7l.4 1.4c-.3.2-.5.4-.7.7l-1.4-.4a.6.6 0 00-.7.4L1.8 5.8a.6.6 0 00.4.7l1.4.5a5.2 5.2 0 000 .9l-1.4.5a.6.6 0 00-.4.7l.5 1.6c.1.3.4.5.7.4l1.4-.4c.2.3.4.5.7.7l-.4 1.4c-.1.3.1.6.4.7l1.6.5c.3.1.6-.1.7-.4l.5-1.4h.9l.5 1.4c.1.3.4.5.7.4l1.6-.5a.6.6 0 00.4-.7l-.4-1.4c.3-.2.5-.4.7-.7l1.4.4c.3.1.6-.1.7-.4l.5-1.6a.6.6 0 00-.4-.7z"/></symbol>
+  <symbol id="i-target" viewBox="0 0 16 16"><path fill="currentColor" d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 2a5 5 0 110 10A5 5 0 018 3zm0 2a3 3 0 100 6 3 3 0 000-6zm0 2a1 1 0 110 2 1 1 0 010-2z"/></symbol>
+</svg>
+
+<h1><svg width="20" height="20" style="color:#2f6fed"><use href="#i-doc"/></svg> 14场胜负平 / 任9 预测模型设计</h1>
+<p class="meta">日期 2026-09-22 · 状态：已拍板，阶段1进行中 · 关联：SKILL v5.13 · 决策人：大哥</p>
+
+<h2>〇、决策记录</h2>
+<div class="decision">
+  <p><b>2026-09-22 大哥拍板：</b>①定位 = <b>C 共用底座</b>（14场与任9 同一套单场概率底座），<b>任9 为主</b>、14场为第二出口；②资金形态 = <b>B 单式多注</b>（每期 2~5 注）+ <b>C 允许轻复式</b>（胶着场双选，每期 4~16 元）；③14场复式覆盖出口后置到任9 跑稳。</p>
+</div>
+
+<h2>一、调研结论（2026-09-22 实测）</h2>
+<table>
+  <tr><th>维度</th><th>竞彩（现有）</th><th>14场胜负平</th><th>任选9场</th></tr>
+  <tr><td>奖金制</td><td>固定赔率</td><td colspan="2"><b>浮动奖池</b>（按注均分，一等奖奖池大头，二等奖切余量）</td></tr>
+  <tr><td>预测对象</td><td>单场玩法</td><td>14 场全部胜平负</td><td>从 14 场中<b>任选 9 场</b>胜平负</td></tr>
+  <tr><td>中奖条件</td><td>单场命中</td><td>14 全中=一等 · 错 1 场=二等</td><td>9 场全对</td></tr>
+  <tr><td>组合空间</td><td>单场 1/3</td><td>3¹⁴ ≈ 478 万</td><td>3⁹ ≈ 1.97 万</td></tr>
+  <tr><td>单注/复式</td><td>2 元</td><td colspan="2">2 元；复式 = 每场多选方向，注数 3ⁿ 指数</td></tr>
+  <tr><td>节奏</td><td>每日多轮</td><td colspan="2">每周 2~3 期 · 周四晚停售 · 覆盖周末欧洲联赛为主</td></tr>
+</table>
+<p><b>现实锚点（500彩票网 26131 期）</b>：一等 11 注 × 1,024,820 元 · 二等 313 注 × 15,435 元 · 任9 3,750 注 × 3,774 元；当前在售 26132 期（停售 2026-09-24 19:02）。<b>14 场场次几乎全为欧洲主流联赛 = fd 覆盖 + Pinnacle 收盘锚齐全</b>，是现有模型的主场。</p>
+
+<h2>二、总体架构（共用底座 + 双出口）</h2>
+<div class="svgbox">
+<svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" font-family="Microsoft YaHei" font-size="13">
+  <defs>
+    <marker id="arw" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="currentColor"/></marker>
+  </defs>
+  <!-- 底座 -->
+  <rect x="10" y="60" width="180" height="190" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" color="#57606a"/>
+  <text x="100" y="80" text-anchor="middle" font-weight="bold" fill="currentColor" color="#57606a">现有底座（全复用）</text>
+  <g fill="#1f2328">
+    <text x="24" y="108">体彩采集 sporttery_fetch</text>
+    <text x="24" y="132">insight 单场情报</text>
+    <text x="24" y="156">DC 拟合 dc_fit</text>
+    <text x="24" y="180">Pinnacle 锚 odds_fetch</text>
+    <text x="24" y="204">DC 融合 p_fused 三向</text>
+    <text x="24" y="228">修正链 / 星级 / corpus</text>
+  </g>
+  <!-- 数据层 -->
+  <rect x="250" y="90" width="170" height="120" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" color="#2da44e"/>
+  <text x="335" y="115" text-anchor="middle" font-weight="bold" fill="currentColor" color="#2da44e">sfc_fetch.py（新）</text>
+  <g fill="#1f2328">
+    <text x="262" y="142">当期 14 场赛程/停售</text>
+    <text x="262" y="166">历史期次开奖回填</text>
+    <text x="262" y="190">data/07-sfc/ 期次库</text>
+  </g>
+  <path d="M192,155 L248,150" stroke="currentColor" marker-end="url(#arw)" color="#57606a" fill="none"/>
+  <!-- 模型层 -->
+  <rect x="480" y="60" width="170" height="180" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" color="#e8a23b"/>
+  <text x="565" y="85" text-anchor="middle" font-weight="bold" fill="currentColor" color="#e8a23b">ren9.py 模型层</text>
+  <g fill="#1f2328">
+    <text x="492" y="112">概率注入：14场逐一 p_fused</text>
+    <text x="492" y="138">选场层：grasp 排序 top9</text>
+    <text x="492" y="164">方向层：每场 argmax</text>
+    <text x="492" y="190">复式贪心：增益比双选</text>
+    <text x="492" y="216">出口B：14场复式覆盖(后置)</text>
+  </g>
+  <path d="M422,150 L478,150" stroke="currentColor" marker-end="url(#arw)" color="#2da44e" fill="none"/>
+  <!-- 出口 -->
+  <rect x="710" y="75" width="155" height="60" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" color="#2f6fed"/>
+  <text x="787" y="100" text-anchor="middle" font-weight="bold" fill="currentColor" color="#2f6fed">出口A · 任9（主）</text>
+  <text x="787" y="122" text-anchor="middle" fill="#1f2328">主推单式+变体+复式</text>
+  <rect x="710" y="165" width="155" height="60" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" color="#8250df"/>
+  <text x="787" y="190" text-anchor="middle" font-weight="bold" fill="currentColor" color="#8250df">出口B · 14场（后置）</text>
+  <text x="787" y="212" text-anchor="middle" fill="#1f2328">复式覆盖优化</text>
+  <path d="M652,130 L708,105" stroke="currentColor" marker-end="url(#arw)" color="#e8a23b" fill="none"/>
+  <path d="M652,170 L708,195" stroke="currentColor" marker-end="url(#arw)" color="#e8a23b" fill="none"/>
+  <text x="440" y="280" text-anchor="middle" fill="#57606a">方案进现有体系：tickets.json 扩展彩种 game:ren9 · 影子层登记 · 回填闭环</text>
+</svg>
+</div>
+
+<h2>三、选场层 + 方向层（模型核心）</h2>
+<h3>3.1 数学底座</h3>
+<p>任9 全对概率 = Π pᵢ（9 场独立连乘）。在 14 场池中选 9 场最大化乘积，<b>数学最优解 = 把握度降序取 top9</b>，每场方向 = argmax(p_fused)。模型价值不在"预测更准"，在<b>"挑打得准的仗打"</b>：单场方向基线 63% → 任9 全对 0.63⁹ ≈ 1.6%/期；选场层若把 9 场把握提到 70%，全对率升至 4%——翻倍以上。</p>
+<h3>3.2 把握度与三道闸</h3>
+<pre>grasp(场) = max(p_fused 三向)      ← 修正链后最终概率（corpus 校准口径），禁裸 DC
+
+闸① 数据等级：C/D 级场排除（insight 缺失的 p 不可信）
+闸② 无锚闸：无 Pinnacle 锚场不进核心 9 场（铁律 10 思想平移）
+闸③ 胶着标注：三向极差 &lt;10pp 的场标"胶着"（不排除，供复式双选取材）</pre>
+<h3>3.3 变体注与复式贪心</h3>
+<ul>
+  <li><b>主推单式</b>：top9 各定 argmax（2 元）</li>
+  <li><b>变体注</b>：第 9 名 ↔ 第 10 名交换（2 元）——防边界场踩雷</li>
+  <li><b>复式注</b>：胶着场双选次优方向，双选哪场按增益比贪心 = ΔP(全对)/成本 降序，预算内取最高（4 元起）</li>
+</ul>
+<p class="meta">每期典型 2~8 元，多胶着场上限 16 元（大哥拍板 B+C 口径：单式多注 + 轻复式）。</p>
+
+<h2>四、方案层输出（周四停售前出卡）</h2>
+<pre>任9 第26133期 方案
+├ 主推单式：9 场方向表（编号|联赛|对阵|方向@grasp）
+├ 变体注：第9场 X ↔ 第10场 Y
+├ 复式建议：第N场 双选 主/平（增益比最高）
+└ 把握度分层表：14 场全量 grasp 排序 + 闸门标记（出口B 复用）</pre>
+
+<h2>五、评估闭环（四级指标）</h2>
+<table>
+  <tr><th>#</th><th>指标</th><th>口径</th><th>成立标准</th></tr>
+  <tr><td>1</td><td>单场方向命中率</td><td>14 场口径 vs 基线 63%</td><td>≥ 基线</td></tr>
+  <tr><td>2</td><td><b>选场 alpha（模型成立的命门）</b></td><td>入选 9 场命中率 − 落选 5 场命中率</td><td>差值显著 &gt; 0</td></tr>
+  <tr><td>3</td><td>模拟中奖率</td><td>历史期次 walk-forward 每期 1 注 vs 理论 1/19683</td><td>≥ 理论值</td></tr>
+  <tr><td>4</td><td>实票对照</td><td>浮动奖金无 CLV → 实际奖金 vs 模型期望</td><td>长期不系统性劣于</td></tr>
+</table>
+<p class="meta">walk-forward 纪律：DC 拟合严格按期次时间切（防泄漏），与现有回测纪律一致。</p>
+
+<h2>六、数据层设计（sfc_fetch.py）</h2>
+<h3>6.1 目录结构</h3>
+<pre>data/07-sfc/
+├── _index.json          # 期号路由表（一行一期）
+├── 26131.json           # 每期一档：14场对阵/联赛/赛果/奖金/销售额
+└── current.json         # 当期在售（赛程+停售时间）</pre>
+<h3>6.2 数据源（主备双链）</h3>
+<table>
+  <tr><th>优先级</th><th>源</th><th>内容</th><th>状态</th></tr>
+  <tr><td>🥇</td><td>500彩票网 kaijiang.500.com/shtml/sfc/{issue}.shtml</td><td>期次开奖：赛果序列/奖金/销售额（GBK，requests+gb18030 已验证可达）</td><td>页面数据在 iframe 内，spike 解析中</td></tr>
+  <tr><td>🥈</td><td>体彩官网传足栏目 sporttery.cn/ctzc/</td><td>公告/计奖通知（JS 渲染，需啃 XHR 接口）</td><td>备选</td></tr>
+  <tr><td>复用</td><td>fd CSV（odds_fetch 现有）</td><td>历史对阵+赛果对齐（期次→14场映射抓取后，赛果三键匹配复用 backfill 思想）</td><td>现成</td></tr>
+</table>
+<div class="warn">⚠ 数据层第一步为 spike：验证 500.com iframe 二层解析。失败则降级体彩官网公告逐期解析，再失败用 fd 重建（期次映射手工补早期、新期自动）。</div>
+
+<h2>七、阶段排期</h2>
+<table>
+  <tr><th>阶段</th><th>内容</th><th>验收</th></tr>
+  <tr><td>1 · 数据（当前）</td><td>sfc_fetch.py spike → 期次库回填 50 期+</td><td>_index.json ≥50 期，每期 14 场赛果齐全</td></tr>
+  <tr><td>2 · 模型</td><td>ren9.py 选场/方向/出口A</td><td>对当期 26132 出首份任9 方案</td></tr>
+  <tr><td>3 · 回测</td><td>历史期次 walk-forward 四级指标</td><td>选场 alpha 显著 &gt; 0</td></tr>
+  <tr><td>4 · 实票</td><td>方案集成+影子登记+实票彩种扩展</td><td>首期实票+回填闭环</td></tr>
+</table>
+<p class="meta">出口B（14场复式覆盖优化）后置：任9 四级指标过线后再立项。</p>
+</div>
+</body>
+</html>
