@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>欧指市场锚补全设计（提升单场预测准确率·路径1）</title>
+<style>
+  :root {
+    --bg: #fafafa; --card: #ffffff; --ink: #1a1a1a; --muted: #666;
+    --accent: #0a5c36; --accent-soft: #e6f2ec; --line: #d9d9d9;
+    --warn: #8a5300; --warn-soft: #fdf3e3;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #101312; --card: #181d1b; --ink: #e8e8e8; --muted: #9aa5a0;
+      --accent: #57c78f; --accent-soft: #1c2b24; --line: #2e3632;
+      --warn: #e0a84f; --warn-soft: #2d2415;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 15px/1.75 "Segoe UI", "Microsoft YaHei", sans-serif;
+  }
+  main { max-width: 920px; margin: 0 auto; padding: 32px 20px 64px; }
+  h1 { font-size: 24px; line-height: 1.4; margin: 0 0 4px; }
+  h2 { font-size: 18px; margin: 40px 0 12px; color: var(--accent); }
+  h3 { font-size: 15.5px; margin: 24px 0 8px; }
+  .meta { color: var(--muted); font-size: 13px; margin-bottom: 24px; }
+  .meta span { margin-right: 18px; }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 14px; }
+  th, td { border: 1px solid var(--line); padding: 7px 10px; text-align: left; vertical-align: top; }
+  th { background: var(--accent-soft); }
+  code { background: var(--accent-soft); padding: 1px 5px; border-radius: 3px; font-size: 13px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 16px 20px; margin: 14px 0; }
+  .warn { background: var(--warn-soft); border-color: var(--warn); }
+  ul, ol { padding-left: 22px; margin: 8px 0; }
+  li { margin: 3px 0; }
+  svg text { font-family: "Segoe UI", "Microsoft YaHei", sans-serif; }
+</style>
+</head>
+<body>
+<main>
+<h1>欧指市场锚补全设计</h1>
+<div class="meta">
+  <span>日期：2026-09-23</span>
+  <span>状态：已拍板（方案C：骨架B+节奏A，大哥确认）</span>
+  <span>开发者：sszhang</span>
+</div>
+
+<h2>一、背景与问题</h2>
+<div class="card">
+<p>目标：提升单场比赛预测准确率（胜平负方向 / 概率校准 / 比分衍生三口径）以提升方案命中率。</p>
+<p>错题归因账本（59 条，截至 09-22）事实：</p>
+<ul>
+  <li>F9 占 50/59（85%）：出票时模型本就无把握（p_final 0.26~0.60）——选腿问题，非模型问题；</li>
+  <li>大量错题 <code>pinSource=none</code>：日职/韩职/北欧/沙特/南美等 fd 不覆盖联赛（约 165/734 ≈ 22% 场次）没有市场锚，纯 DC/模板裸奔——<strong>结构性准确率断层</strong>；</li>
+  <li>错题赛果平局占比极高（平局专项为路径3，本设计不碰）。</li>
+</ul>
+<p>四条候选路径（补锚 / 联赛校准扩容 / 平局专项 / 临场层）经拍板优先级 <strong>1&gt;2&gt;3&gt;4</strong>，本设计只做路径1：给无锚场次补第二市场源（okooo 99家平均欧指）。</p>
+</div>
+
+<h2>二、数据源探测结论（2026-09-23 四轮实测）</h2>
+<table>
+<tr><th>端点</th><th>状态</th><th>提供内容</th></tr>
+<tr><td><code>okooo /jingcai/{date}/</code> 竞彩日期页</td><td>✅ 200（样本日17场）</td><td>全部体彩开售场次（含工作日档）+ 体彩编号 + matchId + 欧指字段</td></tr>
+<tr><td><code>okooo /zucai/{issue}/</code> 期次页</td><td>✅ 生产在用（sfc_fetch.py）</td><td>14场期次自带 99家平均欧指 [主,平,客]（<code>pltxt</code> 解析现成）</td></tr>
+<tr><td><code>okooo /soccer/match/{id}/odds/</code></td><td>✅ 200</td><td>百家欧指明细 + 走势历史入口（数据接口 JS 渲染，待正式开发时挖——挂起项）</td></tr>
+<tr><td>titan007</td><td>⚠️ 首页/联赛页均 JS 壳</td><td>放弃（okooo 够用）</td></tr>
+</table>
+<p>关键利好：<strong>对齐零成本</strong>——okooo 页面直接用体彩编号与中文队名，join key = 日期 + 体彩编号，不依赖 <code>_aliases.json</code>。风险：<strong>99家平均欧指 ≠ Pinnacle</strong>，平均价含高抽水小公司，去水后有系统偏差（长赔端为重灾区），必须对拍验证后才能接入。</p>
+
+<h2>三、方案C设计：骨架B+节奏A（两步交付）</h2>
+
+<h3>第一步 · 采集存档层（立即落地，只采不判）</h3>
+<div class="card">
+<ul>
+  <li>新增 <code>engine/scripts/euro_fetch.py</code>：日期页为主入口、期次页为辅（复用 sfc_fetch 解析），带重试，UA 复用 sfc_fetch 生产验证过的简单 UA；</li>
+  <li>每场提取五元组：体彩编号、主客队、联赛、matchId、平均欧指[主,平,客] + 采集时间戳；</li>
+  <li>存档 <code>engine/cache/euro_odds/{date}.json</code>（对标 score_odds 日存档，纯 JSON 不进画像目录），同日重跑幂等覆盖；</li>
+  <li>接入点：<code>run.py update</code> 体彩采集步骤后追加调用，预测命令自动带上；</li>
+  <li><strong>fd 覆盖与无锚场次一视同仁全采</strong>——前者是明天对拍样本，后者是后天接入受益人。</li>
+</ul>
+</div>
+
+<h3>第二步 · 对拍验证与融合链接入（数据说话后）</h3>
+<div class="card">
+<p>对拍报告（<code>euro_verify.py</code>，样本 = fd 覆盖联赛双源同场）：</p>
+<ul>
+  <li>指标三层：①方向 argmax 一致率 ②去水概率 MAE ③赔率带分层偏差（≤1.5 热门 / 中间 / ≥3.0 冷门）；</li>
+  <li>门槛（初值可调）：argmax 一致率 ≥85% 且 MAE &lt; 0.03 → 直接接入；不达标 → logit 空间仿射校正（系数用 fd 样本拟合，<strong>联赛间交叉验证</strong>确认跨联赛稳定后外推）再测；仍不行 → 降权或不用；</li>
+  <li>样本 ≥50 场出首报，此后每周自动刷新。</li>
+</ul>
+<p>融合链接入（改动集中在 dc_predict 锚装载逻辑）：</p>
+<ul>
+  <li>fallback 链：fd Pinnacle 有锚 → 现状不变；<code>pinSource=none</code> → 当日 euro_odds 存档去水+校正作 p_market；无锚无欧指 → 维持纯 DC；</li>
+  <li>融合一律 <code>import fuse()</code>（双实现陷阱铁律）；</li>
+  <li>诚实降级：<code>pinSource="okooo"</code>，报告可见每场锚来源；</li>
+  <li>顺带收益：fd 断粮（503）时 fd 联赛也有 euro 锚顶上（freq 镜像之外第二道断粮保险）；</li>
+  <li>保留门槛：接入后 walk-forward 无锚场次 纯DC vs DC+euro锚，RPS/方向改善 ≥1% 护栏，不达即回滚。</li>
+</ul>
+</div>
+
+<h3>数据流架构</h3>
+<div class="card">
+<svg viewBox="0 0 860 320" role="img" aria-label="欧指锚数据流架构图" style="width:100%;height:auto;color:var(--ink)">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <g fill="none" stroke="currentColor" stroke-width="1.4">
+    <!-- 源层 -->
+    <rect x="20" y="30" width="180" height="58" rx="8" stroke="var(--accent)"/>
+    <rect x="20" y="130" width="180" height="58" rx="8" stroke="var(--accent)"/>
+    <rect x="20" y="230" width="180" height="58" rx="8"/>
+    <!-- 采集器 -->
+    <rect x="290" y="105" width="150" height="110" rx="8" stroke="var(--accent)" fill="var(--accent-soft)"/>
+    <!-- 存档 -->
+    <rect x="510" y="105" width="160" height="110" rx="8"/>
+    <!-- 对拍 -->
+    <rect x="740" y="20" width="105" height="70" rx="8" stroke="var(--warn)"/>
+    <!-- 融合 -->
+    <rect x="740" y="120" width="105" height="70" rx="8" stroke="var(--warn)"/>
+    <!-- 回滚门 -->
+    <rect x="740" y="218" width="105" height="70" rx="8" stroke="var(--warn)"/>
+    <!-- 连线 -->
+    <path d="M200,59 H245 V145 H290" marker-end="url(#arr)"/>
+    <path d="M200,159 H290" marker-end="url(#arr)"/>
+    <path d="M200,259 H245 V175 H290" marker-end="url(#arr)"/>
+    <path d="M440,160 H510" marker-end="url(#arr)"/>
+    <path d="M670,140 V55 H740" marker-end="url(#arr)"/>
+    <path d="M670,175 V155 H740" marker-end="url(#arr)"/>
+    <path d="M792,90 V120" marker-end="url(#arr)" stroke-dasharray="5 4"/>
+    <path d="M792,190 V218" marker-end="url(#arr)" stroke-dasharray="5 4"/>
+  </g>
+  <g font-size="12.5" fill="currentColor" text-anchor="middle">
+    <text x="110" y="53" font-weight="bold">okooo 竞彩日期页</text>
+    <text x="110" y="70">/jingcai/{date}/</text>
+    <text x="110" y="87">全部开售场次+欧指</text>
+    <text x="110" y="153" font-weight="bold">okooo 期次页</text>
+    <text x="110" y="170">/zucai/{issue}/</text>
+    <text x="110" y="187">99家平均欧指(现成)</text>
+    <text x="110" y="253" font-weight="bold">sporttery 体彩API</text>
+    <text x="110" y="270">场次集合+编号</text>
+    <text x="110" y="287">(join key 对齐)</text>
+    <text x="365" y="133" font-weight="bold" fill="var(--accent)">euro_fetch.py</text>
+    <text x="365" y="152">采集器(第一步)</text>
+    <text x="365" y="170">去水前五元组</text>
+    <text x="365" y="188">幂等日存档</text>
+    <text x="590" y="133" font-weight="bold">euro_odds/</text>
+    <text x="590" y="152">{date}.json</text>
+    <text x="590" y="170">fd场次→对拍样本</text>
+    <text x="590" y="188">无锚场次→受益人</text>
+    <text x="792" y="43" font-weight="bold" fill="var(--warn)">euro_verify</text>
+    <text x="792" y="60">对拍报告</text>
+    <text x="792" y="77">≥85%/MAE.03</text>
+    <text x="792" y="143" font-weight="bold" fill="var(--warn)">dc_predict</text>
+    <text x="792" y="160">fallback链</text>
+    <text x="792" y="177">fuse()·okooo锚</text>
+    <text x="792" y="241" font-weight="bold" fill="var(--warn)">walk-forward</text>
+    <text x="792" y="258">≥1%护栏</text>
+    <text x="792" y="275">不达即回滚</text>
+  </g>
+</svg>
+</div>
+
+<h2>四、错误处理与测试</h2>
+<div class="card">
+<ul>
+  <li>405/限流：重试1次（间隔2s）→ 降级跳过，<strong>预测流程绝不因欧指采集失败阻塞</strong>，报告标 <code>euroSource: null</code>；</li>
+  <li>编码 gb18030；解析照 sfc_fetch <code>parse_soft</code> 宽松模式（容忍缺失不抛异常）；</li>
+  <li>防污染：独立目录，不写 00/01 画像、不碰 fusion.json、不影响出票冻结链；</li>
+  <li>测试：pytest 基线 217 passed，新增4组单测（日期页/期次页解析 fixture、去水+校正、fallback三分支、存档幂等）；落盘新 JSON 后全量重跑。</li>
+</ul>
+</div>
+
+<h2>五、验收标准</h2>
+<table>
+<tr><th>阶段</th><th>验收</th></tr>
+<tr><td>第一步采集层</td><td>连续 3 轮预测欧指存档无缺口（在售场次欧指字段覆盖率 ≥90%）</td></tr>
+<tr><td>第二步对拍</td><td>样本 ≥50 场出报告，接入决策（直接/校正/不用）三选一有数据背书</td></tr>
+<tr><td>最终</td><td>无锚场次 walk-forward RPS/方向改善 ≥1% 护栏，不达即回滚</td></tr>
+</table>
+
+<h2>六、挂起项（YAGNI 不做）</h2>
+<div class="card warn">
+<ul>
+  <li>单场 odds 页走势历史接口（收盘价挖掘）——对拍报告显示"即时价 vs 收盘价漂移"成主要噪声源再立项；</li>
+  <li>回填链 pinClose 扩 euro 源（无锚场次 CLV）——同上；</li>
+  <li>titan007 备选源——放弃；</li>
+  <li>路径2（联赛校准扩容）/ 路径3（平局专项）/ 路径4（临场层）——路径1落地后按效果再议。</li>
+</ul>
+</div>
+
+<p class="meta">关联：docs/2026-08-21-rag-design.html（检索铁律）· engine/scripts/sfc_fetch.py（okooo 生产源）· data/04-summaries/attribution.json（错题归因依据）</p>
+</main>
+</body>
+</html>
