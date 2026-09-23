@@ -193,7 +193,30 @@
 </ul>
 </div>
 
-<p class="meta">关联：docs/2026-08-21-rag-design.html（检索铁律）· engine/scripts/sfc_fetch.py（okooo 生产源）· data/04-summaries/attribution.json（错题归因依据）</p>
+<h2>七、B2 市场腿升级：对照结果与撤回记录（2026-09-23 当日闭环）</h2>
+<div class="card">
+<p><strong>实况勘误</strong>：实施 B2 前排查发现原设计假设失效——boldplay 出票链市场腿<strong>一直是体彩票价去水</strong>（出票时点无 Pinnacle 收盘可拿），"pinSource=none 场次 fallback"位置在出票链不存在。对照组实测：体彩票价去水 vs Pinnacle 收盘 MAE 0.0179（okooo 锚 0.0072，优 2.5 倍）→ 大哥拍板升级为 B2（融合概率端换 okooo 锚，赔率端不动）。</p>
+<p><strong>对照结果（98 场同场配对，同 p_dc 同 a/b 只换市场腿）</strong>：</p>
+<ul>
+  <li>方向命中率 55.1% vs 55.1%（Δ 0.0pp；argmax 仅翻转 4 场、翻转后 okooo 只对 1 场）；</li>
+  <li>RPS 0.1931 vs 0.1951（配对差 -0.002，t≈-1.54 <strong>统计不显著</strong>）；</li>
+  <li>且对照存在时点不对称（okooo 侧=历史终值收盘性质，体彩侧=赛前价），真实接入用赛前即时欧指效果只会更接近持平。</li>
+</ul>
+<p><strong>撤回裁定</strong>：按"无正增益即删"纪律，B2 <strong>不上 boldplay 主干</strong>（主链零改动）。核心教训：<strong>更准的锚 ≠ 更准的融合</strong>——锚层面 MAE 0.011 的优势经 fuse（市场腿归一化权重 0.71、DC 与市场高相关）稀释后输出端差异 &lt;0.005，98 场分不出。动市场腿源前必须先测融合输出端。</p>
+<p><strong>资产转正</strong>：</p>
+<ul>
+  <li>采集链保留：run.py update 每日 euro_fetch today，积累<strong>赛前即时欧指</strong>（4 周后可做真实时点二次对照）；</li>
+  <li>60 天终值存档 + 对拍结论（okooo≈Pinnacle 收盘，155 场 98.1%/MAE 0.0072）转用于<strong>归因链</strong>：attribute.py F3/F4 判别对 fd 不覆盖联赛扩 okooo 锚（当日立项，见 §八）。</li>
+</ul>
+</div>
+
+<h2>八、归因链扩展：F3/F4 扩 okooo 锚（2026-09-23 立项）</h2>
+<div class="card">
+<p><strong>问题</strong>：错题归因 65% none 是结构性缺口——fd 不覆盖联赛（日职/韩职/北欧/沙特/南美）无 Pinnacle 收盘，F3/F4 市场锚判别（"市场对不对"）无法进行，这些错题只能落 F9 桶。</p>
+<p><strong>方案</strong>：attribute.py 判别树在 pinClose 缺失时兜底查当日 euro_odds 存档（回填终值≈收盘，对拍 98.1% 等价），okooo 去水三向作市场锚参与 F3/F4 判别，evidence.pinSource 标 "okooo" 诚实降级。<strong>不动</strong> backfill 链 pinClose 字段、CLV 口径、calibrate 样本（最小侵入，纯事后分析增强）。</p>
+</div>
+
+<p class="meta">关联：docs/2026-08-21-rag-design.html（检索铁律）· engine/scripts/sfc_fetch.py（okooo 生产源）· data/04-summaries/attribution.json（错题归因依据）· data/04-summaries/euro-verify.json（对拍报告）</p>
 </main>
 </body>
 </html>

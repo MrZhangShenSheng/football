@@ -15,10 +15,47 @@ from datetime import date
 from pathlib import Path
 
 from common import log, ROOT
+from euro_fetch import euro_anchor
 
 OUT = ROOT / "data" / "04-summaries" / "attribution.json"
 RESULTS_DIR = ROOT / "data" / "02-results"
 SCORE_ODDS_DIR = ROOT / "engine" / "cache" / "score_odds"
+
+_WEEK_ZH = {"一": 0, "二": 1, "三": 2, "四": 3, "五": 4, "六": 5, "日": 6}
+
+
+def _sale_day(round_day: str, code: str | None) -> str:
+    """euro_odds 存档查询键：02-results 文件名日期=出票日，场次编号前缀
+    （周三001）=销售日星期——在出票日 ±2 天内找星期匹配日（优先 0/+1/+2，
+    周五出票周日场场景）。无编号/无法解析 → 原样返回。sszhang"""
+    if not code or len(code) < 2 or code[0] != "周":
+        return round_day
+    wd = _WEEK_ZH.get(code[1])
+    if wd is None:
+        return round_day
+    try:
+        from datetime import date as _d, timedelta as _td
+        base = _d.fromisoformat(round_day)
+    except ValueError:
+        return round_day
+    for delta in (0, 1, 2, -1, -2):
+        cand = base + _td(days=delta)
+        if cand.weekday() == wd:
+            return cand.isoformat()
+    return round_day
+
+
+def inject_euro_anchor(rec: dict, day: str) -> dict:
+    """F3/F4 扩 okooo 锚兜底（设计 §八·2026-09-23 立项）：pinClose 缺失
+    （fd 不覆盖联赛）时查 euro_odds 存档注入内存副本参与判别，
+    evidence.pinSource 标 "okooo" 诚实降级。不回写 02-results——pinClose
+    字段语义保持 fd Pinnacle 专属，CLV/calibrate 口径不变。sszhang"""
+    if rec.get("pinClose"):
+        return rec
+    euro = euro_anchor(day, rec.get("code"))
+    if euro:
+        return {**rec, "pinClose": euro, "pinSource": "okooo"}
+    return rec
 
 # 方向 → 三向数组下标
 _DIR_IDX = {"主胜": 0, "胜": 0, "平": 1, "平局": 1, "客胜": 2}
@@ -241,7 +278,7 @@ def build() -> tuple[dict, dict]:
                     continue  # 同场同玩法同选法跨日复用 → 首见已归因
                 seen_crossday.add(cd_key)
             key = f"{round_id[:10]}|{m.get('code')}|{play}"
-            out = classify(m)
+            out = classify(inject_euro_anchor(m, _sale_day(round_id[:10], m.get("code"))))
             out["source"] = "rule"
             out["confirmed"] = True   # rule 判定默认确认；llm 软标签才 false
 

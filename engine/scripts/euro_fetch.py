@@ -35,6 +35,7 @@ import urllib.request
 from datetime import date, timedelta
 
 from common import log, ROOT
+from dc_predict import devig
 
 OUT_DIR = ROOT / "engine" / "cache" / "euro_odds"
 UA = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
@@ -170,6 +171,29 @@ def main() -> None:
         _backfill_days(int(args[1]) if len(args) >= 2 else 60)
     else:
         print(__doc__)
+
+
+def euro_anchor(day: str, order_cn: str | None) -> list[float] | None:
+    """查询接口：当日 99家平均欧指存档 → 比例法去水三向。
+
+    归因链 F3/F4 兜底用（docs/2026-09-23-euro-anchor-design.html §八）：
+    pinClose 缺失（fd 不覆盖联赛）时的市场锚——回填终值≈收盘（对拍 155 场
+    98.1%/MAE 0.0072）。缺档/缺场/坏数据返回 None（诚实降级）。sszhang
+    """
+    if not order_cn:
+        return None
+    f = OUT_DIR / f"{day}.json"
+    if not f.exists():
+        return None
+    try:
+        d = json.loads(f.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return None
+    for m in d.get("matches", []):
+        if m.get("orderCn") == order_cn and m.get("euroAvg"):
+            ea = m["euroAvg"]
+            return devig([ea["home"], ea["draw"], ea["away"]])
+    return None
 
 
 def _backfill_days(n: int) -> None:

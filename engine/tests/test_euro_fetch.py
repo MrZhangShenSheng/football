@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
-"""euro_fetch 单测：日期页解析 / custom 解析 / merge / 降级（fixture 基于真实页面结构）。"""
+"""euro_fetch 单测：日期页解析 / custom 解析 / merge / 降级 / euro_anchor 查询（fixture 基于真实页面结构）。"""
+import json
+
 import pytest
 
-from euro_fetch import fetch_text, merge_odds, parse_custom, parse_day_page
+from euro_fetch import euro_anchor, fetch_text, merge_odds, parse_custom, parse_day_page
 
 # 真实结构样本（2026-09-16 竞彩日期页，<div class="touzhu_1"> 行 + liansai 子块）
 FIXTURE_HTML = """
@@ -58,3 +60,33 @@ def test_fetch_text_degrades(monkeypatch):
 
     monkeypatch.setattr(euro_fetch, "_get", _boom)
     assert fetch_text("http://x", retries=0) is None   # 降级不抛异常
+
+
+class TestEuroAnchor:
+    """归因链查询接口：当日欧指存档 → 去水三向（缺档/缺场/坏数据 None）。"""
+
+    def _setup_dir(self, tmp_path, monkeypatch):
+        import euro_fetch
+        monkeypatch.setattr(euro_fetch, "OUT_DIR", tmp_path)
+        (tmp_path / "2026-09-16.json").write_text(json.dumps({
+            "date": "2026-09-16",
+            "matches": [{"orderCn": "周三001", "euroAvg": {"home": 2.0, "draw": 4.0, "away": 4.0}},
+                        {"orderCn": "周三002", "euroAvg": None}]}, ensure_ascii=False), encoding="utf-8")
+        return euro_fetch
+
+    def test_hit(self, tmp_path, monkeypatch):
+        ef = self._setup_dir(tmp_path, monkeypatch)
+        out = euro_anchor("2026-09-16", "周三001")     # 1/2,1/4,1/4 归一
+        assert out == pytest.approx([0.5, 0.25, 0.25])
+
+    def test_missing_order(self, tmp_path, monkeypatch):
+        self._setup_dir(tmp_path, monkeypatch)
+        assert euro_anchor("2026-09-16", "周三002") is None   # 场次在但无欧指
+        assert euro_anchor("2026-09-16", "周三999") is None   # 无此场
+        assert euro_anchor("2026-09-16", None) is None
+
+    def test_missing_day_or_bad_file(self, tmp_path, monkeypatch):
+        self._setup_dir(tmp_path, monkeypatch)
+        assert euro_anchor("2026-08-01", "周三001") is None   # 无存档日
+        (tmp_path / "2026-09-17.json").write_text("not json", encoding="utf-8")
+        assert euro_anchor("2026-09-17", "周三001") is None   # 坏文件降级

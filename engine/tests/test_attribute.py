@@ -4,7 +4,8 @@ import json
 
 import pytest
 
-from attribute import pick_to_index, result_to_idx, correction_flipped, classify, odds_drift_buy_heat
+from attribute import (pick_to_index, result_to_idx, correction_flipped, classify,
+                       odds_drift_buy_heat, inject_euro_anchor)
 
 
 class TestIndexParse:
@@ -257,6 +258,7 @@ class TestBuild:
         monkeypatch.setattr(attribute, "RESULTS_DIR", res)
         monkeypatch.setattr(attribute, "OUT", out_path)
         monkeypatch.setattr(attribute, "SCORE_ODDS_DIR", tmp_path)
+        monkeypatch.setattr(attribute, "euro_anchor", lambda d, c: None)   # 隔离真实 euro_odds 存档
         records, stats = attribute.build()
         assert len(records) == 2  # 跳过方向对的周五012
         assert records["2026-08-28|周五010|HAD"]["primary"] == "F5"
@@ -266,3 +268,40 @@ class TestBuild:
         saved = json.loads(out_path.read_text(encoding="utf-8"))
         assert saved["schemaVersion"] == 1
         assert "F5" in saved["factorStats"]
+
+
+class TestInjectEuroAnchor:
+    """F3/F4 扩 okooo 锚兜底（设计 §八）：内存注入、不回写、诚实降级。"""
+
+    def _mk(self, **kw):
+        base = dict(code="周三001", pick="HAD 主胜", result="0-2", directionHit=False)
+        base.update(kw)
+        return base
+
+    def test_has_pinclose_untouched(self, monkeypatch):
+        import attribute
+        monkeypatch.setattr(attribute, "euro_anchor", lambda d, c: (_ for _ in ()).throw(AssertionError("不应查询")))
+        r = inject_euro_anchor(self._mk(pinClose=[0.2, 0.3, 0.5], pinSource="fd"), "2026-09-16")
+        assert r["pinSource"] == "fd"      # 已有 fd 锚不覆盖
+
+    def test_inject_when_missing(self, monkeypatch):
+        import attribute
+        monkeypatch.setattr(attribute, "euro_anchor", lambda d, c: [0.3, 0.3, 0.4] if c == "周三001" else None)
+        r = inject_euro_anchor(self._mk(), "2026-09-16")
+        assert r["pinClose"] == [0.3, 0.3, 0.4]
+        assert r["pinSource"] == "okooo"
+
+    def test_no_anchor_passthrough(self, monkeypatch):
+        import attribute
+        monkeypatch.setattr(attribute, "euro_anchor", lambda d, c: None)
+        r = inject_euro_anchor(self._mk(), "2026-09-16")
+        assert "pinClose" not in r and "pinSource" not in r
+
+    def test_classify_uses_injected(self, monkeypatch):
+        import attribute
+        # 无锚时 F9 兜底；注入 okooo 锚后（fused看主/锚看客/结果客/DC也主）→ F3
+        monkeypatch.setattr(attribute, "euro_anchor", lambda d, c: [0.15, 0.2, 0.65])
+        r = inject_euro_anchor(self._mk(dc=[0.5, 0.25, 0.25], fused=[0.5, 0.25, 0.25]), "d")
+        out = classify(r)
+        assert out["primary"] == "F3"
+        assert out["evidence"]["pinSource"] == "okooo"
