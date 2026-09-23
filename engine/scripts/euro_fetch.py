@@ -20,6 +20,7 @@ fd 覆盖与无锚场次一视同仁全采——前者对拍样本，后者接�
   python euro_fetch.py day 2026-09-23     # 指定销售日（幂等覆盖刷新）
   python euro_fetch.py today              # 今天（run.py update 自动调用）
   python euro_fetch.py week               # 近7天补洞（仅缺文件）
+  python euro_fetch.py backfill 60        # 回填近60天（仅缺文件；历史欧指=终值，对拍样本速积）
 
 落盘：engine/cache/euro_odds/{date}.json
 纪律：失败重试1次→降级返回 None 不抛异常，绝不阻塞预测流程。
@@ -164,13 +165,28 @@ def main() -> None:
     elif cmd == "today":
         collect_day(date.today().isoformat())
     elif cmd == "week":
-        for i in range(7):
-            d = (date.today() - timedelta(days=i)).isoformat()
-            if not (OUT_DIR / f"{d}.json").exists():
-                collect_day(d)
-                time.sleep(1.0)
+        _backfill_days(7)
+    elif cmd == "backfill":
+        _backfill_days(int(args[1]) if len(args) >= 2 else 60)
     else:
         print(__doc__)
+
+
+def _backfill_days(n: int) -> None:
+    """近 n 天补洞：已有存档的日期跳过（today 幂等覆盖由 update 流程负责）。"""
+    ok = fail = skip = 0
+    for i in range(n):
+        d = (date.today() - timedelta(days=i)).isoformat()
+        if (OUT_DIR / f"{d}.json").exists():
+            skip += 1
+            continue
+        payload = collect_day(d)
+        if payload:
+            ok += 1
+        else:
+            fail += 1
+        time.sleep(1.2)   # 限流温和（sfc 回填 0.8s 曾触发 IP 限流）
+    log("euro", f"回填完成：新增 {ok} 天，失败 {fail} 天，已存在 {skip} 天")
 
 
 if __name__ == "__main__":
