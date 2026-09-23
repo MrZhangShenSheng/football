@@ -76,6 +76,7 @@ def main() -> None:
         sh("odds_fetch.py", "--season", CURRENT_SEASON, *codes)
         sh("sporttery_fetch.py")
         sh("sporttery_fetch.py", "dump-odds")   # P0-1: 日存档自动留档（boldplay 已改读实时清单，存档仅历史档）
+        sh("euro_fetch.py", "today")            # 欧指锚路径1第一步：99家平均欧指日存档（只采不判·docs/2026-09-23-euro-anchor-design.html）
         sh("build_index.py")
         sh("league_profile.py", "--all")
     elif cmd == "fit":
