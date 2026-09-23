@@ -101,7 +101,8 @@ def save(issue: int, data: dict):
 
 
 def update_index():
-    files = sorted(OUT_DIR.glob('2*.json'))
+    # 仅纯数字期次文件入索引（26132-prediction/anchors 等伴生文件不入）
+    files = sorted(f for f in OUT_DIR.glob('*.json') if re.fullmatch(r'\d{5}', f.stem))
     index = [{'issue': int(f.stem),
               'complete': '?' not in json.loads(f.read_text(encoding='utf-8'))['resultSeq']}
              for f in files]
