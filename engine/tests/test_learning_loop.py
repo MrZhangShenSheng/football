@@ -141,6 +141,28 @@ def test_backfill_chain():
     assert outcome_of(3, 1) == 0 and outcome_of(1, 1) == 1 and outcome_of(0, 2) == 2
 
 
+def test_score_hit_only_counts_score_legs():
+    """scoreHit 口径（2026-09-25 归一）：只判比分腿，方向/总进球/半全场腿一律 None。
+
+    回归 2026-09-25 审计的两个实测缺陷：①189 条 HAD 方向腿的 scoreHit 被 option_hit
+    写成方向命中（比分命中率分母灌水）②复合 pick '1-1 + HAFU dd' 正则整串不匹配 → 静默 None。
+    """
+    from backfill import score_hit_of, score_fragments
+    # ① 方向/总进球/半全场腿不进比分口径
+    assert score_hit_of({"pick": "HAD 主胜"}, 2, 1) is None
+    assert score_hit_of({"pick": "TTG 3"}, 2, 1) is None
+    assert score_hit_of({"pick": "HAFU dh"}, 2, 1) is None
+    # ② 比分腿两种分隔符都判（票面冒号口径曾被漏掉 50/59 条）
+    assert score_hit_of({"pick": "CRS 2-0"}, 2, 0) is True
+    assert score_hit_of({"pick": "CRS 0:2"}, 0, 2) is True
+    assert score_hit_of({"pick": "CRS 0:2"}, 1, 0) is False
+    # ③ 复合/复式 pick 逐片段提取，任一命中即中
+    assert score_fragments("1-1 + HAFU dd") == [(1, 1)]
+    assert score_hit_of({"pick": "CRS 1-1 + HAFU dd"}, 1, 1) is True
+    assert score_hit_of({"pick": "CRS 2-0/3-0 + HAFU hh"}, 3, 0) is True
+    assert score_hit_of({"pick": "CRS 2-0/3-0 + HAFU hh"}, 5, 1) is False
+
+
 def test_backfill_sporttery_fallback(tmp_path, monkeypatch):
     """体彩 fallback（P0 回填断链）：ESPN 停摆时按场次编号对票回填；'不可得'可救回；半全场可判定。"""
     import backfill
@@ -185,7 +207,8 @@ def test_backfill_sporttery_fallback(tmp_path, monkeypatch):
     data = json.loads((tmp_path / "2026-08-23.json").read_text(encoding="utf-8"))
     m0, m1, m2, m3, m4 = data["matches"]
     assert m0["result"] == "2-1" and m0["directionHit"] is True   # 冒号比分 → 横杠统一 + 主胜命中
-    assert m1["result"] == "0-4" and m1["scoreHit"] is True       # hafu aa（客/客）半场 0:2 判定
+    assert m1["result"] == "0-4" and m1["optionHit"] is True      # hafu aa（客/客）半场 0:2 判定 → optionHit
+    assert m1["scoreHit"] is None                                 # 半全场腿不进比分口径（09-25 归一）
     assert "backfillNote" not in m1                               # 旧'不可得'标注清除
     assert m2["result"] is None and "backfillNote" not in m2      # 未开赛：不标'不可得'不标'缓存延迟'
     assert m3["result"] is None and "backfillNote" not in m3      # 未开赛（票池查不到）：同样跳过

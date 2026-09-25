@@ -1409,7 +1409,10 @@ def _selftest_lottery():
     day = {"matches": [mk(1, 1.45, 4.00, 6.50), mk(2, 1.42, 4.20, 6.80),
                        mk(3, 1.48, 3.90, 6.20), mk(4, 1.44, 4.10, 6.60),
                        mk(5, 1.50, 3.80, 5.90)]}        # 5场低赔主胜 → 池=5 全上
-    legs = _lottery_legs(day, zh={}, dc_params_fn=fake_dc, fusion=(0.4, 1.0))
+    # hhad_map={} 必须显式传：缺省会走 _hhad_odds() 读**当日真实缓存**，一旦缓存里
+    # 恰有 周六001/002 等同名编号，该场就被让球腿顶掉 had 腿 → 自检随当日赔率文件
+    # 随机红绿（2026-09-25 实测：缓存 29 腿全覆盖 001~005，本断言必挂）。
+    legs = _lottery_legs(day, zh={}, hhad_map={}, dc_params_fn=fake_dc, fusion=(0.4, 1.0))
     assert len(legs) == 5 and all(l["pick"] == "主胜" for l in legs)   # 全主胜入池
     assert all(l["p"] >= LOTTERY_MIN_P for l in legs)
     # 同场去重：hhad 让球主胜与 had 主胜同场 → 只留 EV 最高一条

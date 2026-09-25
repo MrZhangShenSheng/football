@@ -14,6 +14,7 @@
 """
 import json
 import math
+import re
 from collections import defaultdict
 from datetime import date
 from pathlib import Path
@@ -61,9 +62,24 @@ def normalize_in_plan(v) -> str:
     return f"入串{v}" if str(v) in ("A", "B", "C", "D") else "未入串"
 
 
+SCORE_PICK_RE = re.compile(r"\d+\s*[-:：]\s*\d+")   # 比分片段：'2-0' 预测口径 / '2:0' 票面口径
+
+
+def is_score_judged(r: dict) -> bool:
+    """该记录是否已作比分判定。
+
+    单一事实源 = `scoreHit` 非空：backfill.score_hit_of 只对含比分的 pick 写值
+    （方向/总进球/半全场腿一律 None），故此处无需二次猜玩法。
+    旧实现按 `"-" in pick` 判定：59 条 CRS 腿里 50 条写作 '0:2' 冒号形态全被漏掉，
+    而方向腿反被算进比分分母（2026-09-25 审计实测 39 条分母、0 命中）。
+    另：按 play 字段筛会漏掉 'HAD 主胜 + CRS 1-0' 这类同格复合记录——其比分判定真实存在。
+    """
+    return r.get("scoreHit") is not None
+
+
 def pick_type(pick) -> str:
-    """pick 类型：比分（含'-'）vs 方向。"""
-    if pick and "-" in str(pick):
+    """pick 类型：比分 vs 方向（分桶展示用，按 pick 文本判）。"""
+    if pick and SCORE_PICK_RE.search(str(pick)):
         return "比分"
     return "方向"
 
@@ -83,16 +99,22 @@ def normalize_grade(value) -> str:
 def build_series(records: list[dict]) -> dict:
     """按轮次（round 字段）聚合的评估序列。
 
-    双口径（2026-08-29 分母污染修复）：
+    三口径（2026-08-29 分母污染修复 / 2026-09-25 比分口径独立）：
     - logloss：有赛果 outcome 即可算（p_final 场参与累计，分母 n）
     - 方向命中率/校准/分桶/断言：仅 directionHit 已判定的场（排除场/比分场混入会稀释）
+    - 比分命中率：独立走 score_filled——比分腿多数 directionHit=None（59 条 CRS 里 57 条），
+      混在方向池里统计等于把比分腿全丢掉（铁律 11 要求两率分开算，不是共用一个分母）
     """
     filled = [r for r in records if outcome_idx(r) is not None]
     dir_filled = [r for r in filled if r.get("directionHit") is not None]
+    score_filled = [r for r in filled if is_score_judged(r)]
     by_round = defaultdict(list)
     for r in dir_filled:
         by_round[r.get("round", "?")].append(r)
-    rounds = sorted(by_round)
+    score_by_round = defaultdict(list)
+    for r in score_filled:
+        score_by_round[r.get("round", "?")].append(r)
+    rounds = sorted(set(by_round) | set(score_by_round))
     series = {"rounds": [], "cum": {"n": 0, "n_dir": 0, "ll_model": 0.0, "ll_mkt": 0.0, "hit": 0, "score_hit": 0, "score_n": 0}}
     rows_out = []
     # logloss 累计走完整 filled（按轮分桶：outcome 可算即可参与）
@@ -117,15 +139,13 @@ def build_series(records: list[dict]) -> dict:
                                 "contamination": round(n_fallback / max(n_pin + n_fallback, 1), 3)}
     for rd in rounds:
         recs = by_round[rd]
-        hit = score_hit = score_n = 0
+        hit = 0
         for r in recs:
             if r.get("directionHit"):
                 hit += 1
-            pick = r.get("pick")
-            if pick and "-" in str(pick):
-                score_n += 1
-                if r.get("scoreHit"):
-                    score_hit += 1
+        score_recs = score_by_round[rd]
+        score_n = len(score_recs)
+        score_hit = sum(1 for r in score_recs if r.get("scoreHit"))
         ll_m, ll_k, n_ll = ll_by_round.get(rd, [0.0, 0.0, 0])
         s = series["cum"]
         s["n"] += n_ll
@@ -229,9 +249,11 @@ def build_plans(plans: dict, records: list[dict]) -> list[dict]:
                 legs.append({"code": code, "status": "无记录"})
                 hit_all = False
                 continue
+            # 腿命中：优先 optionHit（全玩法选项命中口径），回落 scoreHit/directionHit。
+            # 旧式 `"-" not in pick` 分流会把冒号比分腿（'0:2'）误判成方向腿（09-25 口径归一）。
             dh = r.get("directionHit")
-            sh = r.get("scoreHit")
-            ok = bool(dh) if r.get("pick") and "-" not in str(r.get("pick")) else bool(sh or dh)
+            candidates = [r.get("optionHit"), r.get("scoreHit"), dh]
+            ok = any(v is True for v in candidates)
             legs.append({"code": code, "match": r.get("match"), "status": "✓" if ok else ("✗" if dh is not None or r.get("result") else "待回填")})
             if r.get("result") and not ok:
                 hit_all = False
@@ -508,6 +530,13 @@ def render(series: dict, cal: list[dict], buckets: dict, concl: str, meta: dict,
         f'<td>{", ".join(p["breaks"]) or "—"}</td></tr>'
         for p in plan_rows) or '<tr><td colspan="6" class="note">暂无出票方案记录</td></tr>'
 
+    # 比分命中率独立呈现（铁律 11：方向与比分分开统计，不共用分母）
+    cum = series["cum"]
+    score_line = (
+        f'比分命中率（CRS/比分腿独立口径）：{cum["score_hit"]}/{cum["score_n"]} = '
+        f'{cum["score_hit"] / cum["score_n"]:.1%}——与上方方向命中率不同分母，勿混读。'
+        if cum["score_n"] else "比分命中率：暂无已判定的比分腿。")
+
     asserts = build_assertions(series, cal, buckets)
     assert_trs = "".join(
         f'<tr><td>{a["name"]}</td><td>{"⚠️ 触发" if a["triggered"] else "静默"}</td><td>{a["n"]}</td>'
@@ -534,6 +563,7 @@ def render(series: dict, cal: list[dict], buckets: dict, concl: str, meta: dict,
 <div class="legend"><span><i class="lg-main"></i>累计命中率</span><span><i class="lg-sub"></i>滚动{ROLLING_WINDOW}场</span><span><i class="lg-ref"></i>50% 参考线</span></div>
 {chart2}
 <div class="note">累计线看长期水平；滚动线捕捉近期 regime change（如系数失效、开季噪声）。命中率仅展示口径，评估看图①。</div>
+<div class="note">{score_line}</div>
 </div>
 
 <h2>③ CLV 均值走势</h2>

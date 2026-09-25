@@ -30,7 +30,7 @@ OUT = ROOT / "data" / "04-summaries" / "corpus.json"
 _ROUND_SUFFIX = re.compile(r"^(.+)-(?:r|v)(\d+)$")
 
 # 回填字段（合并时取非空；预测锁定字段取最早轮不动）
-BACKFILL_FIELDS = ("result", "directionHit", "scoreHit", "clv",
+BACKFILL_FIELDS = ("result", "directionHit", "scoreHit", "optionHit", "clv",
                    "clv_approx_dk", "clv_note", "pinClose", "pinSource")
 # 独立市场锚字段：calibrate/trend_report 用 p_pinnacle 替代 p_final 做市场基线
 # （修复市场基线污染：p_final 含模型贡献时不能兼作市场侧）
@@ -144,6 +144,7 @@ def normalize_record(r: dict, round_id: str) -> dict | None:
             "result": r.get("result"),
             "directionHit": r.get("directionHit"),
             "scoreHit": r.get("scoreHit"),
+            "optionHit": r.get("optionHit"),   # 全玩法选项命中（scoreHit 只管比分腿，09-25 口径归一）
             "clv": r.get("clv"),
             "clv_approx_dk": r.get("clv_approx_dk"),
             "clv_note": r.get("clv_note"),

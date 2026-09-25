@@ -5,7 +5,8 @@
 闭环 P2-A（docs/2026-08-22-learning-loop-design.html）· P0 修复 2026-08-23：
 - 链路 1（主）：体彩 zqsgkj 开奖口径按场次编号精确对票（含半场比分，半全场命中可判定）
 - 链路 2（兜底）：espn_fetch results 按日拉赛果，中文队名经 _aliases zh → espn 匹配
-- 写回规则（铁律 7）：只改 result/directionHit/scoreHit/backfillNote 字段，不动预测锁定字段；
+- 写回规则（铁律 7）：只改 result/directionHit/scoreHit/optionHit/backfillNote 字段，不动预测锁定字段；
+  scoreHit 只由比分类 pick 判定（score_hit_of），方向/总进球/半全场腿的选项命中走 optionHit；
   增补字段 pinClose/pinSource（fd 收盘三键匹配·P2 归因地基）随回填成功自动落盘，幂等不覆盖
 - 输出：本轮回填 N/M（体彩对票 K）+ 不可得清单
 
@@ -201,10 +202,46 @@ def pick_outcome_idx(rec: dict) -> int | None:
     return None  # 比分/总进球/半全场 pick → option_hit 判定
 
 
+SCORE_FRAGMENT_RE = re.compile(r"(\d+)\s*[-:：]\s*(\d+)")  # 比分片段（'2-0' 预测口径 / '2:0' 票面口径）
+SCORE_PLAYS = ("CRS", "比分")  # 比分类玩法前缀（scoreHit 的唯一合法来源）
+
+
+def score_fragments(pick: str) -> list[tuple[int, int]]:
+    """从 pick 文本提取全部比分片段：'1-1 + HAFU dd' → [(1,1)]、'2-0/3-0' → [(2,0),(3,0)]。
+
+    复合 pick（比分+半全场同格、复式双选）曾致 option_hit 正则整串不匹配 → 静默返回 None
+    → scoreHit 空缺 18 条（2026-09-25 审计实测）。铁律 8「空结果必追查、禁止静默跳过」
+    要求这里逐片段提取而非整串匹配。
+    """
+    return [(int(m.group(1)), int(m.group(2))) for m in SCORE_FRAGMENT_RE.finditer(str(pick or ""))]
+
+
+def score_hit_of(rec: dict, hg: int, ag: int) -> bool | None:
+    """比分命中判定（scoreHit 专用）：只判比分类 pick，方向/总进球/半全场腿一律返回 None。
+
+    与 option_hit 的分工（2026-09-25 口径归一）：option_hit 答"所推选项中没中"（票腿结算用，
+    玩法无关）；本函数答"比分猜对没有"。此前 backfill 把 option_hit 结果直写 scoreHit，
+    致 189 条 HAD 方向腿的 scoreHit 恒等于 directionHit——"比分命中率"分母被方向腿灌水，
+    与铁律 11「方向命中与比分命中分开统计」直接冲突。
+
+    复式/复合 pick（'2-0/3-0'）任一片段命中即算中，与 leg_hit 多选腿口径一致。
+    """
+    play = str(rec.get("pick") or "").split(" ", 1)[0].upper()
+    frags = score_fragments(strip_play(str(rec.get("pick") or "")))
+    if not frags:
+        if play in SCORE_PLAYS:   # 比分玩法却提不出比分 → 记录异常（铁律 8 禁静默）
+            log("backfill", f"比分腿 pick 无法解析比分：{rec.get('code')} {rec.get('pick')!r}")
+        return None
+    if len(frags) > 1:
+        log("backfill", f"比分腿多选判定（任一命中即中）：{rec.get('code')} {rec.get('pick')!r}")
+    return any(fh == hg and fa == ag for fh, fa in frags)
+
+
 def option_hit(rec: dict, hg: int, ag: int, hhg: int | None = None, hag: int | None = None) -> bool | None:
     """选项命中判定（方向/比分/总进球/半全场 pick 文本，带玩法前缀均可）。
 
     hhg/hag 为半场比分（体彩口径 halfScore 可判半全场；ESPN 不带 → 不判）。
+    **勿用于 scoreHit**——方向腿在此返回方向命中，写进 scoreHit 即灌水（见 score_hit_of）。
     """
     pick = strip_play(str(rec.get("pick") or ""))
     oi = pick_outcome_idx(rec)
@@ -337,8 +374,9 @@ def backfill(day_limit: str | None = None) -> dict:
                 rec["directionHit"] = hhad_hit(str(rec["pick"]).split(" ", 1)[-1], hg, ag)
             else:
                 rec["directionHit"] = None
-            oh = option_hit(rec, hg, ag, hh, ha)
+            oh = score_hit_of(rec, hg, ag)
             rec["scoreHit"] = oh if oh is not None else rec.get("scoreHit")
+            rec["optionHit"] = option_hit(rec, hg, ag, hh, ha)   # 全玩法选项命中（TTG/HAFU 等非比分腿的命中口径）
             rec.pop("backfillNote", None)  # 救回成功，清'不可得/缓存延迟'旧标注
             apply_pin_close(rec, sp.get("matchDate") or d, ROOT / "engine" / "cache")
             ps = find_pre_snapshots(rec.get("code"), d)
@@ -373,8 +411,9 @@ def backfill(day_limit: str | None = None) -> dict:
                 rec["directionHit"] = hhad_hit(str(rec["pick"]).split(" ", 1)[-1], hg, ag)
             else:
                 rec["directionHit"] = None
-            oh = option_hit(rec, hg, ag)
+            oh = score_hit_of(rec, hg, ag)
             rec["scoreHit"] = oh if oh is not None else rec.get("scoreHit")
+            rec["optionHit"] = option_hit(rec, hg, ag)   # ESPN 兜底无半场 → 半全场腿为 None（口径同链路1）
             rec.pop("backfillNote", None)  # 对齐链路1：救回成功，清'不可得/缓存延迟'旧标注
             apply_pin_close(rec, d, ROOT / "engine" / "cache")   # ESPN 兜底场用预测日作窗口中心
             ps = find_pre_snapshots(rec.get("code"), d)
