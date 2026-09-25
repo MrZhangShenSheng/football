@@ -54,7 +54,8 @@
    "half": "0:3",
    "directionHit": null,
    "scoreHit": false,
-   "pinSource": "none"
+   "pinSource": "none",
+   "optionHit": false
   },
   {
    "idx": 2,
@@ -85,8 +86,9 @@
    "result": "1-0",
    "half": "0:0",
    "directionHit": null,
-   "scoreHit": false,
-   "pinSource": "none"
+   "scoreHit": null,
+   "pinSource": "none",
+   "optionHit": false
   },
   {
    "idx": 3,
@@ -181,8 +183,9 @@
    "result": "3-1",
    "half": "2:1",
    "directionHit": null,
-   "scoreHit": false,
-   "pinSource": "none"
+   "scoreHit": null,
+   "pinSource": "none",
+   "optionHit": false
   },
   {
    "idx": 6,
@@ -213,8 +216,9 @@
    "result": "4-0",
    "half": "1:0",
    "directionHit": null,
-   "scoreHit": true,
-   "pinSource": "none"
+   "scoreHit": null,
+   "pinSource": "none",
+   "optionHit": true
   },
   {
    "idx": 7,
@@ -396,7 +400,7 @@
    "result": "2-2",
    "half": "0:2",
    "directionHit": false,
-   "scoreHit": false,
+   "scoreHit": null,
    "pinSource": "fd",
    "pinClose": [
     0.6754,
@@ -404,7 +408,8 @@
     0.1312
    ],
    "clv": -0.0274,
-   "clv_note": "pinClose精确口径(v2四键)"
+   "clv_note": "pinClose精确口径(v2四键)",
+   "optionHit": false
   },
   {
    "idx": 11,
@@ -436,7 +441,8 @@
    "half": "1:0",
    "directionHit": null,
    "scoreHit": false,
-   "pinSource": "none"
+   "pinSource": "none",
+   "optionHit": false
   },
   {
    "idx": 12,
@@ -467,8 +473,9 @@
    "result": "2-4",
    "half": "0:2",
    "directionHit": true,
-   "scoreHit": true,
-   "pinSource": "none"
+   "scoreHit": null,
+   "pinSource": "none",
+   "optionHit": true
   },
   {
    "idx": 13,
@@ -540,8 +547,9 @@
    "result": "2-1",
    "half": "2:0",
    "directionHit": null,
-   "scoreHit": true,
-   "pinSource": "none"
+   "scoreHit": null,
+   "pinSource": "none",
+   "optionHit": true
   }
  ],
  "revisionNote": "2026-09-15 比分现实性检验后修订：翻身档人工关档(决策C)，总成本 8→2 元。周三014 莱万特0:3 经本季 fd 赛果证否(西甲1次/毕巴客场从未进3球/莱万特主场8-0-2)；其余四腿杯赛纯模板不可检验，'未被证否≠可买'。在买仅彩票档 4串1 2元。"

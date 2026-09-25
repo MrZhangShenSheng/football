@@ -149,8 +149,9 @@
    "result": "0-0",
    "directionHit": false,
    "half": "0:0",
-   "scoreHit": false,
-   "pinSource": "none"
+   "scoreHit": null,
+   "pinSource": "none",
+   "optionHit": false
   },
   {
    "idx": 2,
@@ -183,8 +184,9 @@
    "result": "1-2",
    "directionHit": false,
    "half": "0:1",
-   "scoreHit": false,
-   "pinSource": "none"
+   "scoreHit": null,
+   "pinSource": "none",
+   "optionHit": false
   },
   {
    "idx": 3,
@@ -219,8 +221,9 @@
    "result": "2-3",
    "half": "2:0",
    "directionHit": true,
-   "scoreHit": true,
-   "pinSource": "none"
+   "scoreHit": null,
+   "pinSource": "none",
+   "optionHit": true
   },
   {
    "idx": 4,
@@ -310,8 +313,9 @@
    "result": "3-0",
    "half": "2:0",
    "directionHit": true,
-   "scoreHit": true,
-   "pinSource": "none"
+   "scoreHit": null,
+   "pinSource": "none",
+   "optionHit": true
   },
   {
    "idx": 7,
@@ -479,8 +483,9 @@
    "result": "2-1",
    "half": "1:1",
    "directionHit": false,
-   "scoreHit": false,
-   "pinSource": "none"
+   "scoreHit": null,
+   "pinSource": "none",
+   "optionHit": false
   },
   {
    "idx": 12,
@@ -510,8 +515,9 @@
    "result": "4-0",
    "half": "3:0",
    "directionHit": false,
-   "scoreHit": false,
-   "pinSource": "none"
+   "scoreHit": null,
+   "pinSource": "none",
+   "optionHit": false
   },
   {
    "idx": 13,
@@ -541,8 +547,9 @@
    "result": "1-1",
    "half": "1:1",
    "directionHit": true,
-   "scoreHit": true,
-   "pinSource": "none"
+   "scoreHit": null,
+   "pinSource": "none",
+   "optionHit": true
   },
   {
    "idx": 14,
@@ -572,8 +579,9 @@
    "result": "3-1",
    "half": "1:1",
    "directionHit": false,
-   "scoreHit": false,
-   "pinSource": "none"
+   "scoreHit": null,
+   "pinSource": "none",
+   "optionHit": false
   },
   {
    "idx": 15,
@@ -603,8 +611,9 @@
    "result": "1-2",
    "half": "0:2",
    "directionHit": false,
-   "scoreHit": false,
-   "pinSource": "none"
+   "scoreHit": null,
+   "pinSource": "none",
+   "optionHit": false
   },
   {
    "idx": 16,
@@ -638,7 +647,7 @@
    "result": "4-1",
    "half": "1:1",
    "directionHit": true,
-   "scoreHit": true,
+   "scoreHit": null,
    "pinSource": "fd",
    "pinClose": [
     0.8107,
@@ -646,7 +655,8 @@
     0.066
    ],
    "clv": -0.0109,
-   "clv_note": "pinClose精确口径(v2四键)"
+   "clv_note": "pinClose精确口径(v2四键)",
+   "optionHit": true
   }
  ],
  "finalReview": {

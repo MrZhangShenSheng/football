@@ -92,13 +92,14 @@
    "backfillNote": "ESPN scoreboard 2026-08-23 手动回填(backfill.py zh→espn映射缺口期)",
    "result": "0-1",
    "directionHit": null,
-   "scoreHit": false,
+   "scoreHit": null,
    "pinSource": "fd",
    "pinClose": [
     0.3231,
     0.3323,
     0.3446
-   ]
+   ],
+   "optionHit": false
   },
   {
    "idx": 9,
@@ -119,8 +120,9 @@
    "backfillNote": "ESPN scoreboard 2026-08-23 手动回填(backfill.py zh→espn映射缺口期)",
    "result": "1-1",
    "directionHit": null,
-   "scoreHit": true,
-   "pinSource": "none"
+   "scoreHit": null,
+   "pinSource": "none",
+   "optionHit": true
   },
   {
    "idx": 52,
@@ -174,7 +176,7 @@
    "note": "超低赔胆仅做骨架;坎布尔3连败(0分垫底,上轮客1-3),费耶诺德上轮主2-2平弱旅微减",
    "result": "2-5",
    "directionHit": true,
-   "scoreHit": true,
+   "scoreHit": null,
    "pinSource": "fd",
    "pinClose": [
     0.0892,
@@ -182,7 +184,8 @@
     0.7622
    ],
    "clv": -0.1311,
-   "clv_note": "pinClose精确口径(v2四键)"
+   "clv_note": "pinClose精确口径(v2四键)",
+   "optionHit": true
   },
   {
    "idx": 41,
@@ -205,8 +208,9 @@
    "note": "瑞超小联赛限额1场已用",
    "result": "2-0",
    "directionHit": true,
-   "scoreHit": true,
-   "pinSource": "none"
+   "scoreHit": null,
+   "pinSource": "none",
+   "optionHit": true
   },
   {
    "idx": 28,
@@ -230,7 +234,8 @@
    "result": "5-0",
    "directionHit": true,
    "scoreHit": null,
-   "pinSource": "none"
+   "pinSource": "none",
+   "optionHit": true
   },
   {
    "idx": 37,
@@ -261,7 +266,8 @@
     0.1538
    ],
    "clv": -0.1475,
-   "clv_note": "pinClose精确口径(v2四键)"
+   "clv_note": "pinClose精确口径(v2四键)",
+   "optionHit": true
   },
   {
    "idx": 27,
@@ -293,7 +299,8 @@
     0.6741
    ],
    "clv": -0.1237,
-   "clv_note": "pinClose精确口径(v2四键)"
+   "clv_note": "pinClose精确口径(v2四键)",
+   "optionHit": true
   }
  ]
 }

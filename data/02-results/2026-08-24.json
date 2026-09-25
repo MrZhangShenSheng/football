@@ -249,7 +249,8 @@
    "resultOutcome": "a",
    "directionHit": true,
    "result": "0-2",
-   "pinSource": "none"
+   "pinSource": "none",
+   "scoreHit": false
   },
   {
    "idx": 3,
@@ -439,7 +440,8 @@
    "resultOutcome": "h",
    "directionHit": true,
    "result": "3-2",
-   "pinSource": "none"
+   "pinSource": "none",
+   "optionHit": false
   },
   {
    "idx": 6,
@@ -661,7 +663,8 @@
     0.2591,
     0.2744,
     0.4665
-   ]
+   ],
+   "scoreHit": false
   },
   {
    "idx": 9,
@@ -753,7 +756,9 @@
    "resultOutcome": "h",
    "directionHit": true,
    "result": "2-0",
-   "pinSource": "ambiguous"
+   "pinSource": "ambiguous",
+   "scoreHit": true,
+   "optionHit": true
   },
   {
    "idx": 10,

@@ -84,7 +84,7 @@
    "inPlan": "保底/进阶",
    "result": "2-5",
    "directionHit": true,
-   "scoreHit": true,
+   "scoreHit": null,
    "clv": -0.2271,
    "clv_approx_dk": null,
    "half": "2:3",
@@ -94,7 +94,8 @@
     0.2638,
     0.427
    ],
-   "clv_note": "pinClose精确口径(v2四键)"
+   "clv_note": "pinClose精确口径(v2四键)",
+   "optionHit": true
   },
   {
    "idx": 2,
@@ -134,7 +135,7 @@
    "inPlan": "保底/进阶",
    "result": "3-3",
    "directionHit": false,
-   "scoreHit": false,
+   "scoreHit": null,
    "clv": -0.0956,
    "clv_approx_dk": null,
    "half": "1:2",
@@ -144,7 +145,8 @@
     0.266,
     0.38
    ],
-   "clv_note": "pinClose精确口径(v2四键)"
+   "clv_note": "pinClose精确口径(v2四键)",
+   "optionHit": false
   },
   {
    "idx": 3,
@@ -184,7 +186,7 @@
    "inPlan": "保底/进阶",
    "result": "3-2",
    "directionHit": false,
-   "scoreHit": false,
+   "scoreHit": null,
    "clv": -0.1047,
    "clv_approx_dk": null,
    "half": "0:1",
@@ -194,7 +196,8 @@
     0.2659,
     0.4432
    ],
-   "clv_note": "pinClose精确口径(v2四键)"
+   "clv_note": "pinClose精确口径(v2四键)",
+   "optionHit": false
   },
   {
    "idx": 4,
@@ -234,7 +237,7 @@
    "inPlan": "保底/进阶",
    "result": "0-1",
    "directionHit": false,
-   "scoreHit": false,
+   "scoreHit": null,
    "clv": -0.3771,
    "clv_approx_dk": null,
    "half": "0:0",
@@ -244,7 +247,8 @@
     0.2814,
     0.3317
    ],
-   "clv_note": "pinClose精确口径(v2四键)"
+   "clv_note": "pinClose精确口径(v2四键)",
+   "optionHit": false
   },
   {
    "idx": 5,
@@ -284,7 +288,7 @@
    "inPlan": "保底/进阶",
    "result": "1-1",
    "directionHit": false,
-   "scoreHit": false,
+   "scoreHit": null,
    "clv": -0.1718,
    "clv_approx_dk": null,
    "half": "1:0",
@@ -294,7 +298,8 @@
     0.2757,
     0.2884
    ],
-   "clv_note": "pinClose精确口径(v2四键)"
+   "clv_note": "pinClose精确口径(v2四键)",
+   "optionHit": false
   },
   {
    "idx": 6,
@@ -334,7 +339,7 @@
    "inPlan": "保底/进阶",
    "result": "5-2",
    "directionHit": false,
-   "scoreHit": false,
+   "scoreHit": null,
    "clv": -0.1642,
    "clv_approx_dk": null,
    "pinSource": "fd",
@@ -343,7 +348,8 @@
     0.2895,
     0.4117
    ],
-   "clv_note": "pinClose精确口径(v2四键)"
+   "clv_note": "pinClose精确口径(v2四键)",
+   "optionHit": false
   },
   {
    "idx": 7,
@@ -366,7 +372,7 @@
    "inPlan": "翻身",
    "result": "0-3",
    "directionHit": null,
-   "scoreHit": null,
+   "scoreHit": false,
    "clv": null,
    "clv_approx_dk": null,
    "pinSource": "fd",
@@ -374,7 +380,8 @@
     0.0853,
     0.1876,
     0.7271
-   ]
+   ],
+   "optionHit": false
   },
   {
    "idx": 8,
@@ -397,7 +404,7 @@
    "inPlan": "翻身",
    "result": "1-2",
    "directionHit": null,
-   "scoreHit": null,
+   "scoreHit": false,
    "clv": null,
    "clv_approx_dk": null,
    "half": "0:1",
@@ -411,7 +418,8 @@
     0.5227,
     0.2512,
     0.2261
-   ]
+   ],
+   "optionHit": false
   },
   {
    "idx": 9,
@@ -434,7 +442,7 @@
    "inPlan": "翻身",
    "result": "1-0",
    "directionHit": null,
-   "scoreHit": null,
+   "scoreHit": false,
    "clv": null,
    "clv_approx_dk": null,
    "half": "1:0",
@@ -448,7 +456,8 @@
     0.3084,
     0.2804,
     0.4112
-   ]
+   ],
+   "optionHit": false
   },
   {
    "idx": 10,
@@ -471,7 +480,7 @@
    "inPlan": "翻身",
    "result": "2-0",
    "directionHit": null,
-   "scoreHit": null,
+   "scoreHit": false,
    "clv": null,
    "clv_approx_dk": null,
    "pinSource": "fd",
@@ -479,7 +488,8 @@
     0.7733,
     0.1659,
     0.0608
-   ]
+   ],
+   "optionHit": false
   }
  ]
 }
