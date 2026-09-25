@@ -1,0 +1,151 @@
+{
+ "fetchedAt": "2026-09-25",
+ "source": "sporttery",
+ "matchId": 2041695,
+ "match": {
+  "code": "周五012",
+  "league": "欧国联",
+  "gameweek": "1",
+  "season": "2026/2027",
+  "home": "瑞典",
+  "away": "罗马尼亚",
+  "kickoff": "2026-09-26 02:45",
+  "uniformMatchId": 2509556
+ },
+ "standing": {
+  "away": {
+   "groupName": "Group 4",
+   "phaseName": "League B",
+   "ranking": "3",
+   "sAwayDrawMatchCnt": "0",
+   "sAwayLossGoalMatchCnt": "0",
+   "sAwayWinGoalMatchCnt": "0",
+   "sDrawMatchCnt": "0",
+   "sLossGoalMatchCnt": "0",
+   "sWinGoalMatchCnt": "0",
+   "seasonName": "2026/2027"
+  },
+  "home": {
+   "groupName": "Group 4",
+   "phaseName": "League B",
+   "ranking": "4",
+   "sDrawMatchCnt": "0",
+   "sHomeDrawMatchCnt": "0",
+   "sHomeLossGoalMatchCnt": "0",
+   "sHomeWinGoalMatchCnt": "0",
+   "sLossGoalMatchCnt": "0",
+   "sWinGoalMatchCnt": "0",
+   "seasonName": "2026/2027"
+  }
+ },
+ "injuries": {
+  "home": [],
+  "away": [
+   {
+    "name": "O. Moruţan",
+    "pos": "前锋",
+    "no": "",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 0,
+    "starts": 0
+   }
+  ]
+ },
+ "form": {
+  "goalAvg": {
+   "awayGoalAvgCnt": "1.6",
+   "awayGoalAvgCntRatio": "47.1",
+   "homeGoalAvgCnt": "1.8",
+   "homeGoalAvgCntRatio": "52.9",
+   "totalLegCnt": 10
+  },
+  "last10": {
+   "awayDrawMatchCnt": 2,
+   "awayLossGoalMatchCnt": 4,
+   "awayScoreRatio": "47",
+   "awayWinGoalMatchCnt": 4,
+   "homeDrawMatchCnt": 3,
+   "homeLossGoalMatchCnt": 4,
+   "homeScoreRatio": "40",
+   "homeWinGoalMatchCnt": 3,
+   "totalLegCnt": 10
+  },
+  "last10HomeAway": {
+   "awayDrawMatchCnt": 2,
+   "awayLossGoalMatchCnt": 4,
+   "awayScoreRatio": "47",
+   "awayWinGoalMatchCnt": 4,
+   "homeDrawMatchCnt": 2,
+   "homeLossGoalMatchCnt": 2,
+   "homeScoreRatio": "67",
+   "homeWinGoalMatchCnt": 6,
+   "totalLegCnt": 10
+  }
+ },
+ "h2h": {
+  "statistics": {
+   "drawMatchCnt": 0,
+   "drawProbability": "0%",
+   "goalCnt": 0,
+   "lossGoalCnt": 0,
+   "lossGoalMatchCnt": 1,
+   "lossProbability": "33%",
+   "netGoal": 0,
+   "sportteryTeamId": 0,
+   "teamId": 0,
+   "teamShortName": "瑞典",
+   "totalLegCnt": 3,
+   "winGoalMatchCnt": 2,
+   "winProbability": "67%"
+  },
+  "matches": [
+   {
+    "date": "2019-11-16",
+    "home": "罗马尼亚",
+    "score": "0:2",
+    "ht": "0:2",
+    "away": "瑞典",
+    "winner": "home"
+   },
+   {
+    "date": "2019-03-24",
+    "home": "瑞典",
+    "score": "2:1",
+    "ht": "2:0",
+    "away": "罗马尼亚",
+    "winner": "home"
+   },
+   {
+    "date": "2018-03-28",
+    "home": "罗马尼亚",
+    "score": "1:0",
+    "ht": "0:0",
+    "away": "瑞典",
+    "winner": "away"
+   }
+  ]
+ },
+ "scorers": {
+  "away": {
+   "playerList": [],
+   "sportteryTeamId": 395,
+   "teamId": 1839,
+   "teamShortName": "罗马尼亚",
+   "uniformTeamId": 413
+  },
+  "home": {
+   "playerList": [],
+   "sportteryTeamId": 402,
+   "teamId": 2173,
+   "teamShortName": "瑞典",
+   "uniformTeamId": 755
+  },
+  "seasonId": 14602,
+  "seasonName": "2026/2027",
+  "tournamentId": 1400,
+  "tournamentShortName": "欧国联",
+  "uniformLeagueId": 69,
+  "uniformMatchId": 2509556
+ }
+}

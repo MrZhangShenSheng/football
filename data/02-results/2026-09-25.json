@@ -1,0 +1,255 @@
+{
+  "date": "2026-09-25",
+  "version": "v5.13",
+  "context": {
+    "window": "国际比赛日窗口（2026世界杯后首个）+ 名古屋亚运会淘汰赛阶段",
+    "anchorMode": "单锚模式：全轮无fd覆盖（欧国联/亚运/国际赛/荷乙/日乙/韩职），无Pinnacle收盘锚，概率=体彩CRS池去水×0.97，置信度上限三星",
+    "nationsGW": "欧国联全部GW=1（新赛季首轮，insight gameweek口径）",
+    "asiaGames": "亚运男足已至淘汰赛8强（9-15开打小组赛，9-25中秋夜=8强战），韩越战为1/4决赛",
+    "policy": "preference.json candidatePool.cupNoLibrary（2026-09-16拍板）：无联赛库场次全量放行·纯假设驱动",
+    "userRequest": "买一注2串1比分（CRS 2串1合法形状：09-18拍板CRS 2串1单注48倍起）"
+  },
+  "plans": [
+    {
+      "plan": "🎯主推 CRS 2串1",
+      "type": "比分2串1×1倍",
+      "stake": "2元(1注×1倍)",
+      "legs": [
+        "周五004 CRS 2:0(韩国亚) @6.00 p≈12.1% EV-27.6%",
+        "周五012 CRS 2:1(瑞典) @6.75 p≈10.7% EV-27.6%"
+      ],
+      "odds": 40.5,
+      "allWinPayout": "81元",
+      "pAtLeastWin": 0.013,
+      "note": "合赔6.0×6.75=40.5·两腿全survived假设驱动·倍数大哥自定(偏好习惯×5/×10可平行加倍)"
+    },
+    {
+      "plan": "备选 CRS 2串1",
+      "type": "比分2串1×1倍",
+      "stake": "2元(1注×1倍)",
+      "legs": [
+        "周五004 CRS 2:0(韩国亚) @6.00 p≈12.1% EV-27.6%",
+        "周五011 CRS 1:2(法国客胜) @8.30 p≈8.7% EV-27.6%"
+      ],
+      "odds": 49.8,
+      "allWinPayout": "100元",
+      "pAtLeastWin": 0.0105,
+      "note": "合赔6.0×8.3=49.8·弱点=姆巴佩流感伤疑为临场变量(缺阵则法国进攻降档1:2画面弱化)"
+    }
+  ],
+  "matches": [
+    {
+      "idx": 1, "code": "周五004", "league": "亚运男足(8强淘汰赛)",
+      "match": "韩国亚 vs 越南亚", "matchDate": "2026-09-25", "kickoff": "18:30",
+      "pick": "crs 2:0", "odds": 6.0, "star": 4, "grade": "A",
+      "dc": null, "fused": null, "final": 0.121, "dc_used": false,
+      "chain": "单锚×0.97",
+      "lambdaHome": null, "lambdaAway": null, "fusedPre": null,
+      "chainSteps": [{"name": "单锚模式修正", "factor": 0.97}],
+      "ev": -0.276, "inPlan": "主推+备选",
+      "hypothesis": {
+        "matchPlay": {
+          "rotation": "亚运8强淘汰赛无退路：韩国全力冲四连冠（免兵役压倒性动机，2014/2018/2023三连冠）；越南缺主帅金相植（临时指挥军心涣散）",
+          "tactics": "韩国全场高压冲击边路爆点；越南5-4-1铁桶防反，理性策略=拖加时",
+          "goalSource": "韩国边路突破+定位球+反击（小组赛4:1卡塔尔火力实证）；越南零星反击",
+          "script": "韩国围攻，越南铁桶，下半场体能崩开缺口 2:0/1:0；1:1拖加时是越南理论最优但缺主帅难执行",
+          "specialVars": "中秋夜8强赛；90分钟口径CRS不含加时；2022 U23决赛1:1前科（越南有主帅时摆大巴成功）"
+        },
+        "assumption": "韩国8强以2:0/1:0干净取胜——免兵役动机+实力差+越南缺主帅军心差，铁桶拖不到加时",
+        "checks": [
+          {"kind": "h2h", "seasonComplete": "insight口径10场+新闻交叉", "gaps": "2023-2026亚运/U23口径无交手；2022 U23决赛1:1为越南有主帅时摆大巴成功案例", "matches": 3},
+          {"kind": "form", "note": "韩国9-15首战4:1卡塔尔(韩联社)；越南小组1胜1平1负C组第二、末轮0:2负乌兹别克、缺主帅(mk.co.kr)"},
+          {"kind": "injury", "note": "insight主客伤停均0人"}
+        ],
+        "verdict": "survived"
+      }
+    },
+    {
+      "idx": 2, "code": "周五012", "league": "欧国联(GW1)",
+      "match": "瑞典 vs 罗马尼亚", "matchDate": "2026-09-26", "kickoff": "02:45",
+      "pick": "crs 2:1", "odds": 6.75, "star": 3, "grade": "A",
+      "dc": null, "fused": null, "final": 0.107, "dc_used": false,
+      "chain": "单锚×0.97",
+      "lambdaHome": null, "lambdaAway": null, "fusedPre": null,
+      "chainSteps": [{"name": "单锚模式修正", "factor": 0.97}],
+      "ev": -0.276, "inPlan": "主推",
+      "hypothesis": {
+        "matchPlay": {
+          "rotation": "双枪在队：伊萨克(利物浦)+约克雷斯(阿森纳)双双入选9月窗口(世界杯名单延续)；阵容延续性好",
+          "tactics": "瑞典主场Strawberry Arena强攻双中锋；罗马尼亚收缩防反",
+          "goalSource": "双枪禁区终结(伊萨克3+射正/约克雷斯2+球盘口在售=市场预期火力)；罗马尼亚反击(Moruţan伤缺但出场0影响小)",
+          "script": "瑞典主场围攻2球差拿下，罗马尼亚客场漏1球；H2H 2019主场2:1复刻画面",
+          "specialVars": "欧国联GW1；瑞典打进2026世界杯阵容当打，罗马尼亚世界杯参赛状态未核实"
+        },
+        "assumption": "瑞典双枪主场对客弱罗马尼亚2:1取胜——H2H 2019主场2:1直接复刻+双枪火力",
+        "checks": [
+          {"kind": "h2h", "seasonComplete": "insight口径10场+新闻交叉", "gaps": "2020-2026无交手；2019瑞典主场2:1/客场2:0双杀罗马尼亚", "matches": 3},
+          {"kind": "news", "note": "伊萨克+约克雷斯在9月名单(BBC世界杯名单+Sky盘口在售)"},
+          {"kind": "injury", "note": "客队Moruçan伤(前锋,0出场)影响≈0；主队无伤"}
+        ],
+        "verdict": "survived"
+      }
+    },
+    {
+      "idx": 3, "code": "周五011", "league": "欧国联(GW1)",
+      "match": "土耳其 vs 法国", "matchDate": "2026-09-26", "kickoff": "02:45",
+      "pick": "crs 1:2", "odds": 8.3, "star": 4, "grade": "A",
+      "dc": null, "fused": null, "final": 0.087, "dc_used": false,
+      "chain": "单锚×0.97",
+      "lambdaHome": null, "lambdaAway": null, "fusedPre": null,
+      "chainSteps": [{"name": "单锚模式修正", "factor": 0.97}],
+      "ev": -0.276, "inPlan": "备选",
+      "hypothesis": {
+        "matchPlay": {
+          "rotation": "齐达内时代首战：首期名单5张新面孔(Lepaul/Jacquet/Da Cunha/Diouf+1)；姆巴佩流感缺训伤疑(赛前3天唯一缺席)",
+          "tactics": "土耳其İzmit魔鬼主场高压绞杀(Güler/Yıldız)；法国防反，磨合生涩",
+          "goalSource": "法国Olise/Doué边路；土耳其定位球+Yıldız远射",
+          "script": "土耳其开局猛攻，法国顶住后反击；客胜小比分1:2/0:2，主队有球画面真实",
+          "specialVars": "欧国联GW1+新帅首战=磨合双向风险；İzmit=2019土耳其2:0法国同一城市球场"
+        },
+        "assumption": "法国客胜但齐达内首战磨合+İzmit主场火力使零封难——1:2优先于0:2",
+        "checks": [
+          {"kind": "h2h", "seasonComplete": "insight口径10场+新闻交叉", "gaps": "2020-2026无交手；2019土耳其主场2:0法国=同城场地翻车史", "matches": 2},
+          {"kind": "news", "note": "齐达内5新人名单+姆巴佩流感缺训(hngnews)"},
+          {"kind": "injury", "note": "insight主客伤停0人；姆巴佩状态=临场变量"}
+        ],
+        "verdict": "survived"
+      }
+    },
+    {
+      "idx": 4, "code": "周五003", "league": "国际赛(友谊赛)",
+      "match": "澳大利亚 vs 巴西", "matchDate": "2026-09-25", "kickoff": "18:00",
+      "pick": "排除:pending(情报缺口)", "odds": null, "star": null, "grade": "B",
+      "dc": null, "fused": null, "final": null, "dc_used": false,
+      "chain": null, "ev": null, "inPlan": null,
+      "hypothesis": {
+        "matchPlay": {
+          "rotation": "世界杯后首窗口友谊赛，巴西名单/新帅情报缺口（搜索无果）；远征澳洲14h+时差，大概率试验阵容+6换人",
+          "tactics": "澳身体流高位冲吊 vs 巴技术流控场",
+          "goalSource": "巴西个人能力（名单未核实）；澳定位球",
+          "script": "友谊赛强度打折，巴西小胜画面 0:1/0:2",
+          "specialVars": "友谊赛性质=动机存疑；2017 H2H 0:4 是世界杯前全力巴西不可外推"
+        },
+        "assumption": "巴西客场友谊赛小胜（0:1/0:2）——但名单未核实无法压缩到单比分",
+        "checks": [
+          {"kind": "h2h", "seasonComplete": "insight口径", "gaps": "2017仅1场", "matches": 1},
+          {"kind": "gap", "note": "巴西9月名单未搜到-情报缺口"}
+        ],
+        "verdict": "pending"
+      }
+    },
+    {
+      "idx": 5, "code": "周六007", "league": "亚运男足(淘汰赛)",
+      "match": "日本亚 vs 朝鲜亚", "matchDate": "2026-09-26", "kickoff": "18:30",
+      "pick": "排除:pending(比分发散)", "odds": null, "star": null, "grade": "B",
+      "dc": null, "fused": null, "final": null, "dc_used": false,
+      "chain": null, "ev": null, "inPlan": null,
+      "hypothesis": {
+        "matchPlay": {
+          "rotation": "东道主日本亚运队全力；朝鲜淘汰赛神秘之师",
+          "tactics": "日本传控；朝鲜身体+反击",
+          "goalSource": "日本场均3.5球(71%占比)；朝鲜小组赛4:1伊朗有火力",
+          "script": "日本控场2球差，朝鲜能咬住身体对抗",
+          "specialVars": "朝鲜2013有客胜日本亚前科；数据真空不可测"
+        },
+        "assumption": "日本东道主淘汰赛取胜方向可看，但朝鲜火力+不可测性使比分分布发散，比分腿不出",
+        "checks": [
+          {"kind": "h2h", "seasonComplete": "insight口径", "gaps": "2014-2022无交手；近4场日本3胜1负", "matches": 4},
+          {"kind": "news", "note": "朝鲜小组赛4:1伊朗(olympics.com)"}
+        ],
+        "verdict": "pending"
+      }
+    },
+    {
+      "idx": 6, "code": "周六011", "league": "欧国联(GW1)",
+      "match": "冰岛 vs 爱沙尼亚", "matchDate": "2026-09-27", "kickoff": "00:00",
+      "pick": "排除:pending(比分发散)", "odds": null, "star": null, "grade": "B",
+      "dc": null, "fused": null, "final": null, "dc_used": false,
+      "chain": null, "ev": null, "inPlan": null,
+      "hypothesis": {
+        "matchPlay": {
+          "rotation": "C/D级对决，世界杯后双方小轮换",
+          "tactics": "冰岛主场长传冲吊；爱沙尼亚密集防守",
+          "goalSource": "场均1.1/1.0极低；定位球为主",
+          "script": "低分闷战",
+          "specialVars": "H2H两场1:1"
+        },
+        "assumption": "冰岛低分取胜或闷平，1:0/1:1/2:0三选发散，单比分不集中",
+        "checks": [{"kind": "h2h", "seasonComplete": "insight口径", "gaps": "2016-2022无交手；两场全1:1", "matches": 2}],
+        "verdict": "pending"
+      }
+    },
+    {
+      "idx": 7, "code": "周六015", "league": "欧国联(GW1)",
+      "match": "北马其顿 vs 瑞士", "matchDate": "2026-09-27", "kickoff": "02:45",
+      "pick": "排除:pending(比分发散)", "odds": null, "star": null, "grade": "B",
+      "dc": null, "fused": null, "final": null, "dc_used": false,
+      "chain": null, "ev": null, "inPlan": null,
+      "hypothesis": {
+        "matchPlay": {
+          "rotation": "瑞士客战，名单未核实",
+          "tactics": "瑞士控场；北马其顿0.8球/场进攻瘫痪",
+          "goalSource": "瑞士客均1.8球(69%占比)；主队进攻乏力",
+          "script": "瑞士零封小胜",
+          "specialVars": "H2H 0场无数据；瑞士客战稳定性历史存疑"
+        },
+        "assumption": "瑞士客场零封小胜方向可看，但0:1/0:2五五开单比分不集中",
+        "checks": [{"kind": "h2h", "seasonComplete": "insight口径", "gaps": "无交手记录", "matches": 0}],
+        "verdict": "pending"
+      }
+    },
+    {
+      "idx": 8, "code": "周五010", "league": "欧国联(GW1)",
+      "match": "波兰 vs 波黑", "matchDate": "2026-09-26", "kickoff": "02:45",
+      "pick": "排除:pending(情报缺口)", "odds": null, "star": null, "grade": "B",
+      "dc": null, "fused": null, "final": null, "dc_used": false,
+      "chain": null, "ev": null, "inPlan": null,
+      "hypothesis": {
+        "matchPlay": {
+          "rotation": "莱万38岁世界杯后是否继续国家队未核实——火力档位直接取决于此",
+          "tactics": "波兰主场强攻；波黑防反",
+          "goalSource": "波兰场均1.7球；H2H 2020波兰3:0(莱万时代)",
+          "script": "波兰小胜",
+          "specialVars": "欧国联GW1；波兰新老交替进度未知"
+        },
+        "assumption": "波兰主场取胜方向可看，但莱万在否未核实致火力档位不明，比分发散",
+        "checks": [{"kind": "h2h", "seasonComplete": "insight口径", "gaps": "2021-2026无交手", "matches": 2},
+                   {"kind": "gap", "note": "莱万国家队状态情报缺口"}],
+        "verdict": "pending"
+      }
+    }
+  ],
+  "excluded": [
+    "#1 周五001 亚运男足 乌兹别亚vs沙特亚 [排除] 13:00开赛仅46分钟来不及功课+首战比分发散",
+    "#2 周五002 亚运女足 中国女vs越南女 [排除] HAD未开售仅CRS/HAFU/TTG，女足情报缺口",
+    "#3 周五005 亚运女足 韩国女vs乌兹别女 [排除] 同上",
+    "#4 周五006 欧国联 格鲁吉亚vs北爱尔兰 [排除] 胶着(52/27/21)方向不明",
+    "#5 周五007 欧国联 亚美尼亚vs拉脱维亚 [排除] 胶着同上",
+    "#6 周五008 欧国联 意大利vs比利时 [排除] 三向极差<10pp胶着区(45/27/29)",
+    "#7 周五009 欧国联 黑山vs塞浦路斯 [排除] 中游对决无画面",
+    "#8 周五013 荷乙 多德勒支vs阿尔梅勒 [排除] 无锚小联赛+boldplay模板腿pending",
+    "#9 周六001 亚运男足 中国亚vs泰国亚 [排除] 中国小组3战仅进1球(1胜2平)火力存疑+泰国反击型",
+    "#10 周六002-006 日乙5场 [排除] 无锚+日乙胶着区多(002/003/004/006极差<10pp)",
+    "#11 周六008 欧国联 斯洛文尼vs苏格兰 [排除] 胶着(39/30/31)",
+    "#12 周六009/013 荷乙2场 [排除] 无锚小联赛",
+    "#13 周六010 欧国联 法罗群岛vs哈萨克 [排除] 极弱对决0.5/2.9均进球结构紊乱",
+    "#14 周六012 欧国联 保加利亚vs卢森堡 [排除] 胶着(39/31/30)",
+    "#15 周六014 欧国联 捷克vs克罗地亚 [排除] 客胜倾向但捷克主场2.35不可测",
+    "#16 周六016 欧国联 英格兰vs西班牙 [排除] 世纪大战三向全近(32/28/41)最典型胶着",
+    "#17 周日001 韩职 江原FCvs仁川联 [排除] 无锚+胶着(39/32/29)+34天画像过期",
+    "#18 周日003 荷乙 格拉夫vs登博思 [排除] 无锚小联赛"
+  ],
+  "gateRuleCheck": {
+    "rule": "v5.8 gateRule:高抽水池腿须系统同推",
+    "verdict": "本轮boldplay三池卡未同推韩国亚/瑞典CRS(无锚轮模板链不覆盖亚运/欧国联)——适用preference.json candidatePool.cupNoLibrary(09-16拍板,晚于gateRule):无库场次全量放行·纯假设驱动,选腿依据=可证伪假设。两条腿均survived且CRS band(净胜≤2且总进球≤3)合规",
+    "agreement": "agree(假设层路径=09-16重构拍板正门)"
+  },
+  "sources": [
+    "engine/cache/sporttery_matches.json(31场五池赔率,run.py update 12:04)",
+    "engine/cache/sporttery_insight_2041686/87/93/94/95/2112/2116/2120.json(8场单场情报)",
+    "engine/cache/score_odds/2026-09-25.json(dump-odds全玩法存档)",
+    "data/05-trends/2026-09-25-odds.json(刷新快照27项diff)+2026-09-25-intel.json(8条)",
+    "WebSearch: hngnews(齐达内5新人+姆巴佩流感)/365scores+SkyBet(瑞典双枪盘口)/olympics.com+韩联社+mk.co.kr(亚运赛果赛程)",
+    "data/06-tickets/preference.json(candidatePool.cupNoLibrary+CRS band)"
+  ]
+}

@@ -1,49 +1,379 @@
 {
-  "checkedAt": "2026-09-21",
+  "checkedAt": "2026-09-25",
   "leagues": {
-    "英锦标赛": {
+    "亚运男足": {
+      "status": "missing"
+    },
+    "亚运女足": {
+      "status": "missing"
+    },
+    "国际赛": {
+      "status": "missing"
+    },
+    "欧国联": {
+      "status": "missing"
+    },
+    "荷乙": {
+      "status": "missing"
+    },
+    "日乙": {
+      "status": "missing"
+    },
+    "韩职": {
       "status": "missing"
     }
   },
   "missingLeagues": [
-    "英锦标赛"
+    "亚运男足",
+    "亚运女足",
+    "国际赛",
+    "欧国联",
+    "荷乙",
+    "日乙",
+    "韩职"
   ],
   "staleLeagues": [],
   "missingAlias": [
     {
-      "team": "米尔顿",
-      "league": "英锦标赛",
-      "match": "米尔顿 vs 克劳利"
+      "team": "乌兹别亚",
+      "league": "亚运男足",
+      "match": "乌兹别亚 vs 沙特亚"
     },
     {
-      "team": "克劳利",
-      "league": "英锦标赛",
-      "match": "米尔顿 vs 克劳利"
+      "team": "沙特亚",
+      "league": "亚运男足",
+      "match": "乌兹别亚 vs 沙特亚"
     },
     {
-      "team": "诺茨郡",
-      "league": "英锦标赛",
-      "match": "诺茨郡 vs 格里姆"
+      "team": "中国女",
+      "league": "亚运女足",
+      "match": "中国女 vs 越南女"
     },
     {
-      "team": "格里姆",
-      "league": "英锦标赛",
-      "match": "诺茨郡 vs 格里姆"
+      "team": "越南女",
+      "league": "亚运女足",
+      "match": "中国女 vs 越南女"
     },
     {
-      "team": "维冈",
-      "league": "英锦标赛",
-      "match": "维冈 vs 布莱克浦"
+      "team": "澳大利亚",
+      "league": "国际赛",
+      "match": "澳大利亚 vs 巴西"
     },
     {
-      "team": "布莱克浦",
-      "league": "英锦标赛",
-      "match": "维冈 vs 布莱克浦"
+      "team": "巴西",
+      "league": "国际赛",
+      "match": "澳大利亚 vs 巴西"
+    },
+    {
+      "team": "韩国亚",
+      "league": "亚运男足",
+      "match": "韩国亚 vs 越南亚"
+    },
+    {
+      "team": "越南亚",
+      "league": "亚运男足",
+      "match": "韩国亚 vs 越南亚"
+    },
+    {
+      "team": "韩国女",
+      "league": "亚运女足",
+      "match": "韩国女 vs 乌兹别女"
+    },
+    {
+      "team": "乌兹别女",
+      "league": "亚运女足",
+      "match": "韩国女 vs 乌兹别女"
+    },
+    {
+      "team": "格鲁吉亚",
+      "league": "欧国联",
+      "match": "格鲁吉亚 vs 北爱尔兰"
+    },
+    {
+      "team": "北爱尔兰",
+      "league": "欧国联",
+      "match": "格鲁吉亚 vs 北爱尔兰"
+    },
+    {
+      "team": "亚美尼亚",
+      "league": "欧国联",
+      "match": "亚美尼亚 vs 拉脱维亚"
+    },
+    {
+      "team": "拉脱维亚",
+      "league": "欧国联",
+      "match": "亚美尼亚 vs 拉脱维亚"
+    },
+    {
+      "team": "意大利",
+      "league": "欧国联",
+      "match": "意大利 vs 比利时"
+    },
+    {
+      "team": "比利时",
+      "league": "欧国联",
+      "match": "意大利 vs 比利时"
+    },
+    {
+      "team": "黑山",
+      "league": "欧国联",
+      "match": "黑山 vs 塞浦路斯"
+    },
+    {
+      "team": "塞浦路斯",
+      "league": "欧国联",
+      "match": "黑山 vs 塞浦路斯"
+    },
+    {
+      "team": "波兰",
+      "league": "欧国联",
+      "match": "波兰 vs 波黑"
+    },
+    {
+      "team": "波黑",
+      "league": "欧国联",
+      "match": "波兰 vs 波黑"
+    },
+    {
+      "team": "土耳其",
+      "league": "欧国联",
+      "match": "土耳其 vs 法国"
+    },
+    {
+      "team": "法国",
+      "league": "欧国联",
+      "match": "土耳其 vs 法国"
+    },
+    {
+      "team": "瑞典",
+      "league": "欧国联",
+      "match": "瑞典 vs 罗马尼亚"
+    },
+    {
+      "team": "罗马尼亚",
+      "league": "欧国联",
+      "match": "瑞典 vs 罗马尼亚"
+    },
+    {
+      "team": "多德勒支",
+      "league": "荷乙",
+      "match": "多德勒支 vs 阿尔梅勒"
+    },
+    {
+      "team": "中国亚",
+      "league": "亚运男足",
+      "match": "中国亚 vs 泰国亚"
+    },
+    {
+      "team": "泰国亚",
+      "league": "亚运男足",
+      "match": "中国亚 vs 泰国亚"
+    },
+    {
+      "team": "磐城FC",
+      "league": "日乙",
+      "match": "磐城FC vs 仙台七夕"
+    },
+    {
+      "team": "富山胜利",
+      "league": "日乙",
+      "match": "富山胜利 vs 横滨FC"
+    },
+    {
+      "team": "大分三神",
+      "league": "日乙",
+      "match": "大分三神 vs 藤枝MYFC"
+    },
+    {
+      "team": "藤枝MYFC",
+      "league": "日乙",
+      "match": "大分三神 vs 藤枝MYFC"
+    },
+    {
+      "team": "日本亚",
+      "league": "亚运男足",
+      "match": "日本亚 vs 朝鲜亚"
+    },
+    {
+      "team": "朝鲜亚",
+      "league": "亚运男足",
+      "match": "日本亚 vs 朝鲜亚"
+    },
+    {
+      "team": "斯洛文尼",
+      "league": "欧国联",
+      "match": "斯洛文尼 vs 苏格兰"
+    },
+    {
+      "team": "苏格兰",
+      "league": "欧国联",
+      "match": "斯洛文尼 vs 苏格兰"
+    },
+    {
+      "team": "维迪斯",
+      "league": "荷乙",
+      "match": "赫拉克勒 vs 维迪斯"
+    },
+    {
+      "team": "法罗群岛",
+      "league": "欧国联",
+      "match": "法罗群岛 vs 哈萨克"
+    },
+    {
+      "team": "哈萨克",
+      "league": "欧国联",
+      "match": "法罗群岛 vs 哈萨克"
+    },
+    {
+      "team": "冰岛",
+      "league": "欧国联",
+      "match": "冰岛 vs 爱沙尼亚"
+    },
+    {
+      "team": "爱沙尼亚",
+      "league": "欧国联",
+      "match": "冰岛 vs 爱沙尼亚"
+    },
+    {
+      "team": "保加利亚",
+      "league": "欧国联",
+      "match": "保加利亚 vs 卢森堡"
+    },
+    {
+      "team": "卢森堡",
+      "league": "欧国联",
+      "match": "保加利亚 vs 卢森堡"
+    },
+    {
+      "team": "捷克",
+      "league": "欧国联",
+      "match": "捷克 vs 克罗地亚"
+    },
+    {
+      "team": "克罗地亚",
+      "league": "欧国联",
+      "match": "捷克 vs 克罗地亚"
+    },
+    {
+      "team": "北马其顿",
+      "league": "欧国联",
+      "match": "北马其顿 vs 瑞士"
+    },
+    {
+      "team": "瑞士",
+      "league": "欧国联",
+      "match": "北马其顿 vs 瑞士"
+    },
+    {
+      "team": "英格兰",
+      "league": "欧国联",
+      "match": "英格兰 vs 西班牙"
+    },
+    {
+      "team": "西班牙",
+      "league": "欧国联",
+      "match": "英格兰 vs 西班牙"
+    },
+    {
+      "team": "格拉夫",
+      "league": "荷乙",
+      "match": "格拉夫 vs 登博思"
     }
   ],
-  "notReadyTeams": [],
+  "notReadyTeams": [
+    {
+      "team": "阿尔梅勒",
+      "teamId": "almere-city",
+      "league": "netherlands-eerste",
+      "status": "stale",
+      "lastUpdated": "2026-09-10",
+      "ageDays": 15
+    },
+    {
+      "team": "仙台七夕",
+      "teamId": "vegalta-sendai",
+      "league": "japan",
+      "status": "missing"
+    },
+    {
+      "team": "横滨FC",
+      "teamId": "yokohama-fc",
+      "league": "japan",
+      "status": "missing"
+    },
+    {
+      "team": "秋田闪电",
+      "teamId": "akita-blausitz",
+      "league": "japan-j2",
+      "status": "stale",
+      "lastUpdated": "2026-08-22",
+      "ageDays": 34
+    },
+    {
+      "team": "新潟天鹅",
+      "teamId": "albirex-niigata",
+      "league": "japan",
+      "status": "missing"
+    },
+    {
+      "team": "大宫松鼠",
+      "teamId": "omiya-ardija",
+      "league": "japan-j2",
+      "status": "missing"
+    },
+    {
+      "team": "甲府风林",
+      "teamId": "ventforet-kofu",
+      "league": "japan-j2",
+      "status": "stale",
+      "lastUpdated": "2026-08-22",
+      "ageDays": 34
+    },
+    {
+      "team": "赫拉克勒",
+      "teamId": "heracles-almelo",
+      "league": "netherlands-eredivisie",
+      "status": "missing"
+    },
+    {
+      "team": "罗达JC",
+      "teamId": "roda-jc",
+      "league": "netherlands-eerste",
+      "status": "missing"
+    },
+    {
+      "team": "瓦尔韦克",
+      "teamId": "rkc-waalwijk",
+      "league": "netherlands-eredivisie",
+      "status": "missing"
+    },
+    {
+      "team": "江原FC",
+      "teamId": "gangwon",
+      "league": "korea-k-league",
+      "status": "stale",
+      "lastUpdated": "2026-08-22",
+      "ageDays": 34
+    },
+    {
+      "team": "仁川联",
+      "teamId": "incheon-united",
+      "league": "korea-k-league",
+      "status": "stale",
+      "lastUpdated": "2026-08-23",
+      "ageDays": 33
+    },
+    {
+      "team": "登博思",
+      "teamId": "den-bosch",
+      "league": "netherlands",
+      "status": "stale",
+      "lastUpdated": "2026-08-22",
+      "ageDays": 34
+    }
+  ],
   "readyCount": {
     "leagues": 0,
-    "teamsKnown": 521
+    "teamsKnown": 532
   }
 }

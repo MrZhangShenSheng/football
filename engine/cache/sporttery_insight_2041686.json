@@ -1,0 +1,245 @@
+{
+ "fetchedAt": "2026-09-25",
+ "source": "sporttery",
+ "matchId": 2041686,
+ "match": {
+  "code": "周五003",
+  "league": "国际赛",
+  "gameweek": "",
+  "season": "2026",
+  "home": "澳大利亚",
+  "away": "巴西",
+  "kickoff": "2026-09-25 18:00",
+  "uniformMatchId": 2509549
+ },
+ "standing": {
+  "away": {
+   "groupName": "",
+   "phaseName": "",
+   "ranking": "",
+   "sAwayDrawMatchCnt": "",
+   "sAwayLossGoalMatchCnt": "",
+   "sAwayWinGoalMatchCnt": "",
+   "sDrawMatchCnt": "",
+   "sLossGoalMatchCnt": "",
+   "sWinGoalMatchCnt": "",
+   "seasonName": ""
+  },
+  "home": {
+   "groupName": "",
+   "phaseName": "",
+   "ranking": "",
+   "sDrawMatchCnt": "",
+   "sHomeDrawMatchCnt": "",
+   "sHomeLossGoalMatchCnt": "",
+   "sHomeWinGoalMatchCnt": "",
+   "sLossGoalMatchCnt": "",
+   "sWinGoalMatchCnt": "",
+   "seasonName": ""
+  }
+ },
+ "injuries": {
+  "home": [
+   {
+    "name": "C·梅特卡夫",
+    "pos": "中场",
+    "no": "",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 4,
+    "starts": 3
+   }
+  ],
+  "away": []
+ },
+ "form": {
+  "goalAvg": {
+   "awayGoalAvgCnt": "2.3",
+   "awayGoalAvgCntRatio": "69.7",
+   "homeGoalAvgCnt": "1.0",
+   "homeGoalAvgCntRatio": "30.3",
+   "totalLegCnt": 10
+  },
+  "last10": {
+   "awayDrawMatchCnt": 2,
+   "awayLossGoalMatchCnt": 2,
+   "awayScoreRatio": "67",
+   "awayWinGoalMatchCnt": 6,
+   "homeDrawMatchCnt": 3,
+   "homeLossGoalMatchCnt": 4,
+   "homeScoreRatio": "40",
+   "homeWinGoalMatchCnt": 3,
+   "totalLegCnt": 10
+  },
+  "last10HomeAway": {
+   "awayDrawMatchCnt": 3,
+   "awayLossGoalMatchCnt": 4,
+   "awayScoreRatio": "40",
+   "awayWinGoalMatchCnt": 3,
+   "homeDrawMatchCnt": 3,
+   "homeLossGoalMatchCnt": 0,
+   "homeScoreRatio": "80",
+   "homeWinGoalMatchCnt": 7,
+   "totalLegCnt": 10
+  }
+ },
+ "h2h": {
+  "statistics": {
+   "drawMatchCnt": 0,
+   "drawProbability": "0%",
+   "goalCnt": 0,
+   "lossGoalCnt": 0,
+   "lossGoalMatchCnt": 1,
+   "lossProbability": "100%",
+   "netGoal": 0,
+   "sportteryTeamId": 0,
+   "teamId": 0,
+   "teamShortName": "澳大利亚",
+   "totalLegCnt": 1,
+   "winGoalMatchCnt": 0,
+   "winProbability": "0%"
+  },
+  "matches": [
+   {
+    "date": "2017-06-13",
+    "home": "澳大利亚",
+    "score": "0:4",
+    "ht": "0:1",
+    "away": "巴西",
+    "winner": "away"
+   }
+  ]
+ },
+ "scorers": {
+  "away": {
+   "playerList": [
+    {
+     "appearanceCnt": 4,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 2,
+     "goalProbability": "17%",
+     "injuryFlag": 0,
+     "personId": 662831,
+     "personName": "Danilo",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 3,
+     "suspensionFlag": 0,
+     "uniformNo": ""
+    },
+    {
+     "appearanceCnt": 4,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 2,
+     "goalProbability": "17%",
+     "injuryFlag": 0,
+     "personId": 649618,
+     "personName": "蒂亚戈",
+     "playerPositionCode": "Attacker",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 3,
+     "suspensionFlag": 0,
+     "uniformNo": ""
+    },
+    {
+     "appearanceCnt": 3,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.3",
+     "goalCnt": 1,
+     "goalProbability": "8%",
+     "injuryFlag": 0,
+     "personId": 462884,
+     "personName": "布雷默",
+     "playerPositionCode": "Defender",
+     "playerPositionDesc": "后卫",
+     "startedMatchCnt": 2,
+     "substituteMatchCnt": 1,
+     "suspensionFlag": 0,
+     "uniformNo": ""
+    }
+   ],
+   "sportteryTeamId": 417,
+   "teamId": 349,
+   "teamShortName": "巴西",
+   "uniformTeamId": 1737
+  },
+  "home": {
+   "playerList": [
+    {
+     "appearanceCnt": 4,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 2,
+     "goalProbability": "29%",
+     "injuryFlag": 0,
+     "personId": 680791,
+     "personName": "N. Irankunda",
+     "playerPositionCode": "Attacker",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 3,
+     "suspensionFlag": 0,
+     "uniformNo": ""
+    },
+    {
+     "appearanceCnt": 4,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 2,
+     "goalProbability": "29%",
+     "injuryFlag": 0,
+     "personId": 582633,
+     "personName": "J. Bos",
+     "playerPositionCode": "Defender",
+     "playerPositionDesc": "后卫",
+     "startedMatchCnt": 2,
+     "substituteMatchCnt": 2,
+     "suspensionFlag": 0,
+     "uniformNo": ""
+    },
+    {
+     "appearanceCnt": 4,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.3",
+     "goalCnt": 1,
+     "goalProbability": "14%",
+     "injuryFlag": 0,
+     "personId": 643874,
+     "personName": "A. Circati",
+     "playerPositionCode": "Defender",
+     "playerPositionDesc": "后卫",
+     "startedMatchCnt": 4,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": ""
+    }
+   ],
+   "sportteryTeamId": 421,
+   "teamId": 156,
+   "teamShortName": "澳大利亚",
+   "uniformTeamId": 875
+  },
+  "seasonId": 14311,
+  "seasonName": "2026",
+  "tournamentId": 1012,
+  "tournamentShortName": "国际赛",
+  "uniformLeagueId": 104,
+  "uniformMatchId": 2509549
+ }
+}
