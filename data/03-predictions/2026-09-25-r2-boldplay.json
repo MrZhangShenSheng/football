@@ -130,6 +130,19 @@
      "goalLine": -1.0
     },
     {
+     "matchNumStr": "周五004",
+     "match": "韩国亚-越南亚",
+     "play": "had",
+     "pick": "主胜",
+     "odds": 1.02,
+     "modelSupport": "none",
+     "hypothesis": {
+      "assumption": "",
+      "checks": [],
+      "verdict": "pending"
+     }
+    },
+    {
      "matchNumStr": "周五006",
      "match": "格鲁吉亚-北爱尔兰",
      "play": "had",
@@ -206,19 +219,6 @@
       "checks": [],
       "verdict": "pending"
      }
-    },
-    {
-     "matchNumStr": "周五012",
-     "match": "瑞典-罗马尼亚",
-     "play": "had",
-     "pick": "主胜",
-     "odds": 1.31,
-     "modelSupport": "none",
-     "hypothesis": {
-      "assumption": "",
-      "checks": [],
-      "verdict": "pending"
-     }
     }
    ],
    "bets": [
@@ -236,9 +236,9 @@
      "multiplier": 1
     }
    ],
-   "expOdds": 27.9,
-   "winIfHit": 56.0,
-   "note": "8串1×1倍=2元 · 全中≈56元 · 无预算管理(设计§四红线废除)",
+   "expOdds": 21.7,
+   "winIfHit": 43.0,
+   "note": "8串1×1倍=2元 · 全中≈43元 · 无预算管理(设计§四红线废除)",
    "blockedByHypothesis": [
     {
      "pick": "让球客胜",
@@ -265,11 +265,11 @@
      "verdict": "pending"
     },
     {
-     "pick": "客胜",
+     "pick": "主胜",
      "verdict": "pending"
     },
     {
-     "pick": "主胜",
+     "pick": "客胜",
      "verdict": "pending"
     }
    ]
@@ -1644,14 +1644,16 @@
   "[lottery] 8 腿假设未通过（pending/refuted），出票前须逐条验证"
  ],
  "couplingHit": {
-  "atLeastOne": 0.0134,
-  "independent": 0.0134,
-  "overestimatePp": -0.0,
+  "atLeastOne": 0.0169,
+  "independent": 0.0169,
+  "overestimatePp": 0.0,
   "method": "enum-2^12",
   "legs": 12,
   "bets": 2,
   "pSource": "mixed"
  },
  "method": "freq",
- "dataAsOf": "2026-09-25"
+ "dataAsOf": "2026-09-25",
+ "superseded": true,
+ "supersededBy": "r2"
 }
