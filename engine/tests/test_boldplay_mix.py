@@ -127,10 +127,12 @@ def test_no_library_match_admitted_lottery(monkeypatch):
     legs = boldplay._lottery_legs(day, zh=zh, hhad_map={}, dc_params_fn=fake_dc)
     codes = {l["matchNumStr"] for l in legs}
     assert "002" in codes, "彩票档同样须放行无库场次"
-    # 无库场彩票档腿结构：同场一腿(铁律9)、赔率最高项、无概率无分歧值
+    # 无库场彩票档腿结构：同场一腿(铁律9)、**市场热门项**、无概率无分歧值
     no_lib = [l for l in legs if l["matchNumStr"] == "002"]
     assert len(no_lib) == 1, "彩票档 N串1 全中才回款——同场互斥腿=结构性必输，每场只一条"
-    assert no_lib[0]["modelSupport"] == "none" and no_lib[0]["odds"] == 4.0  # a=4.0 三向赔率最高
+    # 2026-09-25 修：原断言 odds==4.0（三向最高赔）锁死的是 bug 本身——最高赔=庄家
+    # 认为最不可能，与彩票档 p≥0.55 热门门槛矛盾。改断言 min 赔率=热门。
+    assert no_lib[0]["modelSupport"] == "none" and no_lib[0]["odds"] == 1.9  # h=1.9 三向最低赔=热门
     assert "divergence" not in no_lib[0] and "ev" not in no_lib[0]
 
 

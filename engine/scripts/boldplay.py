@@ -678,12 +678,21 @@ def _card_view(m: dict, hafu_map: dict) -> dict:
 
 def _odds_only_had_legs(m: dict, mid, had: dict) -> list:
     """无 DC 场次的彩票档腿（spec §1.6）：只有赔率、无概率无 EV 无分歧值。
-    与 A-MIX _odds_only_legs 不同，每场只出赔率最高一条——彩票档 N串1 全中才
-    回款，同场互斥腿=结构性必输（铁律9 同场去重不变量须维持）。开发者 sszhang"""
+    与 A-MIX _odds_only_legs 不同，每场只出**一条**——彩票档 N串1 全中才回款，
+    同场互斥腿=结构性必输（铁律9 同场去重不变量须维持）。
+
+    取 **min(赔率)=市场热门**，不是 max。2026-09-25 修：此处原为 `max(o3)`，与
+    A-MIX 侧 2026-09-16 已修的同一病根（`[:1]` 取最高赔）——同场赔率最高恒等于
+    庄家认为最不可能发生的选项，而彩票档自身门槛是 p_fused≥0.55（热门档）。
+    两者叠加=无 DC 场（国家队/杯赛/日乙全在此路径）系统性选中最劣腿：实测当日
+    26 场无库腿全部选反，韩国亚 1.02 主胜被选成 22.0 客胜、冰岛 1.2 主胜被选成
+    10.0 客胜；8 腿串只需一腿灭即归零,全中概率被压到近乎不可能。
+    热门腿去水概率随后由调用方按 LOTTERY_MIN_P 复核，仍不合格者自然落选。
+    开发者 sszhang"""
     if not all(had.get(k) for k in ("h", "d", "a")):
         return []
     o3 = {k: float(had[k]) for k in ("h", "d", "a")}
-    k = max(o3, key=o3.get)
+    k = min(o3, key=o3.get)
     return [{"matchNumStr": mid, "match": f'{m.get("home")}-{m.get("away")}',
              "play": "had", "pick": {"h": "主胜", "d": "平", "a": "客胜"}[k],
              "odds": o3[k], "modelSupport": "none",

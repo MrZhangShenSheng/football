@@ -582,6 +582,23 @@ def test_lottery_legs_carry_hypothesis():
     assert "checks" in legs[0]["hypothesis"], "须有 checks 容器可回填"
 
 
+def test_odds_only_had_legs_picks_favorite():
+    """无 DC 场次必须选**市场热门**（min 赔率），不是最高赔（2026-09-25 修）。
+
+    原实现取 max(o3)=庄家认为最不可能的选项，与彩票档 p≥0.55 热门门槛直接矛盾：
+    2026-09-25 在售 26 场无库腿全部选反（韩国亚 1.02 主胜被选成 22.0 客胜）。
+    A-MIX 侧同一病根已于 2026-09-16 修（boldplay.py:245 docstring）。"""
+    m = {"matchNumStr": "003", "home": "冰岛", "away": "爱沙尼亚"}
+    legs = bp._odds_only_had_legs(m, "003", {"h": 1.20, "d": 5.10, "a": 10.0})
+    assert len(legs) == 1, "同场只出一条（铁律9 结构性必输防护）"
+    assert legs[0]["pick"] == "主胜" and legs[0]["odds"] == 1.20, \
+        f'须选热门主胜@1.20，实得 {legs[0]["pick"]}@{legs[0]["odds"]}'
+    # 客队为热门时同样成立（防止写死 "h"）
+    m2 = {"matchNumStr": "011", "home": "土耳其", "away": "法国"}
+    legs2 = bp._odds_only_had_legs(m2, "011", {"h": 8.75, "d": 5.50, "a": 1.20})
+    assert legs2[0]["pick"] == "客胜" and legs2[0]["odds"] == 1.20
+
+
 # ---------- Task 7（2026-09-16）：卡面排序与呈现（spec §三）----------
 
 
