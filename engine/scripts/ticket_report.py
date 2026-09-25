@@ -155,6 +155,15 @@ def ticket_rows(tickets: list) -> str:
     rows = []
     for t in tickets:
         st = t.get("settled") or {}
+        if not t.get("legs"):
+            # 胜负彩/任九方案票（issue+structure 口径，无腿结构）：降级一行，本金仍入账本
+            rows.append(
+                f'<tr><td>{t["id"]}</td><td>{t.get("type") or "胜负彩"} {t.get("plan") or ""}</td>'
+                f'<td>{str(t.get("createdAt") or "")[:16]}</td><td>{t["stake"]}</td>'
+                f'<td class="legs"><span class="pend">{t.get("issue", "")}期 · '
+                f'{t.get("structure") or ""} · {t.get("notes", "-")}注</span></td>'
+                f'<td>待结算（非腿制）</td><td>手动</td></tr>')
+            continue
         legs = " / ".join(
             f'<span class="{"hit" if l.get("result") == "hit" else ("miss" if l.get("result") == "miss" else "pend")}">'
             f'{"<s>" if l.get("revoked") else ""}{l["code"]} {l["market"]} {l["pick"]}@{l["odds"]}'

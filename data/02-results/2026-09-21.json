@@ -1,145 +1,225 @@
 {
-  "date": "2026-09-21",
-  "version": "v5.11",
-  "mode": "全局模式·英锦标赛小组赛轮（在售3场：周二002-004，09-23凌晨开赛=体彩销售日周二09-22）",
-  "anchorMode": "单锚（体彩去水×0.97）：英锦标赛 fd 不覆盖无 Pinnacle 锚，铁律10 无锚联赛——保底档关档、腿仅入搏奖/翻身性质",
-  "dcUsed": false,
-  "hypothesisFile": "data/03-predictions/2026-09-21-hypothesis.json",
-  "plans": [
-    {
-      "plan": "A·假设主推串",
-      "type": "HAD 3串1×1倍",
-      "stake": "2元",
-      "legs": [
-        "周二002 HAD 平 @4.25（假设survived：米尔顿守平型烂+克劳利垫底摆平拿点球分+H2H两次全平）",
-        "周二003 HAD 平 @3.45（假设survived：格里姆客场70%平+诺茨郡锋无力场均0.8）",
-        "周二004 HAD 客 @2.72（假设survived：维冈垫底+近4次对布不胜+布莱克浦进13球攻强）"
-      ],
-      "odds": 39.89,
-      "pModel": 0.0159,
-      "ev": -0.367,
-      "note": "两平一客假设组合；同场限一玩法✓；003平与票B的003 CRS 1:1为跨票分池（铁律9合法）"
-    },
-    {
-      "plan": "B·CRS单关×10（偏好档案第二优先）",
-      "type": "CRS 单关×5注×2场=10注",
-      "stake": "20元",
-      "legs": [
-        "周二003 CRS 1:1 @7.25 ×5注（假设主核+系统同推✓引擎翻身候选）",
-        "周二004 CRS 1:1 @8.00 ×5注（假设次核+系统同推✓引擎翻身候选）"
-      ],
-      "odds": null,
-      "pModel": null,
-      "evEach": true,
-      "note": "偏好档案09-15拍板：CRS只走单关禁入串关（影子168票实证串关零变现）；引擎2串1结构按偏好拆单关；002 1:1被gateRule挡（系统未同推002高抽水池）不入"
-    },
-    {
-      "plan": "C·三平尾巴串",
-      "type": "HAD 3串1×1倍",
-      "stake": "2元",
-      "legs": [
-        "周二002 HAD 平 @4.25",
-        "周二003 HAD 平 @3.45",
-        "周二004 HAD 平 @3.50（004假设'客胜为主平局次之'的次核对冲）"
-      ],
-      "odds": 51.31,
-      "pModel": 0.0123,
-      "ev": -0.369,
-      "note": "与票A共享002平+003平两腿（耦合），与票B的1:1腿正相关（1:1命中则平必命中）"
-    }
-  ],
-  "matches": [
-    {
-      "idx": 1,
-      "code": "周二002",
-      "league": "英锦标赛(小组赛)",
-      "match": "米尔顿 vs 克劳利",
-      "pick": "HAD 平",
-      "play": "had 平",
-      "odds": 4.25,
-      "star": 1,
-      "grade": "B",
-      "dcUsed": false,
-      "dc": null,
-      "fused": [0.592, 0.202, 0.176],
-      "fusedPre": [0.610, 0.208, 0.181],
-      "final": 0.202,
-      "chain": "单锚×0.97",
-      "chainSteps": [{"name": "单锚修正", "factor": 0.97}],
-      "lambdaHome": null,
-      "lambdaAway": null,
-      "ev": -0.142,
-      "inPlan": "A,C",
-      "hypothesis": "survived：米尔顿0胜6平1负守平型烂+克劳利英乙垫底+H2H最近两次全平+小组赛平即点球积分制",
-      "blockedLegs": "主胜@1.45作胆 refuted（近10场1胜 vs 市场隐含66%背离）；CRS/HAFU/TTG 被 gateRule 挡（系统未同推该场高抽水玩法）",
-      "leagueContext": "米尔顿=英甲22（0W6D1L 进8失10）·克劳利=英乙24垫底（1W1D5L 进6失13）·两队场均合计1.9球"
-    },
-    {
-      "idx": 2,
-      "code": "周二003",
-      "league": "英锦标赛(小组赛)",
-      "match": "诺茨郡 vs 格里姆",
-      "pick": "HAD 平",
-      "play": "had 平 / crs 1:1（跨票分池）",
-      "odds": 3.45,
-      "star": 1,
-      "grade": "B",
-      "dcUsed": false,
-      "dc": null,
-      "fused": [0.413, 0.249, 0.308],
-      "fusedPre": [0.426, 0.257, 0.317],
-      "final": 0.249,
-      "chain": "单锚×0.97",
-      "chainSteps": [{"name": "单锚修正", "factor": 0.97}],
-      "lambdaHome": null,
-      "lambdaAway": null,
-      "ev": -0.141,
-      "evCrs11": -0.140,
-      "inPlan": "A,B,C",
-      "hypothesis": "survived：格里姆英乙3不败+客场近10场7平（70%）+诺茨郡场均0.8锋无力+同为平局户；反证=诺茨郡主场近10有4胜+H2H历史6胜占优（压平局至主核不满仓）",
-      "poolsCard": {"recBase": "HAFU hh(q26%)引擎推荐（与本场假设反向，未采纳）", "recUpset": "CRS 1:1@7.25（采纳✓假设同向+系统同推）"},
-      "leagueContext": "诺茨郡=英甲20（1W4D2L 进7失9）·格里姆=英乙3（3W4D0L不败 进11失6）·场均合计2.4球"
-    },
-    {
-      "idx": 3,
-      "code": "周二004",
-      "league": "英锦标赛(小组赛)",
-      "match": "维冈 vs 布莱克浦",
-      "pick": "HAD 客",
-      "play": "had 客 / crs 1:1（跨票分池）",
-      "odds": 2.72,
-      "star": 2,
-      "grade": "B",
-      "dcUsed": false,
-      "dc": null,
-      "fused": [0.409, 0.245, 0.316],
-      "fusedPre": [0.422, 0.253, 0.325],
-      "final": 0.316,
-      "chain": "单锚×0.97",
-      "chainSteps": [{"name": "单锚修正", "factor": 0.97}],
-      "lambdaHome": null,
-      "lambdaAway": null,
-      "ev": -0.141,
-      "evCrs11": -0.051,
-      "inPlan": "A,B",
-      "hypothesis": "survived：维冈英甲垫底（4分 进5失12）+对布莱克浦近4次3平1负不胜+布莱克浦进13球攻强（场均1.7）→客胜为主、平局次之；反证=维冈主场近10有4胜+两队主客场均为极端分胜型（主1平/客0平）→平局不重仓",
-      "poolsCard": {"recBase": "TTG s2(q23%)引擎推荐", "recUpset": "CRS 1:1@8.0（采纳✓假设次核+系统同推）"},
-      "leagueContext": "维冈=英甲24垫底（1W1D5L 进5失12）·布莱克浦=英甲15（2W2D3L 进13失13）·场均合计2.6球·维冈小组赛已赛1场1胜（有投入迹象）"
-    }
-  ],
-  "hitAtLeastOne": {
-    "value": 0.235,
-    "method": "耦合口径（票A/C共享002平003平两腿；票B的1:1⊂平与A/C正相关；按002/003/004三场独立场内相关展开）",
-    "note": "全灭主路径=P(003不平)=75.1%×P(004非1:1)=88.1% 占大头；'两平'（P=5.0%）是A/C共同生命线"
+ "date": "2026-09-21",
+ "version": "v5.11",
+ "mode": "全局模式·英锦标赛小组赛轮（在售3场：周二002-004，09-23凌晨开赛=体彩销售日周二09-22）",
+ "anchorMode": "单锚（体彩去水×0.97）：英锦标赛 fd 不覆盖无 Pinnacle 锚，铁律10 无锚联赛——保底档关档、腿仅入搏奖/翻身性质",
+ "dcUsed": false,
+ "hypothesisFile": "data/03-predictions/2026-09-21-hypothesis.json",
+ "plans": [
+  {
+   "plan": "A·假设主推串",
+   "type": "HAD 3串1×1倍",
+   "stake": "2元",
+   "legs": [
+    "周二002 HAD 平 @4.25（假设survived：米尔顿守平型烂+克劳利垫底摆平拿点球分+H2H两次全平）",
+    "周二003 HAD 平 @3.45（假设survived：格里姆客场70%平+诺茨郡锋无力场均0.8）",
+    "周二004 HAD 客 @2.72（假设survived：维冈垫底+近4次对布不胜+布莱克浦进13球攻强）"
+   ],
+   "odds": 39.89,
+   "pModel": 0.0159,
+   "ev": -0.367,
+   "note": "两平一客假设组合；同场限一玩法✓；003平与票B的003 CRS 1:1为跨票分池（铁律9合法）"
   },
-  "totalStake": "24元（A 2 + B 20 + C 2）",
-  "tierStatus": {"保底档": "关档·铁律10无锚联赛禁保底胆", "彩票档": "关档·合格腿1<4（唯一p≥0.55的002主胜已被假设层否决）", "翻身档": "引擎2串1推演@58倍（003×004 CRS 1:1）——按偏好档案拆为票B单关结构，引擎卡approved=false留档", "影子层": "shadow-all 2026-09-23 返回可用场3<4不成轮·registered=0——本轮在售仅3场英锦标赛，4串类形状物理组不成，引擎门槛正确，如实留空不硬凑"},
-  "sources": [
-    "engine/cache/sporttery_matches.json（体彩官方API 2026-09-21，五池赔率）",
-    "engine/cache/sporttery_insight_2041643/2041655/2041644.json（insight近10场/H2H/排名/伤停）",
-    "engine/cache/espn_standings_eng_3/eng_4.json（ESPN英甲英乙实时积分榜 2026-09-21）",
-    "data/00-leagues/efl-trophy.json（本轮新建杯赛画像）",
-    "data/03-predictions/2026-09-21-hypothesis.json（Step -1 假设层档案）",
-    "data/03-predictions/2026-09-21-boldplay.json（boldplay引擎卡 seq25）"
-  ]
+  {
+   "plan": "B·CRS单关×10（偏好档案第二优先）",
+   "type": "CRS 单关×5注×2场=10注",
+   "stake": "20元",
+   "legs": [
+    "周二003 CRS 1:1 @7.25 ×5注（假设主核+系统同推✓引擎翻身候选）",
+    "周二004 CRS 1:1 @8.00 ×5注（假设次核+系统同推✓引擎翻身候选）"
+   ],
+   "odds": null,
+   "pModel": null,
+   "evEach": true,
+   "note": "偏好档案09-15拍板：CRS只走单关禁入串关（影子168票实证串关零变现）；引擎2串1结构按偏好拆单关；002 1:1被gateRule挡（系统未同推002高抽水池）不入"
+  },
+  {
+   "plan": "C·三平尾巴串",
+   "type": "HAD 3串1×1倍",
+   "stake": "2元",
+   "legs": [
+    "周二002 HAD 平 @4.25",
+    "周二003 HAD 平 @3.45",
+    "周二004 HAD 平 @3.50（004假设'客胜为主平局次之'的次核对冲）"
+   ],
+   "odds": 51.31,
+   "pModel": 0.0123,
+   "ev": -0.369,
+   "note": "与票A共享002平+003平两腿（耦合），与票B的1:1腿正相关（1:1命中则平必命中）"
+  }
+ ],
+ "matches": [
+  {
+   "idx": 1,
+   "code": "周二002",
+   "league": "英锦标赛(小组赛)",
+   "match": "米尔顿 vs 克劳利",
+   "pick": "HAD 平",
+   "play": "had 平",
+   "odds": 4.25,
+   "star": 1,
+   "grade": "B",
+   "dcUsed": false,
+   "dc": null,
+   "fused": [
+    0.592,
+    0.202,
+    0.176
+   ],
+   "fusedPre": [
+    0.61,
+    0.208,
+    0.181
+   ],
+   "final": 0.202,
+   "chain": "单锚×0.97",
+   "chainSteps": [
+    {
+     "name": "单锚修正",
+     "factor": 0.97
+    }
+   ],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": -0.142,
+   "inPlan": "A,C",
+   "hypothesis": "survived：米尔顿0胜6平1负守平型烂+克劳利英乙垫底+H2H最近两次全平+小组赛平即点球积分制",
+   "blockedLegs": "主胜@1.45作胆 refuted（近10场1胜 vs 市场隐含66%背离）；CRS/HAFU/TTG 被 gateRule 挡（系统未同推该场高抽水玩法）",
+   "leagueContext": "米尔顿=英甲22（0W6D1L 进8失10）·克劳利=英乙24垫底（1W1D5L 进6失13）·两队场均合计1.9球",
+   "result": "4-1",
+   "half": "2:0",
+   "directionHit": false,
+   "scoreHit": false,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041643,
+    "lastOddsAt": "2026-09-22T22:20:41+08:00",
+    "lastIntelAt": null
+   }
+  },
+  {
+   "idx": 2,
+   "code": "周二003",
+   "league": "英锦标赛(小组赛)",
+   "match": "诺茨郡 vs 格里姆",
+   "pick": "HAD 平",
+   "play": "had 平 / crs 1:1（跨票分池）",
+   "odds": 3.45,
+   "star": 1,
+   "grade": "B",
+   "dcUsed": false,
+   "dc": null,
+   "fused": [
+    0.413,
+    0.249,
+    0.308
+   ],
+   "fusedPre": [
+    0.426,
+    0.257,
+    0.317
+   ],
+   "final": 0.249,
+   "chain": "单锚×0.97",
+   "chainSteps": [
+    {
+     "name": "单锚修正",
+     "factor": 0.97
+    }
+   ],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": -0.141,
+   "evCrs11": -0.14,
+   "inPlan": "A,B,C",
+   "hypothesis": "survived：格里姆英乙3不败+客场近10场7平（70%）+诺茨郡场均0.8锋无力+同为平局户；反证=诺茨郡主场近10有4胜+H2H历史6胜占优（压平局至主核不满仓）",
+   "poolsCard": {
+    "recBase": "HAFU hh(q26%)引擎推荐（与本场假设反向，未采纳）",
+    "recUpset": "CRS 1:1@7.25（采纳✓假设同向+系统同推）"
+   },
+   "leagueContext": "诺茨郡=英甲20（1W4D2L 进7失9）·格里姆=英乙3（3W4D0L不败 进11失6）·场均合计2.4球",
+   "result": "2-1",
+   "half": "1:0",
+   "directionHit": false,
+   "scoreHit": false,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041655,
+    "lastOddsAt": "2026-09-22T22:20:41+08:00",
+    "lastIntelAt": null
+   }
+  },
+  {
+   "idx": 3,
+   "code": "周二004",
+   "league": "英锦标赛(小组赛)",
+   "match": "维冈 vs 布莱克浦",
+   "pick": "HAD 客",
+   "play": "had 客 / crs 1:1（跨票分池）",
+   "odds": 2.72,
+   "star": 2,
+   "grade": "B",
+   "dcUsed": false,
+   "dc": null,
+   "fused": [
+    0.409,
+    0.245,
+    0.316
+   ],
+   "fusedPre": [
+    0.422,
+    0.253,
+    0.325
+   ],
+   "final": 0.316,
+   "chain": "单锚×0.97",
+   "chainSteps": [
+    {
+     "name": "单锚修正",
+     "factor": 0.97
+    }
+   ],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "ev": -0.141,
+   "evCrs11": -0.051,
+   "inPlan": "A,B",
+   "hypothesis": "survived：维冈英甲垫底（4分 进5失12）+对布莱克浦近4次3平1负不胜+布莱克浦进13球攻强（场均1.7）→客胜为主、平局次之；反证=维冈主场近10有4胜+两队主客场均为极端分胜型（主1平/客0平）→平局不重仓",
+   "poolsCard": {
+    "recBase": "TTG s2(q23%)引擎推荐",
+    "recUpset": "CRS 1:1@8.0（采纳✓假设次核+系统同推）"
+   },
+   "leagueContext": "维冈=英甲24垫底（1W1D5L 进5失12）·布莱克浦=英甲15（2W2D3L 进13失13）·场均合计2.6球·维冈小组赛已赛1场1胜（有投入迹象）",
+   "result": "3-2",
+   "half": "1:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041644,
+    "lastOddsAt": "2026-09-22T22:20:41+08:00",
+    "lastIntelAt": null
+   }
+  }
+ ],
+ "hitAtLeastOne": {
+  "value": 0.235,
+  "method": "耦合口径（票A/C共享002平003平两腿；票B的1:1⊂平与A/C正相关；按002/003/004三场独立场内相关展开）",
+  "note": "全灭主路径=P(003不平)=75.1%×P(004非1:1)=88.1% 占大头；'两平'（P=5.0%）是A/C共同生命线"
+ },
+ "totalStake": "24元（A 2 + B 20 + C 2）",
+ "tierStatus": {
+  "保底档": "关档·铁律10无锚联赛禁保底胆",
+  "彩票档": "关档·合格腿1<4（唯一p≥0.55的002主胜已被假设层否决）",
+  "翻身档": "引擎2串1推演@58倍（003×004 CRS 1:1）——按偏好档案拆为票B单关结构，引擎卡approved=false留档",
+  "影子层": "shadow-all 2026-09-23 返回可用场3<4不成轮·registered=0——本轮在售仅3场英锦标赛，4串类形状物理组不成，引擎门槛正确，如实留空不硬凑"
+ },
+ "sources": [
+  "engine/cache/sporttery_matches.json（体彩官方API 2026-09-21，五池赔率）",
+  "engine/cache/sporttery_insight_2041643/2041655/2041644.json（insight近10场/H2H/排名/伤停）",
+  "engine/cache/espn_standings_eng_3/eng_4.json（ESPN英甲英乙实时积分榜 2026-09-21）",
+  "data/00-leagues/efl-trophy.json（本轮新建杯赛画像）",
+  "data/03-predictions/2026-09-21-hypothesis.json（Step -1 假设层档案）",
+  "data/03-predictions/2026-09-21-boldplay.json（boldplay引擎卡 seq25）"
+ ]
 }

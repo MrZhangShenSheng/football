@@ -576,6 +576,8 @@ def settle_tickets(sp_cache: dict[str, dict[str, dict]]) -> dict:
         st = (t.get("settled") or {}).get("status")
         if st not in (None, "pending"):  # 缺 settled/status 视为 pending（T004 手动建档漏字段被静默跳过教训）
             continue
+        if not t.get("legs"):
+            continue  # 胜负彩/任九方案票（issue+structure 口径，无腿结构）不走腿制结算
         res_idx = _results_index(t.get("matchDays") or [])
         all_final = True
         for leg in t["legs"]:

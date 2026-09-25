@@ -1,0 +1,312 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>回填复盘 · 2026-09-25（09-18~09-22 三轮结算）</title>
+<style>
+:root{
+  --bg:#0f1115; --panel:#171a21; --panel2:#1d212a; --line:#2a2f3a;
+  --fg:#e6e9ef; --dim:#8d95a6; --accent:#5aa9e6;
+  --pos:#4cc38a; --neg:#e5484d; --warn:#f5a524;
+}
+*{box-sizing:border-box}
+body{margin:0;padding:32px 24px 64px;background:var(--bg);color:var(--fg);
+  font:15px/1.7 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif}
+.wrap{max-width:1080px;margin:0 auto}
+h1{font-size:25px;margin:0 0 6px;letter-spacing:.5px}
+h2{font-size:18px;margin:38px 0 14px;padding-left:11px;border-left:3px solid var(--accent);display:flex;align-items:center;gap:8px}
+h3{font-size:15px;margin:22px 0 8px;color:var(--accent)}
+.sub{color:var(--dim);font-size:13px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:14px 0}
+.grid{display:grid;gap:14px}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:repeat(2,1fr)}
+@media(max-width:820px){.g4,.g3,.g2{grid-template-columns:1fr 1fr}}
+.kpi{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:14px 16px}
+.kpi .lab{color:var(--dim);font-size:12px;letter-spacing:.5px}
+.kpi .val{font-size:24px;font-weight:600;margin-top:4px;font-variant-numeric:tabular-nums}
+.pos{color:var(--pos)} .neg{color:var(--neg)} .warn{color:var(--warn)} .dim{color:var(--dim)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:8px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--dim);font-weight:500;font-size:12.5px;letter-spacing:.4px;background:var(--panel2)}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+code{background:#000;padding:1px 6px;border-radius:4px;font-size:12.5px;color:#9fd0ff}
+.tag{display:inline-block;padding:1px 8px;border-radius:99px;font-size:11.5px;border:1px solid var(--line);background:var(--panel2);color:var(--dim)}
+.tag.hit{color:var(--pos);border-color:#245c43} .tag.miss{color:var(--neg);border-color:#5c2427}
+.tag.fix{color:var(--warn);border-color:#5c4624}
+svg.chart{width:100%;height:auto;display:block;margin:6px 0 2px;color:var(--dim)}
+.ico{width:18px;height:18px;flex:0 0 18px;color:var(--accent)}
+ul{margin:6px 0 0;padding-left:20px} li{margin:4px 0}
+.lead{background:linear-gradient(180deg,#1b2430,#171a21);border-left:3px solid var(--accent)}
+.foot{color:var(--dim);font-size:12.5px;margin-top:34px;border-top:1px solid var(--line);padding-top:14px}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-ticket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+<path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1a2 2 0 0 0 0 6v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1a2 2 0 0 0 0-6V8z"/><path d="M9 6v12" stroke-dasharray="2 3"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+<path d="M4 20V4"/><path d="M4 20h16"/><path d="M7 16l4-6 3 3 5-7"/></symbol>
+<symbol id="i-bug" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="12" cy="13" r="5"/><path d="M12 8V5M8 10L5.5 7.5M16 10l2.5-2.5M7 14H4M17 14h3M9 18l-2 2.5M15 18l2 2.5"/></symbol>
+<symbol id="i-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+<path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-1 5.8V16a3 3 0 0 0 4 2.8V4z"/><path d="M15 4a3 3 0 0 1 3 3 3 3 0 0 1 1 5.8V16a3 3 0 0 1-4 2.8V4z"/></symbol>
+<symbol id="i-ghost" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+<path d="M5 20V10a7 7 0 0 1 14 0v10l-2.3-1.8-2.3 1.8-2.4-1.8L9.6 20 7.3 18.2 5 20z"/><circle cx="9.5" cy="10.5" r=".9" fill="currentColor"/><circle cx="14.5" cy="10.5" r=".9" fill="currentColor"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+<path d="M5 21V4"/><path d="M5 5h10l-1.5 3L15 11H5z"/></symbol>
+</defs></svg>
+
+<div class="wrap">
+<h1>回填复盘 · 2026-09-25</h1>
+<p class="sub">覆盖 09-18 / 09-19 / 09-21 / 09-22 四个比赛日 · 新结算实票 2 张 · 修复回填主链两处硬崩</p>
+
+<div class="card lead">
+<b>一句话结论</b>：三轮全灭（T036 −24 / T038 −10），账本净额落到 −202.03 元；但本轮真正的收获不在赛果，
+而在于回填主链被 26132 胜负彩票卡死的两处 <code>KeyError: 'legs'</code> 已修，
+以及归因引擎把两张票的失手都归到同一个因子 <b>F9（模型与市场同向但赛果反向）</b>——不是选股逻辑坏了，是这四场本身就是低概率端落点。
+</div>
+
+<h2><svg class="ico"><use href="#i-chart"/></svg>账本总览</h2>
+<div class="grid g4">
+  <div class="kpi"><div class="lab">已结算票数</div><div class="val">38<span class="sub"> / 39</span></div></div>
+  <div class="kpi"><div class="lab">累计投入</div><div class="val">680<span class="sub"> 元</span></div></div>
+  <div class="kpi"><div class="lab">累计回款</div><div class="val">477.97<span class="sub"> 元</span></div></div>
+  <div class="kpi"><div class="lab">累计净额</div><div class="val neg">−202.03</div></div>
+</div>
+<p class="sub" style="margin-top:10px">唯一未结算票=26132 期胜负彩 16 元（14 场跨 09-24~09-26，#6~#14 今晚才开赛，非腿制结构不入腿级结算）。</p>
+
+<h3>资金曲线（近八张结算票）</h3>
+<svg class="chart" viewBox="0 0 720 200" role="img" aria-label="近八张结算票累计净额曲线">
+  <line x1="56" y1="30" x2="700" y2="30" stroke="currentColor" stroke-opacity=".15"/>
+  <line x1="56" y1="170" x2="700" y2="170" stroke="currentColor" stroke-opacity=".3"/>
+  <text x="48" y="34" fill="currentColor" font-size="11" text-anchor="end">−60</text>
+  <text x="48" y="174" fill="currentColor" font-size="11" text-anchor="end">−210</text>
+  <polyline fill="none" stroke="#e5484d" stroke-width="2" stroke-linejoin="round"
+    points="56,41 148,74 240,102 332,111 424,120 516,129 608,138 700,170"/>
+  <g fill="#e5484d">
+    <circle cx="56" cy="41" r="4" stroke="#0f1115" stroke-width="2"/>
+    <circle cx="148" cy="74" r="4" stroke="#0f1115" stroke-width="2"/>
+    <circle cx="240" cy="102" r="4" stroke="#0f1115" stroke-width="2"/>
+    <circle cx="332" cy="111" r="4" stroke="#0f1115" stroke-width="2"/>
+    <circle cx="424" cy="120" r="4" stroke="#0f1115" stroke-width="2"/>
+    <circle cx="516" cy="129" r="4" stroke="#0f1115" stroke-width="2"/>
+    <circle cx="608" cy="138" r="4" stroke="#0f1115" stroke-width="2"/>
+    <circle cx="700" cy="170" r="4.5" stroke="#0f1115" stroke-width="2"/>
+  </g>
+  <g fill="currentColor" font-size="11" text-anchor="middle">
+    <text x="56" y="190">T028</text><text x="148" y="190">T032</text><text x="240" y="190">T033</text>
+    <text x="332" y="190">T035</text><text x="424" y="190">T037</text><text x="516" y="190">T034</text>
+    <text x="608" y="190">T038</text><text x="700" y="190">T036</text>
+  </g>
+  <text x="690" y="162" fill="#e5484d" font-size="12" text-anchor="end" font-weight="600">−202.03</text>
+</svg>
+<p class="sub">近八票连续零回款：−72 → −202.03。八连灭的共同结构=比分/低概率方向为主，无中间回款档。</p>
+
+<h2><svg class="ico"><use href="#i-ticket"/></svg>本轮结算明细</h2>
+<table>
+<thead><tr><th>票号</th><th>形状</th><th class="num">本金</th><th>腿 → 实际</th><th class="num">净额</th></tr></thead>
+<tbody>
+<tr>
+  <td><b>T038</b><br><span class="sub">09-22 轮</span></td>
+  <td>HAD 3串1×1注×5倍<br><span class="sub">合赔 43.31</span></td>
+  <td class="num">10</td>
+  <td>
+    周二002 平@5.05 <span class="tag miss">4:1</span><br>
+    周二003 平@3.35 <span class="tag miss">2:1</span><br>
+    周二004 客胜@2.56 <span class="tag miss">3:2</span>
+  </td>
+  <td class="num neg">−10.00</td>
+</tr>
+<tr>
+  <td><b>T036</b><br><span class="sub">09-18 轮 · 跨日</span></td>
+  <td>CRS 2串1复式×4注×3倍<br><span class="sub">4 注全展开</span></td>
+  <td class="num">24</td>
+  <td>
+    周四004 贝蒂斯 0:0/1:0 <span class="tag hit">1:0 命中</span><br>
+    周五014 纽约城 1:1/2:1 <span class="tag miss">0:1</span>
+  </td>
+  <td class="num neg">−24.00</td>
+</tr>
+</tbody></table>
+
+<div class="card">
+<h3 style="margin-top:0">T038：三腿全错，且错得方向一致</h3>
+<p>三腿都是英锦标赛小组赛，两腿买平、一腿买客胜，实际 4:1 / 2:1 / 3:2 —— 全部主队赢，且两场是大比分主胜。
+买平的两腿 <code>p_final</code> 给平只有 20.2% / 24.9%，系统<b>主胜项才是最高</b>（59.2% / 41.3%）。
+这是<b>明知偏离系统方向的平局轨下注</b>，登记时 <code>agreement</code> 记为 agree 是因为 09-22 轮 T1 方案本身推了这三腿，
+但归因引擎按 <code>fusedBest</code> 判定为 <span class="tag fix">pickDeviation = true</span>。</p>
+<p class="sub">归因：周二002 → F9 主因 + F10 次因（出票价 4.25 → 后续 4.87，价格持续走冷未被当作反向信号）；周二003 → F9 主因。</p>
+</div>
+
+<div class="card">
+<h3 style="margin-top:0">T036：腿①猜中比分，被误买的腿②拖死</h3>
+<p>贝蒂斯 1:0 正中复式选点（<code>p_final</code> 主胜 60.2%，pinClose 有锚），
+但腿②是 09-17 出票时误买成周五014 纽约城（原计划马拉加），选点 1:1/2:1 沿用未重估，实际 0:1 客胜。
+当时登记就写明「本场 DC 前二实为 1:0 15.5% + 2:0 14.4%，此复式未覆盖」——<b>误买换场未连带修正选点</b>的代价在本轮完整实现。</p>
+<p class="sub">归因：周五014 → F9 主因（p_final 主胜 66.1%，实际客胜；市场锚 okooo 同向）。这一腿方向和比分双错，四注全灭。</p>
+</div>
+
+<h2><svg class="ico"><use href="#i-bug"/></svg>本轮修复：回填主链两处硬崩</h2>
+<div class="card">
+<p>回填第一次执行即崩溃，<code>python engine/scripts/backfill.py</code> 抛 <code>KeyError: 'legs'</code>。
+根因是 26132 期胜负彩票以 <code>issue / plan / structure / notes</code> 口径写入 <code>tickets.json</code>，
+与腿制实票不同源，而结算器与报告渲染都硬取 <code>t["legs"]</code>。</p>
+<table>
+<thead><tr><th>位置</th><th>症状</th><th>处置</th></tr></thead>
+<tbody>
+<tr><td><code>backfill.py:581</code><br><span class="sub">settle_tickets</span></td>
+    <td>遍历 pending 票取 <code>t["legs"]</code> 直接抛错 → 整条回填链中断，赛果也写不进去</td>
+    <td>无 legs 的票（胜负彩/任九方案票）跳过腿制结算，不影响其余票</td></tr>
+<tr><td><code>ticket_report.py:162</code><br><span class="sub">ticket_rows</span></td>
+    <td>同样硬取 legs → 报告渲染崩，结算完成但 tickets.html 刷不出来</td>
+    <td>降级渲染一行（期号 + 结构 + 注数 + 本金），<b>本金仍入账本</b>，不让真实出票从账面消失</td></tr>
+</tbody></table>
+<p class="sub">这两处是同一根因的两个出口，只修一处会在报告阶段二次崩溃——实际执行中就是分两次撞上的。</p>
+</div>
+
+<div class="card">
+<h3 style="margin-top:0">附带：T036 登记格式规范化</h3>
+<p>T036 是老式复式登记（<code>pick</code> 为 <code>"0:0 + 1:0(复式2点)"</code> 字符串、<code>odds</code> 为列表、
+<code>bets</code> 无腿索引），现有 <code>leg_hit</code> 判不出结果，返回 None 而永久卡 pending。
+按 T032 多选腿范式无损复原为 <code>pick:["0:0","1:0"]</code> + <code>odds:{"0:0":10.0,"1:0":5.4}</code>，
+<code>bets[].legs</code> 补回 <code>[[0,"0:0"],[1,"1:1"]]</code> 形态。<b>赔率与注结构均照票面原值搬运，未改一个数</b>，
+原始登记文本留在 <code>pickNote</code>。修完当次即结算成功。</p>
+</div>
+
+<h2><svg class="ico"><use href="#i-brain"/></svg>学习链就绪度</h2>
+<div class="grid g4">
+  <div class="kpi"><div class="lab">语料条数</div><div class="val">741<span class="sub"> / 回填 740</span></div></div>
+  <div class="kpi"><div class="lab">CLV 样本</div><div class="val">125</div></div>
+  <div class="kpi"><div class="lab">p_final 样本</div><div class="val">580</div></div>
+  <div class="kpi"><div class="lab">门槛</div><div class="val pos" style="font-size:17px">可校准 ✓ 可消融 ✓</div></div>
+</div>
+
+<h3>校准与消融（均未触发升级）</h3>
+<table>
+<thead><tr><th>环节</th><th>结论</th><th>动作</th></tr></thead>
+<tbody>
+<tr><td>calibrate 融合系数</td>
+    <td>n=361 · 当前 a=0.4 RPS 0.1850 · 最优 a=0.05 RPS 0.1834（改善 +0.88%）</td>
+    <td><span class="tag">护栏拦下</span> 改善 &lt;1% 不升级</td></tr>
+<tr><td>trend 校准图</td>
+    <td class="warn">0%~40% 桶实际命中 56% vs 预测 38%（系统性低估 18pp）</td>
+    <td>低概率端持续低估，与本轮 F9 主导互为印证</td></tr>
+<tr><td>ablate 七系数</td>
+    <td>开季修正 CI95 [−0.0628, 0.0096] 跨 0；其余六项触发样本 &lt;10</td>
+    <td>全部维持，无系数可删</td></tr>
+<tr><td>temperature 池级温度</td>
+    <td>crs T=1.30 启用 · ttg T=1.30 启用 · hafu T=1.30 仍禁用（无历史回溯）</td>
+    <td>照旧</td></tr>
+<tr><td>DC 重拟合（非 fd 联赛）</td>
+    <td>日职 1590 场 holdout 1.0303 劣于 v2 的 0.9448；沙特 0.9518 劣于 v6 的 0.8816；瑞超 1.0595 劣于 v11；巴甲/挪超训练集无新增</td>
+    <td><span class="tag">holdout 门槛全数拒发</span></td></tr>
+</tbody></table>
+
+<h3>归因账本（61 场错题）</h3>
+<svg class="chart" viewBox="0 0 720 150" role="img" aria-label="归因因子分布">
+  <line x1="120" y1="8" x2="120" y2="140" stroke="currentColor" stroke-opacity=".25"/>
+  <g font-size="12" fill="currentColor">
+    <text x="110" y="28" text-anchor="end">F9</text>
+    <text x="110" y="62" text-anchor="end">F1</text>
+    <text x="110" y="96" text-anchor="end">F3</text>
+    <text x="110" y="130" text-anchor="end">F5</text>
+  </g>
+  <rect x="120" y="14" width="520" height="18" rx="4" fill="#e5484d" fill-opacity=".85"/>
+  <rect x="120" y="48" width="61"  height="18" rx="4" fill="#f5a524" fill-opacity=".85"/>
+  <rect x="120" y="82" width="20"  height="18" rx="4" fill="#5aa9e6" fill-opacity=".85"/>
+  <rect x="120" y="116" width="20" height="18" rx="4" fill="#5aa9e6" fill-opacity=".85"/>
+  <g font-size="12" fill="currentColor">
+    <text x="650" y="28">51 场 · avgGap 0.366</text>
+    <text x="191" y="62">6 场 · 0.420</text>
+    <text x="150" y="96">2 场 · 0.478</text>
+    <text x="150" y="130">2 场 · 0.602</text>
+  </g>
+</svg>
+<p class="sub"><b>F9 占 51/61</b>（模型与市场同向、赛果反向），已过消融候选线 nPrimary≥20。
+本轮新增四条错题（09-19 周五013/014、09-21 周二002/003）<b>全部落在 F9</b>，其中周二002 带 F10 次因（赔率漂移未采信）。</p>
+
+<h2><svg class="ico"><use href="#i-ghost"/></svg>影子层</h2>
+<div class="grid g3">
+  <div class="kpi"><div class="lab">账本票数</div><div class="val">288<span class="sub"> 张</span></div></div>
+  <div class="kpi"><div class="lab">全周期净额 / ROI</div><div class="val neg">−3187.76</div>
+    <div class="sub">投 7486 · 回 4298.24 · ROI −42.6%</div></div>
+  <div class="kpi"><div class="lab">本次新登记</div><div class="val">20<span class="sub"> 张 / 09-26 轮</span></div></div>
+</div>
+<p style="margin-top:12px">09-21~09-24 四日 <code>settle-all</code> 返回 <code>settled=0</code>，核账本确认属实：
+既有 268 张全已结算，这四日<b>本就没有登记过影子票</b>（qcache 快照也断在 09-20）。
+<b>缺登记不能事后补</b>——shadow_all 读的是实时在售清单，赛前真实五池价已不可得，补登记会污染赛前判断凭证链。
+这段作为数据断层如实记录，只登记新轮（09-26，8 腿 × 20 spec）。</p>
+
+<h3>spec 全周期净额两端</h3>
+<div class="grid g2">
+<div class="card" style="margin:0">
+<h3 style="margin-top:0" class="pos">正贡献</h3>
+<table><tbody>
+<tr><td>ev-4串11</td><td class="num pos">+124.02</td><td class="sub">n=13 投286</td></tr>
+<tr><td>全2关-4</td><td class="num pos">+10.57</td><td class="sub">n=13 投312</td></tr>
+<tr><td>4串11</td><td class="num pos">+8.44</td><td class="sub">n=13 投286</td></tr>
+<tr><td>4串1</td><td class="num pos">+5.98</td><td class="sub">n=13 投390</td></tr>
+</tbody></table>
+</div>
+<div class="card" style="margin:0">
+<h3 style="margin-top:0" class="neg">负贡献</h3>
+<table><tbody>
+<tr><td>8串1 / ev-8串1</td><td class="num neg">−390.00</td><td class="sub">各 n=13 投390</td></tr>
+<tr><td>g-tail-贪心串1</td><td class="num neg">−360.00</td><td class="sub">n=12 投360</td></tr>
+<tr><td>crs-4串1 / ttg-4串1</td><td class="num neg">−360.00</td><td class="sub">各 n=12 投360</td></tr>
+<tr><td>crs-双选2串1</td><td class="num neg">−288.00</td><td class="sub">n=12 投288</td></tr>
+</tbody></table>
+</div>
+</div>
+<p class="sub">容错族（4串11 / 全2关）是唯一四条正贡献 spec，全或无族（8串1、4串1 单注、贪心串1）成片零回款——
+与 636 轮形状回测「方差容错族碾压」的结论同向。</p>
+
+<h2><svg class="ico"><use href="#i-ticket"/></svg>实票 × 推荐对齐（v5.8 系统同推制）</h2>
+<div class="grid g2">
+  <div class="kpi"><div class="lab">高一致组（agree ≥ 50%）</div>
+    <div class="val pos">+91.71</div><div class="sub">16 张已结算</div></div>
+  <div class="kpi"><div class="lab">低一致组</div>
+    <div class="val neg">−293.74</div><div class="sub">22 张已结算</div></div>
+</div>
+<table>
+<thead><tr><th>agreement</th><th class="num">腿数</th><th class="num">命中</th><th class="num">命中率</th></tr></thead>
+<tbody>
+<tr><td>agree 一致</td><td class="num">46</td><td class="num">23</td><td class="num pos">50.0%</td></tr>
+<tr><td>play_diff 玩法不同</td><td class="num">51</td><td class="num">13</td><td class="num">25.5%</td></tr>
+<tr><td>excluded 排除场照买</td><td class="num">20</td><td class="num">8</td><td class="num">40.0%</td></tr>
+<tr><td>no_rec 无玩法推荐</td><td class="num">15</td><td class="num">3</td><td class="num">20.0%</td></tr>
+<tr><td>pick_diff 选项不同</td><td class="num">9</td><td class="num">3</td><td class="num">33.3%</td></tr>
+</tbody></table>
+<p class="sub">高一致 vs 低一致的净额差扩大到 385 元（上轮记录为 +212.9 vs −75.6）。
+本轮两张票腿全标 agree，仍全灭——一致性是长期期望优势，不保证单轮回款，这一点要和赛果分开看。</p>
+
+<h2><svg class="ico"><use href="#i-flag"/></svg>教训</h2>
+<div class="card">
+<ul>
+<li><b>误买换场必须连带重估选点。</b> T036 腿②沿用马拉加方案的 1:1/2:1 打在纽约城身上，
+当时就查明该场 DC 前二是 1:0/2:0 且本复式未覆盖——票不可改，但这条要在下次误买当刻就触发全腿重估，而非只记进 note 等回填。</li>
+<li><b>平局轨偏离系统方向时，价格走冷是反向信号而非折扣。</b> T038 周二002 出票 4.25 后续走到 4.87，
+按「无新信息定律3 不调换」维持了原选，但归因判定 F10 成立。走冷 + 系统主胜 59.2% 双重提示下，这一腿本该出局。</li>
+<li><b>多口径票共处一个账本，必须在所有消费端做结构分支。</b> 胜负彩票只写进 tickets.json 一处，
+就让结算器与报告两处同时崩——这是新口径入账时的通病，下次新增票型先 grep 所有读 <code>["legs"]</code> 的位置。</li>
+<li><b>影子层断粮如实记录，不补造。</b> 四日无登记的账面空白，比用今天的价格伪造赛前判断要诚实得多。</li>
+<li><b>F9 已过消融候选线（51 场）。</b> 模型与市场同向却反向落地占错题 83.6%，叠加 0%~40% 桶低估 18pp，
+方向是「低概率端的概率给得太低」而非「选股方向错」。这是下一步该动的地方。</li>
+</ul>
+</div>
+
+<h2>数据来源</h2>
+<div class="card">
+<table>
+<thead><tr><th>用途</th><th>文件</th></tr></thead>
+<tbody>
+<tr><td>赛果回填</td><td><code>data/02-results/2026-09-18.json</code> · <code>-09-19</code> · <code>-09-21</code> · <code>-09-22</code></td></tr>
+<tr><td>实票账本</td><td><code>data/06-tickets/tickets.json</code>（T036 / T038 结算 · meta 重算）</td></tr>
+<tr><td>语料就绪度</td><td><code>data/04-summaries/corpus.json</code>（741 条 / 42 轮）</td></tr>
+<tr><td>归因账本</td><td><code>data/04-summaries/attribution.json</code>（61 场 · F9/F1/F3/F5）</td></tr>
+<tr><td>消融与趋势</td><td><code>data/04-summaries/ablate-report.json</code> · <code>trend.html</code></td></tr>
+<tr><td>影子账本</td><td><code>engine/shadow/paper_tickets.json</code>（288 张 · P269~P288 新登记）</td></tr>
+<tr><td>在售清单</td><td><code>engine/cache/sporttery_matches.json</code>（13 场 · 09-25 / 09-26）</td></tr>
+<tr><td>代码改动</td><td><code>engine/scripts/backfill.py</code> · <code>engine/scripts/ticket_report.py</code></td></tr>
+</tbody></table>
+</div>
+
+<p class="foot">生成于 2026-09-25 · pytest 382 passed · 唯一未回填场=09-17 周三014 西甲延期赛（非数据缺口，重赛日待定）</p>
+</div></body></html>
