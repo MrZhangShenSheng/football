@@ -255,6 +255,107 @@ def freq_legs(odds_day: dict, freq_table: dict, form: dict, zh: dict, band: tupl
     return legs
 
 
+# ================= CRS-Fused 出腿（2026-09-26 crs-fusion-redesign spec §3）=================
+# 融合代数全部在 crs_fusion.py（Task 1-5）；本段只做接线：现有模板/平移链 → 平滑 →
+# 市场去水 → 对数意见池 → 5 族输出+闸门。legacy 函数（freq_legs/pools_card）零改动。
+
+TTG_S7_MEAN = 7.4            # TTG s7="7+"并桶条件均值（联赛库 7+ 球实测，spec §2 弱点6：
+                             # 并桶给池中值 7 会系统性低估市场总进球期望）
+CRS_FUSION_MIN_ITEMS = 20    # 市场价最少项数：≥20 项才融合，否则纯模板降级（spec §3）
+
+
+def _ttg_market_expect(ttg_odds: dict) -> float | None:
+    """体彩 TTG 8 档赔率 → power 去水期望总进球 e_mkt（复用 crs_fusion.solve_power_k）。
+    8 档不全/全无效 → None（缺档期望失真，宁缺毋滥）。开发者 sszhang"""
+    from crs_fusion import solve_power_k
+    implied = {}
+    for k, v in (ttg_odds or {}).items():
+        m = re.match(r"^s([0-7])$", str(k))
+        try:
+            w = 1.0 / float(v)
+        except (TypeError, ValueError, ZeroDivisionError):
+            continue
+        if m and w > 0:
+            implied[int(m.group(1))] = w
+    if len(implied) < 8:
+        return None
+    k_exp = solve_power_k(implied)
+    raw = {j: w ** k_exp for j, w in implied.items()}
+    z = sum(raw.values())
+    return sum((j if j < 7 else TTG_S7_MEAN) * (p / z) for j, p in raw.items())
+
+
+def load_fusion_crs_safe() -> dict:
+    """crs_fusion 参数安全加载：import/读文件失败 → 冻结默认值（降级不熔断）。"""
+    try:
+        from crs_fusion import load_fusion_crs
+        return load_fusion_crs()
+    except Exception:
+        return {"r": 0.286, "w": 0.35, "alphaLidstone": 0.5, "familyGateThreshold": 0.28}
+
+
+def _template_counts(freq_table: dict, m: dict, zh: dict, form: dict | None = None,
+                     pool: Counter | None = None) -> tuple:
+    """freq_legs 同款模板链接线（不新写模板逻辑）：map_league → 联赛模板（无则
+    global_pool 全局池）→ league_base_rates → team_strength/lambdas 平移 λ。
+    返回 (频率 Counter, λ|None)——**此处不平移**：λ 需先经市场 TTG 收缩
+    （fused_legs 内 shrink_lambda）再进 shifted_q。开发者 sszhang"""
+    lg = map_league(m.get("league", ""))
+    blob = freq_table.get(lg) if lg else None
+    if pool is None:
+        pool = global_pool(freq_table)
+    blob = blob if (blob and blob.get("__n", 0)) else pool
+    if not blob.get("__n", 0):
+        return Counter(), None
+    lam = lambdas(league_base_rates(blob),
+                  team_strength(form or {}, _norm(zh.get(m.get("home", ""), "")), lg),
+                  team_strength(form or {}, _norm(zh.get(m.get("away", ""), "")), lg))
+    return blob, lam
+
+
+def fused_legs(odds_day: dict, freq_table: dict, form: dict, zh: dict,
+               cfg: dict | None = None) -> list:
+    """CRS-Fused 出腿（spec §3 四步：平滑→去水→融合→族组合）。
+
+    每场一条：{code, match, families[5族排序], gate{pass,maxProb}, p_final_top3,
+    marketFused, shrunk, lambda}。闸门不过 → 该场 CRS 关档（gate.pass=False 照样落
+    条目，铁律 8 空轮≠漏跑）。市场价 <20 项 → marketFused=False 纯模板降级。
+    λ 收缩（spec §2）：有市场 TTG（8 档全）→ e_mkt 收缩 λsum（w=cfg["w"]）后按原
+    比例回分 λh/λa 再进平移链，shrunk=True；无市场 TTG → 原 λ + shrunk=False。
+    开发者 sszhang"""
+    from crs_fusion import (extract_mkt_dist, family_gate, family_scores,
+                            fuse_crs, shrink_lambda, smooth_template)
+    cfg = cfg or load_fusion_crs_safe()
+    pool = global_pool(freq_table)
+    out = []
+    for m in odds_day.get("matches", []):
+        crs = m.get("crs") or {}
+        blob, lam = _template_counts(freq_table, m, zh, form, pool)
+        shrunk = False
+        if lam is not None:
+            e_mkt = _ttg_market_expect(m.get("ttg"))
+            if e_mkt is not None:
+                lam_sum, shrunk = shrink_lambda(lam[0] + lam[1], e_mkt, w=cfg["w"])
+                scale = lam_sum / (lam[0] + lam[1])
+                lam = (lam[0] * scale, lam[1] * scale)
+        q_map = shifted_q(blob, lam)
+        counts = {}
+        for s, v in q_map.items():                     # "h:a" 字符串键 → CRS_POOL 元组键
+            h, a = (int(x) for x in s.split(":"))
+            counts[(h, a)] = v                         # shifted_q Σ=1 → 平滑尺度自洽
+        q = smooth_template(counts, alpha=cfg["alphaLidstone"])
+        p_mkt = extract_mkt_dist(crs) if len(crs) >= CRS_FUSION_MIN_ITEMS else {}
+        pf = fuse_crs(q, p_mkt, r=cfg["r"]) if p_mkt else q
+        ok, mx = family_gate(pf, cfg["familyGateThreshold"])
+        out.append({"code": m.get("matchNumStr"), "match": f'{m.get("home")} vs {m.get("away")}',
+                    "families": family_scores(pf), "gate": {"pass": ok, "maxProb": round(mx, 4)},
+                    "p_final_top3": sorted(pf.items(), key=lambda kv: -kv[1])[:3],
+                    "marketFused": bool(p_mkt), "shrunk": shrunk,
+                    "lambda": ([round(lam[0], 3), round(lam[1], 3)]
+                               if lam is not None else None)})
+    return out
+
+
 def ttg_agg(q_map: dict) -> dict:
     """比分分布 → 体彩总进球8档 {s0..s7}（s7=7+并桶；'胜其他'等长尾并入s7保守）。
     纯分桶不改形状（spec §4.2）。开发者 sszhang"""
@@ -535,10 +636,79 @@ def _selftest_pools():
     print("[selftest] pools_card OK")
 
 
+def _zh_alias_map() -> dict:
+    """_aliases.json → {中文队名: tid}（与 boldplay._zh_map 同源口径；freq_band 侧
+    CLI 自持一份——boldplay 已 import freq_band，反向 import 会循环）。开发者 sszhang"""
+    from common import load_aliases
+    out = {}
+    for tid, srcs in load_aliases().items():
+        if not isinstance(srcs, dict):
+            continue
+        for v in srcs.get("variants") or []:
+            out[v] = tid
+        if srcs.get("zh"):
+            out[srcs["zh"]] = tid       # 主名后写，冲突时优先
+    return out
+
+
+def _fmt_score(s) -> str:
+    """p_final_top3 元组键 → "h:a" 可读串（终端打印用）。"""
+    return f"{s[0]}:{s[1]}" if isinstance(s, tuple) else str(s)
+
+
+def _run_cli(args) -> None:
+    """CLI 冒烟主流程：score_odds 存档 → fused/legacy 出腿 → 终端打印
+    （肉眼检查闸门/族排序/λ收缩）。开发者 sszhang"""
+    from score_ev import build_freq_table
+    archives = sorted(glob.glob(str(ROOT / "engine/cache/score_odds/*.json")))
+    path = (ROOT / f"engine/cache/score_odds/{args.day}.json"
+            if args.day else Path(archives[-1]))
+    if not path.exists():
+        print(f"[freq_band] 存档不存在: {path}")
+        return
+    odds = json.loads(Path(path).read_text(encoding="utf-8"))
+    print(f"[freq_band] method={args.method} 存档={path.name}")
+    freq_table = build_freq_table()
+    form = build_team_form()
+    zh = _zh_alias_map()
+    days = odds.get("matchDays", [])
+    if args.method == "legacy":
+        for day in days:
+            print(f'== {day.get("businessDate")} ==')
+            for l in freq_legs(day, freq_table, form, zh, BAND_DEFAULT):
+                print(f'  [{l["matchNumStr"]}] {l["match"]}  {l["score"]} @{l["odds"]}'
+                      f' q={l["q"]} {"平移" if l["shifted"] else "纯模板"}')
+        return
+    n_total = n_pass = n_fused = n_shrunk = 0
+    for day in days:
+        print(f'== {day.get("businessDate")} ==')
+        for r in fused_legs(day, freq_table, form, zh):
+            n_total += 1
+            n_pass += 1 if r["gate"]["pass"] else 0
+            n_fused += 1 if r["marketFused"] else 0
+            n_shrunk += 1 if r["shrunk"] else 0
+            top = r["families"][0] if r["families"] else None
+            top3 = ", ".join(f"{_fmt_score(s)}:{p:.3f}" for s, p in r["p_final_top3"])
+            print(f'  [{r["code"]}] {r["match"]} | top={top["family"]}({top["prob"]:.3f})'
+                  f' gate={"过" if r["gate"]["pass"] else "关档"}({r["gate"]["maxProb"]})'
+                  f' fused={r["marketFused"]} shrunk={r["shrunk"]} λ={r["lambda"]} | {top3}')
+    print(f"[freq_band] {n_total} 场：闸门过 {n_pass} · 市场融合 {n_fused} · λ收缩 {n_shrunk}")
+
+
 if __name__ == "__main__":
-    import sys
-    if "--selftest" in sys.argv:
+    import argparse
+    ap = argparse.ArgumentParser(
+        description="freq-band 比分选法（fused=CRS 融合引擎·新默认；legacy=纯频率平移·回滚口径）")
+    ap.add_argument("--method", choices=("fused", "legacy"), default="fused",
+                    help="出腿方法：fused=CRS 融合引擎（平滑→去水→对数池→5族+闸门）| legacy=纯频率平移（零改动回滚口径）")
+    ap.add_argument("--day", default=None,
+                    help="score_odds 存档日期 YYYY-MM-DD（默认最新一份）")
+    ap.add_argument("--selftest", action="store_true", help="跑内置 selftest 后退出")
+    args = ap.parse_args()
+    if args.selftest:
         _selftest_ttg()
         _selftest_hafu()
         _selftest_pools()
         _selftest_lambdas()
+    else:
+        _run_cli(args)

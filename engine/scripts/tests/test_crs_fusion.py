@@ -163,3 +163,104 @@ def test_smooth_ignores_non_score_keys():
     a = smooth_template({(1, 0): 50, (1, 1): 40})
     b = smooth_template({(1, 0): 50, (1, 1): 40, "__n": 999})
     assert a == b
+
+
+# ================= Task 6: freq_band fused_legs 接入集成 =================
+# spec: docs/2026-09-26-crs-fusion-redesign（.superpowers/sdd/2026-09-26-crs-fusion-redesign）
+
+def test_full_pipeline_toy_match():
+    # 玩具场：市场定价 1:1 集中 → 平局族应居首且过闸门
+    crs_odds = {"1:1": 4.0, "0:0": 8.0, "1:0": 7.0, "0:1": 9.0, "2:1": 9.0, "2:2": 16.0,
+                "2:0": 15.0, "0:2": 18.0, "3:0": 30.0, "0:3": 40.0, "3:1": 20.0, "1:3": 30.0, "3:2": 40.0, "2:3": 40.0,
+                "1:2": 12.0, "1:4": 90.0, "0:4": 80.0, "4:0": 60.0, "4:1": 80.0, "5:0": 150.0, "0:5": 200.0}
+    counts = {(1, 1): 40, (1, 0): 30, (2, 1): 25, (0, 1): 20, (0, 0): 15, (2, 0): 12, (1, 2): 10}
+    q = smooth_template(counts)
+    p = extract_mkt_dist(crs_odds)
+    f = fuse_crs(q, p, r=load_fusion_crs()["r"])
+    ok, mx = family_gate(f)
+    fams = family_scores(f)
+    assert ok and fams[0]["family"] == "draw"    # 市场模板同向 → 平局族居首
+
+from collections import Counter
+from band_calibration import CURRENT_SEASON
+from freq_band import fused_legs, _ttg_market_expect
+
+CFG_TOY = {"r": 0.286, "w": 0.35, "alphaLidstone": 0.5, "familyGateThreshold": 0.28}
+
+def _toy_stack():
+    """玩具三件套：英超模板 + 双方当季近况（team_strength 生效 → λ 平移可用）。"""
+    freq = {"england-premier": Counter({"1:1": 30, "1:0": 25, "2:1": 20, "0:1": 15,
+                                        "0:0": 10, "2:0": 8, "1:2": 7, "__n": 115})}
+    row = lambda gf, ga: (gf, ga, CURRENT_SEASON, "england-premier")
+    form = {"teama": [row(1, 1)] * 10,                       # 主队 (进1.0, 失1.0)
+            "teamb": [row(1, 0)] * 5 + [row(1, 1)] * 5}      # 客队 (进1.0, 失0.5)
+    zh = {"主队甲": "team-a", "客队乙": "team-b"}
+    return freq, form, zh
+
+def test_ttg_market_expect_uniform_eight():
+    # 等赔 8 档 → 去水均匀 p=1/8 → e_mkt=(0+..+6)/8 + 7.4/8 = 3.55（s7 用 7.4 代入·spec §2 弱点6）
+    ttg = {f"s{k}": 8.0 for k in range(8)}
+    assert abs(_ttg_market_expect(ttg) - 3.55) < 1e-9
+    assert _ttg_market_expect({"s0": 8.0}) is None           # 档不全 → None（宁缺毋滥）
+    assert _ttg_market_expect({}) is None
+    assert _ttg_market_expect(None) is None
+
+def test_ttg_market_expect_hot_low_scores():
+    # 低总进球热门（s0-s2 赔率低）→ e_mkt 低于均匀 3.55；高进球热门反向
+    low = {"s0": 2.0, "s1": 2.2, "s2": 2.5, "s3": 4.5, "s4": 7.0, "s5": 12.0, "s6": 20.0, "s7": 40.0}
+    high = {"s0": 40.0, "s1": 20.0, "s2": 12.0, "s3": 7.0, "s4": 4.5, "s5": 2.5, "s6": 2.2, "s7": 2.0}
+    assert _ttg_market_expect(low) < 3.55 < _ttg_market_expect(high)
+
+def test_fused_legs_lambda_shrink_wiring():
+    # λ 收缩接线：有 8 档市场 TTG → λsum 向 e_mkt 收缩(w=0.35)且 λh/λa 比例保持；
+    # 无 TTG → 原 λ + shrunk=False。e_mkt 手算锚=等赔 8 档 3.55
+    freq, form, zh = _toy_stack()
+    m = {"matchNumStr": "周六001", "league": "英超", "home": "主队甲", "away": "客队乙"}
+    ttg = {f"s{k}": 8.0 for k in range(8)}
+    day_with = {"matches": [dict(m, crs={}, ttg=ttg)]}
+    day_wo = {"matches": [dict(m, crs={}, ttg={})]}
+    r_wo = fused_legs(day_wo, freq, form, zh, CFG_TOY)[0]
+    r_with = fused_legs(day_with, freq, form, zh, CFG_TOY)[0]
+    assert r_wo["shrunk"] is False and r_wo["lambda"] is not None   # 无 TTG 用原 λ
+    assert r_with["shrunk"] is True
+    s0, s1 = sum(r_wo["lambda"]), sum(r_with["lambda"])
+    assert abs(s1 - (0.35 * s0 + 0.65 * 3.55)) < 0.02              # James-Stein 收缩公式
+    lw, ls = r_wo["lambda"], r_with["lambda"]
+    assert abs(lw[0] / lw[1] - ls[0] / ls[1]) < 0.005              # 同 scale 回分（比例保持）
+
+def test_fused_legs_end_to_end_schema_and_fusion():
+    # 端到端：22 项市场价 ≥20 → marketFused=True；schema 齐全；族概率降序
+    crs_odds = {"1:1": 4.0, "0:0": 8.0, "1:0": 7.0, "0:1": 9.0, "2:1": 9.0, "2:2": 16.0,
+                "2:0": 15.0, "0:2": 18.0, "3:0": 30.0, "0:3": 40.0, "3:1": 20.0, "1:3": 30.0,
+                "3:2": 40.0, "2:3": 40.0, "1:2": 12.0, "1:4": 90.0, "0:4": 80.0,
+                "4:0": 60.0, "4:1": 80.0, "5:0": 150.0, "0:5": 200.0}
+    freq, form, zh = _toy_stack()
+    day = {"matches": [{"matchNumStr": "周六001", "league": "英超", "home": "主队甲",
+                        "away": "客队乙", "crs": crs_odds, "ttg": {}}]}
+    rows = fused_legs(day, freq, form, zh, CFG_TOY)
+    r = rows[0]
+    assert set(r) >= {"code", "match", "families", "gate", "p_final_top3",
+                      "marketFused", "shrunk", "lambda"}
+    assert r["marketFused"] is True
+    probs = [f["prob"] for f in r["families"]]
+    assert probs == sorted(probs, reverse=True) and len(r["families"]) == 5
+    assert r["families"][0]["family"] == "draw"               # 市场模板同向（玩具同款市场）
+
+def test_fused_legs_degrades_to_template_without_market():
+    # 市场价 <20 项 → 纯模板降级 marketFused=False，仍出条目（铁律 8 空轮≠漏跑）
+    freq, form, zh = _toy_stack()
+    day = {"matches": [{"matchNumStr": "周六001", "league": "英超", "home": "主队甲",
+                        "away": "客队乙", "crs": {"1:1": 6.0, "1:0": 7.0}, "ttg": {}}]}
+    rows = fused_legs(day, freq, form, zh, CFG_TOY)
+    assert len(rows) == 1 and rows[0]["marketFused"] is False
+    assert rows[0]["families"]                                # 纯模板族排序仍在
+
+def test_fused_legs_no_template_falls_to_global_pool():
+    # 联赛无模板（欧冠类）→ global_pool 全局池；池也空 → 均匀先验仍出条目不崩
+    freq, form, zh = _toy_stack()
+    day = {"matches": [{"matchNumStr": "周六002", "league": "欧冠", "home": "X",
+                        "away": "Y", "crs": {}, "ttg": {}}]}
+    rows = fused_legs(day, freq, form, zh, CFG_TOY)
+    assert len(rows) == 1 and rows[0]["lambda"] is None       # X/Y 无近况 → 纯模板
+    rows_empty = fused_legs(day, {}, {}, {}, CFG_TOY)         # 全空 freq_table
+    assert len(rows_empty) == 1 and rows_empty[0]["gate"]["maxProb"] > 0
