@@ -270,6 +270,19 @@ PRED_DIR = ROOT / "data" / "03-predictions"
 QCACHE_DIR = ROOT / "engine" / "shadow" / "qcache"
 
 
+def _bp_cards(round_date: str, bp_cache: dict, pred_dir: Path | None = None) -> dict:
+    """{date}-boldplay.json 主卡按 code 索引（-rN 过程快照不读——铁律7 主文件=真相）。
+    task-10 起 payload=整卡（crsGate 族上下文与 crsDist 尾部摘要共享一份缓存）。"""
+    if round_date not in bp_cache:
+        try:
+            cards = json.loads(((pred_dir or PRED_DIR) / f"{round_date}-boldplay.json")
+                               .read_text(encoding="utf-8")).get("cards") or []
+        except (OSError, json.JSONDecodeError):
+            cards = []
+        bp_cache[round_date] = {c.get("code"): c for c in cards}
+    return bp_cache[round_date]
+
+
 def resolve_family_ctx(rec: dict, round_date: str, bp_cache: dict,
                        pred_dir: Path | None = None) -> tuple[str | None, float | None]:
     """CRS 腿当轮 top1 族上下文：优先 rec.crsFamilies（预测链落盘 family_scores 输出），
@@ -279,22 +292,22 @@ def resolve_family_ctx(rec: dict, round_date: str, bp_cache: dict,
     if isinstance(fams, list) and fams:
         top = max(fams, key=lambda f: float(f.get("prob") or 0))
         return top.get("family"), top.get("prob")
-    pred = pred_dir or PRED_DIR
-    if round_date not in bp_cache:
-        try:
-            cards = json.loads((pred / f"{round_date}-boldplay.json").read_text(encoding="utf-8")).get("cards") or []
-        except (OSError, json.JSONDecodeError):
-            cards = []
-        bp_cache[round_date] = {c.get("code"): c.get("crsGate") or {} for c in cards}
-    gate = bp_cache[round_date].get(rec.get("code")) or {}
+    card = _bp_cards(round_date, bp_cache, pred_dir).get(rec.get("code")) or {}
+    gate = card.get("crsGate") or {}
     return gate.get("topFamily"), gate.get("maxProb")
 
 
 def resolve_tail_prob(rec: dict, round_date: str, qc_cache: dict,
-                      qcache_dir: Path | None = None) -> tuple[float | None, str | None]:
-    """CRS 分布尾部 P(4+)（trend 尾部专项输入）：优先 rec.crsDist（真融合口径 "h:a"→p）；
-    否则 qcache 快照 ttg s4~s7 并桶（模板λ链口径——融合尾部未落盘的降级源，来源字段
-    标注防口径混淆，trend 侧分口径统计不并池）。无源 → (None, None)。"""
+                      qcache_dir: Path | None = None, bp_cache: dict | None = None,
+                      pred_dir: Path | None = None) -> tuple[float | None, str | None]:
+    """CRS 分布尾部 P(4+)（trend 尾部专项输入）。三级优先：
+    ① rec.crsDist（"h:a"→p 全分布，P(4+)=Σh+a≥4，fused 口径）；
+    ② task-10 boldplay 主卡 crsDist.tailP4（融合族摘要）——仅 marketFused=True
+      才计 fused 口径：纯模板卡不冒充融合分布（T9 防误判红线，模板口径失准
+      不得触发融合链回滚）；
+    ③ qcache 快照 ttg s4~s7 并桶（模板λ链口径降级源）。
+    来源字段标注防口径混淆，trend 侧分口径统计不并池。bp_cache=None=跳过主卡跳
+    （测试隔离）；无源 → (None, None)。"""
     dist = rec.get("crsDist")
     if isinstance(dist, dict) and dist:
         try:
@@ -302,7 +315,13 @@ def resolve_tail_prob(rec: dict, round_date: str, qc_cache: dict,
                        if sum(int(x) for x in str(s).split(":")) >= 4)
             return round(tail, 4), "fused"
         except (ValueError, TypeError):
-            pass  # 坏键 → 降级 qcache
+            pass  # 坏键 → 降级主卡/qcache
+    if bp_cache is not None:
+        card = _bp_cards(round_date, bp_cache, pred_dir).get(rec.get("code")) or {}
+        cd = card.get("crsDist")
+        if (isinstance(cd, dict) and cd.get("marketFused")
+                and isinstance(cd.get("tailP4"), (int, float))):
+            return round(float(cd["tailP4"]), 4), "fused"
     base = datetime.strptime(round_date, "%Y-%m-%d").date()
     qdir = qcache_dir or QCACHE_DIR
     for delta in (0, 1, -1, 2):   # 销售日窗口：编号一周内唯一，任意桶命中即同场
@@ -336,7 +355,8 @@ def apply_family_ctx(rec: dict, score: tuple[int, int], round_date: str, bp_cach
     fam, prob = resolve_family_ctx(rec, round_date, bp_cache, pred_dir)
     rec["familyName"], rec["familyProb"] = fam, prob
     rec["familyHit"] = score in FAMILIES[fam] if fam in FAMILIES else None
-    tp, src = resolve_tail_prob(rec, round_date, qc_cache, qcache_dir)
+    tp, src = resolve_tail_prob(rec, round_date, qc_cache, qcache_dir,
+                                bp_cache=bp_cache, pred_dir=pred_dir)
     if tp is not None:
         rec["crsTailProb"], rec["crsTailSource"] = tp, src
     return True

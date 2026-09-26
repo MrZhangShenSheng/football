@@ -334,10 +334,12 @@ def fused_legs(odds_day: dict, freq_table: dict, form: dict, zh: dict,
     """CRS-Fused 出腿（spec §3 四步：平滑→去水→融合→族组合）。
 
     每场一条：{code, match, families[5族排序], gate{pass,maxProb}, p_final_top3,
-    marketFused, shrunk, lambda}。闸门不过 → 该场 CRS 关档（gate.pass=False 照样落
-    条目，铁律 8 空轮≠漏跑）。市场价 <20 项 → marketFused=False 纯模板降级。
-    λ 收缩（spec §2）：有市场 TTG（8 档全）→ e_mkt 收缩 λsum（w=cfg["w"]）后按原
-    比例回分 λh/λa 再进平移链，shrunk=True；无市场 TTG → 原 λ + shrunk=False。
+    tailP4, marketFused, shrunk, lambda}。闸门不过 → 该场 CRS 关档（gate.pass=False
+    照样落条目，铁律 8 空轮≠漏跑）。市场价 <20 项 → marketFused=False 纯模板降级。
+    tailP4=P(4+)（ΣP_final(h+a≥4)，task-10：boldplay 落 crsDist 摘要 → trend ⑨
+    fused 口径尾部监控的分布本体来源）。λ 收缩（spec §2）：有市场 TTG（8 档全）→
+    e_mkt 收缩 λsum（w=cfg["w"]）后按原比例回分 λh/λa 再进平移链，shrunk=True；
+    无市场 TTG → 原 λ + shrunk=False。
     开发者 sszhang"""
     from crs_fusion import (extract_mkt_dist, family_gate, family_scores,
                             fuse_crs, shrink_lambda)
@@ -359,9 +361,11 @@ def fused_legs(odds_day: dict, freq_table: dict, form: dict, zh: dict,
         p_mkt = extract_mkt_dist(crs) if len(crs) >= CRS_FUSION_MIN_ITEMS else {}
         pf = fuse_crs(q, p_mkt, r=cfg["r"]) if p_mkt else q
         ok, mx = family_gate(pf, cfg["familyGateThreshold"])
+        tail_p4 = sum(p for (h, a), p in pf.items() if h + a >= 4)
         out.append({"code": m.get("matchNumStr"), "match": f'{m.get("home")} vs {m.get("away")}',
                     "families": family_scores(pf), "gate": {"pass": ok, "maxProb": round(mx, 4)},
                     "p_final_top3": sorted(pf.items(), key=lambda kv: -kv[1])[:3],
+                    "tailP4": round(tail_p4, 4),
                     "marketFused": bool(p_mkt), "shrunk": shrunk,
                     "lambda": ([round(lam[0], 3), round(lam[1], 3)]
                                if lam is not None else None)})

@@ -140,9 +140,30 @@ class TestFamilyContextResolution(unittest.TestCase):
                              pred_dir=empty, qcache_dir=empty)
         self.assertIsNone(rec["familyHit"])     # 族名不在 FAMILIES → 无法判 → null
 
+    def test_apply_full_card_chain(self):
+        # T10 全链：族上下文取 crsGate + 尾部概率取同卡 crsDist（一份缓存两用）
+        import tempfile
+        from pathlib import Path
+        from backfill import apply_family_ctx
+        with tempfile.TemporaryDirectory() as td:
+            pred = Path(td)
+            (pred / "2026-09-26-boldplay.json").write_text(json.dumps(
+                {"cards": [{"code": "周日001",
+                            "crsGate": {"pass": True, "maxProb": 0.42, "topFamily": "draw"},
+                            "crsDist": {"draw": 0.42, "tailP4": 0.23, "sum": 0.86,
+                                        "marketFused": True}}]}), encoding="utf-8")
+            rec = {"code": "周日001", "pick": "CRS 1:1"}
+            apply_family_ctx(rec, (1, 1), "2026-09-26", {}, {},
+                             pred_dir=pred, qcache_dir=Path(td))
+        self.assertEqual(rec["familyName"], "draw")
+        self.assertIs(rec["familyHit"], True)
+        self.assertEqual((rec["crsTailProb"], rec["crsTailSource"]), (0.23, "fused"))
+
 
 class TestTailProbResolution(unittest.TestCase):
-    """resolve_tail_prob：fused（rec.crsDist）优先 → qcache ttg 并桶降级 → 无源 null。"""
+    """resolve_tail_prob：fused（rec.crsDist）优先 → T10 boldplay 主卡 crsDist.tailP4
+    （仅 marketFused=True 计 fused 口径——纯模板卡不冒充融合分布）→ qcache ttg 并桶降级
+    → 无源 null。"""
 
     def test_fused_crs_dist(self):
         from backfill import resolve_tail_prob
@@ -150,6 +171,59 @@ class TestTailProbResolution(unittest.TestCase):
         tp, src = resolve_tail_prob(rec, "2026-09-26", {})
         self.assertEqual(src, "fused")          # 3:1(4球)+2:3(5球)=0.15
         self.assertAlmostEqual(tp, 0.15)
+
+    def test_card_crs_dist_hop_fused(self):
+        # T10 主卡跳：boldplay crsDist.tailP4 + marketFused=True → fused 口径
+        import tempfile
+        from pathlib import Path
+        from backfill import resolve_tail_prob
+        with tempfile.TemporaryDirectory() as td:
+            pred = Path(td)
+            (pred / "2026-09-26-boldplay.json").write_text(json.dumps(
+                {"cards": [{"code": "周日001",
+                            "crsGate": {"pass": True, "maxProb": 0.31, "topFamily": "draw"},
+                            "crsDist": {"draw": 0.31, "home_clean": 0.22, "away_clean": 0.14,
+                                        "home_multi": 0.10, "away_multi": 0.07,
+                                        "tailP4": 0.26, "sum": 0.84,
+                                        "marketFused": True}}]}), encoding="utf-8")
+            tp, src = resolve_tail_prob({"code": "周日001"}, "2026-09-26", {},
+                                        bp_cache={}, pred_dir=pred)
+            self.assertEqual((tp, src), (0.26, "fused"))
+
+    def test_card_market_fused_false_falls_to_qcache(self):
+        # 口径红线：纯模板卡（marketFused=False）不得按 fused 计分 → 降级 qcache
+        import tempfile
+        from pathlib import Path
+        from backfill import resolve_tail_prob
+        with tempfile.TemporaryDirectory() as td:
+            pred = Path(td)
+            (pred / "2026-09-26-boldplay.json").write_text(json.dumps(
+                {"cards": [{"code": "周日001",
+                            "crsDist": {"tailP4": 0.9, "marketFused": False}}]}),
+                encoding="utf-8")
+            (pred / "2026-09-27.json").write_text(json.dumps(
+                {"周日001": {"ttg": [["s4", 0.20], ["s5", 0.06]]}}), encoding="utf-8")
+            tp, src = resolve_tail_prob({"code": "周日001"}, "2026-09-26", {},
+                                        qcache_dir=pred, bp_cache={}, pred_dir=pred)
+            self.assertEqual(src, "qcache")
+            self.assertAlmostEqual(tp, 0.26)    # 0.20+0.06（卡上 0.9 未被采用）
+
+    def test_rec_crs_dist_wins_over_card(self):
+        # 优先级：rec.crsDist（全分布）> 主卡摘要
+        import tempfile
+        from pathlib import Path
+        from backfill import resolve_tail_prob
+        with tempfile.TemporaryDirectory() as td:
+            pred = Path(td)
+            (pred / "2026-09-26-boldplay.json").write_text(json.dumps(
+                {"cards": [{"code": "周日001",
+                            "crsDist": {"tailP4": 0.9, "marketFused": True}}]}),
+                encoding="utf-8")
+            rec = {"code": "周日001",
+                   "crsDist": {"1:1": 0.6, "0:0": 0.4}}   # P(4+)=0
+            tp, src = resolve_tail_prob(rec, "2026-09-26", {},
+                                        bp_cache={}, pred_dir=pred)
+            self.assertEqual((tp, src), (0.0, "fused"))
 
     def test_qcache_ttg_fallback(self):
         import tempfile

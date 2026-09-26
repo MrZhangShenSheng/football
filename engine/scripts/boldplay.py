@@ -730,6 +730,22 @@ def _fused_crs_candidates(fr: dict, crs_odds: dict, cfg: dict) -> tuple:
     return rows, info
 
 
+def _crs_dist_summary(fr: dict) -> dict | None:
+    """fused_legs 单场输出 → 融合分布族概率摘要（task-10·T9 移交落盘）：5 族
+    {family: prob} + tailP4（P(4+)——trend ⑨ fused 口径尾部监控生产者）+ sum
+    （5 族合计=1−族外项）+ marketFused（口径开关：False=纯模板日，resolver 不得
+    按 fused 口径计分——T9 防误判红线）。闸门只管出腿不管监控：关档场照落。
+    开发者 sszhang"""
+    fams = (fr or {}).get("families") or []
+    if not fams:
+        return None
+    dist = {f["family"]: round(float(f["prob"]), 4) for f in fams}
+    dist["tailP4"] = fr.get("tailP4")
+    dist["sum"] = round(sum(float(f["prob"]) for f in fams), 4)
+    dist["marketFused"] = bool(fr.get("marketFused"))
+    return dist
+
+
 def _pick_card_recs(cands: list, flags: list) -> tuple:
     """双行推荐重选（freq_band.pools_card 同式·task-8）：保底=相近EV带(差<0.1)内 q
     最高；翻身=非分歧带内赔率最高——CRS 族 top2 行只作单关双选材料不入翻身
@@ -766,6 +782,9 @@ def _apply_fused_crs(card: dict, fr: dict, crs_odds: dict, cfg: dict) -> dict:
     for r in rows:
         r["code"], r["match"] = card.get("code"), card.get("match")
     card["crsGate"] = info
+    dist = _crs_dist_summary(fr)             # task-10：族概率摘要落卡（关档场照落）
+    if dist:
+        card["crsDist"] = dist
     cands = [c for c in (card.get("candidates") or []) if c.get("pool") != "crs"]
     flags = card.setdefault("flags", [])
     if not info["pass"]:
