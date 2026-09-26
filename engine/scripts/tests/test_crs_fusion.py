@@ -50,3 +50,36 @@ def test_smooth_preserves_ranking():
     counts = {(1,0): 50, (1,1): 40, (2,1): 30}
     q = smooth_template(counts)
     assert q[(1,0)] > q[(1,1)] > q[(2,1)]
+
+from crs_fusion import fuse_crs, shrink_lambda
+
+def test_fuse_normalizes():
+    q = {(1,0): 0.3, (1,1): 0.25, (0,1): 0.2, (2,1): 0.15, (2,0): 0.1}
+    p = {(1,0): 0.4, (1,1): 0.3, (0,1): 0.1, (2,1): 0.1, (2,0): 0.1}
+    f = fuse_crs(q, p)
+    assert abs(sum(f.values()) - 1.0) < 1e-9
+
+def test_fuse_market_dominant_when_r_small():
+    # r→0 退化为市场分布（spec 弱点5：a*→0 退化仍有效）
+    q = {(1,0): 0.9, (1,1): 0.05, (0,1): 0.05}
+    p = {(1,0): 0.1, (1,1): 0.2, (0,1): 0.7}
+    f = fuse_crs(q, p, r=0.001)
+    assert f[(0,1)] > f[(1,0)]   # 跟市场走
+
+def test_fuse_epsilon_on_missing_market_key():
+    # 市场缺项 ε 兜底不归零
+    q = {(1,0): 0.5, (5,5): 0.5}
+    p = {(1,0): 1.0}             # 市场只有一项
+    f = fuse_crs(q, p)
+    assert f[(5,5)] > 0
+
+def test_shrink_lambda_basic():
+    assert abs(shrink_lambda(1.2, 3.0, w=0.35)[0] - (0.35*1.2 + 0.65*3.0)) < 1e-9
+
+def test_shrink_lambda_no_market_degrades():
+    lam, shrunk = shrink_lambda(2.5, None, w=0.35)
+    assert lam == 2.5 and shrunk is False
+
+def test_shrink_lambda_extremes():
+    assert shrink_lambda(2.0, 3.0, w=0.0)[0] == 3.0   # 全市场
+    assert shrink_lambda(2.0, 3.0, w=1.0)[0] == 2.0   # 全模型

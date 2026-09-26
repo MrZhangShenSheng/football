@@ -72,3 +72,31 @@ def smooth_template(counts: dict, alpha: float = ALPHA_LIDSTONE, n_items: int = 
     n = sum(counts.values())
     z = n + alpha * len(keys)
     return {s: (counts.get(s, 0) + alpha) / z for s in keys}
+
+
+# ---- 对数意见池融合 + λ 收缩（spec §2/§3）----
+
+R_LOG_POOL = 0.286      # r = a/(a+b) = 0.4/1.4（spec §3 弱点4 比值不变性；fusion_crs.json r 同源）
+EPS_MARKET = 0.001      # 市场缺项 ε 兜底（spec §3）
+W_LAMBDA_SHRINK = 0.35  # λ 收缩模型权重（spec §2 James-Stein；fusion_crs.json w 同源）
+
+def fuse_crs(q_t: dict, p_mkt: dict, r: float = R_LOG_POOL, eps: float = EPS_MARKET) -> dict:
+    """对数意见池：P_final ∝ q^r · p^(1-r)（spec §3；比值不变性→只搜 r 一维）。
+
+    r = a/(a+b)，默认 0.286 = 0.4/1.4。市场缺项 ε 兜底。q_t 须已平滑（全正）。"""
+    keys = set(q_t) | set(p_mkt)
+    raw = {}
+    for s in keys:
+        qv = max(q_t.get(s, eps), 1e-12)
+        pv = max(p_mkt.get(s, eps), 1e-12)
+        raw[s] = qv ** r * pv ** (1.0 - r)
+    z = sum(raw.values())
+    return {s: v / z for s, v in raw.items()}
+
+def shrink_lambda(lam_sum_model: float, e_mkt, w: float = W_LAMBDA_SHRINK):
+    """λ 总量向市场 E 收缩（spec §2 James-Stein 精神）。
+
+    返回 (λ'sum, shrunk)；e_mkt=None 时纯模型降级。"""
+    if e_mkt is None or e_mkt <= 0:
+        return lam_sum_model, False
+    return w * lam_sum_model + (1.0 - w) * e_mkt, True
