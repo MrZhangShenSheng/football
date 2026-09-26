@@ -23,6 +23,7 @@ from datetime import date
 from pathlib import Path
 
 from common import log, ROOT
+from crs_fusion import FAMILY_GATE_THRESHOLD   # 族闸门阈值单一事实源（Minor-3 复用，勿复制 0.28）
 
 CORPUS = ROOT / "data" / "04-summaries" / "corpus.json"
 OUT = ROOT / "data" / "04-summaries" / "trend.html"
@@ -293,8 +294,8 @@ def plan_summary(plan_rows: list[dict], series: dict) -> dict:
 
 
 ASSERT_MIN_N = 15  # 单断言最小样本（低于则跳过该断言）
-# T9 族监控分桶（闸门 0.28 起；spec §4 族概率集中区间上探）
-FAMILY_BINS = [(0.28, 0.35), (0.35, 0.45), (0.45, 1.01)]
+# T9 族监控分桶（闸门阈值 FAMILY_GATE_THRESHOLD 起；spec §4 族概率集中区间上探）
+FAMILY_BINS = [(FAMILY_GATE_THRESHOLD, 0.35), (0.35, 0.45), (0.45, 1.01)]
 TAIL_GOALS = 4     # 尾部专项阈值：总进球 4+ 球（spec §5 唯一正 EV 探测器）
 
 
@@ -368,7 +369,7 @@ def _total_goals(r: dict) -> int | None:
 
 def build_family_calibration(records: list[dict]) -> dict | None:
     """区块⑧：top1 族概率分桶校准（T9）。familyHit 已判 CRS 腿按族概率分桶，桶内预测
-    均值 vs 实际命中率；闸门 0.28 以下腿不入桶只入汇总。无已判腿 → None（样本积累中）。
+    均值 vs 实际命中率；闸门阈值以下腿不入桶只入汇总。无已判腿 → None（样本积累中）。
     附二项检验三数字（累计命中/累计期望/n_legs）——trend 只出数不判。"""
     judged = [r for r in records if r.get("familyHit") is not None]
     if not judged:
@@ -697,7 +698,7 @@ def render(series: dict, cal: list[dict], buckets: dict, concl: str, meta: dict,
 <h2>⑧ 族概率分桶校准（CRS 监控链）★ v5.14</h2>
 <div class="card">
 {fam_html}
-<div class="note">CRS 腿 top1 族概率 vs 实际族命中（familyHit=actual∈top1族）。桶内预测均值系统性高于实际 = 族输出高估（闸门放行过松）；低于实际 = 低估（可用未用）。闸门 0.28 以下腿不入桶只入汇总。</div>
+<div class="note">CRS 腿 top1 族概率 vs 实际族命中（familyHit=actual∈top1族）。桶内预测均值系统性高于实际 = 族输出高估（闸门放行过松）；低于实际 = 低估（可用未用）。闸门 {FAMILY_GATE_THRESHOLD:.0%} 以下腿不入桶只入汇总。</div>
 </div>
 
 <h2>⑨ 尾部 4+ 球专项（唯一正 EV 探测器）★ v5.14</h2>

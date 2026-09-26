@@ -325,7 +325,11 @@ def apply_family_ctx(rec: dict, score: tuple[int, int], round_date: str, bp_cach
                      qcache_dir: Path | None = None) -> bool:
     """回填族监控字段（T9）：仅 CRS pick 腿写 familyHit（actual ∈ 当轮 top1 族）+
     familyName/familyProb + crsTailProb/crsTailSource；无族数据 → familyHit=null。
-    非 CRS 腿不动（返回 False）。族映射 import crs_fusion.FAMILIES（单一事实源）。"""
+    幂等语义（同 pinClose 惯例）：null/缺失=未知可重算（族上下文到位即恢复），
+    true/false=已知不覆盖（已判腿不动）。非 CRS 腿不动（返回 False）。
+    族映射 import crs_fusion.FAMILIES（单一事实源）。"""
+    if rec.get("familyHit") is not None:   # 已判（true/false）→ 不覆盖
+        return False
     if str(rec.get("pick") or "").split(" ", 1)[0].upper() not in SCORE_PLAYS:
         return False
     from crs_fusion import FAMILIES
@@ -399,8 +403,10 @@ def backfill(day_limit: str | None = None) -> dict:
                         if ps:
                             rec.setdefault("preSnapshots", ps)
                             data["_dirty"] = True
-                # 已回填但缺 familyHit → 纯本地补判（T9 监控链幂等补挂，同 pinClose 模式）
-                if "familyHit" not in rec and sc:
+                # 已回填但 familyHit 未知（缺失/null）→ 纯本地补判（T9 监控链幂等补挂，
+                # 同 pinClose 惯例：null/缺失=未知可重算，true/false=已知不覆盖——
+                # 无族数据落 null 不锁死，族上下文到位（crsFamilies/crsGate）即可恢复）
+                if rec.get("familyHit") is None and sc:
                     d0 = rec.get("date") or data.get("date")
                     if d0 and apply_family_ctx(rec, sc, d0, bp_cache, qc_cache):
                         data["_dirty"] = True

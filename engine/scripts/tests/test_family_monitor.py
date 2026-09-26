@@ -1,7 +1,8 @@
 # engine/scripts/tests/test_family_monitor.py
 """Task-9 测试：familyHit 回填判定 + trend 族校准/尾部 4+ 专项区块（TDD 先测后写）。
 覆盖：CRS 腿判定真/假/null 三路径 / 非 CRS 腿不动 / crsFamilies 优先与 boldplay
-crsGate 兜底解析 / 尾部概率 fused 与 qcache 双口径 / 分桶与空数据（样本积累中）路径。
+crsGate 兜底解析 / 尾部概率 fused 与 qcache 双口径 / 分桶与空数据（样本积累中）路径 /
+幂等门语义（null=未知可重算·族上下文到位即恢复，true/false=已知不覆盖）。
 开发者 sszhang"""
 import json
 import sys
@@ -57,6 +58,46 @@ class TestFamilyHitJudging(unittest.TestCase):
         changed = self._apply(rec, (2, 0))
         self.assertFalse(changed)
         self.assertNotIn("familyHit", rec)      # 非 CRS 腿不落字段
+
+
+class TestIdempotentGateSemantics(unittest.TestCase):
+    """幂等门（fix round2）：null/缺失=未知可重算，true/false=已知不覆盖（对齐 pinClose 惯例）。
+    实证背景：旧门 "familyHit" not in rec 使 null 落盘后恒 False，64 条 null 腿锁死、
+    ⑧校准池永久损失——null 腿须在族上下文到位（crsFamilies/crsGate 落盘）后可恢复。"""
+
+    def _apply(self, rec, score):
+        import tempfile
+        from pathlib import Path
+        from backfill import apply_family_ctx
+        with tempfile.TemporaryDirectory() as td:
+            empty = Path(td)
+            return apply_family_ctx(rec, score, "2026-09-26", {}, {},
+                                    pred_dir=empty, qcache_dir=empty)
+
+    def test_null_recomputed_when_family_arrives(self):
+        rec = {"pick": "CRS 1:1"}                       # 第一遍：无族数据 → 落 null
+        self._apply(rec, (1, 1))
+        self.assertIsNone(rec["familyHit"])
+        rec["crsFamilies"] = [_fam("draw", 0.42)]       # 第二遍：族上下文到位 → 重算恢复
+        changed = self._apply(rec, (1, 1))
+        self.assertTrue(changed)
+        self.assertIs(rec["familyHit"], True)
+        self.assertEqual(rec["familyName"], "draw")
+
+    def test_judged_true_not_overwritten(self):
+        rec = {"pick": "CRS 1:1", "familyHit": True, "familyName": "draw",
+               "familyProb": 0.42, "crsFamilies": [_fam("home_clean", 0.5)]}
+        changed = self._apply(rec, (0, 0))              # 族上下文变了也不覆盖已判值
+        self.assertFalse(changed)
+        self.assertIs(rec["familyHit"], True)
+        self.assertEqual(rec["familyName"], "draw")
+
+    def test_judged_false_not_overwritten(self):
+        rec = {"pick": "CRS 1:1", "familyHit": False,
+               "crsFamilies": [_fam("draw", 0.42)]}
+        changed = self._apply(rec, (1, 1))              # 实际命中也不翻已判 false
+        self.assertFalse(changed)
+        self.assertIs(rec["familyHit"], False)
 
 
 class TestFamilyContextResolution(unittest.TestCase):
