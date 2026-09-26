@@ -264,3 +264,58 @@ def test_fused_legs_no_template_falls_to_global_pool():
     assert len(rows) == 1 and rows[0]["lambda"] is None       # X/Y 无近况 → 纯模板
     rows_empty = fused_legs(day, {}, {}, {}, CFG_TOY)         # 全空 freq_table
     assert len(rows_empty) == 1 and rows_empty[0]["gate"]["maxProb"] > 0
+
+
+# ---- 审查 I-1 修复：α 按模板有效样本量缩放（恢复计数空间 Lidstone 语义）----
+# 病灶：shifted_q 输出归一化概率(Σ=1 等效 N=1)直喂 smooth_template(α=0.5) →
+# 先验质量 31α/(1+31α)=93.9% 抹平模板（英超 168:1 压到 ~1.5:1，融合退化为纯市场微调）。
+# 修法：α_eff=α/N_template，(p_s+α/N)/(1+31α/N) ≡ (c_s+α)/(N+31α) 计数语义恢复。
+
+from freq_band import shifted_q, _smooth_shifted
+
+def _tpl_counter(spec: dict) -> Counter:
+    """比分计数 spec → 带 __n=Σ计数 的联赛模板 Counter（build_freq_table 同口径）。"""
+    counts = Counter(spec)
+    counts["__n"] = sum(spec.values())
+    return counts
+
+def test_fused_alpha_large_n_preserves_resolution():
+    # N=600 大模板：top 1:1=168(0.28) / bottom 0:5=1(0.0017) 即 168:1 →
+    # α_eff=0.5/600 后 top/bottom 比仍 >50:1（修复前 N=1 伪计数压到 ~1.5:1）
+    freq = {"england-premier": _tpl_counter({"1:1": 168, "2:1": 100, "1:0": 100,
+                                             "0:1": 90, "0:0": 60, "2:0": 40,
+                                             "1:2": 30, "3:0": 10, "3:1": 1, "0:5": 1})}
+    blob = freq["england-premier"]
+    assert blob["__n"] == 600
+    q = _smooth_shifted(shifted_q(blob, None), blob["__n"], CFG_TOY["alphaLidstone"])
+    assert q[(1, 1)] / q[(0, 5)] > 50
+    # 接线验证：无市场价 → p_final=q，top1 概率与缩放 α 计算一致（非旧 α=0.5 值）
+    day = {"matches": [{"matchNumStr": "周六001", "league": "英超", "home": "X",
+                        "away": "Y", "crs": {}, "ttg": {}}]}
+    r = fused_legs(day, freq, {}, {}, CFG_TOY)[0]
+    assert r["p_final_top3"][0][0] == (1, 1)
+    assert abs(r["p_final_top3"][0][1] - q[(1, 1)]) < 1e-9
+
+def test_fused_alpha_small_n_prior_dominates():
+    # N=10 小模板（global_pool 断粮兜底类）→ α_eff=0.05，先验质量 31α_eff/(1+31α_eff)≈61%
+    # 主导 → 分布摊平趋近均匀（小样本模板不该有强分辨率，先验主导合理）
+    freq = {"england-premier": _tpl_counter({"1:1": 5, "0:0": 3, "1:0": 2})}
+    blob = freq["england-premier"]
+    assert blob["__n"] == 10
+    q = _smooth_shifted(shifted_q(blob, None), blob["__n"], CFG_TOY["alphaLidstone"])
+    assert 31 * min(q.values()) > 0.5                # 均匀底座占过半质量（先验主导）
+    assert max(q.values()) / min(q.values()) < 20    # 摊平（vs 大 N >50 分辨率）
+    # 接线验证：欧冠无映射走 global_pool 兜底 → 用全局池 N（此处=同款 __n=10）
+    day = {"matches": [{"matchNumStr": "周六002", "league": "欧冠", "home": "X",
+                        "away": "Y", "crs": {}, "ttg": {}}]}
+    r = fused_legs(day, freq, {}, {}, CFG_TOY)[0]
+    assert abs(r["p_final_top3"][0][1] - q[(1, 1)]) < 1e-9
+
+def test_fused_alpha_pool_identity_and_empty_template():
+    # 全 31 项 Σ=1 恒等：含池外比分折叠（6:0/0:6 → 方向代表键）与空模板(n=0)两路
+    blob = _tpl_counter({"1:1": 100, "2:0": 50, "6:0": 5, "0:6": 3})
+    q = _smooth_shifted(shifted_q(blob, None), blob["__n"], CFG_TOY["alphaLidstone"])
+    assert len(q) == 31 and abs(sum(q.values()) - 1.0) < 1e-9
+    q0 = _smooth_shifted({}, 0, CFG_TOY["alphaLidstone"])     # 空模板：不除零
+    assert len(q0) == 31 and abs(sum(q0.values()) - 1.0) < 1e-9
+    assert abs(max(q0.values()) - 1 / 31) < 1e-12             # 均匀先验退化

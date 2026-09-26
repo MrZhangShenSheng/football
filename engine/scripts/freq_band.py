@@ -313,6 +313,22 @@ def _template_counts(freq_table: dict, m: dict, zh: dict, form: dict | None = No
     return blob, lam
 
 
+def _smooth_shifted(q_map: dict, n_tpl: int, alpha: float) -> dict:
+    """shifted_q 概率分布（Σ=1）→ 元组键 counts → Lidstone 平滑（审查 I-1 修复）。
+    概率输入等效 N=1 伪计数，直喂 α=0.5 时先验质量 31α/(1+31α)=93.9% 抹平模板——
+    α 按模板有效样本量缩放：α_eff=α/n_tpl，使 (p_s+α/N)/(1+31α/N) ≡ (c_s+α)/(N+31α)，
+    计数空间 Lidstone 语义恢复（大 N 分辨率保留、小 N 先验主导趋均匀）。
+    n_tpl≤0（空模板）→ 原 α 均匀先验退化（shifted_q 空输出本就无模板信息）。
+    开发者 sszhang"""
+    from crs_fusion import smooth_template
+    counts = {}
+    for s, v in q_map.items():                     # "h:a" 字符串键 → CRS_POOL 元组键
+        h, a = (int(x) for x in s.split(":"))
+        counts[(h, a)] = v
+    alpha_eff = alpha / n_tpl if n_tpl > 0 else alpha
+    return smooth_template(counts, alpha=alpha_eff)
+
+
 def fused_legs(odds_day: dict, freq_table: dict, form: dict, zh: dict,
                cfg: dict | None = None) -> list:
     """CRS-Fused 出腿（spec §3 四步：平滑→去水→融合→族组合）。
@@ -324,7 +340,7 @@ def fused_legs(odds_day: dict, freq_table: dict, form: dict, zh: dict,
     比例回分 λh/λa 再进平移链，shrunk=True；无市场 TTG → 原 λ + shrunk=False。
     开发者 sszhang"""
     from crs_fusion import (extract_mkt_dist, family_gate, family_scores,
-                            fuse_crs, shrink_lambda, smooth_template)
+                            fuse_crs, shrink_lambda)
     cfg = cfg or load_fusion_crs_safe()
     pool = global_pool(freq_table)
     out = []
@@ -339,11 +355,7 @@ def fused_legs(odds_day: dict, freq_table: dict, form: dict, zh: dict,
                 scale = lam_sum / (lam[0] + lam[1])
                 lam = (lam[0] * scale, lam[1] * scale)
         q_map = shifted_q(blob, lam)
-        counts = {}
-        for s, v in q_map.items():                     # "h:a" 字符串键 → CRS_POOL 元组键
-            h, a = (int(x) for x in s.split(":"))
-            counts[(h, a)] = v                         # shifted_q Σ=1 → 平滑尺度自洽
-        q = smooth_template(counts, alpha=cfg["alphaLidstone"])
+        q = _smooth_shifted(q_map, blob.get("__n", 0), cfg["alphaLidstone"])
         p_mkt = extract_mkt_dist(crs) if len(crs) >= CRS_FUSION_MIN_ITEMS else {}
         pf = fuse_crs(q, p_mkt, r=cfg["r"]) if p_mkt else q
         ok, mx = family_gate(pf, cfg["familyGateThreshold"])
