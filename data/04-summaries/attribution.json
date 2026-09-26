@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-25",
+  "generatedAt": "2026-09-26",
   "records": {
     "2026-08-23|周日015|HAD": {
       "primary": "F9",
@@ -260,7 +260,9 @@
     },
     "2026-08-28|周五006|HAD": {
       "primary": "F9",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": 0.5989,
         "dcBest": 0,
@@ -268,7 +270,11 @@
         "pickIdx": 0,
         "resultIdx": 2,
         "result": "2-3",
-        "pinSource": "fd"
+        "pinSource": "fd",
+        "oddsDrift": {
+          "pickOdds": 1.46,
+          "laterOdds": 1.63
+        }
       },
       "confidence": "high",
       "source": "rule",
@@ -289,7 +295,7 @@
         "pinSource": "okooo",
         "oddsDrift": {
           "pickOdds": 1.96,
-          "laterOdds": 3.52
+          "laterOdds": 4.5
         }
       },
       "confidence": "high",
@@ -311,7 +317,7 @@
         "pinSource": "fd",
         "oddsDrift": {
           "pickOdds": 1.55,
-          "laterOdds": 3.3
+          "laterOdds": 5.9
         }
       },
       "confidence": "high",
@@ -371,7 +377,7 @@
         "pinSource": "okooo",
         "oddsDrift": {
           "pickOdds": 1.75,
-          "laterOdds": 1.9
+          "laterOdds": 4.15
         }
       },
       "confidence": "high",
@@ -393,7 +399,7 @@
         "pinSource": "okooo",
         "oddsDrift": {
           "pickOdds": 1.85,
-          "laterOdds": 3.36
+          "laterOdds": 2.56
         }
       },
       "confidence": "high",
@@ -415,7 +421,7 @@
         "pinSource": "fd",
         "oddsDrift": {
           "pickOdds": 1.37,
-          "laterOdds": 1.94
+          "laterOdds": 2.45
         }
       },
       "confidence": "high",
@@ -437,7 +443,7 @@
         "pinSource": "fd",
         "oddsDrift": {
           "pickOdds": 1.5,
-          "laterOdds": 3.88
+          "laterOdds": 4.88
         }
       },
       "confidence": "high",
@@ -476,7 +482,7 @@
         "pinSource": "fd",
         "oddsDrift": {
           "pickOdds": 1.5,
-          "laterOdds": 2.6
+          "laterOdds": 2.15
         }
       },
       "confidence": "high",
@@ -485,7 +491,9 @@
     },
     "2026-08-28|周六015|HAD": {
       "primary": "F9",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": 0.4503,
         "dcBest": 0,
@@ -493,7 +501,11 @@
         "pickIdx": 0,
         "resultIdx": 1,
         "result": "1-1",
-        "pinSource": "fd"
+        "pinSource": "fd",
+        "oddsDrift": {
+          "pickOdds": 1.87,
+          "laterOdds": 6.65
+        }
       },
       "confidence": "high",
       "source": "rule",
@@ -514,7 +526,7 @@
         "pinSource": "fd",
         "oddsDrift": {
           "pickOdds": 2.1,
-          "laterOdds": 5.6
+          "laterOdds": 2.18
         }
       },
       "confidence": "high",
@@ -606,7 +618,9 @@
     },
     "2026-08-28|周日003|HAD": {
       "primary": "F5",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": 0.3905,
         "dcBest": 1,
@@ -615,7 +629,11 @@
         "resultIdx": 1,
         "result": "1-1",
         "pinSource": "okooo",
-        "replay": "dc_approx"
+        "replay": "dc_approx",
+        "oddsDrift": {
+          "pickOdds": 2.19,
+          "laterOdds": 2.85
+        }
       },
       "confidence": "low",
       "source": "rule",
@@ -937,7 +955,7 @@
         "lambdaGap": 2.22,
         "oddsDrift": {
           "pickOdds": 1.69,
-          "laterOdds": 2.1
+          "laterOdds": 2.28
         }
       },
       "confidence": "high",
@@ -1083,7 +1101,9 @@
     },
     "2026-09-19|周五013|HAD": {
       "primary": "F9",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": 0.6687,
         "dcBest": 0,
@@ -1091,7 +1111,11 @@
         "pickIdx": 0,
         "resultIdx": 2,
         "result": "1-3",
-        "pinSource": "fd"
+        "pinSource": "fd",
+        "oddsDrift": {
+          "pickOdds": 1.65,
+          "laterOdds": 3.2
+        }
       },
       "confidence": "high",
       "source": "rule",
