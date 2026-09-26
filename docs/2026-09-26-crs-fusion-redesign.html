@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
-<title>CRS 融合链路重构设计 · 2026-09-26</title>
+<title>CRS 融合链路重构设计 v2（含数学审查修正）· 2026-09-26</title>
 <style>
-:root{--bg:#0f172a;--card:#1e293b;--line:#334155;--txt:#e2e8f0;--dim:#94a3b8;--gold:#f59e0b;--blue:#38bdf8}
+:root{--bg:#0f172a;--card:#1e293b;--line:#334155;--txt:#e2e8f0;--dim:#94a3b8;--gold:#f59e0b;--blue:#38bdf8;--red:#ef4444;--green:#16a34a}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--txt);font:14px/1.8 -apple-system,"PingFang SC",sans-serif;padding:24px}
 .wrap{max-width:1000px;margin:0 auto}
@@ -14,69 +14,72 @@ th{color:var(--gold)}
 code,pre{font-family:Menlo,monospace;font-size:12.5px;background:rgba(0,0,0,.3);padding:1px 5px;border-radius:4px}
 pre{padding:10px 14px;overflow-x:auto;line-height:1.6}
 .formula{color:var(--blue);font-weight:600}
+.fix{color:var(--red);font-weight:600}
 .src{color:var(--dim);font-size:12px;line-height:1.9}
 </style></head><body><div class="wrap">
-<h1>CRS 融合链路重构设计（freq-band v2 → CRS-Fused）</h1>
-<div class="sub">2026-09-26 大哥拍板直接转正（旧链路证伪无需影子陪跑）· 依据=九模块验证报告（data/04-summaries/2026-09-26-crs-audit.html）+ 学术文献链 · 开发者 sszhang</div>
+<h1>CRS 融合链路重构设计 v2（freq-band v2 → CRS-Fused）</h1>
+<div class="sub">2026-09-26 · v1 大哥拍板直接转正 → v2 并入数学审查 10 项修正（3 错误+7 弱点）· 依据=九模块验证+文献链 · 开发者 sszhang</div>
 
 <h2>0 · 背景与拍板记录</h2>
 <div class="card">
-<p><b>病理</b>（九模块验证）：现行 freq-band"带内 q 最高"= 无条件先验选腿，413 腿 83% 押≤2球（均值 1.86）vs 实际 3.20 球；四象限倒挂（60% 腿押在小比分率仅 32% 的象限）；负 alpha（40 腿按真实频率期望 5.5 中实际 2 中）。</p>
-<p><b>拍板</b>：①大哥接受 freq-band 血统改变（市场信号从门槛升级为融合源）；②直接转正生产，不走影子 4 周陪跑；③形状带（桂林 10-17/梅州 18-28）废除硬门槛降为参考；④a/b 初始冻结 0.4/1.0，语料 join 样本 ≥300 场再开网格校准；⑤λ 收缩只缩总量不缩主客分布（一期）。</p>
-<p><b>哲学修正</b>：08-27"数据说话"保留但升级——联赛频率 q=<b>先验</b>，市场定价=<b>条件信息（似然）</b>，输出=<b>后验</b>（贝叶斯框架）。市场 E 本身就是数据，且是本场条件化的数据；这不是"跟市场"，是把仓库已验证的三向对数意见池融合（fusion.json）推广到 CRS 31 维。</p>
+<p><b>病理</b>（九模块验证）：freq-band"带内 q 最高"= 无条件先验，413 腿 83% 押≤2球（均值 1.86）vs 实际 3.20；四象限倒挂；负 alpha（40 腿期望 5.5 中实际 2）。</p>
+<p><b>拍板</b>：①市场信号从门槛升级为融合源（血统改变）；②直接转正不走影子期；③形状带废除硬门槛；④a/b 冻结起步攒样再校；⑤λ 只缩总量；⑥<span class="fix">v2 并入数学审查全部修正</span>（见各节 <span class="fix">【修】</span> 标记）。</p>
+<p><b>哲学</b>：q=先验，市场=似然，输出=后验（贝叶斯）。三向层 fusion.json 已验证的方法论推广到 31 维。</p>
+<p><b>期望管理（诚实上限）</b>：本方案<b>不是把 CRS 变正 EV</b>——33.9% 抽水池靠选股长期转正数学上近乎不可能。它做三件事：①负 alpha 消除（回收 ~40%→市场基线 ~66%）②族组合变现修 V8 幅度错 ③<b>尾部 alpha 探测</b>=唯一正 EV 期权（体彩若在大比分尾部系统性压价，融合分布尾部有真优势，专项监控待命）。</p>
 </div>
 
 <h2>1 · 总体架构</h2>
 <pre>
 输入                    层1 收缩校准             层2 融合引擎                 层3 变现层
 ┌──────────┐     ┌─────────────────┐     ┌───────────────────┐     ┌────────────────┐
-│ λ_model  │─┐   │ λ'sum = w·λ_sum │     │ P_final(s) ∝      │     │ 比分族组合输出   │
-│ (DC)     │ ├──→│  + (1-w)·E_mkt  │ ──→ │  q_t(s)^a         │ ──→ │ 5族top1/top2    │
+│ λ_model  │─┐   │ λ'sum = w·λ_sum │     │ P_final(s) ∝      │     │ 5族top1/top2   │
+│ (DC)     │ ├──→│  + (1-w)·E_mkt  │ ──→ │  q_t(s)^a         │ ──→ │ +族概率闸门     │
 │ E_mkt    │─┘   │ (James-Stein)   │     │  · p_mkt(s)^b     │     │ +HHAD让位规则    │
 │ (TTG去水) │     └─────────────────┘     │ (对数意见池31维)    │     └────────────────┘
 │ q_t      │ ─────────────────────────→  │                   │
-│ (联赛模板)│                             └───────────────────┘
+│ (平滑模板)│                             └───────────────────┘
 └──────────┘                                     ↓
-                                   层4 生产监控：逐轮回填 · 负alpha监控 · 攒样后a/b校准
+                                   层4 生产监控：二项检验红线 · 尾部校准专项 · 攒样后比值校准
 </pre>
 
 <h2>2 · 层1 · λ 收缩校准</h2>
 <div class="card">
-<p><span class="formula">λ'sum = w·λ_model_sum + (1−w)·E_mkt</span>，主客分配保持模型比例（λH'/λH = λ'sum/λsum）。</p>
-<p><b>E_mkt</b>：score_odds 存档 TTG 8 档去水隐含期望（加权 Σs·p_s）。<b>w</b> 初始 0.35（V4 校准预示市场侧权重高），语料网格搜校准作为一期附带产出（不用等 300 场——λ 层有 214 场可用）。<b>降级</b>：无市场价场 w=1 纯模型 + 标注 shrunk=false。</p>
-<p>接入点：freq_band.py 平移链输入端 + boldplay qcache 同步。治 V4（λ&lt;1.5 桶低估 2.75 球）。</p>
+<p><span class="formula">λ'sum = w·λ_model_sum + (1−w)·E_mkt</span>，主客分配保持模型比例。w 初始 0.35，214 场语料网格校准（一层参数样本充分）。降级：无市场价 w=1 + shrunk=false。</p>
+<p><span class="fix">【修·弱点6】</span> E_mkt 的 TTG s7 封顶档（7+球合并）不得按档中心 7 计——用联赛库 20402 场的 7+ 球条件均值（实测约 7.4）代入，防高进球场系统性低估。</p>
+<p><span class="fix">【修·弱点·二阶标注】</span> λ 收缩的边际贡献是<b>二阶的</b>——p_mkt 已含 E_mkt 全部信息，收缩只是提升 q_t 侧专家质量、抬融合上限。保留（工程小、无副作用），但验收预期放低。</p>
 </div>
 
 <h2>3 · 层2 · CRS 融合引擎（核心）</h2>
 <div class="card">
-<p><b>市场分布提取（power method 去水）</b>：<span class="formula">p_mkt(s) ∝ (1/o_s)^k</span>，k 解方程 Σp=1（二分法）。文献：Clarke et al. 2013——高抽水 CRS 池 power 法优于朴素归一，大比分尾部不再被系统性压低（体彩 CRS 抽水 33.9%）。</p>
-<p><b>融合</b>：<span class="formula">P_final(s) ∝ q_t(s)^a · p_mkt(s)^b</span>，s∈31 项，a=0.4/b=1.0 冻结起步。</p>
+<p><b>市场分布（power 去水）</b>：<span class="formula">p_mkt(s) ∝ (1/o_s)^k</span>，k 解 Σp=1（二分法）。Clarke 2013；818 场存档可自检校准度（回测节）。</p>
+<p><b>模板平滑</b> <span class="fix">【修·错误1——零吸收违背贝叶斯代数】</span>：<span class="formula">q_t(s) = (count_s + α)/(N + 31α)</span>，α=0.5（Lidstone）——先验支撑集不再阉割后验；"c=0 永不入选"降级为<b>输出过滤层</b>业务规则，不进融合代数。</p>
+<p><b>融合</b>：<span class="formula">P_final(s) ∝ q_t(s)^a · p_mkt(s)^b</span>。</p>
 <ul>
-<li>q_t(s)=0（生存阈 c=0）→ P_final=0，freq 生存阈语义保留</li>
-<li>市场缺项/赔率缺失 → ε=0.001 兜底防归零</li>
-<li>31 项外比分（5:5+）：q_t 侧为 0，融合后≈0，不影响排序</li>
-<li>联赛无模板（杯赛/国家队）→ q_t 用全局池（沿用 low_conf 路径）</li>
+<li><span class="fix">【修·弱点4】</span> <b>比值不变性</b>：归一化下 q^a·p^b ≡ q^(a/(a+b))·p^(b/(a+b))——只有比值 r=a/(a+b) 起作用，校准一维搜索；a=0.4/b=1.0 即 r≈0.286</li>
+<li><span class="fix">【修·弱点5】</span> <b>双计数预期管理</b>：q_t 与 p_mkt 不独立（市场已消化球队近况），融合后验偏自信——若校准后 r*→0，方案退化为"power 去水市场分布+族变现"，<b>依然成立</b>（变现层价值独立），非失败态</li>
+<li><span class="fix">【修·弱点7】</span> <b>leagueOverrides 一期禁用</b>：207-300 场校全局 1 参数充分；分联赛校准=每联赛 10-30 场估参=过拟合，二期样本≥500 再议</li>
+<li><span class="fix">【修·弱点8】</span> <b>对数池而非线性池的理由</b>：线性池 P=wq+(1-w)p 是平行测量混合，输出摊平/双峰化，损害精确比分排序；对数池满足外部贝叶西性（先融合再更新≡先更新再融合），语义=先验×似然正确</li>
+<li>市场缺项 ε=0.001；杯赛无模板→全局池（low_conf 路径沿用）</li>
 </ul>
-<p><b>freq_band.py 三步铁律 → 四步</b>：生存阈 → 市场分布提取 → <b>融合</b> → 族组合。<b>"带内 q 最高"废掉</b>；形状带（10-17/18-28）降为杠杆参考标注不做过滤。参数存 <code>engine/cache/fusion_crs.json</code>（结构对齐 fusion.json：a/b/frozenAt/leagueOverrides 预留）。</p>
-<p>治 V1/V3/V5（结构性小比分+特征错位+负 alpha）。</p>
+<p><b>freq_band.py 三步→四步</b>：生存阈（输出层）→ 市场分布提取 → 融合 → 族组合。"带内 q 最高"废掉，形状带降为参考。参数存 <code>engine/cache/fusion_crs.json</code>。</p>
 </div>
 
 <h2>4 · 层3 · 比分族组合变现</h2>
 <div class="card">
-<p><b>固定 5 族</b>：零封主胜 {1:0,2:0,3:0} · 主胜多球 {2:1,3:1,3:2} · 平局 {0:0,1:1,2:2} · 零封客胜 {0:1,0:2,0:3} · 客胜多球 {1:2,1:3,2:3}。</p>
-<p><b>输出</b>：每场 5 族概率（族概率=ΣP_final）排序 + 族内 P_final top2 比分。取代"每场 1 腿"。</p>
-<p><b>偏好对接</b>：CRS 单关×10 → 族 top1+top2 双选拆注（1:1+1:2 模式推广）；翻身档 CRS 腿 → 族 top1。</p>
-<p><b>HHAD 让位规则</b>：融合后主胜族（零封+多球）合计 ≥65% → CRS 卡标注"让位 HHAD"（V8：方向 6/7 对 CRS 仅 1/7 中的幅度修正）。</p>
+<p><b>5 族</b>：零封主胜{1:0,2:0,3:0} · 主胜多球{2:1,3:1,3:2} · 平局{0:0,1:1,2:2} · 零封客胜{0:1,0:2,0:3} · 客胜多球{1:2,1:3,2:3}。族概率=ΣP_final（守恒到 1−族外项，数学自洽）；输出族排序+族内 top2。</p>
+<p><span class="fix">【修·错误3——族概率闸门】</span> <b>max(族概率) &lt; 28% → 该场 CRS 关档</b>。族概率最大值=CRS 可玩性的检验统计量：低分集中场天然 35-45%（平局族/零封族），高方差场摊平 ~20%——V6 四象限倒挂的直接数学化，比市场 E 门槛更根本（同时用市场+模板信息）。</p>
+<p><b>偏好对接</b>：CRS 单关×10 → 族 top1+top2 双选拆注；翻身档 CRS 腿 → 族 top1。<b>HHAD 让位</b>：主胜族合计 ≥65% → 标注让位 HHAD。</p>
 </div>
 
-<h2>5 · 层4 · 直接转正 + 生产监控（替代影子期）</h2>
+<h2>5 · 层4 · 直接转正 + 生产监控</h2>
 <div class="card">
 <table>
 <tr><th>监控项</th><th>机制</th><th>红灯动作</th></tr>
-<tr><td>负 alpha 监控</td><td>每轮回填后：实际命中 vs 按融合分布的期望命中</td><td>连续 3 轮跑输期望 → 回滚开关 fusion_crs.enabled=false（降级纯模板）</td></tr>
-<tr><td>校准曲线</td><td>trend.html 增比分族校准分桶（P_final 族概率 vs 实际族命中）</td><td>分桶偏差 >15pp → 触发 a/b 重校</td></tr>
-<tr><td>a/b 校准</td><td>join 样本 ≥300 场自动开网格（最小化比分 logloss），护栏改善&lt;1% 不动</td><td>对齐 calibrate.py 纪律</td></tr>
-<tr><td>3 轮复盘节点</td><td>转正后第 3 个比赛轮做一次人工复盘对照</td><td>大哥人审决定继续/回滚</td></tr>
+<tr><td>负 alpha 监控</td><td><span class="fix">【修·错误2】</span> 累计二项检验：累计命中 vs 累计融合期望，<b>样本≥30 腿启动</b>，单侧 p&lt;0.05 才回滚（前 30 腿宽限）；禁止"连续 N 轮"式规则（假阳性 12.5%）</td><td>p&lt;0.05 → fusion_crs.enabled=false 降级纯模板</td></tr>
+<tr><td>尾部校准专项</td><td><span class="fix">【修·弱点9】</span> 4+ 球档预测概率 vs 实际频率分桶——<b>唯一正 EV 探测器</b>（体彩尾部若系统性压价，这里先亮）</td><td>持续低估 → 尾部加权实验（二期）</td></tr>
+<tr><td>族校准曲线</td><td>trend.html 族概率分桶校准（预测 vs 实际命中）</td><td>分桶偏差 &gt;15pp → 触发 r 重校</td></tr>
+<tr><td>r 比值校准</td><td>join 样本 ≥300 自动开一维网格（最小化比分 logloss），护栏改善&lt;1% 不动（对齐 calibrate.py）</td><td>—</td></tr>
+<tr><td>3 轮人工复盘</td><td>转正后第 3 比赛轮人工对照</td><td>大哥人审继续/回滚</td></tr>
 </table>
 </div>
 
@@ -84,22 +87,22 @@ pre{padding:10px 14px;overflow-x:auto;line-height:1.6}
 <div class="card">
 <table>
 <tr><th>文件</th><th>改动</th></tr>
-<tr><td>engine/scripts/freq_band.py</td><td>核心重构：+extract_mkt_dist(power去水) +fuse_crs(对数意见池) +λ收缩 +family_output；--method=fused 新默认，--method=legacy 保留一个月回滚开关</td></tr>
-<tr><td>engine/scripts/boldplay.py</td><td>三池卡 CRS 候选源切 freq_band fused 输出（族 top1/top2）；HHAD 让位标注</td></tr>
-<tr><td>engine/scripts/backfill.py / corpus.py</td><td>回填增比分族命中字段（familyHit）供负 alpha 监控</td></tr>
-<tr><td>engine/scripts/trend_report.py</td><td>+族校准分桶区块</td></tr>
-<tr><td>engine/cache/fusion_crs.json</td><td>新参数文件（a/b/w/enabled/frozenAt）</td></tr>
-<tr><td>skill/SKILL.md</td><td>铁律 8 改写（三步→四步）+ v5.15 版本注记（转正后一并提交）</td></tr>
-<tr><td>engine/scripts/crs_fusion_audit.py</td><td>九模块审计管道固化（复用 scratch/crs_audit 数据管道进 git）</td></tr>
+<tr><td>engine/scripts/freq_band.py</td><td>核心重构：+power去水 +lidstone平滑 +fuse_crs +族输出/闸门；--method=fused 新默认，--method=legacy 保留一个月</td></tr>
+<tr><td>engine/scripts/boldplay.py</td><td>三池卡 CRS 候选源切 fused（族 top1/top2）；HHAD 让位标注；闸门关档原因落卡</td></tr>
+<tr><td>engine/scripts/backfill.py / corpus.py</td><td>+familyHit 字段（族命中）供二项检验监控</td></tr>
+<tr><td>engine/scripts/trend_report.py</td><td>+族校准分桶 +尾部校准专项区块</td></tr>
+<tr><td>engine/cache/fusion_crs.json</td><td>新参数（r/w/enabled/frozenAt/alpha）</td></tr>
+<tr><td>skill/SKILL.md</td><td>铁律 8 三步→四步 + v5.15（转正后一并提交）</td></tr>
+<tr><td>engine/scripts/crs_fusion_audit.py</td><td>九模块审计管道固化进 git（复用 scratch/crs_audit）</td></tr>
 </table>
 </div>
 
 <h2>7 · 测试与验收</h2>
 <div class="card">
 <ul>
-<li><b>单元</b>：power 去水 Σ=1+赔率单调；融合 q=0→0、ε 兜底、归一；族概率守恒（Σ族=1−其他项）；λ 收缩边界（w=0/w=1）</li>
-<li><b>回测验收（上线门槛）</b>：207 场 join 样本 walk-forward——融合链 logloss &lt; 纯模板 &lt; 现行链三方对照；族 top1 命中 ≥ 按真实频率期望（负 alpha 消除）；小比分捕获率 ≥45%（现行 31% 基线，S4 选择器实测 59%）</li>
-<li><b>生产验收</b>：跑一轮真实出票卡（boldplay --method=fused）无 warnings + 逐腿 P_final 落盘</li>
+<li><b>单元</b>：power 去水 Σ=1+单调；Lidstone 平滑后全 31 项 q&gt;0 且 Σ=1；融合归一+ε 兜底；族概率守恒（Σ族=1−其他）；闸门 28% 边界；λ 收缩 w=0/w=1 两端；s7 条件均值代入</li>
+<li><b>回测验收</b>：207 场 walk-forward，<span class="fix">【修·弱点10】</span> 三方 logloss 对照须<b>配对差 CI95</b>（ablate.py 纪律）非均值比较；族 top1 命中 ≥ 真实频率期望（负 alpha 消除）；小比分捕获率 ≥45%（V3 in-sample 59% 打折）；<b>power 去水自检</b>：818 场市场去水分布 vs 实际分布校准（验证去水法本身）</li>
+<li><b>生产验收</b>：boldplay --method=fused 真实出票卡无 warnings + 逐腿 P_final/族概率落盘</li>
 </ul>
 </div>
 
@@ -107,13 +110,13 @@ pre{padding:10px 14px;overflow-x:auto;line-height:1.6}
 <div class="card">
 <table>
 <tr><th>期</th><th>内容</th><th>状态</th></tr>
-<tr><td>一期</td><td>层1+层2+层3+监控落地（本 spec 全部）</td><td>立即实施·直接转正</td></tr>
-<tr><td>二期</td><td>a/b/w 网格校准（样本达标后自动）+ SKILL v5.15 条文</td><td>攒样触发</td></tr>
-<tr><td>三期（可选）</td><td>进球分布升级（负二项/双Weibull, Boshnakov 2017）+ Shin 去水对照 + 半场口径玩法</td><td>二期后评估</td></tr>
+<tr><td>一期</td><td>层1+2+3+监控（本 spec 全部，含 v2 修正）</td><td>立即实施·直接转正</td></tr>
+<tr><td>二期</td><td>r/w 校准（≥300 场自动）+ SKILL v5.15 + 尾部加权实验（若专项监控亮灯）</td><td>攒样触发</td></tr>
+<tr><td>三期（可选）</td><td>负二项/双Weibull 分布（Boshnakov 2017）+ Shin 去水对照 + 半场口径</td><td>二期后评估</td></tr>
 </table>
 </div>
 
 <h2>9 · 文献与数据依据</h2>
 <div class="src">
-①对数意见池融合：Genest &amp; Zidek (1986) <i>Combining probability distributions</i>, Statistical Science · ②power/Shin 去水：Clarke, Kovalchik, Ingram et al. (2013) <i>Adjusting true odds to allow for overround</i> · ③比分分布尾部：Boshnakov, Kharrat &amp; McHale (2017) <i>A bivariate Weibull count model</i>, JRSSA · Karlis &amp; Ntzoufras (2003) bivariate Poisson · ④动态进球：Dixon &amp; Robinson (1998) birth process · Rue &amp; Salvesen (2000) · ⑤市场有效性边界：Forrest, Goddard &amp; Simmons (2005) · ⑥国内数据：九模块验证报告 2026-09-26-crs-audit.html（V1~V9）</div>
+融合：Genest &amp; Zidek (1986) Statistical Science · 去水：Clarke et al. (2013) · 平滑：Lidstone/Add-k（Jeffreys 先验 α=0.5）· 尾部：Boshnakov et al. (2017) JRSSA · Karlis &amp; Ntzoufras (2003) · 动态：Dixon &amp; Robinson (1998) · 市场有效性：Forrest, Goddard &amp; Simmons (2005) · 监控：二项检验/CUSUM 质量控制原理 · 国内数据：2026-09-26-crs-audit.html（V1~V9）</div>
 </div></body></html>
