@@ -1,0 +1,96 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>CRS 比分预测系统性失真 · 九模块验证报告 · 2026-09-26</title>
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--line:#334155;--txt:#e2e8f0;--dim:#94a3b8;--gold:#f59e0b;--red:#ef4444;--green:#16a34a;--blue:#38bdf8}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);font:14px/1.75 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;padding:24px}
+.wrap{max-width:1080px;margin:0 auto}
+h1{font-size:22px;padding:10px 0 2px}h1 svg,h2 svg{width:20px;height:20px;vertical-align:-3px;margin-right:6px;color:var(--gold)}
+h2{font-size:16px;margin:26px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.sub{color:var(--dim);font-size:13px;margin-bottom:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin-bottom:12px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--gold);font-weight:600;white-space:nowrap}
+.ok{color:var(--green)} .bad{color:var(--red)} .warn{color:var(--gold)} .dim{color:var(--dim)}
+.bar{display:inline-block;height:10px;background:var(--blue);border-radius:2px;vertical-align:middle}
+.tag{display:inline-block;padding:1px 8px;border-radius:99px;font-size:12px;border:1px solid var(--line);margin:1px 4px 1px 0}
+.verdict{font-size:15px;font-weight:700;padding:3px 10px;border-radius:6px}
+.v-yes{background:rgba(22,163,74,.15);color:var(--green)} .v-no{background:rgba(239,68,68,.15);color:var(--red)} .v-part{background:rgba(245,158,11,.15);color:var(--gold)}
+.src{color:var(--dim);font-size:12px;line-height:1.9}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+</style></head><body><div class="wrap">
+<h1><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 2v4M12 2v4M14 2v4M4 6h16M6 6v14a2 2 0 002 2h8a2 2 0 002-2V6"/><path d="M9 12h6"/></svg>CRS 比分预测系统性失真 · 九模块验证报告</h1>
+<div class="sub">2026-09-26 · 验证对象：大哥三论断（①预测永远小比分 ②实际比分大 ③真小比分场未被选出/选腿逻辑不对）+ 顶尖分析师四判断 · 方法：先设计验证方案→跑数据→后结论（未动任何模型/代码）</div>
+
+<h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>判定总表</h2>
+<table>
+<tr><th>论断/判断</th><th>判定</th><th>核心证据</th><th>模块</th></tr>
+<tr><td>① 预测永远小比分</td><td><span class="verdict v-yes">✓ 成立·结构性</span></td><td>全量 413 条 CRS 腿（实票47+语料40+影子326）：83% 押≤2球、≥4球仅 4%、均值 1.86 球</td><td>V1</td></tr>
+<tr><td>② 实际比分大·预测系统性失真</td><td><span class="verdict v-yes">✓ 成立</span></td><td>市场隐含 E=2.94 球（基本准，仅低估 0.26）vs 我方预测 E=1.77 球——<b>我方比市场小 1.17 球</b>；我方入票场实际 E=3.64（选场还偏高进球 +0.44）</td><td>V2</td></tr>
+<tr><td>③ 真小比分场未被选出·选腿逻辑不对</td><td><span class="verdict v-yes">✓ 成立·核心病灶</span></td><td>特征错位（我方场平赔 4.15 vs 真小比分场 3.69）+ 四象限倒挂（60% 腿押在小比分率仅 32% 的象限，小比分率 60% 的象限只押 7%）+ 负 alpha（40 腿按联赛真实频率期望中 5.5 实际只中 2）</td><td>V3/V5/V6</td></tr>
+<tr><td>判断一：肥尾/崩盘被低估</td><td><span class="verdict v-yes">✓ 成立</span></td><td>大比分场 87% 由下半场崩盘驱动（≥2球）；λ&lt;1.5 桶预测 1.25 实际 4.00 球（低估 2.75）</td><td>V9/V4</td></tr>
+<tr><td>判断二：场型-玩法适配倒挂</td><td><span class="verdict v-yes">✓ 成立</span></td><td>强热 CRS 腿方向 6/7 对但 CRS 命中仅 1/7（幅度问题）；均衡场 CRS 方向 33%≈瞎猜</td><td>V6/V8</td></tr>
+<tr><td>判断三：杯赛/国家队模板错配</td><td><span class="verdict v-no">✗ 证伪</span></td><td>俱乐部场 CRS 腿 2/29 命中（7%）与杯赛/国家队场 1/10 同样差——问题在选腿逻辑不在赛事类型，<b>不需要按赛事类型分池</b></td><td>V7</td></tr>
+<tr><td>判断四：逆市场自大</td><td><span class="verdict v-part">△ 部分成立</span></td><td>我方与市场分布错位 1.17 球确凿；但"押中腿=跟市场走"的分层验证因样本不足未完成</td><td>V2</td></tr>
+</table>
+
+<h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5M4 19h16"/><path d="M8 15l3-6 3 3 4-7"/></svg>关键证据链（数据）</h2>
+<div class="grid2">
+<div class="card"><b>V1 · 预测分布（n=413 腿）</b><br>
+<span class="dim">0球 2% · 1球 32% · 2球 49% · 3球 14% · 4球+ 4% · <b>均值 1.86</b></span><br>
+<span class="bad">83% 押 ≤2 球——结构性输出，非某轮偶然</span></div>
+<div class="card"><b>V2 · 三方对齐</b><br>
+<table><tr><th></th><th>均值</th><th>≤2球</th><th>≥4球</th></tr>
+<tr><td>市场隐含</td><td>2.94</td><td>41%</td><td>35%</td></tr>
+<tr><td>实际赛果</td><td>3.20</td><td>39%</td><td>44%</td></tr>
+<tr><td class="bad">我方预测</td><td class="bad">1.77</td><td class="bad">78%</td><td class="bad">2%</td></tr>
+<tr><td>我方场实际</td><td>3.64</td><td>31%</td><td>46%</td></tr></table>
+<span class="dim">市场基本准 → 锅在我方不在环境</span></div>
+<div class="card"><b>V3 · 反事实选择器（n=207 可测场）</b><br>
+<table><tr><th>选择器</th><th>≤2球率</th><th>1:1率</th></tr>
+<tr><td>（对照）我方实际选场</td><td>31%</td><td>5%</td></tr>
+<tr><td class="ok">市场E进球最低20%</td><td class="ok">59%</td><td class="ok">24%</td></tr>
+<tr><td class="ok">平赔&lt;3.2（胶着）</td><td class="ok">51%</td><td class="ok">19%</td></tr>
+<tr><td class="ok">E&lt;2.5+方向明</td><td class="ok">70%</td><td>10%</td></tr></table>
+<span class="dim">市场低分信号完全未被现行选腿利用</span></div>
+<div class="card"><b>V6 · 四象限倒挂</b><br>
+<table><tr><th>象限</th><th>小比分率</th><th>我方押注占比</th></tr>
+<tr><td class="ok">方向明×低进球</td><td class="ok">60%</td><td class="bad">7%</td></tr>
+<tr><td>胶着×低进球</td><td>52%</td><td>7%</td></tr>
+<tr><td class="bad">方向明×高进球</td><td class="bad">32%</td><td class="bad">60%</td></tr>
+<tr><td>胶着×高进球</td><td>25%</td><td>27%</td></tr></table>
+<span class="dim">押最多的象限恰是最不该押的</span></div>
+<div class="card"><b>V4 · λ 校准（n=214）</b><br>
+<table><tr><th>λ合计</th><th>预测</th><th>实际</th><th>偏差</th></tr>
+<tr><td class="bad">&lt;1.5</td><td>1.25</td><td class="bad">4.00</td><td class="bad">+2.75</td></tr>
+<tr><td>1.5-2.0</td><td>1.80</td><td>2.73</td><td>+0.93</td></tr>
+<tr><td>2.0-3.0</td><td>2.6</td><td>2.9</td><td>+0.4</td></tr>
+<tr><td>≥3.0</td><td>3.79</td><td>2.97</td><td>-0.83</td></tr></table>
+<span class="dim">押小比分的低λ场恰是低估最重的场</span></div>
+<div class="card"><b>V5 · 联赛基准 + 负alpha</b><br>
+<span class="dim">18 联赛库 20402 场：无任何联赛 ≤2球率 &gt;54%；TOP 形状频率 6~21%。<br>我方 40 腿按形状真实频率<b>期望命中 5.5 场，实际仅 2 场</b>——<span class="bad">选场跑输随机押同形状（负 alpha）</span></span></div>
+<div class="card"><b>V8 · 强热场变现缺口</b><br>
+<span class="dim">7 条强热 CRS 腿：方向 <b class="ok">6/7 对</b>，CRS 命中 <b class="bad">1/7</b>——全部败在净胜球幅度（押 2:0 实际 4-0/5-1）。HHAD 替代假想因存档缺口仅 2 条可测（1赢1输），<b>待验证</b></span></div>
+<div class="card"><b>V9 · 半场崩盘结构（n=101）</b><br>
+<span class="dim">全场≥4球场 87% 由下半场崩盘驱动（下半场均 2.8 球 &gt; 上半场 2.1）；全场≤2球场 <b class="ok">94% 半场已≤1球</b>、56% 半场 0:0。<br>崩盘是动态过程，赛前静态 λ 结构性无法捕捉</span></div>
+</div>
+
+<h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/><circle cx="12" cy="12" r="4"/></svg>数据支持的优化方向（按证据强度排序·未实施）</h2>
+<div class="card">
+<p><b>O1 · CRS 入场条件反转（证据 V6+V3，最强）</b>：CRS 腿只在"方向明×低进球"象限出（小比分率 60%），门槛可用市场 TTG 隐含 E&lt;2.6 + 方向集中度——现行 60% 押在 32% 象限的选法直接废掉。预期：小比分捕获率 31%→59%（S4 选择器实测）。</p>
+<p><b>O2 · 选腿信号引入市场低分锚（证据 V3）</b>：市场 TTG 隐含 E 与平赔是已验证的强选择器（1:1 命中 24% vs 现行 5%）；freq-band"带内 q 最高"应替换为/加权市场低分信号。</p>
+<p><b>O3 · 强热场退出 CRS 改 HHAD/TTG（证据 V8，方向明确但样本待补）</b>：方向 6/7 对的场不该用 13% 概率的精确比分变现；先补 HHAD 历史存档回填再定。</p>
+<p><b>O4 · λ 低分桶校准（证据 V4）</b>：λ&lt;2.0 桶向市场 E 收缩或直接以市场 E 为准——低 λ 桶 +0.93~2.75 球的低估是押小比分的直接毒源。</p>
+<p><b>O5 · 半场口径玩法探索（证据 V9）</b>：小比分场 94% 半场≤1球 → HAFU 含 d 半场腿/半场视角是更优表达；同时建议回填链增补半场比分字段（实票 note 已有 101 条可迁移）。</p>
+<p><b>O6 · 不做（证据 V7 证伪）</b>：按赛事类型（杯赛/国家队）分池——俱乐部场同样烂，复杂度不加。</p>
+<p class="warn">⚠ 优先级：O1+O2 是同一个病灶的两面（选场+选信号），先行；O3 需补数据；O4/O5 第二批。所有改动须先在 612 场语料上做 walk-forward 对照（跑赢市场分布再上生产）。</p>
+</div>
+
+<h2>数据缺口清单</h2>
+<div class="card src">
+① HHAD 让球盘历史存档仅覆盖 8-24 后（V8 假想结算样本 2/7）——backfill 可回补；② 语料/联赛库无半场比分字段（V9 靠实票 note 101 条）——建议回填链增补；③ score_odds 存档 8-24 起，早期场无市场特征（V3 join 率 207/612）。</div>
+
+<h2>数据来源</h2>
+<div class="src">data/06-tickets/tickets.json（143腿+101条半场）· data/02-results/2026-*.json（30轮616场·12已回填612）· engine/shadow/paper_tickets.json（crs spec 326腿）· engine/cache/score_odds/（29天818场市场隐含）· data/02-results/league/（18联赛20402场）· 中间数据 engine/scripts/scratch/crs_audit/（v1-v5 json）</div>
+</div></body></html>
