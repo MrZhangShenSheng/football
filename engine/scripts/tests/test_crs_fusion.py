@@ -32,6 +32,15 @@ def test_extract_skips_invalid_entries():
     assert (1,0) in dist and (1,1) in dist and (0,1) in dist
     assert (2,2) not in dist
 
+def test_power_overround_pool_k_above_one():
+    # 生产回归：体彩真实 CRS 池抽水 Σ1/o>1（score_odds/2026-09-25 实测 1.17~1.32）→ k 解须 >1；
+    # brief 原二分上界 1.0 会夹死在 k=1，power 去水静默退化为朴素归一（去水惰化）
+    odds = {"1:0": 1.8, "1:1": 2.0, "0:1": 3.6}   # Σ1/o = 1.333 抽水池
+    dist = extract_mkt_dist(odds)
+    assert abs(sum(dist.values()) - 1.0) < 1e-9
+    naive = {k: (1/v)/sum(1/x for x in odds.values()) for k, v in odds.items()}
+    assert dist[(1,0)] > naive["1:0"]   # 热门项相对朴素归一抬升（k>1 修正方向）
+
 from crs_fusion import smooth_template
 
 def test_smooth_all_positive_even_unseen():

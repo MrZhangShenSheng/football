@@ -8,9 +8,13 @@ import re
 
 CRS_KEY = re.compile(r"^(\d+):(\d+)$")
 
+# 二分求 k 区间：体彩真实 CRS 池 Σ1/o 实测 1.17~1.35（抽水，score_odds 存档）→ k 解 >1；
+# 低估水池（Σ<1，如玩具/返水场景）k<1。上界 5.0 为实测需求（k≈1.1~1.5）3 倍以上冗余。
+K_BISECT_LO, K_BISECT_HI = 0.05, 5.0
+
 def solve_power_k(implied: dict[tuple, float]) -> float:
     """解 Σ p_i^k = 1 的 k（二分法）。implied 为原始倒数赔率（Σ>1 含抽水）。"""
-    lo, hi = 0.05, 1.0
+    lo, hi = K_BISECT_LO, K_BISECT_HI
     def over(k):
         return sum(v ** k for v in implied.values()) - 1.0
     for _ in range(60):
