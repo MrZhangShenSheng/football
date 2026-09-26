@@ -100,3 +100,34 @@ def shrink_lambda(lam_sum_model: float, e_mkt, w: float = W_LAMBDA_SHRINK):
     if e_mkt is None or e_mkt <= 0:
         return lam_sum_model, False
     return w * lam_sum_model + (1.0 - w) * e_mkt, True
+
+
+# ---- 比分族输出 + 闸门（spec §4）----
+
+# 5 族（spec §4）：族概率=ΣP_final，守恒到 1−族外项
+FAMILIES = {
+    "home_clean":  [(1,0), (2,0), (3,0)],
+    "home_multi":  [(2,1), (3,1), (3,2)],
+    "draw":        [(0,0), (1,1), (2,2)],
+    "away_clean":  [(0,1), (0,2), (0,3)],
+    "away_multi":  [(1,2), (1,3), (2,3)],
+}
+FAMILY_GATE_THRESHOLD = 0.28   # spec §4 数学审查错误3：max族概率<28%→关档（fusion_crs.json familyGateThreshold 同源）
+
+def family_scores(p_final: dict) -> list:
+    out = []
+    for name, members in FAMILIES.items():
+        inside = {s: p_final[s] for s in members if s in p_final}
+        if not inside:
+            continue
+        ranked = sorted(inside.items(), key=lambda kv: -kv[1])
+        out.append({"family": name, "prob": sum(inside.values()),
+                    "top1": ranked[0], "top2": ranked[1] if len(ranked) > 1 else None})
+    return sorted(out, key=lambda f: -f["prob"])
+
+def family_gate(p_final: dict, threshold: float = FAMILY_GATE_THRESHOLD):
+    fams = family_scores(p_final)
+    if not fams:
+        return False, 0.0
+    mx = fams[0]["prob"]
+    return mx >= threshold, mx

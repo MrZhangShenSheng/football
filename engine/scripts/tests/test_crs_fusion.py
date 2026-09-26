@@ -83,3 +83,27 @@ def test_shrink_lambda_no_market_degrades():
 def test_shrink_lambda_extremes():
     assert shrink_lambda(2.0, 3.0, w=0.0)[0] == 3.0   # 全市场
     assert shrink_lambda(2.0, 3.0, w=1.0)[0] == 2.0   # 全模型
+
+from crs_fusion import FAMILIES, family_scores, family_gate
+
+def test_five_families_defined():
+    assert set(FAMILIES) == {"home_clean", "home_multi", "draw", "away_clean", "away_multi"}
+    assert (1,1) in FAMILIES["draw"] and (2,0) in FAMILIES["home_clean"]
+
+def test_family_scores_sorted_with_top2():
+    p = {(1,0): 0.18, (1,1): 0.15, (0,1): 0.12, (2,1): 0.10, (2,0): 0.08, (0,0): 0.05}
+    fams = family_scores(p)
+    assert fams[0]["prob"] >= fams[1]["prob"]
+    draw = [f for f in fams if f["family"] == "draw"][0]
+    assert draw["top1"][0] == (1,1) and draw["top2"][0] == (0,0)
+
+def test_family_gate_blocks_flat_distribution():
+    # 数学审查错误3：高方差场族概率摊平 → 关档
+    flat = {(1,0): 0.07, (1,1): 0.07, (0,1): 0.07, (2,1): 0.06, (2,0): 0.06, (0,2): 0.06, (0,0): 0.04}
+    ok, mx = family_gate(flat)
+    assert ok is False and mx < 0.28
+
+def test_family_gate_passes_concentrated():
+    p = {(1,1): 0.30, (0,0): 0.10, (1,0): 0.20, (0,1): 0.05, (2,1): 0.05, (2,0): 0.05}
+    ok, mx = family_gate(p)
+    assert ok is True and mx >= 0.28
