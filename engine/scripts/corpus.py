@@ -145,6 +145,12 @@ def normalize_record(r: dict, round_id: str) -> dict | None:
             "directionHit": r.get("directionHit"),
             "scoreHit": r.get("scoreHit"),
             "optionHit": r.get("optionHit"),   # 全玩法选项命中（scoreHit 只管比分腿，09-25 口径归一）
+            # T9 族监控链透传（CRS 腿：familyHit=actual∈top1 族；尾部 4+ 探测器输入）
+            "familyHit": r.get("familyHit"),
+            "familyName": r.get("familyName"),
+            "familyProb": r.get("familyProb"),
+            "crsTailProb": r.get("crsTailProb"),
+            "crsTailSource": r.get("crsTailSource"),
             "clv": r.get("clv"),
             "clv_approx_dk": r.get("clv_approx_dk"),
             "clv_note": r.get("clv_note"),

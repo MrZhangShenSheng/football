@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""胜率趋势报告：回填赛果后自动跑，产出七区块（①logloss vs 市场 ②命中率+滚动20场 ③CLV ④校准图 ⑤分桶下钻 ⑥方案准确率 ⑦回归断言）→ data/04-summaries/trend.html。
+"""胜率趋势报告：回填赛果后自动跑，产出九区块（①logloss vs 市场 ②命中率+滚动20场 ③CLV ④校准图 ⑤分桶下钻 ⑥方案准确率 ⑦回归断言 ⑧族概率分桶校准 ⑨尾部4+球专项）→ data/04-summaries/trend.html。
 
 设计依据（docs/2026-08-22-learning-loop-design.html + 文献调研 2026-08-22）：
 - 主曲线 = 累计 log loss（arXiv:1908.08980：Ignorance/log-loss 实证优于 RPS/Brier）+ 市场基线对照线
@@ -8,6 +8,9 @@
 - CLV 走势（DK 近似口径，体彩抽水结构性负值看相对趋势）
 - 校准图简化版（arXiv:2008.03033 CORP 思想的固定分桶版：p_final 最高概率 vs 实际胜率）
 - 自动结论硬门槛：已回填 n<30 只输出"数据积累期"，n≥30 才启用倒挂/趋势规则
+- ⑧⑨ CRS 监控链（v5.14 融合链 T9）：⑧ top1 族概率分桶校准；⑨ 尾部 4+ 球实际占比 vs
+  分布尾部概率均值——唯一正 EV 探测器。两区块均输出二项检验三数字（累计命中/累计期望/
+  n_legs），trend 只出数不判，回滚判据（样本≥30 且单侧 p<0.05）在人工/SKILL 层执行
 
 用法：
   python trend_report.py          # 读 corpus.json → trend.html
@@ -290,6 +293,9 @@ def plan_summary(plan_rows: list[dict], series: dict) -> dict:
 
 
 ASSERT_MIN_N = 15  # 单断言最小样本（低于则跳过该断言）
+# T9 族监控分桶（闸门 0.28 起；spec §4 族概率集中区间上探）
+FAMILY_BINS = [(0.28, 0.35), (0.35, 0.45), (0.45, 1.01)]
+TAIL_GOALS = 4     # 尾部专项阈值：总进球 4+ 球（spec §5 唯一正 EV 探测器）
 
 
 def build_assertions(series: dict, cal: list[dict], buckets: dict) -> list[dict]:
@@ -352,6 +358,56 @@ def build_assertions(series: dict, cal: list[dict], buckets: dict) -> list[dict]
             len(dc_t) + len(dc_f),
             "DC场显著更差→该批联赛模型重拟合或降 DC 权重；更优→可提 a（calibrate 校验）")
     return asserts
+
+
+def _total_goals(r: dict) -> int | None:
+    """result '2-1' → 3；不可解析 → None（尾部专项配对过滤用）。"""
+    m = re.match(r"^(\d+)-(\d+)$", str(r.get("result") or "").strip())
+    return int(m.group(1)) + int(m.group(2)) if m else None
+
+
+def build_family_calibration(records: list[dict]) -> dict | None:
+    """区块⑧：top1 族概率分桶校准（T9）。familyHit 已判 CRS 腿按族概率分桶，桶内预测
+    均值 vs 实际命中率；闸门 0.28 以下腿不入桶只入汇总。无已判腿 → None（样本积累中）。
+    附二项检验三数字（累计命中/累计期望/n_legs）——trend 只出数不判。"""
+    judged = [r for r in records if r.get("familyHit") is not None]
+    if not judged:
+        return None
+    legs = [r for r in judged if r.get("familyProb") is not None]
+    buckets = []
+    for lo, hi in FAMILY_BINS:
+        members = [r for r in legs if lo <= float(r["familyProb"]) < hi]
+        buckets.append({
+            "bin": f"{lo:.0%}~{hi:.0%}", "n": len(members),
+            "pred": round(sum(float(r["familyProb"]) for r in members) / len(members), 4) if members else None,
+            "obs": round(sum(1 for r in members if r["familyHit"]) / len(members), 4) if members else None})
+    return {"buckets": buckets,
+            "hits": sum(1 for r in legs if r["familyHit"]),
+            "expected": round(sum(float(r["familyProb"]) for r in legs), 2),
+            "n_legs": len(legs)}
+
+
+def build_tail_monitor(records: list[dict]) -> dict | None:
+    """区块⑨：尾部 4+ 球专项（spec §5 唯一正 EV 探测器）。CRS 相关场配对比较实际 4+
+    占比 vs 分布尾部概率均值，按 crsTailSource 分口径统计（fused=真融合 / qcache=模板λ链
+    降级），不并池防回滚误判。无配对样本 → None。附二项检验三数字——trend 只出数不判。"""
+    groups: dict[str, list[tuple[float, bool]]] = defaultdict(list)
+    for r in records:
+        tg, tp = _total_goals(r), r.get("crsTailProb")
+        if tg is None or tp is None:
+            continue  # 配对要求：实际赛果与尾部概率齐备（分母一致才可比）
+        groups[str(r.get("crsTailSource") or "?")].append((float(tp), tg >= TAIL_GOALS))
+    if not groups:
+        return None
+    out = {}
+    for src, pairs in groups.items():
+        n = len(pairs)
+        hits = sum(1 for _, h in pairs if h)
+        out[src] = {"n_legs": n, "hits": hits,
+                    "expected": round(sum(p for p, _ in pairs), 2),
+                    "pred_mean": round(sum(p for p, _ in pairs) / n, 4),
+                    "actual_share": round(hits / n, 4)}
+    return out
 
 
 def conclusion(series: dict, cal: list[dict]) -> str:
@@ -487,7 +543,8 @@ td{padding:5px 8px;border-bottom:1px solid #202a40}
 """
 
 
-def render(series: dict, cal: list[dict], buckets: dict, concl: str, meta: dict, plans: dict, records: list) -> str:
+def render(series: dict, cal: list[dict], buckets: dict, concl: str, meta: dict, plans: dict,
+           records: list, fam_cal: dict | None = None, tail_mon: dict | None = None) -> str:
     rows = series["rounds"]
     labels = [r["round"].replace("2026-", "") for r in rows] if rows else []
     chart1 = _line_chart([(i, r["cum_logloss"]) for i, r in enumerate(rows)] if rows else [],
@@ -542,6 +599,34 @@ def render(series: dict, cal: list[dict], buckets: dict, concl: str, meta: dict,
         f'<tr><td>{a["name"]}</td><td>{"⚠️ 触发" if a["triggered"] else "静默"}</td><td>{a["n"]}</td>'
         f'<td>{a["conclusion"] or "—"}</td><td>{a["action"] or "—"}</td></tr>'
         for a in asserts) or '<tr><td colspan="5" class="note">暂无断言数据</td></tr>'
+
+    # ⑧⑨ CRS 监控链区块（T9）：空数据渲染"样本积累中"不崩
+    def _binomial_note(hits, expected, n):
+        return (f'二项检验红线数据（trend 只出数不判）：累计命中 {hits} / 累计期望 {expected} '
+                f'/ n_legs={n} —— 回滚判据=样本≥30 且单侧 p&lt;0.05，判定在人工/SKILL 层。')
+
+    if fam_cal and fam_cal["n_legs"]:
+        fam_trs = "".join(
+            f'<tr><td>{b["bin"]}</td><td>{b["n"]}</td><td>{fmt_pct(b["pred"])}</td>'
+            f'<td>{fmt_pct(b["obs"])}</td></tr>' for b in fam_cal["buckets"])
+        empty_bins = "、".join(b["bin"] for b in fam_cal["buckets"] if b["n"] == 0)
+        fam_html = (f'<table><tr><th>族概率桶</th><th>n</th><th>预测均值</th><th>实际命中率</th></tr>{fam_trs}</table>'
+                    + (f'<div class="note">未覆盖桶（样本积累中）：{empty_bins}。</div>' if empty_bins else "")
+                    + f'<div class="note">{_binomial_note(fam_cal["hits"], fam_cal["expected"], fam_cal["n_legs"])}</div>')
+    else:
+        fam_html = '<div class="empty">样本积累中（CRS 腿族数据随回填积累——融合链 2026-09-26 上线，闸门内腿回填后生效）</div>'
+
+    if tail_mon:
+        tail_trs = "".join(
+            f'<tr><td>{src}</td><td>{v["n_legs"]}</td><td>{v["pred_mean"]:.1%}</td>'
+            f'<td>{v["actual_share"]:.1%}</td><td>{v["hits"]}</td><td>{v["expected"]}</td></tr>'
+            for src, v in tail_mon.items())
+        tail_html = (f'<table><tr><th>口径来源</th><th>n_legs</th><th>尾部概率均值</th>'
+                     f'<th>实际4+占比</th><th>累计命中</th><th>累计期望</th></tr>{tail_trs}</table>'
+                     '<div class="note">实际4+占比持续高于尾部概率均值 = 分布尾部系统性低估（TTG s4+/CRS 长赔唯一正 EV 区）。'
+                     '口径分组不并池：fused=真融合分布；qcache=模板λ链降级（融合尾部未落盘期的诚实降级源，判红线时先核口径）。</div>')
+    else:
+        tail_html = '<div class="empty">样本积累中（需回填后的 CRS 相关场同时具备实际赛果与尾部概率）</div>'
 
     return f"""<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -609,6 +694,17 @@ def render(series: dict, cal: list[dict], buckets: dict, concl: str, meta: dict,
 <div class="note">样本门槛 n≥{ASSERT_MIN_N}/断言（不足跳过防噪声）。触发的断言对应提升动作：A1/A4→calibrate.py 重校融合系数（自动，n≥100）；A2/A3→ablate.py 系数消融（人审 diff）。四项全静默 = 模型健康或样本不足。</div>
 </div>
 
+<h2>⑧ 族概率分桶校准（CRS 监控链）★ v5.14</h2>
+<div class="card">
+{fam_html}
+<div class="note">CRS 腿 top1 族概率 vs 实际族命中（familyHit=actual∈top1族）。桶内预测均值系统性高于实际 = 族输出高估（闸门放行过松）；低于实际 = 低估（可用未用）。闸门 0.28 以下腿不入桶只入汇总。</div>
+</div>
+
+<h2>⑨ 尾部 4+ 球专项（唯一正 EV 探测器）★ v5.14</h2>
+<div class="card">
+{tail_html}
+</div>
+
 <div class="sub" style="margin-top:36px">sszhang pipeline · 回填赛果后自动更新 · 主指标依据 arXiv:1908.08980（log loss）/ arXiv:2008.03033（校准图）</div>
 </div></body></html>"""
 
@@ -622,10 +718,13 @@ def main() -> None:
     series = build_series(records)
     cal = build_calibration(series["filled"])
     buckets = build_buckets(series["filled"])
+    fam_cal = build_family_calibration(records)   # T9 ⑧：全 records 口径（CRS 腿多无 directionHit，不入 filled）
+    tail_mon = build_tail_monitor(records)        # T9 ⑨：尾部 4+ 配对（同样全 records）
     concl = conclusion(series, cal)
     meta = {"generatedAt": date.today().isoformat(), "n_total": c.get("n_total", 0),
             "n_result": len(series["filled"]), "n_rounds": c.get("n_rounds", 0)}
-    OUT.write_text(render(series, cal, buckets, concl, meta, c.get("plans", {}), records), encoding="utf-8")
+    OUT.write_text(render(series, cal, buckets, concl, meta, c.get("plans", {}), records,
+                          fam_cal, tail_mon), encoding="utf-8")
     log("trend", f"回填 {meta['n_result']} 场 / {meta['n_rounds']} 轮 → {OUT.relative_to(ROOT)}")
     log("trend", f"结论：{concl}")
 

@@ -7,7 +7,9 @@
 - 链路 2（兜底）：espn_fetch results 按日拉赛果，中文队名经 _aliases zh → espn 匹配
 - 写回规则（铁律 7）：只改 result/directionHit/scoreHit/optionHit/backfillNote 字段，不动预测锁定字段；
   scoreHit 只由比分类 pick 判定（score_hit_of），方向/总进球/半全场腿的选项命中走 optionHit；
-  增补字段 pinClose/pinSource（fd 收盘三键匹配·P2 归因地基）随回填成功自动落盘，幂等不覆盖
+  增补字段 pinClose/pinSource（fd 收盘三键匹配·P2 归因地基）随回填成功自动落盘，幂等不覆盖；
+  T9 族监控：CRS pick 腿增补 familyHit/familyName/familyProb + crsTailProb/crsTailSource
+  （top1 族上下文 crsFamilies→boldplay crsGate 解析；无族数据 familyHit=null 诚实空）
 - 输出：本轮回填 N/M（体彩对票 K）+ 不可得清单
 
 用法：
@@ -262,6 +264,80 @@ def option_hit(rec: dict, hg: int, ag: int, hhg: int | None = None, hag: int | N
     return None
 
 
+# ---- 族监控链（T9）：CRS 腿 familyHit 判定 + 尾部概率落盘 ----
+
+PRED_DIR = ROOT / "data" / "03-predictions"
+QCACHE_DIR = ROOT / "engine" / "shadow" / "qcache"
+
+
+def resolve_family_ctx(rec: dict, round_date: str, bp_cache: dict,
+                       pred_dir: Path | None = None) -> tuple[str | None, float | None]:
+    """CRS 腿当轮 top1 族上下文：优先 rec.crsFamilies（预测链落盘 family_scores 输出），
+    否则 T8 boldplay 主卡 crsGate 透传（{date}-boldplay.json cards[].crsGate.topFamily/maxProb，
+    -rN 过程快照不读——铁律7 主文件=真相）。无族数据 → (None, None)。"""
+    fams = rec.get("crsFamilies")
+    if isinstance(fams, list) and fams:
+        top = max(fams, key=lambda f: float(f.get("prob") or 0))
+        return top.get("family"), top.get("prob")
+    pred = pred_dir or PRED_DIR
+    if round_date not in bp_cache:
+        try:
+            cards = json.loads((pred / f"{round_date}-boldplay.json").read_text(encoding="utf-8")).get("cards") or []
+        except (OSError, json.JSONDecodeError):
+            cards = []
+        bp_cache[round_date] = {c.get("code"): c.get("crsGate") or {} for c in cards}
+    gate = bp_cache[round_date].get(rec.get("code")) or {}
+    return gate.get("topFamily"), gate.get("maxProb")
+
+
+def resolve_tail_prob(rec: dict, round_date: str, qc_cache: dict,
+                      qcache_dir: Path | None = None) -> tuple[float | None, str | None]:
+    """CRS 分布尾部 P(4+)（trend 尾部专项输入）：优先 rec.crsDist（真融合口径 "h:a"→p）；
+    否则 qcache 快照 ttg s4~s7 并桶（模板λ链口径——融合尾部未落盘的降级源，来源字段
+    标注防口径混淆，trend 侧分口径统计不并池）。无源 → (None, None)。"""
+    dist = rec.get("crsDist")
+    if isinstance(dist, dict) and dist:
+        try:
+            tail = sum(float(p) for s, p in dist.items()
+                       if sum(int(x) for x in str(s).split(":")) >= 4)
+            return round(tail, 4), "fused"
+        except (ValueError, TypeError):
+            pass  # 坏键 → 降级 qcache
+    base = datetime.strptime(round_date, "%Y-%m-%d").date()
+    qdir = qcache_dir or QCACHE_DIR
+    for delta in (0, 1, -1, 2):   # 销售日窗口：编号一周内唯一，任意桶命中即同场
+        dd = (base + timedelta(days=delta)).isoformat()
+        if dd not in qc_cache:
+            try:
+                snap = json.loads((qdir / f"{dd}.json").read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                snap = {}
+            qc_cache[dd] = {code: round(sum(float(p) for k, p in (v.get("ttg") or [])
+                                            if k in ("s4", "s5", "s6", "s7")), 4)
+                            for code, v in snap.items()}
+        if rec.get("code") in qc_cache[dd]:
+            return qc_cache[dd][rec["code"]], "qcache"
+    return None, None
+
+
+def apply_family_ctx(rec: dict, score: tuple[int, int], round_date: str, bp_cache: dict,
+                     qc_cache: dict, pred_dir: Path | None = None,
+                     qcache_dir: Path | None = None) -> bool:
+    """回填族监控字段（T9）：仅 CRS pick 腿写 familyHit（actual ∈ 当轮 top1 族）+
+    familyName/familyProb + crsTailProb/crsTailSource；无族数据 → familyHit=null。
+    非 CRS 腿不动（返回 False）。族映射 import crs_fusion.FAMILIES（单一事实源）。"""
+    if str(rec.get("pick") or "").split(" ", 1)[0].upper() not in SCORE_PLAYS:
+        return False
+    from crs_fusion import FAMILIES
+    fam, prob = resolve_family_ctx(rec, round_date, bp_cache, pred_dir)
+    rec["familyName"], rec["familyProb"] = fam, prob
+    rec["familyHit"] = score in FAMILIES[fam] if fam in FAMILIES else None
+    tp, src = resolve_tail_prob(rec, round_date, qc_cache, qcache_dir)
+    if tp is not None:
+        rec["crsTailProb"], rec["crsTailSource"] = tp, src
+    return True
+
+
 def backfill(day_limit: str | None = None) -> dict:
     zh_map = zh_to_espn_map()
     # 收集未回填记录（result 为空或'不可得'均重试——'不可得'曾因 ESPN 单链路断粮，体彩可救回）
@@ -269,6 +345,8 @@ def backfill(day_limit: str | None = None) -> dict:
     touched: dict[int, tuple] = {}   # id(data) → (path, data)：收集阶段被动过的文件也须写回
     n_fix = 0
     n_pin_pending = 0   # fd 覆盖联赛已回填但 pinClose 仍缺（时机提示用，层2）
+    bp_cache: dict[str, dict] = {}   # T9 族上下文：round_date → {code: crsGate}
+    qc_cache: dict[str, dict] = {}   # T9 尾部概率：qcache 日 → {code: P(4+)}
     for p in sorted(RESULTS_DIR.glob("*.json")):
         if p.name.startswith("_"):
             continue
@@ -321,6 +399,11 @@ def backfill(day_limit: str | None = None) -> dict:
                         if ps:
                             rec.setdefault("preSnapshots", ps)
                             data["_dirty"] = True
+                # 已回填但缺 familyHit → 纯本地补判（T9 监控链幂等补挂，同 pinClose 模式）
+                if "familyHit" not in rec and sc:
+                    d0 = rec.get("date") or data.get("date")
+                    if d0 and apply_family_ctx(rec, sc, d0, bp_cache, qc_cache):
+                        data["_dirty"] = True
                 continue
             d = rec.get("date") or data.get("date")
             if not d or d > TODAY:
@@ -377,6 +460,7 @@ def backfill(day_limit: str | None = None) -> dict:
             oh = score_hit_of(rec, hg, ag)
             rec["scoreHit"] = oh if oh is not None else rec.get("scoreHit")
             rec["optionHit"] = option_hit(rec, hg, ag, hh, ha)   # 全玩法选项命中（TTG/HAFU 等非比分腿的命中口径）
+            apply_family_ctx(rec, (hg, ag), d, bp_cache, qc_cache)   # T9：CRS 腿族判定+尾部概率
             rec.pop("backfillNote", None)  # 救回成功，清'不可得/缓存延迟'旧标注
             apply_pin_close(rec, sp.get("matchDate") or d, ROOT / "engine" / "cache")
             ps = find_pre_snapshots(rec.get("code"), d)
@@ -414,6 +498,7 @@ def backfill(day_limit: str | None = None) -> dict:
             oh = score_hit_of(rec, hg, ag)
             rec["scoreHit"] = oh if oh is not None else rec.get("scoreHit")
             rec["optionHit"] = option_hit(rec, hg, ag)   # ESPN 兜底无半场 → 半全场腿为 None（口径同链路1）
+            apply_family_ctx(rec, (hg, ag), d, bp_cache, qc_cache)   # T9：CRS 腿族判定+尾部概率
             rec.pop("backfillNote", None)  # 对齐链路1：救回成功，清'不可得/缓存延迟'旧标注
             apply_pin_close(rec, d, ROOT / "engine" / "cache")   # ESPN 兜底场用预测日作窗口中心
             ps = find_pre_snapshots(rec.get("code"), d)
