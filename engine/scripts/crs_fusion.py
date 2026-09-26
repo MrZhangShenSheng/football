@@ -131,3 +131,23 @@ def family_gate(p_final: dict, threshold: float = FAMILY_GATE_THRESHOLD):
         return False, 0.0
     mx = fams[0]["prob"]
     return mx >= threshold, mx
+
+
+# ---- 参数文件加载（spec §6；降级不熔断）----
+
+import json as _json
+from pathlib import Path
+
+FUSION_CRS_PATH = Path(__file__).resolve().parent.parent / "cache" / "fusion_crs.json"   # engine/cache/fusion_crs.json
+FUSION_CRS_DEFAULTS = {"frozenAt": "2026-09-26", "enabled": True, "r": 0.286, "w": 0.35,
+                       "alphaLidstone": 0.5, "familyGateThreshold": 0.28, "hhadCedeThreshold": 0.65,
+                       "leagueOverrides": None}
+
+def load_fusion_crs() -> dict:
+    """读融合参数；文件缺失/损坏 → 冻结默认值 + degraded 标记（降级不熔断）。"""
+    try:
+        cfg = _json.loads(FUSION_CRS_PATH.read_text(encoding="utf-8"))
+        cfg.setdefault("degraded", False)
+        return cfg
+    except Exception:
+        return {**FUSION_CRS_DEFAULTS, "degraded": True}

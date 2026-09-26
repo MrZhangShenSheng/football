@@ -107,3 +107,16 @@ def test_family_gate_passes_concentrated():
     p = {(1,1): 0.30, (0,0): 0.10, (1,0): 0.20, (0,1): 0.05, (2,1): 0.05, (2,0): 0.05}
     ok, mx = family_gate(p)
     assert ok is True and mx >= 0.28
+
+import json, pathlib
+from crs_fusion import load_fusion_crs
+
+def test_load_fusion_crs_reads_file():
+    cfg = load_fusion_crs()
+    assert cfg["enabled"] is True
+    assert 0 < cfg["r"] < 1 and 0 <= cfg["w"] <= 1
+
+def test_load_fusion_crs_degrades_to_defaults(tmp_path, monkeypatch):
+    monkeypatch.setattr("crs_fusion.FUSION_CRS_PATH", tmp_path / "missing.json")
+    cfg = load_fusion_crs()
+    assert cfg["degraded"] is True and cfg["r"] == 0.286
