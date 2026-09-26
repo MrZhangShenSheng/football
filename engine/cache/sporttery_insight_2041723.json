@@ -1,0 +1,245 @@
+{
+ "fetchedAt": "2026-09-26",
+ "source": "sporttery",
+ "matchId": 2041723,
+ "match": {
+  "code": "周六018",
+  "league": "国际赛",
+  "gameweek": "",
+  "season": "2026",
+  "home": "加拿大",
+  "away": "智利",
+  "kickoff": "2026-09-27 07:00",
+  "uniformMatchId": 2509766
+ },
+ "standing": {
+  "away": {
+   "groupName": "",
+   "phaseName": "",
+   "ranking": "",
+   "sAwayDrawMatchCnt": "",
+   "sAwayLossGoalMatchCnt": "",
+   "sAwayWinGoalMatchCnt": "",
+   "sDrawMatchCnt": "",
+   "sLossGoalMatchCnt": "",
+   "sWinGoalMatchCnt": "",
+   "seasonName": ""
+  },
+  "home": {
+   "groupName": "",
+   "phaseName": "",
+   "ranking": "",
+   "sDrawMatchCnt": "",
+   "sHomeDrawMatchCnt": "",
+   "sHomeLossGoalMatchCnt": "",
+   "sHomeWinGoalMatchCnt": "",
+   "sLossGoalMatchCnt": "",
+   "sWinGoalMatchCnt": "",
+   "seasonName": ""
+  }
+ },
+ "injuries": {
+  "home": [
+   {
+    "name": "科尼利厄斯",
+    "pos": "后卫",
+    "no": "",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 4,
+    "starts": 2
+   }
+  ],
+  "away": []
+ },
+ "form": {
+  "goalAvg": {
+   "awayGoalAvgCnt": "1.4",
+   "awayGoalAvgCntRatio": "48.3",
+   "homeGoalAvgCnt": "1.5",
+   "homeGoalAvgCntRatio": "51.7",
+   "totalLegCnt": 10
+  },
+  "last10": {
+   "awayDrawMatchCnt": 1,
+   "awayLossGoalMatchCnt": 4,
+   "awayScoreRatio": "53",
+   "awayWinGoalMatchCnt": 5,
+   "homeDrawMatchCnt": 4,
+   "homeLossGoalMatchCnt": 2,
+   "homeScoreRatio": "53",
+   "homeWinGoalMatchCnt": 4,
+   "totalLegCnt": 10
+  },
+  "last10HomeAway": {
+   "awayDrawMatchCnt": 1,
+   "awayLossGoalMatchCnt": 7,
+   "awayScoreRatio": "23",
+   "awayWinGoalMatchCnt": 2,
+   "homeDrawMatchCnt": 5,
+   "homeLossGoalMatchCnt": 2,
+   "homeScoreRatio": "47",
+   "homeWinGoalMatchCnt": 3,
+   "totalLegCnt": 10
+  }
+ },
+ "h2h": {
+  "statistics": {
+   "drawMatchCnt": 1,
+   "drawProbability": "100%",
+   "goalCnt": 0,
+   "lossGoalCnt": 0,
+   "lossGoalMatchCnt": 0,
+   "lossProbability": "0%",
+   "netGoal": 0,
+   "sportteryTeamId": 0,
+   "teamId": 0,
+   "teamShortName": "加拿大",
+   "totalLegCnt": 1,
+   "winGoalMatchCnt": 0,
+   "winProbability": "0%"
+  },
+  "matches": [
+   {
+    "date": "2024-06-30",
+    "home": "加拿大",
+    "score": "0:0",
+    "ht": "0:0",
+    "away": "智利",
+    "winner": "draw"
+   }
+  ]
+ },
+ "scorers": {
+  "away": {
+   "playerList": [
+    {
+     "appearanceCnt": 4,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 2,
+     "goalProbability": "25%",
+     "injuryFlag": 0,
+     "personId": 602800,
+     "personName": "G.塔皮亚",
+     "playerPositionCode": "Attacker",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 2,
+     "substituteMatchCnt": 2,
+     "suspensionFlag": 0,
+     "uniformNo": ""
+    },
+    {
+     "appearanceCnt": 4,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.3",
+     "goalCnt": 1,
+     "goalProbability": "13%",
+     "injuryFlag": 0,
+     "personId": 675456,
+     "personName": "L. Cepeda",
+     "playerPositionCode": "Attacker",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 2,
+     "substituteMatchCnt": 2,
+     "suspensionFlag": 0,
+     "uniformNo": ""
+    },
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "13%",
+     "injuryFlag": 0,
+     "personId": 471780,
+     "personName": "布雷雷顿",
+     "playerPositionCode": "Attacker",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 2,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": ""
+    }
+   ],
+   "sportteryTeamId": 419,
+   "teamId": 424,
+   "teamShortName": "智利",
+   "uniformTeamId": 1742
+  },
+  "home": {
+   "playerList": [
+    {
+     "appearanceCnt": 4,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 2,
+     "goalProbability": "40%",
+     "injuryFlag": 0,
+     "personId": 481528,
+     "personName": "戴维",
+     "playerPositionCode": "Attacker",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 4,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": ""
+    },
+    {
+     "appearanceCnt": 4,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.3",
+     "goalCnt": 1,
+     "goalProbability": "20%",
+     "injuryFlag": 0,
+     "personId": 183261,
+     "personName": "奥索里奥",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 3,
+     "suspensionFlag": 0,
+     "uniformNo": ""
+    },
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "20%",
+     "injuryFlag": 0,
+     "personId": 546771,
+     "personName": "罗",
+     "playerPositionCode": "Attacker",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 1,
+     "suspensionFlag": 0,
+     "uniformNo": ""
+    }
+   ],
+   "sportteryTeamId": 542,
+   "teamId": 401,
+   "teamShortName": "加拿大",
+   "uniformTeamId": 1171
+  },
+  "seasonId": 14311,
+  "seasonName": "2026",
+  "tournamentId": 1012,
+  "tournamentShortName": "国际赛",
+  "uniformLeagueId": 104,
+  "uniformMatchId": 2509766
+ }
+}

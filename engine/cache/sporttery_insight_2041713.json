@@ -1,22 +1,22 @@
 {
  "fetchedAt": "2026-09-26",
  "source": "sporttery",
- "matchId": 2041720,
+ "matchId": 2041713,
  "match": {
-  "code": "周六015",
+  "code": "周六008",
   "league": "欧国联",
   "gameweek": "1",
   "season": "2026/2027",
-  "home": "北马其顿",
-  "away": "瑞士",
-  "kickoff": "2026-09-27 02:45",
-  "uniformMatchId": 2509746
+  "home": "斯洛文尼",
+  "away": "苏格兰",
+  "kickoff": "2026-09-26 21:00",
+  "uniformMatchId": 2509765
  },
  "standing": {
   "away": {
    "groupName": "Group 1",
    "phaseName": "League B",
-   "ranking": "2",
+   "ranking": "1",
    "sAwayDrawMatchCnt": "0",
    "sAwayLossGoalMatchCnt": "0",
    "sAwayWinGoalMatchCnt": "0",
@@ -28,7 +28,7 @@
   "home": {
    "groupName": "Group 1",
    "phaseName": "League B",
-   "ranking": "4",
+   "ranking": "3",
    "sDrawMatchCnt": "0",
    "sHomeDrawMatchCnt": "0",
    "sHomeLossGoalMatchCnt": "0",
@@ -40,40 +40,21 @@
  },
  "injuries": {
   "home": [],
-  "away": [
-   {
-    "name": "索乌",
-    "pos": "中场",
-    "no": "",
-    "injury": 1,
-    "suspension": 0,
-    "apps": 0,
-    "starts": 0
-   },
-   {
-    "name": "阿坎吉",
-    "pos": "后卫",
-    "no": "",
-    "injury": 1,
-    "suspension": 0,
-    "apps": 0,
-    "starts": 0
-   }
-  ]
+  "away": []
  },
  "form": {
   "goalAvg": {
-   "awayGoalAvgCnt": "1.8",
-   "awayGoalAvgCntRatio": "69.2",
+   "awayGoalAvgCnt": "1.7",
+   "awayGoalAvgCntRatio": "68.0",
    "homeGoalAvgCnt": "0.8",
-   "homeGoalAvgCntRatio": "30.8",
+   "homeGoalAvgCntRatio": "32.0",
    "totalLegCnt": 10
   },
   "last10": {
-   "awayDrawMatchCnt": 5,
-   "awayLossGoalMatchCnt": 1,
-   "awayScoreRatio": "57",
-   "awayWinGoalMatchCnt": 4,
+   "awayDrawMatchCnt": 0,
+   "awayLossGoalMatchCnt": 5,
+   "awayScoreRatio": "50",
+   "awayWinGoalMatchCnt": 5,
    "homeDrawMatchCnt": 5,
    "homeLossGoalMatchCnt": 4,
    "homeScoreRatio": "27",
@@ -81,55 +62,72 @@
    "totalLegCnt": 10
   },
   "last10HomeAway": {
-   "awayDrawMatchCnt": 7,
-   "awayLossGoalMatchCnt": 0,
-   "awayScoreRatio": "53",
-   "awayWinGoalMatchCnt": 3,
+   "awayDrawMatchCnt": 1,
+   "awayLossGoalMatchCnt": 3,
+   "awayScoreRatio": "63",
+   "awayWinGoalMatchCnt": 6,
    "homeDrawMatchCnt": 6,
-   "homeLossGoalMatchCnt": 0,
-   "homeScoreRatio": "60",
-   "homeWinGoalMatchCnt": 4,
+   "homeLossGoalMatchCnt": 2,
+   "homeScoreRatio": "40",
+   "homeWinGoalMatchCnt": 2,
    "totalLegCnt": 10
   }
  },
  "h2h": {
   "statistics": {
-   "drawMatchCnt": 0,
-   "drawProbability": "0%",
+   "drawMatchCnt": 1,
+   "drawProbability": "50%",
    "goalCnt": 0,
    "lossGoalCnt": 0,
-   "lossGoalMatchCnt": 0,
-   "lossProbability": "0%",
+   "lossGoalMatchCnt": 1,
+   "lossProbability": "50%",
    "netGoal": 0,
    "sportteryTeamId": 0,
    "teamId": 0,
-   "teamShortName": "北马其顿",
-   "totalLegCnt": 0,
+   "teamShortName": "斯洛文尼",
+   "totalLegCnt": 2,
    "winGoalMatchCnt": 0,
    "winProbability": "0%"
   },
-  "matches": []
+  "matches": [
+   {
+    "date": "2017-10-09",
+    "home": "斯洛文尼",
+    "score": "2:2",
+    "ht": "0:1",
+    "away": "苏格兰",
+    "winner": "draw"
+   },
+   {
+    "date": "2017-03-27",
+    "home": "苏格兰",
+    "score": "1:0",
+    "ht": "0:0",
+    "away": "斯洛文尼",
+    "winner": "away"
+   }
+  ]
  },
  "scorers": {
   "away": {
    "playerList": [],
-   "sportteryTeamId": 403,
-   "teamId": 2201,
-   "teamShortName": "瑞士",
-   "uniformTeamId": 407
+   "sportteryTeamId": 398,
+   "teamId": 1940,
+   "teamShortName": "苏格兰",
+   "uniformTeamId": 64
   },
   "home": {
    "playerList": [],
-   "sportteryTeamId": 1476,
-   "teamId": 1439,
-   "teamShortName": "北马其顿",
-   "uniformTeamId": 746
+   "sportteryTeamId": 400,
+   "teamId": 2011,
+   "teamShortName": "斯洛文尼",
+   "uniformTeamId": 93
   },
   "seasonId": 14602,
   "seasonName": "2026/2027",
   "tournamentId": 1400,
   "tournamentShortName": "欧国联",
   "uniformLeagueId": 69,
-  "uniformMatchId": 2509746
+  "uniformMatchId": 2509765
  }
 }

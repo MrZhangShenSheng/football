@@ -1,106 +1,41 @@
 {
-  "checkedAt": "2026-09-25",
+  "checkedAt": "2026-09-26",
   "leagues": {
-    "欧国联": {
-      "status": "missing"
-    },
-    "荷乙": {
-      "status": "missing"
-    },
     "亚运男足": {
       "status": "missing"
     },
     "日乙": {
       "status": "missing"
     },
+    "欧国联": {
+      "status": "missing"
+    },
+    "荷乙": {
+      "status": "missing"
+    },
+    "国际赛": {
+      "status": "missing"
+    },
+    "美职": {
+      "status": "ready",
+      "roundsPlayed": 23,
+      "standingsSource": "espn",
+      "fdCovered": false
+    },
     "韩职": {
       "status": "missing"
     }
   },
   "missingLeagues": [
-    "欧国联",
-    "荷乙",
     "亚运男足",
     "日乙",
+    "欧国联",
+    "荷乙",
+    "国际赛",
     "韩职"
   ],
   "staleLeagues": [],
   "missingAlias": [
-    {
-      "team": "格鲁吉亚",
-      "league": "欧国联",
-      "match": "格鲁吉亚 vs 北爱尔兰"
-    },
-    {
-      "team": "北爱尔兰",
-      "league": "欧国联",
-      "match": "格鲁吉亚 vs 北爱尔兰"
-    },
-    {
-      "team": "亚美尼亚",
-      "league": "欧国联",
-      "match": "亚美尼亚 vs 拉脱维亚"
-    },
-    {
-      "team": "拉脱维亚",
-      "league": "欧国联",
-      "match": "亚美尼亚 vs 拉脱维亚"
-    },
-    {
-      "team": "意大利",
-      "league": "欧国联",
-      "match": "意大利 vs 比利时"
-    },
-    {
-      "team": "比利时",
-      "league": "欧国联",
-      "match": "意大利 vs 比利时"
-    },
-    {
-      "team": "黑山",
-      "league": "欧国联",
-      "match": "黑山 vs 塞浦路斯"
-    },
-    {
-      "team": "塞浦路斯",
-      "league": "欧国联",
-      "match": "黑山 vs 塞浦路斯"
-    },
-    {
-      "team": "波兰",
-      "league": "欧国联",
-      "match": "波兰 vs 波黑"
-    },
-    {
-      "team": "波黑",
-      "league": "欧国联",
-      "match": "波兰 vs 波黑"
-    },
-    {
-      "team": "土耳其",
-      "league": "欧国联",
-      "match": "土耳其 vs 法国"
-    },
-    {
-      "team": "法国",
-      "league": "欧国联",
-      "match": "土耳其 vs 法国"
-    },
-    {
-      "team": "瑞典",
-      "league": "欧国联",
-      "match": "瑞典 vs 罗马尼亚"
-    },
-    {
-      "team": "罗马尼亚",
-      "league": "欧国联",
-      "match": "瑞典 vs 罗马尼亚"
-    },
-    {
-      "team": "多德勒支",
-      "league": "荷乙",
-      "match": "多德勒支 vs 阿尔梅勒"
-    },
     {
       "team": "中国亚",
       "league": "亚运男足",
@@ -217,20 +152,77 @@
       "match": "英格兰 vs 西班牙"
     },
     {
+      "team": "美国",
+      "league": "国际赛",
+      "match": "美国 vs 秘鲁"
+    },
+    {
+      "team": "秘鲁",
+      "league": "国际赛",
+      "match": "美国 vs 秘鲁"
+    },
+    {
+      "team": "加拿大",
+      "league": "国际赛",
+      "match": "加拿大 vs 智利"
+    },
+    {
+      "team": "智利",
+      "league": "国际赛",
+      "match": "加拿大 vs 智利"
+    },
+    {
+      "team": "费城",
+      "league": "美职",
+      "match": "费城 vs 奥兰多"
+    },
+    {
+      "team": "奥兰多",
+      "league": "美职",
+      "match": "费城 vs 奥兰多"
+    },
+    {
+      "team": "多伦多",
+      "league": "美职",
+      "match": "纳什维尔 vs 多伦多"
+    },
+    {
+      "team": "盐湖城",
+      "league": "美职",
+      "match": "盐湖城 vs 新英格兰"
+    },
+    {
+      "team": "圣何塞",
+      "league": "美职",
+      "match": "圣何塞 vs 波特兰"
+    },
+    {
+      "team": "波特兰",
+      "league": "美职",
+      "match": "圣何塞 vs 波特兰"
+    },
+    {
+      "team": "洛城银河",
+      "league": "美职",
+      "match": "洛城银河 vs 科罗拉多"
+    },
+    {
       "team": "格拉夫",
       "league": "荷乙",
       "match": "格拉夫 vs 登博思"
+    },
+    {
+      "team": "哥伦布",
+      "league": "美职",
+      "match": "哥伦布 vs 迈国际"
+    },
+    {
+      "team": "迈国际",
+      "league": "美职",
+      "match": "哥伦布 vs 迈国际"
     }
   ],
   "notReadyTeams": [
-    {
-      "team": "阿尔梅勒",
-      "teamId": "almere-city",
-      "league": "netherlands-eerste",
-      "status": "stale",
-      "lastUpdated": "2026-09-10",
-      "ageDays": 15
-    },
     {
       "team": "仙台七夕",
       "teamId": "vegalta-sendai",
@@ -249,7 +241,7 @@
       "league": "japan-j2",
       "status": "stale",
       "lastUpdated": "2026-08-22",
-      "ageDays": 34
+      "ageDays": 35
     },
     {
       "team": "新潟天鹅",
@@ -269,7 +261,7 @@
       "league": "japan-j2",
       "status": "stale",
       "lastUpdated": "2026-08-22",
-      "ageDays": 34
+      "ageDays": 35
     },
     {
       "team": "赫拉克勒",
@@ -290,12 +282,56 @@
       "status": "missing"
     },
     {
+      "team": "纽约红牛",
+      "teamId": "ny-red-bulls",
+      "league": "usa",
+      "status": "missing"
+    },
+    {
+      "team": "圣路易城",
+      "teamId": "st-louis-city",
+      "league": "usa",
+      "status": "missing"
+    },
+    {
+      "team": "达拉斯",
+      "teamId": "dallas",
+      "league": "usa",
+      "status": "stale",
+      "lastUpdated": "2026-08-22",
+      "ageDays": 35
+    },
+    {
+      "team": "洛杉矶FC",
+      "teamId": "lafc",
+      "league": "usa",
+      "status": "missing"
+    },
+    {
+      "team": "纳什维尔",
+      "teamId": "nashville-sc",
+      "league": "usa",
+      "status": "missing"
+    },
+    {
+      "team": "新英格兰",
+      "teamId": "new-england",
+      "league": "usa",
+      "status": "missing"
+    },
+    {
+      "team": "科罗拉多",
+      "teamId": "colorado-rapids",
+      "league": "usa",
+      "status": "missing"
+    },
+    {
       "team": "江原FC",
       "teamId": "gangwon",
       "league": "korea-k-league",
       "status": "stale",
       "lastUpdated": "2026-08-22",
-      "ageDays": 34
+      "ageDays": 35
     },
     {
       "team": "仁川联",
@@ -303,7 +339,7 @@
       "league": "korea-k-league",
       "status": "stale",
       "lastUpdated": "2026-08-23",
-      "ageDays": 33
+      "ageDays": 34
     },
     {
       "team": "登博思",
@@ -311,11 +347,11 @@
       "league": "netherlands",
       "status": "stale",
       "lastUpdated": "2026-08-22",
-      "ageDays": 34
+      "ageDays": 35
     }
   ],
   "readyCount": {
-    "leagues": 0,
+    "leagues": 1,
     "teamsKnown": 532
   }
 }
