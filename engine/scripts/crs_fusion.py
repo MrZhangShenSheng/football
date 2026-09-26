@@ -71,11 +71,27 @@ def smooth_template(counts: dict, alpha: float = ALPHA_LIDSTONE, n_items: int = 
     """联赛模板计数 → Lidstone 平滑分布。
 
     q_t(s) = (count_s + α)/(N + 31α)——全 31 项>0，"c=0 永不入选"降级为输出层
-    业务规则，不进融合代数（零吸收违背贝叶斯支撑集代数）。"""
+    业务规则，不进融合代数（零吸收违背贝叶斯支撑集代数）。
+
+    池外折叠（审查移交 Important 修复）：真实联赛模板含 6:0/5:3/0:6 等池外比分
+    （占历史 1.4%），原实现只进分母不进分子 → Σ=0.941。现按胜负方向折叠进
+    兜底代表键（h>a→(4,3) 胜其他 / h==a→(4,4) 平其他 / h<a→(3,4) 负其他，
+    与体彩 CRS 池兜底项语义一致），使全 31 项 Σ=1 精确成立。非比分键
+    （如 "__n"）不进分母——进分母必须在分子有对应。"""
     keys = CRS_POOL[:n_items]
-    n = sum(counts.values())
+    keyset = set(keys)
+    folded = {}
+    for s, c in counts.items():
+        if s in keyset:
+            folded[s] = folded.get(s, 0) + c
+        elif (isinstance(s, tuple) and len(s) == 2
+              and all(isinstance(x, int) for x in s)):
+            rep = (4, 3) if s[0] > s[1] else ((4, 4) if s[0] == s[1] else (3, 4))
+            if rep in keyset:          # 截断池无代表键时弃计数（n_items=31 全池无此路径）
+                folded[rep] = folded.get(rep, 0) + c
+    n = sum(folded.values())
     z = n + alpha * len(keys)
-    return {s: (counts.get(s, 0) + alpha) / z for s in keys}
+    return {s: (folded.get(s, 0) + alpha) / z for s in keys}
 
 
 # ---- 对数意见池融合 + λ 收缩（spec §2/§3）----
@@ -148,10 +164,13 @@ FUSION_CRS_DEFAULTS = {"frozenAt": "2026-09-26", "enabled": True, "r": 0.286, "w
                        "leagueOverrides": None}
 
 def load_fusion_crs() -> dict:
-    """读融合参数；文件缺失/损坏 → 冻结默认值 + degraded 标记（降级不熔断）。"""
+    """读融合参数；文件缺失/损坏 → 冻结默认值 + degraded 标记（降级不熔断）；
+    文件在但缺键 → setdefault 全默认键兜底（Minor-4：调用方 cfg["w"] 等不 KeyError）。"""
     try:
         cfg = _json.loads(FUSION_CRS_PATH.read_text(encoding="utf-8"))
-        cfg.setdefault("degraded", False)
-        return cfg
     except Exception:
         return {**FUSION_CRS_DEFAULTS, "degraded": True}
+    for k, v in FUSION_CRS_DEFAULTS.items():
+        cfg.setdefault(k, v)
+    cfg.setdefault("degraded", False)
+    return cfg

@@ -129,3 +129,37 @@ def test_load_fusion_crs_degrades_to_defaults(tmp_path, monkeypatch):
     monkeypatch.setattr("crs_fusion.FUSION_CRS_PATH", tmp_path / "missing.json")
     cfg = load_fusion_crs()
     assert cfg["degraded"] is True and cfg["r"] == 0.286
+
+def test_load_fusion_crs_fills_missing_keys(tmp_path, monkeypatch):
+    # Minor-4：文件存在但缺键 → setdefault 全默认键兜底（不 KeyError 不静默缺参）
+    p = tmp_path / "fusion_crs.json"
+    p.write_text(json.dumps({"r": 0.3}), encoding="utf-8")
+    monkeypatch.setattr("crs_fusion.FUSION_CRS_PATH", p)
+    cfg = load_fusion_crs()
+    assert cfg["r"] == 0.3                          # 文件值优先
+    assert cfg["w"] == 0.35 and cfg["alphaLidstone"] == 0.5
+    assert cfg["familyGateThreshold"] == 0.28 and cfg["enabled"] is True
+    assert cfg["degraded"] is False                 # 文件在 = 非降级
+
+# ---- 审查移交 Important：smooth_template 池外折叠（真实联赛模板 Σ=0.941 修复）----
+
+def test_smooth_offpool_counts_sum_to_one():
+    # 含池外比分计数（6:0/5:3/0:6 等真实联赛模板占历史 1.4%）→ 全 31 项 Σ=1 精确成立
+    counts = {(1, 0): 50, (1, 1): 40, (2, 1): 30, (6, 0): 3, (5, 3): 2, (0, 6): 2}
+    q = smooth_template(counts)
+    assert len(q) == 31
+    assert abs(sum(q.values()) - 1.0) < 1e-9
+
+def test_smooth_offpool_folds_into_direction_repr():
+    # 方向折叠：6:0→(4,3) 胜其他代表、5:5→(4,4) 平其他、0:6→(3,4) 负其他（体彩兜底项语义）
+    base = smooth_template({(1, 0): 100})
+    q = smooth_template({(1, 0): 100, (6, 0): 10, (5, 5): 10, (0, 6): 10})
+    assert q[(4, 3)] > base[(4, 3)]
+    assert q[(4, 4)] > base[(4, 4)]
+    assert q[(3, 4)] > base[(3, 4)]
+
+def test_smooth_ignores_non_score_keys():
+    # "__n" 等非比分键不进分母：进分母必须在分子有对应（Σ=1 精确成立前提）
+    a = smooth_template({(1, 0): 50, (1, 1): 40})
+    b = smooth_template({(1, 0): 50, (1, 1): 40, "__n": 999})
+    assert a == b
