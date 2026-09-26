@@ -70,7 +70,7 @@
       "dc": [0.74, 0.19, 0.07], "fused": [0.708, 0.183, 0.108], "final": 0.708,
       "chain": "无修正(伤停差值不适用·抽调未核实)", "lambdaHome": 2.14, "lambdaAway": 0.53,
       "fusedPre": [0.708, 0.183, 0.108], "chainSteps": [{"name": "伤停差值", "factor": 1.0, "note": "国际窗口抽调未核实，insight 伤停字段失真，不适用"}],
-      "ev": 0.708 * 1.28 - 1, "inPlan": "甲/丙",
+      "ev": -0.0938, "inPlan": "甲/丙",
       "hypothesis": {
         "matchPlay": {"rotation": "Yazbek/Nájar历史有征召但本轮未核实；榜1主场", "tactics": "GEODIS公园主压弱旅客", "goalSource": "Surridge高点+中场插上vs多伦多场均1.7弱", "script": "1:0/2:0/2:1控场画面", "specialVars": "美职国际窗口内比赛·抽调未核实·GW23+卡位期"},
         "assumption": "榜1vs榜12结构差+DC74%/市场69%同向，1-2名抽调不翻转结构",
@@ -84,7 +84,7 @@
       "dc": [0.71, 0.17, 0.12], "fused": [0.648, 0.186, 0.166], "final": 0.648,
       "chain": "踩线纪律(64.8%<65 三星高位)", "lambdaHome": 2.71, "lambdaAway": 1.05,
       "fusedPre": [0.648, 0.186, 0.166], "chainSteps": [{"name": "踩线四星降档", "factor": 1.0, "note": "64.8%未过65线+抽调风险=按三星对待"}],
-      "ev": 0.648 * 1.43 - 1, "inPlan": "甲/丙",
+      "ev": -0.0734, "inPlan": "甲/丙",
       "hypothesis": {
         "matchPlay": {"rotation": "Sullivan(16岁核心)USMNT首召，USMNT本窗是否踢不确定（东道主无预选）", "tactics": "Subaru公园高位逼抢主场", "goalSource": "场均2.9多点火点vs奥兰多3伤", "script": "2:1/2:0/3:1主攻慢热", "specialVars": "国际窗口抽调未核实·Power Rankings榜首状态(9-14)"},
         "assumption": "主场8-2-0结构性优势覆盖1人抽调损失",
@@ -98,7 +98,7 @@
       "dc": null, "fused": [0.78, 0.15, 0.07], "final": 0.78,
       "chain": "纯市场锚×0.97=0.757", "lambdaHome": null, "lambdaAway": null,
       "fusedPre": [0.78, 0.15, 0.07], "chainSteps": [{"name": "单锚修正", "factor": 0.97}],
-      "ev": 0.757 * 1.14 - 1, "inPlan": "甲/丙",
+      "ev": -0.137, "inPlan": "甲/丙",
       "hypothesis": {
         "matchPlay": {"rotation": "日本U23选拔队班底稳定", "tactics": "日本技术控场vs朝鲜体能冲撞防反", "goalSource": "日本场均3.5多点vs朝鲜1.4反击", "script": "2:0/3:0/3:1碾压画面", "specialVars": "淘汰赛90分钟口径(CRS/HAFO按90分钟结算不含加时)"},
         "assumption": "技术代差碾压，90分钟内解决战斗",
@@ -112,7 +112,7 @@
       "dc": [0.53, 0.23, 0.24], "fused": [0.499, 0.231, 0.270], "final": 0.499,
       "chain": "无修正(伤停差值不适用)", "lambdaHome": 2.04, "lambdaAway": 1.32,
       "fusedPre": [0.499, 0.231, 0.270], "chainSteps": [{"name": "伤停差值", "factor": 1.0, "note": "客6伤真实但美职抽调口径失真，不放大修正"}],
-      "ev": 0.499 * 1.82 - 1, "inPlan": "甲(非胆位)",
+      "ev": -0.0918, "inPlan": "甲(非胆位)",
       "hypothesis": {
         "matchPlay": {"rotation": "波特兰6伤(半条防线量级)+圣何塞2伤", "tactics": "PayPal公园主攻vs残防收缩", "goalSource": "圣何塞边中结合vs波特兰由守转攻削弱", "script": "2:1/2:0/1:1(铁桶成功)画面", "specialVars": "抽调未核实·主队自身近10 2-4-4平庸"},
         "assumption": "客队6防伤病量级差足以让49.9%主胜被低估",
@@ -126,7 +126,7 @@
       "dc": null, "fused": [0.30, 0.27, 0.44], "final": null,
       "chain": "纯市场锚", "lambdaHome": null, "lambdaAway": null,
       "fusedPre": [0.30, 0.27, 0.44], "chainSteps": [],
-      "ev": 0.102 * 6.50 - 1, "inPlan": "乙(1:1×5+1:2×5双选)",
+      "ev": -0.337, "inPlan": "乙(1:1×5+1:2×5双选)",
       "hypothesis": {
         "matchPlay": {"rotation": "英5退营+2补召+TAA/Palmer回归试验期；西世界冠军班底微调Porro伤缺", "tactics": "温布利对攻质量局非铁桶局", "goalSource": "英Palmer/Saka vs 西Yamal/Pedri/Nico", "script": "GW1磨合谨慎开局后段打开1:1/1:2/2:1", "specialVars": "欧国联GW1新周期首战·Euro2024复仇叙事·西班牙荣誉疲劳风险·A3死亡组"},
         "assumption": "西班牙磨合度高于英格兰但GW1+温布利双方不梭哈，西班牙小胜或平两分天下，1:1/1:2形状最优",
@@ -140,7 +140,7 @@
       "dc": [0.36, 0.38, 0.26], "fused": [0.381, 0.338, 0.281], "final": 0.338,
       "chain": "无修正(d=0)", "lambdaHome": 0.97, "lambdaAway": 0.78,
       "fusedPre": [0.381, 0.338, 0.281], "chainSteps": [],
-      "ev": 0.338 * 2.75 - 1, "inPlan": "丙'(混串腿)",
+      "ev": -0.0705, "inPlan": "丙'(混串腿)",
       "hypothesis": {
         "matchPlay": {"rotation": "GW22深赛季中游队国脚影响小", "tactics": "动力真空双方均不冒进", "goalSource": "场均1.1对1.1均无稳定得分点", "script": "低节奏慢局0:0/1:1/1:0", "specialVars": "榜5vs榜9均无保级争冠压力·韩职深赛季平局抬升期"},
         "assumption": "动力真空+攻弱对攻弱+DC平38%融合34%>市场32%，平腿被低估——但poolSingle=0只作混串",
