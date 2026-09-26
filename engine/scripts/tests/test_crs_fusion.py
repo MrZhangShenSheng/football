@@ -31,3 +31,22 @@ def test_extract_skips_invalid_entries():
     dist = extract_mkt_dist(odds)
     assert (1,0) in dist and (1,1) in dist and (0,1) in dist
     assert (2,2) not in dist
+
+from crs_fusion import smooth_template
+
+def test_smooth_all_positive_even_unseen():
+    # 数学审查错误1修正：c=0 的比分平滑后必须 >0（先验支撑集不得阉割后验）
+    counts = {(1,0): 50, (1,1): 40, (2,1): 30}
+    q = smooth_template(counts)
+    assert all(p > 0 for p in q.values())
+    assert (0,4) in q and q[(0,4)] > 0   # 从未出现的比分也有平滑概率
+
+def test_smooth_sums_to_one():
+    counts = {(1,0): 50, (1,1): 40}
+    q = smooth_template(counts)
+    assert abs(sum(q.values()) - 1.0) < 1e-9
+
+def test_smooth_preserves_ranking():
+    counts = {(1,0): 50, (1,1): 40, (2,1): 30}
+    q = smooth_template(counts)
+    assert q[(1,0)] > q[(1,1)] > q[(2,1)]
