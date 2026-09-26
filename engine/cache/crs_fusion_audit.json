@@ -1,0 +1,11331 @@
+{
+ "generatedAt": "2026-09-26",
+ "params": {
+  "r": 0.286,
+  "w": 0.35,
+  "alphaLidstone": 0.5,
+  "familyGateThreshold": 0.28,
+  "frozenNote": "r/w/α=冻结值前向评估（不做样本内拟合）",
+  "nBoot": 1000,
+  "bootSeed": 20260926,
+  "familyRatioGate": 0.9,
+  "smallScoreCaptureMin": 0.45
+ },
+ "walkForward": {
+  "n": 207,
+  "logloss": {
+   "tpl": 3.1916,
+   "mkt": 3.08,
+   "fused": 3.0684
+  },
+  "pairedDiff": {
+   "fusedVsTpl": {
+    "mean": 0.1232,
+    "ci95": [
+     0.0379,
+     0.2067
+    ],
+    "ciExcludesZero": true
+   },
+   "fusedVsMkt": {
+    "mean": 0.0116,
+    "ci95": [
+     -0.0179,
+     0.0454
+    ],
+    "ciExcludesZero": false
+   }
+  },
+  "gate1": {
+   "fusedBeatsTpl": true,
+   "fusedBeatsMkt": true,
+   "pass": true
+  },
+  "familyTop1": {
+   "all": {
+    "n": 207,
+    "hits": 66,
+    "hitRate": 0.3188405797101449,
+    "expectedRate": 0.2598343493946716,
+    "ratio": 1.227091723834583,
+    "pass": true
+   },
+   "gatePass": {
+    "n": 48,
+    "hits": 25,
+    "hitRate": 0.5208333333333334,
+    "expectedRate": 0.30554732672807144,
+    "ratio": 1.7045913603978622,
+    "pass": true
+   },
+   "gateFail": {
+    "n": 159,
+    "hits": 41,
+    "hitRate": 0.2578616352201258,
+    "expectedRate": 0.24603420529402256,
+    "ratio": 1.0480722991828266,
+    "pass": true
+   }
+  },
+  "smallScoreCapture": {
+   "gatePassN": 48,
+   "captureRate": 0.5,
+   "pass": true
+  },
+  "lambdaGuard": {
+   "nLamActive": 114,
+   "nStrengthMissing": 42,
+   "nGuardBlockedPre": 51,
+   "nPostShrinkViolation": 0,
+   "note": "pre 收缩越界=0（lambdas 内护栏构造性保证，guardBlockedPre 即拦截层）"
+  }
+ },
+ "perMatch": [
+  {
+   "date": "2026-08-24",
+   "code": "周一001",
+   "league": "意甲",
+   "actual": "0:1",
+   "tg": 1,
+   "ll": {
+    "tpl": 2.0388,
+    "mkt": 2.382,
+    "fused": 2.1661
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2882369616678736,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.1424209606153313
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.09291360816157579
+    ]
+   },
+   "gatePass": true,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.5401,
+    "lamSumPre": 1.7952,
+    "lamSumPost": 2.1997,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-24",
+   "code": "周一002",
+   "league": "沙职",
+   "actual": "0:2",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.7493,
+    "mkt": 2.3643,
+    "fused": 2.4505
+   },
+   "top1": {
+    "family": "away_multi",
+    "prob": 0.2251238871682309,
+    "members": [
+     [
+      1,
+      2
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      2
+     ],
+     0.10437342851137511
+    ],
+    "top2": [
+     [
+      1,
+      3
+     ],
+     0.0776191844495191
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.8952,
+    "lamSumPre": 2.8323,
+    "lamSumPost": 3.1463,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-24",
+   "code": "周一003",
+   "league": "瑞超",
+   "actual": "0:3",
+   "tg": 3,
+   "ll": {
+    "tpl": 2.2832,
+    "mkt": 3.3218,
+    "fused": 2.9559
+   },
+   "top1": {
+    "family": "away_multi",
+    "prob": 0.21593098839265934,
+    "members": [
+     [
+      1,
+      2
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      2
+     ],
+     0.11260857932966717
+    ],
+    "top2": [
+     [
+      1,
+      3
+     ],
+     0.06518972775136035
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.8217,
+    "lamSumPre": 2.013,
+    "lamSumPost": 2.806,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-24",
+   "code": "周一004",
+   "league": "西甲",
+   "actual": "0:0",
+   "tg": 0,
+   "ll": {
+    "tpl": 2.9651,
+    "mkt": 2.6092,
+    "fused": 2.6423
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2578808494280618,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.1370707396630317
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.07119378151522976
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.6178,
+    "lamSumPre": 3.2016,
+    "lamSumPost": 2.7598,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-24",
+   "code": "周一005",
+   "league": "沙职",
+   "actual": "3:2",
+   "tg": 5,
+   "ll": {
+    "tpl": 3.4451,
+    "mkt": 3.3905,
+    "fused": 3.3833
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.26284301786688824,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      0
+     ],
+     0.09966670543434925
+    ],
+    "top2": [
+     [
+      1,
+      0
+     ],
+     0.09570974738085451
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.8952,
+    "lamSumPre": 2.7563,
+    "lamSumPost": 3.0624,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-24",
+   "code": "周一006",
+   "league": "意甲",
+   "actual": "4:0",
+   "tg": 4,
+   "ll": {
+    "tpl": 4.1379,
+    "mkt": 3.5195,
+    "fused": 3.6748
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.2773721206454598,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.11924970727103068
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.09785611222388448
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.5401,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-24",
+   "code": "周一007",
+   "league": "法乙",
+   "actual": "3:1",
+   "tg": 4,
+   "ll": {
+    "tpl": 3.2174,
+    "mkt": 2.8385,
+    "fused": 2.9317
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.263062367995021,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.11943477429013107
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.09643237385052875
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.4905,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-24",
+   "code": "周一008",
+   "league": "英超",
+   "actual": "2:3",
+   "tg": 5,
+   "ll": {
+    "tpl": 3.534,
+    "mkt": 3.2888,
+    "fused": 3.341
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2246057447147613,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.10790040505869157
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.06628659190804637
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.9539,
+    "lamSumPre": 3.7915,
+    "lamSumPost": 3.198,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-24",
+   "code": "周一009",
+   "league": "葡超",
+   "actual": "2:0",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.2983,
+    "mkt": 2.0877,
+    "fused": 2.1361
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.34793202401090145,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.1596145298031643
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.1181171133838938
+    ]
+   },
+   "gatePass": true,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.6528,
+    "lamSumPre": 1.7053,
+    "lamSumPost": 2.0967,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-24",
+   "code": "周一010",
+   "league": "西甲",
+   "actual": "1:1",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.3385,
+    "mkt": 1.7954,
+    "fused": 1.8335
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2964110708420197,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.15985946023399203
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.08863872881494482
+    ]
+   },
+   "gatePass": true,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.6178,
+    "lamSumPre": 2.2453,
+    "lamSumPost": 2.3194,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-24",
+   "code": "周一011",
+   "league": "巴甲",
+   "actual": "2:3",
+   "tg": 5,
+   "ll": {
+    "tpl": 3.8695,
+    "mkt": 4.005,
+    "fused": 3.9139
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2706129079738902,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.14604532854957109
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.07023764174385248
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.4823,
+    "lamSumPre": 2.5782,
+    "lamSumPost": 2.51,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-25",
+   "code": "周二003",
+   "league": "沙特联",
+   "actual": "2:3",
+   "tg": 5,
+   "ll": {
+    "tpl": 3.1833,
+    "mkt": 3.0922,
+    "fused": 3.0029
+   },
+   "top1": {
+    "family": "away_multi",
+    "prob": 0.23834231643983356,
+    "members": [
+     [
+      1,
+      2
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      3
+     ],
+     0.09509003699209172
+    ],
+    "top2": [
+     [
+      1,
+      2
+     ],
+     0.09360837900096808
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.8952,
+    "lamSumPre": 3.9582,
+    "lamSumPost": 3.8966,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-25",
+   "code": "周二004",
+   "league": "英联杯",
+   "actual": "1:1",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.0754,
+    "mkt": 1.9834,
+    "fused": 2.0035
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.27069101035757404,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.13486793023556307
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.07652436352094562
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": 2.2663,
+    "lamSumPost": 2.4249,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-25",
+   "code": "周二005",
+   "league": "欧冠资格赛",
+   "actual": "4:1",
+   "tg": 5,
+   "ll": {
+    "tpl": 4.1785,
+    "mkt": 3.633,
+    "fused": 3.777
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2175847057941227,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.10897844286441
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.06441220844193007
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-25",
+   "code": "周二006",
+   "league": "欧冠资格赛",
+   "actual": "3:0",
+   "tg": 3,
+   "ll": {
+    "tpl": 3.2342,
+    "mkt": 2.6678,
+    "fused": 2.7756
+   },
+   "top1": {
+    "family": "home_multi",
+    "prob": 0.239262445244128,
+    "members": [
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      1
+     ],
+     [
+      3,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      1
+     ],
+     0.11072802905929165
+    ],
+    "top2": [
+     [
+      3,
+      1
+     ],
+     0.07939220015384439
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-25",
+   "code": "周二007",
+   "league": "英联杯",
+   "actual": "0:2",
+   "tg": 2,
+   "ll": {
+    "tpl": 3.0977,
+    "mkt": 3.0631,
+    "fused": 3.0698
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.26088119310350905,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.13265330873785167
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.06600229848789184
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-25",
+   "code": "周二008",
+   "league": "英联杯",
+   "actual": "1:6",
+   "tg": 7,
+   "ll": {
+    "tpl": 2.7997,
+    "mkt": 6.9078,
+    "fused": 5.7104
+   },
+   "top1": {
+    "family": "away_clean",
+    "prob": 0.2587050811983742,
+    "members": [
+     [
+      0,
+      1
+     ],
+     [
+      0,
+      2
+     ],
+     [
+      0,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      0,
+      1
+     ],
+     0.100226631770214
+    ],
+    "top2": [
+     [
+      0,
+      2
+     ],
+     0.09468774221404151
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": 2.8877,
+    "lamSumPost": 2.959,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-25",
+   "code": "周二009",
+   "league": "西甲",
+   "actual": "0:1",
+   "tg": 1,
+   "ll": {
+    "tpl": 2.1086,
+    "mkt": 2.2741,
+    "fused": 2.1466
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2693874697488943,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.14425577208957086
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.07456698783125473
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.6178,
+    "lamSumPre": 2.2608,
+    "lamSumPost": 2.4058,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-26",
+   "code": "周三003",
+   "league": "英联赛杯",
+   "actual": "5:1",
+   "tg": 6,
+   "ll": {
+    "tpl": 5.0273,
+    "mkt": 3.593,
+    "fused": 3.9238
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.30999229812067114,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      0
+     ],
+     0.11646933700537056
+    ],
+    "top2": [
+     [
+      1,
+      0
+     ],
+     0.10631348492577221
+    ]
+   },
+   "gatePass": true,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-26",
+   "code": "周三004",
+   "league": "英联赛杯",
+   "actual": "3:2",
+   "tg": 5,
+   "ll": {
+    "tpl": 3.5436,
+    "mkt": 3.3862,
+    "fused": 3.3211
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.2537040368885618,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.09491402697011417
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.09308167481368615
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": 2.9608,
+    "lamSumPost": 3.1998,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-26",
+   "code": "周三005",
+   "league": "欧冠",
+   "actual": "4:0",
+   "tg": 4,
+   "ll": {
+    "tpl": 4.1094,
+    "mkt": 3.4812,
+    "fused": 3.6328
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.30844321815451137,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.1290784449768541
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.1161321951184869
+    ]
+   },
+   "gatePass": true,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-26",
+   "code": "周三006",
+   "league": "欧冠",
+   "actual": "1:1",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.1323,
+    "mkt": 2.1004,
+    "fused": 2.106
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2583548800490707,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.1217216709597464
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.07630222019800503
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-26",
+   "code": "周三007",
+   "league": "欧冠",
+   "actual": "3:1",
+   "tg": 4,
+   "ll": {
+    "tpl": 3.1582,
+    "mkt": 3.0364,
+    "fused": 3.0619
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.22798758664676097,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.11061716637197266
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.06817168999089396
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-26",
+   "code": "周三008",
+   "league": "欧冠",
+   "actual": "1:2",
+   "tg": 3,
+   "ll": {
+    "tpl": 2.6284,
+    "mkt": 2.5911,
+    "fused": 2.598
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.24615823612213145,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.1250802329663683
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.06232206469082859
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-26",
+   "code": "周三009",
+   "league": "英联赛杯",
+   "actual": "0:4",
+   "tg": 4,
+   "ll": {
+    "tpl": 2.8375,
+    "mkt": 3.3511,
+    "fused": 3.1787
+   },
+   "top1": {
+    "family": "away_clean",
+    "prob": 0.2980344024987966,
+    "members": [
+     [
+      0,
+      1
+     ],
+     [
+      0,
+      2
+     ],
+     [
+      0,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      0,
+      2
+     ],
+     0.11031228615840762
+    ],
+    "top2": [
+     [
+      0,
+      1
+     ],
+     0.10510158997620947
+    ]
+   },
+   "gatePass": true,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": 2.0835,
+    "lamSumPost": 2.6691,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-26",
+   "code": "周三010",
+   "league": "西甲",
+   "actual": "4:1",
+   "tg": 5,
+   "ll": {
+    "tpl": 4.2686,
+    "mkt": 2.9267,
+    "fused": 3.2349
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.2856260772698259,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.1010486319956505
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.10066857092420833
+    ]
+   },
+   "gatePass": true,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.6178,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-26",
+   "code": "周三011",
+   "league": "巴西杯",
+   "actual": "3:0",
+   "tg": 3,
+   "ll": {
+    "tpl": 2.8912,
+    "mkt": 2.6588,
+    "fused": 2.7168
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.3155169365778095,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.13135714514828706
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.11807676556833258
+    ]
+   },
+   "gatePass": true,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": 2.895,
+    "lamSumPost": 2.6494,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-26",
+   "code": "周三012",
+   "league": "巴西杯",
+   "actual": "1:0",
+   "tg": 1,
+   "ll": {
+    "tpl": 2.2902,
+    "mkt": 2.035,
+    "fused": 2.0867
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.2962449136116326,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.12409061811651688
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.11164463499746294
+    ]
+   },
+   "gatePass": true,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-27",
+   "code": "周四001",
+   "league": "欧罗巴",
+   "actual": "4:1",
+   "tg": 5,
+   "ll": {
+    "tpl": 4.1785,
+    "mkt": 3.7849,
+    "fused": 3.8868
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2272682287421276,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.11297553993901063
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.06862440897956763
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-27",
+   "code": "周四002",
+   "league": "欧罗巴",
+   "actual": "4:2",
+   "tg": 6,
+   "ll": {
+    "tpl": 4.6612,
+    "mkt": 4.8594,
+    "fused": 4.7981
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.24878983095360466,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12402391116985986
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.07292752595760192
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-27",
+   "code": "周四003",
+   "league": "欧罗巴",
+   "actual": "3:0",
+   "tg": 3,
+   "ll": {
+    "tpl": 3.2342,
+    "mkt": 2.264,
+    "fused": 2.4733
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.2895460342985383,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      0
+     ],
+     0.10446980432062662
+    ],
+    "top2": [
+     [
+      1,
+      0
+     ],
+     0.10077152773746235
+    ]
+   },
+   "gatePass": true,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-27",
+   "code": "周四004",
+   "league": "欧罗巴",
+   "actual": "1:3",
+   "tg": 4,
+   "ll": {
+    "tpl": 3.593,
+    "mkt": 2.4556,
+    "fused": 2.6937
+   },
+   "top1": {
+    "family": "away_clean",
+    "prob": 0.24098290119392912,
+    "members": [
+     [
+      0,
+      1
+     ],
+     [
+      0,
+      2
+     ],
+     [
+      0,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      0,
+      1
+     ],
+     0.09019799194112516
+    ],
+    "top2": [
+     [
+      0,
+      2
+     ],
+     0.08908275153247867
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-27",
+   "code": "周四005",
+   "league": "欧罗巴",
+   "actual": "4:0",
+   "tg": 4,
+   "ll": {
+    "tpl": 4.1094,
+    "mkt": 5.2931,
+    "fused": 4.9396
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.25386973862172146,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12587863996403223
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.06896776721343165
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-27",
+   "code": "周四006",
+   "league": "欧罗巴",
+   "actual": "3:0",
+   "tg": 3,
+   "ll": {
+    "tpl": 3.2342,
+    "mkt": 2.4158,
+    "fused": 2.609
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.29054640826343386,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.11126223000807561
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.10567412799859571
+    ]
+   },
+   "gatePass": true,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-27",
+   "code": "周四007",
+   "league": "西甲",
+   "actual": "1:2",
+   "tg": 3,
+   "ll": {
+    "tpl": 3.1411,
+    "mkt": 2.9439,
+    "fused": 2.99
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.30338163780550664,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.14577707010610155
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.10154696653557872
+    ]
+   },
+   "gatePass": true,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.6178,
+    "lamSumPre": 2.1829,
+    "lamSumPost": 2.2792,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-27",
+   "code": "周四008",
+   "league": "西甲",
+   "actual": "2:0",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.7671,
+    "mkt": 2.1794,
+    "fused": 2.259
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.2963922715981138,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      0
+     ],
+     0.10445797578108197
+    ],
+    "top2": [
+     [
+      1,
+      0
+     ],
+     0.09843425383541618
+    ]
+   },
+   "gatePass": true,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.6178,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-27",
+   "code": "周四009",
+   "league": "巴西杯",
+   "actual": "0:0",
+   "tg": 0,
+   "ll": {
+    "tpl": 2.4135,
+    "mkt": 2.4448,
+    "fused": 2.4092
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.2657816522858467,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.12875481527491495
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.09566799500485897
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": 2.6465,
+    "lamSumPost": 2.4823,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-28",
+   "code": "周五001",
+   "league": "德乙",
+   "actual": "3:5",
+   "tg": 8,
+   "ll": {
+    "tpl": 4.3191,
+    "mkt": 6.9078,
+    "fused": 6.1535
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.23994892090932973,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.11500087774838885
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.07243911568200324
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.9984,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-28",
+   "code": "周五002",
+   "league": "德乙",
+   "actual": "0:1",
+   "tg": 1,
+   "ll": {
+    "tpl": 2.7026,
+    "mkt": 2.9726,
+    "fused": 2.8698
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.23496531720765498,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.09596033157401604
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.08835631681047469
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.9984,
+    "lamSumPre": 2.1123,
+    "lamSumPost": 2.6894,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-28",
+   "code": "周五003",
+   "league": "西甲",
+   "actual": "3:2",
+   "tg": 5,
+   "ll": {
+    "tpl": 3.4759,
+    "mkt": 3.2984,
+    "fused": 3.342
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.24080544847948276,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.127161408609193
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.056825095393939526
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.6178,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-28",
+   "code": "周五004",
+   "league": "沙职",
+   "actual": "1:5",
+   "tg": 6,
+   "ll": {
+    "tpl": 5.1344,
+    "mkt": 3.3738,
+    "fused": 3.7648
+   },
+   "top1": {
+    "family": "away_clean",
+    "prob": 0.24508262159431743,
+    "members": [
+     [
+      0,
+      1
+     ],
+     [
+      0,
+      2
+     ],
+     [
+      0,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      0,
+      2
+     ],
+     0.09097078758129402
+    ],
+    "top2": [
+     [
+      0,
+      1
+     ],
+     0.0813996757342819
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.8952,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-28",
+   "code": "周五005",
+   "league": "法乙",
+   "actual": "0:0",
+   "tg": 0,
+   "ll": {
+    "tpl": 2.3472,
+    "mkt": 2.5086,
+    "fused": 2.4466
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.28111210593415925,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.13368229871385381
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.09805118379313406
+    ]
+   },
+   "gatePass": true,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.4905,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-28",
+   "code": "周五006",
+   "league": "荷甲",
+   "actual": "2:3",
+   "tg": 5,
+   "ll": {
+    "tpl": 3.7047,
+    "mkt": 3.7072,
+    "fused": 3.6826
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.22551237599690613,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      0
+     ],
+     0.08349262407877493
+    ],
+    "top2": [
+     [
+      1,
+      0
+     ],
+     0.08048363645376554
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 3.1152,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-28",
+   "code": "周五007",
+   "league": "荷乙",
+   "actual": "2:2",
+   "tg": 4,
+   "ll": {
+    "tpl": 2.8673,
+    "mkt": 2.7219,
+    "fused": 2.7428
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.24286519405346074,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12111302087263955
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.06439067749683293
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-28",
+   "code": "周五008",
+   "league": "德甲",
+   "actual": "5:1",
+   "tg": 6,
+   "ll": {
+    "tpl": 4.3816,
+    "mkt": 2.9701,
+    "fused": 3.2889
+   },
+   "top1": {
+    "family": "home_multi",
+    "prob": 0.23477807976073806,
+    "members": [
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      1
+     ],
+     [
+      3,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      3,
+      1
+     ],
+     0.09494100608062336
+    ],
+    "top2": [
+     [
+      2,
+      1
+     ],
+     0.09218956836145069
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 3.1904,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-28",
+   "code": "周五009",
+   "league": "意甲",
+   "actual": "2:0",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.6316,
+    "mkt": 2.0494,
+    "fused": 2.1693
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.3132486377467664,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.12283513040661585
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.11425356877473102
+    ]
+   },
+   "gatePass": true,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.5401,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-28",
+   "code": "周五010",
+   "league": "法甲",
+   "actual": "2:2",
+   "tg": 4,
+   "ll": {
+    "tpl": 3.1271,
+    "mkt": 2.8928,
+    "fused": 2.8662
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.22719152218639088,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.11401335245150997
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.05691648065842647
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.8251,
+    "lamSumPre": 2.4919,
+    "lamSumPost": 2.8781,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-28",
+   "code": "周五011",
+   "league": "英超",
+   "actual": "1:4",
+   "tg": 5,
+   "ll": {
+    "tpl": 4.2231,
+    "mkt": 3.3383,
+    "fused": 3.537
+   },
+   "top1": {
+    "family": "away_clean",
+    "prob": 0.23422959331548837,
+    "members": [
+     [
+      0,
+      1
+     ],
+     [
+      0,
+      2
+     ],
+     [
+      0,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      0,
+      1
+     ],
+     0.09304740684086622
+    ],
+    "top2": [
+     [
+      0,
+      2
+     ],
+     0.0885925688798169
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.9539,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-28",
+   "code": "周五012",
+   "league": "英冠",
+   "actual": "1:2",
+   "tg": 3,
+   "ll": {
+    "tpl": 2.2678,
+    "mkt": 2.495,
+    "fused": 2.4106
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2551614104564801,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.13134410507576005
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.06966495257211118
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.5421,
+    "lamSumPre": 2.9872,
+    "lamSumPost": 2.7404,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-28",
+   "code": "周五013",
+   "league": "葡超",
+   "actual": "0:4",
+   "tg": 4,
+   "ll": {
+    "tpl": 4.4483,
+    "mkt": 2.8077,
+    "fused": 3.1645
+   },
+   "top1": {
+    "family": "away_clean",
+    "prob": 0.2888461351923478,
+    "members": [
+     [
+      0,
+      1
+     ],
+     [
+      0,
+      2
+     ],
+     [
+      0,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      0,
+      1
+     ],
+     0.10826951419438142
+    ],
+    "top2": [
+     [
+      0,
+      2
+     ],
+     0.10160417210117423
+    ]
+   },
+   "gatePass": true,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.6528,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-28",
+   "code": "周五014",
+   "league": "西甲",
+   "actual": "1:0",
+   "tg": 1,
+   "ll": {
+    "tpl": 2.219,
+    "mkt": 2.4867,
+    "fused": 2.3609
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.24673031617171337,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12599484814285244
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.061637578286895714
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.6178,
+    "lamSumPre": 3.2743,
+    "lamSumPost": 2.9201,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-29",
+   "code": "周六001",
+   "league": "日职",
+   "actual": "1:1",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.6939,
+    "mkt": 1.9965,
+    "fused": 2.1304
+   },
+   "top1": {
+    "family": "away_clean",
+    "prob": 0.3011659791272868,
+    "members": [
+     [
+      0,
+      1
+     ],
+     [
+      0,
+      2
+     ],
+     [
+      0,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      0,
+      1
+     ],
+     0.1356016034668039
+    ],
+    "top2": [
+     [
+      0,
+      2
+     ],
+     0.10478321778107368
+    ]
+   },
+   "gatePass": true,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.5805,
+    "lamSumPre": 3.3482,
+    "lamSumPost": 2.7118,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-29",
+   "code": "周六002",
+   "league": "日职",
+   "actual": "0:1",
+   "tg": 1,
+   "ll": {
+    "tpl": 2.2581,
+    "mkt": 2.1565,
+    "fused": 2.1184
+   },
+   "top1": {
+    "family": "away_clean",
+    "prob": 0.2705337850075429,
+    "members": [
+     [
+      0,
+      1
+     ],
+     [
+      0,
+      2
+     ],
+     [
+      0,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      0,
+      1
+     ],
+     0.12022411458759472
+    ],
+    "top2": [
+     [
+      0,
+      2
+     ],
+     0.09186017246243541
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.5805,
+    "lamSumPre": 3.0149,
+    "lamSumPost": 2.754,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-29",
+   "code": "周六003",
+   "league": "日乙",
+   "actual": "2:2",
+   "tg": 4,
+   "ll": {
+    "tpl": 2.8673,
+    "mkt": 2.8316,
+    "fused": 2.837
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2496717673740298,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12487063368608456
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.06620277181530412
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-29",
+   "code": "周六003",
+   "league": "日乙",
+   "actual": "2:2",
+   "tg": 4,
+   "ll": {
+    "tpl": 2.8673,
+    "mkt": 2.8316,
+    "fused": 2.837
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2496717673740298,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12487063368608456
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.06620277181530412
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-29",
+   "code": "周六004",
+   "league": "韩职",
+   "actual": "3:1",
+   "tg": 4,
+   "ll": {
+    "tpl": 3.1876,
+    "mkt": 3.0604,
+    "fused": 3.0913
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2560475067416973,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.1283163484618799
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.06767094155247023
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.5417,
+    "lamSumPre": 1.7232,
+    "lamSumPost": 2.4356,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-29",
+   "code": "周六004",
+   "league": "韩职",
+   "actual": "3:1",
+   "tg": 4,
+   "ll": {
+    "tpl": 3.1876,
+    "mkt": 3.0604,
+    "fused": 3.0913
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2560475067416973,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.1283163484618799
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.06767094155247023
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.5417,
+    "lamSumPre": 1.7232,
+    "lamSumPost": 2.4356,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-29",
+   "code": "周六005",
+   "league": "德乙",
+   "actual": "2:5",
+   "tg": 7,
+   "ll": {
+    "tpl": 5.4177,
+    "mkt": 4.7765,
+    "fused": 4.926
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.22388843772845113,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.10699514737877926
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.07498335173294773
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.9984,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-29",
+   "code": "周六006",
+   "league": "英超",
+   "actual": "2:2",
+   "tg": 4,
+   "ll": {
+    "tpl": 2.6874,
+    "mkt": 2.9547,
+    "fused": 2.842
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.2590197144628369,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      0
+     ],
+     0.09548778407517798
+    ],
+    "top2": [
+     [
+      1,
+      0
+     ],
+     0.09179213923713328
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.9539,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-29",
+   "code": "周六009",
+   "league": "德甲",
+   "actual": "3:2",
+   "tg": 5,
+   "ll": {
+    "tpl": 3.5252,
+    "mkt": 3.8103,
+    "fused": 3.671
+   },
+   "top1": {
+    "family": "away_multi",
+    "prob": 0.21823509424307613,
+    "members": [
+     [
+      1,
+      2
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      2
+     ],
+     0.10625657315963404
+    ],
+    "top2": [
+     [
+      1,
+      3
+     ],
+     0.0668917749490602
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 3.1904,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-29",
+   "code": "周六010",
+   "league": "德甲",
+   "actual": "3:0",
+   "tg": 3,
+   "ll": {
+    "tpl": 3.327,
+    "mkt": 2.7048,
+    "fused": 2.8545
+   },
+   "top1": {
+    "family": "home_multi",
+    "prob": 0.22709107478168947,
+    "members": [
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      1
+     ],
+     [
+      3,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      1
+     ],
+     0.10759059299488975
+    ],
+    "top2": [
+     [
+      3,
+      1
+     ],
+     0.07598940753010254
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 3.1904,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-29",
+   "code": "周六011",
+   "league": "德甲",
+   "actual": "3:3",
+   "tg": 6,
+   "ll": {
+    "tpl": 3.8088,
+    "mkt": 4.0734,
+    "fused": 3.9821
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.23197232433307624,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.11475977655764999
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.07076234074256736
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 3.1904,
+    "lamSumPre": 3.4696,
+    "lamSumPost": 3.2311,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-29",
+   "code": "周六013",
+   "league": "德甲",
+   "actual": "0:0",
+   "tg": 0,
+   "ll": {
+    "tpl": 2.9873,
+    "mkt": 3.4256,
+    "fused": 3.2673
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.2346397103433532,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      0
+     ],
+     0.09115808999900059
+    ],
+    "top2": [
+     [
+      1,
+      0
+     ],
+     0.0820053160065365
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 3.1904,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-29",
+   "code": "周六020",
+   "league": "德甲",
+   "actual": "2:0",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.4154,
+    "mkt": 2.123,
+    "fused": 2.1815
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.28399742905269254,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      0
+     ],
+     0.112873949940646
+    ],
+    "top2": [
+     [
+      3,
+      0
+     ],
+     0.08824016238579575
+    ]
+   },
+   "gatePass": true,
+   "shrunk": true,
+   "guard": {
+    "tMean": 3.1904,
+    "lamSumPre": 2.7874,
+    "lamSumPost": 3.1433,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-29",
+   "code": "周六022",
+   "league": "意甲",
+   "actual": "0:3",
+   "tg": 3,
+   "ll": {
+    "tpl": 3.6353,
+    "mkt": 4.8948,
+    "fused": 4.5116
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.26446471143229533,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.11128517769907563
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.09627494972740429
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.5401,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-29",
+   "code": "周六024",
+   "league": "荷甲",
+   "actual": "5:2",
+   "tg": 7,
+   "ll": {
+    "tpl": 5.2507,
+    "mkt": 4.2078,
+    "fused": 4.4529
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.24378677060398207,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      0
+     ],
+     0.0897992245071018
+    ],
+    "top2": [
+     [
+      3,
+      0
+     ],
+     0.07777088412357287
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 3.1152,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-29",
+   "code": "周六025",
+   "league": "西甲",
+   "actual": "2:1",
+   "tg": 3,
+   "ll": {
+    "tpl": 2.6982,
+    "mkt": 2.1909,
+    "fused": 2.2832
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.24809628737820907,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12737693321619314
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.0610672858299433
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.6178,
+    "lamSumPre": 3.4303,
+    "lamSumPost": 2.9515,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-29",
+   "code": "周六026",
+   "league": "葡超",
+   "actual": "0:3",
+   "tg": 3,
+   "ll": {
+    "tpl": 3.4212,
+    "mkt": 2.1407,
+    "fused": 2.3766
+   },
+   "top1": {
+    "family": "away_clean",
+    "prob": 0.3445083259050291,
+    "members": [
+     [
+      0,
+      1
+     ],
+     [
+      0,
+      2
+     ],
+     [
+      0,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      0,
+      1
+     ],
+     0.13183469368168702
+    ],
+    "top2": [
+     [
+      0,
+      2
+     ],
+     0.11980867027284098
+    ]
+   },
+   "gatePass": true,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.6528,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-29",
+   "code": "周六027",
+   "league": "意甲",
+   "actual": "2:0",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.1809,
+    "mkt": 1.8279,
+    "fused": 1.9095
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.3895328134004655,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      0
+     ],
+     0.14815433322990026
+    ],
+    "top2": [
+     [
+      3,
+      0
+     ],
+     0.1208519750057928
+    ]
+   },
+   "gatePass": true,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.5401,
+    "lamSumPre": 2.2676,
+    "lamSumPost": 2.679,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-29",
+   "code": "周六028",
+   "league": "西甲",
+   "actual": "1:3",
+   "tg": 4,
+   "ll": {
+    "tpl": 3.3335,
+    "mkt": 3.0002,
+    "fused": 3.0711
+   },
+   "top1": {
+    "family": "away_clean",
+    "prob": 0.26182989982604016,
+    "members": [
+     [
+      0,
+      1
+     ],
+     [
+      0,
+      2
+     ],
+     [
+      0,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      0,
+      1
+     ],
+     0.11532480988735286
+    ],
+    "top2": [
+     [
+      0,
+      2
+     ],
+     0.09546357581570265
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.6178,
+    "lamSumPre": 3.3367,
+    "lamSumPost": 2.8384,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-30",
+   "code": "周日011",
+   "league": "德甲",
+   "actual": "4:1",
+   "tg": 5,
+   "ll": {
+    "tpl": 3.9373,
+    "mkt": 3.5319,
+    "fused": 3.634
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.22693269279345551,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.11324232737425483
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.06239730318387254
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 3.1904,
+    "lamSumPre": 2.8031,
+    "lamSumPost": 3.0182,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-30",
+   "code": "周日012",
+   "league": "荷甲",
+   "actual": "0:4",
+   "tg": 4,
+   "ll": {
+    "tpl": 2.8351,
+    "mkt": 3.1482,
+    "fused": 2.8312
+   },
+   "top1": {
+    "family": "away_multi",
+    "prob": 0.2358825772035637,
+    "members": [
+     [
+      1,
+      2
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      2
+     ],
+     0.09855406298102218
+    ],
+    "top2": [
+     [
+      1,
+      3
+     ],
+     0.08728917123561855
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 3.1152,
+    "lamSumPre": 3.8914,
+    "lamSumPost": 3.8858,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-30",
+   "code": "周日014",
+   "league": "英超",
+   "actual": "5:2",
+   "tg": 7,
+   "ll": {
+    "tpl": 4.5938,
+    "mkt": 4.6462,
+    "fused": 4.5958
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.2602861337168945,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      0
+     ],
+     0.09661457278948687
+    ],
+    "top2": [
+     [
+      3,
+      0
+     ],
+     0.08215380468890242
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.9539,
+    "lamSumPre": 3.8999,
+    "lamSumPost": 3.5265,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-30",
+   "code": "周日015",
+   "league": "德甲",
+   "actual": "3:0",
+   "tg": 3,
+   "ll": {
+    "tpl": 3.327,
+    "mkt": 3.242,
+    "fused": 3.2508
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.23425916510804703,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.1145705594749605
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.06540499404324049
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 3.1904,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-30",
+   "code": "周日016",
+   "league": "意甲",
+   "actual": "1:2",
+   "tg": 3,
+   "ll": {
+    "tpl": 2.4306,
+    "mkt": 2.504,
+    "fused": 2.4689
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2814188155263752,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.14393840356867765
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.08196526771012984
+    ]
+   },
+   "gatePass": true,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.5401,
+    "lamSumPre": 3.0235,
+    "lamSumPost": 2.6192,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-30",
+   "code": "周日017",
+   "league": "西甲",
+   "actual": "3:1",
+   "tg": 4,
+   "ll": {
+    "tpl": 3.0325,
+    "mkt": 3.5906,
+    "fused": 3.3642
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2759762424829862,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.13637325559809432
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.0975061295295075
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.6178,
+    "lamSumPre": 2.5259,
+    "lamSumPost": 2.3389,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-30",
+   "code": "周日018",
+   "league": "荷甲",
+   "actual": "1:4",
+   "tg": 5,
+   "ll": {
+    "tpl": 3.9655,
+    "mkt": 2.8529,
+    "fused": 3.0612
+   },
+   "top1": {
+    "family": "away_clean",
+    "prob": 0.238507083905514,
+    "members": [
+     [
+      0,
+      1
+     ],
+     [
+      0,
+      2
+     ],
+     [
+      0,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      0,
+      2
+     ],
+     0.09363035517520471
+    ],
+    "top2": [
+     [
+      0,
+      1
+     ],
+     0.07322621860734203
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 3.1152,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-30",
+   "code": "周日019",
+   "league": "意甲",
+   "actual": "1:0",
+   "tg": 1,
+   "ll": {
+    "tpl": 2.2387,
+    "mkt": 2.003,
+    "fused": 1.98
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.316490435901181,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.13806672967083802
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.1160128458842409
+    ]
+   },
+   "gatePass": true,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.5401,
+    "lamSumPre": 2.803,
+    "lamSumPost": 2.4402,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-30",
+   "code": "周日020",
+   "league": "意甲",
+   "actual": "0:1",
+   "tg": 1,
+   "ll": {
+    "tpl": 2.5738,
+    "mkt": 2.0288,
+    "fused": 2.0753
+   },
+   "top1": {
+    "family": "away_clean",
+    "prob": 0.3203198621620402,
+    "members": [
+     [
+      0,
+      1
+     ],
+     [
+      0,
+      2
+     ],
+     [
+      0,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      0,
+      1
+     ],
+     0.12552443465814916
+    ],
+    "top2": [
+     [
+      0,
+      2
+     ],
+     0.12086316130734945
+    ]
+   },
+   "gatePass": true,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.5401,
+    "lamSumPre": 2.2046,
+    "lamSumPost": 2.573,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-30",
+   "code": "周日021",
+   "league": "法甲",
+   "actual": "2:0",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.3422,
+    "mkt": 2.8108,
+    "fused": 2.6146
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.21792999053570566,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.11207198496343891
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.06015105373329782
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.8251,
+    "lamSumPre": 2.407,
+    "lamSumPost": 2.8662,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-30",
+   "code": "周日022",
+   "league": "巴甲",
+   "actual": "3:0",
+   "tg": 3,
+   "ll": {
+    "tpl": 2.1581,
+    "mkt": 2.4989,
+    "fused": 2.3118
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.3228267607965828,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      0
+     ],
+     0.1268360174821555
+    ],
+    "top2": [
+     [
+      3,
+      0
+     ],
+     0.09907862173004221
+    ]
+   },
+   "gatePass": true,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.4823,
+    "lamSumPre": 2.5138,
+    "lamSumPost": 2.9113,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-30",
+   "code": "周日023",
+   "league": "西甲",
+   "actual": "0:2",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.7474,
+    "mkt": 2.8857,
+    "fused": 2.8397
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.28141967005861585,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.14838849897637954
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.0825467234129237
+    ]
+   },
+   "gatePass": true,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.6178,
+    "lamSumPre": 1.6372,
+    "lamSumPost": 2.1682,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-30",
+   "code": "周日024",
+   "league": "葡超",
+   "actual": "0:0",
+   "tg": 0,
+   "ll": {
+    "tpl": 2.7722,
+    "mkt": 2.4476,
+    "fused": 2.5278
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2558299646736976,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12301760566155835
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.079831992684158
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.6528,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-30",
+   "code": "周日025",
+   "league": "美职",
+   "actual": "3:3",
+   "tg": 6,
+   "ll": {
+    "tpl": 4.0209,
+    "mkt": 3.9825,
+    "fused": 3.9848
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.22632641671467207,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.10980880146434455
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.07036083002671964
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 3.0042,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-31",
+   "code": "周一001",
+   "league": "芬超",
+   "actual": "1:0",
+   "tg": 1,
+   "ll": {
+    "tpl": 2.2902,
+    "mkt": 2.3643,
+    "fused": 2.3388
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2571260954846723,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.13280000703056985
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.06229408087358563
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-31",
+   "code": "周一002",
+   "league": "芬超",
+   "actual": "1:1",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.1323,
+    "mkt": 2.2318,
+    "fused": 2.1925
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.22518937251021337,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.11163320912278325
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.06614622655352344
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-31",
+   "code": "周一003",
+   "league": "意甲",
+   "actual": "0:4",
+   "tg": 4,
+   "ll": {
+    "tpl": 4.6625,
+    "mkt": 3.2151,
+    "fused": 3.5521
+   },
+   "top1": {
+    "family": "away_clean",
+    "prob": 0.32139544218379246,
+    "members": [
+     [
+      0,
+      1
+     ],
+     [
+      0,
+      2
+     ],
+     [
+      0,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      0,
+      1
+     ],
+     0.13747615673302935
+    ],
+    "top2": [
+     [
+      0,
+      2
+     ],
+     0.11724101638584312
+    ]
+   },
+   "gatePass": true,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.5401,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-31",
+   "code": "周一004",
+   "league": "瑞超",
+   "actual": "4:0",
+   "tg": 4,
+   "ll": {
+    "tpl": 2.5065,
+    "mkt": 3.2705,
+    "fused": 2.8317
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.2796603692799515,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      0
+     ],
+     0.10790413894349987
+    ],
+    "top2": [
+     [
+      3,
+      0
+     ],
+     0.09526326747660285
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.8217,
+    "lamSumPre": 3.6007,
+    "lamSumPost": 3.4043,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-31",
+   "code": "周一005",
+   "league": "瑞超",
+   "actual": "0:1",
+   "tg": 1,
+   "ll": {
+    "tpl": 2.7128,
+    "mkt": 3.0528,
+    "fused": 2.9263
+   },
+   "top1": {
+    "family": "home_multi",
+    "prob": 0.2063896343382069,
+    "members": [
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      1
+     ],
+     [
+      3,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      1
+     ],
+     0.10331859691045708
+    ],
+    "top2": [
+     [
+      3,
+      1
+     ],
+     0.062101710784554925
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.8217,
+    "lamSumPre": 2.9557,
+    "lamSumPost": 3.2608,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-31",
+   "code": "周一006",
+   "league": "西甲",
+   "actual": "1:0",
+   "tg": 1,
+   "ll": {
+    "tpl": 2.0662,
+    "mkt": 1.753,
+    "fused": 1.818
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.29517611218095097,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.16234245287958587
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.0920509161795651
+    ]
+   },
+   "gatePass": true,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.6178,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-31",
+   "code": "周一007",
+   "league": "意甲",
+   "actual": "1:0",
+   "tg": 1,
+   "ll": {
+    "tpl": 2.0552,
+    "mkt": 2.1531,
+    "fused": 2.1166
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.2715059022753213,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.12044608320312378
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.0965749864748474
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.5401,
+    "lamSumPre": 1.6062,
+    "lamSumPost": 2.3042,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-31",
+   "code": "周一008",
+   "league": "法乙",
+   "actual": "2:3",
+   "tg": 5,
+   "ll": {
+    "tpl": 4.2634,
+    "mkt": 3.5607,
+    "fused": 3.7081
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.25469229738770566,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12447417386284491
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.07574382625984792
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.4905,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-31",
+   "code": "周一009",
+   "league": "英超",
+   "actual": "0:1",
+   "tg": 1,
+   "ll": {
+    "tpl": 2.3659,
+    "mkt": 2.1821,
+    "fused": 2.2098
+   },
+   "top1": {
+    "family": "away_clean",
+    "prob": 0.3207802677820541,
+    "members": [
+     [
+      0,
+      1
+     ],
+     [
+      0,
+      2
+     ],
+     [
+      0,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      0,
+      2
+     ],
+     0.12564751164414648
+    ],
+    "top2": [
+     [
+      0,
+      1
+     ],
+     0.10971881409365873
+    ]
+   },
+   "gatePass": true,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.9539,
+    "lamSumPre": 2.3833,
+    "lamSumPost": 2.6788,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-08-31",
+   "code": "周一011",
+   "league": "葡超",
+   "actual": "1:0",
+   "tg": 1,
+   "ll": {
+    "tpl": 2.1219,
+    "mkt": 2.1534,
+    "fused": 2.1256
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.2669303907918746,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.1193607451643811
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.0878385755176285
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.6528,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-01",
+   "code": "周二001",
+   "league": "沙职",
+   "actual": "3:0",
+   "tg": 3,
+   "ll": {
+    "tpl": 2.7182,
+    "mkt": 2.8724,
+    "fused": 2.8033
+   },
+   "top1": {
+    "family": "home_multi",
+    "prob": 0.22779115417819185,
+    "members": [
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      1
+     ],
+     [
+      3,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      1
+     ],
+     0.109160555966138
+    ],
+    "top2": [
+     [
+      3,
+      1
+     ],
+     0.0779429159108247
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.8952,
+    "lamSumPre": 3.2744,
+    "lamSumPost": 3.33,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-01",
+   "code": "周二002",
+   "league": "英冠",
+   "actual": "2:0",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.2159,
+    "mkt": 2.4288,
+    "fused": 2.3381
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.2624821189424844,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.10749046517324344
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.09650645366967806
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.5421,
+    "lamSumPre": 2.1144,
+    "lamSumPost": 2.561,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-01",
+   "code": "周二003",
+   "league": "英冠",
+   "actual": "4:2",
+   "tg": 6,
+   "ll": {
+    "tpl": 4.7891,
+    "mkt": 4.3059,
+    "fused": 4.4349
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.24238410996745768,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12242977979445804
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.06003911794233479
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.5421,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-01",
+   "code": "周二004",
+   "league": "英冠",
+   "actual": "0:2",
+   "tg": 2,
+   "ll": {
+    "tpl": 3.5032,
+    "mkt": 3.1402,
+    "fused": 3.2331
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2519034069623806,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12658280776558378
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.06626224089482792
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.5421,
+    "lamSumPre": 2.7536,
+    "lamSumPost": 2.6944,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-01",
+   "code": "周二005",
+   "league": "英冠",
+   "actual": "0:0",
+   "tg": 0,
+   "ll": {
+    "tpl": 2.6205,
+    "mkt": 2.7462,
+    "fused": 2.6996
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2566115978588059,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12948509418231777
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.06723534473625212
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.5421,
+    "lamSumPre": 2.2127,
+    "lamSumPost": 2.5493,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-01",
+   "code": "周二006",
+   "league": "英冠",
+   "actual": "1:3",
+   "tg": 4,
+   "ll": {
+    "tpl": 2.7446,
+    "mkt": 3.31,
+    "fused": 3.1152
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2460509470448684,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12422586416895445
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.06242558653506999
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.5421,
+    "lamSumPre": 3.2084,
+    "lamSumPost": 2.8951,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-01",
+   "code": "周二007",
+   "league": "英冠",
+   "actual": "3:2",
+   "tg": 5,
+   "ll": {
+    "tpl": 3.4526,
+    "mkt": 3.3551,
+    "fused": 3.3569
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.23905279694142986,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.09512012304333425
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.08739220173155654
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.5421,
+    "lamSumPre": 3.147,
+    "lamSumPost": 3.0033,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-01",
+   "code": "周二008",
+   "league": "英冠",
+   "actual": "1:1",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.0284,
+    "mkt": 2.0979,
+    "fused": 2.0726
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.24843618613662033,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.1258544288523364
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.06300794694825411
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.5421,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-01",
+   "code": "周二009",
+   "league": "英冠",
+   "actual": "1:0",
+   "tg": 1,
+   "ll": {
+    "tpl": 2.22,
+    "mkt": 2.7358,
+    "fused": 2.5727
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2474468258411845,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12316903348568971
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.06388321042070677
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.5421,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-01",
+   "code": "周二010",
+   "league": "意大利杯",
+   "actual": "0:1",
+   "tg": 1,
+   "ll": {
+    "tpl": 2.5483,
+    "mkt": 2.6115,
+    "fused": 2.5666
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2537756254579327,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12529266573763553
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.07707324398049972
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": 3.6261,
+    "lamSumPost": 2.9002,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-02",
+   "code": "周三007",
+   "league": "英冠",
+   "actual": "0:3",
+   "tg": 3,
+   "ll": {
+    "tpl": 4.0825,
+    "mkt": 3.7603,
+    "fused": 3.8494
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.26042368580473535,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.13650088545801475
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.06663994950257315
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.5421,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-02",
+   "code": "周三008",
+   "league": "英冠",
+   "actual": "1:1",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.0574,
+    "mkt": 1.9854,
+    "fused": 2.0018
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.27286410056446897,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.11860047385808828
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.09987324363729602
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.5421,
+    "lamSumPre": 1.9177,
+    "lamSumPost": 2.3598,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-02",
+   "code": "周三009",
+   "league": "英冠",
+   "actual": "2:1",
+   "tg": 3,
+   "ll": {
+    "tpl": 2.3109,
+    "mkt": 2.1679,
+    "fused": 2.1912
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.23880093077010398,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12455902944812812
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.06796633320750525
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.5421,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-02",
+   "code": "周三011",
+   "league": "英冠",
+   "actual": "1:1",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.0284,
+    "mkt": 2.0888,
+    "fused": 2.0526
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2459479567907545,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12840333912387672
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.06762416608470459
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.5421,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-02",
+   "code": "周三012",
+   "league": "巴甲",
+   "actual": "2:0",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.5191,
+    "mkt": 1.885,
+    "fused": 1.9818
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.3567455848816145,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      0
+     ],
+     0.1378192460199394
+    ],
+    "top2": [
+     [
+      1,
+      0
+     ],
+     0.12238161325354972
+    ]
+   },
+   "gatePass": true,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.4823,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-02",
+   "code": "周三013",
+   "league": "巴西杯",
+   "actual": "0:0",
+   "tg": 0,
+   "ll": {
+    "tpl": 2.7065,
+    "mkt": 2.7499,
+    "fused": 2.7181
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2538296180697756,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.13188707632866206
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.06599994386731871
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": 2.895,
+    "lamSumPost": 2.7032,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-03",
+   "code": "周四001",
+   "league": "沙职",
+   "actual": "2:2",
+   "tg": 4,
+   "ll": {
+    "tpl": 3.3624,
+    "mkt": 2.8798,
+    "fused": 3.0024
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.26915483018880804,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.13643692719302858
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.08304873759271514
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.8952,
+    "lamSumPre": 2.1276,
+    "lamSumPost": 2.4032,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-03",
+   "code": "周四002",
+   "league": "沙职",
+   "actual": "3:0",
+   "tg": 3,
+   "ll": {
+    "tpl": 2.3376,
+    "mkt": 2.8984,
+    "fused": 2.6753
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.2802731178540967,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      0
+     ],
+     0.11206508825536922
+    ],
+    "top2": [
+     [
+      1,
+      0
+     ],
+     0.09932220900408638
+    ]
+   },
+   "gatePass": true,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.8952,
+    "lamSumPre": 2.777,
+    "lamSumPost": 2.8714,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-03",
+   "code": "周四003",
+   "league": "瑞超",
+   "actual": "0:2",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.7984,
+    "mkt": 2.4599,
+    "fused": 2.3804
+   },
+   "top1": {
+    "family": "away_clean",
+    "prob": 0.25474814267860113,
+    "members": [
+     [
+      0,
+      1
+     ],
+     [
+      0,
+      2
+     ],
+     [
+      0,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      0,
+      2
+     ],
+     0.09251540335272852
+    ],
+    "top2": [
+     [
+      0,
+      1
+     ],
+     0.08127961412586975
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.8217,
+    "lamSumPre": 3.6007,
+    "lamSumPost": 3.3377,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-03",
+   "code": "周四004",
+   "league": "沙职",
+   "actual": "0:2",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.6013,
+    "mkt": 2.3256,
+    "fused": 2.3794
+   },
+   "top1": {
+    "family": "away_clean",
+    "prob": 0.23903530760995423,
+    "members": [
+     [
+      0,
+      1
+     ],
+     [
+      0,
+      2
+     ],
+     [
+      0,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      0,
+      2
+     ],
+     0.09260797735720426
+    ],
+    "top2": [
+     [
+      0,
+      1
+     ],
+     0.08294207348315004
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.8952,
+    "lamSumPre": 1.9244,
+    "lamSumPost": 2.8741,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-03",
+   "code": "周四005",
+   "league": "法甲",
+   "actual": "0:1",
+   "tg": 1,
+   "ll": {
+    "tpl": 2.4771,
+    "mkt": 2.299,
+    "fused": 2.3232
+   },
+   "top1": {
+    "family": "away_clean",
+    "prob": 0.24077293782677267,
+    "members": [
+     [
+      0,
+      1
+     ],
+     [
+      0,
+      2
+     ],
+     [
+      0,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      0,
+      1
+     ],
+     0.0979565327375832
+    ],
+    "top2": [
+     [
+      0,
+      2
+     ],
+     0.08872413862701711
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.8251,
+    "lamSumPre": 2.8317,
+    "lamSumPost": 2.7509,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-03",
+   "code": "周四006",
+   "league": "西甲",
+   "actual": "0:0",
+   "tg": 0,
+   "ll": {
+    "tpl": 2.9173,
+    "mkt": 2.8241,
+    "fused": 2.7657
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2520889270194673,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12945934912405094
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.06292926567319138
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.6178,
+    "lamSumPre": 2.4635,
+    "lamSumPost": 2.6303,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-03",
+   "code": "周四007",
+   "league": "巴西杯",
+   "actual": "3:1",
+   "tg": 4,
+   "ll": {
+    "tpl": 3.459,
+    "mkt": 3.5023,
+    "fused": 3.4887
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.3035231783955572,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.14981404378606128
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.11018191495881056
+    ]
+   },
+   "gatePass": true,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": 2.6465,
+    "lamSumPost": 2.3398,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-05",
+   "code": "周六006",
+   "league": "意甲",
+   "actual": "1:2",
+   "tg": 3,
+   "ll": {
+    "tpl": 2.4044,
+    "mkt": 2.6567,
+    "fused": 2.5442
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2576222018365876,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.1305084367572664
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.06538606835400981
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.5401,
+    "lamSumPre": 3.4014,
+    "lamSumPost": 2.9193,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-05",
+   "code": "周六007",
+   "league": "德甲",
+   "actual": "3:4",
+   "tg": 7,
+   "ll": {
+    "tpl": 4.2047,
+    "mkt": 6.9078,
+    "fused": 6.1168
+   },
+   "top1": {
+    "family": "home_multi",
+    "prob": 0.21796261644829196,
+    "members": [
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      1
+     ],
+     [
+      3,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      1
+     ],
+     0.10588608318531742
+    ],
+    "top2": [
+     [
+      3,
+      1
+     ],
+     0.06935618851457404
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 3.1904,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-05",
+   "code": "周六008",
+   "league": "德甲",
+   "actual": "3:1",
+   "tg": 4,
+   "ll": {
+    "tpl": 2.8528,
+    "mkt": 3.6857,
+    "fused": 3.3994
+   },
+   "top1": {
+    "family": "away_multi",
+    "prob": 0.21432361058611155,
+    "members": [
+     [
+      1,
+      2
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      2
+     ],
+     0.10329412574383792
+    ],
+    "top2": [
+     [
+      1,
+      3
+     ],
+     0.06693431778928874
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 3.1904,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-05",
+   "code": "周六009",
+   "league": "德甲",
+   "actual": "0:1",
+   "tg": 1,
+   "ll": {
+    "tpl": 2.8811,
+    "mkt": 2.4088,
+    "fused": 2.5113
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2338189692146393,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.11426113783943775
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.06937024254141078
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 3.1904,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-05",
+   "code": "周六010",
+   "league": "德甲",
+   "actual": "2:3",
+   "tg": 5,
+   "ll": {
+    "tpl": 3.2746,
+    "mkt": 3.076,
+    "fused": 3.1043
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2102663204855198,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.10071352767780489
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.0748407703557789
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 3.1904,
+    "lamSumPre": 3.1724,
+    "lamSumPost": 3.3619,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-05",
+   "code": "周六011",
+   "league": "德甲",
+   "actual": "4:0",
+   "tg": 4,
+   "ll": {
+    "tpl": 2.9066,
+    "mkt": 3.0766,
+    "fused": 3.0022
+   },
+   "top1": {
+    "family": "home_multi",
+    "prob": 0.24296550339950349,
+    "members": [
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      1
+     ],
+     [
+      3,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      1
+     ],
+     0.10809480610477669
+    ],
+    "top2": [
+     [
+      3,
+      1
+     ],
+     0.08914223624759504
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 3.1904,
+    "lamSumPre": 3.2603,
+    "lamSumPost": 3.4311,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-05",
+   "code": "周六012",
+   "league": "英超",
+   "actual": "0:0",
+   "tg": 0,
+   "ll": {
+    "tpl": 2.9863,
+    "mkt": 2.8295,
+    "fused": 2.8662
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2517343823924981,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.1265378382381533
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.06828074515080398
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.9539,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-05",
+   "code": "周六014",
+   "league": "英超",
+   "actual": "1:1",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.6909,
+    "mkt": 2.153,
+    "fused": 2.2619
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.2935802331327766,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      0
+     ],
+     0.10921825086353205
+    ],
+    "top2": [
+     [
+      1,
+      0
+     ],
+     0.10683808358605436
+    ]
+   },
+   "gatePass": true,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.9539,
+    "lamSumPre": 3.3582,
+    "lamSumPost": 2.9655,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-05",
+   "code": "周六015",
+   "league": "英超",
+   "actual": "2:3",
+   "tg": 5,
+   "ll": {
+    "tpl": 4.0666,
+    "mkt": 3.6859,
+    "fused": 3.7893
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.259804767919061,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.1331113603437931
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.06526064647022899
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.9539,
+    "lamSumPre": 2.7895,
+    "lamSumPost": 2.675,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-05",
+   "code": "周六016",
+   "league": "西甲",
+   "actual": "3:0",
+   "tg": 3,
+   "ll": {
+    "tpl": 4.6353,
+    "mkt": 3.9266,
+    "fused": 4.1057
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.24496778222379395,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.1275477317833612
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.059627776223797946
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.6178,
+    "lamSumPre": 2.6377,
+    "lamSumPost": 2.6765,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-05",
+   "code": "周六017",
+   "league": "法甲",
+   "actual": "0:1",
+   "tg": 1,
+   "ll": {
+    "tpl": 2.8503,
+    "mkt": 3.293,
+    "fused": 3.1265
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.279519934388768,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      0
+     ],
+     0.10533200016993423
+    ],
+    "top2": [
+     [
+      1,
+      0
+     ],
+     0.10306873655320646
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.8251,
+    "lamSumPre": 2.8034,
+    "lamSumPost": 2.9687,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-05",
+   "code": "周六018",
+   "league": "意甲",
+   "actual": "3:2",
+   "tg": 5,
+   "ll": {
+    "tpl": 3.7123,
+    "mkt": 3.6093,
+    "fused": 3.613
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.2854641351160075,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.11899033170722718
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.10372494286743407
+    ]
+   },
+   "gatePass": true,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.5401,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-05",
+   "code": "周六019",
+   "league": "挪超",
+   "actual": "1:2",
+   "tg": 3,
+   "ll": {
+    "tpl": 2.7451,
+    "mkt": 2.7476,
+    "fused": 2.7304
+   },
+   "top1": {
+    "family": "home_multi",
+    "prob": 0.22571186843230884,
+    "members": [
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      1
+     ],
+     [
+      3,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      1
+     ],
+     0.11282184079686769
+    ],
+    "top2": [
+     [
+      3,
+      1
+     ],
+     0.06557020205010682
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 3.0991,
+    "lamSumPre": 2.7814,
+    "lamSumPost": 3.1466,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-05",
+   "code": "周六020",
+   "league": "英超",
+   "actual": "0:0",
+   "tg": 0,
+   "ll": {
+    "tpl": 2.6768,
+    "mkt": 2.7493,
+    "fused": 2.6139
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2655242780871509,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.13349034121221823
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.07325065540689946
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.9539,
+    "lamSumPre": 1.8958,
+    "lamSumPost": 2.4325,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-05",
+   "code": "周六022",
+   "league": "西甲",
+   "actual": "3:2",
+   "tg": 5,
+   "ll": {
+    "tpl": 3.4759,
+    "mkt": 3.2973,
+    "fused": 3.34
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.24350177317394858,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12663680356123264
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.0629449870250002
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.6178,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-05",
+   "code": "周六023",
+   "league": "葡超",
+   "actual": "0:3",
+   "tg": 3,
+   "ll": {
+    "tpl": 3.4212,
+    "mkt": 2.1673,
+    "fused": 2.3779
+   },
+   "top1": {
+    "family": "away_clean",
+    "prob": 0.322166618667062,
+    "members": [
+     [
+      0,
+      1
+     ],
+     [
+      0,
+      2
+     ],
+     [
+      0,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      0,
+      1
+     ],
+     0.11501941711915822
+    ],
+    "top2": [
+     [
+      0,
+      2
+     ],
+     0.11440663983365174
+    ]
+   },
+   "gatePass": true,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.6528,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-05",
+   "code": "周六024",
+   "league": "沙职",
+   "actual": "2:1",
+   "tg": 3,
+   "ll": {
+    "tpl": 3.3929,
+    "mkt": 2.8983,
+    "fused": 2.9577
+   },
+   "top1": {
+    "family": "away_multi",
+    "prob": 0.24054581611138748,
+    "members": [
+     [
+      1,
+      2
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      2
+     ],
+     0.10562963039899693
+    ],
+    "top2": [
+     [
+      1,
+      3
+     ],
+     0.08330715980492205
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.8952,
+    "lamSumPre": 3.9582,
+    "lamSumPost": 3.6761,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-05",
+   "code": "周六025",
+   "league": "荷甲",
+   "actual": "1:3",
+   "tg": 4,
+   "ll": {
+    "tpl": 3.6725,
+    "mkt": 2.8296,
+    "fused": 3.0377
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.20445734991211661,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.09395079891142244
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.08335116600442266
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 3.1152,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-05",
+   "code": "周六026",
+   "league": "意甲",
+   "actual": "2:1",
+   "tg": 3,
+   "ll": {
+    "tpl": 2.45,
+    "mkt": 2.2211,
+    "fused": 2.2708
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.24684457340470584,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.10592430380392814
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.09092583027467219
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.5401,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-05",
+   "code": "周六027",
+   "league": "法甲",
+   "actual": "1:2",
+   "tg": 3,
+   "ll": {
+    "tpl": 2.4612,
+    "mkt": 2.4065,
+    "fused": 2.4089
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.27392144549268554,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.14394564981511604
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.07784103201057932
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.8251,
+    "lamSumPre": 2.2937,
+    "lamSumPost": 2.4272,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-05",
+   "code": "周六028",
+   "league": "西甲",
+   "actual": "2:3",
+   "tg": 5,
+   "ll": {
+    "tpl": 3.2727,
+    "mkt": 4.3049,
+    "fused": 3.9295
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.25092647341455177,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.10371336883434872
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.08693411538706532
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.6178,
+    "lamSumPre": 3.4926,
+    "lamSumPost": 3.1725,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-05",
+   "code": "周六029",
+   "league": "巴甲",
+   "actual": "2:3",
+   "tg": 5,
+   "ll": {
+    "tpl": 3.7319,
+    "mkt": 3.831,
+    "fused": 3.7641
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.24645517916610649,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12384232102490231
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.06291187536367085
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.4823,
+    "lamSumPre": 2.5541,
+    "lamSumPost": 2.6861,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日001",
+   "league": "日职",
+   "actual": "0:1",
+   "tg": 1,
+   "ll": {
+    "tpl": 2.3091,
+    "mkt": 2.8306,
+    "fused": 2.6683
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.24010934423777291,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.10851102732006018
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.08554149334217982
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.5805,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日002",
+   "league": "日职",
+   "actual": "1:3",
+   "tg": 4,
+   "ll": {
+    "tpl": 3.6317,
+    "mkt": 2.9829,
+    "fused": 3.1487
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.24017682726712022,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.11797366093433222
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.0621607118148083
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.5805,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日003",
+   "league": "韩职",
+   "actual": "0:3",
+   "tg": 3,
+   "ll": {
+    "tpl": 3.0171,
+    "mkt": 3.4289,
+    "fused": 3.2685
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.25527472607433954,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12897656948319017
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.071144100158236
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.5417,
+    "lamSumPre": 3.5252,
+    "lamSumPost": 2.88,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日004",
+   "league": "韩职",
+   "actual": "2:2",
+   "tg": 4,
+   "ll": {
+    "tpl": 3.1328,
+    "mkt": 3.1394,
+    "fused": 3.1333
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.3035533038057138,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.1257589258480923
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.11346149735481775
+    ]
+   },
+   "gatePass": true,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.5417,
+    "lamSumPre": 1.9042,
+    "lamSumPost": 2.4299,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日005",
+   "league": "日职",
+   "actual": "2:0",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.5895,
+    "mkt": 2.2575,
+    "fused": 2.3264
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.2664417228030998,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.11306889304010259
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.09764225369905456
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.5805,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日006",
+   "league": "英冠",
+   "actual": "2:2",
+   "tg": 4,
+   "ll": {
+    "tpl": 3.0387,
+    "mkt": 2.8442,
+    "fused": 2.8939
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2649337377211855,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.13281831369890196
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.07675645979658188
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.5421,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日007",
+   "league": "荷甲",
+   "actual": "2:3",
+   "tg": 5,
+   "ll": {
+    "tpl": 3.4236,
+    "mkt": 3.0067,
+    "fused": 3.0808
+   },
+   "top1": {
+    "family": "away_multi",
+    "prob": 0.21093399797937257,
+    "members": [
+     [
+      1,
+      2
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      2
+     ],
+     0.1010498384109461
+    ],
+    "top2": [
+     [
+      1,
+      3
+     ],
+     0.06395979393084539
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 3.1152,
+    "lamSumPre": 2.9873,
+    "lamSumPost": 3.3123,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日007",
+   "league": "荷甲",
+   "actual": "2:3",
+   "tg": 5,
+   "ll": {
+    "tpl": 3.4236,
+    "mkt": 3.0067,
+    "fused": 3.0808
+   },
+   "top1": {
+    "family": "away_multi",
+    "prob": 0.21093399797937257,
+    "members": [
+     [
+      1,
+      2
+     ],
+     [
+      1,
+      3
+     ],
+     [
+      2,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      2
+     ],
+     0.1010498384109461
+    ],
+    "top2": [
+     [
+      1,
+      3
+     ],
+     0.06395979393084539
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 3.1152,
+    "lamSumPre": 2.9873,
+    "lamSumPost": 3.3123,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日008",
+   "league": "英超",
+   "actual": "2:2",
+   "tg": 4,
+   "ll": {
+    "tpl": 2.8681,
+    "mkt": 2.63,
+    "fused": 2.6306
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2447195388402672,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.125989603108485
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.07203246617815262
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.9539,
+    "lamSumPre": 1.9499,
+    "lamSumPost": 2.7575,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日008",
+   "league": "英超",
+   "actual": "2:2",
+   "tg": 4,
+   "ll": {
+    "tpl": 2.8681,
+    "mkt": 2.63,
+    "fused": 2.6306
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2447195388402672,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.125989603108485
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.07203246617815262
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.9539,
+    "lamSumPre": 1.9499,
+    "lamSumPost": 2.7575,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日009",
+   "league": "意甲",
+   "actual": "3:2",
+   "tg": 5,
+   "ll": {
+    "tpl": 3.7123,
+    "mkt": 3.2137,
+    "fused": 3.3384
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2364566257463563,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.11744442042792884
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.07383517751359489
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.5401,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日009",
+   "league": "意甲",
+   "actual": "3:2",
+   "tg": 5,
+   "ll": {
+    "tpl": 3.7123,
+    "mkt": 3.2137,
+    "fused": 3.3384
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2364566257463563,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.11744442042792884
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.07383517751359489
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.5401,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日010",
+   "league": "意甲",
+   "actual": "1:1",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.0928,
+    "mkt": 1.7945,
+    "fused": 1.8664
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.29762994402787624,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.1546824896585241
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.08866685836242391
+    ]
+   },
+   "gatePass": true,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.5401,
+    "lamSumPre": 3.2754,
+    "lamSumPost": 2.6622,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日010",
+   "league": "意甲",
+   "actual": "1:1",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.0928,
+    "mkt": 1.7945,
+    "fused": 1.8664
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.29762994402787624,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.1546824896585241
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.08866685836242391
+    ]
+   },
+   "gatePass": true,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.5401,
+    "lamSumPre": 3.2754,
+    "lamSumPost": 2.6622,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日011",
+   "league": "法甲",
+   "actual": "2:6",
+   "tg": 8,
+   "ll": {
+    "tpl": 4.5778,
+    "mkt": 6.9078,
+    "fused": 6.2262
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.24761089935141728,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12710947938600095
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.06274096175283898
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.8251,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日011",
+   "league": "法甲",
+   "actual": "2:6",
+   "tg": 8,
+   "ll": {
+    "tpl": 4.5778,
+    "mkt": 6.9078,
+    "fused": 6.2262
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.24761089935141728,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12710947938600095
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.06274096175283898
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.8251,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日012",
+   "league": "德甲",
+   "actual": "0:5",
+   "tg": 5,
+   "ll": {
+    "tpl": 4.9782,
+    "mkt": 6.0831,
+    "fused": 5.7592
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2519332522643927,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12226762318933443
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.06968120876776544
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 3.1904,
+    "lamSumPre": 2.4381,
+    "lamSumPost": 2.6877,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日012",
+   "league": "德甲",
+   "actual": "0:5",
+   "tg": 5,
+   "ll": {
+    "tpl": 4.9782,
+    "mkt": 6.0831,
+    "fused": 5.7592
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2519332522643927,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12226762318933443
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.06968120876776544
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 3.1904,
+    "lamSumPre": 2.4381,
+    "lamSumPost": 2.6877,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日013",
+   "league": "西甲",
+   "actual": "0:5",
+   "tg": 5,
+   "ll": {
+    "tpl": 6.9311,
+    "mkt": 3.2358,
+    "fused": 4.119
+   },
+   "top1": {
+    "family": "away_clean",
+    "prob": 0.2689546142171857,
+    "members": [
+     [
+      0,
+      1
+     ],
+     [
+      0,
+      2
+     ],
+     [
+      0,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      0,
+      2
+     ],
+     0.09910556578448741
+    ],
+    "top2": [
+     [
+      0,
+      1
+     ],
+     0.09040234521179545
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.6178,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日013",
+   "league": "西甲",
+   "actual": "0:5",
+   "tg": 5,
+   "ll": {
+    "tpl": 6.9311,
+    "mkt": 3.2358,
+    "fused": 4.119
+   },
+   "top1": {
+    "family": "away_clean",
+    "prob": 0.2689546142171857,
+    "members": [
+     [
+      0,
+      1
+     ],
+     [
+      0,
+      2
+     ],
+     [
+      0,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      0,
+      2
+     ],
+     0.09910556578448741
+    ],
+    "top2": [
+     [
+      0,
+      1
+     ],
+     0.09040234521179545
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.6178,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日014",
+   "league": "葡超",
+   "actual": "4:0",
+   "tg": 4,
+   "ll": {
+    "tpl": 2.4807,
+    "mkt": 3.9742,
+    "fused": 3.4726
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.31983993360037244,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.14575236394635402
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.10706380112617549
+    ]
+   },
+   "gatePass": true,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.6528,
+    "lamSumPre": 2.8465,
+    "lamSumPost": 2.5065,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日014",
+   "league": "葡超",
+   "actual": "4:0",
+   "tg": 4,
+   "ll": {
+    "tpl": 2.4807,
+    "mkt": 3.9742,
+    "fused": 3.4726
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.31983993360037244,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.14575236394635402
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.10706380112617549
+    ]
+   },
+   "gatePass": true,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.6528,
+    "lamSumPre": 2.8465,
+    "lamSumPost": 2.5065,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日015",
+   "league": "挪超",
+   "actual": "2:0",
+   "tg": 2,
+   "ll": {
+    "tpl": 3.1172,
+    "mkt": 2.3041,
+    "fused": 2.4682
+   },
+   "top1": {
+    "family": "home_multi",
+    "prob": 0.24633666864138362,
+    "members": [
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      1
+     ],
+     [
+      3,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      1
+     ],
+     0.10411118282188786
+    ],
+    "top2": [
+     [
+      3,
+      1
+     ],
+     0.09238367254511146
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 3.0991,
+    "lamSumPre": 4.1238,
+    "lamSumPost": 3.9432,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日015",
+   "league": "挪超",
+   "actual": "2:0",
+   "tg": 2,
+   "ll": {
+    "tpl": 3.1172,
+    "mkt": 2.3041,
+    "fused": 2.4682
+   },
+   "top1": {
+    "family": "home_multi",
+    "prob": 0.24633666864138362,
+    "members": [
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      1
+     ],
+     [
+      3,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      1
+     ],
+     0.10411118282188786
+    ],
+    "top2": [
+     [
+      3,
+      1
+     ],
+     0.09238367254511146
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 3.0991,
+    "lamSumPre": 4.1238,
+    "lamSumPost": 3.9432,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日016",
+   "league": "英超",
+   "actual": "2:1",
+   "tg": 3,
+   "ll": {
+    "tpl": 2.394,
+    "mkt": 2.1413,
+    "fused": 2.1865
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.2642016396988228,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      0
+     ],
+     0.0964353516780917
+    ],
+    "top2": [
+     [
+      1,
+      0
+     ],
+     0.09551817462338147
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.9539,
+    "lamSumPre": 3.6832,
+    "lamSumPost": 3.1548,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日016",
+   "league": "英超",
+   "actual": "2:1",
+   "tg": 3,
+   "ll": {
+    "tpl": 2.394,
+    "mkt": 2.1413,
+    "fused": 2.1865
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.2642016396988228,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      0
+     ],
+     0.0964353516780917
+    ],
+    "top2": [
+     [
+      1,
+      0
+     ],
+     0.09551817462338147
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.9539,
+    "lamSumPre": 3.6832,
+    "lamSumPost": 3.1548,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日017",
+   "league": "德甲",
+   "actual": "1:4",
+   "tg": 5,
+   "ll": {
+    "tpl": 4.3148,
+    "mkt": 4.5899,
+    "fused": 4.4897
+   },
+   "top1": {
+    "family": "home_multi",
+    "prob": 0.22299513426848236,
+    "members": [
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      1
+     ],
+     [
+      3,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      1
+     ],
+     0.10393761570141753
+    ],
+    "top2": [
+     [
+      3,
+      1
+     ],
+     0.06859561235845957
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 3.1904,
+    "lamSumPre": 3.6041,
+    "lamSumPost": 3.6042,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日017",
+   "league": "德甲",
+   "actual": "1:4",
+   "tg": 5,
+   "ll": {
+    "tpl": 4.3148,
+    "mkt": 4.5899,
+    "fused": 4.4897
+   },
+   "top1": {
+    "family": "home_multi",
+    "prob": 0.22299513426848236,
+    "members": [
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      1
+     ],
+     [
+      3,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      1
+     ],
+     0.10393761570141753
+    ],
+    "top2": [
+     [
+      3,
+      1
+     ],
+     0.06859561235845957
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 3.1904,
+    "lamSumPre": 3.6041,
+    "lamSumPost": 3.6042,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日018",
+   "league": "意甲",
+   "actual": "2:2",
+   "tg": 4,
+   "ll": {
+    "tpl": 2.8588,
+    "mkt": 2.9261,
+    "fused": 2.8368
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2595267734195702,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.13786244772816966
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.06305260133107725
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.5401,
+    "lamSumPre": 2.551,
+    "lamSumPost": 2.612,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日018",
+   "league": "意甲",
+   "actual": "2:2",
+   "tg": 4,
+   "ll": {
+    "tpl": 2.8588,
+    "mkt": 2.9261,
+    "fused": 2.8368
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2595267734195702,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.13786244772816966
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.06305260133107725
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.5401,
+    "lamSumPre": 2.551,
+    "lamSumPost": 2.612,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日019",
+   "league": "西甲",
+   "actual": "5:2",
+   "tg": 7,
+   "ll": {
+    "tpl": 5.5367,
+    "mkt": 6.364,
+    "fused": 6.0691
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.285563340229845,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.14273565731830049
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.09610665403400262
+    ]
+   },
+   "gatePass": true,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.6178,
+    "lamSumPre": 2.791,
+    "lamSumPost": 2.4616,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日019",
+   "league": "西甲",
+   "actual": "5:2",
+   "tg": 7,
+   "ll": {
+    "tpl": 5.5367,
+    "mkt": 6.364,
+    "fused": 6.0691
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.285563340229845,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.14273565731830049
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.09610665403400262
+    ]
+   },
+   "gatePass": true,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.6178,
+    "lamSumPre": 2.791,
+    "lamSumPost": 2.4616,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日020",
+   "league": "西甲",
+   "actual": "0:0",
+   "tg": 0,
+   "ll": {
+    "tpl": 2.9386,
+    "mkt": 2.6514,
+    "fused": 2.6677
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2501343249134652,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.13014352592981004
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.06941060405792186
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.6178,
+    "lamSumPre": 2.4012,
+    "lamSumPost": 2.5318,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日020",
+   "league": "西甲",
+   "actual": "0:0",
+   "tg": 0,
+   "ll": {
+    "tpl": 2.9386,
+    "mkt": 2.6514,
+    "fused": 2.6677
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2501343249134652,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.13014352592981004
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.06941060405792186
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.6178,
+    "lamSumPre": 2.4012,
+    "lamSumPost": 2.5318,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日021",
+   "league": "意甲",
+   "actual": "1:1",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.0409,
+    "mkt": 1.9879,
+    "fused": 1.9859
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2755246555876719,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.13725535873242276
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.08109328296715848
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.5401,
+    "lamSumPre": 2.2676,
+    "lamSumPost": 2.4094,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日021",
+   "league": "意甲",
+   "actual": "1:1",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.0409,
+    "mkt": 1.9879,
+    "fused": 1.9859
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2755246555876719,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.13725535873242276
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.08109328296715848
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.5401,
+    "lamSumPre": 2.2676,
+    "lamSumPost": 2.4094,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日022",
+   "league": "法甲",
+   "actual": "2:3",
+   "tg": 5,
+   "ll": {
+    "tpl": 3.7749,
+    "mkt": 3.9453,
+    "fused": 3.7518
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.24500562820388927,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12369616990169069
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.060953523068173164
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.8251,
+    "lamSumPre": 2.407,
+    "lamSumPost": 2.7227,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日022",
+   "league": "法甲",
+   "actual": "2:3",
+   "tg": 5,
+   "ll": {
+    "tpl": 3.7749,
+    "mkt": 3.9453,
+    "fused": 3.7518
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.24500562820388927,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12369616990169069
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.060953523068173164
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.8251,
+    "lamSumPre": 2.407,
+    "lamSumPost": 2.7227,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日023",
+   "league": "西甲",
+   "actual": "1:1",
+   "tg": 2,
+   "ll": {
+    "tpl": 1.9613,
+    "mkt": 1.8966,
+    "fused": 1.9024
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.28085911885716897,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.14921572388463658
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.08031274878936072
+    ]
+   },
+   "gatePass": true,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.6178,
+    "lamSumPre": 2.9625,
+    "lamSumPost": 2.6001,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日023",
+   "league": "西甲",
+   "actual": "1:1",
+   "tg": 2,
+   "ll": {
+    "tpl": 1.9613,
+    "mkt": 1.8966,
+    "fused": 1.9024
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.28085911885716897,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.14921572388463658
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.08031274878936072
+    ]
+   },
+   "gatePass": true,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.6178,
+    "lamSumPre": 2.9625,
+    "lamSumPost": 2.6001,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日024",
+   "league": "巴甲",
+   "actual": "0:0",
+   "tg": 0,
+   "ll": {
+    "tpl": 3.1476,
+    "mkt": 2.8321,
+    "fused": 2.859
+   },
+   "top1": {
+    "family": "away_clean",
+    "prob": 0.2611413263051664,
+    "members": [
+     [
+      0,
+      1
+     ],
+     [
+      0,
+      2
+     ],
+     [
+      0,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      0,
+      1
+     ],
+     0.10850799689355808
+    ],
+    "top2": [
+     [
+      0,
+      2
+     ],
+     0.10139465355841736
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.4823,
+    "lamSumPre": 2.2559,
+    "lamSumPost": 2.5471,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-06",
+   "code": "周日024",
+   "league": "巴甲",
+   "actual": "0:0",
+   "tg": 0,
+   "ll": {
+    "tpl": 3.1476,
+    "mkt": 2.8321,
+    "fused": 2.859
+   },
+   "top1": {
+    "family": "away_clean",
+    "prob": 0.2611413263051664,
+    "members": [
+     [
+      0,
+      1
+     ],
+     [
+      0,
+      2
+     ],
+     [
+      0,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      0,
+      1
+     ],
+     0.10850799689355808
+    ],
+    "top2": [
+     [
+      0,
+      2
+     ],
+     0.10139465355841736
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.4823,
+    "lamSumPre": 2.2559,
+    "lamSumPost": 2.5471,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-08",
+   "code": "周二002",
+   "league": "欧冠",
+   "actual": "1:0",
+   "tg": 1,
+   "ll": {
+    "tpl": 2.2902,
+    "mkt": 2.4594,
+    "fused": 2.3934
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2229209652081168,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.11198123160896223
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.066705339905443
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-08",
+   "code": "周二003",
+   "league": "欧冠",
+   "actual": "2:3",
+   "tg": 5,
+   "ll": {
+    "tpl": 3.8526,
+    "mkt": 3.5362,
+    "fused": 3.6201
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.24612879296396095,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12232977712516242
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.06758930151103916
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-08",
+   "code": "周二004",
+   "league": "荷甲",
+   "actual": "2:2",
+   "tg": 4,
+   "ll": {
+    "tpl": 2.6395,
+    "mkt": 2.6926,
+    "fused": 2.6519
+   },
+   "top1": {
+    "family": "home_multi",
+    "prob": 0.2106922301014248,
+    "members": [
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      1
+     ],
+     [
+      3,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      1
+     ],
+     0.0961847137659706
+    ],
+    "top2": [
+     [
+      3,
+      1
+     ],
+     0.07248117754532858
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 3.1152,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-08",
+   "code": "周二005",
+   "league": "沙职",
+   "actual": "3:2",
+   "tg": 5,
+   "ll": {
+    "tpl": 3.2316,
+    "mkt": 3.1428,
+    "fused": 3.1481
+   },
+   "top1": {
+    "family": "home_multi",
+    "prob": 0.20888734139548243,
+    "members": [
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      1
+     ],
+     [
+      3,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      1
+     ],
+     0.10412800702466021
+    ],
+    "top2": [
+     [
+      3,
+      1
+     ],
+     0.06182545068392166
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.8952,
+    "lamSumPre": 3.7994,
+    "lamSumPost": 3.4905,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-08",
+   "code": "周二006",
+   "league": "英冠",
+   "actual": "3:1",
+   "tg": 4,
+   "ll": {
+    "tpl": 3.3366,
+    "mkt": 2.8249,
+    "fused": 2.9398
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.23850537162684404,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12174014281949845
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.06479964146972479
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.5421,
+    "lamSumPre": 2.9995,
+    "lamSumPost": 2.8858,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-08",
+   "code": "周二007",
+   "league": "英联赛杯",
+   "actual": "1:0",
+   "tg": 1,
+   "ll": {
+    "tpl": 2.8665,
+    "mkt": 2.1922,
+    "fused": 2.2478
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2666450468023748,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.13585512682620862
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.07402900730184554
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": 2.4564,
+    "lamSumPost": 2.5962,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-08",
+   "code": "周二008",
+   "league": "欧冠",
+   "actual": "2:1",
+   "tg": 3,
+   "ll": {
+    "tpl": 2.3958,
+    "mkt": 2.1536,
+    "fused": 2.1913
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.23685693765103327,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.08975152163376499
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.08763096940888501
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": false,
+    "guardBlockedPre": true,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-08",
+   "code": "周二009",
+   "league": "欧冠",
+   "actual": "3:2",
+   "tg": 5,
+   "ll": {
+    "tpl": 3.6512,
+    "mkt": 3.082,
+    "fused": 3.2228
+   },
+   "top1": {
+    "family": "home_multi",
+    "prob": 0.21783083136499964,
+    "members": [
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      1
+     ],
+     [
+      3,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      1
+     ],
+     0.11365488062243334
+    ],
+    "top2": [
+     [
+      3,
+      1
+     ],
+     0.06433226831668122
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-08",
+   "code": "周二010",
+   "league": "欧冠",
+   "actual": "2:3",
+   "tg": 5,
+   "ll": {
+    "tpl": 4.2013,
+    "mkt": 3.8316,
+    "fused": 3.9313
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.25989725325271984,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.14158681811707305
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.06084241755529621
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": 1.9217,
+    "lamSumPost": 2.4543,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-08",
+   "code": "周二011",
+   "league": "欧冠",
+   "actual": "0:2",
+   "tg": 2,
+   "ll": {
+    "tpl": 3.9766,
+    "mkt": 2.3156,
+    "fused": 2.6219
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.23122896791935993,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.11573610689103822
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.06508690923883914
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": 2.6945,
+    "lamSumPost": 2.9533,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-08",
+   "code": "周二012",
+   "league": "解放者杯",
+   "actual": "2:0",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.6598,
+    "mkt": 1.9109,
+    "fused": 2.0828
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.34848311759276374,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.15838720888108648
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.12458492857308212
+    ]
+   },
+   "gatePass": true,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-10",
+   "code": "周四001",
+   "league": "欧冠",
+   "actual": "1:1",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.1323,
+    "mkt": 2.1062,
+    "fused": 2.0876
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.24365316820803945,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.1239852877508005
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.06889806228542271
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-10",
+   "code": "周四002",
+   "league": "欧冠",
+   "actual": "4:1",
+   "tg": 5,
+   "ll": {
+    "tpl": 4.1785,
+    "mkt": 3.4272,
+    "fused": 3.6238
+   },
+   "top1": {
+    "family": "home_multi",
+    "prob": 0.21947009138953522,
+    "members": [
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      1
+     ],
+     [
+      3,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      1
+     ],
+     0.11241576527767004
+    ],
+    "top2": [
+     [
+      3,
+      1
+     ],
+     0.06587226341402071
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-10",
+   "code": "周四004",
+   "league": "欧冠",
+   "actual": "2:3",
+   "tg": 5,
+   "ll": {
+    "tpl": 3.8526,
+    "mkt": 3.5018,
+    "fused": 3.5941
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.2465401010821819,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12562221586071673
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.0649882542870783
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-10",
+   "code": "周四006",
+   "league": "葡超",
+   "actual": "2:1",
+   "tg": 3,
+   "ll": {
+    "tpl": 2.8443,
+    "mkt": 3.0006,
+    "fused": 2.9369
+   },
+   "top1": {
+    "family": "away_clean",
+    "prob": 0.29053595133531906,
+    "members": [
+     [
+      0,
+      1
+     ],
+     [
+      0,
+      2
+     ],
+     [
+      0,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      0,
+      1
+     ],
+     0.11955354210817419
+    ],
+    "top2": [
+     [
+      0,
+      2
+     ],
+     0.10127187950629964
+    ]
+   },
+   "gatePass": true,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.6528,
+    "lamSumPre": 3.0157,
+    "lamSumPost": 2.8322,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-10",
+   "code": "周四007",
+   "league": "解放者杯",
+   "actual": "0:2",
+   "tg": 2,
+   "ll": {
+    "tpl": 3.0977,
+    "mkt": 2.8095,
+    "fused": 2.8825
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.28346419890627955,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.14480409500255756
+    ],
+    "top2": [
+     [
+      0,
+      0
+     ],
+     0.08824365637834505
+    ]
+   },
+   "gatePass": true,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-19",
+   "code": "周六013",
+   "league": "德甲",
+   "actual": "3:4",
+   "tg": 7,
+   "ll": {
+    "tpl": 4.091,
+    "mkt": 6.9078,
+    "fused": 6.0897
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.22706612181446328,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.10991786878117611
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.07277762957209262
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 3.1904,
+    "lamSumPre": 2.4718,
+    "lamSumPost": 2.9921,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-19",
+   "code": "周六023",
+   "league": "西甲",
+   "actual": "5:0",
+   "tg": 5,
+   "ll": {
+    "tpl": 3.9177,
+    "mkt": 4.7325,
+    "fused": 4.4275
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.24151319480585795,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.0894411439130654
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.08463405866990995
+    ]
+   },
+   "gatePass": false,
+   "shrunk": true,
+   "guard": {
+    "tMean": 2.6178,
+    "lamSumPre": 3.6485,
+    "lamSumPost": 3.2873,
+    "strengthMissing": false,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-22",
+   "code": "周二001",
+   "league": "亚运男足",
+   "actual": "2:0",
+   "tg": 2,
+   "ll": {
+    "tpl": 2.6598,
+    "mkt": 2.1286,
+    "fused": 2.2309
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.2804164765855453,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      0
+     ],
+     0.10743487118617445
+    ],
+    "top2": [
+     [
+      1,
+      0
+     ],
+     0.10260975458802876
+    ]
+   },
+   "gatePass": true,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-22",
+   "code": "周二002",
+   "league": "英锦标赛",
+   "actual": "4:1",
+   "tg": 5,
+   "ll": {
+    "tpl": 4.1785,
+    "mkt": 3.0026,
+    "fused": 3.2977
+   },
+   "top1": {
+    "family": "home_multi",
+    "prob": 0.23369369325768874,
+    "members": [
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      1
+     ],
+     [
+      3,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      1
+     ],
+     0.1166434884548062
+    ],
+    "top2": [
+     [
+      3,
+      1
+     ],
+     0.07406466431859941
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-22",
+   "code": "周二003",
+   "league": "英锦标赛",
+   "actual": "2:1",
+   "tg": 3,
+   "ll": {
+    "tpl": 2.3958,
+    "mkt": 2.2146,
+    "fused": 2.2615
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.23965019528506526,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.1206313423980375
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.06296280110225685
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-22",
+   "code": "周二004",
+   "league": "英锦标赛",
+   "actual": "3:2",
+   "tg": 5,
+   "ll": {
+    "tpl": 3.6512,
+    "mkt": 3.4203,
+    "fused": 3.4754
+   },
+   "top1": {
+    "family": "draw",
+    "prob": 0.24266610863740942,
+    "members": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ],
+     [
+      2,
+      2
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      1
+     ],
+     0.12416139436004761
+    ],
+    "top2": [
+     [
+      2,
+      2
+     ],
+     0.06878684445889213
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-25",
+   "code": "周五004",
+   "league": "亚运男足",
+   "actual": "4:0",
+   "tg": 4,
+   "ll": {
+    "tpl": 4.1094,
+    "mkt": 2.1377,
+    "fused": 2.5611
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.36173804557419315,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      0
+     ],
+     0.13523466446951335
+    ],
+    "top2": [
+     [
+      3,
+      0
+     ],
+     0.12101083028206717
+    ]
+   },
+   "gatePass": true,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-25",
+   "code": "周五010",
+   "league": "欧国联",
+   "actual": "0:0",
+   "tg": 0,
+   "ll": {
+    "tpl": 2.6613,
+    "mkt": 2.9574,
+    "fused": 2.8501
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.2796377423616524,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      1,
+      0
+     ],
+     0.12118867092956301
+    ],
+    "top2": [
+     [
+      2,
+      0
+     ],
+     0.09738374912835708
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-25",
+   "code": "周五011",
+   "league": "欧国联",
+   "actual": "0:1",
+   "tg": 1,
+   "ll": {
+    "tpl": 2.5862,
+    "mkt": 2.6338,
+    "fused": 2.5006
+   },
+   "top1": {
+    "family": "away_clean",
+    "prob": 0.24409841504484298,
+    "members": [
+     [
+      0,
+      1
+     ],
+     [
+      0,
+      2
+     ],
+     [
+      0,
+      3
+     ]
+    ],
+    "top1": [
+     [
+      0,
+      2
+     ],
+     0.0915251083363221
+    ],
+    "top2": [
+     [
+      0,
+      1
+     ],
+     0.08203546293238549
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  },
+  {
+   "date": "2026-09-25",
+   "code": "周五012",
+   "league": "欧国联",
+   "actual": "2:1",
+   "tg": 3,
+   "ll": {
+    "tpl": 2.3958,
+    "mkt": 2.0567,
+    "fused": 2.1178
+   },
+   "top1": {
+    "family": "home_clean",
+    "prob": 0.2786188165719771,
+    "members": [
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      0
+     ],
+     [
+      3,
+      0
+     ]
+    ],
+    "top1": [
+     [
+      2,
+      0
+     ],
+     0.108288719800412
+    ],
+    "top2": [
+     [
+      1,
+      0
+     ],
+     0.10282815459640052
+    ]
+   },
+   "gatePass": false,
+   "shrunk": false,
+   "guard": {
+    "tMean": 2.7357,
+    "lamSumPre": null,
+    "lamSumPost": null,
+    "strengthMissing": true,
+    "guardBlockedPre": false,
+    "postShrinkViolation": false
+   }
+  }
+ ],
+ "powerSelfCheck": {
+  "nMkt": 818,
+  "nCalibrated": 348,
+  "nCalibratedUnique": 194,
+  "rawEntries": {
+   "n": 348,
+   "buckets": {
+    "0": {
+     "predMean": 0.0538,
+     "actualFreq": 0.0718
+    },
+    "1": {
+     "predMean": 0.1539,
+     "actualFreq": 0.1322
+    },
+    "2": {
+     "predMean": 0.2291,
+     "actualFreq": 0.158
+    },
+    "3": {
+     "predMean": 0.2387,
+     "actualFreq": 0.1695
+    },
+    "4+": {
+     "predMean": 0.3245,
+     "actualFreq": 0.4684
+    }
+   },
+   "tail4plus": {
+    "predMean": 0.3245,
+    "actualShare": 0.4684
+   }
+  },
+  "uniqueMatches": {
+   "n": 194,
+   "buckets": {
+    "0": {
+     "predMean": 0.0537,
+     "actualFreq": 0.0722
+    },
+    "1": {
+     "predMean": 0.1543,
+     "actualFreq": 0.1237
+    },
+    "2": {
+     "predMean": 0.2297,
+     "actualFreq": 0.1701
+    },
+    "3": {
+     "predMean": 0.2397,
+     "actualFreq": 0.1701
+    },
+    "4+": {
+     "predMean": 0.3227,
+     "actualFreq": 0.4639
+    }
+   },
+   "tail4plus": {
+    "predMean": 0.3227,
+    "actualShare": 0.4639
+   }
+  }
+ },
+ "acceptance": {
+  "line1Logloss": true,
+  "line2FamilyTop1": true,
+  "line3SmallScore": true
+ }
+}
