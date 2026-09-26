@@ -1,18 +1,22 @@
 # engine/scripts/tests/test_crs_fusion_audit.py
 """crs_fusion_audit 回测验收器核心函数测试（TDD·离线注入 fixtures 不触网）。
-覆盖：actual→池键映射 / logloss / 族 top1 命中统计 / 总进球分桶校准 /
-配对差 bootstrap CI / three_dists 三方分布装配 / 输出 JSON 键卫生。
+覆盖：actual→池键映射 / logloss / 市场臂兜底折叠公平计分（I-1）/ join 样本去重（I-2）/
+族 top1 命中统计 / 闸门分层对齐（M-1）/ 总进球分桶校准 / 配对差 bootstrap CI /
+three_dists 三方分布装配 / 输出 JSON 键卫生。
 开发者 sszhang"""
 import json
 import math
 
 import pytest
 
-from crs_fusion import EPS_MARKET, fuse_crs
+from crs_fusion import EPS_MARKET, extract_mkt_dist, fuse_crs
 from crs_fusion_audit import (
     actual_pool_key,
     bucket_calibration,
+    build_fam_rows,
+    dedup_by_match,
     family_top1_stats,
+    fold_crs_fallback,
     logloss,
     paired_bootstrap_ci,
     tg_buckets,
@@ -47,6 +51,80 @@ def test_logloss_out_of_pool_actual_uses_rep_key():
 def test_logloss_missing_key_falls_back_to_eps():
     dist = {(1, 0): 1.0}                            # 市场臂无代表键场景
     assert logloss(dist, 5, 5) == pytest.approx(-math.log(EPS_MARKET))
+
+# ---- fold_crs_fallback：市场臂兜底赔率折叠（I-1 公平计分）----
+
+def test_fold_crs_fallback_renames_zh_keys_to_reps():
+    crs = {"1:0": 3.0, "0:0": 3.2, "胜其他": 100.0, "平其他": 400.0, "负其他": 36.0}
+    assert fold_crs_fallback(crs) == {
+        "1:0": 3.0, "0:0": 3.2, "4:3": 100.0, "4:4": 400.0, "3:4": 36.0}
+
+def test_fold_crs_fallback_merges_implied_probs_if_numeric_rep_present():
+    # 分组语义：隐含概率相加（1/o 调和合并）。池结构保证不触发（28 数值+3 兜底=31），防御分支锁定
+    out = fold_crs_fallback({"4:3": 100.0, "胜其他": 100.0})
+    assert out["4:3"] == pytest.approx(50.0)        # 1/100+1/100=2/100 → o=50
+
+def test_fold_crs_fallback_skips_invalid_entries():
+    out = fold_crs_fallback({"1:0": 3.0, "胜其他": 0, "平其他": "x"})
+    assert out == {"1:0": 3.0}
+
+def test_market_arm_scores_out_of_pool_with_fallback_price():
+    # I-1 核心：市场臂对池外 actual（1:6 等）用兜底代表键概率计分，不再记 ε=6.91 假惩罚
+    crs = {f"{h}:{a}": 20.0 for h in range(3) for a in range(3)}
+    crs["负其他"] = 36.0
+    dist = extract_mkt_dist(fold_crs_fallback(crs))
+    ll = logloss(dist, 1, 6)
+    assert (3, 4) in dist and dist[(3, 4)] > 0
+    assert ll == pytest.approx(-math.log(dist[(3, 4)]))
+    assert ll < -math.log(EPS_MARKET) - 0.5         # 显著低于 ε 假惩罚
+
+# ---- dedup_by_match：join 样本 date+code 唯一化（I-2）----
+
+def test_dedup_by_match_unique_on_date_code():
+    rows = [
+        {"date": "2026-09-06", "code": "周日007", "rh": 2, "ra": 3, "tg": 5},
+        {"date": "2026-09-06", "code": "周日007", "rh": 2, "ra": 3, "tg": 5},  # 09-06 双记
+        {"date": "2026-09-06", "code": "周日008", "rh": 1, "ra": 1, "tg": 2},
+        {"date": "2026-08-29", "code": "周六003", "rh": 0, "ra": 0, "tg": 0},
+        {"date": "2026-08-29", "code": "周六003", "rh": 0, "ra": 0, "tg": 0},  # 08-29 双记
+    ]
+    uniq, dupes = dedup_by_match(rows)
+    assert dupes == 2 and len(uniq) == 3
+    assert [(r["date"], r["code"]) for r in uniq] == [
+        ("2026-09-06", "周日007"), ("2026-09-06", "周日008"), ("2026-08-29", "周六003")]
+
+def test_dedup_by_match_keeps_first_occurrence():
+    # 双记对结果字段逐位相同、预测侧字段随扫档日漂移——保留首现（不进审计统计的字段无差）
+    rows = [{"date": "d", "code": "c", "rh": 1, "ra": 0, "tg": 1},
+            {"date": "d", "code": "c", "rh": 1, "ra": 0, "tg": 1, "pick": "排除:DC分歧"}]
+    uniq, dupes = dedup_by_match(rows)
+    assert dupes == 1 and len(uniq) == 1 and uniq[0].get("pick") is None
+
+def test_dedup_by_match_no_dupes_passthrough():
+    rows = [{"date": "a", "code": "x1"}, {"date": "b", "code": "x1"}]   # code 跨日可复用
+    uniq, dupes = dedup_by_match(rows)
+    assert dupes == 0 and uniq == rows
+
+# ---- build_fam_rows：闸门分层对齐（M-1：top1=None 不得错位）----
+
+def test_build_fam_rows_gate_stratification_no_zip_misalignment():
+    # M-1 回归钉：top1=None 场滤出后，闸门分层按各自行 gatePass 归层（旧 zip(per) 会配错场）
+    per = [
+        {"actual": "1:1", "gatePass": True,
+         "top1": {"family": "draw", "prob": 0.5, "members": [(0, 0), (1, 1), (2, 2)]}},
+        {"actual": "5:3", "gatePass": False, "top1": None},               # 空模板场不入族统计
+        {"actual": "1:0", "gatePass": True,
+         "top1": {"family": "home_clean", "prob": 0.4, "members": [(1, 0), (2, 0), (3, 0)]}},
+        {"actual": "0:1", "gatePass": False,
+         "top1": {"family": "away_clean", "prob": 0.3, "members": [(0, 1), (0, 2), (0, 3)]}},
+    ]
+    fam_rows = build_fam_rows(per)
+    assert len(fam_rows) == 3
+    assert fam_rows[0]["actual"] == (1, 1) and fam_rows[0]["gatePass"] is True
+    gate_pass = [fr for fr in fam_rows if fr["gatePass"]]
+    gate_fail = [fr for fr in fam_rows if not fr["gatePass"]]
+    assert [fr["top1"]["family"] for fr in gate_pass] == ["draw", "home_clean"]
+    assert [fr["top1"]["family"] for fr in gate_fail] == ["away_clean"]
 
 # ---- family_top1_stats：top1 族实际命中 vs 融合期望 ----
 
@@ -157,13 +235,14 @@ def test_three_dists_sums_and_fusion_math():
     for arm in ("tpl", "mkt", "fused"):
         assert sum(out[arm].values()) == pytest.approx(1.0, abs=1e-9)
     assert out["lam"] is None and out["shrunk"] is False
-    # 融合 = 对数意见池比值关系逐项可验
-    q, p, pf = out["tpl"], out["mkt"], out["fused"]
+    # 融合 = 对数意见池比值关系逐项可验（融合链输入=生产未折叠市场分布，I-1 后与市场臂口径分离）
+    q, pf = out["tpl"], out["fused"]
+    p_fuse = extract_mkt_dist(m["crs"])
     r = 0.286
     for s in ((1, 0), (1, 1), (2, 1)):
-        expect = q[s] ** r * p[s] ** (1 - r)
+        expect = q[s] ** r * p_fuse[s] ** (1 - r)
         got_ratio = pf[s] / pf[(1, 0)]
-        want_ratio = expect / (q[(1, 0)] ** r * p[(1, 0)] ** (1 - r))
+        want_ratio = expect / (q[(1, 0)] ** r * p_fuse[(1, 0)] ** (1 - r))
         assert got_ratio == pytest.approx(want_ratio, rel=1e-9)
     assert out["gate"]["maxProb"] > 0
 
@@ -174,11 +253,13 @@ def test_three_dists_template_is_smoothed_pure_freq():
     q10 = out["tpl"][(1, 0)]
     assert q10 == pytest.approx((0.40 + 0.5 / 100) / (1 + 31 * 0.5 / 100), rel=1e-9)
 
-def test_three_dists_fused_includes_template_only_keys():
-    # 市场无代表键 → 融合后代表键仍 >0（ε 兜底，不零吸收）
+def test_three_dists_market_folds_fallback_reps_but_fused_chain_unfolded():
+    # I-1：市场臂兜底折叠（(4,3)/(4,4)/(3,4) 有价）；融合链输入保持生产口径（未折叠、ε 兜底）
     m, ft, form, zh = _toy_fixture()
     out = three_dists(m, ft, form, zh)
-    assert out["fused"][(4, 4)] > 0 and out["mkt"].get((4, 4)) is None
+    assert out["mkt"][(4, 3)] > 0 and out["mkt"][(4, 4)] > 0 and out["mkt"][(3, 4)] > 0
+    assert extract_mkt_dist(m["crs"]).get((4, 4)) is None      # 生产市场分布无代表键
+    assert out["fused"][(4, 4)] > 0                            # 融合仍经模板+ε支撑（不零吸收）
 
 def test_three_dists_market_below_min_items_degrades():
     m, ft, form, zh = _toy_fixture()
