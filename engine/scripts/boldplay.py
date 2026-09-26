@@ -26,7 +26,10 @@ from odds_fetch import LEAGUE_CODES   # fd 收盘锚联赛表（铁律10 白名�
 FD_ANCHOR_LEAGUES = frozenset(LEAGUE_CODES.values()) | {
     "SC0", "germany-2-bundesliga", "portugal-primeira"}
 from freq_band import (build_team_form, freq_legs, pools_card, shifted_q, league_base_rates,
-                       lambdas, team_strength, _norm)
+                       lambdas, team_strength, _norm,
+                       # task-8 CRS 换源（spec 2026-09-26-crs-fusion-redesign §5）：三池卡
+                       # CRS 候选从模板 q 排序切 fused 族 top1/top2
+                       fused_legs, load_fusion_crs_safe, DIVERGENCE_FLAG_PP, POOL_MARGIN_DIV)
 from hypothesis import (make_hypothesis, filter_buyable, check_shared_legs,
                         dedup_same_match, sort_by_hypothesis)
 
@@ -676,6 +679,119 @@ def _card_view(m: dict, hafu_map: dict) -> dict:
     return {**m, "code": mid, "hafu": m.get("hafu") or hafu_map.get(mid) or {}}
 
 
+# 主胜族（HHAD 让位判定·spec 2026-09-26-crs-fusion-redesign §4：两族合计 ≥ hhadCedeThreshold
+# → CRS 让位 HHAD——比分精确命中让位于让球盘方向变现）
+HOME_CRS_FAMILIES = ("home_clean", "home_multi")
+
+
+def _fused_crs_candidates(fr: dict, crs_odds: dict, cfg: dict) -> tuple:
+    """fused_legs 单场输出 → 三池卡 CRS 候选行 + 闸门信息（task-8 换源核心）。
+
+    返回 (rows, gate_info)：
+    - rows：族 top1（slot=top1·翻身档 CRS 腿候选）+ 族 top2（slot=top2·CRS 单关
+      双选拆注材料，preference shapes 第二优先"族 top1+top2 双选拆注"）；候选行带
+      family/familyProb/gate 字段；未挂牌比分诚实跳过（无赔率不可下注）。
+    - gate_info：{pass,maxProb,threshold,topFamily[,cedeHHAD][,reason]}；gate.pass=False
+      → rows=[] 但 reason 落卡（铁律 8 空轮≠漏跑：关档场照出条目）。
+    (h,a) 元组键在此转 "h:a" 串（T6 移交项：families top1/top2 携元组，进
+    boldplay/JSON 前必须转换，否则序列化崩）。开发者 sszhang"""
+    th = float(cfg.get("familyGateThreshold", 0.28))
+    fams = (fr or {}).get("families") or []
+    gate = (fr or {}).get("gate") or {}
+    top = fams[0] if fams else None
+    info = {"pass": bool(gate.get("pass")), "maxProb": gate.get("maxProb", 0.0),
+            "threshold": th, "topFamily": top["family"] if top else None}
+    if not top or not info["pass"]:
+        info["reason"] = (f"CRS关档·族峰值 {info['maxProb']:.1%} < 闸门 {th:.0%}"
+                          if top else "CRS关档·fused 无族输出")
+        return [], info
+    home_sum = sum(f["prob"] for f in fams if f["family"] in HOME_CRS_FAMILIES)
+    if home_sum >= float(cfg.get("hhadCedeThreshold", 0.65)):
+        info["cedeHHAD"] = True
+    rows = []
+    for slot, pick in (("top1", top.get("top1")), ("top2", top.get("top2"))):
+        if not pick:
+            continue
+        score, p = pick                            # ((h,a), P_final)
+        s = f"{score[0]}:{score[1]}"               # 元组键 → "h:a" 串
+        o = crs_odds.get(s)
+        if not o:                                  # 未挂牌不可下注
+            continue
+        o = float(o)
+        q = round(float(p), 4)
+        row = {"pool": "crs", "pick": s, "q": q, "odds": o,
+               "ev": round(q * o - 1, 4), "family": top["family"],
+               "familyProb": round(top["prob"], 4),
+               "gate": {"pass": True, "maxProb": info["maxProb"]},
+               "slot": slot, "marketFused": bool(fr.get("marketFused"))}
+        if info.get("cedeHHAD"):
+            row["cedeHHAD"] = True
+        rows.append(row)
+    return rows, info
+
+
+def _pick_card_recs(cands: list, flags: list) -> tuple:
+    """双行推荐重选（freq_band.pools_card 同式·task-8）：保底=相近EV带(差<0.1)内 q
+    最高；翻身=非分歧带内赔率最高——CRS 族 top2 行只作单关双选材料不入翻身
+    （翻身档 CRS 腿候选=族 top1·spec §4 偏好对接）；全分歧退路=非CRS非分歧候选
+    兜底，无则 None（本场不出翻身腿·I1 裁定）。low_conf → 保底走低抽水池兜底
+    （spec D9）。CRS 换源后候选集变化必须重选，独立成函数供测试。开发者 sszhang"""
+    evs = [c["ev"] for c in cands]
+    band = [c for c in cands if c["ev"] >= max(evs) - 0.1]
+    rec_base = max(band, key=lambda c: c["q"])
+    nd = [c for c in cands if not c.get("divergent")]
+    pool_upset = [c for c in nd
+                  if not (c["pool"] == "crs" and c.get("slot") == "top2")]
+    if pool_upset:
+        rec_upset = max((c for c in pool_upset
+                         if c["ev"] >= max(c["ev"] for c in pool_upset) - 0.1),
+                        key=lambda c: c["odds"])
+    else:
+        non_crs = [c for c in cands if c["pool"] != "crs" and not c.get("divergent")]
+        rec_upset = max(non_crs, key=lambda c: c["q"]) if non_crs else None
+    if "low_conf" in flags:
+        low_vig = [c for c in band if c["pool"] in ("ttg", "hafu")]
+        if low_vig:
+            rec_base = max(low_vig, key=lambda c: c["q"])
+    return rec_base, rec_upset
+
+
+def _apply_fused_crs(card: dict, fr: dict, crs_odds: dict, cfg: dict) -> dict:
+    """三池卡 CRS 换源落卡（task-8）：pools_card 的模板 q CRS 候选替换为 fused 族
+    top1/top2 行（TTG/HAFU 候选与 low_conf/pure_template 旗零改动），候选集变化后
+    双行推荐按 pools_card 同式重选。gate 关档 → CRS 行剔除 + crsGate.reason 落卡
+    （铁律 8 空轮≠漏跑）。分歧旗沿用 pools_card D12 口径（|q−市场隐含|>5pp 沉底、
+    只拦翻身不拦保底）。开发者 sszhang"""
+    rows, info = _fused_crs_candidates(fr, crs_odds, cfg)
+    for r in rows:
+        r["code"], r["match"] = card.get("code"), card.get("match")
+    card["crsGate"] = info
+    cands = [c for c in (card.get("candidates") or []) if c.get("pool") != "crs"]
+    flags = card.setdefault("flags", [])
+    if not info["pass"]:
+        flags.append("crs_gate_closed")
+    for r in rows:
+        implied = 1.0 / (r["odds"] * POOL_MARGIN_DIV.get("crs", 1.5))
+        if (r["q"] - implied) * 100 > DIVERGENCE_FLAG_PP:
+            r["divergent"] = True
+            if "divergence" not in flags:
+                flags.append("divergence")
+    cands.extend(rows)
+    if any(c.get("divergent") for c in cands):
+        cands.sort(key=lambda c: c.get("divergent", False))    # 分歧沉底（稳定排序）
+    card["candidates"] = cands
+    if not cands:
+        if "no_candidates" not in flags:
+            flags.append("no_candidates")
+        card.pop("rec_base", None)                             # 不留悬空推荐引用
+        card.pop("rec_upset", None)
+        return card
+    if "no_candidates" in flags:                               # 换源补行后撤旧旗
+        flags.remove("no_candidates")
+    card["rec_base"], card["rec_upset"] = _pick_card_recs(cands, flags)
+    return card
+
+
 def _odds_only_had_legs(m: dict, mid, had: dict) -> list:
     """无 DC 场次的彩票档腿（spec §1.6）：只有赔率、无概率无 EV 无分歧值。
     与 A-MIX _odds_only_legs 不同，每场只出**一条**——彩票档 N串1 全中才回款，
@@ -1000,12 +1116,26 @@ def build_three_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form:
                 "note": note,
                 "coverGate": None}   # 关档(总开关/零腿轮·设计§四), 只出叙事档
     hafu_map = hafu_map if hafu_map is not None else _hafu_odds()
+    # task-8（spec 2026-09-26-crs-fusion-redesign §5）：三池卡 CRS 候选源切融合引擎
+    # （族 top1/top2·闸门联动·HHAD 让位）；fusion_crs.enabled=false → 一键回滚纯模板
+    # （卡零改动·CRS 候选维持 pools_card 模板 q 链，engine/cache/fusion_crs.json note）
+    cfg_crs = load_fusion_crs_safe()
+    fused_by_code = {}
+    if cfg_crs.get("enabled", True):
+        ab = [m for m in odds_day.get("matches", []) if _is_ab(m)]
+        fused_by_code = {r.get("code"): r for r in
+                         fused_legs({"matches": ab}, freq_table, form, zh, cfg=cfg_crs)}
     cards = []
     for m in odds_day.get("matches", []):
         if not _is_ab(m):
             continue
+        view = _card_view(m, hafu_map)
         q_map, lam = _q_map_for(m, freq_table, form, zh)
-        cards.append(pools_card(_card_view(m, hafu_map), q_map, form, zh, freq_table, lam=lam))
+        card = pools_card(view, q_map, form, zh, freq_table, lam=lam)
+        fr = fused_by_code.get(view.get("code"))
+        if fr is not None:
+            card = _apply_fused_crs(card, fr, view.get("crs") or {}, cfg_crs)
+        cards.append(card)
     # 翻身: seq 奇=跨池2串1×3 / 偶=跨池4串1×N; 腿=各场 rec_upset(同场≤1; 全分歧场
     # rec_upset=None → 不出翻身腿, freq_band pools_card I1 裁定)
     cand = sorted((c["rec_upset"] for c in cards if c.get("rec_upset")), key=lambda c: -c["ev"])
@@ -1015,10 +1145,15 @@ def build_three_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form:
         if code in seen:
             continue
         seen.add(code)
-        legs.append({"matchNumStr": code, "match": c.get("match"), "play": c["pool"],
-                     "pick": c["pick"], "odds": c["odds"], "q": c["q"], "ev": c["ev"],
-                     "modelSupport": "template",   # 三池卡 q 源自联赛模板频率(freq_band)
-                     "hypothesis": make_hypothesis("")})
+        leg = {"matchNumStr": code, "match": c.get("match"), "play": c["pool"],
+               "pick": c["pick"], "odds": c["odds"], "q": c["q"], "ev": c["ev"],
+               # 三池卡 q 源：fused=CRS融合引擎族top1(task-8) / template=联赛模板频率
+               "modelSupport": "fused" if c.get("family") else "template",
+               "hypothesis": make_hypothesis("")}
+        if c.get("family"):
+            leg["family"] = c["family"]
+            leg["familyProb"] = c.get("familyProb")
+        legs.append(leg)
     if seq % 2 == 1:                                        # 容错引擎: 3注独立2串1
         n = min(3, len(legs) // 2)
         upset = {"shape": "pool-2x1x3", "cost": n * 2, "legs": legs[:n * 2],
@@ -1039,6 +1174,7 @@ def build_three_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form:
     out = {"structure": "new", "date": str(date.today()), "seq": seq,
            "tiers": {"base": base, "upset": upset, "lottery": lottery},
            "totalCost": total_cost,
+           "crsSource": "fused" if cfg_crs.get("enabled", True) else "template",  # task-8 溯源
            "cards": cards, "ranAt": str(date.today()),
            "approved": False}    # P1-6：默认未拍板——人工核后方可采纳；settle 跳过未拍板卡
     if blocked_legs:
@@ -1075,8 +1211,8 @@ def render_legs_grouped(legs: list) -> str:
         grp = list(grp)
         out.append(f"── {code} {grp[0].get('match', '')}")
         for l in grp:
-            sup = {"dc": "DC", "template": "模板", "none": "无模型"}.get(
-                l.get("modelSupport"), "?")
+            sup = {"dc": "DC", "template": "模板", "none": "无模型",
+                   "fused": "融合"}.get(l.get("modelSupport"), "?")
             flags = "⚠分歧 " if l.get("divergenceFlag") else ""
             vd = (l.get("hypothesis") or {}).get("verdict", "pending")
             mark = {"survived": "✓", "refuted": "✗", "pending": "○"}.get(vd, "○")
@@ -1119,15 +1255,23 @@ def render_ticket(t: dict) -> str:
         lines.append(f"│ ⚠{w}")
     lines.append("│ 三池推荐(A/B级场):")
     for c in t.get("cards") or []:
-        if not c.get("candidates"):
-            continue
+        cg = c.get("crsGate")
+        if not c.get("candidates") and not cg:
+            continue                     # 无候选且无 CRS 闸门信息才跳过（闸门关档场须可见·铁律8）
         fl = (("⚠" if "divergence" in c["flags"] else "")
               + ("🟡" if "low_conf" in c["flags"] else "")
-              + ("◇" if "pure_template" in c["flags"] else ""))
-        rb, ru = c["rec_base"], c["rec_upset"]
-        ru_txt = f"{ru['pool'].upper()} {ru['pick']}@{ru['odds']}" if ru else "—(分歧排除)"
-        lines.append(f"│   {c['code']} {fl} 保底→{rb['pool'].upper()} {rb['pick']}(q{rb['q']:.0%})"
-                     f" · 翻身→{ru_txt}")
+              + ("◇" if "pure_template" in c["flags"] else "")
+              + ("⛔" if "crs_gate_closed" in c["flags"] else ""))
+        rb, ru = c.get("rec_base"), c.get("rec_upset")
+        rb_txt = (f"{rb['pool'].upper()} {rb['pick']}(q{rb['q']:.0%})" if rb else "—")
+        ru_txt = f"{ru['pool'].upper()} {ru['pick']}@{ru['odds']}" if ru else "—(无翻身腿)"
+        crs_txt = ""                     # task-8：CRS 闸门关档原因/HHAD 让位落卡面
+        if cg:
+            if not cg.get("pass"):
+                crs_txt = f" · {cg.get('reason', 'CRS关档')}"
+            elif cg.get("cedeHHAD"):
+                crs_txt = " · 主胜族让位HHAD"
+        lines.append(f"│   {c['code']} {fl} 保底→{rb_txt} · 翻身→{ru_txt}{crs_txt}")
     if t.get("approved") is False:
         lines.append("│ ⚠未拍板(approved=false)·settle跳过未拍板卡·人工核后方可采纳出票")
     if t.get("structure") == "new":
