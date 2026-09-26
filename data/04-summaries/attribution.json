@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-26",
+  "generatedAt": "2026-09-27",
   "records": {
     "2026-08-23|周日015|HAD": {
       "primary": "F9",
@@ -377,7 +377,7 @@
         "pinSource": "okooo",
         "oddsDrift": {
           "pickOdds": 1.75,
-          "laterOdds": 4.15
+          "laterOdds": 3.6
         }
       },
       "confidence": "high",
@@ -504,7 +504,7 @@
         "pinSource": "fd",
         "oddsDrift": {
           "pickOdds": 1.87,
-          "laterOdds": 6.65
+          "laterOdds": 6.7
         }
       },
       "confidence": "high",
@@ -513,9 +513,7 @@
     },
     "2026-08-28|周六016|HAD": {
       "primary": "F9",
-      "secondary": [
-        "F10"
-      ],
+      "secondary": [],
       "evidence": {
         "pfinalPick": 0.4599,
         "dcBest": 2,
@@ -523,11 +521,7 @@
         "pickIdx": 2,
         "resultIdx": 0,
         "result": "5-2",
-        "pinSource": "fd",
-        "oddsDrift": {
-          "pickOdds": 2.1,
-          "laterOdds": 2.18
-        }
+        "pinSource": "fd"
       },
       "confidence": "high",
       "source": "rule",
@@ -548,7 +542,7 @@
         "pinSource": "fd",
         "oddsDrift": {
           "pickOdds": 1.96,
-          "laterOdds": 3.32
+          "laterOdds": 5.45
         }
       },
       "confidence": "high",
@@ -557,7 +551,9 @@
     },
     "2026-08-28|周六019|HAD": {
       "primary": "F5",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": 0.4049,
         "dcBest": 2,
@@ -566,7 +562,11 @@
         "resultIdx": 2,
         "result": "0-2",
         "pinSource": "fd",
-        "replay": "dc_approx"
+        "replay": "dc_approx",
+        "oddsDrift": {
+          "pickOdds": 2.06,
+          "laterOdds": 2.97
+        }
       },
       "confidence": "low",
       "source": "rule",
@@ -574,9 +574,7 @@
     },
     "2026-08-28|周六022|HAD": {
       "primary": "F9",
-      "secondary": [
-        "F10"
-      ],
+      "secondary": [],
       "evidence": {
         "pfinalPick": 0.5497,
         "dcBest": 0,
@@ -584,11 +582,7 @@
         "pickIdx": 0,
         "resultIdx": 2,
         "result": "0-3",
-        "pinSource": "fd",
-        "oddsDrift": {
-          "pickOdds": 1.5,
-          "laterOdds": 2.08
-        }
+        "pinSource": "fd"
       },
       "confidence": "high",
       "source": "rule",
@@ -692,7 +686,7 @@
         "pinSource": "fd",
         "oddsDrift": {
           "pickOdds": 2.3,
-          "laterOdds": 2.61
+          "laterOdds": 2.68
         }
       },
       "confidence": "high",
@@ -887,7 +881,7 @@
         "pinSource": "fd",
         "oddsDrift": {
           "pickOdds": 1.33,
-          "laterOdds": 2.0
+          "laterOdds": 1.46
         }
       },
       "confidence": "high",

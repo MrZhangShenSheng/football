@@ -1,199 +1,496 @@
 {
-  "date": "2026-09-26",
-  "version": "v5.14",
-  "context": {
-    "window": "国际比赛日窗口（FIFA 新格式三周窗）+ 名古屋亚运淘汰赛 8 强+欧国联 GW1",
-    "anchorMode": "混合锚：美职/韩职有 DC 模型（usa v9 n=2354 至 09-14/korea v11 n=635 至 09-20 均今日 learn 发布）但无 fd 收盘=单锚模式×0.97；欧国联/亚运/日乙/荷乙/国际赛全无模型=纯市场锚",
-    "nationsGW": "欧国联 2026-27 新赛季 GW1（A3 死亡组=英/西/克/捷同组，本轮两场同组对决）",
-    "worldCup2026": "西班牙=2026 世界杯冠军（决赛加时 1-0 阿根廷·费兰 106'·十人应战）；英格兰=季军（半决赛 1-2 阿根廷·季军战 6-4 法国）",
-    "mlsTrap": "美职本轮在国际窗口内进行，国脚抽调不在 insight 伤停字段（费城 Cavan Sullivan 已获 USMNT 首召）——系数 9 伤停差值本轮不适用（数据源失真），星级封顶三星",
-    "asiaGames": "亚运男足 8 强淘汰赛（中国亚 vs 泰国亚 14:00 时间窗不足禁入；日本亚 vs 朝鲜亚 18:30）",
-    "seq": 29
+ "date": "2026-09-26",
+ "version": "v5.14",
+ "context": {
+  "window": "国际比赛日窗口（FIFA 新格式三周窗）+ 名古屋亚运淘汰赛 8 强+欧国联 GW1",
+  "anchorMode": "混合锚：美职/韩职有 DC 模型（usa v9 n=2354 至 09-14/korea v11 n=635 至 09-20 均今日 learn 发布）但无 fd 收盘=单锚模式×0.97；欧国联/亚运/日乙/荷乙/国际赛全无模型=纯市场锚",
+  "nationsGW": "欧国联 2026-27 新赛季 GW1（A3 死亡组=英/西/克/捷同组，本轮两场同组对决）",
+  "worldCup2026": "西班牙=2026 世界杯冠军（决赛加时 1-0 阿根廷·费兰 106'·十人应战）；英格兰=季军（半决赛 1-2 阿根廷·季军战 6-4 法国）",
+  "mlsTrap": "美职本轮在国际窗口内进行，国脚抽调不在 insight 伤停字段（费城 Cavan Sullivan 已获 USMNT 首召）——系数 9 伤停差值本轮不适用（数据源失真），星级封顶三星",
+  "asiaGames": "亚运男足 8 强淘汰赛（中国亚 vs 泰国亚 14:00 时间窗不足禁入；日本亚 vs 朝鲜亚 18:30）",
+  "seq": 29
+ },
+ "plans": [
+  {
+   "plan": "甲·T002/T003 降级版 4串11",
+   "type": "HAD 4串11（6×2串1+4×3串1+1×4串1）",
+   "stake": "22元(11注×1倍)",
+   "note": "对冲腿缺材（本轮无双玩法同推对冲场）→ 按规则降级单张 4串11 并标注",
+   "legs": [
+    "周六022 纳什维尔 HAD 主胜@1.28 p70.8%",
+    "周六020 费城 HAD 主胜@1.43 p64.8%",
+    "周六007 日本亚 HAD 主胜@1.14 p78.0%(市场锚)",
+    "周六024 圣何塞 HAD 主胜@1.82 p49.9%"
+   ],
+   "odds": 3.79,
+   "evEach": false
   },
-  "plans": [
-    {
-      "plan": "甲·T002/T003 降级版 4串11",
-      "type": "HAD 4串11（6×2串1+4×3串1+1×4串1）",
-      "stake": "22元(11注×1倍)",
-      "note": "对冲腿缺材（本轮无双玩法同推对冲场）→ 按规则降级单张 4串11 并标注",
-      "legs": [
-        "周六022 纳什维尔 HAD 主胜@1.28 p70.8%",
-        "周六020 费城 HAD 主胜@1.43 p64.8%",
-        "周六007 日本亚 HAD 主胜@1.14 p78.0%(市场锚)",
-        "周六024 圣何塞 HAD 主胜@1.82 p49.9%"
-      ],
-      "odds": 3.79,
-      "evEach": false
-    },
-    {
-      "plan": "乙·英西 CRS 单关双选×10",
-      "type": "CRS 单关（preference shapes[1]：单关×10 拆两注）",
-      "stake": "20元(1:1×5注+1:2×5注)",
-      "legs": [
-        "周六016 英西 CRS 1:1@6.50 ×5注(10元)",
-        "周六016 英西 CRS 1:2@7.75 ×5注(10元)"
-      ],
-      "odds": null,
-      "evEach": true
-    },
-    {
-      "plan": "丙·3串1×5倍（彩票档 3 腿降级同票）",
-      "type": "HAD 3串1×1注×5倍",
-      "stake": "10元",
-      "note": "彩票档合格腿仅 3 条（纳什/费城/日本亚 p_fused≥0.55）→ v5.13 降级 3串1 选项卡，与 T038 形状合并；全中≈104 元",
-      "legs": [
-        "周六022 纳什维尔 HAD 主胜@1.28",
-        "周六020 费城 HAD 主胜@1.43",
-        "周六007 日本亚 HAD 主胜@1.14"
-      ],
-      "odds": 2.09,
-      "evEach": false
-    },
-    {
-      "plan": "丙'·混串右尾版（可选替换丙）",
-      "type": "HAD 混串 3串1×5倍（含韩职平腿）",
-      "stake": "10元",
-      "note": "韩职平腿 poolSingle.HAD=0 无法单关 → 按 09-04 第五条降级混串（捆绑腿三腿全 survived=有独立信心）；全中≈200 元 vs 丙 104 元，方差换右尾",
-      "legs": [
-        "周六022 纳什维尔 HAD 主胜@1.28",
-        "周日001 江原FC HAD 平@2.75",
-        "周六007 日本亚 HAD 主胜@1.14"
-      ],
-      "odds": 4.01,
-      "evEach": false
-    }
-  ],
-  "matches": [
-    {
-      "idx": 22, "code": "周六022", "league": "美职(GW23+)", "match": "纳什维尔 vs 多伦多",
-      "pick": "HAD 主胜", "odds": 1.28, "star": 3, "grade": "A",
-      "dc": [0.74, 0.19, 0.07], "fused": [0.708, 0.183, 0.108], "final": 0.708,
-      "chain": "无修正(伤停差值不适用·抽调未核实)", "lambdaHome": 2.14, "lambdaAway": 0.53,
-      "fusedPre": [0.708, 0.183, 0.108], "chainSteps": [{"name": "伤停差值", "factor": 1.0, "note": "国际窗口抽调未核实，insight 伤停字段失真，不适用"}],
-      "ev": -0.0938, "inPlan": "甲/丙",
-      "hypothesis": {
-        "matchPlay": {"rotation": "Yazbek/Nájar历史有征召但本轮未核实；榜1主场", "tactics": "GEODIS公园主压弱旅客", "goalSource": "Surridge高点+中场插上vs多伦多场均1.7弱", "script": "1:0/2:0/2:1控场画面", "specialVars": "美职国际窗口内比赛·抽调未核实·GW23+卡位期"},
-        "assumption": "榜1vs榜12结构差+DC74%/市场69%同向，1-2名抽调不翻转结构",
-        "checks": ["近10 5-3-2稳定✓", "多伦多客3-4-3平庸✓", "抽调未核实=封顶三星"],
-        "verdict": "survived"
-      }
-    },
-    {
-      "idx": 20, "code": "周六020", "league": "美职(GW23+)", "match": "费城 vs 奥兰多",
-      "pick": "HAD 主胜", "odds": 1.43, "star": 3, "grade": "A",
-      "dc": [0.71, 0.17, 0.12], "fused": [0.648, 0.186, 0.166], "final": 0.648,
-      "chain": "踩线纪律(64.8%<65 三星高位)", "lambdaHome": 2.71, "lambdaAway": 1.05,
-      "fusedPre": [0.648, 0.186, 0.166], "chainSteps": [{"name": "踩线四星降档", "factor": 1.0, "note": "64.8%未过65线+抽调风险=按三星对待"}],
-      "ev": -0.0734, "inPlan": "甲/丙",
-      "hypothesis": {
-        "matchPlay": {"rotation": "Sullivan(16岁核心)USMNT首召，USMNT本窗是否踢不确定（东道主无预选）", "tactics": "Subaru公园高位逼抢主场", "goalSource": "场均2.9多点火点vs奥兰多3伤", "script": "2:1/2:0/3:1主攻慢热", "specialVars": "国际窗口抽调未核实·Power Rankings榜首状态(9-14)"},
-        "assumption": "主场8-2-0结构性优势覆盖1人抽调损失",
-        "checks": ["近10主8-2-0场均2.9✓强支持", "奥兰多客4-2-4+3伤✓", "Sullivan若被抽走中场创造力-1档⚠"],
-        "verdict": "survived"
-      }
-    },
-    {
-      "idx": 7, "code": "周六007", "league": "亚运男足(8强)", "match": "日本亚 vs 朝鲜亚",
-      "pick": "HAD 主胜", "odds": 1.14, "star": 3, "grade": "B",
-      "dc": null, "fused": [0.78, 0.15, 0.07], "final": 0.78,
-      "chain": "纯市场锚×0.97=0.757", "lambdaHome": null, "lambdaAway": null,
-      "fusedPre": [0.78, 0.15, 0.07], "chainSteps": [{"name": "单锚修正", "factor": 0.97}],
-      "ev": -0.137, "inPlan": "甲/丙",
-      "hypothesis": {
-        "matchPlay": {"rotation": "日本U23选拔队班底稳定", "tactics": "日本技术控场vs朝鲜体能冲撞防反", "goalSource": "日本场均3.5多点vs朝鲜1.4反击", "script": "2:0/3:0/3:1碾压画面", "specialVars": "淘汰赛90分钟口径(CRS/HAFO按90分钟结算不含加时)"},
-        "assumption": "技术代差碾压，90分钟内解决战斗",
-        "checks": ["日本近10 9-1-0场均3.5✓强支持", "@1.14无单关价值只作骨架", "朝鲜封闭无情报=方差源"],
-        "verdict": "survived"
-      }
-    },
-    {
-      "idx": 24, "code": "周六024", "league": "美职(GW23+)", "match": "圣何塞 vs 波特兰",
-      "pick": "HAD 主胜", "odds": 1.82, "star": 2, "grade": "B",
-      "dc": [0.53, 0.23, 0.24], "fused": [0.499, 0.231, 0.270], "final": 0.499,
-      "chain": "无修正(伤停差值不适用)", "lambdaHome": 2.04, "lambdaAway": 1.32,
-      "fusedPre": [0.499, 0.231, 0.270], "chainSteps": [{"name": "伤停差值", "factor": 1.0, "note": "客6伤真实但美职抽调口径失真，不放大修正"}],
-      "ev": -0.0918, "inPlan": "甲(非胆位)",
-      "hypothesis": {
-        "matchPlay": {"rotation": "波特兰6伤(半条防线量级)+圣何塞2伤", "tactics": "PayPal公园主攻vs残防收缩", "goalSource": "圣何塞边中结合vs波特兰由守转攻削弱", "script": "2:1/2:0/1:1(铁桶成功)画面", "specialVars": "抽调未核实·主队自身近10 2-4-4平庸"},
-        "assumption": "客队6防伤病量级差足以让49.9%主胜被低估",
-        "checks": ["波特兰客4-2-4+6伤✓", "圣何塞近10 2-4-4状态不热⚠", "只作串关非胆腿=二星"],
-        "verdict": "survived"
-      }
-    },
-    {
-      "idx": 16, "code": "周六016", "league": "欧国联(A3·GW1)", "match": "英格兰 vs 西班牙",
-      "pick": "CRS 1:1", "odds": 6.50, "star": null, "grade": "B",
-      "dc": null, "fused": [0.30, 0.27, 0.44], "final": null,
-      "chain": "纯市场锚", "lambdaHome": null, "lambdaAway": null,
-      "fusedPre": [0.30, 0.27, 0.44], "chainSteps": [],
-      "ev": -0.337, "inPlan": "乙(1:1×5+1:2×5双选)",
-      "hypothesis": {
-        "matchPlay": {"rotation": "英5退营+2补召+TAA/Palmer回归试验期；西世界冠军班底微调Porro伤缺", "tactics": "温布利对攻质量局非铁桶局", "goalSource": "英Palmer/Saka vs 西Yamal/Pedri/Nico", "script": "GW1磨合谨慎开局后段打开1:1/1:2/2:1", "specialVars": "欧国联GW1新周期首战·Euro2024复仇叙事·西班牙荣誉疲劳风险·A3死亡组"},
-        "assumption": "西班牙磨合度高于英格兰但GW1+温布利双方不梭哈，西班牙小胜或平两分天下，1:1/1:2形状最优",
-        "checks": ["西近10 7-3-0不败✓", "英近10 7-2-1季军火力✓", "H2H 2018欧国联互斩客场提示强度接近", "无否决性证据"],
-        "verdict": "survived"
-      }
-    },
-    {
-      "idx": 1, "code": "周日001", "league": "韩职(GW22)", "match": "江原FC vs 仁川联",
-      "pick": "HAD 平", "odds": 2.75, "star": null, "grade": "B",
-      "dc": [0.36, 0.38, 0.26], "fused": [0.381, 0.338, 0.281], "final": 0.338,
-      "chain": "无修正(d=0)", "lambdaHome": 0.97, "lambdaAway": 0.78,
-      "fusedPre": [0.381, 0.338, 0.281], "chainSteps": [],
-      "ev": -0.0705, "inPlan": "丙'(混串腿)",
-      "hypothesis": {
-        "matchPlay": {"rotation": "GW22深赛季中游队国脚影响小", "tactics": "动力真空双方均不冒进", "goalSource": "场均1.1对1.1均无稳定得分点", "script": "低节奏慢局0:0/1:1/1:0", "specialVars": "榜5vs榜9均无保级争冠压力·韩职深赛季平局抬升期"},
-        "assumption": "动力真空+攻弱对攻弱+DC平38%融合34%>市场32%，平腿被低估——但poolSingle=0只作混串",
-        "checks": ["江原近10 2-6-2平6场✓强支持", "仁川近10 2-4-4平4场✓", "单关资格=0降级混串(09-04第五条)"],
-        "verdict": "survived"
-      }
-    },
-    {
-      "idx": 14, "code": "周六014", "league": "欧国联(A3·GW1)", "match": "捷克 vs 克罗地亚",
-      "pick": "排除:pending(换代细节未核实·边际<5pp)", "odds": null, "star": null, "grade": "C",
-      "dc": null, "fused": [0.26, 0.27, 0.47], "final": null, "chain": "",
-      "lambdaHome": null, "lambdaAway": null, "fusedPre": [0.26, 0.27, 0.47], "chainSteps": [],
-      "ev": null, "inPlan": null,
-      "hypothesis": {"assumption": "克罗地亚换代期客战硬度存疑但边际薄不足独立出腿", "checks": ["换代细节未核实"], "verdict": "pending"}
-    },
-    {
-      "idx": 1, "code": "周六001", "league": "亚运男足(8强)", "match": "中国亚 vs 泰国亚",
-      "pick": "排除:pending(14:00开赛时间窗不足·未过假设层)", "odds": null, "star": null, "grade": "C",
-      "dc": null, "fused": [0.45, 0.30, 0.25], "final": null, "chain": "",
-      "lambdaHome": null, "lambdaAway": null, "fusedPre": [0.45, 0.30, 0.25], "chainSteps": [],
-      "ev": null, "inPlan": null,
-      "hypothesis": {"assumption": "泰国火力2.2vs中国0.9与市场45%主胜背离，泰国不败方向——但H2H=0+时间窗<1.5h验证不完整", "checks": ["泰国Wongsa 3场3球✓", "中国standing字段口径乱⚠"], "verdict": "pending"}
-    }
-  ],
-  "excluded": [
-    "周六002~006 日乙5场 [D→C] 无模型无锚+16:00窗口紧，大宫@1.49与秋田@2.35市场基面口径存疑（新潟榜1客7-0-3却客胜2.75贵于秋田主胜）未核实禁入",
-    "周六008 斯洛文尼vs苏格兰 [C] 胶着9pp平31%三条过平局轨唯独GW1开季条款禁入+苏格兰近10 0平反向项",
-    "周六009/013/周日003 荷乙3场 [D] 无模型无锚（格拉夫TTG s3模板腿被假设层降级）",
-    "周六010 法罗vs哈萨克 [C] HAFU aa模板腿无本场证据（法罗主场龙7-0-3有题材但CRS/HAFU均模板）",
-    "周六011 冰岛vs爱沙尼亚 [C] 市场76%超热vs冰岛近10 1-3-6基面大背离——正背离陷阱警惕",
-    "周六012 保加利亚vs卢森堡 [C] 半胶着11pp无边际",
-    "周六015 北马其顿vs瑞士 [C] 瑞士67%客热无边际+主队平局大户但GW1开季平局轨禁入",
-    "周六017 美国 vs 秘鲁 · 周六018 加拿大vs智利 [D] 友谊赛试验阵容高波动排除",
-    "周六019/023/025/周日009 美职胶着区 [C] 极差12-20pp无方向边际（哥伦布CRS 1:1模板腿降级）",
-    "周六021 达拉斯vs洛杉矶FC [C] DC44%vs市场43%同价无边际（引擎HAFU da模板腿降级）"
-  ],
-  "gateRuleCheck": {
-    "sameMatchOnePlay": "✓ 各票无同场多玩法（英西 CRS 单关票与甲丙串关票不同场）",
-    "woodBucket": "✓ 甲丙纯 HAD 4/3 关；乙 CRS 单关",
-    "poolSingle": "✓ 韩职平单关=0 已降级混串；CRS 全场单关=1",
-    "noAnchorBanBase": "✓ 保底档关档（09-16 拍板）；骨架腿日本亚为市场锚但甲非保底档=4串11 容错票+杯赛放行 policy",
-    "lotteryGate": "彩票档 p_fused≥0.55 干净腿仅 3 条 → v5.13 降级 3串1 选项卡（与丙合并）买否大哥拍板",
-    "drawTrack": "无单关平局票：斯洛文尼 GW1 开季禁入+韩职 poolSingle=0 → 韩平仅混串腿入丙'",
-    "upsetTier": "翻身档关档：4 模板腿全被假设层降级 pending（铁律 12 模板腿禁令）",
-    "budget": "甲22+乙20+丙(或丙')10=52元全家桶；精简版乙20或甲+丙32；轮红线30元参考由大哥拍板"
+  {
+   "plan": "乙·英西 CRS 单关双选×10",
+   "type": "CRS 单关（preference shapes[1]：单关×10 拆两注）",
+   "stake": "20元(1:1×5注+1:2×5注)",
+   "legs": [
+    "周六016 英西 CRS 1:1@6.50 ×5注(10元)",
+    "周六016 英西 CRS 1:2@7.75 ×5注(10元)"
+   ],
+   "odds": null,
+   "evEach": true
   },
-  "sources": [
-    "engine/cache/sporttery_matches.json (28场五池赔率 2026-09-26 刷新)",
-    "engine/cache/score_odds/2026-09-26.json (dump-odds 全玩法存档)",
-    "engine/cache/sporttery_insight_20417*.json (28场单场情报)",
-    "engine/cache/models/usa_dc_v9.json + korea_dc_v11.json (learn 今日发布)",
-    "data/03-predictions/2026-09-26-hypothesis.json (假设层 12 场)",
-    "data/03-predictions/2026-09-26-boldplay.json (seq28 引擎卡·假设闸门 pending 态)",
-    "WebSearch: 2026世界杯结果+英西战队况(Yahoo/flashscore/Guardian) + 美职国际窗口抽调(CBS)"
-  ]
+  {
+   "plan": "丙·3串1×5倍（彩票档 3 腿降级同票）",
+   "type": "HAD 3串1×1注×5倍",
+   "stake": "10元",
+   "note": "彩票档合格腿仅 3 条（纳什/费城/日本亚 p_fused≥0.55）→ v5.13 降级 3串1 选项卡，与 T038 形状合并；全中≈104 元",
+   "legs": [
+    "周六022 纳什维尔 HAD 主胜@1.28",
+    "周六020 费城 HAD 主胜@1.43",
+    "周六007 日本亚 HAD 主胜@1.14"
+   ],
+   "odds": 2.09,
+   "evEach": false
+  },
+  {
+   "plan": "丙'·混串右尾版（可选替换丙）",
+   "type": "HAD 混串 3串1×5倍（含韩职平腿）",
+   "stake": "10元",
+   "note": "韩职平腿 poolSingle.HAD=0 无法单关 → 按 09-04 第五条降级混串（捆绑腿三腿全 survived=有独立信心）；全中≈200 元 vs 丙 104 元，方差换右尾",
+   "legs": [
+    "周六022 纳什维尔 HAD 主胜@1.28",
+    "周日001 江原FC HAD 平@2.75",
+    "周六007 日本亚 HAD 主胜@1.14"
+   ],
+   "odds": 4.01,
+   "evEach": false
+  }
+ ],
+ "matches": [
+  {
+   "idx": 22,
+   "code": "周六022",
+   "league": "美职(GW23+)",
+   "match": "纳什维尔 vs 多伦多",
+   "pick": "HAD 主胜",
+   "odds": 1.28,
+   "star": 3,
+   "grade": "A",
+   "dc": [
+    0.74,
+    0.19,
+    0.07
+   ],
+   "fused": [
+    0.708,
+    0.183,
+    0.108
+   ],
+   "final": 0.708,
+   "chain": "无修正(伤停差值不适用·抽调未核实)",
+   "lambdaHome": 2.14,
+   "lambdaAway": 0.53,
+   "fusedPre": [
+    0.708,
+    0.183,
+    0.108
+   ],
+   "chainSteps": [
+    {
+     "name": "伤停差值",
+     "factor": 1.0,
+     "note": "国际窗口抽调未核实，insight 伤停字段失真，不适用"
+    }
+   ],
+   "ev": -0.0938,
+   "inPlan": "甲/丙",
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "Yazbek/Nájar历史有征召但本轮未核实；榜1主场",
+     "tactics": "GEODIS公园主压弱旅客",
+     "goalSource": "Surridge高点+中场插上vs多伦多场均1.7弱",
+     "script": "1:0/2:0/2:1控场画面",
+     "specialVars": "美职国际窗口内比赛·抽调未核实·GW23+卡位期"
+    },
+    "assumption": "榜1vs榜12结构差+DC74%/市场69%同向，1-2名抽调不翻转结构",
+    "checks": [
+     "近10 5-3-2稳定✓",
+     "多伦多客3-4-3平庸✓",
+     "抽调未核实=封顶三星"
+    ],
+    "verdict": "survived"
+   }
+  },
+  {
+   "idx": 20,
+   "code": "周六020",
+   "league": "美职(GW23+)",
+   "match": "费城 vs 奥兰多",
+   "pick": "HAD 主胜",
+   "odds": 1.43,
+   "star": 3,
+   "grade": "A",
+   "dc": [
+    0.71,
+    0.17,
+    0.12
+   ],
+   "fused": [
+    0.648,
+    0.186,
+    0.166
+   ],
+   "final": 0.648,
+   "chain": "踩线纪律(64.8%<65 三星高位)",
+   "lambdaHome": 2.71,
+   "lambdaAway": 1.05,
+   "fusedPre": [
+    0.648,
+    0.186,
+    0.166
+   ],
+   "chainSteps": [
+    {
+     "name": "踩线四星降档",
+     "factor": 1.0,
+     "note": "64.8%未过65线+抽调风险=按三星对待"
+    }
+   ],
+   "ev": -0.0734,
+   "inPlan": "甲/丙",
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "Sullivan(16岁核心)USMNT首召，USMNT本窗是否踢不确定（东道主无预选）",
+     "tactics": "Subaru公园高位逼抢主场",
+     "goalSource": "场均2.9多点火点vs奥兰多3伤",
+     "script": "2:1/2:0/3:1主攻慢热",
+     "specialVars": "国际窗口抽调未核实·Power Rankings榜首状态(9-14)"
+    },
+    "assumption": "主场8-2-0结构性优势覆盖1人抽调损失",
+    "checks": [
+     "近10主8-2-0场均2.9✓强支持",
+     "奥兰多客4-2-4+3伤✓",
+     "Sullivan若被抽走中场创造力-1档⚠"
+    ],
+    "verdict": "survived"
+   }
+  },
+  {
+   "idx": 7,
+   "code": "周六007",
+   "league": "亚运男足(8强)",
+   "match": "日本亚 vs 朝鲜亚",
+   "pick": "HAD 主胜",
+   "odds": 1.14,
+   "star": 3,
+   "grade": "B",
+   "dc": null,
+   "fused": [
+    0.78,
+    0.15,
+    0.07
+   ],
+   "final": 0.78,
+   "chain": "纯市场锚×0.97=0.757",
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": [
+    0.78,
+    0.15,
+    0.07
+   ],
+   "chainSteps": [
+    {
+     "name": "单锚修正",
+     "factor": 0.97
+    }
+   ],
+   "ev": -0.137,
+   "inPlan": "甲/丙",
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "日本U23选拔队班底稳定",
+     "tactics": "日本技术控场vs朝鲜体能冲撞防反",
+     "goalSource": "日本场均3.5多点vs朝鲜1.4反击",
+     "script": "2:0/3:0/3:1碾压画面",
+     "specialVars": "淘汰赛90分钟口径(CRS/HAFO按90分钟结算不含加时)"
+    },
+    "assumption": "技术代差碾压，90分钟内解决战斗",
+    "checks": [
+     "日本近10 9-1-0场均3.5✓强支持",
+     "@1.14无单关价值只作骨架",
+     "朝鲜封闭无情报=方差源"
+    ],
+    "verdict": "survived"
+   },
+   "result": "1-0",
+   "half": "1:0",
+   "directionHit": true,
+   "scoreHit": null,
+   "optionHit": true,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041712,
+    "lastOddsAt": "2026-09-26T12:20:07+08:00",
+    "lastIntelAt": "2026-09-26T12:22:54+08:00"
+   }
+  },
+  {
+   "idx": 24,
+   "code": "周六024",
+   "league": "美职(GW23+)",
+   "match": "圣何塞 vs 波特兰",
+   "pick": "HAD 主胜",
+   "odds": 1.82,
+   "star": 2,
+   "grade": "B",
+   "dc": [
+    0.53,
+    0.23,
+    0.24
+   ],
+   "fused": [
+    0.499,
+    0.231,
+    0.27
+   ],
+   "final": 0.499,
+   "chain": "无修正(伤停差值不适用)",
+   "lambdaHome": 2.04,
+   "lambdaAway": 1.32,
+   "fusedPre": [
+    0.499,
+    0.231,
+    0.27
+   ],
+   "chainSteps": [
+    {
+     "name": "伤停差值",
+     "factor": 1.0,
+     "note": "客6伤真实但美职抽调口径失真，不放大修正"
+    }
+   ],
+   "ev": -0.0918,
+   "inPlan": "甲(非胆位)",
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "波特兰6伤(半条防线量级)+圣何塞2伤",
+     "tactics": "PayPal公园主攻vs残防收缩",
+     "goalSource": "圣何塞边中结合vs波特兰由守转攻削弱",
+     "script": "2:1/2:0/1:1(铁桶成功)画面",
+     "specialVars": "抽调未核实·主队自身近10 2-4-4平庸"
+    },
+    "assumption": "客队6防伤病量级差足以让49.9%主胜被低估",
+    "checks": [
+     "波特兰客4-2-4+6伤✓",
+     "圣何塞近10 2-4-4状态不热⚠",
+     "只作串关非胆腿=二星"
+    ],
+    "verdict": "survived"
+   }
+  },
+  {
+   "idx": 16,
+   "code": "周六016",
+   "league": "欧国联(A3·GW1)",
+   "match": "英格兰 vs 西班牙",
+   "pick": "CRS 1:1",
+   "odds": 6.5,
+   "star": null,
+   "grade": "B",
+   "dc": null,
+   "fused": [
+    0.3,
+    0.27,
+    0.44
+   ],
+   "final": null,
+   "chain": "纯市场锚",
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": [
+    0.3,
+    0.27,
+    0.44
+   ],
+   "chainSteps": [],
+   "ev": -0.337,
+   "inPlan": "乙(1:1×5+1:2×5双选)",
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "英5退营+2补召+TAA/Palmer回归试验期；西世界冠军班底微调Porro伤缺",
+     "tactics": "温布利对攻质量局非铁桶局",
+     "goalSource": "英Palmer/Saka vs 西Yamal/Pedri/Nico",
+     "script": "GW1磨合谨慎开局后段打开1:1/1:2/2:1",
+     "specialVars": "欧国联GW1新周期首战·Euro2024复仇叙事·西班牙荣誉疲劳风险·A3死亡组"
+    },
+    "assumption": "西班牙磨合度高于英格兰但GW1+温布利双方不梭哈，西班牙小胜或平两分天下，1:1/1:2形状最优",
+    "checks": [
+     "西近10 7-3-0不败✓",
+     "英近10 7-2-1季军火力✓",
+     "H2H 2018欧国联互斩客场提示强度接近",
+     "无否决性证据"
+    ],
+    "verdict": "survived"
+   }
+  },
+  {
+   "idx": 1,
+   "code": "周日001",
+   "league": "韩职(GW22)",
+   "match": "江原FC vs 仁川联",
+   "pick": "HAD 平",
+   "odds": 2.75,
+   "star": null,
+   "grade": "B",
+   "dc": [
+    0.36,
+    0.38,
+    0.26
+   ],
+   "fused": [
+    0.381,
+    0.338,
+    0.281
+   ],
+   "final": 0.338,
+   "chain": "无修正(d=0)",
+   "lambdaHome": 0.97,
+   "lambdaAway": 0.78,
+   "fusedPre": [
+    0.381,
+    0.338,
+    0.281
+   ],
+   "chainSteps": [],
+   "ev": -0.0705,
+   "inPlan": "丙'(混串腿)",
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "GW22深赛季中游队国脚影响小",
+     "tactics": "动力真空双方均不冒进",
+     "goalSource": "场均1.1对1.1均无稳定得分点",
+     "script": "低节奏慢局0:0/1:1/1:0",
+     "specialVars": "榜5vs榜9均无保级争冠压力·韩职深赛季平局抬升期"
+    },
+    "assumption": "动力真空+攻弱对攻弱+DC平38%融合34%>市场32%，平腿被低估——但poolSingle=0只作混串",
+    "checks": [
+     "江原近10 2-6-2平6场✓强支持",
+     "仁川近10 2-4-4平4场✓",
+     "单关资格=0降级混串(09-04第五条)"
+    ],
+    "verdict": "survived"
+   }
+  },
+  {
+   "idx": 14,
+   "code": "周六014",
+   "league": "欧国联(A3·GW1)",
+   "match": "捷克 vs 克罗地亚",
+   "pick": "排除:pending(换代细节未核实·边际<5pp)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "dc": null,
+   "fused": [
+    0.26,
+    0.27,
+    0.47
+   ],
+   "final": null,
+   "chain": "",
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": [
+    0.26,
+    0.27,
+    0.47
+   ],
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": null,
+   "hypothesis": {
+    "assumption": "克罗地亚换代期客战硬度存疑但边际薄不足独立出腿",
+    "checks": [
+     "换代细节未核实"
+    ],
+    "verdict": "pending"
+   }
+  },
+  {
+   "idx": 1,
+   "code": "周六001",
+   "league": "亚运男足(8强)",
+   "match": "中国亚 vs 泰国亚",
+   "pick": "排除:pending(14:00开赛时间窗不足·未过假设层)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "dc": null,
+   "fused": [
+    0.45,
+    0.3,
+    0.25
+   ],
+   "final": null,
+   "chain": "",
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": [
+    0.45,
+    0.3,
+    0.25
+   ],
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": null,
+   "hypothesis": {
+    "assumption": "泰国火力2.2vs中国0.9与市场45%主胜背离，泰国不败方向——但H2H=0+时间窗<1.5h验证不完整",
+    "checks": [
+     "泰国Wongsa 3场3球✓",
+     "中国standing字段口径乱⚠"
+    ],
+    "verdict": "pending"
+   },
+   "result": "3-0",
+   "half": "1:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041706,
+    "lastOddsAt": "2026-09-26T12:20:07+08:00",
+    "lastIntelAt": "2026-09-26T12:22:36+08:00"
+   }
+  }
+ ],
+ "excluded": [
+  "周六002~006 日乙5场 [D→C] 无模型无锚+16:00窗口紧，大宫@1.49与秋田@2.35市场基面口径存疑（新潟榜1客7-0-3却客胜2.75贵于秋田主胜）未核实禁入",
+  "周六008 斯洛文尼vs苏格兰 [C] 胶着9pp平31%三条过平局轨唯独GW1开季条款禁入+苏格兰近10 0平反向项",
+  "周六009/013/周日003 荷乙3场 [D] 无模型无锚（格拉夫TTG s3模板腿被假设层降级）",
+  "周六010 法罗vs哈萨克 [C] HAFU aa模板腿无本场证据（法罗主场龙7-0-3有题材但CRS/HAFU均模板）",
+  "周六011 冰岛vs爱沙尼亚 [C] 市场76%超热vs冰岛近10 1-3-6基面大背离——正背离陷阱警惕",
+  "周六012 保加利亚vs卢森堡 [C] 半胶着11pp无边际",
+  "周六015 北马其顿vs瑞士 [C] 瑞士67%客热无边际+主队平局大户但GW1开季平局轨禁入",
+  "周六017 美国 vs 秘鲁 · 周六018 加拿大vs智利 [D] 友谊赛试验阵容高波动排除",
+  "周六019/023/025/周日009 美职胶着区 [C] 极差12-20pp无方向边际（哥伦布CRS 1:1模板腿降级）",
+  "周六021 达拉斯vs洛杉矶FC [C] DC44%vs市场43%同价无边际（引擎HAFU da模板腿降级）"
+ ],
+ "gateRuleCheck": {
+  "sameMatchOnePlay": "✓ 各票无同场多玩法（英西 CRS 单关票与甲丙串关票不同场）",
+  "woodBucket": "✓ 甲丙纯 HAD 4/3 关；乙 CRS 单关",
+  "poolSingle": "✓ 韩职平单关=0 已降级混串；CRS 全场单关=1",
+  "noAnchorBanBase": "✓ 保底档关档（09-16 拍板）；骨架腿日本亚为市场锚但甲非保底档=4串11 容错票+杯赛放行 policy",
+  "lotteryGate": "彩票档 p_fused≥0.55 干净腿仅 3 条 → v5.13 降级 3串1 选项卡（与丙合并）买否大哥拍板",
+  "drawTrack": "无单关平局票：斯洛文尼 GW1 开季禁入+韩职 poolSingle=0 → 韩平仅混串腿入丙'",
+  "upsetTier": "翻身档关档：4 模板腿全被假设层降级 pending（铁律 12 模板腿禁令）",
+  "budget": "甲22+乙20+丙(或丙')10=52元全家桶；精简版乙20或甲+丙32；轮红线30元参考由大哥拍板"
+ },
+ "sources": [
+  "engine/cache/sporttery_matches.json (28场五池赔率 2026-09-26 刷新)",
+  "engine/cache/score_odds/2026-09-26.json (dump-odds 全玩法存档)",
+  "engine/cache/sporttery_insight_20417*.json (28场单场情报)",
+  "engine/cache/models/usa_dc_v9.json + korea_dc_v11.json (learn 今日发布)",
+  "data/03-predictions/2026-09-26-hypothesis.json (假设层 12 场)",
+  "data/03-predictions/2026-09-26-boldplay.json (seq28 引擎卡·假设闸门 pending 态)",
+  "WebSearch: 2026世界杯结果+英西战队况(Yahoo/flashscore/Guardian) + 美职国际窗口抽调(CBS)"
+ ]
 }
