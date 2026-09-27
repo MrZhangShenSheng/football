@@ -27,7 +27,9 @@
      "revoked": false,
      "result": "hit",
      "actual": "平/平",
-     "agreement": "play_diff"
+     "agreement": "play_diff",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     },
     {
      "code": "周六024",
@@ -39,7 +41,9 @@
      "revoked": false,
      "result": "miss",
      "actual": "0-1(1球)",
-     "agreement": "no_rec"
+     "agreement": "no_rec",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     },
     {
      "code": "周日002",
@@ -51,7 +55,9 @@
      "revoked": false,
      "result": "miss",
      "actual": "3-1",
-     "agreement": "no_rec"
+     "agreement": "no_rec",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     },
     {
      "code": "周日024",
@@ -63,7 +69,9 @@
      "revoked": false,
      "result": "hit",
      "actual": "0-5(客/客)",
-     "agreement": "no_rec"
+     "agreement": "no_rec",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     }
    ],
    "settled": {
@@ -105,7 +113,9 @@
      "revoked": false,
      "result": "hit",
      "actual": "2-0",
-     "agreement": "agree"
+     "agreement": "agree",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     },
     {
      "code": "周一008",
@@ -117,7 +127,9 @@
      "revoked": false,
      "result": "miss",
      "actual": "2-3",
-     "agreement": "agree"
+     "agreement": "agree",
+     "clv_self": 2.5217,
+     "clv_self_note": "末次快照 1.15 @ 2026-09-14T09:13"
     },
     {
      "code": "周一004",
@@ -129,7 +141,9 @@
      "revoked": false,
      "result": "hit",
      "actual": "0-0",
-     "agreement": "agree"
+     "agreement": "agree",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     },
     {
      "code": "周一002",
@@ -141,7 +155,9 @@
      "revoked": false,
      "result": "miss",
      "actual": "0-2",
-     "agreement": "agree"
+     "agreement": "agree",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     }
    ],
    "settled": {
@@ -183,7 +199,9 @@
      "revoked": false,
      "result": "hit",
      "actual": "2-0",
-     "agreement": "agree"
+     "agreement": "agree",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     },
     {
      "code": "周一008",
@@ -195,7 +213,9 @@
      "revoked": false,
      "result": "miss",
      "actual": "2-3",
-     "agreement": "agree"
+     "agreement": "agree",
+     "clv_self": 2.5217,
+     "clv_self_note": "末次快照 1.15 @ 2026-09-14T09:13"
     },
     {
      "code": "周一004",
@@ -207,7 +227,9 @@
      "revoked": false,
      "result": "hit",
      "actual": "0-0",
-     "agreement": "agree"
+     "agreement": "agree",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     },
     {
      "code": "周一002",
@@ -219,7 +241,9 @@
      "revoked": false,
      "result": "miss",
      "actual": "0-2",
-     "agreement": "play_diff"
+     "agreement": "play_diff",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     }
    ],
    "settled": {
@@ -261,7 +285,9 @@
      "revoked": false,
      "result": "miss",
      "actual": "2:3(半2:0)",
-     "agreement": "play_diff"
+     "agreement": "play_diff",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     },
     {
      "code": "周二006",
@@ -273,7 +299,9 @@
      "revoked": false,
      "result": "miss",
      "actual": "3:0(半2:0)",
-     "agreement": "play_diff"
+     "agreement": "play_diff",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     },
     {
      "code": "周三005",
@@ -285,7 +313,9 @@
      "revoked": false,
      "result": "miss",
      "actual": "4:0(半3:0)",
-     "agreement": "excluded"
+     "agreement": "excluded",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     },
     {
      "code": "周三010",
@@ -297,7 +327,9 @@
      "revoked": false,
      "result": "miss",
      "actual": "4:1(半1:1)",
-     "agreement": "play_diff"
+     "agreement": "play_diff",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     }
    ],
    "payoutShape": "按形状结算:中2关回1注2串1/中3关回3注2串1+1注3串1/全中回全部11注;4串1注合赔5022中10044(超1万部分税20%)",
@@ -339,7 +371,9 @@
      "odds": 11.0,
      "result": "miss",
      "actual": "4:1(半1:1)",
-     "agreement": "no_rec"
+     "agreement": "no_rec",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     },
     {
      "code": "周四007",
@@ -350,7 +384,9 @@
      "odds": 7.75,
      "result": "miss",
      "actual": "1:2(半1:0)",
-     "agreement": "agree"
+     "agreement": "agree",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     },
     {
      "code": "周四008",
@@ -361,7 +397,9 @@
      "odds": 8.25,
      "result": "miss",
      "actual": "2:0(半1:0)",
-     "agreement": "play_diff"
+     "agreement": "play_diff",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     }
    ],
    "payoutShape": "按形状结算:010已miss,死3注(010×007@85.25/010×008@90.75/3串1@703.31);活注仅007×008合赔63.94→中回127.88",
@@ -402,7 +440,9 @@
      "odds": 11.0,
      "result": "miss",
      "actual": "4:1(半1:1)",
-     "agreement": "no_rec"
+     "agreement": "no_rec",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     },
     {
      "code": "周四007",
@@ -413,7 +453,9 @@
      "odds": 7.75,
      "result": "miss",
      "actual": "1:2(半1:0)",
-     "agreement": "agree"
+     "agreement": "agree",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     },
     {
      "code": "周四008",
@@ -424,7 +466,9 @@
      "odds": 7.0,
      "result": "miss",
      "actual": "2:0(半1:0)",
-     "agreement": "play_diff"
+     "agreement": "play_diff",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     }
    ],
    "payoutShape": "按形状结算:010已miss,死3注(010×007@85.25/010×008@77.0/3串1@596.75);活注仅007×008合赔54.25→中回108.50",
@@ -466,7 +510,9 @@
      "result": "miss",
      "priceNote": null,
      "actual": "1:1(半1:1)",
-     "agreement": "no_rec"
+     "agreement": "no_rec",
+     "clv_self": -0.5139,
+     "clv_self_note": "末次快照 3.6 @ 2026-09-26T12:20"
     },
     {
      "code": "周五005",
@@ -478,7 +524,9 @@
      "result": "miss",
      "priceNote": null,
      "actual": "0:0(半0:0)",
-     "agreement": "excluded"
+     "agreement": "excluded",
+     "clv_self": -0.0867,
+     "clv_self_note": "末次快照 1.73 @ 2026-09-18T11:11"
     },
     {
      "code": "周五010",
@@ -490,7 +538,9 @@
      "result": "miss",
      "priceNote": null,
      "actual": "2:2(半1:0)",
-     "agreement": "excluded"
+     "agreement": "excluded",
+     "clv_self": -0.7286,
+     "clv_self_note": "末次快照 5.6 @ 2026-09-25T09:52"
     },
     {
      "code": "周六028",
@@ -502,7 +552,9 @@
      "result": "hit",
      "priceNote": null,
      "actual": "1-3",
-     "agreement": "excluded"
+     "agreement": "excluded",
+     "clv_self": -0.1786,
+     "clv_self_note": "末次快照 2.24 @ 2026-09-12T11:25"
     },
     {
      "code": "周六017",
@@ -514,7 +566,9 @@
      "result": "miss",
      "priceNote": null,
      "actual": "2:1(半0:1)",
-     "agreement": "play_diff"
+     "agreement": "play_diff",
+     "clv_self": -0.6404,
+     "clv_self_note": "末次快照 5.45 @ 2026-09-26T12:20"
     },
     {
      "code": "周五001",
@@ -526,7 +580,9 @@
      "result": "hit",
      "priceNote": null,
      "actual": "3:5(半2:2)",
-     "agreement": "excluded"
+     "agreement": "excluded",
+     "clv_self": -0.58,
+     "clv_self_note": "末次快照 5.0 @ 2026-09-25T09:52"
     }
    ],
    "bets": [
@@ -586,7 +642,9 @@
      "result": "miss",
      "priceNote": null,
      "actual": "1:1(半1:1)",
-     "agreement": "no_rec"
+     "agreement": "no_rec",
+     "clv_self": -0.5139,
+     "clv_self_note": "末次快照 3.6 @ 2026-09-26T12:20"
     },
     {
      "code": "周五005",
@@ -598,7 +656,9 @@
      "result": "miss",
      "priceNote": null,
      "actual": "0:0(半0:0)",
-     "agreement": "excluded"
+     "agreement": "excluded",
+     "clv_self": -0.0867,
+     "clv_self_note": "末次快照 1.73 @ 2026-09-18T11:11"
     },
     {
      "code": "周五010",
@@ -610,7 +670,9 @@
      "result": "miss",
      "priceNote": null,
      "actual": "2:2(半1:0)",
-     "agreement": "excluded"
+     "agreement": "excluded",
+     "clv_self": -0.7286,
+     "clv_self_note": "末次快照 5.6 @ 2026-09-25T09:52"
     },
     {
      "code": "周六028",
@@ -622,7 +684,9 @@
      "result": "hit",
      "priceNote": null,
      "actual": "1-3",
-     "agreement": "excluded"
+     "agreement": "excluded",
+     "clv_self": -0.1786,
+     "clv_self_note": "末次快照 2.24 @ 2026-09-12T11:25"
     },
     {
      "code": "周六017",
@@ -634,7 +698,9 @@
      "result": "miss",
      "priceNote": null,
      "actual": "2:1(半0:1)",
-     "agreement": "play_diff"
+     "agreement": "play_diff",
+     "clv_self": -0.6404,
+     "clv_self_note": "末次快照 5.45 @ 2026-09-26T12:20"
     }
    ],
    "bets": [
@@ -689,7 +755,9 @@
      "result": "miss",
      "priceNote": null,
      "actual": "2-0",
-     "agreement": "pick_diff"
+     "agreement": "pick_diff",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     },
     {
      "code": "周六002",
@@ -703,7 +771,9 @@
      "q": null,
      "priceNote": null,
      "actual": "0:1(半0:0)",
-     "agreement": "no_rec"
+     "agreement": "no_rec",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     },
     {
      "code": "周五010",
@@ -716,7 +786,9 @@
      "result": "miss",
      "priceNote": null,
      "actual": "2:2(半1:0)",
-     "agreement": "excluded"
+     "agreement": "excluded",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     },
     {
      "code": "周六022",
@@ -729,7 +801,9 @@
      "result": "miss",
      "priceNote": null,
      "actual": "0:3(半0:2)",
-     "agreement": "play_diff"
+     "agreement": "play_diff",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     },
     {
      "code": "周六019",
@@ -742,7 +816,9 @@
      "result": "miss",
      "priceNote": null,
      "actual": "0:2(半0:0)",
-     "agreement": "play_diff"
+     "agreement": "play_diff",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     }
    ],
    "bets": [
@@ -833,7 +909,9 @@
      "note": "方案腿·freq-band纯模板(shifted=false)·票面@25冻结(体彩后调价至28)",
      "priceNote": null,
      "actual": "0-3",
-     "agreement": "play_diff"
+     "agreement": "play_diff",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     },
     {
      "code": "周日004",
@@ -847,7 +925,9 @@
      "note": "方案腿·freq-band球队平移(shifted=true)",
      "priceNote": null,
      "actual": "1:2(半0:1)",
-     "agreement": "excluded"
+     "agreement": "excluded",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     },
     {
      "code": "周一002",
@@ -861,7 +941,9 @@
      "note": "误买腿·原方案=周一006奥萨苏纳0:2@19(q10.89)·芬超无本地频率库q不可算·未过freq-band生存阈·小联赛比分腿违入选纪律·票面为准",
      "priceNote": null,
      "actual": "1:1(半0:0)",
-     "agreement": "no_rec"
+     "agreement": "no_rec",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     },
     {
      "code": "周六027",
@@ -875,7 +957,9 @@
      "note": "方案腿·freq-band球队平移(shifted=true)·与T009共享场次(T009买0-0@17)",
      "priceNote": null,
      "actual": "2-0",
-     "agreement": "play_diff"
+     "agreement": "play_diff",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     }
    ],
    "bets": [
@@ -1070,7 +1154,9 @@
      "priceNote": "方案1.33→实价1.31",
      "result": "hit",
      "actual": "0:4(半0:3)",
-     "agreement": "pick_diff"
+     "agreement": "pick_diff",
+     "clv_self": -0.8952,
+     "clv_self_note": "末次快照 12.5 @ 2026-09-14T09:13"
     },
     {
      "code": "周一009",
@@ -1083,7 +1169,9 @@
      "priceNote": "方案1.40→实价1.38",
      "result": "hit",
      "actual": "0:1(半0:0)",
-     "agreement": "play_diff"
+     "agreement": "play_diff",
+     "clv_self": -0.4692,
+     "clv_self_note": "末次快照 2.6 @ 2026-09-14T09:13"
     },
     {
      "code": "周一004",
@@ -1096,7 +1184,9 @@
      "priceNote": "方案1.42→实价1.35",
      "result": "hit",
      "actual": "4:0(半3:0)",
-     "agreement": "pick_diff"
+     "agreement": "pick_diff",
+     "clv_self": -0.7404,
+     "clv_self_note": "末次快照 5.2 @ 2026-09-14T09:13"
     },
     {
      "code": "周一012",
@@ -1109,7 +1199,9 @@
      "priceNote": "方案1.85→实价1.60",
      "result": "hit",
      "actual": "5:2(半2:1)",
-     "agreement": "play_diff"
+     "agreement": "play_diff",
+     "clv_self": -0.2558,
+     "clv_self_note": "末次快照 2.15 @ 2026-09-14T09:13"
     }
    ],
    "payoutShape": "按形状结算(实价):中3关回1注3串1(2倍);全中5注全回税前60.19(各注<1万不税)",
@@ -1184,7 +1276,9 @@
      "priceNote": "方案19.0→实价19.0(不变)",
      "result": "miss",
      "actual": "1:0(半1:0)",
-     "agreement": "excluded"
+     "agreement": "excluded",
+     "clv_self": -0.8417,
+     "clv_self_note": "末次快照 120.0 @ 2026-09-14T09:13"
     },
     {
      "code": "周一011",
@@ -1198,7 +1292,9 @@
      "priceNote": "方案13.0→实价13.0(不变)",
      "result": "miss",
      "actual": "1:0(半0:0)",
-     "agreement": "play_diff"
+     "agreement": "play_diff",
+     "clv_self": -0.1333,
+     "clv_self_note": "末次快照 15.0 @ 2026-09-14T09:13"
     },
     {
      "code": "周一008",
@@ -1212,7 +1308,9 @@
      "priceNote": "出票冻结13.0(方案12.0→出票13→复扫14.0,以票面13为准)",
      "result": "miss",
      "actual": "2:3(半1:1)",
-     "agreement": "play_diff"
+     "agreement": "play_diff",
+     "clv_self": 0.625,
+     "clv_self_note": "末次快照 8.0 @ 2026-09-14T09:13"
     }
    ],
    "payoutShape": "按形状结算(出票冻结价):中2关回1注2串1(2倍);全中4注税前15496.00/税后12927.20(3串1注12844>1万扣20%)",
@@ -1253,7 +1351,9 @@
      "odds": 15.0,
      "result": "miss",
      "actual": "2-1",
-     "agreement": "no_rec"
+     "agreement": "no_rec",
+     "clv_self": -0.8,
+     "clv_self_note": "末次快照 75.0 @ 2026-09-16T16:34"
     }
    ],
    "payoutShape": "按形状结算:命中回15.00×2×5=150元;未中全灭",
@@ -1337,7 +1437,9 @@
      "odds": 1.35,
      "result": "hit",
      "actual": "3:0(半2:0)",
-     "agreement": "excluded"
+     "agreement": "excluded",
+     "clv_self": 0.1157,
+     "clv_self_note": "末次快照 1.21 @ 2026-09-22T17:22"
     },
     {
      "code": "周二007",
@@ -1348,7 +1450,9 @@
      "odds": 1.48,
      "result": "hit",
      "actual": "3:2(半1:1)",
-     "agreement": "play_diff"
+     "agreement": "play_diff",
+     "clv_self": -0.0199,
+     "clv_self_note": "末次快照 1.51 @ 2026-09-01T12:01"
     },
     {
      "code": "周三003",
@@ -1359,7 +1463,9 @@
      "odds": 1.79,
      "result": "miss",
      "actual": "4-2",
-     "agreement": "play_diff"
+     "agreement": "play_diff",
+     "clv_self": 0.0229,
+     "clv_self_note": "末次快照 1.75 @ 2026-09-02T11:06"
     },
     {
      "code": "周三004",
@@ -1370,7 +1476,9 @@
      "odds": 1.71,
      "result": "hit",
      "actual": "2-1",
-     "agreement": "no_rec"
+     "agreement": "no_rec",
+     "clv_self": -0.5929,
+     "clv_self_note": "末次快照 4.2 @ 2026-09-16T16:34"
     }
    ],
    "payoutShape": "按形状结算(出票实价1.35/1.48/1.79/1.71):全中5注全回=4注3串1(14.31+13.67+16.53+18.12)+1注4串1(24.46)≈87.14(大哥票面为准);中3关回1注3串1(13.67~18.12);各注<1万不税",
@@ -1444,7 +1552,9 @@
      "result": "hit",
      "note": "融合63.9%三星·近10:7胜3平0负·fd锚干净胆",
      "actual": "2:1(半1:0)",
-     "agreement": "agree"
+     "agreement": "agree",
+     "clv_self": 0.3504,
+     "clv_self_note": "末次快照 1.37 @ 2026-09-16T16:34"
     },
     {
      "code": "周三011",
@@ -1456,7 +1566,9 @@
      "result": "miss",
      "note": "63.0%三星但模型vs市场分歧23pp(保守42%)·双平局队平局威胁",
      "actual": "1:1(半0:1)",
-     "agreement": "agree"
+     "agreement": "agree",
+     "clv_self": 0.1684,
+     "clv_self_note": "末次快照 1.9 @ 2026-09-16T16:34"
     },
     {
      "code": "周四006",
@@ -1468,7 +1580,9 @@
      "result": "miss",
      "note": "56.9%三星·分歧2pp干净",
      "agreement": "agree",
-     "actual": "0:0(半0:0)"
+     "actual": "0:0(半0:0)",
+     "clv_self": -0.284,
+     "clv_self_note": "末次快照 2.57 @ 2026-09-17T10:24"
     }
    ],
    "payoutShape": "按形状结算:全中4注(3注2串1+1注3串1);中2关回1注对应2串1;≤1关0回款",
@@ -1542,7 +1656,9 @@
      "result": "miss",
      "note": "freq-band带内q8.8%(DC一致)·英冠TOP3",
      "actual": "2:1(半1:0)",
-     "agreement": "play_diff"
+     "agreement": "play_diff",
+     "clv_self": 0.4483,
+     "clv_self_note": "末次快照 7.25 @ 2026-09-16T16:34"
     },
     {
      "code": "周三011",
@@ -1554,7 +1670,9 @@
      "result": "miss",
      "note": "freq-band带内q8.5%·⚠实价8.00(方案时8.75,12:08复扫已调价,冻结按8.00)",
      "actual": "1:1(半0:1)",
-     "agreement": "play_diff"
+     "agreement": "play_diff",
+     "clv_self": 0.1034,
+     "clv_self_note": "末次快照 7.25 @ 2026-09-16T16:34"
     },
     {
      "code": "周四006",
@@ -1566,7 +1684,9 @@
      "result": "miss",
      "note": "freq-band带内q12.5%·西甲TOP2",
      "agreement": "play_diff",
-     "actual": "0:0(半0:0)"
+     "actual": "0:0(半0:0)",
+     "clv_self": -0.3043,
+     "clv_self_note": "末次快照 11.5 @ 2026-09-17T10:24"
     }
    ],
    "payoutShape": "按形状结算:全中4注;中2比分回1注2串1;≤1关0",
@@ -1624,7 +1744,9 @@
      "result": "miss",
      "agreement": "no_rec",
      "note": "系统同推:周四轮方案腿+池卡rec_base同推;q9.2%(freq-band)EV+51.8%;CLV=0%(16.50→16.50零异动)",
-     "actual": "3:0(半3:0)"
+     "actual": "3:0(半3:0)",
+     "clv_self": -0.0833,
+     "clv_self_note": "末次快照 18.0 @ 2026-09-10T09:26"
     }
    ],
    "payoutShape": "单关:中即派彩2×16.50×5",
@@ -1678,7 +1800,9 @@
      "result": "hit",
      "agreement": "agree",
      "note": "系统同推:平局轨入轨四条全过(融合平28.1%≥28%);出票3.10 vs 方案冻结3.05=CLV+1.6%(升水买值)",
-     "actual": "2:2(半1:1)"
+     "actual": "2:2(半1:1)",
+     "clv_self": -0.0746,
+     "clv_self_note": "末次快照 3.35 @ 2026-09-10T09:26"
     },
     {
      "code": "周四002",
@@ -1690,7 +1814,9 @@
      "result": "miss",
      "agreement": "play_diff",
      "note": "系统同推同T017;CLV=0%(零异动);铁律9混串(不同场HAD+CRS合法)",
-     "actual": "3:0(半3:0)"
+     "actual": "3:0(半3:0)",
+     "clv_self": -0.0833,
+     "clv_self_note": "末次快照 18.0 @ 2026-09-10T09:26"
     }
    ],
    "payoutShape": "2串1:两腿全中才派彩2×(3.10×16.50)×5",
@@ -1749,7 +1875,9 @@
      "result": "hit",
      "agreement": "excluded",
      "note": "系统同推-r1彩票档①;p69.1%;CLV-1.4%(1.40→1.38降水)",
-     "actual": "3-1"
+     "actual": "3-1",
+     "clv_self": -0.6368,
+     "clv_self_note": "末次快照 3.8 @ 2026-09-18T11:11"
     },
     {
      "code": "周五009",
@@ -1761,7 +1889,9 @@
      "result": "hit",
      "agreement": "excluded",
      "note": "系统同推-r1彩票档②;p58.8%;CLV=0%;⚠️H2H近6场0胜4平",
-     "actual": "1-4"
+     "actual": "1-4",
+     "clv_self": -0.6344,
+     "clv_self_note": "末次快照 4.65 @ 2026-09-25T09:52"
     },
     {
      "code": "周五004",
@@ -1773,7 +1903,9 @@
      "result": "hit",
      "agreement": "play_diff",
      "note": "系统同推-r1彩票档③;p76.3%;CLV-1.5%(1.32→1.30降水)",
-     "actual": "0-2"
+     "actual": "0-2",
+     "clv_self": -0.9,
+     "clv_self_note": "末次快照 13.0 @ 2026-09-25T09:52"
     },
     {
      "code": "周五011",
@@ -1785,7 +1917,9 @@
      "result": "miss",
      "agreement": "play_diff",
      "note": "系统同推-r1彩票档④;p76.1%;CLV=0%;⚠️H2H 50%平局率",
-     "actual": "1-0"
+     "actual": "1-0",
+     "clv_self": -0.037,
+     "clv_self_note": "末次快照 1.35 @ 2026-09-25T09:52"
     },
     {
      "code": "周五006",
@@ -1797,7 +1931,9 @@
      "result": "miss",
      "agreement": "agree",
      "note": "系统同推-r1彩票档⑤;p58.8%;CLV=0%",
-     "actual": "2-2"
+     "actual": "2-2",
+     "clv_self": -0.0562,
+     "clv_self_note": "末次快照 1.78 @ 2026-09-25T09:52"
     },
     {
      "code": "周五008",
@@ -1809,7 +1945,9 @@
      "result": "hit",
      "agreement": "play_diff",
      "note": "系统同推-r1彩票档⑥;p63.6%;CLV=0%",
-     "actual": "4-1"
+     "actual": "4-1",
+     "clv_self": -0.298,
+     "clv_self_note": "末次快照 1.98 @ 2026-09-25T09:52"
     },
     {
      "code": "周五010",
@@ -1821,7 +1959,9 @@
      "result": "hit",
      "agreement": "excluded",
      "note": "系统同推-r1彩票档⑦;p64.6%;CLV=0%",
-     "actual": "0-2"
+     "actual": "0-2",
+     "clv_self": -0.7482,
+     "clv_self_note": "末次快照 5.6 @ 2026-09-25T09:52"
     },
     {
      "code": "周五001",
@@ -1833,7 +1973,9 @@
      "result": "miss",
      "agreement": "excluded",
      "note": "系统同推-r1彩票档⑧;p62.5%;CLV=0%;⚠️DC-市场分歧21pp",
-     "actual": "2-2"
+     "actual": "2-2",
+     "clv_self": -0.0745,
+     "clv_self_note": "末次快照 1.61 @ 2026-09-25T09:52"
     }
    ],
    "payoutShape": "8串1:全中才派彩2×合赔×5;断任一腿=0",
@@ -1889,7 +2031,9 @@
      "result": "hit",
      "agreement": "agree",
      "note": "系统同推-保底档B胆1;p79%⭐4;出票=方案冻结价",
-     "actual": "0:5(半0:2)"
+     "actual": "0:5(半0:2)",
+     "clv_self": -0.4756,
+     "clv_self_note": "末次快照 2.25 @ 2026-09-18T11:11"
     },
     {
      "code": "周六023",
@@ -1901,7 +2045,9 @@
      "result": "hit",
      "agreement": "play_diff",
      "note": "系统同推-保底档B胆2;p78%⭐4;出票=方案冻结价",
-     "actual": "0:3(半0:1)"
+     "actual": "0:3(半0:1)",
+     "clv_self": -0.5403,
+     "clv_self_note": "末次快照 2.48 @ 2026-09-26T12:20"
     },
     {
      "code": "周六017",
@@ -1913,7 +2059,9 @@
      "result": "miss",
      "agreement": "play_diff",
      "note": "系统同推-保底档B胆3;p65.4%⭐4踩线;出票=方案冻结价",
-     "actual": "0:1(半0:0)"
+     "actual": "0:1(半0:0)",
+     "clv_self": -0.089,
+     "clv_self_note": "末次快照 1.46 @ 2026-09-26T12:20"
     },
     {
      "code": "周六028",
@@ -1925,7 +2073,9 @@
      "result": "miss",
      "agreement": "excluded",
      "note": "系统同推-保底档B胆4;p65%⭐4踩线·基面警示;出票=方案冻结价",
-     "actual": "2:3(半1:1)"
+     "actual": "2:3(半1:1)",
+     "clv_self": -0.4731,
+     "clv_self_note": "末次快照 2.6 @ 2026-09-12T11:25"
     }
    ],
    "combinedOdds": 2.4511,
@@ -1983,7 +2133,9 @@
      "result": "hit",
      "agreement": "play_diff",
      "note": "系统同推-boldplay彩票档(hhad让球主胜p59.9%·单锚体彩去水·合格腿≥0.55);韩职HAD方向层排除是另一玩法池,不冲突",
-     "actual": "0:0(半0:0)"
+     "actual": "0:0(半0:0)",
+     "clv_self": 0.0738,
+     "clv_self_note": "末次快照 1.49 @ 2026-09-26T12:20"
     },
     {
      "code": "周六017",
@@ -1995,7 +2147,9 @@
      "result": "miss",
      "agreement": "play_diff",
      "note": "系统同推-保底档B胆3/彩票档L③;p65.4%⭐4踩线",
-     "actual": "0:1(半0:0)"
+     "actual": "0:1(半0:0)",
+     "clv_self": -0.089,
+     "clv_self_note": "末次快照 1.46 @ 2026-09-26T12:20"
     },
     {
      "code": "周日001",
@@ -2007,7 +2161,9 @@
      "result": "miss",
      "agreement": "agree",
      "note": "系统同推-boldplay彩票档(had主胜p55.4%·踩线合格);日职HAD方向层'无锚排除'与HAD玩法腿合格并行不悖",
-     "actual": "0:1(半0:1)"
+     "actual": "0:1(半0:1)",
+     "clv_self": -0.2588,
+     "clv_self_note": "末次快照 2.28 @ 2026-09-27T10:30"
     },
     {
      "code": "周日010",
@@ -2019,7 +2175,9 @@
      "result": "hit",
      "agreement": "agree",
      "note": "系统同推-boldplay彩票档(hhad让球客胜p60.9%·蒙扎+1方向);意甲HAD方向排除≠HHAD池腿排除",
-     "actual": "1:1(半0:1)"
+     "actual": "1:1(半0:1)",
+     "clv_self": -0.173,
+     "clv_self_note": "末次快照 1.85 @ 2026-09-13T17:36"
     },
     {
      "code": "周日012",
@@ -2031,7 +2189,9 @@
      "result": "miss",
      "agreement": "agree",
      "note": "系统同推-boldplay彩票档(hhad让球主胜p65.1%);德甲HAD胶着排除=方向层口径,HHAD让球腿合格",
-     "actual": "0:5(半0:2)"
+     "actual": "0:5(半0:2)",
+     "clv_self": -0.364,
+     "clv_self_note": "末次快照 2.28 @ 2026-09-13T17:36"
     },
     {
      "code": "周日013",
@@ -2043,7 +2203,9 @@
      "result": "hit",
      "agreement": "agree",
      "note": "系统同推-保底档B胆1/彩票档L①;p79%⭐4",
-     "actual": "0:5(半0:2)"
+     "actual": "0:5(半0:2)",
+     "clv_self": -0.4756,
+     "clv_self_note": "末次快照 2.25 @ 2026-09-18T11:11"
     },
     {
      "code": "周日016",
@@ -2055,7 +2217,9 @@
      "result": "hit",
      "agreement": "agree",
      "note": "系统同推-彩票档L⑥(阿森纳)",
-     "actual": "2:1(半1:1)"
+     "actual": "2:1(半1:1)",
+     "clv_self": -0.3846,
+     "clv_self_note": "末次快照 2.47 @ 2026-09-13T17:36"
     },
     {
      "code": "周日022",
@@ -2067,7 +2231,9 @@
      "result": "miss",
      "agreement": "play_diff",
      "note": "系统同推-彩票档L⑧(马赛)",
-     "actual": "2:3(半1:2)"
+     "actual": "2:3(半1:2)",
+     "clv_self": -0.7317,
+     "clv_self_note": "末次快照 6.0 @ 2026-09-13T17:36"
     }
    ],
    "combinedOdds": 23.0393,
@@ -2195,7 +2361,9 @@
      "result": "miss",
      "agreement": "play_diff",
      "note": "系统同推-翻身档EV①+85.6%(韩职);出票=方案冻结价;agreement人工勘误:classify初判excluded系只读方向层(排除:胶着/无锚≠玩法排除),本腿=boldplay翻身档CRS正式腿,gateRule池卡同推成立",
-     "actual": "0:3(半0:1)"
+     "actual": "0:3(半0:1)",
+     "clv_self": 0.6471,
+     "clv_self_note": "末次快照 17.0 @ 2026-09-27T10:30"
     },
     {
      "code": "周六016",
@@ -2207,7 +2375,9 @@
      "result": "miss",
      "agreement": "agree",
      "note": "系统同推-翻身档EV②+19.1%;出票=方案冻结价;agreement人工勘误:classify初判excluded系只读方向层(排除:胶着/无锚≠玩法排除),本腿=boldplay翻身档CRS正式腿,gateRule池卡同推成立",
-     "actual": "3:0(半0:0)"
+     "actual": "3:0(半0:0)",
+     "clv_self": -0.0417,
+     "clv_self_note": "末次快照 12.0 @ 2026-09-26T12:20"
     },
     {
      "code": "周六015",
@@ -2219,7 +2389,9 @@
      "result": "miss",
      "agreement": "no_rec",
      "note": "系统同推-翻身档EV③+17.6%;出票=方案冻结价;agreement人工勘误:classify初判excluded系只读方向层(排除:胶着/无锚≠玩法排除),本腿=boldplay翻身档CRS正式腿,gateRule池卡同推成立",
-     "actual": "2:3(半2:1)"
+     "actual": "2:3(半2:1)",
+     "clv_self": 0.5,
+     "clv_self_note": "末次快照 7.0 @ 2026-09-26T12:20"
     },
     {
      "code": "周六020",
@@ -2231,7 +2403,9 @@
      "result": "miss",
      "agreement": "agree",
      "note": "系统同推-翻身档EV④+15.4%;出票=方案冻结价;agreement人工勘误:classify初判excluded系只读方向层(排除:胶着/无锚≠玩法排除),本腿=boldplay翻身档CRS正式腿,gateRule池卡同推成立",
-     "actual": "0:0(半0:0)"
+     "actual": "0:0(半0:0)",
+     "clv_self": 0.6774,
+     "clv_self_note": "末次快照 7.75 @ 2026-09-26T12:20"
     }
    ],
    "combinedOdds": 43953.0,
@@ -2289,7 +2463,9 @@
      "result": "hit",
      "agreement": "play_diff",
      "note": "v6彩票档腿转正",
-     "actual": "1-1"
+     "actual": "1-1",
+     "clv_self": -0.3256,
+     "clv_self_note": "末次快照 2.15 @ 2026-09-14T09:13"
     },
     {
      "code": "周日012",
@@ -2301,7 +2477,9 @@
      "result": "miss",
      "agreement": "agree",
      "note": "v6彩票档腿转正",
-     "actual": "0:5(半0:2)"
+     "actual": "0:5(半0:2)",
+     "clv_self": -0.364,
+     "clv_self_note": "末次快照 2.28 @ 2026-09-13T17:36"
     },
     {
      "code": "周日016",
@@ -2313,7 +2491,9 @@
      "result": "hit",
      "agreement": "agree",
      "note": "v6彩票档腿转正",
-     "actual": "2:1(半1:1)"
+     "actual": "2:1(半1:1)",
+     "clv_self": -0.3765,
+     "clv_self_note": "末次快照 2.47 @ 2026-09-13T17:36"
     },
     {
      "code": "周日013",
@@ -2325,7 +2505,9 @@
      "result": "hit",
      "agreement": "agree",
      "note": "v6彩票档腿转正(此票版,与T024改腿版并存=同场跨票分池)",
-     "actual": "0:5(半0:2)"
+     "actual": "0:5(半0:2)",
+     "clv_self": -0.48,
+     "clv_self_note": "末次快照 2.25 @ 2026-09-18T11:11"
     },
     {
      "code": "周日001",
@@ -2337,7 +2519,9 @@
      "result": "miss",
      "agreement": "agree",
      "note": "已0-1断链·此票注定全灭",
-     "actual": "0:1(半0:1)"
+     "actual": "0:1(半0:1)",
+     "clv_self": -0.2895,
+     "clv_self_note": "末次快照 2.28 @ 2026-09-27T10:30"
     },
     {
      "code": "周日006",
@@ -2349,7 +2533,9 @@
      "result": "hit",
      "agreement": "agree",
      "note": "v6彩票档腿转正;2026-09-07登记修复:pick漏写让球线致结算卡pending,按score_odds/2026-09-05存档goalLine=+1还原票面(票面事实不可改写,此为补全非改写)",
-     "actual": "2:2(半2:2)"
+     "actual": "2:2(半2:2)",
+     "clv_self": -0.0573,
+     "clv_self_note": "末次快照 1.57 @ 2026-09-18T11:11"
     },
     {
      "code": "周日010",
@@ -2361,7 +2547,9 @@
      "result": "hit",
      "agreement": "agree",
      "note": "v6彩票档腿转正",
-     "actual": "1:1(半0:1)"
+     "actual": "1:1(半0:1)",
+     "clv_self": -0.2,
+     "clv_self_note": "末次快照 1.85 @ 2026-09-13T17:36"
     },
     {
      "code": "周日003",
@@ -2373,7 +2561,9 @@
      "result": "miss",
      "agreement": "agree",
      "note": "v6彩票档腿转正;2026-09-07登记修复:pick漏写让球线致结算卡pending,按score_odds/2026-09-05存档goalLine=+1还原票面(票面事实不可改写,此为补全非改写)",
-     "actual": "0:3(半0:1)"
+     "actual": "0:3(半0:1)",
+     "clv_self": -0.5016,
+     "clv_self_note": "末次快照 3.15 @ 2026-09-27T10:30"
     }
    ],
    "meta": {
@@ -2554,7 +2744,9 @@
      "result": "hit",
      "agreement": "play_diff",
      "note": "大哥手动改腿:系统双版(v6/v7)同推HAD客胜@1.17→自选HHAD+2负@2.37搏深盘·DC泊松p=0.496(EV+17.5%)vs体彩去水0.374(EV-11.4%)双口径已示",
-     "actual": "0:5(半0:2)"
+     "actual": "0:5(半0:2)",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     },
     {
      "code": "周日016",
@@ -2566,7 +2758,9 @@
      "result": "hit",
      "agreement": "agree",
      "note": "v7彩票档同款腿",
-     "actual": "2:1(半1:1)"
+     "actual": "2:1(半1:1)",
+     "clv_self": -0.3725,
+     "clv_self_note": "末次快照 2.47 @ 2026-09-13T17:36"
     },
     {
      "code": "周日014",
@@ -2578,7 +2772,9 @@
      "result": "hit",
      "agreement": "agree",
      "note": "v7推荐3星备选·全票唯一正EV腿",
-     "actual": "4:0(半1:0)"
+     "actual": "4:0(半1:0)",
+     "clv_self": -0.6635,
+     "clv_self_note": "末次快照 5.2 @ 2026-09-18T11:11"
     },
     {
      "code": "周一008",
@@ -2590,7 +2786,9 @@
      "result": "miss",
      "agreement": "agree",
      "note": "v7彩票档同款腿·宽保护带",
-     "actual": "2-3"
+     "actual": "2-3",
+     "clv_self": -0.427,
+     "clv_self_note": "末次快照 2.67 @ 2026-09-14T09:13"
     },
     {
      "code": "周日019",
@@ -2602,7 +2800,9 @@
      "result": "miss",
      "agreement": "agree",
      "note": "v7彩票档同款腿·宽保护带",
-     "actual": "5:2(半2:0)"
+     "actual": "5:2(半2:0)",
+     "clv_self": -0.5726,
+     "clv_self_note": "末次快照 3.65 @ 2026-09-18T11:11"
     }
    ],
    "meta": {
@@ -2793,7 +2993,9 @@
      "result": "hit",
      "agreement": "agree",
      "note": "v8彩票档腿·市场持续强化(1.49→1.47→1.45)",
-     "actual": "0-1"
+     "actual": "0-1",
+     "clv_self": -0.0136,
+     "clv_self_note": "末次快照 1.47 @ 2026-09-14T09:13"
     },
     {
      "code": "周一006",
@@ -2805,7 +3007,9 @@
      "result": "miss",
      "agreement": "play_diff",
      "note": "v8彩票档腿·双选之一(乌迪内斯不败)·市场强化(1.40→1.38→1.36)",
-     "actual": "1-2"
+     "actual": "1-2",
+     "clv_self": -0.2917,
+     "clv_self_note": "末次快照 1.92 @ 2026-09-14T09:13"
     },
     {
      "code": "周一006",
@@ -2817,7 +3021,9 @@
      "result": "miss",
      "agreement": "play_diff",
      "note": "自选双选另一半·全卡唯一正EV腿(fused EV+4.8%@6.45·20:32价6.65更肥)·系统同场推HHAD+1主胜",
-     "actual": "1-2"
+     "actual": "1-2",
+     "clv_self": 1.463,
+     "clv_self_note": "末次快照 2.7 @ 2026-09-14T09:13"
     },
     {
      "code": "周二008",
@@ -2829,7 +3035,9 @@
      "result": "hit",
      "agreement": "agree",
      "note": "跨轮场(09-09销售日)·09-08轮预测无覆盖·欧冠无DC市场锚·EV-11.5%纯水位",
-     "actual": "2:1(半2:0)"
+     "actual": "2:1(半2:0)",
+     "clv_self": 0.0,
+     "clv_self_note": "末次快照 1.45 @ 2026-09-08T09:22"
     },
     {
      "code": "周一002",
@@ -2841,7 +3049,9 @@
      "result": "hit",
      "agreement": "agree",
      "note": "平局轨基础腿(DC平42.4%四条过被poolSingle.HAD=0拦·混串不受单关资格限)·双选之一",
-     "actual": "1-1"
+     "actual": "1-1",
+     "clv_self": -0.2932,
+     "clv_self_note": "末次快照 3.65 @ 2026-09-14T09:13"
     },
     {
      "code": "周一002",
@@ -2853,7 +3063,9 @@
      "result": "miss",
      "agreement": "pick_diff",
      "note": "自选双选另一半(EV-3.1%全卡方向腿最浅)·系统同场推平·双选覆盖67.2%",
-     "actual": "1-1"
+     "actual": "1-1",
+     "clv_self": -0.3263,
+     "clv_self_note": "末次快照 4.75 @ 2026-09-14T09:13"
     }
    ],
    "meta": {
@@ -2914,7 +3126,9 @@
      "agreement": "agree",
      "note": "平局轨方案腿(融合平32.55%·极差8.9pp·伤停0/0)·kickoff 2026-09-09 18:30·体彩销售日09-10",
      "result": "hit",
-     "actual": "1-1(半0:1)"
+     "actual": "1-1(半0:1)",
+     "clv_self": 0.0,
+     "clv_self_note": "末次快照 2.9 @ 2026-09-23T09:19"
     }
    ],
    "meta": {
@@ -2975,7 +3189,9 @@
      "agreement": "agree",
      "note": "EV错价票非信心票:q=7.37%·92.6%死·EV+32.7%@18.0票面价(全卡最高·带平移)·方向层实为科莫主胜54.7%(外部56%确认),0:1是客胜分支被市场低估格子(莱红牛客场4胜0平6负极端化)",
      "result": "miss",
-     "actual": "4:1(半2:0)"
+     "actual": "4:1(半2:0)",
+     "clv_self": 0.2,
+     "clv_self_note": "末次快照 15.0 @ 2026-09-10T09:26"
     },
     {
      "code": "周四007",
@@ -2987,7 +3203,9 @@
      "agreement": "pick_diff",
      "note": "修正后p=34.0%全场最高(伤停d=-2×0.93+首回合保护×0.92/平+4pp+单锚×0.97)·EV-8.3%负·三向极差3.9pp极度胶着·基多海拔~2800m(Jardim公开权衡疲劳+高原)·poolSingle.HAD=0被锁单关故混串捆绑002",
      "result": "miss",
-     "actual": "0:2(半0:0)"
+     "actual": "0:2(半0:0)",
+     "clv_self": -0.5367,
+     "clv_self_note": "末次快照 6.0 @ 2026-09-17T10:24"
     }
    ],
    "meta": {
@@ -3054,7 +3272,9 @@
      "agreement": "play_diff",
      "receiptNote": "系统pick=A同向(p50.7%)",
      "result": "hit",
-     "actual": "2:3(半2:0)"
+     "actual": "2:3(半2:0)",
+     "clv_self": -0.672,
+     "clv_self_note": "末次快照 5.0 @ 2026-09-25T09:52"
     },
     {
      "code": "周六004",
@@ -3066,7 +3286,9 @@
      "agreement": "excluded",
      "receiptNote": "系统pick=A同向(p47.3%)",
      "result": "hit",
-     "actual": "0:2(半0:1)"
+     "actual": "0:2(半0:1)",
+     "clv_self": -0.36,
+     "clv_self_note": "末次快照 2.75 @ 2026-09-26T12:20"
     },
     {
      "code": "周日021",
@@ -3078,7 +3300,9 @@
      "agreement": "play_diff",
      "receiptNote": "系统pick=A同向(p40.6%)",
      "result": "hit",
-     "actual": "0:3(半0:0)"
+     "actual": "0:3(半0:0)",
+     "clv_self": -0.2929,
+     "clv_self_note": "末次快照 2.97 @ 2026-09-18T11:11"
     },
     {
      "code": "周六014",
@@ -3090,7 +3314,9 @@
      "agreement": "excluded",
      "receiptNote": "系统pick=H同向(p44.7%)",
      "result": "miss",
-     "actual": "1:2(半0:0)"
+     "actual": "1:2(半0:0)",
+     "clv_self": -0.3731,
+     "clv_self_note": "末次快照 3.35 @ 2026-09-26T12:20"
     }
    ],
    "settled": {
@@ -3144,7 +3370,9 @@
      "agreement": "agree",
      "receiptNote": "平局轨入轨(drawTrack=true·极差8.2pp)",
      "result": "miss",
-     "actual": "1:2(半1:1)"
+     "actual": "1:2(半1:1)",
+     "clv_self": -0.0643,
+     "clv_self_note": "末次快照 3.42 @ 2026-09-26T12:20"
     },
     {
      "code": "周六022",
@@ -3156,7 +3384,9 @@
      "agreement": "agree",
      "receiptNote": "平局轨入轨(drawTrack=true·极差7.9pp)",
      "result": "hit",
-     "actual": "0:0(半0:0)"
+     "actual": "0:0(半0:0)",
+     "clv_self": -0.3163,
+     "clv_self_note": "末次快照 4.9 @ 2026-09-26T12:20"
     },
     {
      "code": "周六001",
@@ -3168,7 +3398,9 @@
      "agreement": "excluded",
      "receiptNote": "【09-11晚修正】原标pick_diff系回执对照了r1.json早间字段(方向pick=H/未入轨)，未反映下午复核结论——会话复核已列蔚山入平局一致组(DC 1-1 15.7%/0-0 13.7%双平+OddsPedia预测1-1)，改判agree(复核口径)；与T030蔚山1:1/0:0同源风险已另注",
      "result": "miss",
-     "actual": "2:1(半0:0)"
+     "actual": "2:1(半0:0)",
+     "clv_self": 0.0574,
+     "clv_self_note": "末次快照 2.96 @ 2026-09-26T12:20"
     },
     {
      "code": "周五008",
@@ -3180,7 +3412,9 @@
      "agreement": "play_diff",
      "receiptNote": "【09-11晚修正】原标pick_diff系回执对照滞后字段——会话复核已列威尼斯入平局一致组(佛罗伦萨9场8不胜场均0.67球+外网1-1主流)，改判agree(复核口径)；平局轨门槛差0.8pp未入轨是轨设计不是信号否定",
      "result": "miss",
-     "actual": "2:4(半1:2)"
+     "actual": "2:4(半1:2)",
+     "clv_self": -0.0152,
+     "clv_self_note": "末次快照 3.3 @ 2026-09-25T09:52"
     }
    ],
    "settled": {
@@ -3240,7 +3474,9 @@
      "agreement": "excluded",
      "receiptNote": "池卡CRS推荐=0:1(带内q10.6%)；本腿1:1为全池q第一12.92%(audit全31项复算·对隐含12.44%+0.5pp合规)·pick_diff只提示不拦",
      "result": "miss",
-     "actual": "2:1(半0:0)"
+     "actual": "2:1(半0:0)",
+     "clv_self": 0.0435,
+     "clv_self_note": "末次快照 5.75 @ 2026-09-26T12:20"
     },
     {
      "code": "周六001",
@@ -3252,7 +3488,9 @@
      "agreement": "excluded",
      "receiptNote": "池卡CRS推荐=0:1；0:0 q8.89%对隐含6.79%+2.1pp合规·DC双平(13.67%)与freq同向·pick_diff只提示不拦",
      "result": "miss",
-     "actual": "2:1(半0:0)"
+     "actual": "2:1(半0:0)",
+     "clv_self": 0.4667,
+     "clv_self_note": "末次快照 7.5 @ 2026-09-26T12:20"
     },
     {
      "code": "周六022",
@@ -3264,7 +3502,9 @@
      "agreement": "play_diff",
      "receiptNote": "池卡翻身TTG推荐=s2@3.5；0球=CRS0:0同事件同价@14·q8.85%对隐含5.34%+3.5pp合规·热刺赛季零进球+under共识支撑·玩法级TTG同推✓·pick_diff只提示不拦",
      "result": "hit",
-     "actual": "0:0(半0:0)"
+     "actual": "0:0(半0:0)",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     }
    ],
    "evFreq": 0.086,
@@ -3319,7 +3559,9 @@
      "agreement": "play_diff",
      "note": "池卡rec_base同推s1(q25.8%模板·λ合计1.31模型口径~32%)·EV=0.32×4.35-1≈+39%·该注20元命中回87",
      "result": "miss",
-     "actual": "2:2(半2:0)"
+     "actual": "2:2(半2:0)",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     },
     {
      "code": "周六020",
@@ -3331,7 +3573,9 @@
      "agreement": "play_diff",
      "note": "池卡rec_base为s1·s2非同推选项(媒体两家主流1-1方向·大哥容错双选第二腿)·EV=0.26×2.90-1≈-25%(2.90被压价)·该注10元命中回29",
      "result": "miss",
-     "actual": "2:2(半2:0)"
+     "actual": "2:2(半2:0)",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     }
    ],
    "meta": {
@@ -3664,7 +3908,9 @@
      "agreement": "play_diff",
      "note": "单选·市场并列最热10.3%·大哥点名保留",
      "result": "miss",
-     "actual": "3:2(半0:0)"
+     "actual": "3:2(半0:0)",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     },
     {
      "code": "周日023",
@@ -3680,7 +3926,9 @@
      "agreement": "play_diff",
      "note": "单选·市场最热13.6%·主场胜形态实证·票面价5.30(6748.03反推验证分毫不差)",
      "result": "miss",
-     "actual": "2:1(半0:0)"
+     "actual": "2:1(半0:0)",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     },
     {
      "code": "周一003",
@@ -3698,7 +3946,9 @@
      "agreement": "play_diff",
      "note": "双选·市场前两热(11.2/13.1%)",
      "result": "miss",
-     "actual": "2:1(半1:0)"
+     "actual": "2:1(半1:0)",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     },
     {
      "code": "周一004",
@@ -3714,7 +3964,9 @@
      "agreement": "play_diff",
      "note": "单选·模型top1 16.1%",
      "result": "hit",
-     "actual": "0:2(半0:1)"
+     "actual": "0:2(半0:1)",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     }
    ],
    "meta": {
@@ -3761,7 +4013,9 @@
      "odds": 9.0,
      "q": 0.086,
      "seasonFreq": 0.059,
-     "agreement": "play_diff"
+     "agreement": "play_diff",
+     "clv_self": 0.0286,
+     "clv_self_note": "末次快照 8.75 @ 2026-09-16T16:34"
     },
     {
      "code": "周三006",
@@ -3772,7 +4026,9 @@
      "odds": 16.0,
      "q": 0.065,
      "seasonFreq": 0.02,
-     "agreement": "play_diff"
+     "agreement": "play_diff",
+     "clv_self": 0.0,
+     "clv_self_note": "末次快照 16.0 @ 2026-09-16T16:34"
     },
     {
      "code": "周三006",
@@ -3783,7 +4039,9 @@
      "odds": 6.5,
      "q": 0.062,
      "seasonFreq": 0.039,
-     "agreement": "play_diff"
+     "agreement": "play_diff",
+     "clv_self": 0.04,
+     "clv_self_note": "末次快照 6.25 @ 2026-09-16T16:34"
     },
     {
      "code": "周二010",
@@ -3798,7 +4056,9 @@
      "note": "三注共用腿·米堡非2:1则三注全灭",
      "result": "miss",
      "actual": "2:2",
-     "resultNote": "米堡0:2落后后追至2:2平·买入2:1未中·三注共用腿→全注死"
+     "resultNote": "米堡0:2落后后追至2:2平·买入2:1未中·三注共用腿→全注死",
+     "clv_self": -0.0333,
+     "clv_self_note": "末次快照 7.5 @ 2026-09-08T09:22"
     }
    ],
    "bets": [
@@ -3896,7 +4156,9 @@
      "pickReason": "存活候选(1:0/2:0/2:1)中赔率最高者，非EV/freq最优者",
      "note": "本场freq为六场欧罗巴共用通用模板(非专属)，出票依据是假设驱动流程非模型概率。forebet第三方给尤文57%胜率+预测比分2-0，与假设方向一致但非本场选点依据",
      "result": "miss",
-     "actual": "5:0(半3:0)"
+     "actual": "5:0(半3:0)",
+     "clv_self": 0.1875,
+     "clv_self_note": "末次快照 8.0 @ 2026-09-17T10:24"
     },
     {
      "code": "周四010",
@@ -3916,7 +4178,9 @@
      "pickReason": "存活候选(0:0/0:1/1:1)中赔率最高者",
      "note": "H2H近31次交锋比利亚雷12胜马拉加10胜9平，历史面比利亚雷占优但差距不大；市场隐含比利亚雷胜率约52%。DC模型(spain-laliga参数)给0:0=20.7%/EV+272%，freq给0:0=7.0%/EV+25.1%，两口径均不否定但均非本次选点依据(依据=假设存活+最高赔率)",
      "result": "miss",
-     "actual": "1:3(半1:2)"
+     "actual": "1:3(半1:2)",
+     "clv_self": 0.0,
+     "clv_self_note": "末次快照 18.0 @ 2026-09-17T10:24"
     }
    ],
    "combinedOdds": 171.0,
@@ -3977,7 +4241,9 @@
      "note": "腿①复式2点·freq与DC同向(0:0 11.9%/15.1%·1:0 18.8%/20.0%)·两点覆盖零封与小胜两条剧本",
      "pickNote": "复式2点(原登记 '0:0 + 1:0(复式2点)')",
      "result": "hit",
-     "actual": "1:0(半1:0)"
+     "actual": "1:0(半1:0)",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     },
     {
      "code": "周五014",
@@ -4001,7 +4267,9 @@
      "note": "腿②复式2点·非计划场次(原方案第二场为周四010马拉加vs比利亚雷·大哥误买成本场)：选点1:1/2:1数字沿用马拉加方案未重新评估。本场DC给主胜64.0%/融合57.2%(强于马拉加的两模型分歧)，但1:1/2:1并非本场DC前二候选(本场DC前二实为1:0 15.5%+2:0 14.4%，EV+78%/+72%，此复式未覆盖)；2026-09-19 07:30开赛，非09-18当晚场次",
      "pickNote": "复式2点(原登记 '1:1 + 2:1(复式2点)')",
      "result": "miss",
-     "actual": "0:1(半0:0)"
+     "actual": "0:1(半0:0)",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     }
    ],
    "bets": [
@@ -4127,7 +4395,9 @@
      "hypothesis": "survived",
      "note": "主推腿①·freq与DC同向(20.28%/19.98%)·EV+7.9~9.5%",
      "result": "hit",
-     "actual": "1:0(半1:0)"
+     "actual": "1:0(半1:0)",
+     "clv_self": 0.0,
+     "clv_self_note": "末次快照 5.4 @ 2026-09-17T10:24"
     },
     {
      "code": "周三016",
@@ -4142,7 +4412,9 @@
      "hypothesis": "survived",
      "note": "主推腿②·freq与DC同向(14.64%/12.68%)·保守EV+1.4%",
      "result": "miss",
-     "actual": "3:2(半1:1)"
+     "actual": "3:2(半1:1)",
+     "clv_self": 0.0,
+     "clv_self_note": "末次快照 8.0 @ 2026-09-16T16:34"
     }
    ],
    "bets": [
@@ -4209,7 +4481,9 @@
      "hypothesis": "pending",
      "note": "误打腿·欧罗巴无DC无模板无模型概率。市场隐含5.97%、Poisson粗估13.1%(未修正低比分相关·高估)，合理区间6~9%。形态：奥莫尼亚主场6胜3平1负进球率70%支持主胜小比分；但塞尔塔近10六平·客场2胜6平2负，平局形态与\"客队零进球\"弱冲突。当轮评级C级不参与(inPlan=未入选)·系统无候选=覆盖缺口",
      "result": "hit",
-     "actual": "1:0(半0:0)"
+     "actual": "1:0(半0:0)",
+     "clv_self": 0.0,
+     "clv_self_note": "末次快照 12.5 @ 2026-09-16T16:34"
     },
     {
      "code": "周三016",
@@ -4224,7 +4498,9 @@
      "hypothesis": "survived",
      "note": "与T034腿②同腿同价·freq 14.64%/DC 12.68%正价",
      "result": "miss",
-     "actual": "3:2(半1:1)"
+     "actual": "3:2(半1:1)",
+     "clv_self": 0.0,
+     "clv_self_note": "末次快照 8.0 @ 2026-09-16T16:34"
     }
    ],
    "bets": [
@@ -4294,7 +4570,9 @@
      "hypothesis": "survived",
      "note": "09-21假设沿用：米尔顿守平型烂(0胜6平1负)+克劳利摆平拿点球分+H2H两连平·市场平价4.25→5.05连续两天远离(无新信息定律3不调换)·C/B级无锚单锚×0.97",
      "result": "miss",
-     "actual": "4:1(半2:0)"
+     "actual": "4:1(半2:0)",
+     "clv_self": 0.037,
+     "clv_self_note": "末次快照 4.87 @ 2026-09-22T17:22"
     },
     {
      "code": "周二003",
@@ -4309,7 +4587,9 @@
      "hypothesis": "survived",
      "note": "格里姆客场平局机器(近10客2胜7平1负·70%平)+诺茨郡锋无力场均0.8球+同为平局户·反证=诺茨郡主场4胜压仓位",
      "result": "miss",
-     "actual": "2:1(半1:0)"
+     "actual": "2:1(半1:0)",
+     "clv_self": -0.029,
+     "clv_self_note": "末次快照 3.45 @ 2026-09-22T17:22"
     },
     {
      "code": "周二004",
@@ -4324,7 +4604,9 @@
      "hypothesis": "survived",
      "note": "维冈垫底(4分进5失12)+近4次对布莱克浦不胜+布攻强场均1.7球·客胜为主1:1次之",
      "result": "miss",
-     "actual": "3:2(半1:0)"
+     "actual": "3:2(半1:0)",
+     "clv_self": 0.0,
+     "clv_self_note": "末次快照 2.56 @ 2026-09-22T17:22"
     }
    ],
    "bets": [
@@ -4406,7 +4688,9 @@
      "hypothesis": "survived",
      "note": "假设=法国客胜但土耳其İzmit主场有球。支撑：①姆巴佩流感已愈复归合练，齐达内首期名单姆巴佩+登贝莱+奥利塞+杜埃攻击线齐整 ②土耳其缺恰尔汗奥卢+耶尔迪兹两创造者(火力降但居勒尔/阿克蒂尔科glu在，进1球能力仍存) ③法国缺萨利巴/孔纳特/琼阿梅尼，后防临时拼凑，左后卫特吕费尔仅第2帽=攻强守嫩结构 ④İzmit即2019土耳其2:0法国之同一球场，土对法6战1胜即此 ⑤Sports Mole预测比分恰为1-2。临场复扫：HAD客胜1.24→1.20继续压低但CRS 1:2维持8.30未动(池内相对价值不变)。无锚轮全轮无fd模型，纯假设驱动，单锚模式×0.97。",
      "result": "miss",
-     "actual": "0:1(半0:0)"
+     "actual": "0:1(半0:0)",
+     "clv_self": 0.1448,
+     "clv_self_note": "末次快照 7.25 @ 2026-09-25T09:52"
     },
     {
      "code": "周五004",
@@ -4420,7 +4704,9 @@
      "hypothesis": "weakened",
      "note": "假设=越南铁桶把韩国拖成90分钟平局(淘汰赛CRS/HAFU按90分钟结算，加时点球不计)。支撑：2026-01 U23亚洲杯三四名决赛，10人应战的越南2-2逼平韩国(韩需补时绝平)并点球7-6淘汰之，同教练李民成、同级别、同年=最强同口径前证。削弱项(临场复核查实)：①越南两名主力中场春北(35分钟伤退)+国强双双伤缺，攻防转换与控节奏能力尽失 ②本届对乌兹别克摆大巴仍开场即失球、越媒称'只输0-2算幸运'，主帅自评'仅属可接受水平' ③韩国九名旅欧+三超龄(金志洙/布伦特福德、裴俊镐/斯托克城、梁民赫/托特纳姆)，小组4-1卡塔尔+2-0沙特。市场同向：平局族三项全线拉开(CRS 1:1 14.00→16.00·HAFU dd 10.50→12.00·HAD平 6.50→7.00)且韩主胜压至1.08。选dd不选CRS 1:1之由=dd覆盖0:0/1:1/2:2三态，中场崩塌后0:0比1:1更像越南能打出的平局。",
      "result": "miss",
-     "actual": "4:0(半1:0)"
+     "actual": "4:0(半1:0)",
+     "clv_self": null,
+     "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
     }
    ],
    "expectation": {
