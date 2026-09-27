@@ -1,0 +1,178 @@
+{
+ "fetchedAt": "2026-09-27",
+ "source": "sporttery",
+ "matchId": 2041734,
+ "match": {
+  "code": "周日004",
+  "league": "欧国联",
+  "gameweek": "2",
+  "season": "2026/2027",
+  "home": "丹麦",
+  "away": "威尔士",
+  "kickoff": "2026-09-28 00:00",
+  "uniformMatchId": 2509758
+ },
+ "standing": {
+  "away": {
+   "groupName": "Group 4",
+   "phaseName": "League A",
+   "ranking": "4",
+   "sAwayDrawMatchCnt": "0",
+   "sAwayLossGoalMatchCnt": "1",
+   "sAwayWinGoalMatchCnt": "0",
+   "sDrawMatchCnt": "0",
+   "sLossGoalMatchCnt": "1",
+   "sWinGoalMatchCnt": "0",
+   "seasonName": "2026/2027"
+  },
+  "home": {
+   "groupName": "Group 4",
+   "phaseName": "League A",
+   "ranking": "3",
+   "sDrawMatchCnt": "0",
+   "sHomeDrawMatchCnt": "0",
+   "sHomeLossGoalMatchCnt": "0",
+   "sHomeWinGoalMatchCnt": "0",
+   "sLossGoalMatchCnt": "1",
+   "sWinGoalMatchCnt": "0",
+   "seasonName": "2026/2027"
+  }
+ },
+ "injuries": {
+  "home": [],
+  "away": []
+ },
+ "form": {
+  "goalAvg": {
+   "awayGoalAvgCnt": "1.4",
+   "awayGoalAvgCntRatio": "35.9",
+   "homeGoalAvgCnt": "2.5",
+   "homeGoalAvgCntRatio": "64.1",
+   "totalLegCnt": 10
+  },
+  "last10": {
+   "awayDrawMatchCnt": 3,
+   "awayLossGoalMatchCnt": 5,
+   "awayScoreRatio": "30",
+   "awayWinGoalMatchCnt": 2,
+   "homeDrawMatchCnt": 3,
+   "homeLossGoalMatchCnt": 2,
+   "homeScoreRatio": "60",
+   "homeWinGoalMatchCnt": 5,
+   "totalLegCnt": 10
+  },
+  "last10HomeAway": {
+   "awayDrawMatchCnt": 3,
+   "awayLossGoalMatchCnt": 4,
+   "awayScoreRatio": "40",
+   "awayWinGoalMatchCnt": 3,
+   "homeDrawMatchCnt": 3,
+   "homeLossGoalMatchCnt": 1,
+   "homeScoreRatio": "70",
+   "homeWinGoalMatchCnt": 6,
+   "totalLegCnt": 10
+  }
+ },
+ "h2h": {
+  "statistics": {
+   "drawMatchCnt": 0,
+   "drawProbability": "0%",
+   "goalCnt": 0,
+   "lossGoalCnt": 0,
+   "lossGoalMatchCnt": 0,
+   "lossProbability": "0%",
+   "netGoal": 0,
+   "sportteryTeamId": 0,
+   "teamId": 0,
+   "teamShortName": "丹麦",
+   "totalLegCnt": 3,
+   "winGoalMatchCnt": 3,
+   "winProbability": "100%"
+  },
+  "matches": [
+   {
+    "date": "2021-06-27",
+    "home": "威尔士",
+    "score": "0:4",
+    "ht": "0:1",
+    "away": "丹麦",
+    "winner": "home"
+   },
+   {
+    "date": "2018-11-17",
+    "home": "威尔士",
+    "score": "1:2",
+    "ht": "0:1",
+    "away": "丹麦",
+    "winner": "home"
+   },
+   {
+    "date": "2018-09-10",
+    "home": "丹麦",
+    "score": "2:0",
+    "ht": "1:0",
+    "away": "威尔士",
+    "winner": "home"
+   }
+  ]
+ },
+ "scorers": {
+  "away": {
+   "playerList": [],
+   "sportteryTeamId": 406,
+   "teamId": 2332,
+   "teamShortName": "威尔士",
+   "uniformTeamId": 92
+  },
+  "home": {
+   "playerList": [
+    {
+     "appearanceCnt": 1,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "1.0",
+     "goalCnt": 1,
+     "goalProbability": "50%",
+     "injuryFlag": 0,
+     "personId": 634840,
+     "personName": "赫伊隆",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "0"
+    },
+    {
+     "appearanceCnt": 1,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "1.0",
+     "goalCnt": 1,
+     "goalProbability": "50%",
+     "injuryFlag": 0,
+     "personId": 525402,
+     "personName": "达姆斯高",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "0"
+    }
+   ],
+   "sportteryTeamId": 369,
+   "teamId": 643,
+   "teamShortName": "丹麦",
+   "uniformTeamId": 749
+  },
+  "seasonId": 14602,
+  "seasonName": "2026/2027",
+  "tournamentId": 1400,
+  "tournamentShortName": "欧国联",
+  "uniformLeagueId": 69,
+  "uniformMatchId": 2509758
+ }
+}

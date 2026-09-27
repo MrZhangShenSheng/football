@@ -11,24 +11,9 @@
    "coverGate": null
   },
   "upset": {
-   "shape": "pool-4x1",
-   "cost": 2,
+   "shape": "closed",
+   "cost": 0,
    "legs": [
-    {
-     "matchNumStr": "周日008",
-     "match": "挪威 vs 葡萄牙",
-     "play": "ttg",
-     "pick": "s2",
-     "odds": 4.3,
-     "q": 0.2338,
-     "ev": 0.0053,
-     "modelSupport": "template",
-     "hypothesis": {
-      "assumption": "",
-      "checks": [],
-      "verdict": "pending"
-     }
-    },
     {
      "matchNumStr": "周日003",
      "match": "格拉夫 vs 登博思",
@@ -60,13 +45,13 @@
      }
     },
     {
-     "matchNumStr": "周日002",
-     "match": "中国 vs 新西兰",
+     "matchNumStr": "周日001",
+     "match": "江原FC vs 仁川联",
      "play": "ttg",
      "pick": "s3",
-     "odds": 3.85,
-     "q": 0.2257,
-     "ev": -0.1311,
+     "odds": 4.2,
+     "q": 0.2189,
+     "ev": -0.0806,
      "modelSupport": "template",
      "hypothesis": {
       "assumption": "",
@@ -75,24 +60,8 @@
      }
     }
    ],
-   "multiplier": 1,
-   "bets": [
-    {
-     "legs": [
-      0,
-      1,
-      2,
-      3
-     ],
-     "multiplier": 1
-    }
-   ],
-   "note": "跨池4串1(木桶≤4关)",
+   "note": "翻身候选腿不足·关档",
    "blockedByHypothesis": [
-    {
-     "pick": "s2",
-     "verdict": "pending"
-    },
     {
      "pick": "s3",
      "verdict": "pending"
@@ -108,7 +77,7 @@
    ]
   },
   "lottery": {
-   "shape": "lottery-8x1",
+   "shape": "lottery-3x1",
    "cost": 2,
    "legs": [
     {
@@ -116,11 +85,11 @@
      "match": "哥伦布-迈国际",
      "play": "hhad",
      "pick": "让球主胜",
-     "odds": 1.64,
-     "p": 0.5646,
-     "ev": -0.0741,
+     "odds": 1.62,
+     "p": 0.5693,
+     "ev": -0.0778,
      "modelSupport": "dc",
-     "divergence": 0.0242,
+     "divergence": 0.0223,
      "divergenceFlag": false,
      "hypothesis": {
       "assumption": "",
@@ -148,76 +117,11 @@
      "goalLine": -1.0
     },
     {
-     "matchNumStr": "周日002",
-     "match": "中国-新西兰",
-     "play": "had",
-     "pick": "客胜",
-     "odds": 2.06,
-     "modelSupport": "none",
-     "hypothesis": {
-      "assumption": "",
-      "checks": [],
-      "verdict": "pending"
-     }
-    },
-    {
      "matchNumStr": "周日003",
      "match": "格拉夫-登博思",
      "play": "had",
      "pick": "主胜",
      "odds": 1.88,
-     "modelSupport": "none",
-     "hypothesis": {
-      "assumption": "",
-      "checks": [],
-      "verdict": "pending"
-     }
-    },
-    {
-     "matchNumStr": "周日004",
-     "match": "丹麦-威尔士",
-     "play": "had",
-     "pick": "主胜",
-     "odds": 1.38,
-     "modelSupport": "none",
-     "hypothesis": {
-      "assumption": "",
-      "checks": [],
-      "verdict": "pending"
-     }
-    },
-    {
-     "matchNumStr": "周日005",
-     "match": "塞尔维亚-荷兰",
-     "play": "had",
-     "pick": "客胜",
-     "odds": 1.41,
-     "modelSupport": "none",
-     "hypothesis": {
-      "assumption": "",
-      "checks": [],
-      "verdict": "pending"
-     }
-    },
-    {
-     "matchNumStr": "周日006",
-     "match": "奥地利-科索沃",
-     "play": "had",
-     "pick": "主胜",
-     "odds": 1.41,
-     "modelSupport": "none",
-     "hypothesis": {
-      "assumption": "",
-      "checks": [],
-      "verdict": "pending"
-     }
-    },
-    {
-     "matchNumStr": "周日007",
-     "match": "德国-希腊",
-     "play": "had",
-     "pick": "主胜",
-     "odds": 1.3,
      "modelSupport": "none",
      "hypothesis": {
       "assumption": "",
@@ -231,19 +135,14 @@
      "legs": [
       0,
       1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7
+      2
      ],
      "multiplier": 1
     }
    ],
-   "expOdds": 33.5,
-   "winIfHit": 67.0,
-   "note": "8串1×1倍=2元 · 全中≈67元 · 无预算管理(设计§四红线废除)",
+   "expOdds": 4.5,
+   "winIfHit": 9.0,
+   "note": "彩票档降级 3串1×1倍=2元（合格腿3<4·09-22 放宽：标注不关档，右尾弱于标准 N串，买否大哥拍板）",
    "blockedByHypothesis": [
     {
      "pick": "让球主胜",
@@ -254,33 +153,13 @@
      "verdict": "pending"
     },
     {
-     "pick": "客胜",
-     "verdict": "pending"
-    },
-    {
-     "pick": "主胜",
-     "verdict": "pending"
-    },
-    {
-     "pick": "主胜",
-     "verdict": "pending"
-    },
-    {
-     "pick": "客胜",
-     "verdict": "pending"
-    },
-    {
-     "pick": "主胜",
-     "verdict": "pending"
-    },
-    {
      "pick": "主胜",
      "verdict": "pending"
     }
    ]
   }
  },
- "totalCost": 4,
+ "totalCost": 2,
  "crsSource": "fused",
  "cards": [
   {
@@ -293,8 +172,8 @@
      "pool": "ttg",
      "pick": "s3",
      "q": 0.2189,
-     "odds": 4.1,
-     "ev": -0.1025
+     "odds": 4.2,
+     "ev": -0.0806
     },
     {
      "code": "周日001",
@@ -302,8 +181,8 @@
      "pool": "ttg",
      "pick": "s2",
      "q": 0.2127,
-     "odds": 3.2,
-     "ev": -0.3194
+     "odds": 3.1,
+     "ev": -0.3406
     },
     {
      "code": "周日001",
@@ -317,14 +196,14 @@
     {
      "pool": "crs",
      "pick": "1:1",
-     "q": 0.1412,
+     "q": 0.141,
      "odds": 5.7,
-     "ev": -0.1952,
+     "ev": -0.1963,
      "family": "draw",
-     "familyProb": 0.2924,
+     "familyProb": 0.2933,
      "gate": {
       "pass": true,
-      "maxProb": 0.2924
+      "maxProb": 0.2933
      },
      "slot": "top1",
      "marketFused": true,
@@ -334,14 +213,14 @@
     {
      "pool": "crs",
      "pick": "0:0",
-     "q": 0.1065,
-     "odds": 7.25,
-     "ev": -0.2279,
+     "q": 0.11,
+     "odds": 7.0,
+     "ev": -0.23,
      "family": "draw",
-     "familyProb": 0.2924,
+     "familyProb": 0.2933,
      "gate": {
       "pass": true,
-      "maxProb": 0.2924
+      "maxProb": 0.2933
      },
      "slot": "top2",
      "marketFused": true,
@@ -370,124 +249,31 @@
     "divergent": true
    },
    "rec_upset": {
-    "pool": "crs",
-    "pick": "1:1",
-    "q": 0.1412,
-    "odds": 5.7,
-    "ev": -0.1952,
-    "family": "draw",
-    "familyProb": 0.2924,
-    "gate": {
-     "pass": true,
-     "maxProb": 0.2924
-    },
-    "slot": "top1",
-    "marketFused": true,
     "code": "周日001",
-    "match": "江原FC vs 仁川联"
+    "match": "江原FC vs 仁川联",
+    "pool": "ttg",
+    "pick": "s3",
+    "q": 0.2189,
+    "odds": 4.2,
+    "ev": -0.0806
    },
    "flags": [
     "divergence"
    ],
    "crsGate": {
     "pass": true,
-    "maxProb": 0.2924,
+    "maxProb": 0.2933,
     "threshold": 0.28,
     "topFamily": "draw"
    },
    "crsDist": {
-    "draw": 0.2924,
-    "home_clean": 0.2107,
-    "away_clean": 0.1701,
-    "home_multi": 0.1406,
-    "away_multi": 0.1281,
-    "tailP4": 0.1968,
-    "sum": 0.942,
-    "marketFused": true
-   }
-  },
-  {
-   "code": "周日002",
-   "match": "中国 vs 新西兰",
-   "candidates": [
-    {
-     "code": "周日002",
-     "match": "中国 vs 新西兰",
-     "pool": "ttg",
-     "pick": "s2",
-     "q": 0.2338,
-     "odds": 3.25,
-     "ev": -0.2401
-    },
-    {
-     "code": "周日002",
-     "match": "中国 vs 新西兰",
-     "pool": "ttg",
-     "pick": "s3",
-     "q": 0.2257,
-     "odds": 3.85,
-     "ev": -0.1311
-    },
-    {
-     "code": "周日002",
-     "match": "中国 vs 新西兰",
-     "pool": "hafu",
-     "pick": "aa",
-     "q": 0.1746,
-     "odds": 3.65,
-     "ev": -0.3627
-    },
-    {
-     "code": "周日002",
-     "match": "中国 vs 新西兰",
-     "pool": "hafu",
-     "pick": "hh",
-     "q": 0.2695,
-     "odds": 5.4,
-     "ev": 0.4553,
-     "divergent": true
-    }
-   ],
-   "rec_base": {
-    "code": "周日002",
-    "match": "中国 vs 新西兰",
-    "pool": "hafu",
-    "pick": "hh",
-    "q": 0.2695,
-    "odds": 5.4,
-    "ev": 0.4553,
-    "divergent": true
-   },
-   "rec_upset": {
-    "code": "周日002",
-    "match": "中国 vs 新西兰",
-    "pool": "ttg",
-    "pick": "s3",
-    "q": 0.2257,
-    "odds": 3.85,
-    "ev": -0.1311
-   },
-   "flags": [
-    "low_conf",
-    "pure_template",
-    "divergence",
-    "crs_gate_closed"
-   ],
-   "crsGate": {
-    "pass": false,
-    "maxProb": 0.2613,
-    "threshold": 0.28,
-    "topFamily": "draw",
-    "reason": "CRS关档·族峰值 26.1% < 闸门 28%"
-   },
-   "crsDist": {
-    "draw": 0.2613,
-    "away_clean": 0.1921,
-    "home_clean": 0.175,
-    "away_multi": 0.1492,
-    "home_multi": 0.1373,
-    "tailP4": 0.2457,
-    "sum": 0.915,
+    "draw": 0.2933,
+    "home_clean": 0.2135,
+    "away_clean": 0.1756,
+    "home_multi": 0.1397,
+    "away_multi": 0.1271,
+    "tailP4": 0.1862,
+    "sum": 0.9491,
     "marketFused": true
    }
   },
@@ -528,8 +314,8 @@
      "pool": "ttg",
      "pick": "s2",
      "q": 0.2338,
-     "odds": 6.7,
-     "ev": 0.5665,
+     "odds": 6.6,
+     "ev": 0.5431,
      "divergent": true
     }
    ],
@@ -539,8 +325,8 @@
     "pool": "ttg",
     "pick": "s2",
     "q": 0.2338,
-    "odds": 6.7,
-    "ev": 0.5665,
+    "odds": 6.6,
+    "ev": 0.5431,
     "divergent": true
    },
    "rec_upset": {
@@ -560,104 +346,19 @@
    ],
    "crsGate": {
     "pass": false,
-    "maxProb": 0.2028,
+    "maxProb": 0.203,
     "threshold": 0.28,
     "topFamily": "home_multi",
     "reason": "CRS关档·族峰值 20.3% < 闸门 28%"
    },
    "crsDist": {
-    "home_multi": 0.2028,
-    "draw": 0.1987,
-    "away_multi": 0.1566,
-    "home_clean": 0.141,
-    "away_clean": 0.1045,
-    "tailP4": 0.4605,
-    "sum": 0.8035,
-    "marketFused": true
-   }
-  },
-  {
-   "code": "周日008",
-   "match": "挪威 vs 葡萄牙",
-   "candidates": [
-    {
-     "code": "周日008",
-     "match": "挪威 vs 葡萄牙",
-     "pool": "ttg",
-     "pick": "s2",
-     "q": 0.2338,
-     "odds": 4.3,
-     "ev": 0.0053
-    },
-    {
-     "code": "周日008",
-     "match": "挪威 vs 葡萄牙",
-     "pool": "ttg",
-     "pick": "s3",
-     "q": 0.2257,
-     "odds": 3.6,
-     "ev": -0.1875
-    },
-    {
-     "code": "周日008",
-     "match": "挪威 vs 葡萄牙",
-     "pool": "hafu",
-     "pick": "aa",
-     "q": 0.1746,
-     "odds": 3.75,
-     "ev": -0.3452
-    },
-    {
-     "code": "周日008",
-     "match": "挪威 vs 葡萄牙",
-     "pool": "hafu",
-     "pick": "hh",
-     "q": 0.2695,
-     "odds": 3.95,
-     "ev": 0.0645,
-     "divergent": true
-    }
-   ],
-   "rec_base": {
-    "code": "周日008",
-    "match": "挪威 vs 葡萄牙",
-    "pool": "hafu",
-    "pick": "hh",
-    "q": 0.2695,
-    "odds": 3.95,
-    "ev": 0.0645,
-    "divergent": true
-   },
-   "rec_upset": {
-    "code": "周日008",
-    "match": "挪威 vs 葡萄牙",
-    "pool": "ttg",
-    "pick": "s2",
-    "q": 0.2338,
-    "odds": 4.3,
-    "ev": 0.0053
-   },
-   "flags": [
-    "low_conf",
-    "pure_template",
-    "divergence",
-    "crs_gate_closed"
-   ],
-   "crsGate": {
-    "pass": false,
-    "maxProb": 0.2307,
-    "threshold": 0.28,
-    "topFamily": "draw",
-    "reason": "CRS关档·族峰值 23.1% < 闸门 28%"
-   },
-   "crsDist": {
-    "draw": 0.2307,
-    "home_multi": 0.1703,
-    "away_multi": 0.1664,
-    "home_clean": 0.1501,
-    "away_clean": 0.144,
-    "tailP4": 0.3612,
-    "sum": 0.8614,
+    "home_multi": 0.203,
+    "draw": 0.1963,
+    "away_multi": 0.1567,
+    "home_clean": 0.1412,
+    "away_clean": 0.1061,
+    "tailP4": 0.461,
+    "sum": 0.8033,
     "marketFused": true
    }
   },
@@ -750,18 +451,20 @@
  "ranAt": "2026-09-27",
  "approved": false,
  "warnings": [
-  "[upset] 4 腿假设未通过（pending/refuted），出票前须逐条验证",
-  "[lottery] 8 腿假设未通过（pending/refuted），出票前须逐条验证"
+  "[upset] 3 腿假设未通过（pending/refuted），出票前须逐条验证",
+  "[lottery] 3 腿假设未通过（pending/refuted），出票前须逐条验证"
  ],
  "couplingHit": {
-  "atLeastOne": 0.0137,
-  "independent": 0.0137,
+  "atLeastOne": 0.1607,
+  "independent": 0.1607,
   "overestimatePp": -0.0,
-  "method": "enum-2^12",
-  "legs": 12,
-  "bets": 2,
+  "method": "enum-2^3",
+  "legs": 3,
+  "bets": 1,
   "pSource": "mixed"
  },
  "method": "freq",
- "dataAsOf": "2026-09-27"
+ "dataAsOf": "2026-09-27",
+ "superseded": true,
+ "supersededBy": "r2"
 }

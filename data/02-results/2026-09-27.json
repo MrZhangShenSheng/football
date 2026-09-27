@@ -1,78 +1,703 @@
 {
-  "date": "2026-09-27",
-  "version": "v5.15",
-  "mode": "single-anchor",
-  "note": "单锚模式：Pinnacle 全缺（韩职/荷乙/美职均无 fd 收盘锚），概率锚=体彩去水，修正后概率×0.97，星级上限⭐⭐⭐。数据源=体彩 insight 四要素（A 级）。",
-  "plans": [
-    {"plan": "A·CRS单关×10（偏好形状[1]）", "type": "CRS 单关×10=20元（1:1×7 + 0:0×3）", "stake": "20元(2元×10注)",
-     "legs": ["周日001 CRS 1:1 @5.70 p=14.1%(fused) ×7", "周日001 CRS 0:0 @7.00 p=11.0%(fused) ×3"],
-     "odds": null, "evEach": true,
-     "basis": "CRS 融合链平局族 0.293 过闸门 28%（本轮唯一放行场）+ matchPlay 低进球画面 + 江原主场平局率 50% + 平局轨降级形态（poolSingle.HAD=0）",
-     "payout": "1:1命中 79.8元 / 0:0命中 42元"},
-    {"plan": "B·平局轨降级混串 2串1", "type": "HAD平 × HHAD(+1)主胜 跨场2串1", "stake": "2元(1注)",
-     "legs": ["周日001 HAD 平 d @2.75 p=33.9%(fused)", "周日009 HHAD 让球(+1)主胜 h @1.62 p=58%(fused+修正)"],
-     "odds": 4.46, "evEach": false,
-     "basis": "平局轨入轨四条过（p平≥28%/极差10.1pp/R22/胶着）+第五条 poolSingle.HAD=0 → 降级混串路径（捆绑腿哥伦布+1 有独立假设：迈国际伤停d=-2+轮换风险+哥伦布主场5W1D4L）",
-     "payout": "命中 8.91元"},
-    {"plan": "C·彩票档3串1（boldplay原卡·含冲突腿）", "type": "HHAD×HAD×HHAD 3串1", "stake": "2元(1注)",
-     "legs": ["周日001 HHAD(让-1)客胜 @1.48 p=61.9%", "周日003 HAD 主胜 @1.88 p=45.7%[无模型]", "周日009 HHAD(+1)主胜 @1.62 p=58%"],
-     "odds": 4.51, "evEach": false,
-     "basis": "boldplay seq30 彩票档降级3串1；⚠周日003腿与假设层冲突（无锚+无DC+基面反向近10=2W1D7L）——假设层建议撤此腿即腿数不足关档；买否大哥拍板",
-     "payout": "全中 9.02元"},
-    {"plan": "对冲双票（T002/T003形状）", "type": "缺材不出", "stake": "0元",
-     "legs": [], "odds": null, "evEach": false,
-     "basis": "形状需骨架3场+第4关对冲场=4场，本轮在售仅3场 → 对冲腿缺材降级，不出（卡面标注）"}
-  ],
-  "coupling": {
-    "note": "方案A与方案B共享失效点：周日001 江原获胜（p≈0.38）则 A+B 全灭——同假设多重表达伪分散已明示",
-    "pAtLeastOneAB": 0.39,
-    "pAllLossAB": 0.61
+ "date": "2026-09-27",
+ "version": "v5.15",
+ "mode": "single-anchor",
+ "note": "单锚模式：Pinnacle 全缺（韩职/荷乙/美职均无 fd 收盘锚），概率锚=体彩去水，修正后概率×0.97，星级上限⭐⭐⭐。数据源=体彩 insight 四要素（A 级）。",
+ "plans": [
+  {
+   "plan": "A·CRS单关×10（维持·主推）",
+   "type": "CRS 单关×10=20元（1:1×7 + 0:0×3）",
+   "stake": "20元",
+   "legs": [
+    "周日001 CRS 1:1 @5.70 p=14.1%(fused) ×7",
+    "周日001 CRS 0:0 @7.00 p=11.0%(fused) ×3"
+   ],
+   "odds": null,
+   "evEach": true,
+   "basis": "CRS融合链平局族0.293过闸门+matchPlay低进球画面+江原主场平局率50%+平局轨降级形态; 9场版三池推荐翻身视角CRS 1:1@5.7三重确认",
+   "payout": "1:1命中79.8元 / 0:0命中42元"
   },
-  "matches": [
-    {"idx": 1, "code": "周日001", "league": "韩职(R22)", "match": "江原FC vs 仁川联",
-     "pick": "CRS 1:1", "odds": 5.70, "star": 2, "grade": "A",
-     "dc": [0.363, 0.381, 0.257], "fused": [0.381, 0.339, 0.280],
-     "final": 0.141, "chain": "单锚×0.97",
-     "lambdaHome": 0.969, "lambdaAway": 0.777,
-     "fusedPre": [0.381, 0.339, 0.280],
-     "chainSteps": [{"name": "单锚模式", "factor": 0.97}],
-     "crsFusion": {"family": "draw", "familyProb": 0.293, "gate": "pass", "top": [["1:1", 0.141], ["1:0", 0.117], ["0:0", 0.110]], "marketFused": true, "shrunk": true, "lambdaShift": [1.072, 1.32]},
-     "score_source": "crs-fusion(r=0.286,Lidstone+power去水+log池)", "shape_family": "draw",
-     "ev": -0.196, "inPlan": "A",
-     "hypothesis": {"matchPlay": {"rotation": "R22争冠组卡位战双方输不起主力尽出; FIFA窗后首轮体能钝", "tactics": "江原主场保守型(14主场4W7D3L平局率50%), 两队场均进球各1.1低进球结构", "goalSource": "进攻来源分散无超级射手, 低效率阵地战+定位球", "script": "低节奏中低速对抗, 0:0/1:1/1:0画面——DC与联赛TOP三方互证", "specialVars": "卡位战输不起→先保后攻; 伤停0v0"}, "assumption": "卡位战+江原主场平局惯性+韩职低进球结构, 平局与小分被市场低估, 画面锁定0:0/1:1/1:0", "checks": ["H2H近10: 江原5胜2平3负不否决", "近10=2W6D2L平局率60%支撑", "伤停0v0", "仁川中游非摆烂"], "verdict": "survived"},
-     "result": null, "directionHit": null, "scoreHit": null, "optionHit": null, "clv": null, "clv_approx_dk": null, "clv_note": "无Pinnacle锚, CLV缺"},
-     {"idx": 2, "code": "周日001", "league": "韩职(R22)", "match": "江原FC vs 仁川联",
-     "pick": "HAD 平(d)", "odds": 2.75, "star": 2, "grade": "A",
-     "dc": [0.363, 0.381, 0.257], "fused": [0.381, 0.339, 0.280],
-     "final": 0.329, "chain": "单锚×0.97",
-     "lambdaHome": 0.969, "lambdaAway": 0.777,
-     "fusedPre": [0.381, 0.339, 0.280],
-     "chainSteps": [{"name": "单锚模式", "factor": 0.97}],
-     "ev": -0.095, "inPlan": "B",
-     "hypothesis": {"assumption": "同周日001 CRS腿假设（平局被低估）——HAD平为平局轨降级混串表达", "verdict": "survived"},
-     "result": null, "directionHit": null, "scoreHit": null, "optionHit": null, "clv": null, "clv_approx_dk": null},
-    {"idx": 3, "code": "周日003", "league": "荷乙(R8)", "match": "格拉夫 vs 登博思",
-     "pick": "排除:无锚基面反向", "odds": 1.88, "star": 1, "grade": "A",
-     "dc": null, "fused": [0.457, 0.212, 0.302],
-     "final": null, "chain": "单锚×0.97(纯市场锚)",
-     "lambdaHome": null, "lambdaAway": null,
-     "fusedPre": [0.471, 0.219, 0.311],
-     "chainSteps": [{"name": "单锚模式", "factor": 0.97}],
-     "crsFusion": {"family": "home_multi", "familyProb": 0.203, "gate": "fail", "marketFused": true},
-     "ev": null, "inPlan": null,
-     "hypothesis": {"matchPlay": {"rotation": "荷乙R8单线轮换小", "tactics": "格拉夫垫底但H2H对登博思3胜2平; 登博思客场2W2D6L摆烂", "goalSource": "场均1.4/1.7中速对攻", "script": "主队抢分局1:1/2:1/2:0偏主不稳", "specialVars": "荷乙无降级=客场摆烂文化结构性"}, "assumption": "荷乙主场结构性优势支撑主胜定价, 但格拉夫近10仅2胜基面反向, 不入胆只按市场锚展示", "checks": ["H2H格拉夫3胜2平不败(叙事参考)", "基面反向: 市场47% vs 近10=2W1D7L", "无fd锚/无DC/无本地库四级降级"], "verdict": "survived"},
-     "result": null, "directionHit": null, "scoreHit": null, "optionHit": null, "clv": null, "clv_approx_dk": null, "clv_note": "无Pinnacle锚"},
-     {"idx": 4, "code": "周日009", "league": "美职(R27)", "match": "哥伦布 vs 迈国际",
-     "pick": "HHAD 让球(+1)主胜(h)", "odds": 1.62, "star": 3, "grade": "A",
-     "dc": [0.392, 0.231, 0.376], "fused": [0.348, 0.227, 0.425],
-     "final": 0.580, "chain": "伤停d=-2主×1.04客×0.93+单锚×0.97",
-     "lambdaHome": 1.873, "lambdaAway": 1.833,
-     "fusedPre": [0.348, 0.227, 0.425],
-     "chainSteps": [{"name": "伤停差值", "factor": 1.04, "note": "d=-2客伤重(Casemiro/塞戈维亚/弗雷主力+Silvetti边缘) 主×1.04客×0.93"}, {"name": "单锚模式", "factor": 0.97}],
-     "crsFusion": {"family": "draw", "familyProb": 0.208, "gate": "fail", "marketFused": true},
-     "ev": -0.060, "inPlan": "B",
-     "hypothesis": {"matchPlay": {"rotation": "迈国际46分锁定季后赛→客场轮换高风险(梅西国际赛疲劳); 哥伦布渺茫未死主场尽出", "tactics": "哥伦布主场5W1D4L拼抢型; 迈国际控球体系λ合计3.71对攻局", "goalSource": "哥伦布主场压迫+定位球; 迈国际梅西组织+反击", "script": "开放对攻2:1/1:2/2:2画面双方进球概率高", "specialVars": "伤停d=-2客伤重; 迈国际近10=2W6D2L平局惯性; 梅西不在伤停名单=可出场但轮换待临场确认"}, "assumption": "迈国际无欲+中轴4主力伤停+轮换风险, 客胜44.5%定价过热, 哥伦布主场抵抗被低估——主不败方向", "checks": ["H2H迈国际4胜1平碾压⚠反对但仅叙事参考+全主力期", "迈国际近10客场6W3D1L强⚠与最新伤停对冲", "DC主39.2%vs市场33.1%分歧+6.1pp有伤停d=-2独立证据", "库滞后两周标注"], "verdict": "survived"},
-     "result": null, "directionHit": null, "scoreHit": null, "optionHit": null, "clv": null, "clv_approx_dk": null, "clv_note": "无Pinnacle锚"}
-  ],
-  "sources": ["engine/cache/sporttery_matches.json (2026-09-27 fetch)", "engine/cache/sporttery_insight_2041731/2041733/2041739.json", "engine/cache/korea_dc.json (models v11, 635场至09-20)", "engine/cache/usa_dc.json (models v9, 2354场至09-14·滞后两周标注)", "data/00-leagues/korea.json (本地635场统计·本轮生成)", "engine/cache/score_odds/2026-09-27.json (dump-odds)", "data/03-predictions/2026-09-27-boldplay.json (seq30)", "data/03-predictions/2026-09-27-hypothesis.json"]
+  {
+   "plan": "B·平局轨降级混串 2串1（微调价）",
+   "type": "HAD平 × HHAD(+1)主胜 跨场2串1",
+   "stake": "2元",
+   "legs": [
+    "周日001 HAD 平 d @2.75 p=32.9%",
+    "周日009 HHAD 让球(+1)主胜 h @1.64 p=56.5%(异动后)"
+   ],
+   "odds": 4.51,
+   "evEach": false,
+   "basis": "入轨四条过+第五条poolSingle.HAD=0降级混串; 捆绑腿独立假设维持(伤停d=-2名单复核无变化), 009客胜1.99→1.95市场异动反向标注(定律3不因1pp资金面噪声调换)",
+   "payout": "命中9.02元"
+  },
+  {
+   "plan": "C·彩票档两版拍板",
+   "type": "C1修正5串1(假设支持腿) vs C2原卡8串1(boldplay)",
+   "stake": "2元(拍板一版)",
+   "legs": [
+    "C1: 周日001HHAD客胜@1.48×周日004丹麦主胜@1.38×周日005荷兰客胜@1.41×周日007德国主胜@1.30×周日009HHAD主胜@1.64=6.14倍→12.27元",
+    "C2: boldplay 8串1含3冲突腿(周日002新西兰客胜/周日003格拉夫主胜/周日006奥地利主胜)=33.5倍→67元"
+   ],
+   "odds": 6.14,
+   "evEach": false,
+   "basis": "C1=假设层支持5腿(撤3冲突腿); C2=引擎原卡右尾强但含假设反对腿(002友谊赛方向不可判/003基面反向/006假大热·科索沃同档6W2L组内直接对话)——大哥对比拍板",
+   "payout": "C1全中12.27元 / C2全中67元"
+  },
+  {
+   "plan": "D·翻身档修正4串1 TTG（换腿）",
+   "type": "TTG 跨场4串1",
+   "stake": "2元",
+   "legs": [
+    "周日002 TTG s2(2球) @3.25",
+    "周日003 TTG s3 @4.30",
+    "周日008 TTG s2 @4.30",
+    "周日009 TTG s3 @3.95"
+   ],
+   "odds": 237.7,
+   "evEach": false,
+   "basis": "boldplay翻身档4串原卡002腿为s3@3.85——与国足场低进球画面(0:0/1:1/1:0=0-2球带)冲突, 换s2@3.25画面一致; 003 s3(荷乙垫底互咬λ3.1)/008 s2(强强对攻2-3球)/009 s3(λ合计3.71)全与matchPlay一致",
+   "payout": "全中475.4元"
+  },
+  {
+   "plan": "对冲双票",
+   "type": "缺材不出(维持)",
+   "stake": "0元",
+   "legs": [],
+   "odds": null,
+   "evEach": false,
+   "basis": "9场在售但骨架需3场方向胆+第4关对冲场=4场结构, 本轮方向胆仅4-5场且分散——缺合格对冲场(需双玩法同推), 维持缺材标注"
+  }
+ ],
+ "coupling": {
+  "note": "A/B/C1共享江原场失效点(江原非1:1非0:0即A+B+C1全灭); D独立(进球维度); 周日009跨B/C1/D三方案",
+  "pAtLeastOne_ABCD": 0.26,
+  "pAllLoss_ABCD": 0.74,
+  "pJiangwonKillsABC": 0.749
+ },
+ "matches": [
+  {
+   "idx": 1,
+   "code": "周日001",
+   "league": "韩职(R22)",
+   "match": "江原FC vs 仁川联",
+   "pick": "CRS 1:1",
+   "odds": 5.7,
+   "star": 2,
+   "grade": "A",
+   "dc": [
+    0.363,
+    0.381,
+    0.257
+   ],
+   "fused": [
+    0.381,
+    0.339,
+    0.28
+   ],
+   "final": 0.141,
+   "chain": "单锚×0.97",
+   "lambdaHome": 0.969,
+   "lambdaAway": 0.777,
+   "fusedPre": [
+    0.381,
+    0.339,
+    0.28
+   ],
+   "chainSteps": [
+    {
+     "name": "单锚模式",
+     "factor": 0.97
+    }
+   ],
+   "crsFusion": {
+    "family": "draw",
+    "familyProb": 0.293,
+    "gate": "pass",
+    "top": [
+     [
+      "1:1",
+      0.141
+     ],
+     [
+      "1:0",
+      0.117
+     ],
+     [
+      "0:0",
+      0.11
+     ]
+    ],
+    "marketFused": true,
+    "shrunk": true,
+    "lambdaShift": [
+     1.072,
+     1.32
+    ]
+   },
+   "score_source": "crs-fusion(r=0.286,Lidstone+power去水+log池)",
+   "shape_family": "draw",
+   "ev": -0.196,
+   "inPlan": "A",
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "R22争冠组卡位战双方输不起主力尽出; FIFA窗后首轮体能钝",
+     "tactics": "江原主场保守型(14主场4W7D3L平局率50%), 两队场均进球各1.1低进球结构",
+     "goalSource": "进攻来源分散无超级射手, 低效率阵地战+定位球",
+     "script": "低节奏中低速对抗, 0:0/1:1/1:0画面——DC与联赛TOP三方互证",
+     "specialVars": "卡位战输不起→先保后攻; 伤停0v0"
+    },
+    "assumption": "卡位战+江原主场平局惯性+韩职低进球结构, 平局与小分被市场低估, 画面锁定0:0/1:1/1:0",
+    "checks": [
+     "H2H近10: 江原5胜2平3负不否决",
+     "近10=2W6D2L平局率60%支撑",
+     "伤停0v0",
+     "仁川中游非摆烂"
+    ],
+    "verdict": "survived"
+   },
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": "无Pinnacle锚, CLV缺"
+  },
+  {
+   "idx": 2,
+   "code": "周日001",
+   "league": "韩职(R22)",
+   "match": "江原FC vs 仁川联",
+   "pick": "HAD 平(d)",
+   "odds": 2.75,
+   "star": 2,
+   "grade": "A",
+   "dc": [
+    0.363,
+    0.381,
+    0.257
+   ],
+   "fused": [
+    0.381,
+    0.339,
+    0.28
+   ],
+   "final": 0.329,
+   "chain": "单锚×0.97",
+   "lambdaHome": 0.969,
+   "lambdaAway": 0.777,
+   "fusedPre": [
+    0.381,
+    0.339,
+    0.28
+   ],
+   "chainSteps": [
+    {
+     "name": "单锚模式",
+     "factor": 0.97
+    }
+   ],
+   "ev": -0.095,
+   "inPlan": "B",
+   "hypothesis": {
+    "assumption": "同周日001 CRS腿假设（平局被低估）——HAD平为平局轨降级混串表达",
+    "verdict": "survived"
+   },
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "clv": null,
+   "clv_approx_dk": null
+  },
+  {
+   "idx": 3,
+   "code": "周日003",
+   "league": "荷乙(R8)",
+   "match": "格拉夫 vs 登博思",
+   "pick": "排除:无锚基面反向",
+   "odds": 1.88,
+   "star": 1,
+   "grade": "A",
+   "dc": null,
+   "fused": [
+    0.457,
+    0.212,
+    0.302
+   ],
+   "final": null,
+   "chain": "单锚×0.97(纯市场锚)",
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": [
+    0.471,
+    0.219,
+    0.311
+   ],
+   "chainSteps": [
+    {
+     "name": "单锚模式",
+     "factor": 0.97
+    }
+   ],
+   "crsFusion": {
+    "family": "home_multi",
+    "familyProb": 0.203,
+    "gate": "fail",
+    "marketFused": true
+   },
+   "ev": null,
+   "inPlan": null,
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "荷乙R8单线轮换小",
+     "tactics": "格拉夫垫底但H2H对登博思3胜2平; 登博思客场2W2D6L摆烂",
+     "goalSource": "场均1.4/1.7中速对攻",
+     "script": "主队抢分局1:1/2:1/2:0偏主不稳",
+     "specialVars": "荷乙无降级=客场摆烂文化结构性"
+    },
+    "assumption": "荷乙主场结构性优势支撑主胜定价, 但格拉夫近10仅2胜基面反向, 不入胆只按市场锚展示",
+    "checks": [
+     "H2H格拉夫3胜2平不败(叙事参考)",
+     "基面反向: 市场47% vs 近10=2W1D7L",
+     "无fd锚/无DC/无本地库四级降级"
+    ],
+    "verdict": "survived"
+   },
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": "无Pinnacle锚"
+  },
+  {
+   "idx": 4,
+   "code": "周日009",
+   "league": "美职(R27)",
+   "match": "哥伦布 vs 迈国际",
+   "pick": "HHAD 让球(+1)主胜(h)",
+   "odds": 1.64,
+   "star": 3,
+   "grade": "A",
+   "dc": [
+    0.392,
+    0.231,
+    0.376
+   ],
+   "fused": [
+    0.348,
+    0.227,
+    0.425
+   ],
+   "final": 0.58,
+   "chain": "伤停d=-2主×1.04客×0.93+单锚×0.97+异动标注(客胜1.99→1.95资金面向客·定律3不调换)",
+   "lambdaHome": 1.873,
+   "lambdaAway": 1.833,
+   "fusedPre": [
+    0.348,
+    0.227,
+    0.425
+   ],
+   "chainSteps": [
+    {
+     "name": "伤停差值",
+     "factor": 1.04,
+     "note": "d=-2客伤重(Casemiro/塞戈维亚/弗雷主力+Silvetti边缘) 主×1.04客×0.93"
+    },
+    {
+     "name": "单锚模式",
+     "factor": 0.97
+    }
+   ],
+   "crsFusion": {
+    "family": "draw",
+    "familyProb": 0.208,
+    "gate": "fail",
+    "marketFused": true
+   },
+   "ev": -0.07340000000000013,
+   "inPlan": "B",
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "迈国际46分锁定季后赛→客场轮换高风险(梅西国际赛疲劳); 哥伦布渺茫未死主场尽出",
+     "tactics": "哥伦布主场5W1D4L拼抢型; 迈国际控球体系λ合计3.71对攻局",
+     "goalSource": "哥伦布主场压迫+定位球; 迈国际梅西组织+反击",
+     "script": "开放对攻2:1/1:2/2:2画面双方进球概率高",
+     "specialVars": "伤停d=-2客伤重; 迈国际近10=2W6D2L平局惯性; 梅西不在伤停名单=可出场但轮换待临场确认"
+    },
+    "assumption": "迈国际无欲+中轴4主力伤停+轮换风险, 客胜44.5%定价过热, 哥伦布主场抵抗被低估——主不败方向",
+    "checks": [
+     "H2H迈国际4胜1平碾压⚠反对但仅叙事参考+全主力期",
+     "迈国际近10客场6W3D1L强⚠与最新伤停对冲",
+     "DC主39.2%vs市场33.1%分歧+6.1pp有伤停d=-2独立证据",
+     "库滞后两周标注"
+    ],
+    "verdict": "survived"
+   },
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": "无Pinnacle锚"
+  },
+  {
+   "idx": 5,
+   "code": "周日002",
+   "league": "国际赛(友谊赛)",
+   "match": "中国 vs 新西兰",
+   "pick": "排除:友谊赛方向不可判(TTG s2入D方案)",
+   "odds": 3.25,
+   "star": 1,
+   "grade": "B",
+   "dc": null,
+   "fused": [
+    0.296,
+    0.294,
+    0.445
+   ],
+   "final": null,
+   "chain": "单锚×0.97(纯市场锚)",
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": [
+    0.305,
+    0.303,
+    0.459
+   ],
+   "chainSteps": [
+    {
+     "name": "单锚模式",
+     "factor": 0.97
+    }
+   ],
+   "crsFusion": {
+    "family": null,
+    "familyProb": 0.261,
+    "gate": "fail"
+   },
+   "score_source": "matchPlay画面",
+   "shape_family": "lowscore",
+   "ev": null,
+   "inPlan": "D(TTG s2)",
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "友谊赛练兵轮换常规",
+     "tactics": "国足主场控球效率低(场均0.9); 新西兰身体流反击",
+     "goalSource": "国足阵地战进球荒; 新西兰定位球+反击",
+     "script": "低质量低进球拉锯0:0/1:1/1:0",
+     "specialVars": "友谊赛波动最大; H2H新西兰对国足不败"
+    },
+    "assumption": "同档弱旅+场均合计2.0 → 低进球画面, 方向不可判只给TTG/CRS池卡",
+    "checks": [
+     "H2H两场新西兰不败",
+     "国足近10=5W1D4L vs 新西兰1W7L",
+     "排名字段缺失=B级"
+    ],
+    "verdict": "survived"
+   },
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": "无锚"
+  },
+  {
+   "idx": 6,
+   "code": "周日004",
+   "league": "欧国联(R2)",
+   "match": "丹麦 vs 威尔士",
+   "pick": "HAD 主胜(h)",
+   "odds": 1.38,
+   "star": 3,
+   "grade": "A",
+   "dc": null,
+   "fused": [
+    0.668,
+    0.193,
+    0.139
+   ],
+   "final": 0.668,
+   "chain": "单锚×0.97(纯市场锚)",
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": [
+    0.689,
+    0.199,
+    0.144
+   ],
+   "chainSteps": [
+    {
+     "name": "单锚模式",
+     "factor": 0.97
+    }
+   ],
+   "ev": -0.078,
+   "inPlan": "C1",
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "R2三天第二战轮换2-3人但主力框架在",
+     "tactics": "丹麦主场高压场均2.5; 威尔士客场摆防(近10客场2W5L)",
+     "goalSource": "丹麦多点开花; 威尔士锋无力",
+     "script": "丹麦主攻威尔士收缩2:0/2:1/3:1",
+     "specialVars": "两队首轮均败负者垫底——丹麦战意满格; H2H丹麦3连胜4:0/2:0/2:1"
+    },
+    "assumption": "H2H碾压+威尔士客场虫+败者垫底战意差 → 主胜方向明确",
+    "checks": [
+     "H2H丹麦3连胜",
+     "丹麦5W3D2L场均2.5 vs 威尔士2W5L",
+     "0v0伤停"
+    ],
+    "verdict": "survived"
+   },
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": "无锚"
+  },
+  {
+   "idx": 7,
+   "code": "周日005",
+   "league": "欧国联(R2)",
+   "match": "塞尔维亚 vs 荷兰",
+   "pick": "HAD 客胜(a)",
+   "odds": 1.41,
+   "star": 3,
+   "grade": "A",
+   "dc": null,
+   "fused": [
+    0.137,
+    0.212,
+    0.651
+   ],
+   "final": 0.651,
+   "chain": "单锚×0.97(纯市场锚)",
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": [
+    0.141,
+    0.219,
+    0.67
+   ],
+   "chainSteps": [
+    {
+     "name": "单锚模式",
+     "factor": 0.97
+    }
+   ],
+   "ev": -0.082,
+   "inPlan": "C1",
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "荷兰轮换3-4人深度厚",
+     "tactics": "塞尔维亚火星主场但3W7L场均0.9锋无力; 荷兰控球场均2.1",
+     "goalSource": "塞尔维亚支点断裂; 荷兰边锋群",
+     "script": "荷兰控场0:2/1:2/1:3",
+     "specialVars": "塞尔维亚主场哨+情绪球唯一翻盘变量; 荷兰HAD单关=1"
+    },
+    "assumption": "3W7L场均0.9 vs 5W1L场均2.1 → 荷兰客胜可入串非胆",
+    "checks": [
+     "无H2H(10年0交手)",
+     "近况单边差",
+     "主1伤客1伤非核心"
+    ],
+    "verdict": "survived"
+   },
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": "无锚"
+  },
+  {
+   "idx": 8,
+   "code": "周日006",
+   "league": "欧国联(R2)",
+   "match": "奥地利 vs 科索沃",
+   "pick": "排除:假大热(市场高估奥地利)",
+   "odds": 1.41,
+   "star": 2,
+   "grade": "A",
+   "dc": null,
+   "fused": [
+    0.638,
+    0.21,
+    0.152
+   ],
+   "final": null,
+   "chain": "单锚×0.97(纯市场锚)",
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": [
+    0.658,
+    0.216,
+    0.157
+   ],
+   "chainSteps": [
+    {
+     "name": "单锚模式",
+     "factor": 0.97
+    }
+   ],
+   "ev": null,
+   "inPlan": null,
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "R2轮换2-3人",
+     "tactics": "奥地利朗尼克高压场均1.9; 科索沃6W2L同状态队技术流",
+     "goalSource": "奥地利整体压迫; 科索沃旅欧散兵个人能力",
+     "script": "真刀真枪对攻2:1/1:1/2:2",
+     "specialVars": "假大热警报: 市场奥地利67% vs 科索沃同状态同分直接对话"
+    },
+    "assumption": "科索沃状态同档+组内直接对话 → 1.41主胜高估奥地利, 避开方向",
+    "checks": [
+     "无H2H",
+     "奥地利6W2D2L vs 科索沃6W2L同档",
+     "组内1v2同分科索沃战意满格"
+    ],
+    "verdict": "survived"
+   },
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": "无锚"
+  },
+  {
+   "idx": 9,
+   "code": "周日007",
+   "league": "欧国联(R2)",
+   "match": "德国 vs 希腊",
+   "pick": "HAD 主胜(h)",
+   "odds": 1.3,
+   "star": 3,
+   "grade": "A",
+   "dc": null,
+   "fused": [
+    0.7,
+    0.185,
+    0.115
+   ],
+   "final": 0.7,
+   "chain": "单锚×0.97(纯市场锚)",
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": [
+    0.722,
+    0.191,
+    0.119
+   ],
+   "chainSteps": [
+    {
+     "name": "单锚模式",
+     "factor": 0.97
+    }
+   ],
+   "ev": -0.09,
+   "inPlan": "C1",
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "德国轮换3-4人但替补深度全欧顶级",
+     "tactics": "德国主场场均3.0碾压火力; 希腊防反场均0.9",
+     "goalSource": "德国多点开花+高位压迫; 希腊定位球偷袭",
+     "script": "德国攻防演练3:0/2:0/3:1净胜2球起",
+     "specialVars": "希腊组内第1非软柿子但实力差3档; H2H德国全胜"
+    },
+    "assumption": "场均3.0 vs 0.9+H2H全胜 → 主胜方向最稳一场",
+    "checks": [
+     "H2H德国2:1/4:2全胜",
+     "德国7W2D1L vs 希腊2W5L",
+     "主0伤客1伤"
+    ],
+    "verdict": "survived"
+   },
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": "无锚"
+  },
+  {
+   "idx": 10,
+   "code": "周日008",
+   "league": "欧国联(R2)",
+   "match": "挪威 vs 葡萄牙",
+   "pick": "排除:真五五开(TTG s2入D方案)",
+   "odds": 4.3,
+   "star": 2,
+   "grade": "A",
+   "dc": null,
+   "fused": [
+    0.337,
+    0.228,
+    0.347
+   ],
+   "final": null,
+   "chain": "单锚×0.97(纯市场锚)",
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": [
+    0.348,
+    0.235,
+    0.358
+   ],
+   "chainSteps": [
+    {
+     "name": "单锚模式",
+     "factor": 0.97
+    }
+   ],
+   "ev": null,
+   "inPlan": "D(TTG s2)",
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "双方轮换2-3人",
+     "tactics": "挪威哈兰德轴心主场场均2.0; 葡萄牙技术控球场均1.5",
+     "goalSource": "挪威哈兰德终结; 葡萄牙边路群星",
+     "script": "强强对话攻防转换多2:1/1:2/1:1/2:2",
+     "specialVars": "真五五开极差11.9pp; 组内1v2直接对话"
+    },
+    "assumption": "同档强队对攻 → 方向不选, TTG 2-3球/CRS多分屏",
+    "checks": [
+     "H2H仅1场10年前过期",
+     "挪威6W3D1L vs 葡萄牙6W1L同档",
+     "主1伤客1伤"
+    ],
+    "verdict": "survived"
+   },
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": "无锚"
+  }
+ ],
+ "sources": [
+  "engine/cache/sporttery_matches.json (2026-09-27 fetch)",
+  "engine/cache/sporttery_insight_2041731/2041733/2041739.json",
+  "engine/cache/korea_dc.json (models v11, 635场至09-20)",
+  "engine/cache/usa_dc.json (models v9, 2354场至09-14·滞后两周标注)",
+  "data/00-leagues/korea.json (本地635场统计·本轮生成)",
+  "engine/cache/score_odds/2026-09-27.json (dump-odds)",
+  "data/03-predictions/2026-09-27-boldplay.json (seq30)",
+  "data/03-predictions/2026-09-27-hypothesis.json",
+  "11:26复核: sporttery_matches.json 9场重扫 + insight 2041732/34/35/36/37/38 + boldplay seq30(9场版) + 影子09-28轮20票"
+ ],
+ "revision": "11:26 复核: 晚上架补录6场(欧国联5+国足友谊赛1)+周日009异动标注+方案扩为A/B/C/D; boldplay seq30重跑(9场版), 影子09-28轮6场20票已登记"
 }
