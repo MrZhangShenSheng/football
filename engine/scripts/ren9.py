@@ -17,6 +17,11 @@ from dc_predict import devig as devig_n
 BASE = Path(__file__).resolve().parents[2]
 SFC_DIR = BASE / 'data' / '07-sfc'
 
+# ④ 平局暴露参数（26132 教训）：E_draw≥2.0 且 argmax 0 平 → 报警；
+# 平局双选增益 ×1.5（pari-mutuel 稀注杠杆系数，先验值——积累 3+ 期后校准）
+DRAW_EXPOSE_THRESHOLD = 1.5  # 26132实测E_draw=1.72开2平校准(26131/11无赔率不可回放)
+DRAW_LEVERAGE = 1.5
+
 # okooo 联赛中文名 → fd slug（联赛期次才用；国家队/杯赛不在表内=无DC）
 LEAGUE_MAP = {
     '英超': 'england-premier', '西甲': 'spain-laliga', '德甲': 'germany-bundesliga',
@@ -84,17 +89,48 @@ def ren9(issue: int, manual: dict | None = None) -> dict:
     core, bench = ranked[:9], ranked[9:]
 
     # 复式贪心：核心场中增益比 (p主+p次)/p主 最大者双选
+    # 平局双选增益 × DRAW_LEVERAGE（pari-mutuel 稀注杠杆：大众追热门避平局，平局
+    # 中的分钱注数少——argmax 单式结构性 0 平局 vs 历史开奖期望 ~3.25 平/期，
+    # 26132 任9 7/9 死于澳巴+波兰双平局的直接教训。④三梯队一期）
     best_double = None
     for r in core:
         pf = r['pFused']
         p2 = sorted(pf)[-2]
         gain = (pf[r['pFused'].index(max(pf))] and (max(pf) + p2) / max(pf))
+        second_dir = [3, 1, 0][sorted(range(3), key=lambda k: -pf[k])[1]]
+        if second_dir == 1:
+            gain *= DRAW_LEVERAGE
         if not best_double or gain > best_double['gain']:
             best_double = {'no': r['no'], 'match': f"{r['home']} vs {r['away']}",
-                           'dirs': [r['dir'], [3, 1, 0][sorted(range(3), key=lambda k: -pf[k])[1]]],
-                           'gain': round(gain, 3)}
+                           'dirs': [r['dir'], second_dir],
+                           'gain': round(gain, 3),
+                           'leverageApplied': second_dir == 1}
+
+    # drawGuard：平局暴露检查（26132 教训代码化）
+    e_draw = sum(r['pFused'][1] for r in core if r.get('pFused'))
+    n_draw = sum(1 for r in core if r.get('dir') == 1)
+    guard = {'eDraw': round(e_draw, 2), 'nDrawLegs': n_draw, 'warn': False, 'suggest': []}
+    if n_draw == 0 and e_draw >= DRAW_EXPOSE_THRESHOLD:
+        guard['warn'] = True
+        guard['note'] = (f"argmax 单式 0 平局 vs 期望 {e_draw:.1f} 平"
+                         f"（26132 实测 E_draw=1.72 开 2 平 · pari-mutuel 稀注杠杆区遗漏）")
+    # 名额函数 n_slots = min(4, ceil(E_draw×2))：暴露越多名额越多（26132 单期校准
+    # ——E_draw=1.72→4 名额恰好覆盖双平局死因，3+ 期后复校防过拟合）。建议与报警
+    # 解耦：始终输出 top n_slots（≥0.18）的平局双选候选
+    import math as _math
+    n_slots = min(4, _math.ceil(e_draw * 2)) if e_draw >= DRAW_EXPOSE_THRESHOLD else 2
+    guard['nSlots'] = n_slots
+    for r in sorted(core, key=lambda r: -(r['pFused'][1] if r.get('pFused') else 0))[:n_slots]:
+        pf = r['pFused']
+        if pf and pf[1] >= 0.18:
+            guard['suggest'].append({'no': r['no'],
+                                     'match': f"{r['home']} vs {r['away']}",
+                                     'pDraw': round(pf[1], 3),
+                                     'pick': {3: '主胜', 1: '平', 0: '客胜'}[r['dir']],
+                                     'action': f"建议平局双选（{ {3:'主胜',1:'平',0:'客胜'}[r['dir']] }+平）"})
     return {'issue': issue, 'rows': rows, 'core': core, 'bench': bench,
             'doublePick': best_double,
+            'drawGuard': guard,
             'variantSwap': {'out9': core[-1], 'in10': bench[0]} if len(bench) else None,
             'dcCoverage': sum(1 for r in rows if r['dcUsed'])}
 
@@ -117,7 +153,15 @@ def render(res: dict) -> str:
     if d:
         lines.append(f"── 复式建议 ── #{d['no']} {d['match']} 双选 "
                      f"{ {3:'主胜',1:'平',0:'客胜'}[d['dirs'][0]] }+{ {3:'主胜',1:'平',0:'客胜'}[d['dirs'][1]] }"
-                     f"（增益比×{d['gain']}）")
+                     f"（增益比×{d['gain']}{'·平局杠杆1.5已乘' if d.get('leverageApplied') else ''}）")
+    g = res.get('drawGuard')
+    if g:
+        tag = '⚠️报警' if g['warn'] else '✅正常'
+        lines.append(f"── 平局暴露 ── {tag} E_draw={g['eDraw']} 票内平局腿={g['nDrawLegs']}")
+        if g.get('note'):
+            lines.append(f"   {g['note']}")
+        for s in g.get('suggest', []):
+            lines.append(f"   #{s['no']} {s['match']} p平={s['pDraw']} 当前选{s['pick']} → {s['action']}")
     return '\n'.join(lines)
 
 
