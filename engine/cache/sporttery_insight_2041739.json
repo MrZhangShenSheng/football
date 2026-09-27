@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-09-26",
+ "fetchedAt": "2026-09-27",
  "source": "sporttery",
  "matchId": 2041739,
  "match": {
@@ -39,8 +39,100 @@
   }
  },
  "injuries": {
-  "home": [],
-  "away": []
+  "home": [
+   {
+    "name": "J. Martínez",
+    "pos": "前锋",
+    "no": "77",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 8,
+    "starts": 4
+   },
+   {
+    "name": "R. Camacho",
+    "pos": "后卫",
+    "no": "4",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 19,
+    "starts": 18
+   },
+   {
+    "name": "W.阿布 阿里",
+    "pos": "前锋",
+    "no": "9",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 7,
+    "starts": 7
+   },
+   {
+    "name": "扎鲁里",
+    "pos": "前锋",
+    "no": "21",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 1,
+    "starts": 1
+   },
+   {
+    "name": "L. Giaccone",
+    "pos": "中场",
+    "no": "26",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 5,
+    "starts": 2
+   }
+  ],
+  "away": [
+   {
+    "name": "Casemiro",
+    "pos": "中场",
+    "no": "5",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 10,
+    "starts": 10
+   },
+   {
+    "name": "塞戈维亚",
+    "pos": "中场",
+    "no": "8",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 23,
+    "starts": 22
+   },
+   {
+    "name": "I.弗雷",
+    "pos": "后卫",
+    "no": "17",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 20,
+    "starts": 18
+   },
+   {
+    "name": "T. Allende",
+    "pos": "前锋",
+    "no": "21",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 9,
+    "starts": 4
+   },
+   {
+    "name": "M. Silvetti",
+    "pos": "前锋",
+    "no": "24",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 14,
+    "starts": 10
+   }
+  ]
  },
  "form": {
   "goalAvg": {
@@ -263,7 +355,7 @@
      "goalAvgCnt": "0.7",
      "goalCnt": 5,
      "goalProbability": "14%",
-     "injuryFlag": 0,
+     "injuryFlag": 1,
      "personId": 444219,
      "personName": "W.阿布 阿里",
      "playerPositionCode": "Forward",

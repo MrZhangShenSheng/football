@@ -1,0 +1,39 @@
+{
+ "league": "korea-k-league",
+ "season": "2026",
+ "generatedAt": "2026-09-27",
+ "roundsPlayed": 22,
+ "standings": [],
+ "leagueStats": {
+  "avgGoals": 2.542,
+  "homeWinRate": 0.397,
+  "drawRate": 0.277,
+  "upsetRate": 0.326,
+  "topScores": [
+   {
+    "score": "1-1",
+    "count": 83
+   },
+   {
+    "score": "1-0",
+    "count": 70
+   },
+   {
+    "score": "0-1",
+    "count": 60
+   }
+  ],
+  "computedFrom": "local-league-results",
+  "matchesUsed": 635,
+  "seasonsMerged": [
+   "2026"
+  ]
+ },
+ "context": "韩职常规赛(K League 1): 12队33轮, 前6争冠组后6保级组; insight gameweek=22",
+ "dcParams": "engine/cache/korea_dc.json (models v11)",
+ "freshness": {
+  "standingsSource": "insight",
+  "stale": false,
+  "note": "积分榜用 sporttery insight 即时排名; 统计源自本地597场库"
+ }
+}
