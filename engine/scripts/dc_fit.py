@@ -169,13 +169,13 @@ def fit(matches: list[dict], xi: float, use_xg: bool = False):
     return teams, attack, defense, float(res.x[2 * n]), float(res.x[2 * n + 1]), res.fun
 
 
-def holdout_logloss(matches, xi, split=0.8):
-    """留出验证 log-loss，用于 xi 扫描。"""
+def holdout_logloss(matches, xi, split=0.8, use_xg: bool = False):
+    """留出验证 log-loss，用于 xi 扫描。use_xg=xG-λ 实验开关（②三梯队一期）。"""
     cut = int(len(matches) * split)
     train, test = matches[:cut], matches[cut:]
     if len(test) < 10:
         return None
-    teams, attack, defense, home_adv, rho, _ = fit(train, xi)
+    teams, attack, defense, home_adv, rho, _ = fit(train, xi, use_xg=use_xg)
     idx = {t: i for i, t in enumerate(teams)}
     n = len(teams)
     ll, cnt = 0.0, 0

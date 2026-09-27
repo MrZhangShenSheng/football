@@ -1,0 +1,82 @@
+{
+ "at": "2026-09-27",
+ "design": "docs/2026-09-27-probability-modernization-design.html §②",
+ "xi": 0.005,
+ "split": 0.8,
+ "rows": [
+  {
+   "league": "england-premier",
+   "seasons": [
+    "2526",
+    "2627"
+   ],
+   "n": 260,
+   "xgCoverage": 0.19,
+   "nCompared": 50,
+   "subsetMode": true,
+   "holdoutLogloss_goals": 1.6723,
+   "holdoutLogloss_xg": 1.2545,
+   "xgImprovementPct": 24.98,
+   "verdict": "xG更优"
+  },
+  {
+   "league": "spain-laliga",
+   "seasons": [
+    "2526",
+    "2627"
+   ],
+   "n": 258,
+   "xgCoverage": 0.27,
+   "nCompared": 69,
+   "subsetMode": true,
+   "holdoutLogloss_goals": 1.0571,
+   "holdoutLogloss_xg": 1.1091,
+   "xgImprovementPct": -4.92,
+   "verdict": "进球更优"
+  },
+  {
+   "league": "germany-bundesliga",
+   "seasons": [
+    "2526",
+    "2627"
+   ],
+   "n": 186,
+   "xgCoverage": 0.19,
+   "nCompared": 36,
+   "subsetMode": true,
+   "holdoutLogloss_goals": null,
+   "holdoutLogloss_xg": null
+  },
+  {
+   "league": "italy-serie-a",
+   "seasons": [
+    "2526",
+    "2627"
+   ],
+   "n": 250,
+   "xgCoverage": 0.2,
+   "nCompared": 50,
+   "subsetMode": true,
+   "holdoutLogloss_goals": 1.2404,
+   "holdoutLogloss_xg": 1.042,
+   "xgImprovementPct": 16.0,
+   "verdict": "xG更优"
+  },
+  {
+   "league": "france-ligue1",
+   "seasons": [
+    "2526",
+    "2627"
+   ],
+   "n": 198,
+   "xgCoverage": 0.23,
+   "nCompared": 45,
+   "subsetMode": true,
+   "holdoutLogloss_goals": null,
+   "holdoutLogloss_xg": null
+  }
+ ],
+ "conclusion": "2/3 联赛 xG 显著更优(>1%)——证据不足维持进球源；xG 覆盖与样本随赛季推进增长，季度复跑",
+ "note": "只出报告不切默认；2627 季 fd xG 覆盖 100%（50/50 实测英超），2526 季部分覆盖",
+ "caveat": "子集模式(2627季xG覆盖100%但两季合并仅19-27%)下每联赛仅~40训练场=20队参数严重欠拟合——英超1.67/xG1.25的大幅差部分反映xG初始化在小样本下更稳, 不纯是信号质量; 西甲反向。证据强度不足, 季度复跑(2627季满季后子集>200场再判)"
+}
