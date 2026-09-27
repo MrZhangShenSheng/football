@@ -1,0 +1,22 @@
+{
+ "at": "2026-09-27",
+ "backtest": {
+  "n": 185,
+  "zMean": 0.0664,
+  "loglossShin": 0.8755,
+  "loglossProp": 0.8828,
+  "favLayer": {
+   "n": 114,
+   "shin": 0.5018,
+   "prop": 0.5404
+  },
+  "dogLayer": {
+   "n": 71,
+   "shin": 1.4755,
+   "prop": 1.4325
+  }
+ },
+ "improvementPct": 0.83,
+ "verdict": "打平(<1%)——维持现状（护栏）",
+ "note": "体彩三向 Shin vs 比例归一（216场交集·score_odds 存档）"
+}
