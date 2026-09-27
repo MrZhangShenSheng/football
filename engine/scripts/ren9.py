@@ -135,6 +135,37 @@ def ren9(issue: int, manual: dict | None = None) -> dict:
             'dcCoverage': sum(1 for r in rows if r['dcUsed'])}
 
 
+
+def edge_rank(core: list, gamma: float = 1.5) -> list:
+    """⑥ pari-mutuel 期望效用选场（近似版·三梯队二期）。
+
+    spike 结论（2026-09-27）：体彩官方开奖公告仅公布销量/中奖注数/奖池，**不公布
+    各场投注比例**；第三方无稳定归档 → p_crowd 无直接数据。降级为先验近似：
+    p_crowd_i ∝ (1/o_i)^γ（γ>1 = 大众比理性更追热门），edge = p_fused − p_crowd。
+    edge 高的方向 = 大众低估区 = pari-mutuel 稀注价值区（argmax 的数学修正）。
+    γ=1.5 行为金融 FLB 系数量级（先验），3+ 期后校准。
+    开发者 sszhang
+    """
+    out = []
+    for r in core:
+        pf = r.get("pFused")
+        if not pf or not r.get("odds"):
+            continue
+        try:
+            inv = [(1.0 / float(o)) ** gamma for o in r["odds"]]
+        except (TypeError, ValueError):
+            continue
+        s = sum(inv)
+        crowd = [x / s for x in inv]
+        edges = [pf[k] - crowd[k] for k in range(3)]
+        best = max(range(3), key=lambda k: edges[k])
+        out.append({"no": r["no"], "match": f"{r['home']} vs {r['away']}",
+                    "edgeDir": {0: "主胜", 1: "平", 2: "客胜"}[best],
+                    "edge": round(edges[best], 3),
+                    "pFusedDir": round(pf[best], 3), "pCrowdDir": round(crowd[best], 3)})
+    return sorted(out, key=lambda x: -x["edge"])
+
+
 def render(res: dict) -> str:
     lines = [f"任9 第{res['issue']}期 · DC覆盖 {res['dcCoverage']}/14 场（国家队期=纯市场锚）", '']
     lines.append('── 核心九场（grasp 降序）──')
