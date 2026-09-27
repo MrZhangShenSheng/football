@@ -150,6 +150,37 @@ def svg_bars(rows: list) -> str:
     return "".join(out)
 
 
+def _clv_tag(leg: dict) -> str:
+    """腿级自有 CLV 标注（③三梯队一期·self_clv.py 写入）：clv_self=冻结价/末次快照价−1。
+    正=出票时点价优于停售前末次价（同庄家口径）。08-30 前出票无快照=null 不显示。"""
+    v = leg.get("clv_self")
+    if v is None:
+        return ""
+    cls = "pos" if v > 0 else "neg"
+    return f' <span class="{cls} sub" title="自有CLV:冻结价/体彩末次快照价-1">c{v:+.1%}</span>'
+
+
+def clv_block(tickets: list) -> str:
+    """⑥ 自有 CLV 汇总（玩法级）：③设计的验收区块。正CLV占比=时点质量代理。"""
+    agg = defaultdict(list)
+    for t in tickets:
+        if (t.get("settled") or {}).get("status") != "settled":
+            continue
+        for l in t.get("legs", []):
+            if l.get("clv_self") is not None:
+                agg[l.get("market", "?")].append(l["clv_self"])
+    if not agg:
+        return ""
+    rows = "".join(
+        f'<tr><td>{mk}</td><td>{len(vs)}</td>'
+        f'<td class="{"pos" if sum(vs) >= 0 else "neg"}">{sum(vs) / len(vs):+.2%}</td>'
+        f'<td>{sum(1 for v in vs if v > 0)}/{len(vs)}</td></tr>'
+        for mk, vs in sorted(agg.items()))
+    return (f'<h2>⑥ 自有 CLV（同庄家时序：冻结价 vs 体彩末次快照价）</h2>'
+            f'<table><tr><th>玩法</th><th>腿数</th><th>场均 clv_self</th><th>正CLV</th></tr>{rows}</table>'
+            f'<p class="sub">正=出票时点价优于停售前末次价 · 08-30 前出票无快照不计 · self_clv.py 每次结算后重跑刷新 · 三梯队一期③</p>')
+
+
 def ticket_rows(tickets: list) -> str:
     """② 票务清单表（pending 票也列出，结算列示待结算）。"""
     rows = []
@@ -167,6 +198,7 @@ def ticket_rows(tickets: list) -> str:
         legs = " / ".join(
             f'<span class="{"hit" if l.get("result") == "hit" else ("miss" if l.get("result") == "miss" else "pend")}">'
             f'{"<s>" if l.get("revoked") else ""}{l["code"]} {l["market"]} {l["pick"]}@{l["odds"]}'
+            f'{_clv_tag(l)}'
             f'{"</s>" if l.get("revoked") else ""}</span>'
             for l in t["legs"])
         cross = "跨日" if len(t.get("matchDays", [])) > 1 else ""
@@ -245,6 +277,7 @@ def agreement_rows(stats: dict) -> str:
 
 def render(data: dict) -> str:
     tickets_all = data.get("tickets", [])
+    clv_html = clv_block([t for t in tickets_all if not t.get("testGroup")])  # ⑥ 三梯队一期③
     meta = data.get("meta", {})
     # testGroup 分栏（2026-09-05 大哥批的主链例外#2）：测试票正常登记结算，
     # 但不进实票口径统计（曲线/玩法/一致率/KPI 均为 live）——分栏呈现保透明。
@@ -358,7 +391,7 @@ th{{background:var(--bg);font-weight:600}}
 <table><tr><th>日期</th><th>事件</th><th>实票净利</th><th>反事实净利</th><th>差异</th><th>评注</th></tr>
 {discipline_rows(meta)}</table>
 
-<h2>⑤ 推荐一致率（票腿 × 系统推荐，对齐设计 §02）</h2>
+{clv_html}<h2>⑤ 推荐一致率（票腿 × 系统推荐，对齐设计 §02）</h2>
 <table><tr><th>分类</th><th>腿数</th><th>命中率</th></tr>
 {agreement_rows(ag)}</table>
 <p class="sub">高一致票（agree≥½ 腿，{ag["hi"]["tickets"]} 张）累计净
