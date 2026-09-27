@@ -1,0 +1,33 @@
+{
+ "league": "korea",
+ "pair": "gangwon vs incheon-united",
+ "B": 40,
+ "full": {
+  "nMatches": 636,
+  "lambdaHome": {
+   "p25": 0.508,
+   "p975": 1.487,
+   "width": 0.979,
+   "mean": 0.821
+  },
+  "threeWayWidth": [
+   0.354,
+   0.195,
+   0.249
+  ]
+ },
+ "small60": {
+  "lambdaHome": {
+   "p25": 0.341,
+   "p975": 2.214,
+   "width": 1.873,
+   "mean": 1.003
+  },
+  "threeWayWidth": [
+   0.503,
+   0.301,
+   0.575
+  ]
+ },
+ "verdict": "机制正确✅ 小样本三向CI显著更宽"
+}
