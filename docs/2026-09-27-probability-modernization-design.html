@@ -1,0 +1,126 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>概率底座现代化 · 三梯队优化设计</title>
+<style>
+:root{--ink:#1a1f2e;--sub:#5a6478;--line:#e3e7ee;--bg:#f7f8fb;--card:#fff;--acc:#c0392b;--ok:#1e8e5a;--warn:#b7791f;--blue:#2b6cb0}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;padding:26px 16px}
+.wrap{max-width:960px;margin:0 auto}
+h1{font-size:22px;margin-bottom:4px}h2{font-size:17px;margin:28px 0 12px;padding-left:10px;border-left:4px solid var(--acc)}
+h3{font-size:14.5px;margin:16px 0 8px}
+.sub{color:var(--sub);font-size:13px;margin-bottom:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+th{text-align:left;color:var(--sub);font-weight:600;padding:6px 8px;border-bottom:1.5px solid var(--line)}
+td{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+code{background:#eef1f6;border-radius:4px;padding:1px 5px;font-size:12px;font-family:ui-monospace,Menlo,monospace}
+.tag{font-size:11px;border:1px solid var(--line);border-radius:6px;padding:1px 6px;color:var(--sub)}
+.tag.t1{color:var(--ok);border-color:#bfe3d2;font-weight:700}
+.tag.t2{color:var(--warn);border-color:#f0dfb4}
+.tag.t3{color:var(--blue);border-color:#c3d6ef}
+.ev{background:#fdf0ee;border:1px solid #f2c4bd;border-radius:8px;padding:10px 14px;font-size:12.5px;margin:8px 0}
+.flow{background:#f0f4f9;border:1px dashed #9db2cc;border-radius:10px;padding:12px 16px;font-family:ui-monospace,Menlo,monospace;font-size:12px;white-space:pre;line-height:1.8;overflow-x:auto;margin:8px 0}
+.warnbox{background:#fdf6e8;border:1px solid #f0dfb4;border-radius:8px;padding:10px 14px;font-size:12.5px;color:#7a5b16;margin:10px 0}
+.footer{color:var(--sub);font-size:11.5px;margin-top:24px;border-top:1px solid var(--line);padding-top:12px}
+ul{margin:6px 0 6px 20px}li{margin:3px 0;font-size:13px}
+</style></head><body><div class="wrap">
+
+<h1>概率底座现代化 · 三梯队优化设计</h1>
+<div class="sub">2026-09-27 立项 · 依据=数学/概率/足球分析三视角审计（同日会话）· SKILL v5.15 · 开发者 sszhang</div>
+
+<h2>〇、立项证据（库内实锤，非理论推演）</h2>
+<div class="card">
+<table>
+<tr><th>#</th><th>证据</th><th>来源</th><th>指向</th></tr>
+<tr><td>E1</td><td><b>校准断裂 22pp</b>：0~40% 概率桶实际 59% vs 预测 38%</td><td>trend.html 校准图（2026-09-27 verify）</td><td>① 校准层缺失</td></tr>
+<tr><td>E2</td><td>001 江原 0:0：DC 矩阵 top1=0:0(19.8%) 被融合链塑形为 1:1(14.1%)，开出 0:0</td><td>2026-09-27 review001</td><td>② 联合校准断裂</td></tr>
+<tr><td>E3</td><td>CLV 体彩vsPinnacle 口径 95.8% 恒负（166 条中 159 负）</td><td>2026-09-27 自审</td><td>③ CLV 口径错误→自有 CLV</td></tr>
+<tr><td>E4</td><td>任9 26132 死于双平局（澳巴/波兰），argmax 单式结构性 0 平局 vs 历史期望 3.25 平/期</td><td>26132 drawAlignment + 结算</td><td>④ 传足平局暴露</td></tr>
+<tr><td>E5</td><td>fd CSV 的 HxG/AxG 字段每轮下载、从未用于 λ 拟合</td><td>odds_fetch.py 字段清单</td><td>⑤ xG 信号未用</td></tr>
+</table>
+</div>
+
+<h2>一、第一梯队（第一期开发 · 数据全就绪 · 约 1.5 天）</h2>
+
+<div class="card">
+<h3>① 概率校准层（isotonic · 最高 ROI）</h3>
+<p><b>问题</b>（E1）：输出概率与实际频率系统性偏离 22pp，整个下游（星级/EV/串关连乘）都建立在未校准概率上。</p>
+<p><b>方案</b>：对 corpus 298 场的 <code>(p_final[pick], directionHit)</code> 对做 PAVA 保序回归（自实现，不引 sklearn），输出分段线性映射表。</p>
+<div class="flow">corpus.json records → (p̂, hit) 298对 → PAVA 单调拟合
+→ 前80%拟合 / 后20%时间外验证(OOT)
+→ engine/cache/isotonic.json（分段断点+映射值+n支持数）</div>
+<p><b>护栏（本期不动生产链）</b>：只落盘映射表+校准前后 reliability 报告；<b>观察一个回填周期</b>后按消融纪律决定是否接线进 dc_predict/boldplay（无正增益即不接）——沿用修正系数消融纪律。</p>
+<p><b>验收</b>：映射表单调；OOT 校准后 |预测−实际| 收敛（目标：低桶偏差 22pp → &lt;10pp）；报告 <code>data/04-summaries/isotonic-report.json</code>。</p>
+<p><b>新文件</b>：<code>engine/scripts/calibrate_isotonic.py</code>（PAVA 自实现+selftest）。</p>
+</div>
+
+<div class="card">
+<h3>② xG-λ 对比实验（信号源升级评审）</h3>
+<p><b>问题</b>（E5）：λ 从进球数拟合=从噪声拟合（进球含运气分量）；fd 的 HxG/AxG 是更干净的信号。</p>
+<p><b>方案</b>：<code>dc_fit.py</code> 加 <code>--lambda-source=xg|goals</code> 开关，同 train/test 划分对比两种 λ 源的 holdout logloss。</p>
+<div class="flow">fd CSV(HxG/AxG, 缺失场次剔除) → λ_xg 拟合 vs λ_goals 拟合
+→ 同划分 holdout logloss 对比（总体+分联赛）
+→ data/04-summaries/xg-experiment-report.json
+→ 结论二选一: 建议 dc_fit 默认换源 / 证据不足维持(写明数据量)</div>
+<p><b>验收</b>：≥3 个主流联赛 holdout logloss 对比表；xG 覆盖率统计（缺失率&gt;30% 的联赛标"不适用"）；结论写入报告（换/不换+依据），<b>不自动切换默认值</b>（换源=大哥拍板项）。</p>
+</div>
+
+<div class="card">
+<h3>③ 自有 CLV 接线（同庄家时序口径）</h3>
+<p><b>问题</b>（E3）：体彩 vs Pinnacle 的 CLV 结构性恒负（抽水差 13pp），衡量不了选单能力；真正口径=同庄家时序（出票时体彩价 vs 体彩最终价）。</p>
+<p><b>方案</b>：新脚本扫描 <code>data/05-trends/*-odds.json</code> 时序链，对每条已结算票腿：出票冻结价（tickets.json odds 字段）vs 该场**最后一次快照价**→ <code>clv_self = 冻结价/最终价 − 1</code>，写回票腿字段。</p>
+<div class="flow">tickets.json 已结算腿 → 05-trends 快照链取该场末次价
+→ clv_self 逐腿写回 → tickets.html 增列 → 汇总场均 clv_self</div>
+<p><b>诚实标注</b>：trends 快照自 2026-08-30 起积累——只有近月票可算，早期腿 clv_self=null 标"时序未覆盖"；最终快照≠真实收盘（停售后无价），标注口径近似。</p>
+<p><b>验收</b>：对 09 月已结算实票跑通并出汇总（场均 clv_self 正负分布）；tickets.html 显示新列。</p>
+<p><b>新文件</b>：<code>engine/scripts/self_clv.py</code>。</p>
+</div>
+
+<div class="card">
+<h3>④ 传足平局暴露检查（26132 死因直击）</h3>
+<p><b>问题</b>（E4）：grasp=max(p_fused) 的 argmax 单式必然 0 平局（平局概率几乎从不为三向最高），而历史开奖期望 ~3.25 平/期+pari-mutuel 稀注杠杆。</p>
+<p><b>方案</b>：<code>ren9.py</code> 的 <code>ren9()</code> 输出后加暴露检查+复式贪心修正：</p>
+<div class="flow">core9 → Σp_draw 期望值 E_draw + argmax 平局数 n_draw
+→ n_draw==0 且 E_draw≥2.0 → warning: drawExposure
+→ 复式贪心增益比修正: 平局双选 gain × 平局杠杆系数(默认1.5·pari-mutuel稀注)
+→ 输出 drawGuard 字段(报警+建议双选名额分配)</div>
+<p><b>回放验收（硬标准）</b>：对 26132 重放——澳巴（友谊赛+客胜胆）与波兰（主胜开平）应被 drawGuard 建议平局双选或降级；26131（4 平期）重放报警触发。</p>
+</div>
+
+<h2>二、第二梯队（第二期 · 建模升级 · 各约一天）</h2>
+<div class="card">
+<h3>⑤ Shin 去水统一</h3>
+<p>HAD 三向比例归一 + CRS power 去水的双轨制统一为 Shin(1993) 内幕交易模型（体彩票池 FLB 最重场景）；实现 z 参数数值解+三向概率输出，替换 <code>devig()</code> 内核，power 去水保留在 CRS 池作对照。验收：对历史 298 场做 Shin vs 比例归一的 RPS 对比，改善 &lt;1% 不切换（护栏）。</p>
+<h3>⑥ 传足 pari-mutuel 期望效用选场</h3>
+<p>argmax top9 → edge 最大化（p_true − p_crowd）。p_crowd 无直接数据时的近似：热门偏差先验（赔率倒数平方加权）+ okooo 投注比例探测（数据可得性 spike 先行）。产出 <code>ren9.py</code> v1 选场函数，与 v0 并行输出对比三期后拍板。</p>
+<h3>⑦ 平局亲和度连续分</h3>
+<p>平局轨二值门槛（p平≥28%+极差&lt;12pp）→ 连续分 <code>draw_affinity = f(λ_sum, |λ_h−λ_a|)</code>（泊松下 P(draw)=Σ_k P(H=k)P(A=k) 解析式，k≤3 主项）；输出每场连续分+分位排名，阈值改分位数（如 top 15%）。验收：历史平局场（n=21 条推平腿）的 affinity 显著高于非平局场（AUC≥0.6）。</p>
+</div>
+
+<h2>三、第三梯队（第三期 · 架构级 · 各 2-3 天）</h2>
+<div class="card">
+<h3>⑧ Bayesian hierarchical λ（不确定性传播）</h3>
+<p>球队攻击/防守参数带先验的层次模型（PyMC 或 Stan 简化版），小样本联赛自动输出宽区间→星级自动下调（替代手工 ×0.97 单锚补丁）。前置：①校准层完成（否则校准的是噪声）。</p>
+<h3>⑨ 任9 轮内相关性建模</h3>
+<p>全中概率≠连乘（共同冲击：天气/裁判/轮换潮）。单因子 copula 或共同因子 λ 扰动近似；先用历史期次做重放验证连乘高估幅度，再决定建模深度。前置：④上线路径依赖平局检查积累 3+ 期数据。</p>
+<h3>⑩ drift 特征进融合</h3>
+<p>odds 快照时序的 drift（开售→出票时点）作为特征进融合公式（市场动量增量信息，低流动性联赛最强）。前置：③自有 CLV 接线+积累两个完整月时序。odds_drift.py 从"解读工具"升级为"特征提取器"。</p>
+</div>
+
+<h2>四、纪律（不做什么）</h2>
+<div class="card">
+<ul>
+<li><b>298 场语料撑不起深度学习</b>——任何神经网络/GBDT 大特征提案直接拒绝（Groll 2018 用的是数千场级）</li>
+<li><b>不自动切换生产默认值</b>——①映射表、②λ 源、⑤去水内核全部走"离线报告→大哥拍板→接线"三步，与修正系数消融纪律同构</li>
+<li><b>不过度设计</b>——三梯队每期做完评估下一期 ROI，第三梯队任何一项若前两期已解决底层问题（如校准层吸收了大部分断裂），砍掉不做</li>
+<li><b>单写会话纪律</b>——每期开发单独会话，先 git pull，结束 commit</li>
+</ul>
+</div>
+
+<div class="flow">依赖关系:  ①校准层 ──→ ⑧Bayesianλ (前置)
+           ④平局检查 ──→ ⑨轮内相关 (积累3+期)
+           ③自有CLV ──→ ⑩drift特征 (积累2月)
+           ②xG实验 / ⑤Shin / ⑥pari-mutuel / ⑦亲和度: 独立</div>
+
+<div class="footer">设计依据=2026-09-27 三视角审计会话（数学：校准/联合/不确定性 · 概率：CLV口径/去水/pari-mutuel · 足球分析：xG/赛程密度）· 第一梯队四项互不依赖可并行 · 验收标准均含库内回放硬标准 · docs/2026-09-27-probability-modernization-design.html</div>
+</div></body></html>
