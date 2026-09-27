@@ -603,7 +603,7 @@
         "pinSource": "okooo",
         "oddsDrift": {
           "pickOdds": 1.85,
-          "laterOdds": 4.26
+          "laterOdds": 1.98
         }
       },
       "confidence": "high",
@@ -626,7 +626,7 @@
         "replay": "dc_approx",
         "oddsDrift": {
           "pickOdds": 2.19,
-          "laterOdds": 2.85
+          "laterOdds": 2.8
         }
       },
       "confidence": "low",
@@ -635,9 +635,7 @@
     },
     "2026-08-28|周日004|HAD": {
       "primary": "F9",
-      "secondary": [
-        "F10"
-      ],
+      "secondary": [],
       "evidence": {
         "pfinalPick": null,
         "dcBest": null,
@@ -645,11 +643,7 @@
         "pickIdx": 0,
         "resultIdx": 2,
         "result": "1-2",
-        "pinSource": "okooo",
-        "oddsDrift": {
-          "pickOdds": 1.72,
-          "laterOdds": 2.82
-        }
+        "pinSource": "okooo"
       },
       "confidence": "high",
       "source": "rule",
@@ -686,7 +680,7 @@
         "pinSource": "fd",
         "oddsDrift": {
           "pickOdds": 2.3,
-          "laterOdds": 2.68
+          "laterOdds": 2.74
         }
       },
       "confidence": "high",
@@ -949,7 +943,7 @@
         "lambdaGap": 2.22,
         "oddsDrift": {
           "pickOdds": 1.69,
-          "laterOdds": 2.28
+          "laterOdds": 2.14
         }
       },
       "confidence": "high",

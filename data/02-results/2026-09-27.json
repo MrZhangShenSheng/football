@@ -176,13 +176,25 @@
     ],
     "verdict": "survived"
    },
-   "result": null,
+   "result": "0-0",
    "directionHit": null,
-   "scoreHit": null,
-   "optionHit": null,
+   "scoreHit": false,
+   "optionHit": false,
    "clv": null,
    "clv_approx_dk": null,
-   "clv_note": "无Pinnacle锚, CLV缺"
+   "clv_note": "无Pinnacle锚, CLV缺",
+   "half": "0:0",
+   "familyName": "draw",
+   "familyProb": 0.2924,
+   "familyHit": true,
+   "crsTailProb": 0.1968,
+   "crsTailSource": "fused",
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041731,
+    "lastOddsAt": "2026-09-27T12:53:00+08:00",
+    "lastIntelAt": "2026-09-27T12:53:32+08:00"
+   }
   },
   {
    "idx": 2,
@@ -224,12 +236,19 @@
     "assumption": "同周日001 CRS腿假设（平局被低估）——HAD平为平局轨降级混串表达",
     "verdict": "survived"
    },
-   "result": null,
-   "directionHit": null,
+   "result": "0-0",
+   "directionHit": true,
    "scoreHit": null,
-   "optionHit": null,
+   "optionHit": true,
    "clv": null,
-   "clv_approx_dk": null
+   "clv_approx_dk": null,
+   "half": "0:0",
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041731,
+    "lastOddsAt": "2026-09-27T12:53:00+08:00",
+    "lastIntelAt": "2026-09-27T12:53:32+08:00"
+   }
   },
   {
    "idx": 3,
@@ -954,5 +973,13 @@
    "周日008": "真五五开确认(RotoWire押葡萄牙深度/Goal.com称卫冕冠军可能被哈兰德羞辱·56场64球R1双响); C罗确认在阵; TTGs2腿警示: 哈兰德火热R1挪威3-2丹麦(5球)——总进球偏高风险, s2维持(EV视角仍优于s3)"
   },
   "netImpact": "001风向增强平局信心(国际vs体彩分裂=体彩资金追热); 004族分歧如实标注(外部2-1主流vs我方零封族); 007轮换方差上调; 其余确认原判断"
+ },
+ "review001": {
+  "at": "2026-09-27T21:05",
+  "result": "0-0",
+  "verdict": "方向命中(HAD平directionHit=True✅)+形态落空(CRS 1:1 scoreHit=False❌)",
+  "lesson": "0:0vs1:1形态选择三重反转: DC模型0:0第一(19.8%)→CRS融合链(市场权重0.714)塑形1:1为top1(14.1%)→13:45资金抛售0:0(7.25→7.50)+我撤0:0×3并注1:1→实际开出0:0=模型原始信号对·市场融合与资金面双错。14:3x曾提示大哥可补0:0@7.50单关(T040未含=未补)。",
+  "attribution": "F3/F4市场锚类样本点: 融合权重在低进球剧本场景可能压制模型top1——单场不推翻r=0.286·入归因账本累积; 大哥口述先于官方对票(铁律2), 体彩开奖链路已核验0-0",
+  "dcRefit": "korea_dc v12已发布(+1场636场·holdout 1.0868替代v11)"
  }
 }
