@@ -1,0 +1,88 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>交接文档 · 2026-09-29 任务续接</title>
+<style>
+:root{--ink:#1a1f2e;--sub:#5a6478;--line:#e3e7ee;--bg:#f7f8fb;--card:#fff;--acc:#c0392b;--ok:#1e8e5a;--warn:#b7791f}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;padding:26px 16px}
+.wrap{max-width:900px;margin:0 auto}
+h1{font-size:21px;margin-bottom:4px}h2{font-size:16px;margin:24px 0 10px;padding-left:10px;border-left:4px solid var(--acc)}
+.sub{color:var(--sub);font-size:13px;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin-bottom:12px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0}
+th{text-align:left;color:var(--sub);font-weight:600;padding:6px 8px;border-bottom:1.5px solid var(--line)}
+td{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+code{background:#eef1f6;border-radius:4px;padding:1px 5px;font-size:12px;font-family:ui-monospace,Menlo,monospace}
+.flow{background:#f0f4f9;border:1px dashed #9db2cc;border-radius:10px;padding:12px 16px;font-family:ui-monospace,Menlo,monospace;font-size:12px;white-space:pre-wrap;line-height:1.8;margin:8px 0}
+.warnbox{background:#fdf6e8;border:1px solid #f0dfb4;border-radius:8px;padding:10px 14px;font-size:12.5px;color:#7a5b16;margin:10px 0}
+ul{margin:6px 0 6px 20px}li{margin:4px 0;font-size:13px}
+.footer{color:var(--sub);font-size:11.5px;margin-top:20px;border-top:1px solid var(--line);padding-top:12px}
+</style></head><body><div class="wrap">
+
+<h1>交接文档 · 2026-09-29（周二）任务续接</h1>
+<div class="sub">生成于 2026-09-28 深夜 · 给另一台电脑上的新会话用 · 开场让 Claude 读本文件即可无缝续接 · 开发者 sszhang</div>
+
+<div class="warnbox"><b>新会话开场白（复制给 Claude）</b>：「读 docs/2026-09-28-handoff-tomorrow.html 交接文档，按里面的任务清单继续」——仓库本身就是状态载体，git 历史=一切凭证。</div>
+
+<h2>一、明晨任务（按时间序）</h2>
+<div class="card">
+<table>
+<tr><th>#</th><th>任务</th><th>触发/命令</th><th>状态</th></tr>
+<tr><td>1</td><td><b>回填今晚赛果</b>（6 场欧国联 003-008·凌晨 5 点后全部完赛）</td><td>说「回填赛果」或 <code>python3 engine/scripts/run.py verify</code></td><td>待比赛完赛</td></tr>
+<tr><td>2</td><td><b>T041 结算</b>（竞彩 3串4×2倍 16 元：日本 2:0/法国客胜/罗马尼亚 1:1——日本场可能已结算）</td><td>verify 链路自动（settle_tickets）</td><td>pending</td></tr>
+<tr><td>3</td><td><b>★P352 影子票结算+设计文档回写</b>（证据模型第一个活样本）</td><td><code>python3 engine/shadow/paper.py settle-all 2026-09-29</code></td><td>关键任务</td></tr>
+<tr><td>4</td><td>T042 任九 26134 期确认出票（32 元·<b>售止 09-30 02:45</b>）</td><td>人工确认后说「我买了」</td><td>待购</td></tr>
+</table>
+<div class="flow">P352 结算后的三件校验（回写 docs/2026-09-28-score-evidence-model-design.html §4.5）：
+①断层检测 k_i 决策对错（007 无断层双选 vs 006/008 断层单选——若 007 开出
+  2:1/1:1 以外而 006/008 精确命中 → 断层规则初验成功）
+②证据集中度排序（006＞008＞007）与实际命中相关性
+③保本数学兑现（命中档回款 vs 预告 63.25-86.3 区间）</div>
+</div>
+
+<h2>二、当前状态快照</h2>
+<div class="card">
+<h3>票务</h3>
+<table>
+<tr><th>票</th><th>内容</th><th>状态</th></tr>
+<tr><td>T040</td><td>4串11 混串 22 元（周日轮）</td><td>✅ 已结算：2/4 中（丹麦 2:0 精确命中+哥伦布+1）回 23.78 <b>净+1.78</b>——"任意2中保本"首次实盘兑现</td></tr>
+<tr><td>T041</td><td>3串4×2倍 16 元（日本 2:0@5.25/法国客胜@1.67/罗马尼亚 1:1@5.75）</td><td>pending（今晚凌晨）</td></tr>
+<tr><td>T042</td><td>任九 26134 期 4双5单 32 元</td><td>待购（售止 09-30 02:45）</td></tr>
+<tr><td>P352</td><td>影子票 evidence-combo-v1 7注14元（006 罗马 1:1/007 瑞典{2:1,1:1}/008 北爱 1:1）</td><td>pending（明晨结算=V1 前活样本）</td></tr>
+</table>
+<h3>模型/资产版本</h3>
+<ul>
+<li>韩职 DC <b>v12</b>（637 场）；美职 v9（滞后标注）；荷乙无 DC 纯市场锚</li>
+<li>CRS 融合链 v5.15（r=0.286·族闸门 28%·method=fused 默认）</li>
+<li>corpus 767 记录/298 已结算；影子层 352 票（track A 回收率 46.8%）</li>
+</ul>
+<h3>设计文档（全部在 docs/）</h3>
+<ul>
+<li><b>证据累积比分模型</b>（2026-09-28-score-evidence-model-design.html）——四轮演化闭环（R1 数学/R2 edge去市场+保本实证/R3 LLR积累管线/R4 盲测纪律）+ §4.5 影子票结算钩子。<b>V1 切片就绪待开工（2 天）</b></li>
+<li>概率底座现代化三梯队（2026-09-27-probability-modernization-design.html）——10 项全交付：4 接线（③自有CLV/④drawGuard/⑥edge_rank/⑦亲和度v3）·4 数据否决（①校准/②xG/⑤Shin/⑨copula）·2 积累（⑧λ区间/⑩drift）</li>
+</ul>
+</div>
+
+<h2>三、后续任务队列（优先级序）</h2>
+<div class="card">
+<ol>
+<li><b>证据模型 V1 开工</b>（P352 校验后）：5 核心因素（联赛频率/市场/λ/近况/画面softmask α=0.69）+证据累积+θ相对校准+三元组+组合器+因素快照落盘——设计文档 §七 V1 切片，验收=187 场 walk-forward 不劣化+001 回放 sanity（0:0 能否回 top1）</li>
+<li><b>三梯队接线拍板项</b>（报告就绪待大哥点头）：⑥edge_rank 进 ren9 选场（26132 重放 top1=澳巴平局）/ ⑦亲和度 v3 进平局轨（AUC 0.66）/ ⑧λ区间进星级（替代手工×0.97）</li>
+<li><b>corpus λ 透传工程</b>：v4.7 的 lambdaHome 在 corpus.py 归一时被丢弃——⑦⑨ 被迫降级口径，透传后泊松解析式亲和度才能做原设计版</li>
+<li>数据积累型（自动/复跑）：①isotonic（n≥500）/②xG 源（2627 满季）/⑩drift 特征（两月）/④名额函数+⑥γ（各 3+ 期）</li>
+</ol>
+</div>
+
+<h2>四、新电脑环境注意</h2>
+<div class="card">
+<ul>
+<li><b>本仓库无 requirements.txt</b>——依赖：python3.11 + numpy + scipy（L-BFGS 拟合用）；数据源网络：体彩 API 直连 / fd CSV requests 直连 / ESPN 勿加浏览器 UA（403）</li>
+<li><b>本地 memory 不随仓库走</b>（~/.claude 按机器存）——关键教训已在 skill/references/lessons.md（含 0927 赔率方向读反+传足 26132 两条新档）</li>
+<li><b>单写会话纪律</b>：开新会话先 git pull；同一时间只开一个写会话</li>
+<li>关键触发词：「帮我预测」全流程 /「回填赛果」闭环 /「再跑一遍」终审复扫</li>
+<li>路径铁律：run.py 不在根目录，一律 <code>python3 engine/scripts/run.py &lt;子命令&gt;</code></li>
+</ul>
+</div>
+
+<div class="footer">docs/2026-09-28-handoff-tomorrow.html · 交接快照=2026-09-28 深夜（P352 登记后）· 明晨从任务一开始 · 开发者 sszhang</div>
+</div></body></html>
