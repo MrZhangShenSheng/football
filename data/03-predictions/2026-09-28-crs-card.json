@@ -1,0 +1,22 @@
+{
+  "date": "2026-09-28",
+  "gameType": "竞彩 CRS 比分单关",
+  "shape": "CRS单关×10（主公偏好档案第二优先·preference.json shapes[1]）",
+  "bets": 10, "mult": 1, "cost": 20,
+  "gateWaiverNote": "引擎族闸门本轮全场关档（族峰值22.6~27.1%<28%）——该闸门是批量选腿关档理由；主公单场购买决策按'购买标准=解释力非EV·禁用EV劝退'执行，以下每注均为假设层survived画面正推或爆冷机制说得清，负期望（CRS池抽水33.9%）已知且接受",
+  "legs": [
+    {"code": "周一001", "match": "日本 vs 委内瑞拉", "pick": "2:0", "odds": 5.5, "poolHeat": "池内第一14.1%", "why": "假设层survived零封主胜族·主场碾压+客缺主力前锋+客场虫"},
+    {"code": "周一001", "match": "日本 vs 委内瑞拉", "pick": "1:0", "odds": 6.75, "poolHeat": "11.5%", "why": "破密集慢热画面·零封"},
+    {"code": "周一001", "match": "日本 vs 委内瑞拉", "pick": "3:0", "odds": 7.0, "poolHeat": "11.1%", "why": "主场场均进1.9·大胜族"},
+    {"code": "周一005", "match": "比利时 vs 法国", "pick": "1:2", "odds": 7.0, "poolHeat": "池内第一11.1%", "why": "survived法国客胜·比利时不零封（主场5胜有火力）·H2H分胜负"},
+    {"code": "周一005", "match": "比利时 vs 法国", "pick": "0:1", "odds": 11.0, "poolHeat": "7.1%", "why": "法国零封客胜备选"},
+    {"code": "周一006", "match": "罗马尼亚 vs 波黑", "pick": "1:1", "odds": 6.5, "poolHeat": "11.7%", "why": "主公偏好'平局型1:1命中主力池'正命中·波黑客场7/10平局机器p平0.283核心9场最高·HAD不可单关但CRS可单关"},
+    {"code": "周二001", "match": "朝鲜女 vs 中国女", "pick": "2:0", "odds": 6.5, "poolHeat": "并列第一11.8%", "why": "survived·朝鲜场均进3.9全场最高攻击输出·零封碾压"},
+    {"code": "周二001", "match": "朝鲜女 vs 中国女", "pick": "1:0", "odds": 6.5, "poolHeat": "并列第一11.8%", "why": "赛会制求稳零封画面"},
+    {"code": "周二007", "match": "日本女 vs 韩国女", "pick": "2:0", "odds": 6.25, "poolHeat": "池内第一12.6%", "why": "survived·9胜0平1负场均3.2·零封碾压"},
+    {"code": "周二007", "match": "日本女 vs 韩国女", "pick": "3:0", "odds": 7.4, "poolHeat": "10.6%", "why": "场均3.2大胜族"}
+  ],
+  "atLeastOneApprox": "10注独立近似≈1-Π(1-隐含p)：0.141+0.115+0.111+0.111+0.071+0.117+0.118+0.118+0.126+0.106 → 至少中一注≈68%（独立近似口径，同场多注实际耦合略低）",
+  "honestyNote": "纯市场锚轮（国家队期无DC无锚）·隐含概率=体彩CRS池去水热度·EV照标不拦：单注期望返还≈66.1%（池抽水33.9%全场最高），20元期望回≈13.2元——购买依据=假设层画面解释力，非EV",
+  "sources": ["engine/cache/sporttery_matches.json (CRS池31项+poolSingle.CRS=1)", "data/02-results/2026-09-28.json (假设层survived推演)", "data/06-tickets/preference.json (shapes[1] CRS单关×10形状)"]
+}
