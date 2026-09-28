@@ -1,0 +1,146 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>证据累积比分模型 · 四层架构设计</title>
+<style>
+:root{--ink:#1a1f2e;--sub:#5a6478;--line:#e3e7ee;--bg:#f7f8fb;--card:#fff;--acc:#c0392b;--ok:#1e8e5a;--warn:#b7791f;--blue:#2b6cb0}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;padding:26px 16px}
+.wrap{max-width:980px;margin:0 auto}
+h1{font-size:22px;margin-bottom:4px}h2{font-size:17px;margin:28px 0 12px;padding-left:10px;border-left:4px solid var(--acc)}
+h3{font-size:14.5px;margin:14px 0 8px}
+.sub{color:var(--sub);font-size:13px;margin-bottom:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+th{text-align:left;color:var(--sub);font-weight:600;padding:6px 8px;border-bottom:1.5px solid var(--line)}
+td{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+code{background:#eef1f6;border-radius:4px;padding:1px 5px;font-size:12px;font-family:ui-monospace,Menlo,monospace}
+.flow{background:#f0f4f9;border:1px dashed #9db2cc;border-radius:10px;padding:12px 16px;font-family:ui-monospace,Menlo,monospace;font-size:12px;white-space:pre;line-height:1.8;overflow-x:auto;margin:8px 0}
+.warnbox{background:#fdf6e8;border:1px solid #f0dfb4;border-radius:8px;padding:10px 14px;font-size:12.5px;color:#7a5b16;margin:10px 0}
+.ev{background:#fdf0ee;border:1px solid #f2c4bd;border-radius:8px;padding:10px 14px;font-size:12.5px;margin:8px 0}
+.footer{color:var(--sub);font-size:11.5px;margin-top:24px;border-top:1px solid var(--line);padding-top:12px}
+ul{margin:6px 0 6px 20px}li{margin:3px 0;font-size:13px}
+.tag{font-size:11px;border:1px solid var(--line);border-radius:6px;padding:1px 6px;color:var(--sub)}
+.tag.fix{color:var(--acc);border-color:#f2c4bd;font-weight:700}
+</style></head><body><div class="wrap">
+
+<h1>证据累积比分模型 · 四层架构设计</h1>
+<div class="sub">2026-09-28 立项 · 源起=大哥三段拍板：①混合分层目标（分布质量主轴+命中ROI验收）②"多因素集齐达临界点→比分触发"③组合层三补充（场次选择/k_i决策/保本数学）· 经 9 条红队修正 · 开发者 sszhang</div>
+
+<h2>〇、设计演化与红线</h2>
+<div class="card">
+<p><b>演化</b>：竞彩 CRS 融合链 v5.15（模板×市场双源）→ 本设计（N 因素证据累积 + 组合优化）。<b>不追求单注 EV&gt;0</b>（CRS 池抽水 33.9% 结构性不可能），追求<b>组合层"命中条件 ROI"</b>最优——任意 2 场比分命中即回款超成本（硬约束），命中档回报曲线最优（目标）。</p>
+<div class="ev"><b>九条红队修正（全部已融入）</b>：①P(s)∝q_template·exp(score)（softmax丢先验是数学错误）②θ时间切分校准+指标预注册（防自考自）③不可回算因素降级soft-mask（画面/战意无历史LLR·不假装能估）④每比分输出P/p_mkt/edge三元组（大哥"不一定EV正"的精确化——选高edge非高P）⑤min-pair回款显式硬计算（TTG×TTG贴线22.3元vs22成本实证）⑥V1砍到5因素（C档占位砍·防消融噪声）⑦独立假设偏差标注（⑨实测轮内负相关2.21=连乘低估全中·V1保守可接受）⑧验收加总回收率（影子trackA口径46.8%）⑨消融预注册p&lt;0.05+方向可解释（10因素逐关至少1-2假阳性）。</div>
+</div>
+
+<h2>一、四层总架构</h2>
+<div class="card">
+<div class="flow">因素层(10因素→V1先5) → 证据累积层(score=log q_template+Σ组间加权LLR)
+   ↓                                ↓
+   P(s) ∝ q_template(s)·exp(score(s))     [修正①·模板为底乘证据]
+   ↓
+临界点筛选：score 过 θ → 比分入选组合候选（θ=时间切分校准·修正②）
+   ↓ 每比分三元组 {P_our(s), p_mkt(s), edge(s)}   [修正④]
+组合优化器：场次选择(4层漏斗) × k_i决策(3规则) × 结构模板 × 保本硬约束
+   ↓
+输出：组合卡 = 票面 + 分档回报表(恰2中/恰3中/全中 ROI分布) + P(≥2中) + 总回收率预期</div>
+</div>
+
+<h2>二、因素层（V1=5 核心，V1.5→10，V2 激活数据缺口档）</h2>
+<div class="card">
+<table>
+<tr><th>档</th><th>因素</th><th>LLR 估计方式</th><th>V1</th></tr>
+<tr><td rowspan="5"><b>核心</b></td><td>1 联赛比分频率</td><td>联赛模板 vs 全局基线（既有 freq_band）</td><td>✅</td></tr>
+<tr><td>2 市场定价</td><td>体彩 CRS 池 power 去水（既有链）</td><td>✅</td></tr>
+<tr><td>3 λ 强度结构</td><td>泊松(λ_h,λ_a) 31 项（DC/xG-λ 可替换）</td><td>✅</td></tr>
+<tr><td>4 双方近况比分倾向</td><td>近10 场比分频率 vs 联赛基线（可回算·数千场）</td><td>✅</td></tr>
+<tr><td>6 matchPlay 画面</td><td><b>soft-mask</b>（修正③）：剧本集合内 exp(+0.3)/外 exp(−0.3)·固定系数</td><td>✅</td></tr>
+<tr><td rowspan="5">扩展</td><td>5 H2H 比分史</td><td>交锋比分集合弱 LLR（低权重）</td><td>V1.5</td></tr>
+<tr><td>7 伤停/轮换</td><td>soft-mask（主力缺阵→总进球带偏移）</td><td>V1.5</td></tr>
+<tr><td>8 战意/赛制</td><td>soft-mask（输不起→保守比分集合）</td><td>V1.5</td></tr>
+<tr><td>13 一周双赛密度</td><td>days-since-match 可回算</td><td>V1.5</td></tr>
+<tr><td>14 连续客场疲劳</td><td>客场连打计数可回算</td><td>V1.5</td></tr>
+<tr><td>环境</td><td>9 天气 / 12 草皮人工草</td><td>临场情报手动开（有情报才激活）</td><td>V1.5 条件</td></tr>
+<tr><td>缺口</td><td>10 裁判尺度 / 11 教练对位史</td><td>无数据源——V2 找源后激活</td><td>❌砍</td></tr>
+</table>
+<p><b>共线性处理</b>：10 因素按信息本质分 5 组（历史结构{1,3}/市场{2}/球队状态{4,5,7,13,14}/比赛理解{6,8}/环境{9,12}）——<b>组内取最强信号（max 非 sum）</b>，组间累加。防"近况平局多&画面低进球&战意保守"三倍计数。</p>
+<p><b>LLR 估计纪律</b>：可回算因素在联赛库数千场上估分档 LLR（档内比分频率/全局基线取对数）；<b>档样本&lt;30 收缩向 0（小样本不说话）；每张 LLR 表必须附样本量 n</b>（今天②xG实验教训：小样本"更优"可能是欠拟合 artifact）。</p>
+</div>
+
+<h2>三、证据累积与临界点</h2>
+<div class="card">
+<div class="flow">score(s) = log q_template(s) + Σ_g w_g · LLR_g*(s)    [g=5组·组内max]
+P_our(s) ∝ q_template(s) · exp(Σ w_g·LLR_g*)          [修正①·先验底数]
+edge(s)  = P_our(s) − p_mkt_power去水(s)               [修正④·三元组之一]
+入选：score(s) ≥ θ（θ 由前70%场次校准入选命中率≥15%·后30%验收·修正②预注册）</div>
+<p><b>θ 校准口径</b>：目标"过阈比分平均命中率 ≥15%（top1）/≥30%（top3）"——基线参考：市场隐含 top1 约 11-13%、当前融合链族 top1=31%（187 场）。前 70% 校准 θ 与组权重 w，后 30% 只验收不回调。</p>
+<p><b>独立假设偏差标注（修正⑦）</b>：子集概率按关间独立连乘——⑨ 实测轮内负相关（实际/期望=2.21）意味着<b>连乘系统性低估全中</b>，V1 偏保守（实际命中回报可能更好），V2 引入相关修正。</p>
+</div>
+
+<h2>四、组合优化器（大哥三补充）</h2>
+<div class="card">
+<h3>① 场次选择：四层漏斗</h3>
+<div class="flow">资格层：数据A/B级 + 假设survived（铁律12）
+质量层：证据层过阈比分≥1（θ触发——因素没集齐不进组合）
+价值层：存在edge(s)>0的比分（我们vs市场有分歧=有错价）
+排序层：证据集中度降序取K场（top1 score领先越多越优先）·次级edge×赔率
+分散层：跨联赛/跨剧本类型分散（同轮共同冲击）</div>
+
+<h3>② 每场比分数 k_i：三规则联合</h3>
+<ul>
+<li><b>score 断层检测（主规则）</b>：score 降序相邻差 &gt; δ 断崖即停——因素集齐的比分与没集齐的天然有断层（001 原型：0:0/1:1 集齐平局族因素·2:3 无支撑）</li>
+<li><b>累积概率兜底</b>：P 降序累加 ≥35% 封顶（覆盖主+次剧本·其余 65% 承认不可预测）</li>
+<li><b>成本上限</b>：每场 ≤2；Πk_i×结构系数 ≤ 预算/2元</li>
+</ul>
+
+<h3>③ 保本数学（最低 ROI 覆盖成本）</h3>
+<div class="flow">设 K 场·第 i 场入选比分最便宜赔率 o_i*（多比分取 min）
+
+最低回款（最坏命中=最便宜两场恰好命中）：
+  R_min = 2元 × min over 所有两场组合(i,j) [ o_i* × o_j* ]
+
+硬约束：R_min ≥ 1.5 × 总成本 C          [安全垫1.5·TTG×TTG贴线22.3 vs 22 自动拒]
+最低ROI：ROI_min = (R_min − C)/C         [组合卡第一输出指标]
+
+完整回报矩阵（K≤5 → 2^K≤32 子集全枚举）：
+  R(S) = Σ_{被S完全覆盖的M串N注} 2元 × Π o_腿
+  P(S) = Π_{i∈S} P_our(i,top) × Π_{i∉S}(1−P_our(i))   [独立假设·偏差见修正⑦]
+  → 分档表：恰2中/恰3中/全中 各档 ROI 分布</div>
+<p><b>结构选择</b>：4串11（K4×1比分×11注）/ 3串4双比分（K3×2×4结构）/ 混串变体（CRS×CRS×TTG）枚举比较三件套 <code>{ROI_min, P(≥2中), E[logROI|≥2中]}</code>——<b>ROI_min 优先（"一定赚钱"硬约束），同 ROI_min 下最大化期望</b>。预算口径=单期 20-30 元红线。</p>
+</div>
+
+<h2>五、验收纪律（预注册·修正②⑧⑨）</h2>
+<div class="card">
+<ul>
+<li><b>主验收</b>：187 场审计库 walk-forward——前 70% 校准/后 30% 验收，指标先写后跑：过阈 top1 命中率 ≥15%、top3 ≥30%（vs 融合链同口径）</li>
+<li><b>组合层验收</b>：历史回放（影子 326 票期次）——组合器 vs 同结构盲选（随机比分）的"至少 2 中率"与 ROI 分布对照</li>
+<li><b>总回收率</b>（修正⑧）：影子登记满 10 轮——总回款/总成本（track A 口径当前 46.8%）为目标提升指标</li>
+<li><b>因素消融</b>（修正⑨）：逐因素关闭看验收指标变化——结论需 p&lt;0.05 且方向可解释（10 因素逐关至少 1-2 假阳性，单显著不采纳）</li>
+<li><b>失败红线</b>：验收期 top1 命中率 &lt; 市场基线（11%）= 模型劣于裸跟随市场，回滚融合链</li>
+</ul>
+</div>
+
+<h2>六、与现有系统关系</h2>
+<div class="card">
+<ul>
+<li><b>CRS 融合链</b>（v5.15）：不废弃——因素 1+2 的打包实现（保底路径，新引擎故障时回退）</li>
+<li><b>假设层</b>（matchPlay）：因素 6 的正式供给方——"真的预测比赛"第一次有严格数学出口</li>
+<li><b>boldplay 三池卡</b>：CRS 候选改读证据层输出（灰度并行一个月）</li>
+<li><b>②xG-λ</b>：因素 3 的 λ 源升级入口（2627 满季复跑后可切）</li>
+<li><b>⑧λ区间/⑦亲和度/⑥edge_rank</b>：分别接入因素权重调制/场次排序/组合器选腿</li>
+<li><b>影子层</b>：组合卡每轮影子登记（复用既有 spec 框架）</li>
+</ul>
+</div>
+
+<h2>七、实施切片（防"设计宏大落地烂尾"）</h2>
+<div class="card">
+<table>
+<tr><th>期</th><th>内容</th><th>验收</th></tr>
+<tr><td><b>V1</b>（2天）</td><td>5 核心因素（1/2/3/4/6-softmask）+ 证据累积 + θ 时间切分校准 + 三元组输出 + 组合器（四层漏斗/k_i三规则/保本数学/结构枚举）</td><td>187 场 walk-forward 预注册指标 + 001 案例回放 sanity（0:0 能否回 top1）</td></tr>
+<tr><td>V1.5</td><td>+5 扩展因素（5/7/8/13/14）+ 环境条件激活</td><td>扩展因素消融（预注册）</td></tr>
+<tr><td>V2</td><td>泊松回归学组权重（替换手工先验）+ 裁判/教练数据源找源 + 独立假设相关修正</td><td>权重学习 CI + 外样本不劣化</td></tr>
+</table>
+<p class="sub">V1 组间权重先验：市场 0.35 / 历史结构 0.20 / 球队状态 0.20 / 比赛理解 0.20 / 环境 0.05（V1 只用前 4 组）。</p>
+</div>
+
+<div class="footer">docs/2026-09-28-score-evidence-model-design.html · 源起会话=大哥三轮设计输入（混合目标/因素集齐触发/三补充）+ 红队 9 修正 · 与 docs/2026-09-27-probability-modernization-design.html（三梯队）互补：三梯队=概率底座，本设计=比分层架构 · 开发者 sszhang</div>
+</div></body></html>
