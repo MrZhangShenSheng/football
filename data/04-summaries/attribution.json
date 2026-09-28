@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-27",
+  "generatedAt": "2026-09-28",
   "records": {
     "2026-08-23|周日015|HAD": {
       "primary": "F9",
@@ -1164,13 +1164,29 @@
       "confidence": "high",
       "source": "rule",
       "confirmed": true
+    },
+    "2026-09-27|周日007|HAD": {
+      "primary": "F9",
+      "secondary": [],
+      "evidence": {
+        "pfinalPick": 0.7,
+        "dcBest": null,
+        "fusedBest": 0,
+        "pickIdx": 0,
+        "resultIdx": 2,
+        "result": "0-1",
+        "pinSource": "none"
+      },
+      "confidence": "high",
+      "source": "rule",
+      "confirmed": true
     }
   },
   "factorStats": {
     "F9": {
-      "nPrimary": 51,
+      "nPrimary": 52,
       "nSecondary": 0,
-      "avgProbGap": 0.3659
+      "avgProbGap": 0.3646
     },
     "F3": {
       "nPrimary": 2,
