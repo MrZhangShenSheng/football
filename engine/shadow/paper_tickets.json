@@ -65103,5 +65103,55 @@
   "result": "pending",
   "payout": null,
   "settledAt": null
+ },
+ {
+  "id": "P349",
+  "spec_name": "N-CRS-2x1-2026-09-28",
+  "track": "N",
+  "date": "2026-09-28",
+  "legs": [
+   {
+    "code": "周一005",
+    "match": "比利时-法国",
+    "market": "crs",
+    "pick": [
+     "1:0"
+    ],
+    "odds": {
+     "1:0": 16.0
+    }
+   },
+   {
+    "code": "周一008",
+    "match": "北爱尔兰-匈牙利",
+    "market": "crs",
+    "pick": [
+     "1:0"
+    ],
+    "odds": {
+     "1:0": 7.5
+    }
+   }
+  ],
+  "bets": [
+   {
+    "legs": [
+     [
+      0,
+      "1:0"
+     ],
+     [
+      1,
+      "1:0"
+     ]
+    ]
+   }
+  ],
+  "n_bets": 1,
+  "mult": 1,
+  "cost": 2,
+  "result": "pending",
+  "payout": null,
+  "settledAt": null
  }
 ]

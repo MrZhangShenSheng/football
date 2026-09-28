@@ -14,7 +14,7 @@
    "xgCoverage": 0.19,
    "nCompared": 50,
    "subsetMode": true,
-   "holdoutLogloss_goals": 1.6723,
+   "holdoutLogloss_goals": 1.6722,
    "holdoutLogloss_xg": 1.2545,
    "xgImprovementPct": 24.98,
    "verdict": "xG更优"
@@ -57,9 +57,9 @@
    "xgCoverage": 0.2,
    "nCompared": 50,
    "subsetMode": true,
-   "holdoutLogloss_goals": 1.2404,
-   "holdoutLogloss_xg": 1.042,
-   "xgImprovementPct": 16.0,
+   "holdoutLogloss_goals": 1.2403,
+   "holdoutLogloss_xg": 1.0419,
+   "xgImprovementPct": 15.99,
    "verdict": "xG更优"
   },
   {
@@ -77,6 +77,5 @@
   }
  ],
  "conclusion": "2/3 联赛 xG 显著更优(>1%)——证据不足维持进球源；xG 覆盖与样本随赛季推进增长，季度复跑",
- "note": "只出报告不切默认；2627 季 fd xG 覆盖 100%（50/50 实测英超），2526 季部分覆盖",
- "caveat": "子集模式(2627季xG覆盖100%但两季合并仅19-27%)下每联赛仅~40训练场=20队参数严重欠拟合——英超1.67/xG1.25的大幅差部分反映xG初始化在小样本下更稳, 不纯是信号质量; 西甲反向。证据强度不足, 季度复跑(2627季满季后子集>200场再判)"
+ "note": "只出报告不切默认；2627 季 fd xG 覆盖 100%（50/50 实测英超），2526 季部分覆盖"
 }

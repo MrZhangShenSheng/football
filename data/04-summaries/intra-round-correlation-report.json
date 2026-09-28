@@ -1,18 +1,11 @@
 {
  "at": "2026-09-27",
- "nRounds": 20,
+ "nRounds": 21,
  "nAllHit": 4,
- "sumPJoint": 1.813,
- "actualOverExpected": 2.207,
+ "sumPJoint": 1.848,
+ "actualOverExpected": 2.164,
  "verdict": "无高估证据——维持连乘",
  "detail": [
-  {
-   "date": "2026-08-22",
-   "nLegs": 35,
-   "pJoint": 0.0,
-   "hits": 27,
-   "allHit": false
-  },
   {
    "date": "2026-08-23",
    "nLegs": 30,
@@ -145,6 +138,13 @@
    "pJoint": 0.0604,
    "hits": 5,
    "allHit": true
+  },
+  {
+   "date": "2026-09-27",
+   "nLegs": 5,
+   "pJoint": 0.0359,
+   "hits": 4,
+   "allHit": false
   }
  ]
 }

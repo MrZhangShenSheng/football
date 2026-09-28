@@ -1,0 +1,29 @@
+chore(体检副作用归档): 脚本全量体检触发的真实重算·22文件+1新增如实入档
+
+背景：大哥命做全量脚本可用性体检。四关实测——语法 86/86、import 80/80、
+CLI 裸跑 56 个零 Traceback、测试套件 108 passed。脚本可用性无恙。
+
+但体检暴露一个真缺陷：10 个脚本无参数即执行长动作且写盘
+（band_calibration/boldplay/crs_fusion_audit/elo_fetch/freq_backtest/
+freq_band/half_params/lambda_uncertainty/score_ev/temperature），
+其中 5 个连 argv 分派都没有。本次体检的裸跑即产生如下真实状态变更，
+按大哥指示全部如实提交（各文件性质已逐个核过，均为真实重算或合理增量，
+非数据损坏）：
+
+- data/06-tickets/tickets.json：T040 四腿补算 clv_self（三梯队③自有CLV增量，
+  出票冻结价 vs 时序链末次快照：001=0.0 / 009=+1.2% / 004=-51.7% / 007=-25%），
+  余 40 票实质零变化（纯格式重排）；tickets.html 同步重刷
+- data/07-sfc/26132-ren9-plan.json：ren9 裸跑回填 6 场赛果（score/result 从
+  null 到实值）+ okooo 赔率刷新
+- engine/shadow/paper_tickets.json：+P349（N-CRS-2x1-2026-09-28 叙事轨影子票，
+  narrative.py 裸跑产生·2元口径·非主动登记）+ data/03-predictions/2026-09-28-narrative.json
+- data/04-summaries/*.json×11：corpus 增长后的报告重算（isotonic n 270→274、
+  trend/attribution/shin/draw-affinity/xg-experiment/euro-verify 等）
+- engine/cache/*：calibration_curve/clubelo_slugs/drift_features/isotonic/
+  live_odds_feasibility/sporttery_matches 常规刷新
+- data/05-trends/2026-09-28-odds.json：时序链追加快照
+
+后续待办（另立项）：给十个无参即执行脚本补「无参打印用法」（run.py 为范本），
+优先改无 argv 分派的五个。此缺陷的危害=让体检本身有代价，不敢体检才是
+脚本增多后最危险的状态。08-28 曾提此建议被臣误判「不必落地」，
+今日实证纠正：对 boldplay 或许无害，对影子层/账本是真实状态变更。
