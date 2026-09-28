@@ -132,6 +132,34 @@ Step 8   赛果回填 + 五维复盘 + 闭环学习（corpus/attribute/trend/lea
 
 并行控制：同一时间最多 4~5 个查询，按联赛分组采集，高关注度比赛优先。
 
+### 命令速查（2026-09-28 补：此前全文未提 9 个主链子命令，新会话须翻脚本才知怎么跑）
+
+**统一入口 `python engine/scripts/run.py <子命令>`**，人和 agent 都只记这一个文件（`run.py` 无参数即打印完整用法）：
+
+| 时机 | 命令 | 作用 |
+|:--|:--|:--|
+| **预测日开跑** | `run.py all` | update + fit --auto + learn 一条龙 |
+| 单独刷缓存 | `run.py update` | 当季+上季主流联赛赔率/xG + 重建球队索引 |
+| 单独拟合 | `run.py fit [联赛] [赛季]` | DC 拟合（缺省=最新两季联拟；`--auto` 新鲜度自检） |
+| 非 fd 联赛闭环 | `run.py learn [japan\|saudi\|sweden]` | espn history 增量采集+拟合+版本发布 |
+| 单场预测 | `run.py predict 联赛 主队 客队 [--market h,d,a]` | DC 预测 + 可选融合 |
+| 情报补拍 | `run.py snapshot [--insight 周日004,...]` | odds 全量快照 + 可选情报时序 |
+| **赛后闭环** | `run.py verify` | backfill→corpus→trend(断言)→calibrate→ablate 全链 |
+| 单独回填 | `run.py backfill [日期]` | 赛果回填（ESPN 按日+别名匹配） |
+| 单独语料 | `run.py corpus` | 语料汇总 + 趋势报告 |
+| 单独归因 | `run.py attribute` | 错题判别 → attribution.json |
+| 回测 | `run.py backtest [联赛] [赛季]` | walk-forward（RPS/logloss） |
+| 积分榜兜底 | `run.py espn [代码]` / `run.py cn [联赛ID]` | ESPN 直连 / titan007 国内源 |
+
+**传统足彩（14 场固定盘）另走两脚本**：`sfc_fetch.py issue|backfill|current` 抓期次赛果、`ren9.py` 任九选场。
+⚠ 澳客源 2026-09-28 起已上阿里系风控（405 反爬页），`backfill` 批量回填历史期次不再可行，只能每期在售时增量抓。
+
+**未接线的研究脚本勿误判为死代码 ★ 2026-09-28**：`engine/scripts/` 下 56 个脚本中 11 个无人调用，其中
+7 个属三梯队概率底座现代化（`calibrate_isotonic`/`shin`/`draw_affinity`/`xg_experiment`/`lambda_uncertainty`/
+`replay_correlation`/`drift_feature`）——设计明写**「本期不动生产链，只落盘报告，按消融纪律决定是否接线」**，
+「无人调用」是设计意图不是缺陷。各自 verdict 见 `data/04-summaries/sediment-ledger.md` 三梯队节
+（现状：isotonic 判不接线 / shin 打平维持 / xg 维持进球源 / draw_affinity 唯一达标可接线）。
+
 ---
 
 ## Step -1：假设层（决策入口）★ v5.11 新增（2026-09-16 拍板 / 09-18 补写进 skill / 09-22 v5.12 推演层）
