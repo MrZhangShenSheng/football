@@ -1,9 +1,9 @@
 {
- "generatedAt": "2026-09-27",
+ "generatedAt": "2026-09-28",
  "n_total": 767,
  "n_rounds": 45,
  "readiness": {
-  "n_result": 758,
+  "n_result": 766,
   "n_clv": 125,
   "n_pfinal": 598,
   "n_dedup_merged": 66,
@@ -31459,7 +31459,7 @@
    "in_plan": "D(TTG s2)",
    "chain": "单锚×0.97(纯市场锚)",
    "pools": null,
-   "result": null,
+   "result": "0-3",
    "directionHit": null,
    "scoreHit": null,
    "optionHit": null,
@@ -31472,7 +31472,7 @@
    "clv_approx_dk": null,
    "clv_note": "无锚",
    "pinClose": null,
-   "pinSource": null,
+   "pinSource": "none",
    "round": "2026-09-27"
   },
   {
@@ -31495,7 +31495,7 @@
    "in_plan": null,
    "chain": "单锚×0.97(纯市场锚)",
    "pools": null,
-   "result": null,
+   "result": "1-0",
    "directionHit": null,
    "scoreHit": null,
    "optionHit": null,
@@ -31508,7 +31508,7 @@
    "clv_approx_dk": null,
    "clv_note": "无Pinnacle锚",
    "pinClose": null,
-   "pinSource": null,
+   "pinSource": "none",
    "round": "2026-09-27"
   },
   {
@@ -31531,10 +31531,10 @@
    "in_plan": "C1",
    "chain": "单锚×0.97(纯市场锚)",
    "pools": null,
-   "result": null,
-   "directionHit": null,
+   "result": "2-0",
+   "directionHit": true,
    "scoreHit": null,
-   "optionHit": null,
+   "optionHit": true,
    "familyHit": null,
    "familyName": null,
    "familyProb": null,
@@ -31544,7 +31544,7 @@
    "clv_approx_dk": null,
    "clv_note": "无锚",
    "pinClose": null,
-   "pinSource": null,
+   "pinSource": "none",
    "round": "2026-09-27"
   },
   {
@@ -31567,10 +31567,10 @@
    "in_plan": "C1",
    "chain": "单锚×0.97(纯市场锚)",
    "pools": null,
-   "result": null,
-   "directionHit": null,
+   "result": "1-2",
+   "directionHit": true,
    "scoreHit": null,
-   "optionHit": null,
+   "optionHit": true,
    "familyHit": null,
    "familyName": null,
    "familyProb": null,
@@ -31580,7 +31580,7 @@
    "clv_approx_dk": null,
    "clv_note": "无锚",
    "pinClose": null,
-   "pinSource": null,
+   "pinSource": "none",
    "round": "2026-09-27"
   },
   {
@@ -31603,7 +31603,7 @@
    "in_plan": null,
    "chain": "单锚×0.97(纯市场锚)",
    "pools": null,
-   "result": null,
+   "result": "3-1",
    "directionHit": null,
    "scoreHit": null,
    "optionHit": null,
@@ -31616,7 +31616,7 @@
    "clv_approx_dk": null,
    "clv_note": "无锚",
    "pinClose": null,
-   "pinSource": null,
+   "pinSource": "none",
    "round": "2026-09-27"
   },
   {
@@ -31639,10 +31639,10 @@
    "in_plan": "C1",
    "chain": "单锚×0.97(纯市场锚)",
    "pools": null,
-   "result": null,
-   "directionHit": null,
+   "result": "0-1",
+   "directionHit": false,
    "scoreHit": null,
-   "optionHit": null,
+   "optionHit": false,
    "familyHit": null,
    "familyName": null,
    "familyProb": null,
@@ -31652,7 +31652,7 @@
    "clv_approx_dk": null,
    "clv_note": "无锚",
    "pinClose": null,
-   "pinSource": null,
+   "pinSource": "none",
    "round": "2026-09-27"
   },
   {
@@ -31675,7 +31675,7 @@
    "in_plan": "D(TTG s2)",
    "chain": "单锚×0.97(纯市场锚)",
    "pools": null,
-   "result": null,
+   "result": "1-2",
    "directionHit": null,
    "scoreHit": null,
    "optionHit": null,
@@ -31688,7 +31688,7 @@
    "clv_approx_dk": null,
    "clv_note": "无锚",
    "pinClose": null,
-   "pinSource": null,
+   "pinSource": "none",
    "round": "2026-09-27"
   },
   {
@@ -31715,8 +31715,8 @@
    "in_plan": "B",
    "chain": "伤停d=-2主×1.04客×0.93+单锚×0.97+异动标注(客胜1.99→1.95资金面向客·定律3不调换)",
    "pools": null,
-   "result": null,
-   "directionHit": null,
+   "result": "2-1",
+   "directionHit": true,
    "scoreHit": null,
    "optionHit": null,
    "familyHit": null,
@@ -31728,7 +31728,7 @@
    "clv_approx_dk": null,
    "clv_note": "无Pinnacle锚",
    "pinClose": null,
-   "pinSource": null,
+   "pinSource": "none",
    "round": "2026-09-27"
   },
   {
