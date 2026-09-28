@@ -4908,6 +4908,105 @@
       "settle": {
         "status": "pending"
       }
+    },
+    {
+      "id": "T042",
+      "source": "manual",
+      "placedAt": "2026-09-28",
+      "matchDays": [
+        "2026-09-29",
+        "2026-09-30"
+      ],
+      "gameType": "任九",
+      "issue": 26134,
+      "shape": "任九 4双选+5单选",
+      "shapeDetail": "核心9场·16注×2元",
+      "stake": 32,
+      "unitStake": 2,
+      "multiplier": 1,
+      "units": 16,
+      "coreNine": [
+        12,
+        13,
+        9,
+        11,
+        8,
+        3,
+        10,
+        6,
+        5
+      ],
+      "legs": [
+        {
+          "no": 5,
+          "match": "罗马尼亚 vs 波黑",
+          "pick": [
+            "胜",
+            "平"
+          ],
+          "type": "double"
+        },
+        {
+          "no": 6,
+          "match": "瑞典 vs 波兰",
+          "pick": [
+            "胜",
+            "平"
+          ],
+          "type": "double"
+        },
+        {
+          "no": 8,
+          "match": "保加利亚 vs 爱沙尼亚",
+          "pick": [
+            "胜",
+            "平"
+          ],
+          "type": "double"
+        },
+        {
+          "no": 10,
+          "match": "苏格兰 vs 瑞士",
+          "pick": [
+            "负",
+            "平"
+          ],
+          "type": "double"
+        },
+        {
+          "no": 3,
+          "match": "比利时 vs 法国",
+          "pick": "负",
+          "type": "single"
+        },
+        {
+          "no": 9,
+          "match": "捷克 vs 英格兰",
+          "pick": "负",
+          "type": "single"
+        },
+        {
+          "no": 11,
+          "match": "斯洛文尼亚 vs 北马其顿",
+          "pick": "胜",
+          "type": "single"
+        },
+        {
+          "no": 12,
+          "match": "西班牙 vs 克罗地亚",
+          "pick": "胜",
+          "type": "single"
+        },
+        {
+          "no": 13,
+          "match": "斯洛伐克 vs 哈萨克斯坦",
+          "pick": "胜",
+          "type": "single"
+        }
+      ],
+      "settle": {
+        "status": "pending"
+      }
     }
   ]
 }
