@@ -1,0 +1,67 @@
+{
+  "issue": 26134,
+  "date": "2026-09-28",
+  "generatedAt": "2026-09-28",
+  "gameType": "14场胜负彩",
+  "cards": [
+    {
+      "cardId": "26134-B14",
+      "name": "B·14场精简复式",
+      "shape": "4双选+10单选",
+      "bets": 16,
+      "mult": 1,
+      "cost": 32,
+      "selections": {
+        "doubles": [
+          {"no": 5, "match": "罗马尼亚 vs 波黑", "picks": ["胜", "平"], "why": "波黑客场7/10平局机器·p平0.283全场最高"},
+          {"no": 6, "match": "瑞典 vs 波兰", "picks": ["胜", "平"], "why": "瑞主场画像弱于让步价+波客场韧性"},
+          {"no": 8, "match": "保加利亚 vs 爱沙尼亚", "picks": ["胜", "平"], "why": "引擎平局暴露报警p平0.264"},
+          {"no": 10, "match": "苏格兰 vs 瑞士", "picks": ["负", "平"], "why": "引擎复式建议增益比2.347"}
+        ],
+        "singles": [
+          {"no": 1, "match": "亚美尼亚 vs 黑山", "pick": "负"},
+          {"no": 2, "match": "拉脱维亚 vs 塞浦路斯", "pick": "主"},
+          {"no": 3, "match": "比利时 vs 法国", "pick": "负"},
+          {"no": 4, "match": "北爱尔兰 vs 匈牙利", "pick": "负"},
+          {"no": 7, "match": "土耳其 vs 意大利", "pick": "负"},
+          {"no": 9, "match": "捷克 vs 英格兰", "pick": "负"},
+          {"no": 11, "match": "斯洛文尼亚 vs 北马其顿", "pick": "胜"},
+          {"no": 12, "match": "西班牙 vs 克罗地亚", "pick": "胜"},
+          {"no": 13, "match": "斯洛伐克 vs 哈萨克斯坦", "pick": "胜"},
+          {"no": 14, "match": "卢森堡 vs 冰岛", "pick": "负"}
+        ]
+      },
+      "risk": "5胶着场(#1/#2/#4/#7/#14)裸奔单选+平局爆雷即全灭；双选4场已覆盖核心平局暴露(E_draw 2.09中约1.08)",
+      "anchorsNote": "纯市场锚(okooo去水)，国家队期无DC无锚，铁律10同口径标注"
+    },
+    {
+      "cardId": "26134-C14",
+      "name": "C·14场单式娱乐",
+      "shape": "14单选",
+      "bets": 1,
+      "mult": 1,
+      "cost": 2,
+      "selections": [
+        {"no": 1, "match": "亚美尼亚 vs 黑山", "pick": "负"},
+        {"no": 2, "match": "拉脱维亚 vs 塞浦路斯", "pick": "主"},
+        {"no": 3, "match": "比利时 vs 法国", "pick": "负"},
+        {"no": 4, "match": "北爱尔兰 vs 匈牙利", "pick": "负"},
+        {"no": 5, "match": "罗马尼亚 vs 波黑", "pick": "胜"},
+        {"no": 6, "match": "瑞典 vs 波兰", "pick": "胜"},
+        {"no": 7, "match": "土耳其 vs 意大利", "pick": "负"},
+        {"no": 8, "match": "保加利亚 vs 爱沙尼亚", "pick": "胜"},
+        {"no": 9, "match": "捷克 vs 英格兰", "pick": "负"},
+        {"no": 10, "match": "苏格兰 vs 瑞士", "pick": "负"},
+        {"no": 11, "match": "斯洛文尼亚 vs 北马其顿", "pick": "胜"},
+        {"no": 12, "match": "西班牙 vs 克罗地亚", "pick": "胜"},
+        {"no": 13, "match": "斯洛伐克 vs 哈萨克斯坦", "pick": "胜"},
+        {"no": 14, "match": "卢森堡 vs 冰岛", "pick": "负"}
+      ],
+      "risk": "全单选无容错，全对才中一等奖；C为B的贴钱娱乐版（B双选场C取赔率优侧）",
+      "anchorsNote": "同B·纯市场锚"
+    }
+  ],
+  "related": ["data/07-sfc/26134-ren9-plan.json (任九16注32元·主推对照)", "data/07-sfc/26134-prediction.json (14场逐场推演)"],
+  "salesStop": "#1/#2 2026-09-29 00:00前 · 其余场次 2026-09-30 02:45前",
+  "settle": "待开奖后回填——'回填赛果'链对票(sfc backfill + 结算按票面形状算派彩)"
+}
