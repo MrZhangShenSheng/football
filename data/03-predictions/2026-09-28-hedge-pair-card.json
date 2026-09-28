@@ -1,0 +1,54 @@
+{
+  "date": "2026-09-28",
+  "gameType": "竞彩跨池混串 对冲双票",
+  "shape": "4串11×2张(共享3腿+第4腿互补)——T002/T003冠军票型复刻",
+  "totalCost": 44,
+  "cards": [
+    {
+      "cardId": "A",
+      "name": "票A·TTG版",
+      "shape": "4串11(6×2串1+4×3串1+1×4串1)×1倍",
+      "bets": 11, "mult": 1, "cost": 22,
+      "legs": [
+        {"code": "周一006", "match": "罗马尼亚 vs 波黑", "market": "CRS", "pick": "1:1", "odds": 6.5, "note": "偏好命中·波黑7/10平局机器"},
+        {"code": "周一001", "match": "日本 vs 委内瑞拉", "market": "CRS", "pick": "2:0", "odds": 5.25, "note": "零封碾压·池内热度第一"},
+        {"code": "周一005", "match": "比利时 vs 法国", "market": "HAD", "pick": "客胜", "odds": 1.67, "note": "假设层survived·容错腿"},
+        {"code": "周一006", "match": "罗马尼亚 vs 波黑", "market": "TTG", "pick": "1球", "odds": 4.70, "note": "低进球共识·与CRS 1:1同场双保险"}
+      ],
+      "keyPair": "CRS①×CRS② = 6.5×5.25 = 34.13元（中2关保本）",
+      "allHit": "6.5×5.25×1.67×4.70 = 268元"
+    },
+    {
+      "cardId": "B",
+      "name": "票B·HAFU版",
+      "shape": "4串11(6×2串1+4×3串1+1×4串1)×1倍",
+      "bets": 11, "mult": 1, "cost": 22,
+      "legs": [
+        {"code": "周一006", "match": "罗马尼亚 vs 波黑", "market": "CRS", "pick": "1:1", "odds": 6.5, "note": "共享"},
+        {"code": "周一001", "match": "日本 vs 委内瑞拉", "market": "CRS", "pick": "2:0", "odds": 5.25, "note": "共享"},
+        {"code": "周一005", "match": "比利时 vs 法国", "market": "HAD", "pick": "客胜", "odds": 1.67, "note": "共享"},
+        {"code": "周一006", "match": "罗马尼亚 vs 波黑", "market": "HAFU", "pick": "dd(平/平)", "odds": 5.25, "note": "平/平共识·与CRS 1:1同场双保险"}
+      ],
+      "keyPair": "CRS①×CRS② = 6.5×5.25 = 34.13元（中2关保本）",
+      "allHit": "6.5×5.25×1.67×5.25 = 299元"
+    }
+  ],
+  "hedgeLogic": {
+    "sharedLegs": ["腿①CRS 1:1", "腿②CRS 2:0", "腿③HAD 客胜"],
+    "hedgeLeg4": "票A=TTG 1球 @4.70 / 票B=HAFU dd @5.25——同场(周一006)互补覆盖",
+    "scenarios": {
+      "波黑1:1且进球=1": "CRS命中+TTG命中+HAFU命中 → 两票都活",
+      "波黑0:0": "CRS灭+TTG灭(0球≠1球)+HAFU活(dd) → 票B回款",
+      "波黑2:2": "CRS灭+TTG灭(4球≠1球)+HAFU活(dd) → 票B回款",
+      "波黑1:0/0:1": "CRS灭+TTG活(1球)+HAFU灭(非dd) → 票A回款"
+    }
+  },
+  "payoutMatrix": {
+    "bothAllHit": "268+299=567元",
+    "onlyShared3Hit": "票AB各回3串1+2串1≈120元×2",
+    "shared2Hit": "票AB各回1注2串1≈34元×2=68元（保本线=44元·净+24）",
+    "T002/T003实证": "中2关各回136.5元·净+229（合赔68.25×2=136.5）"
+  },
+  "honestyNote": "本卡合赔34~57·低于T002/T003的68.25——因本轮平局机器场(波黑)赔率6.5低于T002的9.0；形状价值=对冲结构而非期望溢价",
+  "sources": ["data/06-tickets/tickets.json (T002/T003冠军结构)", "engine/cache/sporttery_matches.json (赔率冻结)"]
+}
