@@ -1,0 +1,191 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>影子票 2026-09-27 批结算报表</title>
+<style>
+:root { --bg:#0f172a; --card:#1e293b; --line:#334155; --txt:#e2e8f0; --dim:#94a3b8; --gold:#f59e0b; --red:#ef4444; --green:#16a34a; --blue:#0ea5e9; --posfill:#0ea5e9; --negfill:#ef4444; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--txt); font:14px/1.7 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif; padding:24px; }
+.wrap { max-width:1060px; margin:0 auto; }
+h1 { font-size:22px; padding:12px 0 4px; }
+h1 svg, h2 svg { width:20px; height:20px; vertical-align:-3px; margin-right:6px; color:var(--gold); }
+h2 { font-size:16px; margin:28px 0 10px; padding-bottom:6px; border-bottom:1px solid var(--line); }
+.sub { color:var(--dim); font-size:13px; margin-bottom:16px; }
+.card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px 20px; margin-bottom:14px; }
+table { width:100%; border-collapse:collapse; font-size:13px; }
+th,td { padding:7px 9px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+th { color:var(--gold); font-weight:600; white-space:nowrap; }
+td.num,th.num { text-align:right; font-variant-numeric:tabular-nums; }
+td.note { color:var(--dim); }
+.grid { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-bottom:14px; }
+.kpi { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:12px 14px; }
+.kpi .v { font-size:21px; font-weight:700; }
+.kpi .l { color:var(--dim); font-size:12px; }
+.neg { color:var(--red); } .pos { color:var(--green); } .warn { color:var(--gold); } .blue { color:var(--blue); }
+.lesson { border-left:3px solid var(--gold); padding:8px 14px; margin:8px 0; background:rgba(245,158,11,.06); border-radius:0 8px 8px 0; }
+.src { color:var(--dim); font-size:12px; line-height:1.9; }
+.bar-row rect.bar { rx:3; cursor:pointer; transition:filter .15s; }
+.bar-row rect.bar:hover { filter:brightness(1.35); }
+.legend { display:flex; gap:18px; font-size:12px; color:var(--dim); margin:4px 0 6px; }
+.legend .sw { display:inline-block; width:10px; height:10px; border-radius:2px; vertical-align:-1px; margin-right:5px; }
+</style></head><body><div class="wrap">
+<h1><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 15l3-3 2 2 4-6"/></svg>影子票 2026-09-27 批 · 结算报表</h1>
+<div class="sub">销售日 2026-09-27 · 20 票（P289-P308）· 覆盖 9 场（欧国联 R2 六场 + 荷乙两场 + 韩职补赛）· 结算时点 2026-09-28 10:02</div>
+
+<div class="grid">
+<div class="kpi"><div class="v">568元</div><div class="l">投入（20 票）</div></div>
+<div class="kpi"><div class="v pos">785.46元</div><div class="l">回款</div></div>
+<div class="kpi"><div class="v pos">+217.46元</div><div class="l">净额 · 回报率 138.3%</div></div>
+<div class="kpi"><div class="v">7 / 13</div><div class="l">盈利票 / 亏损票</div></div>
+<div class="kpi"><div class="v warn">67.5%</div><div class="l">剔除 P306 后回报（19 票净 -176.54）</div></div>
+</div>
+
+<h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>逐票净额（悬停看明细）</h2>
+<div class="legend"><span><span class="sw" style="background:var(--posfill)"></span>正净额</span><span><span class="sw" style="background:var(--negfill)"></span>负净额</span><span>0 基线居左（负侧最宽仅 -30）</span></div>
+<svg viewBox="0 0 920 572" role="img" aria-label="09-27批20票净额双向条形图" style="width:100%;height:auto">
+<!-- 图区 x=118..880 宽762, 值域 -40..+410 → px/元 = 762/450 = 1.6933; 0线 x = 118 + 40*1.6933 = 185.7 -->
+<g font-size="11.5" fill="#94a3b8">
+<!-- 每行 y 起 = 8 + i*28, 条高17 -->
+<line x1="185.7" y1="4" x2="185.7" y2="568" stroke="#475569" stroke-width="1"/>
+<text x="185.7" y="570" text-anchor="middle" font-size="10.5">0</text>
+
+<g class="bar-row"><text x="112" y="21" text-anchor="end">P306 crs-双选2串1</text>
+<rect class="bar" x="185.7" y="8" width="667.2" height="17" fill="#0ea5e9"><title>P306 crs-双选2串1 · 成本24 · 回款418.00 · 净+394.00（冰岛1:1@9.5×格拉夫1:0@22.0×2元）</title></rect>
+<text x="857.5" y="21" fill="#7dd3fc">+394.00</text></g>
+
+<g class="bar-row"><text x="112" y="49" text-anchor="end">P307 crs-双选单关</text>
+<rect class="bar" x="185.7" y="36" width="79.6" height="17" fill="#0ea5e9"><title>P307 crs-双选单关 · 成本28 · 回款75.00 · 净+47.00（7场1:1/1:0双选·格拉夫1:0@22中1注）</title></rect>
+<text x="270.0" y="49" fill="#7dd3fc">+47.00</text></g>
+
+<g class="bar-row"><text x="112" y="77" text-anchor="end">P294 全2关-4</text>
+<rect class="bar" x="185.7" y="64" width="18.8" height="17" fill="#0ea5e9"><title>P294 全2关-4 · 成本24 · 回款35.09 · 净+11.09</title></rect>
+<text x="209.2" y="77" fill="#7dd3fc">+11.09</text></g>
+
+<g class="bar-row"><text x="112" y="105" text-anchor="end">P293 全2关-6</text>
+<rect class="bar" x="185.7" y="92" width="16.5" height="17" fill="#0ea5e9"><title>P293 全2关-6 · 成本30 · 回款39.73 · 净+9.73</title></rect>
+<text x="206.9" y="105" fill="#7dd3fc">+9.73</text></g>
+
+<g class="bar-row"><text x="112" y="133" text-anchor="end">P304 ttg-单关</text>
+<rect class="bar" x="185.7" y="120" width="13.5" height="17" fill="#0ea5e9"><title>P304 ttg-单关 · 成本30 · 回款38.00 · 净+8.00</title></rect>
+<text x="203.9" y="133" fill="#7dd3fc">+8.00</text></g>
+
+<g class="bar-row"><text x="112" y="161" text-anchor="end">P291 4串11</text>
+<rect class="bar" x="185.7" y="148" width="9.0" height="17" fill="#0ea5e9"><title>P291 4串11 · 成本22 · 回款27.34 · 净+5.34</title></rect>
+<text x="199.4" y="161" fill="#7dd3fc">+5.34</text></g>
+
+<g class="bar-row"><text x="112" y="189" text-anchor="end">P303 ttg-双选2串1</text>
+<rect class="bar" x="185.7" y="176" width="5.7" height="17" fill="#0ea5e9"><title>P303 ttg-双选2串1 · 成本24 · 回款27.36 · 净+3.36</title></rect>
+<text x="196.1" y="189" fill="#7dd3fc">+3.36</text></g>
+
+<g class="bar-row"><text x="112" y="217" text-anchor="end">P297 胶着-双选单关</text>
+<rect class="bar" x="180.8" y="204" width="4.9" height="17" fill="#ef4444"><title>P297 胶着-双选单关 · 成本28 · 回款27.58 · 净-0.42</title></rect>
+<text x="175.0" y="217" text-anchor="end" fill="#fca5a5">-0.42</text></g>
+
+<g class="bar-row"><text x="112" y="245" text-anchor="end">P295 胶着-三选2串1</text>
+<rect class="bar" x="182.5" y="232" width="3.2" height="17" fill="#ef4444"><title>P295 胶着-三选2串1 · 成本18 · 回款16.12 · 净-1.88</title></rect>
+<text x="176.7" y="245" text-anchor="end" fill="#fca5a5">-1.88</text></g>
+
+<g class="bar-row"><text x="112" y="273" text-anchor="end">P296 胶着-双选全2关</text>
+<rect class="bar" x="173.1" y="260" width="12.6" height="17" fill="#ef4444"><title>P296 胶着-双选全2关 · 成本48 · 回款40.58 · 净-7.42</title></rect>
+<text x="167.3" y="273" text-anchor="end" fill="#fca5a5">-7.42</text></g>
+
+<g class="bar-row"><text x="112" y="301" text-anchor="end">P299 ev-4串11</text>
+<rect class="bar" x="162.7" y="288" width="23.0" height="17" fill="#ef4444"><title>P299 ev-4串11 · 成本22 · 回款8.41 · 净-13.59</title></rect>
+<text x="156.9" y="301" text-anchor="end" fill="#fca5a5">-13.59</text></g>
+
+<g class="bar-row"><text x="112" y="329" text-anchor="end">P301 ev-双选全2关-4</text>
+<rect class="bar" x="159.0" y="316" width="26.7" height="17" fill="#ef4444"><title>P301 ev-双选全2关-4 · 成本48 · 回款32.25 · 净-15.75</title></rect>
+<text x="153.2" y="329" text-anchor="end" fill="#fca5a5">-15.75</text></g>
+
+<g class="bar-row"><text x="112" y="357" text-anchor="end">P300 ev-8串9</text>
+<rect class="bar" x="155.2" y="344" width="30.5" height="17" fill="#ef4444"><title>P300 ev-8串9 · 成本18 · 回款0 · 净-18.00</title></rect>
+<text x="149.4" y="357" text-anchor="end" fill="#fca5a5">-18.00</text></g>
+
+<g class="bar-row"><text x="112" y="385" text-anchor="end">P292 4串1+2双选</text>
+<rect class="bar" x="145.0" y="372" width="40.7" height="17" fill="#ef4444"><title>P292 4串1+2双选 · 成本24 · 回款0 · 净-24.00</title></rect>
+<text x="139.2" y="385" text-anchor="end" fill="#fca5a5">-24.00</text></g>
+
+<g class="bar-row"><text x="112" y="413" text-anchor="end">P289 8串1</text>
+<rect class="bar" x="134.9" y="400" width="50.8" height="17" fill="#ef4444"><title>P289 8串1 · 成本30 · 回款0 · 净-30.00（八腿断于德国0-1等冷门）</title></rect>
+<text x="129.1" y="413" text-anchor="end" fill="#fca5a5">-30.00</text></g>
+
+<g class="bar-row"><text x="112" y="441" text-anchor="end">P290 4串1</text>
+<rect class="bar" x="134.9" y="428" width="50.8" height="17" fill="#ef4444"><title>P290 4串1 · 成本30 · 回款0 · 净-30.00</title></rect>
+<text x="129.1" y="441" text-anchor="end" fill="#fca5a5">-30.00</text></g>
+
+<g class="bar-row"><text x="112" y="469" text-anchor="end">P298 ev-8串1</text>
+<rect class="bar" x="134.9" y="456" width="50.8" height="17" fill="#ef4444"><title>P298 ev-8串1 · 成本30 · 回款0 · 净-30.00</title></rect>
+<text x="129.1" y="469" text-anchor="end" fill="#fca5a5">-30.00</text></g>
+
+<g class="bar-row"><text x="112" y="497" text-anchor="end">P302 ttg-4串1</text>
+<rect class="bar" x="134.9" y="484" width="50.8" height="17" fill="#ef4444"><title>P302 ttg-4串1 · 成本30 · 回款0 · 净-30.00</title></rect>
+<text x="129.1" y="497" text-anchor="end" fill="#fca5a5">-30.00</text></g>
+
+<g class="bar-row"><text x="112" y="525" text-anchor="end">P305 crs-4串1</text>
+<rect class="bar" x="134.9" y="512" width="50.8" height="17" fill="#ef4444"><title>P305 crs-4串1 · 成本30 · 回款0 · 净-30.00（北马其顿0-3断腿）</title></rect>
+<text x="129.1" y="525" text-anchor="end" fill="#fca5a5">-30.00</text></g>
+
+<g class="bar-row"><text x="112" y="553" text-anchor="end">P308 g-tail-贪心串1</text>
+<rect class="bar" x="134.9" y="540" width="50.8" height="17" fill="#ef4444"><title>P308 g-tail-贪心串1 · 成本30 · 回款0 · 净-30.00</title></rect>
+<text x="129.1" y="553" text-anchor="end" fill="#fca5a5">-30.00</text></g>
+</g>
+</svg>
+
+<h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>逐票结算明细</h2>
+<table><tr><th>ID</th><th>形状</th><th class="num">成本</th><th class="num">回款</th><th class="num">净</th><th class="num">回报率</th><th>命中注 / 结构</th></tr>
+<tr><td>P306</td><td>crs-双选2串1</td><td class="num">24</td><td class="num pos">418.00</td><td class="num pos">+394.00</td><td class="num pos">1741.7%</td><td class="note">1/12 注 · 冰岛1:1@9.5 × 格拉夫1:0@22.0 = 209倍×2元</td></tr>
+<tr><td>P307</td><td>crs-双选单关</td><td class="num">28</td><td class="num pos">75.00</td><td class="num pos">+47.00</td><td class="num pos">267.9%</td><td class="note">1/14 注 · 格拉夫1:0@22×2元=44 · 冰岛1:1@9.5×2元=19（7场1:1/1:0单关）</td></tr>
+<tr><td>P294</td><td>全2关-4</td><td class="num">24</td><td class="num pos">35.09</td><td class="num pos">+11.09</td><td class="num pos">146.2%</td><td class="note">四场两两2串1，冷门对子命中</td></tr>
+<tr><td>P293</td><td>全2关-6</td><td class="num">30</td><td class="num pos">39.73</td><td class="num pos">+9.73</td><td class="num pos">132.4%</td><td class="note">六场两两2串1 · 同构放量版</td></tr>
+<tr><td>P304</td><td>ttg-单关</td><td class="num">30</td><td class="num pos">38.00</td><td class="num pos">+8.00</td><td class="num pos">126.7%</td><td class="note">3注单关 · 冰岛2球/北马3球/格拉夫1球其一命中</td></tr>
+<tr><td>P291</td><td>4串11</td><td class="num">22</td><td class="num pos">27.34</td><td class="num pos">+5.34</td><td class="num pos">124.3%</td><td class="note">过2关回1注2串1 · 与主公T040同构（T040回23.78）</td></tr>
+<tr><td>P303</td><td>ttg-双选2串1</td><td class="num">24</td><td class="num pos">27.36</td><td class="num pos">+3.36</td><td class="num pos">114.0%</td><td class="note">三场s2/s3双选两两组合 · 对子命中</td></tr>
+<tr><td>P297</td><td>胶着-双选单关</td><td class="num">28</td><td class="num">27.58</td><td class="num">-0.42</td><td class="num">98.5%</td><td class="note">贴水</td></tr>
+<tr><td>P295</td><td>胶着-三选2串1</td><td class="num">18</td><td class="num">16.12</td><td class="num">-1.88</td><td class="num">89.6%</td><td class="note">贴水</td></tr>
+<tr><td>P296</td><td>胶着-双选全2关</td><td class="num">48</td><td class="num">40.58</td><td class="num">-7.42</td><td class="num">84.5%</td><td class="note">贴水</td></tr>
+<tr><td>P299</td><td>ev-4串11</td><td class="num">22</td><td class="num">8.41</td><td class="num">-13.59</td><td class="num">38.2%</td><td class="note">仅过2关低对子</td></tr>
+<tr><td>P301</td><td>ev-双选全2关-4</td><td class="num">48</td><td class="num">32.25</td><td class="num">-15.75</td><td class="num">67.2%</td><td class="note">部分对子回款</td></tr>
+<tr><td>P300</td><td>ev-8串9</td><td class="num">18</td><td class="num">0</td><td class="num">-18.00</td><td class="num">0%</td><td class="note">全灭</td></tr>
+<tr><td>P292</td><td>4串1+2双选</td><td class="num">24</td><td class="num">0</td><td class="num">-24.00</td><td class="num">0%</td><td class="note">全灭</td></tr>
+<tr><td>P289</td><td>8串1</td><td class="num">30</td><td class="num">0</td><td class="num">-30.00</td><td class="num">0%</td><td class="note">全灭 · 含德国0-1冷门腿</td></tr>
+<tr><td>P290</td><td>4串1</td><td class="num">30</td><td class="num">0</td><td class="num">-30.00</td><td class="num">0%</td><td class="note">全灭</td></tr>
+<tr><td>P298</td><td>ev-8串1</td><td class="num">30</td><td class="num">0</td><td class="num">-30.00</td><td class="num">0%</td><td class="note">全灭</td></tr>
+<tr><td>P302</td><td>ttg-4串1</td><td class="num">30</td><td class="num">0</td><td class="num">-30.00</td><td class="num">0%</td><td class="note">全灭</td></tr>
+<tr><td>P305</td><td>crs-4串1</td><td class="num">30</td><td class="num">0</td><td class="num">-30.00</td><td class="num">0%</td><td class="note">全灭 · 北马其顿0-3断腿</td></tr>
+<tr><td>P308</td><td>g-tail-贪心串1</td><td class="num">30</td><td class="num">0</td><td class="num">-30.00</td><td class="num">0%</td><td class="note">全灭</td></tr>
+<tr><th>—</th><th>合计</th><th class="num">568</th><th class="num">785.46</th><th class="num pos">+217.46</th><th class="num pos">138.3%</th><th class="note">盈利 7 票 +478.52 · 亏损 13 票 -261.06</th></tr>
+</table>
+
+<h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg>形状分组小计</h2>
+<table><tr><th>组</th><th>票数</th><th class="num">成本</th><th class="num">回款</th><th class="num">净</th><th class="num">回报</th><th>说明</th></tr>
+<tr><td>crs 双选系</td><td>3</td><td class="num">82</td><td class="num pos">493.00</td><td class="num pos">+411.00</td><td class="num pos">601.2%</td><td class="note">本批功臣 · 但 +411 几乎全出自 P306 一注（crs-4串1 同族却全灭）</td></tr>
+<tr><td>全2关系</td><td>2</td><td class="num">54</td><td class="num pos">74.82</td><td class="num pos">+20.82</td><td class="num pos">138.6%</td><td class="note">稳定小盈 · 平局富矿日的结构受益者</td></tr>
+<tr><td>ttg 系</td><td>3</td><td class="num">84</td><td class="num">65.36</td><td class="num">-18.64</td><td class="num">77.8%</td><td class="note">单关/双选活 · 4串1灭</td></tr>
+<tr><td>胶着系</td><td>3</td><td class="num">94</td><td class="num">84.28</td><td class="num">-9.72</td><td class="num">89.7%</td><td class="note">三形状齐贴水 · 防守型</td></tr>
+<tr><td>ev 系</td><td>4</td><td class="num">118</td><td class="num">40.66</td><td class="num">-77.34</td><td class="num">34.5%</td><td class="note">本批最差组 · 长串两灭</td></tr>
+<tr><td>通用串</td><td>4</td><td class="num">106</td><td class="num">27.34</td><td class="num">-78.66</td><td class="num">25.8%</td><td class="note">8串1/4串1/4串1+2双选三灭 · 唯4串11靠容错回款</td></tr>
+<tr><td>g-tail</td><td>1</td><td class="num">30</td><td class="num">0</td><td class="num">-30.00</td><td class="num">0%</td><td class="note">贪心右尾串 · 15轮累计零中</td></tr>
+</table>
+
+<h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h10M7 17h6"/></svg>覆盖九场与赛果对照</h2>
+<table><tr><th>编号</th><th>对阵</th><th>赛果</th><th>方向</th><th class="num">覆盖票数</th><th>影子判断得失</th></tr>
+<tr><td>周六011</td><td>冰岛 vs 爱沙尼亚</td><td>1:1（半 1:0）</td><td class="warn">平</td><td class="num">15</td><td class="note">覆盖最广 · HAD 押主胜的票全在此翻车；crs 双选 1:1 却吃到大肉（@9.5）</td></tr>
+<tr><td>周日003</td><td>格拉夫 vs 登博思</td><td>1:0</td><td class="pos">主胜</td><td class="num">14</td><td class="note">crs 双选 1:0@22 全场最肥一腿 · 主文件「排除」之场反成印钞机</td></tr>
+<tr><td>周六014</td><td>捷克 vs 克罗地亚</td><td>1:2</td><td class="pos">客胜</td><td class="num">14</td><td class="note">押客胜的票普遍过关</td></tr>
+<tr><td>周六015</td><td>北马其顿 vs 瑞士</td><td>0:3</td><td class="pos">客胜</td><td class="num">14</td><td class="note">crs 双选 1:1/1:0 全灭于此（0-3 大冷门方向对比分暴）</td></tr>
+<tr><td>周六010</td><td>法罗群岛 vs 哈萨克</td><td>1:1</td><td class="warn">平</td><td class="num">9</td><td class="note">HAD 押主胜翻车</td></tr>
+<tr><td>周六012</td><td>保加利亚 vs 卢森堡</td><td>1:2</td><td class="pos">客胜</td><td class="num">8</td><td class="note">小冷客胜</td></tr>
+<tr><td>周六016</td><td>英格兰 vs 西班牙</td><td>2:3</td><td class="pos">客胜</td><td class="num">8</td><td class="note">押客胜过关</td></tr>
+<tr><td>周日001</td><td>江原FC vs 仁川联</td><td>0:0</td><td class="warn">平</td><td class="num">6</td><td class="note">第三场平局 · HAD 主胜腿全灭（与实票 001 同画面）</td></tr>
+<tr><td>周六013</td><td>罗达JC vs 瓦尔韦克</td><td>2:0</td><td class="pos">主胜</td><td class="num">6</td><td class="note">热主胜顺利</td></tr>
+</table>
+<div class="sub" style="margin-top:8px">九场之中 <b>3 平局</b>（法罗/冰岛/江原）——欧国联次轮+荷乙的平局富矿，正是 crs 双选「1:1/1:0」形状的天然粮仓；而 HAD 单向票（8串1/4串1 系）三处断腿皆平局。</div>
+
+<h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>三条分析要点</h2>
+<div class="lesson"><b>① 右尾集中度：P306 一票占本批回款 53.2%、占净额 181%。</b>剔除它，19 票净 -176.54（回报 67.5%）。本批「盈利」本质是单注暴击 + 其余票贴水，不是形状层的普遍盈利——分析时勿把 138.3% 当作可持续率。</div>
+<div class="lesson"><b>② 平局日 × 高赔双选 = 本批唯一印钞组合。</b>三场平局把 HAD 单向长串全部斩首（8串1/4串1/ev-8串1/g-tail 四组全灭 -174），却把 crs 双选（1:1 半价 + 1:0 全价@22）送上 418。同一赛果两面收割：方向票死于平局，比分双选生于平局。</div>
+<div class="lesson"><b>③ 格拉夫 1:0@22 是全批胜负手。</b>荷乙比分池高价 × 主文件「排除：无锚基面反向」之场——影子引擎不管排除令照选（CRS 融合族 1:0 在族内），开出主胜 1:0 后 P306/P307 两票吃满。与上轮复盘「排除场两开出主胜」互为印证：排除决策的代价在比分池被放大了 22 倍。</div>
+
+<h2>数据来源</h2>
+<div class="src">
+engine/shadow/paper_tickets.json（P289-P308 · settledAt 2026-09-28T10:02）· engine/cache/sporttery_results_2026-09-27_2026-09-27.json + 2026-09-28_2026-09-28.json（周六/周日场开奖）· engine/cache/sporttery_results_2026-09-25_2026-09-26.json（周五场补拉）· data/02-results/2026-09-27.json（主文件赛果互核）· 形状引擎 engine/shadow/shapes.py（结算口径）
+</div>
+</div></body></html>
