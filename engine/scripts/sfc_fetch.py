@@ -23,13 +23,23 @@ UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
 
 
 def fetch_html(issue: int) -> str:
+    """单期抓取，含 405 限流退避。
+
+    2026-09-28 实测：backfill 连抓 58 期全数 HTTP 405（澳客按频率限流，非封禁）——
+    单期间隔 20 秒重试即成功。故 405 单独退避重试（5s→15s→40s），其余异常沿用原两次。
+    """
     url = f'https://www.okooo.com/zucai/{issue}/'
     req = urllib.request.Request(url, headers={'User-Agent': UA})
-    for attempt in (1, 2):
+    backoff = (5, 15, 40)
+    for attempt in range(1, len(backoff) + 2):
         try:
             return urllib.request.urlopen(req, timeout=20).read().decode('gb18030', errors='ignore')
+        except urllib.error.HTTPError as e:
+            if e.code != 405 or attempt > len(backoff):
+                raise
+            time.sleep(backoff[attempt - 1])
         except Exception:
-            if attempt == 2:
+            if attempt >= 2:
                 raise
             time.sleep(2)
 
@@ -120,22 +130,38 @@ def main():
         save(issue, data)
         print(f'[sfc] {issue}: 赛果 {data["resultSeq"]} · 奖金 {data["prize"]}')
     elif cmd == 'backfill':
-        lo, hi = int(sys.argv[2]), int(sys.argv[3])
-        ok = fail = 0
+        # --force：重抓已存在期次（早期版本无 odds 字段，outcomes 校准表需赔率，须重抓补全）
+        force = '--force' in sys.argv
+        args = [a for a in sys.argv[2:] if not a.startswith('--')]
+        lo, hi = int(args[0]), int(args[1])
+        ok = fail = skip = 0
         for issue in range(lo, hi + 1):
-            if (OUT_DIR / f'{issue}.json').exists():
-                print(f'[sfc] {issue} 已存在跳过')
+            p = OUT_DIR / f'{issue}.json'
+            if p.exists() and not force:
+                skip += 1
                 continue
+            if p.exists() and force:
+                # 已有赛果+赔率齐备的不重抓（省请求、避限流）
+                try:
+                    old = json.loads(p.read_text(encoding='utf-8'))
+                    ms = old.get('matches') or []
+                    if ms and all(m.get('odds') for m in ms) and all(m.get('result') is not None for m in ms):
+                        skip += 1
+                        continue
+                except Exception:
+                    pass
             try:
                 data = parse_issue(issue, fetch_html(issue))
                 save(issue, data)
                 ok += 1
-                print(f'[sfc] {issue}: {data["resultSeq"]}')
+                n_odds = sum(1 for m in data['matches'] if m.get('odds'))
+                print(f'[sfc] {issue}: {data["resultSeq"]} · odds {n_odds}/14')
             except Exception as e:
                 fail += 1
                 print(f'[sfc] {issue} FAIL: {e}')
-            time.sleep(0.8)
-        print(f'[sfc] 回填完成 成功{ok} 失败{fail}')
+            # 6s 间隔：0.8s 实测触发 405 全批失败（2026-09-28），澳客按频率限流
+            time.sleep(6)
+        print(f'[sfc] 回填完成 成功{ok} 跳过{skip} 失败{fail}')
     elif cmd == 'current':
         recent = None
         m = re.search(r'recentPrizeNo\s*=\s*(\d+)', fetch_html(26131 + 1))

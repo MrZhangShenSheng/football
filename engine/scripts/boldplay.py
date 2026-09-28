@@ -1046,6 +1046,95 @@ def validate_card_assertions(t: dict) -> None:
             f"[预算] 轮次总投入 {total_cost} 元 > 红线 {ROUND_REDLINE} 元")
 
 
+def annotate_registered_hints(t: dict) -> None:
+    """已注册提示区（2026-09-28 大哥审计后立·lessons.md 籍别声明"可提示"籍的落点）。
+
+    **为何在此而非出票核对单**：核对单是 agent 手写的对话文本——把提示写在那里
+    仍然靠记性，与现状无异。提示必须落在脚本输出里才真正脱离记性（反推四）。
+
+    **硬规矩：每条提示必须有触发条件，无条件的提示不许上屏。** 否则 agent 会学会
+    忽略它，退回记性通路。"注意爆冷风险"这类任何时候都能说的话 = 不合格。
+
+    首批两条（可自动化）：
+      ① 概率带行——每腿所属带 + 该带 outcomes 客观实测（n 标注；无表则静默）
+      ② 胶着占比——本轮极差<12pp 场次占比，方向胆稀缺时提示
+    半自动一条：
+      ③ 国家队/杯赛轮 ≥50% 时，提示人工核上期同批次赛果（"同批次"无形式定义，
+         脚本无法自动判断赛制周期——诚实降级为提醒去查，不假装能自动化，反推四）
+
+    写 t["hints"]（与 warnings 分开：warnings=违规须改，hints=背景须知）。开发者 sszhang"""
+    t.setdefault("hints", [])
+    calib_path = ROOT / "data" / "08-outcomes" / "outcomes_calibration.json"
+    grid = {}
+    if calib_path.exists():
+        try:
+            grid = (json.loads(calib_path.read_text(encoding="utf-8")) or {}).get("grid") or {}
+        except Exception:
+            grid = {}
+
+    NAT = ("国际赛", "欧国联", "世预", "亚洲杯", "欧洲杯", "世界杯", "友谊", "亚运",
+           "欧冠", "欧罗巴", "欧协联", "解放者", "亚冠", "杯")
+
+    def band_of(p: float) -> str:
+        for nm, lo, hi in (("<0.15", 0, .15), ("0.15-0.30", .15, .30),
+                           ("0.30-0.45", .30, .45), ("0.45-0.60", .45, .60)):
+            if lo <= p < hi:
+                return nm
+        return ">=0.60"
+
+    all_legs, nat_n, tight_n, total_n = [], 0, 0, 0
+    seen = set()
+    for tier in (t.get("tiers") or {}).values():
+        if isinstance(tier, dict):
+            all_legs.extend(tier.get("legs") or [])
+    for c in (t.get("cards") or []):
+        code = str(c.get("matchNumStr") or "")
+        if not code or code in seen:
+            continue
+        seen.add(code)
+        total_n += 1
+        if any(k in str(c.get("league") or "") for k in NAT):
+            nat_n += 1
+        pm = c.get("pMkt") or c.get("p_mkt")
+        if isinstance(pm, (list, tuple)) and len(pm) == 3:
+            try:
+                if (max(pm) - min(pm)) * 100 < 12:
+                    tight_n += 1
+            except TypeError:
+                pass
+
+    # ① 概率带行（仅在 outcomes 表有该格样本时出，无表静默——不造无据提示）
+    if grid:
+        for l in all_legs:
+            p = l.get("p") or l.get("q")
+            if not isinstance(p, (int, float)):
+                continue
+            regime = "national_cup" if any(
+                k in str(l.get("league") or "") for k in NAT) else "league"
+            g = grid.get(f"{regime}|{band_of(float(p))}") or {}
+            if g.get("n", 0) >= 20:       # n<20 不出（样本太薄反成噪音）
+                l["bandHint"] = (f"带{band_of(float(p))} 客观实测{g['hitRate']:.1%}"
+                                 f"(n={g['n']} {g['devPp']:+.1f}pp)")
+
+    # ② 胶着占比
+    if total_n and tight_n / total_n >= 0.4:
+        t["hints"].append(
+            f"[胶着] 本轮 {tight_n}/{total_n} 场三向极差<12pp，方向胆稀缺——"
+            f"容错形状优先于长串（636 轮回测：4串11 回款轮 96.8% vs 4串1 38.5%）")
+
+    # ③ 国家队轮半自动提醒（"同批次"无形式定义，故只提醒不自动查）
+    if total_n and nat_n / total_n >= 0.5:
+        t["hints"].append(
+            f"[国家队轮] {nat_n}/{total_n} 场属国家队/杯赛（DC 无参数=纯市场锚）——"
+            f"⚠需人工核：上期同批次赛果分布（大热灭了几个/客胜占比）。"
+            f"corpus 该维度实测偏差 +17.4pp(n=31 薄) vs 纯联赛 +7.5pp(n=243)")
+
+    if not grid:
+        t["hints"].append(
+            "[带表] data/08-outcomes/ 校准表未就绪——概率带提示静默"
+            "（跑 python engine/scripts/outcomes.py 生成；每格 n≥100 才进参数链）")
+
+
 def coupling_at_least_one(t: dict, max_legs: int = 20) -> dict:
     """跨档耦合口径"至少中一注"（SKILL v5.1 条款脚本化，2026-09-22 大哥拍板）：
     多注共享腿时独立近似 1−Π(1−p注) 系统性高估（8-25 实测 93%→实际 82%），按腿集合
@@ -1207,6 +1296,7 @@ def build_three_tier(odds_day: dict, freq_table: dict, seq: int, zh: dict, form:
     # 常量与 budget_gate/MONTHLY_CAP 调用保留给 --structure=legacy 旧结构对照卡
     annotate_hypothesis_warnings(out)   # 假设层：唯一剩下的出票前拦截（Task 6·spec §三）
     validate_card_assertions(out)       # 机器断言（09-22 自查清单分流：同场限一/木桶/预算红线）
+    annotate_registered_hints(out)      # 已注册提示区（09-28：赛果经验的"可提示"籍落点）
     out["couplingHit"] = coupling_at_least_one(out)   # 耦合"至少中一注"（v5.1 条款脚本化 09-22）
     return out
 
@@ -1238,8 +1328,9 @@ def render_legs_grouped(legs: list) -> str:
             pick = l.get("pick") or l.get("score") or ""
             gl = f"(让{l['goalLine']:+g})" if l.get("goalLine") is not None else ""
             ev = f" EV{l['ev']:+.0%}" if l.get("ev") is not None else ""
+            bh = f" 💡{l['bandHint']}" if l.get("bandHint") else ""
             out.append(f"   {mark} {str(l.get('play', '')).upper():5} {str(pick) + gl:10} "
-                       f"@{float(l.get('odds') or 0):<7.2f} [{sup}]{ev} {flags}".rstrip())
+                       f"@{float(l.get('odds') or 0):<7.2f} [{sup}]{ev} {flags}{bh}".rstrip())
     return "\n".join(out)
 
 
@@ -1272,6 +1363,9 @@ def render_ticket(t: dict) -> str:
         lines.append(f"│ ⚠连续{t['upsetHalved']}轮翻身0回款·仓位减半")
     for w in t.get("warnings") or []:
         lines.append(f"│ ⚠{w}")
+    # 已注册提示区（2026-09-28）：hints=背景须知（与 warnings=违规须改分开）
+    for h in t.get("hints") or []:
+        lines.append(f"│ 💡{h}")
     lines.append("│ 三池推荐(A/B级场):")
     for c in t.get("cards") or []:
         cg = c.get("crsGate")

@@ -1,0 +1,128 @@
+{
+ "generatedAt": "2026-09-28",
+ "source": "outcomes.json（48 场 / 144 条三向样本）",
+ "gridMinN": 100,
+ "gateNote": "闸门算在【格】上不算总数：10 格需总样本 1000+ 才可能每格过 100（lessons.md 籍别声明）",
+ "grid": {
+  "national_cup|<0.15": {
+   "n": 11,
+   "hitRate": 0.0909,
+   "pMktMean": 0.0918,
+   "devPp": -0.1,
+   "ci95": [
+    -0.102,
+    0.1791
+   ],
+   "gateReady": false,
+   "verdict": "样本不足（n=11<100）→ 维持提示籍，不得进参数链"
+  },
+  "national_cup|0.15-0.30": {
+   "n": 21,
+   "hitRate": 0.1905,
+   "pMktMean": 0.2353,
+   "devPp": -4.5,
+   "ci95": [
+    -0.1974,
+    0.1376
+   ],
+   "gateReady": false,
+   "verdict": "样本不足（n=21<100）→ 维持提示籍，不得进参数链"
+  },
+  "national_cup|0.30-0.45": {
+   "n": 16,
+   "hitRate": 0.375,
+   "pMktMean": 0.3633,
+   "devPp": 1.2,
+   "ci95": [
+    -0.2164,
+    0.2573
+   ],
+   "gateReady": false,
+   "verdict": "样本不足（n=16<100）→ 维持提示籍，不得进参数链"
+  },
+  "national_cup|0.45-0.60": {
+   "n": 3,
+   "hitRate": 0.6667,
+   "pMktMean": 0.5211,
+   "devPp": 14.6,
+   "ci95": [
+    -0.5009,
+    0.518
+   ],
+   "gateReady": false,
+   "verdict": "样本不足（n=3<100）→ 维持提示籍，不得进参数链"
+  },
+  "national_cup|>=0.60": {
+   "n": 9,
+   "hitRate": 0.7778,
+   "pMktMean": 0.7415,
+   "devPp": 3.6,
+   "ci95": [
+    -0.2667,
+    0.2783
+   ],
+   "gateReady": false,
+   "verdict": "样本不足（n=9<100）→ 维持提示籍，不得进参数链"
+  },
+  "league|<0.15": {
+   "n": 4,
+   "hitRate": 0.0,
+   "pMktMean": 0.0831,
+   "devPp": -8.3,
+   "ci95": [
+    -0.1263,
+    -0.0399
+   ],
+   "gateReady": false,
+   "verdict": "样本不足（n=4<100）→ 维持提示籍，不得进参数链"
+  },
+  "league|0.15-0.30": {
+   "n": 42,
+   "hitRate": 0.2143,
+   "pMktMean": 0.2425,
+   "devPp": -2.8,
+   "ci95": [
+    -0.1491,
+    0.1073
+   ],
+   "gateReady": false,
+   "verdict": "样本不足（n=42<100）→ 维持提示籍，不得进参数链"
+  },
+  "league|0.30-0.45": {
+   "n": 24,
+   "hitRate": 0.375,
+   "pMktMean": 0.3786,
+   "devPp": -0.4,
+   "ci95": [
+    -0.2061,
+    0.1946
+   ],
+   "gateReady": false,
+   "verdict": "样本不足（n=24<100）→ 维持提示籍，不得进参数链"
+  },
+  "league|0.45-0.60": {
+   "n": 10,
+   "hitRate": 0.6,
+   "pMktMean": 0.5494,
+   "devPp": 5.1,
+   "ci95": [
+    -0.2774,
+    0.3698
+   ],
+   "gateReady": false,
+   "verdict": "样本不足（n=10<100）→ 维持提示籍，不得进参数链"
+  },
+  "league|>=0.60": {
+   "n": 4,
+   "hitRate": 1.0,
+   "pMktMean": 0.7257,
+   "devPp": 27.4,
+   "ci95": [
+    0.1536,
+    0.3825
+   ],
+   "gateReady": false,
+   "verdict": "样本不足（n=4<100）→ 维持提示籍，不得进参数链"
+  }
+ }
+}
