@@ -1,0 +1,20 @@
+{
+  "date": "2026-09-28",
+  "gameType": "竞彩 HAD 混串",
+  "shape": "4串11容错·单张（偏好档案第一优先T002/T003降级：对冲腿缺材——本轮无双玩法同推场）",
+  "bets": 11, "mult": 1, "cost": 22,
+  "fullHitPayout": 44.7,
+  "legs": [
+    {"code": "周一001", "match": "日本 vs 委内瑞拉", "play": "had", "pick": "主胜", "odds": 1.15, "verdict": "survived", "star": 3},
+    {"code": "周一005", "match": "比利时 vs 法国", "play": "had", "pick": "客胜", "odds": 1.67, "verdict": "survived", "star": 3},
+    {"code": "周二001", "match": "朝鲜女 vs 中国女", "play": "had", "pick": "主胜", "odds": 1.32, "verdict": "survived", "star": 2},
+    {"code": "周二007", "match": "日本女 vs 韩国女", "play": "had", "pick": "主胜", "odds": 1.15, "verdict": "survived", "star": 2}
+  ],
+  "structure": {"2串1×6": [1.92, 1.52, 1.32, 2.20, 1.92, 1.52], "3串1×4": [2.53, 2.21, 1.75, 2.53], "4串1×1": 2.92},
+  "hitMatrix": {"中4关": "11注全中≈44.7元", "中3关": "回1注3串1+3注2串1≈14~16元", "中2关": "回1注2串1≈3~4.4元", "中1关/0关": "0"},
+  "probApprox": {"全中": "≈18.7%", "至少中3关": "≈48.6%", "至少中2关": "≈84%（独立近似口径）", "最弱腿": "法国51.4%"},
+  "hypothesisNote": "四腿全为假设层survived且系统同推（agree）；女足两腿保守标二星；同场限一玩法合规（四场各一腿）",
+  "honestyNote": "纯市场锚轮·低赔腿堆叠合赔2.92——形状价值=回款路径质量（636轮回测：容错族回款轮96.8%·连灭1）非期望溢价，期望回收≈45%；对冲双票降级单张按偏好档案条款标注",
+  "related": ["data/03-predictions/2026-09-28-crs-card.json (CRS单关×10·20元·可并行)", "data/02-results/2026-09-28.json (假设层推演)"],
+  "sources": ["engine/cache/sporttery_matches.json (HAD赔率冻结)", "data/06-tickets/preference.json (shapes[0]对冲双票·缺材降级条款)"]
+}
