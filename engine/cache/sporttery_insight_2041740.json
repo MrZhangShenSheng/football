@@ -1,0 +1,272 @@
+{
+ "fetchedAt": "2026-09-28",
+ "source": "sporttery",
+ "matchId": 2041740,
+ "match": {
+  "code": "周一001",
+  "league": "国际赛",
+  "gameweek": "",
+  "season": "2026",
+  "home": "日本",
+  "away": "委内瑞拉",
+  "kickoff": "2026-09-28 18:25",
+  "uniformMatchId": 2509727
+ },
+ "standing": {
+  "away": {
+   "groupName": "",
+   "phaseName": "",
+   "ranking": "",
+   "sAwayDrawMatchCnt": "",
+   "sAwayLossGoalMatchCnt": "",
+   "sAwayWinGoalMatchCnt": "",
+   "sDrawMatchCnt": "",
+   "sLossGoalMatchCnt": "",
+   "sWinGoalMatchCnt": "",
+   "seasonName": ""
+  },
+  "home": {
+   "groupName": "",
+   "phaseName": "",
+   "ranking": "",
+   "sDrawMatchCnt": "",
+   "sHomeDrawMatchCnt": "",
+   "sHomeLossGoalMatchCnt": "",
+   "sHomeWinGoalMatchCnt": "",
+   "sLossGoalMatchCnt": "",
+   "sWinGoalMatchCnt": "",
+   "seasonName": ""
+  }
+ },
+ "injuries": {
+  "home": [
+   {
+    "name": "冨安健洋",
+    "pos": "后卫",
+    "no": "",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 1,
+    "starts": 1
+   }
+  ],
+  "away": [
+   {
+    "name": "佩雷拉",
+    "pos": "中场",
+    "no": "",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 2,
+    "starts": 1
+   },
+   {
+    "name": "D. Martínez",
+    "pos": "前锋",
+    "no": "",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 3,
+    "starts": 2
+   }
+  ]
+ },
+ "form": {
+  "goalAvg": {
+   "awayGoalAvgCnt": "1.1",
+   "awayGoalAvgCntRatio": "36.7",
+   "homeGoalAvgCnt": "1.9",
+   "homeGoalAvgCntRatio": "63.3",
+   "totalLegCnt": 10
+  },
+  "last10": {
+   "awayDrawMatchCnt": 1,
+   "awayLossGoalMatchCnt": 6,
+   "awayScoreRatio": "33",
+   "awayWinGoalMatchCnt": 3,
+   "homeDrawMatchCnt": 2,
+   "homeLossGoalMatchCnt": 1,
+   "homeScoreRatio": "77",
+   "homeWinGoalMatchCnt": 7,
+   "totalLegCnt": 10
+  },
+  "last10HomeAway": {
+   "awayDrawMatchCnt": 1,
+   "awayLossGoalMatchCnt": 8,
+   "awayScoreRatio": "13",
+   "awayWinGoalMatchCnt": 1,
+   "homeDrawMatchCnt": 2,
+   "homeLossGoalMatchCnt": 0,
+   "homeScoreRatio": "87",
+   "homeWinGoalMatchCnt": 8,
+   "totalLegCnt": 10
+  }
+ },
+ "h2h": {
+  "statistics": {
+   "drawMatchCnt": 1,
+   "drawProbability": "50%",
+   "goalCnt": 0,
+   "lossGoalCnt": 0,
+   "lossGoalMatchCnt": 1,
+   "lossProbability": "50%",
+   "netGoal": 0,
+   "sportteryTeamId": 0,
+   "teamId": 0,
+   "teamShortName": "日本",
+   "totalLegCnt": 2,
+   "winGoalMatchCnt": 0,
+   "winProbability": "0%"
+  },
+  "matches": [
+   {
+    "date": "2019-11-19",
+    "home": "日本",
+    "score": "1:4",
+    "ht": "0:4",
+    "away": "委内瑞拉",
+    "winner": "away"
+   },
+   {
+    "date": "2018-11-16",
+    "home": "日本",
+    "score": "1:1",
+    "ht": "1:0",
+    "away": "委内瑞拉",
+    "winner": "draw"
+   }
+  ]
+ },
+ "scorers": {
+  "away": {
+   "playerList": [
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "1.0",
+     "goalCnt": 2,
+     "goalProbability": "29%",
+     "injuryFlag": 0,
+     "personId": 621881,
+     "personName": "D.阿方索",
+     "playerPositionCode": "Defender",
+     "playerPositionDesc": "后卫",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 1,
+     "suspensionFlag": 0,
+     "uniformNo": ""
+    },
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "1.0",
+     "goalCnt": 2,
+     "goalProbability": "29%",
+     "injuryFlag": 0,
+     "personId": 58710,
+     "personName": "龙东",
+     "playerPositionCode": "Attacker",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 0,
+     "substituteMatchCnt": 2,
+     "suspensionFlag": 0,
+     "uniformNo": ""
+    },
+    {
+     "appearanceCnt": 4,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.3",
+     "goalCnt": 1,
+     "goalProbability": "14%",
+     "injuryFlag": 0,
+     "personId": 777116,
+     "personName": "G. Mendoza",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 4,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": ""
+    }
+   ],
+   "sportteryTeamId": 412,
+   "teamId": 2313,
+   "teamShortName": "委内瑞拉",
+   "uniformTeamId": 1738
+  },
+  "home": {
+   "playerList": [
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "20%",
+     "injuryFlag": 0,
+     "personId": 507525,
+     "personName": "三笘薫",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 1,
+     "suspensionFlag": 0,
+     "uniformNo": ""
+    },
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "20%",
+     "injuryFlag": 0,
+     "personId": 435835,
+     "personName": "K. Ogawa",
+     "playerPositionCode": "Attacker",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 0,
+     "substituteMatchCnt": 2,
+     "suspensionFlag": 0,
+     "uniformNo": ""
+    },
+    {
+     "appearanceCnt": 1,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "1.0",
+     "goalCnt": 1,
+     "goalProbability": "20%",
+     "injuryFlag": 0,
+     "personId": 795162,
+     "personName": "K. Shiogai",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 0,
+     "substituteMatchCnt": 1,
+     "suspensionFlag": 0,
+     "uniformNo": "26"
+    }
+   ],
+   "sportteryTeamId": 438,
+   "teamId": 1348,
+   "teamShortName": "日本",
+   "uniformTeamId": 869
+  },
+  "seasonId": 14311,
+  "seasonName": "2026",
+  "tournamentId": 1012,
+  "tournamentShortName": "国际赛",
+  "uniformLeagueId": 104,
+  "uniformMatchId": 2509727
+ }
+}

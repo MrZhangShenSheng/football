@@ -1,31 +1,103 @@
 {
-  "checkedAt": "2026-09-27",
+  "checkedAt": "2026-09-28",
   "leagues": {
-    "韩职": {
-      "status": "ready",
-      "roundsPlayed": 22,
-      "standingsSource": "insight",
-      "fdCovered": false
+    "国际赛": {
+      "status": "missing"
     },
-    "荷乙": {
-      "status": "ready",
-      "roundsPlayed": 8,
-      "standingsSource": "espn-manual",
-      "fdCovered": false
-    },
-    "美职": {
-      "status": "ready",
-      "roundsPlayed": 23,
-      "standingsSource": "espn",
-      "fdCovered": false
+    "欧国联": {
+      "status": "missing"
     }
   },
-  "missingLeagues": [],
+  "missingLeagues": [
+    "国际赛",
+    "欧国联"
+  ],
   "staleLeagues": [],
-  "missingAlias": [],
+  "missingAlias": [
+    {
+      "team": "日本",
+      "league": "国际赛",
+      "match": "日本 vs 委内瑞拉"
+    },
+    {
+      "team": "委内瑞拉",
+      "league": "国际赛",
+      "match": "日本 vs 委内瑞拉"
+    },
+    {
+      "team": "韩国",
+      "league": "国际赛",
+      "match": "韩国 vs 乌拉圭"
+    },
+    {
+      "team": "乌拉圭",
+      "league": "国际赛",
+      "match": "韩国 vs 乌拉圭"
+    },
+    {
+      "team": "亚美尼亚",
+      "league": "欧国联",
+      "match": "亚美尼亚 vs 黑山"
+    },
+    {
+      "team": "黑山",
+      "league": "欧国联",
+      "match": "亚美尼亚 vs 黑山"
+    },
+    {
+      "team": "土耳其",
+      "league": "欧国联",
+      "match": "土耳其 vs 意大利"
+    },
+    {
+      "team": "意大利",
+      "league": "欧国联",
+      "match": "土耳其 vs 意大利"
+    },
+    {
+      "team": "比利时",
+      "league": "欧国联",
+      "match": "比利时 vs 法国"
+    },
+    {
+      "team": "法国",
+      "league": "欧国联",
+      "match": "比利时 vs 法国"
+    },
+    {
+      "team": "罗马尼亚",
+      "league": "欧国联",
+      "match": "罗马尼亚 vs 波黑"
+    },
+    {
+      "team": "波黑",
+      "league": "欧国联",
+      "match": "罗马尼亚 vs 波黑"
+    },
+    {
+      "team": "瑞典",
+      "league": "欧国联",
+      "match": "瑞典 vs 波兰"
+    },
+    {
+      "team": "波兰",
+      "league": "欧国联",
+      "match": "瑞典 vs 波兰"
+    },
+    {
+      "team": "北爱尔兰",
+      "league": "欧国联",
+      "match": "北爱尔兰 vs 匈牙利"
+    },
+    {
+      "team": "匈牙利",
+      "league": "欧国联",
+      "match": "北爱尔兰 vs 匈牙利"
+    }
+  ],
   "notReadyTeams": [],
   "readyCount": {
-    "leagues": 3,
+    "leagues": 0,
     "teamsKnown": 537
   }
 }

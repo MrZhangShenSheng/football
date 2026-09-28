@@ -1,0 +1,260 @@
+{
+ "fetchedAt": "2026-09-28",
+ "source": "sporttery",
+ "matchId": 2041741,
+ "match": {
+  "code": "周一002",
+  "league": "国际赛",
+  "gameweek": "",
+  "season": "2026",
+  "home": "韩国",
+  "away": "乌拉圭",
+  "kickoff": "2026-09-28 19:00",
+  "uniformMatchId": 2509734
+ },
+ "standing": {
+  "away": {
+   "groupName": "",
+   "phaseName": "",
+   "ranking": "",
+   "sAwayDrawMatchCnt": "",
+   "sAwayLossGoalMatchCnt": "",
+   "sAwayWinGoalMatchCnt": "",
+   "sDrawMatchCnt": "",
+   "sLossGoalMatchCnt": "",
+   "sWinGoalMatchCnt": "",
+   "seasonName": ""
+  },
+  "home": {
+   "groupName": "",
+   "phaseName": "",
+   "ranking": "",
+   "sDrawMatchCnt": "",
+   "sHomeDrawMatchCnt": "",
+   "sHomeLossGoalMatchCnt": "",
+   "sHomeWinGoalMatchCnt": "",
+   "sLossGoalMatchCnt": "",
+   "sWinGoalMatchCnt": "",
+   "seasonName": ""
+  }
+ },
+ "injuries": {
+  "home": [],
+  "away": [
+   {
+    "name": "R. Araújo",
+    "pos": "后卫",
+    "no": "4",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 1,
+    "starts": 1
+   },
+   {
+    "name": "F. Viñas",
+    "pos": "前锋",
+    "no": "21",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 1,
+    "starts": 1
+   }
+  ]
+ },
+ "form": {
+  "goalAvg": {
+   "awayGoalAvgCnt": "0.9",
+   "awayGoalAvgCntRatio": "39.1",
+   "homeGoalAvgCnt": "1.4",
+   "homeGoalAvgCntRatio": "60.9",
+   "totalLegCnt": 10
+  },
+  "last10": {
+   "awayDrawMatchCnt": 5,
+   "awayLossGoalMatchCnt": 3,
+   "awayScoreRatio": "37",
+   "awayWinGoalMatchCnt": 2,
+   "homeDrawMatchCnt": 0,
+   "homeLossGoalMatchCnt": 4,
+   "homeScoreRatio": "60",
+   "homeWinGoalMatchCnt": 6,
+   "totalLegCnt": 10
+  },
+  "last10HomeAway": {
+   "awayDrawMatchCnt": 6,
+   "awayLossGoalMatchCnt": 3,
+   "awayScoreRatio": "30",
+   "awayWinGoalMatchCnt": 1,
+   "homeDrawMatchCnt": 0,
+   "homeLossGoalMatchCnt": 3,
+   "homeScoreRatio": "70",
+   "homeWinGoalMatchCnt": 7,
+   "totalLegCnt": 10
+  }
+ },
+ "h2h": {
+  "statistics": {
+   "drawMatchCnt": 1,
+   "drawProbability": "25%",
+   "goalCnt": 0,
+   "lossGoalCnt": 0,
+   "lossGoalMatchCnt": 2,
+   "lossProbability": "50%",
+   "netGoal": 0,
+   "sportteryTeamId": 0,
+   "teamId": 0,
+   "teamShortName": "韩国",
+   "totalLegCnt": 4,
+   "winGoalMatchCnt": 1,
+   "winProbability": "25%"
+  },
+  "matches": [
+   {
+    "date": "2023-03-28",
+    "home": "韩国",
+    "score": "1:2",
+    "ht": "0:1",
+    "away": "乌拉圭",
+    "winner": "away"
+   },
+   {
+    "date": "2022-11-24",
+    "home": "乌拉圭",
+    "score": "0:0",
+    "ht": "0:0",
+    "away": "韩国",
+    "winner": "draw"
+   },
+   {
+    "date": "2018-10-12",
+    "home": "韩国",
+    "score": "2:1",
+    "ht": "0:0",
+    "away": "乌拉圭",
+    "winner": "home"
+   },
+   {
+    "date": "2010-06-26",
+    "home": "乌拉圭",
+    "score": "2:1",
+    "ht": "1:0",
+    "away": "韩国",
+    "winner": "away"
+   }
+  ]
+ },
+ "scorers": {
+  "away": {
+   "playerList": [
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "50%",
+     "injuryFlag": 0,
+     "personId": 397869,
+     "personName": "巴尔韦德",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 2,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": ""
+    },
+    {
+     "appearanceCnt": 1,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "1.0",
+     "goalCnt": 1,
+     "goalProbability": "50%",
+     "injuryFlag": 0,
+     "personId": 541844,
+     "personName": "阿劳霍",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "20"
+    }
+   ],
+   "sportteryTeamId": 414,
+   "teamId": 2300,
+   "teamShortName": "乌拉圭",
+   "uniformTeamId": 1198
+  },
+  "home": {
+   "playerList": [
+    {
+     "appearanceCnt": 3,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.7",
+     "goalCnt": 2,
+     "goalProbability": "40%",
+     "injuryFlag": 0,
+     "personId": 598350,
+     "personName": "曹奎成",
+     "playerPositionCode": "Attacker",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 2,
+     "suspensionFlag": 0,
+     "uniformNo": ""
+    },
+    {
+     "appearanceCnt": 1,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "1.0",
+     "goalCnt": 1,
+     "goalProbability": "20%",
+     "injuryFlag": 0,
+     "personId": 539794,
+     "personName": "李东京",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 0,
+     "substituteMatchCnt": 1,
+     "suspensionFlag": 0,
+     "uniformNo": "26"
+    },
+    {
+     "appearanceCnt": 1,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "1.0",
+     "goalCnt": 1,
+     "goalProbability": "20%",
+     "injuryFlag": 0,
+     "personId": 593422,
+     "personName": "吴玄奎",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "18"
+    }
+   ],
+   "sportteryTeamId": 430,
+   "teamId": 1385,
+   "teamShortName": "韩国",
+   "uniformTeamId": 1348
+  },
+  "seasonId": 14311,
+  "seasonName": "2026",
+  "tournamentId": 1012,
+  "tournamentShortName": "国际赛",
+  "uniformLeagueId": 104,
+  "uniformMatchId": 2509734
+ }
+}
