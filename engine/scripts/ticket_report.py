@@ -186,8 +186,8 @@ def ticket_rows(tickets: list) -> str:
     rows = []
     for t in tickets:
         st = t.get("settled") or {}
-        if not t.get("legs"):
-            # 胜负彩/任九方案票（issue+structure 口径，无腿结构）：降级一行，本金仍入账本
+        if not t.get("legs") or not all(l.get("code") for l in t["legs"]):
+            # 胜负彩/任九方案票（issue+structure 口径；腿用 no 场次序号无 code）：降级一行，本金仍入账本
             rows.append(
                 f'<tr><td>{t["id"]}</td><td>{t.get("type") or "胜负彩"} {t.get("plan") or ""}</td>'
                 f'<td>{str(t.get("createdAt") or "")[:16]}</td><td>{t["stake"]}</td>'

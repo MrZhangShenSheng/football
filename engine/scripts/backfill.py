@@ -673,7 +673,7 @@ def settle_payout(ticket: dict) -> dict:
 def recalc_meta(data: dict) -> None:
     """按已结算票重算账本 meta 汇总。"""
     done = [t for t in data.get("tickets", []) if (t.get("settled") or {}).get("status") == "settled"]
-    data["meta"].update({
+    data.setdefault("meta", {}).update({
         "totalTickets": len(data.get("tickets", [])),
         "totalStake": sum(t["stake"] for t in done),
         "totalPayout": round(sum(t["settled"]["payout"] for t in done), 2),
@@ -728,6 +728,8 @@ def settle_tickets(sp_cache: dict[str, dict[str, dict]]) -> dict:
             continue
         if not t.get("legs"):
             continue  # 胜负彩/任九方案票（issue+structure 口径，无腿结构）不走腿制结算
+        if not all(l.get("code") for l in t["legs"]):
+            continue  # 任九/胜负彩带腿票用 no(场次序号) 非 code(竞彩编号)，无法走编号对票（T042）
         res_idx = _results_index(t.get("matchDays") or [])
         all_final = True
         for leg in t["legs"]:
