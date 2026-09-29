@@ -26,6 +26,7 @@ SPEC = {s['name']: s for s in shapes.PLAN_FAMILIES}
 
 
 def test_equal_cost_matches_report():
+    """等成本规则验证（2026-09-29 精简后 spec：删 B 族+胶着池）。"""
     legs = _strong8()
     assert shapes.build_ticket(legs, SPEC['4串11'])['cost'] == 22
     assert shapes.build_ticket(legs, SPEC['8串1'])['cost'] == 30
@@ -33,10 +34,6 @@ def test_equal_cost_matches_report():
     assert shapes.build_ticket(legs, SPEC['全2关-6'])['cost'] == 30
     assert shapes.build_ticket(legs, SPEC['全2关-4'])['cost'] == 24
     assert shapes.build_ticket(legs, SPEC['4串1+2双选'])['cost'] == 24
-    assert shapes.build_ticket(legs, SPEC['ev-8串9'])['cost'] == 18
-    assert shapes.build_ticket(legs, SPEC['胶着-三选2串1'])['cost'] == 18
-    assert shapes.build_ticket(legs, SPEC['胶着-双选全2关'])['cost'] == 48
-    assert shapes.build_ticket(legs, SPEC['胶着-双选单关'])['cost'] == 28
 
 
 def test_settle_all_win_vs_one_miss():
@@ -108,25 +105,6 @@ def test_had_odds_frozen_only_bought_slots():
     for tleg in t['tlegs']:
         assert tleg['odds'][1] is None and tleg['odds'][2] is None  # 只买主胜槽
         assert tleg['odds'][0] > 1
-
-
-def test_jiao_pool_prefers_tight_legs():
-    """胶着池=三向极差升序：极差小的场优先入池。"""
-    legs = [_had_leg(0, 0.7, 0.2, 0.1),      # 极差 0.6（强腿）
-            _had_leg(1, 0.35, 0.33, 0.32),   # 极差 0.03（胶着）
-            _had_leg(2, 0.34, 0.33, 0.33)]   # 极差 0.01（最胶着）
-    t = shapes.build_ticket(legs, SPEC['胶着-三选2串1'])
-    srcs = [tl['src'] for tl in t['tlegs']]
-    assert set(srcs) == {2, 1}               # 最胶着两场入选
-
-
-def test_jiao_short_pool_degrades():
-    """胶着池腿<N 降级用全部可用（spec 变更#6）。"""
-    legs = [_had_leg(i, 0.34, 0.33, 0.33) for i in range(2)]   # 仅2场胶着
-    t = shapes.build_ticket(legs, SPEC['胶着-双选全2关'])       # n_legs=4 → 降级2场
-    assert t is not None and len(t['tlegs']) == 2
-    assert t['n_bets'] == 4                   # C(2,2)=1骨架 × 2×2 双选
-    assert t['cost'] == 24                    # 4注×2元×mult=⌊30/8⌋=3
 
 
 def test_ttg_crs_skip_without_qcache():

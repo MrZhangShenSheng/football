@@ -28,23 +28,17 @@ BET_UNIT = 2      # 单注 2 元（与实票账本/narrative.SHADOW_BET_UNIT 同
 BUDGET = 30       # 等成本预算上限（mult=⌊30/(n_bets*2)⌋ 至少 1）
 
 
-# ── 方案族（19 spec · 家族/池/形状/腿数/选项规则对齐回放报告）──
+# ── 方案族（12 spec · 2026-09-29 清理：删 B 族全部+A 族胶着池，证据=市场充分定价+博冷门证伪）──
 PLAN_FAMILIES = [
-    # A 族：HAD 方向（strong=市场去水强腿 / jiao_zhuo=胶着池）
+    # A 族：HAD 方向（strong=市场去水强腿·保留作市场基线对照）
     {'family': 'A', 'name': '8串1',        'pool': 'strong',   'shape': '8串1',  'n_legs': 8, 'options': 'single', 'track': 'A'},
     {'family': 'A', 'name': '4串1',        'pool': 'strong',   'shape': '4串1',  'n_legs': 4, 'options': 'single', 'track': 'A'},
     {'family': 'A', 'name': '4串11',       'pool': 'strong',   'shape': '4串11', 'n_legs': 4, 'options': 'single', 'track': 'A'},
     {'family': 'A', 'name': '4串1+2双选',  'pool': 'strong',   'shape': '4串1',  'n_legs': 4, 'options': 'dual2', 'track': 'A'},
     {'family': 'A', 'name': '全2关-6',     'pool': 'strong',   'shape': '全2关', 'n_legs': 6, 'options': 'single', 'track': 'A'},
     {'family': 'A', 'name': '全2关-4',     'pool': 'strong',   'shape': '全2关', 'n_legs': 4, 'options': 'single', 'track': 'A'},
-    {'family': 'A', 'name': '胶着-三选2串1', 'pool': 'jiao_zhuo', 'shape': '2串1', 'n_legs': 2, 'options': 'triple', 'track': 'A'},
-    {'family': 'A', 'name': '胶着-双选全2关', 'pool': 'jiao_zhuo', 'shape': '全2关', 'n_legs': 4, 'options': 'dual', 'track': 'A'},
-    {'family': 'A', 'name': '胶着-双选单关', 'pool': 'jiao_zhuo', 'shape': '单关', 'n_legs': 7, 'options': 'dual', 'track': 'A'},
-    # B 族：EV 最优池（同 A 形状）
-    {'family': 'B', 'name': 'ev-8串1',     'pool': 'ev_best',  'shape': '8串1',  'n_legs': 8, 'options': 'single', 'track': 'A'},
-    {'family': 'B', 'name': 'ev-4串11',    'pool': 'ev_best',  'shape': '4串11', 'n_legs': 4, 'options': 'single', 'track': 'A'},
-    {'family': 'B', 'name': 'ev-8串9',     'pool': 'ev_best',  'shape': '8串9',  'n_legs': 8, 'options': 'single', 'track': 'A'},
-    {'family': 'B', 'name': 'ev-双选全2关-4', 'pool': 'ev_best', 'shape': '全2关', 'n_legs': 4, 'options': 'dual', 'track': 'A'},
+    # B 族（ev_best）2026-09-29 删除：EV = p×o - 1 ≈ 概率排序（市场充分定价），与 A 族冗余
+    # A 族胶着池 2026-09-29 删除：三轮证伪了顺序/逆序/胶着，博冷门逻辑无 alpha
     # C 族：TTG（q 快照驱动 · 无 q 跳过）
     {'family': 'C', 'name': 'ttg-4串1',    'pool': 'ttg',      'shape': '4串1',  'n_legs': 4, 'options': 'single', 'track': 'A'},
     {'family': 'C', 'name': 'ttg-双选2串1', 'pool': 'ttg',     'shape': '全2关', 'n_legs': 3, 'options': 'dual', 'track': 'A'},
@@ -53,7 +47,7 @@ PLAN_FAMILIES = [
     {'family': 'D', 'name': 'crs-4串1',    'pool': 'crs',      'shape': '4串1',  'n_legs': 4, 'options': 'single', 'track': 'A'},
     {'family': 'D', 'name': 'crs-双选2串1', 'pool': 'crs',     'shape': '全2关', 'n_legs': 3, 'options': 'dual', 'track': 'A'},
     {'family': 'D', 'name': 'crs-双选单关', 'pool': 'crs',     'shape': '单关',  'n_legs': 7, 'options': 'dual', 'track': 'A'},
-    # G 族：右尾贪心（2026-09-09 大哥拍板新增）——概率预算背包贪心近似：
+    # G 族：右尾贪心（2026-09-09 大哥拍板新增·保留作闯关票对照）——概率预算背包贪心近似：
     # 预算容量 W=-ln(p_budget) 内按密度 d=ln(o)/(-ln(p)) 贪心装入（每损失 1 单位概率
     # 换回最多赔率对数收益）；候选=每场 {HAD 主选项 ∪ CRS top-1 ∪ TTG top-1}，
     # 同场取密度最高（铁律9 同场限一玩法）。关数不预设（2~n_legs 由预算自然决定——
