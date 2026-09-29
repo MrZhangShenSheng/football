@@ -1,0 +1,61 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>正期望模型两路证伪记录 · 错价搬砖+资金流跟随</title>
+<style>
+:root{--ink:#1a1f2e;--sub:#5a6478;--line:#e3e7ee;--bg:#f7f8fb;--card:#fff;--acc:#c0392b;--ok:#1e8e5a;--blue:#2b6cb0}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;padding:26px 16px}
+.wrap{max-width:960px;margin:0 auto}
+h1{font-size:21px;margin-bottom:4px}h2{font-size:16px;margin:26px 0 10px;padding-left:10px;border-left:4px solid var(--acc)}
+.sub{color:var(--sub);font-size:12.5px;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+th{text-align:left;color:var(--sub);font-weight:600;padding:6px 8px;border-bottom:1.5px solid var(--line)}
+td{padding:6px 8px;border-bottom:1px solid var(--line)}
+.dead{color:var(--acc);font-weight:700}
+.footer{color:var(--sub);font-size:11.5px;margin-top:24px;border-top:1px solid var(--line);padding-top:12px}
+</style></head><body><div class="wrap">
+
+<h1>正期望模型两路证伪记录</h1>
+<div class="sub">2026-09-29 晚 · 立项=大哥新目标"建立什么投注模型才能收益为正" · 预注册判据跑前锁定 · 判据未达即证伪 · <b>禁重跑</b>（铁律13 先例）· 开发者 sszhang</div>
+
+<h2>〇、数学前提（roll500 推演结论）</h2>
+<div class="card">
+<p>EV = P×o − 1。正期望只有两个入口：①信息优势（P 比市场准）②时机优势（买到的 o 高于公允）。票型/串关/复利/仓位不改变期望（500 元滚动推演实证：回收率恒在 ~95%）。本轮验证两个"时机优势"候选，均证伪。</p>
+</div>
+
+<h2>一、模型2：资金流跟随（CRS 开盘→封盘漂移）——<span class="dead">死刑</span></h2>
+<div class="card">
+<p><b>设计</b>：4999 场（100% 含开盘+封盘价），买"开盘/封盘比值最小"（被资金压得最狠）的 top-k 比分，对照=封盘价最低 top-k（市场自身）。结算=命中项封盘赔率×2元/注，成本=k×2元/注。</p>
+<table>
+<tr><th>k</th><th>资金流A</th><th>市场B</th><th>A−B</th></tr>
+<tr><td>1</td><td>71.4%</td><td>83.8%</td><td class="dead">−12.5pp</td></tr>
+<tr><td>2</td><td>70.1%</td><td>78.7%</td><td class="dead">−8.6pp</td></tr>
+<tr><td>3</td><td>63.2%</td><td>77.1%</td><td class="dead">−13.9pp</td></tr>
+<tr><td>4</td><td>66.6%</td><td>76.7%</td><td class="dead">−10.1pp</td></tr>
+</table>
+<p><b>死因</b>：①全面大幅劣于市场基线（口径验证：B 与 4985 场天花板线 84.0/78.7/77.2/76.7 完全吻合）②机制诊断——"被压得最狠"的比分历史命中率仅 <b>3.1%</b>：体彩 CRS 池的资金漂移集中在<b>高赔冷门比分</b>（投机盘），方向与"更可能开出"无关。开盘价已把信息定准，漂移是噪声不是信号。</p>
+</div>
+
+<h2>二、模型1：错价搬砖（体彩 HAD × Pinnacle 去水收盘）——<span class="dead">死缓·证据不利</span></h2>
+<div class="card">
+<p><b>设计</b>：02-results 带 pinClose 的 296 场独立场次（注：早前统计的"495 场"含 -rN 过程快照重复计数，已勘误）× hist_odds 体彩 HAD 匹配 196 场。错价单 = 体彩赔率×Pin去水概率−1 &gt; 0。</p>
+<table>
+<tr><th>口径</th><th>EV&gt;0 单数</th><th>实测命中率</th><th>Pin期望</th><th>回收率</th></tr>
+<tr><td>全量</td><td>37 / 588</td><td>16.2%</td><td>20.8%</td><td class="dead">72.3%</td></tr>
+<tr><td>仅单固（真实可买单关）</td><td>5 / 204</td><td>20.0%</td><td>24.0%</td><td class="dead">98.0%</td></tr>
+</table>
+<p><b>死因三连</b>：①<b>机会密度低</b>：588 单仅 6.3% EV&gt;0（月均~4 单）——体彩 HAD 定价与 Pinnacle 高度一致，无系统性懒价；②<b>单固闸门</b>：仅 35% 场可买单关，与错价交集后月均不足 1 单；③<b>时点价疑点</b>：hist 的 HAD 是<b>开奖价</b>非出票时点价——体彩临场调价向 Pin 收敛后，真实可买价可能已无错价；实测回收率 72% 亦不支持"EV 为真"。</p>
+</div>
+
+<h2>三、排除法收口：正收益的唯一活路</h2>
+<div class="card">
+<p>时机优势两条支路（跟资金/搬砖价差）已证伪或证据不利，公开信息预测已被族模型盲测证伪（偏离判据 −1.0~−4.5pp）。排除法收敛到<b>唯一未验证路径：市场外信息（模型3·伤停/首发/临场情报）</b>——它是唯一能改变 P 本身的入口。配套结论：</p>
+<ul>
+<li>闯关票维持 2 元/天纪律=数据积累器，500 元滚动方案作废（负期望×复利=加速归零）</li>
+<li>模型3 的因素快照管线（09-28 设计 §二点五 R3）为下一步唯一立项候选</li>
+<li>若市场外信息最终也证伪 → 诚实结论="竞彩 CRS 无正期望可提取"，策略资产转为纯记录</li>
+</ul>
+</div>
+
+<div class="footer">docs/2026-09-29-positive-ev-falsification.html · 数据=engine/cache/hist_odds（去重修正后）+ data/02-results pinClose · 脚本=engine/scripts/scratch/m1_pin_gap.py·m2_drift.py（会话临时）· 关联=铁律13 · docs/2026-09-29-score-family-model-design.html（公开信息证伪）· 开发者 sszhang</div>
+</div></body></html>
