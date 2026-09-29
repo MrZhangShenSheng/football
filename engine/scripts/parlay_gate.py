@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
-r"""闯关票生产脚本（2026-09-29 大哥拍板直接转正）。
+r"""闯关票生产脚本（2026-09-29 动态选腿策略转正）。
 
 方案定义（全部参数冻结，证据=engine/scripts/research/ 全链验证）：
-  概率源   ：比分族特征模型（score_family_model 族 softmax，逐月滚动重训——
-            当月预测用联赛库 < 当月 1 日全部数据，实盘无泄漏）
+  概率源   ：比分族特征模型（score_family_model 族 softmax，v2 26维特征，
+            逐月滚动重训——当月预测用联赛库 < 当月 1 日全部数据，实盘无泄漏）
   选场     ：滚动 2 天窗口（跨日在售池）内 gap 断层最大的前 2 场
-  选腿     ：每场押模型 top1+top2 双选（防次热翻转，P352 教训）
-  结构     ：2串1 复式 = 4 注 × 2 元 = 8 元/票（每日一票）
-  预期     ：全季模拟 134 注 ROI +20.1%；右尾结构——6~8 月连续 3 个月 0 回款
-            是常态，非故障；评估纪律 = 满 100 注或 3 个月 0 回款再议，中途不停
+  选腿     ：动态 1-2 选（gap > 0.05 选单选，否则选双选）
+  结构     ：2串1 复式 = 1~4 注 × 2 元（每日一票）
+  预期     ：2026-01~09 大样本 203票 ROI +4.6%；右尾结构——连续数月 0 回款是常态
 
 纪律：
   · 幂等：同窗口已出票（cache 存在）则跳过，--force 才重出
@@ -42,6 +41,12 @@ OUT_DIR = ROOT / "engine" / "cache" / "parlay_gate"
 WINDOW_DAYS = 2
 N_LEGS = 2
 UNIT = 2.0
+GAP_THRESHOLD = 0.05  # 动态选腿阈值：gap > 0.05 选单选，否则双选
+
+
+def dynamic_k(gap):
+    """根据 gap 决定选几个比分"""
+    return 1 if gap > GAP_THRESHOLD else 2
 
 
 def current_window_matches():
@@ -117,17 +122,17 @@ def build_live_packs():
         fv_h = stats[h].vector(0, lg_gf)
         fv_a = stats[a].vector(1, lg_gf)
         if fv_h[12] >= sfm.MIN_HIST and fv_a[12] >= sfm.MIN_HIST:
-            X_tr.append(sfm.feature_row_v4((fv_h, fv_a),
-                                           stats[h].recent, stats[a].recent))
+            # 用 v2 基线特征（26维）—— 和回测 score_family_parlay_v2 一致
+            X_tr.append(sfm.feature_row((fv_h, fv_a)))
             y_tr.append(sfm.CLASSES.index(sfm.family_of(hg, ag)))
         stats[h].add(hg, ag, True, opp=a)
         stats[a].add(ag, hg, False, opp=h)
         tot_g += hg + ag
         tot_n += 1
     model = sfm.train_softmax(X_tr, y_tr, len(sfm.CLASSES))
-    X_bl = [sfm.feature_row_v4((stats[b["hid"]].vector(0, tot_g / max(tot_n, 1)),
-                                stats[b["aid"]].vector(1, tot_g / max(tot_n, 1))),
-                               stats[b["hid"]].recent, stats[b["aid"]].recent)
+    # 盲测特征也用 v2（26维）
+    X_bl = [sfm.feature_row((stats[b["hid"]].vector(0, tot_g / max(tot_n, 1)),
+                             stats[b["aid"]].vector(1, tot_g / max(tot_n, 1))))
             for b in blind]
     P = sfm.predict_proba(model, X_bl)
     fam_dist = defaultdict(Counter)
@@ -192,19 +197,38 @@ def main():
     if len(pool) < N_LEGS:
         raise SystemExit(f"[parlay_gate] 窗口内可映射场 {len(pool)} < {N_LEGS}，不出票")
 
+    # 动态选腿：根据 gap 决定每场选几个比分
+    legs = []
+    for p in pool:
+        k = dynamic_k(p["gap"])
+        leg = {
+            "code": p["code"], "league": p["league"], "match": p["match"],
+            "date": p["date"], "gap": p["gap"], "k": k,
+            "top1": f'{p["top1"][0]}:{p["top1"][1]}', "p1": p["p1"], "o1": p["o1"],
+        }
+        if k >= 2:
+            leg["top2"] = f'{p["top2"][0]}:{p["top2"][1]}'
+            leg["p2"] = p["p2"]
+            leg["o2"] = p["o2"]
+        legs.append(leg)
+
+    # 计算注数和成本
+    k1, k2 = legs[0]["k"], legs[1]["k"]
+    n_bets = k1 * k2
+    cost = n_bets * UNIT
+
+    shape_desc = f"2串1复式（{n_bets}注×{UNIT:.0f}元={cost:.0f}元）"
+    pick_desc = f"{k1}选×{k2}选"
+
     ticket = {
-        "date": today, "shape": "2串1复式（4注×2元=8元）",
+        "date": today, "shape": shape_desc, "pick": pick_desc,
         "window": [today, w_end],
-        "legs": [{"code": p["code"], "league": p["league"], "match": p["match"],
-                  "date": p["date"], "gap": p["gap"],
-                  "top1": f'{p["top1"][0]}:{p["top1"][1]}', "p1": p["p1"], "o1": p["o1"],
-                  "top2": f'{p["top2"][0]}:{p["top2"][1]}', "p2": p["p2"], "o2": p["o2"]}
-                 for p in pool],
-        "cost": 8.0, "unitStake": 2.0, "multiplier": 1,
-        "bets": 4,
-        "model": "score_family v4（逐月滚动重训+族频率比分体质特征·2026-09-29 双段验证通过）· W=2 · gap前2 · 双选",
-        "evidence": "2025-10~2026-09 全季模拟 134注 ROI+20.1%（右尾·6-8月连亏3月为常态）",
-        "expected": "以小博大：多数注归零，靠双选全中(合赔数十倍级)回本翻正",
+        "legs": legs,
+        "cost": cost, "unitStake": UNIT, "multiplier": 1,
+        "bets": n_bets,
+        "model": "score_family v2（26维特征·逐月滚动重训）· W=2 · gap前2 · 动态1-2选(gap>0.05选1)",
+        "evidence": "2026-01~09 大样本 203票 ROI+4.6%（右尾·连续数月0回款为常态）",
+        "expected": "以小博大：多数注归零，靠全中(合赔数十倍级)回本翻正",
         "discipline": "满100注或连续3个月0回款再评估；中途不停",
         "settle": {"status": "pending"},
     }
@@ -215,12 +239,16 @@ def main():
 
 
 def _print_card(t):
-    print("\n┌ 闯关票 · 2串1复式 · 4注×2元=8元 " + "─" * 30)
+    print(f"\n┌ 闯关票 · {t['shape']} " + "─" * 30)
     for i, l in enumerate(t["legs"], 1):
+        k = l.get("k", 2)
+        if k == 1:
+            pick_str = f"单选 {l['top1']}@{l['o1']}"
+        else:
+            pick_str = f"双选 {l['top1']}@{l['o1']} / {l.get('top2', '?')}@{l.get('o2', '?')}"
         print(f"│ 腿{i} {l['code']} {l['league']:5} {l['match'][:22]:24} "
-              f"双选 {l['top1']}@{l['o1']} / {l['top2']}@{l['o2']}  "
-              f"(gap {l['gap']:.3f})")
-    print("│ 规则：两腿各命中任一双选比分 → 全中派彩（赔率相乘×2元）")
+              f"{pick_str}  (gap {l['gap']:.3f})")
+    print("│ 规则：两腿各命中所选比分 → 全中派彩（赔率相乘×2元）")
     print("└ 出票时逐条对照终端，赔率以终端为准 ──────────────────")
 
 
