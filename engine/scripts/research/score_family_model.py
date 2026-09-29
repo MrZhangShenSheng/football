@@ -109,7 +109,7 @@ class TeamStats:
     v2 新增：动量（近3场 vs 全期的净胜差）——状态变化特征。"""
 
     __slots__ = ("n", "gf", "ga", "win", "gd", "cs", "becs", "btts", "over25",
-                 "gf_side", "ga_side", "recent_gd")
+                 "gf_side", "ga_side", "recent_gd", "recent")
 
     def __init__(self):
         self.n = 0
@@ -118,8 +118,9 @@ class TeamStats:
         self.gf_side = [[0, 0], [0, 0]]   # [主/客][进球和, 场次]
         self.ga_side = [[0, 0], [0, 0]]
         self.recent_gd = []               # 最近 3 场净胜（滑动窗口）
+        self.recent = []                  # v4：(opp, scored, conceded) 近 10（族频率特征源）
 
-    def add(self, scored: int, conceded: int, at_home: bool):
+    def add(self, scored: int, conceded: int, at_home: bool, opp=None):
         i = 0 if at_home else 1
         self.n += 1
         self.gf += scored
@@ -137,6 +138,10 @@ class TeamStats:
         self.recent_gd.append(scored - conceded)
         if len(self.recent_gd) > 3:
             self.recent_gd.pop(0)
+        if opp is not None:               # v4：传 opp 才记明细（向后兼容 v2 调用）
+            self.recent.append((opp, scored, conceded))
+            if len(self.recent) > 10:
+                self.recent.pop(0)
 
     def vector(self, side: int, lg_gf: float):
         """side=0 主场视角 1 客场视角。14 维（v2 加动量 1 维）。"""
@@ -163,8 +168,26 @@ class TeamStats:
 
 
 def feature_row(fv):
-    """(home_vec, away_vec) → 拼接特征（去样本量列后 13+13=26 维）。"""
+    """(home_vec, away_vec) → 拼接特征（去样本量列后 13+13=26 维）。v2 基线。"""
     return fv[0][:13] + fv[1][:13]
+
+
+FAMS_LIST = list(FAMILIES)
+
+
+def fam_freq_vector(recent, n=10):
+    """v4 增补：近 n 场 5 族频率（比分体质特征·2026-09-29 双段验证通过）。"""
+    fc = Counter()
+    tail = recent[-n:]
+    for _opp, s_, c_ in tail:
+        fc[family_of(s_, c_)] += 1
+    tot = max(len(tail), 1)
+    return [fc.get(f, 0) / tot for f in FAMS_LIST]
+
+
+def feature_row_v4(fv, rec_h, rec_a):
+    """v4 生产特征：v2 26 维 + 两队族频率 10 维 = 36 维。"""
+    return fv[0][:13] + fv[1][:13] + fam_freq_vector(rec_h) + fam_freq_vector(rec_a)
 
 
 # ---------------------------------------------------------------- softmax 回归

@@ -117,15 +117,17 @@ def build_live_packs():
         fv_h = stats[h].vector(0, lg_gf)
         fv_a = stats[a].vector(1, lg_gf)
         if fv_h[12] >= sfm.MIN_HIST and fv_a[12] >= sfm.MIN_HIST:
-            X_tr.append(sfm.feature_row((fv_h, fv_a)))
+            X_tr.append(sfm.feature_row_v4((fv_h, fv_a),
+                                           stats[h].recent, stats[a].recent))
             y_tr.append(sfm.CLASSES.index(sfm.family_of(hg, ag)))
-        stats[h].add(hg, ag, True)
-        stats[a].add(ag, hg, False)
+        stats[h].add(hg, ag, True, opp=a)
+        stats[a].add(ag, hg, False, opp=h)
         tot_g += hg + ag
         tot_n += 1
     model = sfm.train_softmax(X_tr, y_tr, len(sfm.CLASSES))
-    X_bl = [sfm.feature_row((stats[b["hid"]].vector(0, tot_g / max(tot_n, 1)),
-                             stats[b["aid"]].vector(1, tot_g / max(tot_n, 1))))
+    X_bl = [sfm.feature_row_v4((stats[b["hid"]].vector(0, tot_g / max(tot_n, 1)),
+                                stats[b["aid"]].vector(1, tot_g / max(tot_n, 1))),
+                               stats[b["hid"]].recent, stats[b["aid"]].recent)
             for b in blind]
     P = sfm.predict_proba(model, X_bl)
     fam_dist = defaultdict(Counter)
@@ -200,7 +202,7 @@ def main():
                  for p in pool],
         "cost": 8.0, "unitStake": 2.0, "multiplier": 1,
         "bets": 4,
-        "model": "score_family v2（逐月滚动重训）· W=2 · gap前2 · 双选",
+        "model": "score_family v4（逐月滚动重训+族频率比分体质特征·2026-09-29 双段验证通过）· W=2 · gap前2 · 双选",
         "evidence": "2025-10~2026-09 全季模拟 134注 ROI+20.1%（右尾·6-8月连亏3月为常态）",
         "expected": "以小博大：多数注归零，靠双选全中(合赔数十倍级)回本翻正",
         "discipline": "满100注或连续3个月0回款再评估；中途不停",
