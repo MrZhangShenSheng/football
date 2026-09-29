@@ -1,0 +1,108 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>比分族特征模型 v1 · 设计方案</title>
+<style>
+:root{--ink:#1a1f2e;--sub:#5a6478;--line:#e3e7ee;--bg:#f7f8fb;--card:#fff;--acc:#c0392b;--ok:#1e8e5a;--blue:#2b6cb0}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;padding:26px 16px}
+.wrap{max-width:960px;margin:0 auto}
+h1{font-size:22px;margin-bottom:4px}h2{font-size:17px;margin:26px 0 10px;padding-left:10px;border-left:4px solid var(--acc)}
+h3{font-size:14.5px;margin:14px 0 8px}
+.sub{color:var(--sub);font-size:13px;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+th{text-align:left;color:var(--sub);font-weight:600;padding:6px 8px;border-bottom:1.5px solid var(--line)}
+td{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+code{background:#eef1f6;border-radius:4px;padding:1px 5px;font-size:12px;font-family:ui-monospace,Menlo,monospace}
+.flow{background:#f0f4f9;border:1px dashed #9db2cc;border-radius:10px;padding:12px 16px;font-family:ui-monospace,Menlo,monospace;font-size:12px;white-space:pre;line-height:1.8;overflow-x:auto;margin:8px 0}
+.warn{background:#fdf6e8;border:1px solid #f0dfb4;border-radius:8px;padding:10px 14px;font-size:12.5px;color:#7a5b16;margin:10px 0}
+.ev{background:#fdf0ee;border:1px solid #f2c4bd;border-radius:8px;padding:10px 14px;font-size:12.5px;margin:8px 0}
+ul{margin:6px 0 6px 20px}li{margin:3px 0;font-size:13px}
+.footer{color:var(--sub);font-size:11.5px;margin-top:24px;border-top:1px solid var(--line);padding-top:12px}
+</style></head><body><div class="wrap">
+
+<h1>比分族特征模型 v1 · 设计方案</h1>
+<div class="sub">2026-09-29 立项 · 源起=大哥指令"每种比分都建立特征模型" · 与铁律 13 的关系：本模型是"独立概率源"路线的正式实现——排序不得来自赔率的任何变换 · 开发者 sszhang</div>
+
+<h2>〇、判定标准（预注册·看结果前锁定·禁改）</h2>
+<div class="ev">
+<b>样本</b>：hist_odds 采集库中 <b>2026-07-01 之后</b>开赛、两队均可映射规范 ID 的场次（约 600 场·盲测集）。<br>
+<b>训练集</b>：联赛库 2223~2627 全部历史，特征时点滚动（每场只用该场之前的比赛）。<br>
+<b>对照三方</b>：①市场封盘赔率排序（天花板：84%/79%/77%/77%）②DC 现有缓存 ③经验频率模板。<br>
+<b>主判据（双条件，缺一即无 alpha）</b>：<br>
+　①偏离：模型 top-k 集合 ≠ 市场 top-k 集合的场次占比（&gt;0 即有偏离能力）<br>
+　②更准：<b>仅偏离场次上</b>，模型命中率 − 市场命中率 &gt; 0<br>
+<b>财务判据</b>：真实结算回收率（逐场按实际中奖项赔率）vs 市场三方对照线。<br>
+<b>禁改条款</b>：特征集/超参/切分点在首次盲测前冻结；盲测集只跑一次；中奖次数 &lt;50 的行只入脚注不入结论。<br>
+<b>预期管理</b>：本版特征全为公开信息（市场大概率已定价），先验预期=跑赢 DC、跑输市场。它的价值是把"公开信息到头了"从推断变实测，并为市场外信息版（V2）预留完全相同的验证框架。
+</div>
+
+<h2>一、为什么是"族级分类"而不是"31 个比分各建一个模型"</h2>
+<div class="card">
+<ul>
+<li><b>归一化等价</b>：31 个比分概率之和恒为 1，独立建模后终究归一——除非各模型<b>输入特征不同</b>，否则不多任何信息。</li>
+<li><b>样本量</b>：单比分正样本太少（冷门比分一年仅 20~30 个），直接分类必然欠拟合；<b>族级正样本是比分级的 3 倍</b>，且 5 族结构项目已有（crs_fusion.FAMILIES）。</li>
+<li><b>避开泊松结构假设</b>：DC/goal_engine 都在"λ 参数化"内做文章（已被证无增益）；本模型<b>直接对族概率分类</b>，不假设泊松边际——这是与既有工作唯一的结构差异。</li>
+<li><b>族内分布</b>用训练集条件频率（族内比分排序稳定，符合"族好猜、族内难猜"的实测格局）。</li>
+</ul>
+</div>
+
+<h2>二、模型结构</h2>
+<div class="card">
+<div class="flow">特征 x（13 维·全部时点滚动·公开信息）
+  ↓
+softmax 多分类（6 类）：P(home_clean) P(home_multi) P(draw) P(away_clean) P(away_multi) P(other)
+  ↓
+族内条件分布 P(s|族)（训练集全局频率·限制在体彩池内归一）
+  ↓
+P(比分 s) = P(族(s)) × P(s|族(s))    [族外比分按 P(other) × 全局频率分摊]
+  ↓
+输出：31 项完整比分分布 → top-k 排序 → 与市场/DC/模板三方对拍</div>
+<h3>特征集（G1~G5·13 维·每场只用该场之前 N=10 场）</h3>
+<table>
+<tr><th>组</th><th>机制</th><th>特征（主客各一份）</th></tr>
+<tr><td>G1 攻防</td><td>总进球骨架</td><td>场均进球、场均失球（主/客场拆分取对应侧）</td></tr>
+<tr><td>G2 实力</td><td>方向</td><td>近 10 场胜率、近 10 场场均净胜</td></tr>
+<tr><td>G3 零封</td><td>clean sheet 族</td><td>零封率、被零封率</td></tr>
+<tr><td>G4 互爆</td><td>draw/home_multi/away_multi</td><td>BTTS 率（双方进球比例）</td></tr>
+<tr><td>G5 大球</td><td>大比分族</td><td>总进球&gt;2.5 场次占比</td></tr>
+</table>
+<p style="font-size:12.5px;color:var(--sub)">min_hist=5：某队历史不足 5 场 → 该特征用全局均值填充并在样本中标记（不跳过，保训练量）。分类器：多项逻辑回归（sklearn 可用则用，否则 scipy 手写 softmax·L2 正则 C=1.0 预注册固定）。</p>
+</div>
+
+<h2>三、无泄漏纪律（三锁）</h2>
+<div class="card">
+<ul>
+<li><b>特征锁</b>：全局场次表按日期排序后滚动累积，任意特征只统计严格早于该场比赛日的记录。</li>
+<li><b>训练锁</b>：分类器只用盲测 CUT（2026-07-01）之前开赛场次训练；CUT 后模型冻结，盲测集纯预测。</li>
+<li><b>赔率锁</b>：市场对照一律用开赛前最后快照（hist_odds 采集时已保证），禁用收盘后任何数据。</li>
+</ul>
+<div class="warn">队名映射：体彩中文名 → <code>common.load_aliases</code> zh 字段 → 规范 ID。实测两队均可映射约 63.4%——未映射场次<b>跳过并计数报告</b>（不冒充样本）。</div>
+</div>
+
+<h2>四、验证协议（一次盲测·四方对照）</h2>
+<div class="card">
+<div class="flow">盲测集（~600 场·CUT 后）
+  ├─ 市场：封盘赔率升序 → top-k · 回收率结算
+  ├─ DC：engine/cache/{league}_dc.json → score_matrix → top-k
+  ├─ 模板：全库比分频率 top-k
+  └─ 本模型：族分类 → 全分布 → top-k
+对拍四表：
+  ① top1~top4 命中率（四方）
+  ② 偏离双条件（模型 vs 市场·主判据）
+  ③ 真实结算回收率（k=1 单关逐场按实际中奖项赔率·vs 天花板线）
+  ④ 分族校准（各族预测均值 vs 实际频率·n 标注）</div>
+</div>
+
+<h2>五、结果的三种走向与对应动作（预先声明）</h2>
+<div class="card">
+<table>
+<tr><th>结果</th><th>结论</th><th>动作</th></tr>
+<tr><td>跑赢 DC、输市场</td><td>"公开信息到头"实测成立</td><td>停本路线；V2 只做市场外信息（伤停实时/阵容窗口），复用本验证框架</td></tr>
+<tr><td>跑赢市场（双条件成立）</td><td>公开信息仍有残余 alpha</td><td>进选腿流程：影子登记 ≥10 轮 → 总回收率验收</td></tr>
+<tr><td><b>实测落点（2026-09-29）</b></td><td><b>介于①②之间：跑赢 DC（13.2% vs 9.5%）、命中率与市场持平（13.2% vs 13.3%）、回收率高于市场（k=1 98.7~99.3% vs 83.2%）但偏离判据为负</b></td><td><b>大哥拍板 2026-09-29：闯关组合形态直接转正（跳过影子期）——生产脚本 engine/scripts/parlay_gate.py + preference.json shapes 入档；评估纪律=满 100 注或连续 3 个月 0 回款再议</b></td></tr>
+<tr><td>连 DC 都没跑赢</td><td>族级分类结构劣于 λ 参数化</td><td>回滚设计；记录失败模式（分族 vs λ 的结构性教训）</td></tr>
+</table>
+</div>
+
+<div class="footer">docs/2026-09-29-score-family-model-design.html · 实现=engine/scripts/research/score_family_model.py · 关联：铁律 13（skill v5.16）/ docs/2026-09-28-score-evidence-model-design.html（本模型可作其证据层的族分类器实现）· 开发者 sszhang</div>
+</div></body></html>

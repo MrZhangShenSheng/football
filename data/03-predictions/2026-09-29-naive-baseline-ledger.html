@@ -1,0 +1,152 @@
+<!DOCTYPE html><html lang='zh-CN'><head><meta charset='utf-8'>
+<title>朴素基线 · 逐日结算账单</title><style>
+body{font-family:-apple-system,"Microsoft YaHei",sans-serif;background:#f5f6f8;color:#1a1f2e;padding:20px;font-size:13px}
+.wrap{max-width:1150px;margin:0 auto}
+h1{font-size:19px}.sub{color:#5a6478;font-size:12px;margin:6px 0 8px}
+h2{font-size:15px;margin:22px 0 8px}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;margin-bottom:10px}
+th{background:#eef1f6;padding:7px 8px;text-align:left;font-size:12px}
+td{padding:5px 8px;border-bottom:1px solid #f0f2f5;font-size:12px;font-family:ui-monospace,Menlo,monospace}
+tr.win td{background:#e3f5ea}
+tr.lose td{background:#fdf3f2}
+.foot{color:#5a6478;font-size:12px;margin-top:10px}
+</style></head><body><div class='wrap'>
+<h1>朴素基线 · 逐日结算账单（gap前2场·双选·2串复式 8元/天）</h1>
+<div class='sub'>腿=模型断层（top1−top2 概率差）排序 · 双选=模型 top1+top2 · 绿=全中派彩 · 红=断关。无泄漏时点滚动。</div>
+<div class='sub'>汇总：dev 59天 投472 回489 ROI +3.7% ｜ 盲测 70天 投560 回512 ROI -8.7%</div>
+<h2>Dev 段（2026-04 ~ 2026-06）（59 天 · 投入 472 元 · 回款 489 元 · ROI +3.7% · 中奖 6）</h2>
+<table><tr><th>日期</th><th>腿1（断层第1）</th><th>双选</th><th>实开</th><th>腿2（断层第2）</th><th>双选</th><th>实开</th><th>结果</th><th>派彩</th></tr>
+<tr class='lose'><td>04-01</td><td>周三001 日职</td><td>1:0 / 1:1</td><td><b>2:0</b></td><td>周三002 日职</td><td>1:1 / 1:0</td><td><b>0:3</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>04-03</td><td>周五003 英冠</td><td>0:1 / 1:1</td><td><b>0:1</b></td><td>周五002 英冠</td><td>0:1 / 1:1</td><td><b>1:2</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>04-04</td><td>周六006 芬超</td><td>0:1 / 1:1</td><td><b>0:0</b></td><td>周五011 英冠</td><td>0:1 / 1:1</td><td><b>3:2</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>04-05</td><td>周六026 英足总杯</td><td>0:1 / 1:2</td><td><b>2:1</b></td><td>周六025 意甲</td><td>1:0 / 2:0</td><td><b>1:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>04-06</td><td>周一004 英冠</td><td>1:0 / 2:0</td><td><b>1:2</b></td><td>周一008 英冠</td><td>1:1 / 0:1</td><td><b>2:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>04-07</td><td>周一014 英冠</td><td>0:1 / 0:2</td><td><b>0:0</b></td><td>周一011 英冠</td><td>1:1 / 0:1</td><td><b>2:2</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>04-08</td><td>周二005 英冠</td><td>1:1 / 0:1</td><td><b>1:5</b></td><td>周二003 欧冠</td><td>2:1 / 1:0</td><td><b>0:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>04-09</td><td>周三002 欧罗巴</td><td>1:0 / 2:1</td><td><b>1:1</b></td><td>周三004 欧冠</td><td>2:1 / 1:0</td><td><b>0:2</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>04-10</td><td>周四008 解放者杯</td><td>0:1 / 0:2</td><td><b>0:2</b></td><td>周五002 芬超</td><td>0:1 / 1:1</td><td><b>2:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>04-11</td><td>周六006 芬超</td><td>0:1 / 1:1</td><td><b>1:0</b></td><td>周五010 荷乙</td><td>0:1 / 1:1</td><td><b>1:3</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>04-12</td><td>周日007 英冠</td><td>1:1 / 1:0</td><td><b>2:0</b></td><td>周日015 意甲</td><td>0:1 / 1:1</td><td><b>1:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>04-13</td><td>周日024 意甲</td><td>1:0 / 2:0</td><td><b>2:0</b></td><td>周日029 葡超</td><td>0:1 / 1:2</td><td><b>1:3</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>04-14</td><td>周一005 英超</td><td>1:0 / 2:1</td><td><b>1:2</b></td><td>周一006 西甲</td><td>1:1 / 0:1</td><td><b>1:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>04-15</td><td>周二007 解放者杯</td><td>0:1 / 0:2</td><td><b>2:0</b></td><td>周二005 英冠</td><td>1:1 / 0:1</td><td><b>2:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>04-16</td><td>周三006 欧冠</td><td>2:1 / 1:0</td><td><b>4:3</b></td><td>周三005 欧冠</td><td>2:1 / 1:2</td><td><b>0:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>04-17</td><td>周四006 欧协联</td><td>0:1 / 1:2</td><td><b>3:1</b></td><td>周四002 欧罗巴</td><td>0:1 / 1:2</td><td><b>1:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='win'><td>04-18</td><td>周五007 德甲</td><td>1:1 / 0:1</td><td><b>1:1</b></td><td>周五010 英冠</td><td>1:1 / 0:1</td><td><b>1:1</b></td><td>✓ 全中</td><td>74</td></tr>
+<tr class='lose'><td>04-19</td><td>周日007 英冠</td><td>1:1 / 2:1</td><td><b>2:2</b></td><td>周日014 意甲</td><td>0:1 / 1:1</td><td><b>0:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>04-20</td><td>周日025 意甲</td><td>1:0 / 1:1</td><td><b>2:0</b></td><td>周日023 葡超</td><td>2:1 / 1:0</td><td><b>1:2</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>04-21</td><td>周一004 葡超</td><td>1:1 / 2:1</td><td><b>1:0</b></td><td>周一005 亚冠精英</td><td>1:1 / 1:0</td><td><b>1:2</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='win'><td>04-22</td><td>周二009 西甲</td><td>1:0 / 2:1</td><td><b>2:1</b></td><td>周二005 西甲</td><td>1:0 / 1:1</td><td><b>1:0</b></td><td>✓ 全中</td><td>90</td></tr>
+<tr class='lose'><td>04-23</td><td>周三011 英超</td><td>0:1 / 1:2</td><td><b>0:1</b></td><td>周三004 西甲</td><td>0:1 / 1:1</td><td><b>3:2</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>04-24</td><td>周五003 芬超</td><td>1:0 / 2:1</td><td><b>1:1</b></td><td>周四003 西甲</td><td>1:1 / 0:1</td><td><b>2:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>04-25</td><td>周五011 意甲</td><td>1:0 / 2:0</td><td><b>4:0</b></td><td>周六018 西甲</td><td>0:1 / 1:2</td><td><b>0:2</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>04-26</td><td>周日014 西甲</td><td>1:1 / 1:0</td><td><b>1:2</b></td><td>周六027 葡超</td><td>1:0 / 2:0</td><td><b>4:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>04-27</td><td>周日020 意甲</td><td>0:1 / 1:2</td><td><b>2:2</b></td><td>周日024 挪超</td><td>1:2 / 0:1</td><td><b>0:2</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>04-28</td><td>周一006 法乙</td><td>0:1 / 1:1</td><td><b>2:6</b></td><td>周一008 西甲</td><td>1:1 / 1:0</td><td><b>0:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>04-29</td><td>周二003 英冠</td><td>1:1 / 1:0</td><td><b>2:2</b></td><td>周三001 日职</td><td>1:0 / 1:1</td><td><b>0:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>04-30</td><td>周三011 解放者杯</td><td>0:1 / 0:2</td><td><b>1:1</b></td><td>周三006 芬超</td><td>1:0 / 2:0</td><td><b>1:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>05-01</td><td>周四001 挪超</td><td>1:0 / 2:1</td><td><b>5:0</b></td><td>周四005 欧协联</td><td>1:1 / 1:0</td><td><b>1:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>05-02</td><td>周五001 挪超</td><td>2:1 / 1:0</td><td><b>3:0</b></td><td>周六015 英超</td><td>1:1 / 1:0</td><td><b>1:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>05-03</td><td>周六026 法乙</td><td>1:0 / 2:0</td><td><b>1:1</b></td><td>周日004 意甲</td><td>1:0 / 2:1</td><td><b>0:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>05-04</td><td>周日026 意甲</td><td>1:0 / 2:0</td><td><b>2:0</b></td><td>周日020 意甲</td><td>1:0 / 2:0</td><td><b>1:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>05-05</td><td>周一002 芬超</td><td>1:1 / 1:0</td><td><b>1:0</b></td><td>周一003 意甲</td><td>0:1 / 1:1</td><td><b>1:2</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>05-06</td><td>周三004 日职</td><td>1:1 / 1:0</td><td><b>0:1</b></td><td>周二004 芬超</td><td>1:1 / 0:1</td><td><b>2:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>05-08</td><td>周五001 芬超</td><td>1:1 / 0:1</td><td><b>1:0</b></td><td>周四005 解放者杯</td><td>1:2 / 0:1</td><td><b>2:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>05-09</td><td>周五007 芬超</td><td>1:0 / 2:0</td><td><b>0:0</b></td><td>周五003 德乙</td><td>2:1 / 1:1</td><td><b>2:2</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>05-10</td><td>周日004 日职</td><td>0:1 / 1:1</td><td><b>0:2</b></td><td>周日001 韩职</td><td>1:0 / 1:1</td><td><b>1:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>05-11</td><td>周日027 法甲</td><td>1:1 / 0:1</td><td><b>2:1</b></td><td>周日023 德甲</td><td>1:1 / 1:0</td><td><b>1:3</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>05-12</td><td>周一006 英冠</td><td>1:1 / 1:0</td><td><b>0:2</b></td><td>周一008 葡超</td><td>0:1 / 1:2</td><td><b>1:4</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='win'><td>05-13</td><td>周二007 英冠</td><td>1:1 / 0:0</td><td><b>1:1</b></td><td>周二005 西甲</td><td>1:0 / 2:1</td><td><b>2:1</b></td><td>✓ 全中</td><td>83</td></tr>
+<tr class='lose'><td>05-14</td><td>周三009 西甲</td><td>0:1 / 1:2</td><td><b>1:0</b></td><td>周三006 英超</td><td>1:0 / 2:1</td><td><b>3:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='win'><td>05-15</td><td>周四005 西甲</td><td>1:0 / 2:0</td><td><b>2:0</b></td><td>周四004 西甲</td><td>1:1 / 1:0</td><td><b>1:1</b></td><td>✓ 全中</td><td>94</td></tr>
+<tr class='lose'><td>05-16</td><td>周六003 韩职</td><td>1:1 / 0:1</td><td><b>1:2</b></td><td>周六006 韩职</td><td>1:1 / 1:0</td><td><b>4:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>05-17</td><td>周六028 葡超</td><td>0:1 / 1:2</td><td><b>1:3</b></td><td>周日014 英超</td><td>1:1 / 0:1</td><td><b>1:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='win'><td>05-18</td><td>周一001 芬超</td><td>0:1 / 1:1</td><td><b>1:1</b></td><td>周日021 西甲</td><td>1:1 / 0:1</td><td><b>0:1</b></td><td>✓ 全中</td><td>76</td></tr>
+<tr class='lose'><td>05-20</td><td>周二001 英超</td><td>0:1 / 1:2</td><td><b>1:1</b></td><td>周二002 英超</td><td>1:1 / 2:1</td><td><b>2:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>05-21</td><td>周三009 解放者杯</td><td>1:0 / 2:0</td><td><b>1:0</b></td><td>周三002 挪超</td><td>0:1 / 1:2</td><td><b>1:4</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>05-22</td><td>周四007 德甲</td><td>1:1 / 2:1</td><td><b>0:0</b></td><td>周五001 日职</td><td>1:1 / 1:0</td><td><b>1:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>05-23</td><td>周六010 芬超</td><td>1:0 / 2:0</td><td><b>2:1</b></td><td>周五002 芬超</td><td>1:1 / 0:1</td><td><b>2:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>05-24</td><td>周六016 意甲</td><td>1:0 / 2:1</td><td><b>2:1</b></td><td>周六024 西甲</td><td>0:1 / 1:2</td><td><b>3:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>05-25</td><td>周日024 意甲</td><td>1:0 / 2:1</td><td><b>1:2</b></td><td>周日020 意甲</td><td>1:1 / 1:0</td><td><b>1:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='win'><td>05-26</td><td>周一006 瑞超</td><td>1:1 / 0:1</td><td><b>1:1</b></td><td>周一009 德甲</td><td>1:1 / 2:1</td><td><b>1:1</b></td><td>✓ 全中</td><td>72</td></tr>
+<tr class='lose'><td>05-28</td><td>周三007 解放者杯</td><td>1:0 / 2:0</td><td><b>0:2</b></td><td>周三001 欧协联</td><td>1:0 / 1:1</td><td><b>1:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>05-30</td><td>周六011 芬超</td><td>1:0 / 2:0</td><td><b>1:1</b></td><td>周五009 法甲</td><td>1:0 / 2:1</td><td><b>4:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>05-31</td><td>周日001 日职</td><td>1:1 / 0:1</td><td><b>1:1</b></td><td>周日005 瑞超</td><td>2:1 / 1:1</td><td><b>3:2</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>06-06</td><td>周六203 日职</td><td>1:0 / 1:1</td><td><b>0:2</b></td><td>周六204 日职</td><td>1:0 / 1:1</td><td><b>3:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>06-17</td><td>周三201 芬超</td><td>1:1 / 1:0</td><td><b>3:3</b></td><td>周三203 芬超</td><td>1:0 / 1:1</td><td><b>1:2</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>06-18</td><td>周三205 芬超</td><td>1:1 / 1:0</td><td><b>1:2</b></td><td>周三204 芬超</td><td>1:0 / 2:1</td><td><b>1:0</b></td><td>✗ 断关</td><td>0</td></tr>
+</table>
+<h2>盲测段（2026-07 ~ 2026-09）（70 天 · 投入 560 元 · 回款 512 元 · ROI -8.7% · 中奖 4）</h2>
+<table><tr><th>日期</th><th>腿1（断层第1）</th><th>双选</th><th>实开</th><th>腿2（断层第2）</th><th>双选</th><th>实开</th><th>结果</th><th>派彩</th></tr>
+<tr class='lose'><td>07-04</td><td>周六207 芬超</td><td>1:1 / 0:1</td><td><b>3:1</b></td><td>周六201 韩职</td><td>1:1 / 0:1</td><td><b>2:3</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>07-05</td><td>周日205 瑞超</td><td>1:1 / 1:0</td><td><b>1:2</b></td><td>周日202 韩职</td><td>1:1 / 0:1</td><td><b>1:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>07-11</td><td>周五201 芬超</td><td>1:1 / 2:1</td><td><b>1:0</b></td><td>周六205 芬超</td><td>1:1 / 1:0</td><td><b>2:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>07-12</td><td>周日201 韩职</td><td>1:1 / 1:0</td><td><b>0:1</b></td><td>周日205 瑞超</td><td>1:0 / 2:1</td><td><b>2:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='win'><td>07-17</td><td>周四206 巴甲</td><td>1:1 / 1:0</td><td><b>1:0</b></td><td>周四205 巴甲</td><td>1:0 / 2:1</td><td><b>2:1</b></td><td>✓ 全中</td><td>87</td></tr>
+<tr class='lose'><td>07-18</td><td>周五204 巴甲</td><td>1:0 / 2:0</td><td><b>2:0</b></td><td>周六201 韩职</td><td>1:1 / 1:0</td><td><b>2:2</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>07-19</td><td>周日202 韩职</td><td>1:1 / 1:0</td><td><b>1:1</b></td><td>周日201 韩职</td><td>1:1 / 0:1</td><td><b>1:3</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>07-21</td><td>周二201 韩职</td><td>1:1 / 0:1</td><td><b>1:1</b></td><td>周二203 韩职</td><td>1:0 / 1:1</td><td><b>1:2</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>07-22</td><td>周二205 欧冠</td><td>0:1 / 0:2</td><td><b>1:0</b></td><td>周三202 韩职</td><td>1:1 / 0:1</td><td><b>2:3</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>07-23</td><td>周三207 巴甲</td><td>0:1 / 0:2</td><td><b>0:4</b></td><td>周三210 欧冠</td><td>0:1 / 1:1</td><td><b>1:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>07-24</td><td>周四203 欧罗巴</td><td>1:0 / 2:0</td><td><b>1:1</b></td><td>周四206 欧罗巴</td><td>1:0 / 2:0</td><td><b>1:2</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>07-25</td><td>周六202 韩职</td><td>1:1 / 0:1</td><td><b>0:2</b></td><td>周六206 芬超</td><td>1:0 / 1:1</td><td><b>3:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>07-26</td><td>周日210 芬超</td><td>1:1 / 0:1</td><td><b>1:0</b></td><td>周六209 巴甲</td><td>1:0 / 2:0</td><td><b>2:2</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>07-27</td><td>周日217 巴甲</td><td>1:0 / 2:1</td><td><b>1:1</b></td><td>周日218 巴甲</td><td>1:1 / 0:1</td><td><b>1:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>07-28</td><td>周一202 挪超</td><td>1:0 / 1:1</td><td><b>4:0</b></td><td>周一201 瑞超</td><td>2:1 / 1:0</td><td><b>0:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>07-30</td><td>周三006 巴甲</td><td>0:1 / 1:1</td><td><b>0:4</b></td><td>周三005 巴甲</td><td>1:0 / 1:1</td><td><b>0:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>07-31</td><td>周四003 欧罗巴</td><td>0:1 / 0:2</td><td><b>3:1</b></td><td>周四006 巴甲</td><td>1:0 / 1:1</td><td><b>0:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>08-01</td><td>周六003 韩职</td><td>1:1 / 1:0</td><td><b>0:1</b></td><td>周六001 韩职</td><td>1:0 / 1:1</td><td><b>0:3</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>08-02</td><td>周日006 芬超</td><td>1:1 / 1:0</td><td><b>0:1</b></td><td>周六008 挪超</td><td>0:1 / 1:2</td><td><b>0:3</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>08-03</td><td>周日012 挪超</td><td>2:1 / 1:1</td><td><b>3:2</b></td><td>周日013 巴西杯</td><td>1:1 / 2:1</td><td><b>1:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>08-04</td><td>周一001 芬超</td><td>1:1 / 2:1</td><td><b>3:0</b></td><td>周一004 巴西杯</td><td>1:0 / 1:1</td><td><b>2:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>08-06</td><td>周三002 欧冠</td><td>0:1 / 1:2</td><td><b>2:1</b></td><td>周三001 巴西杯</td><td>1:0 / 2:1</td><td><b>1:3</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>08-07</td><td>周四001 巴西杯</td><td>1:1 / 1:0</td><td><b>4:0</b></td><td>周五002 日职</td><td>1:1 / 1:0</td><td><b>4:3</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>08-08</td><td>周六002 日乙</td><td>0:1 / 1:1</td><td><b>1:0</b></td><td>周五009 英联赛杯</td><td>1:1 / 1:0</td><td><b>1:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>08-09</td><td>周六022 荷甲</td><td>1:0 / 2:0</td><td><b>2:0</b></td><td>周日012 芬超</td><td>1:1 / 1:0</td><td><b>0:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>08-10</td><td>周日024 巴甲</td><td>1:0 / 2:0</td><td><b>2:0</b></td><td>周日023 巴甲</td><td>1:1 / 1:0</td><td><b>0:2</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>08-11</td><td>周二002 欧冠</td><td>1:0 / 2:0</td><td><b>0:1</b></td><td>周二001 亚冠精英</td><td>1:1 / 1:0</td><td><b>0:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>08-12</td><td>周二007 欧冠</td><td>1:0 / 1:1</td><td><b>2:0</b></td><td>周二004 欧冠</td><td>1:0 / 1:1</td><td><b>4:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>08-14</td><td>周五002 芬超</td><td>1:1 / 1:0</td><td><b>1:3</b></td><td>周五001 日职</td><td>1:1 / 0:1</td><td><b>1:3</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>08-15</td><td>周六008 英冠</td><td>0:1 / 1:1</td><td><b>2:1</b></td><td>周五015 法乙</td><td>1:1 / 1:2</td><td><b>3:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>08-16</td><td>周六025 葡超</td><td>0:1 / 1:2</td><td><b>0:2</b></td><td>周日013 葡超</td><td>1:1 / 2:1</td><td><b>2:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>08-17</td><td>周日026 葡超</td><td>1:0 / 1:1</td><td><b>1:2</b></td><td>周日022 西甲</td><td>1:1 / 1:0</td><td><b>3:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>08-18</td><td>周一005 葡超</td><td>0:1 / 1:2</td><td><b>0:7</b></td><td>周一004 西甲</td><td>1:1 / 0:1</td><td><b>1:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>08-19</td><td>周二003 欧冠</td><td>0:1 / 0:2</td><td><b>2:2</b></td><td>周二004 欧冠</td><td>0:1 / 0:2</td><td><b>1:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>08-20</td><td>周三006 欧冠</td><td>0:1 / 1:1</td><td><b>3:0</b></td><td>周三008 欧冠</td><td>1:0 / 2:0</td><td><b>1:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>08-21</td><td>周四008 欧罗巴</td><td>0:1 / 1:1</td><td><b>3:0</b></td><td>周四006 欧罗巴</td><td>0:1 / 1:1</td><td><b>0:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>08-22</td><td>周六002 日乙</td><td>0:1 / 1:1</td><td><b>3:0</b></td><td>周六013 英冠</td><td>1:1 / 1:0</td><td><b>0:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>08-23</td><td>周日001 荷甲</td><td>1:0 / 2:0</td><td><b>3:1</b></td><td>周六020 意甲</td><td>1:0 / 2:1</td><td><b>4:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>08-24</td><td>周日024 西甲</td><td>0:1 / 1:2</td><td><b>0:5</b></td><td>周日018 意甲</td><td>0:1 / 1:2</td><td><b>0:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>08-25</td><td>周一010 西甲</td><td>1:1 / 0:1</td><td><b>1:1</b></td><td>周一007 法乙</td><td>1:1 / 1:0</td><td><b>3:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>08-26</td><td>周二004 英联赛杯</td><td>0:1 / 0:2</td><td><b>1:1</b></td><td>周二005 欧冠</td><td>0:1 / 1:2</td><td><b>4:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>08-27</td><td>周三006 欧冠</td><td>0:1 / 0:2</td><td><b>1:1</b></td><td>周三009 英联赛杯</td><td>0:1 / 0:2</td><td><b>0:4</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>08-28</td><td>周四001 欧罗巴</td><td>0:1 / 1:2</td><td><b>4:1</b></td><td>周四002 欧罗巴</td><td>1:0 / 2:0</td><td><b>4:2</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>08-29</td><td>周六001 日职</td><td>0:1 / 1:1</td><td><b>1:1</b></td><td>周五013 葡超</td><td>0:1 / 1:2</td><td><b>0:4</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>08-30</td><td>周六026 葡超</td><td>0:1 / 0:2</td><td><b>0:3</b></td><td>周日013 西甲</td><td>1:0 / 2:1</td><td><b>4:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='win'><td>08-31</td><td>周日020 意甲</td><td>0:1 / 1:2</td><td><b>0:1</b></td><td>周日019 意甲</td><td>1:0 / 2:1</td><td><b>1:0</b></td><td>✓ 全中</td><td>75</td></tr>
+<tr class='lose'><td>09-01</td><td>周一008 法乙</td><td>1:1 / 0:1</td><td><b>2:3</b></td><td>周一012 西甲</td><td>1:0 / 2:1</td><td><b>5:2</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>09-02</td><td>周二006 英冠</td><td>0:1 / 0:2</td><td><b>1:3</b></td><td>周三003 日职</td><td>0:1 / 1:1</td><td><b>4:2</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>09-03</td><td>周三011 英冠</td><td>1:1 / 0:1</td><td><b>1:1</b></td><td>周三008 英冠</td><td>1:0 / 2:1</td><td><b>1:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>09-04</td><td>周四007 巴西杯</td><td>1:1 / 1:0</td><td><b>3:1</b></td><td>周四005 法甲</td><td>0:1 / 1:1</td><td><b>0:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>09-05</td><td>周五005 法乙</td><td>1:1 / 0:1</td><td><b>1:2</b></td><td>周五013 葡超</td><td>1:0 / 2:1</td><td><b>2:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>09-06</td><td>周六023 葡超</td><td>0:1 / 0:2</td><td><b>0:3</b></td><td>周日013 西甲</td><td>0:1 / 1:2</td><td><b>0:5</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>09-07</td><td>周日023 西甲</td><td>1:1 / 1:0</td><td><b>1:1</b></td><td>周日018 意甲</td><td>1:0 / 2:1</td><td><b>2:2</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='win'><td>09-08</td><td>周一009 巴甲</td><td>1:1 / 1:0</td><td><b>1:0</b></td><td>周二001 韩职</td><td>1:1 / 1:0</td><td><b>1:0</b></td><td>✓ 全中</td><td>210</td></tr>
+<tr class='lose'><td>09-09</td><td>周二003 欧冠</td><td>0:1 / 0:2</td><td><b>2:3</b></td><td>周二002 欧冠</td><td>2:1 / 1:0</td><td><b>1:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>09-10</td><td>周三006 欧冠</td><td>1:0 / 2:0</td><td><b>3:1</b></td><td>周三006 欧冠</td><td>1:0 / 2:0</td><td><b>3:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>09-11</td><td>周五002 沙职</td><td>0:1 / 1:2</td><td><b>1:3</b></td><td>周四001 欧冠</td><td>0:1 / 1:1</td><td><b>1:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>09-12</td><td>周五003 德乙</td><td>1:0 / 2:0</td><td><b>2:1</b></td><td>周六009 德甲</td><td>1:0 / 2:0</td><td><b>3:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>09-13</td><td>周六025 葡超</td><td>0:1 / 1:2</td><td><b>1:4</b></td><td>周六029 英超</td><td>0:1 / 1:1</td><td><b>0:2</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>09-14</td><td>周日016 西甲</td><td>1:1 / 1:0</td><td><b>1:1</b></td><td>周日022 葡超</td><td>0:1 / 1:2</td><td><b>1:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>09-15</td><td>周一009 法乙</td><td>1:0 / 2:0</td><td><b>1:0</b></td><td>周一003 意甲</td><td>1:0 / 1:1</td><td><b>2:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>09-16</td><td>周二012 英联赛杯</td><td>0:1 / 1:2</td><td><b>2:4</b></td><td>周二013 西甲</td><td>0:1 / 1:2</td><td><b>2:3</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>09-17</td><td>周三015 解放者杯</td><td>0:1 / 1:1</td><td><b>3:2</b></td><td>周三008 欧罗巴</td><td>1:0 / 2:0</td><td><b>2:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>09-18</td><td>周四010 西甲</td><td>0:1 / 1:2</td><td><b>1:3</b></td><td>周四004 西甲</td><td>1:0 / 1:1</td><td><b>1:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='win'><td>09-19</td><td>周五012 英冠</td><td>1:0 / 2:0</td><td><b>1:0</b></td><td>周五009 意甲</td><td>1:1 / 2:1</td><td><b>2:1</b></td><td>✓ 全中</td><td>140</td></tr>
+<tr class='lose'><td>09-20</td><td>周六025 意甲</td><td>0:1 / 1:1</td><td><b>0:2</b></td><td>周日008 西甲</td><td>1:0 / 2:0</td><td><b>1:0</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>09-21</td><td>周日026 意甲</td><td>1:0 / 2:0</td><td><b>3:0</b></td><td>周日025 德甲</td><td>1:1 / 0:1</td><td><b>3:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>09-23</td><td>周二004 英锦标赛</td><td>0:1 / 0:2</td><td><b>3:2</b></td><td>周二003 英锦标赛</td><td>0:1 / 0:2</td><td><b>2:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>09-26</td><td>周六004 日乙</td><td>1:0 / 2:0</td><td><b>2:2</b></td><td>周六005 日乙</td><td>1:0 / 2:1</td><td><b>5:1</b></td><td>✗ 断关</td><td>0</td></tr>
+<tr class='lose'><td>09-27</td><td>周日003 荷乙</td><td>1:2 / 0:1</td><td><b>1:0</b></td><td>周六013 荷乙</td><td>2:1 / 1:1</td><td><b>2:0</b></td><td>✗ 断关</td><td>0</td></tr>
+</table>
+<div class='foot'>派彩=两腿命中比分赔率乘积×2元；断关=任一腿实开不在该腿双选内。</div></div></body></html>
