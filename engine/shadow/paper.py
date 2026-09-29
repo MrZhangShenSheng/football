@@ -78,9 +78,12 @@ def load_tickets(path=None):
         raise RuntimeError(f'影子账本损坏（JSON 解析失败），已备份 {p}.corrupt-*，'
                            f'人工核验后再重建，不静默清账: {e}') from e
     if not isinstance(tickets, list):
-        _backup_corrupt(p)
-        raise RuntimeError(f'影子账本结构损坏（顶层须为 list，实得 {type(tickets).__name__}），'
-                           f'已备份 {p}.corrupt-*')
+        if isinstance(tickets, dict) and "tickets" in tickets:
+            tickets = tickets["tickets"]   # 兼容旧 {"tickets": [...]} 格式
+        else:
+            _backup_corrupt(p)
+            raise RuntimeError(f'影子账本结构损坏（顶层须为 list，实得 {type(tickets).__name__}），'
+                               f'已备份 {p}.corrupt-*')
     return tickets
 
 
