@@ -1,0 +1,87 @@
+{
+ "ranAt": "2026-09-30",
+ "nMatches": 4724,
+ "lambda": {
+  "home": 1.539,
+  "away": 1.265
+ },
+ "marginal": {
+  "0": {
+   "homeEmp": 0.2246,
+   "homePois": 0.2145,
+   "awayEmp": 0.2932,
+   "awayPois": 0.2822
+  },
+  "1": {
+   "homeEmp": 0.3285,
+   "homePois": 0.3302,
+   "awayEmp": 0.3476,
+   "awayPois": 0.357
+  },
+  "2": {
+   "homeEmp": 0.2413,
+   "homePois": 0.2542,
+   "awayEmp": 0.2242,
+   "awayPois": 0.2259
+  },
+  "3": {
+   "homeEmp": 0.1274,
+   "homePois": 0.1304,
+   "awayEmp": 0.0895,
+   "awayPois": 0.0953
+  },
+  "4": {
+   "homeEmp": 0.0523,
+   "homePois": 0.0502,
+   "awayEmp": 0.0313,
+   "awayPois": 0.0301
+  }
+ },
+ "productCheck": {
+  "pHome1": 0.3285,
+  "pAway1": 0.3476,
+  "product": 0.1142,
+  "empirical11": 0.1211
+ },
+ "concentration": {
+  "1": 0.1211,
+  "3": 0.3008,
+  "6": 0.5174,
+  "10": 0.7242,
+  "20": 0.938,
+  "31": 0.9873
+ },
+ "favSubset": {
+  "oddsMax": 1.35,
+  "n": 569,
+  "topScores": [
+   [
+    "2:1",
+    68,
+    0.1195
+   ],
+   [
+    "2:0",
+    66,
+    0.116
+   ],
+   [
+    "3:0",
+    62,
+    0.109
+   ],
+   [
+    "1:0",
+    57,
+    0.1002
+   ],
+   [
+    "1:1",
+    41,
+    0.0721
+   ]
+  ],
+  "topShare": 0.1195,
+  "nDistinctScores": 34
+ }
+}
