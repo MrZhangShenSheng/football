@@ -1,0 +1,230 @@
+{
+ "ranAt": "2026-09-30",
+ "nTotal": 7216,
+ "globalCurve": {
+  "0.00": 0.1995,
+  "0.05": 0.1998,
+  "0.10": 0.2002,
+  "0.15": 0.2008,
+  "0.20": 0.2014,
+  "0.25": 0.202,
+  "0.30": 0.2027,
+  "0.35": 0.2033,
+  "0.40": 0.2039,
+  "0.45": 0.2046,
+  "0.50": 0.2052,
+  "0.55": 0.2058,
+  "0.60": 0.2063
+ },
+ "aBestGlobal": 0.0,
+ "globalVsMarket": {
+  "d": -0.0045,
+  "lo": -0.0055,
+  "hi": -0.0034
+ },
+ "perLeague": [
+  {
+   "league": "england-championship",
+   "n": 817,
+   "aCur": 0.4,
+   "rpsCur": 0.215,
+   "aBest": 0.0,
+   "rpsBest": 0.2118,
+   "gain": 0.015,
+   "ciHi": 0.0003,
+   "suggest": false
+  },
+  {
+   "league": "spain-liga2",
+   "n": 645,
+   "aCur": 0.4,
+   "rpsCur": 0.2171,
+   "aBest": 0.0,
+   "rpsBest": 0.2106,
+   "gain": 0.0301,
+   "ciHi": -0.0027,
+   "suggest": true
+  },
+  {
+   "league": "england-premier",
+   "n": 550,
+   "aCur": 0.4,
+   "rpsCur": 0.2018,
+   "aBest": 0.05,
+   "rpsBest": 0.2002,
+   "gain": 0.008,
+   "ciHi": 0.001,
+   "suggest": false
+  },
+  {
+   "league": "spain-laliga",
+   "n": 548,
+   "aCur": 0.4,
+   "rpsCur": 0.1936,
+   "aBest": 0.0,
+   "rpsBest": 0.1894,
+   "gain": 0.0215,
+   "ciHi": -0.0008,
+   "suggest": true
+  },
+  {
+   "league": "italy-serie-a",
+   "n": 540,
+   "aCur": 0.0,
+   "rpsCur": 0.1856,
+   "aBest": 0.0,
+   "rpsBest": 0.1856,
+   "gain": 0.0,
+   "ciHi": 0.0,
+   "suggest": false
+  },
+  {
+   "league": "turkey-super-lig",
+   "n": 435,
+   "aCur": 0.4,
+   "rpsCur": 0.1855,
+   "aBest": 0.0,
+   "rpsBest": 0.1832,
+   "gain": 0.0123,
+   "ciHi": 0.0013,
+   "suggest": false
+  },
+  {
+   "league": "portugal-liga",
+   "n": 431,
+   "aCur": 0.4,
+   "rpsCur": 0.1865,
+   "aBest": 0.0,
+   "rpsBest": 0.1805,
+   "gain": 0.0321,
+   "ciHi": -0.0008,
+   "suggest": true
+  },
+  {
+   "league": "italy-serie-b",
+   "n": 430,
+   "aCur": 0.4,
+   "rpsCur": 0.206,
+   "aBest": 0.05,
+   "rpsBest": 0.2031,
+   "gain": 0.0141,
+   "ciHi": 0.0005,
+   "suggest": false
+  },
+  {
+   "league": "netherlands-eredivisie",
+   "n": 421,
+   "aCur": 0.0,
+   "rpsCur": 0.1867,
+   "aBest": 0.0,
+   "rpsBest": 0.1867,
+   "gain": 0.0,
+   "ciHi": 0.0,
+   "suggest": false
+  },
+  {
+   "league": "france-ligue1",
+   "n": 414,
+   "aCur": 0.4,
+   "rpsCur": 0.208,
+   "aBest": 0.0,
+   "rpsBest": 0.2027,
+   "gain": 0.0254,
+   "ciHi": -0.001,
+   "suggest": true
+  },
+  {
+   "league": "germany-bundesliga",
+   "n": 402,
+   "aCur": 0.0,
+   "rpsCur": 0.1976,
+   "aBest": 0.0,
+   "rpsBest": 0.1976,
+   "gain": 0.0,
+   "ciHi": 0.0,
+   "suggest": false
+  },
+  {
+   "league": "belgium-first-a",
+   "n": 380,
+   "aCur": 0.4,
+   "rpsCur": 0.1946,
+   "aBest": 0.0,
+   "rpsBest": 0.191,
+   "gain": 0.0181,
+   "ciHi": 0.0006,
+   "suggest": false
+  },
+  {
+   "league": "france-ligue2",
+   "n": 377,
+   "aCur": 0.4,
+   "rpsCur": 0.2198,
+   "aBest": 0.05,
+   "rpsBest": 0.2176,
+   "gain": 0.0102,
+   "ciHi": 0.0017,
+   "suggest": false
+  },
+  {
+   "league": "germany-bundesliga2",
+   "n": 359,
+   "aCur": 0.4,
+   "rpsCur": 0.2236,
+   "aBest": 0.05,
+   "rpsBest": 0.2204,
+   "gain": 0.0143,
+   "ciHi": 0.0011,
+   "suggest": false
+  },
+  {
+   "league": "SC0",
+   "n": 235,
+   "aCur": 0.4,
+   "rpsCur": 0.2141,
+   "aBest": 0.0,
+   "rpsBest": 0.2089,
+   "gain": 0.0243,
+   "ciHi": -0.0003,
+   "suggest": true
+  },
+  {
+   "league": "greece-super",
+   "n": 232,
+   "aCur": 0.4,
+   "rpsCur": 0.2018,
+   "aBest": 0.0,
+   "rpsBest": 0.2003,
+   "gain": 0.0074,
+   "ciHi": 0.0023,
+   "suggest": false
+  }
+ ],
+ "suggest": {
+  "spain-liga2": 0.0,
+  "spain-laliga": 0.0,
+  "portugal-liga": 0.0,
+  "france-ligue1": 0.0,
+  "SC0": 0.0
+ },
+ "applied": true,
+ "guards": {
+  "minN": 150,
+  "improve": 0.01,
+  "grid": [
+   0.0,
+   0.05,
+   0.1,
+   0.15,
+   0.2,
+   0.25,
+   0.3,
+   0.35,
+   0.4,
+   0.45,
+   0.5,
+   0.55,
+   0.6
+  ]
+ }
+}

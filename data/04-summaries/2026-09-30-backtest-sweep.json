@@ -1,0 +1,427 @@
+{
+  "ranAt": "2026-09-30",
+  "n": 7216,
+  "leagues": 48,
+  "note": "批量 walk-forward·RPS 主指标·配对 bootstrap vs 纯市场·价值下注按 Pinnacle 收盘价",
+  "overall": {
+    "market": {
+      "rps": 0.1995,
+      "logloss": 0.9898,
+      "acc": 0.511
+    },
+    "dc": {
+      "rps": 0.2278,
+      "logloss": 1.1303,
+      "acc": 0.464
+    },
+    "fused": {
+      "rps": 0.2025,
+      "logloss": 1.0015,
+      "acc": 0.506
+    }
+  },
+  "paired_vs_market": {
+    "dc_rps": [
+      0.028332680380428583,
+      0.025291331360639765,
+      0.03125198707076654
+    ],
+    "fused_rps": [
+      0.0030152085482943116,
+      0.0020875372078966313,
+      0.003948361874321838
+    ],
+    "dc_logloss": [
+      0.140491346999123,
+      0.12415134415305898,
+      0.1571736895034208
+    ],
+    "fused_logloss": [
+      0.011739433349803617,
+      0.00802057593187717,
+      0.015483008540695443
+    ]
+  },
+  "value_bets": {
+    ">2%": {
+      "dc": {
+        "bets": 8356,
+        "stake": 8356.0,
+        "ret": 7605.1,
+        "roi": -9.0
+      },
+      "fused": {
+        "bets": 4223,
+        "stake": 4223.0,
+        "ret": 3977.7,
+        "roi": -5.8
+      }
+    },
+    ">5%": {
+      "dc": {
+        "bets": 6171,
+        "stake": 6171.0,
+        "ret": 5554.9,
+        "roi": -10.0
+      },
+      "fused": {
+        "bets": 1557,
+        "stake": 1557.0,
+        "ret": 1402.9,
+        "roi": -9.9
+      }
+    },
+    ">10%": {
+      "dc": {
+        "bets": 3652,
+        "stake": 3652.0,
+        "ret": 3171.5,
+        "roi": -13.2
+      },
+      "fused": {
+        "bets": 494,
+        "stake": 494.0,
+        "ret": 438.2,
+        "roi": -11.3
+      }
+    }
+  },
+  "perLeague": [
+    {
+      "league": "greece-super",
+      "season": "2627",
+      "n": 5,
+      "rpsMarket": 0.0621,
+      "rpsFused": 0.0727
+    },
+    {
+      "league": "portugal-liga",
+      "season": "2526",
+      "n": 123,
+      "rpsMarket": 0.1702,
+      "rpsFused": 0.1667
+    },
+    {
+      "league": "netherlands-eredivisie",
+      "season": "2627",
+      "n": 33,
+      "rpsMarket": 0.1714,
+      "rpsFused": 0.1714
+    },
+    {
+      "league": "greece-super",
+      "season": "2526",
+      "n": 24,
+      "rpsMarket": 0.1778,
+      "rpsFused": 0.176
+    },
+    {
+      "league": "germany-bundesliga",
+      "season": "2526",
+      "n": 120,
+      "rpsMarket": 0.1803,
+      "rpsFused": 0.1803
+    },
+    {
+      "league": "belgium-first-a",
+      "season": "2627",
+      "n": 33,
+      "rpsMarket": 0.1735,
+      "rpsFused": 0.1813
+    },
+    {
+      "league": "italy-serie-a",
+      "season": "2425",
+      "n": 350,
+      "rpsMarket": 0.1816,
+      "rpsFused": 0.1816
+    },
+    {
+      "league": "turkey-super-lig",
+      "season": "2425",
+      "n": 310,
+      "rpsMarket": 0.1819,
+      "rpsFused": 0.1818
+    },
+    {
+      "league": "netherlands-eredivisie",
+      "season": "2526",
+      "n": 112,
+      "rpsMarket": 0.1834,
+      "rpsFused": 0.1834
+    },
+    {
+      "league": "turkey-super-lig",
+      "season": "2526",
+      "n": 102,
+      "rpsMarket": 0.1776,
+      "rpsFused": 0.1844
+    },
+    {
+      "league": "france-ligue1",
+      "season": "2627",
+      "n": 15,
+      "rpsMarket": 0.1645,
+      "rpsFused": 0.1846
+    },
+    {
+      "league": "spain-laliga",
+      "season": "2526",
+      "n": 159,
+      "rpsMarket": 0.185,
+      "rpsFused": 0.1871
+    },
+    {
+      "league": "netherlands-eredivisie",
+      "season": "2425",
+      "n": 276,
+      "rpsMarket": 0.1899,
+      "rpsFused": 0.1899
+    },
+    {
+      "league": "italy-serie-a",
+      "season": "2526",
+      "n": 170,
+      "rpsMarket": 0.1902,
+      "rpsFused": 0.1902
+    },
+    {
+      "league": "portugal-liga",
+      "season": "2425",
+      "n": 276,
+      "rpsMarket": 0.185,
+      "rpsFused": 0.1914
+    },
+    {
+      "league": "spain-laliga",
+      "season": "2425",
+      "n": 350,
+      "rpsMarket": 0.1905,
+      "rpsFused": 0.1942
+    },
+    {
+      "league": "belgium-first-a",
+      "season": "2425",
+      "n": 281,
+      "rpsMarket": 0.1905,
+      "rpsFused": 0.1945
+    },
+    {
+      "league": "england-premier",
+      "season": "2526",
+      "n": 180,
+      "rpsMarket": 0.1958,
+      "rpsFused": 0.2008
+    },
+    {
+      "league": "england-premier",
+      "season": "2425",
+      "n": 350,
+      "rpsMarket": 0.2008,
+      "rpsFused": 0.2013
+    },
+    {
+      "league": "belgium-first-a",
+      "season": "2526",
+      "n": 66,
+      "rpsMarket": 0.2019,
+      "rpsFused": 0.2016
+    },
+    {
+      "league": "italy-serie-b",
+      "season": "2627",
+      "n": 20,
+      "rpsMarket": 0.1901,
+      "rpsFused": 0.2016
+    },
+    {
+      "league": "spain-liga2",
+      "season": "2425",
+      "n": 432,
+      "rpsMarket": 0.2013,
+      "rpsFused": 0.2027
+    },
+    {
+      "league": "germany-bundesliga",
+      "season": "2425",
+      "n": 276,
+      "rpsMarket": 0.2041,
+      "rpsFused": 0.2041
+    },
+    {
+      "league": "italy-serie-b",
+      "season": "2425",
+      "n": 350,
+      "rpsMarket": 0.2035,
+      "rpsFused": 0.2055
+    },
+    {
+      "league": "SC0",
+      "season": "2425",
+      "n": 198,
+      "rpsMarket": 0.2043,
+      "rpsFused": 0.2057
+    },
+    {
+      "league": "france-ligue1",
+      "season": "2425",
+      "n": 276,
+      "rpsMarket": 0.2035,
+      "rpsFused": 0.206
+    },
+    {
+      "league": "france-ligue2",
+      "season": "2627",
+      "n": 33,
+      "rpsMarket": 0.2014,
+      "rpsFused": 0.2074
+    },
+    {
+      "league": "greece-super",
+      "season": "2425",
+      "n": 203,
+      "rpsMarket": 0.2064,
+      "rpsFused": 0.2081
+    },
+    {
+      "league": "italy-serie-b",
+      "season": "2526",
+      "n": 60,
+      "rpsMarket": 0.2054,
+      "rpsFused": 0.2105
+    },
+    {
+      "league": "england-championship",
+      "season": "2425",
+      "n": 522,
+      "rpsMarket": 0.2087,
+      "rpsFused": 0.2112
+    },
+    {
+      "league": "germany-bundesliga2",
+      "season": "2627",
+      "n": 24,
+      "rpsMarket": 0.2075,
+      "rpsFused": 0.2123
+    },
+    {
+      "league": "spain-laliga",
+      "season": "2627",
+      "n": 39,
+      "rpsMarket": 0.1976,
+      "rpsFused": 0.2138
+    },
+    {
+      "league": "france-ligue2",
+      "season": "2425",
+      "n": 276,
+      "rpsMarket": 0.2127,
+      "rpsFused": 0.2143
+    },
+    {
+      "league": "italy-serie-a",
+      "season": "2627",
+      "n": 20,
+      "rpsMarket": 0.2148,
+      "rpsFused": 0.2148
+    },
+    {
+      "league": "france-ligue1",
+      "season": "2526",
+      "n": 123,
+      "rpsMarket": 0.2056,
+      "rpsFused": 0.2153
+    },
+    {
+      "league": "england-championship",
+      "season": "2627",
+      "n": 65,
+      "rpsMarket": 0.1975,
+      "rpsFused": 0.2164
+    },
+    {
+      "league": "germany-bundesliga2",
+      "season": "2526",
+      "n": 59,
+      "rpsMarket": 0.2222,
+      "rpsFused": 0.22
+    },
+    {
+      "league": "portugal-liga",
+      "season": "2627",
+      "n": 32,
+      "rpsMarket": 0.1815,
+      "rpsFused": 0.2205
+    },
+    {
+      "league": "england-premier",
+      "season": "2627",
+      "n": 20,
+      "rpsMarket": 0.2337,
+      "rpsFused": 0.2212
+    },
+    {
+      "league": "spain-liga2",
+      "season": "2627",
+      "n": 47,
+      "rpsMarket": 0.2214,
+      "rpsFused": 0.2222
+    },
+    {
+      "league": "england-championship",
+      "season": "2526",
+      "n": 230,
+      "rpsMarket": 0.2228,
+      "rpsFused": 0.2232
+    },
+    {
+      "league": "germany-bundesliga2",
+      "season": "2425",
+      "n": 276,
+      "rpsMarket": 0.2212,
+      "rpsFused": 0.2254
+    },
+    {
+      "league": "SC0",
+      "season": "2526",
+      "n": 25,
+      "rpsMarket": 0.2119,
+      "rpsFused": 0.2254
+    },
+    {
+      "league": "turkey-super-lig",
+      "season": "2627",
+      "n": 23,
+      "rpsMarket": 0.2252,
+      "rpsFused": 0.2399
+    },
+    {
+      "league": "germany-bundesliga",
+      "season": "2627",
+      "n": 6,
+      "rpsMarket": 0.2444,
+      "rpsFused": 0.2444
+    },
+    {
+      "league": "france-ligue2",
+      "season": "2526",
+      "n": 68,
+      "rpsMarket": 0.2462,
+      "rpsFused": 0.2481
+    },
+    {
+      "league": "spain-liga2",
+      "season": "2526",
+      "n": 166,
+      "rpsMarket": 0.2315,
+      "rpsFused": 0.2532
+    },
+    {
+      "league": "SC0",
+      "season": "2627",
+      "n": 12,
+      "rpsMarket": 0.2785,
+      "rpsFused": 0.3297
+    }
+  ]
+}

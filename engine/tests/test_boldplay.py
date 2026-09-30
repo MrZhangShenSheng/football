@@ -532,8 +532,11 @@ def test_lottery_high_divergence_leg_not_excluded():
          "had": {"h": 1.30, "d": 5.0, "a": 9.0}}
     day = {"matches": [m]}
     blocked = []
+    # fusion 显式注入：本测试验的是标注机制，不得依赖 fusion.json 生产值
+    # （2026-09-30 重校给西甲落 a=0 → p_fused≡p_mkt、分歧恒 0，此测试曾随之误红）
     legs = bp._lottery_legs(day, {}, dc_params_fn=lambda mm, z: (3.2, 0.35, 0.0),
-                            blocked=blocked)   # p_fused 0.786 vs p_mkt → 7.4pp > 5pp 线
+                            fusion=(0.4, 1.0),   # p_fused 0.786 vs p_mkt → 7.4pp > 5pp 线
+                            blocked=blocked)
     flagged = [l for l in legs if l.get("divergenceFlag")]
     assert flagged, "高分歧腿须仍在候选池（标注不排除）"
     assert blocked, "高分歧须归档供卡面 warnings 展示"
