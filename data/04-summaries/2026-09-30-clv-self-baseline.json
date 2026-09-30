@@ -1,0 +1,7 @@
+{
+ "ranAt": "2026-09-30",
+ "nDays": 29,
+ "usableDays": 0,
+ "verdict": "前置体检未通过：05-trends 后续快照为增量（无变动即空 matches），无任何一天有 2 个非空时点 → 漂移基线无法建立，clv_self 归因悬置",
+ "sideFinding": "drift_features.json 仅 3 场真数据、漂移全零，drift 特征线实际未积累"
+}
