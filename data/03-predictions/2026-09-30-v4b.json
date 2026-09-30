@@ -1,0 +1,20 @@
+{
+ "date": "2026-09-30",
+ "model": "predictor_v4b",
+ "nCalc": 0,
+ "nSkip": 2,
+ "skips": [
+  {
+   "code": "周三001",
+   "match": "韩国亚 vs 中国亚",
+   "skipReason": "别名映射失败（国家队/亚运/未收录队——模型不可算）"
+  },
+  {
+   "code": "周三002",
+   "match": "乌兹别亚 vs 日本亚",
+   "skipReason": "别名映射失败（国家队/亚运/未收录队——模型不可算）"
+  }
+ ],
+ "status": "样本内回测未过盲测——对照源非生产概率源（docs/predictor_v4b.md 收编标注）",
+ "matches": []
+}

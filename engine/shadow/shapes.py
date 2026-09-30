@@ -56,6 +56,12 @@ PLAN_FAMILIES = [
     # 之间——右尾显著肥于 A、回款可观测性远好于 D（1% 预算锚）。
     {'family': 'G', 'name': 'g-tail-贪心串1', 'pool': 'tail_greedy', 'shape': 'N串1',
      'n_legs': 4, 'options': 'single', 'track': 'A', 'p_budget': 0.01},
+    # V 族：v4b 比分模型影子盲测（2026-09-30 B+C 立项）——选场按快照 top1 信号降序取前 2 场
+    # （v4b 文档第五章口径，非市场排序）、每场 CRS top2（pool 内有价比分）→ 2×2=4 注 2串1。
+    # 快照源=engine/cache/v4b_snap/{date}.json（predictor_v4b_daily.py 生成，与 qcache 同构）；
+    # 定位=样本外盲测对照（+341.4% 皆样本内回测，docs/predictor_v4b.md 收编标注），非生产概率源。
+    {'family': 'V', 'name': 'v4b-双选2串1', 'pool': 'v4b', 'shape': '2串1',
+     'n_legs': 2, 'options': 'dual', 'track': 'A'},
 ]
 
 
@@ -72,6 +78,22 @@ def load_qcache(date: str):
         return None
 
 
+V4B_SNAP_DIR = os.path.join(HERE, '..', 'cache', 'v4b_snap')   # engine/cache/v4b_snap
+
+
+def load_v4b_snap(date: str):
+    """v4b 快照 data 部分 → dict（与 qcache 同构 {code:{crs:[(pick,signal),...]}}）；
+    缺失/空可算场返回 None（V 族诚实跳过）。快照由 predictor_v4b_daily.py 生成（冻结纪律同 qcache）。"""
+    p = os.path.join(V4B_SNAP_DIR, f'{date}.json')
+    if not os.path.exists(p):
+        return None
+    try:
+        with open(p, encoding='utf-8') as fh:
+            doc = json.load(fh)
+    except (OSError, json.JSONDecodeError):
+        return None
+    data = (doc or {}).get('data') or {}
+    return data or None
 # ── 选腿（池排序 → 前 n 腿）──
 def _key_strong(leg):
     return max(leg['fused'])
@@ -125,7 +147,7 @@ def _qc_options(leg, kind, qc, k):
 
 def _leg_picks(leg, spec, options_mode, qc):
     """→ 该腿选项 list（建票展开用）；had 腿 int 选项，ttg/crs 池键 str。"""
-    kind = 'had' if spec['pool'] in ('strong', 'jiao_zhuo', 'ev_best') else spec['pool']
+    kind = 'had' if spec['pool'] in ('strong', 'jiao_zhuo', 'ev_best') else ('crs' if spec['pool'] == 'v4b' else spec['pool'])
     if kind == 'had':
         k = {'single': 1, 'dual': 2, 'dual2': 2, 'triple': 3}[options_mode]
         return _had_options(leg, k)
@@ -248,7 +270,22 @@ def build_ticket(legs, spec, qc=None):
         mult = max(1, BUDGET // (n_bets * BET_UNIT))
         return {'tlegs': tlegs, 'bets': bets, 'n_bets': n_bets,
                 'mult': mult, 'cost': n_bets * BET_UNIT * mult}
-    if spec['pool'] in ('ttg', 'crs'):
+    if spec['pool'] == 'v4b':
+        # V 族：选场按 v4b 快照 top1 信号降序（模型口径，非市场排序）——qc=v4b快照（paper 特供）
+        if not qc:
+            return None
+        by_signal = {}
+        for code, pools in qc.items():
+            ranked = pools.get('crs') or []
+            if ranked:
+                by_signal[code] = ranked[0][1]
+        idx_of = {l['code']: i for i, l in enumerate(legs)}
+        ordered = [idx_of[c] for c in sorted(by_signal, key=by_signal.get, reverse=True)
+                   if c in idx_of]
+        pool = [(i, legs[i]) for i in ordered[:spec['n_legs']]]
+        if len(pool) < 2:
+            return None
+    elif spec['pool'] in ('ttg', 'crs'):
         if not qc:
             return None                     # 无 q 快照整族跳过（qcache 随事故丢失待重建）
         pool = sorted(enumerate(legs), key=lambda kv: _key_strong(kv[1]),
@@ -269,7 +306,7 @@ def build_ticket(legs, spec, qc=None):
         picks = _leg_picks(leg, spec, mode, qc)
         if not picks:
             return None                     # ttg/crs 池价/q 全缺该场 → 整票放弃（不建半票）
-        kind = 'had' if spec['pool'] in ('strong', 'jiao_zhuo', 'ev_best') else spec['pool']
+        kind = 'had' if spec['pool'] in ('strong', 'jiao_zhuo', 'ev_best') else ('crs' if spec['pool'] == 'v4b' else spec['pool'])
         if kind == 'had':
             picks = [int(p) for p in picks]
             # 只冻结已买槽（未买槽 None——settle 以槽位有价判"买了且命中"，全槽透传会误判）

@@ -306,7 +306,22 @@ def shadow_all(date=None, out=None):
     for spec in _shapes.PLAN_FAMILIES:
         if (spec['name'], date) in done:
             continue
-        tk = _shapes.build_ticket(legs, spec, qc=qc)
+        spec_qc = qc
+        if spec.get('pool') == 'v4b':
+            # V 族盲测（2026-09-30 B+C）：qc 换 v4b 快照；缺失时 predictor_v4b_daily 自动生成
+            spec_qc = _shapes.load_v4b_snap(date)
+            if spec_qc is None:
+                try:
+                    import subprocess as _sp
+                    import sys as _sys
+                    _sp.run([_sys.executable,
+                             os.path.join(REPO, 'engine', 'scripts', 'predictor_v4b_daily.py'),
+                             date, '--snap-only'],
+                            check=True, cwd=REPO)
+                    spec_qc = _shapes.load_v4b_snap(date)
+                except Exception:
+                    spec_qc = None           # 诚实降级：v4b spec 跳过（映射失败/历史不足皆打印原因）
+        tk = _shapes.build_ticket(legs, spec, qc=spec_qc)
         if tk is None:
             continue
         legs_frozen = freeze_legs(legs, tk)
