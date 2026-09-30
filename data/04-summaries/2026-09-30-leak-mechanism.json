@@ -1,0 +1,32 @@
+{
+ "ranAt": "2026-09-30",
+ "touchRate": {
+  "nBlind": 3168,
+  "nSameDaySameTeams": 947,
+  "rate": 0.2989
+ },
+ "paired": {
+  "n": 2551,
+  "leak": {
+   "top1": 0.1356,
+   "recovery": 0.9726
+  },
+  "clean": {
+   "top1": 0.1109,
+   "recovery": 0.7761
+  },
+  "dTop1": [
+   0.0247,
+   0.0176,
+   0.0321
+  ],
+  "dRecovery": [
+   0.1966,
+   0.1425,
+   0.2564
+  ],
+  "pickChanged": 361
+ },
+ "introducedBy": "7b5a87a 2026-09-29 15:36（闯关票转正）· 修于 04a1206 2026-09-30 14:27",
+ "rootCause": "merged.sort(key=lambda r: (r[1], 0 if r[0] == \"L\" else 1)) 同日联赛库行排在待预测场之前"
+}
