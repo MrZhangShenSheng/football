@@ -146,9 +146,9 @@ def snap(day: str, force: bool = False) -> dict:
     return doc
 
 
-def card(day: str) -> dict:
+def card(day: str, force: bool = False) -> dict:
     """对照卡：v4b top2 vs 市场 CRS 最热 vs 当日 crs_fusion（boldplay 卡若有）。"""
-    doc = snap(day)
+    doc = snap(day, force=force)
     sm = json.loads((ROOT / "engine/cache/sporttery_matches.json").read_text(encoding="utf-8"))
     matches = {m.get("code"): m for m in sm.get("matches", []) if m.get("matchDate") == day}
 
@@ -165,7 +165,7 @@ def card(day: str) -> dict:
     for code, pools in doc["data"].items():
         m = matches.get(code) or {}
         pool = {crs_key_to_pretty(k): float(v) for k, v in (m.get("crs") or {}).items() if v}
-        mkt_hot = max(pool, key=pool.get) if pool else None
+        mkt_hot = min(pool, key=pool.get) if pool else None   # 市场最热=最低赔率(隐含概率最高)
         rows.append({
             "code": code, "league": m.get("league"), "match": f"{m.get('home')} vs {m.get('away')}",
             "v4bTop2": [{"pick": p, "signal": round(s, 4), "odds": pool.get(p)} for p, s in pools["crs"]],
@@ -193,4 +193,4 @@ if __name__ == "__main__":
     if args.snap_only:
         snap(args.date, force=args.force)
     else:
-        card(args.date)
+        card(args.date, force=args.force)

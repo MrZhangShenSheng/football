@@ -230,8 +230,10 @@ def main():
         for p in sorted_packs:
             top1, prob1 = p["model_sorted"][0]
             top2, prob2 = p["model_sorted"][1]
-            o1 = p["crs"].get(f"{top1[0]}:{top1[1]}") or p["crs"].get(f"{top1[0]}{top1[1]}")
-            o2 = p["crs"].get(f"{top2[0]}:{top2[1]}") or p["crs"].get(f"{top2[0]}{top2[1]}")
+            o1 = (p["crs"].get(f"{top1[0]}:{top1[1]}") or p["crs"].get(f"{top1[0]}{top1[1]}")
+                  or p["crs"].get(f"s{int(top1[0]):02d}s{int(top1[1]):02d}"))
+            o2 = (p["crs"].get(f"{top2[0]}:{top2[1]}") or p["crs"].get(f"{top2[0]}{top2[1]}")
+                  or p["crs"].get(f"s{int(top2[0]):02d}s{int(top2[1]):02d}"))
             k = dynamic_k(p["gap"], gap_threshold)
             legs.append({
                 "code": p["code"], "league": p["league"],
