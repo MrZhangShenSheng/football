@@ -1,0 +1,161 @@
+{
+ "ranAt": "2026-09-30",
+ "stakePerBet": 10.0,
+ "pinnacle": {
+  "n": 7216,
+  "overround": 0.0484,
+  "blindRoi": -0.0615,
+  "valueBets": {
+   "纯DC>2%": {
+    "bets": 8356,
+    "stake": 83560.0,
+    "ret": 76051.0,
+    "net": -7509.0,
+    "roi": -9.0,
+    "per100": -9.0,
+    "perBet": -0.9,
+    "selectionError": -2.9
+   },
+   "纯DC>5%": {
+    "bets": 6171,
+    "stake": 61710.0,
+    "ret": 55549.0,
+    "net": -6161.0,
+    "roi": -10.0,
+    "per100": -10.0,
+    "perBet": -1.0,
+    "selectionError": -3.9
+   },
+   "纯DC>10%": {
+    "bets": 3652,
+    "stake": 36520.0,
+    "ret": 31715.0,
+    "net": -4805.0,
+    "roi": -13.2,
+    "per100": -13.2,
+    "perBet": -1.32,
+    "selectionError": -7.1
+   },
+   "融合>2%": {
+    "bets": 5194,
+    "stake": 51940.0,
+    "ret": 47229.0,
+    "net": -4711.0,
+    "roi": -9.1,
+    "per100": -9.1,
+    "perBet": -0.91,
+    "selectionError": -3.0
+   },
+   "融合>5%": {
+    "bets": 1933,
+    "stake": 19330.0,
+    "ret": 16963.0,
+    "net": -2367.0,
+    "roi": -12.2,
+    "per100": -12.2,
+    "perBet": -1.22,
+    "selectionError": -6.1
+   },
+   "融合>10%": {
+    "bets": 614,
+    "stake": 6140.0,
+    "ret": 5287.0,
+    "net": -853.0,
+    "roi": -13.9,
+    "per100": -13.9,
+    "perBet": -1.39,
+    "selectionError": -7.8
+   }
+  },
+  "stakePerBet": 10.0
+ },
+ "sporttery": {
+  "n": 2551,
+  "overround": 0.3486,
+  "blindRoi": -0.4066,
+  "schemes": {
+   "市场最低赔率": {
+    "bets": 2551,
+    "stake": 25510,
+    "ret": 21754,
+    "net": -3756,
+    "recovery": 85.3,
+    "perBet": -1.47,
+    "vsMarketPP": 0.0
+   },
+   "经验频率": {
+    "bets": 2551,
+    "stake": 25510,
+    "ret": 19834,
+    "net": -5676,
+    "recovery": 77.7,
+    "perBet": -2.23,
+    "vsMarketPP": -7.5
+   },
+   "多场景v2": {
+    "bets": 2551,
+    "stake": 25510,
+    "ret": 20108,
+    "net": -5402,
+    "recovery": 78.8,
+    "perBet": -2.12,
+    "vsMarketPP": -6.5
+   },
+   "多场景v3": {
+    "bets": 2551,
+    "stake": 25510,
+    "ret": 19784,
+    "net": -5726,
+    "recovery": 77.6,
+    "perBet": -2.24,
+    "vsMarketPP": -7.7
+   },
+   "v4b×0": {
+    "bets": 2551,
+    "stake": 25510,
+    "ret": 19784,
+    "net": -5726,
+    "recovery": 77.6,
+    "perBet": -2.24,
+    "vsMarketPP": -7.7
+   },
+   "v4b×0.5": {
+    "bets": 2551,
+    "stake": 25510,
+    "ret": 19784,
+    "net": -5726,
+    "recovery": 77.6,
+    "perBet": -2.24,
+    "vsMarketPP": -7.7
+   },
+   "v4b×1": {
+    "bets": 2551,
+    "stake": 25510,
+    "ret": 19798,
+    "net": -5712,
+    "recovery": 77.6,
+    "perBet": -2.24,
+    "vsMarketPP": -7.7
+   },
+   "v4b×1.25": {
+    "bets": 2551,
+    "stake": 25510,
+    "ret": 19798,
+    "net": -5712,
+    "recovery": 77.6,
+    "perBet": -2.24,
+    "vsMarketPP": -7.7
+   },
+   "v4b×2": {
+    "bets": 2551,
+    "stake": 25510,
+    "ret": 19798,
+    "net": -5712,
+    "recovery": 77.6,
+    "perBet": -2.24,
+    "vsMarketPP": -7.7
+   }
+  },
+  "stakePerBet": 10.0
+ }
+}
