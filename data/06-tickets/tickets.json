@@ -5154,7 +5154,8 @@
         "disciplineEvents": [],
         "disciplineNote": "🟡金额警示：24元=闯关票标准8元/天×3倍·超ticketBand[8,22]上限2元·未破roundRedline 30（软提醒不拦截）",
         "preferenceCheck": "形状=档案闯关票(族模型gap前2双选2串复式)✅·3倍为档案外倍数(T038 3串1×5倍固定买法同类先例)",
-        "rightTail": "闯关票右尾纪律累计+4注(×3倍)·满100注或连续3个月0回款再评估"
+        "rightTail": "闯关票右尾纪律累计+4注(×3倍)·满100注或连续3个月0回款再评估",
+ "evidenceRetracted": "⚠️ 2026-09-30 14:27 后追认：本票选腿依据(闯关票方案A·族模型)的转正证据含回测自泄漏，已作废。当初依据「134注 ROI +20.1%」来自被污染回测(肇事行 merged.sort 同日联赛库赛果先入统计，引入于 7b5a87a 与该 +20.1% 同一提交)；去泄漏重测 fullseason W=2 由 +9.6% 转 −7.0%、dynamic_k 方案A +4.4%→+3.9%(204票中14，与零优势统计上分不开)。另「六方案对照胜出」存选择偏差(42配置同批数据挑最优，随机信号走同流程亦可凭空抬高约20pp)。→ 本票不构成策略有效的证据，结算结果(中或不中)均不得用于支持/反对该策略；闯关票后续出票已无有效依据支撑。证据链见 research/leak_mechanism.py、selection_bias.py、clean_eval.py 与 research/README.md"
       },
       "settled": {
         "status": "pending"
