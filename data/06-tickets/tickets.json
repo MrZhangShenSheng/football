@@ -5031,13 +5031,141 @@
       "settle": {
         "status": "pending"
       }
+    },
+    {
+      "id": "T043",
+      "source": "方案转正(闯关票方案A·parlay_gate 09-30票面×3倍——别名映射入库bd30e5d后首张真票)",
+      "placedAt": "2026-09-30 13:56",
+      "placedAtNote": "大哥报'买了闯关票的方案 24元'=方案A 4注×2元×3倍。票面赔率按13:47复扫冻结(001 1:0/1:1 由午时5.75/12.0降至5.50/10.0), 实际以出票终端为准",
+      "stake": 24,
+      "unitStake": 2,
+      "units": 12,
+      "multiplier": 3,
+      "shape": "CRS 2串1复式 2选×2选=4注×3倍",
+      "shapeDetail": "两腿互斥比分·至多中1注·木桶CRS上限4关内✅·同场限一玩法✅",
+      "matchDays": [
+        "2026-09-30"
+      ],
+      "parlayGateRef": "engine/cache/parlay_gate/2026-09-30_A.json",
+      "legs": [
+        {
+          "code": "周三002",
+          "league": "亚运男足(1/8决赛)",
+          "match": "乌兹别亚 vs 日本亚",
+          "market": "CRS",
+          "pick": [
+            "0:1",
+            "1:2"
+          ],
+          "odds": {
+            "0:1": 6.25,
+            "1:2": 7.0
+          },
+          "poolP": 0.2261,
+          "hypothesis": "survived",
+          "note": "闯关票族模型双选(gap0.017<0.05)·0:1=午时假设层主线+市场最热·1:2=族模型补位(与日本6场零失球画面相逆,已知悉)",
+          "agreement": "agree"
+        },
+        {
+          "code": "周三001",
+          "league": "亚运男足(1/8决赛)",
+          "match": "韩国亚 vs 中国亚",
+          "market": "CRS",
+          "pick": [
+            "1:0",
+            "1:1"
+          ],
+          "odds": {
+            "1:0": 5.5,
+            "1:1": 10.0
+          },
+          "poolP": 0.2103,
+          "hypothesis": "survived",
+          "note": "闯关票族模型双选(gap0.013<0.05)·1:0=13:40修正后三源交集(v4b/族模型/中国10场失5球防守画像)·1:1=族模型与v4b共推",
+          "agreement": "agree"
+        }
+      ],
+      "bets": [
+        {
+          "legs": [
+            [
+              0,
+              "0:1"
+            ],
+            [
+              1,
+              "1:0"
+            ]
+          ],
+          "multiplier": 3
+        },
+        {
+          "legs": [
+            [
+              0,
+              "0:1"
+            ],
+            [
+              1,
+              "1:1"
+            ]
+          ],
+          "multiplier": 3
+        },
+        {
+          "legs": [
+            [
+              0,
+              "1:2"
+            ],
+            [
+              1,
+              "1:0"
+            ]
+          ],
+          "multiplier": 3
+        },
+        {
+          "legs": [
+            [
+              0,
+              "1:2"
+            ],
+            [
+              1,
+              "1:1"
+            ]
+          ],
+          "multiplier": 3
+        }
+      ],
+      "payoutStructure": {
+        "note": "派彩按形状算：两腿各中所选比分才回款·四注互斥至多中1注",
+        "tiers": {
+          "0:1×1:0": 206.25,
+          "0:1×1:1": 375.0,
+          "1:2×1:0": 231.0,
+          "1:2×1:1": 420.0
+        }
+      },
+      "meta": {
+        "pFull": 0.0475,
+        "pFullNote": "市场去水口径：002两选22.6%×001两选21.0%（关间独立近似）",
+        "disciplineEvents": [],
+        "disciplineNote": "🟡金额警示：24元=闯关票标准8元/天×3倍·超ticketBand[8,22]上限2元·未破roundRedline 30（软提醒不拦截）",
+        "preferenceCheck": "形状=档案闯关票(族模型gap前2双选2串复式)✅·3倍为档案外倍数(T038 3串1×5倍固定买法同类先例)",
+        "rightTail": "闯关票右尾纪律累计+4注(×3倍)·满100注或连续3个月0回款再评估"
+      },
+      "settled": {
+        "status": "pending"
+      }
     }
   ],
   "meta": {
-    "totalTickets": 43,
+    "totalTickets": 44,
     "totalStake": 738,
     "totalPayout": 501.75,
     "totalNet": -236.25,
-    "lastUpdated": "2026-09-29"
+    "lastUpdated": "2026-09-30"
   }
 }
