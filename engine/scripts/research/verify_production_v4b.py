@@ -189,8 +189,15 @@ print()
 print("=" * 80)
 print("对比验证")
 print("=" * 80)
-expected_profit = 341.4
-expected_hits = 39
+# ⚠ 2026-09-30：下列期望值出自**自泄漏**口径（被预测场自己的赛果先入统计），已作废。
+# 同一脚本改用 common.strict_merged(lag=2) 后的正确值：收益率 +53.8%、命中 17/253、
+# 回撤 35.1%（v4b_leak_ab.py 实测 A/B 对照，泄漏虚增 286.8pp）。
+# 且 +53.8% 本身未通过自证伪：剔除最大 2 张命中票即回收率 94.6%、净利转负；
+# 回收率 95%CI[64.9%, 199.2%] 下界未过 100%；clean_eval 同口径 v4b 单场 top1
+# 11.1% 显著低于市场 13.7%。故本脚本仅作历史复现用，不得据其结论采用 v4b。
+# 详见 v4b_leak_ab.py / v4b_roi_53_selfrefute.py / clean_eval.py。
+expected_profit = 341.4   # 作废值，保留仅为复现旧口径
+expected_hits = 39        # 作废值（正确口径为 17）
 expected_tickets = 253
 actual_profit = (capital - INITIAL_CAPITAL) / INITIAL_CAPITAL * 100
 

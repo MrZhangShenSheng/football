@@ -1,0 +1,34 @@
+{
+ "ranAt": "2026-09-30",
+ "correctRoiPct": 126.6,
+ "nTickets": 253,
+ "nHit": 17,
+ "costYuan": 2024.0,
+ "payoutYuan": 2562.2,
+ "concentration": {
+  "top3ShareOfPayout": 0.3466,
+  "topPayouts": [
+   384.0,
+   264.0,
+   240.0,
+   221.0,
+   220.0
+  ]
+ },
+ "permutation": {
+  "nPerm": 2000,
+  "pLegHit": 0.111,
+  "p": 0.0,
+  "medianRoi": 0.2072,
+  "shareRandomAbove100": 0.0005
+ },
+ "bootstrap": {
+  "ci": [
+   0.649,
+   1.9917
+  ],
+  "pAbove100": 0.7734
+ },
+ "crossCheck": "clean_eval.py 同口径：v4b top1 11.1% vs 市场 13.7%，差 −2.6pp[−4.0,−1.3]；分歧场 8.6% vs 13.2%，差 −4.6pp",
+ "verdict": "+53.8% 未通过自证伪：回收率 95%CI 下界 64.9% 未过 100%。叠加 clean_eval 同口径实证（v4b 单场 top1 11.1% vs 市场 13.7%，差 −2.6pp[−4.0,−1.3]；分歧场 8.6% vs 13.2%），结论为 2 串 1 右尾运气 + 少数高赔票，非选腿能力，不可作生产依据"
+}

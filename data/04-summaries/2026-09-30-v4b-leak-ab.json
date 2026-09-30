@@ -1,0 +1,31 @@
+{
+ "ranAt": "2026-09-30",
+ "ask": "大哥要求按当前正确逻辑重跑 +341% 那个回测，看正确值",
+ "anchorClaim": {
+  "roiPct": 341.4,
+  "source": "commit 14173ab / verify_production_v4b.py:192",
+  "nTickets": 253,
+  "hitRatePct": 15.4,
+  "maxDrawdownPct": 11.7
+ },
+ "A_lag0_leaky": {
+  "nBlind": 3168.0,
+  "roiPct": 340.6,
+  "nHitTickets": 39.0,
+  "hitRatePct": 15.4,
+  "costYuan": 2032.0,
+  "payoutYuan": 5437.8,
+  "maxDrawdownPct": 11.7
+ },
+ "B_lag2_strict": {
+  "nBlind": 3168.0,
+  "roiPct": 53.8,
+  "nHitTickets": 17.0,
+  "hitRatePct": 6.7,
+  "costYuan": 2024.0,
+  "payoutYuan": 2562.2,
+  "maxDrawdownPct": 35.1
+ },
+ "leakInflationPp": 286.8,
+ "verdict": "正确值 +53.8%（lag=2 strict_merged 口径）；旧口径 +340.6% 系自泄漏虚增 +286.8pp"
+}
