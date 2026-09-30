@@ -6,7 +6,11 @@ r"""闯关票生产脚本（2026-09-30 双方案并行）。
 【方案A - 保守】
   选场条件：每日在售 >=2 场即可
   gap阈值 ：0.05
-  预期ROI ：+15.77%（8/8 切分点正收益）
+  预期ROI ：⚠ 2026-09-30 作废——+15.77%/8切分点正收益出自自泄漏回测（被预测场赛果先入
+            统计，见 docs/predictor_v4b.md 与 common.strict_merged）。修正后同配置全季
+            ROI −7.0%~+3.9%（中奖 10~14 张），与零优势统计上分不开；clean_eval 另证
+            公开统计造比分规则线整体劣于市场最低赔率。本脚本按 09-29 纪律继续出票，
+            但「预期正收益」这一说法已无证据支撑。
   票数    ：日均产出高
 
 【方案B - 激进】
@@ -61,13 +65,13 @@ SCHEMES = {
         "name": "保守",
         "min_matches": 2,
         "gap_threshold": 0.05,
-        "evidence": "8/8切分点正收益 ROI+15.77%",
+        "evidence": "⚠原证据+15.77%已作废(自泄漏回测)·修正后同配置 ROI+3.9%(204票中14·不显著)",
     },
     "B": {
         "name": "激进",
         "min_matches": 10,
         "gap_threshold": 0.06,
-        "evidence": "8/8切分点正收益 ROI+37.62%（日>=10场才出票）",
+        "evidence": "⚠原证据+37.62%已作废(自泄漏回测)·未重测(日>=10场才出票·今年样本稀少)",
     },
 }
 
@@ -265,7 +269,7 @@ def main():
             "bets": n_bets,
             "min_matches": cfg["min_matches"],
             "gap_threshold": gap_threshold,
-            "model": f"score_family v2（26维特征·逐月滚动重训）· 方案{scheme_id} · gap>{gap_threshold}选1",
+            "model": f"score_family v2（26维特征=feature_row·逐月滚动重训）· 方案{scheme_id} · gap>{gap_threshold}选1",
             "evidence": cfg["evidence"],
             "expected": "以小博大：多数注归零，靠全中(合赔数十倍级)回本翻正",
             "discipline": "满100注或连续3个月0回款再评估；中途不停",

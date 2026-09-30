@@ -42,7 +42,7 @@ if __name__ == "__main__":
         n = code.count(ORIG)
         print(f"\n######## {rel}（merged 构造行命中 {n} 处）########")
         if n == 0:
-            print("  无该构造行（可能是循环内 append 写法），需人工核对排序")
+            print("  无旧构造行：已改用 common.strict_merged，或为循环内 append 写法（需人工核对排序）")
             continue
         stem = Path(rel).stem
         print("—— A 原样 ——")

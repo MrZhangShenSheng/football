@@ -1,11 +1,11 @@
 {
- "generatedAt": "2026-09-29",
- "n_total": 777,
- "n_rounds": 46,
+ "generatedAt": "2026-09-30",
+ "n_total": 779,
+ "n_rounds": 47,
  "readiness": {
   "n_result": 775,
   "n_clv": 125,
-  "n_pfinal": 608,
+  "n_pfinal": 610,
   "n_dedup_merged": 66,
   "n_dedup_diff_pick_kept": 94,
   "calibrateReady": true,
@@ -31,8 +31,8 @@
    "解放者杯": 15,
    "美职": 13,
    "德乙": 13,
+   "亚运男足": 13,
    "法乙": 12,
-   "亚运男足": 11,
    "荷乙": 10,
    "英联赛杯": 10,
    "挪超": 10,
@@ -56,7 +56,7 @@
   "by_star": {
    "1": 100,
    "2": 307,
-   "3": 169,
+   "3": 171,
    "4": 58
   }
  },
@@ -32092,6 +32092,78 @@
    "round": "2026-09-28"
   },
   {
+   "date": "2026-09-30",
+   "code": "周三001",
+   "league": "亚运男足",
+   "match": "韩国亚 vs 中国亚",
+   "stars": 3,
+   "grade": 4,
+   "pick": "1:0",
+   "play": "crs",
+   "odds": 5.5,
+   "p_final": [
+    0.791,
+    0.154,
+    0.055
+   ],
+   "p_dc": null,
+   "ev": null,
+   "in_plan": "CRS 2串1 主推",
+   "chain": "单锚×0.97",
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "familyHit": null,
+   "familyName": null,
+   "familyProb": null,
+   "crsTailProb": null,
+   "crsTailSource": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "pinClose": null,
+   "pinSource": null,
+   "round": "2026-09-30"
+  },
+  {
+   "date": "2026-09-30",
+   "code": "周三002",
+   "league": "亚运男足",
+   "match": "乌兹别亚 vs 日本亚",
+   "stars": 3,
+   "grade": 4,
+   "pick": "0:1",
+   "play": "crs",
+   "odds": 6.25,
+   "p_final": [
+    0.157,
+    0.241,
+    0.602
+   ],
+   "p_dc": null,
+   "ev": null,
+   "in_plan": "CRS 2串1 主推+对冲变体",
+   "chain": "单锚×0.97",
+   "pools": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "familyHit": null,
+   "familyName": null,
+   "familyProb": null,
+   "crsTailProb": null,
+   "crsTailSource": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "pinClose": null,
+   "pinSource": null,
+   "round": "2026-09-30"
+  },
+  {
    "seq": 10,
    "code": "周五001",
    "league": "日职",
@@ -34529,6 +34601,30 @@
    "basis": "9场CRS融合链: 闸门过2场(001 draw 29.3%/004 home_clean 28.1%)+接近闸门(007 25.1%/002 26.0%); E2三腿全为matchPlay画面比分(江原低进球平局+丹麦净胜2零封+德国净胜2起)非模型top1堆砌; 004丹麦2:0为画面第一(族内第二)·1:0为族top1两版并列; 2*3按大哥09-18先例=过2关+过3关=官方3串4(3注2串1+1注3串1任中2关回款); CRS复式=同场同玩法多比分合法",
    "payout": "V2全中979元/V5全中≈979元(1:1,2:0,2:0组合)/右尾最大867(0:0组合)",
    "risk": "影子168票实证CRS串关8腿命中零变现(变现7/7全是单关)——串关=右尾彩票非变现工具; CRS 2串期望返还43.7%/3串28.9%"
+  },
+  "2026-09-30:CRS 2串1 主推": {
+   "plan": "CRS 2串1 主推",
+   "type": "混串2串1",
+   "stake": "2元(1注×2元)",
+   "legs": [
+    "周三001 CRS 2:0@4.6",
+    "周三002 CRS 0:1@6.25"
+   ],
+   "odds": 28.75,
+   "evEach": false,
+   "note": "合赔28.75·全中回57.5元; 假设双survived"
+  },
+  "2026-09-30:CRS 2串1 对冲变体": {
+   "plan": "CRS 2串1 对冲变体",
+   "type": "混串2串1",
+   "stake": "2元(1注×2元)",
+   "legs": [
+    "周三001 CRS 2:0@4.6",
+    "周三002 CRS 0:0@11.5"
+   ],
+   "odds": 52.9,
+   "evEach": false,
+   "note": "合赔52.9·全中回105.8元; 覆盖乌兹铁桶拖加时画面; 与票1共享001 2:0腿(002双选拆两注)"
   }
  }
 }

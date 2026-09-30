@@ -3,7 +3,7 @@
 """采集脚本公共工具：别名表加载 + 球队画像文件读写骨架。"""
 import json
 import sys
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 # Windows 控制台中文乱码：统一强制 UTF-8 输出（Python 3.7+）
@@ -14,6 +14,23 @@ for _stream in (sys.stdout, sys.stderr):
 ROOT = Path(__file__).resolve().parents[2]
 TEAMS_DIR = ROOT / "data" / "01-teams"
 ALIASES_PATH = TEAMS_DIR / "_aliases.json"
+
+
+LEAK_LAG_DAYS = 2   # 联赛库日期比体彩日期早 0~1 天（2026-09-30 实测分布仅 −1/0），2 天缓冲才隔得开同一场
+
+
+def strict_merged(league_rows, blind_rows, lag_days: int = LEAK_LAG_DAYS) -> list:
+    """回测时间线：联赛库赛果(L) + 体彩盲测场(B) → 按处理顺序排好的 [(kind, date, h, a, hg, ag, idx)]。
+
+    L 行日期后移 lag_days 再排序（同日 L 先 B 后），保证预测某场时统计里只有其日期前
+    ≥lag_days 天的联赛赛果——被预测场自己的赛果（体彩约六成场次同一场也在联赛库）
+    不会先入统计。宁可少用 1~2 天的新赛果，不可偷看答案。
+    league_rows=[(date, h, a, hg, ag)]；blind_rows=[(date, h, a, hg, ag, idx)]。开发者 sszhang"""
+    shift = lambda d: (date.fromisoformat(d) + timedelta(days=lag_days)).isoformat()  # noqa: E731
+    merged = [("L", shift(d), h, a, hg, ag, None) for d, h, a, hg, ag in league_rows]
+    merged += [("B", d, h, a, hg, ag, i) for d, h, a, hg, ag, i in blind_rows]
+    merged.sort(key=lambda r: (r[1], 0 if r[0] == "L" else 1))
+    return merged
 
 
 def load_aliases() -> dict:

@@ -332,10 +332,9 @@ for m in hist:
 print(f"盲测样本：{len(blind)}场")
 
 # 合并时间线
-merged = [("L", d, h, a, hg, ag, None) for d, h, a, hg, ag in tl]
-merged += [("B", m["date"], m["hid"], m["aid"], m["actual"][0], m["actual"][1], i)
-           for i, m in enumerate(blind)]
-merged.sort(key=lambda r: (r[1], 0 if r[0] == "L" else 1))
+from common import strict_merged   # 2026-09-30 修自泄漏：原排序让被预测场赛果先入统计
+merged = strict_merged(tl, [(m["date"], m["hid"], m["aid"], m["actual"][0], m["actual"][1], i)
+                            for i, m in enumerate(blind)])
 
 # 滚动统计
 stats = defaultdict(sfm.TeamStats)
