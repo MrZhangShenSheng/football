@@ -1,0 +1,16 @@
+{
+ "ranAt": "2026-09-30",
+ "nMatches": 4979,
+ "nConfig": 42,
+ "nTrial": 400,
+ "unit": 2.0,
+ "singleConfigRoi": -0.4075,
+ "bestOfNRoi": {
+  "mean": -0.2077,
+  "std": 0.0532,
+  "max": 0.0025,
+  "p95": -0.1096
+ },
+ "selectionLiftPP": 19.98,
+ "verdict": "选择偏差单独抬高约 20.0pp，不足以解释 +341%；主因是泄漏，选择偏差为第二层放大"
+}
