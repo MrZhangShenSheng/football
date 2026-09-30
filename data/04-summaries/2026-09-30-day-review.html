@@ -1,0 +1,94 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>2026-09-30 全日总结 · 从 +341% 的信仰到右尾结构的重建</title>
+<style>
+:root{--ink:#1c2733;--sub:#5b6b7a;--line:#dde4ea;--bg:#f7f9fb;--card:#fff;--ok:#0f6b4f;--bad:#a33;--warn:#b3541e}
+*{box-sizing:border-box}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;color:var(--ink);background:var(--bg);margin:0;padding:24px 16px;max-width:1000px;margin-inline:auto}
+h1{font-size:21px;margin:0 0 4px}
+h2{font-size:16px;margin:26px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--ok)}
+.meta{color:var(--sub);font-size:13px;margin-bottom:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:8px 0}
+th,td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#f0f4f7}
+.num{font-variant-numeric:tabular-nums}
+.bad{color:var(--bad);font-weight:600}
+.ok{color:var(--ok);font-weight:600}
+.warn{color:var(--warn)}
+.small{font-size:12px;color:var(--sub)}
+ul{margin:6px 0;padding-left:20px}li{margin:4px 0}
+.tag{display:inline-block;font-size:11px;border-radius:4px;padding:1px 7px;margin-right:5px;vertical-align:1px}
+.t-red{background:#fbeaea;color:var(--bad)}.t-grn{background:#e6f2ed;color:var(--ok)}.t-amb{background:#f9ede2;color:var(--warn)}
+.icon{width:1em;height:1em;vertical-align:-0.12em;color:var(--ok)}
+</style></head><body>
+<svg style="display:none"><symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3z"/></symbol><symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6 6 18"/></symbol><symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/></symbol></svg>
+
+<h1><svg class="icon"><use href="#i-shield"/></svg> 2026-09-30 全日总结：从 +341% 的信仰，到全线证伪，到右尾结构的重建</h1>
+<div class="meta">开发者 sszhang · 32 个提交（07:15 ~ 17:49）· 本文档随全日产物一并归档</div>
+
+<h2>一、一句话</h2>
+<div class="card">上午延续的比分预测模型全线（+341.4% / +20.1% / +15.77% / +133.5%）被证实为<b>回测自泄漏 + 选择偏差的假象</b>；下午在干净口径下重测了比分线、方向线、DC 融合线，<b>全部不优于市场</b>；随后把战场从「跑赢市场」转到「负期望下的最优形状」，建立了右尾命中率的结构模型，并按大哥「拉长时间全量回测」的指令启动两年历史回采（进行中）。</div>
+
+<h2>二、六幕时间线（32 提交）</h2>
+<div class="card">
+<table>
+<tr><th>幕</th><th>时段</th><th>提交</th><th>内容</th></tr>
+<tr><td>① 晨间常规</td><td>07:15-12:44</td><td class="num">32bf030 3d319cf b7b0292</td><td>伤停模型终判（市场已定价）、09-29 数据刷新、亚运男足预测轮（全无锚·假设层直推）</td></tr>
+<tr><td>② 遗产入库与实票</td><td>13:06-14:02</td><td class="num">14173ab d58ccf7 bd30e5d 4ee9643 0725e13</td><td>凌晨爆窗会话遗产全系入库；v4b 影子盲测接入；亚运 U23 特征源入库（41 场+18 队别名）；<b>T043 实票 24 元</b>（闯关票方案A×3）</td></tr>
+<tr><td>③ 证伪与归因</td><td>14:27-15:56</td><td class="num">04a1206 aeb61f6 f1a2845 b1f8d24 0e9dae7</td><td>发现自泄漏（一行排序键）→ strict_merged 修复 → 机制量化（<span class="bad">回收虚增 19.7pp</span>）→ 选择偏差量化（42选1 抬 20pp）→ 亏损折金额归因（抽水/选错两层）</td></tr>
+<tr><td>④ 干净重测</td><td>15:31-16:39</td><td class="num">eeb31b1 d1bc3b0 68b2c86 e37bfd1 37833c6</td><td>7216 场 walk-forward（DC 无增量·五联赛落 a=0）；模型 vs Pinnacle 打平；CLV 体检（查出 drift 特征线攒了 0 场）；赛程密度证伪；方向线 107.9% 未证伪</td></tr>
+<tr><td>⑤ 纪律与文档</td><td>16:02-16:17</td><td class="num">d927c5b e5486d1 1ac70f4 018997a c2d8c42</td><td>T043 挂证据作废批注；两文档作废声明；<b>铁律 14 入 skill + 机器守卫</b>（故障注入验证有效）；research/README 泄漏警示</td></tr>
+<tr><td>⑥ 结构重建</td><td>16:51-17:49</td><td class="num">d17c9f7 d01adf2 fbd0524 c5b5131 ab09eba</td><td>中奖票画像（真票靠 HAD 不靠比分）；比分离散分解（泊松乘积·1:1 天花板 12%）；TTG vs CRS 对拍；右尾命中率三抓手；右尾模型 v1/v2</td></tr>
+</table>
+</div>
+
+<h2>三、今日十个硬数字</h2>
+<div class="card">
+<table>
+<tr><th>#</th><th>数字</th><th>含义</th></tr>
+<tr><td>1</td><td class="num bad">97.3% → 77.6%</td><td>同一批 2551 场，泄漏版 vs 干净版单注回收率（<span class="num">Δ19.7pp CI[+14.2,+25.6]</span>）— 上午全部正收益的主因</td></tr>
+<tr><td>2</td><td class="num bad">+340.6% → +53.8%</td><td>v4b 泄漏版 vs 正确口径；且 +53.8% 剔除最大 2 张票即净亏 109.8 元（右尾运气非能力）</td></tr>
+<tr><td>3</td><td class="num">0.9613 vs 0.9398</td><td>模型 vs Pinnacle log-loss（n=334，CI 含 0）— 没有证据说我们比市场准</td></tr>
+<tr><td>4</td><td class="num bad">11.1% vs 13.7%</td><td>干净口径 v4b 单场比分命中 vs 市场最低赔率（差 −2.6pp 显著）— 比分规则线结案</td></tr>
+<tr><td>5</td><td class="num">0.1995 vs 0.2278</td><td>纯市场 vs 纯 DC 的 RPS（7216 场）— RPS 随融合权重 a 单调劣化，五联赛已落 a=0</td></tr>
+<tr><td>6</td><td class="num">34.9%</td><td>体彩 CRS 池抽水（vs HAD 12.9%）— 比分池谁押都先亏 26%：亏损大头</td></tr>
+<tr><td>7</td><td class="num">12.1%</td><td>最高频比分 1:1 的天花板（泊松乘积 32.9%×34.8%≈11.4% 实测吻合）— 比分天生离散</td></tr>
+<tr><td>8</td><td class="num">0.873 vs 0.600</td><td>CRS 热门端 vs 冷门端的腿效率（有效抽水 12.7% vs 40%）— 右尾腿要买热的</td></tr>
+<tr><td>9</td><td class="num ok">1.68% / 0.46% / 0.13%</td><td>M=50/100/500 档右尾票实测命中率（全热门2串 / 桂林带 / 梅州带）</td></tr>
+<tr><td>10</td><td class="num warn">→ 撞顶</td><td>右尾 v2 网格优化（81 组合·前后半验证）：前半最优设计后半全部塌缩 — 一年样本分辨不了设计细差，已启动两年回采</td></tr>
+</table>
+</div>
+
+<h2>四、生产链与基建变更（今日落地）</h2>
+<div class="card">
+<ul>
+<li><span class="tag t-grn">skill</span> 铁律 13 补强 + <b>新增铁律 14「回测四条硬纪律」</b>（v5.17·十四条铁律）：strict_merged 时间线 / 判据预注册 / 正收益先自证伪 / 警讯清单</li>
+<li><span class="tag t-grn">守卫</span> <code>engine/tests/test_backtest_no_leak_guard.py</code> 三道机器强制（白名单必须 strict_merged、禁肇事排序行、生产待预测场赛果必须 None），故障注入验证有效；pytest 386→393</li>
+<li><span class="tag t-grn">融合</span> fusion.json 五联赛落 a=0（西乙/西甲/葡超/法甲/苏超，改善 2.1~3.2%）；全局 a=0.40 待拍板</li>
+<li><span class="tag t-amb">作废</span> 闯关票转正证据（+15.77%/+20.1%）标作废、票面打印警示；v4b/multi_scene 系列文档挂红头作废；T043 挂 <code>meta.evidenceRetracted</code></li>
+<li><span class="tag t-grn">数据</span> 亚运 U23 特征源（league 库 asian-u23 41 场 + 别名 18 队）；ESPN 首发采集器 <code>lineup_watch.py</code> + Windows 定时任务（每 10 分钟·预注册三判据·满 150 场才下结论）</li>
+<li><span class="tag t-grn">审计</span> leak_audit / leak_mechanism / selection_bias / clean_eval / backtest_sweep / loss_decompose / ttg_vs_crs / right_tail_* 共 14 支可复跑脚本 + 12 份 04-summaries 审计 JSON</li>
+</ul>
+</div>
+
+<h2>五、在途（本文档归档时未完）</h2>
+<div class="card">
+<ul>
+<li><svg class="icon"><use href="#i-clock"/></svg> <b>两年历史回采进行中</b>：2023-09-01 起回采体彩全池历史赔率（断点续采），归档时已至 2024-02（1597 场）— 完成后跑右尾 v2 全量回测再定档位设计</li>
+<li><svg class="icon"><use href="#i-clock"/></svg> <b>首发信息实验</b>：唯一未证伪方向，判据预注册，攒 150 场（约 1~2 个月）自动可判</li>
+<li><svg class="icon"><use href="#i-clock"/></svg> <b>v4b 影子盲测</b>：每日出票冻结，样本外战绩自动积累</li>
+<li><svg class="icon"><use href="#i-x"/></svg> <b>T043 待结算</b>（24 元·两场亚运 1/8 决赛）：选腿依据已作废，中或不中均不作策略证据</li>
+</ul>
+</div>
+
+<h2>六、待主公拍板</h2>
+<div class="card">
+<ul>
+<li>闯关票是否继续每日 8 元（转正证据已作废·09-29 纪律为大哥所拍·臣不擅停）</li>
+<li>全局融合权重 a 是否从 0.40 下调（全样本 a=0 显著更优，但会波及未回测联赛）</li>
+<li>drift 快照是否改写全量（现状：增量快照结构把该特征线废成 0 场，明确可修）</li>
+</ul>
+</div>
+
+<div class="small">数据来源：engine/cache/hist_odds（4979 场·回采扩展中）、data/04-summaries/corpus.json（779 条·真前瞻）、data/06-tickets/tickets.json（44 票）、data/05-trends（29 天快照）。全部结论可经 research/ 下对应脚本复跑验证。</div>
+</body></html>
