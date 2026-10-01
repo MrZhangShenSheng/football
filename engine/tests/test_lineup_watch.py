@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-"""lineup_watch 临场首发采集器测试（全离线：scoreboard/summary/results 注入假源，落 tmp_path）。
+"""lineup_watch 临场首发采集器测试（全离线：scoreboard/summary/results/injury 注入假源，落 tmp_path）。
 
 覆盖：五池 diff/replay 往返 / ESPN 对场（时刻容差+单侧命中+无别名+歧义）/ 首发解析（未公布判空）/
+伤停轨（全在售窗建档 → 节流复查 → 变更快照 → 终窗每tick → 失败隔离 → 开赛后停查）/
 tick 全链（窗口外不落盘 → 快照 → 首发查询 → 调价 diff 压缩 → 首发公布 → 停售检测 → 结算）。
 开发者 sszhang
 """
@@ -76,7 +77,7 @@ def test_parse_lineup_published_vs_not():
 
 def test_tick_full_chain(tmp_path):
     state = {"published": False}
-    sb_calls, res_calls = [], []
+    sb_calls, res_calls, inj_calls = [], [], []
     board = [_ev("401", "2026-10-03T13:00Z", "Manchester City", "Arsenal")]
     full = {"rosters": [_ros("home", "Manchester City", 11), _ros("away", "Arsenal", 11)]}
     empty = {"rosters": [{"homeAway": "home", "roster": []}, {"homeAway": "away", "roster": []}]}
@@ -92,7 +93,11 @@ def test_tick_full_chain(tmp_path):
         res_calls.append((d1, d2))
         return {"900001": {"score": "2:1", "halfScore": "1:0"}}
 
-    kw = dict(scoreboard=sb, summary=summ, results=res, zh_map=ZH)
+    def inj(mid):
+        inj_calls.append(mid)
+        return {"h": [], "a": []}
+
+    kw = dict(scoreboard=sb, summary=summ, results=res, zh_map=ZH, injury=inj)
     far = _sub(900009, "周一001", "曼城", "阿森纳", date_="2026-10-05")
     path = tmp_path / "2026-10-03-lineups.json"
 
@@ -102,8 +107,13 @@ def test_tick_full_chain(tmp_path):
     club = lambda h="2.10": _sub(900001, "周六001", "曼城", "阿森纳", h=h)
     asia = _sub(900002, "周六002", "韩国亚", "中国亚")
 
-    at("17:30", club(), asia)                        # 开赛前 210 分：窗口外
-    assert not path.exists()
+    at("17:30", club(), asia)                        # 开赛前 210 分：赔率窗外但伤停窗内 → 建档+伤停快照
+    doc = lw.load_doc(tmp_path, "2026-10-03")
+    assert set(doc["matches"]) == {"900001", "900002"}
+    early = doc["matches"]["900001"]
+    assert early["snapshots"] == [] and early["seenTicks"] == []          # 赔率轨不越窗
+    assert len(early["injChecks"]) == 1 and len(early["injSnapshots"]) == 1
+    assert early["closedDetectedAt"] is None                             # 在售场不得误判停售
     at("18:30", club(), asia)                        # 赔率窗内、首发窗外
     at("19:10", club(), asia)                        # 首发窗：对场成功但未公布
     doc = lw.load_doc(tmp_path, "2026-10-03")
@@ -138,3 +148,81 @@ def test_tick_full_chain(tmp_path):
     assert res_calls == [("2026-10-02", "2026-10-04")]
     at("23:50", far)                                  # 60 分内不重查未完赛场
     assert len(res_calls) == 1
+
+
+def _p(name):
+    return {"name": name, "pos": "前锋", "injury": True, "susp": False, "apps": 8, "starts": 7}
+
+
+def test_parse_injuries_slim_and_sort():
+    value = {"home": {"injuriesAndSuspensionsList": [
+        {"personName": "B球员", "playerPositionDesc": "前锋", "injuryFlag": True, "suspensionFlag": False,
+         "appearanceCnt": 8, "startedMatchCnt": 7},
+        {"personName": "A球员", "playerPositionDesc": "后卫", "injuryFlag": False, "suspensionFlag": True,
+         "appearanceCnt": 5, "startedMatchCnt": 3}]},
+        "away": {}}
+    out = lw.parse_injuries(value)
+    assert out == {"h": [{"name": "A球员", "pos": "后卫", "injury": False, "susp": True, "apps": 5, "starts": 3},
+                         _p("B球员")],
+                   "a": []}
+    assert lw.parse_injuries({}) == {"h": [], "a": []}
+
+
+def test_injury_track(tmp_path):
+    lists = {"900002": ([_p("哈兰德")], [])}
+    fail = set()
+    calls = []
+
+    def inj(mid):
+        calls.append(mid)
+        if mid in fail:
+            raise ValueError("boom")
+        h, a = lists.get(mid, ([], []))
+        return {"h": h, "a": a}
+
+    kw = dict(injury=inj)
+    asia = lambda: _sub(900002, "周六002", "韩国亚", "中国亚")   # 无别名：绕开 ESPN，专测伤停轨
+    path = tmp_path / "2026-10-03-lineups.json"
+
+    def at(day_hm, *subs):
+        return lw.tick(datetime.strptime(day_hm, lw.KICK_FMT), _calc(*subs), tmp_path, **kw)
+
+    at("2026-10-01 20:00", asia())                     # 开赛前 2 天：全在售窗建档+首条快照
+    rec = lw.load_doc(tmp_path, "2026-10-03")["matches"]["900002"]
+    assert rec["injChecks"] == ["2026-10-01T20:00:00+08:00"]
+    assert rec["injSnapshots"] == [{"at": "2026-10-01T20:00:00+08:00", "inj": {"h": [_p("哈兰德")], "a": []}}]
+    assert rec["snapshots"] == [] and rec["seenTicks"] == []
+    assert rec["closedDetectedAt"] is None
+
+    at("2026-10-01 20:10", asia())                     # 节流：120 分钟内不复查
+    assert len(calls) == 1
+    rec = lw.load_doc(tmp_path, "2026-10-03")["matches"]["900002"]
+    assert len(rec["injChecks"]) == 1 and rec["closedDetectedAt"] is None
+
+    at("2026-10-01 22:30", asia())                     # 节流过期：复查·名单未变 → 只记查询不加快照
+    rec = lw.load_doc(tmp_path, "2026-10-03")["matches"]["900002"]
+    assert len(rec["injChecks"]) == 2 and len(rec["injSnapshots"]) == 1
+
+    lists["900002"] = ([_p("哈兰德"), _p("德布劳内")], [])
+    at("2026-10-02 00:40", asia())                     # 名单变更 → 追加快照（22:30 后 130 分·节流已过期）
+    rec = lw.load_doc(tmp_path, "2026-10-03")["matches"]["900002"]
+    assert len(rec["injChecks"]) == 3 and len(rec["injSnapshots"]) == 2
+    assert rec["injSnapshots"][1]["at"] == "2026-10-02T00:40:00+08:00"
+    assert rec["injSnapshots"][1]["inj"]["h"] == [_p("哈兰德"), _p("德布劳内")]
+
+    at("2026-10-03 18:30", asia())                     # 终窗（≤开赛前180分）：每 tick 查
+    at("2026-10-03 18:40", asia())
+    rec = lw.load_doc(tmp_path, "2026-10-03")["matches"]["900002"]
+    assert len(rec["injChecks"]) == 5
+
+    fail.add("900002")
+    stat = at("2026-10-03 18:50", asia())              # 采集失败：计数隔离·不崩·不记查询
+    assert stat["injErr"] == 1
+    rec = lw.load_doc(tmp_path, "2026-10-03")["matches"]["900002"]
+    assert len(rec["injChecks"]) == 5
+
+    far = _sub(900009, "周一001", "曼城", "阿森纳", date_="2026-10-05")
+    at("2026-10-03 21:05", far)                        # 开赛后：不查伤停；出清单 → 判停售
+    rec = lw.load_doc(tmp_path, "2026-10-03")["matches"]["900002"]
+    assert len(rec["injChecks"]) == 5
+    assert rec["closedDetectedAt"] == "2026-10-03T21:05:00+08:00"
