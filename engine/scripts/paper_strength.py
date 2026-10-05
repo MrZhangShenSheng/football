@@ -72,3 +72,9 @@ def league_offsets(bridge_rows: list[dict], min_bridge: int = BRIDGE_MIN) -> dic
     offsets = {k: sum(v) / len(v) for k, v in buckets.items() if len(v) >= min_bridge}
     uncal = [k for k, v in buckets.items() if len(v) < min_bridge]
     return {"offsets": offsets, "uncalibrated": uncal}
+
+def compare(att_h: float, def_h: float, att_a: float, def_a: float, hfa: float, env: float) -> dict:
+    """③ 实力对比：攻对比 Δ_att = att_h + hfa/2 − def_a；防对比对称；T=联赛进球环境（②c 扣的在此还回）。"""
+    return {"d_att": att_h + hfa / 2 - def_a,
+            "d_def": att_a - hfa / 2 - def_h,
+            "T": env}

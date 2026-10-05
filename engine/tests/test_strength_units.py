@@ -70,3 +70,14 @@ def test_league_offsets_detects_inflation():
     rows = [{"homeLeague": "lgA", "awayLeague": "lgB", "hg": 3, "ag": 2, "lamH0": 1.0, "lamA0": 1.0}] * 30
     out = ps.league_offsets(rows, min_bridge=30)
     assert out["offsets"]["lgA|lgB"] > 0.1
+
+def test_compare_symmetry_and_hfa():
+    c = ps.compare(1.0, 0.5, 0.5, 0.4, hfa=0.3, env=2.7)
+    assert c["d_att"] == pytest.approx(1.0 + 0.15 - 0.4)     # att_h + hfa/2 - def_a
+    assert c["d_def"] == pytest.approx(0.5 - 0.15 - 0.5)     # att_a - hfa/2 - def_h
+    assert c["T"] == 2.7
+    # 主客互换+同HFA → 攻防通道交换且平移一个hfa：d_att'=d_def+hfa、d_def'=d_att-hfa
+    # （brief原断言-d_def/-d_att是测试假红·Task8 λ_a=exp(d_def)钉死d_def=客攻击通道口径·现场裁定改断言留实现）
+    c2 = ps.compare(0.5, 0.4, 1.0, 0.5, hfa=0.3, env=2.7)
+    assert c2["d_att"] == pytest.approx(c["d_def"] + 0.3)
+    assert c2["d_def"] == pytest.approx(c["d_att"] - 0.3)
