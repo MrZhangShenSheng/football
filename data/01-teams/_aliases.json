@@ -1,16 +1,4 @@
 {
- "_meta": {
-  "updatedAt": "2026-09-12",
-  "note": "规范ID=kebab-case英文，多数据源经此表解析。null=待对应fetch脚本首次运行时补全（勿手填猜测）。league=国内联赛目录名（杯赛参赛队挂国内联赛）。",
-  "sources": {
-   "zh": "体彩官方API中文名",
-   "clubelo": "clubelo.com 球队名",
-   "understat": "understat.com 球队名（仅六大联赛覆盖）",
-   "espn": "ESPN 球队名",
-   "fd": "football-data.co.uk CSV 命名（注意简写：Vallecano/Ath Madrid/Sociedad 等）",
-   "league": "data/01-teams/ 下联赛目录代码"
-  }
- },
  "saudi": {
   "al-majmaah": {
    "zh": "迈季迈阿宽广",
@@ -2934,6 +2922,328 @@
    "altZh": [
     "澳大利23"
    ]
+  }
+ },
+ "uefa-nations": {
+  "albania": {
+   "zh": "阿尔巴尼",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Albania",
+   "variants": []
+  },
+  "armenia": {
+   "zh": "亚美尼亚",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Armenia",
+   "variants": []
+  },
+  "austria": {
+   "zh": "奥地利",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Austria",
+   "variants": []
+  },
+  "azerbaijan": {
+   "zh": "阿塞拜疆",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Azerbaijan",
+   "variants": []
+  },
+  "belgium": {
+   "zh": "比利时",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Belgium",
+   "variants": []
+  },
+  "bosnia-and-herzegovina": {
+   "zh": "波黑",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Bosnia & Herzegovina",
+   "variants": []
+  },
+  "bulgaria": {
+   "zh": "保加利亚",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Bulgaria",
+   "variants": []
+  },
+  "croatia": {
+   "zh": "克罗地亚",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Croatia",
+   "variants": []
+  },
+  "cyprus": {
+   "zh": "塞浦路斯",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Cyprus",
+   "variants": []
+  },
+  "czechia": {
+   "zh": "捷克",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Czech Republic",
+   "variants": []
+  },
+  "denmark": {
+   "zh": "丹麦",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Denmark",
+   "variants": []
+  },
+  "england": {
+   "zh": "英格兰",
+   "clubelo": null,
+   "understat": null,
+   "espn": "England",
+   "variants": []
+  },
+  "estonia": {
+   "zh": "爱沙尼亚",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Estonia",
+   "variants": []
+  },
+  "faroe-islands": {
+   "zh": "法罗群岛",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Faroe Islands",
+   "variants": []
+  },
+  "finland": {
+   "zh": "芬兰",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Finland",
+   "variants": []
+  },
+  "france": {
+   "zh": "法国",
+   "clubelo": null,
+   "understat": null,
+   "espn": "France",
+   "variants": []
+  },
+  "georgia": {
+   "zh": "格鲁吉亚",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Georgia",
+   "variants": []
+  },
+  "germany": {
+   "zh": "德国",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Germany",
+   "variants": []
+  },
+  "greece": {
+   "zh": "希腊",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Greece",
+   "variants": []
+  },
+  "hungary": {
+   "zh": "匈牙利",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Hungary",
+   "variants": []
+  },
+  "iceland": {
+   "zh": "冰岛",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Iceland",
+   "variants": []
+  },
+  "ireland": {
+   "zh": "爱尔兰",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Ireland",
+   "variants": []
+  },
+  "italy": {
+   "zh": "意大利",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Italy",
+   "variants": []
+  },
+  "kazakhstan": {
+   "zh": "哈萨克",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Kazakhstan",
+   "variants": []
+  },
+  "kosovo": {
+   "zh": "科索沃",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Kosovo",
+   "variants": []
+  },
+  "latvia": {
+   "zh": "拉脱维亚",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Latvia",
+   "variants": []
+  },
+  "luxembourg": {
+   "zh": "卢森堡",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Luxembourg",
+   "variants": []
+  },
+  "montenegro": {
+   "zh": "黑山",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Montenegro",
+   "variants": []
+  },
+  "netherlands": {
+   "zh": "荷兰",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Netherlands",
+   "variants": []
+  },
+  "north-macedonia": {
+   "zh": "北马其顿",
+   "clubelo": null,
+   "understat": null,
+   "espn": "North Macedonia",
+   "variants": []
+  },
+  "northern-ireland": {
+   "zh": "北爱尔兰",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Northern Ireland",
+   "variants": []
+  },
+  "norway": {
+   "zh": "挪威",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Norway",
+   "variants": []
+  },
+  "poland": {
+   "zh": "波兰",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Poland",
+   "variants": []
+  },
+  "portugal": {
+   "zh": "葡萄牙",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Portugal",
+   "variants": []
+  },
+  "romania": {
+   "zh": "罗马尼亚",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Romania",
+   "variants": []
+  },
+  "scotland": {
+   "zh": "苏格兰",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Scotland",
+   "variants": []
+  },
+  "serbia": {
+   "zh": "塞尔维亚",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Serbia",
+   "variants": []
+  },
+  "slovakia": {
+   "zh": "斯洛伐克",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Slovakia",
+   "variants": []
+  },
+  "slovenia": {
+   "zh": "斯洛文尼",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Slovenia",
+   "variants": []
+  },
+  "spain": {
+   "zh": "西班牙",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Spain",
+   "variants": []
+  },
+  "sweden": {
+   "zh": "瑞典",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Sweden",
+   "variants": []
+  },
+  "switzerland": {
+   "zh": "瑞士",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Switzerland",
+   "variants": []
+  },
+  "turkiye": {
+   "zh": "土耳其",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Turkey",
+   "variants": []
+  },
+  "wales": {
+   "zh": "威尔士",
+   "clubelo": null,
+   "understat": null,
+   "espn": "Wales",
+   "variants": []
+  }
+ },
+ "_meta": {
+  "updatedAt": "2026-09-12",
+  "note": "规范ID=kebab-case英文，多数据源经此表解析。null=待对应fetch脚本首次运行时补全（勿手填猜测）。league=国内联赛目录名（杯赛参赛队挂国内联赛）。",
+  "sources": {
+   "zh": "体彩官方API中文名",
+   "clubelo": "clubelo.com 球队名",
+   "understat": "understat.com 球队名（仅六大联赛覆盖）",
+   "espn": "ESPN 球队名",
+   "fd": "football-data.co.uk CSV 命名（注意简写：Vallecano/Ath Madrid/Sociedad 等）",
+   "league": "data/01-teams/ 下联赛目录代码"
   }
  }
 }

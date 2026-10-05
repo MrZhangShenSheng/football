@@ -195,9 +195,24 @@ def test_dc_rolling_proxy_asof_no_future_leak(tmp_path):
     rows = json.loads(lg_file.read_text(encoding="utf-8"))
     rows["matches"].append({"date": "2026-09-05", "home": "team-a", "away": "team-b", "hg": 5, "ag": 0})
     lg_file.write_text(json.dumps(rows), encoding="utf-8")
-    ctx2 = _ctx_for_rolling(tmp_path)
+    ctx2 = sl.build_ctx(["test-lg"], leagues_dir=tmp_path / "league", cache_dir=tmp_path / "cache",
+                        aliases={"team-a": {"zh": "甲"}, "team-b": {"zh": "乙"}, "team-c": {"zh": "丙"}})
     st2 = sl.team_state_on("team-a", date(2026, 9, 3), ctx2, dc_rolling=True)
     assert (st2["dc_att"], st2["dc_def"]) == (st["dc_att"], st["dc_def"])
+
+
+def test_dc_fallback_rolling_when_no_cache(tmp_path):
+    """2026-10-05 生产修复：联赛无 DC 缓存条目（如 uefa-nations 国家队新库）时默认模式
+    回退 rolling 代理（缓存优先·缺失回退）——而非 no_dc 中性。"""
+    ctx = _ctx_for_rolling(tmp_path)
+    # team-c 不在 DC 缓存 teams 里（缓存只有 team-a）但有 timeline 历史（09-01 客队 0:3）
+    st = sl.team_state_on("team-c", date(2026, 9, 3), ctx)
+    assert "dc_source:rolling" in st["flags"] and "no_dc" not in st["flags"]
+    assert st["dc_att"] == pytest.approx(0.0 - 1.35)      # 唯一一场进0球
+    assert st["dc_def"] == pytest.approx(3.0 - 1.35)      # 失3球（正=弱防）
+    # 缓存里有条目的队不受影响（仍走缓存）
+    st_a = sl.team_state_on("team-a", date(2026, 9, 3), ctx)
+    assert st_a["dc_att"] == pytest.approx(0.3)
 
 def test_gate1_report_requires_three_baselines():
     """V4：缺任一基线（随机/市场/旧链）→ 报告拒绝生成（raise）。"""

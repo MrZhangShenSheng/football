@@ -122,7 +122,12 @@ def team_state_on(team: str, as_of: date, ctx: dict, lag_days: int = LAG_DAYS,
         st["flags"].append("no_league")
         return st
     lg = st["league"]
-    if dc_rolling:
+    dc_team = (ctx["dc"].get(lg, {}).get("teams") or {}).get(team)
+    if not dc_rolling and dc_team:
+        st["dc_att"], st["dc_def"] = float(dc_team["attack"]), float(dc_team["defense"])
+    else:
+        # rolling 代理：评估器防泄漏模式，或该队无 DC 缓存条目（如 uefa-nations 国家队库）的
+        # 生产回退——缓存优先，缺失回退（2026-10-05 欧国联实弹暴露 no_dc 中性伪预测后修复）
         scored, conceded = [], []
         for r in as_of_rows(ctx["timeline"].get(lg, []), as_of, lag_days):
             hg, ag = r.get("hg"), r.get("ag")
@@ -136,11 +141,7 @@ def team_state_on(team: str, as_of: date, ctx: dict, lag_days: int = LAG_DAYS,
         if scored:
             st["dc_att"] = sum(scored) / len(scored) - DC_ROLLING_ENV       # 攻强=场均进−环境
             st["dc_def"] = sum(conceded) / len(conceded) - DC_ROLLING_ENV   # DC字段：场均失−环境（负=强防）
-        st["flags"].append("dc_source:rolling")
-    else:
-        dc_team = (ctx["dc"].get(lg, {}).get("teams") or {}).get(team)
-        if dc_team:
-            st["dc_att"], st["dc_def"] = float(dc_team["attack"]), float(dc_team["defense"])
+            st["flags"].append("dc_source:rolling")
         else:
             st["flags"].append("no_dc")
     # 自建 Elo：最近一次 pre 值（as-of）

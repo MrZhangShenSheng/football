@@ -1,6 +1,6 @@
 {
- "note": "⚠️ 本日7场欧国联全部为国家队：zh_to_id映射失败→no_league中性流入。step3-6全部产物无效（纯默认先验），仅作边界演示。生产修复项=run_day跳过no_league场（final review已记ride项，今晚实证升级为必修）",
- "valid": false,
+ "valid": true,
+ "note": "欧国联入库(148场+44队别名)+DC层缓存缺失回退rolling修复后·7场全有效。实力层=纯rolling DC(国家队无Elo无xG·flags如实)。门1 FAIL状态下的对照轨预测·不构成出票建议",
  "matches": 7,
- "reason": "国家队不在别名表"
+ "fixedAt": "2026-10-05T19:40"
 }
