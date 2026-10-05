@@ -149,13 +149,30 @@ svg.chain{width:100%;height:auto;color:var(--ink)}
 <tr><td><b>门2 影子CLV</b><br>（有edge才开实票）</td><td>影子票冻结赛前五池价（paper层基建现成）；<b>M=50 主档</b>（右尾v1命中率最高档·band 4.5-8.0·k=2）；跑满1个日历月≥25销售日；CLV=出票赔率/Pinnacle收盘−1：均值≥0 且 bootstrap CI下界&gt;−2%<br>附加：V6随机选场基线对照</td><td>自然时间积累（机器自动·不占人力）</td></tr>
 <tr><td><b>实票闸门</b></td><td>双门全过→提请大哥人工拍板；任一门不过→链回炉或诚实证伪归档，<b>不硬开</b></td><td>—</td></tr>
 </table>
+<div style="margin-top:12px">
+<p><b>门1首跑结果（2026-10-05）</b>：<span class="bad">总判定 FAIL</span>（结果归档 <code>data/04-summaries/strength-chain-gate1.json</code>·过/不过都锁定）</p>
+<table class="num">
+<tr><th>判据</th><th>结果</th><th>数字</th></tr>
+<tr><td>1a 校准</td><td><span class="bad">FAIL</span></td><td>worstDev <b>0.1194</b> &gt; 5pp（0.9-1.0桶 93场：pred 0.9366 vs act 0.8172，高概率区系统性过度自信）</td></tr>
+<tr><td>1b 命中</td><td><span class="ok">PASS</span></td><td>CRS −1.32pp ≥ −1.5pp（model 0.1157 vs 市场 0.1289）· TTG −1.13pp ≥ −2pp（0.2226 vs 0.2339）</td></tr>
+<tr><td>1c log-loss</td><td><span class="bad">FAIL</span></td><td>配对差 CI 上界 <b>+0.0617</b> &gt; +0.01（1000次bootstrap·seed7）</td></tr>
+</table>
+<ul>
+<li>三基线：model top1 0.1157 &gt; randomShuffle 0.0958、&gt; oldChain 代理 0.1111，但 &lt; 市场 0.1289——<b>无三杀</b>。oldChain 代理实取 crs 池<b>存档末档</b>赔率的次低选项（gate1.json 误标「开盘」；且代理本身非旧链本体，见其 notes）</li>
+<li>覆盖 7741/13574：skip = no_zh_mapping 4379 + no_league_team 1407 + bad_score 47，<b>全部计数不隐藏</b>；flags：no_xg 7595（98%）· no_elo 6131</li>
+<li><b>Task13 门2按预注册门机制跳过</b>（门1不过→链不进影子下注）·链进入归因回炉——过度自信根因候选：uniform T=2.7（②c offset 未接入·全联赛统一进球环境）/ 98% no_xg 退回名气先验（②a收缩无从起效）/ hfa 对分保总量 vs DC 抬主λ（②b量纲错配）</li>
+</ul>
+</div>
 </div>
 
 <h2>九、工程结构</h2>
 <div class="card">
 <ul>
+<li><code>engine/scripts/strength_loaders.py</code> 数据装载（as-of 可见性+别名归一）</li>
 <li><code>engine/scripts/paper_strength.py</code> 步骤①②③（实力层）</li>
 <li><code>engine/scripts/lambda_bridge.py</code> 步骤④（λ桥+伤停乘子）</li>
+<li><code>engine/scripts/score_matrix.py</code> 步骤⑤（泊松39格·<code>CRS_KEYS</code>口径：36具体格零填充+三其他·2026-10-05 Task9 现场裁定，五章「31格」=投注页展示选项数）</li>
+<li><code>engine/scripts/pick_logic.py</code> 步骤⑥（选场）</li>
 <li><code>engine/scripts/strength_chain_run.py</code> 日运行器（串联①—⑤+选场⑥+逐步落盘；幂等）</li>
 <li><code>engine/scripts/strength_chain_eval.py</code> 门1回测评估器（只读预注册舱）</li>
 <li><code>engine/cache/strength_chain/{date}/</code> 中间产物（逐步JSON·纳管git）+ <code>preregistration.json</code> 预注册舱</li>
