@@ -55,7 +55,8 @@ def run_day(day: str, ctx: dict, out_dir: Path, *, feed: list | None = None, bet
             continue
         lg = states[hid]["state"].get("league") or "default"
         env = ENV_GOALS.get(lg, ENV_GOALS["default"])
-        hfa_v = ps.hfa_value(0.30, states[hid]["state"]["n_xg"], None)
+        home_adv = float((ctx["dc"].get(lg) or {}).get("homeAdv", 0.30))   # 联赛真实主场优势·缺DC才回退0.30
+        hfa_v = ps.hfa_value(home_adv, states[hid]["state"]["n_xg"], None)
         cmp_out = ps.compare(states[hid]["att"], states[hid]["def"],
                              states[aid]["att"], states[aid]["def"], hfa_v, env)
         key = str(m.get("matchId", f"{hid}-{aid}"))
