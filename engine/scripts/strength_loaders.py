@@ -114,13 +114,19 @@ def team_state_on(team: str, as_of: date, ctx: dict, lag_days: int = LAG_DAYS,
     'dc_source:rolling'。默认 False 保持当前缓存行为不变。"""
     st = {"team": team, "league": None, "elo": None, "xg_att": None, "xg_def": None,
           "n_xg": 0, "dc_att": 0.0, "dc_def": 0.0, "flags": []}
+    # 跨库合并（2026-10-05 修复2）：一队多赛事（france 分布欧国联/世预赛/世界杯/欧预赛），
+    # 收集全部库的 as-of 可见场次；主联赛=场次最多的库（供联赛级参数查找）。旧版锁单库丢35~77%数据。
+    lg_counts, team_rows = {}, []
     for lg, rows in ctx["timeline"].items():
-        if any(team in (r.get("home"), r.get("away")) for r in as_of_rows(rows, as_of, lag_days)):
-            st["league"] = lg
-            break
-    if st["league"] is None:
+        mine = [r for r in as_of_rows(rows, as_of, lag_days)
+                if team in (r.get("home"), r.get("away"))]
+        if mine:
+            lg_counts[lg] = len(mine)
+            team_rows.extend(mine)
+    if not lg_counts:
         st["flags"].append("no_league")
         return st
+    st["league"] = max(lg_counts, key=lg_counts.get)
     lg = st["league"]
     dc_team = (ctx["dc"].get(lg, {}).get("teams") or {}).get(team)
     if not dc_rolling and dc_team:
@@ -128,8 +134,9 @@ def team_state_on(team: str, as_of: date, ctx: dict, lag_days: int = LAG_DAYS,
     else:
         # rolling 代理：评估器防泄漏模式，或该队无 DC 缓存条目（如 uefa-nations 国家队库）的
         # 生产回退——缓存优先，缺失回退（2026-10-05 欧国联实弹暴露 no_dc 中性伪预测后修复）
+        # 扫描范围=跨库合并的全部 as-of 可见场（按日期排序后取近10）
         scored, conceded = [], []
-        for r in as_of_rows(ctx["timeline"].get(lg, []), as_of, lag_days):
+        for r in sorted(team_rows, key=lambda r: str(r.get("date", ""))):
             hg, ag = r.get("hg"), r.get("ag")
             if not isinstance(hg, (int, float)) or not isinstance(ag, (int, float)):
                 continue

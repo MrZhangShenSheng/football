@@ -234,3 +234,25 @@ def test_walk_forward_eval_smoke(tmp_path):
                                 "score": "2:1", "crsMarketTop": "s1s0"}],
                          ctx=None, tmp_dir=tmp_path)
     assert {"calibration", "hit", "logloss", "baselines"} <= set(out)
+
+
+def test_cross_league_rolling_merge(tmp_path):
+    """2026-10-05 修复2：跨赛事队的 rolling 必须合并全部库的 as-of 可见场（近10场按日期取），
+    主联赛=该队场次最多的库。旧版锁单库丢 35~77% 数据（france 只扫欧国联9/25场）。"""
+    lg_dir = tmp_path / "league"; lg_dir.mkdir(exist_ok=True)
+    (lg_dir / "lgA_matches.json").write_text('{"matches":['
+        '{"date":"2026-08-01","home":"team-x","away":"o1","hg":1,"ag":1},'
+        '{"date":"2026-08-05","home":"team-x","away":"o2","hg":1,"ag":1},'
+        '{"date":"2026-08-10","home":"team-x","away":"o3","hg":1,"ag":1}]}', encoding="utf-8")
+    (lg_dir / "lgB_matches.json").write_text('{"matches":['
+        '{"date":"2026-08-03","home":"team-x","away":"o4","hg":2,"ag":0},'
+        '{"date":"2026-08-20","home":"o5","away":"team-x","hg":0,"ag":4},'
+        '{"date":"2026-08-25","home":"o6","away":"team-x","hg":0,"ag":4}]}', encoding="utf-8")
+    cache = tmp_path / "cache"; cache.mkdir(exist_ok=True)
+    ctx = sl.build_ctx(["lgA", "lgB"], leagues_dir=lg_dir, cache_dir=cache,
+                       aliases={"team-x": {"zh": "X"}, "o1": {"zh": "一"}})
+    st = sl.team_state_on("team-x", date(2026, 9, 3), ctx)
+    assert st["league"] == "lgA"                       # 主联赛=场次最多（3:2）
+    # 合并6场按日期序：进 1,1,1,2,4,4=13 失 1,1,1,0,0,0=3 → 场均进13/6失0.5
+    assert st["dc_att"] == pytest.approx(13 / 6 - 1.35)
+    assert st["dc_def"] == pytest.approx(0.5 - 1.35)
