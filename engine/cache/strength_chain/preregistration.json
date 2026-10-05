@@ -1,5 +1,5 @@
 {
- "version": 2,
+ "version": 3,
  "registeredAt": "2026-10-05",
  "spec": "docs/2026-10-05-strength-chain-design.html",
  "hyperparamsFixed": {
@@ -8,7 +8,8 @@
   "hfaTeamFloor": 30,
   "bridgeMin": 30,
   "maxGoals": 6,
-  "rollingShrinkK": 5
+  "rollingShrinkK": 5,
+  "opponentAdjK": 0.5
  },
  "fittedCoefficients": [
   "league_offset",
@@ -44,6 +45,7 @@
  "changeRule": "改任何判据或超参=新实验：version+1、旧战绩作废重计时",
  "changeLog": [
   "v1(2026-10-05): 初版判据+超参（门1首跑FAIL归档run1：1a 0.1194/1b过线/1c +0.0617）",
-  "v2(2026-10-05): 缺陷修复轮——②缺层重归一(raw_strength有效层权重归1) + ③rolling小样本收缩(dc值×n/(n+5)·K=5统计惯例固定值)。run2(仅②)证明压缩曾掩盖rolling噪声：worstDev 0.1194→0.2929恶化——③为本轮必要配套非调参。判据1a/1b/1c与门2口径零改动"
+  "v2(2026-10-05): 缺陷修复轮——②缺层重归一(raw_strength有效层权重归1) + ③rolling小样本收缩(dc值×n/(n+5)·K=5统计惯例固定值)。run2(仅②)证明压缩曾掩盖rolling噪声：worstDev 0.1194→0.2929恶化——③为本轮必要配套非调参。判据1a/1b/1c与门2口径零改动",
+  "v3(2026-10-05): A数据地基(fd映射122队+法乙入库+别名组补写·run4几乎不动系xG历史无源的天花板非修复失败) + B对手强度调整(rolling进球按对手防守强度×0.5修正·失球按对手攻击×0.5修正·一层近似不递归·κ=0.5保守半额)"
  ]
 }

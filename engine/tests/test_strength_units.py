@@ -169,13 +169,13 @@ def _ctx_for_rolling(p):   # 最小合成地基：timeline + DC缓存（值故�
     (lg_dir / "test-lg_matches.json").write_text('{"matches":['
         '{"date":"2026-08-01","home":"team-a","away":"team-b","hg":2,"ag":1},'
         '{"date":"2026-08-05","home":"team-d","away":"team-a","hg":1,"ag":1},'
-        '{"date":"2026-08-10","home":"team-b","away":"team-a","hg":0,"ag":0},'
+        '{"date":"2026-08-10","home":"team-e","away":"team-a","hg":0,"ag":0},'
         '{"date":"2026-09-01","home":"team-a","away":"team-c","hg":3,"ag":0}]}', encoding="utf-8")
     cache = p / "cache"; cache.mkdir(exist_ok=True)
     (cache / "test-lg_dc.json").write_text('{"homeAdv":0.25,"rho":-0.05,"teams":'
         '{"team-a":{"attack":0.3,"defense":-0.2}}}', encoding="utf-8")
     return sl.build_ctx(["test-lg"], leagues_dir=lg_dir, cache_dir=cache,
-                        aliases={"team-a": {"zh": "甲"}, "team-b": {"zh": "乙"}, "team-c": {"zh": "丙"}})
+                        aliases={"team-a": {"zh": "甲"}, "team-b": {"zh": "乙"}, "team-c": {"zh": "丙"}, "team-e": {"zh": "戊"}})
 
 def test_dc_rolling_proxy_asof_no_future_leak(tmp_path):
     """裁定②滚动代理：dc_rolling=True → dc_att/dc_def 来自 as-of 可见近≤10场场均进/失
@@ -197,7 +197,7 @@ def test_dc_rolling_proxy_asof_no_future_leak(tmp_path):
     rows["matches"].append({"date": "2026-09-05", "home": "team-a", "away": "team-b", "hg": 5, "ag": 0})
     lg_file.write_text(json.dumps(rows), encoding="utf-8")
     ctx2 = sl.build_ctx(["test-lg"], leagues_dir=tmp_path / "league", cache_dir=tmp_path / "cache",
-                        aliases={"team-a": {"zh": "甲"}, "team-b": {"zh": "乙"}, "team-c": {"zh": "丙"}})
+                        aliases={"team-a": {"zh": "甲"}, "team-b": {"zh": "乙"}, "team-c": {"zh": "丙"}, "team-e": {"zh": "戊"}})
     st2 = sl.team_state_on("team-a", date(2026, 9, 3), ctx2, dc_rolling=True)
     assert (st2["dc_att"], st2["dc_def"]) == (st["dc_att"], st["dc_def"])
 
@@ -209,9 +209,11 @@ def test_dc_fallback_rolling_when_no_cache(tmp_path):
     # team-c 不在 DC 缓存 teams 里（缓存只有 team-a）但有 timeline 历史（09-01 客队 0:3）
     st = sl.team_state_on("team-c", date(2026, 9, 3), ctx)
     assert "dc_source:rolling" in st["flags"] and "no_dc" not in st["flags"]
-    w1 = 1 / (1 + 5)                                      # v2收缩：1场×1/6
-    assert st["dc_att"] == pytest.approx((0.0 - 1.35) * w1)
-    assert st["dc_def"] == pytest.approx((3.0 - 1.35) * w1)
+    # v2收缩×1/6 + v3对手调整：对手team-a截至08-30三场(进1失0.667)→att=-0.131·def=-0.256
+    # adj_goal=0-0.5×(-0.256)=+0.128 → dc_att=(0.128-1.35)/6=-0.2036
+    # adj_conc=3-0.5×(-0.131)=3.066 → dc_def=(3.066-1.35)/6=0.286
+    assert st["dc_att"] == pytest.approx((0.0 - 0.5 * ((2/3 - 1.35) * 0.375) - 1.35) / 6)
+    assert st["dc_def"] == pytest.approx((3.0 - 0.5 * ((1.0 - 1.35) * 0.375) - 1.35) / 6)
     # 缓存里有条目的队不受影响（仍走缓存）
     st_a = sl.team_state_on("team-a", date(2026, 9, 3), ctx)
     assert st_a["dc_att"] == pytest.approx(0.3)
@@ -288,3 +290,40 @@ def test_rolling_small_sample_shrinkage(tmp_path):
     w = n / (n + 5)
     assert st["dc_att"] == pytest.approx(((2 + 1 + 0 + 3) / 4 - 1.35) * w)
     assert st["dc_def"] == pytest.approx(((1 + 1 + 0 + 0) / 4 - 1.35) * w)
+
+
+def test_opponent_adjustment_rolling(tmp_path):
+    """2026-10-05 B修复：rolling 对手强度调整（预注册舱v3 κ=0.5）。
+    虐鱼场景：team-x 近3场全对烂防队(场均失3+·opp_def≈+1.0×w) 场均进3 → 修正后 dc_att 显著低于未修正。
+    强攻场景：team-y 近3场全对强攻队 场均失3 → 修正后 dc_def 改善（负移）。"""
+    lg_dir = tmp_path / "league"; lg_dir.mkdir()
+    # 对手烂防：op1/op2/op3 各自此前被进3球（2026-06 场）→ as-of 07-01 它们 def≈(3-1.35)×1/6
+    rows = [
+        {"date": "2026-06-01", "home": "o1", "away": "p1", "hg": 0, "ag": 3},
+        {"date": "2026-06-02", "home": "o2", "away": "p1", "hg": 0, "ag": 3},
+        {"date": "2026-06-03", "home": "o3", "away": "p1", "hg": 0, "ag": 3},
+        # team-x 三场虐这些烂防队（每场07月）
+        {"date": "2026-07-01", "home": "team-x", "away": "o1", "hg": 3, "ag": 0},
+        {"date": "2026-07-02", "home": "team-x", "away": "o2", "hg": 3, "ag": 0},
+        {"date": "2026-07-03", "home": "team-x", "away": "o3", "hg": 3, "ag": 0},
+        # team-y 三场被强攻队打（q 队此前场均进3）
+        {"date": "2026-06-01", "home": "q1", "away": "p1", "hg": 3, "ag": 0},
+        {"date": "2026-06-02", "home": "q2", "away": "p1", "hg": 3, "ag": 0},
+        {"date": "2026-06-03", "home": "q3", "away": "p1", "hg": 3, "ag": 0},
+        {"date": "2026-07-04", "home": "q1", "away": "team-y", "hg": 3, "ag": 0},
+        {"date": "2026-07-05", "home": "q2", "away": "team-y", "hg": 3, "ag": 0},
+        {"date": "2026-07-06", "home": "q3", "away": "team-y", "hg": 3, "ag": 0},
+    ]
+    (lg_dir / "lgA_matches.json").write_text(json.dumps({"matches": rows}), encoding="utf-8")
+    cache = tmp_path / "cache"; cache.mkdir()
+    ctx = sl.build_ctx(["lgA"], leagues_dir=lg_dir, cache_dir=cache,
+                       aliases={"team-x": {"zh": "X"}, "team-y": {"zh": "Y"}})
+    stx = sl.team_state_on("team-x", __import__("datetime").date(2026, 7, 8), ctx, dc_rolling=True)
+    sty = sl.team_state_on("team-y", __import__("datetime").date(2026, 7, 8), ctx, dc_rolling=True)
+    # 未修正参考：team-x 場均进3 → (3-1.35)×3/8=0.619；修正后应显著更低（对手烂防功劳被扣）
+    w3 = 3 / (3 + 5)
+    unadj_x = (3.0 - 1.35) * w3
+    assert stx["dc_att"] < unadj_x * 0.97, f"虐鱼att未显著下调: {stx['dc_att']} vs {unadj_x}"
+    # team-y 场均失3 → 未修正 def=(3-1.35)×0.375=0.619；修正后应改善（强攻对手的锅扣一半）
+    unadj_y = (3.0 - 1.35) * w3
+    assert sty["dc_def"] < unadj_y * 0.97, f"强攻失球未获豁免: {sty['dc_def']} vs {unadj_y}"

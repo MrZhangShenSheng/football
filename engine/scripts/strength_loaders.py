@@ -18,6 +18,7 @@ XG_WINDOW_N = 10        # 预注册舱 hyperparamsFixed.xgWindowN
 LAG_DAYS = 2
 DC_ROLLING_ENV = 1.35   # 滚动代理联赛进球环境基线（Task12 裁定②·与 paper_strength._xg_z 缺省同源）
 ROLLING_SHRINK_K = 5    # 预注册舱 v2 hyperparamsFixed.rollingShrinkK（小样本收缩常数）
+OPPONENT_ADJ_K = 0.5    # 预注册舱 v3 hyperparamsFixed.opponentAdjK（对手强度调整系数·保守半额）
 DC_ROLLING_N = 10       # 滚动代理窗口=近10场可见赛
 
 def _read(p: Path, default):
@@ -109,6 +110,25 @@ def build_ctx(leagues: list[str], *, leagues_dir: Path = LEAGUES_DIR, cache_dir:
         ctx["unmapped"][lg] = dropped
     return ctx
 
+def _opp_rolling_strength(team: str, day, ctx: dict) -> tuple[float, float]:
+    """对手 Y 截至 day 的未修正 rolling (att, def)（B调整一层近似·day−lag 可见场·无递归）。"""
+    d = date.fromisoformat(day) if isinstance(day, str) else day
+    sc, cc = [], []
+    for lg, rows in ctx["timeline"].items():
+        for r in as_of_rows(rows, d, LAG_DAYS):
+            if not isinstance(r.get("hg"), (int, float)):
+                continue
+            if r.get("home") == team:
+                sc.append(r["hg"]); cc.append(r["ag"])
+            elif r.get("away") == team:
+                sc.append(r["ag"]); cc.append(r["hg"])
+    sc, cc = sc[-DC_ROLLING_N:], cc[-DC_ROLLING_N:]
+    if not sc:
+        return 0.0, 0.0
+    w = len(sc) / (len(sc) + ROLLING_SHRINK_K)
+    return ((sum(sc) / len(sc) - DC_ROLLING_ENV) * w,
+            (sum(cc) / len(cc) - DC_ROLLING_ENV) * w)
+
 def team_state_on(team: str, as_of: date, ctx: dict, lag_days: int = LAG_DAYS,
                   dc_rolling: bool = False) -> dict:
     """队的 as-of 快照：滚动xG(近N场)/联赛内Elo(最近pre值)/DC参数。降级记 flags（报告忠实度）。
@@ -140,21 +160,37 @@ def team_state_on(team: str, as_of: date, ctx: dict, lag_days: int = LAG_DAYS,
         # 生产回退——缓存优先，缺失回退（2026-10-05 欧国联实弹暴露 no_dc 中性伪预测后修复）
         # 扫描范围=跨库合并的全部 as-of 可见场（按日期排序后取近10）
         scored, conceded = [], []
+        adj_rows = []                                   # (进, 失, 对手, 场日期) 供B对手调整
         for r in sorted(team_rows, key=lambda r: str(r.get("date", ""))):
             hg, ag = r.get("hg"), r.get("ag")
             if not isinstance(hg, (int, float)) or not isinstance(ag, (int, float)):
                 continue
             if r.get("home") == team:
+                opp = r.get("away")
                 scored.append(hg); conceded.append(ag)
             elif r.get("away") == team:
+                opp = r.get("home")
                 scored.append(ag); conceded.append(hg)
+            else:
+                continue
+            adj_rows.append((hg, ag, opp, str(r.get("date", ""))[:10], r.get("home") == team))
+        adj_rows = adj_rows[-DC_ROLLING_N:]
         scored, conceded = scored[-DC_ROLLING_N:], conceded[-DC_ROLLING_N:]
         if scored:
+            # B 对手强度调整（预注册舱v3·opponentAdjK=0.5）：进球按对手烂防打折/失球按对手强攻豁免
+            # ——一层近似（对手强度用其未修正rolling值·不递归）。方向：adj_goal=goal−κ·opp_def、
+            # adj_conc=conc−κ·opp_att（opp_def正=烂防·opp_att正=强攻）
+            adj_goals, adj_concs = [], []
+            for hg, ag, opp, d_str, is_home in adj_rows:
+                goal, conc = (hg, ag) if is_home else (ag, hg)
+                opp_att, opp_def = _opp_rolling_strength(opp, d_str, ctx)
+                adj_goals.append(goal - OPPONENT_ADJ_K * opp_def)
+                adj_concs.append(conc - OPPONENT_ADJ_K * opp_att)
             # 缺陷③修复(预注册舱v2·rollingShrinkK=5)：小样本向联赛均值(0)收缩 ×n/(n+K)——
             # 2~9场国家队/世预赛虐鱼均值不再全额兑现（罗马尼亚λ6.36级爆炸根治·run2实证必要）
             w_shrink = len(scored) / (len(scored) + ROLLING_SHRINK_K)
-            st["dc_att"] = (sum(scored) / len(scored) - DC_ROLLING_ENV) * w_shrink       # 攻强=场均进−环境
-            st["dc_def"] = (sum(conceded) / len(conceded) - DC_ROLLING_ENV) * w_shrink   # DC字段：场均失−环境（负=强防）
+            st["dc_att"] = (sum(adj_goals) / len(adj_goals) - DC_ROLLING_ENV) * w_shrink     # 攻强=对手调整后场均进−环境
+            st["dc_def"] = (sum(adj_concs) / len(adj_concs) - DC_ROLLING_ENV) * w_shrink     # DC字段：场均失−环境（负=强防）
             st["flags"].append("dc_source:rolling")
         else:
             st["flags"].append("no_dc")
