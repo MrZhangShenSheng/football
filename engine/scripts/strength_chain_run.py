@@ -17,7 +17,7 @@ import pick_logic as pk
 OUT_ROOT = Path(__file__).resolve().parents[2] / "engine" / "cache" / "strength_chain"
 LEAGUES = ["england-premier", "spain-laliga", "germany-bundesliga", "italy-serie-a",
            "france-ligue1", "netherlands-eredivisie", "portugal-primeira", "korea",
-           "japan", "denmark", "sweden", "norway", "brazil", "saudi", "usa", "france-ligue2"]
+           "japan", "denmark", "sweden", "norway", "brazil", "saudi", "usa", "france-ligue2", "world-cup", "world-cup-qual", "euro-qual", "uefa-champions", "uefa-europa"]
 ENV_GOALS = {"default": 2.7}     # 联赛进球环境基线（②c offset 之前）
 
 def _atomic_write(p: Path, obj) -> None:
