@@ -42,3 +42,13 @@ def test_devig_fame_no_xg_pure_elo():
     """n_xg=0 → w=0 → 完全退回 raw（名气先验兜底）。"""
     st = _st(n_xg=0, xg_att=None, xg_def=None, flags=["no_xg"])
     assert ps.devig_fame(st) == ps.raw_strength(st)
+
+def test_hfa_shrink_to_league():
+    """队样本<30 → 向联赛均值收缩；n=0 → 纯联赛值。"""
+    assert ps.hfa_value(0.30, 0, None) == pytest.approx(0.30)
+    mid = ps.hfa_value(0.30, 15, 0.50)                 # 半收缩
+    assert 0.30 < mid < 0.50
+    assert ps.hfa_value(0.30, 30, 0.50) == pytest.approx(0.50)   # 达门槛用队值
+
+def test_hfa_none_team_obs():
+    assert ps.hfa_value(0.30, 200, None) == pytest.approx(0.30)  # 无观测再多样本也是联赛值

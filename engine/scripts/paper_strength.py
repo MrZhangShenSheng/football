@@ -46,3 +46,12 @@ def devig_fame(st: dict) -> tuple[float, float]:
     att = (1 - w) * fame_att + min(1.0, w / max(W_XG + W_DC, 1e-9)) * actual_att * (W_XG + W_DC)
     df = (1 - w) * fame_def + min(1.0, w / max(W_XG + W_DC, 1e-9)) * actual_def * (W_XG + W_DC)
     return att, df
+
+HFA_FLOOR = 30    # 预注册舱 hyperparamsFixed.hfaTeamFloor
+
+def hfa_value(league_hfa: float, team_n: int, team_hfa: float | None, floor: int = HFA_FLOOR) -> float:
+    """②b 主场优势（进球单位）：联赛经验值 + 队级偏移按样本量收缩（n<floor 向联赛均值收）。"""
+    if team_hfa is None:
+        return float(league_hfa)
+    w = min(team_n, floor) / floor
+    return (1 - w) * league_hfa + w * team_hfa
