@@ -63,9 +63,10 @@ def hist_crs_key_to_matrix(k: str) -> str:
         return ""
 
 
-def payout_4s11(legs: list[tuple[str, float]], hit_keys: set) -> float:
-    """4串11 派彩（11注·单注封顶）。legs=[(matrix_key, odds)]。hit_keys=真实比分命中的矩阵键集合。"""
-    ok = [k in hit_keys for k, _ in legs]
+def payout_4s11(legs: list[tuple[str, float]], per_leg_hit: list) -> float:
+    """4串11 派彩（11注·单注封顶）。per_leg_hit[i]=第i腿自己的场真实比分是否命中该腿格——
+    各腿各判各场·严禁合并比分集合（首版曾跨场串奖致随机基线+19867%·基线疫苗当场抓获）。"""
+    ok = per_leg_hit
     pay = 0.0
     for i, j in itertools.combinations(range(4), 2):
         if ok[i] and ok[j]:
@@ -135,47 +136,37 @@ def main() -> None:
             stats["daysSkippedNoPick"] += 1
             continue
 
-        def settle(selected):
-            legs = [(c["cells"][0]["mk"], c["cells"][0]["odds"]) for c in selected]
-            hit = {score_to_matrix_key(str(selected[0]["m"]["score"]))}
-            return payout_4s11(legs, hit)
-
-        # V1 主策略：场分(最高EV)top4
-        ranked = sorted(cands, key=lambda c: -c["cells"][0]["ev"])[:TOP_N_LEGS]
-        # V2 对照：排除爆炸场后 top4
-        non_boom = [c for c in cands if c["boomP"] <= BOOM_THRESHOLD]
-        ranked2 = sorted(non_boom, key=lambda c: -c["cells"][0]["ev"])[:TOP_N_LEGS]
-
-        # 基线1：市场最热格（每场最低价格）4串11
-        market_sel = []
-        for c in sorted(cands, key=lambda c: min(x["odds"] for x in c["cells"]))[:TOP_N_LEGS]:
-            hottest = min(c["cells"], key=lambda x: x["odds"])
-            market_sel.append({**c, "cells": [hottest]})
-        # 基线2：模型top概率格（非EV）
-        topp_sel = []
-        for c in sorted(cands, key=lambda c: -max(x["p"] for x in c["cells"]))[:TOP_N_LEGS]:
-            topp = max(c["cells"], key=lambda x: x["p"])
-            topp_sel.append({**c, "cells": [topp]})
-
         hit_keys_by_m = {id(c): {score_to_matrix_key(str(c["m"]["score"]))} for c in cands}
 
         def settle_generic(selected):
-            legs = [(c["cells"][0]["mk"], c["cells"][0]["odds"]) for c in selected]
-            hit = hit_keys_by_m[id(selected[0])] if len(selected) == 1 and id(selected[0]) in hit_keys_by_m else None
-            # 结算 hit 必须取"该腿对应场"的真实比分——4串11各腿各场：
-            ok_keys = set()
-            for c in selected:
-                ok_keys |= hit_keys_by_m[id(c)]
-            return payout_4s11(legs, ok_keys)
+            """selected=[(原cand引用, cell)]——每腿只对自己的场判命中。"""
+            legs = [(cell["mk"], cell["odds"]) for c, cell in selected]
+            per_hit = [cell["mk"] in hit_keys_by_m[id(c)] for c, cell in selected]
+            return payout_4s11(legs, per_hit)
+
+        # V1 主策略：场分(最高EV)top4
+        ranked = sorted(cands, key=lambda c: -c["cells"][0]["ev"])[:TOP_N_LEGS]
+        ranked_sel = [(c, c["cells"][0]) for c in ranked]
+        # V2 对照：排除爆炸场后 top4
+        non_boom = [c for c in cands if c["boomP"] <= BOOM_THRESHOLD]
+        ranked2 = sorted(non_boom, key=lambda c: -c["cells"][0]["ev"])[:TOP_N_LEGS]
+        ranked2_sel = [(c, c["cells"][0]) for c in ranked2]
+
+        # 基线1：市场最热格（每场最低价格）4串11
+        market_sel = [(c, min(c["cells"], key=lambda x: x["odds"]))
+                      for c in sorted(cands, key=lambda c: min(x["odds"] for x in c["cells"]))[:TOP_N_LEGS]]
+        # 基线2：模型top概率格（非EV）
+        topp_sel = [(c, max(c["cells"], key=lambda x: x["p"]))
+                    for c in sorted(cands, key=lambda c: -max(x["p"] for x in c["cells"]))[:TOP_N_LEGS]]
 
         days.append({
             "day": day,
             "nCands": len(cands),
-            "v1": {"stake": 22.0, "pay": settle_generic(ranked),
+            "v1": {"stake": 22.0, "pay": settle_generic(ranked_sel),
                    "legs": [{"match": f"{c['m']['home']}v{c['m']['away']}", "pick": c["cells"][0]["mk"],
                              "odds": c["cells"][0]["odds"], "p": round(c["cells"][0]["p"], 4),
                              "ev": round(c["cells"][0]["ev"], 3), "boomP": round(c["boomP"], 3)} for c in ranked]},
-            "v2": ({"stake": 22.0, "pay": settle_generic(ranked2)} if len(ranked2) == TOP_N_LEGS else None),
+            "v2": ({"stake": 22.0, "pay": settle_generic(ranked2_sel)} if len(ranked2_sel) == TOP_N_LEGS else None),
             "baseMarket": {"stake": 22.0, "pay": settle_generic(market_sel)},
             "baseTopP": {"stake": 22.0, "pay": settle_generic(topp_sel)},
             "cands": cands,          # 供随机基线
@@ -190,12 +181,11 @@ def main() -> None:
         for d in days:
             cs = d["cands"]
             sel = rng.sample(cs, TOP_N_LEGS)
-            legs = [(c["cells"][0]["mk"], c["cells"][0]["odds"]) for c in sel]  # 占位（用各场EV格）
-            legs = [(rng.choice(c["cells"])["mk"], rng.choice(c["cells"])["odds"]) for c in sel]
-            ok = set()
-            for c in sel:
-                ok |= {score_to_matrix_key(str(c["m"]["score"]))}
-            tot += payout_4s11(legs, ok)
+            picks = [rng.choice(c["cells"]) for c in sel]
+            legs = [(pk["mk"], pk["odds"]) for pk in picks]
+            per_hit = [pk["mk"] == score_to_matrix_key(str(c["m"]["score"]))
+                       for c, pk in zip(sel, picks)]
+            tot += payout_4s11(legs, per_hit)
         rand_pays.append(tot)
 
     def agg(key):
