@@ -9,6 +9,7 @@ def _ctx(tmp_path):
     # 合成最小数据地基：league库/DC/elo/xg 各一份
     lg_dir = tmp_path / "league"; lg_dir.mkdir()
     (lg_dir / "test-lg_matches.json").write_text('[{"date":"2026-08-01","home":"teamA","away":"teamB","hg":2,"ag":1},'
+        '{"date":"2026-08-05","home":"teamD","away":"teamA","hg":1,"ag":1},'
         '{"date":"2026-08-10","home":"teamB","away":"teamA","hg":0,"ag":0},'
         '{"date":"2026-09-01","home":"teamA","away":"teamC","hg":3,"ag":0}]', encoding="utf-8")
     cache = tmp_path / "cache"; cache.mkdir()
@@ -44,13 +45,24 @@ def test_v2_cutoff_boundary():
         assert sl.as_of_rows(ctx["timeline"]["test-lg"], date(2026, 9, 3))[-1]["date"] == "2026-09-01"
 
 def test_degradation_flags():
-    """降级链显式：队无 xG 记录（teamC 只当过客队一场）→ flags 记 'no_xg'；无 elo 行 → 'no_elo'。"""
+    """降级链显式：teamC 在 as_of=09-03 实际拿得到 xG（09-01 客队行在 cutoff=09-01 内）与 elo（09-01 pre 行）；
+    真正的 no_xg 正向用例是 teamD（见 test_no_xg_positive）。"""
     import pathlib, tempfile
     with tempfile.TemporaryDirectory() as td:
         ctx = _ctx(pathlib.Path(td))
         st = sl.team_state_on("teamC", date(2026, 9, 3), ctx)
+        assert st["n_xg"] == 1 and "no_xg" not in st["flags"]            # 09-01 客队行可见 → 有 xG
         assert "no_elo" in st["flags"] or st["elo"] is not None          # 按实现契约二选一断言
         assert isinstance(st["flags"], list)
+
+def test_no_xg_positive():
+    """no_xg 正向断言：teamD 在 timeline 出场一次（联赛可解析）但从未出现在 xg 文件 matches → flags 记 'no_xg'。"""
+    import pathlib, tempfile
+    with tempfile.TemporaryDirectory() as td:
+        ctx = _ctx(pathlib.Path(td))
+        st = sl.team_state_on("teamD", date(2026, 9, 3), ctx)
+        assert st["league"] == "test-lg"
+        assert "no_xg" in st["flags"] and st["n_xg"] == 0
 
 def test_zh_to_id():
     assert sl.zh_to_id({"teamA": {"zh": "甲队"}, "teamB": {"zh": "乙队"}}) == {"甲队": "teamA", "乙队": "teamB"}

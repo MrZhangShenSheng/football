@@ -1,7 +1,8 @@
 # engine/scripts/strength_loaders.py
 # -*- coding: utf-8 -*-
-"""实力链数据装载器：四砖（league赛果/DC/自建Elo/fd xG）统一 as-of 读取。
-铁律14：as-of 语义 = 只见 ≤ as_of - lag_days 的行（lag=2 与 common.strict_merged 一致）。
+"""实力链数据装载器：四砖（league赛果/DC/自建Elo/fd xG）as-of 读取。
+铁律14：timeline/xG 的 as-of 语义 = 只见 ≤ as_of - lag_days 的行（lag=2 与 common.strict_merged 一致）；
+Elo 砖 lag=0 —— elo_*_pre 是赛前值不含该场赛果，date ≤ as_of 即可见，无答案泄漏。
 开发者 sszhang"""
 from __future__ import annotations
 import json, sys
@@ -43,15 +44,22 @@ def as_of_rows(rows: list[dict], as_of: date, lag_days: int = LAG_DAYS) -> list[
     return [r for r in rows if str(r.get("date", ""))[:10] <= cutoff]
 
 def build_ctx(leagues: list[str], *, leagues_dir: Path = LEAGUES_DIR, cache_dir: Path = CACHE_DIR) -> dict:
-    """预装载全部四砖（一次性读盘，team_state_on 纯内存过滤）。"""
+    """预装载全部四砖（一次性读盘，team_state_on 纯内存过滤）。
+    xG/elo 双赛季档（2526+2627）合并后按日期升序：2526 档 hxg/axg 全 None（fd 旧季 CSV 无 xG 回填），
+    单档偏好会让 xG 成死砖；且赛季初滚动窗须跨季取行，合并行统一走 team_state_on 的 as-of 过滤。"""
     ctx = {"timeline": {}, "dc": {}, "elo": {}, "xg": {}}
     for lg in leagues:
         ctx["timeline"][lg] = _read(leagues_dir / f"{lg}_matches.json", [])
         ctx["dc"][lg] = _read(cache_dir / f"{lg}_dc.json", {})
-        ctx["elo"][lg] = (_read(cache_dir / f"elo_history_{lg}_2526.json", {})
-                          or _read(cache_dir / f"elo_history_{lg}_2627.json", {}))
-        ctx["xg"][lg] = (_read(cache_dir / f"odds_{lg}_2526.json", {})
-                         or _read(cache_dir / f"odds_{lg}_2627.json", {})).get("matches", [])
+        elo_files = [_read(cache_dir / f"elo_history_{lg}_{season}.json", {}) for season in ("2526", "2627")]
+        elo_rows = sorted((r for f in elo_files for r in f.get("rows", [])),
+                          key=lambda r: str(r.get("date", "")))
+        hfa = next((f["hfa"] for f in reversed(elo_files) if f.get("hfa") is not None), None)
+        ctx["elo"][lg] = {"hfa": hfa, "rows": elo_rows}
+        xg_rows = [m for season in ("2526", "2627")
+                   for m in _read(cache_dir / f"odds_{lg}_{season}.json", {}).get("matches", [])]
+        xg_rows.sort(key=lambda m: _ddmmyyyy(m.get("date", "")) or date.min)
+        ctx["xg"][lg] = xg_rows
     return ctx
 
 def team_state_on(team: str, as_of: date, ctx: dict, lag_days: int = LAG_DAYS) -> dict:
