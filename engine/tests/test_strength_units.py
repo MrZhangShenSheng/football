@@ -111,3 +111,38 @@ def test_fit_beta_moment():
     samples = [{"delta_main": d, "log_ratio": -beta_true * d + 0.01 * ((d % 3) - 1)}
                for d in range(-4, 5) for _ in range(20)]
     assert abs(lb.fit_beta(samples) - beta_true) < 0.02
+
+# ---- 步骤⑤ score_matrix：DC修正比分矩阵 + TTG/HAD 出口 ----
+# 现场裁定（2026-10-05 Task9）：计划文"31格"=投注页展示数；体彩 API/池键实测=39
+# （36具体 s{i:02d}s{j:02d} + 胜/平/负其他 s1sh/s1sd/s1sa，见 sporttery_fetch.CRS_KEYS）。
+# 键零填充 6 字符 → h=int(k[1:3]), a=int(k[4:6]) 解析成立（brief 原 's{h}s{a}' 单字符键
+# 配双字符切片的系统性解析 bug 随键格式一并修正）。
+import score_matrix as sm
+
+def test_matrix_normalized_39_cells_crs_keys():
+    """体彩 CRS 口径=39键，键集与 sporttery_fetch.CRS_KEYS 逐键对齐，概率和=1。"""
+    m = sm.dc_matrix(1.5, 1.2, rho=-0.05)
+    assert len(m) == 39
+    assert abs(sum(m.values()) - 1.0) < 1e-6
+    from sporttery_fetch import CRS_KEYS
+    assert set(m) == set(CRS_KEYS)                            # 具体格+三其他逐键一致
+
+def test_ttg_had_normalized_and_consistent():
+    m = sm.dc_matrix(1.5, 1.2, rho=-0.05)
+    ttg, had = sm.ttg_from(m), sm.had_from(m)
+    assert abs(sum(ttg.values()) - 1.0) < 1e-6
+    assert abs(sum(had.values()) - 1.0) < 1e-6
+    assert set(ttg) == {f"s{i}" for i in range(9)}            # 9档 s0..s8（s8=8+开桶·三其他归此）
+    assert ttg["s0"] == pytest.approx(m["s00s00"])            # TTG=0 档 = 0:0 矩阵元
+
+def test_matrix_recovers_lambda():
+    """已知λ恢复：大样本频率≈λ（Poisson机理自检·仅具体格·零填充两位可解析）。"""
+    m = sm.dc_matrix(1.5, 1.2, rho=0.0)
+    mean_h = sum(int(k[1:3]) * v for k, v in m.items()
+                 if k[1:3].isdigit() and k[4:6].isdigit())
+    assert 1.2 < mean_h < 1.8                                 # 逼近1.5（含其他档截断容差）
+
+def test_rho_shifts_low_draws():
+    """ρ<0（DC修正）→ 0:0/1:1 相对 ρ=0 抬高（低平局修正方向）。"""
+    m0, mr = sm.dc_matrix(1.5, 1.2, rho=0.0), sm.dc_matrix(1.5, 1.2, rho=-0.05)
+    assert mr["s00s00"] > m0["s00s00"] and mr["s01s01"] > m0["s01s01"]
