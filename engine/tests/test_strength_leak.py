@@ -10,13 +10,13 @@ ALIASES = {"team-a": {"zh": "甲队"}, "team-b": {"zh": "乙队"}, "team-c": {"z
 def _ctx(tmp_path):
     # 合成最小数据地基：league库/DC/elo/xg 各一份
     # timeline=规范ID+dict包装（真实18/19为{...,matches:[...]}结构）；xG/elo/DC=fd显示名（装载时归一规范ID）
-    lg_dir = tmp_path / "league"; lg_dir.mkdir()
+    lg_dir = tmp_path / "league"; lg_dir.mkdir(exist_ok=True)    # exist_ok: V1疫苗同目录二次重建ctx
     (lg_dir / "test-lg_matches.json").write_text('{"league":"test-lg","matches":['
         '{"date":"2026-08-01","home":"team-a","away":"team-b","hg":2,"ag":1},'
         '{"date":"2026-08-05","home":"team-d","away":"team-a","hg":1,"ag":1},'
         '{"date":"2026-08-10","home":"team-b","away":"team-a","hg":0,"ag":0},'
         '{"date":"2026-09-01","home":"team-a","away":"team-c","hg":3,"ag":0}]}', encoding="utf-8")
-    cache = tmp_path / "cache"; cache.mkdir()
+    cache = tmp_path / "cache"; cache.mkdir(exist_ok=True)
     (cache / "test-lg_dc.json").write_text('{"homeAdv":0.25,"rho":-0.05,"teams":'
         '{"Team A":{"attack":0.3,"defense":-0.2},"Team B":{"attack":0.0,"defense":0.1},"Team C":{"attack":-0.3,"defense":0.3}}}', encoding="utf-8")
     (cache / "elo_history_test-lg_2526.json").write_text('{"hfa":65,"rows":['
@@ -86,3 +86,19 @@ def test_fd_name_normalization():
 
 def test_zh_to_id():
     assert sl.zh_to_id({"team-a": {"zh": "甲队"}, "team-b": {"zh": "乙队"}}) == {"甲队": "team-a", "乙队": "team-b"}
+
+def test_v1_singularity_injection():
+    """V1奇点：把被预测场(2026-09-05 teamA vs teamB, 5:0)注入league库 → team_state_on 输出必须逐字节不变。
+    （as_of=09-05 → cutoff=09-03，注入场09-05>09-03不可见——这正是疫苗要锚定的语义。）"""
+    import pathlib, tempfile, copy, json
+    with tempfile.TemporaryDirectory() as td:
+        p = pathlib.Path(td)
+        ctx = _ctx(p)
+        before = sl.team_state_on("teamA", date(2026, 9, 5), ctx)
+        lg_file = p / "league" / "test-lg_matches.json"
+        rows = json.loads(lg_file.read_text(encoding="utf-8"))
+        rows["matches"].append({"date": "2026-09-05", "home": "teamA", "away": "teamB", "hg": 5, "ag": 0})
+        lg_file.write_text(json.dumps(rows), encoding="utf-8")
+        ctx2 = _ctx(p)
+        after = sl.team_state_on("teamA", date(2026, 9, 5), ctx2)
+        assert before == after, "被预测场赛果泄入了实力快照！"

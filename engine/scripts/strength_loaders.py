@@ -106,7 +106,7 @@ def team_state_on(team: str, as_of: date, ctx: dict, lag_days: int = LAG_DAYS) -
     st = {"team": team, "league": None, "elo": None, "xg_att": None, "xg_def": None,
           "n_xg": 0, "dc_att": 0.0, "dc_def": 0.0, "flags": []}
     for lg, rows in ctx["timeline"].items():
-        if any(team in (r.get("home"), r.get("away")) for r in rows):
+        if any(team in (r.get("home"), r.get("away")) for r in as_of_rows(rows, as_of, lag_days)):
             st["league"] = lg
             break
     if st["league"] is None:
