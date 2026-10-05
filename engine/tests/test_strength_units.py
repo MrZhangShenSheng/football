@@ -3,6 +3,7 @@
 import pytest
 import strength_loaders as sl
 import paper_strength as ps
+import lambda_bridge as lb
 
 def _st(**kw):
     base = {"team": "t", "league": "test-lg", "elo": 1520.0, "xg_att": 1.8, "xg_def": 1.0,
@@ -81,3 +82,32 @@ def test_compare_symmetry_and_hfa():
     c2 = ps.compare(0.5, 0.4, 1.0, 0.5, hfa=0.3, env=2.7)
     assert c2["d_att"] == pytest.approx(c["d_def"] + 0.3)
     assert c2["d_def"] == pytest.approx(c["d_att"] - 0.3)
+
+def test_main_player_count():
+    inj = [{"name": "a", "apps": 8, "starts": 7}, {"name": "b", "apps": 2, "starts": 1},
+           {"name": "c", "apps": 6, "starts": 0}]
+    assert lb.main_player_count(inj) == 2                     # apps>=5 记主力
+
+def test_injury_multiplier_direction():
+    assert lb.injury_multiplier(-2, beta=0.05) > 1.0          # 客队更缺主力 → 主λ上调
+    assert lb.injury_multiplier(+2, beta=0.05) < 1.0
+    assert lb.injury_multiplier(0, beta=0.05) == 1.0
+
+def test_lambdas_accounting():
+    c = {"d_att": 0.5, "d_def": -0.3, "T": 2.7}
+    out = lb.lambdas(c, inj_h=1, inj_a=3, beta=0.05)
+    assert out["lam_h"] > 0 and out["lam_a"] > 0
+    assert set(out["contrib"]) == {"base", "hfa", "injury"}    # 三行账
+
+def test_lambdas_missing_injury_neutral():
+    c = {"d_att": 0.0, "d_def": 0.0, "T": 2.7}
+    out = lb.lambdas(c, inj_h=None, inj_a=None, beta=0.05)
+    assert out["contrib"]["injury"] == "neutral(no-data)"      # 缺数据=乘子1+标注
+
+def test_fit_beta_moment():
+    """矩估计回归：构造 Δ主力 与 ln(实际/期望) 成正比的合成样本 → β 恢复出真值±容差。"""
+    import math
+    beta_true = 0.06
+    samples = [{"delta_main": d, "log_ratio": -beta_true * d + 0.01 * ((d % 3) - 1)}
+               for d in range(-4, 5) for _ in range(20)]
+    assert abs(lb.fit_beta(samples) - beta_true) < 0.02
