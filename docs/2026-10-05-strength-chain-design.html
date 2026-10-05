@@ -98,10 +98,10 @@ svg.chain{width:100%;height:auto;color:var(--ink)}
 <div class="card">
 <table>
 <tr><th>步</th><th>输入</th><th>算法</th><th>输出</th><th>降级链（显式标注）</th></tr>
-<tr><td>①纸面实力</td><td>Elo（clubelo）、滚动xG/xGA（fd CSV·近10场）、DC攻防参数（league内）</td><td><b>输出攻/防双分</b>（λ桥需要 att−def 结构）：xG层给 att=xG_z/def=xGA_z，DC层给 att/def，Elo单轨→攻防同权项+总量调节；三层各自标准化后合成</td><td>每队 (att, def) 双分 + 分层明细</td><td>无xG联赛→DC参数代理；无Elo队（休赛/小联赛）→冻结最近值或联赛均值</td></tr>
+<tr><td>①纸面实力</td><td>Elo（<b>自建联赛内Elo·elo_history缓存8联赛·init1500跨联赛不可比</b>）、滚动xG/xGA（fd·odds_{lg}_{season}.json 的 hxg/axg·近10场）、DC攻防参数（{lg}_dc.json·teams.{attack,defense}）</td><td><b>输出攻/防双分</b>（λ桥需要 att−def 结构）：xG层给 att=xG_z/def=xGA_z，DC层给 att/def，Elo单轨→攻防同权项+总量调节；三层各自标准化后合成</td><td>每队 (att, def) 双分 + 分层明细</td><td>无xG联赛→DC参数代理；无Elo队→联赛均值+标注</td></tr>
 <tr><td>②a挤名气水</td><td>Elo + 滚动xG</td><td>strength = w·Elo_z + (1−w)·xG_z，w = n/(n+20)，n=近20场有效样本量（Bayesian收缩，名气先验随实际数据量让位）</td><td>校准后实力分</td><td>n=0 纯Elo；Elo也缺→联赛均值+标注</td></tr>
 <tr><td>②b剥主场</td><td>联赛内主客历史</td><td>HFA = 联赛经验值 + 队级偏移收缩（队样本&lt;30场向联赛均值收）；评分本体不含HFA，对比时显式加回</td><td>HFA_league、HFA_team、净实力 net</td><td>新队无主场样本→纯联赛值</td></tr>
-<tr><td>②c去联赛水</td><td>欧战/杯赛跨联赛场次（league库13.5k场内含）</td><td>拟合联赛 offset（如荷甲进攻参数整体通胀）；无桥联赛对（韩职vs英超无交手）→Elo差做先验锚</td><td>league_offset 表 + 跨联赛可比 net</td><td>桥样本不足（&lt;30场）→先验锚+标注</td></tr>
+<tr><td>②c去联赛水</td><td>跨联赛场次=<b>hist_odds 中的欧战/杯赛场</b>（欧冠/欧罗巴等·league库无欧战文件·中文队名经alias映射规范ID·score拆hg/ag）</td><td>拟合联赛 offset（如荷甲进攻参数整体通胀）；<b>2026-10-05 修订：仓库 Elo 为联赛内自建（init1500·跨联赛不可比），原"Elo差先验锚"取消</b>——桥样本不足（&lt;30场）的联赛对直接标 crossLeague=uncalibrated，该场实力对比标注不可比并计入报告忠实度</td><td>league_offset 表 + 跨联赛可比 net</td><td>桥不足→uncalibrated 标注（不硬凑）</td></tr>
 <tr><td>③实力对比</td><td>双方 (att, def)、HFA、league环境</td><td>攻对比 Δ_att = att_home + HFA/2 − def_away；防对比对称；总量 T = 联赛进球环境加回（去联赛水时扣的在此还回）</td><td>Δ_att、Δ_away侧、T（每项显式可读·直通④对数线性）</td><td>—</td></tr>
 </table>
 <p class="small">每步中间产物落盘 <code>engine/cache/strength_chain/{date}/</code>（JSON·逐步一文件），任何一场任何一步事后可翻可归因可消融。</p>
