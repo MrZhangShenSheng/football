@@ -56,6 +56,9 @@ def _norm_team(name: str, aliases: dict) -> str | None:
     for tid, srcs in aliases.items():
         if srcs.get("espn") and srcs["espn"].lower() == name.lower():
             return tid
+    for tid, srcs in aliases.items():     # fd 字段：fd CSV 缩写名（'Milan'/'Ath Madrid'·A2修复122行xG丢失）
+        if srcs.get("fd") and srcs["fd"].lower() == name.lower():
+            return tid
     return None
 
 def build_ctx(leagues: list[str], *, leagues_dir: Path = LEAGUES_DIR, cache_dir: Path = CACHE_DIR,

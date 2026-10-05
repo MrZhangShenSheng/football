@@ -102,3 +102,14 @@ def test_v1_singularity_injection():
         ctx2 = _ctx(p)
         after = sl.team_state_on("teamA", date(2026, 9, 5), ctx2)
         assert before == after, "被预测场赛果泄入了实力快照！"
+
+def test_norm_team_fd_field():
+    """2026-10-05 A2修复：别名条目 fd 字段（fd CSV缩写名 'Milan'/'Ath Madrid'）反查规范ID——
+    优先级 identity→kebab→espn→fd。修 122 行 xG 丢失（'Milan' vs espn='AC Milan' 对不上）。"""
+    fake = {"ac-milan": {"zh": "AC米兰", "espn": "AC Milan", "fd": "Milan"},
+            "atletico-madrid": {"zh": "马竞", "espn": "Atlético Madrid", "fd": "Ath Madrid"}}
+    assert sl._norm_team("Milan", fake) == "ac-milan"
+    assert sl._norm_team("Ath Madrid", fake) == "atletico-madrid"
+    assert sl._norm_team("AC Milan", fake) == "ac-milan"          # espn 仍通
+    assert sl._norm_team("ac-milan", fake) == "ac-milan"          # identity 仍通
+    assert sl._norm_team("ZZZ", fake) is None

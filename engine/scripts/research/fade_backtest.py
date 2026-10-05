@@ -37,7 +37,7 @@ SEED = 7
 
 LEAGUES = ["uefa-nations", "england-premier", "spain-laliga", "germany-bundesliga",
            "italy-serie-a", "france-ligue1", "netherlands-eredivisie", "portugal-primeira",
-           "korea", "japan", "denmark", "sweden", "norway", "brazil", "saudi", "usa"]
+           "korea", "japan", "denmark", "sweden", "norway", "brazil", "saudi", "usa", "france-ligue2"]
 
 
 def score_to_matrix_key(score: str) -> str:
