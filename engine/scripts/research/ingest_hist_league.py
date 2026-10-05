@@ -100,6 +100,10 @@ CLUB_EXTRA.update({
     "红色小鬼": "lincoln-red-imps", "克里特": "ofi-crete", "亚拉腊": "ararat-armenia",
     "奥林": "olimpija-ljubljana", "托林斯": "tammeka-tartu",
 })
+CLUB_EXTRA.update({
+    "亚眠": "amiens", "卡昂": "caen", "巴斯蒂亚": "bastia", "奎维利": "quevilly",
+    "孔卡诺": "concarneau", "瓦朗谢纳": "valenciennes",
+})
 
 
 def _split_score(score) -> tuple[int, int] | None:
