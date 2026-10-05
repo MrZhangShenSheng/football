@@ -146,3 +146,13 @@ def test_rho_shifts_low_draws():
     """ρ<0（DC修正）→ 0:0/1:1 相对 ρ=0 抬高（低平局修正方向）。"""
     m0, mr = sm.dc_matrix(1.5, 1.2, rho=0.0), sm.dc_matrix(1.5, 1.2, rho=-0.05)
     assert mr["s00s00"] > m0["s00s00"] and mr["s01s01"] > m0["s01s01"]
+
+def test_tail_split_union_region():
+    """溢出区=并集 {h≥6}∪{a≥6}（2026-10-05 修复：原交集只扫[6,8)²×[6,8)→平其他890倍失真）。
+    λ=1.5/1.2 真值配比≈0.748/0.001/0.251——高比分平局（6:6,7:7..）极罕见≈e-6级。"""
+    th = sm._tail(1.5, 1.2, 6, "h")
+    td = sm._tail(1.5, 1.2, 6, "d")
+    ta = sm._tail(1.5, 1.2, 6, "a")
+    tot = th + td + ta
+    assert th > 0.7 * tot                                  # 主胜向占大头（6+x/x 大概率主胜）
+    assert td < 0.01 * tot                                 # 评分平局（双方≥6且相等）e-6级

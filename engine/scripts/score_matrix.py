@@ -49,10 +49,12 @@ def dc_matrix(lam_h: float, lam_a: float, rho: float, max_goals: int = MAX_GOALS
 
 
 def _tail(lam_h: float, lam_a: float, g: int, side: str) -> float:
-    """>g 球区域三向粗估（截断尾部分配用·一致性无偏即可）。"""
-    tot_h, tot_d, tot_a = 0.0, 0.0, 0.0
-    for h in range(g, g + 8):
-        for a in range(g, g + 8):
+    """>g 球溢出区三向质量（并集 {h≥g}∪{a≥g}·扫至 g+12·评分平局极罕见≈e-6级）。"""
+    tot_h = tot_d = tot_a = 0.0
+    for h in range(0, g + 12):
+        for a in range(0, g + 12):
+            if h < g and a < g:
+                continue
             p = _pois(lam_h, h) * _pois(lam_a, a)
             if h > a:
                 tot_h += p
