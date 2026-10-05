@@ -43,23 +43,62 @@ def as_of_rows(rows: list[dict], as_of: date, lag_days: int = LAG_DAYS) -> list[
     cutoff = (as_of - timedelta(days=lag_days)).isoformat()
     return [r for r in rows if str(r.get("date", ""))[:10] <= cutoff]
 
-def build_ctx(leagues: list[str], *, leagues_dir: Path = LEAGUES_DIR, cache_dir: Path = CACHE_DIR) -> dict:
+def _norm_team(name: str, aliases: dict) -> str | None:
+    """fd/ESPN 显示名 → 规范ID：kebab 命中优先，espn 别名兜底；None=不可映射（行/键丢弃）。"""
+    kebab = name.lower().replace(" ", "-").replace("'", "")
+    if kebab in aliases:
+        return kebab
+    for tid, srcs in aliases.items():
+        if srcs.get("espn") and srcs["espn"].lower() == name.lower():
+            return tid
+    return None
+
+def build_ctx(leagues: list[str], *, leagues_dir: Path = LEAGUES_DIR, cache_dir: Path = CACHE_DIR,
+              aliases: dict | None = None) -> dict:
     """预装载全部四砖（一次性读盘，team_state_on 纯内存过滤）。
     xG/elo 双赛季档（2526+2627）合并后按日期升序：2526 档 hxg/axg 全 None（fd 旧季 CSV 无 xG 回填），
-    单档偏好会让 xG 成死砖；且赛季初滚动窗须跨季取行，合并行统一走 team_state_on 的 as-of 过滤。"""
-    ctx = {"timeline": {}, "dc": {}, "elo": {}, "xg": {}}
+    单档偏好会让 xG 成死砖；且赛季初滚动窗须跨季取行，合并行统一走 team_state_on 的 as-of 过滤。
+    三砖（xG/elo/DC）队名装载时归一为规范ID（fd 显示名经 _norm_team），不可映射行/键丢弃并计入 ctx["unmapped"][联赛]。"""
+    if aliases is None:
+        aliases = load_aliases()
+    ctx = {"timeline": {}, "dc": {}, "elo": {}, "xg": {}, "unmapped": {}}
     for lg in leagues:
-        ctx["timeline"][lg] = _read(leagues_dir / f"{lg}_matches.json", [])
-        ctx["dc"][lg] = _read(cache_dir / f"{lg}_dc.json", {})
+        raw_tl = _read(leagues_dir / f"{lg}_matches.json", [])
+        ctx["timeline"][lg] = raw_tl.get("matches", []) if isinstance(raw_tl, dict) else raw_tl
+        dropped = 0
+        dc_raw = _read(cache_dir / f"{lg}_dc.json", {})
+        dc_teams = {}
+        for name, spec in (dc_raw.get("teams") or {}).items():
+            tid = _norm_team(name, aliases)
+            if tid is None:
+                dropped += 1
+            else:
+                dc_teams[tid] = spec
+        ctx["dc"][lg] = {**dc_raw, "teams": dc_teams}
         elo_files = [_read(cache_dir / f"elo_history_{lg}_{season}.json", {}) for season in ("2526", "2627")]
-        elo_rows = sorted((r for f in elo_files for r in f.get("rows", [])),
-                          key=lambda r: str(r.get("date", "")))
+        elo_merged = sorted((r for f in elo_files for r in f.get("rows", [])),
+                            key=lambda r: str(r.get("date", "")))
+        elo_rows = []
+        for r in elo_merged:
+            h, a = _norm_team(r.get("home") or "", aliases), _norm_team(r.get("away") or "", aliases)
+            if h is None or a is None:
+                dropped += 1
+            else:
+                elo_rows.append({**r, "home": h, "away": a})
         hfa = next((f["hfa"] for f in reversed(elo_files) if f.get("hfa") is not None), None)
         ctx["elo"][lg] = {"hfa": hfa, "rows": elo_rows}
-        xg_rows = [m for season in ("2526", "2627")
-                   for m in _read(cache_dir / f"odds_{lg}_{season}.json", {}).get("matches", [])]
-        xg_rows.sort(key=lambda m: _ddmmyyyy(m.get("date", "")) or date.min)
+        xg_merged = [m for season in ("2526", "2627")
+                     for m in _read(cache_dir / f"odds_{lg}_{season}.json", {}).get("matches", [])]
+        xg_merged.sort(key=lambda m: _ddmmyyyy(m.get("date", "")) or date.min)
+        xg_rows = []
+        for m in xg_merged:
+            h, a = _norm_team(m.get("home") or "", aliases), _norm_team(m.get("away") or "", aliases)
+            if h is None or a is None:
+                dropped += 1
+            else:
+                xg_rows.append({**m, "home": h, "away": a})
         ctx["xg"][lg] = xg_rows
+        ctx["unmapped"][lg] = dropped
     return ctx
 
 def team_state_on(team: str, as_of: date, ctx: dict, lag_days: int = LAG_DAYS) -> dict:
