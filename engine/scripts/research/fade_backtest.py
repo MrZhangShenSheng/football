@@ -26,7 +26,7 @@ HIST_DIR = ROOT / "engine" / "cache" / "hist_odds"
 PREREG = ROOT / "engine" / "cache" / "strength_chain" / "fade-strategy-prereg.json"
 OUT = ROOT / "data" / "04-summaries" / "fade-strategy-backtest.json"
 
-WINDOW = ("2025-10-01", "2026-09-28")   # 预注册舱 v2：一年窗口
+WINDOW = ("2025-10-01", "2026-09-28")   # 默认当前段   # 舱v9段2样本外   # 舱v9段1   # 预注册舱 v2：一年窗口
 MIN_MATCHES = 4
 TOP_N_LEGS = 4
 UNIT = 2.0
@@ -189,6 +189,19 @@ def main() -> None:
         # V3 正向主策略（舱v4）：模型P最高格·场分=P·top4
         v3_sel = topp_sel
 
+        # V3W 腿级去水版（舱v9）：三水排除（λ差>1.5·λ和>3.0·HAD<1.3）后 topP top4
+        def lam_of(c):
+            # 从矩阵反推 λ 近似：boomP>0.10 已知≈λmax>3；这里直接用 had 主胜近似超热
+            return None
+        def is_water(c, m):
+            try: hh = float(m['had']['h'])
+            except (TypeError, ValueError, KeyError): hh = None
+            if hh is not None and hh < 1.3: return True
+            return c['boomP'] > 0.10        # λmax>3 代理（λ和/λ差的稳定代理·爆炸格合计）
+        clean_cands = [c for c in cands if not is_water(c, c['m'])]
+        w_sel = ([(c, max(c["cells"], key=lambda x: x["p"]))
+                  for c in sorted(clean_cands, key=lambda c: -max(x["p"] for x in c["cells"]))[:TOP_N_LEGS]]
+                 if len(clean_cands) >= TOP_N_LEGS else None)
         # V6 修复集中（舱v6）：场选择 topP top4 · 格选择 = 场内 max(P×odds)（cells[0]）
         v6_sel = [(c, c["cells"][0]) for c in sorted(cands, key=lambda c: -max(x["p"] for x in c["cells"]))[:TOP_N_LEGS]]
         # V4/V5 复式混串（舱v5）：topP 4场·每场 P 最高的 2/3 格
@@ -213,6 +226,11 @@ def main() -> None:
                              "odds": cell["odds"], "p": round(cell["p"], 4),
                              "hit": cell["mk"] in hit_keys_by_m[id(c)]}
                             for c, cell in v3_sel]},
+            "v3w": ({"stake": 22.0, "pay": settle_generic(w_sel),
+                     "legs": [{"match": f"{c['m']['home']}v{c['m']['away']}", "pick": cell["mk"],
+                               "odds": cell["odds"], "p": round(cell["p"], 4),
+                               "hit": cell["mk"] in hit_keys_by_m[id(c)]}
+                              for c, cell in w_sel]} if w_sel else None),
             "v6": {"stake": 22.0, "pay": settle_generic(v6_sel),
                    "legs": [{"match": f"{c['m']['home']}v{c['m']['away']}", "pick": cell["mk"],
                              "odds": cell["odds"], "p": round(cell["p"], 4),
@@ -247,6 +265,7 @@ def main() -> None:
         return {"stake": stake, "pay": pay, "roi": (pay - stake) / stake if stake else None,
                 "hitDays": sum(1 for d in days if d.get(key) and d[key]["pay"] > 0)}
     v3 = agg("v3")
+    v3w = agg("v3w")
     v6 = agg("v6")
     v4, v5 = agg("v4"), agg("v5")
 
@@ -268,7 +287,7 @@ def main() -> None:
     result = {
         "generatedAt": "2026-10-05", "prereg": {"version": 1, "path": str(PREREG)},
         "window": WINDOW, "stats": stats,
-        "v1_main": v1, "v3_topP": v3, "v6_shareArgmax": v6, "v4_multi2": v4, "v5_multi3": v5, "v2_noBoom": v2,
+        "v1_main": v1, "v3_topP": v3, "v3w_dewater": v3w, "v6_shareArgmax": v6, "v4_multi2": v4, "v5_multi3": v5, "v2_noBoom": v2,
         "baselines": {"randomShuffle": {"meanPay": rand_mean, "percentileOfV1": pct,
                                         "roi": (rand_mean - total_stake) / total_stake},
                       "marketHottest": bm, "modelTopP": bp},
@@ -281,8 +300,11 @@ def main() -> None:
     print(f"==== 反差策略回测 {WINDOW[0]}~{WINDOW[1]} ====")
     print(f"交易日 {stats['daysTraded']}/{stats['daysTotal']} · 预测 {stats['matchesPredicted']} 场(可算域)")
     print(f"V1 纯机械: 投入 {v1['stake']:.0f} 回款 {v1['pay']:.0f} ROI {(v1['pay']-v1['stake'])/v1['stake']*100:+.1f}% · 回款日 {v1['hitDays']}")
-    if v2.get("roi") is not None:
-        print(f"V3 单选top1: 投入 {v3['stake']:.0f} 回款 {v3['pay']:.0f} ROI {v3['roi']*100:+.1f}% · 回款日 {v3['hitDays']}")
+    if v3w.get("roi") is not None:
+        wl = [(dd['day'], l) for dd in days if dd.get('v3w') for l in dd['v3w']['legs']]
+        wh = sum(l['hit'] for _, l in wl) / max(len(wl), 1)
+        print(f"V3W 去水版: 投入 {v3w['stake']:.0f} 回款 {v3w['pay']:.0f} ROI {v3w['roi']*100:+.1f}% · 回款日 {v3w['hitDays']} · 腿命中 {wh*100:.1f}%")
+    print(f"V3 单选top1: 投入 {v3['stake']:.0f} 回款 {v3['pay']:.0f} ROI {v3['roi']*100:+.1f}% · 回款日 {v3['hitDays']}")
     print(f"V6 修复集中: 投入 {v6['stake']:.0f} 回款 {v6['pay']:.0f} ROI {v6['roi']*100:+.1f}% · 回款日 {v6['hitDays']}")
     print(f"V4 复式top2: 投入 {v4['stake']:.0f} 回款 {v4['pay']:.0f} ROI {v4['roi']*100:+.1f}% · 回款日 {v4['hitDays']}")
     print(f"V5 复式top3: 投入 {v5['stake']:.0f} 回款 {v5['pay']:.0f} ROI {v5['roi']*100:+.1f}% · 回款日 {v5['hitDays']}")
