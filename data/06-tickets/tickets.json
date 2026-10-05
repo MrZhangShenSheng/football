@@ -5166,7 +5166,7 @@
    "source": "方案转正(反差方案「名气水·CRS版」score-card·大哥拍板'002 004 005 006 按方案 2*3*4 1倍22元'·CRS比分版口径经确认)",
    "backfilled": false,
    "placedAt": "2026-10-05 21:20",
-   "placedAtNote": "赔率20:10冻结(engine/cache/strength_chain_odds_today.json)·出票登记时体彩价与冻结价一致未再复扫",
+   "placedAtNote": "赔率20:10冻结(engine/cache/strength_chain_odds_today.json)·出票登记时体彩价与冻结价一致未再复扫·票面预计中奖金额≈73万=单注封顶50万后口径(4串1层163.8万→50万·全中合计≈733,284税前)·结算时4串1层按封顶计勿按倍数积虚算",
    "matchDays": [
     "2026-10-06"
    ],
@@ -5247,7 +5247,12 @@
    },
    "budget": {
     "stake": 22.0,
-    "note": "娱乐预算口径·门1FAIL状态(链校准worstDev 21.5pp·概率打折读)·CRS池抽水35.5%"
+    "note": "娱乐预算口径·门1FAIL状态(链校准worstDev 21.5pp·概率打折读)·CRS池抽水35.5%",
+    "payoutCap": {
+     "capPerBet": 500000,
+     "fullHitEstimate": 733284,
+     "note": "体彩单注奖金封顶50万·结算器settle_tickets无封顶逻辑时按本字段手工核"
+    }
    },
    "note": "实力链v2(438tests·预注册舱v2·缺陷①②③修复版)首批实票·'名气水'主题:市场按身价定价vs模型按实战绩定价·003罗马尼亚全场故意排除(链病灶EV越漂亮越是bug)·明早回填时与HAD版fade-name卡共同构成假设首批检验样本",
    "evidence": "data/03-predictions/2026-10-05-score-card.html·data/03-predictions/2026-10-05-fade-name-card.html·engine/cache/strength_chain/2026-10-05/"
