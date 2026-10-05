@@ -1,0 +1,71 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>2026-10-05 欧国联 · 实力链对照出票卡（门1 FAIL 状态·人工拍板用）</title>
+<style>
+:root{--ink:#1c2733;--sub:#5b6b7a;--line:#dde4ea;--bg:#f7f9fb;--card:#fff;--ok:#0f6b4f;--bad:#a33;--warn:#b3541e;--accent:#1a5fb4}
+*{box-sizing:border-box}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;color:var(--ink);background:var(--bg);margin:0;padding:24px 16px;max-width:1080px;margin-inline:auto}
+h1{font-size:20px;margin:0 0 4px}
+h2{font-size:15px;margin:22px 0 8px;padding-bottom:5px;border-bottom:2px solid var(--accent)}
+.meta{color:var(--sub);font-size:12.5px;margin-bottom:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 16px;margin:9px 0}
+table{border-collapse:collapse;width:100%;font-size:12.5px;margin:6px 0}
+th,td{border:1px solid var(--line);padding:4px 7px;text-align:center;vertical-align:top}
+th{background:#f0f4f7}
+.num{font-variant-numeric:tabular-nums}
+.bad{color:var(--bad);font-weight:600}
+.ok{color:var(--ok);font-weight:600}
+.warn{color:var(--warn);font-weight:600}
+.small{font-size:11.5px;color:var(--sub)}
+.ev-neg{background:#fbeaea}
+.icon{width:1em;height:1em;vertical-align:-0.12em;color:var(--warn)}
+.banner{background:#f9ede2;border:1px solid var(--warn);border-radius:8px;padding:9px 13px;font-size:13px;margin:8px 0}
+</style></head><body>
+<svg style="display:none"><symbol id="i-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 2 21h20L12 3z"/><path d="M12 10v5"/><circle cx="12" cy="18" r="0.6" fill="currentColor"/></symbol><symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6 6 18"/></symbol><symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 13l5 5L20 6"/></symbol></svg>
+
+<h1><svg class="icon"><use href="#i-warn"/></svg> 2026-10-05 欧国联 · 实力链对照出票卡</h1>
+<div class="meta">开发者 sszhang · 生成 2026-10-05 19:45 · 数据：实力链 v1（rolling DC 一层·国家队无Elo无xG·样本2~9场/队）× 体彩实时五池（19:45冻结） · 凭证 engine/cache/strength_chain/2026-10-05/</div>
+
+<div class="banner"><b>三重警示（读卡前置）</b>：① 门1 FAIL（校准 worstDev 11.9pp·高概率桶过度自信——模型 60% 档实际兑现约 48%，本卡所有"模型概率"需打折读）；② 项目证据链刻死：模型与市场<b>分歧大的场，错的通常是模型</b>（v4b 分歧场命中 8.6% vs 顺从场 13.2%·spec 封死清单第2条）；③ 国家队场是链最薄数据区（148 场起步）。本卡=人工拍板参考，非系统推荐。</div>
+
+<h2>一、七场全景：模型 vs 市场（去水隐含）</h2>
+<div class="card">
+<table>
+<tr><th>场次</th><th>对阵</th><th>模型 主/平/客</th><th>市场 主/平/客</th><th>HAD赔率</th><th>分歧判读</th><th>模型视角最优EV</th></tr>
+<tr><td>周一001</td><td>塞浦路斯 vs 拉脱维亚</td><td class="num">34/25/<b>41</b></td><td class="num"><b>63</b>/23/14</td><td class="num">1.40/3.90/6.30</td><td class="bad">⚡巨大反向</td><td class="num ev-neg">客胜 +1.58−1 → 名义+58%⚠伪</td></tr>
+<tr><td>周一002</td><td>法国 vs 比利时</td><td class="num"><b>60</b>/22/18</td><td class="num"><b>67</b>/19/14</td><td class="num">1.32/4.70/6.30</td><td class="ok">✓一致</td><td class="num ev-neg">主胜 0.60×1.32−1 = −21%</td></tr>
+<tr><td>周一003</td><td>罗马尼亚 vs 瑞典</td><td class="num"><b>43</b>/21/36</td><td class="num">20/22/<b>58</b></td><td class="num">4.55/4.00/1.52</td><td class="bad">⚡巨大反向</td><td class="num ev-neg">主胜 0.43×4.55−1 = +96%⚠伪</td></tr>
+<tr><td>周一004</td><td>意大利 vs 土耳其</td><td class="num">33/25/<b>42</b></td><td class="num"><b>71</b>/18/12</td><td class="num">1.25/5.05/7.60</td><td class="bad">⚡最大反向</td><td class="num ev-neg">客胜 0.42×7.60−1 = +219%⚠伪</td></tr>
+<tr><td>周一005</td><td>北爱尔兰 vs 格鲁吉亚</td><td class="num"><b>59</b>/21/20</td><td class="num">41/31/28</td><td class="num">2.15/2.88/3.15</td><td class="warn">⚡同向放大</td><td class="num ev-neg">主胜 0.59×2.15−1 = +27%⚠伪</td></tr>
+<tr><td>周一006</td><td>黑山 vs 亚美尼亚</td><td class="num"><b>59</b>/23/18</td><td class="num"><b>66</b>/20/14</td><td class="num">1.35/4.35/6.30</td><td class="ok">✓一致</td><td class="num ev-neg">主胜 0.59×1.35−1 = −20%</td></tr>
+<tr><td>周一007</td><td>波黑 vs 波兰</td><td class="num">37/24/<b>40</b></td><td class="num">30/30/<b>40</b></td><td class="num">2.96/2.95/2.21</td><td class="ok">✓一致</td><td class="num ev-neg">客胜 0.40×2.21−1 = −12%</td></tr>
+</table>
+<p class="small">⚠伪=名义EV为正但属"模型与市场分歧"类——按项目自身证据（分歧场命中 8.6% vs 顺从 13.2% + 门1校准FAIL），这些名义正EV最可能是<b>模型的错</b>而非市场的错。模型滚动DC只看欧国联148场战绩，看不到意大利的阵容身价——市场 1.25 重锤的信息模型根本没有。</p>
+</div>
+
+<h2>二、能拿出手的：零场（诚实结论）+ 一张可选娱乐票</h2>
+<div class="card">
+<p><b>按本项目全部证据，今晚实力链没有任何一场够格出正式票</b>：</p>
+<ul>
+<li><b>三场"一致"（002/006/007）</b>：模型顺从市场=无信息优势，模型概率还全部低于市场隐含（校准折扣后更没边）→ EV 全负，买它们=纯买市场共识</li>
+<li><b>四场"分歧"（001/003/004/005）</b>：名义 EV 越漂亮越是警报——分歧场模型错误率已被量化证伪过一轮（v4b），且这四场正是链数据最薄处（意大利只看欧国联近期、看不见纸面实力）</li>
+</ul>
+<p><b>若大哥仍想留 2 元娱乐注</b>（负期望娱乐预算口径，非模型推荐）：</p>
+<table>
+<tr><th>候选</th><th>玩法</th><th>赔率</th><th>理由（人工判断项）</th></tr>
+<tr><td>周一005 北爱尔兰 主胜</td><td>HAD 单关</td><td class="num">2.15</td><td>四场分歧中<b>唯一"模型与市场同向"的分歧</b>（都挺主、只争多少）——错也错在同向，不像001/003/004是硬反向；2.15 有肉</td></tr>
+<tr><td>周一002 法国 主胜</td><td>HAD 挂串关腿</td><td class="num">1.32</td><td>模型/市场双锤一致场里概率最高的腿（做腿不做单）</td></tr>
+</table>
+<p class="small">2 元纪律参照：闯关票口径 8 元/日已按 09-29 纪律冻结中；本卡娱乐注若出，与闯关票互不计入对方战绩。</p>
+</div>
+
+<h2>三、今晚对链的真正价值：首批国家队对照样本</h2>
+<div class="card">
+<p>明早赛果回填后，这 7 场自动成为 uefa-nations 库新样本（148→155 场）+ 链的首批国家队场战绩。重点记三笔账：</p>
+<ul>
+<li>① 四场反向分歧（001/003/004/005）市场 vs 模型谁对——给"分歧场错误率"证据链添国家队档数据点</li>
+<li>② 一致场（002/006/007）命中是否贴近市场隐含概率——给校准曲线添薄样本点</li>
+<li>③ rolling DC 国家队层的 λ 质量（总进球预测 vs 实际）——决定国家队场下次要不要降权处理</li>
+</ul>
+<p class="small">数据来源：engine/cache/strength_chain/2026-10-05/step1-6.json（实力链逐步产物·V5确定性双跑一致）· engine/cache/strength_chain_odds_today.json（体彩 19:45 五池冻结）· 门1档案 data/04-summaries/strength-chain-gate1.json。开发者 sszhang。</p>
+</div>
+</body></html>
