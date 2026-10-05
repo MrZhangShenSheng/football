@@ -26,3 +26,23 @@ def raw_strength(st: dict) -> tuple[float, float]:
     att = W_XG * xa + W_DC * st["dc_att"] + W_ELO * ez
     df = W_XG * xd + W_DC * (-st["dc_def"]) + W_ELO * ez     # DC.def 负=强 → 翻成正号
     return att, df
+
+def shrink_weight(n: int, k: int = 20) -> float:
+    """实际数据权重 w = n/(n+k)：n=0 纯名气先验，n=k 名气/实际各半。"""
+    return n / (n + k)
+
+def devig_fame(st: dict) -> tuple[float, float]:
+    """②a 挤名气水：raw 层合成后，名气项（Elo 已在 raw 里）按 w 再收缩。
+    实现：att_raw = 名气份额 + 实际份额，对 Elo 份额按 (1-w) 衰减、xG 份额按 w 放大（归一化）。"""
+    if st.get("xg_att") is None or st.get("n_xg", 0) == 0:
+        return raw_strength(st)      # 无实际产出数据=不收缩=保持raw（名气先验兜底）
+    att_raw, def_raw = raw_strength(st)
+    w = shrink_weight(st.get("n_xg", 0))
+    xa, xd = _xg_z(st)
+    ez = elo_z(st)
+    fame_att = W_ELO * ez
+    fame_def = W_ELO * ez
+    actual_att, actual_def = W_XG * xa + W_DC * st["dc_att"], W_XG * xd - W_DC * st["dc_def"]
+    att = (1 - w) * fame_att + min(1.0, w / max(W_XG + W_DC, 1e-9)) * actual_att * (W_XG + W_DC)
+    df = (1 - w) * fame_def + min(1.0, w / max(W_XG + W_DC, 1e-9)) * actual_def * (W_XG + W_DC)
+    return att, df
