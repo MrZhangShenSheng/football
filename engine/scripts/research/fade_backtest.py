@@ -26,7 +26,7 @@ HIST_DIR = ROOT / "engine" / "cache" / "hist_odds"
 PREREG = ROOT / "engine" / "cache" / "strength_chain" / "fade-strategy-prereg.json"
 OUT = ROOT / "data" / "04-summaries" / "fade-strategy-backtest.json"
 
-WINDOW = ("2026-07-01", "2026-09-28")
+WINDOW = ("2025-10-01", "2026-09-28")   # 预注册舱 v2：一年窗口
 MIN_MATCHES = 4
 TOP_N_LEGS = 4
 UNIT = 2.0
