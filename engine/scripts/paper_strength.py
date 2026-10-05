@@ -22,11 +22,23 @@ def _xg_z(st: dict, league_env_att: float = 1.35, league_env_def: float = 1.35) 
     return (st["xg_att"] - league_env_att), (league_env_def - st["xg_def"])  # def: 越小越强→取反
 
 def raw_strength(st: dict) -> tuple[float, float]:
-    """三层合成 att/def 双分。att=攻力（正=强），def=防力（正=强·注意与DC def 反号约定）。"""
+    """三层合成 att/def 双分。att=攻力（正=强），def=防力（正=强·注意与DC def 反号约定）。
+    2026-10-05 缺陷②修复：缺层时有效层权重重归一到 1.0——旧版静默压缩（国家队仅DC时实力差
+    被压到40%、hfa相对放大4倍→强弱分化抹平+门1高概率桶过度自信同根因）。全层可用时 s=1 行为不变。"""
+    flags = st.get("flags") or []
+    has_xg = st.get("xg_att") is not None
+    has_elo = st.get("elo") is not None
+    has_dc = "no_dc" not in flags
+    w_xg = W_XG if has_xg else 0.0
+    w_dc = W_DC if has_dc else 0.0
+    w_elo = W_ELO if has_elo else 0.0
+    s = w_xg + w_dc + w_elo
+    if s <= 0.0:
+        return 0.0, 0.0
     xa, xd = _xg_z(st)
     ez = elo_z(st)
-    att = W_XG * xa + W_DC * st["dc_att"] + W_ELO * ez
-    df = W_XG * xd + W_DC * (-st["dc_def"]) + W_ELO * ez     # DC.def 负=强 → 翻成正号
+    att = (w_xg * xa + w_dc * st["dc_att"] + w_elo * ez) / s
+    df = (w_xg * xd + w_dc * (-st["dc_def"]) + w_elo * ez) / s   # DC.def 负=强 → 翻成正号
     return att, df
 
 def shrink_weight(n: int, k: int = 20) -> float:

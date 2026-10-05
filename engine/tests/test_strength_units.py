@@ -184,8 +184,9 @@ def test_dc_rolling_proxy_asof_no_future_leak(tmp_path):
     # as_of=09-03 → cutoff=09-01：可见 08-01/08-05/08-10/09-01 四场 team-a 进2,1,0,3 失1,1,0,0
     st = sl.team_state_on("team-a", date(2026, 9, 3), ctx, dc_rolling=True)
     assert "dc_source:rolling" in st["flags"]
-    assert st["dc_att"] == pytest.approx((2 + 1 + 0 + 3) / 4 - 1.35)   # 攻=场均进−环境
-    assert st["dc_def"] == pytest.approx((1 + 1 + 0 + 0) / 4 - 1.35)   # DC字段：场均失−环境（负=强防）
+    w4 = 4 / (4 + 5)                                                    # v2收缩：4场×4/9
+    assert st["dc_att"] == pytest.approx(((2 + 1 + 0 + 3) / 4 - 1.35) * w4)
+    assert st["dc_def"] == pytest.approx(((1 + 1 + 0 + 0) / 4 - 1.35) * w4)
     assert st["dc_att"] != pytest.approx(0.3)                          # 缓存 attack=0.3 未被读
     # 默认 dc_rolling=False：仍走当前缓存（原行为不变）
     st_cache = sl.team_state_on("team-a", date(2026, 9, 3), ctx)
@@ -208,8 +209,9 @@ def test_dc_fallback_rolling_when_no_cache(tmp_path):
     # team-c 不在 DC 缓存 teams 里（缓存只有 team-a）但有 timeline 历史（09-01 客队 0:3）
     st = sl.team_state_on("team-c", date(2026, 9, 3), ctx)
     assert "dc_source:rolling" in st["flags"] and "no_dc" not in st["flags"]
-    assert st["dc_att"] == pytest.approx(0.0 - 1.35)      # 唯一一场进0球
-    assert st["dc_def"] == pytest.approx(3.0 - 1.35)      # 失3球（正=弱防）
+    w1 = 1 / (1 + 5)                                      # v2收缩：1场×1/6
+    assert st["dc_att"] == pytest.approx((0.0 - 1.35) * w1)
+    assert st["dc_def"] == pytest.approx((3.0 - 1.35) * w1)
     # 缓存里有条目的队不受影响（仍走缓存）
     st_a = sl.team_state_on("team-a", date(2026, 9, 3), ctx)
     assert st_a["dc_att"] == pytest.approx(0.3)
@@ -253,6 +255,36 @@ def test_cross_league_rolling_merge(tmp_path):
                        aliases={"team-x": {"zh": "X"}, "o1": {"zh": "一"}})
     st = sl.team_state_on("team-x", date(2026, 9, 3), ctx)
     assert st["league"] == "lgA"                       # 主联赛=场次最多（3:2）
-    # 合并6场按日期序：进 1,1,1,2,4,4=13 失 1,1,1,0,0,0=3 → 场均进13/6失0.5
-    assert st["dc_att"] == pytest.approx(13 / 6 - 1.35)
-    assert st["dc_def"] == pytest.approx(0.5 - 1.35)
+    # 合并6场按日期序：进 1,1,1,2,4,4=13 失 1,1,1,0,0,0=3 → 场均进13/6失0.5 · v2收缩×6/11
+    w6 = 6 / (6 + 5)
+    assert st["dc_att"] == pytest.approx((13 / 6 - 1.35) * w6)
+    assert st["dc_def"] == pytest.approx((0.5 - 1.35) * w6)
+
+
+def test_raw_strength_renormalize_missing_layers():
+    """2026-10-05 缺陷②修复：缺层时有效层权重重归一到1.0——不再静默压缩。
+    国家队场(仅DC)：att=dc_att 全权重；有xG+DC无Elo：按0.4/0.4归一÷0.8。全层不变(s=1)。"""
+    # 仅 DC（国家队形态：无xg无elo）
+    st = _st(xg_att=None, xg_def=None, n_xg=0, elo=None, flags=["no_xg", "no_elo"])
+    att, df = ps.raw_strength(st)
+    assert att == pytest.approx(st["dc_att"])            # DC 独活 → 全权重
+    assert df == pytest.approx(-st["dc_def"])
+    # xG+DC（无Elo）
+    st2 = _st(elo=None, flags=["no_elo"])
+    a2, _ = ps.raw_strength(st2)
+    xa, _ = ps._xg_z(st2)
+    assert a2 == pytest.approx((0.4 * xa + 0.4 * st2["dc_att"]) / 0.8)
+    # 全层：与旧公式逐位一致（s=1 行为不变）
+    a3, _ = ps.raw_strength(_st())
+    assert a3 == pytest.approx(0.4 * (1.8 - 1.35) + 0.4 * 0.3 + 0.2 * ps.elo_z(_st()))
+
+
+def test_rolling_small_sample_shrinkage(tmp_path):
+    """2026-10-05 缺陷③修复：rolling 小样本收缩 dc×n/(n+5)（K=5 统计惯例·预注册舱v2）。
+    n=10 满窗→×0.667；n=2（拉脱维亚2场）→×0.286 向联赛均值收缩防小样本爆炸。"""
+    ctx = _ctx_for_rolling(tmp_path)
+    st = sl.team_state_on("team-a", date(2026, 9, 3), ctx, dc_rolling=True)
+    n = 4                                   # team-a 可见4场
+    w = n / (n + 5)
+    assert st["dc_att"] == pytest.approx(((2 + 1 + 0 + 3) / 4 - 1.35) * w)
+    assert st["dc_def"] == pytest.approx(((1 + 1 + 0 + 0) / 4 - 1.35) * w)

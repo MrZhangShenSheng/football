@@ -1,23 +1,49 @@
 {
-  "version": 1,
-  "registeredAt": "2026-10-05",
-  "spec": "docs/2026-10-05-strength-chain-design.html",
-  "hyperparamsFixed": {"xgWindowN": 10, "shrinkK": 20, "hfaTeamFloor": 30, "bridgeMin": 30, "maxGoals": 6},
-  "fittedCoefficients": ["league_offset", "injury_beta"],
-  "gate1": {
-    "name": "校准达标（模型可用）",
-    "data": "hist_odds 13.5k场 strict_merged walk-forward",
-    "criteria": {
-      "1a_calibration": "各桶(样本>=50)预测概率vs实际频率偏差<=5pp（TTG档与HAD三向分别报）",
-      "1b_hitFloor": "CRS top1命中 >= 市场最低赔率命中 - 1.5pp 且 TTG top1 >= 市场 - 2pp",
-      "1c_logloss": "log-loss CI上界 <= 市场去水 + 0.01"
-    }
-  },
-  "gate2": {
-    "name": "影子CLV（有edge才提请实票）",
-    "data": "paper层影子票·M=50主档·band4.5-8.0·k=2·>=25销售日",
-    "criteria": {"clvMean": ">=0", "clvBootstrapCiLow": "> -0.02", "vsRandomPick": "V6随机基线显著超越"}
-  },
-  "vaccines": {"V1": "奇点断言", "V2": "时间旅行断言", "V3": "本文件", "V4": "三基线强制", "V5": "确定性哈希", "V6": "随机选场基线", "V7": "全量vs选出对照"},
-  "changeRule": "改任何判据或超参=新实验：version+1、旧战绩作废重计时"
+ "version": 2,
+ "registeredAt": "2026-10-05",
+ "spec": "docs/2026-10-05-strength-chain-design.html",
+ "hyperparamsFixed": {
+  "xgWindowN": 10,
+  "shrinkK": 20,
+  "hfaTeamFloor": 30,
+  "bridgeMin": 30,
+  "maxGoals": 6,
+  "rollingShrinkK": 5
+ },
+ "fittedCoefficients": [
+  "league_offset",
+  "injury_beta"
+ ],
+ "gate1": {
+  "name": "校准达标（模型可用）",
+  "data": "hist_odds 13.5k场 strict_merged walk-forward",
+  "criteria": {
+   "1a_calibration": "各桶(样本>=50)预测概率vs实际频率偏差<=5pp（TTG档与HAD三向分别报）",
+   "1b_hitFloor": "CRS top1命中 >= 市场最低赔率命中 - 1.5pp 且 TTG top1 >= 市场 - 2pp",
+   "1c_logloss": "log-loss CI上界 <= 市场去水 + 0.01"
+  }
+ },
+ "gate2": {
+  "name": "影子CLV（有edge才提请实票）",
+  "data": "paper层影子票·M=50主档·band4.5-8.0·k=2·>=25销售日",
+  "criteria": {
+   "clvMean": ">=0",
+   "clvBootstrapCiLow": "> -0.02",
+   "vsRandomPick": "V6随机基线显著超越"
+  }
+ },
+ "vaccines": {
+  "V1": "奇点断言",
+  "V2": "时间旅行断言",
+  "V3": "本文件",
+  "V4": "三基线强制",
+  "V5": "确定性哈希",
+  "V6": "随机选场基线",
+  "V7": "全量vs选出对照"
+ },
+ "changeRule": "改任何判据或超参=新实验：version+1、旧战绩作废重计时",
+ "changeLog": [
+  "v1(2026-10-05): 初版判据+超参（门1首跑FAIL归档run1：1a 0.1194/1b过线/1c +0.0617）",
+  "v2(2026-10-05): 缺陷修复轮——②缺层重归一(raw_strength有效层权重归1) + ③rolling小样本收缩(dc值×n/(n+5)·K=5统计惯例固定值)。run2(仅②)证明压缩曾掩盖rolling噪声：worstDev 0.1194→0.2929恶化——③为本轮必要配套非调参。判据1a/1b/1c与门2口径零改动"
+ ]
 }

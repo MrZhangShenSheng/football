@@ -17,6 +17,7 @@ CACHE_DIR = ROOT / "engine" / "cache"
 XG_WINDOW_N = 10        # 预注册舱 hyperparamsFixed.xgWindowN
 LAG_DAYS = 2
 DC_ROLLING_ENV = 1.35   # 滚动代理联赛进球环境基线（Task12 裁定②·与 paper_strength._xg_z 缺省同源）
+ROLLING_SHRINK_K = 5    # 预注册舱 v2 hyperparamsFixed.rollingShrinkK（小样本收缩常数）
 DC_ROLLING_N = 10       # 滚动代理窗口=近10场可见赛
 
 def _read(p: Path, default):
@@ -146,8 +147,11 @@ def team_state_on(team: str, as_of: date, ctx: dict, lag_days: int = LAG_DAYS,
                 scored.append(ag); conceded.append(hg)
         scored, conceded = scored[-DC_ROLLING_N:], conceded[-DC_ROLLING_N:]
         if scored:
-            st["dc_att"] = sum(scored) / len(scored) - DC_ROLLING_ENV       # 攻强=场均进−环境
-            st["dc_def"] = sum(conceded) / len(conceded) - DC_ROLLING_ENV   # DC字段：场均失−环境（负=强防）
+            # 缺陷③修复(预注册舱v2·rollingShrinkK=5)：小样本向联赛均值(0)收缩 ×n/(n+K)——
+            # 2~9场国家队/世预赛虐鱼均值不再全额兑现（罗马尼亚λ6.36级爆炸根治·run2实证必要）
+            w_shrink = len(scored) / (len(scored) + ROLLING_SHRINK_K)
+            st["dc_att"] = (sum(scored) / len(scored) - DC_ROLLING_ENV) * w_shrink       # 攻强=场均进−环境
+            st["dc_def"] = (sum(conceded) / len(conceded) - DC_ROLLING_ENV) * w_shrink   # DC字段：场均失−环境（负=强防）
             st["flags"].append("dc_source:rolling")
         else:
             st["flags"].append("no_dc")

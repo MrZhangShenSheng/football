@@ -23,7 +23,7 @@ th{background:#f0f4f7}
 <svg style="display:none"><symbol id="i-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 2 21h20L12 3z"/><path d="M12 10v5"/><circle cx="12" cy="18" r="0.6" fill="currentColor"/></symbol><symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6 6 18"/></symbol><symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 13l5 5L20 6"/></symbol></svg>
 
 <h1><svg class="icon"><use href="#i-warn"/></svg> 2026-10-05 欧国联 · 实力链对照出票卡</h1>
-<div class="meta">开发者 sszhang · 生成 2026-10-05 20:10 <b>修订版（跨库合并修复后</b>：rolling 扫全库·france 25场全用·436 tests）· 数据：实力链 v1（rolling DC 一层·国家队无Elo无xG）× 体彩实时五池（19:45冻结） · 凭证 engine/cache/strength_chain/2026-10-05/</div>
+<div class="meta">开发者 sszhang · 生成 2026-10-05 20:40 <b>v2版（缺陷②重归一+③小样本收缩后</b>·预注册舱v2·438 tests·门1三轮档案run1/2/3齐）· 数据：实力链 v1（rolling DC 一层·国家队无Elo无xG）× 体彩实时五池（19:45冻结） · 凭证 engine/cache/strength_chain/2026-10-05/</div>
 
 <div class="banner"><b>三重警示（读卡前置）</b>：① 门1 FAIL（校准 worstDev 11.9pp·高概率桶过度自信——模型 60% 档实际兑现约 48%，本卡所有"模型概率"需打折读）；② 项目证据链刻死：模型与市场<b>分歧大的场，错的通常是模型</b>（v4b 分歧场命中 8.6% vs 顺从场 13.2%·spec 封死清单第2条）；③ 国家队场是链最薄数据区（148 场起步）。本卡=人工拍板参考，非系统推荐。</div>
 
@@ -31,15 +31,15 @@ th{background:#f0f4f7}
 <div class="card">
 <table>
 <tr><th>场次</th><th>对阵</th><th>模型 主/平/客</th><th>市场 主/平/客</th><th>HAD赔率</th><th>分歧判读</th><th>模型视角最优EV</th></tr>
-<tr><td>周一001</td><td>塞浦路斯 vs 拉脱维亚</td><td class="num"><b>63</b>/21/16</td><td class="num"><b>63</b>/23/14</td><td class="num">1.40/3.90/6.30</td><td class="bad">✓对齐</td><td class="num ev-neg">主胜 0.63×1.40−1 = −12%</td></tr>
-<tr><td>周一002</td><td>法国 vs 比利时</td><td class="num">44/22/<b>34</b></td><td class="num"><b>67</b>/19/14</td><td class="num">1.32/4.70/6.30</td><td class="ok">模型看五五</td><td class="num ev-neg">主胜 0.44×1.32−1 = −42%</td></tr>
-<tr><td>周一003</td><td>罗马尼亚 vs 瑞典</td><td class="num"><b>70</b>/16/13</td><td class="num">20/22/<b>58</b></td><td class="num">4.55/4.00/1.52</td><td class="bad">⚡反向更极端</td><td class="num ev-neg">主胜 0.70×4.55−1 = +219%⚠</td></tr>
-<tr><td>周一004</td><td>意大利 vs 土耳其</td><td class="num">43/24/<b>33</b></td><td class="num"><b>71</b>/18/12</td><td class="num">1.25/5.05/7.60</td><td class="bad">⚡仍反向·缩窄</td><td class="num ev-neg">客胜 0.33×7.60−1 = +151%⚠</td></tr>
-<tr><td>周一005</td><td>北爱尔兰 vs 格鲁吉亚</td><td class="num"><b>58</b>/22/20</td><td class="num">41/31/28</td><td class="num">2.15/2.88/3.15</td><td class="warn">⚡同向放大</td><td class="num ev-neg">主胜 0.58×2.15−1 = +25%⚠</td></tr>
-<tr><td>周一006</td><td>黑山 vs 亚美尼亚</td><td class="num"><b>66</b>/18/16</td><td class="num"><b>66</b>/20/14</td><td class="num">1.35/4.35/6.30</td><td class="ok">✓对齐</td><td class="num ev-neg">主胜 0.66×1.35−1 = −11%</td></tr>
-<tr><td>周一007</td><td>波黑 vs 波兰</td><td class="num"><b>52</b>/23/25</td><td class="num">30/30/<b>40</b></td><td class="num">2.96/2.95/2.21</td><td class="ok">同向偏主</td><td class="num ev-neg">主胜 0.52×2.96−1 = +54%⚠</td></tr>
+<tr><td>周一001</td><td>塞浦路斯 vs 拉脱维亚</td><td class="num"><b>73</b>/17/10</td><td class="num"><b>63</b>/23/14</td><td class="num">1.40/3.90/6.30</td><td class="bad">偏主放大</td><td class="num ev-neg">主胜 0.73×1.40−1 = +2%⚠</td></tr>
+<tr><td>周一002</td><td>法国 vs 比利时</td><td class="num">42/19/<b>39</b></td><td class="num"><b>67</b>/19/14</td><td class="num">1.32/4.70/6.30</td><td class="ok">模型挺比利时</td><td class="num ev-neg">客胜 0.39×6.30−1 = +146%⚠</td></tr>
+<tr><td>周一003</td><td>罗马尼亚 vs 瑞典</td><td class="num"><b>85</b>/9/6</td><td class="num">20/22/<b>58</b></td><td class="num">4.55/4.00/1.52</td><td class="bad">⚡仍最极端(虐鱼残留)</td><td class="num ev-neg">主胜 0.85×4.55−1 = +287%⚠</td></tr>
+<tr><td>周一004</td><td>意大利 vs 土耳其</td><td class="num">40/23/<b>37</b></td><td class="num"><b>71</b>/18/12</td><td class="num">1.25/5.05/7.60</td><td class="bad">⚡反向(缩窄)</td><td class="num ev-neg">客胜 0.37×7.60−1 = +181%⚠</td></tr>
+<tr><td>周一005</td><td>北爱尔兰 vs 格鲁吉亚</td><td class="num"><b>66</b>/18/16</td><td class="num">41/31/28</td><td class="num">2.15/2.88/3.15</td><td class="warn">⚡同向放大</td><td class="num ev-neg">主胜 0.66×2.15−1 = +42%⚠</td></tr>
+<tr><td>周一006</td><td>黑山 vs 亚美尼亚</td><td class="num"><b>79</b>/12/9</td><td class="num"><b>66</b>/20/14</td><td class="num">1.35/4.35/6.30</td><td class="ok">偏主放大</td><td class="num ev-neg">主胜 0.79×1.35−1 = +7%⚠</td></tr>
+<tr><td>周一007</td><td>波黑 vs 波兰</td><td class="num"><b>57</b>/21/22</td><td class="num">30/30/<b>40</b></td><td class="num">2.96/2.95/2.21</td><td class="ok">同向偏主</td><td class="num ev-neg">主胜 0.57×2.96−1 = +69%⚠</td></tr>
 </table>
-<p class="small">⚠伪=名义EV为正但属"模型与市场分歧"类——按项目自身证据（分歧场命中 8.6% vs 顺从 13.2% + 门1校准FAIL），这些名义正EV最可能是<b>模型的错</b>而非市场的错。模型滚动DC只看欧国联148场战绩，看不到意大利的阵容身价——市场 1.25 重锤的信息模型根本没有。</p>
+<p class="small">v2修复说明：run1旧数字（1a 0.12/1b过线）系"权重压缩×rolling噪声"两缺陷互相抵消的假象；v2语义干净但暴露对手强度调整缺失（罗马尼亚λ3.99=世预赛虐鱼残留·回炉轮工程）。⚠伪=名义EV为正但属"模型与市场分歧"类——按项目自身证据（分歧场命中 8.6% vs 顺从 13.2% + 门1校准FAIL），这些名义正EV最可能是<b>模型的错</b>而非市场的错。模型滚动DC只看欧国联148场战绩，看不到意大利的阵容身价——市场 1.25 重锤的信息模型根本没有。</p>
 </div>
 
 <h2>二、能拿出手的：零场（诚实结论）+ 一张可选娱乐票</h2>
