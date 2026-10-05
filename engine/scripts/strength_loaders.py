@@ -16,6 +16,8 @@ LEAGUES_DIR = ROOT / "data" / "02-results" / "league"
 CACHE_DIR = ROOT / "engine" / "cache"
 XG_WINDOW_N = 10        # 预注册舱 hyperparamsFixed.xgWindowN
 LAG_DAYS = 2
+DC_ROLLING_ENV = 1.35   # 滚动代理联赛进球环境基线（Task12 裁定②·与 paper_strength._xg_z 缺省同源）
+DC_ROLLING_N = 10       # 滚动代理窗口=近10场可见赛
 
 def _read(p: Path, default):
     try:
@@ -103,8 +105,13 @@ def build_ctx(leagues: list[str], *, leagues_dir: Path = LEAGUES_DIR, cache_dir:
         ctx["unmapped"][lg] = dropped
     return ctx
 
-def team_state_on(team: str, as_of: date, ctx: dict, lag_days: int = LAG_DAYS) -> dict:
-    """队的 as-of 快照：滚动xG(近N场)/联赛内Elo(最近pre值)/DC参数。降级记 flags（报告忠实度）。"""
+def team_state_on(team: str, as_of: date, ctx: dict, lag_days: int = LAG_DAYS,
+                  dc_rolling: bool = False) -> dict:
+    """队的 as-of 快照：滚动xG(近N场)/联赛内Elo(最近pre值)/DC参数。降级记 flags（报告忠实度）。
+    dc_rolling=True（门1评估器模式·Task12 裁定②）：dc_att/dc_def 改用 as-of 可见近≤10场的
+    场均进/失滚动代理（(场均进−1.35)与(场均失−1.35)·DC字段口径 def 负=强防），完全不读
+    ctx["dc"] 当前缓存——当前缓存是全历史拟合，历史 as-of 场用了会泄漏未来赛果；flags 记
+    'dc_source:rolling'。默认 False 保持当前缓存行为不变。"""
     st = {"team": team, "league": None, "elo": None, "xg_att": None, "xg_def": None,
           "n_xg": 0, "dc_att": 0.0, "dc_def": 0.0, "flags": []}
     for lg, rows in ctx["timeline"].items():
@@ -115,11 +122,27 @@ def team_state_on(team: str, as_of: date, ctx: dict, lag_days: int = LAG_DAYS) -
         st["flags"].append("no_league")
         return st
     lg = st["league"]
-    dc_team = (ctx["dc"].get(lg, {}).get("teams") or {}).get(team)
-    if dc_team:
-        st["dc_att"], st["dc_def"] = float(dc_team["attack"]), float(dc_team["defense"])
+    if dc_rolling:
+        scored, conceded = [], []
+        for r in as_of_rows(ctx["timeline"].get(lg, []), as_of, lag_days):
+            hg, ag = r.get("hg"), r.get("ag")
+            if not isinstance(hg, (int, float)) or not isinstance(ag, (int, float)):
+                continue
+            if r.get("home") == team:
+                scored.append(hg); conceded.append(ag)
+            elif r.get("away") == team:
+                scored.append(ag); conceded.append(hg)
+        scored, conceded = scored[-DC_ROLLING_N:], conceded[-DC_ROLLING_N:]
+        if scored:
+            st["dc_att"] = sum(scored) / len(scored) - DC_ROLLING_ENV       # 攻强=场均进−环境
+            st["dc_def"] = sum(conceded) / len(conceded) - DC_ROLLING_ENV   # DC字段：场均失−环境（负=强防）
+        st["flags"].append("dc_source:rolling")
     else:
-        st["flags"].append("no_dc")
+        dc_team = (ctx["dc"].get(lg, {}).get("teams") or {}).get(team)
+        if dc_team:
+            st["dc_att"], st["dc_def"] = float(dc_team["attack"]), float(dc_team["defense"])
+        else:
+            st["flags"].append("no_dc")
     # 自建 Elo：最近一次 pre 值（as-of）
     elo_rows = [r for r in (ctx["elo"].get(lg) or {}).get("rows", [])
                 if team in (r.get("home"), r.get("away")) and str(r.get("date")) <= as_of.isoformat()]

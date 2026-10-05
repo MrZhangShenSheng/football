@@ -156,3 +156,66 @@ def test_tail_split_union_region():
     tot = th + td + ta
     assert th > 0.7 * tot                                  # 主胜向占大头（6+x/x 大概率主胜）
     assert td < 0.01 * tot                                 # 评分平局（双方≥6且相等）e-6级
+
+# ---- 步骤⑦ 门1评估器 strength_chain_eval：V4三基线强制 + 只读预注册判据 + DC滚动代理 ----
+# 2026-10-05 Task12 控制器裁定②：ctx["dc"]=当前全历史拟合，历史 as-of 场直接用会泄漏未来赛果
+# → 评估器模式 team_state_on(dc_rolling=True) 用 as-of 可见近10场滚动代理（默认 False 不变）。
+import json
+from datetime import date
+import strength_chain_eval as sce
+
+def _ctx_for_rolling(p):   # 最小合成地基：timeline + DC缓存（值故意≠滚动值以证明未被读取）
+    lg_dir = p / "league"; lg_dir.mkdir(exist_ok=True)
+    (lg_dir / "test-lg_matches.json").write_text('{"matches":['
+        '{"date":"2026-08-01","home":"team-a","away":"team-b","hg":2,"ag":1},'
+        '{"date":"2026-08-05","home":"team-d","away":"team-a","hg":1,"ag":1},'
+        '{"date":"2026-08-10","home":"team-b","away":"team-a","hg":0,"ag":0},'
+        '{"date":"2026-09-01","home":"team-a","away":"team-c","hg":3,"ag":0}]}', encoding="utf-8")
+    cache = p / "cache"; cache.mkdir(exist_ok=True)
+    (cache / "test-lg_dc.json").write_text('{"homeAdv":0.25,"rho":-0.05,"teams":'
+        '{"team-a":{"attack":0.3,"defense":-0.2}}}', encoding="utf-8")
+    return sl.build_ctx(["test-lg"], leagues_dir=lg_dir, cache_dir=cache,
+                        aliases={"team-a": {"zh": "甲"}, "team-b": {"zh": "乙"}, "team-c": {"zh": "丙"}})
+
+def test_dc_rolling_proxy_asof_no_future_leak(tmp_path):
+    """裁定②滚动代理：dc_rolling=True → dc_att/dc_def 来自 as-of 可见近≤10场场均进/失
+    （-1.35 标准化·DC字段口径 def 负=强），当前 DC 缓存不被读取；未来场注入值不变（V2同款注入模式）。"""
+    ctx = _ctx_for_rolling(tmp_path)
+    # as_of=09-03 → cutoff=09-01：可见 08-01/08-05/08-10/09-01 四场 team-a 进2,1,0,3 失1,1,0,0
+    st = sl.team_state_on("team-a", date(2026, 9, 3), ctx, dc_rolling=True)
+    assert "dc_source:rolling" in st["flags"]
+    assert st["dc_att"] == pytest.approx((2 + 1 + 0 + 3) / 4 - 1.35)   # 攻=场均进−环境
+    assert st["dc_def"] == pytest.approx((1 + 1 + 0 + 0) / 4 - 1.35)   # DC字段：场均失−环境（负=强防）
+    assert st["dc_att"] != pytest.approx(0.3)                          # 缓存 attack=0.3 未被读
+    # 默认 dc_rolling=False：仍走当前缓存（原行为不变）
+    st_cache = sl.team_state_on("team-a", date(2026, 9, 3), ctx)
+    assert st_cache["dc_att"] == pytest.approx(0.3) and "dc_source:rolling" not in st_cache["flags"]
+    # 未来场注入（09-05 大胜）→ cutoff=09-01 不可见 → 代理值逐字节不变
+    lg_file = tmp_path / "league" / "test-lg_matches.json"
+    rows = json.loads(lg_file.read_text(encoding="utf-8"))
+    rows["matches"].append({"date": "2026-09-05", "home": "team-a", "away": "team-b", "hg": 5, "ag": 0})
+    lg_file.write_text(json.dumps(rows), encoding="utf-8")
+    ctx2 = _ctx_for_rolling(tmp_path)
+    st2 = sl.team_state_on("team-a", date(2026, 9, 3), ctx2, dc_rolling=True)
+    assert (st2["dc_att"], st2["dc_def"]) == (st["dc_att"], st["dc_def"])
+
+def test_gate1_report_requires_three_baselines():
+    """V4：缺任一基线（随机/市场/旧链）→ 报告拒绝生成（raise）。"""
+    fake = {"randomShuffle": {"hit": 0.10}, "market": {"hit": 0.137}, "oldChain": None}   # 缺旧链
+    with pytest.raises(sce.MissingBaselineError):
+        sce._gate1_verdict(fake)
+
+def test_gate1_criteria_from_prereg_only(tmp_path):
+    """判据只读舱：prereg 的 1b 门槛改掉 → verdict 跟着变（证明没把数字硬编码）。"""
+    prereg = tmp_path / "p.json"
+    prereg.write_text(json.dumps({"gate1": {"criteria": {"1b_hitFloor": "CRS top1 >= market - 1.5pp",
+                                                        "1a_calibration": "x", "1c_logloss": "y"}}}), encoding="utf-8")
+    got = sce._parse_1b_margin(prereg)
+    assert got == 0.015
+
+def test_walk_forward_eval_smoke(tmp_path):
+    """端到端冒烟：合成盲测场（ctx=None 链不可算→如实记 skip）→ 仍出四节结构（calib/hit/logloss/baselines）。"""
+    out = sce._eval_rows(rows=[{"date": "2026-09-10", "league": "lgX", "home": "甲", "away": "乙",
+                                "score": "2:1", "crsMarketTop": "s1s0"}],
+                         ctx=None, tmp_dir=tmp_path)
+    assert {"calibration", "hit", "logloss", "baselines"} <= set(out)
