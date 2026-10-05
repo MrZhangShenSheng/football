@@ -1,0 +1,190 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>实力链 v1 设计 · 比分预测模型重造（纸面实力→去水→对比→λ→泊松→选场）</title>
+<style>
+:root{--ink:#1c2733;--sub:#5b6b7a;--line:#dde4ea;--bg:#f7f9fb;--card:#fff;--ok:#0f6b4f;--bad:#a33;--warn:#b3541e;--accent:#1a5fb4}
+*{box-sizing:border-box}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;color:var(--ink);background:var(--bg);margin:0;padding:24px 16px;max-width:1080px;margin-inline:auto}
+h1{font-size:21px;margin:0 0 4px}
+h2{font-size:16px;margin:26px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--ok)}
+.meta{color:var(--sub);font-size:13px;margin-bottom:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:8px 0}
+th,td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#f0f4f7}
+.num{font-variant-numeric:tabular-nums}
+.bad{color:var(--bad);font-weight:600}
+.ok{color:var(--ok);font-weight:600}
+.warn{color:var(--warn)}
+.small{font-size:12px;color:var(--sub)}
+ul{margin:6px 0;padding-left:20px}li{margin:4px 0}
+code{background:#eef2f5;border-radius:4px;padding:1px 5px;font-size:12.5px}
+.tag{display:inline-block;font-size:11px;border-radius:4px;padding:1px 7px;margin-right:5px;vertical-align:1px}
+.t-red{background:#fbeaea;color:var(--bad)}.t-grn{background:#e6f2ed;color:var(--ok)}.t-amb{background:#f9ede2;color:var(--warn)}.t-blu{background:#e8eef8;color:var(--accent)}
+svg.chain{width:100%;height:auto;color:var(--ink)}
+.icon{width:1em;height:1em;vertical-align:-0.12em;color:var(--ok)}
+</style></head><body>
+<svg style="display:none"><symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3z"/></symbol><symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6 6 18"/></symbol><symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/></symbol><symbol id="i-flask" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3"/></symbol></svg>
+
+<h1><svg class="icon"><use href="#i-flask"/></svg> 实力链 v1 设计：比分预测模型重造</h1>
+<div class="meta">开发者 sszhang · 2026-10-05 · 状态：<b>待大哥审定</b> · 上游文档：docs/2026-09-29-positive-ev-falsification.html（四路证伪）、docs/2026-09-30-day-review.html（泄漏审计）</div>
+
+<div class="card"><b>一句话</b>：用「纸面实力→三步去水→实力对比→λ桥→泊松三出口→选场」六步显式链重造比分预测，每步踩在实际数据上、每步独立可测可归因、每步接种防泄漏/防伪造疫苗；市场（Pinnacle/体彩）<b>不进链只做靶子</b>；双门验收（校准达标+影子CLV）通过才请开实票闸门。</div>
+
+<h2>一、背景与边界（为什么重造、什么已经死了）</h2>
+<div class="card">
+<p>六周证伪史收口后（资金流/错价/公开信息/伤停历史档四路全灭），建模层唯一没被检验过的是「一条结构正确、步步可归因的实力→比分链」——现有 dc_fit/crs_fusion 是黑箱融合，错了不知道错在哪一步。本链的设计动机<b>不是打败市场（先验凶险），而是把"预测"这件事拆成六步，每步单独记账、单独验收、单独可杀</b>。</p>
+<p><b>已封死方向（本链不得偷偷走回头路）</b>：</p>
+<ul>
+<li>模型 vs Pinnacle 打平（n=334 CI含0）；v4b 干净口径 CRS top1 11.1% vs 市场 13.7% 显著更差</li>
+<li>赔率任何变换不产生 alpha（铁律13）；"模型与市场分歧大"选场=分歧场命中 8.6% vs 顺从场 13.2%（错的是模型）</li>
+<li>右尾细档优化无统计功效（13515场·三档配对差全分不开·v1粗规则已定稿）</li>
+<li>市场对日尺度伤停已完全定价（隐含-实际±1.4pp内）——伤停乘子是显式一环但不指望 alpha</li>
+</ul>
+</div>
+
+<h2>二、总体架构</h2>
+<div class="card">
+<svg class="chain" viewBox="0 0 1040 300" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>
+<g font-size="12.5" text-anchor="middle">
+<!-- 输入层 -->
+<rect x="10" y="30" width="120" height="70" rx="8" fill="#e8eef8" stroke="#1a5fb4"/><text x="70" y="55" fill="#1a5fb4" font-weight="600">输入层（零新采集）</text><text x="70" y="72" font-size="11">Elo · xG · DC参数</text><text x="70" y="87" font-size="11">伤停 · 13.5k赛果</text>
+<!-- 步骤1 -->
+<rect x="160" y="30" width="100" height="70" rx="8" fill="#e6f2ed" stroke="#0f6b4f"/><text x="210" y="55" fill="#0f6b4f" font-weight="600">① 纸面实力</text><text x="210" y="72" font-size="11">三层合成 raw</text>
+<!-- 步骤2 -->
+<rect x="290" y="10" width="140" height="110" rx="8" fill="#e6f2ed" stroke="#0f6b4f"/><text x="360" y="30" fill="#0f6b4f" font-weight="600">② 去水三连</text><text x="360" y="50" font-size="11">a 挤名气水(收缩)</text><text x="360" y="67" font-size="11">b 剥主场(HFA分离)</text><text x="360" y="84" font-size="11">c 去联赛水(offset桥)</text>
+<!-- 步骤3 -->
+<rect x="460" y="30" width="100" height="70" rx="8" fill="#e6f2ed" stroke="#0f6b4f"/><text x="510" y="55" fill="#0f6b4f" font-weight="600">③ 实力对比</text><text x="510" y="72" font-size="11">Δ净实力 + T环境</text>
+<!-- 步骤4 -->
+<rect x="590" y="30" width="110" height="70" rx="8" fill="#e6f2ed" stroke="#0f6b4f"/><text x="645" y="55" fill="#0f6b4f" font-weight="600">④ λ桥</text><text x="645" y="72" font-size="11">对数线性+伤停乘子</text>
+<!-- 步骤5 -->
+<rect x="730" y="30" width="110" height="70" rx="8" fill="#e6f2ed" stroke="#0f6b4f"/><text x="785" y="55" fill="#0f6b4f" font-weight="600">⑤ 泊松矩阵</text><text x="785" y="72" font-size="11">DC修正ρ·31格</text>
+<!-- 三出口 -->
+<rect x="880" y="10" width="140" height="42" rx="8" fill="#f9ede2" stroke="#b3541e"/><text x="950" y="35" font-size="12" fill="#b3541e">出口A TTG 8档</text>
+<rect x="880" y="60" width="140" height="42" rx="8" fill="#f9ede2" stroke="#b3541e"/><text x="950" y="85" font-size="12" fill="#b3541e">出口B CRS top-N</text>
+<rect x="880" y="110" width="140" height="42" rx="8" fill="#f9ede2" stroke="#b3541e"/><text x="950" y="135" font-size="12" fill="#b3541e">出口C HAD三向</text>
+<!-- 选场 -->
+<rect x="460" y="160" width="290" height="56" rx="8" fill="#e8eef8" stroke="#1a5fb4"/><text x="605" y="182" fill="#1a5fb4" font-weight="600">⑥ 选场逻辑（右尾框架主目标）</text><text x="605" y="200" font-size="11">S1集中度·S2校准带·S3联赛层·S4信息事件·S5分歧(对照)</text>
+<!-- 门 -->
+<rect x="460" y="240" width="130" height="46" rx="8" fill="#e6f2ed" stroke="#0f6b4f"/><text x="525" y="259" fill="#0f6b4f" font-weight="600">门1 校准达标</text><text x="525" y="276" font-size="11">strict_merged回测</text>
+<rect x="620" y="240" width="130" height="46" rx="8" fill="#e6f2ed" stroke="#0f6b4f"/><text x="685" y="259" fill="#0f6b4f" font-weight="600">门2 影子CLV</text><text x="685" y="276" font-size="11">≥25销售日·CI&gt;-2%</text>
+<rect x="790" y="240" width="150" height="46" rx="8" fill="#fbeaea" stroke="#a33"/><text x="865" y="259" fill="#a33" font-weight="600">实票闸门（人工）</text><text x="865" y="276" font-size="11">双门全过才提请</text>
+<!-- 市场靶子 -->
+<rect x="160" y="160" width="250" height="56" rx="8" fill="#fbeaea" stroke="#a33"/><text x="285" y="182" fill="#a33" font-weight="600">市场（C）= 靶子·不进链</text><text x="285" y="200" font-size="11">校准锚 · 对照基准 · CLV分母</text>
+<!-- 箭头 -->
+<g stroke="currentColor" stroke-width="1.6" fill="none">
+<path d="M130 65H155" marker-end="url(#arr)"/><path d="M260 65H285" marker-end="url(#arr)"/><path d="M430 65H455" marker-end="url(#arr)"/><path d="M560 65H585" marker-end="url(#arr)"/><path d="M700 65H725" marker-end="url(#arr)"/><path d="M840 45H875" marker-end="url(#arr)"/><path d="M840 70H875" marker-end="url(#arr)"/><path d="M840 95H875" marker-end="url(#arr)"/>
+<path d="M510 100V135H600V155" marker-end="url(#arr)"/><path d="M605 216V235" marker-end="url(#arr)"/><path d="M590 263H615" marker-end="url(#arr)"/><path d="M750 263H785" marker-end="url(#arr)"/>
+<path d="M410 188H455" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+</g>
+</g>
+</svg>
+<p class="small">虚线=对照关系（市场做靶子），实线=数据流。旧链（dc_fit/crs_fusion/闯关票/影子层）一律不动，本链为平行对照轨，新旧天天对拍。</p>
+</div>
+
+<h2>三、已拍板决策（大哥记录在案）</h2>
+<div class="card">
+<table>
+<tr><th>决策点</th><th>拍板</th></tr>
+<tr><td>实力底座</td><td>A：Elo+xG+DC 三层自算；B子集：伤停主力度乘子（apps/starts 加权）；B完整体（球员实力值表）列远期，先探测数据源可达性</td></tr>
+<tr><td>市场角色</td><td><b>独立链</b>：C（市场隐含）只做靶子/校准对照/CLV分母，不进链</td></tr>
+<tr><td>去水三步</td><td>挤名气水（Elo先验+xG实际·Bayesian收缩 w=n/(n+20)）+ 剥主场（评分不含HFA·联赛级HFA+队级样本&lt;30收缩）+ 去联赛水（跨联赛场次拟合 offset·无桥用Elo差兜底）——三步全做、系数全部从历史回测拟合不手拍</td></tr>
+<tr><td>选场目标</td><td>右尾概率 P(≥M)/票 为主目标（衔接右尾v1粗规则 band 4.5-8.0·k=2），命中率作为内生信号（S1矩阵集中度）</td></tr>
+<tr><td>验收双门</td><td>门1校准达标→门2影子CLV（1个日历月≥25销售日）→才提请开实票闸门（大哥已定"优化完成之后再实票"）</td></tr>
+</table>
+</div>
+
+<h2>四、步骤①—③ 实力层设计</h2>
+<div class="card">
+<table>
+<tr><th>步</th><th>输入</th><th>算法</th><th>输出</th><th>降级链（显式标注）</th></tr>
+<tr><td>①纸面实力</td><td>Elo（clubelo）、滚动xG/xGA（fd CSV·近10场）、DC攻防参数（league内）</td><td><b>输出攻/防双分</b>（λ桥需要 att−def 结构）：xG层给 att=xG_z/def=xGA_z，DC层给 att/def，Elo单轨→攻防同权项+总量调节；三层各自标准化后合成</td><td>每队 (att, def) 双分 + 分层明细</td><td>无xG联赛→DC参数代理；无Elo队（休赛/小联赛）→冻结最近值或联赛均值</td></tr>
+<tr><td>②a挤名气水</td><td>Elo + 滚动xG</td><td>strength = w·Elo_z + (1−w)·xG_z，w = n/(n+20)，n=近20场有效样本量（Bayesian收缩，名气先验随实际数据量让位）</td><td>校准后实力分</td><td>n=0 纯Elo；Elo也缺→联赛均值+标注</td></tr>
+<tr><td>②b剥主场</td><td>联赛内主客历史</td><td>HFA = 联赛经验值 + 队级偏移收缩（队样本&lt;30场向联赛均值收）；评分本体不含HFA，对比时显式加回</td><td>HFA_league、HFA_team、净实力 net</td><td>新队无主场样本→纯联赛值</td></tr>
+<tr><td>②c去联赛水</td><td>欧战/杯赛跨联赛场次（league库13.5k场内含）</td><td>拟合联赛 offset（如荷甲进攻参数整体通胀）；无桥联赛对（韩职vs英超无交手）→Elo差做先验锚</td><td>league_offset 表 + 跨联赛可比 net</td><td>桥样本不足（&lt;30场）→先验锚+标注</td></tr>
+<tr><td>③实力对比</td><td>双方 (att, def)、HFA、league环境</td><td>攻对比 Δ_att = att_home + HFA/2 − def_away；防对比对称；总量 T = 联赛进球环境加回（去联赛水时扣的在此还回）</td><td>Δ_att、Δ_away侧、T（每项显式可读·直通④对数线性）</td><td>—</td></tr>
+</table>
+<p class="small">每步中间产物落盘 <code>engine/cache/strength_chain/{date}/</code>（JSON·逐步一文件），任何一场任何一步事后可翻可归因可消融。</p>
+<p><b>超参固定清单（防选择偏差·不进调参空间·不回测挑选）</b>：xG滚动窗口 N=10（业界标准值）；收缩基准 k=20；队级HFA样本门槛 30 场；联赛桥样本门槛 30 场。历史数据只拟合两个系数：联赛 offset 与伤停乘子 β（一次性拟合·非网格挑最优）。改任何超参=新实验，V3 舱记录并重计时。</p>
+</div>
+
+<h2>五、步骤④ λ桥 + 步骤⑤ 泊松三出口</h2>
+<div class="card">
+<ul>
+<li><b>④ λ桥</b>（对数线性·与DC同构）：λ_home = exp(μ_联赛 + att_home − def_away + HFA/2)，λ_away 同理；<b>伤停乘子最后乘</b>：λ ×= exp(−β·Δ主力缺阵数)，β从4999场伤停历史回测拟合（strict_merged）；缺伤停数据场乘子=1中性+标注。每场输出三行账：Δ贡献/HFA贡献/伤停贡献。</li>
+<li><b>⑤ 泊松矩阵</b>：Dixon-Coles低分修正ρ（dc_fit已有拟合）；6×6+三其他=体彩31格口径；<b>三出口同源</b>：A=TTG 8档（矩阵行和）、B=CRS top-N、C=HAD三向（矩阵三区和·免费副产品供方向校准）。衔接 goal_engine <code>--compare</code> 对照统计框架。</li>
+</ul>
+</div>
+
+<h2>六、步骤⑥ 选场逻辑</h2>
+<div class="card">
+<ul>
+<li><b>主目标</b>：最大化 P(≥M)/票（右尾v1粗规则直接衔接），命中率以 S1 信号内生</li>
+<li><b>五个信号（各自可单独消融）</b>：S1 矩阵集中度（熵）· S2 校准带宽（门1回测出模型最准概率带）· S3 联赛分层（只在校准达标联赛选）· S4 信息事件（伤停/首发变更·加分项不主导）· S5 分歧度（列对照·预期证伪：先验=分歧场8.6%vs13.2%）</li>
+<li><b>输出</b>：候选场排序+每场入选理由（触发信号明细），落盘可归因</li>
+<li><b>信号清单+权重在门1通过后、门2开始前预注册冻结</b>（模型已定，无回头挑信号余地）</li>
+</ul>
+</div>
+
+<h2>七、疫苗矩阵（防偷看答案/防伪造验证·步步强制）</h2>
+<div class="card">
+<table>
+<tr><th>#</th><th>疫苗</th><th>防什么</th><th>机制</th></tr>
+<tr><td>V1</td><td>奇点断言</td><td>自泄漏（偷看答案）</td><td>把被预测场自己的赛果注入输入库→断言输出逐字节不变</td></tr>
+<tr><td>V2</td><td>时间旅行断言</td><td>未来信息</td><td>T时刻计算→断言实际读取的最大比赛日期≤T−2天（strict_merged lag落到函数级）</td></tr>
+<tr><td>V3</td><td>预注册舱</td><td>事后挑指标</td><td>门1/门2指标+门槛在首次回测前写 <code>preregistration.json</code> 并commit（git=凭证）；评估脚本只读；改判据=新实验旧战绩作废</td></tr>
+<tr><td>V4</td><td>自证伪三基线</td><td>伪造验证结果</td><td>每个回测强制同报：随机打乱/市场最低赔率/旧链crs_fusion 三基线；优势须三杀+bootstrap CI不含0，缺一条报告拒绝生成</td></tr>
+<tr><td>V5</td><td>确定性哈希</td><td>状态污染/隐藏随机</td><td>同输入跑两次中间产物逐字节一致（drift特征线攒0场那类病一测现形）</td></tr>
+<tr><td>V6</td><td>随机选场基线</td><td>选场幻觉</td><td>每日随机选N场×1000次构成分布，选场逻辑命中率须显著超分布，否则=掷骰子</td></tr>
+<tr><td>V7</td><td>全量vs选出对照</td><td>"选出场天然容易"错觉</td><td>选出N场命中 vs 当日全体命中，差值+CI强制同报</td></tr>
+</table>
+<p><b>工程纪律</b>：疫苗测试先写（TDD·<code>test_strength_chain_*.py</code>），实现写到疫苗全绿为止；去水①②③与伤停乘子各留消融开关，回测矩阵天然含"关掉这步"列，每步价值单独记账，无增益即删。</p>
+</div>
+
+<h2>八、双门评估（预注册数字·V3舱内容）</h2>
+<div class="card">
+<table>
+<tr><th>门</th><th>判据（全部预注册·缺一不可）</th><th>数据</th></tr>
+<tr><td><b>门1 校准达标</b><br>（模型可用）</td><td>1a 校准曲线：各桶（样本≥50）预测概率vs实际频率偏差≤5pp<br>1b 命中底线（基准=<b>市场最低赔率选项的命中</b>）：CRS top1≥市场−1.5pp 且 TTG top1≥市场−2pp（不许显著更差）<br>1c 概率质量（基准=<b>市场去水概率</b>）：log-loss CI上界≤市场+0.01</td><td>strict_merged 13.5k场 walk-forward（一次跑完）</td></tr>
+<tr><td><b>门2 影子CLV</b><br>（有edge才开实票）</td><td>影子票冻结赛前五池价（paper层基建现成）；<b>M=50 主档</b>（右尾v1命中率最高档·band 4.5-8.0·k=2）；跑满1个日历月≥25销售日；CLV=出票赔率/Pinnacle收盘−1：均值≥0 且 bootstrap CI下界&gt;−2%<br>附加：V6随机选场基线对照</td><td>自然时间积累（机器自动·不占人力）</td></tr>
+<tr><td><b>实票闸门</b></td><td>双门全过→提请大哥人工拍板；任一门不过→链回炉或诚实证伪归档，<b>不硬开</b></td><td>—</td></tr>
+</table>
+</div>
+
+<h2>九、工程结构</h2>
+<div class="card">
+<ul>
+<li><code>engine/scripts/paper_strength.py</code> 步骤①②③（实力层）</li>
+<li><code>engine/scripts/lambda_bridge.py</code> 步骤④（λ桥+伤停乘子）</li>
+<li><code>engine/scripts/strength_chain_run.py</code> 日运行器（串联①—⑤+选场⑥+逐步落盘；幂等）</li>
+<li><code>engine/scripts/strength_chain_eval.py</code> 门1回测评估器（只读预注册舱）</li>
+<li><code>engine/cache/strength_chain/{date}/</code> 中间产物（逐步JSON·纳管git）+ <code>preregistration.json</code> 预注册舱</li>
+<li><code>engine/tests/test_strength_chain_leak.py</code>（V1V2）·<code>test_strength_chain_determinism.py</code>（V5）·<code>test_strength_chain_units.py</code>（各步单元+归一）·<code>test_pick_logic.py</code>（V6V7）</li>
+<li>门2：engine/shadow/ 挂新 spec（复用 paper 基建）</li>
+<li><b>旧链零改动</b>：帮我预测/闯关票/影子层/回填流程照常，本链平行积累对拍</li>
+</ul>
+</div>
+
+<h2>十、明确不做（YAGNI）</h2>
+<div class="card">
+<ul>
+<li>不做球员实力值表（B完整体）——无数据源，先探测可达性列远期，本版用伤停主力度乘子替代</li>
+<li>不做市场信息进链（任何形式的融合/校准锚不回写进模型本体）</li>
+<li>不做右尾形状/档位再优化（13515场已定稿，本链只供"选哪场"，形状用v1粗规则）</li>
+<li>不做实票自动化——门2过了也是提请人工拍板</li>
+<li>不动旧链任何文件（平行轨原则）</li>
+</ul>
+</div>
+
+<h2>十一、时间结构与风险</h2>
+<div class="card">
+<ul>
+<li><b>工程期</b>：疫苗测试先行→实力层→λ桥→出口→选场（每步疫苗绿才进下一步）</li>
+<li><b>门1</b>：实现完当天可跑（13.5k场一次回测）</li>
+<li><b>门2</b>：自然等1个日历月，机器自动积累</li>
+<li><b>主要风险（诚实声明）</b>：①门1的1b（命中不显著差于市场）有真实不过的概率——v4b先例在此；②门2 CLV≥0 的先验概率低（市场有效证据链长）；本设计的承诺是<b>每一步死得明白</b>，不是保证活</li>
+</ul>
+</div>
+
+<div class="small">数据来源：docs/2026-09-29-positive-ev-falsification.html、docs/2026-09-30-day-review.html、data/04-summaries/2026-09-30-*.json（12份审计）、engine/scripts/common.py::strict_merged、skill/SKILL.md 铁律13/14、检索（ESPN SPI·clubelo·FiveThirtyEight SPI·arX 2026 UEFA Elo 研究·ESPN 跨联赛校准）。开发者 sszhang。</div>
+</body></html>
