@@ -52,3 +52,21 @@ def test_hfa_shrink_to_league():
 
 def test_hfa_none_team_obs():
     assert ps.hfa_value(0.30, 200, None) == pytest.approx(0.30)  # 无观测再多样本也是联赛值
+
+def test_league_offsets_min_bridge():
+    """同一联赛对 ≥30 场才出 offset；不足 → 键在 'uncalibrated' 列表。"""
+    rows = [{"homeLeague": "lgA", "awayLeague": "lgB", "hg": 2, "ag": 1,
+             "lamH0": 1.5, "lamA0": 1.5}] * 30        # 模型无偏时 offset≈0（exp=obs=3·pre-flight裁定值）
+    out = ps.league_offsets(rows, min_bridge=30)
+    assert abs(out["offsets"]["lgA|lgB"]) < 0.05
+
+def test_league_offsets_uncalibrated():
+    rows = [{"homeLeague": "lgA", "awayLeague": "lgC", "hg": 1, "ag": 1, "lamH0": 1.4, "lamA0": 1.3}] * 10
+    out = ps.league_offsets(rows, min_bridge=30)
+    assert "lgA|lgC" in out["uncalibrated"]
+
+def test_league_offsets_detects_inflation():
+    """lgA 球队进攻被系统性高估（实际总进球恒高于模型）→ offset 为正（校准方向正确）。"""
+    rows = [{"homeLeague": "lgA", "awayLeague": "lgB", "hg": 3, "ag": 2, "lamH0": 1.0, "lamA0": 1.0}] * 30
+    out = ps.league_offsets(rows, min_bridge=30)
+    assert out["offsets"]["lgA|lgB"] > 0.1

@@ -3,12 +3,14 @@
 """实力链步骤①②③：纸面实力三层合成 → 三步去水 → 实力对比。开发者 sszhang。
 超参固定（预注册舱）：W_XG=0.4 W_DC=0.4 W_ELO=0.2 k=20 N=10 —— 不进调参空间。"""
 from __future__ import annotations
+import math
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 W_XG, W_DC, W_ELO = 0.4, 0.4, 0.2
 ELO_MID, ELO_SCALE = 1500.0, 100.0     # 自建Elo init=1500；z=(elo-1500)/100
+BRIDGE_MIN = 30    # 预注册舱 hyperparamsFixed.bridgeMin
 
 def elo_z(st: dict) -> float:
     return (st["elo"] - ELO_MID) / ELO_SCALE if st.get("elo") is not None else 0.0
@@ -55,3 +57,18 @@ def hfa_value(league_hfa: float, team_n: int, team_hfa: float | None, floor: int
         return float(league_hfa)
     w = min(team_n, floor) / floor
     return (1 - w) * league_hfa + w * team_hfa
+
+def league_offsets(bridge_rows: list[dict], min_bridge: int = BRIDGE_MIN) -> dict:
+    """②c 去联赛水：跨联赛场次残差 → 联赛对 offset（log尺度一次估计·非网格）。
+    offset = mean(ln((obs_h+obs_a)/(lamH0+lamA0)))，正=两联赛实际进攻比模型估计更猛。
+    键格式 'lgA|lgB'（主|客）。<min_bridge 的对进 uncalibrated（不硬凑）。"""
+    buckets: dict[str, list[float]] = {}
+    for r in bridge_rows:
+        key = f"{r['homeLeague']}|{r['awayLeague']}"
+        obs, exp = (r.get("hg", 0) + r.get("ag", 0)), (r.get("lamH0", 1.0) + r.get("lamA0", 1.0))
+        if obs <= 0 or exp <= 0:
+            continue
+        buckets.setdefault(key, []).append(math.log(obs / exp))
+    offsets = {k: sum(v) / len(v) for k, v in buckets.items() if len(v) >= min_bridge}
+    uncal = [k for k, v in buckets.items() if len(v) < min_bridge]
+    return {"offsets": offsets, "uncalibrated": uncal}
