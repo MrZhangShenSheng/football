@@ -79,6 +79,34 @@ def payout_4s11(legs: list[tuple[str, float]], per_leg_hit: list) -> float:
     return pay
 
 
+
+
+def payout_multi(sel: list, real_keys: list, cap: float = CAP_PER_BET) -> float:
+    """复式混串派彩。sel[i]=该场选格[(mk,odds),...]；real_keys[i]=该场真实比分矩阵键。
+    2*3*4三层：6对2串1+4组3串1+1注4串1·每注独立·单注封顶。"""
+    import itertools as it
+    pay = 0.0
+    for i, j in it.combinations(range(len(sel)), 2):
+        for a in sel[i]:
+            for b in sel[j]:
+                if a[0] == real_keys[i] and b[0] == real_keys[j]:
+                    pay += min(UNIT * a[1] * b[1], cap)
+    for i, j, k in it.combinations(range(len(sel)), 3):
+        for a in sel[i]:
+            for b in sel[j]:
+                for c in sel[k]:
+                    if a[0] == real_keys[i] and b[0] == real_keys[j] and c[0] == real_keys[k]:
+                        pay += min(UNIT * a[1] * b[1] * c[1], cap)
+    for a in sel[0]:
+        for b in sel[1]:
+            for c in sel[2]:
+                for dd in sel[3]:
+                    if (a[0] == real_keys[0] and b[0] == real_keys[1]
+                            and c[0] == real_keys[2] and dd[0] == real_keys[3]):
+                        pay += min(UNIT * a[1] * b[1] * c[1] * dd[1], cap)
+    return pay
+
+
 def main() -> None:
     rows = []
     for f in sorted(HIST_DIR.glob("crs_hist_*.json")):
@@ -158,7 +186,18 @@ def main() -> None:
         # 基线2：模型top概率格（非EV）
         topp_sel = [(c, max(c["cells"], key=lambda x: x["p"]))
                     for c in sorted(cands, key=lambda c: -max(x["p"] for x in c["cells"]))[:TOP_N_LEGS]]
+        # V3 正向主策略（舱v4）：模型P最高格·场分=P·top4
+        v3_sel = topp_sel
 
+        # V4/V5 复式混串（舱v5）：topP 4场·每场 P 最高的 2/3 格
+        top_picks = sorted(cands, key=lambda c: -max(x["p"] for x in c["cells"]))[:TOP_N_LEGS]
+        by_p = lambda c: sorted(c["cells"], key=lambda x: -x["p"])
+        real_keys = [score_to_matrix_key(str(c["m"]["score"])) for c in top_picks]
+        v4_sel = [[(x["mk"], x["odds"]) for x in by_p(c)[:2]] for c in top_picks]
+        v5_sel = [[(x["mk"], x["odds"]) for x in by_p(c)[:3]] for c in top_picks]
+        n_v4 = (sum(len(v4_sel[i]) * len(v4_sel[j]) for i, j in itertools.combinations(range(4), 2))
+                + sum(len(v4_sel[i]) * len(v4_sel[j]) * len(v4_sel[k]) for i, j, k in itertools.combinations(range(4), 3))
+                + 16)
         days.append({
             "day": day,
             "nCands": len(cands),
@@ -167,6 +206,13 @@ def main() -> None:
                              "odds": c["cells"][0]["odds"], "p": round(c["cells"][0]["p"], 4),
                              "ev": round(c["cells"][0]["ev"], 3), "boomP": round(c["boomP"], 3)} for c in ranked]},
             "v2": ({"stake": 22.0, "pay": settle_generic(ranked2_sel)} if len(ranked2_sel) == TOP_N_LEGS else None),
+            "v3": {"stake": 22.0, "pay": settle_generic(v3_sel),
+                   "legs": [{"match": f"{c['m']['home']}v{c['m']['away']}", "pick": cell["mk"],
+                             "odds": cell["odds"], "p": round(cell["p"], 4),
+                             "hit": cell["mk"] in hit_keys_by_m[id(c)]}
+                            for c, cell in v3_sel]},
+            "v4": {"stake": n_v4 * UNIT, "pay": payout_multi(v4_sel, real_keys), "bets": n_v4},
+            "v5": {"stake": 243 * UNIT, "pay": payout_multi(v5_sel, real_keys)},
             "baseMarket": {"stake": 22.0, "pay": settle_generic(market_sel)},
             "baseTopP": {"stake": 22.0, "pay": settle_generic(topp_sel)},
             "cands": cands,          # 供随机基线
@@ -193,6 +239,8 @@ def main() -> None:
         pay = sum(d[key]["pay"] for d in days if d.get(key))
         return {"stake": stake, "pay": pay, "roi": (pay - stake) / stake if stake else None,
                 "hitDays": sum(1 for d in days if d.get(key) and d[key]["pay"] > 0)}
+    v3 = agg("v3")
+    v4, v5 = agg("v4"), agg("v5")
 
     v1, v2 = agg("v1"), agg("v2")
     bm, bp = agg("baseMarket"), agg("baseTopP")
@@ -212,12 +260,12 @@ def main() -> None:
     result = {
         "generatedAt": "2026-10-05", "prereg": {"version": 1, "path": str(PREREG)},
         "window": WINDOW, "stats": stats,
-        "v1_main": v1, "v2_noBoom": v2,
+        "v1_main": v1, "v3_topP": v3, "v4_multi2": v4, "v5_multi3": v5, "v2_noBoom": v2,
         "baselines": {"randomShuffle": {"meanPay": rand_mean, "percentileOfV1": pct,
                                         "roi": (rand_mean - total_stake) / total_stake},
                       "marketHottest": bm, "modelTopP": bp},
         "bootstrap": {"totalNetCI": [bs[49], bs[949]], "median": bs[500]},
-        "days": [{k: d[k] for k in ("day", "nCands", "v1", "v2", "baseMarket", "baseTopP")} for d in days],
+        "days": [{k: d[k] for k in ("day", "nCands", "v1", "v3", "v4", "v5", "v2", "baseMarket", "baseTopP")} for d in days],
         "notes": ["结算价=crs末档价(停售前)·非出票时点价(口径限制)", "V2阈值由T044单例反推·过拟合风险声明",
                   "随机基线每腿从该场全部有价格格随机取(非仅EV格)"],
     }
@@ -226,7 +274,10 @@ def main() -> None:
     print(f"交易日 {stats['daysTraded']}/{stats['daysTotal']} · 预测 {stats['matchesPredicted']} 场(可算域)")
     print(f"V1 纯机械: 投入 {v1['stake']:.0f} 回款 {v1['pay']:.0f} ROI {(v1['pay']-v1['stake'])/v1['stake']*100:+.1f}% · 回款日 {v1['hitDays']}")
     if v2.get("roi") is not None:
-        print(f"V2 排爆炸: 投入 {v2['stake']:.0f} 回款 {v2['pay']:.0f} ROI {v2['roi']*100:+.1f}%")
+        print(f"V3 单选top1: 投入 {v3['stake']:.0f} 回款 {v3['pay']:.0f} ROI {v3['roi']*100:+.1f}% · 回款日 {v3['hitDays']}")
+    print(f"V4 复式top2: 投入 {v4['stake']:.0f} 回款 {v4['pay']:.0f} ROI {v4['roi']*100:+.1f}% · 回款日 {v4['hitDays']}")
+    print(f"V5 复式top3: 投入 {v5['stake']:.0f} 回款 {v5['pay']:.0f} ROI {v5['roi']*100:+.1f}% · 回款日 {v5['hitDays']}")
+    print(f"V2 排爆炸: 投入 {v2['stake']:.0f} 回款 {v2['pay']:.0f} ROI {v2['roi']*100:+.1f}%")
     print(f"基线 市场: ROI {bm['roi']*100:+.1f}% · 模型topP: ROI {bp['roi']*100:+.1f}% · 随机: ROI {(rand_mean-total_stake)/total_stake*100:+.1f}%(V1百分位{pct:.1f})")
     print(f"bootstrap净额CI: [{bs[49]:.0f}, {bs[949]:.0f}]")
 
