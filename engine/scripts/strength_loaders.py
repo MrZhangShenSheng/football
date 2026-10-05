@@ -44,7 +44,9 @@ def as_of_rows(rows: list[dict], as_of: date, lag_days: int = LAG_DAYS) -> list[
     return [r for r in rows if str(r.get("date", ""))[:10] <= cutoff]
 
 def _norm_team(name: str, aliases: dict) -> str | None:
-    """fd/ESPN 显示名 → 规范ID：kebab 命中优先，espn 别名兜底；None=不可映射（行/键丢弃）。"""
+    """fd/ESPN 显示名 → 规范ID：identity 直通（已是规范ID不动）·kebab 命中优先，espn 别名兜底；None=不可映射（行/键丢弃）。"""
+    if name in aliases:
+        return name
     kebab = name.lower().replace(" ", "-").replace("'", "")
     if kebab in aliases:
         return kebab
