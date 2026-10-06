@@ -5264,6 +5264,98 @@
    },
    "note": "实力链v2(438tests·预注册舱v2·缺陷①②③修复版)首批实票·'名气水'主题:市场按身价定价vs模型按实战绩定价·003罗马尼亚全场故意排除(链病灶EV越漂亮越是bug)·明早回填时与HAD版fade-name卡共同构成假设首批检验样本",
    "evidence": "data/03-predictions/2026-10-05-score-card.html·data/03-predictions/2026-10-05-fade-name-card.html·engine/cache/strength_chain/2026-10-05/"
+  },
+  {
+   "id": "T045",
+   "source": "方案转正(V3W-v2生产比分端首张·大哥拍板22元4串11·投注前四重遗漏扫描通过)",
+   "backfilled": false,
+   "placedAt": "2026-10-06 16:00",
+   "placedAtNote": "赔率15:26冻结(engine/cache/odds_today.json)·lineup_watch伤停0主力缺阵·CRS池4场全有价",
+   "matchDays": [
+    "2026-10-06",
+    "2026-10-07"
+   ],
+   "shape": "CRS 4串11容错(2*3*4)",
+   "shapeDetail": "6×2串1+4×3串1+1×4串1=11注×1倍·中2关只回对应1注2串1",
+   "stake": 22.0,
+   "unitStake": 2.0,
+   "units": 11,
+   "multiplier": 1,
+   "legs": [
+    {
+     "code": "周二006",
+     "league": "欧国联",
+     "kickoff": "2026-10-07 02:45",
+     "match": "苏格兰 vs 斯洛文尼",
+     "market": "CRS",
+     "pick": [
+      "0:0"
+     ],
+     "odds": {
+      "0:0": 9.0
+     },
+     "modelP": 0.218,
+     "marketP": null,
+     "note": "模型最高P=21.8%·双弱攻λ=1.0/0.6·去水池最佳形态·主流独排众议(主流说进球模型说闷战)"
+    },
+    {
+     "code": "周二009",
+     "league": "欧国联",
+     "kickoff": "2026-10-07 02:45",
+     "match": "瑞士 vs 北马其顿",
+     "market": "CRS",
+     "pick": [
+      "2:0"
+     ],
+     "odds": {
+      "2:0": 5.8
+     },
+     "modelP": 0.159,
+     "marketP": null,
+     "note": "λ=2.5/0.5悬殊·boom=0.043接近阈值·top3三格平分(2:0/3:0/1:0)·主流一致3:0"
+    },
+    {
+     "code": "周二002",
+     "league": "国际赛",
+     "kickoff": "2026-10-06 19:35",
+     "match": "中国 vs 塔吉克",
+     "market": "CRS",
+     "pick": [
+      "1:1"
+     ],
+     "odds": {
+      "1:1": 7.5
+     },
+     "modelP": 0.138,
+     "marketP": null,
+     "note": "方向分歧最大场(模型38%客vs市场54%主)·选平局=回避方向分歧·FootyWow xG=0.76同边"
+    },
+    {
+     "code": "周二010",
+     "league": "欧国联",
+     "kickoff": "2026-10-07 02:45",
+     "match": "摩尔多瓦 vs 斯洛伐克",
+     "market": "CRS",
+     "pick": [
+      "0:1"
+     ],
+     "odds": {
+      "0:1": 6.75
+     },
+     "modelP": 0.135,
+     "marketP": null,
+     "note": "方向全场一致(模型56%客vs市场69%客)·最安全腿·H2H斯洛伐克全胜"
+    }
+   ],
+   "settled": {
+    "status": "pending"
+   },
+   "budget": {
+    "stake": 22.0,
+    "note": "V3W-v2两段回测+6.5%/+7.2%转正后首张实票·国家队场(回测以俱乐部场为主)·娱乐预算口径·门1FAIL状态(校准worstDev 18.8%)"
+   },
+   "note": "V3W-v2(HST链16联赛+去水v2 boom=0.05/had_hot=1.5)生产比分端首张实票·大哥复核后拍板'我要买22元方案'·四重遗漏扫描通过(伤停0主力/CRS全有价/λ检查009黄灯/票面核算)·已知风险:全国家队场回测不直接适用+瑞士场λ差2.1黄灯+苏格兰0:0独排众议",
+   "evidence": "data/03-predictions/2026-10-06-crs.json·engine/cache/odds_today.json·engine/scripts/strength_chain_prod.py"
   }
  ],
  "meta": {
@@ -5272,6 +5364,6 @@
   "totalPayout": 501.75,
   "totalNet": -236.25,
   "lastUpdated": "2026-09-30",
-  "updatedAt": "2026-10-05"
+  "updatedAt": "2026-10-06"
  }
 }
