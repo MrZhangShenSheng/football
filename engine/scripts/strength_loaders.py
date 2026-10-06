@@ -72,7 +72,7 @@ def build_ctx(leagues: list[str], *, leagues_dir: Path = LEAGUES_DIR, cache_dir:
     三砖（xG/elo/DC）队名装载时归一为规范ID（fd 显示名经 _norm_team），不可映射行/键丢弃并计入 ctx["unmapped"][联赛]。"""
     if aliases is None:
         aliases = load_aliases()
-    ctx = {"timeline": {}, "dc": {}, "elo": {}, "xg": {}, "unmapped": {}}
+    ctx = {"timeline": {}, "dc": {}, "elo": {}, "xg": {}, "hst": {}, "unmapped": {}}
     for lg in leagues:
         raw_tl = _read(leagues_dir / f"{lg}_matches.json", [])
         ctx["timeline"][lg] = raw_tl.get("matches", []) if isinstance(raw_tl, dict) else raw_tl
@@ -111,6 +111,9 @@ def build_ctx(leagues: list[str], *, leagues_dir: Path = LEAGUES_DIR, cache_dir:
             else:
                 xg_rows.append({**m, "home": h, "away": a})
         ctx["xg"][lg] = xg_rows
+        # v11 阶段3：HST 射正档装载（fd 5季·已规范化ID·射正→球量纲代理在 team_state_on）
+        h_raw = _read(cache_dir / f"hst_{lg}.json", {})
+        ctx["hst"][lg] = h_raw.get("rows", [])
         ctx["unmapped"][lg] = dropped
     return ctx
 
@@ -219,10 +222,42 @@ def team_state_on(team: str, as_of: date, ctx: dict, lag_days: int = LAG_DAYS,
         elif m.get("away") == team and m.get("axg") is not None:
             xs.append((float(m["axg"]), float(m["hxg"])))
     xs = xs[-XG_WINDOW_N:]
-    if xs:
+    # v11 阶段3（优先级修正）：真xG窗满(n>=10)才优先·半窗xG(信息少)让位HST长窗(5季)
+    if not xs or len(xs) < XG_WINDOW_N:
+        # HST 代理（场均射正×联赛转化率回球量纲·质量层位）
+        hs = []
+        for r in ctx["hst"].get(lg, []):
+            rd = str(r.get("date", ""))[:10]
+            if rd > (as_of - timedelta(days=lag_days)).isoformat():
+                continue
+            if r.get("home") == team and r.get("hst") is not None:
+                hs.append((float(r["hst"]), float(r["ast"])))
+            elif r.get("away") == team and r.get("ast") is not None:
+                hs.append((float(r["ast"]), float(r["hst"])))
+        hs = hs[-XG_WINDOW_N:]
+        if hs:
+            lg_rows_hst = ctx["hst"].get(lg, [])
+            tot_sot = sum(r["hst"] + r["ast"] for r in lg_rows_hst
+                          if str(r.get("date", ""))[:10] <= (as_of - timedelta(days=lag_days)).isoformat())
+            tot_gls = 0.0
+            for r2 in as_of_rows(ctx["timeline"].get(lg, []), as_of, lag_days):
+                if isinstance(r2.get("hg"), (int, float)):
+                    tot_gls += r2["hg"] + r2["ag"]
+            n_hst_rows = max(1, len(lg_rows_hst))
+            conv = (tot_gls / max(1, len(as_of_rows(ctx["timeline"].get(lg, []), as_of, lag_days)))) / (tot_sot / n_hst_rows / 2) if tot_sot else 0.11
+            conv = min(max(conv, 0.08), 0.20)      # 转化率护栏 8%~20%（联赛进球/射正·典型~11%）
+            st["n_xg"] = len(hs)
+            st["xg_att"] = sum(x[0] for x in hs) / len(hs) * conv
+            st["xg_def"] = sum(x[1] for x in hs) / len(hs) * conv
+            st["flags"].append("hst_source:proxy")
+        elif xs:
+            st["n_xg"] = len(xs)                      # HST 无档联赛回落残窗真xG（韩职等）
+            st["xg_att"] = sum(x[0] for x in xs) / len(xs)
+            st["xg_def"] = sum(x[1] for x in xs) / len(xs)
+        else:
+            st["flags"].append("no_xg")
+    else:
         st["n_xg"] = len(xs)
         st["xg_att"] = sum(x[0] for x in xs) / len(xs)
         st["xg_def"] = sum(x[1] for x in xs) / len(xs)
-    else:
-        st["flags"].append("no_xg")
     return st

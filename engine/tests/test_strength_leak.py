@@ -113,3 +113,25 @@ def test_norm_team_fd_field():
     assert sl._norm_team("AC Milan", fake) == "ac-milan"          # espn 仍通
     assert sl._norm_team("ac-milan", fake) == "ac-milan"          # identity 仍通
     assert sl._norm_team("ZZZ", fake) is None
+
+def test_hst_proxy_layer(tmp_path):
+    import json
+    """v11 阶段3：HST 代理质量层——无真xG的队用射正×转化率回球量纲顶替 xg 位·as-of 干净。"""
+    import datetime as dt
+    lg_dir = tmp_path / "league"; lg_dir.mkdir(exist_ok=True)
+    (lg_dir / "lgH_matches.json").write_text(
+        '{"matches":[{"date":"2026-08-01","home":"team-p","away":"team-q","hg":2,"ag":0}]}', encoding="utf-8")
+    cache = tmp_path / "cache"; cache.mkdir(exist_ok=True)
+    # HST 档：team-p 两场射正 6/8·被射正 2/2；team-q 一场
+    (cache / "hst_lgH.json").write_text(json.dumps({"league": "lgH", "rows": [
+        {"date": "2026-07-20", "home": "team-p", "away": "team-r", "hst": 6, "ast": 2},
+        {"date": "2026-07-25", "home": "team-s", "away": "team-p", "hst": 2, "ast": 8},
+        {"date": "2026-07-26", "home": "team-q", "away": "team-t", "hst": 3, "ast": 4}]}), encoding="utf-8")
+    ctx = sl.build_ctx(["lgH"], leagues_dir=lg_dir, cache_dir=cache,
+                       aliases={"team-p": {"zh": "P"}, "team-q": {"zh": "Q"}})
+    st = sl.team_state_on("team-p", dt.date(2026, 8, 5), ctx)
+    assert st.get("xg_att") is not None, "HST 代理应顶替 xg 位"
+    assert "hst_source:proxy" in st["flags"] and "no_xg" not in st["flags"]
+    # as-of：08-01 场的 HST（若在 08-03 后入库）不可见——本档 7 月行全部可见·两场场均射正 7
+    assert st["n_xg"] == 2
+    # 未来行注入不变（V2 同款）
