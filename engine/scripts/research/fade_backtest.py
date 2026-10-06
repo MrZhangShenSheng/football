@@ -371,7 +371,7 @@ def main() -> None:
                                         "roi": (rand_mean - total_stake) / total_stake},
                       "marketHottest": bm, "modelTopP": bp},
         "bootstrap": {"totalNetCI": [bs[49], bs[949]], "median": bs[500]},
-        "days": [{k: d[k] for k in ("day", "nCands", "v1", "v3", "v6", "v4", "v5", "v2", "baseMarket", "baseTopP")} for d in days],
+        "days": [{k: d[k] for k in ("day", "nCands", "v1", "v3", "v3h", "v3wh", "v3w", "v6", "designs", "v4", "v5", "v2", "baseMarket", "baseTopP")} for d in days],
         "notes": ["结算价=crs末档价(停售前)·非出票时点价(口径限制)", "V2阈值由T044单例反推·过拟合风险声明",
                   "随机基线每腿从该场全部有价格格随机取(非仅EV格)"],
     }
