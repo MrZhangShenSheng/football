@@ -245,6 +245,39 @@ def main() -> None:
         n_v4 = (sum(len(v4_sel[i]) * len(v4_sel[j]) for i, j in itertools.combinations(range(4), 2))
                 + sum(len(v4_sel[i]) * len(v4_sel[j]) * len(v4_sel[k]) for i, j, k in itertools.combinations(range(4), 3))
                 + 16)
+        # D1-D6 纯4串1复式设计扫描（舱v7·含明细）
+        def pure4(picks_per_match, real_keys, fields):
+            pay, bets, detail = 0.0, 1, None
+            for lst in picks_per_match:
+                bets *= len(lst)
+            for a in picks_per_match[0]:
+                for b in picks_per_match[1]:
+                    for c in picks_per_match[2]:
+                        for e in picks_per_match[3]:
+                            if (a[0] == real_keys[0] and b[0] == real_keys[1]
+                                    and c[0] == real_keys[2] and e[0] == real_keys[3]):
+                                gross = UNIT * a[1] * b[1] * c[1] * e[1]
+                                pay += min(gross, CAP_PER_BET)
+                                detail = {"legs": [
+                                    {"match": f"{fields[i]['m']['home']}v{fields[i]['m']['away']}",
+                                     "hit": g[0], "odds": g[1]}
+                                    for i, g in enumerate((a, b, c, e))],
+                                    "gross": round(gross, 1), "paid": round(min(gross, CAP_PER_BET), 1)}
+            return pay, bets, detail
+        designs = {}
+        for name, k in (("D1_top2", 2), ("D2_top3", 3), ("D3_top4", 4), ("D4_top5", 5)):
+            sel = [[(x["mk"], x["odds"]) for x in by_p(c)[:k]] for c in top_picks]
+            pay, bets, detail = pure4(sel, real_keys, top_picks)
+            designs[name] = {"stake": bets * UNIT, "pay": pay, "bets": bets, "hitDetail": detail}
+        for name, nmid in (("D5_hot2mid1", 1), ("D6_hot2mid2", 2)):
+            sel = []
+            for c in top_picks:
+                cells = by_p(c)
+                hot = [(x["mk"], x["odds"]) for x in cells[:2]]
+                mids = [(x["mk"], x["odds"]) for x in cells[2:] if x["odds"] >= 10.0][:nmid]
+                sel.append(hot + (mids or [(cells[2]["mk"], cells[2]["odds"])]))
+            pay, bets, detail = pure4(sel, real_keys, top_picks)
+            designs[name] = {"stake": bets * UNIT, "pay": pay, "bets": bets, "hitDetail": detail}
         days.append({
             "day": day,
             "nCands": len(cands),
@@ -258,6 +291,7 @@ def main() -> None:
                              "odds": cell["odds"], "p": round(cell["p"], 4),
                              "hit": cell["mk"] in hit_keys_by_m[id(c)]}
                             for c, cell in v3_sel]},
+            "designs": designs,
             "v3h": ({"stake": 22.0, "pay": settle_h(v3h_sel),
                     "legs": [{"hit": cell["mk"] in h_hit[id(c)]} for c, cell in v3h_sel]}
                    if v3h_sel else None),
@@ -304,6 +338,13 @@ def main() -> None:
     v3w = agg("v3w")
     v3h = agg("v3h")
     v3wh = agg("v3wh")
+    des = {}
+    for name in ("D1_top2", "D2_top3", "D3_top4", "D4_top5", "D5_hot2mid1", "D6_hot2mid2"):
+        st = sum(dd["designs"][name]["stake"] for dd in days)
+        pay = sum(dd["designs"][name]["pay"] for dd in days)
+        des[name] = {"stake": st, "pay": pay, "roi": (pay - st) / st if st else None,
+                     "hitDays": sum(1 for dd in days if dd["designs"][name]["hitDetail"]),
+                     "bigHits": sum(1 for dd in days if dd["designs"][name]["pay"] >= 100000)}
     v6 = agg("v6")
     v4, v5 = agg("v4"), agg("v5")
 
@@ -325,7 +366,7 @@ def main() -> None:
     result = {
         "generatedAt": "2026-10-05", "prereg": {"version": 1, "path": str(PREREG)},
         "window": WINDOW, "stats": stats,
-        "v1_main": v1, "v3_topP": v3, "v3w_dewater": v3w, "v3h_hard": v3h, "v3wh_hardDW": v3wh, "v6_shareArgmax": v6, "v4_multi2": v4, "v5_multi3": v5, "v2_noBoom": v2,
+        "v1_main": v1, "designScan": des, "v3_topP": v3, "v3w_dewater": v3w, "v3h_hard": v3h, "v3wh_hardDW": v3wh, "v6_shareArgmax": v6, "v4_multi2": v4, "v5_multi3": v5, "v2_noBoom": v2,
         "baselines": {"randomShuffle": {"meanPay": rand_mean, "percentileOfV1": pct,
                                         "roi": (rand_mean - total_stake) / total_stake},
                       "marketHottest": bm, "modelTopP": bp},
