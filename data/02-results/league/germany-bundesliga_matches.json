@@ -1,13 +1,6 @@
 {
  "league": "germany-bundesliga",
- "source": "espn-history",
- "seasons": [
-  "2026",
-  "2026"
- ],
- "fetchedAt": "2026-09-08",
- "cup": false,
- "droppedUnmapped": 0,
+ "source": "fd CSV FTHG/FTAG",
  "matches": [
   {
    "date": "2022-02-04",
@@ -955,6 +948,13 @@
    "ag": 1
   },
   {
+   "date": "2022-08-07",
+   "home": "fc-koln",
+   "away": "schalke",
+   "hg": 3,
+   "ag": 1
+  },
+  {
    "date": "2022-08-12",
    "home": "freiburg",
    "away": "dortmund",
@@ -1000,6 +1000,13 @@
    "date": "2022-08-13",
    "home": "schalke",
    "away": "gladbach",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2022-08-13",
+   "home": "leipzig",
+   "away": "fc-koln",
    "hg": 2,
    "ag": 2
   },
@@ -1081,6 +1088,13 @@
    "ag": 7
   },
   {
+   "date": "2022-08-21",
+   "home": "frankfurt",
+   "away": "fc-koln",
+   "hg": 1,
+   "ag": 1
+  },
+  {
    "date": "2022-08-26",
    "home": "freiburg",
    "away": "bochum",
@@ -1144,6 +1158,13 @@
    "ag": 4
   },
   {
+   "date": "2022-08-28",
+   "home": "fc-koln",
+   "away": "stuttgart",
+   "hg": 0,
+   "ag": 0
+  },
+  {
    "date": "2022-09-02",
    "home": "dortmund",
    "away": "hoffenheim",
@@ -1191,6 +1212,13 @@
    "away": "leipzig",
    "hg": 4,
    "ag": 0
+  },
+  {
+   "date": "2022-09-03",
+   "home": "wolfsburg",
+   "away": "fc-koln",
+   "hg": 2,
+   "ag": 4
   },
   {
    "date": "2022-09-04",
@@ -1270,6 +1298,13 @@
    "ag": 0
   },
   {
+   "date": "2022-09-11",
+   "home": "fc-koln",
+   "away": "union-berlin",
+   "hg": 0,
+   "ag": 1
+  },
+  {
    "date": "2022-09-16",
    "home": "mainz",
    "away": "hertha-bsc",
@@ -1333,6 +1368,13 @@
    "ag": 0
   },
   {
+   "date": "2022-09-18",
+   "home": "bochum",
+   "away": "fc-koln",
+   "hg": 1,
+   "ag": 1
+  },
+  {
    "date": "2022-09-30",
    "home": "bayern",
    "away": "leverkusen",
@@ -1380,6 +1422,13 @@
    "away": "gladbach",
    "hg": 5,
    "ag": 1
+  },
+  {
+   "date": "2022-10-01",
+   "home": "fc-koln",
+   "away": "dortmund",
+   "hg": 3,
+   "ag": 2
   },
   {
    "date": "2022-10-02",
@@ -1459,6 +1508,13 @@
    "ag": 1
   },
   {
+   "date": "2022-10-09",
+   "home": "gladbach",
+   "away": "fc-koln",
+   "hg": 5,
+   "ag": 2
+  },
+  {
    "date": "2022-10-14",
    "home": "schalke",
    "away": "hoffenheim",
@@ -1522,9 +1578,23 @@
    "ag": 0
   },
   {
+   "date": "2022-10-16",
+   "home": "fc-koln",
+   "away": "augsburg",
+   "hg": 3,
+   "ag": 2
+  },
+  {
    "date": "2022-10-21",
    "home": "mainz",
    "away": "cologne",
+   "hg": 5,
+   "ag": 0
+  },
+  {
+   "date": "2022-10-21",
+   "home": "mainz",
+   "away": "fc-koln",
    "hg": 5,
    "ag": 0
   },
@@ -1648,6 +1718,13 @@
    "ag": 1
   },
   {
+   "date": "2022-10-30",
+   "home": "fc-koln",
+   "away": "hoffenheim",
+   "hg": 1,
+   "ag": 1
+  },
+  {
    "date": "2022-11-04",
    "home": "gladbach",
    "away": "stuttgart",
@@ -1707,6 +1784,13 @@
    "date": "2022-11-06",
    "home": "freiburg",
    "away": "cologne",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2022-11-06",
+   "home": "freiburg",
+   "away": "fc-koln",
    "hg": 2,
    "ag": 0
   },
@@ -1774,6 +1858,13 @@
    "ag": 0
   },
   {
+   "date": "2022-11-09",
+   "home": "fc-koln",
+   "away": "leverkusen",
+   "hg": 1,
+   "ag": 2
+  },
+  {
    "date": "2022-11-11",
    "home": "gladbach",
    "away": "dortmund",
@@ -1823,6 +1914,13 @@
    "ag": 2
   },
   {
+   "date": "2022-11-12",
+   "home": "hertha-bsc",
+   "away": "fc-koln",
+   "hg": 2,
+   "ag": 0
+  },
+  {
    "date": "2022-11-13",
    "home": "mainz",
    "away": "frankfurt",
@@ -1835,6 +1933,195 @@
    "away": "union-berlin",
    "hg": 4,
    "ag": 1
+  },
+  {
+   "date": "2023-01-20",
+   "home": "leipzig",
+   "away": "bayern",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-21",
+   "home": "bochum",
+   "away": "hertha-bsc",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-21",
+   "home": "frankfurt",
+   "away": "schalke",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-21",
+   "home": "stuttgart",
+   "away": "mainz",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-21",
+   "home": "union-berlin",
+   "away": "hoffenheim",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-21",
+   "home": "wolfsburg",
+   "away": "freiburg",
+   "hg": 6,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-21",
+   "home": "fc-koln",
+   "away": "werder-bremen",
+   "hg": 7,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-22",
+   "home": "dortmund",
+   "away": "augsburg",
+   "hg": 4,
+   "ag": 3
+  },
+  {
+   "date": "2023-01-22",
+   "home": "gladbach",
+   "away": "leverkusen",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2023-01-24",
+   "home": "schalke",
+   "away": "leipzig",
+   "hg": 1,
+   "ag": 6
+  },
+  {
+   "date": "2023-01-24",
+   "home": "bayern",
+   "away": "fc-koln",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-24",
+   "home": "hertha-bsc",
+   "away": "wolfsburg",
+   "hg": 0,
+   "ag": 5
+  },
+  {
+   "date": "2023-01-24",
+   "home": "hoffenheim",
+   "away": "stuttgart",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2023-01-25",
+   "home": "mainz",
+   "away": "dortmund",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2023-01-25",
+   "home": "augsburg",
+   "away": "gladbach",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-25",
+   "home": "freiburg",
+   "away": "frankfurt",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-25",
+   "home": "leverkusen",
+   "away": "bochum",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-25",
+   "home": "werder-bremen",
+   "away": "union-berlin",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2023-01-27",
+   "home": "leipzig",
+   "away": "stuttgart",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-28",
+   "home": "freiburg",
+   "away": "augsburg",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-28",
+   "home": "hertha-bsc",
+   "away": "union-berlin",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2023-01-28",
+   "home": "hoffenheim",
+   "away": "gladbach",
+   "hg": 1,
+   "ag": 4
+  },
+  {
+   "date": "2023-01-28",
+   "home": "mainz",
+   "away": "bochum",
+   "hg": 5,
+   "ag": 2
+  },
+  {
+   "date": "2023-01-28",
+   "home": "werder-bremen",
+   "away": "wolfsburg",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-28",
+   "home": "bayern",
+   "away": "frankfurt",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-29",
+   "home": "schalke",
+   "away": "fc-koln",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-29",
+   "home": "leverkusen",
+   "away": "dortmund",
+   "hg": 0,
+   "ag": 2
   },
   {
    "date": "2023-02-03",
@@ -1882,6 +2169,13 @@
    "date": "2023-02-04",
    "home": "gladbach",
    "away": "schalke",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2023-02-04",
+   "home": "fc-koln",
+   "away": "leipzig",
    "hg": 0,
    "ag": 0
   },
@@ -1963,6 +2257,13 @@
    "ag": 0
   },
   {
+   "date": "2023-02-12",
+   "home": "fc-koln",
+   "away": "frankfurt",
+   "hg": 3,
+   "ag": 0
+  },
+  {
    "date": "2023-02-17",
    "home": "augsburg",
    "away": "hoffenheim",
@@ -2002,6 +2303,13 @@
    "home": "frankfurt",
    "away": "werder-bremen",
    "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2023-02-18",
+   "home": "stuttgart",
+   "away": "fc-koln",
+   "hg": 3,
    "ag": 0
   },
   {
@@ -2075,6 +2383,13 @@
    "ag": 1
   },
   {
+   "date": "2023-02-25",
+   "home": "fc-koln",
+   "away": "wolfsburg",
+   "hg": 0,
+   "ag": 2
+  },
+  {
    "date": "2023-02-26",
    "home": "freiburg",
    "away": "leverkusen",
@@ -2138,6 +2453,13 @@
    "ag": 2
   },
   {
+   "date": "2023-03-04",
+   "home": "union-berlin",
+   "away": "fc-koln",
+   "hg": 0,
+   "ag": 0
+  },
+  {
    "date": "2023-03-05",
    "home": "leverkusen",
    "away": "hertha-bsc",
@@ -2154,6 +2476,13 @@
   {
    "date": "2023-03-10",
    "home": "cologne",
+   "away": "bochum",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2023-03-10",
+   "home": "fc-koln",
    "away": "bochum",
    "hg": 0,
    "ag": 2
@@ -2257,6 +2586,13 @@
    "ag": 1
   },
   {
+   "date": "2023-03-18",
+   "home": "dortmund",
+   "away": "fc-koln",
+   "hg": 6,
+   "ag": 1
+  },
+  {
    "date": "2023-03-19",
    "home": "union-berlin",
    "away": "frankfurt",
@@ -2341,6 +2677,13 @@
    "ag": 2
   },
   {
+   "date": "2023-04-02",
+   "home": "fc-koln",
+   "away": "gladbach",
+   "hg": 0,
+   "ag": 0
+  },
+  {
    "date": "2023-04-08",
    "home": "leverkusen",
    "away": "frankfurt",
@@ -2381,6 +2724,13 @@
    "away": "leipzig",
    "hg": 0,
    "ag": 1
+  },
+  {
+   "date": "2023-04-08",
+   "home": "augsburg",
+   "away": "fc-koln",
+   "hg": 1,
+   "ag": 3
   },
   {
    "date": "2023-04-09",
@@ -2446,6 +2796,13 @@
    "ag": 1
   },
   {
+   "date": "2023-04-15",
+   "home": "fc-koln",
+   "away": "mainz",
+   "hg": 1,
+   "ag": 1
+  },
+  {
    "date": "2023-04-16",
    "home": "werder-bremen",
    "away": "freiburg",
@@ -2507,6 +2864,13 @@
    "away": "frankfurt",
    "hg": 4,
    "ag": 0
+  },
+  {
+   "date": "2023-04-22",
+   "home": "hoffenheim",
+   "away": "fc-koln",
+   "hg": 1,
+   "ag": 3
   },
   {
    "date": "2023-04-23",
@@ -2579,6 +2943,13 @@
    "ag": 1
   },
   {
+   "date": "2023-04-29",
+   "home": "fc-koln",
+   "away": "freiburg",
+   "hg": 0,
+   "ag": 1
+  },
+  {
    "date": "2023-04-30",
    "home": "bayern",
    "away": "hertha-bsc",
@@ -2605,6 +2976,13 @@
    "away": "schalke",
    "hg": 2,
    "ag": 3
+  },
+  {
+   "date": "2023-05-05",
+   "home": "leverkusen",
+   "away": "fc-koln",
+   "hg": 1,
+   "ag": 2
   },
   {
    "date": "2023-05-06",
@@ -2658,6 +3036,13 @@
   {
    "date": "2023-05-12",
    "home": "cologne",
+   "away": "hertha-bsc",
+   "hg": 5,
+   "ag": 2
+  },
+  {
+   "date": "2023-05-12",
+   "home": "fc-koln",
    "away": "hertha-bsc",
    "hg": 5,
    "ag": 2
@@ -2761,6 +3146,13 @@
    "ag": 3
   },
   {
+   "date": "2023-05-20",
+   "home": "werder-bremen",
+   "away": "fc-koln",
+   "hg": 1,
+   "ag": 1
+  },
+  {
    "date": "2023-05-21",
    "home": "mainz",
    "away": "stuttgart",
@@ -2845,6 +3237,13 @@
    "ag": 2
   },
   {
+   "date": "2023-05-27",
+   "home": "fc-koln",
+   "away": "bayern",
+   "hg": 1,
+   "ag": 2
+  },
+  {
    "date": "2023-08-18",
    "home": "werder-bremen",
    "away": "bayern",
@@ -2894,11 +3293,25 @@
    "ag": 0
   },
   {
+   "date": "2023-08-19",
+   "home": "dortmund",
+   "away": "fc-koln",
+   "hg": 1,
+   "ag": 0
+  },
+  {
    "date": "2023-08-20",
    "home": "union-berlin",
    "away": "mainz",
    "hg": 4,
    "ag": 1
+  },
+  {
+   "date": "2023-08-20",
+   "home": "frankfurt",
+   "away": "sv-darmstadt98",
+   "hg": 1,
+   "ag": 0
   },
   {
    "date": "2023-08-25",
@@ -2941,6 +3354,20 @@
    "away": "leverkusen",
    "hg": 0,
    "ag": 3
+  },
+  {
+   "date": "2023-08-26",
+   "home": "sv-darmstadt98",
+   "away": "union-berlin",
+   "hg": 1,
+   "ag": 4
+  },
+  {
+   "date": "2023-08-26",
+   "home": "fc-koln",
+   "away": "wolfsburg",
+   "hg": 1,
+   "ag": 2
   },
   {
    "date": "2023-08-27",
@@ -2999,6 +3426,13 @@
    "ag": 2
   },
   {
+   "date": "2023-09-02",
+   "home": "leverkusen",
+   "away": "sv-darmstadt98",
+   "hg": 5,
+   "ag": 1
+  },
+  {
    "date": "2023-09-03",
    "home": "frankfurt",
    "away": "cologne",
@@ -3011,6 +3445,13 @@
    "away": "leipzig",
    "hg": 0,
    "ag": 3
+  },
+  {
+   "date": "2023-09-03",
+   "home": "frankfurt",
+   "away": "fc-koln",
+   "hg": 1,
+   "ag": 1
   },
   {
    "date": "2023-09-15",
@@ -3062,11 +3503,32 @@
    "ag": 1
   },
   {
+   "date": "2023-09-16",
+   "home": "fc-koln",
+   "away": "hoffenheim",
+   "hg": 1,
+   "ag": 3
+  },
+  {
    "date": "2023-09-17",
    "home": "heidenheim",
    "away": "werder-bremen",
    "hg": 4,
    "ag": 2
+  },
+  {
+   "date": "2023-09-17",
+   "home": "sv-darmstadt98",
+   "away": "gladbach",
+   "hg": 3,
+   "ag": 3
+  },
+  {
+   "date": "2023-09-22",
+   "home": "stuttgart",
+   "away": "sv-darmstadt98",
+   "hg": 3,
+   "ag": 1
   },
   {
    "date": "2023-09-23",
@@ -3107,6 +3569,13 @@
    "date": "2023-09-23",
    "home": "werder-bremen",
    "away": "cologne",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2023-09-23",
+   "home": "werder-bremen",
+   "away": "fc-koln",
    "hg": 2,
    "ag": 1
   },
@@ -3174,11 +3643,25 @@
    "ag": 2
   },
   {
+   "date": "2023-09-30",
+   "home": "fc-koln",
+   "away": "stuttgart",
+   "hg": 0,
+   "ag": 2
+  },
+  {
    "date": "2023-10-01",
    "home": "freiburg",
    "away": "augsburg",
    "hg": 2,
    "ag": 0
+  },
+  {
+   "date": "2023-10-01",
+   "home": "sv-darmstadt98",
+   "away": "werder-bremen",
+   "hg": 4,
+   "ag": 2
   },
   {
    "date": "2023-10-06",
@@ -3216,6 +3699,13 @@
    "ag": 3
   },
   {
+   "date": "2023-10-07",
+   "home": "augsburg",
+   "away": "sv-darmstadt98",
+   "hg": 1,
+   "ag": 2
+  },
+  {
    "date": "2023-10-08",
    "home": "leverkusen",
    "away": "cologne",
@@ -3234,6 +3724,13 @@
    "home": "frankfurt",
    "away": "heidenheim",
    "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2023-10-08",
+   "home": "leverkusen",
+   "away": "fc-koln",
+   "hg": 3,
    "ag": 0
   },
   {
@@ -3279,6 +3776,13 @@
    "ag": 3
   },
   {
+   "date": "2023-10-21",
+   "home": "sv-darmstadt98",
+   "away": "leipzig",
+   "hg": 1,
+   "ag": 3
+  },
+  {
    "date": "2023-10-22",
    "home": "cologne",
    "away": "gladbach",
@@ -3291,6 +3795,13 @@
    "away": "augsburg",
    "hg": 2,
    "ag": 5
+  },
+  {
+   "date": "2023-10-22",
+   "home": "fc-koln",
+   "away": "gladbach",
+   "hg": 3,
+   "ag": 1
   },
   {
    "date": "2023-10-27",
@@ -3335,6 +3846,20 @@
    "ag": 0
   },
   {
+   "date": "2023-10-28",
+   "home": "bayern",
+   "away": "sv-darmstadt98",
+   "hg": 8,
+   "ag": 0
+  },
+  {
+   "date": "2023-10-28",
+   "home": "leipzig",
+   "away": "fc-koln",
+   "hg": 6,
+   "ag": 0
+  },
+  {
    "date": "2023-10-29",
    "home": "frankfurt",
    "away": "dortmund",
@@ -3347,6 +3872,13 @@
    "away": "freiburg",
    "hg": 2,
    "ag": 1
+  },
+  {
+   "date": "2023-11-03",
+   "home": "sv-darmstadt98",
+   "away": "bochum",
+   "hg": 1,
+   "ag": 2
   },
   {
    "date": "2023-11-04",
@@ -3389,6 +3921,13 @@
    "away": "bayern",
    "hg": 0,
    "ag": 4
+  },
+  {
+   "date": "2023-11-04",
+   "home": "fc-koln",
+   "away": "augsburg",
+   "hg": 1,
+   "ag": 1
   },
   {
    "date": "2023-11-05",
@@ -3440,6 +3979,20 @@
    "ag": 1
   },
   {
+   "date": "2023-11-11",
+   "home": "sv-darmstadt98",
+   "away": "mainz",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2023-11-11",
+   "home": "bochum",
+   "away": "fc-koln",
+   "hg": 1,
+   "ag": 1
+  },
+  {
    "date": "2023-11-12",
    "home": "leverkusen",
    "away": "union-berlin",
@@ -3463,6 +4016,13 @@
   {
    "date": "2023-11-24",
    "home": "cologne",
+   "away": "bayern",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2023-11-24",
+   "home": "fc-koln",
    "away": "bayern",
    "hg": 0,
    "ag": 1
@@ -3503,6 +4063,13 @@
    "ag": 2
   },
   {
+   "date": "2023-11-25",
+   "home": "freiburg",
+   "away": "sv-darmstadt98",
+   "hg": 1,
+   "ag": 1
+  },
+  {
    "date": "2023-11-26",
    "home": "heidenheim",
    "away": "bochum",
@@ -3514,6 +4081,13 @@
    "home": "hoffenheim",
    "away": "mainz",
    "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-12-01",
+   "home": "sv-darmstadt98",
+   "away": "fc-koln",
+   "hg": 0,
    "ag": 1
   },
   {
@@ -3608,6 +4182,13 @@
    "ag": 3
   },
   {
+   "date": "2023-12-09",
+   "home": "heidenheim",
+   "away": "sv-darmstadt98",
+   "hg": 3,
+   "ag": 2
+  },
+  {
    "date": "2023-12-10",
    "home": "stuttgart",
    "away": "leverkusen",
@@ -3617,6 +4198,13 @@
   {
    "date": "2023-12-10",
    "home": "cologne",
+   "away": "mainz",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2023-12-10",
+   "home": "fc-koln",
    "away": "mainz",
    "hg": 0,
    "ag": 0
@@ -3657,6 +4245,13 @@
    "ag": 1
   },
   {
+   "date": "2023-12-16",
+   "home": "sv-darmstadt98",
+   "away": "wolfsburg",
+   "hg": 0,
+   "ag": 1
+  },
+  {
    "date": "2023-12-17",
    "home": "freiburg",
    "away": "cologne",
@@ -3678,6 +4273,13 @@
    "ag": 0
   },
   {
+   "date": "2023-12-17",
+   "home": "freiburg",
+   "away": "fc-koln",
+   "hg": 2,
+   "ag": 0
+  },
+  {
    "date": "2023-12-19",
    "home": "werder-bremen",
    "away": "leipzig",
@@ -3690,6 +4292,13 @@
    "away": "mainz",
    "hg": 1,
    "ag": 1
+  },
+  {
+   "date": "2023-12-19",
+   "home": "hoffenheim",
+   "away": "sv-darmstadt98",
+   "hg": 3,
+   "ag": 3
   },
   {
    "date": "2023-12-20",
@@ -3734,6 +4343,202 @@
    "ag": 2
   },
   {
+   "date": "2023-12-20",
+   "home": "union-berlin",
+   "away": "fc-koln",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-12",
+   "home": "bayern",
+   "away": "hoffenheim",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-13",
+   "home": "augsburg",
+   "away": "leverkusen",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-13",
+   "home": "fc-koln",
+   "away": "heidenheim",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-13",
+   "home": "freiburg",
+   "away": "union-berlin",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-13",
+   "home": "mainz",
+   "away": "wolfsburg",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-13",
+   "home": "leipzig",
+   "away": "frankfurt",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-13",
+   "home": "sv-darmstadt98",
+   "away": "dortmund",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2024-01-14",
+   "home": "bochum",
+   "away": "werder-bremen",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-14",
+   "home": "gladbach",
+   "away": "stuttgart",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-20",
+   "home": "bochum",
+   "away": "stuttgart",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-20",
+   "home": "sv-darmstadt98",
+   "away": "frankfurt",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2024-01-20",
+   "home": "fc-koln",
+   "away": "dortmund",
+   "hg": 0,
+   "ag": 4
+  },
+  {
+   "date": "2024-01-20",
+   "home": "freiburg",
+   "away": "hoffenheim",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2024-01-20",
+   "home": "heidenheim",
+   "away": "wolfsburg",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-20",
+   "home": "leipzig",
+   "away": "leverkusen",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2024-01-21",
+   "home": "bayern",
+   "away": "werder-bremen",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-21",
+   "home": "gladbach",
+   "away": "augsburg",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2024-01-24",
+   "home": "bayern",
+   "away": "union-berlin",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-26",
+   "home": "frankfurt",
+   "away": "mainz",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-27",
+   "home": "augsburg",
+   "away": "bayern",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2024-01-27",
+   "home": "hoffenheim",
+   "away": "heidenheim",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-27",
+   "home": "stuttgart",
+   "away": "leipzig",
+   "hg": 5,
+   "ag": 2
+  },
+  {
+   "date": "2024-01-27",
+   "home": "werder-bremen",
+   "away": "freiburg",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-27",
+   "home": "wolfsburg",
+   "away": "fc-koln",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-27",
+   "home": "leverkusen",
+   "away": "gladbach",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-28",
+   "home": "union-berlin",
+   "away": "sv-darmstadt98",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-28",
+   "home": "dortmund",
+   "away": "bochum",
+   "hg": 3,
+   "ag": 1
+  },
+  {
    "date": "2024-02-02",
    "home": "heidenheim",
    "away": "dortmund",
@@ -3771,6 +4576,20 @@
   {
    "date": "2024-02-03",
    "home": "cologne",
+   "away": "frankfurt",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2024-02-03",
+   "home": "sv-darmstadt98",
+   "away": "leverkusen",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2024-02-03",
+   "home": "fc-koln",
    "away": "frankfurt",
    "hg": 2,
    "ag": 0
@@ -3839,6 +4658,13 @@
    "ag": 0
   },
   {
+   "date": "2024-02-10",
+   "home": "gladbach",
+   "away": "sv-darmstadt98",
+   "hg": 0,
+   "ag": 0
+  },
+  {
    "date": "2024-02-11",
    "home": "stuttgart",
    "away": "mainz",
@@ -3853,8 +4679,22 @@
    "ag": 1
   },
   {
+   "date": "2024-02-11",
+   "home": "hoffenheim",
+   "away": "fc-koln",
+   "hg": 1,
+   "ag": 1
+  },
+  {
    "date": "2024-02-16",
    "home": "cologne",
+   "away": "werder-bremen",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2024-02-16",
+   "home": "fc-koln",
    "away": "werder-bremen",
    "hg": 0,
    "ag": 1
@@ -3893,6 +4733,13 @@
    "away": "gladbach",
    "hg": 2,
    "ag": 0
+  },
+  {
+   "date": "2024-02-17",
+   "home": "sv-darmstadt98",
+   "away": "stuttgart",
+   "hg": 1,
+   "ag": 2
   },
   {
    "date": "2024-02-18",
@@ -3941,6 +4788,20 @@
    "home": "bayern",
    "away": "leipzig",
    "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2024-02-24",
+   "home": "stuttgart",
+   "away": "fc-koln",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2024-02-24",
+   "home": "werder-bremen",
+   "away": "sv-darmstadt98",
+   "hg": 1,
    "ag": 1
   },
   {
@@ -4007,6 +4868,13 @@
    "ag": 3
   },
   {
+   "date": "2024-03-02",
+   "home": "sv-darmstadt98",
+   "away": "augsburg",
+   "hg": 0,
+   "ag": 6
+  },
+  {
    "date": "2024-03-03",
    "home": "cologne",
    "away": "leverkusen",
@@ -4019,6 +4887,13 @@
    "away": "werder-bremen",
    "hg": 2,
    "ag": 1
+  },
+  {
+   "date": "2024-03-03",
+   "home": "fc-koln",
+   "away": "leverkusen",
+   "hg": 0,
+   "ag": 2
   },
   {
    "date": "2024-03-08",
@@ -4056,6 +4931,20 @@
    "ag": 2
   },
   {
+   "date": "2024-03-09",
+   "home": "gladbach",
+   "away": "fc-koln",
+   "hg": 3,
+   "ag": 3
+  },
+  {
+   "date": "2024-03-09",
+   "home": "leipzig",
+   "away": "sv-darmstadt98",
+   "hg": 2,
+   "ag": 0
+  },
+  {
    "date": "2024-03-10",
    "home": "bochum",
    "away": "freiburg",
@@ -4079,6 +4968,13 @@
   {
    "date": "2024-03-15",
    "home": "cologne",
+   "away": "leipzig",
+   "hg": 1,
+   "ag": 5
+  },
+  {
+   "date": "2024-03-15",
+   "home": "fc-koln",
    "away": "leipzig",
    "hg": 1,
    "ag": 5
@@ -4117,6 +5013,13 @@
    "away": "stuttgart",
    "hg": 0,
    "ag": 3
+  },
+  {
+   "date": "2024-03-16",
+   "home": "sv-darmstadt98",
+   "away": "bayern",
+   "hg": 2,
+   "ag": 5
   },
   {
    "date": "2024-03-17",
@@ -4189,6 +5092,20 @@
    "ag": 3
   },
   {
+   "date": "2024-03-31",
+   "home": "augsburg",
+   "away": "fc-koln",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2024-03-31",
+   "home": "bochum",
+   "away": "sv-darmstadt98",
+   "hg": 2,
+   "ag": 2
+  },
+  {
    "date": "2024-04-05",
    "home": "frankfurt",
    "away": "werder-bremen",
@@ -4229,6 +5146,20 @@
    "away": "stuttgart",
    "hg": 0,
    "ag": 1
+  },
+  {
+   "date": "2024-04-06",
+   "home": "fc-koln",
+   "away": "bochum",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2024-04-06",
+   "home": "mainz",
+   "away": "sv-darmstadt98",
+   "hg": 4,
+   "ag": 0
   },
   {
    "date": "2024-04-07",
@@ -4294,11 +5225,25 @@
    "ag": 0
   },
   {
+   "date": "2024-04-13",
+   "home": "bayern",
+   "away": "fc-koln",
+   "hg": 2,
+   "ag": 0
+  },
+  {
    "date": "2024-04-14",
    "home": "leverkusen",
    "away": "werder-bremen",
    "hg": 5,
    "ag": 0
+  },
+  {
+   "date": "2024-04-14",
+   "home": "sv-darmstadt98",
+   "away": "freiburg",
+   "hg": 0,
+   "ag": 1
   },
   {
    "date": "2024-04-19",
@@ -4334,6 +5279,13 @@
    "away": "bayern",
    "hg": 1,
    "ag": 5
+  },
+  {
+   "date": "2024-04-20",
+   "home": "fc-koln",
+   "away": "sv-darmstadt98",
+   "hg": 0,
+   "ag": 2
   },
   {
    "date": "2024-04-21",
@@ -4413,6 +5365,20 @@
    "ag": 1
   },
   {
+   "date": "2024-04-28",
+   "home": "mainz",
+   "away": "fc-koln",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2024-04-28",
+   "home": "sv-darmstadt98",
+   "away": "heidenheim",
+   "hg": 0,
+   "ag": 1
+  },
+  {
    "date": "2024-05-03",
    "home": "hoffenheim",
    "away": "leipzig",
@@ -4443,6 +5409,20 @@
   {
    "date": "2024-05-04",
    "home": "cologne",
+   "away": "freiburg",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2024-05-04",
+   "home": "wolfsburg",
+   "away": "sv-darmstadt98",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2024-05-04",
+   "home": "fc-koln",
    "away": "freiburg",
    "hg": 0,
    "ag": 0
@@ -4511,6 +5491,13 @@
    "ag": 0
   },
   {
+   "date": "2024-05-11",
+   "home": "fc-koln",
+   "away": "union-berlin",
+   "hg": 3,
+   "ag": 2
+  },
+  {
    "date": "2024-05-12",
    "home": "bayern",
    "away": "wolfsburg",
@@ -4523,6 +5510,13 @@
    "away": "leverkusen",
    "hg": 0,
    "ag": 5
+  },
+  {
+   "date": "2024-05-12",
+   "home": "sv-darmstadt98",
+   "away": "hoffenheim",
+   "hg": 0,
+   "ag": 6
   },
   {
    "date": "2024-05-18",
@@ -4577,6 +5571,20 @@
    "date": "2024-05-18",
    "home": "werder-bremen",
    "away": "bochum",
+   "hg": 4,
+   "ag": 1
+  },
+  {
+   "date": "2024-05-18",
+   "home": "dortmund",
+   "away": "sv-darmstadt98",
+   "hg": 4,
+   "ag": 0
+  },
+  {
+   "date": "2024-05-18",
+   "home": "heidenheim",
+   "away": "fc-koln",
    "hg": 4,
    "ag": 1
   },
@@ -5524,6 +6532,265 @@
    "away": "dortmund",
    "hg": 1,
    "ag": 3
+  },
+  {
+   "date": "2025-01-10",
+   "home": "dortmund",
+   "away": "leverkusen",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2025-01-11",
+   "home": "freiburg",
+   "away": "holstein-kiel",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-11",
+   "home": "heidenheim",
+   "away": "union-berlin",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-11",
+   "home": "hoffenheim",
+   "away": "wolfsburg",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-11",
+   "home": "mainz",
+   "away": "bochum",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-11",
+   "home": "st-pauli",
+   "away": "frankfurt",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-11",
+   "home": "gladbach",
+   "away": "bayern",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-12",
+   "home": "leipzig",
+   "away": "werder-bremen",
+   "hg": 4,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-12",
+   "home": "augsburg",
+   "away": "stuttgart",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-14",
+   "home": "holstein-kiel",
+   "away": "dortmund",
+   "hg": 4,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-14",
+   "home": "frankfurt",
+   "away": "freiburg",
+   "hg": 4,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-14",
+   "home": "leverkusen",
+   "away": "mainz",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-14",
+   "home": "wolfsburg",
+   "away": "gladbach",
+   "hg": 5,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-15",
+   "home": "bochum",
+   "away": "st-pauli",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-15",
+   "home": "bayern",
+   "away": "hoffenheim",
+   "hg": 5,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-15",
+   "home": "stuttgart",
+   "away": "leipzig",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-15",
+   "home": "union-berlin",
+   "away": "augsburg",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-15",
+   "home": "werder-bremen",
+   "away": "heidenheim",
+   "hg": 3,
+   "ag": 3
+  },
+  {
+   "date": "2025-01-17",
+   "home": "frankfurt",
+   "away": "dortmund",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-18",
+   "home": "bayern",
+   "away": "wolfsburg",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-18",
+   "home": "bochum",
+   "away": "leipzig",
+   "hg": 3,
+   "ag": 3
+  },
+  {
+   "date": "2025-01-18",
+   "home": "heidenheim",
+   "away": "st-pauli",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-18",
+   "home": "holstein-kiel",
+   "away": "hoffenheim",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2025-01-18",
+   "home": "stuttgart",
+   "away": "freiburg",
+   "hg": 4,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-18",
+   "home": "leverkusen",
+   "away": "gladbach",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-19",
+   "home": "union-berlin",
+   "away": "mainz",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-19",
+   "home": "werder-bremen",
+   "away": "augsburg",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-24",
+   "home": "wolfsburg",
+   "away": "holstein-kiel",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-25",
+   "home": "augsburg",
+   "away": "heidenheim",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-25",
+   "home": "dortmund",
+   "away": "werder-bremen",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-25",
+   "home": "freiburg",
+   "away": "bayern",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-25",
+   "home": "mainz",
+   "away": "stuttgart",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-25",
+   "home": "leipzig",
+   "away": "leverkusen",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-25",
+   "home": "gladbach",
+   "away": "bochum",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-26",
+   "home": "hoffenheim",
+   "away": "frankfurt",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-26",
+   "home": "st-pauli",
+   "away": "union-berlin",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-31",
+   "home": "werder-bremen",
+   "away": "mainz",
+   "hg": 1,
+   "ag": 0
   },
   {
    "date": "2025-02-01",
@@ -6527,6 +7794,13 @@
    "ag": 0
   },
   {
+   "date": "2025-08-24",
+   "home": "mainz",
+   "away": "fc-koln",
+   "hg": 0,
+   "ag": 1
+  },
+  {
    "date": "2025-08-29",
    "home": "hamburg",
    "away": "st-pauli",
@@ -6590,6 +7864,13 @@
    "ag": 1
   },
   {
+   "date": "2025-08-31",
+   "home": "fc-koln",
+   "away": "freiburg",
+   "hg": 4,
+   "ag": 1
+  },
+  {
    "date": "2025-09-12",
    "home": "leverkusen",
    "away": "frankfurt",
@@ -6637,6 +7918,13 @@
    "away": "hamburg",
    "hg": 5,
    "ag": 0
+  },
+  {
+   "date": "2025-09-13",
+   "home": "wolfsburg",
+   "away": "fc-koln",
+   "hg": 3,
+   "ag": 3
   },
   {
    "date": "2025-09-14",
@@ -6691,6 +7979,13 @@
    "date": "2025-09-20",
    "home": "leipzig",
    "away": "cologne",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2025-09-20",
+   "home": "leipzig",
+   "away": "fc-koln",
    "hg": 3,
    "ag": 1
   },
@@ -6779,9 +8074,23 @@
    "ag": 0
   },
   {
+   "date": "2025-09-28",
+   "home": "fc-koln",
+   "away": "stuttgart",
+   "hg": 1,
+   "ag": 2
+  },
+  {
    "date": "2025-10-03",
    "home": "hoffenheim",
    "away": "cologne",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2025-10-03",
+   "home": "hoffenheim",
+   "away": "fc-koln",
    "hg": 0,
    "ag": 1
   },
@@ -6891,6 +8200,13 @@
    "ag": 1
   },
   {
+   "date": "2025-10-18",
+   "home": "fc-koln",
+   "away": "augsburg",
+   "hg": 1,
+   "ag": 1
+  },
+  {
    "date": "2025-10-19",
    "home": "freiburg",
    "away": "frankfurt",
@@ -6950,6 +8266,13 @@
    "date": "2025-10-25",
    "home": "dortmund",
    "away": "cologne",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2025-10-25",
+   "home": "dortmund",
+   "away": "fc-koln",
    "hg": 1,
    "ag": 0
   },
@@ -7031,6 +8354,13 @@
    "ag": 3
   },
   {
+   "date": "2025-11-02",
+   "home": "fc-koln",
+   "away": "hamburg",
+   "hg": 4,
+   "ag": 1
+  },
+  {
    "date": "2025-11-07",
    "home": "werder-bremen",
    "away": "wolfsburg",
@@ -7069,6 +8399,13 @@
    "date": "2025-11-08",
    "home": "gladbach",
    "away": "cologne",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2025-11-08",
+   "home": "gladbach",
+   "away": "fc-koln",
    "hg": 3,
    "ag": 1
   },
@@ -7143,6 +8480,13 @@
    "ag": 4
   },
   {
+   "date": "2025-11-22",
+   "home": "fc-koln",
+   "away": "frankfurt",
+   "hg": 3,
+   "ag": 4
+  },
+  {
    "date": "2025-11-23",
    "home": "leipzig",
    "away": "werder-bremen",
@@ -7197,6 +8541,13 @@
    "away": "dortmund",
    "hg": 1,
    "ag": 2
+  },
+  {
+   "date": "2025-11-29",
+   "home": "werder-bremen",
+   "away": "fc-koln",
+   "hg": 1,
+   "ag": 1
   },
   {
    "date": "2025-11-30",
@@ -7269,6 +8620,13 @@
    "ag": 0
   },
   {
+   "date": "2025-12-06",
+   "home": "fc-koln",
+   "away": "st-pauli",
+   "hg": 1,
+   "ag": 1
+  },
+  {
    "date": "2025-12-07",
    "home": "hamburg",
    "away": "werder-bremen",
@@ -7321,6 +8679,13 @@
    "date": "2025-12-13",
    "home": "leverkusen",
    "away": "cologne",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2025-12-13",
+   "home": "leverkusen",
+   "away": "fc-koln",
    "hg": 2,
    "ag": 0
   },
@@ -7395,6 +8760,13 @@
    "ag": 3
   },
   {
+   "date": "2025-12-20",
+   "home": "fc-koln",
+   "away": "union-berlin",
+   "hg": 0,
+   "ag": 1
+  },
+  {
    "date": "2025-12-21",
    "home": "mainz",
    "away": "st-pauli",
@@ -7407,6 +8779,300 @@
    "away": "bayern",
    "hg": 0,
    "ag": 4
+  },
+  {
+   "date": "2026-01-09",
+   "home": "frankfurt",
+   "away": "dortmund",
+   "hg": 3,
+   "ag": 3
+  },
+  {
+   "date": "2026-01-10",
+   "home": "freiburg",
+   "away": "hamburg",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-10",
+   "home": "heidenheim",
+   "away": "fc-koln",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-10",
+   "home": "union-berlin",
+   "away": "mainz",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-10",
+   "home": "leverkusen",
+   "away": "stuttgart",
+   "hg": 1,
+   "ag": 4
+  },
+  {
+   "date": "2026-01-11",
+   "home": "gladbach",
+   "away": "augsburg",
+   "hg": 4,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-11",
+   "home": "bayern",
+   "away": "wolfsburg",
+   "hg": 8,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-13",
+   "home": "stuttgart",
+   "away": "frankfurt",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-13",
+   "home": "dortmund",
+   "away": "werder-bremen",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-13",
+   "home": "mainz",
+   "away": "heidenheim",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-14",
+   "home": "wolfsburg",
+   "away": "st-pauli",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-14",
+   "home": "fc-koln",
+   "away": "bayern",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2026-01-14",
+   "home": "hoffenheim",
+   "away": "gladbach",
+   "hg": 5,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-14",
+   "home": "leipzig",
+   "away": "freiburg",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-15",
+   "home": "augsburg",
+   "away": "union-berlin",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-16",
+   "home": "werder-bremen",
+   "away": "frankfurt",
+   "hg": 3,
+   "ag": 3
+  },
+  {
+   "date": "2026-01-17",
+   "home": "dortmund",
+   "away": "st-pauli",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-17",
+   "home": "fc-koln",
+   "away": "mainz",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-17",
+   "home": "hamburg",
+   "away": "gladbach",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-17",
+   "home": "hoffenheim",
+   "away": "leverkusen",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-17",
+   "home": "wolfsburg",
+   "away": "heidenheim",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-17",
+   "home": "leipzig",
+   "away": "bayern",
+   "hg": 1,
+   "ag": 5
+  },
+  {
+   "date": "2026-01-18",
+   "home": "stuttgart",
+   "away": "union-berlin",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-18",
+   "home": "augsburg",
+   "away": "freiburg",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-23",
+   "home": "st-pauli",
+   "away": "hamburg",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-24",
+   "home": "bayern",
+   "away": "augsburg",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-24",
+   "home": "frankfurt",
+   "away": "hoffenheim",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2026-01-24",
+   "home": "heidenheim",
+   "away": "leipzig",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2026-01-24",
+   "home": "leverkusen",
+   "away": "werder-bremen",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-24",
+   "home": "mainz",
+   "away": "wolfsburg",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-24",
+   "home": "union-berlin",
+   "away": "dortmund",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2026-01-25",
+   "home": "gladbach",
+   "away": "stuttgart",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2026-01-25",
+   "home": "freiburg",
+   "away": "fc-koln",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-27",
+   "home": "st-pauli",
+   "away": "leipzig",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-27",
+   "home": "werder-bremen",
+   "away": "hoffenheim",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-30",
+   "home": "fc-koln",
+   "away": "wolfsburg",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-31",
+   "home": "augsburg",
+   "away": "st-pauli",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-31",
+   "home": "frankfurt",
+   "away": "leverkusen",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2026-01-31",
+   "home": "hoffenheim",
+   "away": "union-berlin",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-31",
+   "home": "leipzig",
+   "away": "mainz",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-31",
+   "home": "werder-bremen",
+   "away": "gladbach",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-31",
+   "home": "hamburg",
+   "away": "bayern",
+   "hg": 2,
+   "ag": 2
   },
   {
    "date": "2026-02-01",
@@ -7486,6 +9152,13 @@
    "ag": 1
   },
   {
+   "date": "2026-02-08",
+   "home": "fc-koln",
+   "away": "leipzig",
+   "hg": 1,
+   "ag": 2
+  },
+  {
    "date": "2026-02-13",
    "home": "dortmund",
    "away": "mainz",
@@ -7531,6 +9204,13 @@
    "date": "2026-02-14",
    "home": "stuttgart",
    "away": "cologne",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2026-02-14",
+   "home": "stuttgart",
+   "away": "fc-koln",
    "hg": 3,
    "ag": 1
   },
@@ -7591,6 +9271,13 @@
    "ag": 2
   },
   {
+   "date": "2026-02-21",
+   "home": "fc-koln",
+   "away": "hoffenheim",
+   "hg": 2,
+   "ag": 2
+  },
+  {
    "date": "2026-02-22",
    "home": "freiburg",
    "away": "gladbach",
@@ -7615,6 +9302,13 @@
    "date": "2026-02-27",
    "home": "augsburg",
    "away": "cologne",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2026-02-27",
+   "home": "augsburg",
+   "away": "fc-koln",
    "hg": 2,
    "ag": 0
   },
@@ -7731,6 +9425,13 @@
    "ag": 2
   },
   {
+   "date": "2026-03-07",
+   "home": "fc-koln",
+   "away": "dortmund",
+   "hg": 1,
+   "ag": 2
+  },
+  {
    "date": "2026-03-08",
    "home": "st-pauli",
    "away": "frankfurt",
@@ -7783,6 +9484,13 @@
    "date": "2026-03-14",
    "home": "hamburg",
    "away": "cologne",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-03-14",
+   "home": "hamburg",
+   "away": "fc-koln",
    "hg": 1,
    "ag": 1
   },
@@ -7848,6 +9556,13 @@
    "away": "hamburg",
    "hg": 3,
    "ag": 2
+  },
+  {
+   "date": "2026-03-21",
+   "home": "fc-koln",
+   "away": "gladbach",
+   "hg": 3,
+   "ag": 3
   },
   {
    "date": "2026-03-22",
@@ -7934,6 +9649,13 @@
    "ag": 2
   },
   {
+   "date": "2026-04-05",
+   "home": "frankfurt",
+   "away": "fc-koln",
+   "hg": 2,
+   "ag": 2
+  },
+  {
    "date": "2026-04-10",
    "home": "augsburg",
    "away": "hoffenheim",
@@ -7997,9 +9719,23 @@
    "ag": 1
   },
   {
+   "date": "2026-04-12",
+   "home": "fc-koln",
+   "away": "werder-bremen",
+   "hg": 3,
+   "ag": 1
+  },
+  {
    "date": "2026-04-17",
    "home": "st-pauli",
    "away": "cologne",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-04-17",
+   "home": "st-pauli",
+   "away": "fc-koln",
    "hg": 1,
    "ag": 1
   },
@@ -8109,6 +9845,13 @@
    "ag": 2
   },
   {
+   "date": "2026-04-25",
+   "home": "fc-koln",
+   "away": "leverkusen",
+   "hg": 1,
+   "ag": 2
+  },
+  {
    "date": "2026-04-26",
    "home": "stuttgart",
    "away": "werder-bremen",
@@ -8163,6 +9906,13 @@
    "away": "leipzig",
    "hg": 4,
    "ag": 1
+  },
+  {
+   "date": "2026-05-02",
+   "home": "union-berlin",
+   "away": "fc-koln",
+   "hg": 2,
+   "ag": 2
   },
   {
    "date": "2026-05-03",
@@ -8249,6 +9999,13 @@
    "ag": 3
   },
   {
+   "date": "2026-05-10",
+   "home": "fc-koln",
+   "away": "heidenheim",
+   "hg": 1,
+   "ag": 3
+  },
+  {
    "date": "2026-05-16",
    "home": "heidenheim",
    "away": "mainz",
@@ -8312,6 +10069,13 @@
    "ag": 2
   },
   {
+   "date": "2026-05-16",
+   "home": "bayern",
+   "away": "fc-koln",
+   "hg": 5,
+   "ag": 1
+  },
+  {
    "date": "2026-08-28",
    "home": "bayern",
    "away": "stuttgart",
@@ -8361,6 +10125,13 @@
    "ag": 0
   },
   {
+   "date": "2026-08-29",
+   "home": "fc-koln",
+   "away": "hoffenheim",
+   "hg": 3,
+   "ag": 2
+  },
+  {
    "date": "2026-08-30",
    "home": "freiburg",
    "away": "werder-bremen",
@@ -8378,6 +10149,13 @@
    "date": "2026-09-04",
    "home": "stuttgart",
    "away": "cologne",
+   "hg": 4,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-04",
+   "home": "stuttgart",
+   "away": "fc-koln",
    "hg": 4,
    "ag": 1
   },
@@ -8436,6 +10214,132 @@
    "away": "augsburg",
    "hg": 1,
    "ag": 4
+  },
+  {
+   "date": "2026-09-11",
+   "home": "union-berlin",
+   "away": "schalke",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2026-09-12",
+   "home": "augsburg",
+   "away": "leverkusen",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2026-09-12",
+   "home": "dortmund",
+   "away": "paderborn",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-12",
+   "home": "freiburg",
+   "away": "gladbach",
+   "hg": 5,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-12",
+   "home": "hoffenheim",
+   "away": "stuttgart",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-12",
+   "home": "mainz",
+   "away": "frankfurt",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2026-09-12",
+   "home": "fc-koln",
+   "away": "werder-bremen",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-13",
+   "home": "leipzig",
+   "away": "hamburg",
+   "hg": 5,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-13",
+   "home": "elversberg",
+   "away": "bayern",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2026-09-18",
+   "home": "bayern",
+   "away": "union-berlin",
+   "hg": 7,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-19",
+   "home": "frankfurt",
+   "away": "freiburg",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2026-09-19",
+   "home": "hamburg",
+   "away": "fc-koln",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-19",
+   "home": "gladbach",
+   "away": "mainz",
+   "hg": 3,
+   "ag": 4
+  },
+  {
+   "date": "2026-09-19",
+   "home": "werder-bremen",
+   "away": "augsburg",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2026-09-19",
+   "home": "stuttgart",
+   "away": "dortmund",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-20",
+   "home": "leverkusen",
+   "away": "leipzig",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-20",
+   "home": "schalke",
+   "away": "elversberg",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-20",
+   "home": "paderborn",
+   "away": "hoffenheim",
+   "hg": 3,
+   "ag": 1
   }
  ]
 }

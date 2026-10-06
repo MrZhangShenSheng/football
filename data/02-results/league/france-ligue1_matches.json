@@ -1,13 +1,6 @@
 {
  "league": "france-ligue1",
- "source": "espn-history",
- "seasons": [
-  "2026",
-  "2026"
- ],
- "fetchedAt": "2026-09-08",
- "cup": false,
- "droppedUnmapped": 0,
+ "source": "fd CSV FTHG/FTAG",
  "matches": [
   {
    "date": "2022-02-01",
@@ -1158,6 +1151,13 @@
    "ag": 5
   },
   {
+   "date": "2022-08-06",
+   "home": "strasbourg",
+   "away": "monaco",
+   "hg": 1,
+   "ag": 2
+  },
+  {
    "date": "2022-08-07",
    "home": "toulouse",
    "away": "nice",
@@ -1270,6 +1270,13 @@
    "ag": 4
   },
   {
+   "date": "2022-08-14",
+   "home": "nice",
+   "away": "strasbourg",
+   "hg": 1,
+   "ag": 1
+  },
+  {
    "date": "2022-08-19",
    "home": "lyon",
    "away": "troyes",
@@ -1340,6 +1347,13 @@
    "ag": 1
   },
   {
+   "date": "2022-08-21",
+   "home": "strasbourg",
+   "away": "reims",
+   "hg": 1,
+   "ag": 1
+  },
+  {
    "date": "2022-08-26",
    "home": "ajaccio",
    "away": "lille",
@@ -1359,6 +1373,13 @@
    "away": "stade-rennais",
    "hg": 2,
    "ag": 1
+  },
+  {
+   "date": "2022-08-27",
+   "home": "auxerre",
+   "away": "strasbourg",
+   "hg": 1,
+   "ag": 0
   },
   {
    "date": "2022-08-28",
@@ -1480,6 +1501,13 @@
    "ag": 1
   },
   {
+   "date": "2022-08-31",
+   "home": "strasbourg",
+   "away": "nantes",
+   "hg": 1,
+   "ag": 1
+  },
+  {
    "date": "2022-09-03",
    "home": "auxerre",
    "away": "marseille",
@@ -1546,6 +1574,13 @@
    "date": "2022-09-04",
    "home": "troyes",
    "away": "stade-rennais",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2022-09-04",
+   "home": "brest",
+   "away": "strasbourg",
    "hg": 1,
    "ag": 1
   },
@@ -1627,6 +1662,13 @@
    "ag": 0
   },
   {
+   "date": "2022-09-11",
+   "home": "strasbourg",
+   "away": "clermont",
+   "hg": 0,
+   "ag": 0
+  },
+  {
    "date": "2022-09-16",
    "home": "auxerre",
    "away": "lorient",
@@ -1644,6 +1686,13 @@
    "date": "2022-09-17",
    "home": "lille",
    "away": "toulouse",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2022-09-17",
+   "home": "montpellier",
+   "away": "strasbourg",
    "hg": 2,
    "ag": 1
   },
@@ -1713,6 +1762,13 @@
   {
    "date": "2022-10-01",
    "home": "strasbourg-abbr",
+   "away": "stade-rennais",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2022-10-01",
+   "home": "strasbourg",
    "away": "stade-rennais",
    "hg": 1,
    "ag": 3
@@ -1837,8 +1893,22 @@
    "ag": 0
   },
   {
+   "date": "2022-10-09",
+   "home": "angers",
+   "away": "strasbourg",
+   "hg": 2,
+   "ag": 3
+  },
+  {
    "date": "2022-10-14",
    "home": "strasbourg-abbr",
+   "away": "lille",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2022-10-14",
+   "home": "strasbourg",
    "away": "lille",
    "hg": 0,
    "ag": 3
@@ -1977,6 +2047,13 @@
    "ag": 1
   },
   {
+   "date": "2022-10-23",
+   "home": "toulouse",
+   "away": "strasbourg",
+   "hg": 2,
+   "ag": 2
+  },
+  {
    "date": "2022-10-28",
    "home": "lens",
    "away": "toulouse",
@@ -1993,6 +2070,13 @@
   {
    "date": "2022-10-29",
    "home": "strasbourg-abbr",
+   "away": "marseille",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2022-10-29",
+   "home": "strasbourg",
    "away": "marseille",
    "hg": 2,
    "ag": 2
@@ -2064,6 +2148,13 @@
    "date": "2022-11-05",
    "home": "ajaccio",
    "away": "strasbourg-abbr",
+   "hg": 4,
+   "ag": 2
+  },
+  {
+   "date": "2022-11-05",
+   "home": "ajaccio",
+   "away": "strasbourg",
    "hg": 4,
    "ag": 2
   },
@@ -2187,6 +2278,13 @@
    "ag": 2
   },
   {
+   "date": "2022-11-13",
+   "home": "strasbourg",
+   "away": "lorient",
+   "hg": 1,
+   "ag": 1
+  },
+  {
    "date": "2022-12-28",
    "home": "auxerre",
    "away": "monaco",
@@ -2229,6 +2327,13 @@
    "ag": 2
   },
   {
+   "date": "2022-12-28",
+   "home": "paris-saint-germain",
+   "away": "strasbourg",
+   "hg": 2,
+   "ag": 1
+  },
+  {
    "date": "2022-12-29",
    "home": "lorient",
    "away": "montpellier",
@@ -2254,6 +2359,286 @@
    "home": "reims",
    "away": "stade-rennais",
    "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-01",
+   "home": "angers",
+   "away": "lorient",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2023-01-01",
+   "home": "monaco",
+   "away": "brest",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-01",
+   "home": "nantes",
+   "away": "auxerre",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-01",
+   "home": "toulouse",
+   "away": "ajaccio",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-01",
+   "home": "lyon",
+   "away": "clermont",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-01",
+   "home": "lens",
+   "away": "paris-saint-germain",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-02",
+   "home": "strasbourg",
+   "away": "troyes",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2023-01-02",
+   "home": "lille",
+   "away": "reims",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-02",
+   "home": "montpellier",
+   "away": "marseille",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2023-01-02",
+   "home": "stade-rennais",
+   "away": "nice",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-11",
+   "home": "ajaccio",
+   "away": "reims",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-11",
+   "home": "auxerre",
+   "away": "toulouse",
+   "hg": 0,
+   "ag": 5
+  },
+  {
+   "date": "2023-01-11",
+   "home": "brest",
+   "away": "lille",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-11",
+   "home": "clermont",
+   "away": "stade-rennais",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-11",
+   "home": "nantes",
+   "away": "lyon",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-11",
+   "home": "lorient",
+   "away": "monaco",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2023-01-11",
+   "home": "nice",
+   "away": "montpellier",
+   "hg": 6,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-11",
+   "home": "paris-saint-germain",
+   "away": "angers",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-11",
+   "home": "strasbourg",
+   "away": "lens",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2023-01-11",
+   "home": "troyes",
+   "away": "marseille",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2023-01-14",
+   "home": "lens",
+   "away": "auxerre",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-14",
+   "home": "marseille",
+   "away": "lorient",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-14",
+   "home": "lyon",
+   "away": "strasbourg",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2023-01-15",
+   "home": "lille",
+   "away": "troyes",
+   "hg": 5,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-15",
+   "home": "angers",
+   "away": "clermont",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2023-01-15",
+   "home": "montpellier",
+   "away": "nantes",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2023-01-15",
+   "home": "reims",
+   "away": "nice",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-15",
+   "home": "toulouse",
+   "away": "brest",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-15",
+   "home": "monaco",
+   "away": "ajaccio",
+   "hg": 7,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-15",
+   "home": "stade-rennais",
+   "away": "paris-saint-germain",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-27",
+   "home": "lorient",
+   "away": "stade-rennais",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-28",
+   "home": "troyes",
+   "away": "lens",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-28",
+   "home": "marseille",
+   "away": "monaco",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-29",
+   "home": "nice",
+   "away": "lille",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-29",
+   "home": "auxerre",
+   "away": "montpellier",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2023-01-29",
+   "home": "brest",
+   "away": "angers",
+   "hg": 4,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-29",
+   "home": "clermont",
+   "away": "nantes",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-29",
+   "home": "strasbourg",
+   "away": "toulouse",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2023-01-29",
+   "home": "ajaccio",
+   "away": "lyon",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2023-01-29",
+   "home": "paris-saint-germain",
+   "away": "reims",
+   "hg": 1,
    "ag": 1
   },
   {
@@ -2327,6 +2712,13 @@
    "ag": 0
   },
   {
+   "date": "2023-02-01",
+   "home": "stade-rennais",
+   "away": "strasbourg",
+   "hg": 3,
+   "ag": 0
+  },
+  {
    "date": "2023-02-04",
    "home": "paris-saint-germain",
    "away": "toulouse",
@@ -2395,6 +2787,13 @@
    "away": "nantes",
    "hg": 0,
    "ag": 2
+  },
+  {
+   "date": "2023-02-05",
+   "home": "strasbourg",
+   "away": "montpellier",
+   "hg": 2,
+   "ag": 0
   },
   {
    "date": "2023-02-10",
@@ -2467,6 +2866,13 @@
    "ag": 0
   },
   {
+   "date": "2023-02-12",
+   "home": "lille",
+   "away": "strasbourg",
+   "hg": 2,
+   "ag": 0
+  },
+  {
    "date": "2023-02-17",
    "home": "auxerre",
    "away": "lyon",
@@ -2483,6 +2889,13 @@
   {
    "date": "2023-02-18",
    "home": "strasbourg-abbr",
+   "away": "angers",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2023-02-18",
+   "home": "strasbourg",
    "away": "angers",
    "hg": 2,
    "ag": 1
@@ -2607,6 +3020,13 @@
    "ag": 1
   },
   {
+   "date": "2023-02-26",
+   "home": "clermont",
+   "away": "strasbourg",
+   "hg": 1,
+   "ag": 1
+  },
+  {
    "date": "2023-03-03",
    "home": "nice",
    "away": "auxerre",
@@ -2673,6 +3093,13 @@
    "date": "2023-03-05",
    "home": "stade-rennais",
    "away": "marseille",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2023-03-05",
+   "home": "strasbourg",
+   "away": "brest",
    "hg": 0,
    "ag": 1
   },
@@ -2747,6 +3174,13 @@
    "ag": 2
   },
   {
+   "date": "2023-03-12",
+   "home": "marseille",
+   "away": "strasbourg",
+   "hg": 2,
+   "ag": 2
+  },
+  {
    "date": "2023-03-17",
    "home": "lyon",
    "away": "nantes",
@@ -2815,6 +3249,13 @@
    "away": "stade-rennais",
    "hg": 0,
    "ag": 2
+  },
+  {
+   "date": "2023-03-19",
+   "home": "strasbourg",
+   "away": "auxerre",
+   "hg": 2,
+   "ag": 0
   },
   {
    "date": "2023-03-31",
@@ -2887,9 +3328,23 @@
    "ag": 3
   },
   {
+   "date": "2023-04-02",
+   "home": "monaco",
+   "away": "strasbourg",
+   "hg": 4,
+   "ag": 3
+  },
+  {
    "date": "2023-04-07",
    "home": "lens",
    "away": "strasbourg-abbr",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2023-04-07",
+   "home": "lens",
+   "away": "strasbourg",
    "hg": 2,
    "ag": 1
   },
@@ -3027,6 +3482,13 @@
    "ag": 1
   },
   {
+   "date": "2023-04-16",
+   "home": "strasbourg",
+   "away": "ajaccio",
+   "hg": 3,
+   "ag": 1
+  },
+  {
    "date": "2023-04-21",
    "home": "angers",
    "away": "paris-saint-germain",
@@ -3097,8 +3559,22 @@
    "ag": 0
   },
   {
+   "date": "2023-04-23",
+   "home": "reims",
+   "away": "strasbourg",
+   "hg": 0,
+   "ag": 2
+  },
+  {
    "date": "2023-04-28",
    "home": "strasbourg-abbr",
+   "away": "lyon",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2023-04-28",
+   "home": "strasbourg",
    "away": "lyon",
    "hg": 1,
    "ag": 2
@@ -3237,6 +3713,13 @@
    "ag": 2
   },
   {
+   "date": "2023-05-07",
+   "home": "nantes",
+   "away": "strasbourg",
+   "hg": 0,
+   "ag": 2
+  },
+  {
    "date": "2023-05-12",
    "home": "lens",
    "away": "reims",
@@ -3255,6 +3738,13 @@
    "home": "paris-saint-germain",
    "away": "ajaccio",
    "hg": 5,
+   "ag": 0
+  },
+  {
+   "date": "2023-05-13",
+   "home": "strasbourg",
+   "away": "nice",
+   "hg": 2,
    "ag": 0
   },
   {
@@ -3377,6 +3867,13 @@
    "ag": 1
   },
   {
+   "date": "2023-05-21",
+   "home": "troyes",
+   "away": "strasbourg",
+   "hg": 1,
+   "ag": 1
+  },
+  {
    "date": "2023-05-27",
    "home": "angers",
    "away": "troyes",
@@ -3445,6 +3942,13 @@
    "away": "monaco",
    "hg": 2,
    "ag": 0
+  },
+  {
+   "date": "2023-05-27",
+   "home": "strasbourg",
+   "away": "paris-saint-germain",
+   "hg": 1,
+   "ag": 1
   },
   {
    "date": "2023-06-03",
@@ -3517,6 +4021,13 @@
    "ag": 3
   },
   {
+   "date": "2023-06-03",
+   "home": "lorient",
+   "away": "strasbourg",
+   "hg": 2,
+   "ag": 1
+  },
+  {
    "date": "2023-08-11",
    "home": "nice",
    "away": "lille",
@@ -3577,6 +4088,13 @@
    "home": "stade-rennais",
    "away": "metz",
    "hg": 5,
+   "ag": 1
+  },
+  {
+   "date": "2023-08-13",
+   "home": "strasbourg",
+   "away": "lyon",
+   "hg": 2,
    "ag": 1
   },
   {
@@ -3643,6 +4161,13 @@
    "ag": 1
   },
   {
+   "date": "2023-08-20",
+   "home": "monaco",
+   "away": "strasbourg",
+   "hg": 3,
+   "ag": 0
+  },
+  {
    "date": "2023-08-25",
    "home": "nantes",
    "away": "monaco",
@@ -3704,6 +4229,13 @@
    "away": "metz",
    "hg": 0,
    "ag": 1
+  },
+  {
+   "date": "2023-08-27",
+   "home": "strasbourg",
+   "away": "toulouse",
+   "hg": 2,
+   "ag": 0
   },
   {
    "date": "2023-09-01",
@@ -3769,6 +4301,13 @@
    "ag": 2
   },
   {
+   "date": "2023-09-03",
+   "home": "nice",
+   "away": "strasbourg",
+   "hg": 2,
+   "ag": 0
+  },
+  {
    "date": "2023-09-15",
    "home": "paris-saint-germain",
    "away": "nice",
@@ -3832,6 +4371,13 @@
    "ag": 1
   },
   {
+   "date": "2023-09-17",
+   "home": "strasbourg",
+   "away": "montpellier",
+   "hg": 2,
+   "ag": 2
+  },
+  {
    "date": "2023-09-22",
    "home": "monaco",
    "away": "nice",
@@ -3888,6 +4434,13 @@
    "ag": 0
   },
   {
+   "date": "2023-09-24",
+   "home": "metz",
+   "away": "strasbourg",
+   "hg": 0,
+   "ag": 1
+  },
+  {
    "date": "2023-09-26",
    "home": "lille",
    "away": "reims",
@@ -3897,6 +4450,13 @@
   {
    "date": "2023-09-29",
    "home": "strasbourg-abbr",
+   "away": "lens",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2023-09-29",
+   "home": "strasbourg",
    "away": "lens",
    "hg": 0,
    "ag": 1
@@ -3960,6 +4520,13 @@
   {
    "date": "2023-10-06",
    "home": "strasbourg-abbr",
+   "away": "nantes",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2023-10-06",
+   "home": "strasbourg",
    "away": "nantes",
    "hg": 1,
    "ag": 2
@@ -4032,6 +4599,13 @@
    "home": "nice",
    "away": "marseille",
    "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-10-21",
+   "home": "paris-saint-germain",
+   "away": "strasbourg",
+   "hg": 3,
    "ag": 0
   },
   {
@@ -4133,6 +4707,13 @@
    "ag": 1
   },
   {
+   "date": "2023-10-29",
+   "home": "stade-rennais",
+   "away": "strasbourg",
+   "hg": 1,
+   "ag": 1
+  },
+  {
    "date": "2023-11-03",
    "home": "paris-saint-germain",
    "away": "montpellier",
@@ -4193,6 +4774,13 @@
    "home": "nice",
    "away": "stade-rennais",
    "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2023-11-05",
+   "home": "strasbourg",
+   "away": "clermont",
+   "hg": 0,
    "ag": 0
   },
   {
@@ -4273,6 +4861,13 @@
    "ag": 3
   },
   {
+   "date": "2023-11-25",
+   "home": "strasbourg",
+   "away": "marseille",
+   "hg": 1,
+   "ag": 1
+  },
+  {
    "date": "2023-11-26",
    "home": "nice",
    "away": "toulouse",
@@ -4325,6 +4920,13 @@
    "date": "2023-12-01",
    "home": "reims",
    "away": "strasbourg-abbr",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2023-12-01",
+   "home": "reims",
+   "away": "strasbourg",
    "hg": 2,
    "ag": 1
   },
@@ -4399,6 +5001,13 @@
    "ag": 1
   },
   {
+   "date": "2023-12-07",
+   "home": "brest",
+   "away": "strasbourg",
+   "hg": 1,
+   "ag": 1
+  },
+  {
    "date": "2023-12-08",
    "home": "montpellier",
    "away": "lens",
@@ -4459,6 +5068,13 @@
    "home": "metz",
    "away": "brest",
    "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2023-12-10",
+   "home": "strasbourg",
+   "away": "le-havre",
+   "hg": 2,
    "ag": 1
   },
   {
@@ -4525,6 +5141,13 @@
    "ag": 1
   },
   {
+   "date": "2023-12-17",
+   "home": "lorient",
+   "away": "strasbourg",
+   "hg": 1,
+   "ag": 2
+  },
+  {
    "date": "2023-12-20",
    "home": "brest",
    "away": "lorient",
@@ -4588,8 +5211,148 @@
    "ag": 1
   },
   {
+   "date": "2023-12-20",
+   "home": "strasbourg",
+   "away": "lille",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-12",
+   "home": "marseille",
+   "away": "strasbourg",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-13",
+   "home": "monaco",
+   "away": "reims",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2024-01-13",
+   "home": "stade-rennais",
+   "away": "nice",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-14",
+   "home": "lille",
+   "away": "lorient",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-14",
+   "home": "brest",
+   "away": "montpellier",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-14",
+   "home": "metz",
+   "away": "toulouse",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-14",
+   "home": "nantes",
+   "away": "clermont",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2024-01-14",
+   "home": "le-havre",
+   "away": "lyon",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-14",
+   "home": "lens",
+   "away": "paris-saint-germain",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2024-01-26",
+   "home": "lyon",
+   "away": "stade-rennais",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2024-01-27",
+   "home": "nice",
+   "away": "metz",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-27",
+   "home": "marseille",
+   "away": "monaco",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2024-01-28",
+   "home": "montpellier",
+   "away": "lille",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-28",
+   "home": "clermont",
+   "away": "strasbourg",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-28",
+   "home": "lorient",
+   "away": "le-havre",
+   "hg": 3,
+   "ag": 3
+  },
+  {
+   "date": "2024-01-28",
+   "home": "reims",
+   "away": "nantes",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-28",
+   "home": "toulouse",
+   "away": "lens",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2024-01-28",
+   "home": "paris-saint-germain",
+   "away": "brest",
+   "hg": 2,
+   "ag": 2
+  },
+  {
    "date": "2024-02-02",
    "home": "strasbourg-abbr",
+   "away": "paris-saint-germain",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2024-02-02",
+   "home": "strasbourg",
    "away": "paris-saint-germain",
    "hg": 1,
    "ag": 2
@@ -4668,6 +5431,13 @@
    "date": "2024-02-10",
    "home": "paris-saint-germain",
    "away": "lille",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2024-02-10",
+   "home": "lens",
+   "away": "strasbourg",
    "hg": 3,
    "ag": 1
   },
@@ -4777,6 +5547,13 @@
    "ag": 1
   },
   {
+   "date": "2024-02-18",
+   "home": "strasbourg",
+   "away": "lorient",
+   "hg": 1,
+   "ag": 3
+  },
+  {
    "date": "2024-02-23",
    "home": "metz",
    "away": "lyon",
@@ -4796,6 +5573,13 @@
    "away": "nantes",
    "hg": 0,
    "ag": 1
+  },
+  {
+   "date": "2024-02-24",
+   "home": "strasbourg",
+   "away": "brest",
+   "hg": 0,
+   "ag": 3
   },
   {
    "date": "2024-02-25",
@@ -4903,6 +5687,13 @@
    "ag": 2
   },
   {
+   "date": "2024-03-03",
+   "home": "montpellier",
+   "away": "strasbourg",
+   "hg": 2,
+   "ag": 2
+  },
+  {
    "date": "2024-03-08",
    "home": "nice",
    "away": "montpellier",
@@ -4966,6 +5757,13 @@
    "ag": 0
   },
   {
+   "date": "2024-03-10",
+   "home": "strasbourg",
+   "away": "monaco",
+   "hg": 0,
+   "ag": 1
+  },
+  {
    "date": "2024-03-15",
    "home": "toulouse",
    "away": "lyon",
@@ -4983,6 +5781,13 @@
    "date": "2024-03-16",
    "home": "nantes",
    "away": "strasbourg-abbr",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2024-03-16",
+   "home": "nantes",
+   "away": "strasbourg",
    "hg": 1,
    "ag": 3
   },
@@ -5092,6 +5897,13 @@
    "ag": 0
   },
   {
+   "date": "2024-03-31",
+   "home": "strasbourg",
+   "away": "stade-rennais",
+   "hg": 2,
+   "ag": 0
+  },
+  {
    "date": "2024-04-05",
    "home": "lille",
    "away": "marseille",
@@ -5155,6 +5967,13 @@
    "ag": 3
   },
   {
+   "date": "2024-04-07",
+   "home": "toulouse",
+   "away": "strasbourg",
+   "hg": 0,
+   "ag": 0
+  },
+  {
    "date": "2024-04-12",
    "home": "metz",
    "away": "lens",
@@ -5174,6 +5993,13 @@
    "away": "toulouse",
    "hg": 1,
    "ag": 2
+  },
+  {
+   "date": "2024-04-13",
+   "home": "strasbourg",
+   "away": "reims",
+   "hg": 3,
+   "ag": 1
   },
   {
    "date": "2024-04-14",
@@ -5260,6 +6086,13 @@
    "ag": 1
   },
   {
+   "date": "2024-04-21",
+   "home": "lille",
+   "away": "strasbourg",
+   "hg": 1,
+   "ag": 0
+  },
+  {
    "date": "2024-04-24",
    "home": "lorient",
    "away": "paris-saint-germain",
@@ -5344,6 +6177,13 @@
    "ag": 5
   },
   {
+   "date": "2024-04-28",
+   "home": "strasbourg",
+   "away": "nice",
+   "hg": 1,
+   "ag": 3
+  },
+  {
    "date": "2024-05-03",
    "home": "toulouse",
    "away": "montpellier",
@@ -5384,6 +6224,13 @@
    "away": "nantes",
    "hg": 0,
    "ag": 0
+  },
+  {
+   "date": "2024-05-04",
+   "home": "le-havre",
+   "away": "strasbourg",
+   "hg": 3,
+   "ag": 1
   },
   {
    "date": "2024-05-06",
@@ -5451,6 +6298,13 @@
   {
    "date": "2024-05-12",
    "home": "strasbourg-abbr",
+   "away": "metz",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2024-05-12",
+   "home": "strasbourg",
    "away": "metz",
    "hg": 2,
    "ag": 1
@@ -5533,6 +6387,13 @@
    "ag": 1
   },
   {
+   "date": "2024-05-19",
+   "home": "lyon",
+   "away": "strasbourg",
+   "hg": 2,
+   "ag": 1
+  },
+  {
    "date": "2024-08-16",
    "home": "le-havre",
    "away": "paris-saint-germain",
@@ -5594,6 +6455,13 @@
    "away": "lyon",
    "hg": 3,
    "ag": 0
+  },
+  {
+   "date": "2024-08-18",
+   "home": "montpellier",
+   "away": "strasbourg",
+   "hg": 1,
+   "ag": 1
   },
   {
    "date": "2024-08-23",
@@ -5659,9 +6527,23 @@
    "ag": 1
   },
   {
+   "date": "2024-08-25",
+   "home": "strasbourg",
+   "away": "stade-rennais",
+   "hg": 3,
+   "ag": 1
+  },
+  {
    "date": "2024-08-30",
    "home": "lyon",
    "away": "strasbourg-abbr",
+   "hg": 4,
+   "ag": 3
+  },
+  {
+   "date": "2024-08-30",
+   "home": "lyon",
+   "away": "strasbourg",
    "hg": 4,
    "ag": 3
   },
@@ -5785,6 +6667,13 @@
    "ag": 2
   },
   {
+   "date": "2024-09-15",
+   "home": "strasbourg",
+   "away": "angers",
+   "hg": 1,
+   "ag": 1
+  },
+  {
    "date": "2024-09-20",
    "home": "nice",
    "away": "saint-etienne",
@@ -5811,6 +6700,13 @@
    "away": "lens",
    "hg": 1,
    "ag": 1
+  },
+  {
+   "date": "2024-09-21",
+   "home": "lille",
+   "away": "strasbourg",
+   "hg": 3,
+   "ag": 3
   },
   {
    "date": "2024-09-22",
@@ -5911,6 +6807,13 @@
    "ag": 2
   },
   {
+   "date": "2024-09-29",
+   "home": "strasbourg",
+   "away": "marseille",
+   "hg": 1,
+   "ag": 0
+  },
+  {
    "date": "2024-10-04",
    "home": "marseille",
    "away": "angers",
@@ -5974,6 +6877,13 @@
    "ag": 0
   },
   {
+   "date": "2024-10-06",
+   "home": "strasbourg",
+   "away": "lens",
+   "hg": 2,
+   "ag": 2
+  },
+  {
    "date": "2024-10-18",
    "home": "monaco",
    "away": "lille",
@@ -5999,6 +6909,13 @@
    "home": "saint-etienne",
    "away": "lens",
    "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2024-10-19",
+   "home": "paris-saint-germain",
+   "away": "strasbourg",
+   "hg": 4,
    "ag": 2
   },
   {
@@ -6100,6 +7017,13 @@
    "ag": 1
   },
   {
+   "date": "2024-10-27",
+   "home": "strasbourg",
+   "away": "nantes",
+   "hg": 3,
+   "ag": 1
+  },
+  {
    "date": "2024-11-01",
    "home": "monaco",
    "away": "angers",
@@ -6131,6 +7055,13 @@
    "date": "2024-11-02",
    "home": "saint-etienne",
    "away": "strasbourg-abbr",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2024-11-02",
+   "home": "saint-etienne",
+   "away": "strasbourg",
    "hg": 2,
    "ag": 0
   },
@@ -6191,6 +7122,13 @@
    "ag": 2
   },
   {
+   "date": "2024-11-09",
+   "home": "strasbourg",
+   "away": "monaco",
+   "hg": 1,
+   "ag": 3
+  },
+  {
    "date": "2024-11-10",
    "home": "nice",
    "away": "lille",
@@ -6289,6 +7227,13 @@
    "ag": 2
   },
   {
+   "date": "2024-11-24",
+   "home": "nice",
+   "away": "strasbourg",
+   "hg": 2,
+   "ag": 1
+  },
+  {
    "date": "2024-11-29",
    "home": "reims",
    "away": "lens",
@@ -6314,6 +7259,13 @@
    "home": "paris-saint-germain",
    "away": "nantes",
    "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2024-11-30",
+   "home": "brest",
+   "away": "strasbourg",
+   "hg": 3,
    "ag": 1
   },
   {
@@ -6413,6 +7365,13 @@
    "away": "marseille",
    "hg": 0,
    "ag": 2
+  },
+  {
+   "date": "2024-12-08",
+   "home": "strasbourg",
+   "away": "reims",
+   "hg": 0,
+   "ag": 0
   },
   {
    "date": "2024-12-13",
@@ -6478,11 +7437,270 @@
    "ag": 0
   },
   {
+   "date": "2024-12-15",
+   "home": "le-havre",
+   "away": "strasbourg",
+   "hg": 0,
+   "ag": 3
+  },
+  {
    "date": "2024-12-18",
    "home": "monaco",
    "away": "paris-saint-germain",
    "hg": 2,
    "ag": 4
+  },
+  {
+   "date": "2025-01-03",
+   "home": "nice",
+   "away": "stade-rennais",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-04",
+   "home": "saint-etienne",
+   "away": "reims",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-04",
+   "home": "lille",
+   "away": "nantes",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-04",
+   "home": "lyon",
+   "away": "montpellier",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-05",
+   "home": "angers",
+   "away": "brest",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-05",
+   "home": "lens",
+   "away": "toulouse",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-05",
+   "home": "strasbourg",
+   "away": "auxerre",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-05",
+   "home": "marseille",
+   "away": "le-havre",
+   "hg": 5,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-10",
+   "home": "nantes",
+   "away": "monaco",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-10",
+   "home": "auxerre",
+   "away": "lille",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-11",
+   "home": "brest",
+   "away": "lyon",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-11",
+   "home": "reims",
+   "away": "nice",
+   "hg": 2,
+   "ag": 4
+  },
+  {
+   "date": "2025-01-11",
+   "home": "stade-rennais",
+   "away": "marseille",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-12",
+   "home": "le-havre",
+   "away": "lens",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-12",
+   "home": "montpellier",
+   "away": "angers",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2025-01-12",
+   "home": "toulouse",
+   "away": "strasbourg",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-12",
+   "home": "paris-saint-germain",
+   "away": "saint-etienne",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-17",
+   "home": "montpellier",
+   "away": "monaco",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-17",
+   "home": "lille",
+   "away": "nice",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-18",
+   "home": "lens",
+   "away": "paris-saint-germain",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-18",
+   "home": "stade-rennais",
+   "away": "brest",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-18",
+   "home": "lyon",
+   "away": "toulouse",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-19",
+   "home": "saint-etienne",
+   "away": "nantes",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-19",
+   "home": "angers",
+   "away": "auxerre",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-19",
+   "home": "reims",
+   "away": "le-havre",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-19",
+   "home": "marseille",
+   "away": "strasbourg",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-24",
+   "home": "auxerre",
+   "away": "saint-etienne",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-25",
+   "home": "monaco",
+   "away": "stade-rennais",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-25",
+   "home": "strasbourg",
+   "away": "lille",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-25",
+   "home": "paris-saint-germain",
+   "away": "reims",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-26",
+   "home": "le-havre",
+   "away": "brest",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-26",
+   "home": "lens",
+   "away": "angers",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-26",
+   "home": "nantes",
+   "away": "lyon",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-26",
+   "home": "toulouse",
+   "away": "montpellier",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-26",
+   "home": "nice",
+   "away": "marseille",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-31",
+   "home": "montpellier",
+   "away": "lens",
+   "hg": 0,
+   "ag": 2
   },
   {
    "date": "2025-02-01",
@@ -6537,6 +7755,13 @@
    "date": "2025-02-02",
    "home": "stade-rennais",
    "away": "strasbourg-abbr",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2025-02-02",
+   "home": "stade-rennais",
+   "away": "strasbourg",
    "hg": 1,
    "ag": 0
   },
@@ -6604,6 +7829,13 @@
    "ag": 2
   },
   {
+   "date": "2025-02-09",
+   "home": "strasbourg",
+   "away": "montpellier",
+   "hg": 2,
+   "ag": 0
+  },
+  {
    "date": "2025-02-14",
    "home": "brest",
    "away": "auxerre",
@@ -6663,6 +7895,13 @@
    "date": "2025-02-16",
    "home": "stade-rennais",
    "away": "lille",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2025-02-16",
+   "home": "lens",
+   "away": "strasbourg",
    "hg": 0,
    "ag": 2
   },
@@ -6730,6 +7969,13 @@
    "ag": 1
   },
   {
+   "date": "2025-02-23",
+   "home": "strasbourg",
+   "away": "brest",
+   "hg": 0,
+   "ag": 0
+  },
+  {
    "date": "2025-02-28",
    "home": "monaco",
    "away": "reims",
@@ -6793,6 +8039,13 @@
    "ag": 0
   },
   {
+   "date": "2025-03-02",
+   "home": "auxerre",
+   "away": "strasbourg",
+   "hg": 0,
+   "ag": 1
+  },
+  {
    "date": "2025-03-07",
    "home": "toulouse",
    "away": "monaco",
@@ -6852,6 +8105,13 @@
    "date": "2025-03-09",
    "home": "nantes",
    "away": "strasbourg-abbr",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2025-03-09",
+   "home": "nantes",
+   "away": "strasbourg",
    "hg": 0,
    "ag": 1
   },
@@ -6919,8 +8179,22 @@
    "ag": 2
   },
   {
+   "date": "2025-03-16",
+   "home": "strasbourg",
+   "away": "toulouse",
+   "hg": 2,
+   "ag": 1
+  },
+  {
    "date": "2025-03-28",
    "home": "strasbourg-abbr",
+   "away": "lyon",
+   "hg": 4,
+   "ag": 2
+  },
+  {
+   "date": "2025-03-28",
+   "home": "strasbourg",
    "away": "lyon",
    "hg": 4,
    "ag": 2
@@ -7045,6 +8319,13 @@
    "ag": 1
   },
   {
+   "date": "2025-04-06",
+   "home": "reims",
+   "away": "strasbourg",
+   "hg": 0,
+   "ag": 1
+  },
+  {
    "date": "2025-04-11",
    "home": "lens",
    "away": "reims",
@@ -7068,6 +8349,13 @@
   {
    "date": "2025-04-12",
    "home": "strasbourg-abbr",
+   "away": "nice",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2025-04-12",
+   "home": "strasbourg",
    "away": "nice",
    "hg": 2,
    "ag": 2
@@ -7127,6 +8415,13 @@
    "away": "montpellier",
    "hg": 5,
    "ag": 1
+  },
+  {
+   "date": "2025-04-19",
+   "home": "monaco",
+   "away": "strasbourg",
+   "hg": 0,
+   "ag": 0
   },
   {
    "date": "2025-04-20",
@@ -7199,6 +8494,13 @@
    "ag": 1
   },
   {
+   "date": "2025-04-26",
+   "home": "strasbourg",
+   "away": "saint-etienne",
+   "hg": 3,
+   "ag": 1
+  },
+  {
    "date": "2025-04-27",
    "home": "angers",
    "away": "lille",
@@ -7260,6 +8562,13 @@
    "away": "monaco",
    "hg": 1,
    "ag": 3
+  },
+  {
+   "date": "2025-05-03",
+   "home": "strasbourg",
+   "away": "paris-saint-germain",
+   "hg": 2,
+   "ag": 1
   },
   {
    "date": "2025-05-04",
@@ -7360,6 +8669,13 @@
    "ag": 0
   },
   {
+   "date": "2025-05-10",
+   "home": "angers",
+   "away": "strasbourg",
+   "hg": 2,
+   "ag": 1
+  },
+  {
    "date": "2025-05-17",
    "home": "lens",
    "away": "monaco",
@@ -7419,6 +8735,13 @@
    "date": "2025-05-17",
    "home": "saint-etienne",
    "away": "toulouse",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2025-05-17",
+   "home": "strasbourg",
+   "away": "le-havre",
    "hg": 2,
    "ag": 3
   },
@@ -7486,6 +8809,13 @@
    "ag": 1
   },
   {
+   "date": "2025-08-17",
+   "home": "metz",
+   "away": "strasbourg",
+   "hg": 0,
+   "ag": 1
+  },
+  {
    "date": "2025-08-22",
    "home": "paris-saint-germain",
    "away": "angers",
@@ -7544,6 +8874,13 @@
   {
    "date": "2025-08-24",
    "home": "strasbourg-abbr",
+   "away": "nantes",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2025-08-24",
+   "home": "strasbourg",
    "away": "nantes",
    "hg": 1,
    "ag": 0
@@ -7612,6 +8949,13 @@
    "ag": 2
   },
   {
+   "date": "2025-08-31",
+   "home": "monaco",
+   "away": "strasbourg",
+   "hg": 3,
+   "ag": 2
+  },
+  {
    "date": "2025-09-12",
    "home": "marseille",
    "away": "lorient",
@@ -7675,6 +9019,13 @@
    "ag": 1
   },
   {
+   "date": "2025-09-14",
+   "home": "strasbourg",
+   "away": "le-havre",
+   "hg": 1,
+   "ag": 0
+  },
+  {
    "date": "2025-09-19",
    "home": "lyon",
    "away": "angers",
@@ -7731,6 +9082,13 @@
    "ag": 2
   },
   {
+   "date": "2025-09-21",
+   "home": "paris-fc",
+   "away": "strasbourg",
+   "hg": 2,
+   "ag": 3
+  },
+  {
    "date": "2025-09-22",
    "home": "marseille",
    "away": "paris-saint-germain",
@@ -7740,6 +9098,13 @@
   {
    "date": "2025-09-26",
    "home": "strasbourg-abbr",
+   "away": "marseille",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2025-09-26",
+   "home": "strasbourg",
    "away": "marseille",
    "hg": 1,
    "ag": 2
@@ -7864,9 +9229,23 @@
    "ag": 2
   },
   {
+   "date": "2025-10-05",
+   "home": "strasbourg",
+   "away": "angers",
+   "hg": 5,
+   "ag": 0
+  },
+  {
    "date": "2025-10-17",
    "home": "paris-saint-germain",
    "away": "strasbourg-abbr",
+   "hg": 3,
+   "ag": 3
+  },
+  {
+   "date": "2025-10-17",
+   "home": "paris-saint-germain",
+   "away": "strasbourg",
    "hg": 3,
    "ag": 3
   },
@@ -7990,6 +9369,13 @@
    "ag": 2
   },
   {
+   "date": "2025-10-26",
+   "home": "lyon",
+   "away": "strasbourg",
+   "hg": 2,
+   "ag": 1
+  },
+  {
    "date": "2025-10-29",
    "home": "le-havre",
    "away": "brest",
@@ -8051,6 +9437,13 @@
    "away": "stade-rennais",
    "hg": 2,
    "ag": 2
+  },
+  {
+   "date": "2025-10-29",
+   "home": "strasbourg",
+   "away": "auxerre",
+   "hg": 3,
+   "ag": 0
   },
   {
    "date": "2025-11-01",
@@ -8116,6 +9509,13 @@
    "ag": 2
   },
   {
+   "date": "2025-11-02",
+   "home": "stade-rennais",
+   "away": "strasbourg",
+   "hg": 4,
+   "ag": 1
+  },
+  {
    "date": "2025-11-07",
    "home": "paris-fc",
    "away": "stade-rennais",
@@ -8179,6 +9579,13 @@
    "ag": 1
   },
   {
+   "date": "2025-11-09",
+   "home": "strasbourg",
+   "away": "lille",
+   "hg": 2,
+   "ag": 0
+  },
+  {
    "date": "2025-11-21",
    "home": "nice",
    "away": "marseille",
@@ -8205,6 +9612,13 @@
    "away": "monaco",
    "hg": 4,
    "ag": 1
+  },
+  {
+   "date": "2025-11-22",
+   "home": "lens",
+   "away": "strasbourg",
+   "hg": 1,
+   "ag": 0
   },
   {
    "date": "2025-11-23",
@@ -8305,6 +9719,13 @@
    "ag": 0
   },
   {
+   "date": "2025-11-30",
+   "home": "strasbourg",
+   "away": "brest",
+   "hg": 1,
+   "ag": 2
+  },
+  {
    "date": "2025-12-05",
    "home": "brest",
    "away": "monaco",
@@ -8337,6 +9758,13 @@
    "home": "paris-saint-germain",
    "away": "stade-rennais",
    "hg": 5,
+   "ag": 0
+  },
+  {
+   "date": "2025-12-06",
+   "home": "toulouse",
+   "away": "strasbourg",
+   "hg": 1,
    "ag": 0
   },
   {
@@ -8431,6 +9859,230 @@
    "ag": 0
   },
   {
+   "date": "2025-12-14",
+   "home": "strasbourg",
+   "away": "lorient",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-02",
+   "home": "toulouse",
+   "away": "lens",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2026-01-03",
+   "home": "monaco",
+   "away": "lyon",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2026-01-03",
+   "home": "nice",
+   "away": "strasbourg",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-03",
+   "home": "lille",
+   "away": "stade-rennais",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-04",
+   "home": "marseille",
+   "away": "nantes",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-04",
+   "home": "brest",
+   "away": "auxerre",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-04",
+   "home": "le-havre",
+   "away": "angers",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-04",
+   "home": "lorient",
+   "away": "metz",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-04",
+   "home": "paris-saint-germain",
+   "away": "paris-fc",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-16",
+   "home": "monaco",
+   "away": "lorient",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2026-01-16",
+   "home": "paris-saint-germain",
+   "away": "lille",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-17",
+   "home": "lens",
+   "away": "auxerre",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-17",
+   "home": "toulouse",
+   "away": "nice",
+   "hg": 5,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-17",
+   "home": "angers",
+   "away": "marseille",
+   "hg": 2,
+   "ag": 5
+  },
+  {
+   "date": "2026-01-18",
+   "home": "strasbourg",
+   "away": "metz",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-18",
+   "home": "nantes",
+   "away": "paris-fc",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-18",
+   "home": "stade-rennais",
+   "away": "le-havre",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-18",
+   "home": "lyon",
+   "away": "brest",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-23",
+   "home": "auxerre",
+   "away": "paris-saint-germain",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-24",
+   "home": "stade-rennais",
+   "away": "lorient",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-24",
+   "home": "le-havre",
+   "away": "monaco",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-24",
+   "home": "marseille",
+   "away": "lens",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-25",
+   "home": "nantes",
+   "away": "nice",
+   "hg": 1,
+   "ag": 4
+  },
+  {
+   "date": "2026-01-25",
+   "home": "brest",
+   "away": "toulouse",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-25",
+   "home": "metz",
+   "away": "lyon",
+   "hg": 2,
+   "ag": 5
+  },
+  {
+   "date": "2026-01-25",
+   "home": "paris-fc",
+   "away": "angers",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-25",
+   "home": "lille",
+   "away": "strasbourg",
+   "hg": 1,
+   "ag": 4
+  },
+  {
+   "date": "2026-01-30",
+   "home": "lens",
+   "away": "le-havre",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-31",
+   "home": "paris-fc",
+   "away": "marseille",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-31",
+   "home": "lorient",
+   "away": "nantes",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-31",
+   "home": "monaco",
+   "away": "stade-rennais",
+   "hg": 4,
+   "ag": 0
+  },
+  {
    "date": "2026-02-01",
    "home": "lyon",
    "away": "lille",
@@ -8464,6 +10116,13 @@
    "away": "metz",
    "hg": 1,
    "ag": 0
+  },
+  {
+   "date": "2026-02-01",
+   "home": "strasbourg",
+   "away": "paris-saint-germain",
+   "hg": 1,
+   "ag": 2
   },
   {
    "date": "2026-02-06",
@@ -8529,6 +10188,13 @@
    "ag": 0
   },
   {
+   "date": "2026-02-08",
+   "home": "le-havre",
+   "away": "strasbourg",
+   "hg": 2,
+   "ag": 1
+  },
+  {
    "date": "2026-02-13",
    "home": "stade-rennais",
    "away": "paris-saint-germain",
@@ -8562,6 +10228,13 @@
    "away": "lens",
    "hg": 0,
    "ag": 5
+  },
+  {
+   "date": "2026-02-14",
+   "home": "marseille",
+   "away": "strasbourg",
+   "hg": 2,
+   "ag": 2
   },
   {
    "date": "2026-02-15",
@@ -8655,8 +10328,22 @@
    "ag": 0
   },
   {
+   "date": "2026-02-22",
+   "home": "strasbourg",
+   "away": "lyon",
+   "hg": 3,
+   "ag": 1
+  },
+  {
    "date": "2026-02-27",
    "home": "strasbourg-abbr",
+   "away": "lens",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-02-27",
+   "home": "strasbourg",
    "away": "lens",
    "hg": 1,
    "ag": 1
@@ -8744,6 +10431,13 @@
    "away": "angers",
    "hg": 0,
    "ag": 1
+  },
+  {
+   "date": "2026-03-07",
+   "home": "auxerre",
+   "away": "strasbourg",
+   "hg": 0,
+   "ag": 0
   },
   {
    "date": "2026-03-08",
@@ -8837,6 +10531,13 @@
    "ag": 2
   },
   {
+   "date": "2026-03-15",
+   "home": "strasbourg",
+   "away": "paris-fc",
+   "hg": 0,
+   "ag": 0
+  },
+  {
    "date": "2026-03-20",
    "home": "lens",
    "away": "angers",
@@ -8900,6 +10601,13 @@
    "ag": 3
   },
   {
+   "date": "2026-03-22",
+   "home": "nantes",
+   "away": "strasbourg",
+   "hg": 2,
+   "ag": 3
+  },
+  {
    "date": "2026-04-03",
    "home": "paris-saint-germain",
    "away": "toulouse",
@@ -8926,6 +10634,13 @@
    "away": "stade-rennais",
    "hg": 3,
    "ag": 4
+  },
+  {
+   "date": "2026-04-04",
+   "home": "strasbourg",
+   "away": "nice",
+   "hg": 3,
+   "ag": 1
   },
   {
    "date": "2026-04-05",
@@ -9075,6 +10790,13 @@
    "ag": 3
   },
   {
+   "date": "2026-04-19",
+   "home": "strasbourg",
+   "away": "stade-rennais",
+   "hg": 0,
+   "ag": 3
+  },
+  {
    "date": "2026-04-22",
    "home": "paris-saint-germain",
    "away": "nantes",
@@ -9145,6 +10867,13 @@
    "ag": 1
   },
   {
+   "date": "2026-04-26",
+   "home": "lorient",
+   "away": "strasbourg",
+   "hg": 2,
+   "ag": 3
+  },
+  {
    "date": "2026-05-02",
    "home": "paris-saint-germain",
    "away": "lorient",
@@ -9205,6 +10934,13 @@
    "home": "lyon",
    "away": "stade-rennais",
    "hg": 4,
+   "ag": 2
+  },
+  {
+   "date": "2026-05-03",
+   "home": "strasbourg",
+   "away": "toulouse",
+   "hg": 1,
    "ag": 2
   },
   {
@@ -9271,6 +11007,13 @@
    "ag": 1
   },
   {
+   "date": "2026-05-10",
+   "home": "angers",
+   "away": "strasbourg",
+   "hg": 1,
+   "ag": 1
+  },
+  {
    "date": "2026-05-13",
    "home": "brest",
    "away": "strasbourg-abbr",
@@ -9282,6 +11025,13 @@
    "home": "lens",
    "away": "paris-saint-germain",
    "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2026-05-13",
+   "home": "brest",
+   "away": "strasbourg",
+   "hg": 1,
    "ag": 2
   },
   {
@@ -9341,9 +11091,30 @@
    "ag": 0
   },
   {
+   "date": "2026-05-17",
+   "home": "nantes",
+   "away": "toulouse",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2026-05-17",
+   "home": "strasbourg",
+   "away": "monaco",
+   "hg": 5,
+   "ag": 4
+  },
+  {
    "date": "2026-08-21",
    "home": "marseille",
    "away": "strasbourg-abbr",
+   "hg": 4,
+   "ag": 0
+  },
+  {
+   "date": "2026-08-21",
+   "home": "marseille",
+   "away": "strasbourg",
    "hg": 4,
    "ag": 0
   },
@@ -9446,6 +11217,13 @@
    "ag": 1
   },
   {
+   "date": "2026-08-29",
+   "home": "strasbourg",
+   "away": "lens",
+   "hg": 2,
+   "ag": 1
+  },
+  {
    "date": "2026-08-30",
    "home": "paris-fc",
    "away": "nice",
@@ -9526,6 +11304,139 @@
    "date": "2026-09-06",
    "home": "angers",
    "away": "stade-rennais",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2026-09-06",
+   "home": "troyes",
+   "away": "strasbourg",
+   "hg": 2,
+   "ag": 6
+  },
+  {
+   "date": "2026-09-11",
+   "home": "stade-rennais",
+   "away": "marseille",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-12",
+   "home": "strasbourg",
+   "away": "monaco",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-12",
+   "home": "auxerre",
+   "away": "nice",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-12",
+   "home": "le-havre",
+   "away": "angers",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-12",
+   "home": "lorient",
+   "away": "toulouse",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2026-09-12",
+   "home": "paris-fc",
+   "away": "lyon",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-13",
+   "home": "lille",
+   "away": "troyes",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-13",
+   "home": "le-mans",
+   "away": "lens",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2026-09-13",
+   "home": "brest",
+   "away": "paris-saint-germain",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-18",
+   "home": "monaco",
+   "away": "lens",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-19",
+   "home": "paris-fc",
+   "away": "strasbourg",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-19",
+   "home": "angers",
+   "away": "troyes",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-19",
+   "home": "le-mans",
+   "away": "lorient",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-19",
+   "home": "lyon",
+   "away": "stade-rennais",
+   "hg": 4,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-19",
+   "home": "toulouse",
+   "away": "le-havre",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2026-09-20",
+   "home": "auxerre",
+   "away": "brest",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-20",
+   "home": "nice",
+   "away": "lille",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-20",
+   "home": "marseille",
+   "away": "paris-saint-germain",
    "hg": 1,
    "ag": 2
   }

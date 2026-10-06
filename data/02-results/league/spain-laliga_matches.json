@@ -1,13 +1,6 @@
 {
  "league": "spain-laliga",
- "source": "espn-history",
- "seasons": [
-  "2026",
-  "2026"
- ],
- "fetchedAt": "2026-09-08",
- "cup": false,
- "droppedUnmapped": 0,
+ "source": "fd CSV FTHG/FTAG",
  "matches": [
   {
    "date": "2022-02-04",
@@ -2201,6 +2194,272 @@
    "ag": 1
   },
   {
+   "date": "2023-01-06",
+   "home": "elche",
+   "away": "celta",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-06",
+   "home": "valencia",
+   "away": "cadiz",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-07",
+   "home": "villarreal",
+   "away": "real-madrid",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-07",
+   "home": "mallorca",
+   "away": "real-valladolid",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-07",
+   "home": "espanyol",
+   "away": "girona",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2023-01-08",
+   "home": "almeria",
+   "away": "sociedad",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2023-01-08",
+   "home": "rayo-vallecano",
+   "away": "betis",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2023-01-08",
+   "home": "sevilla",
+   "away": "getafe",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-08",
+   "home": "atletico-madrid",
+   "away": "barcelona",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-09",
+   "home": "athletic-bilbao",
+   "away": "osasuna",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-13",
+   "home": "celta",
+   "away": "villarreal",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-14",
+   "home": "real-valladolid",
+   "away": "rayo-vallecano",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-14",
+   "home": "girona",
+   "away": "sevilla",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-14",
+   "home": "osasuna",
+   "away": "mallorca",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-14",
+   "home": "sociedad",
+   "away": "athletic-bilbao",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-15",
+   "home": "getafe",
+   "away": "espanyol",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2023-01-15",
+   "home": "almeria",
+   "away": "atletico-madrid",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-16",
+   "home": "cadiz",
+   "away": "elche",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-20",
+   "home": "mallorca",
+   "away": "celta",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-21",
+   "home": "rayo-vallecano",
+   "away": "sociedad",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2023-01-21",
+   "home": "espanyol",
+   "away": "betis",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-21",
+   "home": "atletico-madrid",
+   "away": "real-valladolid",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-21",
+   "home": "sevilla",
+   "away": "cadiz",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-22",
+   "home": "villarreal",
+   "away": "girona",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-22",
+   "home": "elche",
+   "away": "osasuna",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-22",
+   "home": "barcelona",
+   "away": "getafe",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-22",
+   "home": "athletic-bilbao",
+   "away": "real-madrid",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2023-01-23",
+   "home": "valencia",
+   "away": "almeria",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2023-01-27",
+   "home": "almeria",
+   "away": "espanyol",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-28",
+   "home": "cadiz",
+   "away": "mallorca",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-28",
+   "home": "girona",
+   "away": "barcelona",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-28",
+   "home": "sevilla",
+   "away": "elche",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-28",
+   "home": "getafe",
+   "away": "betis",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-29",
+   "home": "real-valladolid",
+   "away": "valencia",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-29",
+   "home": "osasuna",
+   "away": "atletico-madrid",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-29",
+   "home": "celta",
+   "away": "athletic-bilbao",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-29",
+   "home": "real-madrid",
+   "away": "sociedad",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-30",
+   "home": "villarreal",
+   "away": "rayo-vallecano",
+   "hg": 0,
+   "ag": 1
+  },
+  {
    "date": "2023-02-01",
    "home": "betis",
    "away": "barcelona",
@@ -2292,6 +2551,27 @@
    "ag": 0
   },
   {
+   "date": "2023-02-11",
+   "home": "almeria",
+   "away": "betis",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2023-02-11",
+   "home": "sevilla",
+   "away": "mallorca",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2023-02-11",
+   "home": "valencia",
+   "away": "athletic-bilbao",
+   "hg": 1,
+   "ag": 2
+  },
+  {
    "date": "2023-02-12",
    "home": "getafe",
    "away": "rayo-vallecano",
@@ -2317,6 +2597,20 @@
    "home": "real-valladolid",
    "away": "osasuna",
    "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2023-02-13",
+   "home": "espanyol",
+   "away": "sociedad",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2023-02-15",
+   "home": "real-madrid",
+   "away": "elche",
+   "hg": 4,
    "ag": 0
   },
   {
@@ -4770,6 +5064,279 @@
    "ag": 0
   },
   {
+   "date": "2024-01-02",
+   "home": "getafe",
+   "away": "rayo-vallecano",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2024-01-02",
+   "home": "sociedad",
+   "away": "alaves",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-02",
+   "home": "valencia",
+   "away": "villarreal",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-03",
+   "home": "granada",
+   "away": "cadiz",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-03",
+   "home": "celta",
+   "away": "betis",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-03",
+   "home": "real-madrid",
+   "away": "mallorca",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-03",
+   "home": "girona",
+   "away": "atletico-madrid",
+   "hg": 4,
+   "ag": 3
+  },
+  {
+   "date": "2024-01-04",
+   "home": "osasuna",
+   "away": "almeria",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-04",
+   "home": "sevilla",
+   "away": "athletic-bilbao",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2024-01-04",
+   "home": "las-palmas",
+   "away": "barcelona",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2024-01-12",
+   "home": "sevilla",
+   "away": "alaves",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2024-01-13",
+   "home": "las-palmas",
+   "away": "villarreal",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-13",
+   "home": "mallorca",
+   "away": "celta",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-13",
+   "home": "athletic-bilbao",
+   "away": "sociedad",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-13",
+   "home": "betis",
+   "away": "granada",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-14",
+   "home": "almeria",
+   "away": "girona",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-14",
+   "home": "cadiz",
+   "away": "valencia",
+   "hg": 1,
+   "ag": 4
+  },
+  {
+   "date": "2024-01-19",
+   "home": "alaves",
+   "away": "cadiz",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-20",
+   "home": "rayo-vallecano",
+   "away": "las-palmas",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2024-01-20",
+   "home": "villarreal",
+   "away": "mallorca",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-20",
+   "home": "valencia",
+   "away": "athletic-bilbao",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-20",
+   "home": "celta",
+   "away": "sociedad",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-21",
+   "home": "osasuna",
+   "away": "getafe",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2024-01-21",
+   "home": "real-madrid",
+   "away": "almeria",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2024-01-21",
+   "home": "betis",
+   "away": "barcelona",
+   "hg": 2,
+   "ag": 4
+  },
+  {
+   "date": "2024-01-21",
+   "home": "girona",
+   "away": "sevilla",
+   "hg": 5,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-22",
+   "home": "granada",
+   "away": "atletico-madrid",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-26",
+   "home": "almeria",
+   "away": "alaves",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2024-01-27",
+   "home": "sociedad",
+   "away": "rayo-vallecano",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-27",
+   "home": "las-palmas",
+   "away": "real-madrid",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2024-01-27",
+   "home": "barcelona",
+   "away": "villarreal",
+   "hg": 3,
+   "ag": 5
+  },
+  {
+   "date": "2024-01-27",
+   "home": "mallorca",
+   "away": "betis",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-28",
+   "home": "celta",
+   "away": "girona",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-28",
+   "home": "cadiz",
+   "away": "athletic-bilbao",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-28",
+   "home": "sevilla",
+   "away": "osasuna",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-28",
+   "home": "atletico-madrid",
+   "away": "valencia",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-29",
+   "home": "getafe",
+   "away": "granada",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-31",
+   "home": "barcelona",
+   "away": "osasuna",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-31",
+   "home": "atletico-madrid",
+   "away": "rayo-vallecano",
+   "hg": 2,
+   "ag": 1
+  },
+  {
    "date": "2024-02-01",
    "home": "getafe",
    "away": "real-madrid",
@@ -7164,6 +7731,216 @@
    "ag": 5
   },
   {
+   "date": "2025-01-03",
+   "home": "valencia",
+   "away": "real-madrid",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-10",
+   "home": "rayo-vallecano",
+   "away": "celta",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-11",
+   "home": "alaves",
+   "away": "girona",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-11",
+   "home": "real-valladolid",
+   "away": "betis",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-11",
+   "home": "espanyol",
+   "away": "leganes",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-11",
+   "home": "sevilla",
+   "away": "valencia",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-12",
+   "home": "las-palmas",
+   "away": "getafe",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-12",
+   "home": "atletico-madrid",
+   "away": "osasuna",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-13",
+   "home": "sociedad",
+   "away": "villarreal",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-17",
+   "home": "espanyol",
+   "away": "real-valladolid",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-18",
+   "home": "girona",
+   "away": "sevilla",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-18",
+   "home": "leganes",
+   "away": "atletico-madrid",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-18",
+   "home": "betis",
+   "away": "alaves",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2025-01-18",
+   "home": "getafe",
+   "away": "barcelona",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-19",
+   "home": "celta",
+   "away": "athletic-bilbao",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-19",
+   "home": "real-madrid",
+   "away": "las-palmas",
+   "hg": 4,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-19",
+   "home": "osasuna",
+   "away": "rayo-vallecano",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-19",
+   "home": "valencia",
+   "away": "sociedad",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-20",
+   "home": "villarreal",
+   "away": "mallorca",
+   "hg": 4,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-24",
+   "home": "las-palmas",
+   "away": "osasuna",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-25",
+   "home": "mallorca",
+   "away": "betis",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-25",
+   "home": "atletico-madrid",
+   "away": "villarreal",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-25",
+   "home": "sevilla",
+   "away": "espanyol",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-25",
+   "home": "real-valladolid",
+   "away": "real-madrid",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2025-01-26",
+   "home": "rayo-vallecano",
+   "away": "girona",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-26",
+   "home": "sociedad",
+   "away": "getafe",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2025-01-26",
+   "home": "athletic-bilbao",
+   "away": "leganes",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-26",
+   "home": "barcelona",
+   "away": "valencia",
+   "hg": 7,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-27",
+   "home": "alaves",
+   "away": "celta",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-31",
+   "home": "leganes",
+   "away": "rayo-vallecano",
+   "hg": 0,
+   "ag": 1
+  },
+  {
    "date": "2025-02-01",
    "home": "getafe",
    "away": "sevilla",
@@ -9544,6 +10321,307 @@
    "ag": 2
   },
   {
+   "date": "2026-01-02",
+   "home": "rayo-vallecano",
+   "away": "getafe",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-03",
+   "home": "celta",
+   "away": "valencia",
+   "hg": 4,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-03",
+   "home": "osasuna",
+   "away": "athletic-bilbao",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-03",
+   "home": "elche",
+   "away": "villarreal",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2026-01-03",
+   "home": "espanyol",
+   "away": "barcelona",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-04",
+   "home": "sevilla",
+   "away": "levante",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2026-01-04",
+   "home": "real-madrid",
+   "away": "betis",
+   "hg": 5,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-04",
+   "home": "alaves",
+   "away": "real-oviedo",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-04",
+   "home": "mallorca",
+   "away": "girona",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-04",
+   "home": "sociedad",
+   "away": "atletico-madrid",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-09",
+   "home": "getafe",
+   "away": "sociedad",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-10",
+   "home": "real-oviedo",
+   "away": "betis",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-10",
+   "home": "villarreal",
+   "away": "alaves",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-10",
+   "home": "girona",
+   "away": "osasuna",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-10",
+   "home": "valencia",
+   "away": "elche",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-11",
+   "home": "rayo-vallecano",
+   "away": "mallorca",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-11",
+   "home": "levante",
+   "away": "espanyol",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-12",
+   "home": "sevilla",
+   "away": "celta",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-16",
+   "home": "espanyol",
+   "away": "girona",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-17",
+   "home": "real-madrid",
+   "away": "levante",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-17",
+   "home": "mallorca",
+   "away": "athletic-bilbao",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-17",
+   "home": "osasuna",
+   "away": "real-oviedo",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-17",
+   "home": "betis",
+   "away": "villarreal",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-18",
+   "home": "getafe",
+   "away": "valencia",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-18",
+   "home": "atletico-madrid",
+   "away": "alaves",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-18",
+   "home": "celta",
+   "away": "rayo-vallecano",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-18",
+   "home": "sociedad",
+   "away": "barcelona",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-19",
+   "home": "elche",
+   "away": "sevilla",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-23",
+   "home": "levante",
+   "away": "elche",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-24",
+   "home": "rayo-vallecano",
+   "away": "osasuna",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2026-01-24",
+   "home": "valencia",
+   "away": "espanyol",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-24",
+   "home": "sevilla",
+   "away": "athletic-bilbao",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-24",
+   "home": "villarreal",
+   "away": "real-madrid",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-25",
+   "home": "atletico-madrid",
+   "away": "mallorca",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-25",
+   "home": "barcelona",
+   "away": "real-oviedo",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-25",
+   "home": "sociedad",
+   "away": "celta",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-25",
+   "home": "alaves",
+   "away": "betis",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-26",
+   "home": "girona",
+   "away": "getafe",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-30",
+   "home": "espanyol",
+   "away": "alaves",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-31",
+   "home": "real-oviedo",
+   "away": "girona",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-31",
+   "home": "osasuna",
+   "away": "villarreal",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-31",
+   "home": "levante",
+   "away": "atletico-madrid",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-31",
+   "home": "elche",
+   "away": "barcelona",
+   "hg": 1,
+   "ag": 3
+  },
+  {
    "date": "2026-02-01",
    "home": "real-madrid",
    "away": "rayo-vallecano",
@@ -10988,6 +12066,202 @@
   {
    "date": "2026-09-07",
    "home": "elche",
+   "away": "sociedad",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2026-09-11",
+   "home": "sevilla",
+   "away": "valencia",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-12",
+   "home": "racing-santander",
+   "away": "alaves",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-12",
+   "home": "osasuna",
+   "away": "espanyol",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2026-09-12",
+   "home": "athletic-bilbao",
+   "away": "elche",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-12",
+   "home": "real-madrid",
+   "away": "rayo-vallecano",
+   "hg": 4,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-13",
+   "home": "celta",
+   "away": "malaga",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-13",
+   "home": "levante",
+   "away": "barcelona",
+   "hg": 2,
+   "ag": 4
+  },
+  {
+   "date": "2026-09-13",
+   "home": "getafe",
+   "away": "deportivo",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-13",
+   "home": "sociedad",
+   "away": "atletico-madrid",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2026-09-14",
+   "home": "villarreal",
+   "away": "betis",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2026-09-15",
+   "home": "rayo-vallecano",
+   "away": "espanyol",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-15",
+   "home": "alaves",
+   "away": "valencia",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-15",
+   "home": "elche",
+   "away": "real-madrid",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2026-09-16",
+   "home": "atletico-madrid",
+   "away": "osasuna",
+   "hg": 4,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-16",
+   "home": "deportivo",
+   "away": "sevilla",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-16",
+   "home": "barcelona",
+   "away": "racing-santander",
+   "hg": 7,
+   "ag": 2
+  },
+  {
+   "date": "2026-09-17",
+   "home": "betis",
+   "away": "getafe",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-17",
+   "home": "malaga",
+   "away": "villarreal",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2026-09-18",
+   "home": "espanyol",
+   "away": "elche",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2026-09-19",
+   "home": "osasuna",
+   "away": "rayo-vallecano",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-19",
+   "home": "athletic-bilbao",
+   "away": "alaves",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-19",
+   "home": "celta",
+   "away": "racing-santander",
+   "hg": 5,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-19",
+   "home": "sevilla",
+   "away": "barcelona",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2026-09-20",
+   "home": "getafe",
+   "away": "malaga",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-20",
+   "home": "atletico-madrid",
+   "away": "real-madrid",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-20",
+   "home": "deportivo",
+   "away": "betis",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-20",
+   "home": "villarreal",
+   "away": "levante",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-20",
+   "home": "valencia",
    "away": "sociedad",
    "hg": 2,
    "ag": 3

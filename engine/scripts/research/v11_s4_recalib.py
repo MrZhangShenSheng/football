@@ -35,7 +35,9 @@ CAP = 500_000.0
 LEAGUES = ["uefa-nations","england-premier","spain-laliga","germany-bundesliga","italy-serie-a",
            "france-ligue1","netherlands-eredivisie","portugal-primeira","korea","japan",
            "denmark","sweden","norway","brazil","saudi","usa","france-ligue2",
-           "world-cup","world-cup-qual","euro-qual","uefa-champions","uefa-europa"]
+           "world-cup","world-cup-qual","euro-qual","uefa-champions","uefa-europa",
+           "england-championship","germany-bundesliga2","spain-liga2","italy-serie-b",
+           "belgium-first-a","turkey-super-lig","greece-super","SC0"]
 
 
 def score_to_matrix_key(score: str) -> str:

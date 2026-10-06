@@ -26,7 +26,9 @@ OUT_DIR = ROOT / "data" / "03-predictions"
 LEAGUES = ["uefa-nations","england-premier","spain-laliga","germany-bundesliga","italy-serie-a",
            "france-ligue1","netherlands-eredivisie","portugal-primeira","korea","japan",
            "denmark","sweden","norway","brazil","saudi","usa","france-ligue2",
-           "world-cup","world-cup-qual","euro-qual","uefa-champions","uefa-europa"]
+           "world-cup","world-cup-qual","euro-qual","uefa-champions","uefa-europa",
+           "england-championship","germany-bundesliga2","spain-liga2","italy-serie-b",
+           "belgium-first-a","turkey-super-lig","greece-super","SC0"]
 BOOM_V2 = 0.05       # S4 终校
 HAD_HOT_V2 = 1.5     # S4 终校
 TOP_N_PICKS = 4

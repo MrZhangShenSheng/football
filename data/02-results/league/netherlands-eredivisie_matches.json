@@ -1,13 +1,6 @@
 {
  "league": "netherlands-eredivisie",
- "source": "espn-history",
- "seasons": [
-  "2026",
-  "2026"
- ],
- "fetchedAt": "2026-09-08",
- "cup": false,
- "droppedUnmapped": 0,
+ "source": "fd CSV FTHG/FTAG",
  "matches": [
   {
    "date": "2022-02-05",
@@ -1809,6 +1802,286 @@
    "ag": 2
   },
   {
+   "date": "2023-01-06",
+   "home": "twente",
+   "away": "emmen",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-07",
+   "home": "az-alkmaar",
+   "away": "vitesse",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-07",
+   "home": "fortuna-sittard",
+   "away": "go-ahead-eagles",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2023-01-07",
+   "home": "psv",
+   "away": "sparta-rotterdam",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-08",
+   "home": "utrecht",
+   "away": "feyenoord",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-08",
+   "home": "cambuur",
+   "away": "volendam",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2023-01-08",
+   "home": "nec-nijmegen",
+   "away": "ajax",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-08",
+   "home": "excelsior-rotterdam",
+   "away": "groningen",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-14",
+   "home": "heerenveen",
+   "away": "az-alkmaar",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2023-01-14",
+   "home": "ajax",
+   "away": "twente",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-14",
+   "home": "sparta-rotterdam",
+   "away": "excelsior-rotterdam",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-15",
+   "home": "vitesse",
+   "away": "nec-nijmegen",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-15",
+   "home": "fortuna-sittard",
+   "away": "psv",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2023-01-15",
+   "home": "go-ahead-eagles",
+   "away": "utrecht",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2023-01-15",
+   "home": "emmen",
+   "away": "cambuur",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-15",
+   "home": "groningen",
+   "away": "feyenoord",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2023-01-20",
+   "home": "excelsior-rotterdam",
+   "away": "volendam",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-21",
+   "home": "nec-nijmegen",
+   "away": "emmen",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-21",
+   "home": "cambuur",
+   "away": "sparta-rotterdam",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2023-01-21",
+   "home": "psv",
+   "away": "vitesse",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-22",
+   "home": "heerenveen",
+   "away": "groningen",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-22",
+   "home": "feyenoord",
+   "away": "ajax",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-22",
+   "home": "twente",
+   "away": "utrecht",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-22",
+   "home": "az-alkmaar",
+   "away": "fortuna-sittard",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-24",
+   "home": "emmen",
+   "away": "psv",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-25",
+   "home": "go-ahead-eagles",
+   "away": "az-alkmaar",
+   "hg": 1,
+   "ag": 4
+  },
+  {
+   "date": "2023-01-25",
+   "home": "vitesse",
+   "away": "twente",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2023-01-25",
+   "home": "fortuna-sittard",
+   "away": "heerenveen",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-25",
+   "home": "feyenoord",
+   "away": "nec-nijmegen",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-25",
+   "home": "utrecht",
+   "away": "excelsior-rotterdam",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-26",
+   "home": "groningen",
+   "away": "cambuur",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-26",
+   "home": "ajax",
+   "away": "volendam",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-28",
+   "home": "psv",
+   "away": "go-ahead-eagles",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2023-01-28",
+   "home": "heerenveen",
+   "away": "vitesse",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2023-01-28",
+   "home": "nec-nijmegen",
+   "away": "sparta-rotterdam",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-28",
+   "home": "az-alkmaar",
+   "away": "utrecht",
+   "hg": 5,
+   "ag": 5
+  },
+  {
+   "date": "2023-01-29",
+   "home": "twente",
+   "away": "feyenoord",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-01-29",
+   "home": "excelsior-rotterdam",
+   "away": "ajax",
+   "hg": 1,
+   "ag": 4
+  },
+  {
+   "date": "2023-01-29",
+   "home": "volendam",
+   "away": "groningen",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2023-01-29",
+   "home": "cambuur",
+   "away": "fortuna-sittard",
+   "hg": 1,
+   "ag": 2
+  },
+  {
    "date": "2023-02-01",
    "home": "rkc-waalwijk",
    "away": "go-ahead-eagles",
@@ -2626,6 +2899,13 @@
    "away": "emmen",
    "hg": 5,
    "ag": 1
+  },
+  {
+   "date": "2023-05-14",
+   "home": "groningen",
+   "away": "ajax",
+   "hg": 2,
+   "ag": 3
   },
   {
    "date": "2023-05-16",
@@ -3802,6 +4082,160 @@
    "away": "psv",
    "hg": 0,
    "ag": 4
+  },
+  {
+   "date": "2024-01-13",
+   "home": "fortuna-sittard",
+   "away": "sparta-rotterdam",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2024-01-13",
+   "home": "twente",
+   "away": "az-alkmaar",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-13",
+   "home": "pec-zwolle",
+   "away": "heerenveen",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2024-01-13",
+   "home": "psv",
+   "away": "excelsior-rotterdam",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-14",
+   "home": "volendam",
+   "away": "almere-city",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-14",
+   "home": "go-ahead-eagles",
+   "away": "ajax",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2024-01-14",
+   "home": "vitesse",
+   "away": "utrecht",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-14",
+   "home": "feyenoord",
+   "away": "nec-nijmegen",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2024-01-19",
+   "home": "excelsior-rotterdam",
+   "away": "heerenveen",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-20",
+   "home": "nec-nijmegen",
+   "away": "twente",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-20",
+   "home": "az-alkmaar",
+   "away": "pec-zwolle",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2024-01-21",
+   "home": "utrecht",
+   "away": "psv",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-21",
+   "home": "sparta-rotterdam",
+   "away": "go-ahead-eagles",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2024-01-21",
+   "home": "vitesse",
+   "away": "feyenoord",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2024-01-24",
+   "home": "almere-city",
+   "away": "fortuna-sittard",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-26",
+   "home": "pec-zwolle",
+   "away": "vitesse",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-27",
+   "home": "psv",
+   "away": "almere-city",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-27",
+   "home": "excelsior-rotterdam",
+   "away": "utrecht",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2024-01-28",
+   "home": "heerenveen",
+   "away": "az-alkmaar",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2024-01-28",
+   "home": "feyenoord",
+   "away": "twente",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2024-01-28",
+   "home": "go-ahead-eagles",
+   "away": "nec-nijmegen",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2024-01-28",
+   "home": "volendam",
+   "away": "fortuna-sittard",
+   "hg": 0,
+   "ag": 1
   },
   {
    "date": "2024-02-02",
@@ -5827,6 +6261,132 @@
    "ag": 1
   },
   {
+   "date": "2025-01-10",
+   "home": "fortuna-sittard",
+   "away": "go-ahead-eagles",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2025-01-11",
+   "home": "pec-zwolle",
+   "away": "nec-nijmegen",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-11",
+   "home": "psv",
+   "away": "az-alkmaar",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-12",
+   "home": "twente",
+   "away": "willem-ii",
+   "hg": 6,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-12",
+   "home": "feyenoord",
+   "away": "utrecht",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-12",
+   "home": "groningen",
+   "away": "almere-city",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-12",
+   "home": "nac-breda",
+   "away": "heerenveen",
+   "hg": 2,
+   "ag": 4
+  },
+  {
+   "date": "2025-01-18",
+   "home": "pec-zwolle",
+   "away": "psv",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-18",
+   "home": "utrecht",
+   "away": "az-alkmaar",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-18",
+   "home": "willem-ii",
+   "away": "feyenoord",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-18",
+   "home": "go-ahead-eagles",
+   "away": "groningen",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-19",
+   "home": "nac-breda",
+   "away": "twente",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-19",
+   "home": "heerenveen",
+   "away": "ajax",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-19",
+   "home": "nec-nijmegen",
+   "away": "fortuna-sittard",
+   "hg": 4,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-25",
+   "home": "psv",
+   "away": "nac-breda",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-25",
+   "home": "groningen",
+   "away": "heerenveen",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-26",
+   "home": "fortuna-sittard",
+   "away": "pec-zwolle",
+   "hg": 1,
+   "ag": 4
+  },
+  {
+   "date": "2025-01-26",
+   "home": "az-alkmaar",
+   "away": "sparta-rotterdam",
+   "hg": 1,
+   "ag": 2
+  },
+  {
    "date": "2025-02-01",
    "home": "pec-zwolle",
    "away": "utrecht",
@@ -7801,6 +8361,195 @@
    "ag": 3
   },
   {
+   "date": "2026-01-10",
+   "home": "az-alkmaar",
+   "away": "volendam",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-10",
+   "home": "twente",
+   "away": "pec-zwolle",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-10",
+   "home": "psv",
+   "away": "excelsior-rotterdam",
+   "hg": 5,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-10",
+   "home": "groningen",
+   "away": "nac-breda",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-11",
+   "home": "heerenveen",
+   "away": "feyenoord",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-11",
+   "home": "go-ahead-eagles",
+   "away": "fortuna-sittard",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-11",
+   "home": "telstar",
+   "away": "ajax",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2026-01-17",
+   "home": "ajax",
+   "away": "go-ahead-eagles",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-17",
+   "home": "pec-zwolle",
+   "away": "az-alkmaar",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-17",
+   "home": "excelsior-rotterdam",
+   "away": "telstar",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-17",
+   "home": "fortuna-sittard",
+   "away": "psv",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-17",
+   "home": "nac-breda",
+   "away": "nec-nijmegen",
+   "hg": 3,
+   "ag": 4
+  },
+  {
+   "date": "2026-01-18",
+   "home": "heerenveen",
+   "away": "groningen",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-18",
+   "home": "volendam",
+   "away": "utrecht",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-18",
+   "home": "feyenoord",
+   "away": "sparta-rotterdam",
+   "hg": 3,
+   "ag": 4
+  },
+  {
+   "date": "2026-01-21",
+   "home": "az-alkmaar",
+   "away": "excelsior-rotterdam",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-24",
+   "home": "ajax",
+   "away": "volendam",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-24",
+   "home": "nec-nijmegen",
+   "away": "pec-zwolle",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-24",
+   "home": "psv",
+   "away": "nac-breda",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-24",
+   "home": "twente",
+   "away": "excelsior-rotterdam",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-25",
+   "home": "telstar",
+   "away": "az-alkmaar",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-25",
+   "home": "groningen",
+   "away": "fortuna-sittard",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-25",
+   "home": "utrecht",
+   "away": "sparta-rotterdam",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-30",
+   "home": "nac-breda",
+   "away": "twente",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-31",
+   "home": "az-alkmaar",
+   "away": "nec-nijmegen",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2026-01-31",
+   "home": "pec-zwolle",
+   "away": "telstar",
+   "hg": 4,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-31",
+   "home": "sparta-rotterdam",
+   "away": "groningen",
+   "hg": 2,
+   "ag": 0
+  },
+  {
    "date": "2026-02-01",
    "home": "excelsior-rotterdam",
    "away": "ajax",
@@ -8599,6 +9348,13 @@
    "ag": 0
   },
   {
+   "date": "2026-05-10",
+   "home": "nac-breda",
+   "away": "heerenveen",
+   "hg": 2,
+   "ag": 0
+  },
+  {
    "date": "2026-05-11",
    "home": "nac-breda",
    "away": "heerenveen",
@@ -8968,6 +9724,160 @@
    "away": "fortuna-sittard",
    "hg": 2,
    "ag": 3
+  },
+  {
+   "date": "2026-09-08",
+   "home": "utrecht",
+   "away": "go-ahead-eagles",
+   "hg": 3,
+   "ag": 3
+  },
+  {
+   "date": "2026-09-08",
+   "home": "nec-nijmegen",
+   "away": "excelsior-rotterdam",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2026-09-09",
+   "home": "twente",
+   "away": "telstar",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-11",
+   "home": "az-alkmaar",
+   "away": "willem-ii",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-12",
+   "home": "twente",
+   "away": "den-haag",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-12",
+   "home": "go-ahead-eagles",
+   "away": "groningen",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-12",
+   "home": "fortuna-sittard",
+   "away": "ajax",
+   "hg": 1,
+   "ag": 5
+  },
+  {
+   "date": "2026-09-12",
+   "home": "cambuur",
+   "away": "nec-nijmegen",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-13",
+   "home": "excelsior-rotterdam",
+   "away": "utrecht",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2026-09-13",
+   "home": "heerenveen",
+   "away": "telstar",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-13",
+   "home": "pec-zwolle",
+   "away": "feyenoord",
+   "hg": 0,
+   "ag": 7
+  },
+  {
+   "date": "2026-09-13",
+   "home": "psv",
+   "away": "sparta-rotterdam",
+   "hg": 4,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-15",
+   "home": "ajax",
+   "away": "willem-ii",
+   "hg": 5,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-18",
+   "home": "groningen",
+   "away": "pec-zwolle",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-19",
+   "home": "den-haag",
+   "away": "cambuur",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-19",
+   "home": "sparta-rotterdam",
+   "away": "heerenveen",
+   "hg": 0,
+   "ag": 4
+  },
+  {
+   "date": "2026-09-19",
+   "home": "ajax",
+   "away": "excelsior-rotterdam",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2026-09-19",
+   "home": "willem-ii",
+   "away": "fortuna-sittard",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-20",
+   "home": "feyenoord",
+   "away": "utrecht",
+   "hg": 5,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-20",
+   "home": "az-alkmaar",
+   "away": "telstar",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-20",
+   "home": "twente",
+   "away": "psv",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2026-09-20",
+   "home": "nec-nijmegen",
+   "away": "go-ahead-eagles",
+   "hg": 1,
+   "ag": 1
   }
  ]
 }
