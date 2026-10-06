@@ -19,6 +19,8 @@ LAG_DAYS = 2
 DC_ROLLING_ENV = 1.35   # 滚动代理联赛进球环境基线（Task12 裁定②·与 paper_strength._xg_z 缺省同源）
 ROLLING_SHRINK_K = 5    # 预注册舱 v2 hyperparamsFixed.rollingShrinkK（小样本收缩常数）
 OPPONENT_ADJ_K = 0.5    # 预注册舱 v3 hyperparamsFixed.opponentAdjK（对手强度调整系数·保守半额）
+# v10 硬仗口径：国家队实力分可信场源（预选赛库剔除=虐鱼污染清洗·2026-10-06 大哥拍板"洗"）
+HARD_EXCLUDE = ("world-cup-qual", "euro-qual")   # v10 硬仗口径剔除的预选赛库
 DC_ROLLING_N = 10       # 滚动代理窗口=近10场可见赛
 
 def _read(p: Path, default):
@@ -130,7 +132,7 @@ def _opp_rolling_strength(team: str, day, ctx: dict) -> tuple[float, float]:
             (sum(cc) / len(cc) - DC_ROLLING_ENV) * w)
 
 def team_state_on(team: str, as_of: date, ctx: dict, lag_days: int = LAG_DAYS,
-                  dc_rolling: bool = False) -> dict:
+                  dc_rolling: bool = False, hard_only: bool = False) -> dict:
     """队的 as-of 快照：滚动xG(近N场)/联赛内Elo(最近pre值)/DC参数。降级记 flags（报告忠实度）。
     dc_rolling=True（门1评估器模式·Task12 裁定②）：dc_att/dc_def 改用 as-of 可见近≤10场的
     场均进/失滚动代理（(场均进−1.35)与(场均失−1.35)·DC字段口径 def 负=强防），完全不读
@@ -142,6 +144,8 @@ def team_state_on(team: str, as_of: date, ctx: dict, lag_days: int = LAG_DAYS,
     # 收集全部库的 as-of 可见场次；主联赛=场次最多的库（供联赛级参数查找）。旧版锁单库丢35~77%数据。
     lg_counts, team_rows = {}, []
     for lg, rows in ctx["timeline"].items():
+        if hard_only and lg in ("world-cup-qual", "euro-qual"):
+            continue                               # v10 虐鱼清洗：预选赛库剔除·其余库照收
         mine = [r for r in as_of_rows(rows, as_of, lag_days)
                 if team in (r.get("home"), r.get("away"))]
         if mine:

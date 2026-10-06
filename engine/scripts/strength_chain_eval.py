@@ -131,14 +131,15 @@ def _devig_had(had: dict) -> dict | None:
 
 # ---- 链逐场预测（与 strength_chain_run.run_day 同构·as-of 语义） ----
 
-def _predict_match(hid: str, aid: str, as_of: date, ctx: dict, memo: dict, beta: float) -> dict | None:
+def _predict_match(hid: str, aid: str, as_of: date, ctx: dict, memo: dict, beta: float,
+                   hard_only: bool = False) -> dict | None:
     """裁定①全链：team_state_on(dc_rolling) → devig_fame → hfa → compare → λ → dc_matrix → HAD/TTG。
     memo=(team, as_of) 级快照缓存（裁定③：同日多场共享·免全联赛重扫）。任队 no_league → None。"""
     states = {}
     for tid in (hid, aid):
         k = (tid, as_of)
         if k not in memo:
-            st = sl.team_state_on(tid, as_of, ctx, dc_rolling=True)
+            st = sl.team_state_on(tid, as_of, ctx, dc_rolling=True, hard_only=hard_only)
             att, df = ps.devig_fame(st)
             memo[k] = {"state": st, "att": att, "def": df}
         states[tid] = memo[k]

@@ -26,7 +26,7 @@ HIST_DIR = ROOT / "engine" / "cache" / "hist_odds"
 PREREG = ROOT / "engine" / "cache" / "strength_chain" / "fade-strategy-prereg.json"
 OUT = ROOT / "data" / "04-summaries" / "fade-strategy-backtest.json"
 
-WINDOW = ("2025-10-01", "2026-09-28")   # 默认当前段   # 舱v9段2样本外   # 舱v9段1   # 预注册舱 v2：一年窗口
+WINDOW = ("2025-10-01", "2026-09-28")   # 默认当前段   # v10段2   # 默认当前段   # 舱v9段2样本外   # 舱v9段1   # 预注册舱 v2：一年窗口
 MIN_MATCHES = 4
 TOP_N_LEGS = 4
 UNIT = 2.0
@@ -120,6 +120,7 @@ def main() -> None:
     ctx = sl.build_ctx(LEAGUES)
     zh2id = sl.zh_to_id()
     memo: dict = {}
+    memo_hard: dict = {}
 
     days = []
     stats = {"daysTotal": len(by_day), "daysTraded": 0, "daysSkippedLt4": 0,
@@ -198,6 +199,37 @@ def main() -> None:
             except (TypeError, ValueError, KeyError): hh = None
             if hh is not None and hh < 1.3: return True
             return c['boomP'] > 0.10        # λmax>3 代理（λ和/λ差的稳定代理·爆炸格合计）
+        # v10 硬仗口径候选（预选赛库剔除·俱乐部库照收·对 cands 平行重算）
+        hard_cands = []
+        for m in day_rows:
+            hid, aid = zh2id.get(m["home"]), zh2id.get(m["away"])
+            if not hid or not aid: continue
+            pred = sce._predict_match(hid, aid, as_of, ctx, memo_hard, beta=0.05, hard_only=True)
+            if not pred or not pred.get("matrix"): continue
+            cells = []
+            for ck, ov in (m.get("crs") or {}).items():
+                mk = hist_crs_key_to_matrix(str(ck))
+                if not mk or mk not in pred["matrix"]: continue
+                try: o = float(ov)
+                except (TypeError, ValueError): continue
+                if o > 1.0:
+                    cells.append({"mk": mk, "odds": o, "p": pred["matrix"][mk], "ev": pred["matrix"][mk]*o-1.0})
+            if cells:
+                boom = sum(pred["matrix"].get(k, 0.0) for k in ("s1sh", "s1sd", "s1sa"))
+                hard_cands.append({"m": m, "cells": sorted(cells, key=lambda c: -c["ev"]), "boomP": boom})
+        # V3H/V3WH v10 硬仗口径（预选赛剔除）
+        h_hit = {id(c): {score_to_matrix_key(str(c["m"]["score"]))} for c in hard_cands}
+        def settle_h(selected):
+            legs = [(cell["mk"], cell["odds"]) for c, cell in selected]
+            per = [cell["mk"] in h_hit[id(c)] for c, cell in selected]
+            return payout_4s11(legs, per)
+        v3h_sel = ([(c, max(c["cells"], key=lambda x: x["p"]))
+                    for c in sorted(hard_cands, key=lambda c: -max(x["p"] for x in c["cells"]))[:TOP_N_LEGS]]
+                   if len(hard_cands) >= TOP_N_LEGS else None)
+        hc_clean = [c for c in hard_cands if not is_water(c, c['m'])]
+        v3wh_sel = ([(c, max(c["cells"], key=lambda x: x["p"]))
+                     for c in sorted(hc_clean, key=lambda c: -max(x["p"] for x in c["cells"]))[:TOP_N_LEGS]]
+                    if len(hc_clean) >= TOP_N_LEGS else None)
         clean_cands = [c for c in cands if not is_water(c, c['m'])]
         w_sel = ([(c, max(c["cells"], key=lambda x: x["p"]))
                   for c in sorted(clean_cands, key=lambda c: -max(x["p"] for x in c["cells"]))[:TOP_N_LEGS]]
@@ -226,6 +258,10 @@ def main() -> None:
                              "odds": cell["odds"], "p": round(cell["p"], 4),
                              "hit": cell["mk"] in hit_keys_by_m[id(c)]}
                             for c, cell in v3_sel]},
+            "v3h": ({"stake": 22.0, "pay": settle_h(v3h_sel),
+                    "legs": [{"hit": cell["mk"] in h_hit[id(c)]} for c, cell in v3h_sel]}
+                   if v3h_sel else None),
+            "v3wh": ({"stake": 22.0, "pay": settle_h(v3wh_sel)} if v3wh_sel else None),
             "v3w": ({"stake": 22.0, "pay": settle_generic(w_sel),
                      "legs": [{"match": f"{c['m']['home']}v{c['m']['away']}", "pick": cell["mk"],
                                "odds": cell["odds"], "p": round(cell["p"], 4),
@@ -266,6 +302,8 @@ def main() -> None:
                 "hitDays": sum(1 for d in days if d.get(key) and d[key]["pay"] > 0)}
     v3 = agg("v3")
     v3w = agg("v3w")
+    v3h = agg("v3h")
+    v3wh = agg("v3wh")
     v6 = agg("v6")
     v4, v5 = agg("v4"), agg("v5")
 
@@ -287,7 +325,7 @@ def main() -> None:
     result = {
         "generatedAt": "2026-10-05", "prereg": {"version": 1, "path": str(PREREG)},
         "window": WINDOW, "stats": stats,
-        "v1_main": v1, "v3_topP": v3, "v3w_dewater": v3w, "v6_shareArgmax": v6, "v4_multi2": v4, "v5_multi3": v5, "v2_noBoom": v2,
+        "v1_main": v1, "v3_topP": v3, "v3w_dewater": v3w, "v3h_hard": v3h, "v3wh_hardDW": v3wh, "v6_shareArgmax": v6, "v4_multi2": v4, "v5_multi3": v5, "v2_noBoom": v2,
         "baselines": {"randomShuffle": {"meanPay": rand_mean, "percentileOfV1": pct,
                                         "roi": (rand_mean - total_stake) / total_stake},
                       "marketHottest": bm, "modelTopP": bp},
@@ -304,6 +342,12 @@ def main() -> None:
         wl = [(dd['day'], l) for dd in days if dd.get('v3w') for l in dd['v3w']['legs']]
         wh = sum(l['hit'] for _, l in wl) / max(len(wl), 1)
         print(f"V3W 去水版: 投入 {v3w['stake']:.0f} 回款 {v3w['pay']:.0f} ROI {v3w['roi']*100:+.1f}% · 回款日 {v3w['hitDays']} · 腿命中 {wh*100:.1f}%")
+    if v3h.get("roi") is not None:
+        hl = [(dd['day'], l) for dd in days if dd.get('v3h') for l in dd['v3h']['legs']]
+        hh = sum(l['hit'] for _, l in hl)/max(len(hl),1)
+        print(f"V3H 硬仗口径: 投入 {v3h['stake']:.0f} 回款 {v3h['pay']:.0f} ROI {v3h['roi']*100:+.1f}% · 回款日 {v3h['hitDays']} · 腿命中 {hh*100:.1f}%")
+    if v3wh.get("roi") is not None:
+        print(f"V3WH 硬仗+去水: 投入 {v3wh['stake']:.0f} 回款 {v3wh['pay']:.0f} ROI {v3wh['roi']*100:+.1f}% · 回款日 {v3wh['hitDays']}")
     print(f"V3 单选top1: 投入 {v3['stake']:.0f} 回款 {v3['pay']:.0f} ROI {v3['roi']*100:+.1f}% · 回款日 {v3['hitDays']}")
     print(f"V6 修复集中: 投入 {v6['stake']:.0f} 回款 {v6['pay']:.0f} ROI {v6['roi']*100:+.1f}% · 回款日 {v6['hitDays']}")
     print(f"V4 复式top2: 投入 {v4['stake']:.0f} 回款 {v4['pay']:.0f} ROI {v4['roi']*100:+.1f}% · 回款日 {v4['hitDays']}")

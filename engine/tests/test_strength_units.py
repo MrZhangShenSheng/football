@@ -327,3 +327,27 @@ def test_opponent_adjustment_rolling(tmp_path):
     # team-y 场均失3 → 未修正 def=(3-1.35)×0.375=0.619；修正后应改善（强攻对手的锅扣一半）
     unadj_y = (3.0 - 1.35) * w3
     assert sty["dc_def"] < unadj_y * 0.97, f"强攻失球未获豁免: {sty['dc_def']} vs {unadj_y}"
+
+
+def test_hard_means_filter(tmp_path):
+    """2026-10-06 v10 硬仗口径：hard_only=True 时预选赛库(world-cup-qual/euro-qual)场
+    不进国家队 rolling——虐鱼污染清洗（比利时att+0.90/亚美尼亚豆腐防+1.01的病根）。"""
+    lg_dir = tmp_path / "league"; lg_dir.mkdir(exist_ok=True)
+    # 欧国联：X 对强队 Y 一场 1:1（硬仗）
+    (lg_dir / "uefa-nations_matches.json").write_text('{"matches":['
+        '{"date":"2026-08-01","home":"team-x","away":"team-y","hg":1,"ag":1}]}', encoding="utf-8")
+    # 世预赛：X 虐鱼两场 5:0 6:0（污染源）
+    (lg_dir / "world-cup-qual_matches.json").write_text('{"matches":['
+        '{"date":"2026-08-10","home":"team-x","away":"minnow-a","hg":5,"ag":0},'
+        '{"date":"2026-08-15","home":"team-x","away":"minnow-b","hg":6,"ag":0}]}', encoding="utf-8")
+    cache = tmp_path / "cache"; cache.mkdir(exist_ok=True)
+    aliases = {"team-x": {"zh": "X"}, "team-y": {"zh": "Y"}}
+    ctx = sl.build_ctx(["uefa-nations", "world-cup-qual"], leagues_dir=lg_dir, cache_dir=cache, aliases=aliases)
+    st_all = sl.team_state_on("team-x", __import__("datetime").date(2026, 8, 20), ctx, dc_rolling=True)
+    st_hard = sl.team_state_on("team-x", __import__("datetime").date(2026, 8, 20), ctx, dc_rolling=True, hard_only=True)
+    # 全口径 3场场均进4.0 → att=(4.0-1.35)*3/8=+0.994（虚高）
+    assert st_all["dc_att"] == pytest.approx((4.0 - 1.35) * 3 / 8, abs=0.01)
+    # 硬仗口径 1场1:1 → att=(1.0-1.35)*1/6=-0.058（回收）
+    assert st_hard["dc_att"] == pytest.approx((1.0 - 1.35) / 6, abs=0.01)
+    assert st_hard["dc_att"] < st_all["dc_att"] - 0.5      # 虐鱼分被清洗
+    assert st_hard["league"] == "uefa-nations"
