@@ -26,7 +26,7 @@ HIST_DIR = ROOT / "engine" / "cache" / "hist_odds"
 PREREG = ROOT / "engine" / "cache" / "strength_chain" / "fade-strategy-prereg.json"
 OUT = ROOT / "data" / "04-summaries" / "fade-strategy-backtest.json"
 
-WINDOW = ("2025-10-01", "2026-09-28")   # 默认当前段   # v11-S3样本外   # 默认当前段   # v10段2   # 默认当前段   # 舱v9段2样本外   # 舱v9段1   # 预注册舱 v2：一年窗口
+WINDOW = ("2025-10-01", "2026-09-28")   # 默认当前段   # v12验证段   # v12拟合段   # 默认当前段   # v11-S3样本外   # 默认当前段   # v10段2   # 默认当前段   # 舱v9段2样本外   # 舱v9段1   # 预注册舱 v2：一年窗口
 MIN_MATCHES = 4
 TOP_N_LEGS = 4
 UNIT = 2.0

@@ -55,7 +55,8 @@ def run_day(day: str, ctx: dict, out_dir: Path, *, feed: list | None = None, bet
         if hid not in states or aid not in states:
             continue
         lg = states[hid]["state"].get("league") or "default"
-        env = ENV_GOALS.get(lg, ENV_GOALS["default"])
+        from strength_loaders import league_env as _le
+        env = _le(lg, as_of, ctx)["env"]
         home_adv = float((ctx["dc"].get(lg) or {}).get("homeAdv", 0.30))   # 联赛真实主场优势·缺DC才回退0.30
         hfa_v = ps.hfa_value(home_adv, states[hid]["state"]["n_xg"], None)
         cmp_out = ps.compare(states[hid]["att"], states[hid]["def"],

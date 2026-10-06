@@ -1,0 +1,187 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>2026-10-06~07 会话交接总结 · 实力链v1→v12全历程</title>
+<style>
+:root{--ink:#1c2733;--sub:#5b6b7a;--line:#dde4ea;--bg:#f7f9fb;--card:#fff;--ok:#0f6b4f;--bad:#a33;--warn:#b3541e;--accent:#1a5fb4}
+*{box-sizing:border-box}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;color:var(--ink);background:var(--bg);margin:0;padding:24px 16px;max-width:1100px;margin-inline:auto}
+h1{font-size:20px;margin:0 0 4px}
+h2{font-size:15px;margin:22px 0 8px;padding-bottom:5px;border-bottom:2px solid var(--accent)}
+.meta{color:var(--sub);font-size:12.5px;margin-bottom:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 16px;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:12.5px;margin:5px 0}
+th,td{border:1px solid var(--line);padding:4px 7px;text-align:left;vertical-align:top}
+th{background:#f0f4f7}
+.num{font-variant-numeric:tabular-nums}
+.ok{color:var(--ok);font-weight:600}.bad{color:var(--bad);font-weight:600}.warn{color:var(--warn);font-weight:600}
+.small{font-size:11.5px;color:var(--sub)}
+code{background:#eef2f5;border-radius:4px;padding:1px 5px;font-size:12px}
+</style></head><body>
+
+<h1>2026-10-06~07 会话交接总结 · 实力链 v1→v12 全历程</h1>
+<div class="meta">开发者 sszhang · 2026-10-07 凌晨 · 目的：换电脑无缝衔接</div>
+
+<h2>一、会话做了什么（按时间线）</h2>
+<div class="card">
+<table>
+<tr><th>#</th><th>事件</th><th>关键产出/结论</th></tr>
+<tr><td>1</td><td>补齐赛事数据</td><td>欧国联148场+欧冠504+欧罗巴399+世预赛370+世界杯104+欧预赛89=1466场入库；122队fd映射；法乙252场</td></tr>
+<tr><td>2</td><td>实力链v1设计+实施</td><td>14任务TDD SDD流程 → 7个模块（strength_loaders/paper_strength/lambda_bridge/score_matrix/pick_logic/strength_chain_run/strength_chain_eval）</td></tr>
+<tr><td>3</td><td>门1评估器·六轮回测</td><td>run1假象0.119→run2拆穿0.293→run3干净0.215→run4+地基0.213→run5+对手调整0.205→run6+全修0.196</td></tr>
+<tr><td>4</td><td>反差策略一年回测</td><td>988腿命中0/全年回款0（ROI −100%）·反差买法证伪锁档</td></tr>
+<tr><td>5</td><td>票型六档扫描</td><td>V3单选−22.6% &gt; V4复式−30.4% &gt; 市场基线−45% &gt; V5复式−48.9% &gt; V6份额−94.4% &gt; V1反差−100%</td></tr>
+<tr><td>6</td><td>比分分布检验</td><td>泊松分布确认（方差/均值1.027教科书级）·负二项/零膨胀无理·1:1集中=泊松物理×串关结构双重必然</td></tr>
+<tr><td>7</td><td>去水模型（三水特征）</td><td>λ差&gt;1.5/λ和&gt;3.0/HAD&lt;1.3 · 两段验证+20-30pp改善 · 全项目唯一经受全部检验的改善</td></tr>
+<tr><td>8</td><td>λ信息源补齐v11</td><td>S2 Elo全库✗止损 / S3 HST射正层✓ PASS / S4 系数终校✓ 两段转正(+6.5%/+7.2%)</td></tr>
+<tr><td>9</td><td>生产替换</td><td>比分端从crs_fusion切到strength_chain_prod.py(V3W-v2)·方向HAD保留旧链</td></tr>
+<tr><td>10</td><td>T044实票</td><td>22元4串11·反差方案"名气水"·0/4全灭·假设证伪</td></tr>
+<tr><td>11</td><td>回填+复盘</td><td>7场欧国联赛果回填·方向战市场5:2碾压模型·"名气水假设"全面证伪</td></tr>
+<tr><td>12</td><td>HST覆盖扩展</td><td>fd 16联赛→17,404场射正+比分入库·链LEAGUES扩至30联赛</td></tr>
+<tr><td>13</td><td>v12联赛级动态ENV</td><td>league_env()函数·德甲1b从−5.1pp→+0.2pp反超·V3验证段改善至−6.4%</td></tr>
+<tr><td>14</td><td>T045实票</td><td>22元4串11·V3W-v2首张实票·苏格兰0:0@9.0+瑞士2:0@5.8+中国1:1@7.5+摩尔多瓦0:1@6.75</td></tr>
+</table>
+</div>
+
+<h2>二、当前系统架构（一图全览）</h2>
+<div class="card">
+<pre><code>
+数据层（30联赛）：
+  rolling赛果 ✓ 全联赛全历史
+  HST射正   ✓ 16联赛17,404场（fd源·HST代理覆盖68%→扩后待重测）
+  Elo        部分（仅8联赛·GLOBAL失败回滚）
+  xG         ✗ fd历史无源·免费替代=HST
+  市场赔率    禁入链（铁律13）
+  国家队射门  ✗ 免费源不存在（fbref/understat/insight全探针失败）
+
+模型层：
+  三层实力合成（rolling 0.4 + HST 0.4 + Elo 0.2）
+  缺层重归一 ✓ · 小样本收缩(k=5) ✓ · 对手强度调整(κ=0.5) ✓
+  联赛级动态ENV ✓（v12·league_env()函数·从as-of滚动窗口实时算）
+  三水去水 ✓（v2参数: boom=0.05·had_hot=1.5·<b>待重校</b>）
+  泊松39格矩阵 ✓（方差/均值1.027）
+
+生产链路（"帮我预测"协议）：
+  体彩采集 → lineup_watch tick → DC融合(方向·旧链) →
+  ★ strength_chain_prod.py（比分端·V3W-v2）★ → 战意状态机 → 报告 → 影子层 → 闯关票 → v4b
+
+关键文件：
+  engine/scripts/strength_loaders.py    数据装载(as-of+HST+跨库+动态ENV)
+  engine/scripts/paper_strength.py      实力合成+去水+对比
+  engine/scripts/lambda_bridge.py       λ桥+伤停乘子
+  engine/scripts/score_matrix.py        39格泊松矩阵
+  engine/scripts/strength_chain_prod.py 生产比分端
+  engine/scripts/strength_chain_eval.py 门1评估器
+  engine/scripts/research/fade_backtest.py  票型回测器(V1-V6+designs)
+  engine/scripts/research/expand_hst.py     HST拉取
+  engine/scripts/research/v11_diagnosis.py  诊断归因
+</code></pre>
+</div>
+
+<h2>三、门1九轮全档案</h2>
+<div class="card">
+<table>
+<tr><th>轮</th><th>版本</th><th>1a校准</th><th>1b vs市场</th><th>1c</th><th>n</th><th>备注</th></tr>
+<tr><td>run1</td><td>v1原版</td><td class="num">0.119</td><td class="num ok">−1.3pp过线</td><td class="num">0.055</td><td>7,741</td><td>假象（两缺陷抵消）</td></tr>
+<tr><td>run2</td><td>仅②重归一</td><td class="num bad">0.293</td><td class="num bad">−5.1pp</td><td class="num">0.247</td><td>7,741</td><td>拆穿假象</td></tr>
+<tr><td>run3</td><td>②+③收缩</td><td class="num">0.215</td><td class="num">−3.4pp</td><td class="num">0.098</td><td>7,741</td><td>干净版</td></tr>
+<tr><td>run4</td><td>+A地基</td><td class="num">0.213</td><td class="num">−3.2pp</td><td class="num">0.097</td><td>7,969</td><td></td></tr>
+<tr><td>run5</td><td>+B对手</td><td class="num">0.205</td><td class="num">−3.12pp</td><td class="num">0.093</td><td>7,969</td><td></td></tr>
+<tr><td>run6</td><td>+跨库+全修</td><td class="num">0.196</td><td class="num">−3.10pp</td><td class="num">0.095</td><td>9,155</td><td>v10终版</td></tr>
+<tr><td>run7</td><td>+EloGLOBAL</td><td class="num bad">0.282</td><td class="num bad">−4.24pp</td><td class="num">0.267</td><td>9,155</td><td>失败止损</td></tr>
+<tr><td>run8</td><td>+HST</td><td class="num ok">0.188</td><td class="num ok">−2.14pp</td><td class="num ok">0.075</td><td>9,155</td><td>v11-S3 PASS</td></tr>
+<tr><td><b>run9</b></td><td><b>+动态ENV</b></td><td class="num">0.195</td><td class="num">−2.41pp</td><td class="num">0.078</td><td><b>10,060</b></td><td><b>v12当前·德甲+0.2pp反超</b></td></tr>
+</table>
+<p class="small">run9 整体微幅恶化系可算域扩大905场（新8联赛·挪超−6.6/世预赛−5.7/意甲−5.4拉低均值）·非ENV本身问题</p>
+</div>
+
+<h2>四、V3W-v2 票型·关键数据</h2>
+<div class="card">
+<table>
+<tr><th>口径</th><th>S4参数(旧ENV·22联赛)</th><th>v12动态ENV(30联赛)</th><th>说明</th></tr>
+<tr><td>V3拟合段</td><td class="num bad">−34.9%</td><td class="num">−32.0%</td><td>链本体改善</td></tr>
+<tr><td>V3验证段</td><td class="num bad">−13.8%</td><td class="num ok">−6.4%</td><td>链本体改善7.4pp</td></tr>
+<tr><td>V3W拟合段</td><td class="num ok">+6.5%</td><td class="num bad">−33.0%</td><td>去水参数失效</td></tr>
+<tr><td>V3W验证段</td><td class="num ok">+7.2%</td><td class="num bad">−18.2%</td><td>去水参数失效</td></tr>
+</table>
+<p><b>V3W恶化的根因</b>：动态ENV改变了所有场的λ绝对值 → boomP分布整体移位 → S4参数(boom=0.05/had_hot=1.5)不再排对场。<b>需要S5重校</b>。</p>
+</div>
+
+<h2>五、诊断归因（v12-diagnosis.json）</h2>
+<div class="card">
+<table>
+<tr><th>联赛</th><th>n</th><th>模型vs市场</th><th>动态ENV后</th><th>判定</th></tr>
+<tr><td><b>德甲</b></td><td>842</td><td class="bad">−5.1pp</td><td class="ok">+0.2pp</td><td>✓ 动态ENV修复</td></tr>
+<tr><td>英冠</td><td>659</td><td class="ok">+3.3pp</td><td>−0.2pp</td><td>保持</td></tr>
+<tr><td>西甲</td><td>962</td><td class="bad">−3.9pp</td><td>−2.2pp</td><td>改善1.7pp</td></tr>
+<tr><td>英超</td><td>1,042</td><td>+0.6pp</td><td>−0.3pp</td><td>保持</td></tr>
+<tr><td>意甲</td><td>984</td><td>−2.6pp</td><td class="bad">−5.4pp</td><td>⚠️ 恶化·待查</td></tr>
+<tr><td>挪威超</td><td>317</td><td>—</td><td class="bad">−6.6pp</td><td>新入库·重灾区</td></tr>
+<tr><td>欧冠</td><td>—</td><td class="bad">−4.5pp</td><td>—</td><td>跨联赛rolling不可比</td></tr>
+</table>
+<p><b>质量层效应</b>：HST场差−1.5pp vs 纯rolling场差−4.4pp → HST把差距缩小3pp（最有价值单层）</p>
+</div>
+
+<h2>六、在飞实票</h2>
+<div class="card">
+<table>
+<tr><th>票</th><th>状态</th><th>内容</th><th>结算</th></tr>
+<tr><td>T044</td><td class="bad">✗ 已结算</td><td>反差方案·22元·0/4全灭</td><td>净−22元</td></tr>
+<tr><td><b>T045</b></td><td class="warn">⏳ pending</td><td>V3W-v2首张·22元4串11<br>苏格兰0:0@9.0 × 瑞士2:0@5.8 × 中国1:1@7.5 × 摩尔多瓦0:1@6.75</td><td>明早回填<br>中2关78~135元<br>中4关5,285元+</td></tr>
+</table>
+</div>
+
+<h2>七、待办事项（按优先级）</h2>
+<div class="card">
+<table>
+<tr><th>#</th><th>事项</th><th>工程量</th><th>说明</th></tr>
+<tr><td><b>1</b></td><td><b>S5去水参数重校</b></td><td>~20分钟</td><td>在动态ENV+30联赛新可算域下重新网格搜索boom/had_hot（方法同S4）——这是当前最紧迫的（V3W两段从+7%跌到−18%全因参数失效）</td></tr>
+<tr><td>2</td><td>T045结算</td><td>回填流程</td><td>明早说"回填赛果"自动走</td></tr>
+<tr><td>3</td><td>意甲恶化调查</td><td>半天</td><td>run9意甲从−2.6恶化到−5.4pp·动态ENV在意甲可能不适用（场均2.51低于全局2.7·ENV偏−0.19）</td></tr>
+<tr><td>4</td><td>新联赛质量分层</td><td>半天</td><td>挪超−6.6/世预赛−5.7/瑞超−5.3等新入库联赛的场拉低整体——需要联赛级信任度分层</td></tr>
+<tr><td>5</td><td>ρ参数联赛级化</td><td>半天</td><td>当前全局−0.05·各联赛平局率从17.7%(欧冠)到33%(法乙)差异大</td></tr>
+<tr><td>6</td><td>forward伤停/首发轨</td><td>自动</td><td>lineup_watch每10分钟自动积累·快照≥300场才判（约2-3个月）</td></tr>
+</table>
+</div>
+
+<h2>八、关键数据文件索引</h2>
+<div class="card">
+<table>
+<tr><th>文件</th><th>用途</th></tr>
+<tr><td><code>engine/cache/strength_chain/preregistration.json</code></td><td>预注册舱（判据+超参+changeLog+各阶段verdict）</td></tr>
+<tr><td><code>engine/cache/strength_chain/fade-strategy-prereg.json</code></td><td>票型预注册舱（V1-V6+designs+S4/S5参数+verdict）</td></tr>
+<tr><td><code>data/04-summaries/strength-chain-gate1.json</code></td><td>门1当前结果（run9·动态ENV版）</td></tr>
+<tr><td><code>data/04-summaries/strength-chain-gate1-run*.json</code></td><td>门1九轮历史档案</td></tr>
+<tr><td><code>data/04-summaries/fade-strategy-backtest.json</code></td><td>票型回测产物（当前段·含designs明细）</td></tr>
+<tr><td><code>data/04-summaries/v12-diagnosis.json</code></td><td>三维误差归因（联赛×概率桶×质量层）</td></tr>
+<tr><td><code>data/04-summaries/v11-s4-recalib.json</code></td><td>S4去水参数校准结果</td></tr>
+<tr><td><code>data/06-tickets/tickets.json</code></td><td>实票账本（46票·T045 pending）</td></tr>
+<tr><td><code>data/03-predictions/2026-10-06-crs.json</code></td><td>今晚比分端生产输出</td></tr>
+<tr><td><code>engine/cache/hst_{lg}.json</code></td><td>16联赛射正数据（每联赛独立文件）</td></tr>
+<tr><td><code>engine/cache/insight_injuries.json</code></td><td>4999场伤停历史（82%覆盖）</td></tr>
+</table>
+</div>
+
+<h2>九、换电脑后衔接指引</h2>
+<div class="card">
+<ol>
+<li><b>git pull</b>（所有代码和数据已提交到 main·最新 commit 含全部工作）</li>
+<li><b>跑 S5 重校</b>（最紧迫）：<br>
+<code>cd engine/scripts/research</code><br>
+<code>python3 v11_s4_recalib.py</code>（需改代码中 boom/had_hot 网格·当前跑的是旧参数）<br>
+或直接用 fade_backtest.py + 网格扫描</li>
+<li><b>明早回填</b>：对大哥说"回填赛果"→ 自动走全链（含 T045 结算）</li>
+<li><b>门1重跑</b>（S5 后验证）：<code>python3 engine/scripts/strength_chain_eval.py</code>（约 11 分钟）</li>
+<li><b>诊断脚本</b>：<code>python3 engine/scripts/research/v11_diagnosis.py</code>（约 10 分钟·重跑归因看改善）</li>
+</ol>
+</div>
+
+<h2>十、预注册舱当前版本号</h2>
+<div class="card">
+<table>
+<tr><th>舱</th><th>version</th><th>最近变更</th></tr>
+<tr><td>preregistration.json</td><td class="num">5</td><td>v12联赛动态ENV·S4重校待做(S5)</td></tr>
+<tr><td>fade-strategy-prereg.json</td><td class="num">10</td><td>S4+全谱系+designs+S4审计+S4 verdict</td></tr>
+</table>
+</div>
+
+<div class="small">开发者 sszhang · 2026-10-07 凌晨 · 本文档随会话归档提交</div>
+</body></html>

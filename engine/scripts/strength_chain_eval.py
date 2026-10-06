@@ -146,7 +146,9 @@ def _predict_match(hid: str, aid: str, as_of: date, ctx: dict, memo: dict, beta:
     lg = states[hid]["state"].get("league")
     if lg is None or states[aid]["state"].get("league") is None:
         return None
-    env = ENV_GOALS.get(lg, ENV_GOALS["default"])                       # 均匀T=2.7（notes 缺口声明）
+    # v12 联赛级动态参数（不预拟合·as-of滚动窗口实时算）
+    from strength_loaders import league_env
+    env = league_env(lg, as_of, ctx)["env"]
     home_adv = float((ctx["dc"].get(lg) or {}).get("homeAdv", 0.30))
     hfa_v = ps.hfa_value(home_adv, states[hid]["state"]["n_xg"], None)
     cmp_out = ps.compare(states[hid]["att"], states[hid]["def"],

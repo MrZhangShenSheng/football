@@ -351,3 +351,29 @@ def test_hard_means_filter(tmp_path):
     assert st_hard["dc_att"] == pytest.approx((1.0 - 1.35) / 6, abs=0.01)
     assert st_hard["dc_att"] < st_all["dc_att"] - 0.5      # 虐鱼分被清洗
     assert st_hard["league"] == "uefa-nations"
+
+
+def test_league_dynamic_env(tmp_path):
+    """v12 联赛级动态参数：ENV/平局率/主胜率从各联赛 as-of 滚动窗口实时算——
+    不预拟合不引入自由度·治德甲ENV偏差+0.52等全局参数顾此失彼问题。"""
+    import datetime as dt
+    lg_dir = tmp_path / "league"; lg_dir.mkdir(exist_ok=True)
+    # 高进球联赛（模拟德甲：场均3.2球·主胜50%）
+    (lg_dir / "hi-score_matches.json").write_text(json.dumps({"matches": [
+        {"date": f"2026-08-{d:02d}", "home": "h1", "away": "a1", "hg": 2, "ag": 1}
+        for d in range(1, 11)]}), encoding="utf-8")
+    # 低进球联赛（模拟法乙：场均2.3球·主胜35%）
+    (lg_dir / "lo-score_matches.json").write_text(json.dumps({"matches": [
+        {"date": f"2026-08-{d:02d}", "home": "h2", "away": "a2", "hg": 1, "ag": 0}
+        for d in range(1, 8)] + [
+        {"date": f"2026-08-{d:02d}", "home": "a2", "away": "h2", "hg": 1, "ag": 1}
+        for d in range(8, 15)]}), encoding="utf-8")
+    cache = tmp_path / "cache"; cache.mkdir(exist_ok=True)
+    ctx = sl.build_ctx(["hi-score", "lo-score"], leagues_dir=lg_dir, cache_dir=cache,
+                       aliases={"h1": {"zh": "壹"}, "h2": {"zh": "贰"}})
+    hi = sl.league_env("hi-score", dt.date(2026, 9, 1), ctx)
+    lo = sl.league_env("lo-score", dt.date(2026, 9, 1), ctx)
+    assert hi["env"] > 2.5, f"高进球联赛ENV={hi['env']}"
+    assert lo["env"] < 2.5, f"低进球联赛ENV={lo['env']}"
+    assert hi["env"] > lo["env"], "高进球联赛ENV应大于低进球"
+    assert "homeRate" in hi and "drawRate" in hi

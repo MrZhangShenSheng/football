@@ -136,6 +136,22 @@ def _opp_rolling_strength(team: str, day, ctx: dict) -> tuple[float, float]:
     return ((sum(sc) / len(sc) - DC_ROLLING_ENV) * w,
             (sum(cc) / len(cc) - DC_ROLLING_ENV) * w)
 
+def league_env(lg: str, as_of: date, ctx: dict, lag_days: int = LAG_DAYS,
+                 window: int = 100) -> dict:
+    """v12 联赛级动态参数：从该联赛 as-of 滚动窗口实时算 ENV/主胜率/平局率。
+    不预拟合不引入自由度——联赛参数=该联赛的数据特征。开发者 sszhang"""
+    rows = as_of_rows(ctx["timeline"].get(lg, []), as_of, lag_days)[-window:]
+    if not rows:
+        return {"env": ENV_GOALS_DEFAULT, "homeRate": 0.42, "drawRate": 0.26}
+    tot_g = sum((r.get("hg") or 0) + (r.get("ag") or 0) for r in rows)
+    n_h = sum(1 for r in rows if (r.get("hg") or 0) > (r.get("ag") or 0))
+    n_d = sum(1 for r in rows if (r.get("hg") or 0) == (r.get("ag") or 0))
+    n = len(rows)
+    return {"env": round(tot_g / n, 3) if n else ENV_GOALS_DEFAULT,
+            "homeRate": n_h / n if n else 0.42,
+            "drawRate": n_d / n if n else 0.26}
+
+
 def team_state_on(team: str, as_of: date, ctx: dict, lag_days: int = LAG_DAYS,
                   dc_rolling: bool = False, hard_only: bool = False) -> dict:
     """队的 as-of 快照：滚动xG(近N场)/联赛内Elo(最近pre值)/DC参数。降级记 flags（报告忠实度）。
