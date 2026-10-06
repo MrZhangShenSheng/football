@@ -3,202 +3,202 @@
   "buckets": [
    {
     "bucket": "0.3-0.4",
-    "n": 1117,
+    "n": 984,
     "pred": 0.3761,
-    "act": 0.3868,
-    "dev": -0.0107,
+    "act": 0.3943,
+    "dev": -0.0182,
     "judged": true
    },
    {
     "bucket": "0.4-0.5",
-    "n": 2437,
-    "pred": 0.4479,
-    "act": 0.4239,
-    "dev": 0.024,
+    "n": 2135,
+    "pred": 0.4481,
+    "act": 0.4192,
+    "dev": 0.0289,
     "judged": true
    },
    {
     "bucket": "0.5-0.6",
-    "n": 1848,
-    "pred": 0.5473,
-    "act": 0.5005,
-    "dev": 0.0467,
+    "n": 1608,
+    "pred": 0.5468,
+    "act": 0.4845,
+    "dev": 0.0623,
     "judged": true
    },
    {
     "bucket": "0.6-0.7",
-    "n": 1385,
+    "n": 1199,
     "pred": 0.648,
-    "act": 0.5264,
-    "dev": 0.1216,
+    "act": 0.5238,
+    "dev": 0.1242,
     "judged": true
    },
    {
     "bucket": "0.7-0.8",
-    "n": 989,
-    "pred": 0.7465,
-    "act": 0.5996,
-    "dev": 0.1469,
+    "n": 856,
+    "pred": 0.7476,
+    "act": 0.5935,
+    "dev": 0.1541,
     "judged": true
    },
    {
     "bucket": "0.8-0.9",
-    "n": 784,
-    "pred": 0.8461,
-    "act": 0.6633,
-    "dev": 0.1828,
+    "n": 678,
+    "pred": 0.8451,
+    "act": 0.6504,
+    "dev": 0.1947,
     "judged": true
    },
    {
     "bucket": "0.9-1.0",
-    "n": 595,
-    "pred": 0.9508,
-    "act": 0.7546,
-    "dev": 0.1962,
+    "n": 509,
+    "pred": 0.9495,
+    "act": 0.7446,
+    "dev": 0.2049,
     "judged": true
    }
   ],
-  "worstDev": 0.1962,
+  "worstDev": 0.2049,
   "judgedBuckets": 7,
   "minBucketN": 50,
   "ttg": {
    "buckets": [
     {
      "bucket": "0.1-0.2",
-     "n": 1306,
+     "n": 1139,
      "pred": 0.192,
-     "act": 0.1769,
-     "dev": 0.0151,
+     "act": 0.1712,
+     "dev": 0.0208,
      "judged": true
     },
     {
      "bucket": "0.2-0.3",
-     "n": 7138,
-     "pred": 0.2447,
-     "act": 0.2141,
-     "dev": 0.0307,
+     "n": 6250,
+     "pred": 0.2453,
+     "act": 0.2213,
+     "dev": 0.0241,
      "judged": true
     },
     {
      "bucket": "0.3-0.4",
-     "n": 403,
-     "pred": 0.3338,
-     "act": 0.0943,
-     "dev": 0.2395,
+     "n": 322,
+     "pred": 0.3304,
+     "act": 0.1056,
+     "dev": 0.2248,
      "judged": true
     },
     {
      "bucket": "0.4-0.5",
      "n": 91,
-     "pred": 0.4448,
-     "act": 0.0,
-     "dev": 0.4448,
+     "pred": 0.4437,
+     "act": 0.011,
+     "dev": 0.4327,
      "judged": true
     },
     {
      "bucket": "0.5-0.6",
-     "n": 79,
-     "pred": 0.542,
-     "act": 0.0253,
-     "dev": 0.5167,
+     "n": 67,
+     "pred": 0.5475,
+     "act": 0.0,
+     "dev": 0.5475,
      "judged": true
     },
     {
      "bucket": "0.6-0.7",
-     "n": 38,
-     "pred": 0.6468,
-     "act": 0.0526,
-     "dev": 0.5941,
+     "n": 24,
+     "pred": 0.642,
+     "act": 0.0833,
+     "dev": 0.5587,
      "judged": false
     },
     {
      "bucket": "0.7-0.8",
-     "n": 51,
-     "pred": 0.7469,
-     "act": 0.0,
-     "dev": 0.7469,
-     "judged": true
+     "n": 36,
+     "pred": 0.7427,
+     "act": 0.0278,
+     "dev": 0.7149,
+     "judged": false
     },
     {
      "bucket": "0.8-0.9",
-     "n": 23,
-     "pred": 0.8461,
-     "act": 0.087,
-     "dev": 0.7591,
+     "n": 26,
+     "pred": 0.8594,
+     "act": 0.0385,
+     "dev": 0.8209,
      "judged": false
     },
     {
      "bucket": "0.9-1.0",
-     "n": 26,
-     "pred": 0.9543,
-     "act": 0.0385,
-     "dev": 0.9159,
+     "n": 14,
+     "pred": 0.9633,
+     "act": 0.0714,
+     "dev": 0.8918,
      "judged": false
     }
    ],
-   "worstDev": 0.7469,
-   "judgedBuckets": 6,
+   "worstDev": 0.5475,
+   "judgedBuckets": 5,
    "minBucketN": 50
   }
  },
  "hit": {
-  "n": 9155,
-  "modelTop1": 0.0985,
-  "marketTop1": 0.1295,
-  "ttgModel": 0.1971,
-  "ttgMarket": 0.2329
+  "n": 7969,
+  "modelTop1": 0.0979,
+  "marketTop1": 0.1291,
+  "ttgModel": 0.203,
+  "ttgMarket": 0.2337
  },
  "logloss": {
-  "n": 8719,
-  "model": 1.073477,
-  "market": 0.978555,
-  "diff": 0.094921,
+  "n": 7700,
+  "model": 1.076285,
+  "market": 0.98333,
+  "diff": 0.092956,
   "ci": [
-   0.084702,
-   0.105739
+   0.082508,
+   0.104535
   ]
  },
  "baselines": {
   "randomShuffle": {
-   "hit": 0.078399,
+   "hit": 0.079623,
    "n_perm": 200,
    "seed": 7
   },
   "market": {
-   "hit": 0.1295,
+   "hit": 0.1291,
    "note": "crs池最低赔率选项"
   },
   "oldChain": {
-   "hit": 0.111,
-   "n": 9155,
+   "hit": 0.1118,
+   "n": 7969,
    "proxy": "crs池次低赔率选项（开盘）——旧链crs_fusion逐场历史票不可得，见notes"
   }
  },
  "perLeague": {
   "england-premier": {
-   "n": 1178,
-   "modelTop1": 0.0925,
-   "marketTop1": 0.1104
+   "n": 1156,
+   "modelTop1": 0.0882,
+   "marketTop1": 0.1099
   },
   "italy-serie-a": {
-   "n": 1149,
-   "modelTop1": 0.121,
-   "marketTop1": 0.1636
+   "n": 1128,
+   "modelTop1": 0.1117,
+   "marketTop1": 0.164
   },
   "spain-laliga": {
-   "n": 1072,
-   "modelTop1": 0.1138,
-   "marketTop1": 0.1539
+   "n": 1061,
+   "modelTop1": 0.1216,
+   "marketTop1": 0.1527
   },
   "germany-bundesliga": {
-   "n": 883,
-   "modelTop1": 0.0781,
-   "marketTop1": 0.1042
+   "n": 866,
+   "modelTop1": 0.0774,
+   "marketTop1": 0.1039
   },
   "france-ligue1": {
-   "n": 663,
-   "modelTop1": 0.0995,
-   "marketTop1": 0.1176
+   "n": 651,
+   "modelTop1": 0.0952,
+   "marketTop1": 0.1183
   },
   "japan": {
    "n": 536,
@@ -206,39 +206,29 @@
    "marketTop1": 0.1325
   },
   "netherlands-eredivisie": {
-   "n": 511,
-   "modelTop1": 0.1018,
-   "marketTop1": 0.1115
+   "n": 489,
+   "modelTop1": 0.09,
+   "marketTop1": 0.1125
   },
   "portugal-primeira": {
-   "n": 466,
-   "modelTop1": 0.0837,
-   "marketTop1": 0.1395
+   "n": 449,
+   "modelTop1": 0.0824,
+   "marketTop1": 0.1403
   },
   "korea": {
    "n": 405,
    "modelTop1": 0.1062,
    "marketTop1": 0.1235
   },
-  "world-cup-qual": {
-   "n": 404,
-   "modelTop1": 0.0965,
-   "marketTop1": 0.1535
-  },
   "sweden": {
-   "n": 377,
-   "modelTop1": 0.0875,
-   "marketTop1": 0.1194
-  },
-  "euro-qual": {
-   "n": 343,
-   "modelTop1": 0.0962,
-   "marketTop1": 0.1254
+   "n": 359,
+   "modelTop1": 0.0864,
+   "marketTop1": 0.1226
   },
   "norway": {
-   "n": 316,
-   "modelTop1": 0.057,
-   "marketTop1": 0.1108
+   "n": 305,
+   "modelTop1": 0.0656,
+   "marketTop1": 0.1082
   },
   "france-ligue2": {
    "n": 176,
@@ -255,91 +245,76 @@
    "modelTop1": 0.0959,
    "marketTop1": 0.1164
   },
-  "uefa-champions": {
-   "n": 145,
-   "modelTop1": 0.0414,
-   "marketTop1": 0.1241
-  },
-  "uefa-europa": {
-   "n": 102,
-   "modelTop1": 0.1176,
-   "marketTop1": 0.098
-  },
   "brazil": {
    "n": 80,
    "modelTop1": 0.1625,
    "marketTop1": 0.175
   },
-  "world-cup": {
-   "n": 32,
-   "modelTop1": 0.0938,
-   "marketTop1": 0.125
-  },
   "denmark": {
-   "n": 23,
-   "modelTop1": 0.0435,
-   "marketTop1": 0.1739
+   "n": 14,
+   "modelTop1": 0.0714,
+   "marketTop1": 0.2143
   }
  },
- "n": 9155,
+ "n": 7969,
  "nFull": 13574,
  "skipped": {
   "no_zh_mapping": 2848,
-  "no_league_team": 1521,
+  "no_league_team": 2707,
   "bad_score": 50
  },
  "flagsDist": {
-  "dc_source:rolling": 9155,
-  "no_elo": 6904,
-  "no_xg": 8927
+  "dc_source:rolling": 7969,
+  "no_elo": 5718,
+  "no_xg": 7741
  },
- "generatedAt": "2026-10-06T08:23:03",
- "runtimeSec": 654.1,
+ "generatedAt": "2026-10-05T23:23:29",
+ "runtimeSec": 573.7,
  "gate1": {
   "baselines": {
    "randomShuffle": {
-    "hit": 0.078399,
+    "hit": 0.079623,
     "n_perm": 200,
     "seed": 7
    },
    "market": {
-    "hit": 0.1295,
+    "hit": 0.1291,
     "note": "crs池最低赔率选项"
    },
    "oldChain": {
-    "hit": 0.111,
-    "n": 9155,
+    "hit": 0.1118,
+    "n": 7969,
     "proxy": "crs池次低赔率选项（开盘）——旧链crs_fusion逐场历史票不可得，见notes"
    }
   },
   "rule": "优势须三杀+bootstrap CI 不含 0",
   "1a": {
    "criterion": "各桶(样本>=50)预测概率vs实际频率偏差<=5pp（TTG档与HAD三向分别报）",
-   "worstDev": 0.1962,
+   "worstDev": 0.2049,
    "margin": 0.05,
    "judgedBuckets": 7,
-   "ttgWorstDev": 0.7469,
-   "ttgJudgedBuckets": 6,
+   "ttgWorstDev": 0.5475,
+   "ttgJudgedBuckets": 5,
    "pass": false
   },
   "1b": {
    "criterion": "CRS top1命中 >= 市场最低赔率命中 - 1.5pp 且 TTG top1 >= 市场 - 2pp",
    "crsMargin": 0.015,
    "ttgMargin": 0.02,
-   "crsDiff": -0.031,
-   "ttgDiff": -0.0358,
+   "crsDiff": -0.0312,
+   "ttgDiff": -0.0307,
    "pass": false
   },
   "1c": {
    "criterion": "log-loss CI上界 <= 市场去水 + 0.01",
-   "ciHigh": 0.105739,
+   "ciHigh": 0.104535,
    "margin": 0.01,
    "pass": false
   },
   "pass": false
  },
  "prereg": {
-  "version": 4,
+  "version": 3,
   "path": "/Users/zhangshensheng/Documents/GitHub/football/engine/cache/strength_chain/preregistration.json"
  },
  "notes": [
@@ -348,6 +323,6 @@
   "oldChain代理: 旧链crs_fusion逐场历史票不可得(engine/shadow/qcache 实票仅18销售日173场, 覆盖不足) → crs池次低赔率选项为代理, 非旧链本体",
   "均匀T缺口: ENV_GOALS 全联赛统一2.7(②c offset 未接入) → perLeague 键提供联赛分解直视",
   "hit/logloss 口径: hit=模型与市场crs共同子集(同场对比); logloss=had三向, 市场=体彩had比例去水, 配对差bootstrap CI(1000次·seed7)",
-  "覆盖率: nFull=13574 → 链可算 n=9155 (skipped={'no_zh_mapping': 2848, 'no_league_team': 1521, 'bad_score': 50}); randomShuffle seed=7×200置换"
+  "覆盖率: nFull=13574 → 链可算 n=7969 (skipped={'no_zh_mapping': 2848, 'no_league_team': 2707, 'bad_score': 50}); randomShuffle seed=7×200置换"
  ]
 }
