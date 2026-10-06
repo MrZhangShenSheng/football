@@ -86,7 +86,13 @@ def build_ctx(leagues: list[str], *, leagues_dir: Path = LEAGUES_DIR, cache_dir:
             else:
                 dc_teams[tid] = spec
         ctx["dc"][lg] = {**dc_raw, "teams": dc_teams}
+        # v11 阶段2（run7勘误·优先级反转）：当季档优先（状态敏感）·GLOBAL 全库档仅兜底
+        # （run7实证：GLOBAL跨3季长期分替换当季分→名气成分加重→1a 0.196→0.282恶化·反转后GLOBAL只喂no_elo库）
         elo_files = [_read(cache_dir / f"elo_history_{lg}_{season}.json", {}) for season in ("2526", "2627")]
+        if not any(f.get("rows") for f in elo_files):
+            g_file = _read(cache_dir / f"elo_history_{lg}_GLOBAL.json", {})
+            if g_file.get("rows"):
+                elo_files = [g_file]
         elo_merged = sorted((r for f in elo_files for r in f.get("rows", [])),
                             key=lambda r: str(r.get("date", "")))
         elo_rows = []

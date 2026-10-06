@@ -113,3 +113,17 @@ def test_norm_team_fd_field():
     assert sl._norm_team("AC Milan", fake) == "ac-milan"          # espn 仍通
     assert sl._norm_team("ac-milan", fake) == "ac-milan"          # identity 仍通
     assert sl._norm_team("ZZZ", fake) is None
+
+def test_elo_global_source(tmp_path):
+    """v11 阶段2：GLOBAL 档优先——全库 Elo（961队）让国家队等队 elo 不再 no_elo。"""
+    lg_dir = tmp_path / "league"; lg_dir.mkdir(exist_ok=True)
+    (lg_dir / "lgG_matches.json").write_text(
+        '{"matches":[{"date":"2026-08-01","home":"team-g","away":"team-h","hg":2,"ag":0}]}', encoding="utf-8")
+    cache = tmp_path / "cache"; cache.mkdir(exist_ok=True)
+    (cache / "elo_history_lgG_GLOBAL.json").write_text(
+        '{"hfa":65,"rows":[{"date":"2026-08-01","home":"team-g","away":"team-h",'
+        '"elo_home_pre":1500,"elo_away_pre":1500}]}', encoding="utf-8")
+    ctx = sl.build_ctx(["lgG"], leagues_dir=lg_dir, cache_dir=cache,
+                       aliases={"team-g": {"zh": "G"}, "team-h": {"zh": "H"}})
+    st = sl.team_state_on("team-g", __import__("datetime").date(2026, 8, 5), ctx)
+    assert st["elo"] is not None and "no_elo" not in st["flags"]
