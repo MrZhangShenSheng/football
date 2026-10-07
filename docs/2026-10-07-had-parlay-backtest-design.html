@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>方向1实证检验设计 · 每日HAD串关回测（v16）</title>
+<style>
+:root{--ink:#1c2733;--sub:#5b6b7a;--line:#dde4ea;--bg:#f7f9fb;--card:#fff;--ok:#0f6b4f;--bad:#a33;--warn:#b3541e;--accent:#1a5fb4}
+*{box-sizing:border-box}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;color:var(--ink);background:var(--bg);margin:0;padding:24px 16px;max-width:1000px;margin-inline:auto}
+h1{font-size:20px;margin:0 0 4px}
+h2{font-size:15px;margin:20px 0 8px;padding-bottom:5px;border-bottom:2px solid var(--accent)}
+.meta{color:var(--sub);font-size:12.5px;margin-bottom:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 16px;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:12.5px;margin:5px 0}
+th,td{border:1px solid var(--line);padding:4px 7px;text-align:left;vertical-align:top}
+th{background:#f0f4f7}
+.num{font-variant-numeric:tabular-nums}
+.ok{color:var(--ok);font-weight:600}.bad{color:var(--bad);font-weight:600}.warn{color:var(--warn);font-weight:600}
+.small{font-size:11.5px;color:var(--sub)}
+code{background:#eef2f5;border-radius:4px;padding:1px 5px;font-size:12px}
+pre{background:#f0f4f7;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:11.5px;overflow-x:auto;line-height:1.55}
+</style></head><body>
+
+<h1>方向 1 实证检验设计 · 每日 HAD 串关回测（v16）</h1>
+<div class="meta">拍板 sszhang · 2026-10-07 · 预注册 fade-strategy-prereg v16（跑前写死）· 上游：docs/2026-10-07-optimization-directions.html（方向1先验否定·影子验证）→ 大哥拍板升级为历史实证</div>
+
+<h2>〇、缘起与定位</h2>
+<div class="card">
+<p>立项档案对方向1（HAD 串）的裁定是<b>先验否定</b>（DC 对市场无增量 7216 场·HAD 效率池·抽水锁死），只留了影子票 forward 一条路。大哥拍板：先用历史数据直接实证——<b>每天选 3~8 场串胜平负，投入产出比到底如何</b>。本回测回答此问，一个结果两条路：</p>
+<table>
+<tr><th>结果</th><th>去向</th></tr>
+<tr><td class="ok">任一策略过判据②</td><td>过体彩价敏感性 → 启动丙+（信号审计·找出会预测对的场次）</td></tr>
+<tr><td class="bad">全灭（预期主场景）</td><td>方向1 正式盖棺——送终也要有数字·影子层亦不挂</td></tr>
+</table>
+<p class="small">诚实先验：Pinnacle 收盘每腿 o×p≈0.98（抽水~2%）·串深 D 期望 ROI≈0.98^D−1（3串−6%·8串−15%）·选场无真实增量救不回来；唯一活口=热门-冷门偏差能否让高置信腿 o×p&gt;1。体彩端抽水更高只会更难。</p>
+</div>
+
+<h2>一、数据底子（已核实）</h2>
+<div class="card">
+<table>
+<tr><th>项</th><th>实况</th></tr>
+<tr><td>底表</td><td><code>engine/cache/odds_{联赛}_{赛季}.json</code> = <b>428 比赛日 · 8820 场</b>（Pinnacle 三向收盘价 pin_h/d/a + 赛果）</td></tr>
+<tr><td>跨度</td><td>三赛季：2425（250 日）+ 2526（125 日）+ 2627（53 日）≈ 两年</td></tr>
+<tr><td>日池</td><td>中位 10 场/日 · ≥3 场占 83%（356 日）· ≥8 场占 59%（252 日）· 周末高峰 30~79 场</td></tr>
+<tr><td>可靠性</td><td>与 7216 场 sweep 同一块底子（已验证）·portugal-liga 去重口径照搬</td></tr>
+<tr><td>历史事故对照</td><td>同日泄漏/sfm 自泄漏/v4b 自泄漏/V3ROI 右尾四案全已修或作废——本回测无模型拟合环节·泄漏面最小</td></tr>
+</table>
+</div>
+
+<h2>二、结构矩阵：策略 × 串深</h2>
+<div class="card">
+<p><b>票型</b>：每日从日池选腿·每腿<b>单选</b>（该场 argmax 方向）·N 串 1 一注 2 元·成交按 Pinnacle 收盘价（铁律·零 CLV 假设）。</p>
+<table>
+<tr><th>策略</th><th>选腿规则</th><th>串深</th><th>来源</th></tr>
+<tr><td><b>S1 置信度</b></td><td>当日去水概率（比例去水）argmax 最高前 D 场</td><td>D=3~8 固定六档</td><td>新设·市场置信基准</td></tr>
+<tr><td><b>S2 赔率甜点</b></td><td>argmax 收盘赔率 ∈ [1.40,1.90] 按概率取前 D·不足则全池概率降序补齐</td><td>D=3~8 固定六档</td><td>新设·甜点赔率段</td></tr>
+<tr><td><b>S3 置信分层</b></td><td>踩线护栏（赔率&lt;1.35 且 p&lt;0.68 剔除）后 p≥0.60 合格池·胆级 p≥0.75 优先占席·其余 p 降序·池&lt;3 关档跳过</td><td>N=min(8,池)·变深</td><td><b>09-06 置信分层结论对照臂</b>（胆 96%·标准 74~77%）</td></tr>
+<tr><td><b>S4 彩票档门槛</b></td><td>p≥0.55 或 赔率≤1.25 合格腿全上·池&lt;4 关档跳过</td><td>N=min(8,池)·变深</td><td><b>boldplay 彩票档现行规则</b>（4~8 串）</td></tr>
+<tr><td><b>RND 基线</b></td><td>随机选腿×200 种子：固定 D 档随机 D 场 + S3/S4 逐日配对腿数随机</td><td>与各策略同构</td><td>区分"选场增量"vs"纯彩票"</td></tr>
+</table>
+<p class="small">模型口径（DC/融合 argmax）挂批次二不进本轮——7216 场已证模型≈市场（融合 acc 0.506 vs 市场 0.511）·层1 市场口径即更强版本免重放。日池&lt;D 的天该深度跳过·各深度实际天数诚实报告。</p>
+</div>
+
+<h2>三、判据（预注册·跑前已写死）</h2>
+<div class="card">
+<table>
+<tr><th>#</th><th>判据</th><th>判读</th></tr>
+<tr><td>①</td><td>S1~S4 ROI 落在 RND 同结构 95% 区间内</td><td>选场无增量·串关=彩票+抽水</td></tr>
+<tr><td>②</td><td>任一策略 bootstrap 95%CI 下限&gt;0 <b>且</b>扣最大单日后仍&gt;0</td><td><b>唯一跟进信号</b>→再过体彩价敏感性→方可启动丙+</td></tr>
+<tr><td>③</td><td>全策略全深度 ROI&lt;0 且无任何满足②</td><td>方向1 盖棺·影子层亦不挂</td></tr>
+<tr><td>④</td><td>S3 附赠：胆级/标准级腿 8820 场大样本命中率</td><td>对照 09-06 结论（96%/74~77%）·仅报告不作为任何转正依据</td></tr>
+</table>
+<p class="small">扣最大单日闸=v14 教训（EV 选格 +620% 实为回款仅 2 日的右尾彩票）；bootstrap=按日重抽样×2000·种子 20261007；RND 种子 1..200 固定可复现。</p>
+</div>
+
+<h2>四、审计三件套（大哥要求·结算可审）</h2>
+<div class="card">
+<p><b>① 跑时逐日明细打印</b>（stdout 实时流水）：</p>
+<pre>[2025-04-18] 日池28场 · S1置信度 D=5
+  腿1 阿森纳(H) @1.42 p=0.68 → 赛果2:0 ✓
+  腿2 拜仁(A)   @1.55 p=0.62 → 赛果1:3 ✓
+  ...
+  票面: 5串1×2元 · 赔率积8.93 · 结算: 全灭-2元 · 累计ROI -34.2%</pre>
+<p><b>② 票级全量落盘</b>：产物 JSON 含 <code>tickets[]</code>——日期/策略/串深/每腿（主客·联赛·选向·收盘价·去水p·赛果·中否）/赔率积/注金/回款。<b>审计口径=从票面可独立重算一切汇总数字</b>·不依赖脚本内部累计。RND×200 只落聚合分布+种子（全量票过重·种子可复现）。</p>
+<p><b>③ <code>--audit</code> 复算对账</b>：重读产物→从 tickets[] 逐票重算总投入/总回款/ROI/命中率→与落盘汇总逐项比对→PASS/FAIL 逐策略×深度报告；另抽 10 天从原始底表独立重放选场→出票→结算全链路核对。HTML 报告末尾附对账行：票数×注金=总投入·票面回款和=总回款·两口径不等=报错。</p>
+</div>
+
+<h2>五、体彩价敏感性</h2>
+<div class="card">
+<p>历史体彩赛前价不存在（仅 34 天 score_odds 档案）→ 主口径用 Pinnacle 收盘。敏感性：34 天档案对 Pinnacle 逐赔率带（&lt;1.4 / 1.4~1.9 / &gt;1.9）比价·均值比平移各策略 ROI 报告区间。<b>只作敏感性非主口径</b>（比价须队名跨系统匹配·匹配数与均值差诚实报告·匹配过稀则降级为定性说明）。</p>
+</div>
+
+<h2>六、指标与产出物</h2>
+<div class="card">
+<table>
+<tr><th>指标</th><th>口径</th></tr>
+<tr><td>总 ROI / 每注 ROI</td><td>Σ回款/Σ注金·票级可复算</td></tr>
+<tr><td>全中率 / 回款日率</td><td>票全中占比 / 有回款日占比</td></tr>
+<tr><td><b>扣最大单日 ROI</b></td><td>剔除净利最大单日重算（v14 闸）</td></tr>
+<tr><td>分赛季 ROI</td><td>2425 / 2526 / 2627 三段各报</td></tr>
+<tr><td>最大连黑 / 资金曲线</td><td>连续全灭天数·累计投入回款曲线</td></tr>
+<tr><td>bootstrap 95%CI</td><td>按日重抽样×2000·种子 20261007</td></tr>
+</table>
+<p>产物：<code>data/04-summaries/v16-had-parlay-backtest.json</code>（含 tickets[] 全账）+ <code>data/04-summaries/2026-10-07-v16-had-parlay-review.html</code>（审计报告·含对账行与票务总账表）。脚本 <code>engine/scripts/research/v16_had_parlay_backtest.py</code>（纯数组运算·无模型拟合·跑时&lt;5 分钟）。</p>
+</div>
+
+<h2>七、状态</h2>
+<div class="card">
+<table>
+<tr><th>项</th><th>状态</th></tr>
+<tr><td>预注册 v16（判据跑前写死）</td><td class="ok">✅ 95b4a5f</td></tr>
+<tr><td>设计档（本档）</td><td class="ok">✅ 随本 commit 入库</td></tr>
+<tr><td>v16 脚本（含审计件）</td><td class="warn">待建</td></tr>
+<tr><td>跑 + --audit 对账 + 报告</td><td class="warn">待跑</td></tr>
+</table>
+</div>
+
+<div class="small">开发者 sszhang · 2026-10-07 · 本档随预注册同批归档提交</div>
+</body></html>
