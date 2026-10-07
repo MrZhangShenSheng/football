@@ -1,0 +1,61 @@
+{
+ "ranAt": "2026-10-07",
+ "preReg": "preregistration.json changeLog v6",
+ "mapping": {
+  "slope": 0.3175,
+  "intercept": -0.1522,
+  "n": 24
+ },
+ "modes": {
+  "global(-0.05)": {
+   "fit": {
+    "top5Rate": 0.42683982683982685,
+    "top5N": 4620,
+    "v3Roi": -0.8548849252013809,
+    "days": 316,
+    "hitDays": 12
+   },
+   "val": {
+    "top5Rate": 0.43612800846336947,
+    "top5N": 3781,
+    "v3Roi": 1.1976156299840506,
+    "days": 228,
+    "hitDays": 19
+   }
+  },
+  "cache(现状)": {
+   "fit": {
+    "top5Rate": 0.42424242424242425,
+    "top5N": 4620,
+    "v3Roi": -0.21071274453394706,
+    "days": 316,
+    "hitDays": 24
+   },
+   "val": {
+    "top5Rate": 0.4326897646125364,
+    "top5N": 3781,
+    "v3Roi": -0.09110097687400348,
+    "days": 228,
+    "hitDays": 22
+   }
+  },
+  "drawRateMap": {
+   "fit": {
+    "top5Rate": 0.4277056277056277,
+    "top5N": 4620,
+    "v3Roi": -0.8107393555811278,
+    "days": 316,
+    "hitDays": 15
+   },
+   "val": {
+    "top5Rate": 0.43771489024067706,
+    "top5N": 3781,
+    "v3Roi": -0.04945175438596513,
+    "days": 228,
+    "hitDays": 16
+   }
+  }
+ },
+ "spread": 0.005,
+ "judge": "<1pp 快刀斩立档"
+}

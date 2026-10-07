@@ -83,6 +83,8 @@ def preload_with_lam(ctx, z2i, memo, matches_by_lg):
         rows += json.loads(f.read_text(encoding="utf-8"))["matches"]
     rows = [m for m in rows
             if m.get("crs") and m.get("score") and str(m.get("date", ""))[:10] >= FIT_WINDOW[0]]
+    if "--smoke" in sys.argv:
+        rows = [m for m in rows if str(m.get("date", ""))[:10] <= "2024-03-01"]
     by_day = {}
     for m in rows:
         by_day.setdefault(str(m["date"])[:10], []).append(m)
@@ -161,24 +163,24 @@ def eval_mode(pre, lo, hi, mode, slope, intercept):
             continue
         ok = sorted(ok, key=lambda c: -max(c["cellsNow"].values()))[:4]
         legs, per = [], []
-        # 赔率从 crsRaw 取（历史体彩赔率·ρ 无关）
+        # 有价格内取 max p（对齐 S5/v13 口径）·赔率从 crsRaw 取（ρ 无关）
         for c in ok:
-            best = max(c["cellsNow"], key=c["cellsNow"].get)
-            odds = None
+            priced = []
             for ck, ov in (c["crsRaw"] or {}).items():
                 mk = hist_crs_key_to_matrix(str(ck))
-                if mk == best:
+                if mk and mk in c["cellsNow"]:
                     try:
-                        odds = float(ov)
+                        o = float(ov)
                     except (TypeError, ValueError):
-                        odds = None
-                    break
-            if odds is None or odds <= 1.0:
-                legs.pop()
+                        continue
+                    if o > 1.0:
+                        priced.append((mk, o, c["cellsNow"][mk]))
+            if not priced:
                 per = None
                 break
-            legs[-1] = (best, odds)
-            per.append(best == c["real"])
+            best_mk, odds, _ = max(priced, key=lambda t: t[2])
+            legs.append((best_mk, odds))
+            per.append(best_mk == c["real"])
         if per is None or len(legs) < 4:
             continue
         pay = payout_4s11(legs, per)
@@ -216,22 +218,27 @@ def main():
 
     modes = {"global(-0.05)": "global", "cache(现状)": "cache", "drawRateMap": "map"}
     out = {}
+
+    def fmt(x):
+        return f"{x*100:.2f}%" if x is not None else "n/a"
+
     for label, mode in modes.items():
         fit_r = eval_mode(pre, *FIT_WINDOW, mode, slope, intercept)
         val_r = eval_mode(pre, *VAL_WINDOW, mode, slope, intercept)
         out[label] = {"fit": fit_r, "val": val_r}
-        print(f"  {label:<16} top5命中率 拟合{fit_r['top5Rate']*100:.2f}% 验证{val_r['top5Rate']*100:.2f}%"
-              f" · V3ROI 拟合{fit_r['v3Roi']*100:+.1f}% 验证{val_r['v3Roi']*100:+.1f}%", flush=True)
+        print(f"  {label:<16} top5命中率 拟合{fmt(fit_r['top5Rate'])} 验证{fmt(val_r['top5Rate'])}"
+              f" · V3ROI 拟合{fmt(fit_r['v3Roi'])} 验证{fmt(val_r['v3Roi'])}", flush=True)
 
-    rates = sorted(out[m]["val"]["top5Rate"] for m in modes)
-    spread = rates[-1] - rates[0]
-    judge = ("<1pp 快刀斩立档" if spread < 0.01 else
-             "≥2pp 映射口径预注册深化" if spread >= 0.02 else "1~2pp 观察")
-    print(f"\n口径间 top5 命中率极差: {spread*100:.2f}pp → 判读: {judge}", flush=True)
+    rates = sorted(m["val"]["top5Rate"] for m in out.values() if m["val"]["top5Rate"] is not None)
+    spread = rates[-1] - rates[0] if rates else None
+    judge = (None if spread is None else
+             ("<1pp 快刀斩立档" if spread < 0.01 else
+              "≥2pp 映射口径预注册深化" if spread >= 0.02 else "1~2pp 观察"))
+    print(f"\n口径间 top5 命中率极差: {'n/a' if spread is None else f'{spread*100:.2f}pp'} → 判读: {judge}", flush=True)
 
     result = {"ranAt": "2026-10-07", "preReg": "preregistration.json changeLog v6",
               "mapping": {"slope": round(slope, 4), "intercept": round(intercept, 4), "n": npairs},
-              "modes": out, "spread": round(spread, 4), "judge": judge}
+              "modes": out, "spread": (round(spread, 4) if spread is not None else None), "judge": judge}
     OUT_PATH.write_text(json.dumps(result, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"\n归档 {OUT_PATH.relative_to(ROOT)}", flush=True)
 
