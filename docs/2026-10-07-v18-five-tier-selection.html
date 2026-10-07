@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>v18.1 选腿逻辑整理 · 五挡分级 + 滚动在售池</title>
+<style>
+:root{--ink:#1c2733;--sub:#5b6b7a;--line:#dde4ea;--bg:#f7f9fb;--card:#fff;--ok:#0f6b4f;--bad:#a33;--warn:#b3541e;--accent:#1a5fb4}
+*{box-sizing:border-box}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;color:var(--ink);background:var(--bg);margin:0;padding:24px 16px;max-width:1000px;margin-inline:auto}
+h1{font-size:20px;margin:0 0 4px}
+h2{font-size:15px;margin:20px 0 8px;padding-bottom:5px;border-bottom:2px solid var(--accent)}
+.meta{color:var(--sub);font-size:12.5px;margin-bottom:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 16px;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:12.5px;margin:5px 0}
+th,td{border:1px solid var(--line);padding:4px 7px;text-align:left;vertical-align:top}
+th{background:#f0f4f7}
+.num{font-variant-numeric:tabular-nums}
+.ok{color:var(--ok);font-weight:600}.bad{color:var(--bad);font-weight:600}.warn{color:var(--warn);font-weight:600}
+.small{font-size:11.5px;color:var(--sub)}
+code{background:#eef2f5;border-radius:4px;padding:1px 5px;font-size:12px}
+</style></head><body>
+
+<h1>v18.1 选腿逻辑整理 · 五挡分级 + 滚动在售池</h1>
+<div class="meta">拍板 sszhang · 2026-10-07 · 预注册舱 v18FiveTier · 执行器 engine/scripts/v18_scheme_daily.py（滚动池默认）· 首批影子票 P401~P405</div>
+
+<h2>〇、缘起</h2>
+<div class="card">
+<p>大哥指令链：双信号选腿方案（v18）→ 滚动池模式（路径 2 拍板）→ 全部变体登记影子票 → 选腿逻辑整理成<b>五挡</b> + 滚动池逻辑入档。本档 = 方案的正式定义文档。</p>
+<p class="small">背景不隐藏：v18 历史回测判据③ SEALED（DUAL−S3J=−0.1pp·CI 下限&lt;0）——本方案以<b>影子级</b>运转（零成本前向积累），claimed ROI 全负为抽水结构使然，影子票目的=攒 realized 样本对照 claimed，验证哪一挡信息最有值。</p>
+</div>
+
+<h2>一、五挡分级（判定全部赛前可得）</h2>
+<div class="card">
+<table>
+<tr><th>挡</th><th>名称</th><th>判定</th><th>校准命中率锚*</th><th>今日样本（10-08/09 轮）</th></tr>
+<tr><td class="num"><b>一挡</b></td><td>胆级双确认</td><td>市场去水 p≥0.75 <b>且</b> V3W 同向</td><td class="num">0.830</td><td>—</td></tr>
+<tr><td class="num"><b>二挡</b></td><td>标准双确认</td><td>0.60≤p&lt;0.75 <b>且</b> V3W 同向</td><td class="num">0.694</td><td>维多利亚@1.36 / 帕梅拉斯@1.41</td></tr>
+<tr><td class="num"><b>三挡</b></td><td>边缘同向</td><td>（护栏差≤0.02 <b>或</b> 0.55≤p&lt;0.60）<b>且</b> V3W 同向</td><td class="num">0.597</td><td>弗鲁米嫩@1.33(贴线) / 布拉干RB@1.53(0.58)</td></tr>
+<tr><td class="num"><b>四挡</b></td><td>盲区单信号</td><td>第一信号过（p≥0.60+护栏）但 V3W 不可测（联赛库缺失）</td><td class="num">0.694<span class="small">（未验·标注）</span></td><td>赫尔辛基@1.43 / 库奥皮奥@1.41（芬超）</td></tr>
+<tr><td class="num"><b>五挡</b></td><td>低置信同向</td><td>p&lt;0.55 <b>且</b> V3W 同向（右尾材料）</td><td class="num">0.433</td><td>里莫@1.95 / 桑托斯@1.66 / 巴竞技@1.95</td></tr>
+</table>
+<p class="small">* 校准锚 = v16.1 收盘基大样本分带命中率（≥0.75：83.0% / 0.60-0.75：69.4% / 0.55-0.60：59.7% / &lt;0.55：43.3%·n=8685）。四挡用市场分带锚但 V3W 未验证，票面须标注"盲区"。<br>
+信号定义：第一信号 = 体彩 HAD 去水概率（踩线护栏：赔率&lt;1.35 且 p&lt;0.68 剔除）；第二信号 = V3W-v2 39 格比分矩阵聚合三向 argmax 同向（β=0.05 生产参数）。</p>
+</div>
+
+<h2>二、滚动在售池逻辑（大哥路径 2 拍板·默认模式）</h2>
+<div class="card">
+<table>
+<tr><th>规则</th><th>内容</th></tr>
+<tr><td><b>池定义</b></td><td>当前在售<b>全量</b>场次跨日合并（不按销售日切分）——体彩跨日串合法（T040 先例）</td></tr>
+<tr><td><b>票面</b></td><td>N串1 × 1 倍 = 2 元 · N=选腿数（3~8，&gt;8 按 p 降序截前 8）</td></tr>
+<tr><td><b>关档</b></td><td>选腿 &lt;3 → 当天不出方案（打印原因非静默）</td></tr>
+<tr><td><b>补位顺序</b></td><td>一挡 → 二挡 → 三挡 → 四挡依次补位；<b>五挡仅入右尾票</b>（V-d 型），不入保底型方案</td></tr>
+<tr><td><b>结算日</b></td><td>票挂<b>最晚比赛日</b>——settle-all 到日自动对票结算</td></tr>
+<tr><td><b>幂等</b></td><td>同 spec + 同结算日已登记跳过；每日重跑滚动池自然换血</td></tr>
+<tr><td><b>价冻结纪律</b></td><td>售中=体彩实时缓存；<b>停售/夜间切换后=score_odds 日档存档或 05-trends 时序快照</b>（2026-10-07 23:48 实战：停售后实时缓存清零，存档快照救场——冻结凭证链不可断）</td></tr>
+<tr><td><b>执行器</b></td><td><code>python engine/scripts/v18_scheme_daily.py</code>（默认滚动池；<code>--byday</code> 按销售日切分对照）</td></tr>
+</table>
+</div>
+
+<h2>三、变体票谱系（首批 5 张·结算日 2026-10-09）</h2>
+<div class="card">
+<table>
+<tr><th>票</th><th>spec</th><th>挡组成</th><th>票面</th><th>中奖概率(claimed)</th><th>中奖金额</th><th>ROI(claimed)</th></tr>
+<tr><td class="num">P401</td><td>v18双信号2串1</td><td>二挡×2</td><td>2串1</td><td class="num">48.2%</td><td class="num">3.84元</td><td class="num bad">−7.3%</td></tr>
+<tr><td class="num">P402</td><td>v18Va-双确认宽0.55</td><td>二挡×2+三挡</td><td>3串1</td><td class="num">28.8%</td><td class="num">5.91元</td><td class="num bad">−15.2%</td></tr>
+<tr><td class="num">P403</td><td>v18Vb-贴线放行</td><td>二挡×2+三挡(贴线)</td><td>3串1</td><td class="num">33.4%</td><td class="num">5.14元</td><td class="num bad">−14.3%</td></tr>
+<tr><td class="num">P404</td><td>v18Vc-第一信号池</td><td>二挡×2+四挡×2</td><td>4串1</td><td class="num">23.2%</td><td class="num">7.79元</td><td class="num bad">−10.1%</td></tr>
+<tr><td class="num">P405</td><td>v18Vd-同向右尾</td><td>二三五挡全池</td><td>7串1</td><td class="num">1.6%</td><td class="num">49.61元</td><td class="num bad">−60.3%</td></tr>
+</table>
+<p class="small">ROI 四件套：中奖概率=∏分带校准锚 · 中奖金额=2×∏冻结赔率 · 投入=2元 · ROI(claimed)=P×∏o−1；realized 由 settle-all 结算后对照（积累每挡的真实 vs claimed 偏差）。</p>
+</div>
+
+<h2>四、验证与迭代纪律</h2>
+<div class="card">
+<ul>
+<li>每轮回填后 settle-all 结算 → <b>分挡 realized 命中率 vs 校准锚对照表</b>（一挡 0.830 / 二挡 0.694 / … 的前向验证——v17 的 B 基复检钩子同款）</li>
+<li>挡级命中率偏离锚 &gt;8pp 且 n≥30 → 调锚入预注册变更（不静默改）</li>
+<li>V3W 盲区（四挡）联赛逐个补库解锁（finland 已立项待执行）——补库后该联赛腿从四挡升入对应双确认挡</li>
+<li>本方案<b>影子级</b>：不接实票；转正须另行预注册（realized 过判据②才谈）</li>
+</ul>
+</div>
+
+<div class="small">开发者 sszhang · 2026-10-07 · 首轮五挡样本=10-08/09 在售 12 场 · 影子票 P401~P405 已登记（价源存档快照）</div>
+</body></html>
