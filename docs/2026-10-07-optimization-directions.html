@@ -1,0 +1,115 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>优化方向立项档案 · 方向1 HAD串 / 方向2 比分多格</title>
+<style>
+:root{--ink:#1c2733;--sub:#5b6b7a;--line:#dde4ea;--bg:#f7f9fb;--card:#fff;--ok:#0f6b4f;--bad:#a33;--warn:#b3541e;--accent:#1a5fb4;--run:#0f6b4f;--hold:#b3541e}
+*{box-sizing:border-box}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;color:var(--ink);background:var(--bg);margin:0;padding:24px 16px;max-width:1000px;margin-inline:auto}
+h1{font-size:20px;margin:0 0 4px}
+h2{font-size:15px;margin:20px 0 8px;padding-bottom:5px;border-bottom:2px solid var(--accent)}
+.meta{color:var(--sub);font-size:12.5px;margin-bottom:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 16px;margin:8px 0}
+.card.dir1{border-left:4px solid var(--hold)}
+.card.dir2{border-left:4px solid var(--run)}
+table{border-collapse:collapse;width:100%;font-size:12.5px;margin:5px 0}
+th,td{border:1px solid var(--line);padding:4px 7px;text-align:left;vertical-align:top}
+th{background:#f0f4f7}
+.num{font-variant-numeric:tabular-nums}
+.ok{color:var(--ok);font-weight:600}.bad{color:var(--bad);font-weight:600}.warn{color:var(--warn);font-weight:600}
+.small{font-size:11.5px;color:var(--sub)}
+.badge{display:inline-block;border-radius:10px;padding:2px 10px;font-size:12px;font-weight:600;color:#fff}
+.badge.hold{background:var(--hold)}
+.badge.run{background:var(--run)}
+code{background:#eef2f5;border-radius:4px;padding:1px 5px;font-size:12px}
+</style></head><body>
+
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="i-flag" viewBox="0 0 16 16"><path d="M3 1v14M3 2h9l-2 3 2 3H3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-dice" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="5.5" cy="5.5" r="1.1" fill="currentColor"/><circle cx="10.5" cy="10.5" r="1.1" fill="currentColor"/><circle cx="10.5" cy="5.5" r="1.1" fill="currentColor"/><circle cx="5.5" cy="10.5" r="1.1" fill="currentColor"/></symbol>
+<symbol id="i-doc" viewBox="0 0 16 16"><path d="M4 1.5h6l3 3V14.5H4z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M6 8h5M6 11h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></symbol>
+</defs></svg>
+
+<h1>优化方向立项档案 · 比分端两条路</h1>
+<div class="meta">拍板 sszhang · 2026-10-07 · 缘起 10-06 国际赛 12 场复盘 · 本档防遗忘，后续会话以此为锚</div>
+
+<h2>〇、缘起：昨夜复盘数字</h2>
+<div class="card">
+<table>
+<tr><th>口径</th><th class="num">结果</th><th>判语</th></tr>
+<tr><td>方向命中（模型 HAD argmax）</td><td class="num ok">7/12</td><td>优于市场 4/10（有价场）·方向功底在线</td></tr>
+<tr><td>比分 top1 单格</td><td class="num bad">1/12</td><td>唯一命中=韩国 2:0·恰是未入选 T045 之场</td></tr>
+<tr><td>比分 top5 内</td><td class="num ok">5/12</td><td>其中 4 场在 top2~top4·分布形状有真信息</td></tr>
+<tr><td>T045 实票</td><td class="num bad">0/4 全灭 −22 元</td><td>两腿方向对比分错·单格串法吞没近中机会</td></tr>
+</table>
+<p class="small">故引出两条优化路：既然"方向多对而比分少中"，要么只买方向（方向1），要么把比分从单格扩为多格（方向2）。</p>
+</div>
+
+<h2><svg width="14" height="14" style="vertical-align:-2px;color:var(--hold)"><use href="#i-flag"/></svg> 方向 1：方向对之场 → 胜平负（HAD）串关 <span class="badge hold">先验否定 · 影子验证</span></h2>
+<div class="card dir1">
+<p><b>设想</b>：取模型方向命中的场，串胜平负，以方向命中率（昨 58.3%）搏串关。</p>
+<table>
+<tr><th>已有证据</th><th>指向</th></tr>
+<tr><td>DC 对市场无增量（7216 场 walk-forward：纯市场 RPS 0.1995 vs 融合 0.2025·价值下注 ROI 全负）</td><td class="bad">模型方向长期不比市场准</td></tr>
+<tr><td>赔率无 α 铁律（集中度/近况/steam 三轮证伪·天花板 77~84%·抽水 16%）</td><td class="bad">HAD=效率最高池·期望锁死 −抽水</td></tr>
+<tr><td>昨日 7/12 拆解：市场同翻车日（卢森堡 2.17/苏格兰 1.62 大热门同灭）·模型独立选对仅中国 1 场</td><td class="warn">单日样本诱惑·不可作能力证据</td></tr>
+</table>
+<p><b>裁定</b>：禁实票直上。若主公仍欲验证：只走<b>影子票 forward 积累</b>（成本零），按四条硬纪律预注册后积累 ≥100 注再判。</p>
+<p class="small">判据预注册位：fade-strategy-prereg（尚未登记·若启动先补 v13+ 条目）</p>
+</div>
+
+<h2><svg width="14" height="14" style="vertical-align:-2px;color:var(--run)"><use href="#i-dice"/></svg> 方向 2：比分多格复式（每场 top1 → top2/top3） <span class="badge run">已批准 · 回测中</span></h2>
+<div class="card dir2">
+<p><b>设想</b>：比分端每场由单格（top1）扩为多格（top2/top3），2*3*4 复式串法不变，提高单腿命中率、降方差，代价为注数成本上升。</p>
+<table>
+<tr><th>已有证据</th><th>指向</th></tr>
+<tr><td>昨日 top5 命中 5/12·4 场在 top2~top4（瑞士 3:0=模型top2·中国 0:1=模型top2）</td><td class="ok">近中机会大量存在·被单格吞没</td></tr>
+<tr><td>T002/T003 赚钱结构（大哥钱包验证·立为 shapes 第一优先）</td><td class="ok">容错/复式族碾压单选</td></tr>
+<tr><td>S5 意外线索：topP 口径 −9.1% vs 份额 argmax 口径 −18.2%（差 9pp）</td><td class="ok">格选择口径未定·比分端仍有结构可挖</td></tr>
+<tr><td>右尾效率曲线：热门比分端 e=0.873 最便宜</td><td class="ok">多格买热门段成本最优</td></tr>
+<tr><td>预注册舱 v5 票型（每场 1-3 比分×2*3*4 混串）回测框架现成——但系旧链 crs_fusion 时代跑出 −48.9%</td><td class="warn">V3W-v2 新链下复式<b>未重测</b>·旧数字不可外推</td></tr>
+</table>
+<p><b>实施路径</b>（2026-10-07 启动）：</p>
+<ol>
+<li>预注册判据入舱（fade-strategy-prereg v13·跑前写死）</li>
+<li>复用 S5 preload 框架（841 日全链候选·一次预计算）</li>
+<li>三档对照回测：top1 单选（现状基线）vs top2 复式 vs top3 复式 · 拟合段 2024-01~2025-06 选优 · 验证段 2025-10~2026-09-28 复验</li>
+<li>正收益须过随机基线（200 次·固定种子）</li>
+<li>验证段改善 &gt;5pp 且优于单选基线 → 方可替换生产票面口径；否则 KEEP</li>
+</ol>
+<p class="small">脚本：<code>engine/scripts/research/v13_multicell_backtest.py</code>（待建）·产物：<code>data/04-summaries/v13-multicell-backtest.json</code></p>
+</div>
+
+<h2>一、两向优先级与状态总览</h2>
+<div class="card">
+<svg viewBox="0 0 640 150" width="100%" style="font-family:inherit">
+<rect x="10" y="20" width="280" height="100" rx="10" fill="#fff" stroke="#dde4ea" stroke-width="1.5"/>
+<rect x="10" y="20" width="280" height="6" rx="3" fill="#b3541e"/>
+<text x="30" y="50" font-size="14" font-weight="600" fill="#1c2733">方向 1 · HAD 串</text>
+<text x="30" y="72" font-size="11.5" fill="#5b6b7a">先验否定（DC 无增量+效率池）</text>
+<text x="30" y="92" font-size="11.5" fill="#b3541e" font-weight="600">状态：挂起 · 仅影子验证</text>
+<text x="30" y="110" font-size="10.5" fill="#8a97a3">禁实票 · 欲行先预注册</text>
+<rect x="350" y="20" width="280" height="100" rx="10" fill="#fff" stroke="#dde4ea" stroke-width="1.5"/>
+<rect x="350" y="20" width="280" height="6" rx="3" fill="#0f6b4f"/>
+<text x="370" y="50" font-size="14" font-weight="600" fill="#1c2733">方向 2 · 比分多格复式</text>
+<text x="370" y="72" font-size="11.5" fill="#5b6b7a">证据利多（top5 41.7%+容错族 α）</text>
+<text x="370" y="92" font-size="11.5" fill="#0f6b4f" font-weight="600">状态：已批准 · 回测进行中（2026-10-07）</text>
+<text x="370" y="110" font-size="10.5" fill="#8a97a3">判据预注册 v13 · 过 5pp 门槛方转正</text>
+<path d="M290 70 L350 70" stroke="#8a97a3" stroke-width="1.5" stroke-dasharray="4 3"/>
+</svg>
+<p class="small">顺序：方向 2 先行（框架现成·成本低·证据利多）·方向 1 挂起候数据（影子 forward 积累）。</p>
+</div>
+
+<h2>二、关联锚点</h2>
+<div class="card">
+<table>
+<tr><th>物</th><th>位置</th></tr>
+<tr><td>预注册舱（票型）</td><td><code>engine/cache/strength_chain/fade-strategy-prereg.json</code>（当前 version 12·S5 verdict 已落）</td></tr>
+<tr><td>S5 结论（阈值无正收益空间）</td><td><code>data/04-summaries/v11-s5-recalib.json</code> · commit 4d50910</td></tr>
+<tr><td>昨日预测面</td><td><code>data/03-predictions/2026-10-06-crs.json</code></td></tr>
+<tr><td>昨日赛果面</td><td><code>engine/cache/sporttery_results_2026-10-06_2026-10-07.json</code>（待正式回填入库）</td></tr>
+<tr><td>T045 账本</td><td><code>data/06-tickets/tickets.json</code>（0/4 全灭 −22）</td></tr>
+<tr><td>回测硬纪律</td><td>strict_merged 时间线·判据跑前预注册·正收益先自证伪+随机基线·样本&lt;30 警讯</td></tr>
+</table>
+</div>
+
+<div class="small">开发者 sszhang · 2026-10-07 · 本档随立项归档提交</div>
+</body></html>
