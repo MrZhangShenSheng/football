@@ -1,0 +1,822 @@
+{
+ "date": "2026-10-07",
+ "version": "v5.17",
+ "saleDay": "2026-10-07",
+ "matches": [
+  {
+   "idx": 1,
+   "code": "周三001",
+   "league": "芬超(冠军组G4)",
+   "match": "赫尔火花 vs 国际图尔",
+   "pick": "HAD 客胜",
+   "odds": 1.55,
+   "star": 3,
+   "grade": "B",
+   "dc": null,
+   "fused": [
+    0.199,
+    0.23,
+    0.571
+   ],
+   "final": 0.571,
+   "chain": "纯市场锚",
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": [
+    0.199,
+    0.23,
+    0.571
+   ],
+   "chainSteps": [
+    {
+     "name": "无DC·纯市场锚",
+     "factor": 1.0
+    }
+   ],
+   "ev": null,
+   "inPlan": null,
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "冠军组G4 赛程密集, 双方预计主力框架延续; insight 双方0伤停",
+     "tactics": "国际图尔(榜2)控球压制+双前锋Conteh/Sjögrell高位; 赫尔火花(榜4)主场防守反击靠Akinyemi单点",
+     "goalSource": "客队双前锋合计18球火力全联赛前列; 主队Akinyemi 13球单核, 被重点盯防后进球来源枯竭",
+     "script": "客队控球围攻, 主队反击偶有威胁; 画面客胜小比分1:2/0:2, 难零封",
+     "specialVars": "冠军组季后赛两队均有排名诉求; H2H主队10场仅2胜被压制"
+    },
+    "assumption": "国际图尔整体实力+H2H压制(主队10场2胜6负), 客胜方向成立; 但赫尔火花冠军组主场韧性(主场6/4/3)使客胜难零封, 画面1:2/0:2",
+    "checks": [
+     {
+      "kind": "h2h",
+      "source": "体彩insight 2041823",
+      "seasonComplete": "跨季10场含2526两季, 芬超口径完整",
+      "gaps": "2023年前无覆盖",
+      "matches": 10,
+      "detail": "近5次: 国际图尔3胜主队2胜, 客队赢3场里2次客胜"
+     },
+     {
+      "kind": "form",
+      "detail": "主队主场近10: 5胜4平1负 · 客队客场近10: 3胜5平2负——客队客场平局多(5场), 非碾压型"
+     },
+     {
+      "kind": "standing",
+      "detail": "冠军组: 客队第2(总13/9/3) 主队第4(11/8/6)"
+     },
+     {
+      "kind": "injury",
+      "detail": "双方0伤停(insight injuries 空)"
+     }
+    ],
+    "verdict": "survived"
+   }
+  },
+  {
+   "idx": 2,
+   "code": "周三002",
+   "league": "巴甲(GW29)",
+   "match": "巴西国际 vs 科林蒂安",
+   "pick": "HAD 平局(单关)",
+   "odds": 2.8,
+   "star": null,
+   "grade": "B",
+   "dc": [
+    0.383,
+    0.322,
+    0.295
+   ],
+   "fused": [
+    0.402,
+    0.318,
+    0.28
+   ],
+   "final": 0.324,
+   "chain": "伤停d=+1主×0.97",
+   "lambdaHome": 1.151,
+   "lambdaAway": 0.976,
+   "fusedPre": [
+    0.402,
+    0.318,
+    0.28
+   ],
+   "chainSteps": [
+    {
+     "name": "伤停差值",
+     "factor": 0.97
+    }
+   ],
+   "ev": -0.093,
+   "inPlan": "平局轨单关",
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "无大赛窗口, 双方主力; 主队主力后卫Victor伤缺(首发13/16), 客队全员",
+     "tactics": "保级6分战双方保守开局, 场均进球0.9/0.7双低火力, 中场绞杀为主",
+     "goalSource": "主Carbonero 7球单点; 客Garro/André各3球无强点——两队进攻端都靠定位球与乱战",
+     "script": "低强度低节奏, 0:0/1:1/1:0画面; 半场0:0概率高",
+     "specialVars": "保级直接对话(主18客14边缘); 主场仅3胜5平6负主场优势弱; 修正后三向极差11.2pp触发平局轨"
+    },
+    "assumption": "双弱攻保级互防+主队核心后卫缺阵, 90分钟平局被2.80低估——两队场均进球合计仅1.6, 近10场双方平局率均高(主4平/客5平客场口径)",
+    "checks": [
+     {
+      "kind": "h2h",
+      "source": "体彩insight 2041824",
+      "seasonComplete": "10场跨5季完整",
+      "gaps": "无",
+      "matches": 10,
+      "detail": "近5次: 科林蒂安客场2胜1平2负; 主队主场对客队2:0/1:1/1:4(负)——有来有回"
+     },
+     {
+      "kind": "form",
+      "detail": "主队主场近10: 4胜4平2负 · 客队客场近10: 2胜5平3负——双平局大户, 平局是共同剧本"
+     },
+     {
+      "kind": "standing",
+      "detail": "主18(6/10/12) 客14(8/8/12)——保级边缘互咬"
+     },
+     {
+      "kind": "injury",
+      "detail": "主Victor(后卫,首发13/16)伤缺=d=+1→主×0.97; 客0伤停"
+     }
+    ],
+    "verdict": "survived"
+   }
+  },
+  {
+   "idx": 3,
+   "code": "周三003",
+   "league": "巴甲(GW29)",
+   "match": "里莫 vs 格雷米奥",
+   "pick": "TTG 3球",
+   "odds": 3.65,
+   "star": 1,
+   "grade": "B",
+   "dc": [
+    0.434,
+    0.285,
+    0.282
+   ],
+   "fused": [
+    0.435,
+    0.283,
+    0.281
+   ],
+   "final": 0.285,
+   "chain": "伤停d=-1客×0.97(仅方向)",
+   "lambdaHome": 1.459,
+   "lambdaAway": 1.133,
+   "fusedPre": [
+    0.435,
+    0.283,
+    0.281
+   ],
+   "chainSteps": [
+    {
+     "name": "伤停差值",
+     "factor": 0.97
+    }
+   ],
+   "ev": 0.041,
+   "inPlan": "翻身档3串1选项",
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "主队缺中场维利松(16/23边缘主力)+锋线波韦达(1/15替补); 客队缺中场核心诺列加(19/21)+后卫Martins(17/19)——客队伤更重",
+     "tactics": "保级6分战; 客队全季客场0胜4平10负不会踢客场, 预计仍收缩; 主队主场3/5/6也弱但相对占优",
+     "goalSource": "主Jajá 7球+Alef Manga 5球双点; 客Carlos 10球但缺诺列加输送组织降档",
+     "script": "客队客场魔咒+双主力缺阵→主队主场掌控; 画面主胜1:0/2:1, 客队Carlos反击点存在→2:1保护",
+     "specialVars": "保级6分战双方战意满; 客队客场0胜是全联赛唯一"
+    },
+    "assumption": "格雷米奥客场0胜4平10负魔咒+缺双主力(诺列加19/21+Martins 17/19), 里莫主场拿分被3.15低估——主胜方向",
+    "checks": [
+     {
+      "kind": "h2h",
+      "source": "体彩insight 2041825",
+      "seasonComplete": "仅1场(格雷米奥客0:0), 样本<3不进权重",
+      "gaps": "历史交锋数据缺口大",
+      "matches": 1,
+      "detail": "2026-04 巴西杯格雷米奥客0:0——唯一参考无方向信息"
+     },
+     {
+      "kind": "form",
+      "detail": "主队主场近10: 3胜2平5负 · 客队客场近10: 1胜3平6负——双弱但客更弱"
+     },
+     {
+      "kind": "standing",
+      "detail": "主19(5/8/15) 客17(7/8/13)——保级直接对话"
+     },
+     {
+      "kind": "injury",
+      "detail": "主缺1边缘主力; 客缺2真主力(首发率0.90/0.89)——d=-1→客×0.97"
+     }
+    ],
+    "verdict": "survived"
+   }
+  },
+  {
+   "idx": 4,
+   "code": "周三004",
+   "league": "巴甲(GW29)",
+   "match": "布拉干RB vs 米拉索尔",
+   "pick": "排除:H2H反向·方向弱",
+   "odds": 1.62,
+   "star": 2,
+   "grade": "B",
+   "dc": [
+    0.451,
+    0.284,
+    0.265
+   ],
+   "fused": [
+    0.519,
+    0.257,
+    0.223
+   ],
+   "final": 0.519,
+   "chain": "无系数触发",
+   "lambdaHome": 1.483,
+   "lambdaAway": 1.086,
+   "fusedPre": [
+    0.519,
+    0.257,
+    0.223
+   ],
+   "chainSteps": [],
+   "ev": -0.159,
+   "inPlan": null,
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "主队I.Sosa(4/17替补)缺阵不影响主力框架; 双方全员可用",
+     "tactics": "米拉索尔升班马奇迹排名15, 防反扎实; 主队主场6/2/5主攻但效率一般",
+     "goalSource": "主Pitta/Barbosa各5球; 客卡洛斯·爱德华多6球——双端火力均衡",
+     "script": "市场1.62主胜热vs H2H完全反向(米拉索尔客场近4次对主队2:1/0:1/0:0/1:1不败)",
+     "specialVars": "H2H对位克制信息vs排名/主场常规逻辑矛盾"
+    },
+    "assumption": "主队排名+主场常规逻辑占优, 但米拉索尔对位克制近4次不败——方向主胜但信心弱, H2H反向不推入票",
+    "checks": [
+     {
+      "kind": "h2h",
+      "source": "体彩insight 2041826",
+      "seasonComplete": "10场含2526两季完整",
+      "gaps": "无",
+      "matches": 10,
+      "detail": "近5次米拉索尔客场口径4场不败(2胜2平)——对位克制信号强但H2H降权原则仅弱参考"
+     },
+     {
+      "kind": "form",
+      "detail": "主队主场近10: 5胜1平4负 · 客队客场近10: 2胜3平5负"
+     },
+     {
+      "kind": "standing",
+      "detail": "主11(10/6/12) 客15(8/8/12)"
+     },
+     {
+      "kind": "injury",
+      "detail": "主I.Sosa(4/17替补)不构成主力缺阵, 不触发系数"
+     }
+    ],
+    "verdict": "survived"
+   }
+  },
+  {
+   "idx": 5,
+   "code": "周三005",
+   "league": "巴甲(GW29)",
+   "match": "维多利亚 vs 沙佩科",
+   "pick": "HAD 主胜",
+   "odds": 1.41,
+   "star": 3,
+   "grade": "B",
+   "dc": [
+    0.524,
+    0.269,
+    0.207
+   ],
+   "fused": [
+    0.599,
+    0.233,
+    0.168
+   ],
+   "final": 0.599,
+   "chain": "无系数触发",
+   "lambdaHome": 1.64,
+   "lambdaAway": 0.949,
+   "fusedPre": [
+    0.599,
+    0.233,
+    0.168
+   ],
+   "chainSteps": [],
+   "ev": -0.156,
+   "inPlan": "彩票档6串1+对冲双票骨架",
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "双方0伤停(insight), 全员可用",
+     "tactics": "主队主场9/1/4强势(不平则胜); 沙佩科垫底客场1/4/9摆烂, 预计5-4-1死守",
+     "goalSource": "主Renê 9球定位球+Kayzer 4球; 客马塞利尼奥5球反击单点",
+     "script": "主队围攻铁桶, 上半场0:0胶着下半场破局; 画面1:0/2:0",
+     "specialVars": "沙佩科20名几乎锁定降级战意衰减; 主队保级关键期主场抢分动机强"
+    },
+    "assumption": "主队主场9胜1平4负+对手垫底客场1胜4平9负+降级定局战意差——主胜强方向, 画面1:0/2:0",
+    "checks": [
+     {
+      "kind": "h2h",
+      "source": "体彩insight 2041827",
+      "seasonComplete": "10场跨6季但含巴乙时期(2023前不同级)",
+      "gaps": "2023-2025三年无交锋(不同级)",
+      "matches": 10,
+      "detail": "近5次沙佩科客场口径3平1胜1负不败率80%——但3次平局全在低级别时期, 弱参考"
+     },
+     {
+      "kind": "form",
+      "detail": "主队主场近10: 6胜0平4负 · 客队客场近10: 1胜3平6负"
+     },
+     {
+      "kind": "standing",
+      "detail": "主13(9/6/13) 客20(3/9/15)——客队基本降级"
+     },
+     {
+      "kind": "injury",
+      "detail": "双方0伤停"
+     }
+    ],
+    "verdict": "survived"
+   }
+  },
+  {
+   "idx": 6,
+   "code": "周三006",
+   "league": "巴甲(GW29)",
+   "match": "博塔弗戈 vs 达伽马",
+   "pick": "排除:DC/市场分歧6.7pp·德比变数",
+   "odds": 2.82,
+   "star": 1,
+   "grade": "B",
+   "dc": [
+    0.554,
+    0.246,
+    0.2
+   ],
+   "fused": [
+    0.381,
+    0.272,
+    0.347
+   ],
+   "final": 0.381,
+   "chain": "伤停d=-1客×0.97",
+   "lambdaHome": 1.87,
+   "lambdaAway": 1.048,
+   "fusedPre": [
+    0.381,
+    0.272,
+    0.347
+   ],
+   "chainSteps": [
+    {
+     "name": "伤停差值",
+     "factor": 0.97
+    }
+   ],
+   "ev": null,
+   "inPlan": null,
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "客队头号射手C.Gómez(22/24真主力)伤缺——达伽马进攻核心缺阵; 主队全员",
+     "tactics": "里约德比火药味+中场绞杀; 主队场均0.9低攻, 客队场均2.0高攻但Gómez缺阵降档",
+     "goalSource": "主Danilo 9球+亚瑟7球; 客Thiago Mendes 5球+大卫顶替中锋",
+     "script": "DC说主胜55% vs 市场说客胜41.5%——>5pp分歧=模型多半错(铁律); 德比平局/胶着画面",
+     "specialVars": "里约德比历史恩怨, 红牌/变数概率高; DC local拟合可能滞后于市场已消化的状态信息"
+    },
+    "assumption": "模型与市场>5pp大分歧按纪律不站模型——客队射手伤+客场1/5/7烂与市场客胜热度矛盾, 无可靠方向, 本场不入票(降权)",
+    "checks": [
+     {
+      "kind": "h2h",
+      "source": "体彩insight 2041828",
+      "seasonComplete": "10场完整",
+      "gaps": "无",
+      "matches": 10,
+      "detail": "近5次: 主队2胜2平1负略占优; 德比交锋平局多(3/5)"
+     },
+     {
+      "kind": "form",
+      "detail": "主队主场近10: 5胜4平1负 · 客队客场近10: 4胜3平3负——注意客队客场口径不差, 与赛季客场1/5/7矛盾(近10回暖)"
+     },
+     {
+      "kind": "standing",
+      "detail": "主12(9/8/11) 客16(8/7/12)"
+     },
+     {
+      "kind": "injury",
+      "detail": "客C.Gómez(前锋22/24)伤缺=d=-1→客×0.97"
+     }
+    ],
+    "verdict": "pending"
+   }
+  },
+  {
+   "idx": 7,
+   "code": "周四001",
+   "league": "芬超(冠军组G4)",
+   "match": "赫尔辛基 vs 瓦萨",
+   "pick": "HAD 主胜",
+   "odds": 1.43,
+   "star": 3,
+   "grade": "B",
+   "dc": null,
+   "fused": [
+    0.619,
+    0.211,
+    0.17
+   ],
+   "final": 0.619,
+   "chain": "纯市场锚",
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": [
+    0.619,
+    0.211,
+    0.17
+   ],
+   "chainSteps": [
+    {
+     "name": "无DC·纯市场锚",
+     "factor": 1.0
+    }
+   ],
+   "ev": null,
+   "inPlan": "彩票档6串1",
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "冠军组G4, 双方主力; insight双方0伤停",
+     "tactics": "HJK主场7/2/3强控; 瓦萨客场4/3/5中庸防反",
+     "goalSource": "主Borchers 10球+普基5球; 客Smyth/Lindholm各7球双点",
+     "script": "主队主场压制, 画面1:0/2:1; 客队双射手有反击威胁难零封",
+     "specialVars": "冠军组HJK第3争欧战席位战意满"
+    },
+    "assumption": "HJK主场优势+H2H主队60%胜率同向——主胜成立, 画面1:0/2:1",
+    "checks": [
+     {
+      "kind": "h2h",
+      "source": "体彩insight 2041829",
+      "seasonComplete": "10场完整",
+      "gaps": "无",
+      "matches": 10,
+      "detail": "近5次主队3胜1平1负, 本季7月主2:1胜——同向支持"
+     },
+     {
+      "kind": "form",
+      "detail": "主队主场近10: 6胜2平2负 · 客队客场近10: 3胜3平4负"
+     },
+     {
+      "kind": "standing",
+      "detail": "冠军组主3(12/6/7) 客5(10/6/9)"
+     },
+     {
+      "kind": "injury",
+      "detail": "双方0伤停"
+     }
+    ],
+    "verdict": "survived"
+   }
+  },
+  {
+   "idx": 8,
+   "code": "周四002",
+   "league": "芬超(冠军组G4)",
+   "match": "库奥皮奥 vs AC奥卢",
+   "pick": "排除:H2H大胜反向·pending",
+   "odds": 1.41,
+   "star": 3,
+   "grade": "B",
+   "dc": null,
+   "fused": [
+    0.628,
+    0.224,
+    0.148
+   ],
+   "final": 0.628,
+   "chain": "纯市场锚",
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": [
+    0.628,
+    0.224,
+    0.148
+   ],
+   "chainSteps": [
+    {
+     "name": "无DC·纯市场锚",
+     "factor": 1.0
+    }
+   ],
+   "ev": null,
+   "inPlan": null,
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "冠军组G4双方主力; 0伤停",
+     "tactics": "KuPS榜1控球, 但近10主场3胜4平3负不稳; AC奥卢防反+Karjalainen 10球反击点",
+     "goalSource": "主Moreno 10球; 客Karjalainen 10球——对轰格局",
+     "script": "市场1.41大热vs H2H完全反向(AC奥卢客场近3次2:0/5:0/2:2不败且两次大胜)",
+     "specialVars": "H2H 5:0/2:0大胜信息量大于一般弱参考; KuPS主场不稳(H2H主场1:2负过AC奥卢)"
+    },
+    "assumption": "市场大热与H2H完全反向——AC奥卢近3次客场对KuPS不败且两次大胜(5:0/2:0), KuPS近10主场3胜4平3负与榜首身份不符; 方向存疑不入票",
+    "checks": [
+     {
+      "kind": "h2h",
+      "source": "体彩insight 2041830",
+      "seasonComplete": "10场完整(含2526两季+芬兰杯)",
+      "gaps": "无",
+      "matches": 10,
+      "detail": "近5次AC奥卢客场口径2胜2平1负, 含5:0/2:0两次大胜; KuPS主场近2次对客队1平1负——反向信号强"
+     },
+     {
+      "kind": "form",
+      "detail": "主队主场近10: 3胜4平3负(榜首主场却仅3胜) · 客队客场近10: 2胜2平6负"
+     },
+     {
+      "kind": "standing",
+      "detail": "冠军组主1(13/9/3) 客6(10/4/11)"
+     },
+     {
+      "kind": "injury",
+      "detail": "双方0伤停"
+     }
+    ],
+    "verdict": "pending"
+   }
+  },
+  {
+   "idx": 9,
+   "code": "周四003",
+   "league": "巴甲(GW29)",
+   "match": "桑托斯 vs 弗拉门戈",
+   "pick": "HAD 客胜",
+   "odds": 1.66,
+   "star": 2,
+   "grade": "A",
+   "dc": [
+    0.208,
+    0.259,
+    0.533
+   ],
+   "fused": [
+    0.217,
+    0.25,
+    0.534
+   ],
+   "final": 0.534,
+   "chain": "无系数触发",
+   "lambdaHome": 1.009,
+   "lambdaAway": 1.74,
+   "fusedPre": [
+    0.217,
+    0.25,
+    0.534
+   ],
+   "chainSteps": [],
+   "ev": -0.114,
+   "inPlan": "翻身档3串1选项",
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "双方0伤停全主力; Neymar(桑托斯6球)主场出战",
+     "tactics": "弗拉门戈争冠(榜1)客场王8/3/3压出来打; 桑托斯主场6/4/4平稳应对",
+     "goalSource": "客佩德罗16球(联赛火力王)+利诺9球; 主加布里埃尔13球+Neymar 6球——双方射手都热, 对攻",
+     "script": "客队控球压制主队反击, λ=1.01/1.74合计2.75高进球预期; 画面1:2/2:3客胜, 难零封",
+     "specialVars": "争冠关键轮弗拉门戈不能失分战意满; 桑托斯主场近10不败率90%(5胜4平1负)"
+    },
+    "assumption": "弗拉门戈客场王+争冠战意+佩德罗16球火力——客胜方向成立但桑托斯主场难零封, 画面客胜2:1/3:2; 总进球3-4有支撑(λ合计2.75)",
+    "checks": [
+     {
+      "kind": "h2h",
+      "source": "体彩insight 2041831",
+      "seasonComplete": "10场完整",
+      "gaps": "无",
+      "matches": 10,
+      "detail": "近5次弗拉门戈客场口径3胜0平2负——近2次全胜但都只赢1球(3:1/3:2), 大比分对攻常态化"
+     },
+     {
+      "kind": "form",
+      "detail": "主队主场近10: 5胜4平1负(不败率高) · 客队客场近10: 5胜3平2负(联赛最佳客场)"
+     },
+     {
+      "kind": "standing",
+      "detail": "主8(11/8/9) 客1(18/6/4)——客队争冠"
+     },
+     {
+      "kind": "injury",
+      "detail": "双方0伤停"
+     }
+    ],
+    "verdict": "survived"
+   }
+  },
+  {
+   "idx": 10,
+   "code": "周四004",
+   "league": "巴甲(GW29)",
+   "match": "巴竞技 vs 米竞技",
+   "pick": "HAD 主胜",
+   "odds": 1.95,
+   "star": 2,
+   "grade": "B",
+   "dc": [
+    0.489,
+    0.269,
+    0.242
+   ],
+   "fused": [
+    0.464,
+    0.28,
+    0.256
+   ],
+   "final": 0.457,
+   "chain": "伤停d=+1主×0.97",
+   "lambdaHome": 1.634,
+   "lambdaAway": 1.088,
+   "fusedPre": [
+    0.464,
+    0.28,
+    0.256
+   ],
+   "chainSteps": [
+    {
+     "name": "伤停差值",
+     "factor": 0.97
+    }
+   ],
+   "ev": -0.109,
+   "inPlan": "翻身档3串1选项",
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "主队缺后卫Aguirre(22/24真主力); 客队全员",
+     "tactics": "巴拉纳德比; 主队主场9/4/1强势+近10主场5胜5平0负不败; 客队客场4/2/8烂",
+     "goalSource": "主Viveros 18球(射手王)+Mendoza 5球; 客胡尔克7球——主队锋线碾压",
+     "script": "主队主场掌控德比节奏, 画面1:0/2:1; 后防缺Aguirre给客队胡尔克留反击空间→2:1保护",
+     "specialVars": "州德比; Viveros射手王状态是最大变量"
+    },
+    "assumption": "主队主场不败(近10主场5胜5平0负)+Viveros 18球射手王+对手客场4/2/8烂——主胜方向, 画面1:0/2:1",
+    "checks": [
+     {
+      "kind": "h2h",
+      "source": "体彩insight 2041832",
+      "seasonComplete": "5场近3年完整",
+      "gaps": "2025年缺, 2023-2024有",
+      "matches": 5,
+      "detail": "近5次米竞技客场口径3胜1平1负反压主队(含2:1/1:0客场连赢)——H2H反向但样本5场<200弱参考, 与主场不败基本面冲突取基本面"
+     },
+     {
+      "kind": "form",
+      "detail": "主队主场近10: 5胜5平0负 · 客队客场近10: 4胜3平3负"
+     },
+     {
+      "kind": "standing",
+      "detail": "主3(14/7/7) 客7(12/7/9)"
+     },
+     {
+      "kind": "injury",
+      "detail": "主Aguirre(后卫22/24)伤缺=d=+1→主×0.97; 客0伤停"
+     }
+    ],
+    "verdict": "survived"
+   }
+  },
+  {
+   "idx": 11,
+   "code": "周四005",
+   "league": "巴甲(GW29)",
+   "match": "弗鲁米嫩 vs 科里蒂巴",
+   "pick": "HAD 主胜",
+   "odds": 1.33,
+   "star": 3,
+   "grade": "A",
+   "dc": [
+    0.545,
+    0.243,
+    0.212
+   ],
+   "fused": [
+    0.634,
+    0.22,
+    0.147
+   ],
+   "final": 0.616,
+   "chain": "伤停d=+2主×0.93",
+   "lambdaHome": 1.907,
+   "lambdaAway": 1.122,
+   "fusedPre": [
+    0.634,
+    0.22,
+    0.147
+   ],
+   "chainSteps": [
+    {
+     "name": "伤停差值",
+     "factor": 0.93
+    }
+   ],
+   "ev": -0.181,
+   "inPlan": "彩票档6串1+对冲双票骨架",
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "主队缺中场Nonato(11/15)+前锋卡诺比奥(19/21)双主力; 客队全员——伤停已部分被1.33深热定价",
+     "tactics": "主队主场10/3/1联赛最强主场之一碾压; 科里蒂巴客场5/4/5中庸收缩",
+     "goalSource": "主John Kennedy 9球+胡尔克7球双点(卡诺比奥缺由Kennedy顶); 客Breno/罗查各8球",
+     "script": "主队主场围攻, 画面2:0/2:1; 伤双主力后零封概率降→2:1保护",
+     "specialVars": "主队榜4争解放者资格战意满; 市场1.33已消化伤停——热度合理"
+    },
+    "assumption": "主队主场10/3/1碾压+榜4战意, 伤双主力后仍强于客场中庸的科里蒂巴——主胜方向, 画面2:0/2:1(伤停致2:1权重升)",
+    "checks": [
+     {
+      "kind": "h2h",
+      "source": "体彩insight 2041833",
+      "seasonComplete": "10场跨4季完整",
+      "gaps": "2024-2025无交锋(不同级)",
+      "matches": 10,
+      "detail": "近5次: 客队客场口径2胜2平1负含2026-04客1:1——科里蒂巴并非软柿子, H2H弱参考"
+     },
+     {
+      "kind": "form",
+      "detail": "主队主场近10: 6胜3平1负 · 客队客场近10: 2胜4平4负"
+     },
+     {
+      "kind": "standing",
+      "detail": "主4(13/9/6) 客9(10/8/10)"
+     },
+     {
+      "kind": "injury",
+      "detail": "主Nonato(中场11/15=0.73)+卡诺比奥(前锋19/21=0.90)双主力伤缺=d=+2→主×0.93"
+     }
+    ],
+    "verdict": "survived"
+   }
+  },
+  {
+   "idx": 12,
+   "code": "周四006",
+   "league": "巴甲(GW29)",
+   "match": "帕梅拉斯 vs 巴伊亚",
+   "pick": "HAD 主胜",
+   "odds": 1.42,
+   "star": 3,
+   "grade": "A",
+   "dc": [
+    0.641,
+    0.228,
+    0.13
+   ],
+   "fused": [
+    0.629,
+    0.223,
+    0.148
+   ],
+   "final": 0.629,
+   "chain": "无系数触发",
+   "lambdaHome": 1.957,
+   "lambdaAway": 0.773,
+   "fusedPre": [
+    0.629,
+    0.223,
+    0.148
+   ],
+   "chainSteps": [],
+   "ev": -0.107,
+   "inPlan": "彩票档6串1+对冲双票骨架",
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "双方0伤停全主力",
+     "tactics": "帕梅拉斯榜2主场9/3/1高压控; 巴伊亚榜5也有南美资格诉求不龟缩——开放对攻",
+     "goalSource": "主J.López 8球+毛里西奥7球+Vitor Roque 5球三箭; 客Luciano 9球单核",
+     "script": "主队火力压制但客队敢打对攻→画面2:0/2:1; DC与市场完全一致(62-64%)无分歧",
+     "specialVars": "争冠集团主队不能失分; 客队λ=0.77被限制但H2H近3次客场赢2次(1:2/1:0)——弱参考反向"
+    },
+    "assumption": "帕梅拉斯榜2主场9/3/1+三射手群+DC/市场零分歧——主胜强方向, 画面2:0/2:1",
+    "checks": [
+     {
+      "kind": "h2h",
+      "source": "体彩insight 2041834",
+      "seasonComplete": "10场完整",
+      "gaps": "无",
+      "matches": 10,
+      "detail": "近5次巴伊亚客场口径3胜2负(含近3次客场2胜)——H2H反向弱参考, 与榜2主场基本面冲突取基本面"
+     },
+     {
+      "kind": "form",
+      "detail": "主队主场近10: 7胜2平1负 · 客队客场近10: 2胜4平4负"
+     },
+     {
+      "kind": "standing",
+      "detail": "主2(16/9/3) 客5(12/10/6)——两队都有战意(争冠vs南美资格)"
+     },
+     {
+      "kind": "injury",
+      "detail": "双方0伤停"
+     }
+    ],
+    "verdict": "survived"
+   }
+  }
+ ],
+ "sources": [
+  "engine/cache/sporttery_matches.json(2026-10-07)",
+  "engine/cache/sporttery_insight_*.json(12场)",
+  "engine/cache/today_dc_raw.json(brazil DC 1754场local)",
+  "data/00-leagues/brazil.json",
+  "engine/cache/2026-10-07-boldplay.json(freq模板+三池)"
+ ]
+}

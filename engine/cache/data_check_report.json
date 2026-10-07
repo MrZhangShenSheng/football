@@ -1,31 +1,182 @@
 {
-  "checkedAt": "2026-09-27",
+  "checkedAt": "2026-10-07",
   "leagues": {
-    "韩职": {
-      "status": "ready",
-      "roundsPlayed": 22,
-      "standingsSource": "insight",
-      "fdCovered": false
+    "芬超": {
+      "status": "missing"
     },
-    "荷乙": {
+    "巴甲": {
       "status": "ready",
-      "roundsPlayed": 8,
-      "standingsSource": "espn-manual",
-      "fdCovered": false
-    },
-    "美职": {
-      "status": "ready",
-      "roundsPlayed": 23,
+      "roundsPlayed": 25,
       "standingsSource": "espn",
       "fdCovered": false
     }
   },
-  "missingLeagues": [],
+  "missingLeagues": [
+    "芬超"
+  ],
   "staleLeagues": [],
-  "missingAlias": [],
-  "notReadyTeams": [],
+  "missingAlias": [
+    {
+      "team": "里莫",
+      "league": "巴甲",
+      "match": "里莫 vs 格雷米奥"
+    },
+    {
+      "team": "AC奥卢",
+      "league": "芬超",
+      "match": "库奥皮奥 vs AC奥卢"
+    }
+  ],
+  "notReadyTeams": [
+    {
+      "team": "赫尔火花",
+      "teamId": "gnistan-helsinki",
+      "league": "finland",
+      "status": "missing"
+    },
+    {
+      "team": "国际图尔",
+      "teamId": "inter-turku",
+      "league": "finland",
+      "status": "missing"
+    },
+    {
+      "team": "巴西国际",
+      "teamId": "internacional",
+      "league": "brazil",
+      "status": "stale",
+      "lastUpdated": "2026-09-03",
+      "ageDays": 34
+    },
+    {
+      "team": "科林蒂安",
+      "teamId": "corinthians",
+      "league": "brazil",
+      "status": "missing"
+    },
+    {
+      "team": "格雷米奥",
+      "teamId": "gremio",
+      "league": "brazil",
+      "status": "stale",
+      "lastUpdated": "2026-09-07",
+      "ageDays": 30
+    },
+    {
+      "team": "布拉干RB",
+      "teamId": "red-bull-bragantino",
+      "league": "brazil",
+      "status": "missing"
+    },
+    {
+      "team": "米拉索尔",
+      "teamId": "mirassol",
+      "league": "brazil",
+      "status": "missing"
+    },
+    {
+      "team": "维多利亚",
+      "teamId": "vitoria",
+      "league": "brazil",
+      "status": "stale",
+      "lastUpdated": "2026-09-07",
+      "ageDays": 30
+    },
+    {
+      "team": "沙佩科",
+      "teamId": "chapecoense",
+      "league": "brazil",
+      "status": "missing"
+    },
+    {
+      "team": "博塔弗戈",
+      "teamId": "botafogo",
+      "league": "brazil",
+      "status": "stale",
+      "lastUpdated": "2026-08-24",
+      "ageDays": 44
+    },
+    {
+      "team": "达伽马",
+      "teamId": "vasco",
+      "league": "brazil",
+      "status": "missing"
+    },
+    {
+      "team": "赫尔辛基",
+      "teamId": "hjk-helsinki",
+      "league": "finland",
+      "status": "missing"
+    },
+    {
+      "team": "瓦萨",
+      "teamId": "vps-vaasa",
+      "league": "finland",
+      "status": "missing"
+    },
+    {
+      "team": "库奥皮奥",
+      "teamId": "kups-kuopio",
+      "league": "finland",
+      "status": "missing"
+    },
+    {
+      "team": "桑托斯",
+      "teamId": "santos",
+      "league": "brazil",
+      "status": "missing"
+    },
+    {
+      "team": "弗拉门戈",
+      "teamId": "flamengo",
+      "league": "brazil",
+      "status": "stale",
+      "lastUpdated": "2026-09-10",
+      "ageDays": 27
+    },
+    {
+      "team": "巴竞技",
+      "teamId": "athletico-paranaense",
+      "league": "brazil",
+      "status": "stale",
+      "lastUpdated": "2026-09-10",
+      "ageDays": 27
+    },
+    {
+      "team": "米竞技",
+      "teamId": "atletico-mg",
+      "league": "brazil",
+      "status": "missing"
+    },
+    {
+      "team": "弗鲁米嫩",
+      "teamId": "fluminense",
+      "league": "brazil",
+      "status": "missing"
+    },
+    {
+      "team": "科里蒂巴",
+      "teamId": "coritiba",
+      "league": "brazil",
+      "status": "stale",
+      "lastUpdated": "2026-09-10",
+      "ageDays": 27
+    },
+    {
+      "team": "帕梅拉斯",
+      "teamId": "palmeiras",
+      "league": "brazil",
+      "status": "missing"
+    },
+    {
+      "team": "巴伊亚",
+      "teamId": "bahia",
+      "league": "brazil",
+      "status": "missing"
+    }
+  ],
   "readyCount": {
-    "leagues": 3,
-    "teamsKnown": 537
+    "leagues": 1,
+    "teamsKnown": 799
   }
 }

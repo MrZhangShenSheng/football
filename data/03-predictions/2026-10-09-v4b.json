@@ -1,0 +1,125 @@
+{
+ "date": "2026-10-09",
+ "model": "predictor_v4b",
+ "nCalc": 5,
+ "nSkip": 0,
+ "skips": [],
+ "status": "样本内回测未过盲测——对照源非生产概率源（docs/predictor_v4b.md 收编标注）",
+ "matches": [
+  {
+   "code": "周四002",
+   "league": "芬超",
+   "match": "库奥皮奥 vs AC奥卢",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.215,
+     "odds": 8.25
+    },
+    {
+     "pick": "0:0",
+     "signal": 0.17,
+     "odds": 13.0
+    }
+   ],
+   "marketHot": {
+    "pick": "2:0",
+    "odds": 6.25
+   },
+   "fusionTop": null,
+   "agreeWithMarket": false
+  },
+  {
+   "code": "周四003",
+   "league": "巴甲",
+   "match": "桑托斯 vs 弗拉门戈",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.16,
+     "odds": 7.75
+    },
+    {
+     "pick": "0:0",
+     "signal": 0.095,
+     "odds": 14.0
+    }
+   ],
+   "marketHot": {
+    "pick": "1:2",
+    "odds": 6.75
+   },
+   "fusionTop": null,
+   "agreeWithMarket": false
+  },
+  {
+   "code": "周四004",
+   "league": "巴甲",
+   "match": "巴竞技 vs 米竞技",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.16,
+     "odds": 6.5
+    },
+    {
+     "pick": "0:0",
+     "signal": 0.095,
+     "odds": 11.0
+    }
+   ],
+   "marketHot": {
+    "pick": "1:1",
+    "odds": 6.5
+   },
+   "fusionTop": null,
+   "agreeWithMarket": true
+  },
+  {
+   "code": "周四005",
+   "league": "巴甲",
+   "match": "弗鲁米嫩 vs 科里蒂巴",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.215,
+     "odds": 9.0
+    },
+    {
+     "pick": "0:0",
+     "signal": 0.17,
+     "odds": 14.0
+    }
+   ],
+   "marketHot": {
+    "pick": "1:0",
+    "odds": 6.5
+   },
+   "fusionTop": null,
+   "agreeWithMarket": false
+  },
+  {
+   "code": "周四006",
+   "league": "巴甲",
+   "match": "帕梅拉斯 vs 巴伊亚",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.16,
+     "odds": 8.5
+    },
+    {
+     "pick": "0:0",
+     "signal": 0.095,
+     "odds": 15.0
+    }
+   ],
+   "marketHot": {
+    "pick": "2:0",
+    "odds": 7.0
+   },
+   "fusionTop": null,
+   "agreeWithMarket": false
+  }
+ ]
+}

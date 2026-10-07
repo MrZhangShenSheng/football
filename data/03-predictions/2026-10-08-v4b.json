@@ -1,0 +1,171 @@
+{
+ "date": "2026-10-08",
+ "model": "predictor_v4b",
+ "nCalc": 7,
+ "nSkip": 0,
+ "skips": [],
+ "status": "样本内回测未过盲测——对照源非生产概率源（docs/predictor_v4b.md 收编标注）",
+ "matches": [
+  {
+   "code": "周三001",
+   "league": "芬超",
+   "match": "赫尔火花 vs 国际图尔",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.155,
+     "odds": 7.0
+    },
+    {
+     "pick": "1:2",
+     "signal": 0.115,
+     "odds": 6.75
+    }
+   ],
+   "marketHot": {
+    "pick": "1:2",
+    "odds": 6.75
+   },
+   "fusionTop": null,
+   "agreeWithMarket": false
+  },
+  {
+   "code": "周三002",
+   "league": "巴甲",
+   "match": "巴西国际 vs 科林蒂安",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.215,
+     "odds": 5.25
+    },
+    {
+     "pick": "0:0",
+     "signal": 0.17,
+     "odds": 9.25
+    }
+   ],
+   "marketHot": {
+    "pick": "1:1",
+    "odds": 5.25
+   },
+   "fusionTop": null,
+   "agreeWithMarket": true
+  },
+  {
+   "code": "周三003",
+   "league": "巴甲",
+   "match": "里莫 vs 格雷米奥",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.26,
+     "odds": 5.75
+    },
+    {
+     "pick": "0:0",
+     "signal": 0.17,
+     "odds": 12.0
+    }
+   ],
+   "marketHot": {
+    "pick": "1:1",
+    "odds": 5.75
+   },
+   "fusionTop": null,
+   "agreeWithMarket": true
+  },
+  {
+   "code": "周三004",
+   "league": "巴甲",
+   "match": "布拉干RB vs 米拉索尔",
+   "v4bTop2": [
+    {
+     "pick": "0:1",
+     "signal": 0.115,
+     "odds": 15.0
+    },
+    {
+     "pick": "1:1",
+     "signal": 0.11,
+     "odds": 6.0
+    }
+   ],
+   "marketHot": {
+    "pick": "1:1",
+    "odds": 6.0
+   },
+   "fusionTop": null,
+   "agreeWithMarket": false
+  },
+  {
+   "code": "周三005",
+   "league": "巴甲",
+   "match": "维多利亚 vs 沙佩科",
+   "v4bTop2": [
+    {
+     "pick": "1:0",
+     "signal": 0.1406,
+     "odds": 6.8
+    },
+    {
+     "pick": "2:1",
+     "signal": 0.1181,
+     "odds": 6.2
+    }
+   ],
+   "marketHot": {
+    "pick": "2:1",
+    "odds": 6.2
+   },
+   "fusionTop": null,
+   "agreeWithMarket": false
+  },
+  {
+   "code": "周三006",
+   "league": "巴甲",
+   "match": "博塔弗戈 vs 达伽马",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.16,
+     "odds": 6.0
+    },
+    {
+     "pick": "0:0",
+     "signal": 0.095,
+     "odds": 14.0
+    }
+   ],
+   "marketHot": {
+    "pick": "1:1",
+    "odds": 6.0
+   },
+   "fusionTop": null,
+   "agreeWithMarket": true
+  },
+  {
+   "code": "周四001",
+   "league": "芬超",
+   "match": "赫尔辛基 vs 瓦萨",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.215,
+     "odds": 8.75
+    },
+    {
+     "pick": "0:0",
+     "signal": 0.17,
+     "odds": 18.0
+    }
+   ],
+   "marketHot": {
+    "pick": "2:1",
+    "odds": 7.0
+   },
+   "fusionTop": null,
+   "agreeWithMarket": false
+  }
+ ]
+}
