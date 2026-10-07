@@ -101,16 +101,17 @@ pre{background:#f0f4f7;border:1px solid var(--line);border-radius:8px;padding:10
 <p>产物：<code>data/04-summaries/v16-had-parlay-backtest.json</code>（含 tickets[] 全账）+ <code>data/04-summaries/2026-10-07-v16-had-parlay-review.html</code>（审计报告·含对账行与票务总账表）。脚本 <code>engine/scripts/research/v16_had_parlay_backtest.py</code>（纯数组运算·无模型拟合·跑时&lt;5 分钟）。</p>
 </div>
 
-<h2>七、状态</h2>
+<h2>七、状态与终局</h2>
 <div class="card">
 <table>
 <tr><th>项</th><th>状态</th></tr>
 <tr><td>预注册 v16（判据跑前写死）</td><td class="ok">✅ 95b4a5f</td></tr>
-<tr><td>设计档（本档）</td><td class="ok">✅ 随本 commit 入库</td></tr>
-<tr><td>v16 脚本（含审计件）</td><td class="warn">待建</td></tr>
-<tr><td>跑 + --audit 对账 + 报告</td><td class="warn">待跑</td></tr>
+<tr><td>设计档（本档）</td><td class="ok">✅ 已入库</td></tr>
+<tr><td>v16 脚本（含审计件）</td><td class="ok">✅ 冒烟通过后入库</td></tr>
+<tr><td>跑 + --audit 对账 + 报告</td><td class="ok">✅ 三件套 PASS（4013 票复算 + 10 天全链路重放）</td></tr>
+<tr><td><b>终局判定</b></td><td class="bad"><b>MIXED 不跟进</b>——14 结构全落 RND95% 带内·无一过判据②；S3 +9.5% 三证据皆否（CI 跨 0 / 2526 单季右尾 / 体彩折价）·每日 HAD 串关无正期望证据·方向1 实质盖棺；胆级带热门近公允（单腿 EV −0.39%）与冷门税（p&lt;0.55 带 −5.07%）入档</td></tr>
 </table>
 </div>
 
-<div class="small">开发者 sszhang · 2026-10-07 · 本档随预注册同批归档提交</div>
+<div class="small">开发者 sszhang · 2026-10-07 · 判决明细见 fade-strategy-prereg v16HadParlay 与 data/04-summaries/v16-had-parlay-backtest.json</div>
 </body></html>
