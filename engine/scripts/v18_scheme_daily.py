@@ -11,12 +11,13 @@ r"""v18 方案每日执行器（大哥方案·2026-10-07 指令·影子级执行
 （零成本前向积累·realized 样本自证）；回测证据随卡标注不隐藏。
 V3W 预测不到的场（联赛库缺失·如芬超）自动出局双确认——关档/腿数不足时打印原因非静默。
 
-用法: python engine/scripts/v18_scheme_daily.py [销售日=全部在售日]
-幂等: 同 spec+同日已登记跳过。开发者 sszhang
+用法: python engine/scripts/v18_scheme_daily.py            # 滚动池模式（默认·在售全量跨日选腿）
+      python engine/scripts/v18_scheme_daily.py --byday    # 按销售日切分模式（对照）
+幂等: 同 spec+同结算日已登记跳过。开发者 sszhang
+2026-10-07 拍板: 跨日滚动池=默认（大哥选路径2·在售全量选腿·票挂最晚比赛日结算）。
 """
 import json
 import sys
-from collections import defaultdict
 from datetime import date
 from pathlib import Path
 
@@ -62,26 +63,24 @@ def _cell_ha(k):
 
 def main():
     today = date.today().isoformat()
-    want_day = sys.argv[1] if len(sys.argv) > 1 else None
+    byday_mode = "--byday" in sys.argv
     raw = json.loads((CACHE / "sporttery_matches.json").read_text(encoding="utf-8"))
     ms = raw.get("matchList") or raw.get("matches") or []
-    by_day = defaultdict(list)
-    for m in ms:
-        had = m.get("had") or {}
-        if not all(had.get(k) for k in ("h", "d", "a")):
-            continue
-        by_day[m["matchDate"][:10]].append(m)
+    all_ms = [m for m in ms if all((m.get("had") or {}).get(k) for k in ("h", "d", "a"))]
+    groups = {}
+    if byday_mode:
+        for m in all_ms:
+            groups.setdefault(m["matchDate"][:10], []).append(m)
+    else:
+        groups["滚动池(在售全量)"] = all_ms        # 跨日合并·票挂最晚比赛日结算
 
     z2i = sl.zh_to_id()
     ctx = sl.build_ctx(LEAGUES)
     memo = {}
     existing = {(t["spec_name"], t["date"]) for t in load_tickets()}
 
-    for day in sorted(by_day):
-        if want_day and day != want_day:
-            continue
-        pool = by_day[day]
-        print(f"\n◆ 销售日 {day} · 在售 {len(pool)} 场")
+    for day, pool in groups.items():
+        print(f"\n◆ {day} · {len(pool)} 场")
         cands = []
         for m in pool:
             had = {k: float(m["had"][k]) for k in ("h", "d", "a")}
@@ -97,7 +96,7 @@ def main():
             hid, aid = z2i.get(m["home"]), z2i.get(m["away"])
             v3 = None
             if hid and aid:
-                t = sce._predict_match(hid, aid, date.fromisoformat(day), ctx, memo, beta=0.05)
+                t = sce._predict_match(hid, aid, date.fromisoformat(m["matchDate"][:10]), ctx, memo, beta=0.05)
                 if t and t.get("matrix"):
                     ph = pd_ = pa = 0.0
                     for k, v in t["matrix"].items():
@@ -142,9 +141,10 @@ def main():
         if (SPEC_NAME, day) in existing:
             print(f"    [幂等] {SPEC_NAME} {day} 已登记，跳过")
             continue
-        tk = register(SPEC_NAME, day, legs, [{"legs": bet_legs}], MULT, STAKE)
-        print(f"    [影子登记] {tk['id']} · 赔率冻结 {day}")
-        card = {"salesDay": day, "spec": SPEC_NAME, "generatedAt": today,
+        settle_day = max(c["m"]["matchDate"][:10] for c in sel) if not byday_mode else day
+        tk = register(SPEC_NAME, settle_day, legs, [{"legs": bet_legs}], MULT, STAKE)
+        print(f"    [影子登记] {tk['id']} · 赔率冻结 · 结算日挂 {settle_day}")
+        card = {"salesDay": day, "settleDay": settle_day, "spec": SPEC_NAME, "generatedAt": today,
                 "legs": [{"code": c['m']['code'], "match": f"{c['m']['home']} vs {c['m']['away']}",
                           "league": c['m']['league'], "pick": LABEL[c['pick']],
                           "odds": c['o'], "p": round(c['p'], 4),
@@ -152,7 +152,7 @@ def main():
                 "roi4": {"pAll": round(p_all, 4), "payout": round(STAKE * prod, 2),
                          "stake": STAKE, "roiClaimed": round(roi_claimed, 4)},
                 "note": "v18回测SEALED·影子级执行·大哥2026-10-07指令"}
-        out = PRED_DIR / f"{day}-v18scheme.json"
+        out = PRED_DIR / (f"{today}-v18scheme-rolling.json" if not byday_mode else f"{day}-v18scheme.json")
         if not out.exists():                      # 幂等：卡面不覆盖已存在文件
             out.write_text(json.dumps(card, ensure_ascii=False, indent=1), encoding="utf-8")
             print(f"    [归档] {out.name}")
