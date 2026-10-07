@@ -1,0 +1,70 @@
+{
+ "ranAt": "2026-10-07",
+ "preReg": "fade-strategy-prereg changeLog v13",
+ "chain": "V3W-v2",
+ "tiers": {
+  "A": {
+   "fit": {
+    "units": 3476,
+    "pay": 5487.12,
+    "roi": -0.21071274453394706,
+    "days": 316,
+    "hitDays": 24,
+    "unitCostPerDay": 22.0
+   },
+   "val": {
+    "units": 2508,
+    "pay": 4559.04,
+    "roi": -0.09110097687400348,
+    "days": 228,
+    "hitDays": 22,
+    "unitCostPerDay": 22.0
+   }
+  },
+  "B": {
+   "fit": {
+    "units": 22752,
+    "pay": 26644.27,
+    "roi": -0.41446301424050647,
+    "days": 316,
+    "hitDays": 56,
+    "unitCostPerDay": 144.0
+   },
+   "val": {
+    "units": 16416,
+    "pay": 27793.38,
+    "roi": -0.15346689205653022,
+    "days": 228,
+    "hitDays": 46,
+    "unitCostPerDay": 144.0
+   }
+  },
+  "C": {
+   "fit": {
+    "units": 9164,
+    "pay": 8439.77,
+    "roi": -0.5395146769969446,
+    "days": 316,
+    "hitDays": 38,
+    "unitCostPerDay": 58.0
+   },
+   "val": {
+    "units": 6612,
+    "pay": 12315.07,
+    "roi": -0.06873298548094382,
+    "days": 228,
+    "hitDays": 35,
+    "unitCostPerDay": 58.0
+   }
+  }
+ },
+ "candidate": "A",
+ "criteria": {
+  "improve": false,
+  "hitRate": false,
+  "beatsRandom": null
+ },
+ "randomBaseline": null,
+ "verdict": "KEEP top1单选（拟合段即基线最优·多格无正增益）",
+ "note": "日成本单列不设门槛·钱包裁定=大哥权"
+}
