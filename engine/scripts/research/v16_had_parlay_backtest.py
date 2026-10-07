@@ -171,7 +171,7 @@ def print_ticket(t, cum_stake, cum_ret):
               f"→ 赛果{l['score']} {mark}")
     roi = cum_ret / cum_stake - 1 if cum_stake else 0.0
     verdict = f"全中 +{t['ret']:.2f}元" if t["hit"] else "未全中 -2.00元"
-    print(f"  票面: {t['depth']}串1×2元 · 赔率积{t['oddsProd']:.2f} · 结算: {verdict} "
+    print(f"  票面: {t['depth']}×2元 · 赔率积{t['oddsProd']:.2f} · 结算: {verdict} "
           f"· 累计投入{cum_stake:.0f}元 回款{cum_ret:.2f}元 ROI{roi:+.1%}")
 
 
