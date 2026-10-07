@@ -1,0 +1,88 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>方向2扩展设计 · 四点诊断批次</title>
+<style>
+:root{--ink:#1c2733;--sub:#5b6b7a;--line:#dde4ea;--bg:#f7f9fb;--card:#fff;--ok:#0f6b4f;--bad:#a33;--warn:#b3541e;--accent:#1a5fb4}
+*{box-sizing:border-box}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;color:var(--ink);background:var(--bg);margin:0;padding:24px 16px;max-width:1000px;margin-inline:auto}
+h1{font-size:20px;margin:0 0 4px}
+h2{font-size:15px;margin:20px 0 8px;padding-bottom:5px;border-bottom:2px solid var(--accent)}
+.meta{color:var(--sub);font-size:12.5px;margin-bottom:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 16px;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:12.5px;margin:5px 0}
+th,td{border:1px solid var(--line);padding:4px 7px;text-align:left;vertical-align:top}
+th{background:#f0f4f7}
+.num{font-variant-numeric:tabular-nums}
+.ok{color:var(--ok);font-weight:600}.bad{color:var(--bad);font-weight:600}.warn{color:var(--warn);font-weight:600}
+.small{font-size:11.5px;color:var(--sub)}
+code{background:#eef2f5;border-radius:4px;padding:1px 5px;font-size:12px}
+</style></head><body>
+
+<h1>方向 2 扩展设计 · 四点诊断批次</h1>
+<div class="meta">拍板 sszhang · 2026-10-07 · brainstorming 四节全确认 · 上游：docs/2026-10-07-optimization-directions.html（方向2立项）+ v13 回测（KEEP top1）</div>
+
+<h2>〇、缘起与两项核查新发现</h2>
+<div class="card">
+<p>v13 判 KEEP 后，主公拍板方向 2 主题继续深挖，四扩展点全数入日程。设计前核查撞出两项改变设计的事实：</p>
+<table>
+<tr><th>发现</th><th>内容</th><th>影响</th></tr>
+<tr><td class="warn">① "份额 argmax"实为 EV 选格</td><td>fade_backtest.py:238 v6 实现 = <code>cells[0]</code> = P×odds 最大格（EV 口径），非字面"回收份额"</td><td>归因矩阵选格维度定为 topP vs EV</td></tr>
+<tr><td class="warn">② ρ 已是联赛级但拟合值存疑</td><td>strength_chain_eval.py:157 已读各联赛缓存 rho（−0.2英超/希超 ~ +0.1法甲/德乙/日职）；法甲平局率 33%（最高）却 ρ=+0.1 方向可疑·疑两季过拟合噪声</td><td>#3 从"联赛级化"转向"三口径对照"</td></tr>
+</table>
+</div>
+
+<h2>一、批次规划（preload 45 分钟只跑一次）</h2>
+<div class="card">
+<table>
+<tr><th>批</th><th>内容</th><th>预注册</th><th>墙钟</th></tr>
+<tr><td><b>一</b></td><td>#2 甜点票型（D档）+ #1 格口径 + #4 选场口径 合并一脚本·一次 preload 三线全出</td><td>fade-strategy-prereg v14（跑前）</td><td class="num">~50 分钟</td></tr>
+<tr><td><b>二</b></td><td>#3 ρ 三口径对照（平行轨·不接生产）</td><td>preregistration.json v6（跑前）</td><td class="num">半天</td></tr>
+</table>
+<p class="small">纪律：全部预注册跑前写死·纯诊断不直接动生产·任何换口径/换参数动作另起预注册转正流程。</p>
+</div>
+
+<h2>二、#2 甜点票型 · D 档</h2>
+<div class="card">
+<p><b>票面</b>：3 场（topP 排序前 3·第 4 场弃）× 每场 top2 格 × 官方"3串4"串法（3×2串1+1×3串1）= 4 组过关 × 2×2×2 = <b>8 注 16 元/日</b>。</p>
+<p><b>立意</b>：v13 已证 4 场加格成本暴增（C档29注58元）无正增益；D 档反向——少买一场省钱换双格容错，成本反低于基线 A（11注22元）。昨日 T045 中国场（top1 1:1 真果 0:1 同段）即被救回之典型。</p>
+<p><b>派彩</b>：每过关组合至多 1 注命中（格集含真比分唯一）·赔率=命中格积。</p>
+<p><b>判据（v14 跑前写死）</b>：①拟合段 D vs A 每注 ROI 选优 ②验证段 D 须优于 A 且改善&gt;5pp ③回款日率不劣化 ④拟合段正收益须过随机格基线 200 次（固定种子）。D 档固定 topP 排序+topP 选格口径（与 A 同口径·不与 #1 混杂）。</p>
+</div>
+
+<h2>三、#1 格口径 + #4 选场口径 · 归因矩阵</h2>
+<div class="card">
+<p><b>核心问题</b>：S5 −9.1%（topP系）vs fade −18.2%（EV系）差 9pp·三处口径混杂·全因子分离。</p>
+<table>
+<tr><th>维度</th><th>甲档</th><th>乙档</th></tr>
+<tr><td>过滤参数</td><td>0.05 / 1.5</td><td>0.10 / 1.3</td></tr>
+<tr><td>选场排序</td><td>场内 max p</td><td>场内 max p×odds</td></tr>
+<tr><td>选格</td><td>max p</td><td>max p×odds（=v6实现）</td></tr>
+</table>
+<p><b>产出</b>：8 组×2 段·9pp 主效应分解表（选格/排序/过滤各占几 pp·交互项）。</p>
+<p><b>判读（跑前写死）</b>：选格主效应 ≥3pp → 口径真效应（"免费9pp"实证·再议转正）；1~3pp → 弱效应挂 forward；&lt;1pp → 9pp 主因在过滤/排序·若过滤为主因则生产过滤参数在动态 ENV 下亦须重审。</p>
+</div>
+
+<h2>四、#3 ρ 三口径对照</h2>
+<div class="card">
+<table>
+<tr><th>口径</th><th>定义</th><th>性质</th></tr>
+<tr><td>① 全局一刀切</td><td>全联赛 ρ=−0.05</td><td>基线参照</td></tr>
+<tr><td>② 缓存拟合 ρ</td><td>现状实况（dc_fit 两季拟合值 −0.2~+0.1）</td><td>现状</td></tr>
+<tr><td>③ 平局率映射 ρ</td><td>30 联赛"缓存ρ vs 实际平局率"散点回归定映射系数（数据驱动）·按平局率算 ρ·clip [−0.2, +0.1]</td><td>候选新径</td></tr>
+</table>
+<p><b>指标</b>：主 = 比分 top5 命中率（两段）·副 = 比分校准偏差、V3 票型两段 ROI。<b>判读（跑前写死）</b>：口径间 top5 命中率差 &lt;1pp → 快刀斩立档；≥2pp → 映射口径预注册深化；1~2pp → 观察。</p>
+<p class="small">防泄漏：平局率 as-of 滚动窗口·映射系数全历史拟合（静态参数·注明）。平行轨不接生产。</p>
+</div>
+
+<h2>五、状态</h2>
+<div class="card">
+<table>
+<tr><th>项</th><th>状态</th></tr>
+<tr><td>设计四节确认</td><td class="ok">✅ 2026-10-07 主公逐节拍板</td></tr>
+<tr><td>预注册 v14（批次一）</td><td class="warn">待写（跑前）</td></tr>
+<tr><td>批次一脚本</td><td class="warn">待建 v14_direction2_batch1.py</td></tr>
+<tr><td>批次二（ρ）</td><td>批次一后启动</td></tr>
+</table>
+</div>
+
+<div class="small">开发者 sszhang · 2026-10-07 · 本档随立项归档提交</div>
+</body></html>
