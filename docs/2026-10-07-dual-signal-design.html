@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>v18 设计 · 双信号选腿 N 串方案（HAD 3~8）</title>
+<style>
+:root{--ink:#1c2733;--sub:#5b6b7a;--line:#dde4ea;--bg:#f7f9fb;--card:#fff;--ok:#0f6b4f;--bad:#a33;--warn:#b3541e;--accent:#1a5fb4}
+*{box-sizing:border-box}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;color:var(--ink);background:var(--bg);margin:0;padding:24px 16px;max-width:1000px;margin-inline:auto}
+h1{font-size:20px;margin:0 0 4px}
+h2{font-size:15px;margin:20px 0 8px;padding-bottom:5px;border-bottom:2px solid var(--accent)}
+.meta{color:var(--sub);font-size:12.5px;margin-bottom:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 16px;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:12.5px;margin:5px 0}
+th,td{border:1px solid var(--line);padding:4px 7px;text-align:left;vertical-align:top}
+th{background:#f0f4f7}
+.num{font-variant-numeric:tabular-nums}
+.ok{color:var(--ok);font-weight:600}.bad{color:var(--bad);font-weight:600}.warn{color:var(--warn);font-weight:600}
+.small{font-size:11.5px;color:var(--sub)}
+code{background:#eef2f5;border-radius:4px;padding:1px 5px;font-size:12px}
+</style></head><body>
+
+<h1>v18 设计 · 双信号选腿 N 串方案（HAD 3~8）</h1>
+<div class="meta">拍板 sszhang · 2026-10-07 · 预注册 fade-strategy-prereg v18（跑前写死·59080c6）· 上游：v16（HAD 串无正期望）+ v17（无正交信号·p_fused 分带=终点挑腿器）</div>
+
+<h2>〇、缘起</h2>
+<div class="card">
+<p>大哥指令：结合"选出正确的腿"的逻辑 + 体彩 HAD 购买逻辑（3≤串数≤8），跑比分模型验证选出好腿组成方案；腿&lt;3 场当天关档；算中奖概率/中奖金额/投注金额/ROI。</p>
+<p class="small">与 v16 的差异：v16 测的是单信号（市场置信）选腿——本方案加入<b>第二信号 = V3W-v2 比分模型方向确认</b>（HST 射正质量层 + 三水去水链）。7216 场证的是 DC 融合无增量，V3W 的 HST 层从未被独立检验——这是本方案唯一活口。</p>
+</div>
+
+<h2>一、选腿逻辑（双确认交集）</h2>
+<div class="card">
+<table>
+<tr><th>信号</th><th>规则</th><th>来源</th></tr>
+<tr><td><b>第一信号</b></td><td>市场置信分带：踩线护栏（赔率&lt;1.35 且 p&lt;0.68 剔除）→ p≥0.60 合格池 → 胆级 ≥0.75 优先占席</td><td>v16 S3 同规（v17 终点挑腿器）</td></tr>
+<tr><td><b>第二信号</b></td><td>V3W-v2 39 格比分矩阵聚合三向 argmax 与第一信号同向</td><td>比分模型验证（strength_chain_eval 生产链·β=0.05）</td></tr>
+<tr><td><b>交集成腿</b></td><td>N = 双确认腿数（3~8 · &gt;8 取 p 前 8 · &lt;3 当天关档不出方案）· N串1 × 2 元</td><td>大哥指令</td></tr>
+</table>
+</div>
+
+<h2>二、数据与成交</h2>
+<div class="card">
+<table>
+<tr><th>项</th><th>口径</th></tr>
+<tr><td>底表</td><td>fd 真收盘底表（v16.1 修复后）∩ hist_odds（V3W 时间线·中文队名 zh_to_id 桥接·日期 ±1）——交集口径诚实报告·fd 无锚联赛自动出局</td></tr>
+<tr><td>成交</td><td>Pinnacle 真收盘价 × 2 元 + 体彩敏感性三带比（0.938~0.970）平移</td></tr>
+<tr><td>V3W 重放</td><td>memo 共享一次 preload（smoke 实测单场 ~60ms·全量 ≤15 分钟级）</td></tr>
+</table>
+</div>
+
+<h2>三、判据（预注册·机械应用）</h2>
+<div class="card">
+<table>
+<tr><th>#</th><th>判据</th><th>去向</th></tr>
+<tr><td>①</td><td>DUAL ROI − S3J ROI ≥ +5pp <b>且</b> DUAL bootstrap CI 下限&gt;0 <b>且</b>扣最大单日&gt;0</td><td class="ok">过线 → 批次二建每日生成器（体彩价 + 影子登记）</td></tr>
+<tr><td>②</td><td>DUAL 落 RND95% 带内 或 差 S3J &lt;+5pp</td><td class="warn">双确认无增量·结论入档不接生产</td></tr>
+<tr><td>③</td><td>DUAL ROI &lt; S3J 或 CI 下限≤0</td><td class="bad">比分模型方向确认无价值·与 v16/v17 同判</td></tr>
+</table>
+<p class="small">S3J = v16 S3 同规在交集子集重算（公平对照）· RND×200 逐日配对 · bootstrap 按日重抽样 ×2000 种子 20261008 · 扣最大单日闸照 v14 教训。</p>
+</div>
+
+<h2>四、ROI 四件套（防裸 p 虚高）</h2>
+<div class="card">
+<table>
+<tr><th>项</th><th>算法</th></tr>
+<tr><td>中奖概率</td><td>∏ 分带校准命中率（胆级 0.830 / 标准级 0.694 = v16.1 收盘基大样本）——非裸模型 p</td></tr>
+<tr><td>中奖金额</td><td>2 元 × Π 收盘赔率（批次二换体彩赔率）</td></tr>
+<tr><td>投注金额</td><td>2 元/日（N串1 × 1 倍）</td></tr>
+<tr><td>ROI</td><td>claimed = P(全中)×Π赔率 − 1（与 realized 分开报告）</td></tr>
+</table>
+</div>
+
+<h2>五、审计三件套与状态</h2>
+<div class="card">
+<p>①逐日票面明细 stdout ②tickets[] 票级落盘 ③<code>--audit</code> 复算 + 抽 3 天全链路重放（<b>含 V3W 重预测</b>）。产物：<code>v18-dual-signal-backtest.json</code> + 审计报告 HTML。</p>
+<table>
+<tr><th>项</th><th>状态</th></tr>
+<tr><td>预注册 v18</td><td class="ok">✅ 59080c6</td></tr>
+<tr><td>smoke 机械验证</td><td class="ok">✅（V3W 三向聚合正确·巴萨 4:0 实证）</td></tr>
+<tr><td>回测 + 判读</td><td class="warn">待跑</td></tr>
+</table>
+</div>
+
+<div class="small">开发者 sszhang · 2026-10-07 · 本档随预注册同批归档</div>
+</body></html>
