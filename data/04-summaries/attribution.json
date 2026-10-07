@@ -134,7 +134,9 @@
     },
     "2026-08-25|周三002|HAD": {
       "primary": "F9",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": 0.441,
         "dcBest": 2,
@@ -142,7 +144,11 @@
         "pickIdx": 2,
         "resultIdx": 0,
         "result": "2-1",
-        "pinSource": "okooo"
+        "pinSource": "okooo",
+        "oddsDrift": {
+          "pickOdds": 2.16,
+          "laterOdds": 3.23
+        }
       },
       "confidence": "high",
       "source": "rule",
@@ -150,7 +156,9 @@
     },
     "2026-08-25|周三005|HAD": {
       "primary": "F9",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": 0.294,
         "dcBest": null,
@@ -159,7 +167,11 @@
         "resultIdx": 0,
         "result": "4-0",
         "pickDeviation": true,
-        "pinSource": "okooo"
+        "pinSource": "okooo",
+        "oddsDrift": {
+          "pickOdds": 3.8,
+          "laterOdds": 4.06
+        }
       },
       "confidence": "high",
       "source": "rule",
@@ -795,7 +807,9 @@
     },
     "2026-09-01|周三003|HAD": {
       "primary": "F1",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": 0.549,
         "dcBest": 2,
@@ -804,7 +818,11 @@
         "resultIdx": 0,
         "result": "4-2",
         "pinSource": "okooo",
-        "lambdaGap": 3.57
+        "lambdaGap": 3.57,
+        "oddsDrift": {
+          "pickOdds": 1.79,
+          "laterOdds": 3.15
+        }
       },
       "confidence": "high",
       "source": "rule",
@@ -845,9 +863,7 @@
     },
     "2026-09-02|周四006|HAD": {
       "primary": "F1",
-      "secondary": [
-        "F10"
-      ],
+      "secondary": [],
       "evidence": {
         "pfinalPick": 0.569,
         "dcBest": 0,
@@ -856,11 +872,7 @@
         "resultIdx": 1,
         "result": "0-0",
         "pinSource": "fd",
-        "lambdaGap": 2.39,
-        "oddsDrift": {
-          "pickOdds": 1.84,
-          "laterOdds": 2.74
-        }
+        "lambdaGap": 2.39
       },
       "confidence": "high",
       "source": "rule",

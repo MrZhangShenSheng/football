@@ -236,29 +236,6 @@
     },
     {
       "pos": 11,
-      "team": "Augsburg",
-      "played": 55,
-      "won": 17,
-      "drawn": 14,
-      "lost": 24,
-      "gf": 64,
-      "ga": 90,
-      "gd": -26,
-      "pts": 65,
-      "form": "DWWDL",
-      "homeRecord": {
-        "w": 10,
-        "d": 8,
-        "l": 10
-      },
-      "awayRecord": {
-        "w": 7,
-        "d": 6,
-        "l": 14
-      }
-    },
-    {
-      "pos": 12,
       "team": "M'gladbach",
       "played": 55,
       "won": 18,
@@ -281,16 +258,39 @@
       }
     },
     {
+      "pos": 12,
+      "team": "Augsburg",
+      "played": 54,
+      "won": 17,
+      "drawn": 13,
+      "lost": 24,
+      "gf": 63,
+      "ga": 89,
+      "gd": -26,
+      "pts": 64,
+      "form": "LWWDL",
+      "homeRecord": {
+        "w": 10,
+        "d": 7,
+        "l": 10
+      },
+      "awayRecord": {
+        "w": 7,
+        "d": 6,
+        "l": 14
+      }
+    },
+    {
       "pos": 13,
       "team": "Union Berlin",
-      "played": 55,
+      "played": 54,
       "won": 16,
-      "drawn": 16,
+      "drawn": 15,
       "lost": 23,
-      "gf": 62,
-      "ga": 94,
+      "gf": 61,
+      "ga": 93,
       "gd": -32,
-      "pts": 64,
+      "pts": 63,
       "form": "DDLLL",
       "homeRecord": {
         "w": 8,
@@ -299,7 +299,7 @@
       },
       "awayRecord": {
         "w": 8,
-        "d": 5,
+        "d": 4,
         "l": 14
       }
     },
@@ -535,14 +535,14 @@
     }
   ],
   "leagueStats": {
-    "avgGoals": 3.222,
-    "homeWinRate": 0.419,
-    "drawRate": 0.24,
-    "upsetRate": 0.266,
+    "avgGoals": 3.224,
+    "homeWinRate": 0.42,
+    "drawRate": 0.238,
+    "upsetRate": 0.269,
     "topScores": [
       {
         "score": "1-1",
-        "count": 42
+        "count": 41
       },
       {
         "score": "0-0",
@@ -554,7 +554,7 @@
       }
     ],
     "computedFrom": "fd",
-    "matchesUsed": 492,
+    "matchesUsed": 491,
     "seasonsMerged": [
       "2425",
       "2526",

@@ -52,6 +52,29 @@
     },
     {
       "pos": 3,
+      "team": "Paderborn",
+      "played": 44,
+      "won": 22,
+      "drawn": 12,
+      "lost": 10,
+      "gf": 73,
+      "ga": 55,
+      "gd": 18,
+      "pts": 78,
+      "form": "WWWWW",
+      "homeRecord": {
+        "w": 12,
+        "d": 3,
+        "l": 7
+      },
+      "awayRecord": {
+        "w": 10,
+        "d": 9,
+        "l": 3
+      }
+    },
+    {
+      "pos": 4,
       "team": "Hannover",
       "played": 50,
       "won": 21,
@@ -74,7 +97,7 @@
       }
     },
     {
-      "pos": 4,
+      "pos": 5,
       "team": "Hertha",
       "played": 50,
       "won": 22,
@@ -94,29 +117,6 @@
         "w": 14,
         "d": 4,
         "l": 8
-      }
-    },
-    {
-      "pos": 5,
-      "team": "Paderborn",
-      "played": 43,
-      "won": 21,
-      "drawn": 12,
-      "lost": 10,
-      "gf": 71,
-      "ga": 54,
-      "gd": 17,
-      "pts": 75,
-      "form": "WWWWW",
-      "homeRecord": {
-        "w": 12,
-        "d": 3,
-        "l": 7
-      },
-      "awayRecord": {
-        "w": 9,
-        "d": 9,
-        "l": 3
       }
     },
     {
@@ -329,19 +329,19 @@
     {
       "pos": 15,
       "team": "Braunschweig",
-      "played": 49,
+      "played": 50,
       "won": 12,
       "drawn": 13,
-      "lost": 24,
-      "gf": 60,
-      "ga": 95,
-      "gd": -35,
+      "lost": 25,
+      "gf": 61,
+      "ga": 97,
+      "gd": -36,
       "pts": 49,
       "form": "LLLDL",
       "homeRecord": {
         "w": 7,
         "d": 7,
-        "l": 10
+        "l": 11
       },
       "awayRecord": {
         "w": 5,
@@ -628,9 +628,9 @@
   ],
   "leagueStats": {
     "avgGoals": 3.029,
-    "homeWinRate": 0.412,
-    "drawRate": 0.261,
-    "upsetRate": 0.301,
+    "homeWinRate": 0.411,
+    "drawRate": 0.26,
+    "upsetRate": 0.32,
     "topScores": [
       {
         "score": "1-1",
@@ -638,7 +638,7 @@
       },
       {
         "score": "1-2",
-        "count": 42
+        "count": 43
       },
       {
         "score": "1-0",
@@ -646,7 +646,7 @@
       }
     ],
     "computedFrom": "fd",
-    "matchesUsed": 449,
+    "matchesUsed": 450,
     "seasonsMerged": [
       "2425",
       "2526",
