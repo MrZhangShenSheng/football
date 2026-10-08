@@ -18,6 +18,7 @@
 from __future__ import annotations
 
 import json
+import pickle
 import random
 import sys
 from pathlib import Path
@@ -25,11 +26,29 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import strength_loaders as sl
-from v11_s4_recalib import FIT_WINDOW, LEAGUES
+from v11_s4_recalib import FIT_WINDOW, LEAGUES, HIST
 from v11_s5_recalib import preload_days
 
 ROOT = Path(__file__).resolve().parents[3]
 OUT_PATH = ROOT / "data" / "04-summaries" / "v20_1-crs-full-grid.json"
+CACHE_PATH = ROOT / "engine" / "cache" / "strength_chain" / "pre_days_cache.pkl"
+
+
+def load_or_preload(ctx, z2i, memo):
+    key = f"{max((f.stat().st_mtime for f in HIST.glob('crs_hist_*.json')), default=0):.0f}|{len(LEAGUES)}"
+    if CACHE_PATH.exists():
+        try:
+            obj = pickle.loads(CACHE_PATH.read_bytes())
+            if obj.get("key") == key:
+                print("preload 命中磁盘缓存", flush=True)
+                return obj["pre"]
+        except Exception:
+            pass
+    pre = preload_days(ctx, z2i, memo)
+    CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    CACHE_PATH.write_bytes(pickle.dumps({"key": key, "pre": pre}))
+    print("preload 已写磁盘缓存", flush=True)
+    return pre
 BANDS = ((0.0, 3.0, "<3"), (3.0, 5.0, "3-5"), (5.0, 10.0, "5-10"), (10.0, 1e9, ">=10"))
 P_BANDS = ((0.0, 0.05, "<5%"), (0.05, 0.10, "5-10%"), (0.10, 0.20, "10-20%"), (0.20, 1.01, ">=20%"))
 BOOT_N = 2000
@@ -56,8 +75,8 @@ def main():
     ctx = sl.build_ctx(LEAGUES)
     z2i = sl.zh_to_id()
     memo = {}
-    print("── preload ──", flush=True)
-    pre = preload_days(ctx, z2i, memo)
+    print("── preload（带磁盘缓存）──", flush=True)
+    pre = load_or_preload(ctx, z2i, memo)
     print(f"preload 完: {len(pre)}日\n", flush=True)
 
     all_cells, picked_cells = [], []
@@ -76,6 +95,9 @@ def main():
 
     print(f"全格样本: {len(all_cells)} 格 · 选中口径: {len(picked_cells)} 格\n")
 
+    def fmt(x):
+        return f"{x:.3f}" if x is not None else "n/a"
+
     print("── A) 赔率带 e：全选项 vs 选择口径 ──")
     print(f"{'带':<8}{'全n':<8}{'全e':<8}{'全CI':<18}{'选n':<6}{'选e':<8}{'选CI'}")
     out_bands = {}
@@ -86,7 +108,7 @@ def main():
         es, ns, cis = e_and_ci(s)
         out_bands[name] = {"all": {"n": na, "e": round(ea, 4) if ea else None, "ci": cia},
                            "picked": {"n": ns, "e": round(es, 4) if es else None, "ci": cis}}
-        print(f"{name:<8}{na:<8}{ea:<8.3f}{str(cia):<18}{ns:<6}{es:<8.3f}{cis}")
+        print(f"{name:<8}{na:<8}{fmt(ea):<8}{str(cia):<18}{ns:<6}{fmt(es):<8}{cis}")
 
     print("\n── B) 模型概率分桶校准（全格）──")
     print(f"{'p_model带':<10}{'n':<8}{'meanP':<8}{'realized':<10}{'dev':<8}")
