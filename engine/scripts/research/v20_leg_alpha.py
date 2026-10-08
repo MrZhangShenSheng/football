@@ -29,6 +29,11 @@ SEED = 20261008
 ALPHA_LINE = 1.0
 
 
+PLAY_ALIAS = {"CRS": "CRS", "比分": "CRS", "HAD": "HAD", "胜平负": "HAD", "方向": "HAD",
+              "HHAD": "HHAD", "让球": "HHAD", "TTG": "TTG", "总进球": "TTG",
+              "HAFU": "HAFU", "半全场": "HAFU"}
+
+
 def hit_of(r: dict) -> bool | None:
     if r.get("optionHit") is not None:
         return bool(r["optionHit"])
@@ -39,15 +44,24 @@ def main():
     print("══ v20 腿质量 α 鉴定（T002/T003 鉴定·realized 口径）══\n")
     c = json.loads((ROOT / "data/04-summaries/corpus.json").read_text(encoding="utf-8"))
     legs = []
+    skipped_multi = 0
     for r in c.get("records", []):
         odds = r.get("odds")
         hit = hit_of(r)
-        play = str(r.get("play", "")).upper()
+        play = PLAY_ALIAS.get(str(r.get("play", "")).upper(), str(r.get("play", "")).upper())
+        if isinstance(odds, (dict, list)):
+            skipped_multi += 1
+            continue
+        try:
+            odds = float(odds)
+        except (TypeError, ValueError):
+            skipped_multi += 1
+            continue
         if not odds or odds <= 1.0 or hit is None or play in ("", "NONE"):
             continue
-        legs.append({"play": play, "odds": float(odds), "hit": hit,
+        legs.append({"play": play, "odds": odds, "hit": hit,
                      "date": str(r.get("date", ""))[:10]})
-    print(f"可判腿: {len(legs)}（corpus 798 条中 optionHit+odds 齐备者）\n")
+    print(f"可判腿: {len(legs)}（corpus 798 条中 optionHit+标量odds 齐备者·跳过多选腿 {skipped_multi}）\n")
 
     def e_of(sub):
         if not sub:
@@ -60,7 +74,7 @@ def main():
         rng = random.Random(SEED)
         n = len(sub)
         es = sorted(
-            sum((1.0 if sub[rng.randrange(n)]["hit"] else 0.0) * sub[rng.randrange(n)]["odds"]
+            sum((1.0 if sub[(k := rng.randrange(n))]["hit"] else 0.0) * sub[k]["odds"]
                 for _ in range(n)) / n
             for _ in range(BOOT_N))
         return es[int(BOOT_N * 0.025)], es[int(BOOT_N * 0.975)]
