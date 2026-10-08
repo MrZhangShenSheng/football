@@ -1,0 +1,90 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>丙+批次一设计 · 双底表信号审计（v17）</title>
+<style>
+:root{--ink:#1c2733;--sub:#5b6b7a;--line:#dde4ea;--bg:#f7f9fb;--card:#fff;--ok:#0f6b4f;--bad:#a33;--warn:#b3541e;--accent:#1a5fb4}
+*{box-sizing:border-box}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;color:var(--ink);background:var(--bg);margin:0;padding:24px 16px;max-width:1000px;margin-inline:auto}
+h1{font-size:20px;margin:0 0 4px}
+h2{font-size:15px;margin:20px 0 8px;padding-bottom:5px;border-bottom:2px solid var(--accent)}
+.meta{color:var(--sub);font-size:12.5px;margin-bottom:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 16px;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:12.5px;margin:5px 0}
+th,td{border:1px solid var(--line);padding:4px 7px;text-align:left;vertical-align:top}
+th{background:#f0f4f7}
+.num{font-variant-numeric:tabular-nums}
+.ok{color:var(--ok);font-weight:600}.bad{color:var(--bad);font-weight:600}.warn{color:var(--warn);font-weight:600}
+.small{font-size:11.5px;color:var(--sub)}
+code{background:#eef2f5;border-radius:4px;padding:1px 5px;font-size:12px}
+</style></head><body>
+
+<h1>丙+ 批次一设计 · 双底表信号审计（v17）</h1>
+<div class="meta">拍板 sszhang · 2026-10-07 · 预注册 fade-strategy-prereg v17（跑前写死）· 上游：v16 终局（HAD 串无正期望）→ 丙+立项（先诊断后建模）</div>
+
+<h2>〇、问题与定位</h2>
+<div class="card">
+<p><b>核心问题</b>：除置信分带（p_fused/市场去水概率）外，是否存在<b>正交赛前信号</b>能在带内区分"方向会预测对/错"的场次。</p>
+<table>
+<tr><th>已知地基（本轮设计的出发点）</th></tr>
+<tr><td>生产模型方向正确率 66.0%（282 场）· 胆级 94.9%（n=39）· 同场 vs 市场打平（62.3% vs 61.7%·一致率 90%）</td></tr>
+<tr><td>v16 终局：14 种选腿结构全落 RND 95% 带内·HAD 串关无正期望·选场无增量（市场衍生信号层面）</td></tr>
+<tr><td>sfm 26 维元模型前车之鉴：无正交信号时上 ML=必然过拟合+自泄漏</td></tr>
+</table>
+<p class="small">本审计 = "要不要建元模型"的前置判据，不是建模本身。</p>
+</div>
+
+<h2>一、双底表</h2>
+<div class="card">
+<table>
+<tr><th>底表</th><th>n</th><th>腿定义</th><th>标签</th><th>定位</th></tr>
+<tr><td><b>A 收盘基</b></td><td class="num">8685</td><td>Pinnacle 真收盘去水 argmax（v16 底表·427 日三季）</td><td>argmax==赛果</td><td>信号发现主力（大样本·市场口径）</td></tr>
+<tr><td><b>B 生产基</b></td><td class="num">282</td><td>生产 p_fused 选向（corpus·directionHit 口径）</td><td>directionHit</td><td>模型特有信号粗测（n 紧）</td></tr>
+</table>
+<p class="small">分带四档与 v16/09-06 一致：胆 ≥0.75 / 标准 0.60~0.75 / 0.55~0.60 / &lt;0.55。</p>
+</div>
+
+<h2>二、信号清单（跑前写死·全部赛前可得）</h2>
+<div class="card">
+<table>
+<tr><th>底表</th><th>信号</th><th>分档</th></tr>
+<tr><td rowspan="5">A</td><td>赔率档</td><td>argmax 收盘 &lt;1.30 / 1.30~1.60 / 1.60~2.00 / ≥2.00</td></tr>
+<tr><td>概率边际差</td><td>top1−top2 去水 &lt;0.05 / 0.05~0.15 / 0.15~0.30 / ≥0.30</td></tr>
+<tr><td>联赛段位</td><td>五大（英西德意甲一级）/ 次级 / 其他</td></tr>
+<tr><td>赛季相位</td><td>月 8-10 早段 / 11-2 中段 / 3-5 晚段</td></tr>
+<tr><td>主客位</td><td>主胜 / 平 / 客胜</td></tr>
+<tr><td rowspan="6">B</td><td>DC 分歧度</td><td>|p_dc−p_pinnacle| 选向 &lt;0.05 / 0.05~0.15 / ≥0.15（n≈150）</td></tr>
+<tr><td>grade</td><td>2 / 3 / 4</td></tr>
+<tr><td>stars</td><td>0-1 / 2 / ≥3</td></tr>
+<tr><td>chain</td><td>无 / 有（战意链参与）</td></tr>
+<tr><td>ev</td><td>&lt;0 / 0~0.15 / ≥0.15</td></tr>
+<tr><td>联赛段位</td><td>同 A 口径</td></tr>
+</table>
+<p class="small">crsTailProb 字段缺失剔除；chain 字符串标签归"有无"档。</p>
+</div>
+
+<h2>三、判据（两级·预注册）与建模决策树</h2>
+<div class="card">
+<table>
+<tr><th>级</th><th>判据</th></tr>
+<tr><td><b>格级候选</b></td><td>带内命中率差 ≥8pp <b>且</b> Fisher 精确检验双尾 p&lt;0.05 <b>且</b> 格内 n≥30</td></tr>
+<tr><td><b>信号级真信号</b></td><td>候选格方向跨赛季一致（A 基 ≥2/3 赛季同向·B 基全带同向）<b>且</b> 多重检验诚实对账（候选格数 vs 期望假阳 ≈0.05×总格数）</td></tr>
+</table>
+<p><b>建模决策树</b>：≥2 个<b>不同族</b>真信号 → 立项元模型（logistic ≤5 维·严格 walk-forward·防 sfm 式自泄漏）；&lt;2 → 不建模，p_fused 分带=终点挑腿器。</p>
+</div>
+
+<h2>四、审计三件套（照 v16 标准）</h2>
+<div class="card">
+<p>① 跑时逐格明细 stdout（底表×信号×带×格：n/命中率/带内差/p 值）② <code>cells[]</code> 全量落盘——格=凭证，汇总可独立重算 ③ <code>--audit</code> 复算对账+抽检从原始底表重放。HTML 报告含对账行与多重检验假阳对账表。</p>
+</div>
+
+<h2>五、诚实先验</h2>
+<div class="card">
+<p>A 基市场衍生信号<b>大概率全灭</b>（模型≈市场 7216 场 + v16 选场无增量双重先验）；B 基 n=282 只配测粗效应；真正的希望在前向轨（伤停/首发时序·lineup_watch 攒数中·快照 ≥300 另判·不进本批）。本批最可能的产出=<b>"无正交信号"的实证盖章</b>，让 p_fused 分带正式成为终点挑腿器。</p>
+</div>
+
+<h2>六、产出物</h2>
+<div class="card">
+<p><code>data/04-summaries/v17-signal-audit.json</code>（cells[] 全账）+ <code>data/04-summaries/2026-10-07-v17-signal-audit-review.html</code> + 脚本 <code>engine/scripts/research/v17_signal_audit.py</code>（复用 v16 装载器·跑时 &lt;1 分钟）。</p>
+</div>
+
+<div class="small">开发者 sszhang · 2026-10-07 · 本档随预注册同批归档</div>
+</body></html>

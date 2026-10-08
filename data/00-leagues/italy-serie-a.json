@@ -99,14 +99,14 @@
     {
       "pos": 5,
       "team": "Milan",
-      "played": 63,
-      "won": 33,
+      "played": 62,
+      "won": 32,
       "drawn": 18,
       "lost": 12,
-      "gf": 104,
-      "ga": 63,
-      "gd": 41,
-      "pts": 117,
+      "gf": 101,
+      "ga": 62,
+      "gd": 39,
+      "pts": 114,
       "form": "WWDDW",
       "homeRecord": {
         "w": 17,
@@ -114,7 +114,7 @@
         "l": 4
       },
       "awayRecord": {
-        "w": 16,
+        "w": 15,
         "d": 8,
         "l": 8
       }
@@ -167,15 +167,38 @@
     },
     {
       "pos": 8,
+      "team": "Como",
+      "played": 62,
+      "won": 25,
+      "drawn": 18,
+      "lost": 19,
+      "gf": 85,
+      "ga": 71,
+      "gd": 14,
+      "pts": 93,
+      "form": "DWWWL",
+      "homeRecord": {
+        "w": 14,
+        "d": 9,
+        "l": 6
+      },
+      "awayRecord": {
+        "w": 11,
+        "d": 9,
+        "l": 13
+      }
+    },
+    {
+      "pos": 9,
       "team": "Bologna",
-      "played": 63,
-      "won": 24,
+      "played": 62,
+      "won": 23,
       "drawn": 22,
       "lost": 17,
-      "gf": 89,
-      "ga": 75,
-      "gd": 14,
-      "pts": 94,
+      "gf": 86,
+      "ga": 73,
+      "gd": 13,
+      "pts": 91,
       "form": "LLDLD",
       "homeRecord": {
         "w": 14,
@@ -183,32 +206,9 @@
         "l": 6
       },
       "awayRecord": {
-        "w": 10,
+        "w": 9,
         "d": 11,
         "l": 11
-      }
-    },
-    {
-      "pos": 9,
-      "team": "Como",
-      "played": 63,
-      "won": 25,
-      "drawn": 18,
-      "lost": 20,
-      "gf": 86,
-      "ga": 74,
-      "gd": 12,
-      "pts": 93,
-      "form": "DWWWL",
-      "homeRecord": {
-        "w": 14,
-        "d": 9,
-        "l": 7
-      },
-      "awayRecord": {
-        "w": 11,
-        "d": 9,
-        "l": 13
       }
     },
     {
@@ -375,19 +375,19 @@
     {
       "pos": 17,
       "team": "Verona",
-      "played": 58,
+      "played": 57,
       "won": 12,
       "drawn": 14,
-      "lost": 32,
-      "gf": 51,
-      "ga": 100,
-      "gd": -49,
+      "lost": 31,
+      "gf": 49,
+      "ga": 97,
+      "gd": -48,
       "pts": 50,
-      "form": "LLDLL",
+      "form": "WLLDL",
       "homeRecord": {
         "w": 5,
         "d": 8,
-        "l": 16
+        "l": 15
       },
       "awayRecord": {
         "w": 7,
@@ -558,10 +558,10 @@
     }
   ],
   "leagueStats": {
-    "avgGoals": 2.527,
-    "homeWinRate": 0.392,
-    "drawRate": 0.279,
-    "upsetRate": 0.235,
+    "avgGoals": 2.521,
+    "homeWinRate": 0.393,
+    "drawRate": 0.28,
+    "upsetRate": 0.242,
     "topScores": [
       {
         "score": "1-1",
@@ -577,7 +577,7 @@
       }
     ],
     "computedFrom": "fd",
-    "matchesUsed": 630,
+    "matchesUsed": 628,
     "seasonsMerged": [
       "2425",
       "2526",

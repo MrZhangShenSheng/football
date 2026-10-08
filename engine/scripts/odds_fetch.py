@@ -62,9 +62,13 @@ def normalize_row(r: dict) -> dict | None:
                 if rk and rk.lower() == k.lower():
                     return rv
         return None
-    pin_c_h = g("PPCH", "Psh")  # Pinnacle 收盘（PPC*=closing；老赛季为 Psh）
-    pin_c_d = g("PPCD", "Psd")
-    pin_c_a = g("PPCA", "Psa")
+    # Pinnacle 收盘双命名兼容（2026-10-07 v16 自检修复）：
+    # 2627 系列名 PPC*=收盘/PP*=赛前；2425/2526 系列 PSC*=收盘/PS*=赛前。
+    # 修复前 g("PPCH","Psh") 在 2425/2526 静默降级到 PSH 赛前价（590/590 实证），
+    # 污染 7216 sweep/v16/实力链三水一切"收盘"口径消费方。无真收盘列宁缺毋滥整行丢弃。
+    pin_c_h = g("PPCH", "Psch")
+    pin_c_d = g("PPCD", "Pscd")
+    pin_c_a = g("PPCA", "Psca")
     if not pin_c_h:
         return None
     # OU 三键：两侧价齐备才算有效配对（T1 契约——做锚去水需两侧价齐备，消费方仍须复核）；
@@ -83,7 +87,7 @@ def normalize_row(r: dict) -> dict | None:
         "fthg": g("FTHG"), "ftag": g("FTAG"),
         "hthg": g("HTHG"), "htag": g("HTAG"),  # 半场真果（wargame 侦察3：2026-09-08 收列）
         "pin_h": pin_c_h, "pin_d": pin_c_d, "pin_a": pin_c_a,
-        "pin_open_h": g("PPH"), "pin_open_d": g("PPD"), "pin_open_a": g("PPA"),
+        "pin_open_h": g("PPH", "Psh"), "pin_open_d": g("PPD", "Psd"), "pin_open_a": g("PPA", "Psa"),
         "b365c_h": g("B365CH"), "b365c_d": g("B365CD"), "b365c_a": g("B365CA"),
         "hxg": g("HxG"), "axg": g("AxG"),
         "ou_over25": ou_over25, "ou_under25": ou_under25, "ou_source": ou_src,
@@ -109,7 +113,8 @@ def main() -> None:
                 out_rows.append(m)
         league_name = LEAGUE_CODES.get(code, code)
         out = CACHE_DIR / f"odds_{league_name}_{season}.json"
-        payload = {"fetchedAt": date.today().isoformat(), "source": "football-data.co.uk", "season": season, "matches": out_rows}
+        payload = {"fetchedAt": date.today().isoformat(), "source": "football-data.co.uk", "season": season,
+                   "pinBasis": "pinnacle-closing", "matches": out_rows}
         out.write_text(json.dumps(payload, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
         log("odds", f"{code} {season} → {out.name}：{len(out_rows)} 场")
 

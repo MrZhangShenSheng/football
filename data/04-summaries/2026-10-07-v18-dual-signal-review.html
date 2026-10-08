@@ -1,0 +1,37 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>v18 双信号选腿 N 串回测 · 审计报告</title>
+<style>
+:root{--ink:#1c2733;--sub:#5b6b7a;--line:#dde4ea;--bg:#f7f9fb;--card:#fff;--ok:#0f6b4f;--bad:#a33;--warn:#b3541e;--accent:#1a5fb4}
+*{box-sizing:border-box}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;color:var(--ink);background:var(--bg);margin:0;padding:24px 16px;max-width:1100px;margin-inline:auto}
+h1{font-size:20px;margin:0 0 4px} h2{font-size:15px;margin:20px 0 8px;padding-bottom:5px;border-bottom:2px solid var(--accent)}
+.meta{color:var(--sub);font-size:12.5px;margin-bottom:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 16px;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:12px;margin:5px 0}
+th,td{border:1px solid var(--line);padding:3px 6px;text-align:left} th{background:#f0f4f7}
+.num{font-variant-numeric:tabular-nums} .ok{color:var(--ok);font-weight:600} .bad{color:var(--bad);font-weight:600} .warn{color:var(--warn);font-weight:600}
+.small{font-size:11.5px;color:var(--sub)} pre{background:#f0f4f7;border-radius:8px;padding:10px;font-size:11.5px}
+</style></head><body>
+<h1>v18 双信号选腿 N 串回测 · 审计报告</h1>
+<div class="meta">跑时 2026-10-07 · 交集 1564 场 297 日 · fd∩hist_odds（V3W 时间线）· 预注册 v18</div>
+<div class="card"><b>终局：</b><span class="bad">SEALED(判据③·V3W确认无价值·与v16/v17同判)</span></div>
+<h2>一、策略汇总</h2>
+<div class="card"><table><tr><th>策略</th><th>票数</th><th>投入</th><th>回款</th><th>ROI</th><th>全中率</th><th>扣最大单日</th><th>bootstrap95%CI</th><th>分赛季</th></tr><tr><td>DUAL</td><td class='num'>32</td><td class='num'>64</td><td class='num'>58.73</td><td class='num bad'>-8.2%</td><td class='num'>34.4%</td><td class='num'>-18.2%</td><td class='num'>-53.5%~+40.4%</td><td class='num'>{"2425": {"n": 15, "roi": -0.5063}, "2526": {"n": 13, "roi": 0.1731}, "2627": {"n": 4, "roi": 0.6775}}</td></tr><tr><td>S3J</td><td class='num'>48</td><td class='num'>96</td><td class='num'>88.21</td><td class='num bad'>-8.1%</td><td class='num'>33.3%</td><td class='num'>-14.7%</td><td class='num'>-43.8%~+31.6%</td><td class='num'>{"2425": {"n": 29, "roi": -0.3822}, "2526": {"n": 15, "roi": 0.246}, "2627": {"n": 4, "roi": 0.875}}</td></tr></table></div>
+<h2>二、ROI 四件套样例（DUAL·claimed 口径）</h2>
+<div class="card"><table><tr><th>日期</th><th>串深</th><th>中奖概率</th><th>中奖金额</th><th>ROI(claimed)</th><th>实际</th></tr><tr><td>2024-08-24</td><td>3串1</td><td class='num'>40.0%</td><td class='num'>4.83</td><td class='num'>-3.4%</td><td class='num'>全中</td></tr><tr><td>2024-08-25</td><td>3串1</td><td class='num'>40.0%</td><td class='num'>5.2</td><td class='num'>+3.9%</td><td class='num'>未中</td></tr><tr><td>2024-09-21</td><td>3串1</td><td class='num'>40.0%</td><td class='num'>5.77</td><td class='num'>+15.4%</td><td class='num'>未中</td></tr><tr><td>2024-10-05</td><td>3串1</td><td class='num'>40.0%</td><td class='num'>4.41</td><td class='num'>-11.8%</td><td class='num'>全中</td></tr><tr><td>2024-11-23</td><td>4串1</td><td class='num'>27.7%</td><td class='num'>6.67</td><td class='num'>-7.5%</td><td class='num'>未中</td></tr><tr><td>2024-12-14</td><td>4串1</td><td class='num'>27.7%</td><td class='num'>7.07</td><td class='num'>-1.9%</td><td class='num'>未中</td></tr><tr><td>2024-12-15</td><td>4串1</td><td class='num'>27.7%</td><td class='num'>5.38</td><td class='num'>-25.4%</td><td class='num'>未中</td></tr><tr><td>2025-01-15</td><td>3串1</td><td class='num'>33.4%</td><td class='num'>5.75</td><td class='num'>-3.9%</td><td class='num'>未中</td></tr></table>
+<p class="small">claimed口径=v16.1收盘基分带大样本命中率·realized=票面结算·分开报告</p></div>
+<h2>三、判据明细与体彩敏感性</h2>
+<div class="card"><pre>{
+ "diffVsS3J_pp": -0.1,
+ "c1_margin": false,
+ "c1_ciLowPos": false,
+ "c1_exMaxPos": false,
+ "c2_inRnd95": true,
+ "dualRndPercentile": 66.5,
+ "s3jRndPercentile": 66.5
+}</pre>
+<p class="small">体彩/Pinnacle 三带比 {"1.4-1.9": 0.9382, "<1.4": 0.9686, ">1.9": 0.9691}（209 对）</p></div>
+<h2>四、对账行</h2>
+<div class="card"><pre>S3J+DUAL 80票×2元=投入160元 · 票面回款和=146.94元</pre><p class="small">票级复算 PASS</p></div>
+<div class="small">开发者 sszhang · 2026-10-07 · tickets[] 票面可独立重算一切 · 全量明细见 JSON</div>
+</body></html>
