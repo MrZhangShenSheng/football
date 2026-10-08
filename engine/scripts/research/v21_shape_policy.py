@@ -64,22 +64,29 @@ def build_legs(c):
     return legs
 
 
+def real_dir(real: str) -> int:
+    if real.startswith("s1s"):
+        return {"s1sh": 0, "s1sd": 1, "s1sa": 2}[real]
+    h, a = int(real[1:3]), int(real[4:6])
+    return 0 if h > a else (1 if h == a else 2)
+
+
 def legs_of(cand):
     out = []
-    # HAD 三向（体彩价）
+    d = real_dir(cand["real"])
     hh = cand.get("hadHist")
+    hm = cand.get("hadModel") or {}
     if hh:
-        for key, mk in (("h", "h"), ("d", "d"), ("a", "a")):
+        for key, di in (("h", 0), ("d", 1), ("a", 2)):
             o = hh.get(key)
             try:
                 o = float(o)
             except (TypeError, ValueError):
                 continue
             if o > 1.0:
-                out.append({"p": cand["hadModel"][key], "odds": o,
-                            "hit": cand["real"] == mk, "mk": mk, "play": "HAD",
+                out.append({"p": hm.get(key, 1 / o), "odds": o,
+                            "hit": d == di, "mk": key, "play": "HAD",
                             "matchKey": cand["key"]})
-    # CRS 格
     for cell in cand["cells"]:
         out.append({"p": cell["p"], "odds": cell["odds"],
                     "hit": cell["mk"] == cand["real"], "mk": cell["mk"],
@@ -185,6 +192,24 @@ def main():
     print("预注册: 脚本头跑前写死\n", flush=True)
     pre = load_pre()
     print(f"缓存载入: {len(pre)}日\n", flush=True)
+
+    if "--smoke" in sys.argv:
+        days = sorted(pre)[:30]
+        pre = {k: pre[k] for k in days}
+        print(f"[SMOKE] 截取 {len(pre)} 日\n", flush=True)
+
+    # sanity 自检：HAD 主向腿命中率须 50~60%（否则 hit 判定有 bug·拒跑）
+    n_h = sum(1 for cands in pre.values() for c in cands
+              if c.get("hadHist") and c.get("hadHist").get("h"))
+    h_h = sum(1 for cands in pre.values() for c in cands
+              if c.get("hadHist") and c.get("hadHist").get("h")
+              and real_dir(c["real"]) == 0)
+    hr = h_h / n_h if n_h else 0
+    print(f"[SANITY] HAD主向腿: n={n_h} 命中率={hr*100:.1f}%（预期50~65）→ {'PASS' if 0.45 <= hr <= 0.70 else 'FAIL·拒跑'}", flush=True)
+    if not (0.45 <= hr <= 0.70) and "--force" not in sys.argv:
+        print("SANITY FAIL·退出（--force 强行）", flush=True)
+        return
+
 
     out = {}
     for label, window in (("fit", FIT_WINDOW), ("val", VAL_WINDOW)):
