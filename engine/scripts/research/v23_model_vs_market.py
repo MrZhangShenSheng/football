@@ -96,12 +96,15 @@ def main():
             if not (lo <= day <= hi):
                 continue
             for ci, c in enumerate(cands):
-                crs_by_match[(day, ci)] = [(cell["mk"], cell["odds"], cell["mk"] == c["real"])
-                                           for cell in c["cells"]]
+                crs_by_match[(day, ci)] = [(cell["mk"], cell["odds"], cell["p"],
+                                            cell["mk"] == c["real"]) for cell in c["cells"]]
         crs_rows = []
         for _, g in crs_by_match.items():
-            if len(g) >= 3:
-                crs_rows.extend(devig(g))
+            if len(g) < 3:
+                continue
+            for mk, implied, hit in devig([(mk2, o2, h2) for mk2, o2, _, h2 in g]):
+                p_model = next(p2 for m2, _, p2, _ in g if m2 == mk)
+                crs_rows.append((implied, p_model, hit))
 
         had_cal = dual_calib(had_rows)
         crs_cal = dual_calib(crs_rows)

@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-07",
+  "checkedAt": "2026-10-08",
   "leagues": {
     "芬超": {
       "status": "missing"
@@ -9,99 +9,95 @@
       "roundsPlayed": 25,
       "standingsSource": "espn",
       "fdCovered": false
+    },
+    "韩职": {
+      "status": "ready",
+      "roundsPlayed": 22,
+      "standingsSource": "insight",
+      "fdCovered": false
+    },
+    "日职": {
+      "status": "ready",
+      "roundsPlayed": 6,
+      "standingsSource": "espn",
+      "fdCovered": false
+    },
+    "德乙": {
+      "status": "missing"
+    },
+    "瑞超": {
+      "status": "ready",
+      "roundsPlayed": 20,
+      "standingsSource": "espn",
+      "fdCovered": false
+    },
+    "挪超": {
+      "status": "ready",
+      "roundsPlayed": 19,
+      "standingsSource": "espn",
+      "fdCovered": false
+    },
+    "荷甲": {
+      "status": "ready",
+      "roundsPlayed": 57,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "荷乙": {
+      "status": "ready",
+      "roundsPlayed": 8,
+      "standingsSource": "espn-manual",
+      "fdCovered": false
+    },
+    "德甲": {
+      "status": "ready",
+      "roundsPlayed": 55,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "法甲": {
+      "status": "ready",
+      "roundsPlayed": 56,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "英冠": {
+      "status": "ready",
+      "roundsPlayed": 77,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "西甲": {
+      "status": "ready",
+      "roundsPlayed": 64,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "葡超": {
+      "status": "ready",
+      "roundsPlayed": 17,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
     }
   },
   "missingLeagues": [
-    "芬超"
+    "芬超",
+    "德乙"
   ],
   "staleLeagues": [],
   "missingAlias": [
     {
-      "team": "里莫",
-      "league": "巴甲",
-      "match": "里莫 vs 格雷米奥"
+      "team": "韦斯特罗",
+      "league": "瑞超",
+      "match": "哥德堡 vs 韦斯特罗"
     },
     {
-      "team": "AC奥卢",
-      "league": "芬超",
-      "match": "库奥皮奥 vs AC奥卢"
+      "team": "女王巡游",
+      "league": "英冠",
+      "match": "西汉姆联 vs 女王巡游"
     }
   ],
   "notReadyTeams": [
-    {
-      "team": "赫尔火花",
-      "teamId": "gnistan-helsinki",
-      "league": "finland",
-      "status": "missing"
-    },
-    {
-      "team": "国际图尔",
-      "teamId": "inter-turku",
-      "league": "finland",
-      "status": "missing"
-    },
-    {
-      "team": "巴西国际",
-      "teamId": "internacional",
-      "league": "brazil",
-      "status": "stale",
-      "lastUpdated": "2026-09-03",
-      "ageDays": 34
-    },
-    {
-      "team": "科林蒂安",
-      "teamId": "corinthians",
-      "league": "brazil",
-      "status": "missing"
-    },
-    {
-      "team": "格雷米奥",
-      "teamId": "gremio",
-      "league": "brazil",
-      "status": "stale",
-      "lastUpdated": "2026-09-07",
-      "ageDays": 30
-    },
-    {
-      "team": "布拉干RB",
-      "teamId": "red-bull-bragantino",
-      "league": "brazil",
-      "status": "missing"
-    },
-    {
-      "team": "米拉索尔",
-      "teamId": "mirassol",
-      "league": "brazil",
-      "status": "missing"
-    },
-    {
-      "team": "维多利亚",
-      "teamId": "vitoria",
-      "league": "brazil",
-      "status": "stale",
-      "lastUpdated": "2026-09-07",
-      "ageDays": 30
-    },
-    {
-      "team": "沙佩科",
-      "teamId": "chapecoense",
-      "league": "brazil",
-      "status": "missing"
-    },
-    {
-      "team": "博塔弗戈",
-      "teamId": "botafogo",
-      "league": "brazil",
-      "status": "stale",
-      "lastUpdated": "2026-08-24",
-      "ageDays": 44
-    },
-    {
-      "team": "达伽马",
-      "teamId": "vasco",
-      "league": "brazil",
-      "status": "missing"
-    },
     {
       "team": "赫尔辛基",
       "teamId": "hjk-helsinki",
@@ -121,6 +117,12 @@
       "status": "missing"
     },
     {
+      "team": "AC奥卢",
+      "teamId": "ac-oulu",
+      "league": "finland",
+      "status": "missing"
+    },
+    {
       "team": "桑托斯",
       "teamId": "santos",
       "league": "brazil",
@@ -132,7 +134,7 @@
       "league": "brazil",
       "status": "stale",
       "lastUpdated": "2026-09-10",
-      "ageDays": 27
+      "ageDays": 28
     },
     {
       "team": "巴竞技",
@@ -140,7 +142,7 @@
       "league": "brazil",
       "status": "stale",
       "lastUpdated": "2026-09-10",
-      "ageDays": 27
+      "ageDays": 28
     },
     {
       "team": "米竞技",
@@ -160,7 +162,7 @@
       "league": "brazil",
       "status": "stale",
       "lastUpdated": "2026-09-10",
-      "ageDays": 27
+      "ageDays": 28
     },
     {
       "team": "帕梅拉斯",
@@ -173,10 +175,164 @@
       "teamId": "bahia",
       "league": "brazil",
       "status": "missing"
+    },
+    {
+      "team": "仁川联",
+      "teamId": "incheon-united",
+      "league": "korea-k-league",
+      "status": "stale",
+      "lastUpdated": "2026-09-27",
+      "ageDays": 11
+    },
+    {
+      "team": "浦项制铁",
+      "teamId": "pohang-steelers",
+      "league": "korea-k-league",
+      "status": "stale",
+      "lastUpdated": "2026-08-23",
+      "ageDays": 46
+    },
+    {
+      "team": "柏太阳神",
+      "teamId": "kashiwa-reysol",
+      "league": "japan",
+      "status": "stale",
+      "lastUpdated": "2026-09-10",
+      "ageDays": 28
+    },
+    {
+      "team": "神户胜利",
+      "teamId": "vissel-kobe",
+      "league": "japan",
+      "status": "missing"
+    },
+    {
+      "team": "海登海姆",
+      "teamId": "heidenheim",
+      "league": "germany-bundesliga",
+      "status": "missing"
+    },
+    {
+      "team": "凯泽",
+      "teamId": "kaiserslautern",
+      "league": "germany-bundesliga2",
+      "status": "missing"
+    },
+    {
+      "team": "哥德堡",
+      "teamId": "ifk-goteborg",
+      "league": "sweden",
+      "status": "missing"
+    },
+    {
+      "team": "布兰",
+      "teamId": "brann",
+      "league": "norway",
+      "status": "missing"
+    },
+    {
+      "team": "维京",
+      "teamId": "viking",
+      "league": "norway",
+      "status": "missing"
+    },
+    {
+      "team": "埃因霍温",
+      "teamId": "psv",
+      "league": "netherlands-eredivisie",
+      "status": "stale",
+      "lastUpdated": "2026-08-22",
+      "ageDays": 47
+    },
+    {
+      "team": "海伦芬",
+      "teamId": "heerenveen",
+      "league": "netherlands-eredivisie",
+      "status": "missing"
+    },
+    {
+      "team": "赫拉克勒",
+      "teamId": "heracles-almelo",
+      "league": "netherlands-eredivisie",
+      "status": "missing"
+    },
+    {
+      "team": "瓦尔韦克",
+      "teamId": "rkc-waalwijk",
+      "league": "netherlands-eredivisie",
+      "status": "missing"
+    },
+    {
+      "team": "多特蒙德",
+      "teamId": "dortmund",
+      "league": "germany-bundesliga",
+      "status": "stale",
+      "lastUpdated": "2026-09-07",
+      "ageDays": 31
+    },
+    {
+      "team": "不来梅",
+      "teamId": "werder-bremen",
+      "league": "germany-bundesliga",
+      "status": "missing"
+    },
+    {
+      "team": "朗斯",
+      "teamId": "lens",
+      "league": "france",
+      "status": "stale",
+      "lastUpdated": "2026-08-22",
+      "ageDays": 47
+    },
+    {
+      "team": "里昂",
+      "teamId": "lyon",
+      "league": "france",
+      "status": "stale",
+      "lastUpdated": "2026-08-22",
+      "ageDays": 47
+    },
+    {
+      "team": "西汉姆联",
+      "teamId": "west-ham",
+      "league": "england-championship",
+      "status": "stale",
+      "lastUpdated": "2026-09-10",
+      "ageDays": 28
+    },
+    {
+      "team": "马拉加",
+      "teamId": "malaga",
+      "league": "spain",
+      "status": "stale",
+      "lastUpdated": "2026-08-24",
+      "ageDays": 45
+    },
+    {
+      "team": "西班牙人",
+      "teamId": "espanyol",
+      "league": "spain",
+      "status": "stale",
+      "lastUpdated": "2026-08-22",
+      "ageDays": 47
+    },
+    {
+      "team": "布拉加",
+      "teamId": "braga",
+      "league": "portugal",
+      "status": "stale",
+      "lastUpdated": "2026-09-10",
+      "ageDays": 28
+    },
+    {
+      "team": "里斯本",
+      "teamId": "sporting-cp",
+      "league": "portugal",
+      "status": "missing"
     }
   ],
   "readyCount": {
-    "leagues": 1,
-    "teamsKnown": 799
+    "leagues": 12,
+    "teamsKnown": 802
   }
 }

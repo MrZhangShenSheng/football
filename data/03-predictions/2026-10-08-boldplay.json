@@ -1,0 +1,1122 @@
+{
+ "structure": "new",
+ "date": "2026-10-08",
+ "seq": 34,
+ "tiers": {
+  "base": {
+   "cost": 0,
+   "legs": [],
+   "play": "had-3*4*5",
+   "note": "保底关档（2026-09-16 拍板：资金小量不保本无所谓 · spec §1.4）",
+   "coverGate": null
+  },
+  "upset": {
+   "shape": "pool-4x1",
+   "cost": 2,
+   "legs": [
+    {
+     "matchNumStr": "周四003",
+     "match": "桑托斯 vs 弗拉门戈",
+     "play": "ttg",
+     "pick": "s4",
+     "odds": 5.25,
+     "q": 0.1921,
+     "ev": 0.0085,
+     "modelSupport": "template",
+     "hypothesis": {
+      "assumption": "",
+      "checks": [],
+      "verdict": "pending"
+     }
+    },
+    {
+     "matchNumStr": "周五012",
+     "match": "布拉加 vs 里斯本",
+     "play": "hafu",
+     "pick": "hh",
+     "odds": 6.0,
+     "q": 0.1669,
+     "ev": 0.0014,
+     "modelSupport": "template",
+     "hypothesis": {
+      "assumption": "",
+      "checks": [],
+      "verdict": "pending"
+     }
+    },
+    {
+     "matchNumStr": "周五011",
+     "match": "马拉加 vs 西班牙人",
+     "play": "ttg",
+     "pick": "s3",
+     "odds": 3.8,
+     "q": 0.2412,
+     "ev": -0.0834,
+     "modelSupport": "template",
+     "hypothesis": {
+      "assumption": "",
+      "checks": [],
+      "verdict": "pending"
+     }
+    },
+    {
+     "matchNumStr": "周五003",
+     "match": "海登海姆 vs 凯泽",
+     "play": "ttg",
+     "pick": "s3",
+     "odds": 3.6,
+     "q": 0.2408,
+     "ev": -0.1331,
+     "modelSupport": "template",
+     "hypothesis": {
+      "assumption": "",
+      "checks": [],
+      "verdict": "pending"
+     }
+    }
+   ],
+   "multiplier": 1,
+   "bets": [
+    {
+     "legs": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "multiplier": 1
+    }
+   ],
+   "note": "跨池4串1(木桶≤4关)",
+   "blockedByHypothesis": [
+    {
+     "pick": "s4",
+     "verdict": "pending"
+    },
+    {
+     "pick": "hh",
+     "verdict": "pending"
+    },
+    {
+     "pick": "s3",
+     "verdict": "pending"
+    },
+    {
+     "pick": "s3",
+     "verdict": "pending"
+    }
+   ]
+  },
+  "lottery": {
+   "shape": "lottery-8x1",
+   "cost": 2,
+   "legs": [
+    {
+     "matchNumStr": "周五002",
+     "match": "柏太阳神-神户胜利",
+     "play": "hhad",
+     "pick": "让球客胜",
+     "odds": 1.55,
+     "p": 0.5948,
+     "ev": -0.078,
+     "modelSupport": "dc",
+     "divergence": 0.0235,
+     "divergenceFlag": false,
+     "hypothesis": {
+      "assumption": "",
+      "checks": [],
+      "verdict": "pending"
+     },
+     "goalLine": -1.0
+    },
+    {
+     "matchNumStr": "周四006",
+     "match": "帕梅拉斯-巴伊亚",
+     "play": "had",
+     "pick": "主胜",
+     "odds": 1.44,
+     "p": 0.6228,
+     "ev": -0.1032,
+     "modelSupport": "dc",
+     "divergence": 0.008,
+     "divergenceFlag": false,
+     "hypothesis": {
+      "assumption": "",
+      "checks": [],
+      "verdict": "pending"
+     }
+    },
+    {
+     "matchNumStr": "周五001",
+     "match": "仁川联-浦项制铁",
+     "play": "hhad",
+     "pick": "让球客胜",
+     "odds": 1.48,
+     "p": 0.6027,
+     "ev": -0.108,
+     "modelSupport": "dc",
+     "divergence": 0.0042,
+     "divergenceFlag": false,
+     "hypothesis": {
+      "assumption": "",
+      "checks": [],
+      "verdict": "pending"
+     },
+     "goalLine": -1.0
+    },
+    {
+     "matchNumStr": "周五011",
+     "match": "马拉加-西班牙人",
+     "play": "hhad",
+     "pick": "让球主胜",
+     "odds": 1.43,
+     "p": 0.6204,
+     "ev": -0.1128,
+     "modelSupport": "dc",
+     "divergence": 0.0,
+     "divergenceFlag": false,
+     "hypothesis": {
+      "assumption": "",
+      "checks": [],
+      "verdict": "pending"
+     },
+     "goalLine": 1.0
+    },
+    {
+     "matchNumStr": "周五009",
+     "match": "朗斯-里昂",
+     "play": "hhad",
+     "pick": "让球客胜",
+     "odds": 1.57,
+     "p": 0.5647,
+     "ev": -0.1134,
+     "modelSupport": "dc",
+     "divergence": 0.0,
+     "divergenceFlag": false,
+     "hypothesis": {
+      "assumption": "",
+      "checks": [],
+      "verdict": "pending"
+     },
+     "goalLine": -1.0
+    },
+    {
+     "matchNumStr": "周五008",
+     "match": "多特蒙德-不来梅",
+     "play": "had",
+     "pick": "主胜",
+     "odds": 1.25,
+     "p": 0.7084,
+     "ev": -0.1145,
+     "modelSupport": "dc",
+     "divergence": 0.0,
+     "divergenceFlag": false,
+     "hypothesis": {
+      "assumption": "",
+      "checks": [],
+      "verdict": "pending"
+     }
+    },
+    {
+     "matchNumStr": "周四005",
+     "match": "弗鲁米嫩-科里蒂巴",
+     "play": "had",
+     "pick": "主胜",
+     "odds": 1.31,
+     "p": 0.6413,
+     "ev": -0.1599,
+     "modelSupport": "dc",
+     "divergence": 0.0347,
+     "divergenceFlag": false,
+     "hypothesis": {
+      "assumption": "",
+      "checks": [],
+      "verdict": "pending"
+     }
+    },
+    {
+     "matchNumStr": "周四001",
+     "match": "赫尔辛基-瓦萨",
+     "play": "had",
+     "pick": "主胜",
+     "odds": 1.38,
+     "modelSupport": "none",
+     "hypothesis": {
+      "assumption": "",
+      "checks": [],
+      "verdict": "pending"
+     }
+    }
+   ],
+   "bets": [
+    {
+     "legs": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+     ],
+     "multiplier": 1
+    }
+   ],
+   "expOdds": 16.8,
+   "winIfHit": 34.0,
+   "note": "8串1×1倍=2元 · 全中≈34元 · 无预算管理(设计§四红线废除)",
+   "blockedByHypothesis": [
+    {
+     "pick": "让球客胜",
+     "verdict": "pending"
+    },
+    {
+     "pick": "主胜",
+     "verdict": "pending"
+    },
+    {
+     "pick": "让球客胜",
+     "verdict": "pending"
+    },
+    {
+     "pick": "让球主胜",
+     "verdict": "pending"
+    },
+    {
+     "pick": "让球客胜",
+     "verdict": "pending"
+    },
+    {
+     "pick": "主胜",
+     "verdict": "pending"
+    },
+    {
+     "pick": "主胜",
+     "verdict": "pending"
+    },
+    {
+     "pick": "主胜",
+     "verdict": "pending"
+    }
+   ]
+  }
+ },
+ "totalCost": 4,
+ "crsSource": "fused",
+ "cards": [
+  {
+   "code": "周四003",
+   "match": "桑托斯 vs 弗拉门戈",
+   "candidates": [
+    {
+     "code": "周四003",
+     "match": "桑托斯 vs 弗拉门戈",
+     "pool": "ttg",
+     "pick": "s4",
+     "q": 0.1921,
+     "odds": 5.25,
+     "ev": 0.0085
+    },
+    {
+     "code": "周四003",
+     "match": "桑托斯 vs 弗拉门戈",
+     "pool": "ttg",
+     "pick": "s6",
+     "q": 0.2031,
+     "odds": 18.0,
+     "ev": 2.6558,
+     "divergent": true
+    },
+    {
+     "code": "周四003",
+     "match": "桑托斯 vs 弗拉门戈",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.504,
+     "odds": 2.56,
+     "ev": 0.2902,
+     "divergent": true
+    },
+    {
+     "code": "周四003",
+     "match": "桑托斯 vs 弗拉门戈",
+     "pool": "hafu",
+     "pick": "da",
+     "q": 0.2539,
+     "odds": 4.3,
+     "ev": 0.0918,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周四003",
+    "match": "桑托斯 vs 弗拉门戈",
+    "pool": "ttg",
+    "pick": "s6",
+    "q": 0.2031,
+    "odds": 18.0,
+    "ev": 2.6558,
+    "divergent": true
+   },
+   "rec_upset": {
+    "code": "周四003",
+    "match": "桑托斯 vs 弗拉门戈",
+    "pool": "ttg",
+    "pick": "s4",
+    "q": 0.1921,
+    "odds": 5.25,
+    "ev": 0.0085
+   },
+   "flags": [
+    "divergence",
+    "crs_gate_closed"
+   ],
+   "crsGate": {
+    "pass": false,
+    "maxProb": 0.2607,
+    "threshold": 0.28,
+    "topFamily": "away_clean",
+    "reason": "CRS关档·族峰值 26.1% < 闸门 28%"
+   },
+   "crsDist": {
+    "away_clean": 0.2607,
+    "away_multi": 0.2272,
+    "draw": 0.2023,
+    "home_multi": 0.0854,
+    "home_clean": 0.0733,
+    "tailP4": 0.347,
+    "sum": 0.849,
+    "marketFused": true
+   }
+  },
+  {
+   "code": "周四004",
+   "match": "巴竞技 vs 米竞技",
+   "candidates": [
+    {
+     "code": "周四004",
+     "match": "巴竞技 vs 米竞技",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2523,
+     "odds": 3.4,
+     "ev": -0.1422
+    },
+    {
+     "code": "周四004",
+     "match": "巴竞技 vs 米竞技",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2406,
+     "odds": 3.3,
+     "ev": -0.206
+    },
+    {
+     "code": "周四004",
+     "match": "巴竞技 vs 米竞技",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.199,
+     "odds": 3.25,
+     "ev": -0.3532
+    },
+    {
+     "code": "周四004",
+     "match": "巴竞技 vs 米竞技",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.2393,
+     "odds": 6.1,
+     "ev": 0.4597,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周四004",
+    "match": "巴竞技 vs 米竞技",
+    "pool": "hafu",
+    "pick": "aa",
+    "q": 0.2393,
+    "odds": 6.1,
+    "ev": 0.4597,
+    "divergent": true
+   },
+   "rec_upset": {
+    "code": "周四004",
+    "match": "巴竞技 vs 米竞技",
+    "pool": "ttg",
+    "pick": "s3",
+    "q": 0.2523,
+    "odds": 3.4,
+    "ev": -0.1422
+   },
+   "flags": [
+    "divergence",
+    "crs_gate_closed"
+   ],
+   "crsGate": {
+    "pass": false,
+    "maxProb": 0.2676,
+    "threshold": 0.28,
+    "topFamily": "draw",
+    "reason": "CRS关档·族峰值 26.8% < 闸门 28%"
+   },
+   "crsDist": {
+    "draw": 0.2676,
+    "home_clean": 0.2076,
+    "home_multi": 0.1656,
+    "away_clean": 0.1455,
+    "away_multi": 0.1251,
+    "tailP4": 0.2575,
+    "sum": 0.9114,
+    "marketFused": true
+   }
+  },
+  {
+   "code": "周五001",
+   "match": "仁川联 vs 浦项制铁",
+   "candidates": [
+    {
+     "code": "周五001",
+     "match": "仁川联 vs 浦项制铁",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2503,
+     "odds": 3.2,
+     "ev": -0.199
+    },
+    {
+     "code": "周五001",
+     "match": "仁川联 vs 浦项制铁",
+     "pool": "hafu",
+     "pick": "dd",
+     "q": 0.194,
+     "odds": 4.35,
+     "ev": -0.1561
+    },
+    {
+     "pool": "crs",
+     "pick": "1:1",
+     "q": 0.138,
+     "odds": 5.8,
+     "ev": -0.1996,
+     "family": "draw",
+     "familyProb": 0.2895,
+     "gate": {
+      "pass": true,
+      "maxProb": 0.2895
+     },
+     "slot": "top1",
+     "marketFused": true,
+     "code": "周五001",
+     "match": "仁川联 vs 浦项制铁"
+    },
+    {
+     "pool": "crs",
+     "pick": "0:0",
+     "q": 0.1101,
+     "odds": 7.5,
+     "ev": -0.1743,
+     "family": "draw",
+     "familyProb": 0.2895,
+     "gate": {
+      "pass": true,
+      "maxProb": 0.2895
+     },
+     "slot": "top2",
+     "marketFused": true,
+     "code": "周五001",
+     "match": "仁川联 vs 浦项制铁"
+    },
+    {
+     "code": "周五001",
+     "match": "仁川联 vs 浦项制铁",
+     "pool": "ttg",
+     "pick": "s1",
+     "q": 0.2763,
+     "odds": 3.65,
+     "ev": 0.0085,
+     "divergent": true
+    },
+    {
+     "code": "周五001",
+     "match": "仁川联 vs 浦项制铁",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.2509,
+     "odds": 4.0,
+     "ev": 0.0036,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周五001",
+    "match": "仁川联 vs 浦项制铁",
+    "pool": "ttg",
+    "pick": "s1",
+    "q": 0.2763,
+    "odds": 3.65,
+    "ev": 0.0085,
+    "divergent": true
+   },
+   "rec_upset": {
+    "pool": "crs",
+    "pick": "1:1",
+    "q": 0.138,
+    "odds": 5.8,
+    "ev": -0.1996,
+    "family": "draw",
+    "familyProb": 0.2895,
+    "gate": {
+     "pass": true,
+     "maxProb": 0.2895
+    },
+    "slot": "top1",
+    "marketFused": true,
+    "code": "周五001",
+    "match": "仁川联 vs 浦项制铁"
+   },
+   "flags": [
+    "divergence"
+   ],
+   "crsGate": {
+    "pass": true,
+    "maxProb": 0.2895,
+    "threshold": 0.28,
+    "topFamily": "draw"
+   },
+   "crsDist": {
+    "draw": 0.2895,
+    "home_clean": 0.2413,
+    "away_clean": 0.1661,
+    "home_multi": 0.1453,
+    "away_multi": 0.1123,
+    "tailP4": 0.1751,
+    "sum": 0.9545,
+    "marketFused": true
+   }
+  },
+  {
+   "code": "周五002",
+   "match": "柏太阳神 vs 神户胜利",
+   "candidates": [
+    {
+     "code": "周五002",
+     "match": "柏太阳神 vs 神户胜利",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2221,
+     "odds": 3.7,
+     "ev": -0.1782
+    },
+    {
+     "code": "周五002",
+     "match": "柏太阳神 vs 神户胜利",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.1707,
+     "odds": 3.5,
+     "ev": -0.4026
+    },
+    {
+     "code": "周五002",
+     "match": "柏太阳神 vs 神户胜利",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.3554,
+     "odds": 5.0,
+     "ev": 0.777,
+     "divergent": true
+    },
+    {
+     "code": "周五002",
+     "match": "柏太阳神 vs 神户胜利",
+     "pool": "hafu",
+     "pick": "da",
+     "q": 0.179,
+     "odds": 7.0,
+     "ev": 0.253,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周五002",
+    "match": "柏太阳神 vs 神户胜利",
+    "pool": "hafu",
+    "pick": "aa",
+    "q": 0.3554,
+    "odds": 5.0,
+    "ev": 0.777,
+    "divergent": true
+   },
+   "rec_upset": {
+    "code": "周五002",
+    "match": "柏太阳神 vs 神户胜利",
+    "pool": "ttg",
+    "pick": "s3",
+    "q": 0.2221,
+    "odds": 3.7,
+    "ev": -0.1782
+   },
+   "flags": [
+    "divergence",
+    "crs_gate_closed"
+   ],
+   "crsGate": {
+    "pass": false,
+    "maxProb": 0.247,
+    "threshold": 0.28,
+    "topFamily": "draw",
+    "reason": "CRS关档·族峰值 24.7% < 闸门 28%"
+   },
+   "crsDist": {
+    "draw": 0.247,
+    "home_clean": 0.1741,
+    "away_clean": 0.1677,
+    "home_multi": 0.1614,
+    "away_multi": 0.1576,
+    "tailP4": 0.2818,
+    "sum": 0.9078,
+    "marketFused": true
+   }
+  },
+  {
+   "code": "周五003",
+   "match": "海登海姆 vs 凯泽",
+   "candidates": [
+    {
+     "code": "周五003",
+     "match": "海登海姆 vs 凯泽",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2408,
+     "odds": 3.6,
+     "ev": -0.1331
+    },
+    {
+     "code": "周五003",
+     "match": "海登海姆 vs 凯泽",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.1878,
+     "odds": 2.9,
+     "ev": -0.4554
+    },
+    {
+     "code": "周五003",
+     "match": "海登海姆 vs 凯泽",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2452,
+     "odds": 4.15,
+     "ev": 0.0176,
+     "divergent": true
+    },
+    {
+     "code": "周五003",
+     "match": "海登海姆 vs 凯泽",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.2404,
+     "odds": 6.0,
+     "ev": 0.4424,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周五003",
+    "match": "海登海姆 vs 凯泽",
+    "pool": "hafu",
+    "pick": "aa",
+    "q": 0.2404,
+    "odds": 6.0,
+    "ev": 0.4424,
+    "divergent": true
+   },
+   "rec_upset": {
+    "code": "周五003",
+    "match": "海登海姆 vs 凯泽",
+    "pool": "ttg",
+    "pick": "s3",
+    "q": 0.2408,
+    "odds": 3.6,
+    "ev": -0.1331
+   },
+   "flags": [
+    "divergence",
+    "crs_gate_closed"
+   ],
+   "crsGate": {
+    "pass": false,
+    "maxProb": 0.2298,
+    "threshold": 0.28,
+    "topFamily": "draw",
+    "reason": "CRS关档·族峰值 23.0% < 闸门 28%"
+   },
+   "crsDist": {
+    "draw": 0.2298,
+    "home_multi": 0.1994,
+    "home_clean": 0.1858,
+    "away_multi": 0.147,
+    "away_clean": 0.116,
+    "tailP4": 0.3482,
+    "sum": 0.8779,
+    "marketFused": true
+   }
+  },
+  {
+   "code": "周五005",
+   "match": "布兰 vs 维京",
+   "candidates": [
+    {
+     "code": "周五005",
+     "match": "布兰 vs 维京",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.215,
+     "odds": 3.75,
+     "ev": -0.1937
+    },
+    {
+     "code": "周五005",
+     "match": "布兰 vs 维京",
+     "pool": "ttg",
+     "pick": "s4",
+     "q": 0.1829,
+     "odds": 4.4,
+     "ev": -0.1952
+    },
+    {
+     "code": "周五005",
+     "match": "布兰 vs 维京",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.3892,
+     "odds": 3.1,
+     "ev": 0.2065,
+     "divergent": true
+    },
+    {
+     "code": "周五005",
+     "match": "布兰 vs 维京",
+     "pool": "hafu",
+     "pick": "da",
+     "q": 0.1961,
+     "odds": 5.7,
+     "ev": 0.1178,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周五005",
+    "match": "布兰 vs 维京",
+    "pool": "hafu",
+    "pick": "aa",
+    "q": 0.3892,
+    "odds": 3.1,
+    "ev": 0.2065,
+    "divergent": true
+   },
+   "rec_upset": {
+    "code": "周五005",
+    "match": "布兰 vs 维京",
+    "pool": "ttg",
+    "pick": "s4",
+    "q": 0.1829,
+    "odds": 4.4,
+    "ev": -0.1952
+   },
+   "flags": [
+    "divergence",
+    "crs_gate_closed"
+   ],
+   "crsGate": {
+    "pass": false,
+    "maxProb": 0.2241,
+    "threshold": 0.28,
+    "topFamily": "away_multi",
+    "reason": "CRS关档·族峰值 22.4% < 闸门 28%"
+   },
+   "crsDist": {
+    "away_multi": 0.2241,
+    "draw": 0.1875,
+    "away_clean": 0.1696,
+    "home_multi": 0.1384,
+    "home_clean": 0.089,
+    "tailP4": 0.4447,
+    "sum": 0.8085,
+    "marketFused": true
+   }
+  },
+  {
+   "code": "周五009",
+   "match": "朗斯 vs 里昂",
+   "candidates": [
+    {
+     "code": "周五009",
+     "match": "朗斯 vs 里昂",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.1991,
+     "odds": 3.6,
+     "ev": -0.2832
+    },
+    {
+     "code": "周五009",
+     "match": "朗斯 vs 里昂",
+     "pool": "ttg",
+     "pick": "s7",
+     "q": 0.1857,
+     "odds": 16.0,
+     "ev": 1.9712,
+     "divergent": true
+    },
+    {
+     "code": "周五009",
+     "match": "朗斯 vs 里昂",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.4909,
+     "odds": 4.5,
+     "ev": 1.209,
+     "divergent": true
+    },
+    {
+     "code": "周五009",
+     "match": "朗斯 vs 里昂",
+     "pool": "hafu",
+     "pick": "da",
+     "q": 0.2473,
+     "odds": 7.0,
+     "ev": 0.7311,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周五009",
+    "match": "朗斯 vs 里昂",
+    "pool": "ttg",
+    "pick": "s7",
+    "q": 0.1857,
+    "odds": 16.0,
+    "ev": 1.9712,
+    "divergent": true
+   },
+   "rec_upset": {
+    "code": "周五009",
+    "match": "朗斯 vs 里昂",
+    "pool": "ttg",
+    "pick": "s3",
+    "q": 0.1991,
+    "odds": 3.6,
+    "ev": -0.2832
+   },
+   "flags": [
+    "divergence",
+    "crs_gate_closed"
+   ],
+   "crsGate": {
+    "pass": false,
+    "maxProb": 0.2099,
+    "threshold": 0.28,
+    "topFamily": "draw",
+    "reason": "CRS关档·族峰值 21.0% < 闸门 28%"
+   },
+   "crsDist": {
+    "draw": 0.2099,
+    "away_multi": 0.1965,
+    "away_clean": 0.18,
+    "home_multi": 0.152,
+    "home_clean": 0.111,
+    "tailP4": 0.3805,
+    "sum": 0.8494,
+    "marketFused": true
+   }
+  },
+  {
+   "code": "周五011",
+   "match": "马拉加 vs 西班牙人",
+   "candidates": [
+    {
+     "code": "周五011",
+     "match": "马拉加 vs 西班牙人",
+     "pool": "ttg",
+     "pick": "s2",
+     "q": 0.2611,
+     "odds": 3.35,
+     "ev": -0.1253
+    },
+    {
+     "code": "周五011",
+     "match": "马拉加 vs 西班牙人",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2412,
+     "odds": 3.8,
+     "ev": -0.0834
+    },
+    {
+     "code": "周五011",
+     "match": "马拉加 vs 西班牙人",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.4047,
+     "odds": 4.2,
+     "ev": 0.6997,
+     "divergent": true
+    },
+    {
+     "code": "周五011",
+     "match": "马拉加 vs 西班牙人",
+     "pool": "hafu",
+     "pick": "da",
+     "q": 0.2039,
+     "odds": 5.85,
+     "ev": 0.1928,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周五011",
+    "match": "马拉加 vs 西班牙人",
+    "pool": "hafu",
+    "pick": "aa",
+    "q": 0.4047,
+    "odds": 4.2,
+    "ev": 0.6997,
+    "divergent": true
+   },
+   "rec_upset": {
+    "code": "周五011",
+    "match": "马拉加 vs 西班牙人",
+    "pool": "ttg",
+    "pick": "s3",
+    "q": 0.2412,
+    "odds": 3.8,
+    "ev": -0.0834
+   },
+   "flags": [
+    "divergence",
+    "crs_gate_closed"
+   ],
+   "crsGate": {
+    "pass": false,
+    "maxProb": 0.257,
+    "threshold": 0.28,
+    "topFamily": "draw",
+    "reason": "CRS关档·族峰值 25.7% < 闸门 28%"
+   },
+   "crsDist": {
+    "draw": 0.257,
+    "away_clean": 0.2382,
+    "away_multi": 0.1685,
+    "home_clean": 0.1346,
+    "home_multi": 0.1138,
+    "tailP4": 0.2495,
+    "sum": 0.9121,
+    "marketFused": true
+   }
+  },
+  {
+   "code": "周五012",
+   "match": "布拉加 vs 里斯本",
+   "candidates": [
+    {
+     "code": "周五012",
+     "match": "布拉加 vs 里斯本",
+     "pool": "ttg",
+     "pick": "s3",
+     "q": 0.2313,
+     "odds": 3.7,
+     "ev": -0.1442
+    },
+    {
+     "code": "周五012",
+     "match": "布拉加 vs 里斯本",
+     "pool": "hafu",
+     "pick": "aa",
+     "q": 0.2857,
+     "odds": 3.2,
+     "ev": -0.0858
+    },
+    {
+     "code": "周五012",
+     "match": "布拉加 vs 里斯本",
+     "pool": "hafu",
+     "pick": "hh",
+     "q": 0.1669,
+     "odds": 6.0,
+     "ev": 0.0014
+    },
+    {
+     "code": "周五012",
+     "match": "布拉加 vs 里斯本",
+     "pool": "ttg",
+     "pick": "s1",
+     "q": 0.2227,
+     "odds": 4.7,
+     "ev": 0.0467,
+     "divergent": true
+    }
+   ],
+   "rec_base": {
+    "code": "周五012",
+    "match": "布拉加 vs 里斯本",
+    "pool": "ttg",
+    "pick": "s1",
+    "q": 0.2227,
+    "odds": 4.7,
+    "ev": 0.0467,
+    "divergent": true
+   },
+   "rec_upset": {
+    "code": "周五012",
+    "match": "布拉加 vs 里斯本",
+    "pool": "hafu",
+    "pick": "hh",
+    "q": 0.1669,
+    "odds": 6.0,
+    "ev": 0.0014
+   },
+   "flags": [
+    "divergence",
+    "crs_gate_closed"
+   ],
+   "crsGate": {
+    "pass": false,
+    "maxProb": 0.2441,
+    "threshold": 0.28,
+    "topFamily": "away_clean",
+    "reason": "CRS关档·族峰值 24.4% < 闸门 28%"
+   },
+   "crsDist": {
+    "away_clean": 0.2441,
+    "draw": 0.2387,
+    "away_multi": 0.1754,
+    "home_clean": 0.1326,
+    "home_multi": 0.1132,
+    "tailP4": 0.2686,
+    "sum": 0.9039,
+    "marketFused": true
+   }
+  }
+ ],
+ "ranAt": "2026-10-08",
+ "approved": false,
+ "warnings": [
+  "[upset] 4 腿假设未通过（pending/refuted），出票前须逐条验证",
+  "[lottery] 8 腿假设未通过（pending/refuted），出票前须逐条验证"
+ ],
+ "couplingHit": {
+  "atLeastOne": 0.0242,
+  "independent": 0.0242,
+  "overestimatePp": 0.0,
+  "method": "enum-2^12",
+  "legs": 12,
+  "bets": 2,
+  "pSource": "mixed"
+ },
+ "method": "freq",
+ "dataAsOf": "2026-10-08"
+}
