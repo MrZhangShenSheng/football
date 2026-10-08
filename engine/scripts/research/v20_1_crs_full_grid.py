@@ -35,7 +35,7 @@ CACHE_PATH = ROOT / "engine" / "cache" / "strength_chain" / "pre_days_cache.pkl"
 
 
 def load_or_preload(ctx, z2i, memo):
-    key = f"{max((f.stat().st_mtime for f in HIST.glob('crs_hist_*.json')), default=0):.0f}|{len(LEAGUES)}"
+    key = f"v2|{max((f.stat().st_mtime for f in HIST.glob('crs_hist_*.json')), default=0):.0f}|{len(LEAGUES)}"
     if CACHE_PATH.exists():
         try:
             obj = pickle.loads(CACHE_PATH.read_bytes())

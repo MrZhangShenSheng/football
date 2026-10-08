@@ -82,8 +82,15 @@ def preload_days(ctx, z2i, memo):
                 hh = float(m["had"]["h"])
             except (KeyError, TypeError, ValueError):
                 hh = None
+            had_hist_full = None
+            try:
+                had_hist_full = {k: float(m["had"][k]) for k in ("h", "d", "a")}
+            except (KeyError, TypeError, ValueError):
+                pass
             cands.append({"cells": cells, "real": score_to_matrix_key(str(m["score"])),
-                          "boom": boom, "hh": hh})
+                          "boom": boom, "hh": hh,
+                          "hadModel": dict(pred.get("had") or {}),
+                          "hadHist": had_hist_full})
         if cands:
             pre[day] = cands
         print(f"  preload {day} ({len(pre)}日累计)", end="\r", flush=True)
