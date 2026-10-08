@@ -39,11 +39,22 @@ DISCOUNT_FACTOR = 0.5
 
 
 def load_pre():
-    key = f"{max((f.stat().st_mtime for f in HIST.glob('crs_hist_*.json')), default=0):.0f}|30"
-    obj = pickle.loads(CACHE_PATH.read_bytes())
-    if obj.get("key") != key:
-        raise SystemExit("缓存键不匹配·须先跑 v20_1_crs_full_grid.py 重建缓存")
-    return obj["pre"]
+    key = f"v2|{max((f.stat().st_mtime for f in HIST.glob('crs_hist_*.json')), default=0):.0f}|30"
+    obj = None
+    if CACHE_PATH.exists():
+        obj = pickle.loads(CACHE_PATH.read_bytes())
+    if obj is not None and obj.get("key") == key:
+        print("preload 命中磁盘缓存(v2)", flush=True)
+        return obj["pre"]
+    print("缓存缺失/过期·重建（约45分钟）…", flush=True)
+    import strength_loaders as sl
+    from v11_s5_recalib import preload_days
+    ctx = sl.build_ctx(__import__("v11_s4_recalib", fromlist=["LEAGUES"]).LEAGUES)
+    pre = preload_days(ctx, sl.zh_to_id(), {})
+    CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    CACHE_PATH.write_bytes(pickle.dumps({"key": key, "pre": pre}))
+    print("缓存已重建", flush=True)
+    return pre
 
 
 def build_legs(c):
@@ -129,11 +140,10 @@ def run_policy(pre, lo, hi, policy):
         if policy == "B":
             pool = [x for x in pool if not (x["play"] == "CRS" and x["odds"] >= CRS_BAN_ODDS)]
             for x in pool:
-                pe = x["p"] * (DISCOUNT_FACTOR if x["p"] >= P_DISCOUNT else 1.0)
-                x["score"] = pe * x["odds"]
+                x["score"] = x["p"] * (DISCOUNT_FACTOR if x["p"] >= P_DISCOUNT else 1.0)
         else:
             for x in pool:
-                x["score"] = x["p"] * x["odds"]
+                x["score"] = x["p"]
         pool.sort(key=lambda x: -x["score"])
         # 同场限一腿
         seen, uniq = set(), []
