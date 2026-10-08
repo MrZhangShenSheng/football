@@ -64,10 +64,15 @@ def build_legs(c):
     return legs
 
 
-def real_dir(real: str) -> int:
+def real_dir(real: str) -> int | None:
+    if not real or len(real) < 5:
+        return None
     if real.startswith("s1s"):
-        return {"s1sh": 0, "s1sd": 1, "s1sa": 2}[real]
-    h, a = int(real[1:3]), int(real[4:6])
+        return {"s1sh": 0, "s1sd": 1, "s1sa": 2}.get(real)
+    try:
+        h, a = int(real[1:3]), int(real[4:6])
+    except (ValueError, IndexError):
+        return None
     return 0 if h > a else (1 if h == a else 2)
 
 
@@ -200,13 +205,14 @@ def main():
 
     # sanity 自检：HAD 主向腿命中率须 50~60%（否则 hit 判定有 bug·拒跑）
     n_h = sum(1 for cands in pre.values() for c in cands
-              if c.get("hadHist") and c.get("hadHist").get("h"))
+              if c.get("hadHist") and c.get("hadHist").get("h") and real_dir(c["real"]) is not None)
     h_h = sum(1 for cands in pre.values() for c in cands
               if c.get("hadHist") and c.get("hadHist").get("h")
               and real_dir(c["real"]) == 0)
     hr = h_h / n_h if n_h else 0
-    print(f"[SANITY] HAD主向腿: n={n_h} 命中率={hr*100:.1f}%（预期50~65）→ {'PASS' if 0.45 <= hr <= 0.70 else 'FAIL·拒跑'}", flush=True)
-    if not (0.45 <= hr <= 0.70) and "--force" not in sys.argv:
+    # 全池口径（含客强场·体彩主向均赔~2.5→隐含40%）：正常应 35~50%
+    print(f"[SANITY] HAD主向腿: n={n_h} 命中率={hr*100:.1f}%（全池口径预期35~50）→ {'PASS' if 0.30 <= hr <= 0.55 else 'FAIL·拒跑'}", flush=True)
+    if not (0.30 <= hr <= 0.55) and "--force" not in sys.argv:
         print("SANITY FAIL·退出（--force 强行）", flush=True)
         return
 
@@ -219,19 +225,22 @@ def main():
         print(f"── {label} 段 ──")
         for tag, r in (("A·topP直选4串11", a), ("B·R1-R5决策函数", b)):
             print(f"  {tag}: ROI {r['roi']*100:+7.1f}% (投{r['stake']} 回{r['pay']}·{r['days']}日·回款{r['hitDays']}日)")
-        imp = b["roi"] - a["roi"]
-        print(f"  B-A 改善: {imp*100:+.1f}pp\n")
+        imp = (b["roi"] - a["roi"]) if (b["roi"] is not None and a["roi"] is not None) else None
+        imp_s = f"{imp*100:+.1f}pp" if imp is not None else "n/a"
+        print(f"  B-A 改善: {imp_s}\n")
 
-    imp_val = out["val"]["B"]["roi"] - out["val"]["A"]["roi"]
-    verdict = ("决策函数价值成立（改善>5pp·候选入组票流程）" if imp_val > 0.05 else
-               "改善不足5pp——灵活性为亏损优化器·非盈利引擎")
+    imp_val = out["val"]["B"]["roi"] - out["val"]["A"]["roi"] if (
+        out["val"]["B"]["roi"] is not None and out["val"]["A"]["roi"] is not None) else None
+    verdict = ("决策函数价值成立（改善>5pp·候选入组票流程）" if imp_val is not None and imp_val > 0.05 else
+               "改善不足5pp——灵活性为亏损优化器·非盈利引擎" if imp_val is not None else
+               "样本不足（smoke）")
     print(f"══ 判定: {verdict} ══")
     result = {"ranAt": "2026-10-08", "preReg": "脚本头跑前写死",
               "rules": {"R1": f"CRS odds>={CRS_BAN_ODDS} 禁入",
                         "R1.5": f"p>={P_DISCOUNT} 打折×{DISCOUNT_FACTOR}",
                         "R4": "n>=4→4s11/3→3s4/2→2s1x2/<2不出", "R5": "22元档"},
               "fit": out["fit"], "val": out["val"],
-              "improveValPP": round(imp_val, 4), "verdict": verdict}
+              "improveValPP": (round(imp_val, 4) if imp_val is not None else None), "verdict": verdict}
     OUT_PATH.write_text(json.dumps(result, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"归档 {OUT_PATH.relative_to(ROOT)}", flush=True)
 
