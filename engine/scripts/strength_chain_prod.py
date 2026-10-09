@@ -32,6 +32,9 @@ LEAGUES = ["uefa-nations","england-premier","spain-laliga","germany-bundesliga",
 BOOM_V2 = 0.05       # S4 终校
 HAD_HOT_V2 = 1.5     # S4 终校
 TOP_N_PICKS = 4
+# v25 联赛质量普查旗（两段 Bonferroni·CRS 端）——v26 实证：排除不改命中（LL 弱≠选格弱），
+# 故仅作卡面警示标注（fade-strategy-prereg v26 判据②余烬·2026-10-09），不动选场。
+LEAGUE_WARN_V25 = {"意甲", "德甲", "西甲", "欧冠", "欧罗巴", "日职", "韩职", "瑞超", "葡超"}
 
 
 def main() -> int:
@@ -51,11 +54,18 @@ def main() -> int:
     else:
         from common import ROOT as _R
         d = json.loads((_R / "engine" / "cache" / "sporttery_matches.json").read_text(encoding="utf-8"))
+        # 双结构兼容：旧 value.matchInfoList（matchNumStr/homeTeamAbbName）与新归一 matches
+        # （code/home/away/league·2026-10-08 实证旧路径对新缓存静默出空——盲区修复一并落此）
         feed = [{"matchId": str(m.get("matchId")), "code": m.get("matchNumStr"),
                  "home": m.get("homeTeamAbbName"), "away": m.get("awayTeamAbbName"),
+                 "league": m.get("leagueAbbName") or m.get("league"),
                  "kickoff": f"{m.get('matchDate')} {str(m.get('matchTime'))[:5]}"}
                 for blk in (d.get("value") or {}).get("matchInfoList") or []
                 for m in blk.get("subMatchList") or [] if m.get("matchId")]
+        feed += [{"matchId": str(m.get("matchId")), "code": m.get("code"),
+                  "home": m.get("home"), "away": m.get("away"), "league": m.get("league"),
+                  "kickoff": m.get("kickoff")}
+                 for m in d.get("matches") or [] if m.get("matchId")]
 
     ctx = sl.build_ctx(LEAGUES)
     z2i = sl.zh_to_id()
@@ -76,7 +86,8 @@ def main() -> int:
         boom = sum(matrix.get(k, 0.0) for k in ("s1sh", "s1sd", "s1sa"))
         is_water = boom > BOOM_V2
         entry = {"code": m.get("code"), "match": f"{m['home']} v {m['away']}",
-                 "matchId": m.get("matchId"),
+                 "matchId": m.get("matchId"), "league": m.get("league"),
+                 "leagueWarn": (m.get("league") or "") in LEAGUE_WARN_V25,
                  "lam": [round(pred["lam"][0], 3), round(pred["lam"][1], 3)],
                  "had": {k: round(v, 4) for k, v in (pred.get("had") or {}).items()},
                  "crs_top5": [{"pick": k, "p": round(v, 4)} for k, v in top5],
@@ -91,7 +102,8 @@ def main() -> int:
            "params": {"boom": BOOM_V2, "had_hot": HAD_HOT_V2},
            "generatedAt": datetime.now().isoformat(timespec="seconds"),
            "matches": matches,
-           "picks": [{"code": p["code"], "match": p["match"],
+           "picks": [{"code": p["code"], "match": p["match"], "league": p.get("league"),
+                      "leagueWarn": p.get("leagueWarn", False),
                       "pick": p["crs_top5"][0]["pick"], "p": p["crs_top5"][0]["p"]} for p in picks]}
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(doc, ensure_ascii=False, indent=1), encoding="utf-8")
