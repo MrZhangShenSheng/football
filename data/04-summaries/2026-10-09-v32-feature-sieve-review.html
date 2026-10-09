@@ -1,0 +1,52 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>v32 特征筛子回测 · 审计报告</title>
+<style>
+:root{--ink:#1c2733;--sub:#5b6b7a;--line:#dde4ea;--bg:#f7f9fb;--card:#fff;--ok:#0f6b4f;--bad:#a33;--warn:#b3541e;--accent:#1a5fb4}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;color:var(--ink);background:var(--bg);margin:0;padding:24px 16px;max-width:1100px;margin-inline:auto}
+h1{font-size:20px;margin:0 0 4px} h2{font-size:15px;margin:20px 0 8px;padding-bottom:5px;border-bottom:2px solid var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 16px;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:12px;margin:5px 0}
+th,td{border:1px solid var(--line);padding:3px 6px;text-align:left} th{background:#f0f4f7}
+.num{font-variant-numeric:tabular-nums} .ok{color:var(--ok);font-weight:600} .bad{color:var(--bad);font-weight:600} .small{font-size:11.5px;color:var(--sub)}
+</style></head><body>
+<h1>v32 特征筛子回测 · 标签=总进球≥5</h1>
+<div class="meta">跑时 2026-10-09 · λ覆盖 6327/12878 · fit 2429 / val 3898 行 · 预注册 v32+v32.1</div>
+<div class="card"><b>终局：</b><span class="bad">SEALED(特征无增量·市场TTG定价已含攻防信息·或CI含0)——判据未全过</span></div>
+<h2>一、模型系数（冻结）</h2>
+<div class="card"><code>截距=-1.658 · λ和=-0.092 · λ主=-0.073 · λ客=-0.083 · TTG隐含=+0.586 · 联赛场均=+0.108 · 近5场均=+0.011 · had_p=-0.012 · 客热门=+0.023</code></div>
+<h2>二、spec × 段 汇总（realized·TTG s5+包）</h2>
+<div class="card"><table><tr><th>spec</th><th>段</th><th>n</th><th>投入</th><th>中奖</th><th>r</th><th>ROI</th><th>命中率</th><th>bootstrap95%CI</th></tr><tr><td>ALLPOOL</td><td>fit</td><td class='num'>2429</td><td class='num'>14574</td><td class='num'>9789.80</td><td class='num bad'>0.6717</td><td class='num'>-32.8%</td><td class='num'>16.6%</td><td class='num'>-39.4%~-25.8%</td></tr><tr><td>ALLPOOL</td><td>val</td><td class='num'>3898</td><td class='num'>23388</td><td class='num'>12965.60</td><td class='num bad'>0.5544</td><td class='num'>-44.6%</td><td class='num'>14.5%</td><td class='num'>-49.0%~-39.9%</td></tr><tr><td>CRSfam-Top1</td><td>fit</td><td class='num'>324</td><td class='num'>3240</td><td class='num'>2794.00</td><td class='num bad'>0.8623</td><td class='num'>-13.8%</td><td class='num'>14.2%</td><td class='num'>-40.7%~+15.6%</td></tr><tr><td>CRSfam-Top1</td><td>val</td><td class='num'>444</td><td class='num'>4440</td><td class='num'>3313.00</td><td class='num bad'>0.7462</td><td class='num'>-25.4%</td><td class='num'>13.1%</td><td class='num'>-47.8%~-0.4%</td></tr><tr><td>MARKET-Top1</td><td>fit</td><td class='num'>324</td><td class='num'>1944</td><td class='num'>1699.70</td><td class='num bad'>0.8743</td><td class='num'>-12.6%</td><td class='num'>23.5%</td><td class='num'>-31.8%~+8.6%</td></tr><tr><td>MARKET-Top1</td><td>val</td><td class='num'>444</td><td class='num'>2664</td><td class='num'>1636.60</td><td class='num bad'>0.6143</td><td class='num'>-38.6%</td><td class='num'>18.2%</td><td class='num'>-51.8%~-24.6%</td></tr><tr><td>MARKET-Top2</td><td>fit</td><td class='num'>642</td><td class='num'>3852</td><td class='num'>2774.20</td><td class='num bad'>0.7202</td><td class='num'>-28.0%</td><td class='num'>19.6%</td><td class='num'>-41.0%~-14.3%</td></tr><tr><td>MARKET-Top2</td><td>val</td><td class='num'>868</td><td class='num'>5208</td><td class='num'>3003.40</td><td class='num bad'>0.5767</td><td class='num'>-42.3%</td><td class='num'>18.2%</td><td class='num'>-51.1%~-33.1%</td></tr><tr><td>MARKET-Top3</td><td>fit</td><td class='num'>956</td><td class='num'>5736</td><td class='num'>4127.00</td><td class='num bad'>0.7195</td><td class='num'>-28.1%</td><td class='num'>19.7%</td><td class='num'>-38.2%~-17.0%</td></tr><tr><td>MARKET-Top3</td><td>val</td><td class='num'>1270</td><td class='num'>7620</td><td class='num'>4126.30</td><td class='num bad'>0.5415</td><td class='num'>-45.9%</td><td class='num'>17.3%</td><td class='num'>-53.4%~-38.1%</td></tr><tr><td>MODEL-Top1</td><td>fit</td><td class='num'>324</td><td class='num'>1944</td><td class='num'>1545.80</td><td class='num bad'>0.7952</td><td class='num'>-20.5%</td><td class='num'>27.2%</td><td class='num'>-35.9%~-5.0%</td></tr><tr><td>MODEL-Top1</td><td>val</td><td class='num'>444</td><td class='num'>2664</td><td class='num'>1954.00</td><td class='num bad'>0.7335</td><td class='num'>-26.7%</td><td class='num'>26.6%</td><td class='num'>-39.9%~-13.4%</td></tr><tr><td>MODEL-Top2</td><td>fit</td><td class='num'>642</td><td class='num'>3852</td><td class='num'>3215.90</td><td class='num bad'>0.8349</td><td class='num'>-16.5%</td><td class='num'>27.3%</td><td class='num'>-28.5%~-4.6%</td></tr><tr><td>MODEL-Top2</td><td>val</td><td class='num'>868</td><td class='num'>5208</td><td class='num'>3415.30</td><td class='num bad'>0.6558</td><td class='num'>-34.4%</td><td class='num'>23.3%</td><td class='num'>-43.6%~-25.1%</td></tr><tr><td>MODEL-Top3</td><td>fit</td><td class='num'>956</td><td class='num'>5736</td><td class='num'>4461.90</td><td class='num bad'>0.7779</td><td class='num'>-22.2%</td><td class='num'>24.7%</td><td class='num'>-31.9%~-12.4%</td></tr><tr><td>MODEL-Top3</td><td>val</td><td class='num'>1270</td><td class='num'>7620</td><td class='num'>4824.90</td><td class='num bad'>0.6332</td><td class='num'>-36.7%</td><td class='num'>21.6%</td><td class='num'>-44.2%~-28.6%</td></tr></table></div>
+<h2>三、判据明细</h2>
+<div class="card"><pre>{
+ "MODEL-Top1": {
+  "c1_ciLowPos": false,
+  "c2_sameDir": false,
+  "c3_beatMarket": true,
+  "c3_beatRandomP95": true,
+  "c3_beatAllpool": true,
+  "rndP95": -0.2803,
+  "rndP50": -0.3984
+ },
+ "MODEL-Top2": {
+  "c1_ciLowPos": false,
+  "c2_sameDir": false,
+  "c3_beatMarket": true,
+  "c3_beatRandomP95": false,
+  "c3_beatAllpool": true,
+  "rndP95": -0.3319,
+  "rndP50": -0.3947
+ },
+ "MODEL-Top3": {
+  "c1_ciLowPos": false,
+  "c2_sameDir": false,
+  "c3_beatMarket": true,
+  "c3_beatRandomP95": false,
+  "c3_beatAllpool": true,
+  "rndP95": -0.3538,
+  "rndP50": -0.3988
+ }
+}</pre></div>
+<h2>四、对账行</h2>
+<div class="card"><pre>全部票20607张·投入126714·中奖82209.20</pre><p class="small">复算 PASS</p></div>
+<div class="small">开发者 sszhang · 2026-10-09 · tickets[] 票面可独立重算 · 纯净闸五道见预注册 v32.1</div>
+</body></html>
