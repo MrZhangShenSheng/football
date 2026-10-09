@@ -1,0 +1,1137 @@
+{
+ "date": "2026-10-08",
+ "version": "v4.7",
+ "saleDay": "2026-10-08",
+ "note": "跨日轮：周四场10-08晚+周五场10-09凌晨·matchDate盲区已按开赛日处理",
+ "plans": [],
+ "matches": [
+  {
+   "idx": 1,
+   "code": "周四001",
+   "league": "芬超",
+   "match": "赫尔辛基 vs 瓦萨",
+   "pick": "排除:D级无模型",
+   "odds": null,
+   "star": 1,
+   "grade": "D",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": [],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": null,
+   "modelCrs": null,
+   "hypothesis": null,
+   "result": "6-0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "half": "3:0",
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041829,
+    "lastOddsAt": "2026-10-08T14:37:21+08:00",
+    "lastIntelAt": "2026-10-08T14:40:02+08:00"
+   }
+  },
+  {
+   "idx": 2,
+   "code": "周四002",
+   "league": "芬超",
+   "match": "库奥皮奥 vs AC奥卢",
+   "pick": "排除:D级无模型",
+   "odds": null,
+   "star": 1,
+   "grade": "D",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": [],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": null,
+   "modelCrs": null,
+   "hypothesis": null,
+   "result": "0-1",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "half": "0:1",
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041830,
+    "lastOddsAt": "2026-10-08T14:37:21+08:00",
+    "lastIntelAt": "2026-10-08T14:40:03+08:00"
+   }
+  },
+  {
+   "idx": 3,
+   "code": "周四003",
+   "league": "巴甲",
+   "match": "桑托斯 vs 弗拉门戈",
+   "pick": "ttg s4@5.25",
+   "odds": null,
+   "star": 3,
+   "grade": "B",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": [],
+   "lambdaHome": 1.305,
+   "lambdaAway": 2.103,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": null,
+   "modelCrs": {
+    "lam": [
+     1.305,
+     2.103
+    ],
+    "had": {
+     "h": 0.2245,
+     "d": 0.2267,
+     "a": 0.5487
+    },
+    "crs_top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.0998
+     },
+     {
+      "pick": "s01s02",
+      "p": 0.0955
+     },
+     {
+      "pick": "s00s02",
+      "p": 0.0732
+     },
+     {
+      "pick": "s01s03",
+      "p": 0.067
+     },
+     {
+      "pick": "s02s02",
+      "p": 0.0623
+     }
+    ],
+    "boomP": 0.0228,
+    "water": false
+   },
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "巴甲收官阶段（约R29）无杯赛牵扯，双方预计主力尽出；弗拉门戈周中有解放者杯半决赛隔周档，轮换幅度待临场核",
+     "tactics": "桑托斯保级深陷主压缩防区，弗拉门戈控球压制两翼起球；客队让球-1深盘客让",
+     "goalSource": "弗拉门戈：边路传中+定位球（Pedro点球点）；桑托斯：反击与定位球是唯一稳定来源",
+     "script": "客控主守，桑托斯龟缩保平争胜，弗拉门戈下半场发力——0:1/0:2/1:2 画面，平局概率不低（桑托斯主场摆大巴成色）",
+     "specialVars": "桑托斯保级动机（主场抢分欲望）vs 弗拉门戈杯赛分心可能"
+    },
+    "assumption": "弗拉门戈客场控制力足以破桑托斯密集防守，但桑托斯保级主场铁桶+弗拉门戈杯赛轮换风险让净胜1球为主剧本，客胜@1.65 合理但爆平不可忽略",
+    "checks": [
+     "H2H近5次弗拉门戈3胜1平1负占优",
+     "桑托斯近10场主场场均进球<1",
+     "弗拉门戈客场场均失球1.2"
+    ],
+    "verdict": "survived"
+   },
+   "result": "2-2",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "half": "0:2",
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041831,
+    "lastOddsAt": "2026-10-08T14:37:21+08:00",
+    "lastIntelAt": "2026-10-08T14:40:04+08:00"
+   }
+  },
+  {
+   "idx": 4,
+   "code": "周四004",
+   "league": "巴甲",
+   "match": "巴竞技 vs 米竞技",
+   "pick": "ttg s3@3.40",
+   "odds": null,
+   "star": 3,
+   "grade": "B",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": [],
+   "lambdaHome": 1.647,
+   "lambdaAway": 1.152,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": null,
+   "modelCrs": {
+    "lam": [
+     1.647,
+     1.152
+    ],
+    "had": {
+     "h": 0.4779,
+     "d": 0.2668,
+     "a": 0.2553
+    },
+    "crs_top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1268
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0951
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.0889
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.0826
+     },
+     {
+      "pick": "s00s00",
+      "p": 0.0722
+     }
+    ],
+    "boomP": 0.0081,
+    "water": false
+   },
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "巴甲同分德比性质（巴竞技vs米竞技均米内罗州），无杯赛，双方主力出战",
+     "tactics": "对攻德比：双方中场绞杀+边路互爆，历史德比红黄牌多、节奏碎",
+     "goalSource": "双方均靠定位球与反击；阵地战渗透均弱（巴西中游队通病）",
+     "script": "碎节奏德比，进球来自定位球/失误——1:1 为轴心，2:1/1:2 次之；模型 λ1.65/1.15 支持",
+     "specialVars": "州德比情绪变量（裁判尺度松→碎；紧→定位球多）"
+    },
+    "assumption": "米内罗德比碎节奏+定位球进球源，1:1 为最可能画面（模型top1 12.7%·三向0.478/0.267/0.255 主胜略优）——方向主胜不狠拿，平局双份保险",
+    "checks": [
+     "米竞技客场失球率联赛中游",
+     "巴竞技主场近5场2胜2平1负",
+     "H2H近4次2平"
+    ],
+    "verdict": "survived"
+   },
+   "result": "2-2",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "half": "1:1",
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2041832,
+    "lastOddsAt": "2026-10-08T14:37:21+08:00",
+    "lastIntelAt": "2026-10-08T14:40:05+08:00"
+   }
+  },
+  {
+   "idx": 5,
+   "code": "周四005",
+   "league": "巴甲",
+   "match": "弗鲁米嫩 vs 科里蒂巴",
+   "pick": "had 主胜@1.31",
+   "odds": "1.31",
+   "star": 3,
+   "grade": "B",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": [],
+   "lambdaHome": 2.108,
+   "lambdaAway": 1.082,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": null,
+   "modelCrs": {
+    "lam": [
+     2.108,
+     1.082
+    ],
+    "had": {
+     "h": 0.5997,
+     "d": 0.2227,
+     "a": 0.1776
+    },
+    "crs_top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1031
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.099
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.0914
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.0775
+     },
+     {
+      "pick": "s03s01",
+      "p": 0.0696
+     }
+    ],
+    "boomP": 0.0217,
+    "water": false
+   },
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "巴甲常规轮，弗鲁米嫩保级关键期不轮换",
+     "tactics": "弗鲁米嫩主场压出来打，科里蒂巴（降级区）客场5-4-1死守",
+     "goalSource": "主队：边路爆点+第二落点；客队：唯一反击点",
+     "script": "半场围攻下半场收——2:0/1:0/2:1 画面；模型λ2.11/1.08 主强客弱清晰",
+     "specialVars": "科里蒂巴降级区摆烂风险（客场0胜倾向）"
+    },
+    "assumption": "弗鲁米嫩主场对降级区队零封 win 是主剧本（模型主胜60%·赔率1.31）——胜负方向明确但赔率无肉，仅可作串关骨架腿",
+    "checks": [
+     "科里蒂巴客场场均进球<0.8",
+     "弗鲁米嫩主场近5场3胜"
+    ],
+    "verdict": "survived"
+   },
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "clv": null,
+   "clv_approx_dk": null
+  },
+  {
+   "idx": 6,
+   "code": "周四006",
+   "league": "巴甲",
+   "match": "帕梅拉斯 vs 巴伊亚",
+   "pick": "had 主胜@1.44",
+   "odds": "1.44",
+   "star": 3,
+   "grade": "B",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": [],
+   "lambdaHome": 1.692,
+   "lambdaAway": 1.04,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": null,
+   "modelCrs": {
+    "lam": [
+     1.692,
+     1.04
+    ],
+    "had": {
+     "h": 0.5151,
+     "d": 0.2635,
+     "a": 0.2214
+    },
+    "crs_top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1258
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.0989
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0969
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.0932
+     },
+     {
+      "pick": "s00s00",
+      "p": 0.0763
+     }
+    ],
+    "boomP": 0.0085,
+    "water": false
+   },
+   "hypothesis": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "clv": null,
+   "clv_approx_dk": null
+  },
+  {
+   "idx": 7,
+   "code": "周五001",
+   "league": "韩职",
+   "match": "仁川联 vs 浦项制铁",
+   "pick": "crs 0:0",
+   "odds": null,
+   "star": 3,
+   "grade": "B",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": [],
+   "lambdaHome": 1.122,
+   "lambdaAway": 0.772,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": null,
+   "modelCrs": {
+    "lam": [
+     1.122,
+     0.772
+    ],
+    "had": {
+     "h": 0.4122,
+     "d": 0.3622,
+     "a": 0.2256
+    },
+    "crs_top5": [
+     {
+      "pick": "s00s00",
+      "p": 0.1757
+     },
+     {
+      "pick": "s01s01",
+      "p": 0.1555
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.1437
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.0948
+     },
+     {
+      "pick": "s00s01",
+      "p": 0.091
+     }
+    ],
+    "boomP": 0.0012,
+    "water": false
+   },
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "韩职收官轮次段，中游无欲无求，轮换幅度中等",
+     "tactics": "仁川主场控球但效率低（韩职最平队属性），浦项客场防反",
+     "goalSource": "双方进攻效率均低（模型λ和1.89·韩职场均2.54之下），进球多靠定位球",
+     "script": "低节奏胶着——0:0/1:1/0:1 画面；模型 0:0 概率全日最高（17.6%）",
+     "specialVars": "韩职收官段中游战意温和"
+    },
+    "assumption": "韩职双低效队胶着，0:0/1:1 低比分是主画面（模型top1 0:0 p17.6%）——比分卡第一选场；方向端主胜微优不狠拿",
+    "checks": [
+     "浦项客场场均进球1.1",
+     "仁川主场平局率联赛前列"
+    ],
+    "verdict": "survived"
+   },
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "clv": null,
+   "clv_approx_dk": null
+  },
+  {
+   "idx": 8,
+   "code": "周五002",
+   "league": "日职",
+   "match": "柏太阳神 vs 神户胜利",
+   "pick": "had 客胜@2.88",
+   "odds": "2.12",
+   "star": 3,
+   "grade": "B",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": [],
+   "lambdaHome": 1.823,
+   "lambdaAway": 1.955,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": null,
+   "modelCrs": {
+    "lam": [
+     1.823,
+     1.955
+    ],
+    "had": {
+     "h": 0.3753,
+     "d": 0.1969,
+     "a": 0.4279
+    },
+    "crs_top5": [
+     {
+      "pick": "s01s02",
+      "p": 0.0797
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0743
+     },
+     {
+      "pick": "s01s01",
+      "p": 0.0733
+     },
+     {
+      "pick": "s02s02",
+      "p": 0.0726
+     },
+     {
+      "pick": "s00s01",
+      "p": 0.0529
+     }
+    ],
+    "boomP": 0.0258,
+    "water": false
+   },
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "日职 J1 段，柏太阳神保级边缘或中游（待临场核排名），神户争冠组不轮换",
+     "tactics": "神户控球体系压主场队，柏太阳神防守反击——模型λ1.82/1.96 客略优但接近",
+     "goalSource": "神户：阵地战渗透+定位球；柏：反击速度",
+     "script": "对攻局——1:2/2:2/1:1 画面；客胜0.428微优",
+     "specialVars": "HAD单关资格=1（唯一日职单关场）"
+    },
+    "assumption": "神户客场对攻略优（模型客胜0.428·赔率2.88 有价值空间），但对攻局爆冷双向——方向客胜、比分1:2次选，不作胆只作彩票档腿",
+    "checks": [
+     "神户客场近5场3胜",
+     "柏太阳神主场失球率偏高"
+    ],
+    "verdict": "survived"
+   },
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "clv": null,
+   "clv_approx_dk": null
+  },
+  {
+   "idx": 9,
+   "code": "周五003",
+   "league": "德乙",
+   "match": "海登海姆 vs 凯泽",
+   "pick": "ttg s3@3.60",
+   "odds": null,
+   "star": 3,
+   "grade": "B",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": [],
+   "lambdaHome": 1.793,
+   "lambdaAway": 1.478,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": null,
+   "modelCrs": {
+    "lam": [
+     1.793,
+     1.478
+    ],
+    "had": {
+     "h": 0.4379,
+     "d": 0.2567,
+     "a": 0.3054
+    },
+    "crs_top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1147
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0902
+     },
+     {
+      "pick": "s01s02",
+      "p": 0.0744
+     },
+     {
+      "pick": "s02s02",
+      "p": 0.0667
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.061
+     }
+    ],
+    "boomP": 0.0143,
+    "water": false
+   },
+   "hypothesis": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "clv": null,
+   "clv_approx_dk": null
+  },
+  {
+   "idx": 10,
+   "code": "周五004",
+   "league": "瑞超",
+   "match": "哥德堡 vs 韦斯特罗",
+   "pick": "排除:别名缺",
+   "odds": null,
+   "star": 1,
+   "grade": "C",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": [],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": null,
+   "modelCrs": null,
+   "hypothesis": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "clv": null,
+   "clv_approx_dk": null
+  },
+  {
+   "idx": 11,
+   "code": "周五005",
+   "league": "挪超",
+   "match": "布兰 vs 维京",
+   "pick": "排除:去水water",
+   "odds": null,
+   "star": 1,
+   "grade": "C",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": [],
+   "lambdaHome": 1.905,
+   "lambdaAway": 3.065,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": null,
+   "modelCrs": {
+    "lam": [
+     1.905,
+     3.065
+    ],
+    "had": {
+     "h": 0.2202,
+     "d": 0.1697,
+     "a": 0.6101
+    },
+    "crs_top5": [
+     {
+      "pick": "s1sa",
+      "p": 0.0898
+     },
+     {
+      "pick": "s01s03",
+      "p": 0.0635
+     },
+     {
+      "pick": "s01s02",
+      "p": 0.0621
+     },
+     {
+      "pick": "s02s03",
+      "p": 0.0605
+     },
+     {
+      "pick": "s02s02",
+      "p": 0.0592
+     }
+    ],
+    "boomP": 0.1028,
+    "water": true
+   },
+   "hypothesis": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "clv": null,
+   "clv_approx_dk": null
+  },
+  {
+   "idx": 12,
+   "code": "周五006",
+   "league": "荷甲",
+   "match": "埃因霍温 vs 海伦芬",
+   "pick": "排除:去水water",
+   "odds": null,
+   "star": 1,
+   "grade": "C",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": [],
+   "lambdaHome": 2.738,
+   "lambdaAway": 1.23,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": null,
+   "modelCrs": {
+    "lam": [
+     2.738,
+     1.23
+    ],
+    "had": {
+     "h": 0.6888,
+     "d": 0.1657,
+     "a": 0.1455
+    },
+    "crs_top5": [
+     {
+      "pick": "s02s01",
+      "p": 0.0872
+     },
+     {
+      "pick": "s03s01",
+      "p": 0.0796
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.0709
+     },
+     {
+      "pick": "s01s01",
+      "p": 0.066
+     },
+     {
+      "pick": "s03s00",
+      "p": 0.0647
+     }
+    ],
+    "boomP": 0.0614,
+    "water": true
+   },
+   "hypothesis": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "clv": null,
+   "clv_approx_dk": null
+  },
+  {
+   "idx": 13,
+   "code": "周五007",
+   "league": "荷乙",
+   "match": "赫拉克勒 vs 瓦尔韦克",
+   "pick": "排除:去水water",
+   "odds": null,
+   "star": 1,
+   "grade": "C",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": [],
+   "lambdaHome": 2.018,
+   "lambdaAway": 2.516,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": null,
+   "modelCrs": {
+    "lam": [
+     2.018,
+     2.516
+    ],
+    "had": {
+     "h": 0.3137,
+     "d": 0.1927,
+     "a": 0.4937
+    },
+    "crs_top5": [
+     {
+      "pick": "s02s02",
+      "p": 0.0692
+     },
+     {
+      "pick": "s01s02",
+      "p": 0.0686
+     },
+     {
+      "pick": "s02s03",
+      "p": 0.058
+     },
+     {
+      "pick": "s01s03",
+      "p": 0.0575
+     },
+     {
+      "pick": "s01s01",
+      "p": 0.0565
+     }
+    ],
+    "boomP": 0.0595,
+    "water": true
+   },
+   "hypothesis": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "clv": null,
+   "clv_approx_dk": null
+  },
+  {
+   "idx": 14,
+   "code": "周五008",
+   "league": "德甲",
+   "match": "多特蒙德 vs 不来梅",
+   "pick": "排除:去水water",
+   "odds": null,
+   "star": 1,
+   "grade": "C",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": [],
+   "lambdaHome": 2.901,
+   "lambdaAway": 0.955,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": null,
+   "modelCrs": {
+    "lam": [
+     2.901,
+     0.955
+    ],
+    "had": {
+     "h": 0.7624,
+     "d": 0.1516,
+     "a": 0.086
+    },
+    "crs_top5": [
+     {
+      "pick": "s02s00",
+      "p": 0.089
+     },
+     {
+      "pick": "s03s00",
+      "p": 0.0861
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.085
+     },
+     {
+      "pick": "s03s01",
+      "p": 0.0822
+     },
+     {
+      "pick": "s1sh",
+      "p": 0.0743
+     }
+    ],
+    "boomP": 0.0747,
+    "water": true
+   },
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "德甲 R7 段，多特周中无欧冠轮空（需临场核欧冠日程），不来梅主力齐",
+     "tactics": "多特主场高位压迫+边路爆，不来梅5-3-2低位防反",
+     "goalSource": "多特：边中结合+定位球（身高优势）；不来梅：唯一反击点",
+     "script": "多特主场对中下游常态——2:0/3:0/2:1 画面；λ2.90/0.96 主压倒性",
+     "specialVars": "威斯特法伦主场加成"
+    },
+    "assumption": "多特主场大热（模型主胜76%·赔率1.25）零封概率高——方向无悬念，赔率无肉仅串关骨架/让球口径；比分2:0 为 CRSTTG 交叉验证格",
+    "checks": [
+     "不来梅客场场均失球2+",
+     "多特主场近5场4胜1平"
+    ],
+    "verdict": "survived"
+   },
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "clv": null,
+   "clv_approx_dk": null
+  },
+  {
+   "idx": 15,
+   "code": "周五009",
+   "league": "法甲",
+   "match": "朗斯 vs 里昂",
+   "pick": "had 主胜@2.08",
+   "odds": "2.08",
+   "star": 3,
+   "grade": "B",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": [],
+   "lambdaHome": 1.901,
+   "lambdaAway": 1.033,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": null,
+   "modelCrs": {
+    "lam": [
+     1.901,
+     1.033
+    ],
+    "had": {
+     "h": 0.5867,
+     "d": 0.2007,
+     "a": 0.2126
+    },
+    "crs_top5": [
+     {
+      "pick": "s01s00",
+      "p": 0.1115
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0993
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.0961
+     },
+     {
+      "pick": "s01s01",
+      "p": 0.094
+     },
+     {
+      "pick": "s00s01",
+      "p": 0.0654
+     }
+    ],
+    "boomP": 0.0139,
+    "water": false
+   },
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "法甲 R7，朗斯周中无欧战，里昂欧联杯赛段（需核周日联赛间隔）",
+     "tactics": "朗斯主场高位逼抢，里昂控球渗透——对攻有料但朗斯主场强度占优",
+     "goalSource": "朗斯：边路冲击+第二波进攻；里昂：中路渗透（依赖核心状态）",
+     "script": "主压客守反击——1:0/2:0/2:1 画面；λ1.90/1.03·模型主胜58.7%·赔率2.08 有价值",
+     "specialVars": "里昂欧联分心可能（周日联赛在前的密集档）"
+    },
+    "assumption": "朗斯主场逼抢强度+里昂欧战分心窗口——主胜@2.08 为本轮方向端最优价值腿（模型58.7% vs 市场48%隐含——模型偏乐观须打折看待，但方向主胜可信）",
+    "checks": [
+     "里昂客场失球1.5+",
+     "朗斯主场近5场不败"
+    ],
+    "verdict": "survived"
+   },
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "clv": null,
+   "clv_approx_dk": null
+  },
+  {
+   "idx": 16,
+   "code": "周五010",
+   "league": "英冠",
+   "match": "西汉姆联 vs 女王巡游",
+   "pick": "排除:别名缺",
+   "odds": null,
+   "star": 1,
+   "grade": "C",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": [],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": null,
+   "modelCrs": null,
+   "hypothesis": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "clv": null,
+   "clv_approx_dk": null
+  },
+  {
+   "idx": 17,
+   "code": "周五011",
+   "league": "西甲",
+   "match": "马拉加 vs 西班牙人",
+   "pick": "crs 1:1",
+   "odds": null,
+   "star": 3,
+   "grade": "B",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": [],
+   "lambdaHome": 1.271,
+   "lambdaAway": 1.282,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": null,
+   "modelCrs": {
+    "lam": [
+     1.271,
+     1.282
+    ],
+    "had": {
+     "h": 0.3599,
+     "d": 0.275,
+     "a": 0.365
+    },
+    "crs_top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.131
+     },
+     {
+      "pick": "s00s01",
+      "p": 0.0957
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.0948
+     },
+     {
+      "pick": "s00s00",
+      "p": 0.082
+     },
+     {
+      "pick": "s01s02",
+      "p": 0.0813
+     }
+    ],
+    "boomP": 0.0041,
+    "water": false
+   },
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "西甲 R7 段，双方中下游无欧战，主力出战",
+     "tactics": "马拉加主场控球但终结差（升班马属性），西班牙人客场防反纪律强",
+     "goalSource": "双方进攻效率均低（模型λ1.27/1.28·西甲场均2.66之下），定位球主导",
+     "script": "低进球胶着——1:1/0:0/0:1/1:0 四向均匀；模型三向0.360/0.275/0.365 完全无方向",
+     "specialVars": "极差10.5pp 踩线平局轨候选（p平27.5% 差门槛0.5pp——不入轨只标注）"
+    },
+    "assumption": "西甲双低效队完全胶着（模型三向极差10.5pp）——方向端不推荐任何选项，比分端 1:1 为模型top1（13.1%·选场第2）纯低比分博弈；平局轨差0.5pp不入轨",
+    "checks": [
+     "西班牙人客场场均进球<1",
+     "马拉加主场平局率偏高"
+    ],
+    "verdict": "survived"
+   },
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "clv": null,
+   "clv_approx_dk": null
+  },
+  {
+   "idx": 18,
+   "code": "周五012",
+   "league": "葡超",
+   "match": "布拉加 vs 里斯本",
+   "pick": "crs 1:1",
+   "odds": null,
+   "star": 3,
+   "grade": "B",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": [],
+   "lambdaHome": 1.032,
+   "lambdaAway": 1.439,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": null,
+   "modelCrs": {
+    "lam": [
+     1.032,
+     1.439
+    ],
+    "had": {
+     "h": 0.2656,
+     "d": 0.2754,
+     "a": 0.459
+    },
+    "crs_top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1307
+     },
+     {
+      "pick": "s00s01",
+      "p": 0.1163
+     },
+     {
+      "pick": "s01s02",
+      "p": 0.0903
+     },
+     {
+      "pick": "s00s00",
+      "p": 0.0896
+     },
+     {
+      "pick": "s00s02",
+      "p": 0.0875
+     }
+    ],
+    "boomP": 0.0044,
+    "water": false
+   },
+   "hypothesis": null,
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "clv": null,
+   "clv_approx_dk": null
+  }
+ ],
+ "sources": [
+  "engine/cache/sporttery_matches.json",
+  "data/03-predictions/2026-10-08-crs.json",
+  "data/03-predictions/2026-10-08-hypothesis.json",
+  "insight 18场"
+ ]
+}

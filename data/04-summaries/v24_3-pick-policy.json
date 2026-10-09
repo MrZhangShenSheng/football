@@ -1,0 +1,200 @@
+{
+ "ranAt": "2026-10-09",
+ "preReg": "fade-strategy-prereg v24.3",
+ "aStar": 0.05,
+ "discipline": "目标=准确度·期望锁死1−抽水·不作ROI改善呈报",
+ "seg": {
+  "fit": {
+   "n": 4620,
+   "divergence": {
+    "n": 3100,
+    "share": 0.671,
+    "hitModel": 0.0874,
+    "hitMarket": 0.1203,
+    "diffPP": 0.0329,
+    "ci95": [
+     0.016774,
+     0.049677
+    ],
+    "roiModel": -0.2815,
+    "roiMarket": -0.2168
+   },
+   "arms": {
+    "model": {
+     "hitAll": 0.1009,
+     "roiAll": -0.2466,
+     "nAll": 4620,
+     "hitGated": 0.1085,
+     "roiGated": -0.2144,
+     "nGated": 3438
+    },
+    "market": {
+     "hitAll": 0.1229,
+     "roiAll": -0.2032,
+     "nAll": 4620,
+     "hitGated": 0.1291,
+     "roiGated": -0.1701,
+     "nGated": 3438,
+     "ciVsModel": [
+      0.007853,
+      0.032577
+     ]
+    },
+    "pool": {
+     "hitAll": 0.1236,
+     "roiAll": -0.1995,
+     "nAll": 4620,
+     "hitGated": 0.1315,
+     "roiGated": -0.1568,
+     "nGated": 3438,
+     "ciVsModel": [
+      0.011344,
+      0.034613
+     ]
+    },
+    "ev": {
+     "hitAll": 0.0264,
+     "roiAll": -0.4553,
+     "nAll": 4620,
+     "hitGated": 0.0297,
+     "roiGated": -0.4123,
+     "nGated": 3438,
+     "ciVsModel": [
+      -0.090169,
+      -0.067481
+     ]
+    }
+   },
+   "selection": {
+    "model": {
+     "days": 316,
+     "legs": 1264,
+     "hit": 0.1187,
+     "roi": -0.1618
+    },
+    "market": {
+     "days": 316,
+     "legs": 1264,
+     "hit": 0.1369,
+     "roi": -0.1937,
+     "ciVsModel": [
+      -0.00712,
+      0.040348
+     ]
+    },
+    "pool": {
+     "days": 316,
+     "legs": 1264,
+     "hit": 0.1448,
+     "roi": -0.1443,
+     "ciVsModel": [
+      0.002373,
+      0.047468
+     ]
+    }
+   }
+  },
+  "val": {
+   "n": 3786,
+   "divergence": {
+    "n": 2426,
+    "share": 0.6408,
+    "hitModel": 0.0932,
+    "hitMarket": 0.1245,
+    "diffPP": 0.0313,
+    "ci95": [
+     0.013603,
+     0.050701
+    ],
+    "roiModel": -0.2195,
+    "roiMarket": -0.2102
+   },
+   "arms": {
+    "model": {
+     "hitAll": 0.1109,
+     "roiAll": -0.1908,
+     "nAll": 3786,
+     "hitGated": 0.1228,
+     "roiGated": -0.1518,
+     "nGated": 2744
+    },
+    "market": {
+     "hitAll": 0.131,
+     "roiAll": -0.1849,
+     "nAll": 3786,
+     "hitGated": 0.1359,
+     "roiGated": -0.1642,
+     "nGated": 2744,
+     "ciVsModel": [
+      -0.000364,
+      0.026968
+     ]
+    },
+    "pool": {
+     "hitAll": 0.1355,
+     "roiAll": -0.1503,
+     "nAll": 3786,
+     "hitGated": 0.1381,
+     "roiGated": -0.146,
+     "nGated": 2744,
+     "ciVsModel": [
+      0.002187,
+      0.028061
+     ]
+    },
+    "ev": {
+     "hitAll": 0.0333,
+     "roiAll": -0.3661,
+     "nAll": 3786,
+     "hitGated": 0.0412,
+     "roiGated": -0.3088,
+     "nGated": 2744,
+     "ciVsModel": [
+      -0.095481,
+      -0.066691
+     ]
+    }
+   },
+   "selection": {
+    "model": {
+     "days": 229,
+     "legs": 916,
+     "hit": 0.143,
+     "roi": -0.0382
+    },
+    "market": {
+     "days": 229,
+     "legs": 916,
+     "hit": 0.1496,
+     "roi": -0.1468,
+     "ciVsModel": [
+      -0.021834,
+      0.033843
+     ]
+    },
+    "pool": {
+     "days": 229,
+     "legs": 916,
+     "hit": 0.1539,
+     "roi": -0.1198,
+     "ciVsModel": [
+      -0.015284,
+      0.037118
+     ]
+    }
+   }
+  }
+ },
+ "criteria": {
+  "marketWinsDivergence": true,
+  "modelWinsDivergence": false,
+  "cellBestArm": "pool",
+  "cellGainOverModel": 0.0153,
+  "cellGainSignificant": true,
+  "selBestArm": "pool",
+  "selGainOverModel": 0.0109,
+  "selGainSignificant": false,
+  "swapSelectionRecommended": false
+ },
+ "verdict": "判据①触发：分歧场市场显著优（+3.13pp·CI[1.36, 5.07]·两段复现）——生产选格改市场锚/池锚"
+}

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>提准路线图 · v24 批次判决与下一步设计（2026-10-09）</title>
+<style>
+:root{
+  --bg:#0f1115; --panel:#161a21; --panel2:#1c222b; --line:#2a3240;
+  --fg:#e6e9ef; --dim:#9aa5b5; --accent:#5aa9e6; --good:#4cc38a;
+  --bad:#e5636b; --warn:#e0a458; --mono:'Cascadia Code','Consolas',monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+  font:15px/1.7 -apple-system,'Segoe UI','Microsoft YaHei',sans-serif;}
+.wrap{max-width:1080px;margin:0 auto;padding:36px 24px 80px}
+h1{font-size:26px;margin:0 0 6px;letter-spacing:.5px}
+.sub{color:var(--dim);font-size:13px;margin-bottom:28px}
+h2{font-size:19px;margin:38px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:9px}
+h3{font-size:16px;margin:24px 0 10px;color:var(--accent)}
+.icon{width:19px;height:19px;color:var(--accent);flex:none}
+.ic-s{width:15px;height:15px;vertical-align:-2px}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px}
+th,td{padding:8px 11px;border:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:var(--panel2);color:var(--dim);font-weight:600;white-space:nowrap}
+td.num,th.num{text-align:right;font-family:var(--mono)}
+.good{color:var(--good)} .bad{color:var(--bad)} .warn{color:var(--warn)} .dim{color:var(--dim)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:16px 18px;margin:14px 0}
+.card.k{border-left:3px solid var(--accent)}
+.card.x{border-left:3px solid var(--bad)}
+.card.o{border-left:3px solid var(--good)}
+code{font-family:var(--mono);background:var(--panel2);padding:1px 5px;border-radius:3px;font-size:12.5px}
+ul{margin:8px 0 8px 20px;padding:0} li{margin:5px 0}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;
+  background:var(--panel2);border:1px solid var(--line);color:var(--dim);margin-right:6px}
+.tag.off{color:var(--bad);border-color:#5a2b31}
+.tag.on{color:var(--good);border-color:#2b5a45}
+.tag.hold{color:var(--warn);border-color:#5a4a2b}
+figure{margin:20px 0;text-align:center}
+figcaption{color:var(--dim);font-size:12px;margin-top:8px}
+svg.diag{max-width:100%;height:auto;color:var(--fg)}
+.src{font-size:12px;color:var(--dim);margin-top:6px}
+</style>
+</head>
+<body>
+<svg style="display:none">
+  <symbol id="i-micro" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+    stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3"/><path d="M8 11h6M11 8v6"/></symbol>
+  <symbol id="i-verdict" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+    stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></symbol>
+  <symbol id="i-gate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+    stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></symbol>
+  <symbol id="i-road" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+    stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 21L8 3M20 21L16 3M12 5v3M12 12v3M12 19v2"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+    stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/>
+    <path d="M12 9v4M12 17h.01"/></symbol>
+</svg>
+
+<div class="wrap">
+<h1>提准路线图 · v24 批次判决与下一步设计</h1>
+<div class="sub">2026-10-09 · 预注册舱 fade-strategy-prereg v19→v24（五节跑前写死）· 数据 v2 缓存 841 日（fit 4418 场 / val 3582 场）· commit 10ac527</div>
+
+<div class="card k">
+<strong>一句话结论</strong><br>
+「提高预测准确度」这条主线在 v24 批次走到了终点：<b>模型概率本身没有可提的余量</b>——
+方向端对市场的最优权重恰为 <code>0.00</code>，比分端比市场差 0.142（log-loss，CI 全负，五个价格带无一例外）。
+这不是校准问题（v24/v24.1 把锐化与收缩两个方向都试尽了），而是<b>信息量</b>问题。
+唯一未被证伪的提准路径仍是<b>伤停/首发轨</b>——市场价格里尚未完全包含的新信息。
+</div>
+
+<h2><svg class="icon"><use href="#i-micro"/></svg>一、v24 做了什么</h2>
+<p>主公命「继续提升预测准确度」。臣先查既有证据，发现一处关键缺口：
+<b>v23 的「模型分布过度扁平」结论是按市场隐含概率分带得出的，从未按模型自己的概率分带复核。</b>
+按 X 分组去比较 Y，两张表会各自朝分组变量回归——这是统计学上的经典伪影嫌疑。
+F9 消融查过模型自带口径，但样本仅 243 场且用随机 30% 切分（脚本自标「弱验证·非时间外推」）。
+v2 缓存有 841 日大样本可一次补齐，故开 v24 五线。</p>
+
+<figure>
+<svg class="diag" viewBox="0 0 900 290" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="ar" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto">
+<path d="M0 0L9 3.5L0 7z" fill="currentColor"/></marker></defs>
+<g fill="none" stroke="currentColor" stroke-width="1.6" marker-end="url(#ar)" opacity=".75">
+<path d="M150 56h86"/><path d="M150 112h86"/><path d="M150 168h86"/>
+<path d="M398 56h80"/><path d="M398 112h80"/><path d="M398 168h80"/>
+<path d="M640 112h74"/><path d="M546 140v70h94" stroke-dasharray="4 3"/>
+</g>
+<g font-size="12.5" fill="currentColor">
+  <rect x="14" y="36" width="136" height="40" rx="6" fill="#1c222b" stroke="#2a3240"/>
+  <text x="26" y="52">v23 旧结论</text><text x="26" y="68" font-size="11" opacity=".65">按市场带·模型「扁平」</text>
+  <rect x="14" y="92" width="136" height="40" rx="6" fill="#1c222b" stroke="#2a3240"/>
+  <text x="26" y="108">F9 消融</text><text x="26" y="124" font-size="11" opacity=".65">n=243·随机切分·弱</text>
+  <rect x="14" y="148" width="136" height="40" rx="6" fill="#1c222b" stroke="#2a3240"/>
+  <text x="26" y="164">v2 缓存</text><text x="26" y="180" font-size="11" opacity=".65">841 日·两段时间切分</text>
+
+  <rect x="240" y="30" width="158" height="52" rx="6" fill="#161a21" stroke="#5aa9e6"/>
+  <text x="252" y="50">v24 锐度诊断</text>
+  <text x="252" y="68" font-size="11" opacity=".7">A 自带带 / B 市场带 / C std</text>
+  <rect x="240" y="90" width="158" height="44" rx="6" fill="#161a21" stroke="#5aa9e6"/>
+  <text x="252" y="110">v24.1 收缩三臂</text>
+  <text x="252" y="126" font-size="11" opacity=".7">γ展平·基准率·意见池</text>
+  <rect x="240" y="146" width="158" height="44" rx="6" fill="#161a21" stroke="#5aa9e6"/>
+  <text x="252" y="166">v24.2 比分端对撞</text>
+  <text x="252" y="182" font-size="11" opacity=".7">同支撑集·逐场配对</text>
+
+  <rect x="482" y="34" width="162" height="44" rx="6" fill="#1c222b" stroke="#e5636b"/>
+  <text x="494" y="54" fill="#e5636b">伪影 → 锐化关灯</text>
+  <text x="494" y="70" font-size="11" opacity=".7">符号翻转·γ单调恶化</text>
+  <rect x="482" y="92" width="162" height="44" rx="6" fill="#1c222b" stroke="#e5636b"/>
+  <text x="494" y="112" fill="#e5636b">a*=0.00 零增量</text>
+  <text x="494" y="128" font-size="11" opacity=".7">21 档单调</text>
+  <rect x="482" y="150" width="162" height="44" rx="6" fill="#1c222b" stroke="#e5636b"/>
+  <text x="494" y="170" fill="#e5636b">模型劣 0.142</text>
+  <text x="494" y="186" font-size="11" opacity=".7">五带无一例外</text>
+
+  <rect x="718" y="88" width="166" height="52" rx="6" fill="#161a21" stroke="#4cc38a"/>
+  <text x="730" y="108" fill="#4cc38a">唯余伤停轨</text>
+  <text x="730" y="126" font-size="11" opacity=".7">市场未含之新信息</text>
+  <rect x="640" y="196" width="244" height="46" rx="6" fill="#161a21" stroke="#e0a458"/>
+  <text x="652" y="216" fill="#e0a458">v24.3/24.4 口径择优 → 双维持</text>
+  <text x="652" y="232" font-size="11" opacity=".7">全池显著 · 生产 top4 跨 0</text>
+</g>
+</svg>
+<figcaption>v24 批次五线的证据流：三处缺口 → 三刀对撞 → 一个出口</figcaption>
+</figure>
+
+<h2><svg class="icon"><use href="#i-verdict"/></svg>二、五线判决</h2>
+
+<h3>① v24 锐化线 —— 分组伪影，关灯 <span class="tag off">OFF</span></h3>
+<p>v23 报「模型 ≥55% 带低估 15.7pp」。按模型<b>自带</b>概率带复核，<b>符号完全翻转</b>：</p>
+<table>
+<tr><th>口径</th><th class="num">&lt;10% 带 dev</th><th class="num">&gt;=55% 带 dev</th><th>读法</th></tr>
+<tr><td>按市场带（v23 口径）· val</td><td class="num good">+1.8pp</td><td class="num good">−0.4pp</td><td class="dim">市场校准教科书级</td></tr>
+<tr><td>模型·按市场带 · val</td><td class="num bad">+10.1pp</td><td class="num bad">−11.3pp</td><td class="dim">看似「扁平」</td></tr>
+<tr><td><b>模型·按自带带 · val</b></td><td class="num bad">−10.5pp</td><td class="num bad"><b>+8.2pp</b></td><td class="bad">符号翻转=<b>过度自信</b></td></tr>
+<tr><td>模型·按自带带 · fit</td><td class="num bad">−11.9pp</td><td class="num bad">+14.8pp</td><td class="dim">两段同向复现</td></tr>
+</table>
+<p>γ 幂锐化扫描 16 档（1.0~2.5）在 fit/val <b>双段单调恶化</b>，最优 γ=1.0。
+所谓「与 F9 消融 T=0.8 独立互证」不成立——两者都是同一个分组伪影的产物。</p>
+<div class="src">数据来源：<code>data/04-summaries/v24-sharpen-diag.json</code></div>
+
+<h3>② v24.1 收缩线 —— 方向真实，幅度无用 <span class="tag off">OFF</span></h3>
+<p>既然模型过度自信，正确的修法是<b>收缩</b>而非锐化。三臂同测：</p>
+<table>
+<tr><th>臂</th><th>fit 最优点</th><th class="num">val log-loss</th><th class="num">改善</th><th>读法</th></tr>
+<tr><td>A1 γ 展平（p^γ）</td><td>γ=0.60 <span class="dim">（内点）</span></td><td class="num">1.0425</td><td class="num warn">+0.48%</td><td class="dim">方向真·量太小</td></tr>
+<tr><td>A2 向基准率收缩</td><td>w=0.5 <span class="dim">（内点）</span></td><td class="num">1.0433</td><td class="num warn">+0.39%</td><td class="dim">同上</td></tr>
+<tr><td><b>A3 对数意见池</b> q∝p<sub>模</sub><sup>a</sup>·p<sub>市</sub></td><td><b>a*=0.00</b> <span class="bad">（21 档单调）</span></td><td class="num good">0.9891</td><td class="num">—</td><td class="bad">模型权重为零即最优</td></tr>
+</table>
+<p>两个内点最优证明「收缩方向」客观存在，但收缩到最优仍比市场差 5.2%。
+主判据 A3 给出的 <code>a*=0.00</code> 是判决书：<b>HAD 方向端模型对市场零增量</b>。
+与 <code>dc-no-edge-over-market</code>（7216 场 walk-forward）、<code>model-vs-market-baseline</code>（n=334 真前瞻）三证合流。</p>
+<div class="src">数据来源：<code>data/04-summaries/v24_1-shrink.json</code></div>
+
+<h3>③ v24.2 比分端对撞 —— 模型显著更差 <span class="tag off">OFF</span></h3>
+<p>这是实力链的本业（V3W-v2 两段 +6.5%/+7.2% 转正曾在此），却从未与市场正面量过。
+口径：逐场取体彩在售 CRS 格集，真果须落在格集内（双方同支撑集），各自归一后在 realized 格上算 log-loss。</p>
+<table>
+<tr><th>指标（val 3664 场·平均 28 格）</th><th class="num">模型</th><th class="num">市场</th><th class="num">差</th></tr>
+<tr><td>log-loss（主）</td><td class="num">2.9454</td><td class="num good">2.8036</td><td class="num bad">−0.1419</td></tr>
+<tr><td>配对 bootstrap 95%CI</td><td colspan="2" class="num">[−0.1650, −0.1208]</td><td class="bad">全负</td></tr>
+<tr><td>Brier</td><td class="num">0.9372</td><td class="num good">0.9252</td><td class="num bad">劣</td></tr>
+<tr><td>top1 命中率</td><td class="num">11.46%</td><td class="num good">13.54%</td><td class="num bad">−2.08pp</td></tr>
+</table>
+<p>按真果格的市场隐含概率分带，<b>五个带无一例外</b>模型更差，且越是冷门端差得越多
+（&lt;2% 带 −0.284 / 2-5% 带 −0.187 / 5-10% 带 −0.106 / 10-20% 带 −0.122）。
+这与 v20.1 的 longshot tax 画像一致：模型在高赔端最弱。</p>
+<p>唯一的正面信号是对数意见池 <code>a*=0.05</code>（内点 &gt;0·改善 +0.09%·CI[+0.001,+0.004] 显著）——
+<b>模型确实含有市场未含的信息，但量小到只值 5% 权重</b>。</p>
+<div class="card x">
+<svg class="ic-s"><use href="#i-warn"/></svg>
+<b>一处认知修正</b>：V3W-v2 比分端两段回测 +6.5%/+7.2% 的价值，<b>不在概率精度，而在去水选场闸</b>
+（<code>boom≤0.05</code> + <code>had_hot≥1.5</code> 的过滤动作）。概率排序本身比市场差。
+</div>
+<div class="src">数据来源：<code>data/04-summaries/v24_2-crs-vs-market.json</code></div>
+
+<h3>④ v24.3 口径择优 —— 选场维持 <span class="tag hold">HOLD</span></h3>
+<p>既然市场概率更准，能否直接拿来改生产的选场/选格口径？分三节测。</p>
+<p><b>分歧场裁决</b>（模型 top1 格 ≠ 市场 top1 格）：val 2426 场（占 64.1%），
+模型命中 9.32% vs 市场 12.45%，差 <b>+3.13pp</b>，配对 CI[+1.36,+5.07] 显著；
+fit 段 +3.29pp·CI[+1.68,+4.97] <b>两段复现</b>。市场在分歧场上系统性更准。</p>
+<table>
+<tr><th>选格臂（val·过闸 2744 场）</th><th class="num">top1 命中</th><th class="num">vs model 场级 CI</th><th class="num">realized ROI</th></tr>
+<tr><td>pool（a*=0.05）</td><td class="num good">13.81%</td><td class="num good">[+0.22, +2.81]pp 显著</td><td class="num bad">−14.6%</td></tr>
+<tr><td>market（纯市场）</td><td class="num">13.59%</td><td class="num warn">[−0.04, +2.70]pp 跨 0</td><td class="num bad">−16.4%</td></tr>
+<tr><td>model（现行）</td><td class="num">12.28%</td><td class="num dim">基准</td><td class="num bad">−15.2%</td></tr>
+<tr><td>ev（p×odds−1）</td><td class="num bad">4.12%</td><td class="num bad">[−9.55, −6.67]pp 显著劣</td><td class="num bad">−30.9%</td></tr>
+</table>
+<p>EV 选格显著劣 9pp，与 v2 反差策略（ROI −98.6%）同源：按 EV 挑格等于专挑市场最不信的格。</p>
+<p>判据②（管选场口径）：最优臂 pool 卡面命中 15.39% vs 现行 model 14.30%，
+增量 +1.09pp <b>不过 2pp 门槛</b>且日级 CI[−1.53,+3.71] 跨 0 → <b>选场口径维持现行</b>。</p>
+<div class="src">数据来源：<code>data/04-summaries/v24_3-pick-policy.json</code></div>
+
+<h3>⑤ v24.4 上线闸 —— 选格亦维持 <span class="tag hold">HOLD</span></h3>
+<p>④ 的选格结论（pool 显著优）看上去可以直接改 <code>strength_chain_prod</code>。
+但那是<b>全池</b>口径（val 2744 场），而生产只买每日 top4（val 916 腿）。
+臣加这道闸，在生产设定下复验同一改动：</p>
+<table>
+<tr><th>选场</th><th>选格</th><th class="num">val 命中</th><th class="num">日级配对 CI vs 现行</th><th class="num">fit 同配置 CI</th></tr>
+<tr><td>model</td><td>model <span class="dim">←现行</span></td><td class="num">14.30%</td><td class="num dim">基准</td><td class="num dim">基准</td></tr>
+<tr><td>model</td><td>pool <span class="dim">←目标</span></td><td class="num">15.94%</td><td class="num warn">[−0.66, +3.82]pp <b>跨 0</b></td><td class="num good">[+0.32, +4.59] 显著</td></tr>
+<tr><td>pool</td><td>model</td><td class="num">13.65%</td><td class="num warn">[−2.18, +0.98]pp 跨 0</td><td class="num warn">[−1.50, +1.27] 跨 0</td></tr>
+<tr><td>pool</td><td>pool</td><td class="num">15.39%</td><td class="num warn">[−1.53, +3.71]pp 跨 0</td><td class="num good">[+0.24, +4.75] 显著</td></tr>
+</table>
+<p>目标配置 val 段 <b>跨 0</b>、fit 段显著 → <b>两段不复现</b>。
+top4 内分歧腿子集同样：fit 707 腿 +4.38pp·CI[+0.57,+8.06] 显著，val 472 腿 +3.18pp·CI[−1.48,+7.84] 跨 0。
+样本从 2744 收缩到 916（3 倍），显著性随之消失。</p>
+<div class="card o">
+<svg class="ic-s"><use href="#i-gate"/></svg>
+<b>这道闸的价值</b>：拦下了一次「拿 2744 场的 CI 去担保 916 腿的改动」的越界。
+已沉淀为纪律 <code>prod-pick-policy-gate</code>：改生产选场/选格口径，判据必须跑在生产设定下
+（同过滤、同 top-N、同注金），且 fit/val 两段都要显著。全池口径只能定位方向，不能作上线依据。
+</div>
+<div class="src">数据来源：<code>data/04-summaries/v24_4-prod-grid.json</code></div>
+
+<h2><svg class="icon"><use href="#i-warn"/></svg>三、一条必须说清的纪律</h2>
+<p>v24.3/24.4 的 ROI 列全为负（−3.8% ~ −16.4%），这是<b>预期之内</b>，臣在脚本头与预注册里写死了声明：</p>
+<div class="card">
+本线目标是<b>准确度</b>（top1 命中 / log-loss），不是 ROI。<br>
+CRS 池抽水 33.9%，期望锁死在 1−抽水。命中率提升 1~2pp 不足以跨过抽水线——
+<b>提准 ≠ 盈利</b>。将准确度改善呈报为收益改善，即是臣此前犯过的错（见 <code>false-positive-roi-two-causes</code>）。
+</div>
+
+<h2><svg class="icon"><use href="#i-road"/></svg>四、下一步：三条路</h2>
+<p>既然模型概率端已无余量，提准只剩「引入市场未含的新信息」一条逻辑。按可行性排序：</p>
+
+<h3>路线 A · 伤停/首发轨（唯一未证伪·已在自动积累）<span class="tag on">推荐</span></h3>
+<ul>
+<li><b>为何是它</b>：λ 桥里 <code>inj_h/inj_a</code> 当前恒为 <code>None</code>（中性），β=0.05 从未真正生效。
+这是链路上<b>唯一一个尚未通电的输入</b>，且其信息（临场伤停、首发公布）在赛前 120 分钟才进入市场价格。</li>
+<li><b>现状</b>：<code>lineup_watch.py</code> + Windows 每 10 分钟定时任务（2026-09-30 起·90 天到期），
+已落 6 个日期档（<code>data/05-trends/{开赛日}-lineups.json</code>）。</li>
+<li><b>判据</b>：已预注册于脚本头三口径（①调价率 ②log-loss 信息量 ③可买窗口须调价晚于首发 ≥1 tick 且 tick 连续）。
+门槛：有首发场次满 150 才下结论；快照 ≥300 场且变更事件 ≥30 才判 β。</li>
+<li><b>臣的建议</b>：<b>不做任何新实验，等样本</b>。当前 6 档距 150 场尚远（预估 2~3 个月）。
+此线唯一需要人工的是确认定时任务未断（90 天到期日 2026-12-29）。</li>
+</ul>
+
+<h3>路线 B · 去水选场闸的再标定（v24.2 副产物）<span class="tag hold">候选</span></h3>
+<ul>
+<li><b>线索</b>：v24.2 证明 V3W-v2 的价值在<b>选场闸</b>而非概率精度。那么闸门参数
+（<code>boom≤0.05</code> / <code>had_hot≥1.5</code>）是否还有余量？</li>
+<li><b>已知</b>：S5 在 v12 动态 ENV 下重校过，36 组网格判决 KEEP 生产参数。但 S5 的目标函数是
+<b>4串11 的 ROI</b>，不是准确度。若改以 top1 命中率为目标函数重扫，可能落在不同的角点。</li>
+<li><b>风险</b>：换目标函数＝换实验，须重新预注册；且 ROI 与命中率在抽水面前并非同向
+（v24.3 ③ 节已见 model 选场 ROI −3.8% 最优但命中率最低）。<b>须先想清要哪个</b>。</li>
+<li><b>成本</b>：v2 缓存秒载，一次扫描分钟级。</li>
+</ul>
+
+<h3>路线 C · 池锚挂 forward（v24.4 残留）<span class="tag hold">挂账</span></h3>
+<ul>
+<li>选格池锚（a*=0.05）在全池显著、生产 top4 不显著，差别在样本量。
+挂 forward：corpus 积累到 <b>n≥1500 腿</b>（现 916）再按 v24.4 同判据复跑。</li>
+<li>无需人工动作，随 corpus 自然增长。</li>
+</ul>
+
+<div class="card x">
+<b>不建议的方向</b>（已证伪，勿重开）：改概率校准 / 改温度锐度 / 改融合权重 a /
+按赔率的任何变换挑腿 / EV 选格 / 混串形状优化。
+前四条见本文 ①②③ 与 <code>dc-no-edge-over-market</code>、<code>feedback_odds_no_alpha</code>；
+后两条见 v24.3 ② 节与 <code>s5-dewater-recalib-verdict</code> 八线终局。
+</div>
+
+<h2><svg class="icon"><use href="#i-verdict"/></svg>五、产出清单</h2>
+<table>
+<tr><th>文件</th><th>内容</th></tr>
+<tr><td><code>engine/scripts/research/v24_sharpen_diag.py</code></td><td>锐度体检五项（A 自带带/B 市场带/C std/D γ扫描/E λ压缩 OLS）</td></tr>
+<tr><td><code>engine/scripts/research/v24_1_shrink.py</code></td><td>收缩三臂（γ展平/基准率/对数意见池）</td></tr>
+<tr><td><code>engine/scripts/research/v24_2_crs_vs_market.py</code></td><td>比分端同支撑集逐场配对对撞</td></tr>
+<tr><td><code>engine/scripts/research/v24_3_pick_policy.py</code></td><td>分歧场裁决 + 选格四臂 + 选场三臂</td></tr>
+<tr><td><code>engine/scripts/research/v24_4_prod_grid.py</code></td><td>生产 2×2 上线闸</td></tr>
+<tr><td><code>data/04-summaries/v24*.json</code></td><td>五份判决账本（含全部 CI 与 ROI 诚实列）</td></tr>
+<tr><td><code>engine/cache/strength_chain/fade-strategy-prereg.json</code></td><td>v19→v24 五节预注册 + 终局（version 24·changeLog 29 条）</td></tr>
+</table>
+<p class="dim" style="margin-top:14px">验证：pytest 446 passed · 泄漏闸同 S5 继承（hist_odds 独立源 + as-of 预测·lag=2 strict_merged）·
+全部判据跑前写死于预注册舱，git 时间戳为凭证。</p>
+
+</div>
+</body>
+</html>

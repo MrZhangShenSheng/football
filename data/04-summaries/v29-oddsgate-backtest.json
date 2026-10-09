@@ -1,0 +1,58 @@
+{
+ "ranAt": "2026-10-09",
+ "gate": 0.55,
+ "arms": {
+  "fit": {
+   "A": {
+    "nLegs": 573,
+    "nDays": 282,
+    "hitRate": 0.6178,
+    "meanImpliedQ": 0.6291,
+    "roi": -0.1406,
+    "meanPoolSize": 2.03
+   },
+   "B": {
+    "nLegs": 501,
+    "nDays": 262,
+    "hitRate": 0.6447,
+    "meanImpliedQ": 0.6463,
+    "roi": -0.124,
+    "meanPoolSize": 1.91
+   },
+   "pairedDays": 262,
+   "meanDiff": 0.007715,
+   "ci95": [
+    -0.013151,
+    0.028592
+   ],
+   "daysClosed": 20
+  },
+  "val": {
+   "A": {
+    "nLegs": 518,
+    "nDays": 216,
+    "hitRate": 0.6216,
+    "meanImpliedQ": 0.6342,
+    "roi": -0.1332,
+    "meanPoolSize": 2.4
+   },
+   "B": {
+    "nLegs": 451,
+    "nDays": 196,
+    "hitRate": 0.6475,
+    "meanImpliedQ": 0.653,
+    "roi": -0.1228,
+    "meanPoolSize": 2.3
+   },
+   "pairedDays": 196,
+   "meanDiff": -0.004638,
+   "ci95": [
+    -0.027343,
+    0.017527
+   ],
+   "daysClosed": 20
+  }
+ },
+ "verdict": "判据②：不过（val B−A -0.46pp·CI[-0.027343, 0.017527]）——维持现行 p_fused 门槛·归档挂账",
+ "discipline": "期望恒负·只报相对优劣·不作 EV 呈报"
+}

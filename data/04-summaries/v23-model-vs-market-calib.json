@@ -1,0 +1,161 @@
+{
+ "ranAt": "2026-10-08",
+ "preReg": "脚本头跑前写死",
+ "seg": {
+  "fit": {
+   "had": [
+    {
+     "band": "<10%",
+     "n": 275,
+     "mktImplied": 0.0853,
+     "model": 0.2225,
+     "realized": 0.0545,
+     "devMkt": 0.0308,
+     "devModel": 0.168,
+     "modelEdge": 0.1372
+    },
+    {
+     "band": "10-20%",
+     "n": 2072,
+     "mktImplied": 0.16,
+     "model": 0.2548,
+     "realized": 0.153,
+     "devMkt": 0.007,
+     "devModel": 0.1018,
+     "modelEdge": 0.0948
+    },
+    {
+     "band": "20-35%",
+     "n": 6333,
+     "mktImplied": 0.2681,
+     "model": 0.2874,
+     "realized": 0.2754,
+     "devMkt": -0.0073,
+     "devModel": 0.012,
+     "modelEdge": 0.0047
+    },
+    {
+     "band": "35-55%",
+     "n": 2888,
+     "mktImplied": 0.4397,
+     "model": 0.4087,
+     "realized": 0.4325,
+     "devMkt": 0.0073,
+     "devModel": -0.0237,
+     "modelEdge": 0.0165
+    },
+    {
+     "band": ">=55%",
+     "n": 1686,
+     "mktImplied": 0.6495,
+     "model": 0.4913,
+     "realized": 0.6483,
+     "devMkt": 0.0012,
+     "devModel": -0.157,
+     "modelEdge": 0.1558
+    }
+   ],
+   "crs": [
+    {
+     "band": "<10%",
+     "n": 119381,
+     "mktImplied": 0.0292,
+     "model": 0.0287,
+     "realized": 0.0274,
+     "devMkt": 0.0018,
+     "devModel": 0.0013,
+     "modelEdge": -0.0005
+    },
+    {
+     "band": "10-20%",
+     "n": 9978,
+     "mktImplied": 0.1136,
+     "model": 0.1018,
+     "realized": 0.1214,
+     "devMkt": -0.0078,
+     "devModel": -0.0196,
+     "modelEdge": 0.0118
+    }
+   ],
+   "advantageBands": []
+  },
+  "val": {
+   "had": [
+    {
+     "band": "<10%",
+     "n": 230,
+     "mktImplied": 0.083,
+     "model": 0.166,
+     "realized": 0.0652,
+     "devMkt": 0.0178,
+     "devModel": 0.1008,
+     "modelEdge": 0.083
+    },
+    {
+     "band": "10-20%",
+     "n": 1732,
+     "mktImplied": 0.1599,
+     "model": 0.2229,
+     "realized": 0.1524,
+     "devMkt": 0.0074,
+     "devModel": 0.0704,
+     "modelEdge": 0.063
+    },
+    {
+     "band": "20-35%",
+     "n": 5115,
+     "mktImplied": 0.268,
+     "model": 0.2861,
+     "realized": 0.2729,
+     "devMkt": -0.0049,
+     "devModel": 0.0132,
+     "modelEdge": 0.0083
+    },
+    {
+     "band": "35-55%",
+     "n": 2258,
+     "mktImplied": 0.4409,
+     "model": 0.4108,
+     "realized": 0.4345,
+     "devMkt": 0.0065,
+     "devModel": -0.0237,
+     "modelEdge": 0.0172
+    },
+    {
+     "band": ">=55%",
+     "n": 1411,
+     "mktImplied": 0.6518,
+     "model": 0.5434,
+     "realized": 0.6563,
+     "devMkt": -0.0044,
+     "devModel": -0.1129,
+     "modelEdge": 0.1084
+    }
+   ],
+   "crs": [
+    {
+     "band": "<10%",
+     "n": 98129,
+     "mktImplied": 0.0294,
+     "model": 0.0285,
+     "realized": 0.0276,
+     "devMkt": 0.0018,
+     "devModel": 0.0009,
+     "modelEdge": -0.001
+    },
+    {
+     "band": "10-20%",
+     "n": 7875,
+     "mktImplied": 0.1138,
+     "model": 0.1029,
+     "realized": 0.1211,
+     "devMkt": -0.0073,
+     "devModel": -0.0183,
+     "modelEdge": 0.0109
+    }
+   ],
+   "advantageBands": []
+  }
+ },
+ "verdict": "全线市场更准或打平——模型无优势延伸至玩法端·混串模型先换引擎（伤停轨）"
+}

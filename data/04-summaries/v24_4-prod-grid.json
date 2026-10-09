@@ -1,0 +1,118 @@
+{
+ "ranAt": "2026-10-09",
+ "preReg": "fade-strategy-prereg v24.4",
+ "seg": {
+  "fit": {
+   "grid": {
+    "model|model": {
+     "days": 316,
+     "legs": 1264,
+     "hit": 0.1187,
+     "roi": -0.1618
+    },
+    "model|pool": {
+     "days": 316,
+     "legs": 1264,
+     "hit": 0.1432,
+     "roi": -0.1077,
+     "ciVsProd": [
+      0.003165,
+      0.045886
+     ]
+    },
+    "pool|model": {
+     "days": 316,
+     "legs": 1264,
+     "hit": 0.1171,
+     "roi": -0.2055,
+     "ciVsProd": [
+      -0.015032,
+      0.012658
+     ]
+    },
+    "pool|pool": {
+     "days": 316,
+     "legs": 1264,
+     "hit": 0.1448,
+     "roi": -0.1443,
+     "ciVsProd": [
+      0.002373,
+      0.047468
+     ]
+    }
+   },
+   "divergentLegs": {
+    "n": 707,
+    "hitModel": 0.1047,
+    "hitPool": 0.1485,
+    "roiModel": -0.1807,
+    "roiPool": -0.084,
+    "ci95": [
+     0.005658,
+     0.080622
+    ]
+   }
+  },
+  "val": {
+   "grid": {
+    "model|model": {
+     "days": 229,
+     "legs": 916,
+     "hit": 0.143,
+     "roi": -0.0382
+    },
+    "model|pool": {
+     "days": 229,
+     "legs": 916,
+     "hit": 0.1594,
+     "roi": -0.0553,
+     "ciVsProd": [
+      -0.00655,
+      0.03821
+     ]
+    },
+    "pool|model": {
+     "days": 229,
+     "legs": 916,
+     "hit": 0.1365,
+     "roi": -0.131,
+     "ciVsProd": [
+      -0.021834,
+      0.009825
+     ]
+    },
+    "pool|pool": {
+     "days": 229,
+     "legs": 916,
+     "hit": 0.1539,
+     "roi": -0.1198,
+     "ciVsProd": [
+      -0.015284,
+      0.037118
+     ]
+    }
+   },
+   "divergentLegs": {
+    "n": 472,
+    "hitModel": 0.1123,
+    "hitPool": 0.1441,
+    "roiModel": -0.1169,
+    "roiPool": -0.1501,
+    "ci95": [
+     -0.014831,
+     0.07839
+    ]
+   }
+  }
+ },
+ "criteria": {
+  "targetBeatsProd": false,
+  "gain": 0.0164,
+  "ci95": [
+   -0.00655,
+   0.03821
+  ]
+ },
+ "verdict": "判据②：生产设定下不显著（val +1.64pp·CI[-0.66,+3.82]pp 跨0）——维持现行选格·v24.3 全池显著不足以改 top4 链路（口径不可外推·如实呈报）",
+ "discipline": "目标=准确度·期望锁死1−抽水·ROI同报非判据"
+}
