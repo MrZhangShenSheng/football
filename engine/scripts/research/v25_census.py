@@ -214,21 +214,26 @@ def main():
     else:
         verdict = f"全灭（无联赛过闸②）——合并口径市场 ≤1.8pp 在分联赛下成立·挂账销案"
 
+    def _f4(x):
+        return f"{x:<+11.4f}" if isinstance(x, (int, float)) else f"{'—':<11}"
+
     print(f"\n── 逐联赛表（HAD 池·按 val diff 升序=模型最差在前）──", flush=True)
     print(f"{'联赛':<8}{'n(fit/val)':<13}{'diff fit':<11}{'diff val':<11}{'val CI':<22}{'市场dev'}", flush=True)
     for r in sorted((r for r in rows if r["had_diff"]["val"] is not None),
                     key=lambda r: r["had_diff"]["val"]):
         d = r["had_diff"]
         tag = " ‹a0" if r["a0"] else ""
+        md = r["mktDev"]["val"]
         print(f"{r['league'] + tag:<10}{str(r['had_n']['fit']) + '/' + str(r['had_n']['val']):<13}"
-              f"{d['fit']:<+11.4f}{d['val']:<+11.4f}{str(d['valCI']):<22}{r['mktDev']['val']}", flush=True)
+              f"{_f4(d['fit'])}{_f4(d['val'])}{str(d['valCI']):<22}"
+              f"{md if md is not None else '—'}", flush=True)
     print(f"\n── 逐联赛表（CRS 池）──", flush=True)
     for r in sorted((r for r in rows if r["crs_diff"]["val"] is not None),
                     key=lambda r: r["crs_diff"]["val"]):
         d = r["crs_diff"]
         tag = " ‹a0" if r["a0"] else ""
         print(f"{r['league'] + tag:<10}{str(r['crs_n']['fit']) + '/' + str(r['crs_n']['val']):<13}"
-              f"{d['fit']:<+11.4f}{d['val']:<+11.4f}{str(d['valCI'])}", flush=True)
+              f"{_f4(d['fit'])}{_f4(d['val'])}{str(d['valCI'])}", flush=True)
     small = [r["league"] for r in rows
              if r["had_diff"]["fit"] is None and r["crs_diff"]["fit"] is None]
     print(f"\n不判联赛（n<{MIN_N}）: {small}", flush=True)

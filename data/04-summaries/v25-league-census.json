@@ -1,0 +1,1725 @@
+{
+ "ranAt": "2026-10-09",
+ "preReg": "fade-strategy-prereg v25",
+ "sanity": {
+  "fit": {
+   "labeled": 4620,
+   "all": 4620
+  },
+  "val": {
+   "labeled": 3786,
+   "all": 3786
+  }
+ },
+ "nTested": 35,
+ "alphaBonferroni": 0.001429,
+ "expectedFalsePositive": 1.8,
+ "leagues": [
+  {
+   "league": "世界杯",
+   "a0": false,
+   "had_n": {
+    "fit": 0,
+    "val": 48
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 0,
+    "val": 63
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "世预赛",
+   "a0": false,
+   "had_n": {
+    "fit": 119,
+    "val": 72
+   },
+   "had_diff": {
+    "fit": -0.1254,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 145,
+    "val": 90
+   },
+   "crs_diff": {
+    "fit": -0.2106,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": 0.0,
+    "val": null
+   }
+  },
+  {
+   "league": "亚冠乙",
+   "a0": false,
+   "had_n": {
+    "fit": 0,
+    "val": 2
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 0,
+    "val": 2
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "亚冠精英",
+   "a0": false,
+   "had_n": {
+    "fit": 18,
+    "val": 14
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 17,
+    "val": 13
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "亚洲杯",
+   "a0": false,
+   "had_n": {
+    "fit": 22,
+    "val": 0
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 28,
+    "val": 0
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "俱世界杯",
+   "a0": false,
+   "had_n": {
+    "fit": 19,
+    "val": 0
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 22,
+    "val": 0
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "国际赛",
+   "a0": false,
+   "had_n": {
+    "fit": 25,
+    "val": 47
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 29,
+    "val": 52
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "巴甲",
+   "a0": false,
+   "had_n": {
+    "fit": 0,
+    "val": 49
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 0,
+    "val": 49
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "巴西杯",
+   "a0": false,
+   "had_n": {
+    "fit": 0,
+    "val": 10
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 0,
+    "val": 10
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "德乙",
+   "a0": false,
+   "had_n": {
+    "fit": 101,
+    "val": 88
+   },
+   "had_diff": {
+    "fit": -0.0395,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 98,
+    "val": 85
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": 0.0,
+    "val": null
+   }
+  },
+  {
+   "league": "德国杯",
+   "a0": false,
+   "had_n": {
+    "fit": 16,
+    "val": 25
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 17,
+    "val": 25
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "德甲",
+   "a0": true,
+   "had_n": {
+    "fit": 345,
+    "val": 262
+   },
+   "had_diff": {
+    "fit": -0.0876,
+    "val": -0.0507,
+    "valCI": [
+     -0.083668,
+     -0.01752
+    ]
+   },
+   "crs_n": {
+    "fit": 351,
+    "val": 261
+   },
+   "crs_diff": {
+    "fit": -0.1561,
+    "val": -0.089,
+    "valCI": [
+     -0.136257,
+     -0.04035
+    ]
+   },
+   "mktDev": {
+    "fit": 0.0,
+    "val": 0.0
+   }
+  },
+  {
+   "league": "德超杯",
+   "a0": false,
+   "had_n": {
+    "fit": 1,
+    "val": 1
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 1,
+    "val": 1
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "意大利杯",
+   "a0": false,
+   "had_n": {
+    "fit": 25,
+    "val": 18
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 23,
+    "val": 18
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "意甲",
+   "a0": true,
+   "had_n": {
+    "fit": 483,
+    "val": 348
+   },
+   "had_diff": {
+    "fit": -0.099,
+    "val": -0.0626,
+    "valCI": [
+     -0.097003,
+     -0.0314
+    ]
+   },
+   "crs_n": {
+    "fit": 484,
+    "val": 348
+   },
+   "crs_diff": {
+    "fit": -0.1496,
+    "val": -0.0986,
+    "valCI": [
+     -0.154103,
+     -0.038806
+    ]
+   },
+   "mktDev": {
+    "fit": 0.0,
+    "val": 0.0
+   }
+  },
+  {
+   "league": "意超杯",
+   "a0": false,
+   "had_n": {
+    "fit": 6,
+    "val": 3
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 6,
+    "val": 3
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "挪威杯",
+   "a0": false,
+   "had_n": {
+    "fit": 3,
+    "val": 0
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 3,
+    "val": 0
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "挪超",
+   "a0": false,
+   "had_n": {
+    "fit": 115,
+    "val": 90
+   },
+   "had_diff": {
+    "fit": -0.1181,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 114,
+    "val": 93
+   },
+   "crs_diff": {
+    "fit": -0.2122,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": 0.0,
+    "val": null
+   }
+  },
+  {
+   "league": "日天皇杯",
+   "a0": false,
+   "had_n": {
+    "fit": 7,
+    "val": 0
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 7,
+    "val": 0
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "日职",
+   "a0": false,
+   "had_n": {
+    "fit": 251,
+    "val": 125
+   },
+   "had_diff": {
+    "fit": -0.0507,
+    "val": -0.0473,
+    "valCI": [
+     -0.117724,
+     0.015389
+    ]
+   },
+   "crs_n": {
+    "fit": 247,
+    "val": 119
+   },
+   "crs_diff": {
+    "fit": -0.1742,
+    "val": -0.1393,
+    "valCI": [
+     -0.227686,
+     -0.053436
+    ]
+   },
+   "mktDev": {
+    "fit": 0.0,
+    "val": 0.0
+   }
+  },
+  {
+   "league": "日联赛杯",
+   "a0": false,
+   "had_n": {
+    "fit": 30,
+    "val": 5
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 29,
+    "val": 5
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "杯赛",
+   "a0": false,
+   "had_n": {
+    "fit": 0,
+    "val": 1
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 0,
+    "val": 1
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "欧冠",
+   "a0": false,
+   "had_n": {
+    "fit": 160,
+    "val": 177
+   },
+   "had_diff": {
+    "fit": -0.1077,
+    "val": -0.1244,
+    "valCI": [
+     -0.203974,
+     -0.051277
+    ]
+   },
+   "crs_n": {
+    "fit": 162,
+    "val": 182
+   },
+   "crs_diff": {
+    "fit": -0.2256,
+    "val": -0.2154,
+    "valCI": [
+     -0.334855,
+     -0.10829
+    ]
+   },
+   "mktDev": {
+    "fit": 0.0,
+    "val": 0.0
+   }
+  },
+  {
+   "league": "欧协联",
+   "a0": false,
+   "had_n": {
+    "fit": 39,
+    "val": 31
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 40,
+    "val": 36
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "欧国联",
+   "a0": false,
+   "had_n": {
+    "fit": 115,
+    "val": 24
+   },
+   "had_diff": {
+    "fit": -0.1685,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 117,
+    "val": 24
+   },
+   "crs_diff": {
+    "fit": -0.3336,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": 0.0,
+    "val": null
+   }
+  },
+  {
+   "league": "欧洲杯",
+   "a0": false,
+   "had_n": {
+    "fit": 38,
+    "val": 0
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 39,
+    "val": 0
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "欧罗巴",
+   "a0": false,
+   "had_n": {
+    "fit": 137,
+    "val": 148
+   },
+   "had_diff": {
+    "fit": -0.0987,
+    "val": -0.0244,
+    "valCI": [
+     -0.097719,
+     0.048486
+    ]
+   },
+   "crs_n": {
+    "fit": 138,
+    "val": 150
+   },
+   "crs_diff": {
+    "fit": -0.0896,
+    "val": -0.152,
+    "valCI": [
+     -0.246361,
+     -0.060226
+    ]
+   },
+   "mktDev": {
+    "fit": 0.0,
+    "val": 0.0
+   }
+  },
+  {
+   "league": "欧超杯",
+   "a0": false,
+   "had_n": {
+    "fit": 1,
+    "val": 0
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 1,
+    "val": 0
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "欧预赛",
+   "a0": false,
+   "had_n": {
+    "fit": 7,
+    "val": 0
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 8,
+    "val": 0
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "沙职",
+   "a0": false,
+   "had_n": {
+    "fit": 0,
+    "val": 127
+   },
+   "had_diff": {
+    "fit": null,
+    "val": -0.1125,
+    "valCI": [
+     -0.201444,
+     -0.033364
+    ]
+   },
+   "crs_n": {
+    "fit": 0,
+    "val": 133
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": -0.4151,
+    "valCI": [
+     -0.840282,
+     -0.14543
+    ]
+   },
+   "mktDev": {
+    "fit": null,
+    "val": 0.0
+   }
+  },
+  {
+   "league": "法乙",
+   "a0": false,
+   "had_n": {
+    "fit": 107,
+    "val": 102
+   },
+   "had_diff": {
+    "fit": -0.0161,
+    "val": -0.0305,
+    "valCI": [
+     -0.079216,
+     0.015915
+    ]
+   },
+   "crs_n": {
+    "fit": 107,
+    "val": 101
+   },
+   "crs_diff": {
+    "fit": -0.0533,
+    "val": 0.0043,
+    "valCI": [
+     -0.094428,
+     0.086323
+    ]
+   },
+   "mktDev": {
+    "fit": 0.0,
+    "val": 0.0
+   }
+  },
+  {
+   "league": "法国杯",
+   "a0": false,
+   "had_n": {
+    "fit": 19,
+    "val": 25
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 21,
+    "val": 27
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "法甲",
+   "a0": false,
+   "had_n": {
+    "fit": 255,
+    "val": 205
+   },
+   "had_diff": {
+    "fit": -0.0753,
+    "val": -0.0159,
+    "valCI": [
+     -0.057247,
+     0.025064
+    ]
+   },
+   "crs_n": {
+    "fit": 249,
+    "val": 204
+   },
+   "crs_diff": {
+    "fit": -0.1265,
+    "val": -0.0372,
+    "valCI": [
+     -0.101547,
+     0.021354
+    ]
+   },
+   "mktDev": {
+    "fit": 0.0,
+    "val": 0.0
+   }
+  },
+  {
+   "league": "瑞典杯",
+   "a0": false,
+   "had_n": {
+    "fit": 1,
+    "val": 0
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 1,
+    "val": 0
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "瑞超",
+   "a0": false,
+   "had_n": {
+    "fit": 158,
+    "val": 105
+   },
+   "had_diff": {
+    "fit": -0.0965,
+    "val": -0.18,
+    "valCI": [
+     -0.293069,
+     -0.072182
+    ]
+   },
+   "crs_n": {
+    "fit": 155,
+    "val": 102
+   },
+   "crs_diff": {
+    "fit": -0.2456,
+    "val": -0.2351,
+    "valCI": [
+     -0.380207,
+     -0.096818
+    ]
+   },
+   "mktDev": {
+    "fit": 0.0,
+    "val": 0.0
+   }
+  },
+  {
+   "league": "美洲杯",
+   "a0": false,
+   "had_n": {
+    "fit": 9,
+    "val": 0
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 10,
+    "val": 0
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "美职",
+   "a0": false,
+   "had_n": {
+    "fit": 70,
+    "val": 40
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 68,
+    "val": 40
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "英冠",
+   "a0": false,
+   "had_n": {
+    "fit": 224,
+    "val": 214
+   },
+   "had_diff": {
+    "fit": -0.0886,
+    "val": -0.0198,
+    "valCI": [
+     -0.055337,
+     0.014791
+    ]
+   },
+   "crs_n": {
+    "fit": 224,
+    "val": 212
+   },
+   "crs_diff": {
+    "fit": -0.112,
+    "val": -0.0705,
+    "valCI": [
+     -0.126714,
+     -0.01341
+    ]
+   },
+   "mktDev": {
+    "fit": 0.0,
+    "val": 0.0
+   }
+  },
+  {
+   "league": "英社区盾",
+   "a0": false,
+   "had_n": {
+    "fit": 1,
+    "val": 1
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 1,
+    "val": 1
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "英联赛杯",
+   "a0": false,
+   "had_n": {
+    "fit": 18,
+    "val": 25
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 17,
+    "val": 23
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "英超",
+   "a0": false,
+   "had_n": {
+    "fit": 412,
+    "val": 311
+   },
+   "had_diff": {
+    "fit": -0.0933,
+    "val": -0.0202,
+    "valCI": [
+     -0.057169,
+     0.017399
+    ]
+   },
+   "crs_n": {
+    "fit": 420,
+    "val": 311
+   },
+   "crs_diff": {
+    "fit": -0.1612,
+    "val": -0.0551,
+    "valCI": [
+     -0.109645,
+     -0.005792
+    ]
+   },
+   "mktDev": {
+    "fit": 0.0,
+    "val": 0.0
+   }
+  },
+  {
+   "league": "英足总杯",
+   "a0": false,
+   "had_n": {
+    "fit": 64,
+    "val": 22
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 67,
+    "val": 24
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "荷乙",
+   "a0": false,
+   "had_n": {
+    "fit": 3,
+    "val": 12
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 3,
+    "val": 11
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "荷兰杯",
+   "a0": false,
+   "had_n": {
+    "fit": 11,
+    "val": 18
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 12,
+    "val": 17
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "荷甲",
+   "a0": true,
+   "had_n": {
+    "fit": 152,
+    "val": 169
+   },
+   "had_diff": {
+    "fit": -0.0812,
+    "val": -0.0381,
+    "valCI": [
+     -0.078125,
+     -0.000867
+    ]
+   },
+   "crs_n": {
+    "fit": 161,
+    "val": 177
+   },
+   "crs_diff": {
+    "fit": -0.1251,
+    "val": -0.0543,
+    "valCI": [
+     -0.111106,
+     0.002038
+    ]
+   },
+   "mktDev": {
+    "fit": 0.0,
+    "val": 0.0
+   }
+  },
+  {
+   "league": "葡萄牙杯",
+   "a0": false,
+   "had_n": {
+    "fit": 8,
+    "val": 0
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 8,
+    "val": 0
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "葡超",
+   "a0": false,
+   "had_n": {
+    "fit": 165,
+    "val": 121
+   },
+   "had_diff": {
+    "fit": -0.0559,
+    "val": -0.0667,
+    "valCI": [
+     -0.111982,
+     -0.02108
+    ]
+   },
+   "crs_n": {
+    "fit": 181,
+    "val": 144
+   },
+   "crs_diff": {
+    "fit": -0.1478,
+    "val": -0.1353,
+    "valCI": [
+     -0.206662,
+     -0.066001
+    ]
+   },
+   "mktDev": {
+    "fit": 0.0,
+    "val": 0.0
+   }
+  },
+  {
+   "league": "西国王杯",
+   "a0": false,
+   "had_n": {
+    "fit": 28,
+    "val": 11
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 26,
+    "val": 11
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "西甲",
+   "a0": false,
+   "had_n": {
+    "fit": 423,
+    "val": 340
+   },
+   "had_diff": {
+    "fit": -0.0933,
+    "val": -0.0402,
+    "valCI": [
+     -0.065163,
+     -0.014524
+    ]
+   },
+   "crs_n": {
+    "fit": 423,
+    "val": 351
+   },
+   "crs_diff": {
+    "fit": -0.1521,
+    "val": -0.0921,
+    "valCI": [
+     -0.131821,
+     -0.049076
+    ]
+   },
+   "mktDev": {
+    "fit": 0.0,
+    "val": 0.0
+   }
+  },
+  {
+   "league": "西超杯",
+   "a0": false,
+   "had_n": {
+    "fit": 4,
+    "val": 3
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 4,
+    "val": 3
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "解放者杯",
+   "a0": false,
+   "had_n": {
+    "fit": 10,
+    "val": 0
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 10,
+    "val": 0
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "韩国杯",
+   "a0": false,
+   "had_n": {
+    "fit": 11,
+    "val": 2
+   },
+   "had_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "crs_n": {
+    "fit": 11,
+    "val": 2
+   },
+   "crs_diff": {
+    "fit": null,
+    "val": null,
+    "valCI": null
+   },
+   "mktDev": {
+    "fit": null,
+    "val": null
+   }
+  },
+  {
+   "league": "韩职",
+   "a0": false,
+   "had_n": {
+    "fit": 182,
+    "val": 141
+   },
+   "had_diff": {
+    "fit": -0.0233,
+    "val": -0.0592,
+    "valCI": [
+     -0.123901,
+     0.004473
+    ]
+   },
+   "crs_n": {
+    "fit": 181,
+    "val": 140
+   },
+   "crs_diff": {
+    "fit": -0.1349,
+    "val": -0.1799,
+    "valCI": [
+     -0.297448,
+     -0.064817
+    ]
+   },
+   "mktDev": {
+    "fit": 0.0,
+    "val": 0.0
+   }
+  }
+ ],
+ "flags": [
+  {
+   "league": "德甲",
+   "pool": "had",
+   "diffFit": -0.0876,
+   "diffVal": -0.0507,
+   "valCI": [
+    -0.083668,
+    -0.01752
+   ],
+   "bonferroniPass": false,
+   "z": -2.92,
+   "pOneSided": 0.0017646186407200837
+  },
+  {
+   "league": "德甲",
+   "pool": "crs",
+   "diffFit": -0.1561,
+   "diffVal": -0.089,
+   "valCI": [
+    -0.136257,
+    -0.04035
+   ],
+   "bonferroniPass": true,
+   "z": -3.67,
+   "pOneSided": 0.00012138607598843887
+  },
+  {
+   "league": "意甲",
+   "pool": "had",
+   "diffFit": -0.099,
+   "diffVal": -0.0626,
+   "valCI": [
+    -0.097003,
+    -0.0314
+   ],
+   "bonferroniPass": true,
+   "z": -3.55,
+   "pOneSided": 0.00019362596150318545
+  },
+  {
+   "league": "意甲",
+   "pool": "crs",
+   "diffFit": -0.1496,
+   "diffVal": -0.0986,
+   "valCI": [
+    -0.154103,
+    -0.038806
+   ],
+   "bonferroniPass": true,
+   "z": -3.55,
+   "pOneSided": 0.00019308728609068737
+  },
+  {
+   "league": "日职",
+   "pool": "crs",
+   "diffFit": -0.1742,
+   "diffVal": -0.1393,
+   "valCI": [
+    -0.227686,
+    -0.053436
+   ],
+   "bonferroniPass": true,
+   "z": -3.03,
+   "pOneSided": 0.0012426894964676638
+  },
+  {
+   "league": "欧冠",
+   "pool": "had",
+   "diffFit": -0.1077,
+   "diffVal": -0.1244,
+   "valCI": [
+    -0.203974,
+    -0.051277
+   ],
+   "bonferroniPass": true,
+   "z": -3.25,
+   "pOneSided": 0.0005676807938224115
+  },
+  {
+   "league": "欧冠",
+   "pool": "crs",
+   "diffFit": -0.2256,
+   "diffVal": -0.2154,
+   "valCI": [
+    -0.334855,
+    -0.10829
+   ],
+   "bonferroniPass": true,
+   "z": -3.7,
+   "pOneSided": 0.00010624288682814509
+  },
+  {
+   "league": "欧罗巴",
+   "pool": "crs",
+   "diffFit": -0.0896,
+   "diffVal": -0.152,
+   "valCI": [
+    -0.246361,
+    -0.060226
+   ],
+   "bonferroniPass": true,
+   "z": -3.12,
+   "pOneSided": 0.0008914508850654812
+  },
+  {
+   "league": "瑞超",
+   "pool": "had",
+   "diffFit": -0.0965,
+   "diffVal": -0.18,
+   "valCI": [
+    -0.293069,
+    -0.072182
+   ],
+   "bonferroniPass": true,
+   "z": -3.23,
+   "pOneSided": 0.0006159759523957087
+  },
+  {
+   "league": "瑞超",
+   "pool": "crs",
+   "diffFit": -0.2456,
+   "diffVal": -0.2351,
+   "valCI": [
+    -0.380207,
+    -0.096818
+   ],
+   "bonferroniPass": true,
+   "z": -3.16,
+   "pOneSided": 0.0008017885350057874
+  },
+  {
+   "league": "英冠",
+   "pool": "crs",
+   "diffFit": -0.112,
+   "diffVal": -0.0705,
+   "valCI": [
+    -0.126714,
+    -0.01341
+   ],
+   "bonferroniPass": false,
+   "z": -2.5,
+   "pOneSided": 0.006295719279542977
+  },
+  {
+   "league": "英超",
+   "pool": "crs",
+   "diffFit": -0.1612,
+   "diffVal": -0.0551,
+   "valCI": [
+    -0.109645,
+    -0.005792
+   ],
+   "bonferroniPass": false,
+   "z": -2.02,
+   "pOneSided": 0.0215049595803527
+  },
+  {
+   "league": "荷甲",
+   "pool": "had",
+   "diffFit": -0.0812,
+   "diffVal": -0.0381,
+   "valCI": [
+    -0.078125,
+    -0.000867
+   ],
+   "bonferroniPass": false,
+   "z": -1.9,
+   "pOneSided": 0.028873725201060907
+  },
+  {
+   "league": "葡超",
+   "pool": "had",
+   "diffFit": -0.0559,
+   "diffVal": -0.0667,
+   "valCI": [
+    -0.111982,
+    -0.02108
+   ],
+   "bonferroniPass": false,
+   "z": -2.88,
+   "pOneSided": 0.002015361956233641
+  },
+  {
+   "league": "葡超",
+   "pool": "crs",
+   "diffFit": -0.1478,
+   "diffVal": -0.1353,
+   "valCI": [
+    -0.206662,
+    -0.066001
+   ],
+   "bonferroniPass": true,
+   "z": -3.79,
+   "pOneSided": 7.467956306728141e-05
+  },
+  {
+   "league": "西甲",
+   "pool": "had",
+   "diffFit": -0.0933,
+   "diffVal": -0.0402,
+   "valCI": [
+    -0.065163,
+    -0.014524
+   ],
+   "bonferroniPass": true,
+   "z": -3.05,
+   "pOneSided": 0.0011586000636527594
+  },
+  {
+   "league": "西甲",
+   "pool": "crs",
+   "diffFit": -0.1521,
+   "diffVal": -0.0921,
+   "valCI": [
+    -0.131821,
+    -0.049076
+   ],
+   "bonferroniPass": true,
+   "z": -4.43,
+   "pOneSided": 4.698790460055946e-06
+  },
+  {
+   "league": "韩职",
+   "pool": "crs",
+   "diffFit": -0.1349,
+   "diffVal": -0.1799,
+   "valCI": [
+    -0.297448,
+    -0.064817
+   ],
+   "bonferroniPass": true,
+   "z": -3.02,
+   "pOneSided": 0.0012702071610866117
+  }
+ ],
+ "verdict": "出旗 13 个联赛池（过全部四闸·超过期望假阳 1.8）——v26 选场闸联赛分层另立预注册",
+ "discipline": "描述性 census·不作 EV 呈报"
+}
