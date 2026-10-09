@@ -1,0 +1,20 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>v31 大比分族包回测 · 审计报告</title>
+<style>
+:root{--ink:#1c2733;--sub:#5b6b7a;--line:#dde4ea;--bg:#f7f9fb;--card:#fff;--ok:#0f6b4f;--bad:#a33;--warn:#b3541e;--accent:#1a5fb4}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;color:var(--ink);background:var(--bg);margin:0;padding:24px 16px;max-width:1100px;margin-inline:auto}
+h1{font-size:20px;margin:0 0 4px} h2{font-size:15px;margin:20px 0 8px;padding-bottom:5px;border-bottom:2px solid var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 16px;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:12px;margin:5px 0}
+th,td{border:1px solid var(--line);padding:3px 6px;text-align:left} th{background:#f0f4f7}
+.num{font-variant-numeric:tabular-nums} .ok{color:var(--ok);font-weight:600} .bad{color:var(--bad);font-weight:600} .small{font-size:11.5px;color:var(--sub)}
+</style></head><body>
+<h1>v31 大比分族包回测 · realized ROI（体彩真实价）</h1>
+<div class="meta">跑时 2026-10-09 · 宇宙 12878 场（胆级 587）· 预注册 v31 · v30 先验 r=0.49</div>
+<div class="card"><b>终局：</b><span class="bad">SEALED(全spec CI含0或负 → 胆级选择救不动悬殊格r·与v30合流盖棺)</span></div>
+<h2>一、五 spec 汇总</h2>
+<div class="card"><table><tr><th>spec</th><th>场次</th><th>投注</th><th>中奖</th><th>realized ROI</th><th>r 实测</th><th>族命中率</th><th>市场隐含</th><th>bootstrap95%CI</th></tr><tr><td>S1</td><td class='num'>587</td><td class='num'>4696</td><td class='num'>3215.70</td><td class='num bad'>-31.5%</td><td class='num'>0.6848</td><td class='num'>29.0%</td><td class='num'>41.2%</td><td class='num'>-40.1%~-22.1%</td></tr><tr><td>S2</td><td class='num'>587</td><td class='num'>7044</td><td class='num'>4915.60</td><td class='num bad'>-30.2%</td><td class='num'>0.6978</td><td class='num'>45.7%</td><td class='num'>62.9%</td><td class='num'>-36.9%~-23.4%</td></tr><tr><td>S3</td><td class='num'>2915</td><td class='num'>23320</td><td class='num'>15269.70</td><td class='num bad'>-34.5%</td><td class='num'>0.6548</td><td class='num'>20.9%</td><td class='num'>30.2%</td><td class='num'>-39.4%~-29.5%</td></tr><tr><td>S4</td><td class='num'>587</td><td class='num'>4696</td><td class='num'>3149.70</td><td class='num bad'>-32.9%</td><td class='num'>0.6707</td><td class='num'>38.5%</td><td class='num'>55.6%</td><td class='num'>-40.8%~-24.8%</td></tr><tr><td>S5</td><td class='num'>587</td><td class='num'>2348</td><td class='num'>1904.10</td><td class='num bad'>-18.9%</td><td class='num'>0.8109</td><td class='num'>16.4%</td><td class='num'>20.5%</td><td class='num'>-33.9%~-3.3%</td></tr></table></div>
+<h2>二、对账行</h2>
+<div class="card"><pre>5spec共5263票(场)·格投注合计42104元·中奖合计28454.80元·总realized ROI -32.42%</pre><p class="small">票级复算 PASS · 多重检验 {"specs": 5, "expectedFP": 0.25, "note": "全报不挑·探针看过胆级带故此闸强制"}</p></div>
+<div class="small">开发者 sszhang · 2026-10-09 · tickets[] 逐场逐格可独立重算</div>
+</body></html>

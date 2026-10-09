@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>v31 设计 · 大比分族包批次（离散模型线）</title>
+<style>
+:root{--ink:#1c2733;--sub:#5b6b7a;--line:#dde4ea;--bg:#f7f9fb;--card:#fff;--ok:#0f6b4f;--bad:#a33;--warn:#b3541e;--accent:#1a5fb4}
+*{box-sizing:border-box}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;color:var(--ink);background:var(--bg);margin:0;padding:24px 16px;max-width:1000px;margin-inline:auto}
+h1{font-size:20px;margin:0 0 4px}
+h2{font-size:15px;margin:20px 0 8px;padding-bottom:5px;border-bottom:2px solid var(--accent)}
+.meta{color:var(--sub);font-size:12.5px;margin-bottom:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 16px;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:12.5px;margin:5px 0}
+th,td{border:1px solid var(--line);padding:4px 7px;text-align:left;vertical-align:top}
+th{background:#f0f4f7}
+.num{font-variant-numeric:tabular-nums}
+.ok{color:var(--ok);font-weight:600}.bad{color:var(--bad);font-weight:600}.warn{color:var(--warn);font-weight:600}
+.small{font-size:11.5px;color:var(--sub)}
+</style></head><body>
+
+<h1>v31 设计 · 大比分族包批次（离散模型线）</h1>
+<div class="meta">拍板 sszhang · 2026-10-09 · 预注册 fade-strategy-prereg v31（c2fbc07·原 v20 编号被对面会话 v20~v30 占用顺延）· 流程=过线才接影子（大哥拍板）</div>
+
+<h2>〇、假设与先验</h2>
+<div class="card">
+<table>
+<tr><th>证据</th><th>内容</th><th>对本批的含义</th></tr>
+<tr><td>探针（2026-10-09）</td><td>胆级场（p≥0.75）大比分率 <b>32.0%</b> vs 全池基线 15.6%（n=12,878）= 2.05×</td><td>频率侧有燃料</td></tr>
+<tr><td>v30 先验（对面会话）</td><td>悬殊格返还率 r：净胜2 <b>0.586</b> / 净胜3 <b>0.492</b> / 净胜4 <b>0.477</b>（反向 favourite-longshot bias）</td><td>价值侧全池被重抽</td></tr>
+<tr><td><b>合成赌题</b></td><td colspan="2">2.05 × 0.49 ≈ <b>1.00 贴线</b>——胆级选场能否把悬殊族格的 r 拉回 1 之上？这是 v30 没回答的那半</td></tr>
+</table>
+<p class="small">结构与 v30 判死的路径刻意错开：v30 判的是<b>悬殊格 4串1</b>（r&lt;1 时串越多越差）；本批是<b>单场族包</b>（每场一族格独立单关·不串关）。</p>
+</div>
+
+<h2>一、Spec 全集（5 个·跑前写死·全报不挑）</h2>
+<div class="card">
+<table>
+<tr><th>spec</th><th>选场</th><th>票面（每格 2 元独立单关）</th></tr>
+<tr><td>S1 窄族包</td><td>胆级 p≥0.75（587 场）</td><td>热门侧 3:0 + 4:0 + 3:1 + 胜其他（4 格）</td></tr>
+<tr><td>S2 宽族包</td><td>同 S1</td><td>+ 2:0 + 4:1（6 格）</td></tr>
+<tr><td>S3 衰减对照</td><td>标准级 0.60~0.75（2,915 场）</td><td>同 S1 票面</td></tr>
+<tr><td>S4 TTG 大档</td><td>胆级场</td><td>总进球 4+5+6+7（4 格）</td></tr>
+<tr><td>S5 小比分对照</td><td>胆级场</td><td>1:1 + 热门侧 1:0/0:1（2 格·现模板行为）</td></tr>
+</table>
+<p class="small">热门侧 = had 去水 argmax 方向（主热门用 3:0/4:0/3:1/other_h，客热门镜像 0:3/0:4/1:3/other_a）。</p>
+</div>
+
+<h2>二、结算与判据</h2>
+<div class="card">
+<p><b>realized 口径</b>：每格 2 元独立单关；命中格回款 = 2 × 该格体彩赔率；ROI = Σ中奖 / Σ投注 − 1。</p>
+<table>
+<tr><th>#</th><th>判据</th></tr>
+<tr><td>①</td><td>任一 spec bootstrap 95%CI 下限 &gt; 0 → <span class="ok">过线</span>·建每日影子 spec（预注册转正流程）</td></tr>
+<tr><td>②</td><td>全 spec CI 含 0 或负 → <span class="bad">盖棺</span>·胆级选择救不动悬殊格 r·与 v30 合流</td></tr>
+<tr><td>③</td><td>多重检验：5 spec 全报不挑·期望假阳 0.25 对账（探针已看过胆级带·此闸强制）</td></tr>
+</table>
+<p class="small">bootstrap=场重抽样 ×2000·种子 20261009 · 附加读数：族内命中率 vs 市场隐含 Σ(1/o) · r 实测 vs v30 先验 0.49 对账 · 分赛季。</p>
+</div>
+
+<h2>三、纪律与产出</h2>
+<div class="card">
+<p>防泄漏（选场只用封盘价·纯规则无重放）· 审计三件套（逐票 stdout + tickets[] + --audit）· 影子级隔离（过线才建 spec）。产出：<code>v31-blowout-family-backtest.json</code> + 审计报告 HTML · 脚本分钟级。</p>
+</div>
+
+<div class="small">开发者 sszhang · 2026-10-09 · 纪律保障清单八条已在预注册舱 v31 条目逐项落位</div>
+</body></html>
