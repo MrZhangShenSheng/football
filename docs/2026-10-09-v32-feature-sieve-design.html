@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>v32 设计 · 特征筛子批次（标签=总进球≥5）</title>
+<style>
+:root{--ink:#1c2733;--sub:#5b6b7a;--line:#dde4ea;--bg:#f7f9fb;--card:#fff;--ok:#0f6b4f;--bad:#a33;--warn:#b3541e;--accent:#1a5fb4}
+*{box-sizing:border-box}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;color:var(--ink);background:var(--bg);margin:0;padding:24px 16px;max-width:1000px;margin-inline:auto}
+h1{font-size:20px;margin:0 0 4px}
+h2{font-size:15px;margin:20px 0 8px;padding-bottom:5px;border-bottom:2px solid var(--accent)}
+.meta{color:var(--sub);font-size:12.5px;margin-bottom:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 16px;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:12.5px;margin:5px 0}
+th,td{border:1px solid var(--line);padding:4px 7px;text-align:left;vertical-align:top}
+th{background:#f0f4f7}
+.num{font-variant-numeric:tabular-nums}
+.ok{color:var(--ok);font-weight:600}.bad{color:var(--bad);font-weight:600}.warn{color:var(--warn);font-weight:600}
+.small{font-size:11.5px;color:var(--sub)}
+</style></head><body>
+
+<h1>v32 设计 · 特征筛子批次（标签=总进球≥5）</h1>
+<div class="meta">拍板 sszhang · 2026-10-09 · 预注册 fade-strategy-prereg v32（e580933）· 大哥三连拍板：特征筛子 + 大比分定义修正 + 先落一版</div>
+
+<h2>〇、标签修正与翻译玩法</h2>
+<div class="card">
+<p><b>大比分 = 总进球多</b>（3:2/3:4 均为正——净胜≥3 的旧定义作废，那是碾压不是对攻）。全池 ≥5 球率 15.8%·胆级 22.1%。</p>
+<table>
+<tr><th>翻译玩法</th><th>票面</th><th>分带实测 r（探针）</th></tr>
+<tr><td><b>TTG s5+s6+s7 三格包（主）</b></td><td>6 元/场·命中格回 2×赔率</td><td class="num">全池 0.597 / 胆级 0.653（重税带：隐含 22.2%~32.5%）</td></tr>
+<tr><td>CRS 高总分族（对照）</td><td>3:2/2:3/3:3/4:1/1:4 六格=12 元</td><td>待本批测</td></tr>
+</table>
+</div>
+
+<h2>一、特征（8 维·全部 as-of）与模型</h2>
+<div class="card">
+<table>
+<tr><th>#</th><th>特征</th><th>来源/算法</th></tr>
+<tr><td>1</td><td><b>λ和</b>（对攻主信号）</td><td>V3W HST 质量层重放·赛前时点</td></tr>
+<tr><td>2-3</td><td>λ主、λ客</td><td>同上</td></tr>
+<tr><td>4</td><td>TTG 大球隐含（s4~s7 逆赔率和）</td><td>市场自定价（对照维度）</td></tr>
+<tr><td>5</td><td>联赛 trailing 场均总进球</td><td>hist 自算·同联赛更早日期·min20 场</td></tr>
+<tr><td>6</td><td>两队近 5 场场均总进球</td><td>hist 自算·两侧 last5 均值·缺省回退联赛均值</td></tr>
+<tr><td>7</td><td>had 去水 p</td><td>市场置信</td></tr>
+<tr><td>8</td><td>客热门 dummy</td><td>P4a 白浓缩孔</td></tr>
+</table>
+<p><b>模型</b>：logistic 回归（numpy IRLS 自实现·8 维标准化+截距·确定性无随机源）·<b>fit=2023-09~2024-12 硬切 · val=2025-01~2025-10</b>。防泄漏闸：联赛/近况特征<b>同日整组先算后更</b>（同日比赛互不可见）·λ 走 V3W 内部 as-of·sfm 教训锁死 8 维不上树模型。</p>
+</div>
+
+<h2>二、筛法与对照</h2>
+<div class="card">
+<p>滚动池 {D, D+1} → 模型概率降序 <b>Top-K（K=1/2/3）</b> → 每场 TTG 三格包。对照组：<b>纯市场筛</b>（p 降序 Top-K·r=0.653）/ <b>随机筛 ×200</b> / <b>全池基线</b>（0.597）/ CRS 高总分族。全部 spec 与对照<b>只报不挑</b>。</p>
+</div>
+
+<h2>三、判据（预注册·机械应用）</h2>
+<div class="card">
+<table>
+<tr><th>#</th><th>判据</th></tr>
+<tr><td>①</td><td><b>val 段</b>任一 K 档族包 realized ROI bootstrap 95%CI 下限&gt;0（r&gt;1）→ 过线建影子 spec</td></tr>
+<tr><td>②</td><td>fit/val 两段 r 同向且差 &lt;5pp 才认结构（防单段噪声）</td></tr>
+<tr><td>③</td><td>特征模型须<b>打赢全部对照</b>（纯市场/随机/全池）——打不赢=特征无增量·市场 TTG 定价已含攻防信息</td></tr>
+<tr><td>④</td><td>K 三档+对照全报·期望假阳对账</td></tr>
+</table>
+<p class="small">bootstrap=日重抽样 ×2000 种子 20261010 · 审计三件套：逐票 stdout + tickets[] + --audit 全链路重放（特征+IRLS 确定性重建·模型系数随产物冻结）。</p>
+</div>
+
+<h2>四、诚实先验</h2>
+<div class="card">
+<p>TTG 大档全池 r=0.60 是重税带；特征模型需把筛后命中率从 22% 拉到 33%（+11pp）才过线——λ和若真是市场盲区有此量级；若市场 TTG 定价已含攻防信息（它理应含一部分），会死得很标准。跑完是什么就是什么。</p>
+</div>
+
+<div class="small">开发者 sszhang · 2026-10-09 · V3W λ 重放 ~13 分钟 + 特征矩阵 + IRLS + 回测分钟级</div>
+</body></html>
