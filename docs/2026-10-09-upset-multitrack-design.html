@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>冷门多轨侦测方案设计书 v1</title>
+<style>
+:root {
+  --ink: #1f2933; --sub: #52606d; --line: #d5dde3;
+  --accent: #8a3ffc; --ok: #127c5a; --warn: #b5670f; --dead: #a03030; --run: #1c6dd0;
+  --bg: #ffffff; --panel: #f5f7f9;
+}
+* { box-sizing: border-box; }
+body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; color: var(--ink);
+  background: var(--bg); margin: 0; padding: 32px 20px 64px; line-height: 1.75; }
+.wrap { max-width: 1000px; margin: 0 auto; }
+h1 { font-size: 24px; margin: 0 0 4px; }
+h2 { font-size: 18px; margin: 40px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--line); }
+h3 { font-size: 15px; margin: 22px 0 8px; color: var(--accent); }
+.meta { color: var(--sub); font-size: 13px; margin-bottom: 20px; }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; margin: 10px 0 4px; }
+th, td { border: 1px solid var(--line); padding: 6px 9px; text-align: left; vertical-align: top; }
+th { background: var(--panel); font-weight: 600; white-space: nowrap; }
+.dead { color: var(--dead); } .ok { color: var(--ok); } .run { color: var(--run); } .warn { color: var(--warn); }
+.box { background: var(--panel); border-left: 3px solid var(--accent); padding: 12px 16px; margin: 14px 0; font-size: 13.5px; }
+.box b { color: var(--accent); }
+code { background: var(--panel); padding: 1px 5px; border-radius: 3px; font-size: 12.5px; }
+figure { margin: 18px 0; text-align: center; }
+figcaption { color: var(--sub); font-size: 12.5px; margin-top: 6px; }
+ul, ol { padding-left: 22px; } li { margin: 3px 0; }
+.small { font-size: 12.5px; color: var(--sub); }
+</style>
+</head>
+<body><div class="wrap">
+
+<h1>冷门多轨侦测方案设计书</h1>
+<div class="meta">版本 v1 · 2026-10-09 · 开发者 sszhang · 依据大哥立题「预测冷门不是瞎猜，总是有依据的」· 多轨并立，逐轨有据，逐轨可判</div>
+
+<div class="box">
+<b>总纲：</b>冷门有成因，侦测有依据——本方案把「选出可能出冷门的比赛」拆成<b>一谱四轨两出口</b>：
+一谱 = 冷门成因谱（每条依据标注项目内实证状态）；四轨 = 按数据及时性与可判性分立的侦测轨道；
+两出口 = 侦测结果的两种变现路径（避雷警示 / 右尾排序）。历史可判之轨当日出判决，前向之轨自动积累。
+<b>诚实边界：全部判据为信息层（侦测）与结构层（选带），不作 EV 转正承诺；利润层只如实报告。</b>
+</div>
+
+<figure>
+<svg viewBox="0 0 920 560" width="100%" style="max-width:920px;color:var(--ink)" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="冷门多轨侦测架构图">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <g font-size="13" fill="currentColor">
+    <!-- 左：成因谱 -->
+    <text x="30" y="30" font-weight="bold" font-size="14">依据谱（冷门成因）</text>
+    <g stroke="currentColor" fill="none" stroke-width="1">
+      <rect x="30" y="42"  width="230" height="34" rx="4"/><rect x="30" y="84"  width="230" height="34" rx="4"/>
+      <rect x="30" y="126" width="230" height="34" rx="4"/><rect x="30" y="168" width="230" height="34" rx="4"/>
+      <rect x="30" y="210" width="230" height="34" rx="4"/><rect x="30" y="252" width="230" height="34" rx="4"/>
+      <rect x="30" y="294" width="230" height="34" rx="4"/><rect x="30" y="336" width="230" height="34" rx="4"/>
+    </g>
+    <g text-anchor="middle">
+      <text x="145" y="57">统计回归（射正透支）</text><text x="145" y="71" font-size="11" opacity="0.65">待审 · 轨1</text>
+      <text x="145" y="99">联赛环境（混乱度）</text><text x="145" y="113" font-size="11" opacity="0.65">待审 · 轨1</text>
+      <text x="145" y="141">国际窗口（征调疲劳）</text><text x="145" y="155" font-size="11" opacity="0.65">待审 · 轨1</text>
+      <text x="145" y="183">主客特化 / 防线 / 波动率</text><text x="145" y="197" font-size="11" opacity="0.65">待审 · 轨1</text>
+      <text x="145" y="225">战意错位（无欲 vs 生死）</text><text x="145" y="239" font-size="11" opacity="0.65">待审 · 轨2（净地）</text>
+      <text x="145" y="267">人员突变（伤停/停赛）</text><text x="145" y="281" font-size="11" opacity="0.65">静态已证伪 · 变更归轨4</text>
+      <text x="145" y="309">轮换（杯赛/密集期）</text><text x="145" y="323" font-size="11" opacity="0.65">首发时点 · 归轨4</text>
+      <text x="145" y="351">战术相克 / 天气 / 裁判</text><text x="145" y="365" font-size="11" opacity="0.65">无结构化数据源 · 不立</text>
+    </g>
+    <!-- 中：四轨 -->
+    <text x="410" y="30" font-weight="bold" font-size="14">四轨</text>
+    <g stroke="currentColor" fill="none" stroke-width="1.2">
+      <rect x="380" y="52"  width="250" height="52" rx="4" stroke-dasharray="none"/>
+      <rect x="380" y="122" width="250" height="52" rx="4"/>
+      <rect x="380" y="192" width="250" height="52" rx="4"/>
+      <rect x="380" y="262" width="250" height="52" rx="4"/>
+    </g>
+    <g text-anchor="middle">
+      <text x="505" y="72" font-weight="bold">轨1 统计先验终审</text><text x="505" y="90" font-size="11.5">fd四季·历史当日判·v31</text>
+      <text x="505" y="142" font-weight="bold">轨2 战意赛制终审</text><text x="505" y="160" font-size="11.5">积分榜×赛程·历史判·v32</text>
+      <text x="505" y="212" font-weight="bold">轨3 结构出口（三带卡）</text><text x="505" y="230" font-size="11.5">无侦测主张·已定稿09-30</text>
+      <text x="505" y="282" font-weight="bold">轨4 临场变更前向</text><text x="505" y="300" font-size="11.5">lineup_watch·自动积累·约1月判</text>
+    </g>
+    <!-- 右：两出口 -->
+    <text x="740" y="30" font-weight="bold" font-size="14">两出口</text>
+    <g stroke="currentColor" fill="none" stroke-width="1.2">
+      <rect x="710" y="100" width="180" height="60" rx="4"/>
+      <rect x="710" y="210" width="180" height="60" rx="4"/>
+    </g>
+    <g text-anchor="middle">
+      <text x="800" y="124" font-weight="bold">出口甲 · 避雷</text><text x="800" y="142" font-size="11.5">upsetWarn 卡面警示</text>
+      <text x="800" y="234" font-weight="bold">出口乙 · 右尾排序</text><text x="800" y="252" font-size="11.5">冷门倾向榜喂三带卡</text>
+    </g>
+    <!-- 箭头 -->
+    <g stroke="currentColor" stroke-width="1.2" fill="none" marker-end="url(#ar)">
+      <path d="M262,78  C330,78 340,78 376,78"/>
+      <path d="M262,120 C330,120 340,120 376,120"/>
+      <path d="M262,162 C330,148 340,140 376,133"/>
+      <path d="M262,204 C320,215 330,218 376,222"/>
+      <path d="M262,246 C320,232 330,228 376,226"/>
+      <path d="M262,274 C330,262 340,256 376,250"/>
+      <path d="M262,316 C340,300 360,290 500,288 L500,318"/>
+      <path d="M632,78  C700,90 706,110 708,124"/>
+      <path d="M632,148 C700,160 706,200 708,222"/>
+      <path d="M632,218 C700,220 706,230 708,236"/>
+      <path d="M632,288 C700,290 706,264 708,258"/>
+    </g>
+    <!-- 底部终答 -->
+    <g stroke="currentColor" fill="none" stroke-width="1">
+      <rect x="380" y="380" width="250" height="56" rx="4" stroke-dasharray="5 4"/>
+    </g>
+    <text x="505" y="404" text-anchor="middle" font-weight="bold">全灭时的终答</text>
+    <text x="505" y="422" text-anchor="middle" font-size="11.5">「选场中性，选带是杠杆」</text>
+    <path d="M505,316 L505,376" stroke="currentColor" stroke-width="1.2" fill="none" marker-end="url(#ar)" stroke-dasharray="5 4"/>
+    <text x="380" y="470" font-size="12" opacity="0.8">纪律：判据跑前预注册 · strict_merged lag=2 · Bonferroni 同报不挑拣 · 利润层如实报不作立废</text>
+    <text x="380" y="492" font-size="12" opacity="0.8">已死不复活：伤停静态名单 / 赔率一切变换 / 通用休息差 / 联赛排除法 / H2H / 模型alpha / 六剧本 / 谚语</text>
+  </g>
+</svg>
+<figcaption>图一 · 一谱四轨两出口总架构</figcaption>
+</figure>
+
+<h2>一、依据谱：冷门的八条成因与项目内实证状态</h2>
+<table>
+<tr><th>成因</th><th>机制</th><th>项目内实证</th><th>数据源·及时性</th><th>裁定</th></tr>
+<tr><td>统计回归</td><td>热门方近期进球远超射正×转化率预期 = 运气透支，均值回归</td><td>08-29 合分成员，合分成绩 0.906（基线 0.838）判噪声级——<b>从未单独审判</b></td><td>fd 射正列 · 赛前全知</td><td class="run">轨1 受审</td></tr>
+<tr><td>联赛环境</td><td>联赛固有混乱度（法甲热门失手 29.1% vs 葡超 19.8%）</td><td>谚语轮已有联赛分布表；v25 只查模型弱势，<b>未作冷门先验特征</b></td><td>本地历史 · 赛前全知</td><td class="run">轨1 受审</td></tr>
+<tr><td>国际窗口</td><td>FIFA 比赛日后首战：国脚征调疲劳 + 长途旅行</td><td>通用休息差已证伪（rest_days_test 市场已定价），但<b>征调特异版未测</b></td><td>赛程日历 · 赛前全知</td><td class="run">轨1 受审</td></tr>
+<tr><td>主客特化 / 防线恶化 / 波动率</td><td>客场虫属性、失球趋势上行、近况大起大落</td><td>08-29 仅作合分成员；波动率<b>全新未测</b></td><td>fd · 赛前全知</td><td class="run">轨1 受审</td></tr>
+<tr><td>战意错位</td><td>无欲无求 vs 生死战（保级拼命 / 死气场 / 杯赛优先 / 争冠压力）</td><td><b>净地</b>——08-29 六条剧本皆节奏/进球盘剧本（已勘验原文），战意类从未上审判台</td><td>积分榜×赛程 · 赛前数日全知</td><td class="run">轨2 受审</td></tr>
+<tr><td>人员突变</td><td>关键球员缺阵直接削弱实力</td><td>09-29 终判：方向真实（Δ伤停主胜率 40.4%→45.4% 单调）但<b>静态名单市场完全定价</b>（隐含−实际 ±1.4pp 内）</td><td>体彩 insight · 及时性差（大哥裁定）</td><td class="dead">静态封碑；变更时点归轨4</td></tr>
+<tr><td>轮换</td><td>杯赛/密集期大轮换（09-21 英锦标判例：全场最强变量）</td><td>首发公布约开赛前 1 小时——同属时点问题</td><td>ESPN 首发 · 临场</td><td class="warn">归轨4 前向</td></tr>
+<tr><td>战术相克 / 天气 / 裁判</td><td>摆大巴、反击相克；雨战；红牌倾向裁判</td><td>无结构化数据源</td><td>—</td><td class="dead">不立（无源不立）</td></tr>
+</table>
+
+<h2>二、轨1 · 统计先验终审（v31，历史当日可判）</h2>
+<h3>特征（跑前写死，合分 = 各因子 z 化等权）</h3>
+<ul>
+<li><b>F1 射正转化回归</b>：热门方近 6 场（进球 − 射正×0.30），正值大 = 透支待回归</li>
+<li><b>F2 主客特化差</b>：冷门方主场净胜 − 全场合净胜；热门为客队时看其客场特化</li>
+<li><b>F3 防线恶化</b>：热门方近 3 场均失 − 前 3 场均失（上行 = 恶化）</li>
+<li><b>F4 结果波动率</b>：热门方近 6 场净胜球方差</li>
+<li><b>F5 联赛混乱度</b>：该联赛前两季滚动热门失手率</li>
+<li><b>F6 国际窗口</b>：开赛日距上一 FIFA 窗口关闭 ≤3 日（0/1 旗标）</li>
+<li><b>I1 强热门叠加</b>：市场隐含 ≥0.65 且 F1/F3/F4 任一居样本 top30%</li>
+</ul>
+<h3>数据与口径</h3>
+<ul>
+<li>底仓：fd 四季（2223–2526）13 联赛，Pinnacle 收盘去水定隐含；冷门腿 = 隐含 &lt;20%，预估约六千条</li>
+<li>切分：前两季 fit / 后两季 val，val 为准；walk-forward 因子（复用 08-29 骨架）；strict_merged lag=2 防泄漏（铁律14①）</li>
+</ul>
+<h3>预注册判据（fade-strategy-prereg v31，跑前写死）</h3>
+<ol>
+<li><b>主判据（信息层）</b>：val 段合分 top10% 冷门腿 命中率 − 市场隐含 ≥ <b>+2.5pp 且 bootstrap（2000 次·seed 20261009）CI 下界 &gt; +1pp</b> → 侦测器成立</li>
+<li><b>副判据</b>：合分五分位对冷门命中率单调（趋势检验）</li>
+<li><b>利润层</b>：top10% 回收率如实报出（对照全池基线 ≈0.84），不作立废依据；唯若 &gt;1.0 且 CI 下界 &gt;1.0 → 升级为项目首个 alpha 重大发现，另立前向验证</li>
+<li><b>多重比较</b>：主判据一件先行；单因子表全部同报不挑拣，标注探索性不作立废（防 42 选 1 陷阱）</li>
+<li><b>不过 → 轨1 结案</b>：五因子余烬入坟，冷门侦测只剩轨2/轨4</li>
+</ol>
+
+<h2>三、轨2 · 战意赛制终审（v32，第二顺位，历史可判）</h2>
+<h3>先行审计（已毕）</h3>
+<p class="small">08-29 六条剧本原文勘验：双慢热闷局 / 强强保守 / 对攻开放 / 一边倒屠杀 / 疲劳低分 / 主客场极化——<b>全是节奏与进球盘剧本，零战意条目</b>。轨2 为净地，非重走。</p>
+<h3>特征编码（walk-forward，积分榜由联赛库逐轮重建，只用当轮之前信息）</h3>
+<ul>
+<li><b>M1 死气场</b>：联赛剩 ≤10 轮且<b>双方</b>距欧战区与降级区均已无悬念（按分差×剩余轮次数学判定）</li>
+<li><b>M2 保级拼命</b>：一方处降级区/附加赛区，对手已安全</li>
+<li><b>M3 欧战 slack</b>：热门方本周中有欧战且下轮仍有（赛程日历可判，不碰伤停）</li>
+<li><b>M4 争冠压力</b>：分差 ≤3 的榜首/次席且剩 ≤6 轮</li>
+</ul>
+<h3>判据</h3>
+<p>同轨1 口径（信息层主判据 + 单调副判据 + 利润层如实报）。诚实先验：战意属公开信息，市场大概率已定价——但从未直接验证，值得一审；过则与轨1 同入出口。</p>
+
+<h2>四、轨3 · 结构出口（无侦测主张，纯工程）</h2>
+<ul>
+<li>三带卡（热门 2 串 / 桂林带 / 梅州带）已于 09-30 定稿，<code>make_card()</code> 在库</li>
+<li>轨1/轨2 任一过信息层 → <b>冷门倾向榜</b>（每轮 top-K 场）喂带内选腿排序，同 2 元票命中率更高</li>
+<li>都不过 → 带内按价序（right_tail Part A 已证选场中性——市场有效下选场不改 P(≥M)/票）</li>
+</ul>
+
+<h2>五、轨4 · 临场变更前向（自动运行，零新增成本）</h2>
+<ul>
+<li>lineup_watch 伤停轨：体彩<b>自家</b> insight 频道节流复查 + 变更事件 10 分钟级时间戳（大哥裁定伤停外部源及时性差——此轨恰只测体彩自家频道的时滞，不依赖外部快讯）</li>
+<li>现状（10-09 实测）：8 日 86 场 · 伤停快照 85 场 · 变更事件 20 起 · 赛果 26 场</li>
+<li>门槛：快照 ≥300 场且变更事件 ≥30（预注册三口径在脚本头：临场变更率 / 调价吸收率 / 可利用性），以当前节奏约一月到判，<b>自动出判不占人力</b></li>
+</ul>
+
+<h2>六、两出口与排期</h2>
+<table>
+<tr><th>出口</th><th>内容</th><th>先例/依赖</th></tr>
+<tr><td>甲 · 避雷</td><td>高危场卡面 upsetWarn（热门腿警示），不动选场</td><td>v26 leagueWarn 先例（警示先落，前向攒证后再议行为层）</td></tr>
+<tr><td>乙 · 右尾</td><td>冷门倾向榜喂三带卡带内排序</td><td>依赖轨1/轨2 至少一轨过信息层</td></tr>
+</table>
+<table>
+<tr><th>顺位</th><th>动作</th><th>成本</th></tr>
+<tr><td>1（当日）</td><td>轨1：prereg v31 写死 → v31_cold_detector.py 跑 → 判决 JSON 归档 → pytest 全量 → commit</td><td>一脚本，当日毕</td></tr>
+<tr><td>2（次日）</td><td>轨2：审计（已毕）→ prereg v32 → v32_motivation_gate.py → 判决归档</td><td>一脚本</td></tr>
+<tr><td>3（随判）</td><td>出口接线：过则 upsetWarn + 倾向榜落 strength_chain_prod / make_card；不过则结案归档</td><td>小改</td></tr>
+<tr><td>4（自动）</td><td>轨4：lineup_watch 持续积累，到门槛出判</td><td>零</td></tr>
+</table>
+
+<h2>七、诚实前提与已证伪不复活清单</h2>
+<div class="box">
+本方案<b>不承诺任何 EV 转正</b>。任一轨「过」的含义 = 信息层侦测成立（冷门命中率显著高于市场隐含），其价值出口为避雷与右尾命中率优化；利润层恒如实报告。
+CRS 冷门格期望已由 v30 封死（返还率随赔率单调衰减 0.77→0.29）。
+已死不复活：<b>伤停静态名单</b>（09-29 市场完全定价 + 及时性裁定）、<b>赔率一切变换</b>（铁律13 三轮）、<b>通用休息天数</b>（rest_days_test）、<b>联赛排除法</b>（v26）、<b>H2H</b>（预测力垫底）、<b>模型 alpha</b>（v24 全端零）、<b>五句谚语四句</b>、<b>六条剧本</b>。
+全轨皆灭时的终答八字：<b>「选场中性，选带是杠杆」</b>——冷门票的命中率杠杆在赔率带与串形（三带已定稿），不在挑哪一场。
+</div>
+
+<p class="small">数据来源：docs/2026-08-29-evidence-discovery-experiment.html（四轮实验与六剧本原文）· docs/2026-09-29-positive-ev-falsification.html §二点五（伤停终判）· data/04-summaries/v30-longshot-roi.json（冷端抽水）· engine/cache/insight_injuries.json（4999 场伤停档）· data/05-trends/*-lineups.json（轨4 现状实测）· engine/scripts/research/longshot_factor_test.py（08-29 因子骨架）· right_tail_hitrate 判定（选场中性）</p>
+
+</div></body>
+</html>
