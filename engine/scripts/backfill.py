@@ -253,8 +253,8 @@ def option_hit(rec: dict, hg: int, ag: int, hhg: int | None = None, hag: int | N
     m = re.match(r"^(\d+)\s*[-:：]\s*(\d+)$", pick)
     if m:  # 比分（连字符 '0-2' 预测口径 / 冒号 '0:2' 体彩票面口径）
         return int(m.group(1)) == hg and int(m.group(2)) == ag
-    m = re.match(r"^(\d)\+?$", pick)
-    if m:  # 总进球 N 球 / N+球
+    m = re.match(r"^s?(\d)\+?$", pick)
+    if m:  # 总进球 N 球 / N+球（'3球'剥尾字→'3'；10-08轮新格式'ttg s4'→'s4'）
         total = hg + ag
         n = int(m.group(1))
         return total >= n if pick.endswith("+") else total == n
@@ -394,6 +394,14 @@ def backfill(day_limit: str | None = None) -> dict:
                           if str(rec.get("pick") or "").upper().startswith("HHAD") else None)
                     if dh is not None:
                         rec["directionHit"] = dh
+                        data["_dirty"] = True
+                        n_fix += 1
+                if sc and rec.get("optionHit") is None:
+                    # 已回填但选项未判（option_hit 判定器升级后补算，如 ttg 's4' 新格式）
+                    hh, ha = parse_score(rec.get("half")) or (None, None)
+                    oh = option_hit(rec, sc[0], sc[1], hh, ha)
+                    if oh is not None:
+                        rec["optionHit"] = oh
                         data["_dirty"] = True
                         n_fix += 1
                 # 已回填：pinClose 补跑（无则 fd 四键匹配）+ 精确 CLV 补算（pinClose 有而 clv 无）
