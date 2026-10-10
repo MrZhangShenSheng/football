@@ -169,6 +169,7 @@ def strip_play(pick: str) -> str:
     parts = pick.split(" ", 1)
     body = parts[1].strip() if parts[0].upper() in PLAY_PREFIXES and len(parts) == 2 else pick
     body = re.sub(r"[（(][^（）()]*[)）]", " ", body)
+    body = re.sub(r"@\d+(?:\.\d+)?\s*$", "", body)  # 尾部@赔率注释：'主胜@1.31' → '主胜'（10-08轮新格式）
     return body.replace("维持", "").replace("存续", "").strip()
 
 
@@ -390,7 +391,7 @@ def backfill(day_limit: str | None = None) -> dict:
                 if sc and rec.get("directionHit") is None:
                     dh = (outcome_of(*sc) == oi if oi is not None
                           else hhad_hit(str(rec.get("pick") or "").split(" ", 1)[-1], *sc)
-                          if str(rec.get("pick") or "").startswith("HHAD") else None)
+                          if str(rec.get("pick") or "").upper().startswith("HHAD") else None)
                     if dh is not None:
                         rec["directionHit"] = dh
                         data["_dirty"] = True
@@ -478,7 +479,7 @@ def backfill(day_limit: str | None = None) -> dict:
             oi = pick_outcome_idx(rec)
             if oi is not None:
                 rec["directionHit"] = outcome_of(hg, ag) == oi
-            elif str(rec.get("pick") or "").startswith("HHAD"):
+            elif str(rec.get("pick") or "").upper().startswith("HHAD"):
                 # 让球腿：pick 如 'HHAD 让球主胜(-2)'，三向判定器不识别 → hhad_hit 让球线判定
                 rec["directionHit"] = hhad_hit(str(rec["pick"]).split(" ", 1)[-1], hg, ag)
             else:
@@ -516,7 +517,7 @@ def backfill(day_limit: str | None = None) -> dict:
             oi = pick_outcome_idx(rec)
             if oi is not None:
                 rec["directionHit"] = outcome_of(hg, ag) == oi
-            elif str(rec.get("pick") or "").startswith("HHAD"):
+            elif str(rec.get("pick") or "").upper().startswith("HHAD"):
                 # 让球腿：pick 如 'HHAD 让球主胜(-2)'，三向判定器不识别 → hhad_hit 让球线判定
                 rec["directionHit"] = hhad_hit(str(rec["pick"]).split(" ", 1)[-1], hg, ag)
             else:
