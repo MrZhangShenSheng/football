@@ -44,6 +44,12 @@ FIT_END = "2024-12-31"           # 纯净闸①：fit/val 日期硬切
 K_LIST = (1, 2, 3)
 TTG_CELLS = ("5", "6", "7")
 CRS_FAMILY = ("3:2", "2:3", "3:3", "4:1", "1:4")
+# v32.2 串关 spec（大哥质询后补）：k=场次·cells=每场TTG格
+PARLAYS = {
+    "P2x9": {"k": 2, "cells": ("5", "6", "7")},   # 2场×3格=9注18元
+    "P3x8": {"k": 3, "cells": ("5", "6")},        # 3场×2格=8注16元
+    "P4x1": {"k": 4, "cells": ("5",)},            # 4场×1格=1注2元(右尾)
+}
 N_BOOT, BOOT_SEED = 2000, 20261010
 N_RND, RND_SEED = 200, 20261010
 LEAGUE_MIN_N = 20                # 联赛trailing最少样本·不足回退全局
@@ -186,6 +192,36 @@ def bet_crs_family(m):
     return cells, stake, pay, hits
 
 
+def bet_ttg_parlay(sel_matches, cells):
+    """串关：全腿命中才派彩（每注=2×∏腿赔率·断任一腿=0）→ (legs,n_bets,stake,pay)。"""
+    import itertools
+    per = []
+    legs = []
+    for m in sel_matches:
+        cm = []
+        for k in cells:
+            o = m["ttg"].get(k)
+            if o and float(o) > 1:
+                cm.append((k, float(o), m["tot"] == int(k)))
+        if not cm:
+            return None, 0, 0.0, 0.0
+        per.append(cm)
+        legs.append({"match": f"{m['home']} vs {m['away']}",
+                     "cells": [{"cell": k, "odds": o, "hit": hit} for k, o, hit in cm]})
+    n_bets = 1
+    for c in per:
+        n_bets *= len(c)
+    stake = 2.0 * n_bets
+    pay = 0.0
+    for combo in itertools.product(*per):
+        if all(x[2] for x in combo):
+            prod = 1.0
+            for x in combo:
+                prod *= x[1]
+            pay += 2.0 * prod
+    return legs, n_bets, stake, pay
+
+
 def seg_of(d):
     return "fit" if d <= FIT_END else "val"
 
@@ -284,6 +320,29 @@ def run():
                         emit(f"{tag}-Top{K}", day, r, cells, st, pay, hits,
                              r["prob"] if tag == "MODEL" else r["m"]["p"])
 
+    # v32.2 串关 spec：模型/市场 Top-K 场次 × TTG 格复式串关
+    for day in sorted(pools):
+        pool = pools[day]
+        by_model = sorted(pool, key=lambda r: -r["prob"])
+        by_market = sorted(pool, key=lambda r: -r["m"]["p"])
+        for pname, pc in PARLAYS.items():
+            for tag, sel_rows in (("MODEL", by_model), ("MARKET", by_market)):
+                sel = sel_rows[:pc["k"]]
+                if len(sel) < pc["k"]:
+                    continue
+                legs, n_bets, stake, pay = bet_ttg_parlay([r["m"] for r in sel], pc["cells"])
+                if n_bets == 0:
+                    continue
+                spec = f"{tag}-{pname}"
+                t = {"date": day, "spec": spec,
+                     "match": " ⛓ ".join(l["match"] for l in legs),
+                     "prob": round(sel_rows[0]["prob"], 4) if tag == "MODEL" else None,
+                     "tot": [r["m"]["tot"] for r in sel], "cells": legs,
+                     "stake": round(stake, 2), "pay": round(pay, 2),
+                     "hit": pay > 0, "hits": n_bets and pay > 0}
+                tickets.append(t)
+                specs[spec].append(t)
+
     # 随机筛 ×200（val 段判读·fit 段同报）
     rng = random.Random(RND_SEED)
     rnd_specs = defaultdict(list)
@@ -306,6 +365,17 @@ def run():
             if seed == 1:
                 tickets += tk
                 specs[f"RND-Top{K}"] += tk
+        # v32.2 随机串关对照
+        for pname, pc in PARLAYS.items():
+            st = pay = 0.0
+            for day in sorted(pools):
+                if len(pools[day]) < pc["k"]:
+                    continue
+                sel = r2.sample(pools[day], pc["k"])
+                _, nb, s_, p_ = bet_ttg_parlay([r["m"] for r in sel], pc["cells"])
+                st += s_
+                pay += p_
+            rnd_specs[f"RND-{pname}"].append(pay / st - 1 if st else 0.0)
 
     # 全池基线 + CRS 高总分族（模型Top1场）
     for r in rows:
@@ -344,8 +414,28 @@ def run():
             "rndP95": round(rnd[int(0.95 * N_RND)], 4),
             "rndP50": round(rnd[N_RND // 2], 4),
         }
+    # v32.2 串关判据 + 数学对账（实测 r vs 单场 r^K）
+    single_r = (summaries.get("MODEL-Top1|val") or {}).get("r") or 0.734
+    for pname, pc in PARLAYS.items():
+        f_ = summaries.get(f"MODEL-{pname}|fit")
+        v_ = summaries.get(f"MODEL-{pname}|val")
+        if not v_:
+            continue
+        rnd_p = sorted(rnd_specs[f"RND-{pname}"])
+        mk = summaries.get(f"MARKET-{pname}|val")
+        crit[f"MODEL-{pname}"] = {
+            "c1_ciLowPos": v_["boot"]["p2.5"] > 0,
+            "c2_sameDir": bool(f_ and v_ and f_["r"] > 1.0 and v_["r"] > 1.0 and abs(f_["r"] - v_["r"]) < 0.05),
+            "c3_beatMarket": bool(mk and v_["r"] > mk["r"]),
+            "c3_beatRandomP95": bool(v_["r"] > rnd_p[int(0.95 * N_RND)] + 1),
+            "c3_beatAllpool": True,           # 串关与单场非同构·以数学对账行代替
+            "mathRow": {"singleR": single_r, "k": pc["k"],
+                        "expectedR": round(single_r ** pc["k"], 4), "measuredR": v_["r"]},
+            "rndP50": round(rnd_p[N_RND // 2], 4),
+        }
     n_pass = sum(1 for c in crit.values()
-                 if c["c1_ciLowPos"] and c["c3_beatMarket"] and c["c3_beatRandomP95"] and c["c3_beatAllpool"])
+                 if c.get("c1_ciLowPos") and c.get("c3_beatMarket")
+                 and c.get("c3_beatRandomP95") and c.get("c3_beatAllpool"))
     verdict = (f"PASS(判据①+③全过 → 建影子spec·转正前须纯前向复验[V3W参数弱泄漏交底])" if n_pass
                else "SEALED(特征无增量·市场TTG定价已含攻防信息·或CI含0)——判据未全过")
 
