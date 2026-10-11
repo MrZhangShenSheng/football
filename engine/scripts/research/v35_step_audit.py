@@ -32,8 +32,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import strength_loaders as sl          # noqa: E402
 import strength_chain_eval as sce      # noqa: E402
 import score_matrix as sm              # noqa: E402
+import market_lambda as mkl            # noqa: E402  # v35-P4 D3: 反解器已抽生产模块
 from v18_dual_signal_backtest import LEAGUES  # noqa: E402
 from v32_feature_sieve_backtest import load_hist, seg_of  # noqa: E402
+
+TTG_KEYS = mkl.TTG_KEYS                # 兼容旧引用（若有）
 
 SUMM = ROOT / "data" / "04-summaries"
 OUT_JSON = SUMM / "v35-step-audit.json"
@@ -341,33 +344,8 @@ def cell_key(h, a):
 #
 # 交底(2026-10-11 跑前): U3 的 power 二分目标误写为归一后求和(恒≈1·浮点噪声驱动·k 终值≈3.4 非 ~1.14)——
 # 本单元 λsum 的 power 去水用正确目标 Σ(1/o)^k=1；U3 一行修复重跑待大哥过目后补。
-
-TTG_KEYS = tuple(str(i) for i in range(8))     # 体彩总进球 0..7（"7"=7+ 档）
-TTG_PLUS_VAL = 7.0                              # "7+"期望替身·保守下界（p7 通常<1%影响可忽略）
-
-
-def lam_sum_from_ttg(ttg: dict) -> float:
-    """E[总进球] = TTG power 去水（k 二分解 Σ(1/o)^k=1）后期望。确定性无优化。"""
-    ks = sorted((str(k) for k in ttg if str(k) in TTG_KEYS and float(ttg[k]) > 1.0),
-                key=float)
-    inv = np.array([1.0 / float(ttg[k]) for k in ks])
-    lo, hi = 0.5, 5.0
-    for _ in range(40):
-        mid = (lo + hi) / 2
-        lo, hi = (mid, hi) if (inv ** mid).sum() > 1 else (lo, mid)
-    p = inv ** ((lo + hi) / 2)
-    p = p / p.sum()
-    return float(sum((TTG_PLUS_VAL if k == "7" else float(k)) * pi for k, pi in zip(ks, p)))
-
-
-def solve_lamh(lam_sum: float, p_h: float, rho: float) -> float:
-    """40 次二分解 P(H>A)(λh, λsum−λh)=p_h（had_from 聚合·同 V3W ρ 同链·λh∈(0.05, λsum−0.05)）。"""
-    lo, hi = 0.05, max(0.06, lam_sum - 0.05)
-    for _ in range(40):
-        mid = (lo + hi) / 2
-        p = sm.had_from(sm.dc_matrix(mid, lam_sum - mid, rho))["h"]
-        lo, hi = (mid, hi) if p < p_h else (lo, mid)
-    return (lo + hi) / 2
+# v35-P4 D3(2026-10-11): lam_sum_from_ttg/solve_lamh 本地实现已抽 market_lambda 生产模块——
+# U2 重放改 ρ=0 生产版（与首跑现役 ρ 有微差·perMatch 已冻结不受影响·下次重跑得 ρ=0 版数字属换件演进）。
 
 
 def _top_hit(mat: dict, key: str, k: int) -> bool:
@@ -384,7 +362,7 @@ def unit_u2(store, enrich):
             continue
         if not (m.get("ttg") and m.get("oh") and m.get("od") and m.get("oa")):
             continue                                # TTG/HAD 盘缺→双 null 均不可造
-        lam_sum = lam_sum_from_ttg(m["ttg"])
+        lam_sum = mkl.lam_sum_from_ttg(m["ttg"])
         invh = np.array([1 / m["oh"], 1 / m["od"], 1 / m["oa"]])
         p_mkt = invh / invh.sum()
         rho = e["rho"]
@@ -392,7 +370,7 @@ def unit_u2(store, enrich):
         m_v3w = sm.dc_matrix(e["lam"][0], e["lam"][1], rho)
         if key not in m_v3w:
             continue
-        lh_a = solve_lamh(lam_sum, float(p_mkt[0]), rho)
+        lh_a = mkl.solve_lamh(lam_sum, float(p_mkt[0]))
         m_na = sm.dc_matrix(lh_a, lam_sum - lh_a, rho)
         rec = {"date": m["date"], "seg": seg_of(m["date"]), "lg": e.get("lg") or "?",
                "key": key, "lamSum": round(lam_sum, 3), "lamH_nullA": round(lh_a, 3),
@@ -405,7 +383,7 @@ def unit_u2(store, enrich):
         rec["ll_randPick"] = round(float(-np.log(max(m_v3w[rand_k], 1e-12))), 4)
         anchor = pms.get((m["date"], m["home"], m["away"]))
         if anchor:                                  # nullB: Pinnacle 锚·λsum 仍体彩 TTG(混合源交底)
-            lh_b = solve_lamh(lam_sum, float(anchor[0]), rho)
+            lh_b = mkl.solve_lamh(lam_sum, float(anchor[0]))
             m_nb = sm.dc_matrix(lh_b, lam_sum - lh_b, rho)
             rec.update({"ll_nullB": round(float(-np.log(max(m_nb.get(key, 1e-12), 1e-12))), 4),
                         "lamH_nullB": round(lh_b, 3),
