@@ -1,0 +1,19 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>v33 统一预测大模型 · 双基准考核</title>
+<style>
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;color:#1c2733;background:#f7f9fb;margin:0;padding:24px;max-width:1000px;margin-inline:auto}
+h1{font-size:20px} h2{font-size:15px;border-bottom:2px solid #1a5fb4;padding-bottom:4px}
+.card{background:#fff;border:1px solid #dde4ea;border-radius:10px;padding:13px 16px;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th,td{border:1px solid #dde4ea;padding:4px 7px} th{background:#f0f4f7}
+.num{font-variant-numeric:tabular-nums} .ok{color:#0f6b4f;font-weight:600} .bad{color:#a33;font-weight:600} .warn{color:#b3541e;font-weight:600}
+.small{font-size:11.5px;color:#5b6b7a}
+</style></head><body>
+<h1>v33 统一预测大模型（GBM 双塔 31 格）· 双基准考核</h1>
+<div class="card">跑时 2026-10-11 · 三源齐备 6327 场 · 判据=val段配对log-loss差 CI上限&lt;0</div>
+<div class="card"><b>终局：</b><span class="bad">FAIL(打不赢V3W→大模型路线句号·V3W继续当班)</span></div>
+<h2>分段成绩</h2>
+<div class="card"><table><tr><th>段</th><th>n</th><th>LL·GBM</th><th>LL·市场</th><th>LL·V3W</th><th>Δvs市场(均值·CI上限)</th><th>ΔvsV3W(均值·CI上限)</th></tr><tr><td>fit</td><td class='num'>2429</td><td class='num'>1.8488</td><td class='num'>3.5763</td><td class='num'>3.0367</td><td class='num'>-1.72748 (↑-1.596255)</td><td class='num'>-1.18785 (↑-1.144692)</td></tr><tr><td>val</td><td class='num'>3898</td><td class='num'>3.1562</td><td class='num'>3.5181</td><td class='num'>2.9909</td><td class='num'>-0.36188 (↑-0.278568)</td><td class='num'>0.16528 (↑0.192667)</td></tr></table></div>
+<div class="card"><pre>6327场三源逐场log-loss落盘·val 3898场·GBM 3.1562 vs 市场 3.5181 vs V3W 2.9909</pre></div>
+<div class="small">开发者 sszhang · 2026-10-11 · 逐场预测见 JSON predictions[]·确定性GBM(random_state=0·no early stop)</div>
+</body></html>
