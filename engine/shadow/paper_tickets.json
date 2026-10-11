@@ -110811,5 +110811,127 @@
   "result": "pending",
   "payout": null,
   "settledAt": null
+ },
+ {
+  "id": "P448",
+  "spec_name": "v18双信号N串1",
+  "track": "A",
+  "date": "2026-10-13",
+  "legs": [
+   {
+    "code": "周日021",
+    "match": "贝蒂斯 vs 奥萨苏纳",
+    "market": "had",
+    "pick": [
+     0
+    ],
+    "odds": [
+     1.38,
+     null,
+     null
+    ]
+   },
+   {
+    "code": "周日004",
+    "match": "乌德勒支 vs 威廉二世",
+    "market": "had",
+    "pick": [
+     0
+    ],
+    "odds": [
+     1.38,
+     null,
+     null
+    ]
+   },
+   {
+    "code": "周日024",
+    "match": "卡利亚里 vs 尤文图斯",
+    "market": "had",
+    "pick": [
+     2
+    ],
+    "odds": [
+     null,
+     null,
+     1.42
+    ]
+   },
+   {
+    "code": "周日006",
+    "match": "南安普敦 vs 朴次茅斯",
+    "market": "had",
+    "pick": [
+     0
+    ],
+    "odds": [
+     1.45,
+     null,
+     null
+    ]
+   },
+   {
+    "code": "周日019",
+    "match": "弗赖堡 vs 沙尔克04",
+    "market": "had",
+    "pick": [
+     0
+    ],
+    "odds": [
+     1.46,
+     null,
+     null
+    ]
+   },
+   {
+    "code": "周一002",
+    "match": "亚特兰大 vs 威尼斯",
+    "market": "had",
+    "pick": [
+     0
+    ],
+    "odds": [
+     1.46,
+     null,
+     null
+    ]
+   }
+  ],
+  "bets": [
+   {
+    "legs": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      0
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      3,
+      0
+     ],
+     [
+      4,
+      0
+     ],
+     [
+      5,
+      0
+     ]
+    ]
+   }
+  ],
+  "n_bets": 1,
+  "mult": 1,
+  "cost": 2.0,
+  "result": "pending",
+  "payout": null,
+  "settledAt": null
  }
 ]
