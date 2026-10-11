@@ -216,11 +216,18 @@ def main() -> int:
            "generatedAt": datetime.now().isoformat(timespec="seconds"),
            "matches": matches,
            "picks": [{"code": p["code"], "match": p["match"], "league": p.get("league"),
-                      "leagueWarn": p.get("leagueWarn", False),
+                      "leagueWarn": p.get("leagueWarn", False), "src": p.get("src"),
                       "pick": p["crs_top5"][0]["pick"], "p": p["crs_top5"][0]["p"]} for p in picks]}
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(doc, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"[prod] {len(matches)} 场 · 选场 {len(picks)} → {out_path}")
+    # P4 终审 I3 观察（legacy 周 10-18 必查）：top1 p 降序跨三层混排——层2/3 矩阵概率更集中、
+    # 大热门 top1 可 0.15~0.22 高于层1 市场校准概率(~0.10~0.15)封顶——选场系统性偏降级源，
+    # 与 U2"市场主干最优"判决精神相悖；每日看 picks src 构成，层2/3 占比高须换归一化排序。
+    src_cnt = {}
+    for p in picks:
+        src_cnt[p["src"]] = src_cnt.get(p["src"], 0) + 1
+    print(f"[prod] picks src 构成: {' '.join(f'{k}={v}' for k, v in sorted(src_cnt.items()))}")
     return 0
 
 

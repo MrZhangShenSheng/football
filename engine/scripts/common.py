@@ -59,13 +59,13 @@ def load_team(team_id: str, league: str) -> dict:
 def load_fusion_ab(league: str | None = None, path: Path | None = None) -> tuple[float, float]:
     """fusion.json → (a, b) 融合系数；league 命中 leagueOverrides 时部分覆盖（联赛级 a
     分层，2026-09-15 荷甲降 a 立项——2526 回测荷甲 DC 方向负贡献、a=0 纯市场锚最优）。
-    缺失/损坏回退检索铁律4 默认 (0.4, 1.0)。开发者 sszhang"""
+    缺失/损坏回退纯市场锚 (0.0, 1.0)——2026-10-11 U1 终审后 retired 组件 a=0.4 不得在 fallback 复活。开发者 sszhang"""
     try:
         fus = json.loads((path or ROOT / "engine" / "cache" / "fusion.json")
                          .read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
-        return 0.4, 1.0
-    a = float(fus.get("a", 0.4))
+        return 0.0, 1.0
+    a = float(fus.get("a", 0.0))
     b = float(fus.get("b", 1.0))
     if league:
         ov = (fus.get("leagueOverrides") or {}).get(league)
