@@ -290,7 +290,7 @@ def record_s1_from_archive(archive_path_or_day: str) -> int:
 
 def _cli() -> None:
     args = sys.argv[1:]
-    if len(args) >= 4 and args[0] == "record":       # 会话登记 S8/S9 走此口
+    if len(args) >= 5 and args[0] == "record":       # 会话登记 S8/S9 走此口
         ok = record(args[1], args[2], args[3], json.loads(args[4]), source=SOURCE_SESSION)
         print("[evidence] 会话登记 ✓" if ok else "[evidence] 会话登记 失败(警告)")
     elif len(args) >= 2 and args[0] == "s1":
@@ -442,11 +442,16 @@ def test_scp_hook_payload_shape(tmp_path, monkeypatch):
 Run: `python3 -m pytest engine/scripts/tests/test_evidence.py -v`
 Expected: 8 passed
 
-- [ ] **Step 3: 冒烟（干跑过去日期，--force 只影响 crs.json 输出，证据链照写）**
+- [ ] **Step 3: 冒烟（fixture 喂场+无卡历史日——禁 --force 重跑真实日防覆写预测归档）**
 
-Run: `python3 engine/scripts/strength_chain_prod.py 2026-10-10 --force` 后
-`python3 engine/scripts/evidence.py check 2026-10-10 | tail -3`
-Expected: 有场次 S2/S4/S5/S7 落盘（S1/S3/S6/S8/S9 缺=正常——各归各脚本/会话）
+1. 选无 crs.json 的历史日：`ls data/03-predictions/*-crs.json`，取其中不存在的最近一日（预期 2026-10-05；已存在则往前一日）
+2. 找两个可映射队名：`python3 -c "import sys; sys.path.insert(0,'engine/scripts'); import strength_loaders as sl; print(list(sl.zh_to_id().items())[:8])"`（取前两队；若冒烟 skip=no_data 换下一对）
+3. 写 fixture `/tmp/v35_feed.json`（**注意 --feed 期望 list 形态**）：
+   `[{"matchId": "900001", "code": "周六901", "home": "<队1>", "away": "<队2>", "league": "<联赛名>", "kickoff": "2026-10-05 20:00"}]`
+4. Run: `python3 engine/scripts/strength_chain_prod.py <该历史日> --feed /tmp/v35_feed.json`
+5. Run: `python3 engine/scripts/evidence.py check <该历史日> | tail -3`
+   Expected: 900001 场 S2/S4/S5/S7 ✓（S1/S3/S6/S8/S9 缺=正常——各归各脚本/会话）
+6. 清理: `rm data/03-predictions/<该历史日>-crs.json /tmp/v35_feed.json && rm -rf engine/cache/evidence/<该历史日>`
 
 - [ ] **Step 4: Commit**
 
@@ -498,7 +503,7 @@ git commit -m "feat(v35-P1): run.py update 末尾自动登记证据链 S1"
 
 - [ ] **Step 1: "帮我预测"行的流程链尾部（git commit 之前）插入短语**
 
-在 `→ git commit |` 前追加：
+锚点（**唯一**·勿用 `→ git commit |`，它在协议表出现 4 次）：在该行 `→ git commit | 摘要卡（方案/赔率/仓位·**闯关票面自动附后**）` 的 `→ git commit` 前插入。追加内容：
 `→ **证据链收口：S8/S9 会话登记（`evidence.py record <开赛日> <编号> S8_hypothesis|S9_scheme '<json>'`·假设 verdict+挡位+最终腿）+ 出票前完整性检查（`evidence.py check <开赛日>`·缺步标注不补造·S1/S3/S5/S6 代码 hook 自动落·S2/S4/S7 strength_chain_prod 自动落）** `
 
 - [ ] **Step 2: Commit**
@@ -523,9 +528,9 @@ Expected: 8 passed（fail-open/幂等/check/show/S1 全绿）
 
 dc_predict 真实一场 + `evidence.py check` 输出 S3/S5/S6 ✓；演示后 `rm -rf engine/cache/evidence/2026-10-12`
 
-- [ ] **Step 3: 证据链目录纳入 git（凭证链纪律——防 scratch 误删事故重演）**
+- [ ] **Step 3: 证据链目录纳入 git（凭证链纪律·条件式——冒烟已清理则目录空不提交）**
 
-Run: `git add engine/cache/evidence/ && git commit -m "feat(v35-P1): P1 验收闸 GO——证据链仪表上线（fail-open·幂等·check/show 交付）"`
+Run: `git add engine/cache/evidence/ && git status --short engine/cache/evidence/ | grep -q . && git commit -m "feat(v35-P1): P1 验收闸 GO——证据链仪表上线（fail-open·幂等·check/show 交付）" || echo "[v35] 证据链目录空·首次真实预测自然入库（凭证链纪律已立）"`
 
 **GO 条件**（设计档 §六）：fail-open 单测 ✓ + 幂等重跑 ✓ + 冒烟 3 场九步可查 ✓ → 进 P3 前向积累期（每日预测自然落链）
 
