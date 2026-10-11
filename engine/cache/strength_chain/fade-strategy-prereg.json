@@ -85,7 +85,8 @@
   "v34(2026-10-11): GBM去水器小批量验证立项(大哥拍板)——两臂同规则CRS top-EV选格只换概率源·核心指标=EV校准差(claimed vs realized)·判据:校准显著改善且命中率不劣化才接入EV链·不赌ROI转正(CRS池期望恒负)只赌EV算得准·λ缓存本轮落盘免第四次重放",
   "v34(2026-10-11): GBM去水器验证FAIL(两判据全败)——平均log-loss优势不能转化为top-EV选格优势(v17几何不同构教训再现)·首跑结算bug被铁律14警讯清单自曝(+543%三位数收益=先疑口径·修正后两臂皆负)·power去水留任·λ缓存落盘",
   "v35(2026-10-11): 地基工程立项(大哥拍板'地基不稳')——方案A仪表化渐进·P1证据链∥P2数据账本并行→P3六单元消融审计(U2λ源vs双null最大件)→P4拓扑序重构·初审9处修正入档(3硬伤:hook盖不到会话步/P1P2伪依赖/U2null自造轮子)·预注册原则:每步有账可查·非保住组件",
-  "v35补充(2026-10-11): globalRules三层约束入舱(大哥拍板'以后的迭代模型也需要遵循这一套理念')——组件准入制(消融审计预注册→PASS凭证入幸存链注册表)+evidence九步证据链义务;文字层已落SKILL.md铁律15(v5.18)+CLAUDE.md评估铁律·机器闸门(注册表+启动校验)随P4交付"
+  "v35补充(2026-10-11): globalRules三层约束入舱(大哥拍板'以后的迭代模型也需要遵循这一套理念')——组件准入制(消融审计预注册→PASS凭证入幸存链注册表)+evidence九步证据链义务;文字层已落SKILL.md铁律15(v5.18)+CLAUDE.md评估铁律·机器闸门(注册表+启动校验)随P4交付",
+  "v35-P3(2026-10-11): 步骤消融审计立项判据写死——U1融合a存废(V3W had做模型项·交底替代口径)/U2 λ源vs双null(矩法反解器造法预注册·赢pin锚才算赢市场)/U3 k免费/U4 ρ低分带/U5假设层首账(无判据只建账)/U6五挡定位重写;时间线=纯净闸+λ缓存;全报不挑+家族FP对账"
  ],
  "verdictV1": {
   "ranAt": "2026-10-05",
@@ -561,7 +562,59 @@
    "P4": "删件回放验证+换件影子并跑一周"
   },
   "expectation": "成功标准=每步有账可查·非保住现有组件——链路缩成市场锚+结构先验+包装也是地基稳固·审计不是续命",
-  "status": "design-frozen"
+  "status": "design-frozen",
+  "P3": {
+   "registeredAt": "2026-10-11",
+   "status": "preregistered",
+   "timeline": "v32.1 五道纯净闸+λ缓存重放(6327场)·fit≤2024-12-31硬切/val≥2025-01·fit-only统计·同日先算后更·对照同切·弱泄漏交底",
+   "fpRule": "6单元x2null≈12检验·全报不挑·家族FP对账表入产物·铁律14③自证伪=差值符号翻转x200 null CI 对照(U1/U4)·随机选格对照(U2/U3 沿 v34 先例)",
+   "units": {
+    "U1_fusion": {
+     "question": "融合公式模型项(a=0.4)还有存在价值吗·还是全联赛 a=0 纯市场锚",
+     "modelTerm": "V3W had 三向(strength链重放·λ缓存同源)——交底:生产DC方向已边缘化(3联赛a=0·DC λ as-of重放成本高),用V3W had 替代模型项审 a 的存废",
+     "null": "a=0/b=1.0 纯市场(体彩HAD去水)·对照=现役 a=0.4/b=1.0",
+     "anchorNull": "fd覆盖场 pinClose 去水做市场项(金标准锚·02-results)",
+     "judge": "逐场RPS配对差(a=0.4减a=0·负=a=0.4优)·分联赛bootstrap95%CI",
+     "criteria": "联赛级n>=100才判:CI上限<0=a=0.4显著优留任·否则该联赛建议a=0;无任何联赛显著优→推广a=0进P4拆迁清单",
+     "budget": "0.5会话"
+    },
+    "U2_lambda": {
+     "question": "V3W λ(HST质量层)打得过市场隐含λ吗",
+     "nullA_builder_preregistered": "矩法反解(确定性无优化): λsum=E[总进球](TTG power去水后期望) + λh=二分解P(H>A)(λh,λsum-λh)=p_h(HAD去水主胜·λh∈(0.05,λsum-0.05)·40次二分);null矩阵=同V3W ρ同链只换λ",
+     "nullB_anchor": "Pinnacle锚: p_h/p_d/p_a=pinClose去水(fd覆盖场)·λsum仍体彩TTG——交底:混合源(Pinnacle无TTG);此null赢才算赢市场",
+     "judge": "val段CRS log-loss配对差(V3W减null·负=V3W优)bootstrap95%CI上限+比分带命中(top1/top3)",
+     "criteria": "双null都不显著优→V3W λ降级为结构先验调味(仍供形状·方向让市场);显著优Pinnacle锚→λ留任主概率源;只赢体彩null=不算赢市场(v33教训)",
+     "budget": "1会话(反解器+验证·最大单件·单独会话跑)"
+    },
+    "U3_devig": {
+     "question": "power k二分 vs k=1(1/o归一)有差吗",
+     "judge": "31格log-loss配对差CI(k二分减k1·负=k二分优)",
+     "criteria": "k二分显著优才留·否则简化k=1(信息量低·免费附带)",
+     "budget": "≈0(同代码两跑)"
+    },
+    "U4_rho": {
+     "question": "DC ρ低分修正赚不赚回票价",
+     "null": "ρ=0独立泊松·对照=现役ρ(league_dc)",
+     "judge": "低分带四格(0:0/1:0/0:1/1:1)配对log-loss和(ρ减ρ0·负=ρ优)+带级校准误差|预测和-实际频率|",
+     "criteria": "低分带log-loss差CI上限<0=ρ显著优留任·否则建议ρ=0简化进P4清单",
+     "budget": "0.5会话"
+    },
+    "U5_hypothesis": {
+     "question": "假设层verdict有没有预测力(史上第一次对账)",
+     "data": "data/02-results/*.json matches[].hypothesis(verdict+方向判断)对真实赛果·09-18起",
+     "judge": "描述性:survived/refuted/pending计数·方向命中率对照·n≈30-50",
+     "criteria": "无显著性判据(预注册明说:只建账·前瞻积累到n>=100再立判据批次)——'判断vs赛果'口径非票面收益(refuted无票·选择偏差内生)",
+     "budget": "0.5会话"
+    },
+    "U6_fivetier": {
+     "question": "五挡的存在理由——v19消融已证伪alpha·定位从预测精度改写为投注结构/纪律",
+     "deliverable": "docs/2026-10-12-v35-u6-fivetier-repositioning.html(定位重写文档·非回测)",
+     "budget": "0.5会话"
+    }
+   },
+   "runOrder": "U3热身(免费)→U1→U4→U5→U6→U2(单独会话·反解器最大件)",
+   "audit": "审计三件套全单元:逐场stdout明细+per-match落盘+--audit复算重放"
+  }
  },
  "globalRules": {
   "componentAdmission": "任何新组件/新系数/换件入生产链:先在本舱登记消融审计spec(null/判据/时间线/预算·version+1重计时)→审计三件套+随机基线自证伪→PASS凭证(贡献CI)入幸存链注册表(engine/cache/strength_chain/surviving_chain.json·P4产出)才准入;双null原则=体彩devig null+Pinnacle锚(打赢烂null不算赢市场·v33教训);无审计不入链;注册表=生产组件白名单,P4起生产脚本启动校验(不在表/凭证过期→拒跑或降级标注)",
