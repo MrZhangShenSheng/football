@@ -1,0 +1,197 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>v35 设计 · 地基工程（证据链+数据账本+步骤审计+证据重构）</title>
+<style>
+:root{--ink:#1c2733;--sub:#5b6b7a;--line:#dde4ea;--bg:#f7f9fb;--card:#fff;--ok:#0f6b4f;--bad:#a33;--warn:#b3541e;--accent:#1a5fb4}
+*{box-sizing:border-box}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;color:var(--ink);background:var(--bg);margin:0;padding:24px 16px;max-width:1080px;margin-inline:auto}
+h1{font-size:20px;margin:0 0 4px}
+h2{font-size:15px;margin:22px 0 8px;padding-bottom:5px;border-bottom:2px solid var(--accent)}
+.meta{color:var(--sub);font-size:12.5px;margin-bottom:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 16px;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:12.5px;margin:5px 0}
+th,td{border:1px solid var(--line);padding:4px 7px;text-align:left;vertical-align:top}
+th{background:#f0f4f7}
+.num{font-variant-numeric:tabular-nums}
+.ok{color:var(--ok);font-weight:600}.bad{color:var(--bad);font-weight:600}.warn{color:var(--warn);font-weight:600}
+.small{font-size:11.5px;color:var(--sub)}
+code{background:#f0f4f7;border-radius:3px;padding:1px 5px;font-size:12px}
+.flow{color:var(--accent)}
+</style></head><body>
+
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="i-gauge" viewBox="0 0 24 24"><path d="M12 4a9 9 0 0 1 9 9h-2a7 7 0 0 0-14 0H3a9 9 0 0 1 9-9zm0 5a4 4 0 0 1 4 4h-2a2 2 0 0 0-4 0H8a4 4 0 0 1 4-4zm-1 4h2v7h-2z" fill="currentColor"/></symbol>
+<symbol id="i-book" viewBox="0 0 24 24"><path d="M5 3h11a3 3 0 0 1 3 3v15H8a3 3 0 0 1-3-3V3zm2 2v13a1 1 0 0 0 1 1h9V6a1 1 0 0 0-1-1H7zm2 3h7v2H9V8zm0 4h7v2H9v-2z" fill="currentColor"/></symbol>
+<symbol id="i-scale" viewBox="0 0 24 24"><path d="M11 3h2v2h5l3 7-3 .5V19a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-6.5L3 12l3-7h5V3zM7.4 7 6 10.2l3-1V7H7.4zm9.2 0H15v2.2l3 1L16.6 7zM8 13v6h8v-6H8z" fill="currentColor"/></symbol>
+<symbol id="i-rebuild" viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8zm3.5 5L12 11l3.5 2v-2a4 4 0 1 1-3.9-4.9L10.5 4A6 6 0 1 0 15.5 11z" fill="currentColor" transform="rotate(0)"/></symbol>
+</defs></svg>
+
+<h1>v35 设计 · 地基工程</h1>
+<div class="meta">拍板 sszhang · 2026-10-11 · 执行形态=方案A 仪表化渐进（初审 9 处修正已并入本档）· 预注册舱 fade-strategy-prereg → v35Foundation</div>
+
+<h2>〇、立项背景与预期管理</h2>
+<div class="card">
+<p><b>大哥立项原话</b>：「已经跑了这么多版本的测试了，我觉得每场的地基都不稳——预测模型的每一步的细节都是不清晰的，方案设计也是很粗糙的。」</p>
+<p>翻译成工程语言：<b>端到端指标存在（方向 64.4% / 比分 4.3%），但没有任何一步有自己的误差预算</b>——错一场无法定位是哪步的锅；方案层（v16~v34 四线合流）已证明无 alpha，粗糙的本质是方案目的从未被定义。</p>
+<p><b>预期管理（入档为验收原则）</b>：本工程成功标准 = <b>每步有账可查</b>，不是保住现有组件。哪怕审计后链路缩成「市场锚 + 结构先验 + 包装」，也是地基稳固——审计不是给现有系统续命。</p>
+<p><b>范围</b> = 生产链（run.py → DC → V3W → 融合 → 战意/评级 → 假设层 → 五挡 → 出票）；v-series 研究脚本归档不动。</p>
+</div>
+
+<h2>一、总体架构（四阶段 · P1/P2 并行启动）</h2>
+<div class="card">
+<svg viewBox="0 0 880 430" style="width:100%;color:var(--accent)" font-family="inherit">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <!-- P1 -->
+  <g>
+    <rect x="30" y="20" width="395" height="118" rx="10" fill="#fff" stroke="currentColor" stroke-width="1.5"/>
+    <svg x="44" y="32" width="18" height="18"><use href="#i-gauge"/></svg>
+    <text x="70" y="46" font-size="14" font-weight="600" fill="var(--ink)">P1 证据链仪表化</text>
+    <text x="46" y="66" font-size="11" fill="var(--sub)">代码 hook（S1~S7 脚本步自动落盘）</text>
+    <text x="46" y="82" font-size="11" fill="var(--sub)">会话登记（S8~S9 假设层/方案步，流程纪律强制）</text>
+    <text x="46" y="98" font-size="11" fill="var(--sub)">出票前完整性检查（缺步标注不补造）· fail-open</text>
+    <text x="46" y="114" font-size="11" fill="var(--sub)">控制台打印机 evidence.py show</text>
+  </g>
+  <!-- P2 -->
+  <g>
+    <rect x="455" y="20" width="395" height="118" rx="10" fill="#fff" stroke="currentColor" stroke-width="1.5"/>
+    <svg x="469" y="32" width="18" height="18"><use href="#i-book"/></svg>
+    <text x="495" y="46" font-size="14" font-weight="600" fill="var(--ink)">P2 数据地基账本</text>
+    <text x="471" y="66" font-size="11" fill="var(--sub)">体彩五池 / fd Pinnacle / HST / 伤停首发 / 别名映射</text>
+    <text x="471" y="82" font-size="11" fill="var(--sub)">五源指标：覆盖率 · 错误率 · 时效性 · 事件史</text>
+    <text x="471" y="98" font-size="11" fill="var(--sub)">产物 data-quality-ledger.json（随预测/回填自动刷新）</text>
+    <text x="471" y="114" font-size="11" fill="var(--sub)">与 P1 并行——全部基于已有档案，不等仪表</text>
+  </g>
+  <!-- P3 -->
+  <g>
+    <rect x="30" y="196" width="820" height="112" rx="10" fill="#fff" stroke="currentColor" stroke-width="1.5"/>
+    <svg x="44" y="208" width="18" height="18"><use href="#i-scale"/></svg>
+    <text x="70" y="222" font-size="14" font-weight="600" fill="var(--ink)">P3 步骤消融审计（核心 · 回溯重放）</text>
+    <text x="46" y="242" font-size="11" fill="var(--sub)">U1 融合系数滚动复验（a=0 纯市场 null） · U2 λ源 vs 双null（体彩反解 + Pinnacle锚·最大件）</text>
+    <text x="46" y="258" font-size="11" fill="var(--sub)">U4 ρ=0 消融（低比分带校准） · U5 假设层对账（描述性账本·口径=判断vs赛果）</text>
+    <text x="46" y="274" font-size="11" fill="var(--sub)">U3 去水 k=1 免费附带 · U6 五挡改定位重写（v19 已证伪消融不重跑）</text>
+    <text x="46" y="290" font-size="11" fill="var(--sub)">时间线=v32.1 五道纯净闸+λ缓存重放 · 判据批次预注册 · 全报不挑+家族FP对账</text>
+  </g>
+  <!-- P4 -->
+  <g>
+    <rect x="30" y="352" width="820" height="62" rx="10" fill="#fff" stroke="currentColor" stroke-width="1.5"/>
+    <svg x="44" y="366" width="18" height="18"><use href="#i-rebuild"/></svg>
+    <text x="70" y="380" font-size="14" font-weight="600" fill="var(--ink)">P4 按证据重构</text>
+    <text x="46" y="400" font-size="11" fill="var(--sub)">拓扑序审判（下游先判·kill/fix/keep） → 拆迁清单执行 → 幸存链架构文档 + 协议简化 · 删件=回放验证 / 换件=影子并跑</text>
+  </g>
+  <!-- 箭头 -->
+  <line x1="228" y1="138" x2="228" y2="192" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="238" y="168" font-size="10.5" fill="var(--sub)">步骤分解共用 + 重放基建</text>
+  <line x1="652" y1="138" x2="652" y2="192" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="662" y="168" font-size="10.5" fill="var(--sub)">null 构造材料</text>
+  <line x1="440" y1="308" x2="440" y2="348" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="450" y="332" font-size="10.5" fill="var(--sub)">误差预算表 → 拆迁清单</text>
+</svg>
+<p class="small">方法论切分：<b>P1/P2 管前向</b>（今天的预测开始落证据链，历史补不了——输入没存档）；<b>P3 管回溯</b>（hist_odds 12.9k 场 + λ 缓存 6327 场重放）。两者共用同一套步骤分解：前向回答「这场怎么算的」，回溯回答「这步值不值」。</p>
+</div>
+
+<h2>二、P1 · 证据链仪表化</h2>
+<div class="card">
+<p>新建 <code>engine/scripts/evidence.py</code> 轻量账本，每场落盘 <code>engine/cache/evidence/{开赛日}/{matchId}.json</code>。</p>
+<table>
+<tr><th>步</th><th>记录内容</th><th>落盘机制</th></tr>
+<tr><td>S1 数据快照</td><td>五池赔率原文引用 + fd Pinnacle 引用 + 调价时间戳</td><td>代码 hook（体彩采集）</td></tr>
+<tr><td>S2 画像引用</td><td>elo/xG/近况/伤停所用文件指针 + lastUpdated（不复制本体）</td><td>代码 hook（汇总时统一补）</td></tr>
+<tr><td>S3 DC 参数</td><td>league_dc 版本 + 所用攻防值 + ρ</td><td>代码 hook（dc_predict）</td></tr>
+<tr><td>S4 V3W λ</td><td>λ主/λ客 + beta + HST 输入引用</td><td>代码 hook（strength_chain_prod）</td></tr>
+<tr><td>S5 市场去水</td><td>k 值 + 去水后分布</td><td>代码 hook</td></tr>
+<tr><td>S6 融合</td><td>a/b 系数 + 联赛 override + p_fused 三向</td><td>代码 hook（dc_predict 融合处）</td></tr>
+<tr><td>S7 比分矩阵</td><td>λ+ρ + 39 格矩阵 top 格</td><td>代码 hook（strength_chain_prod）</td></tr>
+<tr><td>S8 假设层</td><td>hypothesis.json 指针 + matchPlay 摘要 + verdict</td><td><b>会话登记</b>（流程纪律）</td></tr>
+<tr><td>S9 挡位方案</td><td>挡位 + 阈值 + 最终腿 + 战意/评级摘要</td><td><b>会话登记</b>（流程纪律）</td></tr>
+</table>
+<p><b>四条铁设计</b>：① <b>fail-open</b>——仪表异常只警告不中断，预测主流程永不为 logging 挂掉；② <b>幂等</b>——按（开赛日, matchId, step）键去重，重跑覆盖同键；③ <b>键口径=开赛日</b>（物理比赛日，与 lineup_watch 一致；销售日只活在票务层）；④ <b>schema 带 version 字段</b>——加字段兼容，改语义升版。出票前跑完整性检查：九步缺哪步标注出来，<b>不补造</b>。</p>
+<p><b>生效时点</b>：会话登记纪律（S8/S9）与出票前完整性检查随 P1 上线即写入 SKILL.md/CLAUDE.md 预测协议——不等 P4。</p>
+</div>
+
+<h2>三、P2 · 数据地基账本</h2>
+<div class="card">
+<table>
+<tr><th>源</th><th>账本指标</th><th>数据来源（全部已有档案）</th></tr>
+<tr><td>体彩五池</td><td>覆盖率 / 调价频率 / 停售时点</td><td>engine/cache/score_odds/ 日存档</td></tr>
+<tr><td>fd Pinnacle</td><td>联赛×赛季覆盖 / 断粮事件史 / 口径事件</td><td>fd CSV（Psh/Psch 口径修复入事件史）</td></tr>
+<tr><td>HST（V3W 输入）</td><td>球队级覆盖率 / 时效性分布</td><td>strength 链 HST 库</td></tr>
+<tr><td>伤停/首发</td><td>快照量 / 变更事件量</td><td>data/05-trends/ lineup_watch 轨</td></tr>
+<tr><td>别名映射</td><td>未映射队清单（拒出口径账本化）</td><td>_aliases.json + 拒出日志</td></tr>
+</table>
+<p>产物 <code>data/04-summaries/data-quality-ledger.json</code>，<b>随预测/回填流程自动刷新</b>（防过期档案）。不依赖 P1 仪表——质量统计直接算已有档案；仅「每场实际用了哪个输入版本」的引用级信息归 P1。</p>
+</div>
+
+<h2>四、P3 · 步骤消融审计（核心）</h2>
+<div class="card">
+<table>
+<tr><th>单元</th><th>对象</th><th>null / 对照</th><th>裁判指标</th><th>预算</th></tr>
+<tr><td>U1</td><td>DC 融合系数（a=0.4 + 3 联赛 a=0）</td><td>全联赛 a=0 纯市场，滚动复验</td><td>分联赛 walk-forward RPS / 方向 / CLV</td><td class="num">0.5 会话</td></tr>
+<tr><td><b>U2</b></td><td>V3W λ 源（HST 质量层）</td><td><b>双 null</b>：体彩 TTG 矩反解 λ + Pinnacle 锚（fd 覆盖联赛金标准）</td><td>CRS log-loss 配对差 / 比分带命中</td><td class="num"><b>1 会话</b>（反解器+验证·最大单件）</td></tr>
+<tr><td>U3</td><td>power 去水 k</td><td>k=1（即 1/o 归一）</td><td>分布 log-loss</td><td class="num">≈0（同代码两跑·信息量低）</td></tr>
+<tr><td>U4</td><td>ρ 修正</td><td>ρ=0 独立泊松</td><td>低比分带（0:0/1:0/0:1/1:1）校准</td><td class="num">0.5 会话</td></tr>
+<tr><td>U5</td><td>假设层闸门</td><td>无闸门全放行（参照）</td><td><b>假设判断 vs 比赛实际结果</b>（非票面收益——refuted 腿无票，选择偏差内生）</td><td class="num">0.5 会话</td></tr>
+<tr><td>U6</td><td>五挡选腿</td><td>——（v19 消融已证伪，不重跑）</td><td>——</td><td class="num">0.5 会话（定位重写·文档非回测）</td></tr>
+</table>
+<p><b>四条方法论硬规矩</b>：</p>
+<p>① <b>时间线</b>=v32.1 五道纯净闸（日期硬切零重叠 / fit-only 统计 / 同日先算后更 / 对照同切 / 弱泄漏交底）+ λ 缓存重放——不是 strict_merged（那是 TeamStats 流的纪律，勿混用）；<br>
+② <b>双 null 原则</b>：体彩 devig null 永远可算但被抽水扭曲，Pinnacle 锚才是金标准——判据写死「打赢烂 null 不算赢市场」（v33 教训）；U2 反解器造法细节批次预注册；<br>
+③ <b>预注册 + 全报不挑</b>：6 单元 × 多 null ≈ 15 个检验，家族 FP 对账入册，数值阈值各单元跑前写死进 fade-strategy-prereg；<br>
+④ <b>U5 期望管理</b>：n≈30~50 只出描述性账本，无显著性判据——定位=账本建立+前瞻积累起点；U6 产出=五挡存在理由从「预测精度」改写为「投注结构/纪律」的定位文档。</p>
+<p><b>产出：误差预算表</b>——每步贡献 CI + keep/fix/kill 初判，回答「错一场哪步的锅」。</p>
+</div>
+
+<h2>五、P4 · 按证据重构</h2>
+<div class="card">
+<p><b>拓扑序审判</b>（从最下游往上游判，杜绝「中性且下游依赖」后门）：S9 方案 → S8 假设 → S7 矩阵 → S6 融合 → S5 去水 → S4 λ → S3 DC → S1/S2 数据。下游被 kill 的<b>专用上游跟随 kill</b>（例：比分端整体 kill → ρ/矩阵专用组件下链）。</p>
+<table>
+<tr><th>判定</th><th>规则</th><th>动作</th><th>验证方式</th></tr>
+<tr><td class="bad">kill</td><td>贡献 CI 上限 &lt; 0，或下游唯一消费者已 kill</td><td>下链 + 删代码</td><td>删件=<b>全链回放不降级</b></td></tr>
+<tr><td class="warn">fix</td><td>CI 跨 0 但有已知缺陷（系数过期/覆盖不足）</td><td>换件或重拟合后重审</td><td>换件=<b>新旧影子并跑一周不降级</b>才切换</td></tr>
+<tr><td class="ok">keep</td><td>CI 下限 &gt; 0，或中性且 ≥1 个存活下游依赖</td><td>留任 + 文档化</td><td>——</td></tr>
+</table>
+<p>产出：幸存链架构文档（HTML·五层：数据/市场锚/结构先验/独家信息/包装）+ 生产协议简化（CLAUDE.md/SKILL.md 更新）。「五代同堂」在证据锁定的范围内解决。</p>
+</div>
+
+<h2>六、测试与验收</h2>
+<div class="card">
+<table>
+<tr><th>阶段</th><th>验收</th></tr>
+<tr><td>P1</td><td>fail-open 单测（模拟 JSON 写失败→预测照常出）+ 幂等重跑测试 + 抽样 3 场证据链完整性人工核</td></tr>
+<tr><td>P2</td><td>账本数字与源文件抽样 10 条对账</td></tr>
+<tr><td>P3</td><td>审计三件套（逐票 stdout + 落盘 + --audit 重放）+ 随机基线自证伪（铁律 14③）+ 全报不挑</td></tr>
+<tr><td>P4</td><td>删件=回放验证 · 换件=影子并跑一周</td></tr>
+</table>
+</div>
+
+<h2>七、预算与节奏</h2>
+<div class="card">
+<table>
+<tr><th>阶段</th><th>会话预算</th><th>GO/NO-GO</th></tr>
+<tr><td>P1 ∥ P2</td><td class="num">P1 1~2 · P2 1（并行）</td><td>证据链首场跑通 + 账本首版 = GO</td></tr>
+<tr><td>P3</td><td class="num">2~3（U2 独占 1）</td><td>误差预算表落盘 + 审计 PASS = GO</td></tr>
+<tr><td>P4</td><td class="num">1~2</td><td>拆迁清单大哥过目拍板后执行</td></tr>
+</table>
+<p class="small">每阶段结束独立 commit + 大哥过目产物再进下一阶段；P4 拆迁清单属「动生产链」操作，须显式拍板。</p>
+</div>
+
+<h2>八、初审记录（9 处修正留痕）</h2>
+<div class="card">
+<table>
+<tr><th>#</th><th>级别</th><th>问题</th><th>修正</th></tr>
+<tr><td>H1</td><td class="bad">硬伤</td><td>hook 模式盖不到会话步（战意/评级/假设/选腿无代码入口）</td><td>代码 hook + 会话登记双机制 + 出票前完整性检查</td></tr>
+<tr><td>H2</td><td class="bad">硬伤</td><td>P1→P2 串行依赖画错（P2 全基于已有档案）</td><td>P1/P2 并行</td></tr>
+<tr><td>H3</td><td class="bad">硬伤</td><td>U2 隐含 λ null 本身是新模型，打赢烂 null≠赢市场</td><td>反解器预注册 + 双 null（体彩反解+Pinnacle 锚）</td></tr>
+<tr><td>M1</td><td class="warn">含糊</td><td>U5 样本量与对账口径不明</td><td>描述性账本·口径=判断 vs 赛果（refuted 无票不可用票面收益）</td></tr>
+<tr><td>M2</td><td class="warn">含糊</td><td>P3 时间线机制混用 strict_merged</td><td>写死 v32.1 纯净闸+λ 缓存重放</td></tr>
+<tr><td>M3</td><td class="warn">含糊</td><td>P4 keep 判据有僵尸后门</td><td>拓扑序审判，死下游的专用上游跟随 kill</td></tr>
+<tr><td>M4</td><td class="warn">含糊</td><td>evidence 键口径未定</td><td>开赛日 + schema version 字段</td></tr>
+<tr><td>S1</td><td class="ok">省工</td><td>U6 五挡消融与 v19 重复</td><td>改定位重写（预测精度→投注结构/纪律）</td></tr>
+<tr><td>S2</td><td class="ok">省工</td><td>U3 与 v34 部分重叠</td><td>k=1 免费附带·信息量低标注</td></tr>
+</table>
+</div>
+
+<div class="small">开发者 sszhang · 2026-10-11 · 方案A 仪表化渐进 · 每阶段预注册判据入 fade-strategy-prereg（v35Foundation）· 审计三件套全阶段适用</div>
+</body></html>
