@@ -1,0 +1,24 @@
+{
+ "schema": 1,
+ "generatedAt": "2026-10-11",
+ "components": {
+  "market_crs_devig": {"status": "keep", "role": "比分分布主干（体彩CRS 31格 power去水）",
+   "evidence": {"unit": "U2+铁律13", "ci": "λ路线天花板13.26%/32.66% vs 市场13.5%/33.5%", "audit": "data/04-summaries/v35-step-audit.json"},
+   "auditedAt": "2026-10-11"},
+  "market_lambda_solver": {"status": "keep", "role": "λ反解降级层（TTG λsum+HAD二分·ρ=0）",
+   "evidence": {"unit": "U2", "ci": "双null显著胜V3W: Δ+0.0994[+0.084,+0.114] / 锚Δ+0.2488[+0.116,+0.396]", "audit": "data/04-summaries/v35-step-audit.json"},
+   "auditedAt": "2026-10-11"},
+  "v3w_lambda": {"status": "demote", "role": "兜底层+画像叙事（HST质量层）",
+   "evidence": {"unit": "U2", "ci": "被双null显著打败·λsum均值2.56vs实际2.80", "audit": "data/04-summaries/v35-step-audit.json"},
+   "auditedAt": "2026-10-11"},
+  "fusion_a": {"status": "retired", "role": "方向融合模型项（全局a=0）",
+   "evidence": {"unit": "U1", "ci": "11联赛n≥100 RPS CI全>0·a=0显著优", "audit": "data/04-summaries/v35-step-audit.json"},
+   "auditedAt": "2026-10-11"},
+  "rho": {"status": "retired", "role": "DC低分修正（ρ=0）",
+   "evidence": {"unit": "U4", "ci": "低分带Δ+0.063 CI>0·带内错置", "audit": "data/04-summaries/v35-step-audit.json"},
+   "auditedAt": "2026-10-11"},
+  "hypothesis_layer": {"status": "keep", "role": "假设层（唯一存活正向组件·前瞻积累）",
+   "evidence": {"unit": "U5", "ci": "survived 57场方向命中75%>基线64.4%（n小·n≥100再立判据）", "audit": "data/04-summaries/v35-step-audit.json"},
+   "auditedAt": "2026-10-11"}
+ }
+}
