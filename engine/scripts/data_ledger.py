@@ -76,7 +76,7 @@ def scan_hst(glob_root: str = None) -> dict:
 
 def scan_lineups(d: Path) -> dict:
     files = sorted(d.glob("*-lineups.json")) if d.exists() else []
-    entries = published = inj = 0
+    entries = published = inj = inj_matches = 0
     for f in files:
         try:
             doc = json.loads(f.read_text(encoding="utf-8"))
@@ -86,10 +86,15 @@ def scan_lineups(d: Path) -> dict:
             entries += 1
             if m.get("lineup"):
                 published += 1
-            i = m.get("injuries") or m.get("injury") or {}
-            inj += len(i) if isinstance(i, (list, dict)) else 0
+            snaps = m.get("injSnapshots") or []
+            if snaps:
+                inj_matches += 1
+            for i in range(1, len(snaps)):          # 变更事件 = 相邻快照 inj 内容不同
+                if (snaps[i].get("inj") or {}) != (snaps[i - 1].get("inj") or {}):
+                    inj += 1
     return {"files": len(files), "matchEntries": entries,
             "lineupPublished": published, "injuryEvents": inj,
+            "injSnapshotMatches": inj_matches,
             "伤停轨判据进度": f"{entries}/300场·{inj}/30变更"}
 
 

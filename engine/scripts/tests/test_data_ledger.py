@@ -25,11 +25,17 @@ def test_scan_pinclose(tmp_path):
 
 def test_scan_lineups(tmp_path):
     (tmp_path / "2026-10-13-lineups.json").write_text(json.dumps(
-        {"matches": {"111": {"lineup": {"home": ["a"]}, "injuries": {"home": ["x"]}},
-                     "222": {"lineup": None}}}, ensure_ascii=False), encoding="utf-8")
+        {"matches": {
+            "111": {"lineup": {"home": ["a"]},
+                    "injSnapshots": [
+                        {"at": "t1", "inj": {"h": ["x"], "a": []}},
+                        {"at": "t2", "inj": {"h": ["x", "y"], "a": []}}]},   # 一次变更
+            "222": {"lineup": None, "injSnapshots": [{"at": "t1", "inj": {"h": [], "a": []}}]}}},
+        ensure_ascii=False), encoding="utf-8")
     r = dl.scan_lineups(tmp_path)
     assert r["files"] == 1 and r["matchEntries"] == 2
     assert r["lineupPublished"] == 1 and r["injuryEvents"] == 1
+    assert r["injSnapshotMatches"] == 2
 
 
 def test_scan_hst(tmp_path):
