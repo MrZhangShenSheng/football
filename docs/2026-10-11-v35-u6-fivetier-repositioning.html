@@ -44,7 +44,7 @@ code{background:#f0f4f7;border-radius:3px;padding:1px 5px;font-size:12px}
 <tr><td>Va / Vb / Vc</td><td class="num">457 / 386 / 783</td><td class="num bad">−50.1% / −40.4% / −31.8%</td><td class="num">CI 上限全部 &lt; 0</td><td>—</td></tr>
 <tr><td><b>合计对账</b></td><td class="num">4163</td><td class="num bad">−39.37%</td><td colspan="2">投入 8326 元 · 票面回收 5048.22 元（recompute PASS）</td></tr>
 </table>
-<p><b>证据 B · 挡间命中率无精度增益</b>（v19 tierStats·对照=市场校准锚）：一挡 78.4% vs 锚 83.0%（<b class="bad">−4.6pp</b>）、二挡 68.0% vs 69.4%（−1.4pp）、三挡a 55.7% vs 59.7%（<b class="bad">−4.0pp</b>）、四挡 71.8% vs 69.4%（+2.4pp）、五挡 44.4% vs 43.3%（+1.1pp）。模型置信度最高的挡反而跑输市场隐含——「模型觉得稳的腿更稳」不成立，随机对照百分位 44.5/50.0 说明整套选腿与随机抽腿不可分。</p>
+<p><b>证据 B · 挡间命中率无精度增益</b>（v19 tierStats·对照=市场校准锚）：一挡 78.4% vs 锚 83.0%（<b class="bad">−4.6pp</b>）、二挡 68.0% vs 69.4%（−1.4pp）、三挡a 55.7% vs 59.7%（<b class="bad">−4.0pp</b>）、三挡b 71.96% vs 59.7%（<b class="warn">+12.3pp</b>·六挡中唯一大幅跑赢锚，全报不挑：n=189 小样本·realized 仍负=入票 177 腿票面重算 ROI −2.8% 且承载 spec 全负（MAIN −47.6%/TAIL −54.5%/Vb −40.4%）·随机不可分）、四挡 71.8% vs 69.4%（+2.4pp）、五挡 44.4% vs 43.3%（+1.1pp）。模型置信度最高的挡反而跑输市场隐含——「模型觉得稳的腿更稳」不成立，随机对照百分位 44.5/50.0 说明整套选腿与随机抽腿不可分。</p>
 <p><b>证据 C · P3 六单元把「更准」的机器拆了</b>（判决与 CI 全文见 v35-step-audit.json）：</p>
 <table>
 <tr><th>单元</th><th>对象</th><th>判决</th><th>关键数字（val 段）</th></tr>
@@ -111,7 +111,7 @@ code{background:#f0f4f7;border-radius:3px;padding:1px 5px;font-size:12px}
     <rect x="60" y="18" width="760" height="96" rx="10" fill="#fff" stroke="currentColor" stroke-width="1.8"/>
     <text x="76" y="42" font-size="14" font-weight="600" fill="var(--ink)">L5 包装层 · 五挡出票（职能=结构/纪律）</text>
     <text x="76" y="62" font-size="11" fill="var(--sub)">保底4串11=方差管理 · 翻身多池=右尾结构 · 平局轨=独立玩法带 · 彩票档=娱乐票 · 闯关票=右尾纪律</text>
-    <text x="76" y="80" font-size="11" fill="var(--sub)">机器闸门：出票脚本启动 require_component 校验幸存链注册表（铁律15·无审计不入链）</text>
+    <text x="76" y="80" font-size="11" fill="var(--sub)">机器闸门：生产脚本（strength_chain_prod）启动校验 require_component 幸存链注册表（铁律15·无审计不入链）</text>
     <text x="76" y="98" font-size="11" fill="var(--sub)">影子层/票型账本对照 claimed vs realized · 形状改动走票型审计非概率审计</text>
   </g>
   <line x1="440" y1="114" x2="440" y2="146" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr2)"/>
@@ -153,7 +153,7 @@ code{background:#f0f4f7;border-radius:3px;padding:1px 5px;font-size:12px}
     <text x="84" y="442" font-size="11" fill="var(--ok)" font-weight="600">CRS 31格 power去水 keep（比分主干）</text>
     <rect x="274" y="428" width="170" height="20" rx="9" fill="#fbeae4" stroke="var(--bad)"/>
     <text x="282" y="442" font-size="11" fill="var(--bad)" font-weight="600">DC 融合项 a retired（a=0·U1）</text>
-    <text x="76" y="470" font-size="11" fill="var(--sub)">方向=体彩 HAD 去水纯市场（U1：a=0 全联赛显著优·锚样本方向同）；比分=CRS 去水主干（U2：λ 路线天花板 13.26%/32.66% 不及反解 null）</text>
+    <text x="76" y="470" font-size="11" fill="var(--sub)">方向=体彩 HAD 去水纯市场（U1：a=0 全联赛显著优·锚样本方向同）；比分=CRS 去水主干（U2：V3W 11.75%/29.45% 不及反解 null 13.26%/32.66%·反解仍不及 CRS 去水市场 13.5%/33.5%）</text>
     <text x="76" y="484" font-size="11" fill="var(--sub)">Pinnacle 收盘=金标准锚（CLV/校准对照·「打赢烂 null 不算赢市场」双 null 原则）</text>
   </g>
   <line x1="440" y1="490" x2="440" y2="522" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr2)"/>
