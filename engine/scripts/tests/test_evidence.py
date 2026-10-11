@@ -67,3 +67,15 @@ def test_record_s1_from_archive(tmp_path, monkeypatch):
     doc = json.loads((tmp_path / "2026-10-12" / "周日001.json").read_text(encoding="utf-8"))
     p = doc["steps"][evidence.STEP_ODDS]["payload"]
     assert p["pools"] == ["had"] and p["oddsUpdatedAt"] == "t1"
+
+
+def test_scp_hook_payload_shape(tmp_path, monkeypatch):
+    """hook 逻辑抽取验证：四步 payload 形状（直接构造 entry 形状调 record）。"""
+    _swap_root(tmp_path, monkeypatch)
+    entry = {"lam": [1.4, 1.1], "crs_top5": [{"pick": "s1s0", "p": 0.12}],
+             "boomP": 0.03, "water": False, "had": {"h": 0.5}}
+    evidence.record("2026-10-12", "k", evidence.STEP_LAMBDA, {"lam": entry["lam"], "beta": 0.05})
+    evidence.record("2026-10-12", "k", evidence.STEP_MATRIX,
+                    {"top5": entry["crs_top5"], "lam": entry["lam"]})
+    doc = json.loads((tmp_path / "2026-10-12" / "k.json").read_text(encoding="utf-8"))
+    assert evidence.STEP_LAMBDA in doc["steps"] and evidence.STEP_MATRIX in doc["steps"]

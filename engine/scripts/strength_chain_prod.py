@@ -94,6 +94,25 @@ def main() -> int:
                  "boomP": round(boom, 4), "water": is_water,
                  "flags": pred.get("flags", [])}
         matches.append(entry)
+        # v35 证据链 hook（fail-open·外层兜底）
+        try:
+            import evidence
+            _key = evidence.norm_key(match_id=m.get("matchId"), code=m.get("code"),
+                                     home=m["home"], away=m["away"])
+            evidence.record(args.day, _key, evidence.STEP_LAMBDA,
+                            {"lam": entry["lam"], "beta": 0.05})
+            evidence.record(args.day, _key, evidence.STEP_PROFILE,
+                            {"hid": hid, "aid": aid, "leagueCode": pred.get("league"),
+                             "hstRows": len(ctx["hst"].get(pred.get("league") or "", [])),
+                             "unmappedLeague": (pred.get("league") or "") in ctx["unmapped"]})
+            evidence.record(args.day, _key, evidence.STEP_DEVIG,
+                            {"method": "V3W-dewater-v2", "boom": BOOM_V2,
+                             "hadHot": HAD_HOT_V2, "water": is_water,
+                             "boomP": entry["boomP"], "had": entry["had"]})
+            evidence.record(args.day, _key, evidence.STEP_MATRIX,
+                            {"top5": entry["crs_top5"], "lam": entry["lam"]})
+        except Exception:                 # noqa: BLE001 —— fail-open
+            pass
         if not is_water:
             cands.append(entry)
 
