@@ -169,6 +169,7 @@ def strip_play(pick: str) -> str:
     parts = pick.split(" ", 1)
     body = parts[1].strip() if parts[0].upper() in PLAY_PREFIXES and len(parts) == 2 else pick
     body = re.sub(r"[（(][^（）()]*[)）]", " ", body)
+    body = re.sub(r"@\d+(?:\.\d+)?\s*$", "", body)  # 尾部@赔率注释：'主胜@1.31' → '主胜'（10-08轮新格式）
     return body.replace("维持", "").replace("存续", "").strip()
 
 
@@ -252,8 +253,8 @@ def option_hit(rec: dict, hg: int, ag: int, hhg: int | None = None, hag: int | N
     m = re.match(r"^(\d+)\s*[-:：]\s*(\d+)$", pick)
     if m:  # 比分（连字符 '0-2' 预测口径 / 冒号 '0:2' 体彩票面口径）
         return int(m.group(1)) == hg and int(m.group(2)) == ag
-    m = re.match(r"^(\d)\+?$", pick)
-    if m:  # 总进球 N 球 / N+球
+    m = re.match(r"^s?(\d)\+?$", pick)
+    if m:  # 总进球 N 球 / N+球（'3球'剥尾字→'3'；10-08轮新格式'ttg s4'→'s4'）
         total = hg + ag
         n = int(m.group(1))
         return total >= n if pick.endswith("+") else total == n
@@ -390,9 +391,17 @@ def backfill(day_limit: str | None = None) -> dict:
                 if sc and rec.get("directionHit") is None:
                     dh = (outcome_of(*sc) == oi if oi is not None
                           else hhad_hit(str(rec.get("pick") or "").split(" ", 1)[-1], *sc)
-                          if str(rec.get("pick") or "").startswith("HHAD") else None)
+                          if str(rec.get("pick") or "").upper().startswith("HHAD") else None)
                     if dh is not None:
                         rec["directionHit"] = dh
+                        data["_dirty"] = True
+                        n_fix += 1
+                if sc and rec.get("optionHit") is None:
+                    # 已回填但选项未判（option_hit 判定器升级后补算，如 ttg 's4' 新格式）
+                    hh, ha = parse_score(rec.get("half")) or (None, None)
+                    oh = option_hit(rec, sc[0], sc[1], hh, ha)
+                    if oh is not None:
+                        rec["optionHit"] = oh
                         data["_dirty"] = True
                         n_fix += 1
                 # 已回填：pinClose 补跑（无则 fd 四键匹配）+ 精确 CLV 补算（pinClose 有而 clv 无）
@@ -478,7 +487,7 @@ def backfill(day_limit: str | None = None) -> dict:
             oi = pick_outcome_idx(rec)
             if oi is not None:
                 rec["directionHit"] = outcome_of(hg, ag) == oi
-            elif str(rec.get("pick") or "").startswith("HHAD"):
+            elif str(rec.get("pick") or "").upper().startswith("HHAD"):
                 # 让球腿：pick 如 'HHAD 让球主胜(-2)'，三向判定器不识别 → hhad_hit 让球线判定
                 rec["directionHit"] = hhad_hit(str(rec["pick"]).split(" ", 1)[-1], hg, ag)
             else:
@@ -516,7 +525,7 @@ def backfill(day_limit: str | None = None) -> dict:
             oi = pick_outcome_idx(rec)
             if oi is not None:
                 rec["directionHit"] = outcome_of(hg, ag) == oi
-            elif str(rec.get("pick") or "").startswith("HHAD"):
+            elif str(rec.get("pick") or "").upper().startswith("HHAD"):
                 # 让球腿：pick 如 'HHAD 让球主胜(-2)'，三向判定器不识别 → hhad_hit 让球线判定
                 rec["directionHit"] = hhad_hit(str(rec["pick"]).split(" ", 1)[-1], hg, ag)
             else:
