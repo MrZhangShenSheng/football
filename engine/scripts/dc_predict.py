@@ -257,6 +257,12 @@ def main() -> None:
     if "--market" in sys.argv:
         i = sys.argv.index("--market")
         market = [float(x) for x in sys.argv[i + 1].split(",")]
+    mid = None
+    if "--mid" in sys.argv:
+        mid = sys.argv[sys.argv.index("--mid") + 1]
+    mday = None
+    if "--day" in sys.argv:
+        mday = sys.argv[sys.argv.index("--day") + 1]
     if len(args) < 3:
         log("dc_predict", '用法: python dc_predict.py <league> "<home>" "<away>" [--market h,d,a]')
         return
@@ -341,6 +347,24 @@ def main() -> None:
             "ttg": [round(v, 4) for v in temper(ttg_dist(pm), tpool["ttg"])],
             "hafu": {k: round(v, 4) for k, v in sorted(zip(hf.keys(), hft))},
         }
+
+    # v35 证据链 hook（fail-open·record 内部再兜一层）
+    try:
+        import evidence
+        from datetime import date as _date
+        _key = evidence.norm_key(match_id=mid, league=league, home=h_key, away=a_key)
+        _day = mday or _date.today().isoformat()
+        evidence.record(_day, _key, evidence.STEP_DC,
+                        {"league": league, "dcFile": f"{league}_dc.json",
+                         "lambdaHome": round(lh, 3), "lambdaAway": round(la, 3),
+                         "rho": dc.get("rho")})
+        if market:
+            evidence.record(_day, _key, evidence.STEP_DEVIG,
+                            {"method": "1/o", "market": market, "p_mkt": result["market"]})
+            evidence.record(_day, _key, evidence.STEP_FUSION,
+                            {"a": fus_a, "b": fus_b, "p_fused": result["p_fused"]})
+    except Exception as _ev:              # noqa: BLE001 —— fail-open
+        print(f"[dc_predict] evidence 警告: {_ev}", file=sys.stderr)
 
     print(json.dumps(result, ensure_ascii=False, indent=2))
 
