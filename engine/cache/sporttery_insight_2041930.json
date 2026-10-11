@@ -1,0 +1,251 @@
+{
+ "fetchedAt": "2026-10-11",
+ "source": "sporttery",
+ "matchId": 2041930,
+ "match": {
+  "code": "周一010",
+  "league": "葡超",
+  "gameweek": "8",
+  "season": "2026/2027",
+  "home": "法马利康",
+  "away": "阿尔维卡",
+  "kickoff": "2026-10-13 03:15",
+  "uniformMatchId": 2512398
+ },
+ "standing": {
+  "away": {
+   "groupName": "",
+   "phaseName": "Regular Season",
+   "ranking": "11",
+   "sAwayDrawMatchCnt": "0",
+   "sAwayLossGoalMatchCnt": "2",
+   "sAwayWinGoalMatchCnt": "1",
+   "sDrawMatchCnt": "2",
+   "sLossGoalMatchCnt": "3",
+   "sWinGoalMatchCnt": "2",
+   "seasonName": "2026/2027"
+  },
+  "home": {
+   "groupName": "",
+   "phaseName": "Regular Season",
+   "ranking": "13",
+   "sDrawMatchCnt": "4",
+   "sHomeDrawMatchCnt": "2",
+   "sHomeLossGoalMatchCnt": "1",
+   "sHomeWinGoalMatchCnt": "0",
+   "sLossGoalMatchCnt": "2",
+   "sWinGoalMatchCnt": "1",
+   "seasonName": "2026/2027"
+  }
+ },
+ "injuries": {
+  "home": [],
+  "away": []
+ },
+ "form": {
+  "goalAvg": {
+   "awayGoalAvgCnt": "1.2",
+   "awayGoalAvgCntRatio": "50.0",
+   "homeGoalAvgCnt": "1.2",
+   "homeGoalAvgCntRatio": "50.0",
+   "totalLegCnt": 10
+  },
+  "last10": {
+   "awayDrawMatchCnt": 2,
+   "awayLossGoalMatchCnt": 4,
+   "awayScoreRatio": "47",
+   "awayWinGoalMatchCnt": 4,
+   "homeDrawMatchCnt": 5,
+   "homeLossGoalMatchCnt": 3,
+   "homeScoreRatio": "37",
+   "homeWinGoalMatchCnt": 2,
+   "totalLegCnt": 10
+  },
+  "last10HomeAway": {
+   "awayDrawMatchCnt": 1,
+   "awayLossGoalMatchCnt": 6,
+   "awayScoreRatio": "33",
+   "awayWinGoalMatchCnt": 3,
+   "homeDrawMatchCnt": 5,
+   "homeLossGoalMatchCnt": 2,
+   "homeScoreRatio": "47",
+   "homeWinGoalMatchCnt": 3,
+   "totalLegCnt": 10
+  }
+ },
+ "h2h": {
+  "statistics": {
+   "drawMatchCnt": 0,
+   "drawProbability": "0%",
+   "goalCnt": 0,
+   "lossGoalCnt": 0,
+   "lossGoalMatchCnt": 1,
+   "lossProbability": "33%",
+   "netGoal": 0,
+   "sportteryTeamId": 0,
+   "teamId": 0,
+   "teamShortName": "法马利康",
+   "totalLegCnt": 3,
+   "winGoalMatchCnt": 2,
+   "winProbability": "67%"
+  },
+  "matches": [
+   {
+    "date": "2026-05-17",
+    "home": "法马利康",
+    "score": "1:0",
+    "ht": "0:0",
+    "away": "阿尔维卡",
+    "winner": "home"
+   },
+   {
+    "date": "2026-01-05",
+    "home": "阿尔维卡",
+    "score": "1:0",
+    "ht": "0:0",
+    "away": "法马利康",
+    "winner": "away"
+   },
+   {
+    "date": "2021-11-21",
+    "home": "阿尔维卡",
+    "score": "1:2",
+    "ht": "1:0",
+    "away": "法马利康",
+    "winner": "home"
+   }
+  ]
+ },
+ "scorers": {
+  "away": {
+   "playerList": [
+    {
+     "appearanceCnt": 3,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "1.0",
+     "goalCnt": 3,
+     "goalProbability": "33%",
+     "injuryFlag": 0,
+     "personId": 681569,
+     "personName": "Dawda Camara",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 2,
+     "substituteMatchCnt": 1,
+     "suspensionFlag": 0,
+     "uniformNo": "19"
+    },
+    {
+     "appearanceCnt": 7,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.3",
+     "goalCnt": 2,
+     "goalProbability": "22%",
+     "injuryFlag": 0,
+     "personId": 695698,
+     "personName": "Vivaldo Semedo",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 5,
+     "substituteMatchCnt": 2,
+     "suspensionFlag": 0,
+     "uniformNo": "9"
+    },
+    {
+     "appearanceCnt": 5,
+     "assistAvgCnt": "0.4",
+     "assistCnt": 2,
+     "assistProbability": "25%",
+     "goalAvgCnt": "0.2",
+     "goalCnt": 1,
+     "goalProbability": "11%",
+     "injuryFlag": 0,
+     "personId": 648810,
+     "personName": "Chiquinho",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 5,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "10"
+    }
+   ],
+   "sportteryTeamId": 260,
+   "teamId": 1691,
+   "teamShortName": "阿尔维卡",
+   "uniformTeamId": 57242
+  },
+  "home": {
+   "playerList": [
+    {
+     "appearanceCnt": 7,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.7",
+     "goalCnt": 5,
+     "goalProbability": "63%",
+     "injuryFlag": 0,
+     "personId": 637198,
+     "personName": "G. Koutsias",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 7,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "70"
+    },
+    {
+     "appearanceCnt": 7,
+     "assistAvgCnt": "0.1",
+     "assistCnt": 1,
+     "assistProbability": "17%",
+     "goalAvgCnt": "0.3",
+     "goalCnt": 2,
+     "goalProbability": "25%",
+     "injuryFlag": 0,
+     "personId": 670483,
+     "personName": "Marcos Vinicios",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 7,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "7"
+    },
+    {
+     "appearanceCnt": 7,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.1",
+     "goalCnt": 1,
+     "goalProbability": "13%",
+     "injuryFlag": 0,
+     "personId": 690058,
+     "personName": "F. van Breemen",
+     "playerPositionCode": "Defender",
+     "playerPositionDesc": "后卫",
+     "startedMatchCnt": 7,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "4"
+    }
+   ],
+   "sportteryTeamId": 2111,
+   "teamId": 2752,
+   "teamShortName": "法马利康",
+   "uniformTeamId": 240
+  },
+  "seasonId": 15243,
+  "seasonName": "2026/2027",
+  "tournamentId": 140,
+  "tournamentShortName": "葡超",
+  "uniformLeagueId": 78,
+  "uniformMatchId": 2512398
+ }
+}

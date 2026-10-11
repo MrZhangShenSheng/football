@@ -1,0 +1,568 @@
+{
+ "date": "2026-10-11",
+ "version": "v5.12",
+ "plans": [
+  {
+   "plan": "对冲双票(T002/T003式)",
+   "type": "4串11×2",
+   "stake": "44元",
+   "legs": [
+    "周日021 贝蒂斯主胜@1.38",
+    "周日019 弗赖堡主胜@1.46",
+    "周日013 拉齐奥主胜@1.49",
+    "周一002 亚特兰大主胜@1.46(票A) / 亚特兰大CRS 2:0@8.25(票B对冲腿)"
+   ]
+  },
+  {
+   "plan": "CRS单关x10",
+   "type": "单关x10注",
+   "stake": "20元",
+   "legs": [
+    "周一002 亚特兰大 2:0@8.25 (λ=2.64vs0.56 V3W最强碾压信号)"
+   ]
+  },
+  {
+   "plan": "3串1x5倍",
+   "type": "3串1×5倍",
+   "stake": "10元",
+   "legs": [
+    "贝蒂斯主@1.38 + 弗赖堡主@1.46 + 拉齐奥主@1.49 (合赔3.00→全中30元)"
+   ]
+  },
+  {
+   "plan": "boldplay三档",
+   "type": "翻身6元+彩票2元(剔除南安普敦腿后采纳)",
+   "stake": "8元",
+   "legs": [
+    "引擎卡 approved=false·人工核(本记录即核)"
+   ]
+  }
+ ],
+ "matches": [
+  {
+   "idx": 1,
+   "code": "周日003",
+   "league": "日职",
+   "match": "川崎前锋 vs 名古屋鲸",
+   "pick": "排除:未深挖(非高置信候选)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null
+  },
+  {
+   "idx": 2,
+   "code": "周日004",
+   "league": "荷甲",
+   "match": "乌德勒支 vs 威廉二世",
+   "pick": "排除:假设层否决",
+   "odds": null,
+   "star": null,
+   "grade": "B",
+   "hypothesis": {
+    "assumption": "PENDING:荷甲a=0纯市场锚+15位vs18位两烂互咬·禁胆位",
+    "verdict": "pending"
+   },
+   "inPlan": null
+  },
+  {
+   "idx": 3,
+   "code": "周日005",
+   "league": "意甲",
+   "match": "科莫 vs 罗马",
+   "pick": "排除:未深挖(非高置信候选)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null
+  },
+  {
+   "idx": 4,
+   "code": "周日006",
+   "league": "英冠",
+   "match": "南安普敦 vs 朴次茅斯",
+   "pick": "排除:假设层否决",
+   "odds": null,
+   "star": null,
+   "grade": "B",
+   "hypothesis": {
+    "assumption": "REFUTED:海岸德比+主伤两大主力+客伤三主力=双残德比变量过大",
+    "verdict": "refuted"
+   },
+   "inPlan": null
+  },
+  {
+   "idx": 5,
+   "code": "周日007",
+   "league": "西甲",
+   "match": "埃尔切 vs 塞尔塔",
+   "pick": "排除:未深挖(非高置信候选)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null
+  },
+  {
+   "idx": 6,
+   "code": "周日008",
+   "league": "芬超",
+   "match": "国际图尔 vs 库奥皮奥",
+   "pick": "排除:未深挖(非高置信候选)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null
+  },
+  {
+   "idx": 7,
+   "code": "周日009",
+   "league": "荷甲",
+   "match": "兹沃勒 vs 坎布尔",
+   "pick": "排除:未深挖(非高置信候选)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null
+  },
+  {
+   "idx": 8,
+   "code": "周日010",
+   "league": "挪超",
+   "match": "腓特烈 vs 特罗姆瑟",
+   "pick": "排除:未深挖(非高置信候选)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null
+  },
+  {
+   "idx": 9,
+   "code": "周日011",
+   "league": "英超",
+   "match": "赫尔城 vs 埃弗顿",
+   "pick": "排除:未深挖(非高置信候选)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null
+  },
+  {
+   "idx": 10,
+   "code": "周日012",
+   "league": "英超",
+   "match": "水晶宫 vs 诺丁汉",
+   "pick": "排除:未深挖(非高置信候选)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null
+  },
+  {
+   "idx": 11,
+   "code": "周日013",
+   "league": "意甲",
+   "match": "拉齐奥 vs 蒙扎",
+   "pick": "HAD 主胜",
+   "odds": 1.49,
+   "star": 3,
+   "grade": "A",
+   "dc": null,
+   "fused": [
+    0.594,
+    0.235,
+    0.17
+   ],
+   "final": 0.594,
+   "chain": "[]",
+   "lambdaHome": 1.98,
+   "lambdaAway": 0.64,
+   "fusedPre": [
+    0.594,
+    0.235,
+    0.17
+   ],
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": "对冲双票/3串1",
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "罗维拉伤(中场轮转损耗但深度够)",
+     "tactics": "拉齐奥控球渗透,蒙扎中低位block",
+     "goalSource": "主队中路渗透+定位球",
+     "script": "主控1:0/2:0",
+     "specialVars": "无"
+    },
+    "assumption": "拉齐奥第3位7胜2平1负罗马主场对15位蒙扎·罗维拉伤减一档信心",
+    "checks": [
+     "insight伤停+排名+近10场"
+    ],
+    "verdict": "survived"
+   }
+  },
+  {
+   "idx": 12,
+   "code": "周日014",
+   "league": "意甲",
+   "match": "莱切 vs 博洛尼亚",
+   "pick": "排除:未深挖(非高置信候选)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null
+  },
+  {
+   "idx": 13,
+   "code": "周日015",
+   "league": "法甲",
+   "match": "尼斯 vs 斯特拉斯",
+   "pick": "排除:未深挖(非高置信候选)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null
+  },
+  {
+   "idx": 14,
+   "code": "周日016",
+   "league": "德甲",
+   "match": "科隆 vs 门兴",
+   "pick": "排除:未深挖(非高置信候选)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null
+  },
+  {
+   "idx": 15,
+   "code": "周日017",
+   "league": "西甲",
+   "match": "皇家社会 vs 拉科",
+   "pick": "排除:假设层否决",
+   "odds": null,
+   "star": null,
+   "grade": "B",
+   "hypothesis": {
+    "assumption": "REFUTED:社会近10场3胜1平6负状态崩+伤三主力,拉科7位稳定——踩线四星+基面反向降档判例",
+    "verdict": "refuted"
+   },
+   "inPlan": null
+  },
+  {
+   "idx": 16,
+   "code": "周日018",
+   "league": "英超",
+   "match": "利物浦 vs 曼城",
+   "pick": "排除:未深挖(非高置信候选)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null
+  },
+  {
+   "idx": 17,
+   "code": "周日019",
+   "league": "德甲",
+   "match": "弗赖堡 vs 沙尔克04",
+   "pick": "HAD 主胜",
+   "odds": 1.46,
+   "star": 4,
+   "grade": "A",
+   "dc": null,
+   "fused": [
+    0.606,
+    0.218,
+    0.175
+   ],
+   "final": 0.606,
+   "chain": "[]",
+   "lambdaHome": 1.03,
+   "lambdaAway": 0.43,
+   "fusedPre": [
+    0.606,
+    0.218,
+    0.175
+   ],
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": "对冲双票/3串1",
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "无轮换压力(无欧战周中)",
+     "tactics": "弗赖堡高位压迫,沙尔克深度防守反击难出球",
+     "goalSource": "主队边中结合多点,沙尔克依赖定位球",
+     "script": "主控局1:0/2:0/2:1",
+     "specialVars": "无"
+    },
+    "assumption": "弗赖堡第3位近10场8胜1平1负全德甲最热·主场对12位沙尔克·主队无主力伤",
+    "checks": [
+     "insight伤停+排名+近10场"
+    ],
+    "verdict": "survived"
+   }
+  },
+  {
+   "idx": 18,
+   "code": "周日020",
+   "league": "意甲",
+   "match": "萨索洛 vs AC米兰",
+   "pick": "排除:未深挖(非高置信候选)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null
+  },
+  {
+   "idx": 19,
+   "code": "周日021",
+   "league": "西甲",
+   "match": "贝蒂斯 vs 奥萨苏纳",
+   "pick": "HAD 主胜",
+   "odds": 1.38,
+   "star": 4,
+   "grade": "A",
+   "dc": null,
+   "fused": [
+    0.642,
+    0.208,
+    0.15
+   ],
+   "final": 0.642,
+   "chain": "[]",
+   "lambdaHome": 2.03,
+   "lambdaAway": 0.58,
+   "fusedPre": [
+    0.642,
+    0.208,
+    0.15
+   ],
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": "对冲双票/3串1",
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "菲尔波伤(轮换边卫)",
+     "tactics": "贝蒂斯技术流控球,奥萨苏纳中场绞杀",
+     "goalSource": "主队边路爆破",
+     "script": "技术流主控2:0/2:1/1:0",
+     "specialVars": "无"
+    },
+    "assumption": "贝蒂斯第4位6胜2平2负主场对14位·菲尔波伤系轮换边卫影响小",
+    "checks": [
+     "insight伤停+排名+近10场"
+    ],
+    "verdict": "survived"
+   }
+  },
+  {
+   "idx": 20,
+   "code": "周日022",
+   "league": "葡超",
+   "match": "本菲卡 vs 吉马良斯",
+   "pick": "排除:未深挖(非高置信候选)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null
+  },
+  {
+   "idx": 21,
+   "code": "周日023",
+   "league": "挪超",
+   "match": "利勒斯特 vs 莫尔德",
+   "pick": "排除:未深挖(非高置信候选)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null
+  },
+  {
+   "idx": 22,
+   "code": "周日024",
+   "league": "意甲",
+   "match": "卡利亚里 vs 尤文图斯",
+   "pick": "排除:假设层否决",
+   "odds": null,
+   "star": null,
+   "grade": "B",
+   "hypothesis": {
+    "assumption": "REFUTED:卡利亚里第4位+近况优于尤文+主场,市场却开客胜热门——排名数据直接反对(米堡判例镜像)",
+    "verdict": "refuted"
+   },
+   "inPlan": null
+  },
+  {
+   "idx": 23,
+   "code": "周日025",
+   "league": "法甲",
+   "match": "特鲁瓦 vs 马赛",
+   "pick": "排除:未深挖(非高置信候选)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null
+  },
+  {
+   "idx": 24,
+   "code": "周日026",
+   "league": "西甲",
+   "match": "桑坦德 vs 巴伦西亚",
+   "pick": "排除:未深挖(非高置信候选)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null
+  },
+  {
+   "idx": 25,
+   "code": "周日027",
+   "league": "巴甲",
+   "match": "米竞技 vs 桑托斯",
+   "pick": "排除:未深挖(非高置信候选)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null
+  },
+  {
+   "idx": 26,
+   "code": "周日028",
+   "league": "美职",
+   "match": "圣路易城 vs 洛城银河",
+   "pick": "排除:未深挖(非高置信候选)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null
+  },
+  {
+   "idx": 27,
+   "code": "周一002",
+   "league": "意甲",
+   "match": "亚特兰大 vs 威尼斯",
+   "pick": "HAD 主胜",
+   "odds": 1.46,
+   "star": 4,
+   "grade": "A",
+   "dc": null,
+   "fused": [
+    0.606,
+    0.218,
+    0.175
+   ],
+   "final": 0.606,
+   "chain": "[]",
+   "lambdaHome": 2.64,
+   "lambdaAway": 0.56,
+   "fusedPre": [
+    0.606,
+    0.218,
+    0.175
+   ],
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": "对冲双票/3串1",
+   "hypothesis": {
+    "matchPlay": {
+     "rotation": "无主力伤停·阵容齐整",
+     "tactics": "亚特兰大3-4-1-2高压,威尼斯五后卫摆大巴",
+     "goalSource": "主队翼卫传中+反击,客队仅零星反击",
+     "script": "主队多点开花2:0/3:1",
+     "specialVars": "威尼斯升班马保级压力"
+    },
+    "assumption": "威尼斯垫底20位近10场2胜1平7负客场虫·亚特兰大主场火力·双方零伤停",
+    "checks": [
+     "insight伤停+排名+近10场"
+    ],
+    "verdict": "survived"
+   }
+  },
+  {
+   "idx": 28,
+   "code": "周一003",
+   "league": "瑞超",
+   "match": "马尔默 vs 卡尔马",
+   "pick": "排除:未深挖(非高置信候选)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null
+  },
+  {
+   "idx": 29,
+   "code": "周一004",
+   "league": "挪超",
+   "match": "奥斯KFUM vs 瓦勒伦加",
+   "pick": "排除:未深挖(非高置信候选)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null
+  },
+  {
+   "idx": 30,
+   "code": "周一005",
+   "league": "意甲",
+   "match": "都灵 vs 乌迪内斯",
+   "pick": "排除:未深挖(非高置信候选)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null
+  },
+  {
+   "idx": 31,
+   "code": "周一006",
+   "league": "法乙",
+   "match": "第戎 vs 梅斯",
+   "pick": "排除:未深挖(非高置信候选)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null
+  },
+  {
+   "idx": 32,
+   "code": "周一007",
+   "league": "英超",
+   "match": "考文垂 vs 纽卡斯尔",
+   "pick": "排除:未深挖(非高置信候选)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null
+  },
+  {
+   "idx": 33,
+   "code": "周一008",
+   "league": "西甲",
+   "match": "莱万特 vs 塞维利亚",
+   "pick": "排除:未深挖(非高置信候选)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null
+  },
+  {
+   "idx": 34,
+   "code": "周一009",
+   "league": "巴甲",
+   "match": "科里蒂巴 vs 博塔弗戈",
+   "pick": "排除:未深挖(非高置信候选)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null
+  },
+  {
+   "idx": 35,
+   "code": "周一010",
+   "league": "葡超",
+   "match": "法马利康 vs 阿尔维卡",
+   "pick": "排除:未深挖(非高置信候选)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null
+  }
+ ]
+}

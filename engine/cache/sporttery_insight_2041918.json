@@ -1,0 +1,331 @@
+{
+ "fetchedAt": "2026-10-11",
+ "source": "sporttery",
+ "matchId": 2041918,
+ "match": {
+  "code": "周日026",
+  "league": "西甲",
+  "gameweek": "8",
+  "season": "2026/2027",
+  "home": "桑坦德",
+  "away": "巴伦西亚",
+  "kickoff": "2026-10-12 03:00",
+  "uniformMatchId": 2512451
+ },
+ "standing": {
+  "away": {
+   "groupName": "",
+   "phaseName": "Regular Season",
+   "ranking": "19",
+   "sAwayDrawMatchCnt": "0",
+   "sAwayLossGoalMatchCnt": "2",
+   "sAwayWinGoalMatchCnt": "1",
+   "sDrawMatchCnt": "1",
+   "sLossGoalMatchCnt": "5",
+   "sWinGoalMatchCnt": "1",
+   "seasonName": "2026/2027"
+  },
+  "home": {
+   "groupName": "",
+   "phaseName": "Regular Season",
+   "ranking": "16",
+   "sDrawMatchCnt": "1",
+   "sHomeDrawMatchCnt": "1",
+   "sHomeLossGoalMatchCnt": "0",
+   "sHomeWinGoalMatchCnt": "2",
+   "sLossGoalMatchCnt": "4",
+   "sWinGoalMatchCnt": "2",
+   "seasonName": "2026/2027"
+  }
+ },
+ "injuries": {
+  "home": [
+   {
+    "name": "Pablo Ramón",
+    "pos": "后卫",
+    "no": "5",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 5,
+    "starts": 4
+   }
+  ],
+  "away": [
+   {
+    "name": "马菲奥",
+    "pos": "后卫",
+    "no": "24",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 6,
+    "starts": 4
+   },
+   {
+    "name": "Luis Rioja",
+    "pos": "前锋",
+    "no": "11",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 4,
+    "starts": 1
+   },
+   {
+    "name": "U. Sadiq",
+    "pos": "前锋",
+    "no": "6",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 3,
+    "starts": 1
+   },
+   {
+    "name": "格洛恩内维尔德",
+    "pos": "前锋",
+    "no": "7",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 7,
+    "starts": 6
+   },
+   {
+    "name": "Diego López",
+    "pos": "前锋",
+    "no": "16",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 0,
+    "starts": 0
+   }
+  ]
+ },
+ "form": {
+  "goalAvg": {
+   "awayGoalAvgCnt": "0.8",
+   "awayGoalAvgCntRatio": "33.3",
+   "homeGoalAvgCnt": "1.6",
+   "homeGoalAvgCntRatio": "66.7",
+   "totalLegCnt": 10
+  },
+  "last10": {
+   "awayDrawMatchCnt": 2,
+   "awayLossGoalMatchCnt": 6,
+   "awayScoreRatio": "27",
+   "awayWinGoalMatchCnt": 2,
+   "homeDrawMatchCnt": 2,
+   "homeLossGoalMatchCnt": 5,
+   "homeScoreRatio": "37",
+   "homeWinGoalMatchCnt": 3,
+   "totalLegCnt": 10
+  },
+  "last10HomeAway": {
+   "awayDrawMatchCnt": 2,
+   "awayLossGoalMatchCnt": 4,
+   "awayScoreRatio": "47",
+   "awayWinGoalMatchCnt": 4,
+   "homeDrawMatchCnt": 2,
+   "homeLossGoalMatchCnt": 1,
+   "homeScoreRatio": "77",
+   "homeWinGoalMatchCnt": 7,
+   "totalLegCnt": 10
+  }
+ },
+ "h2h": {
+  "statistics": {
+   "drawMatchCnt": 3,
+   "drawProbability": "50%",
+   "goalCnt": 0,
+   "lossGoalCnt": 0,
+   "lossGoalMatchCnt": 3,
+   "lossProbability": "50%",
+   "netGoal": 0,
+   "sportteryTeamId": 0,
+   "teamId": 0,
+   "teamShortName": "桑坦德",
+   "totalLegCnt": 6,
+   "winGoalMatchCnt": 0,
+   "winProbability": "0%"
+  },
+  "matches": [
+   {
+    "date": "2012-01-30",
+    "home": "桑坦德",
+    "score": "2:2",
+    "ht": "1:0",
+    "away": "巴伦西亚",
+    "winner": "draw"
+   },
+   {
+    "date": "2011-08-28",
+    "home": "巴伦西亚",
+    "score": "4:3",
+    "ht": "1:2",
+    "away": "桑坦德",
+    "winner": "away"
+   },
+   {
+    "date": "2011-02-01",
+    "home": "桑坦德",
+    "score": "1:1",
+    "ht": "1:0",
+    "away": "巴伦西亚",
+    "winner": "draw"
+   },
+   {
+    "date": "2010-09-12",
+    "home": "巴伦西亚",
+    "score": "1:0",
+    "ht": "1:0",
+    "away": "桑坦德",
+    "winner": "away"
+   },
+   {
+    "date": "2010-03-09",
+    "home": "巴伦西亚",
+    "score": "0:0",
+    "ht": "0:0",
+    "away": "桑坦德",
+    "winner": "draw"
+   },
+   {
+    "date": "2009-10-05",
+    "home": "桑坦德",
+    "score": "0:1",
+    "ht": "0:0",
+    "away": "巴伦西亚",
+    "winner": "away"
+   }
+  ]
+ },
+ "scorers": {
+  "away": {
+   "playerList": [
+    {
+     "appearanceCnt": 4,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.3",
+     "goalCnt": 1,
+     "goalProbability": "33%",
+     "injuryFlag": 1,
+     "personId": 309994,
+     "personName": "Luis Rioja",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 3,
+     "suspensionFlag": 0,
+     "uniformNo": "11"
+    },
+    {
+     "appearanceCnt": 3,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.3",
+     "goalCnt": 1,
+     "goalProbability": "33%",
+     "injuryFlag": 1,
+     "personId": 383985,
+     "personName": "U. Sadiq",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 2,
+     "suspensionFlag": 0,
+     "uniformNo": "6"
+    },
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "33%",
+     "injuryFlag": 0,
+     "personId": 908541,
+     "personName": "亚伦·马约尔",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 2,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "33"
+    }
+   ],
+   "sportteryTeamId": 678,
+   "teamId": 2015,
+   "teamShortName": "巴伦西亚",
+   "uniformTeamId": 452
+  },
+  "home": {
+   "playerList": [
+    {
+     "appearanceCnt": 7,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.9",
+     "goalCnt": 6,
+     "goalProbability": "50%",
+     "injuryFlag": 0,
+     "personId": 841955,
+     "personName": "Y. Zabiri",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 4,
+     "substituteMatchCnt": 3,
+     "suspensionFlag": 0,
+     "uniformNo": "21"
+    },
+    {
+     "appearanceCnt": 6,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.3",
+     "goalCnt": 2,
+     "goalProbability": "17%",
+     "injuryFlag": 0,
+     "personId": 820183,
+     "personName": "Pablo García",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 3,
+     "substituteMatchCnt": 3,
+     "suspensionFlag": 0,
+     "uniformNo": "15"
+    },
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "8%",
+     "injuryFlag": 0,
+     "personId": 892751,
+     "personName": "马丁内斯",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 2,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "36"
+    }
+   ],
+   "sportteryTeamId": 676,
+   "teamId": 2029,
+   "teamShortName": "桑坦德",
+   "uniformTeamId": 879
+  },
+  "seasonId": 15485,
+  "seasonName": "2026/2027",
+  "tournamentId": 128,
+  "tournamentShortName": "西甲",
+  "uniformLeagueId": 24,
+  "uniformMatchId": 2512451
+ }
+}

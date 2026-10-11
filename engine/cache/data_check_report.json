@@ -1,51 +1,9 @@
 {
-  "checkedAt": "2026-10-10",
+  "checkedAt": "2026-10-11",
   "leagues": {
-    "韩职": {
-      "status": "ready",
-      "roundsPlayed": 22,
-      "standingsSource": "insight",
-      "fdCovered": false
-    },
     "日职": {
       "status": "ready",
       "roundsPlayed": 6,
-      "standingsSource": "espn",
-      "fdCovered": false
-    },
-    "英超": {
-      "status": "ready",
-      "roundsPlayed": 64,
-      "standingsSource": "fd-derived",
-      "fdCovered": true
-    },
-    "西甲": {
-      "status": "ready",
-      "roundsPlayed": 64,
-      "standingsSource": "fd-derived",
-      "fdCovered": true
-    },
-    "意甲": {
-      "status": "ready",
-      "roundsPlayed": 63,
-      "standingsSource": "fd-derived",
-      "fdCovered": true
-    },
-    "德甲": {
-      "status": "ready",
-      "roundsPlayed": 55,
-      "standingsSource": "fd-derived",
-      "fdCovered": true
-    },
-    "法甲": {
-      "status": "ready",
-      "roundsPlayed": 56,
-      "standingsSource": "fd-derived",
-      "fdCovered": true
-    },
-    "瑞超": {
-      "status": "ready",
-      "roundsPlayed": 20,
       "standingsSource": "espn",
       "fdCovered": false
     },
@@ -55,30 +13,21 @@
       "standingsSource": "fd-derived",
       "fdCovered": true
     },
-    "葡超": {
+    "意甲": {
       "status": "ready",
-      "roundsPlayed": 17,
+      "roundsPlayed": 63,
       "standingsSource": "fd-derived",
       "fdCovered": true
-    },
-    "沙职": {
-      "status": "ready",
-      "roundsPlayed": 4,
-      "standingsSource": "espn",
-      "fdCovered": false
-    },
-    "巴甲": {
-      "status": "ready",
-      "roundsPlayed": 25,
-      "standingsSource": "espn",
-      "fdCovered": false
-    },
-    "日乙": {
-      "status": "missing"
     },
     "英冠": {
       "status": "ready",
       "roundsPlayed": 77,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "西甲": {
+      "status": "ready",
+      "roundsPlayed": 64,
       "standingsSource": "fd-derived",
       "fdCovered": true
     },
@@ -91,9 +40,45 @@
       "standingsSource": "espn",
       "fdCovered": false
     },
+    "英超": {
+      "status": "ready",
+      "roundsPlayed": 64,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "法甲": {
+      "status": "ready",
+      "roundsPlayed": 56,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "德甲": {
+      "status": "ready",
+      "roundsPlayed": 55,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "葡超": {
+      "status": "ready",
+      "roundsPlayed": 17,
+      "standingsSource": "fd-derived",
+      "fdCovered": true
+    },
+    "巴甲": {
+      "status": "ready",
+      "roundsPlayed": 25,
+      "standingsSource": "espn",
+      "fdCovered": false
+    },
     "美职": {
       "status": "ready",
       "roundsPlayed": 23,
+      "standingsSource": "espn",
+      "fdCovered": false
+    },
+    "瑞超": {
+      "status": "ready",
+      "roundsPlayed": 20,
       "standingsSource": "espn",
       "fdCovered": false
     },
@@ -105,21 +90,10 @@
     }
   },
   "missingLeagues": [
-    "日乙",
     "芬超"
   ],
   "staleLeagues": [],
   "missingAlias": [
-    {
-      "team": "代格福什",
-      "league": "瑞超",
-      "match": "米亚尔比 vs 代格福什"
-    },
-    {
-      "team": "磐城FC",
-      "league": "日乙",
-      "match": "磐城FC vs 秋田闪电"
-    },
     {
       "team": "洛城银河",
       "league": "美职",
@@ -133,450 +107,12 @@
   ],
   "notReadyTeams": [
     {
-      "team": "金泉尚武",
-      "teamId": "gimcheon-sangmu",
-      "league": "korea-k-league",
-      "status": "stale",
-      "lastUpdated": "2026-08-23",
-      "ageDays": 48
-    },
-    {
-      "team": "安养FC",
-      "teamId": "anyang",
-      "league": "korea-k-league",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 49
-    },
-    {
-      "team": "京都",
-      "teamId": "kyoto-sanga",
-      "league": "japan",
-      "status": "stale",
-      "lastUpdated": "2026-09-10",
-      "ageDays": 30
-    },
-    {
-      "team": "町田泽维",
-      "teamId": "machida-zelvia",
-      "league": "japan",
-      "status": "stale",
-      "lastUpdated": "2026-09-01",
-      "ageDays": 39
-    },
-    {
-      "team": "阿森纳",
-      "teamId": "arsenal",
-      "league": "england",
-      "status": "stale",
-      "lastUpdated": "2026-08-21",
-      "ageDays": 50
-    },
-    {
-      "team": "利兹联",
-      "teamId": "leeds",
-      "league": "england",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 49
-    },
-    {
-      "team": "巴列卡诺",
-      "teamId": "rayo-vallecano",
-      "league": "spain",
-      "status": "stale",
-      "lastUpdated": "2026-08-21",
-      "ageDays": 50
-    },
-    {
-      "team": "毕尔巴鄂",
-      "teamId": "athletic-bilbao",
-      "league": "spain",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 49
-    },
-    {
-      "team": "热那亚",
-      "teamId": "genoa",
-      "league": "italy",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 49
-    },
-    {
-      "team": "佛罗伦萨",
-      "teamId": "fiorentina",
-      "league": "italy",
-      "status": "stale",
-      "lastUpdated": "2026-09-10",
-      "ageDays": 30
-    },
-    {
-      "team": "柏林联合",
-      "teamId": "union-berlin",
-      "league": "germany-dfb-pokal",
-      "status": "stale",
-      "lastUpdated": "2026-09-10",
-      "ageDays": 30
-    },
-    {
-      "team": "埃沃斯堡",
-      "teamId": "elversberg",
-      "league": "germany-bundesliga",
-      "status": "missing"
-    },
-    {
-      "team": "奥格斯堡",
-      "teamId": "augsburg",
-      "league": "germany-bundesliga",
-      "status": "missing"
-    },
-    {
-      "team": "拜仁",
-      "teamId": "bayern",
-      "league": "germany-bundesliga",
-      "status": "stale",
-      "lastUpdated": "2026-09-01",
-      "ageDays": 39
-    },
-    {
-      "team": "美因茨",
-      "teamId": "mainz",
-      "league": "germany-bundesliga",
-      "status": "missing"
-    },
-    {
-      "team": "勒沃库森",
-      "teamId": "leverkusen",
-      "league": "germany-bundesliga",
-      "status": "missing"
-    },
-    {
-      "team": "帕德博恩",
-      "teamId": "paderborn",
-      "league": "germany-bundesliga",
-      "status": "missing"
-    },
-    {
-      "team": "斯图加特",
-      "teamId": "stuttgart",
-      "league": "germany-bundesliga",
-      "status": "missing"
-    },
-    {
-      "team": "霍芬海姆",
-      "teamId": "hoffenheim",
-      "league": "germany-bundesliga",
-      "status": "missing"
-    },
-    {
-      "team": "汉堡",
-      "teamId": "hamburg",
-      "league": "germany-bundesliga",
-      "status": "missing"
-    },
-    {
-      "team": "伊普斯",
-      "teamId": "ipswich",
-      "league": "england",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 49
-    },
-    {
-      "team": "富勒姆",
-      "teamId": "fulham",
-      "league": "england",
-      "status": "stale",
-      "lastUpdated": "2026-08-24",
-      "ageDays": 47
-    },
-    {
-      "team": "切尔西",
-      "teamId": "chelsea",
-      "league": "england",
-      "status": "stale",
-      "lastUpdated": "2026-08-24",
-      "ageDays": 47
-    },
-    {
-      "team": "伯恩茅斯",
-      "teamId": "bournemouth",
-      "league": "england",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 49
-    },
-    {
-      "team": "维拉",
-      "teamId": "aston-villa",
-      "league": "england",
-      "status": "stale",
-      "lastUpdated": "2026-09-07",
-      "ageDays": 33
-    },
-    {
-      "team": "布伦特",
-      "teamId": "brentford",
-      "league": "england",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 49
-    },
-    {
-      "team": "阿拉维斯",
-      "teamId": "alaves",
-      "league": "spain",
-      "status": "stale",
-      "lastUpdated": "2026-08-21",
-      "ageDays": 50
-    },
-    {
-      "team": "马竞",
-      "teamId": "atletico-madrid",
-      "league": "spain",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 49
-    },
-    {
-      "team": "里尔",
-      "teamId": "lille",
-      "league": "france",
-      "status": "stale",
-      "lastUpdated": "2026-09-07",
-      "ageDays": 33
-    },
-    {
-      "team": "勒阿弗尔",
-      "teamId": "le-havre",
-      "league": "france",
-      "status": "missing"
-    },
-    {
-      "team": "米亚尔比",
-      "teamId": "mjallby",
-      "league": "sweden",
-      "status": "stale",
-      "lastUpdated": "2026-09-10",
-      "ageDays": 30
-    },
-    {
-      "team": "国际米兰",
-      "teamId": "inter",
-      "league": "italy",
-      "status": "stale",
-      "lastUpdated": "2026-09-07",
-      "ageDays": 33
-    },
-    {
-      "team": "帕尔马",
-      "teamId": "parma",
-      "league": "italy",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 49
-    },
-    {
-      "team": "曼联",
-      "teamId": "man-united",
-      "league": "england",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 49
-    },
-    {
-      "team": "热刺",
-      "teamId": "tottenham",
-      "league": "england",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 49
-    },
-    {
-      "team": "莱红牛",
-      "teamId": "leipzig",
-      "league": "germany-bundesliga",
-      "status": "stale",
-      "lastUpdated": "2026-09-10",
-      "ageDays": 30
-    },
-    {
-      "team": "法兰克福",
-      "teamId": "frankfurt",
-      "league": "germany-bundesliga",
-      "status": "missing"
-    },
-    {
-      "team": "巴萨",
-      "teamId": "barcelona",
-      "league": "spain",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 49
-    },
-    {
-      "team": "赫塔费",
-      "teamId": "getafe",
-      "league": "spain",
-      "status": "stale",
-      "lastUpdated": "2026-09-07",
-      "ageDays": 33
-    },
-    {
-      "team": "费耶诺德",
-      "teamId": "feyenoord",
-      "league": "netherlands-eredivisie",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 49
-    },
-    {
-      "team": "阿尔克马",
-      "teamId": "az-alkmaar",
-      "league": "netherlands-eredivisie",
-      "status": "stale",
-      "lastUpdated": "2026-09-10",
-      "ageDays": 30
-    },
-    {
-      "team": "马里迪莫",
-      "teamId": "maritimo",
-      "league": "portugal",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 49
-    },
-    {
-      "team": "波尔图",
-      "teamId": "porto",
-      "league": "portugal",
-      "status": "stale",
-      "lastUpdated": "2026-09-07",
-      "ageDays": 33
-    },
-    {
-      "team": "利雅新月",
-      "teamId": "al-hilal",
-      "league": "saudi",
-      "status": "stale",
-      "lastUpdated": "2026-09-07",
-      "ageDays": 33
-    },
-    {
-      "team": "吉达联合",
-      "teamId": "al-ittihad",
-      "league": "saudi",
-      "status": "stale",
-      "lastUpdated": "2026-09-10",
-      "ageDays": 30
-    },
-    {
-      "team": "福图纳",
-      "teamId": "fortuna-sittard",
-      "league": "netherlands-eredivisie",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 49
-    },
-    {
-      "team": "特温特",
-      "teamId": "twente",
-      "league": "netherlands-eredivisie",
-      "status": "missing"
-    },
-    {
-      "team": "那不勒斯",
-      "teamId": "napoli",
-      "league": "italy",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 49
-    },
-    {
-      "team": "弗洛西诺",
-      "teamId": "frosinone",
-      "league": "italy",
-      "status": "stale",
-      "lastUpdated": "2026-09-01",
-      "ageDays": 39
-    },
-    {
-      "team": "摩纳哥",
-      "teamId": "monaco",
-      "league": "france",
-      "status": "missing"
-    },
-    {
-      "team": "图卢兹",
-      "teamId": "toulouse",
-      "league": "france",
-      "status": "stale",
-      "lastUpdated": "2026-09-03",
-      "ageDays": 37
-    },
-    {
-      "team": "皇马",
-      "teamId": "real-madrid",
-      "league": "spain",
-      "status": "stale",
-      "lastUpdated": "2026-09-07",
-      "ageDays": 33
-    },
-    {
-      "team": "比利亚雷",
-      "teamId": "villarreal",
-      "league": "spain",
-      "status": "stale",
-      "lastUpdated": "2026-09-07",
-      "ageDays": 33
-    },
-    {
-      "team": "圣保罗",
-      "teamId": "sao-paulo",
-      "league": "brazil",
-      "status": "missing"
-    },
-    {
-      "team": "维多利亚",
-      "teamId": "vitoria",
-      "league": "brazil",
-      "status": "stale",
-      "lastUpdated": "2026-09-07",
-      "ageDays": 33
-    },
-    {
-      "team": "光州FC",
-      "teamId": "gwangju-fc",
-      "league": "korea-k-league",
-      "status": "stale",
-      "lastUpdated": "2026-08-23",
-      "ageDays": 48
-    },
-    {
-      "team": "蔚山现代",
-      "teamId": "ulsan",
-      "league": "korea-k-league",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 49
-    },
-    {
-      "team": "秋田闪电",
-      "teamId": "akita-blausitz",
-      "league": "japan-j2",
-      "status": "stale",
-      "lastUpdated": "2026-08-22",
-      "ageDays": 49
-    },
-    {
       "team": "川崎前锋",
       "teamId": "kawasaki-frontale",
       "league": "japan",
       "status": "stale",
       "lastUpdated": "2026-09-01",
-      "ageDays": 39
+      "ageDays": 40
     },
     {
       "team": "名古屋鲸",
@@ -596,7 +132,7 @@
       "league": "netherlands-eredivisie",
       "status": "stale",
       "lastUpdated": "2026-09-10",
-      "ageDays": 30
+      "ageDays": 31
     },
     {
       "team": "科莫",
@@ -604,7 +140,7 @@
       "league": "italy",
       "status": "stale",
       "lastUpdated": "2026-09-10",
-      "ageDays": 30
+      "ageDays": 31
     },
     {
       "team": "罗马",
@@ -612,7 +148,7 @@
       "league": "italy",
       "status": "stale",
       "lastUpdated": "2026-09-10",
-      "ageDays": 30
+      "ageDays": 31
     },
     {
       "team": "南安普敦",
@@ -620,7 +156,7 @@
       "league": "england-championship",
       "status": "stale",
       "lastUpdated": "2026-09-01",
-      "ageDays": 39
+      "ageDays": 40
     },
     {
       "team": "朴次茅斯",
@@ -628,7 +164,7 @@
       "league": "england-championship",
       "status": "stale",
       "lastUpdated": "2026-09-01",
-      "ageDays": 39
+      "ageDays": 40
     },
     {
       "team": "埃尔切",
@@ -636,7 +172,7 @@
       "league": "spain",
       "status": "stale",
       "lastUpdated": "2026-09-07",
-      "ageDays": 33
+      "ageDays": 34
     },
     {
       "team": "塞尔塔",
@@ -644,7 +180,7 @@
       "league": "spain",
       "status": "stale",
       "lastUpdated": "2026-09-07",
-      "ageDays": 33
+      "ageDays": 34
     },
     {
       "team": "国际图尔",
@@ -670,7 +206,7 @@
       "league": "netherlands-eredivisie",
       "status": "stale",
       "lastUpdated": "2026-08-22",
-      "ageDays": 49
+      "ageDays": 50
     },
     {
       "team": "腓特烈",
@@ -690,7 +226,7 @@
       "league": "england",
       "status": "stale",
       "lastUpdated": "2026-08-22",
-      "ageDays": 49
+      "ageDays": 50
     },
     {
       "team": "埃弗顿",
@@ -698,7 +234,7 @@
       "league": "england",
       "status": "stale",
       "lastUpdated": "2026-08-22",
-      "ageDays": 49
+      "ageDays": 50
     },
     {
       "team": "水晶宫",
@@ -706,7 +242,7 @@
       "league": "england",
       "status": "stale",
       "lastUpdated": "2026-08-22",
-      "ageDays": 49
+      "ageDays": 50
     },
     {
       "team": "诺丁汉",
@@ -714,7 +250,7 @@
       "league": "england",
       "status": "stale",
       "lastUpdated": "2026-08-22",
-      "ageDays": 49
+      "ageDays": 50
     },
     {
       "team": "拉齐奥",
@@ -722,7 +258,7 @@
       "league": "italy",
       "status": "stale",
       "lastUpdated": "2026-09-07",
-      "ageDays": 33
+      "ageDays": 34
     },
     {
       "team": "蒙扎",
@@ -730,7 +266,7 @@
       "league": "italy",
       "status": "stale",
       "lastUpdated": "2026-09-01",
-      "ageDays": 39
+      "ageDays": 40
     },
     {
       "team": "莱切",
@@ -738,7 +274,7 @@
       "league": "italy",
       "status": "stale",
       "lastUpdated": "2026-09-07",
-      "ageDays": 33
+      "ageDays": 34
     },
     {
       "team": "博洛尼亚",
@@ -746,7 +282,7 @@
       "league": "italy",
       "status": "stale",
       "lastUpdated": "2026-08-24",
-      "ageDays": 47
+      "ageDays": 48
     },
     {
       "team": "尼斯",
@@ -754,7 +290,7 @@
       "league": "france",
       "status": "stale",
       "lastUpdated": "2026-08-22",
-      "ageDays": 49
+      "ageDays": 50
     },
     {
       "team": "斯特拉斯",
@@ -762,7 +298,7 @@
       "league": "france",
       "status": "stale",
       "lastUpdated": "2026-08-21",
-      "ageDays": 50
+      "ageDays": 51
     },
     {
       "team": "科隆",
@@ -782,7 +318,7 @@
       "league": "spain",
       "status": "stale",
       "lastUpdated": "2026-09-07",
-      "ageDays": 33
+      "ageDays": 34
     },
     {
       "team": "拉科",
@@ -790,7 +326,7 @@
       "league": "spain",
       "status": "stale",
       "lastUpdated": "2026-08-24",
-      "ageDays": 47
+      "ageDays": 48
     },
     {
       "team": "利物浦",
@@ -798,7 +334,7 @@
       "league": "england",
       "status": "stale",
       "lastUpdated": "2026-08-22",
-      "ageDays": 49
+      "ageDays": 50
     },
     {
       "team": "曼城",
@@ -806,7 +342,7 @@
       "league": "england",
       "status": "stale",
       "lastUpdated": "2026-09-07",
-      "ageDays": 33
+      "ageDays": 34
     },
     {
       "team": "弗赖堡",
@@ -820,7 +356,7 @@
       "league": "germany-bundesliga",
       "status": "stale",
       "lastUpdated": "2026-09-10",
-      "ageDays": 30
+      "ageDays": 31
     },
     {
       "team": "萨索洛",
@@ -828,7 +364,7 @@
       "league": "italy",
       "status": "stale",
       "lastUpdated": "2026-09-01",
-      "ageDays": 39
+      "ageDays": 40
     },
     {
       "team": "AC米兰",
@@ -836,7 +372,7 @@
       "league": "italy",
       "status": "stale",
       "lastUpdated": "2026-08-22",
-      "ageDays": 49
+      "ageDays": 50
     },
     {
       "team": "贝蒂斯",
@@ -844,7 +380,7 @@
       "league": "spain",
       "status": "stale",
       "lastUpdated": "2026-09-07",
-      "ageDays": 33
+      "ageDays": 34
     },
     {
       "team": "奥萨苏纳",
@@ -852,7 +388,7 @@
       "league": "spain",
       "status": "stale",
       "lastUpdated": "2026-08-24",
-      "ageDays": 47
+      "ageDays": 48
     },
     {
       "team": "本菲卡",
@@ -860,7 +396,7 @@
       "league": "portugal",
       "status": "stale",
       "lastUpdated": "2026-08-21",
-      "ageDays": 50
+      "ageDays": 51
     },
     {
       "team": "吉马良斯",
@@ -868,7 +404,7 @@
       "league": "portugal",
       "status": "stale",
       "lastUpdated": "2026-08-22",
-      "ageDays": 49
+      "ageDays": 50
     },
     {
       "team": "利勒斯特",
@@ -888,7 +424,7 @@
       "league": "italy",
       "status": "stale",
       "lastUpdated": "2026-09-07",
-      "ageDays": 33
+      "ageDays": 34
     },
     {
       "team": "尤文图斯",
@@ -896,7 +432,7 @@
       "league": "italy",
       "status": "stale",
       "lastUpdated": "2026-08-22",
-      "ageDays": 49
+      "ageDays": 50
     },
     {
       "team": "特鲁瓦",
@@ -910,7 +446,7 @@
       "league": "france",
       "status": "stale",
       "lastUpdated": "2026-09-10",
-      "ageDays": 30
+      "ageDays": 31
     },
     {
       "team": "桑坦德",
@@ -918,7 +454,7 @@
       "league": "spain",
       "status": "stale",
       "lastUpdated": "2026-08-22",
-      "ageDays": 49
+      "ageDays": 50
     },
     {
       "team": "巴伦西亚",
@@ -926,7 +462,7 @@
       "league": "spain",
       "status": "stale",
       "lastUpdated": "2026-09-10",
-      "ageDays": 30
+      "ageDays": 31
     },
     {
       "team": "米竞技",
@@ -958,7 +494,7 @@
       "league": "italy",
       "status": "stale",
       "lastUpdated": "2026-09-10",
-      "ageDays": 30
+      "ageDays": 31
     },
     {
       "team": "马尔默",
@@ -966,7 +502,7 @@
       "league": "sweden",
       "status": "stale",
       "lastUpdated": "2026-09-07",
-      "ageDays": 33
+      "ageDays": 34
     },
     {
       "team": "卡尔马",
@@ -974,7 +510,7 @@
       "league": "sweden",
       "status": "stale",
       "lastUpdated": "2026-09-07",
-      "ageDays": 33
+      "ageDays": 34
     },
     {
       "team": "奥斯KFUM",
@@ -994,7 +530,7 @@
       "league": "italy",
       "status": "stale",
       "lastUpdated": "2026-09-01",
-      "ageDays": 39
+      "ageDays": 40
     },
     {
       "team": "乌迪内斯",
@@ -1002,7 +538,7 @@
       "league": "italy",
       "status": "stale",
       "lastUpdated": "2026-09-07",
-      "ageDays": 33
+      "ageDays": 34
     },
     {
       "team": "第戎",
@@ -1022,7 +558,7 @@
       "league": "england",
       "status": "stale",
       "lastUpdated": "2026-08-22",
-      "ageDays": 49
+      "ageDays": 50
     },
     {
       "team": "纽卡斯尔",
@@ -1030,7 +566,7 @@
       "league": "england",
       "status": "stale",
       "lastUpdated": "2026-08-22",
-      "ageDays": 49
+      "ageDays": 50
     },
     {
       "team": "莱万特",
@@ -1038,7 +574,7 @@
       "league": "spain",
       "status": "stale",
       "lastUpdated": "2026-08-24",
-      "ageDays": 47
+      "ageDays": 48
     },
     {
       "team": "塞维利亚",
@@ -1046,7 +582,7 @@
       "league": "spain",
       "status": "stale",
       "lastUpdated": "2026-09-10",
-      "ageDays": 30
+      "ageDays": 31
     },
     {
       "team": "科里蒂巴",
@@ -1054,7 +590,7 @@
       "league": "brazil",
       "status": "stale",
       "lastUpdated": "2026-09-10",
-      "ageDays": 30
+      "ageDays": 31
     },
     {
       "team": "博塔弗戈",
@@ -1062,7 +598,7 @@
       "league": "brazil",
       "status": "stale",
       "lastUpdated": "2026-08-24",
-      "ageDays": 47
+      "ageDays": 48
     },
     {
       "team": "法马利康",
@@ -1070,11 +606,11 @@
       "league": "portugal",
       "status": "stale",
       "lastUpdated": "2026-08-22",
-      "ageDays": 49
+      "ageDays": 50
     }
   ],
   "readyCount": {
-    "leagues": 16,
+    "leagues": 14,
     "teamsKnown": 802
   }
 }
