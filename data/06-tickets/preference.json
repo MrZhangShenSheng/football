@@ -1,6 +1,6 @@
 {
  "meta": {
-  "lastUpdated": "2026-09-29",
+  "lastUpdated": "2026-10-11",
   "sampleSize": 6,
   "sampleRange": [
    "T001",
@@ -72,7 +72,16 @@
    "evidence": "全季逐月重训模拟134注 ROI+20.1%（4月+6.2/5月+82/9月+222；6-8月连亏3月为右尾常态）；单关基线-1.7% vs 市场-16.8%",
    "verified": "2026-09-29 大哥拍板直接转正（跳过影子期）",
    "scope": "仅俱乐部联赛轮——国家队/杯赛轮族模型不适用自动不出票(parlay_gate.py)",
-   "discipline": "满100注或连续3个月0回款再评估，中途不停；生产=engine/scripts/parlay_gate.py（幂等，票面落engine/cache/parlay_gate/）"
+   "discipline": "满100注或连续3个月0回款再评估，中途不停；生产=engine/scripts/parlay_gate.py（幂等，票面落engine/cache/parlay_gate/）",
+   "stake": null,
+   "note": " · 2026-10-11预算8→10元/天(大哥确认)"
+  },
+  {
+   "name": "五挡N串1×10倍",
+   "stake": "20元/张(1注×2元×10倍)",
+   "note": "T046首证·大哥2026-10-11确认固定买法·五挡双信号执行器(v18_scheme_daily)出票日转正·全中派彩≈合赔x20",
+   "firstTicket": "T046",
+   "confirmedAt": "2026-10-11"
   }
  ],
  "stake": {
