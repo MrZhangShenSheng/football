@@ -1,0 +1,195 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>v35-P4 · U6 五挡定位重写（预测精度 → 投注结构/纪律）</title>
+<style>
+:root{--ink:#1c2733;--sub:#5b6b7a;--line:#dde4ea;--bg:#f7f9fb;--card:#fff;--ok:#0f6b4f;--bad:#a33;--warn:#b3541e;--accent:#1a5fb4}
+*{box-sizing:border-box}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;color:var(--ink);background:var(--bg);margin:0;padding:24px 16px;max-width:1080px;margin-inline:auto}
+h1{font-size:20px;margin:0 0 4px}
+h2{font-size:15px;margin:22px 0 8px;padding-bottom:5px;border-bottom:2px solid var(--accent)}
+.meta{color:var(--sub);font-size:12.5px;margin-bottom:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 16px;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:12.5px;margin:5px 0}
+th,td{border:1px solid var(--line);padding:4px 7px;text-align:left;vertical-align:top}
+th{background:#f0f4f7}
+.num{font-variant-numeric:tabular-nums}
+.ok{color:var(--ok);font-weight:600}.bad{color:var(--bad);font-weight:600}.warn{color:var(--warn);font-weight:600}
+.small{font-size:11.5px;color:var(--sub)}
+code{background:#f0f4f7;border-radius:3px;padding:1px 5px;font-size:12px}
+.flow{color:var(--accent)}
+.tier-head{display:flex;align-items:baseline;gap:8px;margin-bottom:4px}
+.tier-head b{font-size:14px}
+.verdict{font-size:11.5px;font-weight:600;border-radius:9px;padding:1px 9px;white-space:nowrap}
+.v-struct{background:#e8f1fb;color:var(--accent)}
+</style></head><body>
+
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-3zm0 2.2 6 2.2V11c0 4-2.6 7.8-6 9-3.4-1.2-6-5-6-9V6.4l6-2.2zm-1 4.8v3H8v2h3v3h2v-3h3v-2h-3v-3h-2z" fill="currentColor"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3 2 8l10 5 10-5-10-5zm0 2.3L18.8 8 12 10.7 5.2 8 12 5.3zM4 12.5l8 4 8-4v2.1l-8 4-8-4v-2.1zm0 4.5 8 4 8-4v2.1l-8 4-8-4V17z" fill="currentColor"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 2a8 8 0 1 1 0 16 8 8 0 0 1 0-16zm0 3a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm0 2.5a.5.5 0 1 0 0 1 .5.5 0 0 0 0-1z" fill="currentColor"/></symbol>
+<symbol id="i-gauge" viewBox="0 0 24 24"><path d="M12 4a9 9 0 0 1 9 9h-2a7 7 0 0 0-14 0H3a9 9 0 0 1 9-9zm0 5a4 4 0 0 1 4 4h-2a2 2 0 0 0-4 0H8a4 4 0 0 1 4-4zm-1 4h2v7h-2z" fill="currentColor"/></symbol>
+</defs></svg>
+
+<h1>v35-P4 · U6 五挡定位重写</h1>
+<div class="meta">拍板 sszhang · 2026-10-11 · P3 步骤消融审计 U6 交付件（v19 已证伪消融不重跑·定位重写=文档非回测）· 证据底册 = <code>data/04-summaries/v35-step-audit.json</code> · 开发者 sszhang</div>
+
+<h2>一、为什么重写：两批证据合流，拆掉了「五挡=更准」的全部地基</h2>
+<div class="card">
+<p><b>时间线</b>：v19 五挡滚动消融（2026-10-07·预注册 fade-strategy-prereg v19TierRolling）先证伪了「按精度分挡选腿能兑现收益」；v35-P3 六单元审计（2026-10-11·v35-step-audit.json）再归因——错不在挡位参数，而在整台预测机已被市场锚吸收。两批证据合流后，五挡若继续以「预测精度」为存在理由，就是在为一台不产生增量的机器分层。</p>
+<p><b>证据 A · v19 六 spec 全负</b>（12878 场·1053 天·hist_odds 体彩在售真实价结算·逐票审计三件套对账 PASS）：</p>
+<table>
+<tr><th>spec</th><th>票数</th><th>realized ROI</th><th>bootstrap 95% CI</th><th>随机对照百分位</th></tr>
+<tr><td>MAIN（一~三挡保底型）</td><td class="num">867</td><td class="num bad">−47.6%</td><td class="num">[−56.8%, −37.0%]</td><td class="num">44.5</td></tr>
+<tr><td>TAIL（右尾型·含五挡）</td><td class="num">701</td><td class="num bad">−54.5%</td><td class="num">[−78.6%, −23.8%]</td><td class="num">50.0</td></tr>
+<tr><td>TOP2</td><td class="num">969</td><td class="num bad">−21.7%</td><td class="num">[−26.7%, −16.7%]</td><td>—</td></tr>
+<tr><td>Va / Vb / Vc</td><td class="num">457 / 386 / 783</td><td class="num bad">−50.1% / −40.4% / −31.8%</td><td class="num">CI 上限全部 &lt; 0</td><td>—</td></tr>
+<tr><td><b>合计对账</b></td><td class="num">4163</td><td class="num bad">−39.37%</td><td colspan="2">投入 8326 元 · 票面回收 5048.22 元（recompute PASS）</td></tr>
+</table>
+<p><b>证据 B · 挡间命中率无精度增益</b>（v19 tierStats·对照=市场校准锚）：一挡 78.4% vs 锚 83.0%（<b class="bad">−4.6pp</b>）、二挡 68.0% vs 69.4%（−1.4pp）、三挡a 55.7% vs 59.7%（<b class="bad">−4.0pp</b>）、四挡 71.8% vs 69.4%（+2.4pp）、五挡 44.4% vs 43.3%（+1.1pp）。模型置信度最高的挡反而跑输市场隐含——「模型觉得稳的腿更稳」不成立，随机对照百分位 44.5/50.0 说明整套选腿与随机抽腿不可分。</p>
+<p><b>证据 C · P3 六单元把「更准」的机器拆了</b>（判决与 CI 全文见 v35-step-audit.json）：</p>
+<table>
+<tr><th>单元</th><th>对象</th><th>判决</th><th>关键数字（val 段）</th></tr>
+<tr><td>U1</td><td>DC 融合系数 a=0.4</td><td class="bad">retired（全局 a=0）</td><td class="num">12 联赛中 10 个 RPS 配对差 CI 下限&gt;0（a=0 显著优）；英超 +0.0212 [+0.0131, +0.0297]·荷甲 +0.0363 [+0.0246, +0.0484]；n≥100 的 10 联赛=9 判 a0 + 意乙 neutral；Pinnacle 锚样本 n=74：+0.0188 [−0.0036, +0.0431]</td></tr>
+<tr><td>U2</td><td>V3W λ 源（HST 质量层）</td><td class="warn">demote → 结构先验</td><td class="num">双 null 显著胜：体彩反解 nullA n=3898 Δ+0.0994 [+0.0841, +0.1144]；Pinnacle 锚 nullB n=74 Δ+0.2488 [+0.1163, +0.3963]；比分带命中 top1 11.75% vs 13.26%·top3 29.45% vs 32.66%</td></tr>
+<tr><td>U3</td><td>power 去水 k 二分</td><td class="ok">keep（翻案留任）</td><td class="num">n=7724 Δ−0.0071 [−0.0090, −0.0051]——k 二分显著优于 k=1 归一</td></tr>
+<tr><td>U4</td><td>ρ 低分修正</td><td class="bad">retired（ρ=0）</td><td class="num">低分带 n=3898 Δ+0.0628 [+0.0612, +0.0645]·ρ 显著更差；校准缺口 0.0572 = ρ0 的 0.0572，零改善</td></tr>
+<tr><td>U5</td><td>假设层闸门</td><td class="ok">keep（描述性首账）</td><td class="num">survived 57 / pending 20 / refuted 4；已知方向 32 场命中 75% vs 方向基线 64.4%（n 小·n≥100 再立判据）</td></tr>
+<tr><td>U6</td><td>五挡选腿</td><td colspan="2">v19 已证伪不重跑——本档即交付：存在理由从「预测精度」改写为「投注结构/纪律」</td></tr>
+</table>
+<p><b>合流结论</b>：方向端最优解=纯市场（a=0）；比分端主干=体彩 CRS 31 格去水（λ 只作缺格降级先验，ρ 归零）；唯一存活的正向增量候选=假设层（U5·尚在积累）。<b>预测精度不再是五挡的合法性来源</b>——不是放弃，而是它已经被审计收归市场锚，五挡剩下的、也是唯一守得住的存在理由，是投注结构与纪律。</p>
+</div>
+
+<h2>二、旧定位（废弃）：五挡=预测精度分层</h2>
+<div class="card">
+<p>旧定位的完整形态见 <code>docs/2026-10-07-v18-five-tier-selection.html</code>（v18.1 选腿逻辑）：按「模型置信度」把选腿分成五挡，暗含承诺——<b>置信度高的腿更准，串起来能赢市场</b>。</p>
+<table>
+<tr><th>挡</th><th>旧判定（全部赛前可得）</th><th>校准命中率锚</th></tr>
+<tr><td>一挡 · 胆级双确认</td><td>市场去水 p≥0.75 且 V3W 同向</td><td class="num">0.830</td></tr>
+<tr><td>二挡 · 标准双确认</td><td>0.60≤p&lt;0.75 且 V3W 同向</td><td class="num">0.694</td></tr>
+<tr><td>三挡 · 边缘同向</td><td>护栏差≤0.02 或 0.55≤p&lt;0.60 且 V3W 同向</td><td class="num">0.597</td></tr>
+<tr><td>四挡 · 盲区单信号</td><td>市场过门但 V3W 不可测（联赛库缺失）</td><td class="num">0.694（未验）</td></tr>
+<tr><td>五挡 · 低置信同向</td><td>p&lt;0.55 且 V3W 同向（右尾材料）</td><td class="num">0.433</td></tr>
+</table>
+<p>双信号=体彩 HAD 去水概率（第一信号）+ V3W 39 格矩阵聚合三向 argmax（第二信号）。三处地基已被拆：</p>
+<p>① <b>「更准」的信号本体已退役</b>——第一信号的市场概率如今直接就是生产分布（U1 a=0·融合退役），不存在「模型加持后的概率」；第二信号 V3W 被 U2 双 null 显著打败，降级为缺格兜底先验。按精度分挡=给一台已被市场吸收的机器分层；<br>
+② <b>分层的增益方向是反的</b>——v19 tierStats 一/二/三挡 vs 市场锚 −4.6/−1.4/−4.0pp，置信度最高的挡输得最狠（分歧场命中 8.6% vs 顺从场 13.2%，铁律 13 同款证据：错的是模型不是市场）；<br>
+③ <b>分层兑换不出收益</b>——六 spec realized ROI 全负、CI 上限全部&lt;0、与随机对照不可分（百分位 44.5/50.0）。影子级运转照旧（攒 realized 对照 claimed），但「挡位=精度分级」的叙事正式废弃。</p>
+</div>
+
+<h2>三、新定位（逐挡重写）：每挡的存在理由 = 投注结构 / 纪律，不是「更准」</h2>
+<div class="card">
+<p>五挡的共同底座：概率分布来自<b>市场锚（方向 a=0·比分 CRS 去水主干）+ 结构先验降级 + 假设层覆盖</b>（见第四节）。在此底座上，每挡回答一个<b>结构问题</b>——期望既定，钱以什么形状上场、纪律在哪里止损。同等期望下，形状决定路径：这正是五挡各自合法性的全部来源。</p>
+
+<div class="tier-head"><svg width="15" height="15" style="color:var(--accent)"><use href="#i-shield"/></svg><b>挡1 · 保底 4串11</b><span class="verdict v-struct">职能 = 方差管理</span></div>
+<p>存在理由=买<b>路径质量</b>，不是买更高回报。孪生票回测（shape-backtest-report.json·B_p55 门槛段 374 轮·同日同腿三形状等成本）：容错族回款轮 <b class="ok">96.8%</b>（362/374·中位回报 72.9%）vs 4串1 <b class="bad">38.5%</b>（144/374·中位 0）；最大回撤 −297 vs −689（<b>减半以上</b>）；最长连续零回款 1 轮 vs 10 轮。而期望回报 <b>统计不可分</b>：ret 1.0071 vs 1.0082，孪生配对差 −0.0012 [−0.0821, +0.0724] CI 跨 0——形状改变的是回款频率/回撤深度/连败长度，不改变期望。随机基线 ret 0.89~0.95 证明选腿信息量在，但形状的作用是把它变成可承受的资金曲线。纪律沿袭：无锚联赛腿禁入保底胆（v5.6）、同场限一、木桶校验。</p>
+
+<div class="tier-head"><svg width="15" height="15" style="color:var(--accent)"><use href="#i-target"/></svg><b>挡2 · 翻身多池</b><span class="verdict v-struct">职能 = 右尾结构</span></div>
+<p>存在理由=在市场主干分布上用<b>玩法池结构</b>博右尾：逐场三池卡（CRS/TTG/HAFU）EV 对比选腿·同场≤1腿，seq 奇=跨池 2串1×3 注（容错·期望返还 43.7%）/ seq 偶=跨池 4串1×N 倍（彩票·19.1%）；CRS 候选=族 top1/top2（v5.15 融合链，已自证「从未跑赢市场·留产依据=优于旧模板链」）。期望仍负，合法性来自预算纪律：月预算 40 元超则关档、连续 4 轮 0 回款自动降半仓——右尾结构 + 硬止损，而非「模型发现了市场没看到的比分」。</p>
+
+<div class="tier-head"><svg width="15" height="15" style="color:var(--accent)"><use href="#i-layers"/></svg><b>挡3 · 平局轨</b><span class="verdict v-struct">职能 = 独立玩法带（胶着剧本）</span></div>
+<p>存在理由=平局是市场与模型的共同低频带，<b>与方向轨正交</b>——方向轨已归 a=0 市场锚，平局轨不依赖「模型更准」，依赖<b>剧本结构</b>：入轨五条 = p<sub>平</sub>≥28% + 三向极差&lt;12pp + 联赛 R4 起 + 每轮≤2 注 + poolSingle.HAD=1 单关资格前置（v5.7 入轨四条+v5.8 第五条）。胶着是灵魂——极差条件把平局命中从基线 18% 提到 60%（回测口径）；EV 不拦截（门槛职责是选股，平局按模型 p 算 EV 天然≈−10%，2026-09-02 教训口径）；星级豁免（⭐/★★是方向选项规则，平局轨有独立门槛体系）；永久单关，2 元/注。</p>
+
+<div class="tier-head"><svg width="15" height="15" style="color:var(--accent)"><use href="#i-gauge"/></svg><b>挡4 · 彩票档</b><span class="verdict v-struct">职能 = 娱乐票（2 元合格腿）</span></div>
+<p>存在理由=<b>娱乐预算的诚实定价</b>：HAD/HHAD N串1×1倍=2 元·合格腿全上 4~8 串（p<sub>fused</sub>≥0.55 门槛+超低赔≤1.25 通道+DC 分歧熔断·v5.6）。它不承担收益预期，2 元即成本上限——把「想买张大的」这个需求从保底/翻身档里隔离出来，防止娱乐偏好污染资金纪律。无预算管理独立轮红线沿袭。</p>
+
+<div class="tier-head"><svg width="15" height="15" style="color:var(--accent)"><use href="#i-target"/></svg><b>挡5 · 闯关票</b><span class="verdict v-struct">职能 = 右尾纪律（100 注纪律线）</span></div>
+<p>存在理由=<b>预注册止损纪律本身</b>。族特征模型（26 维 feature_row）→ 滚动 2 天在售池 gap 断层前 2 场 → top1+top2 双选 2串1 复式 8 元/天。证据状态必须诚实标注：转正凭证（ROI +15.77%/+37.62%）<b class="bad">已作废</b>（自泄漏回测），修正后同配置 −7.0%~+3.9%、中奖 10~14 张不显著——即<b>无正收益证据</b>。按 09-29 纪律继续出票的唯一正当性：右尾纪律=满 100 注或连续 3 个月 0 回款再评估，中途不停（6-8 月连亏 3 月为模拟实测常态）——样本攒满前既不追加也不腰斩，这是纪律实验不是盈利策略。拒出口径（队名无法映射联赛库）打印原因非静默。</p>
+
+<p class="small">五挡共性重述：没有任何一挡声称「我的概率比市场准」。分布来自共享底座（第四节），挡与挡的差别全部在<b>结构</b>（形状/玩法池/剧本门槛/预算）与<b>纪律</b>（止损线/评估线/资格前置）——这两样才是审计过后还站得住的东西。</p>
+</div>
+
+<h2>四、幸存链五层架构（P3 审计后的生产链全图）</h2>
+<div class="card">
+<svg viewBox="0 0 880 700" style="width:100%;color:var(--accent)" font-family="inherit">
+  <defs>
+    <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <!-- L5 包装层（顶·最下游） -->
+  <g>
+    <rect x="60" y="18" width="760" height="96" rx="10" fill="#fff" stroke="currentColor" stroke-width="1.8"/>
+    <text x="76" y="42" font-size="14" font-weight="600" fill="var(--ink)">L5 包装层 · 五挡出票（职能=结构/纪律）</text>
+    <text x="76" y="62" font-size="11" fill="var(--sub)">保底4串11=方差管理 · 翻身多池=右尾结构 · 平局轨=独立玩法带 · 彩票档=娱乐票 · 闯关票=右尾纪律</text>
+    <text x="76" y="80" font-size="11" fill="var(--sub)">机器闸门：出票脚本启动 require_component 校验幸存链注册表（铁律15·无审计不入链）</text>
+    <text x="76" y="98" font-size="11" fill="var(--sub)">影子层/票型账本对照 claimed vs realized · 形状改动走票型审计非概率审计</text>
+  </g>
+  <line x1="440" y1="114" x2="440" y2="146" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <text x="452" y="136" font-size="10.5" fill="var(--sub)">分布+假设 → 结构组合/纪律包装</text>
+
+  <!-- L4 独家信息层 -->
+  <g>
+    <rect x="60" y="148" width="760" height="82" rx="10" fill="#fff" stroke="currentColor" stroke-width="1.8"/>
+    <text x="76" y="172" font-size="14" font-weight="600" fill="var(--ink)">L4 独家信息层（唯一存活正向组件）</text>
+    <rect x="76" y="182" width="150" height="20" rx="9" fill="#e7f4ee" stroke="var(--ok)"/>
+    <text x="84" y="196" font-size="11" fill="var(--ok)" font-weight="600">假设层 hypothesis keep</text>
+    <text x="240" y="196" font-size="11" fill="var(--sub)">U5 首账：survived 57 · 方向命中 75% vs 基线 64.4%（n=32 已知·n≥100 再立判据）</text>
+    <text x="76" y="220" font-size="11" fill="var(--sub)">伤停/战意/剧本假设 → 对市场锚分布做覆盖（S8 会话登记·证据链留痕·前瞻积累中）</text>
+  </g>
+  <line x1="440" y1="230" x2="440" y2="262" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <text x="452" y="252" font-size="10.5" fill="var(--sub)">假设覆盖前的一致分布底座</text>
+
+  <!-- L3 结构先验层 -->
+  <g>
+    <rect x="60" y="264" width="760" height="96" rx="10" fill="#fff" stroke="currentColor" stroke-width="1.8"/>
+    <text x="76" y="288" font-size="14" font-weight="600" fill="var(--ink)">L3 结构先验层（市场缺格时的降级路径）</text>
+    <rect x="76" y="298" width="170" height="20" rx="9" fill="#e7f4ee" stroke="var(--ok)"/>
+    <text x="84" y="312" font-size="11" fill="var(--ok)" font-weight="600">λ反解器 market_lambda_solver keep</text>
+    <rect x="254" y="298" width="150" height="20" rx="9" fill="#e7f4ee" stroke="var(--ok)"/>
+    <text x="262" y="312" font-size="11" fill="var(--ok)" font-weight="600">k二分去水 keep（U3翻案）</text>
+    <rect x="412" y="298" width="160" height="20" rx="9" fill="#fbeae4" stroke="var(--bad)"/>
+    <text x="420" y="312" font-size="11" fill="var(--bad)" font-weight="600">ρ 修正 retired（ρ=0·U4）</text>
+    <text x="76" y="340" font-size="11" fill="var(--sub)">TTG λsum + HAD 二分反解 λ → ρ=0 泊松矩阵（CRS 盘 &lt;20 格时顶上·体彩价源）· k 二分显著优于 k=1（Δ−0.0071·CI 全负）</text>
+    <text x="76" y="354" font-size="11" fill="var(--sub)">U2 判决 lam_demote_structure_prior：λ 不再是比分主干，是主干缺格时的结构先验</text>
+  </g>
+  <line x1="440" y1="360" x2="440" y2="392" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <text x="452" y="382" font-size="10.5" fill="var(--sub)">五池原文 → 去水/反解（缺格降级触发）</text>
+
+  <!-- L2 市场锚层 -->
+  <g>
+    <rect x="60" y="394" width="760" height="96" rx="10" fill="#fff" stroke="currentColor" stroke-width="1.8"/>
+    <text x="76" y="418" font-size="14" font-weight="600" fill="var(--ink)">L2 市场锚层（方向+比分双主干）</text>
+    <rect x="76" y="428" width="190" height="20" rx="9" fill="#e7f4ee" stroke="var(--ok)"/>
+    <text x="84" y="442" font-size="11" fill="var(--ok)" font-weight="600">CRS 31格 power去水 keep（比分主干）</text>
+    <rect x="274" y="428" width="170" height="20" rx="9" fill="#fbeae4" stroke="var(--bad)"/>
+    <text x="282" y="442" font-size="11" fill="var(--bad)" font-weight="600">DC 融合项 a retired（a=0·U1）</text>
+    <text x="76" y="470" font-size="11" fill="var(--sub)">方向=体彩 HAD 去水纯市场（U1：a=0 全联赛显著优·锚样本方向同）；比分=CRS 去水主干（U2：λ 路线天花板 13.26%/32.66% 不及反解 null）</text>
+    <text x="76" y="484" font-size="11" fill="var(--sub)">Pinnacle 收盘=金标准锚（CLV/校准对照·「打赢烂 null 不算赢市场」双 null 原则）</text>
+  </g>
+  <line x1="440" y1="490" x2="440" y2="522" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <text x="452" y="512" font-size="10.5" fill="var(--sub)">存档/画像/兜底供给</text>
+
+  <!-- L1 数据层（底·最上游） -->
+  <g>
+    <rect x="60" y="524" width="760" height="96" rx="10" fill="#fff" stroke="currentColor" stroke-width="1.8"/>
+    <text x="76" y="548" font-size="14" font-weight="600" fill="var(--ink)">L1 数据层</text>
+    <rect x="76" y="558" width="190" height="20" rx="9" fill="#fdf3ea" stroke="var(--warn)"/>
+    <text x="84" y="572" font-size="11" fill="var(--warn)" font-weight="600">V3W λ demote（兜底+画像叙事）</text>
+    <text x="76" y="600" font-size="11" fill="var(--sub)">体彩五池日存档（score_odds）· HST 10956 场 · elo/xG 画像 · 伤停/首发时序（lineup_watch）· fd Pinnacle CSV</text>
+    <text x="76" y="614" font-size="11" fill="var(--sub)">数据质量账本 data-quality-ledger.json 随预测/回填自动刷新（P2 交付）· V3W 被双 null 打败（Δ+0.0994/+0.2488）降级为层3兜底与叙事</text>
+  </g>
+
+  <!-- 右侧图例 -->
+  <g>
+    <rect x="836" y="394" width="34" height="226" rx="6" fill="none" stroke="var(--line)"/>
+    <text x="826" y="412" font-size="10" fill="var(--ok)">keep</text>
+    <text x="826" y="432" font-size="10" fill="var(--warn)">demote</text>
+    <text x="826" y="452" font-size="10" fill="var(--bad)">retired</text>
+    <text x="826" y="472" font-size="9.5" fill="var(--sub)" transform="rotate(90 826 472)">幸存链注册表 surviving_chain.json</text>
+  </g>
+</svg>
+<p class="small">组件状态与凭证全文=<code>engine/cache/strength_chain/surviving_chain.json</code>（6 组件：market_crs_devig/market_lambda_solver/hypothesis_layer=keep·v3w_lambda=demote·fusion_a/rho=retired·审计 2026-10-11）；生产换件=D2+D4 三层降级（CRS 去水主干 → λ 反解 → V3W 兜底·strength_chain_prod 启动闸已挂）。<b>读图要点</b>：概率从 L1/L2 流出时就已经是「市场水准」，L4 是唯一还在尝试往上加增量的层，L5 只做结构与纪律——五挡全部活在这一层。</p>
+</div>
+
+<h2>五、与铁律的关系：铁律 13 / 铁律 15 在新定位下的执行含义</h2>
+<div class="card">
+<table>
+<tr><th>铁律</th><th>原文要义</th><th>新定位下的执行含义</th></tr>
+<tr><td><b>铁律 13</b><br>赔率变换无 alpha<br><span class="small">skill v5.16 · 2026-09-29 证伪批次</span></td><td>赔率的任何变换（融合系数/分歧选场/去水口径微调）不产生 alpha；模型与市场分歧大=错的是模型（分歧场命中 8.6% vs 顺从场 13.2%）</td><td>P3 把它从「经验律」升级成了「结构事实」：U1 a=0 + U2 市场主干 = 生产链本体就是铁律 13 的实现。执行含义三条——① <b>概率端不再有挡位级迭代</b>：任何「换个赔率变换/调融合/加模型项」的提案默认无增益，想翻案走 P3 式审计（双 null+预注册+全报不挑），不走进生产；② <b>五挡的改进空间被明确定义在结构端</b>：形状（4串11 vs 4串1）、玩法池组合、剧本门槛（平局轨极差条件）、预算纪律——这些不碰概率、不会被铁律 13 收缴；③ <b>挡位话术受约束</b>：出票卡禁用「模型更看好」类表述（方向=市场锚），只许说结构理由（方差管理/右尾/胶着剧本/娱乐/纪律实验）。</td></tr>
+<tr><td><b>铁律 15</b><br>组件准入制<br><span class="small">v35 立项 · 2026-10-11 大哥拍板</span></td><td>任何新组件/新系数/换件入生产链，先过消融审计（null+判据+时间线跑前预注册），PASS 凭证（贡献 CI）入幸存链注册表 surviving_chain.json 才准入；无审计不入链；注册表由生产脚本启动校验（require_component·凭证 90 天效期·demote 不得作主干）</td><td>五挡新定位下按对象分轨执行——① <b>概率组件走全审</b>：给五挡供分布的任何新件（新比分选法/新 λ 源/新融合项）必须双 null 打赢才入链（体彩 devig null + Pinnacle 锚·打赢烂 null 不算赢市场）；② <b>结构改动走票型审计</b>：形状/门槛/纪律的改动不碰概率，走影子票对照（claimed vs realized 前向积累·shape_backtest 式孪生回测），判据同样跑前预注册；③ <b>挡位存废可审判</b>：每挡如今有明确的职能声明（第三节），职能失效即可证伪——如闯关票满 100 注仍 0 回款则按预注册线停，保底 4串11 若孪生回测路径优势消失（配对差 CI 转正且回撤优势消失）则降级为 4串1；④ <b>注册表是五挡的地基账</b>：L5 出票脚本依赖 L2/L3 的 keep 组件，凭证过期=五挡整体降级出票（拒跑或降级标注），结构合法性追认到概率底座的每一次审计。</td></tr>
+</table>
+<p><b>一句话收口</b>：铁律 13 划定了五挡不能做什么（不能再以「更准」立身），铁律 15 划定了五挡怎样才能改（概率件全审、结构件票型审计、预注册判据跑前写死）——新定位下的五挡是一组<b>受审计约束的投注结构</b>，不是一组预测置信度分级。</p>
+</div>
+
+<div class="small">数据来源：data/04-summaries/v35-step-audit.json（U1~U5 判决与 CI）· data/04-summaries/v19-tier-rolling-backtest.json（六 spec 消融·tierStats）· data/04-summaries/shape-backtest-report.json（孪生票形状回测 B_p55 段）· engine/cache/strength_chain/surviving_chain.json（注册表）· docs/2026-10-07-v18-five-tier-selection.html（旧定位定义）· docs/2026-10-11-v35-foundation-design.html（工程范围与 P4 拓扑序）· skill/SKILL.md（平局轨 v5.7/v5.8·boldplay v5.6·闯关票 v5.17 现行定义）· CLAUDE.md（闯关票证据作废口径）。开发者 sszhang · 2026-10-11 · v35-P4 Task 5 / D5。</div>
+</body></html>
