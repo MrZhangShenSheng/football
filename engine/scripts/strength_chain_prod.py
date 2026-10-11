@@ -104,7 +104,7 @@ def main() -> int:
             evidence.record(args.day, _key, evidence.STEP_PROFILE,
                             {"hid": hid, "aid": aid, "leagueCode": pred.get("league"),
                              "hstRows": len(ctx["hst"].get(pred.get("league") or "", [])),
-                             "unmappedLeague": (pred.get("league") or "") in ctx["unmapped"]})
+                             "unmappedLeague": (ctx["unmapped"].get(pred.get("league") or "") or 0) > 0})
             evidence.record(args.day, _key, evidence.STEP_DEVIG,
                             {"method": "V3W-dewater-v2", "boom": BOOM_V2,
                              "hadHot": HAD_HOT_V2, "water": is_water,
