@@ -91,7 +91,9 @@
   "v35-P3·U2(2026-10-11): λ源终审判死主概率源——矩法反解器(λsum=TTG去水期望+λh二分解P(H>A)=p_h·零模型零HST)双null显著胜V3W(体彩Δ+0.099/锚Δ+0.249)·top3 29.5%vs32.7%·市场反解λ是更好的比分矩阵地基→P4:λ降级结构先验·矩阵λ源换市场反解入拆迁清单",
   "v35-P3·U3翻案(2026-10-11): 修二分退化bug(目标恒≈1·k漂3.37)重跑——正确k≈1.14显著优k=1(Δ-0.007 CI全负)·k二分留任·撤回P4清单k=1简化条·教训=审计脚本自身也藏虫·修bug重跑是判据纪律的一部分·审计31687场复算PASS",
   "v35-P4(2026-10-11): 大哥全批拍板 D1~D6 执行——D1 fusion全局a=0 / D2+D4 比分端三层降级(市场CRS去水主干→反解λ ρ=0→V3W兜底·legacy至10-18) / D3 market_lambda 引擎 / D5 U6 定位重写 docs/2026-10-11-v35-u6-fivetier-repositioning.html / D6 surviving_chain.json 注册表+启动闸(require_component·90天效期) · U3 翻案 k二分留任",
-  "v35-P4 终审(2026-10-11): I1 fusion note口径修正(12联赛10个CI下限>0·n≥100=9a0+意乙neutral) / I2 load_fusion_ab fallback改(0.0,1.0)防retired复活 / I3 picks跨源混排列legacy周(10-18)必查·每日打印src构成·层2/3占比高须换归一化排序 / M1 CLAUDE.md公式口径清理+四消费方(含ren9) · 遗留I4=boldplay crs_fusion融合链未过审计未入注册表(下批立项候选·大哥拍板) · legacy移除runbook=revert 0697686+f1d5ce7回比分链·revert 264b6c2回a·全分支922cc5c"
+  "v35-P4 终审(2026-10-11): I1 fusion note口径修正(12联赛10个CI下限>0·n≥100=9a0+意乙neutral) / I2 load_fusion_ab fallback改(0.0,1.0)防retired复活 / I3 picks跨源混排列legacy周(10-18)必查·每日打印src构成·层2/3占比高须换归一化排序 / M1 CLAUDE.md公式口径清理+四消费方(含ren9) · 遗留I4=boldplay crs_fusion融合链未过审计未入注册表(下批立项候选·大哥拍板) · legacy移除runbook=revert 0697686+f1d5ce7回比分链·revert 264b6c2回a·全分支922cc5c",
+  "prereg(v35-P4回测): 换件回归回测判据跑前写死——fused==market恒等判据+dc不优重现判据·4联赛全报不挑·RPS口径非收益",
+  "v35-P4回测(2026-10-11): 换件回归PASS——fused==market四联赛恒等+a=0换件无残留·dc劣于市场全重现(+0.02~+0.08·荷甲最惨)·全报不挑"
  ],
  "verdictV1": {
   "ranAt": "2026-10-05",
@@ -625,6 +627,24 @@
     "U4_rho": "ρ低分带格级更差(Δ+0.063 CI>0·带级校准同=带内错置)→ρ=0进P4清单",
     "U5_hypothesis": "首账:survived 57场方向命中75%>基线64.4%(n小无判据·前瞻积累)·pending/refuted无对账分母=选择偏差内生实证",
     "U2_lambda": "V3W λ被双null显著打败——体彩nullA val n=3898 Δ+0.0994 CI[+0.084,+0.114]·Pinnacle锚nullB n=74 Δ+0.2488 CI[+0.116,+0.396]·top1 11.75%vs13.26% top3 29.45%vs32.66%·随机选格LL5.29健康→终判lam_demote_structure_prior:λ降级结构先验调味(仍供形状·方向让市场)·市场反解λ进P4换件清单"
+   }
+  },
+  "P4": {
+   "regressionBacktest": {
+    "registeredAt": "2026-10-11",
+    "scope": "方向端换件回归——4联赛2526全报不挑(spain-laliga/england-premier/netherlands-eredivisie/england-championship)",
+    "judge1_fused_eq_market": "每联赛 fused 三指标(RPS/logloss/acc)==market_only——a=0 数学恒等·不等=换件不完整(残留融合项)",
+    "judge2_dc_not_better": "dc_only RPS >= market_only RPS——U1结论在生产backtest基建重现(DC方向不优于市场)",
+    "metric_nature": "RPS/logloss=概率质量非票面收益·无收益声明·铁律14③leak_audit不适用·警讯清单(收益率类)不适用",
+    "timeline": "backtest.py walk_forward逐段重拟合·train段在预测段前·拟合窗不含预测场(段切分保证)",
+    "scope_out": "比分端不重跑——U2已6327场重放+P4换件冒烟(Run2历史清单6/6走层1)",
+    "results": {
+     "verdict": "PASS(2026-10-11)",
+     "judge1": "四联赛 fused==market 逐位一致(0.1863/0.1963/0.1852/0.2216)——a=0恒等验证·无残留融合项",
+     "judge2": "四联赛 dc_only RPS 全劣于市场(+0.0201/+0.0322/+0.0842/+0.0218·荷甲最惨与U1同向)——U1结论生产基建重现",
+     "n": "158/180/112/241",
+     "files": "data/04-summaries/backtest_{spain-laliga,england-premier,netherlands-eredivisie,england-championship}_2526.json"
+    }
    }
   }
  },
