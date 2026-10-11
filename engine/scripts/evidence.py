@@ -60,3 +60,91 @@ def record(match_day: str, match_key: str, step: str, payload: dict,
         print(f"[evidence] 警告: {step}@{match_day}/{match_key} 记录失败 {exc}（不中断）",
               file=sys.stderr)
         return False
+
+
+def check(match_day: str) -> dict:
+    """完整性检查：每场缺哪些步（缺步标注不补造——设计档 P1 铁设计）。"""
+    day_dir = EVIDENCE_ROOT / match_day
+    if not day_dir.exists():
+        return {}
+    out = {}
+    for f in sorted(day_dir.glob("*.json")):
+        try:
+            doc = json.loads(f.read_text(encoding="utf-8"))
+        except Exception:                  # noqa: BLE001 —— 脏文件不炸检查
+            out[f.stem] = ["<文件损坏>"]
+            continue
+        out[f.stem] = [s for s in ALL_STEPS if s not in doc.get("steps", {})]
+    return out
+
+
+def show(match_day: str, match_key: str) -> None:
+    """控制台打表：这场怎么算的（大哥要求直出不切窗口）。"""
+    f = EVIDENCE_ROOT / match_day / f"{match_key}.json"
+    if not f.exists():
+        print(f"[evidence] 无记录: {f}")
+        return
+    doc = json.loads(f.read_text(encoding="utf-8"))
+    print(f"=== 证据链 {match_day} {match_key} (schema {doc['schema']}) ===")
+    for step in ALL_STEPS:
+        rec = doc["steps"].get(step)
+        if not rec:
+            print(f"  {step:14s} ✗ 缺")
+            continue
+        body = json.dumps(rec["payload"], ensure_ascii=False)
+        print(f"  {step:14s} ✓ [{rec['source']}] {rec['recordedAt']} · {body[:160]}")
+
+
+POOL_KEYS = ("had", "crs", "ttg", "hhad", "hafu")
+
+
+def record_s1_from_archive(archive_path_or_day: str) -> int:
+    """从 score_odds 日存档逐场登记 S1（键=matchNumStr·开赛日=块 businessDate，存档文件日兜底）。"""
+    p = Path(archive_path_or_day)
+    if not p.exists():
+        p = ROOT / "engine" / "cache" / "score_odds" / f"{archive_path_or_day}.json"
+        if not p.exists():
+            print(f"[evidence] S1 源不存在: {archive_path_or_day}")
+            return 0
+    day = p.stem
+    try:
+        doc = json.loads(p.read_text(encoding="utf-8"))
+    except Exception as exc:              # noqa: BLE001
+        print(f"[evidence] S1 存档解析失败 {exc}")
+        return 0
+    n = 0
+    for blk in doc.get("matchDays") or []:
+        # 开赛日=块 businessDate：存档一日文件常含多日比赛（如 10-10 存档含 10-10/11/12 三块），
+        # stem=抓取日只能兜底——键口径铁律=物理比赛日（evidence.py 文件头）
+        day = str(blk.get("businessDate") or p.stem)
+        for m in blk.get("matches") or []:
+            pools = [k for k in POOL_KEYS if m.get(k)]
+            payload = {"archive": p.name, "fetchedAt": doc.get("fetchedAt"),
+                       "pools": pools, "oddsUpdatedAt": m.get("oddsUpdatedAt"),
+                       "sellStatus": m.get("sellStatus")}
+            n += record(day, str(m.get("matchNumStr") or ""), STEP_ODDS, payload)
+    return n
+
+
+def _cli() -> None:
+    args = sys.argv[1:]
+    if len(args) >= 5 and args[0] == "record":       # 会话登记 S8/S9 走此口
+        ok = record(args[1], args[2], args[3], json.loads(args[4]), source=SOURCE_SESSION)
+        print("[evidence] 会话登记 ✓" if ok else "[evidence] 会话登记 失败(警告)")
+    elif len(args) >= 2 and args[0] == "s1":
+        print(f"[evidence] S1 登记 {record_s1_from_archive(args[1])} 场")
+    elif len(args) >= 2 and args[0] == "check":
+        r = check(args[1])
+        for k, miss in r.items():
+            tag = "齐" if not miss else f"缺 {'/'.join(miss)}"
+            print(f"  {k}: {tag}")
+        print(f"[evidence] {len(r)} 场检查完毕（缺步标注不补造）")
+    elif len(args) >= 3 and args[0] == "show":
+        show(args[1], args[2])
+    else:
+        print("用法: evidence.py record <日> <键> <步> '<json>' | s1 <存档日> | "
+              "check <日> | show <日> <键>")
+
+
+if __name__ == "__main__":
+    _cli()
