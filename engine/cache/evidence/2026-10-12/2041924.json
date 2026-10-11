@@ -1,0 +1,95 @@
+{
+ "schema": 1,
+ "day": "2026-10-12",
+ "matchKey": "2041924",
+ "steps": {
+  "S1_odds": {
+   "source": "code",
+   "recordedAt": "2026-10-11T20:09:47",
+   "payload": {
+    "archive": "2026-10-11.json",
+    "fetchedAt": "2026-10-11",
+    "code": "周一004",
+    "pools": [
+     "had",
+     "crs",
+     "ttg",
+     "hhad",
+     "hafu"
+    ],
+    "oddsUpdatedAt": "2026-10-10 09:42:13",
+    "sellStatus": 1
+   }
+  },
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-11T20:09:58",
+   "payload": {
+    "lam": [
+     3.181,
+     2.628
+    ],
+    "beta": 0.05
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-11T20:09:58",
+   "payload": {
+    "hid": "kfum-oslo",
+    "aid": "valerenga",
+    "leagueCode": "norway",
+    "hstRows": 0,
+    "unmappedLeague": false
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-11T20:09:58",
+   "payload": {
+    "method": "V3W-dewater-v2",
+    "boom": 0.05,
+    "hadHot": 1.5,
+    "water": true,
+    "boomP": 0.1491,
+    "had": {
+     "h": 0.5039,
+     "d": 0.1697,
+     "a": 0.3264
+    }
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-11T20:09:58",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s1sh",
+      "p": 0.0996
+     },
+     {
+      "pick": "s03s02",
+      "p": 0.0556
+     },
+     {
+      "pick": "s02s02",
+      "p": 0.0524
+     },
+     {
+      "pick": "s03s03",
+      "p": 0.0487
+     },
+     {
+      "pick": "s1sa",
+      "p": 0.0471
+     }
+    ],
+    "lam": [
+     3.181,
+     2.628
+    ]
+   }
+  }
+ }
+}

@@ -56,6 +56,7 @@ def test_check_empty_day(tmp_path, monkeypatch):
 
 def test_record_s1_from_archive(tmp_path, monkeypatch):
     _swap_root(tmp_path, monkeypatch)
+    monkeypatch.setattr(evidence, "ROOT", tmp_path)   # 隔离真实在售清单·无 join 退化编号键
     arch = tmp_path / "arch.json"
     arch.write_text(json.dumps({"fetchedAt": "T", "source": "sporttery", "matchDays": [
         {"businessDate": "2026-10-12", "matches": [
@@ -79,3 +80,22 @@ def test_scp_hook_payload_shape(tmp_path, monkeypatch):
                     {"top5": entry["crs_top5"], "lam": entry["lam"]})
     doc = json.loads((tmp_path / "2026-10-12" / "k.json").read_text(encoding="utf-8"))
     assert evidence.STEP_LAMBDA in doc["steps"] and evidence.STEP_MATRIX in doc["steps"]
+
+
+def test_record_s1_join_matchid(tmp_path, monkeypatch):
+    """S1 键经在售清单 join 到 matchId（防同场九步裂键·2026-10-11 冒烟实证）。"""
+    _swap_root(tmp_path, monkeypatch)
+    monkeypatch.setattr(evidence, "ROOT", tmp_path)
+    cache = tmp_path / "engine" / "cache"
+    cache.mkdir(parents=True)
+    (cache / "sporttery_matches.json").write_text(json.dumps(
+        {"matches": [{"code": "周日001", "matchId": "777"}]}), encoding="utf-8")
+    arch = tmp_path / "arch.json"
+    arch.write_text(json.dumps({"matchDays": [{"businessDate": "2026-10-12", "matches": [
+        {"matchNumStr": "周日001", "had": {"h": 2.0}, "oddsUpdatedAt": "t1"}]}]},
+        ensure_ascii=False), encoding="utf-8")
+    assert evidence.record_s1_from_archive(str(arch)) == 1
+    f = tmp_path / "2026-10-12" / "777.json"
+    assert f.exists(), "S1 应落 matchId 键（join 生效）"
+    doc = json.loads(f.read_text(encoding="utf-8"))
+    assert doc["steps"][evidence.STEP_ODDS]["payload"]["code"] == "周日001"

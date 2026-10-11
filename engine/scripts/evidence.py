@@ -98,8 +98,29 @@ def show(match_day: str, match_key: str) -> None:
 POOL_KEYS = ("had", "crs", "ttg", "hhad", "hafu")
 
 
+def _matchid_map() -> dict:
+    """在售清单 编号→matchId（S1 键与 feed/strength 链统一到 matchId·读失败返回空表退化为编号键）。"""
+    try:
+        d = json.loads((ROOT / "engine" / "cache" / "sporttery_matches.json").read_text(encoding="utf-8"))
+    except Exception:                      # noqa: BLE001
+        return {}
+    out = {}
+    for m in d.get("matches") or []:
+        if m.get("code") and m.get("matchId"):
+            out[str(m["code"])] = str(m["matchId"])
+    for blk in (d.get("value") or {}).get("matchInfoList") or []:
+        for m in blk.get("subMatchList") or []:
+            if m.get("matchNumStr") and m.get("matchId"):
+                out[str(m["matchNumStr"])] = str(m["matchId"])
+    return out
+
+
 def record_s1_from_archive(archive_path_or_day: str) -> int:
-    """从 score_odds 日存档逐场登记 S1（键=matchNumStr·开赛日=块 businessDate，存档文件日兜底）。"""
+    """从 score_odds 日存档逐场登记 S1（键=matchId 经在售清单 join·缺省编号；开赛日=块 businessDate 兜底 stem）。
+
+    存档无 matchId 只有编号，而 strength/dc 链键=matchId——不 join 则同场九步裂成两个文件，
+    完整性检查永不全（2026-10-11 整体冒烟实证）。
+    """
     p = Path(archive_path_or_day)
     if not p.exists():
         p = ROOT / "engine" / "cache" / "score_odds" / f"{archive_path_or_day}.json"
@@ -112,6 +133,7 @@ def record_s1_from_archive(archive_path_or_day: str) -> int:
     except Exception as exc:              # noqa: BLE001
         print(f"[evidence] S1 存档解析失败 {exc}")
         return 0
+    mid_map = _matchid_map()
     n = 0
     for blk in doc.get("matchDays") or []:
         # 开赛日=块 businessDate：存档一日文件常含多日比赛（如 10-10 存档含 10-10/11/12 三块），
@@ -119,10 +141,12 @@ def record_s1_from_archive(archive_path_or_day: str) -> int:
         day = str(blk.get("businessDate") or p.stem)
         for m in blk.get("matches") or []:
             pools = [k for k in POOL_KEYS if m.get(k)]
+            code = str(m.get("matchNumStr") or "")
             payload = {"archive": p.name, "fetchedAt": doc.get("fetchedAt"),
+                       "code": code or None,
                        "pools": pools, "oddsUpdatedAt": m.get("oddsUpdatedAt"),
                        "sellStatus": m.get("sellStatus")}
-            n += record(day, str(m.get("matchNumStr") or ""), STEP_ODDS, payload)
+            n += record(day, mid_map.get(code, code), STEP_ODDS, payload)
     return n
 
 

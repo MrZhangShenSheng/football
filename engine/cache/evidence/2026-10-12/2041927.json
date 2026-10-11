@@ -1,0 +1,95 @@
+{
+ "schema": 1,
+ "day": "2026-10-12",
+ "matchKey": "2041927",
+ "steps": {
+  "S1_odds": {
+   "source": "code",
+   "recordedAt": "2026-10-11T20:09:47",
+   "payload": {
+    "archive": "2026-10-11.json",
+    "fetchedAt": "2026-10-11",
+    "code": "周一007",
+    "pools": [
+     "had",
+     "crs",
+     "ttg",
+     "hhad",
+     "hafu"
+    ],
+    "oddsUpdatedAt": "2026-10-10 09:42:13",
+    "sellStatus": 1
+   }
+  },
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-11T20:09:59",
+   "payload": {
+    "lam": [
+     1.661,
+     1.045
+    ],
+    "beta": 0.05
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-11T20:09:59",
+   "payload": {
+    "hid": "coventry",
+    "aid": "newcastle",
+    "leagueCode": "england-championship",
+    "hstRows": 2041,
+    "unmappedLeague": false
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-11T20:09:59",
+   "payload": {
+    "method": "V3W-dewater-v2",
+    "boom": 0.05,
+    "hadHot": 1.5,
+    "water": false,
+    "boomP": 0.0079,
+    "had": {
+     "h": 0.5026,
+     "d": 0.2743,
+     "a": 0.223
+    }
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-11T20:09:59",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1312
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0963
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.0958
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.0922
+     },
+     {
+      "pick": "s00s00",
+      "p": 0.082
+     }
+    ],
+    "lam": [
+     1.661,
+     1.045
+    ]
+   }
+  }
+ }
+}

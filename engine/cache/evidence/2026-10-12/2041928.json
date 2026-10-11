@@ -1,0 +1,95 @@
+{
+ "schema": 1,
+ "day": "2026-10-12",
+ "matchKey": "2041928",
+ "steps": {
+  "S1_odds": {
+   "source": "code",
+   "recordedAt": "2026-10-11T20:09:47",
+   "payload": {
+    "archive": "2026-10-11.json",
+    "fetchedAt": "2026-10-11",
+    "code": "周一008",
+    "pools": [
+     "had",
+     "crs",
+     "ttg",
+     "hhad",
+     "hafu"
+    ],
+    "oddsUpdatedAt": "2026-10-10 09:42:13",
+    "sellStatus": 1
+   }
+  },
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-11T20:09:59",
+   "payload": {
+    "lam": [
+     1.496,
+     1.094
+    ],
+    "beta": 0.05
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-11T20:09:59",
+   "payload": {
+    "hid": "levante",
+    "aid": "sevilla",
+    "leagueCode": "spain-liga2",
+    "hstRows": 1660,
+    "unmappedLeague": false
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-11T20:09:59",
+   "payload": {
+    "method": "V3W-dewater-v2",
+    "boom": 0.05,
+    "hadHot": 1.5,
+    "water": false,
+    "boomP": 0.0053,
+    "had": {
+     "h": 0.4605,
+     "d": 0.2662,
+     "a": 0.2733
+    }
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-11T20:09:59",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1268
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.1082
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0918
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.0839
+     },
+     {
+      "pick": "s00s00",
+      "p": 0.079
+     }
+    ],
+    "lam": [
+     1.496,
+     1.094
+    ]
+   }
+  }
+ }
+}

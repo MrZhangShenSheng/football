@@ -1,0 +1,95 @@
+{
+ "schema": 1,
+ "day": "2026-10-12",
+ "matchKey": "2041925",
+ "steps": {
+  "S1_odds": {
+   "source": "code",
+   "recordedAt": "2026-10-11T20:09:47",
+   "payload": {
+    "archive": "2026-10-11.json",
+    "fetchedAt": "2026-10-11",
+    "code": "周一005",
+    "pools": [
+     "had",
+     "crs",
+     "ttg",
+     "hhad",
+     "hafu"
+    ],
+    "oddsUpdatedAt": "2026-10-10 09:42:13",
+    "sellStatus": 1
+   }
+  },
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-11T20:09:58",
+   "payload": {
+    "lam": [
+     1.287,
+     1.165
+    ],
+    "beta": 0.05
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-11T20:09:58",
+   "payload": {
+    "hid": "torino",
+    "aid": "udinese",
+    "leagueCode": "italy-serie-a",
+    "hstRows": 1570,
+    "unmappedLeague": false
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-11T20:09:58",
+   "payload": {
+    "method": "V3W-dewater-v2",
+    "boom": 0.05,
+    "hadHot": 1.5,
+    "water": false,
+    "boomP": 0.0034,
+    "had": {
+     "h": 0.3969,
+     "d": 0.2647,
+     "a": 0.3385
+    }
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-11T20:09:58",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1252
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.1147
+     },
+     {
+      "pick": "s00s01",
+      "p": 0.1043
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0831
+     },
+     {
+      "pick": "s00s00",
+      "p": 0.0822
+     }
+    ],
+    "lam": [
+     1.287,
+     1.165
+    ]
+   }
+  }
+ }
+}

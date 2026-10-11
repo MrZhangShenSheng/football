@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>足球大模型训练常识普查 · 2026-10-11</title>
+<style>
+  :root{
+    --primary:#2563eb; --primary-soft:#dbeafe; --ink:#1e293b; --muted:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --good:#059669; --warn:#d97706; --bad:#dc2626;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.75}
+  .wrap{max-width:960px;margin:0 auto;padding:32px 20px 64px}
+  header{border-bottom:3px solid var(--primary);padding-bottom:16px;margin-bottom:28px}
+  h1{font-size:26px;margin:0 0 6px}
+  .meta{color:var(--muted);font-size:13px}
+  h2{font-size:20px;margin:36px 0 12px;padding-left:10px;border-left:4px solid var(--primary)}
+  h3{font-size:16px;margin:20px 0 8px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:14px 0}
+  .tag{display:inline-flex;align-items:center;gap:4px;font-size:12px;padding:2px 10px;border-radius:999px;background:var(--primary-soft);color:var(--primary);font-weight:600;vertical-align:2px}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
+  th{background:var(--primary-soft);color:var(--primary);text-align:left;padding:8px 10px;border:1px solid var(--line)}
+  td{padding:8px 10px;border:1px solid var(--line);vertical-align:top}
+  code{background:#f1f5f9;padding:1px 6px;border-radius:4px;font-size:13px}
+  .icon{width:1em;height:1em;vertical-align:-0.12em;color:var(--primary)}
+  .footnote{font-size:12px;color:var(--muted);margin-top:6px}
+  .vs{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .vs>div{border-radius:8px;padding:12px 14px;font-size:14px}
+  .have{background:#ecfdf5;border:1px solid #a7f3d0}
+  .gap{background:#fffbeb;border:1px solid #fde68a}
+  ul{margin:8px 0;padding-left:22px}
+  li{margin:4px 0}
+  .fig{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0}
+  .fig .cap{font-size:12px;color:var(--muted);text-align:center;margin-top:8px}
+  .src{font-size:13px;color:var(--muted)}
+  .src a{color:var(--primary);text-decoration:none}
+</style>
+</head>
+<body>
+<svg style="display:none" aria-hidden="true">
+  <symbol id="i-db" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zm0 0v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></symbol>
+  <symbol id="i-model" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M12 2a4 4 0 0 1 4 4c2.5.5 4 2.5 4 5a5 5 0 0 1-2 4v3a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4v-3a5 5 0 0 1-2-4c0-2.5 1.5-4.5 4-5a4 4 0 0 1 4-4z"/><circle cx="9" cy="11" r="1" fill="currentColor"/><circle cx="15" cy="11" r="1" fill="currentColor"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/><path fill="none" stroke="currentColor" stroke-width="2" d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></symbol>
+  <symbol id="i-scale" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M12 3v18M5 21h14M3 8h18M3 8l-2 6a3.5 3.5 0 0 0 7 0L6 8m12 0l-2 6a3.5 3.5 0 0 0 7 0l-2-6"/></symbol>
+  <symbol id="i-bot" viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="12" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M12 8V4m-8 8H2m20 0h-2"/><circle cx="9" cy="14" r="1.5" fill="currentColor"/><circle cx="15" cy="14" r="1.5" fill="currentColor"/></symbol>
+  <symbol id="i-draw" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M4 20h16M4 20V6m0 4l4-4m-4 0l4 4"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" d="M12 7v5l3 3"/></symbol>
+</svg>
+
+<div class="wrap">
+<header>
+  <h1><svg class="icon"><use href="#i-model"/></svg> 足球大模型训练常识普查</h1>
+  <div class="meta">2026-10-11 · 联网五路检索汇总（模型家族 / 训练数据 / 防泄漏 / 平局难题 / LLM 路线 / 评估口径）· 背景：v33 GBM 双塔立项</div>
+</header>
+
+<h2><svg class="icon"><use href="#i-model"/></svg> 一、模型家族地图：四代演进</h2>
+<div class="fig">
+<svg viewBox="0 0 860 190" style="width:100%;height:auto;color:var(--primary)" role="img" aria-label="足球预测模型四代演进图">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker>
+  </defs>
+  <!-- 四个阶段方框 -->
+  <g font-size="13" fill="currentColor" text-anchor="middle">
+    <rect x="10"  y="40" width="180" height="86" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+    <text x="100" y="66" font-weight="700">① 统计模型 1990s-</text>
+    <text x="100" y="90" font-size="11">Poisson → Dixon-Coles</text>
+    <text x="100" y="108" font-size="11">Elo / 有序 probit</text>
+
+    <rect x="230" y="40" width="180" height="86" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+    <text x="320" y="66" font-weight="700">② 经典 ML 2015-</text>
+    <text x="320" y="90" font-size="11">GBM / 随机森林</text>
+    <text x="320" y="108" font-size="11">特征工程驱动</text>
+
+    <rect x="450" y="40" width="180" height="86" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+    <text x="540" y="66" font-weight="700">③ 深度学习 2018-</text>
+    <text x="540" y="90" font-size="11">MLP / RNN / 时序网络</text>
+    <text x="540" y="108" font-size="11">端到端概率分布</text>
+
+    <rect x="670" y="40" width="180" height="86" rx="10" fill="none" stroke="currentColor" stroke-width="2"/>
+    <text x="760" y="66" font-weight="700">④ LLM 2023-</text>
+    <text x="760" y="90" font-size="11">提示 / RAG / 微调</text>
+    <text x="760" y="108" font-size="11">非结构化情报入口</text>
+
+    <path d="M190 83h36" stroke="currentColor" stroke-width="2" marker-end="url(#arr)"/>
+    <path d="M410 83h36" stroke="currentColor" stroke-width="2" marker-end="url(#arr)"/>
+    <path d="M630 83h36" stroke="currentColor" stroke-width="2" marker-end="url(#arr)"/>
+    <!-- 底部共识带 -->
+    <rect x="10" y="150" width="840" height="30" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="6 4"/>
+    <text x="430" y="170" font-size="12">共识：代际更替不淘汰前代——统计模型做骨架、ML 做增益、LLM 做情报入口，混合架构是当前主流</text>
+  </g>
+</svg>
+<div class="cap">图 1 · 足球预测模型四代演进（业界综述共识）</div>
+</div>
+
+<div class="card">
+<h3><svg class="icon"><use href="#i-db"/></svg> 各代要点</h3>
+<table>
+<tr><th>家族</th><th>代表</th><th>业界常识定位</th></tr>
+<tr><td>统计模型</td><td>Dixon-Coles / 双变量 Poisson / Elo / 有序 probit</td><td>比分分布的标准骨架。DC 两大改进：<b>时间衰减加权</b>（近期比赛权重高，ξ 衰减因子）与<b>低比分修正 ρ</b>（独立泊松系统性低估 0-0/1-1，DC 抬高低平局格）</td></tr>
+<tr><td>经典 ML</td><td>GBM（XGBoost/LightGBM）、随机森林</td><td>表格特征最强打者，小样本（千场级）下通常胜过神经网络；特征质量决定上限</td></tr>
+<tr><td>深度学习</td><td>MLP / RNN / 注意力时序网络</td><td>样本饥饿：单一联赛一季仅 ~132 场，五年 ~660 场，端到端深度网络极易过拟合；2024 Springer 综述（J. Big Data, 被引 41+）承认类不平衡与过拟合是核心痛点</td></tr>
+<tr><td>LLM</td><td>GPT/Claude/千问等提示式、RAG、微调、Agent</td><td>价值不在数值概率（算不过泊松矩阵），在<b>吞非结构化上下文</b>：伤停公告、首发新闻、更衣室动荡、天气播报。2026 出现首个持续运行基准 LLM-SoccerArena</td></tr>
+</table>
+</div>
+
+<h2><svg class="icon"><use href="#i-db"/></svg> 二、训练数据常识</h2>
+<div class="card">
+<ul>
+<li><b>样本量是硬约束</b>：联赛级建模的天然单位是一季 ~132 场；跨联赛池化（几千至几万场）是扩样本的标准做法，但需引入联赛强度层防尺度混乱</li>
+<li><b>特征工程三原则</b>（O'Reilly《基于机器学习的足球数据分析》等）：① 近期状态用<b>滚动窗口</b>而非赛季聚合（赛季聚合在季初无信息且含未来信息）② 主客拆分、场地特定表现 ③ 优先射门质量类指标（xG/射正）而非裸结果</li>
+<li><b>时间衰减加权</b>：Dixon-Coles 原生 ξ 衰减；ML 侧对应做法 = 滚动重训（逐月/逐轮 refit），静态训练+长期持有被视为反模式</li>
+<li><b>典型特征清单</b>：滚动 xG 差、Elo 差、休息天数、赛程密度、主客场拆分、联赛排名差、比赛重要性（争冠/保级/无欲）、杯赛分心、地理距离（有序 probit 研究用例）</li>
+<li><b>千问类产品数据面</b>：历史赛果 + 球员数据 + 伤停 + <b>天气 + 地貌</b>——天气是学术上有弱证据、工程上少有人做的差异点</li>
+</ul>
+</div>
+
+<h2><svg class="icon"><use href="#i-shield"/></svg> 三、防泄漏：足球预测第一陷阱</h2>
+<div class="card">
+<ul>
+<li><b>定义</b>：模型用到"预测时点不存在的信息"。典型泄漏路径：赛季聚合特征（含未来轮次）、用赛后统计量（如本场 xG）做特征、队名处理阶段的全库归一化</li>
+<li><b>2026 年学界动态</b>：ScienceDirect 已出现西甲二级市场专文《A leakage-aware workflow for pre-match forecasting》——防泄漏工作流本身成了可发表对象；Taylor &amp; Francis 2026 专文量化不同泄漏程度对四种 ML 算法的影响</li>
+<li><b>标配解法</b>：<b>walk-forward（滚动前推验证）</b>——按时间切训练/测试，模拟真实预测时点，被所有严谨文献列为默认；随机 K 折在时序体育数据上被普遍视为无效</li>
+<li><b>红旗信号</b>：回测准确率/ROI 显著超出市场基线（如命中率 85%+、ROI +300%）几乎必然是泄漏——好到不真的结果就是假的</li>
+</ul>
+</div>
+
+<h2><svg class="icon"><use href="#i-draw"/></svg> 四、平局难题：三分类的阿喀琉斯之踵</h2>
+<div class="card">
+<ul>
+<li>平局占比赛 <b>25%~30%</b>，但特征分离度极弱（没有"平局型球队"的稳定画像），是三分类中最难的一类</li>
+<li>典型坍缩：TDS 世界杯案例中模型几乎从不预测平局（测试集仅 2 次平局命中）；2025 PMC 的 MLP 研究总体准确率 86.7%，<b>平局准确率显著拖后腿</b>——总体准确率被胜/负类撑高，具有误导性</li>
+<li>业界对策：类权重 / focal loss / 过采样（SMOTE）只治标；治本路线是<b>绕开三分类直接建比分分布</b>（泊松矩阵天然把平局 = 对角线格子），再边缘化回三向——这正是 DC 系架构对判别式分类器的结构性优势</li>
+<li>评估上用 per-class P/R 与 RPS，不看裸准确率</li>
+</ul>
+</div>
+
+<h2><svg class="icon"><use href="#i-bot"/></svg> 五、LLM 路线常识（2023-2026）</h2>
+<div class="card">
+<table>
+<tr><th>路线</th><th>做法</th><th>业界观察</th></tr>
+<tr><td>直接提示</td><td>把对阵喂给通用 LLM 问结果</td><td>世界杯人机大战：12 家大模型三向命中率 61.9%~65.7% vs 人类 54.6%~58.9%；AI <b>中途逐步反超</b>（动态修正价值）；但 104 场样本下 6.8pp 差距在噪声边缘</td></tr>
+<tr><td>RAG</td><td>检索历史/情报注入上下文（SoccerRAG 等）</td><td>LLM 数值推理弱，RAG 主要补事实与语境；预测精度依赖检索质量而非模型本身</td></tr>
+<tr><td>微调</td><td>用历史赛果序列微调</td><td>与 RAG 的正面 head-to-head 在足球域<b>仍是研究空白</b>；微调成本高、数据量（万场级 token 化）是瓶颈</td></tr>
+<tr><td>混合（ML+LLM）</td><td>统计模型出分布 + LLM 处理伤停/新闻等非结构化信号</td><td>当前务实主流；Beal et al. 2021 (AAAI) 证明 ML+人类专家组合优于单方——LLM 正扮演"规模化人类专家"角色</td></tr>
+</table>
+<p class="footnote">LLM-SoccerArena（arXiv 2026-07）：首个持续运行、标准化评测 LLM 体育预测的基准——说明该方向刚过"玩具期"进入可考核期。</p>
+</div>
+
+<h2><svg class="icon"><use href="#i-scale"/></svg> 六、评估口径常识（学界+职业盘口双共识）</h2>
+<div class="card">
+<ul>
+<li><b>RPS（有序概率得分）</b>是足球三向预测的标准 proper scoring rule（Constantinou &amp; Fenton，被引 132+；Wheatcroft 2019）——对"预测平局而实际负"的惩罚轻于"预测胜而实际负"，尊重有序结构</li>
+<li><b>市场收盘价是最强基线</b>：庄家赔率（尤其收盘线）被反复证明优于一切基于历史均值的模型，是"常常打不败的对手"——学术比较一律以去水收盘概率为参照系</li>
+<li><b>CLV（收盘线价值）</b>：职业盘口界共识——持续正 CLV 是长期盈利最可靠的过程性证据；Smart Betting Club 34.5 万注实盘分析支持"CLV 是盈利最佳先行指标"（Pinnacle 官方背书）</li>
+<li><b>命中率是展示指标</b>：65% 三向命中率配上带水赔率仍可负 EV——"猜对比赛"与"战胜赔率"是两个层级</li>
+</ul>
+</div>
+
+<h2><svg class="icon"><use href="#i-target"/></svg> 七、对照你当前的系统</h2>
+<div class="vs">
+  <div class="have">
+    <b>✅ 已对齐业界常识（多数超出公开产品水平）</b>
+    <ul>
+      <li>DC 时间衰减（ξ=0.005）+ 低比分修正 = 标准统计骨架</li>
+      <li>概率锚 = Pinnacle 收盘去水 + 融合（市场基线不打败就融合它）</li>
+      <li>walk-forward 回测 + 回测审计三件套</li>
+      <li>CLV 主指标 + 影子层 + 预注册判据（超出全部公开产品）</li>
+      <li>比分分布直接建模（31 格）绕开三分类平局坍缩</li>
+      <li>v4b +341.77%/闯关 +15.77% 两次证伪 = 泄漏红旗纪律的本地实践</li>
+    </ul>
+  </div>
+  <div class="gap">
+    <b>⚠️ 业界有、你暂无（候选差距点）</b>
+    <ul>
+      <li><b>天气特征</b>（千问用地貌+天气；学术弱证据，v33 二批特征做消融）</li>
+      <li><b>模型分歧度信号</b>（12 模型人机大战显示错误不完全相关；DC vs 市场锚概率差可作特征/置信度门）</li>
+      <li><b>跨联赛池化+联赛强度层</b>（v33 GBM 双塔若跨联赛训练需联赛层防尺度混乱）</li>
+      <li><b>休息天数/赛程密度</b>（你特征表已有则忽略；有序 probit 文献标配）</li>
+      <li><b>LLM 情报入口</b>（伤停公告/新闻文本→结构化；你 lineup_watch 已铺轨，文本侧未接）</li>
+    </ul>
+  </div>
+</div>
+
+<h2>数据来源清单</h2>
+<div class="src">
+<ul>
+<li>模型家族/DC：<a href="https://dashee87.github.io/football/python">dashee87 统计建模实战</a> · <a href="https://opisthokonta.net">opisthokonta DC 与双变量泊松</a> · <a href="https://statsultra.com/dixon-coles-model">statsultra DC 图解</a></li>
+<li>防泄漏：<a href="https://www.sciencedirect.com">ScienceDirect 2026 leakage-aware workflow (LaLiga)</a> · <a href="https://www.tandfonline.com">Taylor &amp; Francis 2026 时序泄漏量化</a></li>
+<li>平局难题：<a href="https://link.springer.com">Springer J.Big Data 2024 深度学习框架（被引41+）</a> · <a href="https://pmc.ncbi.nlm.nih.gov">PMC 2025 MLP 研究</a> · <a href="https://towardsdatascience.com">TDS 世界杯案例</a></li>
+<li>LLM 路线：<a href="https://arxiv.org/html">LLM-SoccerArena (arXiv 2026)</a> · <a href="https://github.com/simula/soccer-rag">SoccerRAG</a> · <a href="https://cdn.aaai.org/ojs">Beal et al. AAAI 2021</a> · <a href="http://www.news.cn/tech/20260611/0f5e54a7239e4888ab8c2b25b80fcd51/c.html">新华网-千问足球预测AI</a> · <a href="https://www.tmtpost.com">钛媒体-人机大战</a></li>
+<li>评估口径：<a href="https://constantinou.info/downloads/papers">Constantinou &amp; Fenton RPS 论文</a> · <a href="https://arxiv.org/html">Wheatcroft 2019</a> · <a href="https://pena.lt/2025%2F05%2F01">pena.lt RPS 综述</a> · <a href="https://www.pinnacle.com">Pinnacle CLV</a> · <a href="https://smartbettingclub.com">Smart Betting Club 34.5万注分析</a> · <a href="https://www.mdpi.com">MDPI ML in Football Betting (被引115+)</a></li>
+</ul>
+<p class="footnote">检索时间 2026-10-11，五路并行（模型家族/训练数据/防泄漏/LLM/评估），中文+英文源交叉。本文档为常识普查，不含预测。</p>
+</div>
+</div>
+</body>
+</html>

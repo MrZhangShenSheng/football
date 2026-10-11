@@ -1,0 +1,120 @@
+{
+ "schema": 1,
+ "day": "2026-10-12",
+ "matchKey": "2041922",
+ "steps": {
+  "S1_odds": {
+   "source": "code",
+   "recordedAt": "2026-10-11T20:09:47",
+   "payload": {
+    "archive": "2026-10-11.json",
+    "fetchedAt": "2026-10-11",
+    "code": "周一002",
+    "pools": [
+     "had",
+     "crs",
+     "ttg",
+     "hhad",
+     "hafu"
+    ],
+    "oddsUpdatedAt": "2026-10-10 09:42:13",
+    "sellStatus": 1
+   }
+  },
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-11T20:09:58",
+   "payload": {
+    "lam": [
+     1.273,
+     1.135
+    ],
+    "beta": 0.05
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-11T20:09:58",
+   "payload": {
+    "hid": "atalanta",
+    "aid": "venezia",
+    "leagueCode": "italy-serie-a",
+    "hstRows": 1570,
+    "unmappedLeague": false
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-11T20:10:08",
+   "payload": {
+    "method": "1/o",
+    "market": [
+     1.46,
+     4.05,
+     5.05
+    ],
+    "p_mkt": [
+     0.6062,
+     0.2185,
+     0.1753
+    ]
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-11T20:09:58",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1261
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.1186
+     },
+     {
+      "pick": "s00s01",
+      "p": 0.1061
+     },
+     {
+      "pick": "s00s00",
+      "p": 0.0861
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0828
+     }
+    ],
+    "lam": [
+     1.273,
+     1.135
+    ]
+   }
+  },
+  "S3_dc": {
+   "source": "code",
+   "recordedAt": "2026-10-11T20:10:08",
+   "payload": {
+    "league": "italy-serie-a",
+    "dcFile": "italy-serie-a_dc.json",
+    "lambdaHome": 2.643,
+    "lambdaAway": 0.561,
+    "rho": 0.0304
+   }
+  },
+  "S6_fusion": {
+   "source": "code",
+   "recordedAt": "2026-10-11T20:10:08",
+   "payload": {
+    "a": 0.0,
+    "b": 1.0,
+    "p_fused": [
+     0.6062,
+     0.2185,
+     0.1753
+    ]
+   }
+  }
+ }
+}
