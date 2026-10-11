@@ -43,3 +43,22 @@ def test_check_demote_not_runnable(tmp_path, monkeypatch):
             "status": "demote", "auditedAt": "2026-10-11"}}}), encoding="utf-8")
     ok, _ = sc.check_component("v3w_lambda")
     assert not ok          # demote 组件不得作为主概率源（可作降级层·由调用方标注）
+
+
+def test_require_component_exit_code(tmp_path, monkeypatch):
+    import pytest
+    _swap(tmp_path, monkeypatch)
+    (tmp_path / "surviving_chain.json").write_text(json.dumps(
+        {"schema": 1, "components": {}}), encoding="utf-8")
+    with pytest.raises(SystemExit) as ei:
+        sc.require_component("market_crs_devig")
+    assert ei.value.code == 2
+
+
+def test_check_future_audit_date_rejected(tmp_path, monkeypatch):
+    _swap(tmp_path, monkeypatch)
+    (tmp_path / "surviving_chain.json").write_text(json.dumps(
+        {"schema": 1, "components": {"x": {
+            "status": "keep", "auditedAt": "2027-01-01"}}}), encoding="utf-8")
+    ok, why = sc.check_component("x")
+    assert not ok and "未来" in why

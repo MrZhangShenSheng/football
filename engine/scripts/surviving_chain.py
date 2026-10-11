@@ -8,6 +8,7 @@ fail-open 只适用仪表（evidence hook）；闸门是准入不是仪表，拒
 开发者 sszhang
 """
 import json
+import sys
 from datetime import date
 from pathlib import Path
 
@@ -43,6 +44,8 @@ def check_component(name: str, max_age_days: int = MAX_AUDIT_AGE_DAYS) -> tuple:
         return False, f"[surviving_chain] 组件 {name} auditedAt 非法: {audited!r}"
     if age > max_age_days:
         return False, f"[surviving_chain] 组件 {name} 审计过期（{audited}·{age}天>{max_age_days}）——重审后才可跑"
+    if age < 0:
+        return False, f"[surviving_chain] 组件 {name} 审计日期在未来（{audited}）——凭证非法"
     return True, f"PASS · {name} 凭证 {audited}（{age}天）"
 
 
@@ -50,5 +53,6 @@ def require_component(name: str) -> None:
     """启动闸：不通过直接 SystemExit(2)——防未审计组件混入生产。"""
     ok, why = check_component(name)
     if not ok:
-        raise SystemExit(why)
+        print(why, file=sys.stderr)
+        raise SystemExit(2)
     print(f"[surviving_chain] {why}")
