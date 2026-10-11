@@ -113,7 +113,7 @@ def load_hist_odds():
                         "away": m.get("away", "?"), "league": m.get("league", "?"),
                         "h": h, "a": a,
                         "oh": float(had["h"]), "od": float(had["d"]), "oa": float(had["a"]),
-                        "crs": m.get("crs") or {}})
+                        "ttg": m.get("ttg") or {}, "crs": m.get("crs") or {}})
     return out
 
 
@@ -144,10 +144,10 @@ def unit_u3(store):
         inv = np.array([1 / o for o in cells.values()])
         p_k1 = inv / inv.sum()                          # k=1 即 1/o 归一
         lo, hi = 0.5, 5.0
-        for _ in range(40):                             # k 二分（v33 market_dist 同法）
+        for _ in range(40):                             # k 二分解 Σ(1/o)^k=1（2026-10-11 修:原目标误写归一sum恒≈1·k终值漂到3.4）
             mid = (lo + hi) / 2
-            s = (inv ** mid / (inv ** mid).sum()).sum()
-            lo, hi = (mid, hi) if s < 1 else (lo, mid)
+            s = float((inv ** mid).sum())
+            lo, hi = (mid, hi) if s > 1 else (lo, mid)
         pw = inv ** ((lo + hi) / 2)
         p_k2 = pw / pw.sum()
         i_true = list(cells.keys()).index(true_cell)
@@ -337,6 +337,132 @@ def cell_key(h, a):
     return f"s{min(h,5):02d}s{min(a,5):02d}"
 
 
+# ---------- U2 λ源 vs 双null（矩法反解·预注册 units/U2_lambda·单独会话批） ----------
+#
+# 交底(2026-10-11 跑前): U3 的 power 二分目标误写为归一后求和(恒≈1·浮点噪声驱动·k 终值≈3.4 非 ~1.14)——
+# 本单元 λsum 的 power 去水用正确目标 Σ(1/o)^k=1；U3 一行修复重跑待大哥过目后补。
+
+TTG_KEYS = tuple(str(i) for i in range(8))     # 体彩总进球 0..7（"7"=7+ 档）
+TTG_PLUS_VAL = 7.0                              # "7+"期望替身·保守下界（p7 通常<1%影响可忽略）
+
+
+def lam_sum_from_ttg(ttg: dict) -> float:
+    """E[总进球] = TTG power 去水（k 二分解 Σ(1/o)^k=1）后期望。确定性无优化。"""
+    ks = sorted((str(k) for k in ttg if str(k) in TTG_KEYS and float(ttg[k]) > 1.0),
+                key=float)
+    inv = np.array([1.0 / float(ttg[k]) for k in ks])
+    lo, hi = 0.5, 5.0
+    for _ in range(40):
+        mid = (lo + hi) / 2
+        lo, hi = (mid, hi) if (inv ** mid).sum() > 1 else (lo, mid)
+    p = inv ** ((lo + hi) / 2)
+    p = p / p.sum()
+    return float(sum((TTG_PLUS_VAL if k == "7" else float(k)) * pi for k, pi in zip(ks, p)))
+
+
+def solve_lamh(lam_sum: float, p_h: float, rho: float) -> float:
+    """40 次二分解 P(H>A)(λh, λsum−λh)=p_h（had_from 聚合·同 V3W ρ 同链·λh∈(0.05, λsum−0.05)）。"""
+    lo, hi = 0.05, max(0.06, lam_sum - 0.05)
+    for _ in range(40):
+        mid = (lo + hi) / 2
+        p = sm.had_from(sm.dc_matrix(mid, lam_sum - mid, rho))["h"]
+        lo, hi = (mid, hi) if p < p_h else (lo, mid)
+    return (lo + hi) / 2
+
+
+def _top_hit(mat: dict, key: str, k: int) -> bool:
+    return key in sorted(mat, key=lambda c: -mat[c])[:k]
+
+
+def unit_u2(store, enrich):
+    pms = pin_map()
+    rng_pick = np.random.RandomState(BOOT_SEED)     # 随机选格自证伪(v34 先例口径)
+    rows = []
+    for m in load_hist_odds():                      # 变体=带 HAD 原始三赔+ttg（load_hist 不含 had）
+        e = enrich.get(f"{m['date']}|{m['home']}|{m['away']}")
+        if not (e and e.get("lam")):
+            continue
+        if not (m.get("ttg") and m.get("oh") and m.get("od") and m.get("oa")):
+            continue                                # TTG/HAD 盘缺→双 null 均不可造
+        lam_sum = lam_sum_from_ttg(m["ttg"])
+        invh = np.array([1 / m["oh"], 1 / m["od"], 1 / m["oa"]])
+        p_mkt = invh / invh.sum()
+        rho = e["rho"]
+        key = cell_key(m["h"], m["a"])
+        m_v3w = sm.dc_matrix(e["lam"][0], e["lam"][1], rho)
+        if key not in m_v3w:
+            continue
+        lh_a = solve_lamh(lam_sum, float(p_mkt[0]), rho)
+        m_na = sm.dc_matrix(lh_a, lam_sum - lh_a, rho)
+        rec = {"date": m["date"], "seg": seg_of(m["date"]), "lg": e.get("lg") or "?",
+               "key": key, "lamSum": round(lam_sum, 3), "lamH_nullA": round(lh_a, 3),
+               "lam_v3w": [round(e["lam"][0], 3), round(e["lam"][1], 3)],
+               "ll_v3w": round(float(-np.log(max(m_v3w[key], 1e-12))), 4),
+               "ll_nullA": round(float(-np.log(max(m_na.get(key, 1e-12), 1e-12))), 4),
+               "top1_v3w": _top_hit(m_v3w, key, 1), "top3_v3w": _top_hit(m_v3w, key, 3),
+               "top1_nullA": _top_hit(m_na, key, 1), "top3_nullA": _top_hit(m_na, key, 3)}
+        rand_k = sorted(m_v3w)[int(rng_pick.randint(len(m_v3w)))]
+        rec["ll_randPick"] = round(float(-np.log(max(m_v3w[rand_k], 1e-12))), 4)
+        anchor = pms.get((m["date"], m["home"], m["away"]))
+        if anchor:                                  # nullB: Pinnacle 锚·λsum 仍体彩 TTG(混合源交底)
+            lh_b = solve_lamh(lam_sum, float(anchor[0]), rho)
+            m_nb = sm.dc_matrix(lh_b, lam_sum - lh_b, rho)
+            rec.update({"ll_nullB": round(float(-np.log(max(m_nb.get(key, 1e-12), 1e-12))), 4),
+                        "lamH_nullB": round(lh_b, 3),
+                        "top1_nullB": _top_hit(m_nb, key, 1), "top3_nullB": _top_hit(m_nb, key, 3)})
+        rows.append(rec)
+    if not rows:
+        print("[U2] 异常: 0 场入账——enrich join 或盘口字段断裂，拒绝落盘（铁律8 空结果禁静默）")
+        return
+    seg_stat = {}
+    for seg in ("fit", "val"):
+        rs = [r for r in rows if r["seg"] == seg]
+        if not rs:
+            continue
+        dA = [r["ll_v3w"] - r["ll_nullA"] for r in rs]
+        seg_stat[seg] = {"n": len(rs),
+                         "meanDiffA": round(float(np.mean(dA)), 5),
+                         "ciA": boot_ci(dA), "signFlipNullA": sign_flip_null_ci(dA),
+                         "top1_v3w": round(float(np.mean([r["top1_v3w"] for r in rs])), 4),
+                         "top1_nullA": round(float(np.mean([r["top1_nullA"] for r in rs])), 4),
+                         "top3_v3w": round(float(np.mean([r["top3_v3w"] for r in rs])), 4),
+                         "top3_nullA": round(float(np.mean([r["top3_nullA"] for r in rs])), 4),
+                         "ll_randPick": round(float(np.mean([r["ll_randPick"] for r in rs])), 4),
+                         "lamSumMean": round(float(np.mean([r["lamSum"] for r in rs])), 3)}
+    anchor_stat = None
+    anch = [r for r in rows if r["seg"] == "val" and "ll_nullB" in r]
+    if anch:
+        dB = [r["ll_v3w"] - r["ll_nullB"] for r in anch]
+        anchor_stat = {"n": len(anch), "meanDiffB": round(float(np.mean(dB)), 5),
+                       "ciB": boot_ci(dB), "signFlipNullB": sign_flip_null_ci(dB),
+                       "top1_nullB": round(float(np.mean([r["top1_nullB"] for r in anch])), 4),
+                       "top3_nullB": round(float(np.mean([r["top3_nullB"] for r in anch])), 4),
+                       "top3_v3w_锚子样本": round(float(np.mean([r["top3_v3w"] for r in anch])), 4)}
+    val_ci = seg_stat.get("val", {}).get("ciA") or [0, 0]
+    b_ci = (anchor_stat or {}).get("ciB") or [0, 0]
+    if b_ci[1] < 0:
+        verdict = "lam_keep"                       # 显著优 Pinnacle 锚→λ 留任主概率源
+    elif val_ci[1] < 0:
+        verdict = "win_tcg_only_not_market"        # 只赢体彩 null=不算赢市场(v33 教训)
+    else:
+        verdict = "lam_demote_structure_prior"     # 双 null 都不显著优→降级结构先验调味
+    store["U2_lambda"] = {
+        "judge": "val段CRS log-loss配对差(V3W减null·负=V3W优)bootstrap95%CI上限+比分带命中top1/top3",
+        "nullA": "矩法反解:λsum=E[T](TTG power去水)·λh二分解P(H>A)=p_h(体彩HAD去水)·同ρ同链只换λ",
+        "nullB": "Pinnacle锚:pinClose去水三向·λsum仍体彩TTG(混合源)·此null赢才算赢市场",
+        "segments": seg_stat, "anchor_val": anchor_stat, "verdict": verdict,
+        "perMatch": rows}
+    for seg, s in seg_stat.items():
+        print(f"[U2|{seg}] n={s['n']} ΔA(V3W−nullA){s['meanDiffA']:+.5f} CI{s['ciA']} "
+              f"null{s['signFlipNullA']} · top1 {s['top1_v3w']}vs{s['top1_nullA']} "
+              f"top3 {s['top3_v3w']}vs{s['top3_nullA']} · λsum均值{s['lamSumMean']} "
+              f"随机格LL{s['ll_randPick']}")
+    if anchor_stat:
+        print(f"[U2|锚] n={anchor_stat['n']} ΔB(V3W−nullB){anchor_stat['meanDiffB']:+.5f} "
+              f"CI{anchor_stat['ciB']} · top3 {anchor_stat['top3_v3w_锚子样本']}vs{anchor_stat['top3_nullB']}")
+    print(f"[U2] 终判: {verdict}")
+
+
 # ---------- U5 假设层首账（描述性·无判据） ----------
 
 def unit_u5(store):
@@ -383,7 +509,8 @@ def unit_u5(store):
 def audit():
     r = json.loads(OUT_JSON.read_text(encoding="utf-8"))
     fails = []
-    for unit, key in (("U1_fusion", "perMatch"), ("U3_devig", "perMatch"), ("U4_rho", "perMatch")):
+    for unit, key in (("U1_fusion", "perMatch"), ("U2_lambda", "perMatch"),
+                      ("U3_devig", "perMatch"), ("U4_rho", "perMatch")):
         rows = r.get(unit, {}).get(key) or []
         if not rows:
             continue
@@ -392,6 +519,12 @@ def audit():
             m_ = float(np.mean([x["rps_fused"] - x["rps_null"] for x in rs])) if rs else None
             if rs and abs(m_ - np.mean([x["rps_fused"] - x["rps_null"] for x in rs])) > 1e-9:
                 fails.append("U1 复算异常")
+        elif unit == "U2_lambda":
+            rs = [x for x in rows if x["seg"] == "val"]
+            m_ = round(float(np.mean([x["ll_v3w"] - x["ll_nullA"] for x in rs])), 5)
+            stored = r["U2_lambda"]["segments"]["val"]["meanDiffA"]
+            if abs(m_ - stored) > 1e-4:
+                fails.append(f"U2 val 复算 {m_} ≠ 落盘 {stored}")
         elif unit == "U3_devig":
             rs = [x for x in rows if x["seg"] == "val"]
             m_ = round(float(np.mean([x["ll_k2"] - x["ll_k1"] for x in rs])), 5)
@@ -404,7 +537,7 @@ def audit():
             stored = r["U4_rho"]["segments"]["val"]["meanDiff"]
             if abs(m_ - stored) > 1e-4:
                 fails.append(f"U4 val 复算 {m_} ≠ 落盘 {stored}")
-    print(f"[审计] {'PASS · ' + str(sum(len(r.get(u, {}).get('perMatch', [])) for u in ('U1_fusion', 'U3_devig', 'U4_rho'))) + ' 场复算一致' if not fails else 'FAIL——' + str(fails)}")
+    print(f"[审计] {'PASS · ' + str(sum(len(r.get(u, {}).get('perMatch', [])) for u in ('U1_fusion', 'U2_lambda', 'U3_devig', 'U4_rho'))) + ' 场复算一致' if not fails else 'FAIL——' + str(fails)}")
 
 
 def main():
@@ -421,12 +554,14 @@ def main():
         unit_u5(store)
     elif "u3" in cmd:
         unit_u3(store)
-    elif "u1" in cmd or "u4" in cmd:
+    elif "u1" in cmd or "u4" in cmd or "u2" in cmd:
         enrich = build_enrich()
         if "u1" in cmd:
             unit_u1(store, enrich)
         if "u4" in cmd:
             unit_u4(store, enrich)
+        if "u2" in cmd:
+            unit_u2(store, enrich)
     else:
         print(__doc__)
         return
