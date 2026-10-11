@@ -40,7 +40,7 @@ LEAGUES = ["uefa-nations","england-premier","spain-laliga","germany-bundesliga",
 BOOM_V2 = 0.05       # S4 终校（层3 V3W 语义·params 沿袭）
 HAD_HOT_V2 = 1.5     # S4 终校（层3 V3W 语义·params 沿袭）
 TOP_N_PICKS = 4
-BOOM_GATE = 0.05        # water 闸：层1/2=ttg_boom（6+7档）·层3=V3W other 桶（同值沿袭）
+BOOM_GATE = 0.05        # water 闸：层1=ttg_boom(TTG 6+7档) · 层2/层3=矩阵 other 溢出桶（同值 0.05 沿袭）
 LEGACY_UNTIL = "2026-10-18"   # 影子对照一周（大哥拍板后移除 legacy 字段）
 CRS_OTHER_ZH = {"胜其他": "other_h", "平其他": "other_d", "负其他": "other_a"}  # 存档中文键→引擎键
 TTG_PREFIX = "s"        # 存档 ttg 键 s0..s7 前缀（引擎口径 0..7）
@@ -54,6 +54,7 @@ def load_day_odds(day: str, *, odds_dir: Path | None = None) -> dict:
 
     存档文件日=抓取日≠比赛日（一日存档含多日块）——开赛日口径铁律。
     归一适配（2026-10-11 存档实证键形）：crs 中文 other 三键→other_*·ttg s 前缀剥除。
+    同 businessDate 块在多文件出现时后扫覆盖（最新抓取价优先）。
     """
     base = odds_dir or (ROOT / "engine" / "cache" / "score_odds")
     d0 = date.fromisoformat(day)
@@ -137,7 +138,10 @@ def main() -> int:
                  for m in d.get("matches") or [] if m.get("matchId")]
 
     odds_map = load_day_odds(args.day)
-    print(f"[prod] 市场盘 join: {len(odds_map)} 场（businessDate={args.day}）")
+    hit = sum(1 for m in feed if m.get("code") in odds_map)
+    print(f"[prod] 市场盘 join 命中 {hit}/{len(feed)} 场（池 {len(odds_map)}）·businessDate={args.day}")
+    if odds_map and hit == 0:
+        print("[prod] 警告: 市场盘池非空但 join 命中 0——code 错位将全场降级层3", file=sys.stderr)
 
     ctx = sl.build_ctx(LEAGUES)
     z2i = sl.zh_to_id()
@@ -207,7 +211,8 @@ def main() -> int:
     picks = sorted(cands, key=lambda c: -c["crs_top5"][0]["p"])[:TOP_N_PICKS]
     doc = {"date": args.day, "model": "market-3layer (CRS devig → lambda solver → V3W fallback)",
            "params": {"boom": BOOM_V2, "had_hot": HAD_HOT_V2,
-                      "boomGate": BOOM_GATE, "rho": mkl.RHO_ZERO, "legacyUntil": LEGACY_UNTIL},
+                      "boomGate": BOOM_GATE, "rho": mkl.RHO_ZERO, "legacyUntil": LEGACY_UNTIL,
+                      "boomGateNote": "layer1=ttg 6+7 · layer2/3=matrix other bucket"},
            "generatedAt": datetime.now().isoformat(timespec="seconds"),
            "matches": matches,
            "picks": [{"code": p["code"], "match": p["match"], "league": p.get("league"),
