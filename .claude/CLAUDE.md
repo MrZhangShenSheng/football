@@ -73,6 +73,7 @@
 - 主指标：CLV（逐单算：出票赔率/Pinnacle 收盘赔率 - 1）+ RPS + log loss
 - 命中率仅作展示；修正系数须消融回测，无正增益即删（首回合平局保护=首批验证对象）
 - 回测一律 walk-forward，成交按 Pinnacle 收盘价计
+- **组件准入制（v35 地基工程·2026-10-11 大哥拍板）**：任何新组件/新系数/换件入生产链，先过消融审计——null+判据+时间线跑前预注册 `fade-strategy-prereg.json` → globalRules（双 null 原则：体彩 devig null+Pinnacle 锚，打赢烂 null 不算赢）→ 审计三件套+随机基线自证伪 → PASS 凭证（贡献 CI）入幸存链注册表 `surviving_chain.json`（P4 产出·生产脚本启动校验）才准入。**无审计不入链**；每场预测走 evidence 九步证据链（`engine/cache/evidence/{开赛日}/`·代码 hook S1~S7+会话登记 S8~S9），出票前完整性检查缺步标注不补造——设计 docs/2026-10-11-v35-foundation-design.html·铁律 15
 - 检索覆盖率：每轮记录"本地命中 vs 联网补采"字段清单，发现知识库采集洞
 
 ## 升级触发线（现在不做）

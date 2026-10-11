@@ -152,7 +152,7 @@ code{background:#f0f4f7;border-radius:3px;padding:1px 5px;font-size:12px}
 <tr><td class="warn">fix</td><td>CI 跨 0 但有已知缺陷（系数过期/覆盖不足）</td><td>换件或重拟合后重审</td><td>换件=<b>新旧影子并跑一周不降级</b>才切换</td></tr>
 <tr><td class="ok">keep</td><td>CI 下限 &gt; 0，或中性且 ≥1 个存活下游依赖</td><td>留任 + 文档化</td><td>——</td></tr>
 </table>
-<p>产出：幸存链架构文档（HTML·五层：数据/市场锚/结构先验/独家信息/包装）+ 生产协议简化（CLAUDE.md/SKILL.md 更新）。「五代同堂」在证据锁定的范围内解决。</p>
+<p>产出：幸存链架构文档（HTML·五层：数据/市场锚/结构先验/独家信息/包装）+ 生产协议简化（CLAUDE.md/SKILL.md 更新）+ <b>幸存链注册表</b> <code>surviving_chain.json</code>（生产组件白名单：每组件挂 PASS 凭证=贡献 CI+审计日期，生产脚本启动校验——不在表/凭证过期→拒跑或降级标注）。注册表即<b>机器闸门</b>：约束未来一切迭代的物理层（大哥拍板 2026-10-11「以后的迭代模型也需要遵循这一套理念」，铁律 15）。「五代同堂」在证据锁定的范围内解决。</p>
 </div>
 
 <h2>六、测试与验收</h2>
