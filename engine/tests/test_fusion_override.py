@@ -37,7 +37,8 @@ class TestLoadFusionAb:
     def test_corrupt_file_falls_back_to_default(self, tmp_path):
         p = tmp_path / "fusion.json"
         p.write_text("{broken", encoding="utf-8")
-        assert load_fusion_ab("netherlands-eredivisie", path=p) == (0.4, 1.0)
+        # 2026-10-11 U1 终审后 fallback a=0（retired a=0.4 不得复活）
+        assert load_fusion_ab("netherlands-eredivisie", path=p) == (0.0, 1.0)
 
     def test_missing_file_falls_back_to_default(self, tmp_path):
-        assert load_fusion_ab(path=tmp_path / "nope.json") == (0.4, 1.0)
+        assert load_fusion_ab(path=tmp_path / "nope.json") == (0.0, 1.0)

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026-10-12 回填复盘 · 10-10/10-11 双轮</title>
+<style>
+:root{--fg:#2b2f36;--fg2:#6b7280;--line:#e5e7eb;--bg:#fafafa;--card:#fff;--ok:#0f7b4f;--bad:#b3261e;--warn:#9a6700;--accent:#3556c9}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--fg:#e6e8ec;--fg2:#9aa1ac;--line:#2d323b;--bg:#14171c;--card:#1b1f26;--ok:#4cc38a;--bad:#ff7b72;--warn:#d2a8ff;--accent:#7d96f7}}
+*{box-sizing:border-box}
+body{margin:0;padding:24px 16px;background:var(--bg);color:var(--fg);font:15px/1.7 "Microsoft YaHei",system-ui,sans-serif}
+.wrap{max-width:960px;margin:0 auto}
+h1{font-size:20px;margin:0 0 4px}
+h2{font-size:16px;margin:28px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.sub{color:var(--fg2);font-size:13px;margin-bottom:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.kpi .v{font-size:22px;font-weight:700;color:var(--accent)}
+.kpi .l{font-size:12px;color:var(--fg2)}
+.kpi .v.ok{color:var(--ok)} .kpi .v.bad{color:var(--bad)} .kpi .v.warn{color:var(--warn)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+th{color:var(--fg2);font-weight:600;white-space:nowrap}
+.ok{color:var(--ok)} .bad{color:var(--bad)} .warn{color:var(--warn)}
+.ic{width:15px;height:15px;vertical-align:-2px;margin-right:5px;color:var(--accent)}
+ul{margin:6px 0;padding-left:20px}
+.src{font-size:12px;color:var(--fg2);border-top:1px dashed var(--line);padding-top:10px;margin-top:18px}
+code{background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:0 5px;font-size:12.5px}
+</style>
+</head>
+<body>
+<svg style="display:none">
+  <symbol id="i-back" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M3 2v12M13 2 5 8l8 6z"/></symbol>
+  <symbol id="i-shadow" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.4" d="M8 1.5 14 5v6L8 14.5 2 11V5zM8 8l6-3M8 8 2 5M8 8v6.5"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.5" d="M8 1.8 15 14H1zM8 6v4.2M8 12.2v.1"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.5" d="M8 1.5 13.5 3.5v4c0 3.5-2.3 6-5.5 7-3.2-1-5.5-3.5-5.5-7v-4zM5.5 8l1.8 1.8L10.8 6.3"/></symbol>
+</svg>
+<div class="wrap">
+<h1><svg class="ic"><use href="#i-back"/></svg>回填复盘 · 2026-10-12（10-10 周六轮 + 10-11 周日轮）</h1>
+<div class="sub">执行：backfill.py · corpus · attribute · learn · dc_fit --auto · shadow settle-all · pytest 446 passed</div>
+
+<h2>一、回填总览</h2>
+<div class="grid">
+  <div class="kpi"><div class="v">81 / 100</div><div class="l">已回填 / 两轮记录场</div></div>
+  <div class="kpi"><div class="v ok">70%</div><div class="l">10-10 方向命中（7/10）</div></div>
+  <div class="kpi"><div class="v ok">3/3</div><div class="l">10-11 方向命中（小样本）</div></div>
+  <div class="kpi"><div class="v">0</div><div class="l">pick 命中字段 None 警讯</div></div>
+</div>
+<table>
+  <tr><th>销售日</th><th>记录</th><th>已回填</th><th>pending（正确态）</th><th>说明</th></tr>
+  <tr><td>2026-10-10</td><td>65</td><td>55</td><td>10</td><td>周一002~010 为 10-13 凌晨开赛未踢；周六006 延期</td></tr>
+  <tr><td>2026-10-11</td><td>35</td><td>26</td><td>9</td><td>同批 10-13 凌晨场 + 圣路易城已手工补</td></tr>
+</table>
+
+<h2>二、两场特殊处置（诚实档案）</h2>
+<div class="card">
+<ul>
+<li><b>周六006 巴列卡诺 vs 毕尔巴鄂 —— 延期未赛。</b>体彩开奖缺席、ESPN esp.1 10-09~10-12 无此场；<b>titan007 赛后积分榜实证</b>：毕尔巴鄂仅赛 6 场、巴列卡诺 7 场（联赛已 8 轮），两队互对阵未踢。FotMob 赛程页的 10-11 开赛信息为过期编排。维持 pending，体彩改期重排后开奖再补。</li>
+<li><b>周日028 圣路易城 6-2 洛城银河 —— ESPN 手工补。</b>体彩开奖口径仍"未开"（已知滞后），ESPN usa.1 已出赛果，<code>resultSource: espn-manual</code> 落两文件，半场比分待体彩开奖幂等补。</li>
+</ul>
+</div>
+
+<h2>三、影子层（<svg class="ic"><use href="#i-shadow"/></svg>对照票，非真金）</h2>
+<table>
+  <tr><th>销售日</th><th>票数</th><th>投入</th><th>回款</th><th>净额</th><th>结算时点</th></tr>
+  <tr><td>10-10（对向会话结算）</td><td>14</td><td>380.00</td><td>279.21</td><td class="bad">−100.79</td><td>2026-10-11</td></tr>
+  <tr><td>10-11（本次结算）</td><td>14</td><td>380.00</td><td>450.60</td><td class="ok">+70.60</td><td>2026-10-12</td></tr>
+</table>
+<p class="sub">10-11 亮点：P421 4串1 回 129.71、P430 crs-双选2串1 回 114.75。账本 448 张（settled 418 / pending 16：10-12 今晚 14 张 + P448 v18 双信号 10-13 + P349 胜负彩 26134 期挂账维持 pending 正确）。</p>
+
+<h2>四、链路产出与警讯</h2>
+<div class="card">
+<ul>
+<li><b>corpus</b>：916 条（已回填 896，CLV 127）；<b>trend</b>：337 场 / 52 轮。</li>
+<li><b>校准警讯（既有）</b>：<svg class="ic"><use href="#i-warn"/></svg>0%~40% 桶实际 59% vs 预测 38%（系统性低估 22pp）——与上轮同向，非新增。</li>
+<li><b>attribute</b>：71 错题，F9 主因 61（已知错题子集偏差，<b>关灯勿重开</b>）。</li>
+<li><b>learn</b>：ESPN history 接口对 2026 年度区间返回 400，非 fd 联赛无增量；各 DC 版本 holdout 门槛正常拦截（无降级发布）。</li>
+<li><b>dc_fit --auto</b>：fd 断粮期（09-20 起）无新数据，缓存新鲜跳过。</li>
+<li><b>pinClose 待补 147 场</b>：fd 断粮期既有挂账，恢复后 verify 幂等救回。</li>
+<li><b>pytest</b>：446 passed。修复 <code>test_fusion_override</code> 两断言（fallback a=0.4→0.0，跟随 v35-P4 U1 终审"retired a=0.4 不得在 fallback 复活"拍板——对向会话遗留测试债，非回填所致）。</li>
+</ul>
+</div>
+
+<h2>五、git 合并处置（本次会话起点）</h2>
+<div class="card">
+<ul>
+<li>远程 35 提交（v31~v35 地基工程 + 10-11 轮预测 + T045/T046 实票）与本地 lineups 定时任务四文件冲突；<b>深度比对证实本地为严格超集</b>（无更薄键，末次 tick 10-12 09:16 vs 远程 10-11 14:58），全取本地版，仅可能丢 09:16→09:26 一跳快照（下个整点续上）。</li>
+<li>冲突窗口期定时任务产生的 4 个 <code>.corrupt</code> 转存文件经确认无价值后清理。</li>
+</ul>
+</div>
+
+<div class="src">
+<b>数据来源</b>：data/02-results/2026-10-10.json · 2026-10-11.json｜engine/cache/sporttery_results_2026-10-1[12].json（体彩 zqsgkj）｜engine/cache/espn_results_{esp_1,usa_1}_*.json（ESPN scoreboard）｜engine/cache/cn_standings_s31_2026-2027.json（titan007 延期证据）｜engine/shadow/paper_tickets.json（影子账本）｜data/04-summaries/{corpus,attribution}.json · trend.html
+</div>
+</div>
+</body>
+</html>
