@@ -684,6 +684,11 @@ def settle_payout(ticket: dict) -> dict:
             raise ValueError(f"{ticket.get('id')}: bets={bets} 为注数口径但 units={ticket.get('units')}，"
                              "缺注组合（[{legs,multiplier}]）无法按形状结算")
         bets = [{"legs": list(range(len(legs))), "multiplier": ticket.get("multiplier", 1)}]
+    if not bets and re.search(r"\d+\s*串\s*1", str(ticket.get("shape") or "")):
+        # T046 教训（2026-10-13）：6串1×10倍单注票缺 bets 走全组合兜底，
+        # 5中1miss 报出 26 注命中 payout 151.71——N串1 断任一腿=0，兜底口径完全错
+        raise ValueError(f"{ticket.get('id')}: shape={ticket.get('shape')} 为N串1单注形状但缺 bets 字段，"
+                         "禁止走 expand_combos 全组合兜底——补 bets=[{{legs:[...], multiplier:N}}] 再结算")
     combos = ([(tuple(_norm_bet_legs(b["legs"])), b.get("multiplier", 1)) for b in bets]
               if bets else [(tuple((i, None) for i in c), 1) for c in expand_combos(len(legs))])
     payout, win_units = 0.0, 0
