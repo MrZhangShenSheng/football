@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>影子层回溯机制 · 四件套 + V3W 换代</title>
+<style>
+:root{--fg:#2b2f36;--fg2:#6b7280;--line:#e5e7eb;--bg:#fafafa;--card:#fff;--ok:#0f7b4f;--bad:#b3261e;--accent:#3556c9}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--fg:#e6e8ec;--fg2:#9aa1ac;--line:#2d323b;--bg:#14171c;--card:#1b1f26;--ok:#4cc38a;--bad:#ff7b72;--accent:#7d96f7}}
+*{box-sizing:border-box}
+body{margin:0;padding:24px 16px;background:var(--bg);color:var(--fg);font:15px/1.7 "Microsoft YaHei",system-ui,sans-serif}
+.wrap{max-width:920px;margin:0 auto}
+h1{font-size:20px;margin:0 0 4px}
+h2{font-size:16px;margin:26px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.sub{color:var(--fg2);font-size:13px;margin-bottom:18px}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:8px 0}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+th{color:var(--fg2);font-weight:600;white-space:nowrap}
+code{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:0 5px;font-size:12.5px}
+.ok{color:var(--ok)} .bad{color:var(--bad)}
+pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px;font:12.5px/1.6 Consolas,monospace;overflow-x:auto}
+.ic{width:15px;height:15px;vertical-align:-2px;margin-right:5px;color:var(--accent)}
+</style>
+</head>
+<body>
+<svg style="display:none">
+  <symbol id="i-link" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.5" d="M6.5 9.5 9.5 6.5M5 11l-1.5 1.5a2.5 2.5 0 0 1-3.5-3.5L2.5 7M11 5l1.5-1.5a2.5 2.5 0 0 1 3.5 3.5L13.5 9"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.4" d="M8 5.5A2.5 2.5 0 1 0 8 10.5 2.5 2.5 0 0 0 8 5.5zM8 1.5v2M8 12.5v2M1.5 8h2M12.5 8h2M3.4 3.4l1.4 1.4M11.2 11.2l1.4 1.4M12.6 3.4l-1.4 1.4M4.8 11.2l-1.4 1.4"/></symbol>
+</svg>
+<div class="wrap">
+<h1><svg class="ic"><use href="#i-link"/></svg>影子层回溯机制 · 四件套 + 候选源换代 V3W</h1>
+<div class="sub">拍板：主公 2026-10-12（四件全做 + 一起切）· 实施：同日 · pytest 456 passed</div>
+
+<h2>一、痛点（本设计所除之病）</h2>
+<table>
+<tr><th>病灶</th><th>实例（当日实证）</th></tr>
+<tr><td>票不记链籍</td><td>「这比分模型是上周才跑出来的吧」——查 git log + qcache + import 三层才定论 P430 连中出自被淘汰的 freq_band 旧链而非 V3W</td></tr>
+<tr><td>结算不落腿级</td><td>逐腿中/挂明细要现写脚本从 02-results 人肉对票重算</td></tr>
+<tr><td>spec 战绩无分链视图</td><td>crs-双选2串1 +27.9% 是现算的，且两代链混读不知</td></tr>
+<tr><td>假设层否决无理由</td><td>10-11 卡利亚里场 pick 只剩「排除:假设层否决」一句，S8 证据链无理由档</td></tr>
+</table>
+
+<h2>二、四件套</h2>
+<table>
+<tr><th>件</th><th>落点</th><th>口径</th></tr>
+<tr><td><svg class="ic"><use href="#i-link"/></svg>链籍账本</td><td><code>engine/cache/chain_registry.json</code> + <code>shadow/provenance.py</code></td><td>链→epoch（from/to/engine）；票登记 stamp 票.chain（<b>改链必登记新 epoch</b>，日期=体彩销售日）</td></tr>
+<tr><td>腿级明细落盘</td><td>paper.py <code>_annotate_legs</code></td><td>结算时写回每腿 result(hit/miss/void)/actual/hitPrice；结算判口径=shapes._pick_price 同源；幂等</td></tr>
+<tr><td>一键回溯 why</td><td><code>paper.py why P430|T046|2026-10-11</code></td><td>票头+链籍+逐腿+spec×engine 分链战绩；影子/实票双 schema 渲染</td></tr>
+<tr><td>假设层理由纪律</td><td>evidence.py S8</td><td>登记缺理由键（verdicts/reason/note）→ 红警（fail-open 不阻断）；check 标注「S8缺理由」</td></tr>
+</table>
+
+<h2>三、候选源换代（freq_snap v1→v2）</h2>
+<pre>链代：shadow_qcache
+  v1  2026-09-08 ~ 10-12  freq_band λ平移链（已被生产端两度换代甩开·影子测死链）
+  v2  2026-10-13 起        V3W-v2 实力链（strength_chain_eval._predict_match·生产同源 30 联赛）
+      --engine=legacy 对照保留（--out-suffix 另存，不覆盖冻结快照）</pre>
+<ul>
+<li><b>已知代价</b>：V3W 覆盖=30 联赛队名映射，映射不到的场不出条目 → D/C 族关档日增多（10-13 冒烟：9 场在售 8 场产出 1 场跳过）。</li>
+<li><b>反事实定心</b>：10-11 同轮同三场，V3W top2 与旧链在 strong 选场（正路强主场）高度重合——当轮反事实回款同为 114.75，切换不改主体行为，差异积累在 λ 异常场。</li>
+<li><b>不变之实</b>：期望仍锁死 1−CRS 抽水（33.9% 池抽水·top-k 回收天花板 84%）——换代修对照，非找 alpha；86% 全灭日照旧。</li>
+</ul>
+
+<h2>四、历史补齐（一次性·幂等）</h2>
+<table>
+<tr><th>命令</th><th>结果</th></tr>
+<tr><td><code>paper.py restamp</code></td><td>448 票中 298 张补链籍（v1 旧链 154 / 市场去水 138 / v4b 5 / v18 1）；151 张无 stamp=已死 spec（胶着/ev 族+一次性讨论票），诚实留空</td></tr>
+<tr><td><code>paper.py annotate</code></td><td>431 张已结算票补齐腿级明细；1 张缺赛果保持原状（胜负彩独有场挂账票）</td></tr>
+</table>
+
+<h2>五、纪律与红线</h2>
+<ul>
+<li>断代红线：链切换不登 registry = 违规；两代战绩永不分读（spec-stats 按票自身 chain 分列）。</li>
+<li>跨周同编号守卫：annotate/settle 补算按票自身 date±1 取赛果，他周同 code 不补写。</li>
+<li>冻结语义不变：qcache 文件在即返回；对照跑法必须 --out-suffix 另存。</li>
+<li>matchDate 兼容：体彩清单纯日期/全格式两态（盘中刷新观测到全格式），匹配一律 [:10] 截断。</li>
+</ul>
+
+<div class="sub">验证：pytest 456 passed（新增 test_shadow_provenance.py 10 项）；真账本 restamp/annotate/why/spec-stats 四命令实跑；V3W 真链 10-13 冒烟 8 场产出。</div>
+</div>
+</body>
+</html>

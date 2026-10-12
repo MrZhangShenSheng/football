@@ -131,11 +131,12 @@ def freeze_legs(round_legs, ticket):
     return out
 
 
-# ── 登记（赔率冻结进票，写账本）──
-def register(spec_name, date, legs, bets, mult, cost, path=None, track=None):
+# ── 登记（赔率冻结进票，写账本；chain=链籍 stamp·2026-10-12 回溯机制）──
+def register(spec_name, date, legs, bets, mult, cost, path=None, track=None, chain=None):
     """→ 票 dict（已写账本）。legs=冻结腿（freeze_legs 产物或手工同构）；bets/mult/cost
     = build_ticket 输出对应字段透传（bets 元组展开为 list，JSON 可序列化）；
-    track=A|N（缺省 A：未标轨 spec/旧调用方兼容口径·设计§七兼容面④）。"""
+    track=A|N（缺省 A）；chain=provenance.stamp_for_spec 产物（票.chain 字段，
+    回溯归因单一事实源——腿出自哪条链哪一代，读票即知）。"""
     path = path or PAPER_FILE
     tickets = load_tickets(path)
     ticket = {
@@ -143,6 +144,7 @@ def register(spec_name, date, legs, bets, mult, cost, path=None, track=None):
         'spec_name': spec_name,
         'track': track or TRACK_A,
         'date': date,
+        'chain': chain,
         'legs': [_norm_leg(l) for l in legs],
         'bets': [{'legs': [list(pair) for pair in b['legs']]} for b in bets],
         'n_bets': len(bets),
@@ -197,15 +199,40 @@ def _by_track(tickets: list) -> dict:
     return stats
 
 
+def _annotate_legs(ticket, legs_view, shapes):
+    """结算视图 → 票腿写回 result/actual/hitPrice（回溯机制·幂等：已有 result 的腿不动）。
+    腿级命中口径：该腿任一 pick 在 shapes._pick_price 有价（与票级 settle 同判）。"""
+    for leg, lv in zip(ticket['legs'], legs_view):
+        if leg.get('result'):
+            continue
+        if lv.get('void'):
+            leg['result'] = 'void'
+            leg['actual'] = None
+            continue
+        sc = lv.get('score')
+        leg['actual'] = f"{sc[0]}:{sc[1]}" if sc else None
+        tleg = {'kind': leg['market'], 'odds': leg['odds']}
+        hit = False
+        for p in leg['pick']:
+            price = shapes._pick_price(tleg, p, lv.get('outcome'), sc)
+            if price is not None:
+                hit = True
+                leg['hitPrice'] = price
+                break
+        leg['result'] = 'hit' if hit else 'miss'
+
+
 def settle_all(round_results, date=None, path=None):
     """真实赛果结算影子票 → 本次结算的票 list。
     round_results = {code: (outcome, score)}（outcome=0/1/2，score=(h,a) 或 None）；
     按 code（+可选 date=方案日）匹配票腿；已 settled 跳过（幂等）。
+    结算成功时腿级 result/actual 同步落盘（_annotate_legs·2026-10-12 回溯机制）。
     date 匹配（I-3，默认=票自身 date）：显式传 date → 票 date == date 才入结算窗；
     不传 date → 按票自身 date 做跨周歧义守卫——体彩"周XNNN"编号按周重复，若某 code
     落在不同 date 的 pending 票上（跨周同编号歧义形态），涉歧票据全部保持 pending，
     须显式传 date 消歧后分周结算（扁平 round_results 无日期标注，无法自动归属）。"""
     path = path or PAPER_FILE
+    shapes = _require_shapes()
     tickets = load_tickets(path)
     dates_by_code = {}
     for t in tickets:
@@ -215,9 +242,18 @@ def settle_all(round_results, date=None, path=None):
             dates_by_code.setdefault(leg['code'], set()).add(t.get('date'))
     ambiguous = {code for code, ds in dates_by_code.items() if len(ds) > 1}
     settled = []
+    dirty = False
     for t in tickets:
         if t.get('result') == 'settled':
-            continue                        # 幂等：已结算不重算
+            # 幂等补算：已结算但腿级明细缺失（2026-10-12 之前的历史票）→ 顺带补齐。
+            # 仅显式 date 且票 date==date 时做（防跨周同编号拿错周赛果；全量补齐走 annotate）
+            if (date is not None and t.get('date') == date and round_results
+                    and any(not lg.get('result') for lg in t['legs'])):
+                view = _settle_view(t, round_results)
+                if view is not None:
+                    _annotate_legs(t, view[0], shapes)
+                    dirty = True
+            continue                        # 幂等：已结算不重算 payout
         if date is not None and t.get('date') != date:
             continue
         if date is None and any(leg['code'] in ambiguous for leg in t['legs']):
@@ -226,11 +262,13 @@ def settle_all(round_results, date=None, path=None):
         if view is None:
             continue                        # 缺赛果保持 pending
         legs, ticket_view = view
-        t['payout'] = _require_shapes().settle(legs, ticket_view)
+        t['payout'] = shapes.settle(legs, ticket_view)
         t['result'] = 'settled'
         t['settledAt'] = datetime.datetime.now().isoformat(timespec='seconds')
+        _annotate_legs(t, legs, shapes)
         settled.append(t)
-    if settled:
+        dirty = True
+    if dirty:
         _save(tickets, path)
     for k, s in _by_track(tickets).items():
         print(f"[shadow] track {k}: {s['n']}票 回款{s['payout']:.0f}/{s['cost']:.0f}元")
@@ -338,8 +376,14 @@ def shadow_all(date=None, out=None):
                 if real:
                     fl['odds'] = real
                     fl['odds_src'] = 'tiyu-live'
+        # 链籍 stamp（回溯机制·fail-open：registry 缺失不炸登记）
+        try:
+            import provenance
+            chain_stamp = provenance.stamp_for_spec(spec, date)
+        except Exception:
+            chain_stamp = None
         register(spec['name'], date, legs_frozen, tk['bets'], tk['mult'], tk['cost'],
-                 path=out, track=spec.get('track', TRACK_A))
+                 path=out, track=spec.get('track', TRACK_A), chain=chain_stamp)
         n += 1
     return {'date': date, 'legs': len(legs), 'registered': n,
             'pools_field': '五池价冻结（crs31/ttg8/hafu9——影子层独有历史缺口补采）'}
@@ -349,41 +393,13 @@ if __name__ == '__main__' and len(__import__('sys').argv) > 1 and __import__('sy
     print(json.dumps(shadow_all(*(__import__('sys').argv[2:3])), ensure_ascii=False, indent=1))
 
 
-if __name__ == '__main__' and len(__import__('sys').argv) > 1 and __import__('sys').argv[1] == 'settle-all':
-    # settle-all <比赛日>：影子票对真实赛果结算（赛果自 02-results 主文件/体彩缓存自动对票）
-    try:
-        import data as _data   # replay_v2 轮次装载器（2026-09-07 随事故丢失，待随 shapes 重建）
-    except ImportError:
-        raise SystemExit('[settle-all] ' + SHADOW_LOST_NOTE)
-    import glob as _glob, os as _os
-    import sys as _sys
-    day = _sys.argv[2] if len(_sys.argv) > 2 else str(_datetime.date.today())
-    rounds = {r['date']: r['legs'] for r in _data.load_rounds()}
-    # 体彩开奖缓存补充（覆盖 02-results 未回填日）
-    for f in _glob.glob(_os.path.join(REPO, 'engine/cache/sporttery_results_*.json')):
-        try: d = json.load(open(f, encoding='utf-8'))
-        except Exception: continue
-        for m in d.get('matches', []):
-            dt = m.get('matchDate')
-            sc = str(m.get('score') or '')
-            if m.get('status') == 'Played' and sc.startswith('无效') and dt:
-                rounds.setdefault(dt, []).append({
-                    'code': m.get('code'), 'match': f"{m.get('home','')} vs {m.get('away','')}",
-                    'outcome': 'void', 'score': None,   # 体彩无效场次：结算按官方兑付=腿 1.00 计
-                })
-            elif m.get('status') == 'Played' and ':' in sc and dt:
-                h, a = sc.split(':')
-                rounds.setdefault(dt, []).append({
-                    'code': m.get('code'), 'match': f"{m.get('home','')} vs {m.get('away','')}",
-                    'outcome': 0 if int(h) > int(a) else (1 if int(h) == int(a) else 2),
-                    'score': (int(h), int(a)),
-                    'half': (tuple(int(x) for x in str(m.get('halfScore') or '0:0').split(':')) if ':' in str(m.get('halfScore') or '') else None),
-                })
-    # rounds[date]=legs list（load_rounds 口径）→ settle_all 期望 {code:(outcome,score)}
+def settle_all_cli(day):
+    """settle-all <比赛日> CLI 主体（赛果自 02-results 主文件/体彩缓存自动对票）。"""
     # 邻日轮合并：登记按体彩 matchDate（完赛自然日）、load_rounds 按销售日文件，两口径对晚场
     # 错位一天（如 09-09 18:30 完赛的江原 matchDate=09-09 而销售日=09-10）——单日轮会让
     # 跨口径票（P047：date=09-09 + 江原腿在 09-10 轮）结构性缺赛果永远 pending。合并
     # day±1 后由 dict 后写覆盖保证 day 本日优先，跨周同编号歧义仍由 settle_all 守卫兜底
+    rounds = _all_rounds_by_day()
     _d0 = _datetime.date.fromisoformat(day)
     legs_raw = []
     for _dd in ((_d0 - _datetime.timedelta(days=1)).isoformat(),
@@ -391,6 +407,202 @@ if __name__ == '__main__' and len(__import__('sys').argv) > 1 and __import__('sy
                 day):                     # day 最后灌入 → dict 后写覆盖 → 本日轮优先
         legs_raw.extend(rounds.get(_dd) or [])
     round_results = {l['code']: (l['outcome'], l.get('score')) for l in legs_raw}
-    done = paper_settle = settle_all(round_results, date=day) if round_results else []
+    paper_settle = settle_all(round_results, date=day) if round_results else []
     print(json.dumps({'date': day, 'settled': len(paper_settle),
                       'note': '无该日赛果则影子票保持 pending'}, ensure_ascii=False))
+
+
+# ───── 回溯机制（2026-10-12 大哥拍板四件套：链籍/腿级明细/why/annotate）─────
+def _all_rounds_by_day():
+    """全量轮次 → {销售日: legs}（load_rounds + 体彩开奖缓存逐日归并；settle-all 同源）。"""
+    import glob as _glob
+    try:
+        import data as _data
+        rounds = {r['date']: r['legs'] for r in _data.load_rounds()}
+    except ImportError:
+        rounds = {}
+    for f in _glob.glob(os.path.join(REPO, 'engine/cache/sporttery_results_*.json')):
+        try:
+            d = json.load(open(f, encoding='utf-8'))
+        except Exception:                  # noqa: BLE001 —— 脏缓存文件跳过不炸
+            continue
+        for m in d.get('matches', []):
+            dt = m.get('matchDate')
+            sc = str(m.get('score') or '')
+            if m.get('status') == 'Played' and sc.startswith('无效') and dt:
+                rounds.setdefault(dt, []).append({'code': m.get('code'), 'outcome': 'void', 'score': None})
+            elif m.get('status') == 'Played' and ':' in sc and dt:
+                h, a = sc.split(':')
+                rounds.setdefault(dt, []).append({
+                    'code': m.get('code'),
+                    'outcome': 0 if int(h) > int(a) else (1 if int(h) == int(a) else 2),
+                    'score': (int(h), int(a))})
+    return rounds
+
+
+def annotate(path=None):
+    """历史已结算票 → 腿级 result/actual 幂等补齐（按票自身 date±1 取赛果，跨周同编号
+    天然不错配）。→ 补写票数。"""
+    path = path or PAPER_FILE
+    shapes = _require_shapes()
+    tickets = load_tickets(path)
+    rounds = _all_rounds_by_day()
+    n = 0
+    for t in tickets:
+        if t.get('result') != 'settled' or all(lg.get('result') for lg in t['legs']):
+            continue
+        d0 = _datetime.date.fromisoformat(t['date'])
+        mini = {}
+        for dd in ((d0 - _datetime.timedelta(days=1)).isoformat(),
+                   (d0 + _datetime.timedelta(days=1)).isoformat(),
+                   t['date']):              # 本日最后灌入优先
+            for l in rounds.get(dd) or []:
+                mini[l['code']] = (l['outcome'], l.get('score'))
+        view = _settle_view(t, mini)
+        if view is not None:
+            _annotate_legs(t, view[0], shapes)
+            n += 1
+    if n:
+        _save(tickets, path)
+    return n
+
+
+def restamp(path=None):
+    """历史无 chain 字段的影子票 → 按票 date+spec 反查 registry 幂等补 stamp。
+    spec 先按 PLAN_FAMILIES 名反查（pool 路径），miss 再按 spec_name 直查
+    （独立执行器 spec·provenance.SPEC_NAME_CHAIN）。→ 补写票数。"""
+    import provenance
+    path = path or PAPER_FILE
+    tickets = load_tickets(path)
+    spec_by_name = {s['name']: s for s in _require_shapes().PLAN_FAMILIES}
+    n = 0
+    for t in tickets:
+        if t.get('chain'):
+            continue
+        name = t.get('spec_name')
+        spec = spec_by_name.get(name) or {'name': name}
+        t['chain'] = provenance.stamp_for_spec(spec, t.get('date') or '')
+        if t['chain']:
+            n += 1
+    if n:
+        _save(tickets, path)
+    return n
+
+
+def _fmt_leg_odds(leg):
+    """冻结腿 → '价/价' 摘要（had 三槽 list 取买槽；池腿 dict 取买键；实票数值直出）。"""
+    o = leg.get('odds')
+    p = leg.get('pick')
+    picks = p if isinstance(p, list) else ([p] if p is not None else [])
+    if isinstance(o, (int, float)):
+        return '/'.join(str(o) for _ in picks) or str(o)
+    vals = []
+    for x in picks:
+        try:
+            vals.append(str(o[int(x)] if leg.get('market') == 'had' and isinstance(o, list)
+                            else o.get(str(x), o.get(x, '?'))))
+        except (TypeError, ValueError, IndexError):
+            vals.append('?')
+    return '/'.join(vals)
+
+
+def spec_chain_stats(tickets):
+    """已结算票 → {(spec, engine): {n, cost, payout}}（分链战绩·why 尾注用）。"""
+    agg = {}
+    for t in tickets:
+        if t.get('result') != 'settled':
+            continue
+        key = (t.get('spec_name'), (t.get('chain') or {}).get('engine') or '?')
+        s = agg.setdefault(key, {'n': 0, 'cost': 0.0, 'payout': 0.0})
+        s['n'] += 1
+        s['cost'] += t.get('cost') or 0
+        s['payout'] += t.get('payout') or 0
+    return agg
+
+
+_MARK = {'hit': '✓', 'miss': '✗', 'void': '∮', None: '…'}
+
+
+def _render_ticket(t):
+    """票 → 控制台回溯块（票头/链籍/逐腿/分链战绩）。影子票与实票（tickets.json）双 schema 兼容。"""
+    ch = t.get('chain') or {}
+    if 'stake' in t and 'spec_name' not in t:      # 实票 schema（settled 未结=False/结算=dict）
+        settled = t.get('settled')
+        result = settled.get('status') if isinstance(settled, dict) else 'pending'
+        pay = settled.get('payout') if isinstance(settled, dict) else None
+        cost = t.get('stake')
+        spec = t.get('shape') or t.get('spec')
+        day = (t.get('matchDays') or [None])[0]
+    else:                                          # 影子票 schema
+        result = t.get('result')
+        pay = t.get('payout')
+        cost = t.get('cost')
+        spec = t.get('spec_name')
+        day = t.get('date')
+    net = (pay - cost) if isinstance(pay, (int, float)) and isinstance(cost, (int, float)) else None
+    print(f"=== {t.get('id')} {spec} {day} [{result}] ===")
+    if ch:
+        print(f"  链籍: {ch.get('chain')} · {ch.get('engine')} · since {ch.get('since')}")
+    else:
+        print("  链籍: 无 stamp（历史票·restamp 可补）")
+    print(f"  投入 {cost} · 回款 {pay if pay is not None else '—'}"
+          + (f" · 净 {net:+.2f}" if net is not None else ''))
+    for lg in t.get('legs', []):
+        r = lg.get('result')
+        actual = lg.get('actual')
+        price = lg.get('hitPrice')
+        tail = f" → {actual} {_MARK.get(r, '?')}" + (f" @{price}" if price else '') if actual or r else ''
+        print(f"    {lg.get('code')} {str(lg.get('match'))[:22]:24s} {lg.get('market') or lg.get('kind')}"
+              f" {str(lg.get('pick'))[:18]:20s} @{_fmt_leg_odds(lg)}{tail}")
+    return t
+
+
+def why(target, path=None):
+    """回溯入口：P票号=影子票 | T票号=实票 | 日期=当日全部影子票。"""
+    if str(target).startswith('T'):
+        tp = os.path.join(REPO, 'data', '06-tickets', 'tickets.json')
+        doc = json.load(open(tp, encoding='utf-8'))
+        for t in doc.get('tickets', []):
+            if t.get('id') == target:
+                _render_ticket(t)
+                return t
+        print(f'[why] 实票账本无 {target}')
+        return None
+    tickets = load_tickets(path or PAPER_FILE)
+    if str(target).startswith('P'):
+        for t in tickets:
+            if t.get('id') == target:
+                _render_ticket(t)
+                stats = spec_chain_stats(tickets)
+                s = stats.get((t.get('spec_name'), (t.get('chain') or {}).get('engine') or '?'))
+                if s:
+                    print(f"  分链战绩: {t.get('spec_name')} × {(t.get('chain') or {}).get('engine')}: "
+                          f"{s['n']}票 投{s['cost']:.0f} 回{s['payout']:.2f} 净{s['payout'] - s['cost']:+.2f}")
+                return t
+        print(f'[why] 影子账本无 {target}')
+        return None
+    sel = [t for t in tickets if t.get('date') == str(target)]
+    if not sel:
+        print(f'[why] 无 {target} 的影子票（P票号/T票号/日期三口径）')
+        return None
+    for t in sel:
+        _render_ticket(t)
+    return sel
+
+
+if __name__ == '__main__' and len(__import__('sys').argv) > 1:
+    _argv = __import__('sys').argv[1:]
+    if _argv[0] == 'why':
+        why(_argv[1])
+    elif _argv[0] == 'annotate':
+        print(f'[annotate] 腿级明细补齐 {annotate()} 张')
+    elif _argv[0] == 'restamp':
+        print(f'[restamp] 链籍补 stamp {restamp()} 张')
+    elif _argv[0] == 'spec-stats':
+        tickets = load_tickets()
+        for (spec, eng), s in sorted(spec_chain_stats(tickets).items(),
+                                     key=lambda kv: -(kv[1]['payout'] - kv[1]['cost'])):
+            print(f"  {spec:24s} × {eng:36s} {s['n']:>3}票 投{s['cost']:>6.0f} "
+                  f"回{s['payout']:>9.2f} 净{s['payout'] - s['cost']:+9.2f}")
+    elif _argv[0] == 'settle-all':
+        settle_all_cli(_argv[1] if len(_argv) > 1 else str(_datetime.date.today()))

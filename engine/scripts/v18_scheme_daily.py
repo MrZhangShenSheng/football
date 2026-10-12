@@ -142,7 +142,14 @@ def main():
             print(f"    [幂等] {SPEC_NAME} {day} 已登记，跳过")
             continue
         settle_day = max(c["m"]["matchDate"][:10] for c in sel) if not byday_mode else day
-        tk = register(SPEC_NAME, settle_day, legs, [{"legs": bet_legs}], MULT, STAKE)
+        # 链籍 stamp（回溯机制·2026-10-12）：v18 票出自市场置信+V3W 双信号执行器
+        try:
+            import provenance
+            chain_stamp = provenance.stamp_for_spec({'name': SPEC_NAME}, settle_day)
+        except Exception:
+            chain_stamp = None
+        tk = register(SPEC_NAME, settle_day, legs, [{"legs": bet_legs}], MULT, STAKE,
+                      chain=chain_stamp)
         print(f"    [影子登记] {tk['id']} · 赔率冻结 · 结算日挂 {settle_day}")
         card = {"salesDay": day, "settleDay": settle_day, "spec": SPEC_NAME, "generatedAt": today,
                 "legs": [{"code": c['m']['code'], "match": f"{c['m']['home']} vs {c['m']['away']}",

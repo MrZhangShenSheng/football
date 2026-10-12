@@ -30,6 +30,10 @@ ALL_STEPS = (STEP_ODDS, STEP_PROFILE, STEP_DC, STEP_LAMBDA, STEP_DEVIG,
 SOURCE_CODE = "code"
 SOURCE_SESSION = "session"
 
+# S8 假设层理由键（2026-10-12 回溯机制：登记时 payload 须含其一，否则「排除:假设层否决」
+# 类结论成无头案——10-11 卡利亚里场教训：pick 只剩一句排除、理由未落档）
+S8_REASON_KEYS = ("verdicts", "reason", "note")
+
 
 def norm_key(match_id=None, code=None, league=None, home=None, away=None) -> str:
     """matchKey 优先级：matchId > 体彩编号 > 联赛|主|客（禁 ':'，Windows 双机兼容）。"""
@@ -42,8 +46,12 @@ def norm_key(match_id=None, code=None, league=None, home=None, away=None) -> str
 
 def record(match_day: str, match_key: str, step: str, payload: dict,
            source: str = SOURCE_CODE) -> bool:
-    """幂等落盘一条步骤记录。fail-open：任何异常打印警告返回 False，绝不抛出。"""
+    """幂等落盘一条步骤记录。fail-open：任何异常打印警告返回 False，绝不抛出。
+    S8 假设层登记缺理由键（S8_REASON_KEYS）→ 打红警（仍落盘，不阻断——回溯机制四件套）。"""
     try:
+        if step == STEP_HYPO and not any(payload.get(k) for k in S8_REASON_KEYS):
+            print(f"[evidence] ⚠ S8 假设层登记缺理由（{S8_REASON_KEYS} 须含其一）"
+                  f"@{match_day}/{match_key}——结论将成无头案", file=sys.stderr)
         day_dir = EVIDENCE_ROOT / match_day
         day_dir.mkdir(parents=True, exist_ok=True)
         f = day_dir / f"{match_key}.json"
@@ -75,6 +83,10 @@ def check(match_day: str) -> dict:
             out[f.stem] = ["<文件损坏>"]
             continue
         out[f.stem] = [s for s in ALL_STEPS if s not in doc.get("steps", {})]
+        # S8 已登记但缺理由 → 标注（缺步标注不补造；缺理由同哲——登记纪律靠警示收口）
+        s8 = doc.get("steps", {}).get(STEP_HYPO)
+        if s8 and not any((s8.get("payload") or {}).get(k) for k in S8_REASON_KEYS):
+            out[f.stem].append(f"{STEP_HYPO}缺理由")
     return out
 
 

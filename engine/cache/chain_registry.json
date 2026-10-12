@@ -1,0 +1,31 @@
+{
+ "schemaVersion": 1,
+ "note": "链籍账本——票登记时按票日期解析所属链代 stamp 进票（回溯归因单一事实源）。改链/换代必在此登记新 epoch，日期口径=体彩销售日。",
+ "chains": {
+  "shadow_qcache": {
+   "role": "影子层 D/C/G 族候选源（shapes 经 qcache 快照消费）",
+   "epochs": [
+    {"from": "2026-09-08", "to": "2026-10-12", "engine": "freq_band λ平移链（freq_snap v1）"},
+    {"from": "2026-10-13", "engine": "V3W-v2 实力链（strength_chain_eval._predict_match·与生产比分端同源）"}
+   ]
+  },
+  "shadow_v4b": {
+   "role": "V 族 v4b 快照源",
+   "epochs": [
+    {"from": "2026-09-30", "engine": "v4b 多场景状态加成（predictor_v4b_daily）"}
+   ]
+  },
+  "shadow_v18": {
+   "role": "v18 五挡双信号执行器（独立登记·非 PLAN_FAMILIES）",
+   "epochs": [
+    {"from": "2026-10-07", "engine": "市场置信分带 + V3W 同向双信号（v18_scheme_daily）"}
+   ]
+  },
+  "market_devig": {
+   "role": "A 族选场层（市场去水 strong 排序）",
+   "epochs": [
+    {"from": "2026-09-08", "engine": "体彩 HAD 去水主概率降序"}
+   ]
+  }
+ }
+}

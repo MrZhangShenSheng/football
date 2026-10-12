@@ -41,7 +41,10 @@ def _match(code, league='瑞超', crs=True, ttg=True):
 
 
 def _snap(tmp_path, matches, date=DATE, **kw):
-    base = dict(freq_table={'sweden': TPL}, form={}, zh={}, out_dir=str(tmp_path))
+    # 2026-10-13 换代：本文件测 v1 平移链行为 → 显式挂 legacy 引擎（对照保留）；
+    # v3w 引擎契约由 test_shadow_provenance.py 覆盖
+    base = dict(freq_table={'sweden': TPL}, form={}, zh={}, out_dir=str(tmp_path),
+                engine=freq_snap.ENGINE_LEGACY)
     base.update(kw)
     return freq_snap.snap(date, matches=matches, **base)
 
