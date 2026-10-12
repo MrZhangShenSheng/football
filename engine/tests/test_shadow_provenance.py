@@ -111,6 +111,24 @@ def test_settle_no_crossweek_misannotate(tmp_path):
     assert lg.get("result") is None                    # 票日 2026-10-01 ≠ 窗口 10-11 不动
 
 
+# ── 选腿不被无候选场挤关档（2026-10-13 V3W 换代实证缺陷）──
+def test_crs_pool_skips_uncovered_leg():
+    """strong 高位场无模型候选（V3W 未映射）→ 该场跳过而非整票关档。"""
+    import shapes
+    legs = []
+    for i, (code, p_home) in enumerate([('周一002', 0.61), ('周一010', 0.51), ('周一007', 0.45)]):
+        rest = (1 - p_home) / 2
+        legs.append({'code': code, 'match': f'M{i}', 'fused': [p_home, rest, rest],
+                     'odds': [1 / p_home, 1 / rest, 1 / rest],
+                     'pools': {'crs': {'s01s01': 7.0, 's01s00': 8.0}}})
+    qc = {'周一002': {'crs': [['1:1', 0.13], ['1:0', 0.11]]},     # 周一010 无候选（未映射）
+          '周一007': {'crs': [['1:1', 0.12], ['1:0', 0.10]]}}
+    spec = next(s for s in shapes.PLAN_FAMILIES if s['name'] == 'crs-双选2串1')
+    tk = shapes.build_ticket(legs, spec, qc)
+    assert tk is not None                                        # 老口径此处 None（整票关档）
+    assert {legs[t['src']]['code'] for t in tk['tlegs']} == {'周一002', '周一007'}
+
+
 # ── freq_snap v3w 契约 ──
 def test_freq_snap_v3w_contract(tmp_path, monkeypatch):
     """predict_fn 注入 fake V3W → 产出契约：crs 'h:a' 键 / ttg s0~s7（s8 并 s7）/ 映射不到跳过。"""

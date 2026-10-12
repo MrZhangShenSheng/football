@@ -311,7 +311,9 @@ def shadow_all(date=None, out=None):
     # 当日轮腿构造（HAD 三向去水 + 池价透传）
     legs = []
     for m in sm.get('matches', []):
-        if m.get('matchDate') != date:
+        # matchDate 两态兼容（纯 'YYYY-MM-DD' / 全 'YYYY-MM-DD HH:MM:SS'·盘中刷新后为全格式）
+        # ——精确 == 在全格式日会零腿空转，整轮影子票静默不登记（freq_snap 同病同修）
+        if str(m.get('matchDate') or '')[:10] != date:
             continue
         had = m.get('had') or {}
         try:

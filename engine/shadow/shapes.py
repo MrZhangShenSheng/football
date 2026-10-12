@@ -288,7 +288,13 @@ def build_ticket(legs, spec, qc=None):
     elif spec['pool'] in ('ttg', 'crs'):
         if not qc:
             return None                     # 无 q 快照整族跳过（qcache 随事故丢失待重建）
-        pool = sorted(enumerate(legs), key=lambda kv: _key_strong(kv[1]),
+        # 仅在"该池有模型候选"的场次内按 strong 排序选腿：先取 strong 前 N 再查候选的老口径，
+        # 遇一场无候选就整票关档——V3W 换代后未映射场成常态（国家队/未收录队），2026-10-13
+        # 实证九场中未映射的周一010 恰排 strong 第三，C/D 两族六 spec 整日静默消失。
+        # 候选不足 min_n 时仍关档（真·无票可建），口径=诚实跳过不可算场，非降级建半票。
+        cands = [(i, l) for i, l in enumerate(legs)
+                 if (qc.get(l.get('code')) or {}).get(spec['pool'])]
+        pool = sorted(cands, key=lambda kv: _key_strong(kv[1]),
                       reverse=True)[:spec['n_legs']]
         min_n = 1 if spec['shape'] == '单关' else 2
         if len(pool) < min_n:
