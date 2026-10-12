@@ -78,6 +78,11 @@ def main() -> None:
         log("check", "用法: python data_check.py matches.json")
         return
     matches = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+    # wrapper 兼容（2026-10-12）：体彩在售清单 sporttery_matches.json 顶层带
+    # {fetchedAt,matches:[...]} 包装——直喂时 for 遍历 dict 键触发 TypeError 崩溃
+    # （当日「帮我预测」第 2 步被迫跳过的断链）。列表与包装两态通吃。
+    if isinstance(matches, dict):
+        matches = matches.get("matches") or []
     aliases = load_aliases_zh()
     seen_leagues: dict[str, dict] = {}
     missing_alias: list[dict] = []

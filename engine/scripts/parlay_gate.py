@@ -109,7 +109,8 @@ def build_live_packs():
         if not (hid and aid):
             continue
         mon = today[:7]
-        blind.append({"date": m.get("matchDate") or today,
+        # matchDate 两态 [:10] 归一（全格式透传会让盲测票挂日带时间串、后续按日过滤失配）
+        blind.append({"date": str(m.get("matchDate") or "")[:10] or today,
                       "hid": hid, "aid": aid,
                       "home": m.get("home"), "away": m.get("away"),
                       "crs": m.get("crs"), "code": m.get("code"),

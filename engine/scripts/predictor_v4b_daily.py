@@ -105,7 +105,8 @@ def snap(day: str, force: bool = False) -> dict:
         return json.loads(path.read_text(encoding="utf-8"))
 
     sm = json.loads((ROOT / "engine/cache/sporttery_matches.json").read_text(encoding="utf-8"))
-    matches = [m for m in sm.get("matches", []) if m.get("matchDate") == day]
+    # matchDate 两态 [:10]（体彩盘中刷新后为全格式 'YYYY-MM-DD HH:MM:SS'，精确 == 会静默空转）
+    matches = [m for m in sm.get("matches", []) if str(m.get("matchDate") or "")[:10] == day]
     ctx = build_stats(day)
     stats, zh = ctx["stats"], ctx["zh"]
     predictor = PredictorV4b()
@@ -150,7 +151,8 @@ def card(day: str, force: bool = False) -> dict:
     """对照卡：v4b top2 vs 市场 CRS 最热 vs 当日 crs_fusion（boldplay 卡若有）。"""
     doc = snap(day, force=force)
     sm = json.loads((ROOT / "engine/cache/sporttery_matches.json").read_text(encoding="utf-8"))
-    matches = {m.get("code"): m for m in sm.get("matches", []) if m.get("matchDate") == day}
+    matches = {m.get("code"): m for m in sm.get("matches", [])
+               if str(m.get("matchDate") or "")[:10] == day}
 
     # crs_fusion 族候选（当日 boldplay 三池卡 candidates 中 pool=='crs' 首项——对照现行生产链）
     fusion_top = {}

@@ -1,0 +1,34 @@
+{
+ "ranAt": "2026-10-12T15:54:26",
+ "overall": "yellow",
+ "results": {
+  "ledgerFreshness": {
+   "level": "green",
+   "msg": "generatedAt 距今 0 天"
+  },
+  "fdSymptom": {
+   "level": "yellow",
+   "msg": "近 14 天回填 130 场·无 pinClose 123（95%）——fd 断粮期已知挂账"
+  },
+  "dataCheckProbe": {
+   "level": "green",
+   "msg": "data_check 可运行"
+  },
+  "corruptPiles": {
+   "level": "green",
+   "msg": "0 个 corrupt 转存"
+  },
+  "stalePending": {
+   "level": "green",
+   "msg": "0 张久挂无note"
+  },
+  "s8Reason": {
+   "level": "green",
+   "msg": "0 场 S8 缺理由"
+  },
+  "noneRatio": {
+   "level": "green",
+   "msg": "近 7 文件非排除回填 38 场·命中全None 1（3%）"
+  }
+ }
+}
