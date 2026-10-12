@@ -44,11 +44,14 @@ ESPN_LEAGUES = {
     "swe.1": "sweden", "nor.1": "norway", "den.1": "denmark", "ksa.1": "saudi",
     "bra.1": "brazil", "usa.1": "usa",
     "sco.1": "scotland", "kor.1": "korea-k-league", "ned.2": "netherlands",
-    # 杯赛（层1 2026-09-02：cup=true 标记，dc_fit 跳过、score_ev 频率表含入）
+    # 杯赛（层1 2026-09-02：cup=true 标记，dc_fit 跳过；score_ev 频率池不进——设计内排除，
+    # 见 score_ev.py:61「杯赛库不进频率池」，本行注释 2026-10-12 修正：旧注「频率表含入」与实况不符）
     "ita.coppa_italia": "coppa-italia", "ger.dfb_pokal": "dfb-pokal",
     "conmebol.libertadores": "libertadores",
+    # 欧战 2026-10-12 实测接入（dates=YYYY&limit=500 口径，189 场/季全量；dates=区间 格式 ESPN 已全面 400）
+    "uefa.champions": "uefa-champions", "uefa.europa": "uefa-europa",
 }
-CUP_LEAGUES = {"coppa-italia", "dfb-pokal", "libertadores"}
+CUP_LEAGUES = {"coppa-italia", "dfb-pokal", "libertadores", "uefa-champions", "uefa-europa"}
 
 
 def get_json(url: str, params: dict) -> dict | None:
@@ -166,23 +169,32 @@ def espn_name_map() -> dict[str, str]:
 
 
 def cmd_history(code: str, y1: str, y2: str | None) -> None:
-    """历史赛季回填：scoreboard dates={y1}0201-{y2}1231 limit=500 → 本地 matches 格式（供 dc_fit --source local）。
+    """历史赛季回填：scoreboard 逐年 dates=YYYY&limit=500 → 本地 matches 格式（供 dc_fit --source local）。
 
     只入库 STATUS_FULL_TIME 且双方分数齐全的场次；队名映射不上即丢弃并计数（宁缺毋滥）。
+    2026-10-12 请求层重写：dates={start}-{end} 区间格式 ESPN 已全面 400（usa.1 对拍实证，
+    非欧战独有），且无 limit 时默认分页 100 条封顶（欧冠 189 场/季被腰斩）——改逐年
+    自然年请求 + limit=500 + 结果侧日期过滤（>= y1-02-01 且 <= y2-12-31），对既有
+    8 个 LOCAL_LEAGUE 联赛行为零变化（1 月场次本就不在原口径内）。
     """
     y2 = y2 or y1
-    start, end = f"{y1}0201", f"{y2}1231"
+    d_min, d_max = f"{y1}-02-01", f"{y2}-12-31"
     league = ESPN_LEAGUES.get(code)
     if not league:
         log("espn", f"{code} 不在 ESPN_LEAGUES 映射内")
         return
-    data = get_json(SCOREBOARD_URL.format(code), {"dates": f"{start}-{end}", "limit": 500})
-    if not data or not data.get("events"):
+    events: list = []
+    for y in range(int(y1), int(y2) + 1):
+        data = get_json(SCOREBOARD_URL.format(code), {"dates": str(y), "limit": 500})
+        evs = (data or {}).get("events") or []
+        log("espn", f"{code} {y}: {len(evs)} 场")
+        events.extend(evs)
+    if not events:
         log("espn", f"{code} {y1}~{y2} 无数据（ESPN 不覆盖该联赛该时段？）")
         return
     name_map = espn_name_map()
     rows, dropped = [], []
-    for ev in data.get("events", []):
+    for ev in events:
         comp = ev.get("competitions", [{}])[0]
         if comp.get("status", {}).get("type", {}).get("name") != "STATUS_FULL_TIME":
             continue
@@ -190,6 +202,8 @@ def cmd_history(code: str, y1: str, y2: str | None) -> None:
             d = datetime.strptime(ev.get("date", "")[:10], "%Y-%m-%d").date()
         except ValueError:
             continue
+        if not (d_min <= d.isoformat() <= d_max):
+            continue                                  # 原口径 y1-02-01~y2-12-31（自然年多拉的 1 月剔除）
         home = away = None
         hg = ag = None
         for c in comp.get("competitors", []):

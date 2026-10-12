@@ -1,13 +1,335 @@
 {
  "league": "uefa-champions",
- "source": "sporttery hist_odds (欧冠)",
+ "source": "espn-history",
+ "seasons": [
+  "2023",
+  "2026"
+ ],
+ "fetchedAt": "2026-10-12",
+ "cup": true,
+ "droppedUnmapped": 0,
  "matches": [
+  {
+   "date": "2023-02-14",
+   "home": "ac-milan",
+   "away": "tottenham",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-02-14",
+   "home": "paris-saint-germain",
+   "away": "bayern",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2023-02-15",
+   "home": "dortmund",
+   "away": "chelsea",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-02-15",
+   "home": "club-brugge",
+   "away": "benfica",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2023-02-21",
+   "home": "frankfurt",
+   "away": "napoli",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2023-02-21",
+   "home": "liverpool",
+   "away": "real-madrid",
+   "hg": 2,
+   "ag": 5
+  },
+  {
+   "date": "2023-02-22",
+   "home": "inter",
+   "away": "porto",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-02-22",
+   "home": "leipzig",
+   "away": "man-city",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-03-07",
+   "home": "benfica",
+   "away": "club-brugge",
+   "hg": 5,
+   "ag": 1
+  },
+  {
+   "date": "2023-03-07",
+   "home": "chelsea",
+   "away": "dortmund",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2023-03-08",
+   "home": "bayern",
+   "away": "paris-saint-germain",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2023-03-08",
+   "home": "tottenham",
+   "away": "ac-milan",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2023-03-14",
+   "home": "porto",
+   "away": "inter",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2023-03-14",
+   "home": "man-city",
+   "away": "leipzig",
+   "hg": 7,
+   "ag": 0
+  },
+  {
+   "date": "2023-03-15",
+   "home": "napoli",
+   "away": "frankfurt",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2023-03-15",
+   "home": "real-madrid",
+   "away": "liverpool",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-04-11",
+   "home": "benfica",
+   "away": "inter",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2023-04-11",
+   "home": "man-city",
+   "away": "bayern",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2023-04-12",
+   "home": "ac-milan",
+   "away": "napoli",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-04-12",
+   "home": "real-madrid",
+   "away": "chelsea",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2023-04-18",
+   "home": "chelsea",
+   "away": "real-madrid",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2023-04-18",
+   "home": "napoli",
+   "away": "ac-milan",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-04-19",
+   "home": "bayern",
+   "away": "man-city",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-04-19",
+   "home": "inter",
+   "away": "benfica",
+   "hg": 3,
+   "ag": 3
+  },
+  {
+   "date": "2023-05-09",
+   "home": "real-madrid",
+   "away": "man-city",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-05-10",
+   "home": "ac-milan",
+   "away": "inter",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2023-05-16",
+   "home": "inter",
+   "away": "ac-milan",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-05-17",
+   "home": "man-city",
+   "away": "real-madrid",
+   "hg": 4,
+   "ag": 0
+  },
+  {
+   "date": "2023-06-10",
+   "home": "man-city",
+   "away": "inter",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-09-19",
+   "home": "ac-milan",
+   "away": "newcastle",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2023-09-19",
+   "home": "feyenoord",
+   "away": "celtic",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2023-09-19",
+   "home": "lazio",
+   "away": "atletico-madrid",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-09-19",
+   "home": "man-city",
+   "away": "red-star-belgrade",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2023-09-19",
+   "home": "paris-saint-germain",
+   "away": "dortmund",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2023-09-19",
+   "home": "young-boys",
+   "away": "leipzig",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2023-09-19",
+   "home": "barcelona",
+   "away": "antwerp",
+   "hg": 5,
+   "ag": 0
+  },
+  {
+   "date": "2023-09-19",
+   "home": "shakhtar-donetsk",
+   "away": "porto",
+   "hg": 1,
+   "ag": 3
+  },
   {
    "date": "2023-09-20",
    "home": "paris-saint-germain",
    "away": "dortmund",
    "hg": 2,
    "ag": 0
+  },
+  {
+   "date": "2023-09-20",
+   "home": "galatasaray",
+   "away": "fc-copenhagen",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2023-09-20",
+   "home": "real-madrid",
+   "away": "union-berlin",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-09-20",
+   "home": "arsenal",
+   "away": "psv",
+   "hg": 4,
+   "ag": 0
+  },
+  {
+   "date": "2023-09-20",
+   "home": "bayern",
+   "away": "man-united",
+   "hg": 4,
+   "ag": 3
+  },
+  {
+   "date": "2023-09-20",
+   "home": "braga",
+   "away": "napoli",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2023-09-20",
+   "home": "sociedad",
+   "away": "inter",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-09-20",
+   "home": "sevilla",
+   "away": "lens",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-09-20",
+   "home": "benfica",
+   "away": "salzburg",
+   "hg": 0,
+   "ag": 2
   },
   {
    "date": "2023-09-21",
@@ -59,6 +381,174 @@
    "ag": 3
   },
   {
+   "date": "2023-10-03",
+   "home": "union-berlin",
+   "away": "braga",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2023-10-03",
+   "home": "fc-copenhagen",
+   "away": "bayern",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2023-10-03",
+   "home": "inter",
+   "away": "benfica",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-10-03",
+   "home": "lens",
+   "away": "arsenal",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2023-10-03",
+   "home": "man-united",
+   "away": "galatasaray",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2023-10-03",
+   "home": "napoli",
+   "away": "real-madrid",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2023-10-03",
+   "home": "psv",
+   "away": "sevilla",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2023-10-03",
+   "home": "salzburg",
+   "away": "sociedad",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2023-10-04",
+   "home": "atletico-madrid",
+   "away": "feyenoord",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2023-10-04",
+   "home": "dortmund",
+   "away": "ac-milan",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2023-10-04",
+   "home": "celtic",
+   "away": "lazio",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2023-10-04",
+   "home": "porto",
+   "away": "barcelona",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2023-10-04",
+   "home": "newcastle",
+   "away": "paris-saint-germain",
+   "hg": 4,
+   "ag": 1
+  },
+  {
+   "date": "2023-10-04",
+   "home": "leipzig",
+   "away": "man-city",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2023-10-04",
+   "home": "antwerp",
+   "away": "shakhtar-donetsk",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2023-10-04",
+   "home": "red-star-belgrade",
+   "away": "young-boys",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2023-10-24",
+   "home": "galatasaray",
+   "away": "bayern",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2023-10-24",
+   "home": "union-berlin",
+   "away": "napoli",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2023-10-24",
+   "home": "benfica",
+   "away": "sociedad",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2023-10-24",
+   "home": "braga",
+   "away": "real-madrid",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2023-10-24",
+   "home": "lens",
+   "away": "psv",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-10-24",
+   "home": "man-united",
+   "away": "fc-copenhagen",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-10-24",
+   "home": "sevilla",
+   "away": "arsenal",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2023-10-24",
+   "home": "inter",
+   "away": "salzburg",
+   "hg": 2,
+   "ag": 1
+  },
+  {
    "date": "2023-10-25",
    "home": "galatasaray",
    "away": "bayern",
@@ -78,6 +568,62 @@
    "away": "arsenal",
    "hg": 1,
    "ag": 2
+  },
+  {
+   "date": "2023-10-25",
+   "home": "feyenoord",
+   "away": "lazio",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2023-10-25",
+   "home": "celtic",
+   "away": "atletico-madrid",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2023-10-25",
+   "home": "newcastle",
+   "away": "dortmund",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2023-10-25",
+   "home": "paris-saint-germain",
+   "away": "ac-milan",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2023-10-25",
+   "home": "leipzig",
+   "away": "red-star-belgrade",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2023-10-25",
+   "home": "barcelona",
+   "away": "shakhtar-donetsk",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2023-10-25",
+   "home": "antwerp",
+   "away": "porto",
+   "hg": 1,
+   "ag": 4
+  },
+  {
+   "date": "2023-10-25",
+   "home": "young-boys",
+   "away": "man-city",
+   "hg": 1,
+   "ag": 3
   },
   {
    "date": "2023-10-26",
@@ -136,6 +682,62 @@
    "ag": 3
   },
   {
+   "date": "2023-11-07",
+   "home": "dortmund",
+   "away": "newcastle",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2023-11-07",
+   "home": "ac-milan",
+   "away": "paris-saint-germain",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2023-11-07",
+   "home": "atletico-madrid",
+   "away": "celtic",
+   "hg": 6,
+   "ag": 0
+  },
+  {
+   "date": "2023-11-07",
+   "home": "lazio",
+   "away": "feyenoord",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-11-07",
+   "home": "red-star-belgrade",
+   "away": "leipzig",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2023-11-07",
+   "home": "shakhtar-donetsk",
+   "away": "barcelona",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-11-07",
+   "home": "porto",
+   "away": "antwerp",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2023-11-07",
+   "home": "man-city",
+   "away": "young-boys",
+   "hg": 3,
+   "ag": 0
+  },
+  {
    "date": "2023-11-08",
    "home": "dortmund",
    "away": "newcastle",
@@ -162,6 +764,62 @@
    "away": "young-boys",
    "hg": 3,
    "ag": 0
+  },
+  {
+   "date": "2023-11-08",
+   "home": "napoli",
+   "away": "union-berlin",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-11-08",
+   "home": "sociedad",
+   "away": "benfica",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2023-11-08",
+   "home": "arsenal",
+   "away": "sevilla",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2023-11-08",
+   "home": "bayern",
+   "away": "galatasaray",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2023-11-08",
+   "home": "fc-copenhagen",
+   "away": "man-united",
+   "hg": 4,
+   "ag": 3
+  },
+  {
+   "date": "2023-11-08",
+   "home": "psv",
+   "away": "lens",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-11-08",
+   "home": "real-madrid",
+   "away": "braga",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2023-11-08",
+   "home": "salzburg",
+   "away": "inter",
+   "hg": 0,
+   "ag": 1
   },
   {
    "date": "2023-11-09",
@@ -220,6 +878,62 @@
    "ag": 0
   },
   {
+   "date": "2023-11-28",
+   "home": "lazio",
+   "away": "celtic",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2023-11-28",
+   "home": "ac-milan",
+   "away": "dortmund",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2023-11-28",
+   "home": "barcelona",
+   "away": "porto",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2023-11-28",
+   "home": "feyenoord",
+   "away": "atletico-madrid",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2023-11-28",
+   "home": "man-city",
+   "away": "leipzig",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2023-11-28",
+   "home": "paris-saint-germain",
+   "away": "newcastle",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-11-28",
+   "home": "shakhtar-donetsk",
+   "away": "antwerp",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-11-28",
+   "home": "young-boys",
+   "away": "red-star-belgrade",
+   "hg": 2,
+   "ag": 0
+  },
+  {
    "date": "2023-11-29",
    "home": "paris-saint-germain",
    "away": "newcastle",
@@ -246,6 +960,62 @@
    "away": "leipzig",
    "hg": 3,
    "ag": 2
+  },
+  {
+   "date": "2023-11-29",
+   "home": "galatasaray",
+   "away": "man-united",
+   "hg": 3,
+   "ag": 3
+  },
+  {
+   "date": "2023-11-29",
+   "home": "sevilla",
+   "away": "psv",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2023-11-29",
+   "home": "arsenal",
+   "away": "lens",
+   "hg": 6,
+   "ag": 0
+  },
+  {
+   "date": "2023-11-29",
+   "home": "bayern",
+   "away": "fc-copenhagen",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2023-11-29",
+   "home": "benfica",
+   "away": "inter",
+   "hg": 3,
+   "ag": 3
+  },
+  {
+   "date": "2023-11-29",
+   "home": "braga",
+   "away": "union-berlin",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-11-29",
+   "home": "real-madrid",
+   "away": "napoli",
+   "hg": 4,
+   "ag": 2
+  },
+  {
+   "date": "2023-11-29",
+   "home": "sociedad",
+   "away": "salzburg",
+   "hg": 0,
+   "ag": 0
   },
   {
    "date": "2023-11-30",
@@ -304,6 +1074,62 @@
    "ag": 0
   },
   {
+   "date": "2023-12-12",
+   "home": "lens",
+   "away": "sevilla",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2023-12-12",
+   "home": "psv",
+   "away": "arsenal",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-12-12",
+   "home": "union-berlin",
+   "away": "real-madrid",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2023-12-12",
+   "home": "fc-copenhagen",
+   "away": "galatasaray",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2023-12-12",
+   "home": "inter",
+   "away": "sociedad",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2023-12-12",
+   "home": "man-united",
+   "away": "bayern",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2023-12-12",
+   "home": "napoli",
+   "away": "braga",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2023-12-12",
+   "home": "salzburg",
+   "away": "benfica",
+   "hg": 1,
+   "ag": 3
+  },
+  {
    "date": "2023-12-13",
    "home": "napoli",
    "away": "braga",
@@ -323,6 +1149,62 @@
    "away": "galatasaray",
    "hg": 1,
    "ag": 0
+  },
+  {
+   "date": "2023-12-13",
+   "home": "red-star-belgrade",
+   "away": "man-city",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2023-12-13",
+   "home": "atletico-madrid",
+   "away": "lazio",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2023-12-13",
+   "home": "dortmund",
+   "away": "paris-saint-germain",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2023-12-13",
+   "home": "celtic",
+   "away": "feyenoord",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2023-12-13",
+   "home": "newcastle",
+   "away": "ac-milan",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2023-12-13",
+   "home": "leipzig",
+   "away": "young-boys",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2023-12-13",
+   "home": "antwerp",
+   "away": "barcelona",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2023-12-13",
+   "home": "porto",
+   "away": "shakhtar-donetsk",
+   "hg": 5,
+   "ag": 3
   },
   {
    "date": "2023-12-14",
@@ -381,6 +1263,48 @@
    "ag": 1
   },
   {
+   "date": "2024-02-13",
+   "home": "fc-copenhagen",
+   "away": "man-city",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2024-02-13",
+   "home": "leipzig",
+   "away": "real-madrid",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2024-02-14",
+   "home": "lazio",
+   "away": "bayern",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-02-14",
+   "home": "paris-saint-germain",
+   "away": "sociedad",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2024-02-20",
+   "home": "inter",
+   "away": "atletico-madrid",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-02-20",
+   "home": "psv",
+   "away": "dortmund",
+   "hg": 1,
+   "ag": 1
+  },
+  {
    "date": "2024-02-21",
    "home": "psv",
    "away": "dortmund",
@@ -393,6 +1317,20 @@
    "away": "atletico-madrid",
    "hg": 1,
    "ag": 0
+  },
+  {
+   "date": "2024-02-21",
+   "home": "porto",
+   "away": "arsenal",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-02-21",
+   "home": "napoli",
+   "away": "barcelona",
+   "hg": 1,
+   "ag": 1
   },
   {
    "date": "2024-02-22",
@@ -409,6 +1347,20 @@
    "ag": 1
   },
   {
+   "date": "2024-03-05",
+   "home": "bayern",
+   "away": "lazio",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2024-03-05",
+   "home": "sociedad",
+   "away": "paris-saint-germain",
+   "hg": 1,
+   "ag": 2
+  },
+  {
    "date": "2024-03-06",
    "home": "sociedad",
    "away": "paris-saint-germain",
@@ -423,6 +1375,20 @@
    "ag": 0
   },
   {
+   "date": "2024-03-06",
+   "home": "man-city",
+   "away": "fc-copenhagen",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2024-03-06",
+   "home": "real-madrid",
+   "away": "leipzig",
+   "hg": 1,
+   "ag": 1
+  },
+  {
    "date": "2024-03-07",
    "home": "man-city",
    "away": "fc-copenhagen",
@@ -434,6 +1400,13 @@
    "home": "real-madrid",
    "away": "leipzig",
    "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2024-03-12",
+   "home": "barcelona",
+   "away": "napoli",
+   "hg": 3,
    "ag": 1
   },
   {
@@ -451,6 +1424,13 @@
    "ag": 0
   },
   {
+   "date": "2024-03-13",
+   "home": "dortmund",
+   "away": "psv",
+   "hg": 2,
+   "ag": 0
+  },
+  {
    "date": "2024-03-14",
    "home": "dortmund",
    "away": "psv",
@@ -463,6 +1443,20 @@
    "away": "inter",
    "hg": 2,
    "ag": 1
+  },
+  {
+   "date": "2024-04-09",
+   "home": "arsenal",
+   "away": "bayern",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2024-04-09",
+   "home": "real-madrid",
+   "away": "man-city",
+   "hg": 3,
+   "ag": 3
   },
   {
    "date": "2024-04-10",
@@ -479,6 +1473,20 @@
    "ag": 2
   },
   {
+   "date": "2024-04-10",
+   "home": "atletico-madrid",
+   "away": "dortmund",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2024-04-10",
+   "home": "paris-saint-germain",
+   "away": "barcelona",
+   "hg": 2,
+   "ag": 3
+  },
+  {
    "date": "2024-04-11",
    "home": "paris-saint-germain",
    "away": "barcelona",
@@ -491,6 +1499,20 @@
    "away": "dortmund",
    "hg": 2,
    "ag": 1
+  },
+  {
+   "date": "2024-04-16",
+   "home": "barcelona",
+   "away": "paris-saint-germain",
+   "hg": 1,
+   "ag": 4
+  },
+  {
+   "date": "2024-04-16",
+   "home": "dortmund",
+   "away": "atletico-madrid",
+   "hg": 4,
+   "ag": 2
   },
   {
    "date": "2024-04-17",
@@ -507,6 +1529,13 @@
    "ag": 2
   },
   {
+   "date": "2024-04-17",
+   "home": "bayern",
+   "away": "arsenal",
+   "hg": 1,
+   "ag": 0
+  },
+  {
    "date": "2024-04-18",
    "home": "bayern",
    "away": "arsenal",
@@ -521,11 +1550,25 @@
    "ag": 1
   },
   {
+   "date": "2024-04-30",
+   "home": "bayern",
+   "away": "real-madrid",
+   "hg": 2,
+   "ag": 2
+  },
+  {
    "date": "2024-05-01",
    "home": "bayern",
    "away": "real-madrid",
    "hg": 2,
    "ag": 2
+  },
+  {
+   "date": "2024-05-01",
+   "home": "dortmund",
+   "away": "paris-saint-germain",
+   "hg": 1,
+   "ag": 0
   },
   {
    "date": "2024-05-02",
@@ -535,10 +1578,24 @@
    "ag": 0
   },
   {
+   "date": "2024-05-07",
+   "home": "paris-saint-germain",
+   "away": "dortmund",
+   "hg": 0,
+   "ag": 1
+  },
+  {
    "date": "2024-05-08",
    "home": "paris-saint-germain",
    "away": "dortmund",
    "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2024-05-08",
+   "home": "real-madrid",
+   "away": "bayern",
+   "hg": 2,
    "ag": 1
   },
   {
@@ -547,6 +1604,13 @@
    "away": "bayern",
    "hg": 2,
    "ag": 1
+  },
+  {
+   "date": "2024-06-01",
+   "home": "dortmund",
+   "away": "real-madrid",
+   "hg": 0,
+   "ag": 2
   },
   {
    "date": "2024-06-02",
@@ -850,6 +1914,48 @@
    "ag": 0
   },
   {
+   "date": "2024-09-17",
+   "home": "juventus",
+   "away": "psv",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2024-09-17",
+   "home": "ac-milan",
+   "away": "liverpool",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2024-09-17",
+   "home": "bayern",
+   "away": "dinamo-zagreb",
+   "hg": 9,
+   "ag": 2
+  },
+  {
+   "date": "2024-09-17",
+   "home": "real-madrid",
+   "away": "stuttgart",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2024-09-17",
+   "home": "sporting-cp",
+   "away": "lille",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2024-09-17",
+   "home": "young-boys",
+   "away": "aston-villa",
+   "hg": 0,
+   "ag": 3
+  },
+  {
    "date": "2024-09-18",
    "home": "young-boys",
    "away": "aston-villa",
@@ -885,6 +1991,48 @@
    "ag": 3
   },
   {
+   "date": "2024-09-18",
+   "home": "celtic",
+   "away": "slovan-bratislava",
+   "hg": 5,
+   "ag": 1
+  },
+  {
+   "date": "2024-09-18",
+   "home": "club-brugge",
+   "away": "dortmund",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2024-09-18",
+   "home": "man-city",
+   "away": "inter",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2024-09-18",
+   "home": "paris-saint-germain",
+   "away": "girona",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-09-18",
+   "home": "bologna",
+   "away": "shakhtar-donetsk",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2024-09-18",
+   "home": "sparta-praha",
+   "away": "salzburg",
+   "hg": 3,
+   "ag": 0
+  },
+  {
    "date": "2024-09-19",
    "home": "man-city",
    "away": "inter",
@@ -897,6 +2045,48 @@
    "away": "girona",
    "hg": 1,
    "ag": 0
+  },
+  {
+   "date": "2024-09-19",
+   "home": "feyenoord",
+   "away": "leverkusen",
+   "hg": 0,
+   "ag": 4
+  },
+  {
+   "date": "2024-09-19",
+   "home": "red-star-belgrade",
+   "away": "benfica",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2024-09-19",
+   "home": "monaco",
+   "away": "barcelona",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2024-09-19",
+   "home": "atalanta",
+   "away": "arsenal",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2024-09-19",
+   "home": "atletico-madrid",
+   "away": "leipzig",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2024-09-19",
+   "home": "brest",
+   "away": "sturm-graz",
+   "hg": 2,
+   "ag": 1
   },
   {
    "date": "2024-09-20",
@@ -934,6 +2124,195 @@
    "ag": 1
   },
   {
+   "date": "2024-10-01",
+   "home": "arsenal",
+   "away": "paris-saint-germain",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2024-10-01",
+   "home": "leverkusen",
+   "away": "ac-milan",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-10-01",
+   "home": "dortmund",
+   "away": "celtic",
+   "hg": 7,
+   "ag": 1
+  },
+  {
+   "date": "2024-10-01",
+   "home": "inter",
+   "away": "red-star-belgrade",
+   "hg": 4,
+   "ag": 0
+  },
+  {
+   "date": "2024-10-01",
+   "home": "psv",
+   "away": "sporting-cp",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2024-10-01",
+   "home": "slovan-bratislava",
+   "away": "man-city",
+   "hg": 0,
+   "ag": 4
+  },
+  {
+   "date": "2024-10-01",
+   "home": "salzburg",
+   "away": "brest",
+   "hg": 0,
+   "ag": 4
+  },
+  {
+   "date": "2024-10-01",
+   "home": "stuttgart",
+   "away": "sparta-praha",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2024-10-01",
+   "home": "barcelona",
+   "away": "young-boys",
+   "hg": 5,
+   "ag": 0
+  },
+  {
+   "date": "2024-10-02",
+   "home": "girona",
+   "away": "feyenoord",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2024-10-02",
+   "home": "aston-villa",
+   "away": "bayern",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-10-02",
+   "home": "benfica",
+   "away": "atletico-madrid",
+   "hg": 4,
+   "ag": 0
+  },
+  {
+   "date": "2024-10-02",
+   "home": "dinamo-zagreb",
+   "away": "monaco",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2024-10-02",
+   "home": "lille",
+   "away": "real-madrid",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-10-02",
+   "home": "liverpool",
+   "away": "bologna",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2024-10-02",
+   "home": "leipzig",
+   "away": "juventus",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2024-10-02",
+   "home": "shakhtar-donetsk",
+   "away": "atalanta",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2024-10-02",
+   "home": "sturm-graz",
+   "away": "club-brugge",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2024-10-22",
+   "home": "ac-milan",
+   "away": "club-brugge",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2024-10-22",
+   "home": "monaco",
+   "away": "red-star-belgrade",
+   "hg": 5,
+   "ag": 1
+  },
+  {
+   "date": "2024-10-22",
+   "home": "aston-villa",
+   "away": "bologna",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2024-10-22",
+   "home": "girona",
+   "away": "slovan-bratislava",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2024-10-22",
+   "home": "juventus",
+   "away": "stuttgart",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2024-10-22",
+   "home": "paris-saint-germain",
+   "away": "psv",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2024-10-22",
+   "home": "real-madrid",
+   "away": "dortmund",
+   "hg": 5,
+   "ag": 2
+  },
+  {
+   "date": "2024-10-22",
+   "home": "arsenal",
+   "away": "shakhtar-donetsk",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-10-22",
+   "home": "sturm-graz",
+   "away": "sporting-cp",
+   "hg": 0,
+   "ag": 2
+  },
+  {
    "date": "2024-10-23",
    "home": "juventus",
    "away": "stuttgart",
@@ -946,6 +2325,69 @@
    "away": "dortmund",
    "hg": 5,
    "ag": 2
+  },
+  {
+   "date": "2024-10-23",
+   "home": "atalanta",
+   "away": "celtic",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2024-10-23",
+   "home": "brest",
+   "away": "leverkusen",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2024-10-23",
+   "home": "atletico-madrid",
+   "away": "lille",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2024-10-23",
+   "home": "barcelona",
+   "away": "bayern",
+   "hg": 4,
+   "ag": 1
+  },
+  {
+   "date": "2024-10-23",
+   "home": "benfica",
+   "away": "feyenoord",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2024-10-23",
+   "home": "leipzig",
+   "away": "liverpool",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2024-10-23",
+   "home": "man-city",
+   "away": "sparta-praha",
+   "hg": 5,
+   "ag": 0
+  },
+  {
+   "date": "2024-10-23",
+   "home": "salzburg",
+   "away": "dinamo-zagreb",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2024-10-23",
+   "home": "young-boys",
+   "away": "inter",
+   "hg": 0,
+   "ag": 1
   },
   {
    "date": "2024-10-24",
@@ -974,6 +2416,69 @@
    "away": "lille",
    "hg": 1,
    "ag": 3
+  },
+  {
+   "date": "2024-11-05",
+   "home": "psv",
+   "away": "girona",
+   "hg": 4,
+   "ag": 0
+  },
+  {
+   "date": "2024-11-05",
+   "home": "slovan-bratislava",
+   "away": "dinamo-zagreb",
+   "hg": 1,
+   "ag": 4
+  },
+  {
+   "date": "2024-11-05",
+   "home": "bologna",
+   "away": "monaco",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2024-11-05",
+   "home": "celtic",
+   "away": "leipzig",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2024-11-05",
+   "home": "lille",
+   "away": "juventus",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2024-11-05",
+   "home": "liverpool",
+   "away": "leverkusen",
+   "hg": 4,
+   "ag": 0
+  },
+  {
+   "date": "2024-11-05",
+   "home": "real-madrid",
+   "away": "ac-milan",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2024-11-05",
+   "home": "sporting-cp",
+   "away": "man-city",
+   "hg": 4,
+   "ag": 1
+  },
+  {
+   "date": "2024-11-05",
+   "home": "dortmund",
+   "away": "sturm-graz",
+   "hg": 1,
+   "ag": 0
   },
   {
    "date": "2024-11-06",
@@ -1011,6 +2516,69 @@
    "ag": 3
   },
   {
+   "date": "2024-11-06",
+   "home": "club-brugge",
+   "away": "aston-villa",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-11-06",
+   "home": "inter",
+   "away": "arsenal",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-11-06",
+   "home": "paris-saint-germain",
+   "away": "atletico-madrid",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2024-11-06",
+   "home": "red-star-belgrade",
+   "away": "barcelona",
+   "hg": 2,
+   "ag": 5
+  },
+  {
+   "date": "2024-11-06",
+   "home": "stuttgart",
+   "away": "atalanta",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2024-11-06",
+   "home": "bayern",
+   "away": "benfica",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-11-06",
+   "home": "shakhtar-donetsk",
+   "away": "young-boys",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2024-11-06",
+   "home": "feyenoord",
+   "away": "salzburg",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2024-11-06",
+   "home": "sparta-praha",
+   "away": "brest",
+   "hg": 1,
+   "ag": 2
+  },
+  {
    "date": "2024-11-07",
    "home": "paris-saint-germain",
    "away": "atletico-madrid",
@@ -1037,6 +2605,69 @@
    "away": "atalanta",
    "hg": 0,
    "ag": 2
+  },
+  {
+   "date": "2024-11-26",
+   "home": "slovan-bratislava",
+   "away": "ac-milan",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2024-11-26",
+   "home": "barcelona",
+   "away": "brest",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2024-11-26",
+   "home": "bayern",
+   "away": "paris-saint-germain",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-11-26",
+   "home": "inter",
+   "away": "leipzig",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-11-26",
+   "home": "man-city",
+   "away": "feyenoord",
+   "hg": 3,
+   "ag": 3
+  },
+  {
+   "date": "2024-11-26",
+   "home": "sporting-cp",
+   "away": "arsenal",
+   "hg": 1,
+   "ag": 5
+  },
+  {
+   "date": "2024-11-26",
+   "home": "sparta-praha",
+   "away": "atletico-madrid",
+   "hg": 0,
+   "ag": 6
+  },
+  {
+   "date": "2024-11-26",
+   "home": "leverkusen",
+   "away": "salzburg",
+   "hg": 5,
+   "ag": 0
+  },
+  {
+   "date": "2024-11-26",
+   "home": "young-boys",
+   "away": "atalanta",
+   "hg": 1,
+   "ag": 6
   },
   {
    "date": "2024-11-27",
@@ -1102,6 +2733,69 @@
    "ag": 0
   },
   {
+   "date": "2024-11-27",
+   "home": "red-star-belgrade",
+   "away": "stuttgart",
+   "hg": 5,
+   "ag": 1
+  },
+  {
+   "date": "2024-11-27",
+   "home": "monaco",
+   "away": "benfica",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2024-11-27",
+   "home": "aston-villa",
+   "away": "juventus",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2024-11-27",
+   "home": "bologna",
+   "away": "lille",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2024-11-27",
+   "home": "celtic",
+   "away": "club-brugge",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2024-11-27",
+   "home": "dinamo-zagreb",
+   "away": "dortmund",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2024-11-27",
+   "home": "liverpool",
+   "away": "real-madrid",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2024-11-27",
+   "home": "sturm-graz",
+   "away": "girona",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-11-27",
+   "home": "psv",
+   "away": "shakhtar-donetsk",
+   "hg": 3,
+   "ag": 2
+  },
+  {
    "date": "2024-11-28",
    "home": "red-star-belgrade",
    "away": "stuttgart",
@@ -1151,6 +2845,69 @@
    "ag": 0
   },
   {
+   "date": "2024-12-10",
+   "home": "dinamo-zagreb",
+   "away": "celtic",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2024-12-10",
+   "home": "girona",
+   "away": "liverpool",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2024-12-10",
+   "home": "atalanta",
+   "away": "real-madrid",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2024-12-10",
+   "home": "leverkusen",
+   "away": "inter",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-12-10",
+   "home": "brest",
+   "away": "psv",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2024-12-10",
+   "home": "club-brugge",
+   "away": "sporting-cp",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2024-12-10",
+   "home": "leipzig",
+   "away": "aston-villa",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2024-12-10",
+   "home": "salzburg",
+   "away": "paris-saint-germain",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2024-12-10",
+   "home": "shakhtar-donetsk",
+   "away": "bayern",
+   "hg": 1,
+   "ag": 5
+  },
+  {
    "date": "2024-12-11",
    "home": "girona",
    "away": "liverpool",
@@ -1197,6 +2954,69 @@
    "home": "club-brugge",
    "away": "sporting-cp",
    "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2024-12-11",
+   "home": "atletico-madrid",
+   "away": "slovan-bratislava",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2024-12-11",
+   "home": "ac-milan",
+   "away": "red-star-belgrade",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2024-12-11",
+   "home": "arsenal",
+   "away": "monaco",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2024-12-11",
+   "home": "benfica",
+   "away": "bologna",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2024-12-11",
+   "home": "dortmund",
+   "away": "barcelona",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2024-12-11",
+   "home": "juventus",
+   "away": "man-city",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2024-12-11",
+   "home": "lille",
+   "away": "sturm-graz",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2024-12-11",
+   "home": "feyenoord",
+   "away": "sparta-praha",
+   "hg": 4,
+   "ag": 2
+  },
+  {
+   "date": "2024-12-11",
+   "home": "stuttgart",
+   "away": "young-boys",
+   "hg": 5,
    "ag": 1
   },
   {
@@ -1263,6 +3083,69 @@
    "ag": 0
   },
   {
+   "date": "2025-01-21",
+   "home": "monaco",
+   "away": "aston-villa",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-21",
+   "home": "atletico-madrid",
+   "away": "leverkusen",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-21",
+   "home": "benfica",
+   "away": "barcelona",
+   "hg": 4,
+   "ag": 5
+  },
+  {
+   "date": "2025-01-21",
+   "home": "bologna",
+   "away": "dortmund",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-21",
+   "home": "club-brugge",
+   "away": "juventus",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-21",
+   "home": "liverpool",
+   "away": "lille",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-21",
+   "home": "red-star-belgrade",
+   "away": "psv",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2025-01-21",
+   "home": "slovan-bratislava",
+   "away": "stuttgart",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2025-01-21",
+   "home": "atalanta",
+   "away": "sturm-graz",
+   "hg": 5,
+   "ag": 0
+  },
+  {
    "date": "2025-01-22",
    "home": "atalanta",
    "away": "sturm-graz",
@@ -1319,6 +3202,69 @@
    "ag": 3
   },
   {
+   "date": "2025-01-22",
+   "home": "leipzig",
+   "away": "sporting-cp",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-22",
+   "home": "ac-milan",
+   "away": "girona",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-22",
+   "home": "arsenal",
+   "away": "dinamo-zagreb",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-22",
+   "home": "feyenoord",
+   "away": "bayern",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-22",
+   "home": "paris-saint-germain",
+   "away": "man-city",
+   "hg": 4,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-22",
+   "home": "shakhtar-donetsk",
+   "away": "brest",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-22",
+   "home": "celtic",
+   "away": "young-boys",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-22",
+   "home": "real-madrid",
+   "away": "salzburg",
+   "hg": 5,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-22",
+   "home": "sparta-praha",
+   "away": "inter",
+   "hg": 0,
+   "ag": 1
+  },
+  {
    "date": "2025-01-23",
    "home": "real-madrid",
    "away": "salzburg",
@@ -1361,6 +3307,160 @@
    "ag": 2
   },
   {
+   "date": "2025-01-29",
+   "home": "aston-villa",
+   "away": "celtic",
+   "hg": 4,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-29",
+   "home": "barcelona",
+   "away": "atalanta",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-29",
+   "home": "bayern",
+   "away": "slovan-bratislava",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-29",
+   "home": "brest",
+   "away": "real-madrid",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2025-01-29",
+   "home": "dinamo-zagreb",
+   "away": "ac-milan",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-29",
+   "home": "girona",
+   "away": "arsenal",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-29",
+   "home": "inter",
+   "away": "monaco",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-29",
+   "home": "juventus",
+   "away": "benfica",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-29",
+   "home": "lille",
+   "away": "feyenoord",
+   "hg": 6,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-29",
+   "home": "man-city",
+   "away": "club-brugge",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-29",
+   "home": "psv",
+   "away": "liverpool",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2025-01-29",
+   "home": "sporting-cp",
+   "away": "bologna",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-29",
+   "home": "stuttgart",
+   "away": "paris-saint-germain",
+   "hg": 1,
+   "ag": 4
+  },
+  {
+   "date": "2025-01-29",
+   "home": "leverkusen",
+   "away": "sparta-praha",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-29",
+   "home": "dortmund",
+   "away": "shakhtar-donetsk",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2025-01-29",
+   "home": "salzburg",
+   "away": "atletico-madrid",
+   "hg": 1,
+   "ag": 4
+  },
+  {
+   "date": "2025-01-29",
+   "home": "sturm-graz",
+   "away": "leipzig",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2025-01-29",
+   "home": "young-boys",
+   "away": "red-star-belgrade",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2025-02-11",
+   "home": "brest",
+   "away": "paris-saint-germain",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2025-02-11",
+   "home": "juventus",
+   "away": "psv",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-02-11",
+   "home": "man-city",
+   "away": "real-madrid",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2025-02-11",
+   "home": "sporting-cp",
+   "away": "dortmund",
+   "hg": 0,
+   "ag": 3
+  },
+  {
    "date": "2025-02-12",
    "home": "brest",
    "away": "paris-saint-germain",
@@ -1387,6 +3487,34 @@
    "away": "psv",
    "hg": 2,
    "ag": 1
+  },
+  {
+   "date": "2025-02-12",
+   "home": "club-brugge",
+   "away": "atalanta",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-02-12",
+   "home": "monaco",
+   "away": "benfica",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2025-02-12",
+   "home": "celtic",
+   "away": "bayern",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2025-02-12",
+   "home": "feyenoord",
+   "away": "ac-milan",
+   "hg": 1,
+   "ag": 0
   },
   {
    "date": "2025-02-13",
@@ -1417,6 +3545,34 @@
    "ag": 0
   },
   {
+   "date": "2025-02-18",
+   "home": "ac-milan",
+   "away": "feyenoord",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2025-02-18",
+   "home": "atalanta",
+   "away": "club-brugge",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2025-02-18",
+   "home": "bayern",
+   "away": "celtic",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2025-02-18",
+   "home": "benfica",
+   "away": "monaco",
+   "hg": 3,
+   "ag": 3
+  },
+  {
    "date": "2025-02-19",
    "home": "atalanta",
    "away": "club-brugge",
@@ -1445,6 +3601,27 @@
    "ag": 3
   },
   {
+   "date": "2025-02-19",
+   "home": "dortmund",
+   "away": "sporting-cp",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2025-02-19",
+   "home": "paris-saint-germain",
+   "away": "brest",
+   "hg": 7,
+   "ag": 0
+  },
+  {
+   "date": "2025-02-19",
+   "home": "real-madrid",
+   "away": "man-city",
+   "hg": 3,
+   "ag": 1
+  },
+  {
    "date": "2025-02-20",
    "home": "real-madrid",
    "away": "man-city",
@@ -1469,6 +3646,34 @@
    "date": "2025-02-20",
    "home": "psv",
    "away": "juventus",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-03-04",
+   "home": "club-brugge",
+   "away": "aston-villa",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2025-03-04",
+   "home": "dortmund",
+   "away": "lille",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2025-03-04",
+   "home": "psv",
+   "away": "arsenal",
+   "hg": 1,
+   "ag": 7
+  },
+  {
+   "date": "2025-03-04",
+   "home": "real-madrid",
+   "away": "atletico-madrid",
    "hg": 2,
    "ag": 1
   },
@@ -1501,6 +3706,34 @@
    "ag": 7
   },
   {
+   "date": "2025-03-05",
+   "home": "feyenoord",
+   "away": "inter",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2025-03-05",
+   "home": "bayern",
+   "away": "leverkusen",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2025-03-05",
+   "home": "benfica",
+   "away": "barcelona",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2025-03-05",
+   "home": "paris-saint-germain",
+   "away": "liverpool",
+   "hg": 0,
+   "ag": 1
+  },
+  {
    "date": "2025-03-06",
    "home": "paris-saint-germain",
    "away": "liverpool",
@@ -1527,6 +3760,27 @@
    "away": "inter",
    "hg": 0,
    "ag": 2
+  },
+  {
+   "date": "2025-03-11",
+   "home": "barcelona",
+   "away": "benfica",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2025-03-11",
+   "home": "leverkusen",
+   "away": "bayern",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2025-03-11",
+   "home": "inter",
+   "away": "feyenoord",
+   "hg": 2,
+   "ag": 1
   },
   {
    "date": "2025-03-12",
@@ -1557,6 +3811,27 @@
    "ag": 1
   },
   {
+   "date": "2025-03-12",
+   "home": "lille",
+   "away": "dortmund",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2025-03-12",
+   "home": "arsenal",
+   "away": "psv",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2025-03-12",
+   "home": "aston-villa",
+   "away": "club-brugge",
+   "hg": 3,
+   "ag": 0
+  },
+  {
    "date": "2025-03-13",
    "home": "lille",
    "away": "dortmund",
@@ -1585,6 +3860,20 @@
    "ag": 0
   },
   {
+   "date": "2025-04-08",
+   "home": "arsenal",
+   "away": "real-madrid",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2025-04-08",
+   "home": "bayern",
+   "away": "inter",
+   "hg": 1,
+   "ag": 2
+  },
+  {
    "date": "2025-04-09",
    "home": "bayern",
    "away": "inter",
@@ -1599,6 +3888,20 @@
    "ag": 0
   },
   {
+   "date": "2025-04-09",
+   "home": "barcelona",
+   "away": "dortmund",
+   "hg": 4,
+   "ag": 0
+  },
+  {
+   "date": "2025-04-09",
+   "home": "paris-saint-germain",
+   "away": "aston-villa",
+   "hg": 3,
+   "ag": 1
+  },
+  {
    "date": "2025-04-10",
    "home": "barcelona",
    "away": "dortmund",
@@ -1609,6 +3912,20 @@
    "date": "2025-04-10",
    "home": "paris-saint-germain",
    "away": "aston-villa",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2025-04-15",
+   "home": "aston-villa",
+   "away": "paris-saint-germain",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2025-04-15",
+   "home": "dortmund",
+   "away": "barcelona",
    "hg": 3,
    "ag": 1
   },
@@ -1627,6 +3944,20 @@
    "ag": 1
   },
   {
+   "date": "2025-04-16",
+   "home": "inter",
+   "away": "bayern",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2025-04-16",
+   "home": "real-madrid",
+   "away": "arsenal",
+   "hg": 1,
+   "ag": 2
+  },
+  {
    "date": "2025-04-17",
    "home": "inter",
    "away": "bayern",
@@ -1641,11 +3972,25 @@
    "ag": 2
   },
   {
+   "date": "2025-04-29",
+   "home": "arsenal",
+   "away": "paris-saint-germain",
+   "hg": 0,
+   "ag": 1
+  },
+  {
    "date": "2025-04-30",
    "home": "arsenal",
    "away": "paris-saint-germain",
    "hg": 0,
    "ag": 1
+  },
+  {
+   "date": "2025-04-30",
+   "home": "barcelona",
+   "away": "inter",
+   "hg": 3,
+   "ag": 3
   },
   {
    "date": "2025-05-01",
@@ -1662,11 +4007,25 @@
    "ag": 3
   },
   {
+   "date": "2025-05-07",
+   "home": "paris-saint-germain",
+   "away": "arsenal",
+   "hg": 2,
+   "ag": 1
+  },
+  {
    "date": "2025-05-08",
    "home": "paris-saint-germain",
    "away": "arsenal",
    "hg": 2,
    "ag": 1
+  },
+  {
+   "date": "2025-05-31",
+   "home": "paris-saint-germain",
+   "away": "inter",
+   "hg": 5,
+   "ag": 0
   },
   {
    "date": "2025-06-01",
@@ -1942,6 +4301,48 @@
    "ag": 0
   },
   {
+   "date": "2025-09-16",
+   "home": "athletic-bilbao",
+   "away": "arsenal",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2025-09-16",
+   "home": "juventus",
+   "away": "dortmund",
+   "hg": 4,
+   "ag": 4
+  },
+  {
+   "date": "2025-09-16",
+   "home": "real-madrid",
+   "away": "marseille",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-09-16",
+   "home": "tottenham",
+   "away": "villarreal",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2025-09-16",
+   "home": "psv",
+   "away": "union-saint-gilloise",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2025-09-16",
+   "home": "benfica",
+   "away": "qarabag",
+   "hg": 2,
+   "ag": 3
+  },
+  {
    "date": "2025-09-17",
    "home": "psv",
    "away": "union-saint-gilloise",
@@ -1982,6 +4383,48 @@
    "away": "marseille",
    "hg": 2,
    "ag": 1
+  },
+  {
+   "date": "2025-09-17",
+   "home": "ajax",
+   "away": "inter",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2025-09-17",
+   "home": "bayern",
+   "away": "chelsea",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2025-09-17",
+   "home": "liverpool",
+   "away": "atletico-madrid",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2025-09-17",
+   "home": "paris-saint-germain",
+   "away": "atalanta",
+   "hg": 4,
+   "ag": 0
+  },
+  {
+   "date": "2025-09-17",
+   "home": "olympiacos",
+   "away": "pafos",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2025-09-17",
+   "home": "slavia-praha",
+   "away": "bodo-glimt",
+   "hg": 2,
+   "ag": 2
   },
   {
    "date": "2025-09-18",
@@ -2026,6 +4469,48 @@
    "ag": 0
   },
   {
+   "date": "2025-09-18",
+   "home": "club-brugge",
+   "away": "monaco",
+   "hg": 4,
+   "ag": 1
+  },
+  {
+   "date": "2025-09-18",
+   "home": "fc-copenhagen",
+   "away": "leverkusen",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2025-09-18",
+   "home": "frankfurt",
+   "away": "galatasaray",
+   "hg": 5,
+   "ag": 1
+  },
+  {
+   "date": "2025-09-18",
+   "home": "man-city",
+   "away": "napoli",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2025-09-18",
+   "home": "newcastle",
+   "away": "barcelona",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2025-09-18",
+   "home": "sporting-cp",
+   "away": "kairat-almaty",
+   "hg": 4,
+   "ag": 1
+  },
+  {
    "date": "2025-09-19",
    "home": "club-brugge",
    "away": "monaco",
@@ -2066,6 +4551,69 @@
    "away": "kairat-almaty",
    "hg": 4,
    "ag": 1
+  },
+  {
+   "date": "2025-09-30",
+   "home": "atalanta",
+   "away": "club-brugge",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-09-30",
+   "home": "kairat-almaty",
+   "away": "real-madrid",
+   "hg": 0,
+   "ag": 5
+  },
+  {
+   "date": "2025-09-30",
+   "home": "atletico-madrid",
+   "away": "frankfurt",
+   "hg": 5,
+   "ag": 1
+  },
+  {
+   "date": "2025-09-30",
+   "home": "bodo-glimt",
+   "away": "tottenham",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2025-09-30",
+   "home": "chelsea",
+   "away": "benfica",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2025-09-30",
+   "home": "galatasaray",
+   "away": "liverpool",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2025-09-30",
+   "home": "marseille",
+   "away": "ajax",
+   "hg": 4,
+   "ag": 0
+  },
+  {
+   "date": "2025-09-30",
+   "home": "inter",
+   "away": "slavia-praha",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2025-09-30",
+   "home": "pafos",
+   "away": "bayern",
+   "hg": 1,
+   "ag": 5
   },
   {
    "date": "2025-10-01",
@@ -2131,6 +4679,132 @@
    "ag": 1
   },
   {
+   "date": "2025-10-01",
+   "home": "monaco",
+   "away": "man-city",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2025-10-01",
+   "home": "barcelona",
+   "away": "paris-saint-germain",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2025-10-01",
+   "home": "leverkusen",
+   "away": "psv",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2025-10-01",
+   "home": "dortmund",
+   "away": "athletic-bilbao",
+   "hg": 4,
+   "ag": 1
+  },
+  {
+   "date": "2025-10-01",
+   "home": "napoli",
+   "away": "sporting-cp",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-10-01",
+   "home": "villarreal",
+   "away": "juventus",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2025-10-01",
+   "home": "qarabag",
+   "away": "fc-copenhagen",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2025-10-01",
+   "home": "union-saint-gilloise",
+   "away": "newcastle",
+   "hg": 0,
+   "ag": 4
+  },
+  {
+   "date": "2025-10-01",
+   "home": "arsenal",
+   "away": "olympiacos",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2025-10-21",
+   "home": "arsenal",
+   "away": "atletico-madrid",
+   "hg": 4,
+   "ag": 0
+  },
+  {
+   "date": "2025-10-21",
+   "home": "leverkusen",
+   "away": "paris-saint-germain",
+   "hg": 2,
+   "ag": 7
+  },
+  {
+   "date": "2025-10-21",
+   "home": "fc-copenhagen",
+   "away": "dortmund",
+   "hg": 2,
+   "ag": 4
+  },
+  {
+   "date": "2025-10-21",
+   "home": "newcastle",
+   "away": "benfica",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2025-10-21",
+   "home": "psv",
+   "away": "napoli",
+   "hg": 6,
+   "ag": 2
+  },
+  {
+   "date": "2025-10-21",
+   "home": "villarreal",
+   "away": "man-city",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2025-10-21",
+   "home": "barcelona",
+   "away": "olympiacos",
+   "hg": 6,
+   "ag": 1
+  },
+  {
+   "date": "2025-10-21",
+   "home": "kairat-almaty",
+   "away": "pafos",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2025-10-21",
+   "home": "union-saint-gilloise",
+   "away": "inter",
+   "hg": 0,
+   "ag": 4
+  },
+  {
    "date": "2025-10-22",
    "home": "kairat-almaty",
    "away": "pafos",
@@ -2194,6 +4868,69 @@
    "ag": 4
   },
   {
+   "date": "2025-10-22",
+   "home": "galatasaray",
+   "away": "bodo-glimt",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2025-10-22",
+   "home": "monaco",
+   "away": "tottenham",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2025-10-22",
+   "home": "bayern",
+   "away": "club-brugge",
+   "hg": 4,
+   "ag": 0
+  },
+  {
+   "date": "2025-10-22",
+   "home": "chelsea",
+   "away": "ajax",
+   "hg": 5,
+   "ag": 1
+  },
+  {
+   "date": "2025-10-22",
+   "home": "frankfurt",
+   "away": "liverpool",
+   "hg": 1,
+   "ag": 5
+  },
+  {
+   "date": "2025-10-22",
+   "home": "real-madrid",
+   "away": "juventus",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2025-10-22",
+   "home": "sporting-cp",
+   "away": "marseille",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-10-22",
+   "home": "athletic-bilbao",
+   "away": "qarabag",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2025-10-22",
+   "home": "atalanta",
+   "away": "slavia-praha",
+   "hg": 0,
+   "ag": 0
+  },
+  {
    "date": "2025-10-23",
    "home": "athletic-bilbao",
    "away": "qarabag",
@@ -2254,6 +4991,69 @@
    "home": "sporting-cp",
    "away": "marseille",
    "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-11-04",
+   "home": "napoli",
+   "away": "frankfurt",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2025-11-04",
+   "home": "bodo-glimt",
+   "away": "monaco",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2025-11-04",
+   "home": "juventus",
+   "away": "sporting-cp",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2025-11-04",
+   "home": "liverpool",
+   "away": "real-madrid",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2025-11-04",
+   "home": "paris-saint-germain",
+   "away": "bayern",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2025-11-04",
+   "home": "tottenham",
+   "away": "fc-copenhagen",
+   "hg": 4,
+   "ag": 0
+  },
+  {
+   "date": "2025-11-04",
+   "home": "slavia-praha",
+   "away": "arsenal",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2025-11-04",
+   "home": "atletico-madrid",
+   "away": "union-saint-gilloise",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2025-11-04",
+   "home": "olympiacos",
+   "away": "psv",
+   "hg": 1,
    "ag": 1
   },
   {
@@ -2320,6 +5120,69 @@
    "ag": 1
   },
   {
+   "date": "2025-11-05",
+   "home": "ajax",
+   "away": "galatasaray",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2025-11-05",
+   "home": "benfica",
+   "away": "leverkusen",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2025-11-05",
+   "home": "club-brugge",
+   "away": "barcelona",
+   "hg": 3,
+   "ag": 3
+  },
+  {
+   "date": "2025-11-05",
+   "home": "inter",
+   "away": "kairat-almaty",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-11-05",
+   "home": "man-city",
+   "away": "dortmund",
+   "hg": 4,
+   "ag": 1
+  },
+  {
+   "date": "2025-11-05",
+   "home": "marseille",
+   "away": "atalanta",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2025-11-05",
+   "home": "newcastle",
+   "away": "athletic-bilbao",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2025-11-05",
+   "home": "qarabag",
+   "away": "chelsea",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2025-11-05",
+   "home": "pafos",
+   "away": "villarreal",
+   "hg": 1,
+   "ag": 0
+  },
+  {
    "date": "2025-11-06",
    "home": "qarabag",
    "away": "chelsea",
@@ -2383,6 +5246,69 @@
    "ag": 1
   },
   {
+   "date": "2025-11-25",
+   "home": "ajax",
+   "away": "benfica",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2025-11-25",
+   "home": "bodo-glimt",
+   "away": "juventus",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2025-11-25",
+   "home": "dortmund",
+   "away": "villarreal",
+   "hg": 4,
+   "ag": 0
+  },
+  {
+   "date": "2025-11-25",
+   "home": "chelsea",
+   "away": "barcelona",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2025-11-25",
+   "home": "man-city",
+   "away": "leverkusen",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2025-11-25",
+   "home": "marseille",
+   "away": "newcastle",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-11-25",
+   "home": "galatasaray",
+   "away": "union-saint-gilloise",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2025-11-25",
+   "home": "napoli",
+   "away": "qarabag",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2025-11-25",
+   "home": "slavia-praha",
+   "away": "athletic-bilbao",
+   "hg": 0,
+   "ag": 0
+  },
+  {
    "date": "2025-11-26",
    "home": "galatasaray",
    "away": "union-saint-gilloise",
@@ -2444,6 +5370,69 @@
    "away": "villarreal",
    "hg": 4,
    "ag": 0
+  },
+  {
+   "date": "2025-11-26",
+   "home": "fc-copenhagen",
+   "away": "kairat-almaty",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2025-11-26",
+   "home": "arsenal",
+   "away": "bayern",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2025-11-26",
+   "home": "atletico-madrid",
+   "away": "inter",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-11-26",
+   "home": "frankfurt",
+   "away": "atalanta",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2025-11-26",
+   "home": "liverpool",
+   "away": "psv",
+   "hg": 1,
+   "ag": 4
+  },
+  {
+   "date": "2025-11-26",
+   "home": "paris-saint-germain",
+   "away": "tottenham",
+   "hg": 5,
+   "ag": 3
+  },
+  {
+   "date": "2025-11-26",
+   "home": "sporting-cp",
+   "away": "club-brugge",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2025-11-26",
+   "home": "pafos",
+   "away": "monaco",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2025-11-26",
+   "home": "olympiacos",
+   "away": "real-madrid",
+   "hg": 3,
+   "ag": 4
   },
   {
    "date": "2025-11-27",
@@ -2516,6 +5505,69 @@
    "ag": 1
   },
   {
+   "date": "2025-12-09",
+   "home": "bayern",
+   "away": "sporting-cp",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2025-12-09",
+   "home": "monaco",
+   "away": "galatasaray",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2025-12-09",
+   "home": "atalanta",
+   "away": "chelsea",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-12-09",
+   "home": "barcelona",
+   "away": "frankfurt",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2025-12-09",
+   "home": "inter",
+   "away": "liverpool",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2025-12-09",
+   "home": "psv",
+   "away": "atletico-madrid",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2025-12-09",
+   "home": "kairat-almaty",
+   "away": "olympiacos",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2025-12-09",
+   "home": "tottenham",
+   "away": "slavia-praha",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2025-12-09",
+   "home": "union-saint-gilloise",
+   "away": "marseille",
+   "hg": 2,
+   "ag": 3
+  },
+  {
    "date": "2025-12-10",
    "home": "atalanta",
    "away": "chelsea",
@@ -2569,6 +5621,69 @@
    "home": "monaco",
    "away": "galatasaray",
    "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2025-12-10",
+   "home": "villarreal",
+   "away": "fc-copenhagen",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2025-12-10",
+   "home": "athletic-bilbao",
+   "away": "paris-saint-germain",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2025-12-10",
+   "home": "leverkusen",
+   "away": "newcastle",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2025-12-10",
+   "home": "benfica",
+   "away": "napoli",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2025-12-10",
+   "home": "dortmund",
+   "away": "bodo-glimt",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2025-12-10",
+   "home": "club-brugge",
+   "away": "arsenal",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2025-12-10",
+   "home": "real-madrid",
+   "away": "man-city",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2025-12-10",
+   "home": "qarabag",
+   "away": "ajax",
+   "hg": 2,
+   "ag": 4
+  },
+  {
+   "date": "2025-12-10",
+   "home": "juventus",
+   "away": "pafos",
+   "hg": 2,
    "ag": 0
   },
   {
@@ -2642,6 +5757,62 @@
    "ag": 4
   },
   {
+   "date": "2026-01-20",
+   "home": "bodo-glimt",
+   "away": "man-city",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-20",
+   "home": "fc-copenhagen",
+   "away": "napoli",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-20",
+   "home": "inter",
+   "away": "arsenal",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2026-01-20",
+   "home": "real-madrid",
+   "away": "monaco",
+   "hg": 6,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-20",
+   "home": "sporting-cp",
+   "away": "paris-saint-germain",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-20",
+   "home": "tottenham",
+   "away": "dortmund",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-20",
+   "home": "villarreal",
+   "away": "ajax",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-20",
+   "home": "olympiacos",
+   "away": "leverkusen",
+   "hg": 2,
+   "ag": 0
+  },
+  {
    "date": "2026-01-21",
    "home": "sporting-cp",
    "away": "paris-saint-germain",
@@ -2696,6 +5867,69 @@
    "away": "arsenal",
    "hg": 1,
    "ag": 3
+  },
+  {
+   "date": "2026-01-21",
+   "home": "galatasaray",
+   "away": "atletico-madrid",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-21",
+   "home": "atalanta",
+   "away": "athletic-bilbao",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2026-01-21",
+   "home": "juventus",
+   "away": "benfica",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-21",
+   "home": "marseille",
+   "away": "liverpool",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2026-01-21",
+   "home": "newcastle",
+   "away": "psv",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-21",
+   "home": "qarabag",
+   "away": "frankfurt",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-21",
+   "home": "bayern",
+   "away": "union-saint-gilloise",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-21",
+   "home": "chelsea",
+   "away": "pafos",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-21",
+   "home": "slavia-praha",
+   "away": "barcelona",
+   "hg": 2,
+   "ag": 4
   },
   {
    "date": "2026-01-22",
@@ -2758,6 +5992,132 @@
    "home": "juventus",
    "away": "benfica",
    "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-28",
+   "home": "arsenal",
+   "away": "kairat-almaty",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-28",
+   "home": "monaco",
+   "away": "juventus",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-28",
+   "home": "athletic-bilbao",
+   "away": "sporting-cp",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2026-01-28",
+   "home": "atletico-madrid",
+   "away": "bodo-glimt",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-28",
+   "home": "barcelona",
+   "away": "fc-copenhagen",
+   "hg": 4,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-28",
+   "home": "leverkusen",
+   "away": "villarreal",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-28",
+   "home": "benfica",
+   "away": "real-madrid",
+   "hg": 4,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-28",
+   "home": "dortmund",
+   "away": "inter",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-28",
+   "home": "club-brugge",
+   "away": "marseille",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-28",
+   "home": "frankfurt",
+   "away": "tottenham",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-28",
+   "home": "man-city",
+   "away": "galatasaray",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-28",
+   "home": "napoli",
+   "away": "chelsea",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2026-01-28",
+   "home": "paris-saint-germain",
+   "away": "newcastle",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-28",
+   "home": "psv",
+   "away": "bayern",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-28",
+   "home": "ajax",
+   "away": "olympiacos",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2026-01-28",
+   "home": "liverpool",
+   "away": "qarabag",
+   "hg": 6,
+   "ag": 0
+  },
+  {
+   "date": "2026-01-28",
+   "home": "pafos",
+   "away": "slavia-praha",
+   "hg": 4,
+   "ag": 1
+  },
+  {
+   "date": "2026-01-28",
+   "home": "union-saint-gilloise",
+   "away": "atalanta",
+   "hg": 1,
    "ag": 0
   },
   {
@@ -2859,6 +6219,90 @@
    "ag": 2
   },
   {
+   "date": "2026-02-17",
+   "home": "galatasaray",
+   "away": "juventus",
+   "hg": 5,
+   "ag": 2
+  },
+  {
+   "date": "2026-02-17",
+   "home": "monaco",
+   "away": "paris-saint-germain",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2026-02-17",
+   "home": "benfica",
+   "away": "real-madrid",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2026-02-17",
+   "home": "dortmund",
+   "away": "atalanta",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2026-02-18",
+   "home": "bodo-glimt",
+   "away": "inter",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2026-02-18",
+   "home": "club-brugge",
+   "away": "atletico-madrid",
+   "hg": 3,
+   "ag": 3
+  },
+  {
+   "date": "2026-02-18",
+   "home": "qarabag",
+   "away": "newcastle",
+   "hg": 1,
+   "ag": 6
+  },
+  {
+   "date": "2026-02-18",
+   "home": "olympiacos",
+   "away": "leverkusen",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2026-02-24",
+   "home": "atletico-madrid",
+   "away": "club-brugge",
+   "hg": 4,
+   "ag": 1
+  },
+  {
+   "date": "2026-02-24",
+   "home": "inter",
+   "away": "bodo-glimt",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2026-02-24",
+   "home": "leverkusen",
+   "away": "olympiacos",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2026-02-24",
+   "home": "newcastle",
+   "away": "qarabag",
+   "hg": 3,
+   "ag": 2
+  },
+  {
    "date": "2026-02-25",
    "home": "atletico-madrid",
    "away": "club-brugge",
@@ -2885,6 +6329,27 @@
    "away": "bodo-glimt",
    "hg": 1,
    "ag": 2
+  },
+  {
+   "date": "2026-02-25",
+   "home": "atalanta",
+   "away": "dortmund",
+   "hg": 4,
+   "ag": 1
+  },
+  {
+   "date": "2026-02-25",
+   "home": "paris-saint-germain",
+   "away": "monaco",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2026-02-25",
+   "home": "real-madrid",
+   "away": "benfica",
+   "hg": 2,
+   "ag": 1
   },
   {
    "date": "2026-02-26",
@@ -2915,6 +6380,34 @@
    "ag": 2
   },
   {
+   "date": "2026-03-10",
+   "home": "galatasaray",
+   "away": "liverpool",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2026-03-10",
+   "home": "atalanta",
+   "away": "bayern",
+   "hg": 1,
+   "ag": 6
+  },
+  {
+   "date": "2026-03-10",
+   "home": "atletico-madrid",
+   "away": "tottenham",
+   "hg": 5,
+   "ag": 2
+  },
+  {
+   "date": "2026-03-10",
+   "home": "newcastle",
+   "away": "barcelona",
+   "hg": 1,
+   "ag": 1
+  },
+  {
    "date": "2026-03-11",
    "home": "galatasaray",
    "away": "liverpool",
@@ -2941,6 +6434,34 @@
    "away": "bayern",
    "hg": 1,
    "ag": 6
+  },
+  {
+   "date": "2026-03-11",
+   "home": "leverkusen",
+   "away": "arsenal",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-03-11",
+   "home": "bodo-glimt",
+   "away": "sporting-cp",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2026-03-11",
+   "home": "paris-saint-germain",
+   "away": "chelsea",
+   "hg": 5,
+   "ag": 2
+  },
+  {
+   "date": "2026-03-11",
+   "home": "real-madrid",
+   "away": "man-city",
+   "hg": 3,
+   "ag": 0
   },
   {
    "date": "2026-03-12",
@@ -2971,6 +6492,27 @@
    "ag": 0
   },
   {
+   "date": "2026-03-17",
+   "home": "arsenal",
+   "away": "leverkusen",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2026-03-17",
+   "home": "chelsea",
+   "away": "paris-saint-germain",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2026-03-17",
+   "home": "man-city",
+   "away": "real-madrid",
+   "hg": 1,
+   "ag": 2
+  },
+  {
    "date": "2026-03-18",
    "home": "arsenal",
    "away": "leverkusen",
@@ -2997,6 +6539,34 @@
    "away": "paris-saint-germain",
    "hg": 0,
    "ag": 3
+  },
+  {
+   "date": "2026-03-18",
+   "home": "barcelona",
+   "away": "newcastle",
+   "hg": 7,
+   "ag": 2
+  },
+  {
+   "date": "2026-03-18",
+   "home": "bayern",
+   "away": "atalanta",
+   "hg": 4,
+   "ag": 1
+  },
+  {
+   "date": "2026-03-18",
+   "home": "liverpool",
+   "away": "galatasaray",
+   "hg": 4,
+   "ag": 0
+  },
+  {
+   "date": "2026-03-18",
+   "home": "tottenham",
+   "away": "atletico-madrid",
+   "hg": 3,
+   "ag": 2
   },
   {
    "date": "2026-03-19",
@@ -3027,6 +6597,20 @@
    "ag": 2
   },
   {
+   "date": "2026-04-07",
+   "home": "real-madrid",
+   "away": "bayern",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2026-04-07",
+   "home": "sporting-cp",
+   "away": "arsenal",
+   "hg": 0,
+   "ag": 1
+  },
+  {
    "date": "2026-04-08",
    "home": "sporting-cp",
    "away": "arsenal",
@@ -3041,6 +6625,20 @@
    "ag": 2
   },
   {
+   "date": "2026-04-08",
+   "home": "barcelona",
+   "away": "atletico-madrid",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2026-04-08",
+   "home": "paris-saint-germain",
+   "away": "liverpool",
+   "hg": 2,
+   "ag": 0
+  },
+  {
    "date": "2026-04-09",
    "home": "paris-saint-germain",
    "away": "liverpool",
@@ -3051,6 +6649,20 @@
    "date": "2026-04-09",
    "home": "barcelona",
    "away": "atletico-madrid",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2026-04-14",
+   "home": "atletico-madrid",
+   "away": "barcelona",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2026-04-14",
+   "home": "liverpool",
+   "away": "paris-saint-germain",
    "hg": 0,
    "ag": 2
   },
@@ -3069,6 +6681,20 @@
    "ag": 2
   },
   {
+   "date": "2026-04-15",
+   "home": "arsenal",
+   "away": "sporting-cp",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2026-04-15",
+   "home": "bayern",
+   "away": "real-madrid",
+   "hg": 4,
+   "ag": 3
+  },
+  {
    "date": "2026-04-16",
    "home": "bayern",
    "away": "real-madrid",
@@ -3083,11 +6709,25 @@
    "ag": 0
   },
   {
+   "date": "2026-04-28",
+   "home": "paris-saint-germain",
+   "away": "bayern",
+   "hg": 5,
+   "ag": 4
+  },
+  {
    "date": "2026-04-29",
    "home": "paris-saint-germain",
    "away": "bayern",
    "hg": 5,
    "ag": 4
+  },
+  {
+   "date": "2026-04-29",
+   "home": "atletico-madrid",
+   "away": "arsenal",
+   "hg": 1,
+   "ag": 1
   },
   {
    "date": "2026-04-30",
@@ -3097,11 +6737,25 @@
    "ag": 1
   },
   {
+   "date": "2026-05-05",
+   "home": "arsenal",
+   "away": "atletico-madrid",
+   "hg": 1,
+   "ag": 0
+  },
+  {
    "date": "2026-05-06",
    "home": "arsenal",
    "away": "atletico-madrid",
    "hg": 1,
    "ag": 0
+  },
+  {
+   "date": "2026-05-06",
+   "home": "bayern",
+   "away": "paris-saint-germain",
+   "hg": 1,
+   "ag": 1
   },
   {
    "date": "2026-05-07",
@@ -3412,6 +7066,48 @@
    "ag": 2
   },
   {
+   "date": "2026-09-08",
+   "home": "aek-athens",
+   "away": "lask",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-08",
+   "home": "club-brugge",
+   "away": "aston-villa",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2026-09-08",
+   "home": "dortmund",
+   "away": "villarreal",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2026-09-08",
+   "home": "porto",
+   "away": "man-city",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2026-09-08",
+   "home": "lille",
+   "away": "betis",
+   "hg": 2,
+   "ag": 3
+  },
+  {
+   "date": "2026-09-08",
+   "home": "real-madrid",
+   "away": "inter",
+   "hg": 2,
+   "ag": 1
+  },
+  {
    "date": "2026-09-09",
    "home": "aek-athens",
    "away": "lask",
@@ -3454,6 +7150,48 @@
    "ag": 2
   },
   {
+   "date": "2026-09-09",
+   "home": "barcelona",
+   "away": "feyenoord",
+   "hg": 5,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-09",
+   "home": "stuttgart",
+   "away": "viking",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-09",
+   "home": "liverpool",
+   "away": "atletico-madrid",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-09",
+   "home": "napoli",
+   "away": "arsenal",
+   "hg": 0,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-09",
+   "home": "paris-saint-germain",
+   "away": "slovan-bratislava",
+   "hg": 6,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-09",
+   "home": "sporting-cp",
+   "away": "galatasaray",
+   "hg": 3,
+   "ag": 1
+  },
+  {
    "date": "2026-09-10",
    "home": "liverpool",
    "away": "atletico-madrid",
@@ -3494,6 +7232,48 @@
    "away": "feyenoord",
    "hg": 5,
    "ag": 1
+  },
+  {
+   "date": "2026-09-10",
+   "home": "fenerbahce",
+   "away": "roma",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-10",
+   "home": "bayern",
+   "away": "bodo-glimt",
+   "hg": 5,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-10",
+   "home": "como",
+   "away": "leipzig",
+   "hg": 4,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-10",
+   "home": "psv",
+   "away": "shakhtar-donetsk",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-09-10",
+   "home": "man-united",
+   "away": "sabah-fk",
+   "hg": 4,
+   "ag": 0
+  },
+  {
+   "date": "2026-09-10",
+   "home": "slavia-praha",
+   "away": "lens",
+   "hg": 2,
+   "ag": 3
   },
   {
    "date": "2026-09-11",

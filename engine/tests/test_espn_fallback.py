@@ -25,10 +25,31 @@ def test_blacklist_not_overlap_league_codes():
 
 
 def test_unlocked_leagues_have_codes():
-    """批二解锁六项须有码（防回退）。"""
-    for lg in ("美职", "荷乙", "法乙", "德乙", "英冠", "友谊赛"):
+    """批二解锁六项 + 欧战两项（10-12 晚）须有码（防回退）。"""
+    for lg in ("美职", "荷乙", "法乙", "德乙", "英冠", "友谊赛", "欧冠", "欧罗巴"):
         assert lg in bf.LEAGUE_ESPN, f"{lg} 解锁后应有 ESPN 码"
         assert lg not in bf.ESPN_UNAVAILABLE
+
+
+def test_uefa_codes_consistent_across_tables():
+    """欧战码须两表同有且标杯赛——批二病根即两表各自演化（美职实证），此为防复发锚。
+    2026-10-12 实测依据：dates=YYYY&limit=500 全量 189 场/季可取。"""
+    import espn_fetch as ef
+    for code in ("uefa.champions", "uefa.europa"):
+        assert code in ef.ESPN_LEAGUES, f"{code} 须在 espn_fetch.ESPN_LEAGUES"
+        assert ef.ESPN_LEAGUES[code] in ef.CUP_LEAGUES, "欧战属杯赛（dc_fit 跳过·频率池排除）"
+    assert bf.LEAGUE_ESPN["欧冠"] == "uefa.champions"
+    assert bf.LEAGUE_ESPN["欧罗巴"] == "uefa.europa"
+
+
+def test_espn_name_map_covers_uefa_regulars():
+    """欧冠常客 espn 字段可解析（含三处'有值但串不符 ESPN displayName'的改值修复：
+    Red Bull Salzburg→RB Salzburg / Ferencváros→Ferencvaros / Slavia Praha→Slavia Prague）。"""
+    import espn_fetch as ef
+    m = ef.espn_name_map()
+    for name in ("RB Salzburg", "Ferencvaros", "Slavia Prague", "Shakhtar Donetsk",
+                 "Union St.-Gilloise", "Sparta Prague", "Olympiacos", "Rangers"):
+        assert name in m, f"{name} 须可经 espn_name_map 解析（历史库回填丢失即此因）"
 
 
 def test_known_400_leagues_stay_blacklisted():

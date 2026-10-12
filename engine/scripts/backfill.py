@@ -47,13 +47,18 @@ LEAGUE_ESPN = {
     # usa.1/ned.2/kor.1），黑名单写下即未复测。
     "美职": "usa.1", "荷乙": "ned.2", "法乙": "fra.2", "德乙": "ger.2",
     "英冠": "eng.2", "友谊赛": "fifa.friendly",
+    # 2026-10-12 晚解锁：欧冠/欧罗巴赛事期复测通过——dates=YYYY&limit=500 全量 189 场/季
+    # 可取（单日格式对该族联赛有黑洞：20260911 月格式 6 场单日返回 0，故抓取走月格式，
+    # 见 fetch_espn_results）。批二白天判"无终场"时用的单日探测恰踩黑洞+赛季空档双因。
+    "欧冠": "uefa.champions", "欧罗巴": "uefa.europa",
 }
 # ESPN 无赛果接口的联赛。2026-10-12 复测口径（engine/scripts/scratch 探测，近 10 天回看）：
 #   - 真 400：日乙 jpn.2 / 韩职 kor.1（黑名单对这两项成立）
-#   - 接口 200 但近 10 天无终场：芬超/德国杯/德超杯/欧冠/欧罗巴/解放者杯/世界杯
+#   - 接口 200 但近 10 天无终场：芬超/德国杯/德超杯/解放者杯/世界杯
 #     （赛季休赛或赛程空档，不可据此判不可用 → 留黑名单但属"待复测"，有赛事期需重验）
+#   - 2026-10-12 晚已解锁移出：欧冠/欧罗巴（见上）
 ESPN_UNAVAILABLE = {"韩职", "日乙", "芬超",
-                    "德超杯", "德国杯", "欧罗巴", "欧冠", "解放者杯", "世界杯"}
+                    "德超杯", "德国杯", "解放者杯", "世界杯"}
 TODAY = date.today().isoformat()
 
 
@@ -73,9 +78,17 @@ def zh_to_espn_map() -> dict[str, str]:
 
 
 def fetch_espn_results(code: str, d: str) -> list[dict]:
-    """ESPN 单日赛果 → [{home_espn, away_espn, hg, ag}]。dates 必须 YYYYMMDD 无连字符（带连字符返回空）。"""
+    """ESPN 单日赛果 → [{home_espn, away_espn, hg, ag}]。dates 必须 YYYYMMDD 无连字符（带连字符返回空）。
+
+    uefa.* 欧战族例外走月格式 dates=YYYYMM（2026-10-12 实测：单日对部分过去比赛日有黑洞
+    ——20260911 月格式 6 场单日返回 0，未来日正常；月格式全量可靠）。返回整月终场次，
+    多余行由 match_team 按队名过滤，无害。"""
+    if code.startswith("uefa."):
+        params = {"dates": d.replace("-", "")[:6], "limit": 500}
+    else:
+        params = {"dates": d.replace("-", "")}
     try:
-        r = requests.get(SCOREBOARD.format(code), params={"dates": d.replace("-", "")}, timeout=20)
+        r = requests.get(SCOREBOARD.format(code), params=params, timeout=20)
         r.raise_for_status()
     except requests.RequestException:
         return []
@@ -465,7 +478,8 @@ def backfill(day_limit: str | None = None) -> dict:
         base = datetime.strptime(d, "%Y-%m-%d").date()
         for delta in (-1, 0, 1):
             dd = (base + timedelta(days=delta)).isoformat()
-            key = (code, dd)
+            # uefa 族走月格式 → 缓存键同步月粒度（否则 ±1 三日窗口同月重复拉整月三次）
+            key = (code, dd[:7] if code.startswith("uefa.") else dd)
             if key not in cache:
                 cache[key] = fetch_espn_results(code, dd)
             out.extend(cache[key])
