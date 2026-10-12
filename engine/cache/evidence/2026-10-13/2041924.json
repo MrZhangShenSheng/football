@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-13",
+ "matchKey": "2041924",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-12T12:44:44",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     3.181,
+     2.628
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-12T12:44:44",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": true
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-12T12:44:44",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s1sh",
+      "p": 0.0996
+     },
+     {
+      "pick": "s03s02",
+      "p": 0.0556
+     },
+     {
+      "pick": "s02s02",
+      "p": 0.0524
+     },
+     {
+      "pick": "s03s03",
+      "p": 0.0487
+     },
+     {
+      "pick": "s1sa",
+      "p": 0.0471
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-12T12:44:44",
+   "payload": {
+    "hid": "kfum-oslo",
+    "aid": "valerenga",
+    "hstRows": 0
+   }
+  }
+ }
+}

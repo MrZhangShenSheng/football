@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-13",
+ "matchKey": "2041929",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-12T12:44:47",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     1.328,
+     1.031
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-12T12:44:47",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": false
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-12T12:44:47",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1421
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.1129
+     },
+     {
+      "pick": "s00s00",
+      "p": 0.1072
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0859
+     },
+     {
+      "pick": "s00s01",
+      "p": 0.0848
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-12T12:44:47",
+   "payload": {
+    "hid": "coritiba",
+    "aid": "botafogo",
+    "hstRows": 0
+   }
+  }
+ }
+}

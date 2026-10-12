@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-13",
+ "matchKey": "2041927",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-12T12:44:46",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     1.661,
+     1.045
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-12T12:44:46",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": false
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-12T12:44:46",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1312
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0963
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.0958
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.0922
+     },
+     {
+      "pick": "s00s00",
+      "p": 0.082
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-12T12:44:46",
+   "payload": {
+    "hid": "coventry",
+    "aid": "newcastle",
+    "hstRows": 2041
+   }
+  }
+ }
+}

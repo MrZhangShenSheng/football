@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-13",
+ "matchKey": "2041923",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-12T12:44:44",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     2.111,
+     0.681
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-12T12:44:44",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": false
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-12T12:44:44",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s02s00",
+      "p": 0.1366
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.1224
+     },
+     {
+      "pick": "s03s00",
+      "p": 0.0961
+     },
+     {
+      "pick": "s01s01",
+      "p": 0.0951
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.093
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-12T12:44:44",
+   "payload": {
+    "hid": "malmo-ff",
+    "aid": "kalmar-ff",
+    "hstRows": 0
+   }
+  }
+ }
+}

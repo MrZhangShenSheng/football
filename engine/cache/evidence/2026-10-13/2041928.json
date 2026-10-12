@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-13",
+ "matchKey": "2041928",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-12T12:44:46",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     1.496,
+     1.094
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-12T12:44:46",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": false
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-12T12:44:46",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1268
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.1082
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0918
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.0839
+     },
+     {
+      "pick": "s00s00",
+      "p": 0.079
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-12T12:44:46",
+   "payload": {
+    "hid": "levante",
+    "aid": "sevilla",
+    "hstRows": 1660
+   }
+  }
+ }
+}

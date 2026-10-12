@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-13",
+ "matchKey": "2041926",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-12T12:44:45",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     1.479,
+     0.994
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-12T12:44:45",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": false
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-12T12:44:45",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s01s00",
+      "p": 0.1246
+     },
+     {
+      "pick": "s01s01",
+      "p": 0.124
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.0922
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0917
+     },
+     {
+      "pick": "s00s00",
+      "p": 0.0844
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-12T12:44:45",
+   "payload": {
+    "hid": "dijon",
+    "aid": "metz",
+    "hstRows": 1252
+   }
+  }
+ }
+}
