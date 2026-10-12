@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10-14 欧冠轮预测 · 纯市场锚轮不出票</title>
+<style>
+:root{--fg:#2b2f36;--fg2:#6b7280;--line:#e5e7eb;--bg:#fafafa;--card:#fff;--ok:#0f7b4f;--bad:#b3261e;--warn:#9a6700;--accent:#3556c9;--mute:#f3f4f6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--fg:#e6e8ec;--fg2:#9aa1ac;--line:#2d323b;--bg:#14171c;--card:#1b1f26;--ok:#4cc38a;--bad:#ff7b72;--warn:#d2a8ff;--accent:#7d96f7;--mute:#22272f}}
+*{box-sizing:border-box}
+body{margin:0;padding:24px 16px;background:var(--bg);color:var(--fg);font:15px/1.7 "Microsoft YaHei",system-ui,sans-serif}
+.wrap{max-width:980px;margin:0 auto}
+h1{font-size:20px;margin:0 0 4px}
+h2{font-size:16px;margin:28px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.sub{color:var(--fg2);font-size:13px;margin-bottom:18px}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:8px 0}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--fg2);font-weight:600;white-space:nowrap}
+.ok{color:var(--ok)} .bad{color:var(--bad)} .warn{color:var(--warn)} .mu{color:var(--fg2)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:10px 0}
+.ic{width:15px;height:15px;vertical-align:-2px;margin-right:5px;color:var(--accent)}
+.src{font-size:12px;color:var(--fg2);border-top:1px dashed var(--line);padding-top:10px;margin-top:16px}
+.verdict{font-size:17px;font-weight:600}
+.tag{display:inline-block;font-size:11.5px;padding:1px 7px;border-radius:9px;background:var(--mute);color:var(--fg2);margin-right:4px}
+.flow{width:100%;max-width:900px;height:auto;margin:6px 0}
+ul{margin:6px 0 0;padding-left:22px}
+code{background:var(--mute);padding:1px 5px;border-radius:4px;font-size:12.5px}
+</style>
+</head>
+<body>
+<svg style="display:none">
+  <symbol id="i-scale" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.4" d="M8 2v11M3 13h10M8 3.5 3.5 6M8 3.5 12.5 6M3.5 6 1.5 10h4zM12.5 6l-2 4h4z"/></symbol>
+  <symbol id="i-block" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.4"/><path fill="none" stroke="currentColor" stroke-width="1.4" d="M3.8 3.8l8.4 8.4"/></symbol>
+  <symbol id="i-chain" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.4" d="M6.5 9.5 9.5 6.5M5.6 7.1 4.2 8.5a2.4 2.4 0 0 0 3.4 3.4l1.4-1.4M10.4 8.9l1.4-1.4a2.4 2.4 0 0 0-3.4-3.4L7 5.5"/></symbol>
+  <symbol id="i-pulse" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.4" d="M1.5 8h3L6 5l2 6 2-4.5 1.2 1.5h3.3"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.4"/><path fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" d="M8 4.4V8l2.6 1.6"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.4" d="M8 2 14.5 13.5h-13z"/><path fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" d="M8 6.4v3.2M8 11.6v.1"/></symbol>
+</svg>
+<div class="wrap">
+
+<h1><svg class="ic"><use href="#i-scale"/></svg>10-14 欧冠轮预测 · 周二004~011 八场</h1>
+<div class="sub">数据时点 2026-10-12 18:55 刷新 ｜ 销售日 2026-10-13 ｜ boldplay seq36 ｜ 新轮上架，按「全流程不可跳」铁律完整走 Step1-7</div>
+
+<h2>一、结论：<span class="verdict bad"><svg class="ic" style="color:var(--bad)"><use href="#i-block"/></svg>八场全不出票</span></h2>
+<div class="card">
+<p><b>不是没找到好腿，是这一轮系统<u>没有模型</u>。</b>欧冠是跨联赛杯赛，而 DC 按单一联赛拟合——同一张球员表里不存在「马竞 vs 曼联」这种对位，实测即证：</p>
+<p><code>run.py predict spain-laliga 马竞 曼联</code> → <span class="bad">球队未在拟合参数中：马竞=找到, 曼联=None</span></p>
+<p>于是八场在 boldplay 卡上全部带 <span class="tag">low_conf</span><span class="tag">pure_template</span>，CRS 闸门八场全关（族峰值 21.7%~24.0%，闸门 28%）。按 <code>skill/SKILL.md:199</code> 转正补条款：<b>无锚场纯模板腿 = pending，不得入票</b>。2026-09-17 杯赛轮 6 条 <code>dc=null</code> 模板腿直接入票，已立为反例。</p>
+</div>
+
+<h2>二、为何「无模型」——证据链缺口图</h2>
+<svg class="flow" viewBox="0 0 900 232" role="img" aria-label="欧冠场证据链九步缺口示意：S1赔率已落，S2至S7六步因无联赛画像与无DC参数而断，S8/S9会话层因此无从登记">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 10 5 0 10z" fill="currentColor"/>
+    </marker>
+    <marker id="arx" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 10 5 0 10z" fill="currentColor" opacity=".35"/>
+    </marker>
+  </defs>
+  <g font-family="Microsoft YaHei,system-ui" font-size="12" color="currentColor">
+    <text x="0" y="14" fill="currentColor" font-size="12.5" opacity=".65">国内联赛轮（正常链路）</text>
+    <g stroke="currentColor" stroke-width="1.3" fill="none">
+      <rect x="0" y="26" width="96" height="34" rx="6"/>
+      <rect x="128" y="26" width="110" height="34" rx="6"/>
+      <rect x="270" y="26" width="96" height="34" rx="6"/>
+      <rect x="398" y="26" width="104" height="34" rx="6"/>
+      <rect x="534" y="26" width="104" height="34" rx="6"/>
+      <rect x="670" y="26" width="110" height="34" rx="6"/>
+      <rect x="812" y="26" width="88" height="34" rx="6"/>
+    </g>
+    <g fill="currentColor" text-anchor="middle" font-size="11.5">
+      <text x="48" y="47">S1 赔率</text>
+      <text x="183" y="47">S2 联赛画像</text>
+      <text x="318" y="47">S3 DC</text>
+      <text x="450" y="47">S4 λ</text>
+      <text x="586" y="47">S5 去水</text>
+      <text x="725" y="47">S6 融合</text>
+      <text x="856" y="47">S7 矩阵</text>
+    </g>
+    <g stroke="currentColor" stroke-width="1.3" marker-end="url(#ar)">
+      <path d="M96 43h28"/><path d="M238 43h28"/><path d="M366 43h28"/>
+      <path d="M502 43h28"/><path d="M638 43h28"/><path d="M780 43h28"/>
+    </g>
+
+    <text x="0" y="104" fill="currentColor" font-size="12.5" opacity=".65">本轮欧冠八场（实测链路）</text>
+    <g stroke="currentColor" stroke-width="1.5" fill="none">
+      <rect x="0" y="116" width="96" height="34" rx="6"/>
+    </g>
+    <text x="48" y="137" fill="currentColor" text-anchor="middle" font-size="11.5">S1 赔率</text>
+    <text x="48" y="166" fill="currentColor" text-anchor="middle" font-size="11" opacity=".7">已落</text>
+
+    <g stroke="currentColor" stroke-width="1.3" fill="none" stroke-dasharray="4 3" opacity=".45">
+      <rect x="128" y="116" width="110" height="34" rx="6"/>
+      <rect x="270" y="116" width="96" height="34" rx="6"/>
+      <rect x="398" y="116" width="104" height="34" rx="6"/>
+      <rect x="534" y="116" width="104" height="34" rx="6"/>
+      <rect x="670" y="116" width="110" height="34" rx="6"/>
+      <rect x="812" y="116" width="88" height="34" rx="6"/>
+    </g>
+    <g fill="currentColor" text-anchor="middle" font-size="11.5" opacity=".5">
+      <text x="183" y="137">S2 联赛画像</text>
+      <text x="318" y="137">S3 DC</text>
+      <text x="450" y="137">S4 λ</text>
+      <text x="586" y="137">S5 去水</text>
+      <text x="725" y="137">S6 融合</text>
+      <text x="856" y="137">S7 矩阵</text>
+    </g>
+    <g stroke="currentColor" stroke-width="1.3" marker-end="url(#arx)" opacity=".35">
+      <path d="M96 133h28"/><path d="M238 133h28"/><path d="M366 133h28"/>
+      <path d="M502 133h28"/><path d="M638 133h28"/><path d="M780 133h28"/>
+    </g>
+
+    <g stroke="currentColor" stroke-width="2" opacity=".85">
+      <path d="M112 112l16 42M128 112l-16 42"/>
+    </g>
+    <text x="120" y="176" fill="currentColor" text-anchor="middle" font-size="11" opacity=".8">断于此</text>
+
+    <text x="183" y="196" fill="currentColor" text-anchor="middle" font-size="11" opacity=".7">00-leagues 无欧冠档</text>
+    <text x="318" y="196" fill="currentColor" text-anchor="middle" font-size="11" opacity=".7">跨联赛无参数</text>
+    <text x="586" y="196" fill="currentColor" text-anchor="middle" font-size="11" opacity=".7">S8/S9 因此无从登记</text>
+
+    <text x="0" y="224" fill="currentColor" font-size="11.5" opacity=".75">实测 evidence check 2026-10-13：八场齐缺 S2/S3/S4/S5/S6/S7 六步 —— 剩下的只有市场本身</text>
+  </g>
+</svg>
+
+<h2>三、八场盘面与定性</h2>
+<table>
+<tr><th>场</th><th>对阵</th><th>HAD</th><th>让球盘</th><th>单关</th><th>定性</th></tr>
+<tr><td>周二004</td><td>朗斯 vs 里斯本</td><td>2.27/3.42/2.52</td><td>-1 · 4.60/4.25/1.48</td><td class="mu">—</td><td>本轮最均衡·<span class="warn">divergence</span> 模板与市场背离</td></tr>
+<tr><td>周二005</td><td>国际米兰 vs 布鲁日</td><td class="ok">1.18</td><td>-2 · 2.75/4.20/1.90</td><td class="mu">—</td><td>极端热门·v4b 给 2:2 与市场严重背离</td></tr>
+<tr><td>周二006</td><td>阿森纳 vs 里尔</td><td class="ok">1.16</td><td>-2 · 2.75/3.95/1.95</td><td class="mu">—</td><td>全轮最热（去水约 83%）</td></tr>
+<tr><td>周二007</td><td>比利亚雷 vs 那不勒斯</td><td>2.04/3.40/2.90</td><td>-1 · 4.05/3.95/1.59</td><td class="ok">HAD✓</td><td>可单关但无模型支撑</td></tr>
+<tr><td>周二008</td><td>维京 vs 拜仁</td><td class="bad">未售</td><td>+3 · 2.00/5.00/2.33</td><td class="mu">—</td><td>HAD 三向全空=体彩只售让球·档差最大</td></tr>
+<tr><td>周二009</td><td>莱红牛 vs 埃因霍温</td><td>1.60/4.25/3.73</td><td>-1 · 2.61/3.95/2.03</td><td class="mu">—</td><td>卡面 EV+6%/+28.6% 出自此场，<b>系虚高</b>（见下节）</td></tr>
+<tr><td>周二010</td><td>加拉塔萨 vs 巴萨</td><td>客 <span class="ok">1.19</span></td><td>+2 · 2.05/4.50/2.39</td><td class="mu">—</td><td>唯一客队大热场</td></tr>
+<tr><td>周二011</td><td>马竞 vs 曼联</td><td>1.78/3.70/3.37</td><td>-1 · 3.20/3.85/1.80</td><td class="ok">HAD✓</td><td>跨联赛 DC 不可合成即以此场实测为证</td></tr>
+</table>
+
+<h2>四、<svg class="ic" style="color:var(--warn)"><use href="#i-warn"/></svg>卡面正 EV 不可信——须当场点破</h2>
+<div class="card">
+<p>seq36 翻身档给了莱红牛 HAFU <code>aa@6.10 EV+6%</code>、三池推荐里 TTG <code>s2@5.50 EV+28.6%</code>。<b>这些数字不能信</b>：无锚场的 q 值走联赛频率模板兜底，而温度链缺失会让 freq 口径 EV 虚高 15~35pp（已立为记忆条目）。真实边际不存在，<span class="bad">+28.6% 是刻度错位，不是发现机会</span>。</p>
+<p>同理可证的一桩：卡面彩票档 8 腿<b>全是今晚（10-13）场</b>，非本轮。<code>_filter_onsale</code> 只按在售白名单过滤、不按开赛日切分，而今晚最早场 00:00 才开赛、此刻仍在售，故与新轮同池。机制使然非故障——但今晚已于 12:41 终审定<b>「维持三票不动摇·不增票」</b>（提交 b2a0a0b），那 8 腿不构成新建议。</p>
+</div>
+
+<h2>五、<svg class="ic"><use href="#i-chain"/></svg>流程留痕</h2>
+<table>
+<tr><th>步</th><th>结果</th></tr>
+<tr><td>数据刷新 update</td><td class="ok">17 联赛赔率+画像重建·欧指 46 场·223 球队索引</td></tr>
+<tr><td>data_check 体检</td><td class="ok">通过（8 联赛就绪 / 808 球队）</td></tr>
+<tr><td>dc_fit --auto</td><td class="ok">7 联赛缓存新鲜跳过·土超重拟（home_adv=0.281 rho=0.018 holdout=1.8999）</td></tr>
+<tr><td>lineup_watch tick</td><td class="ok">feed 18 场·inWindow 0（距最早场 &gt;180 分钟，窗口未开）</td></tr>
+<tr><td>boldplay</td><td>seq36 出卡·<span class="warn">approved=false</span>·本记录即人工核=不采纳</td></tr>
+<tr><td>parlay_gate 闯关票</td><td class="mu">不出票（今日在售 0 场 &lt; 2 场门槛·窗口 16 场但 W=2 当日取 0）</td></tr>
+<tr><td>v4b 对照卡</td><td class="ok">8 场全可算 → <code>2026-10-14-v4b.json</code>（定位=对照，勿采其比分）</td></tr>
+<tr><td>影子层登记</td><td class="ok">14 票 / 7 腿冻结五池真实价（盲测照常积累——纯市场锚轮正是影子层价值所在）</td></tr>
+<tr><td>evidence check</td><td>八场缺六步，缺步标注不补造</td></tr>
+<tr><td><svg class="ic"><use href="#i-pulse"/></svg>health_check 巡检</td><td><span class="warn">yellow</span>·八探测仅 fdSymptom 黄（近 14 天 130 场无 pinClose 123 场=fd 断粮已知挂账），其余全绿</td></tr>
+</table>
+
+<h2>六、<svg class="ic"><use href="#i-clock"/></svg>时间线</h2>
+<div class="card">
+<ul>
+<li><b>今晚 21:30</b> lineup_watch 进入今晚十场首发窗口；<b>T046 亚特兰大腿「阵容齐整」假设届时复核</b>（该腿 00:30 开赛，是 T046 唯一待赛腿，卡利亚里腿已爆）。</li>
+<li><b>今晚 00:30~03:15</b> 十场陆续开赛；T047 第戎 CRS 1:1@6.5 腿 02:45 见分晓。</li>
+<li><b>明日 00:45 / 03:00</b> 本轮欧冠八场开赛——不持仓，纯观察。</li>
+<li><b>明晨「回填赛果」</b>自动结算影子 15 张（P448~P462·V3W 换代首批）+ T046/T047 尾腿。</li>
+</ul>
+</div>
+
+<div class="src"><b>数据来源</b>：engine/cache/sporttery_matches.json（18:55 刷新·在售 18 场=10-13 十场+10-14 八场）｜data/03-predictions/2026-10-12-boldplay.json（seq36）｜data/03-predictions/2026-10-14-v4b.json｜data/02-results/2026-10-14.json（本轮预测记录）｜engine/cache/evidence/2026-10-13/（证据链 16 场）｜data/04-summaries/health-check.json｜engine/shadow/paper_tickets.json（P463~P476 共 14 票）｜data/06-tickets/tickets.json（T045~T047）</div>
+</div>
+</body>
+</html>

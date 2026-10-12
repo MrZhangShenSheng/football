@@ -1,0 +1,238 @@
+{
+ "date": "2026-10-14",
+ "version": "v5.14",
+ "saleDay": "2026-10-13",
+ "roundNote": "欧冠联赛阶段第三轮·八场全杯赛跨联赛对位。本轮特殊性=系统无欧冠联赛画像(data/00-leagues 无 champions 档)、DC 按单一联赛拟合致跨联赛无参数(实测 run.py predict spain-laliga 马竞 曼联 → 曼联=None)，evidence check 八场齐缺 S2_profiles/S3_dc/S4_lambda/S5_devig/S6_fusion/S7_matrix 六步。按铁律10同口径标注=纯市场锚，非模型输出。",
+ "plans": [
+  {
+   "plan": "不出票",
+   "type": "—",
+   "stake": "0元",
+   "legs": [
+    "八场全 low_conf + pure_template(boldplay seq36 flags 实证)",
+    "按 skill/SKILL.md:199 转正补条款——无锚场(dc_used=false)纯模板腿=pending 不得入票",
+    "CRS 闸门八场全关(族峰值 21.7%~24.0% < 闸门 28%)",
+    "2026-09-17 杯赛轮 6 条 dc=null 模板腿直接入票已立为反例"
+   ]
+  }
+ ],
+ "matches": [
+  {
+   "idx": 1,
+   "code": "周二004",
+   "matchId": 2041953,
+   "league": "欧冠",
+   "match": "朗斯 vs 里斯本",
+   "pick": "排除:纯市场锚(无DC无画像·pure_template)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null,
+   "market": {
+    "had": {"h": 2.27, "d": 3.42, "a": 2.52},
+    "hhad": {"goalLine": "-1", "h": 4.60, "d": 4.25, "a": 1.48},
+    "poolSingleHAD": 0
+   },
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "note": "三向最均衡场(去水后近三分天下)·divergence 旗标=模板与市场背离·v4b对照 1:1@7.0 与市场最热同向",
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none"
+  },
+  {
+   "idx": 2,
+   "code": "周二005",
+   "matchId": 2041954,
+   "league": "欧冠",
+   "match": "国际米兰 vs 布鲁日",
+   "pick": "排除:纯市场锚(无DC无画像·超低赔胆)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null,
+   "market": {
+    "had": {"h": 1.18, "d": 5.60, "a": 9.75},
+    "hhad": {"goalLine": "-2", "h": 2.75, "d": 4.20, "a": 1.90},
+    "poolSingleHAD": 0
+   },
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "note": "主胜 1.18 极端热门·HAD 不可单关(poolSingle.HAD=0)·v4b对照 2:2@19.0 与市场严重背离(模型给平局族·市场给碾压)",
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none"
+  },
+  {
+   "idx": 3,
+   "code": "周二006",
+   "matchId": 2041955,
+   "league": "欧冠",
+   "match": "阿森纳 vs 里尔",
+   "pick": "排除:纯市场锚(无DC无画像·超低赔胆)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null,
+   "market": {
+    "had": {"h": 1.16, "d": 5.70, "a": 11.00},
+    "hhad": {"goalLine": "-2", "h": 2.75, "d": 3.95, "a": 1.95},
+    "poolSingleHAD": 0
+   },
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "note": "本轮最热主胜 1.16(去水约83%)·HAD 不可单关·v4b对照 1:1@10.5 同属背离",
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none"
+  },
+  {
+   "idx": 4,
+   "code": "周二007",
+   "matchId": 2041956,
+   "league": "欧冠",
+   "match": "比利亚雷 vs 那不勒斯",
+   "pick": "排除:纯市场锚(无DC无画像·pure_template)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null,
+   "market": {
+    "had": {"h": 2.04, "d": 3.40, "a": 2.90},
+    "hhad": {"goalLine": "-1", "h": 4.05, "d": 3.95, "a": 1.59},
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "note": "HAD 可单关(poolSingle.HAD=1)·三向偏主·CRS族峰值 23.5% 关档·v4b对照 1:1@6.75",
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none"
+  },
+  {
+   "idx": 5,
+   "code": "周二008",
+   "matchId": 2041957,
+   "league": "欧冠",
+   "match": "维京 vs 拜仁",
+   "pick": "排除:纯市场锚(无DC无画像·HAD未售)",
+   "odds": null,
+   "star": null,
+   "grade": "D",
+   "inPlan": null,
+   "market": {
+    "had": null,
+    "hhad": {"goalLine": "+3", "h": 2.00, "d": 5.00, "a": 2.33},
+    "poolSingleHAD": null
+   },
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "note": "HAD 三向全空=体彩只售让球盘(让+3 极端档差)·档差最大场·v4b对照 2:2@28.0 无参考价值",
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none"
+  },
+  {
+   "idx": 6,
+   "code": "周二009",
+   "matchId": 2041958,
+   "league": "欧冠",
+   "match": "莱红牛 vs 埃因霍温",
+   "pick": "排除:纯市场锚(无DC无画像·pure_template)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null,
+   "market": {
+    "had": {"h": 1.60, "d": 4.25, "a": 3.73},
+    "hhad": {"goalLine": "-1", "h": 2.61, "d": 3.95, "a": 2.03},
+    "poolSingleHAD": 0
+   },
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "note": "boldplay 翻身档候选 HAFU aa@6.10 EV+6% 来源于此场——但 EV 正值系模板 q 值虚高(记忆: freq q 口径 EV 虚高15-35pp·温度链缺失)，非真边际；TTG s2 标 EV+28.6% 更属此症",
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none"
+  },
+  {
+   "idx": 7,
+   "code": "周二010",
+   "matchId": 2041959,
+   "league": "欧冠",
+   "match": "加拉塔萨 vs 巴萨",
+   "pick": "排除:纯市场锚(无DC无画像)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null,
+   "market": {
+    "had": {"h": 7.70, "d": 6.30, "a": 1.19},
+    "hhad": {"goalLine": "+2", "h": 2.05, "d": 4.50, "a": 2.39},
+    "poolSingleHAD": 0
+   },
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "note": "客胜 1.19 极热·唯一客队大热场·土超 DC 本轮刚重拟(home_adv=0.281 rho=0.018·加拉塔萨攻击力+0.66 联赛第2)但跨联赛不可用·v4b对照 2:2@16.0",
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none"
+  },
+  {
+   "idx": 8,
+   "code": "周二011",
+   "matchId": 2041960,
+   "league": "欧冠",
+   "match": "马竞 vs 曼联",
+   "pick": "排除:纯市场锚(无DC无画像·pure_template)",
+   "odds": null,
+   "star": null,
+   "grade": "C",
+   "inPlan": null,
+   "market": {
+    "had": {"h": 1.78, "d": 3.70, "a": 3.37},
+    "hhad": {"goalLine": "-1", "h": 3.20, "d": 3.85, "a": 1.80},
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "note": "HAD 可单关·实测跨联赛 DC 不可合成即以此场为例(马竞在西甲参数内·曼联=None)·v4b对照 1:0@11.0 信号0.2434 为八场最高",
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none"
+  }
+ ],
+ "evidenceChain": {
+  "dir": "engine/cache/evidence/2026-10-13",
+  "note": "S1 按体彩 businessDate(销售日)分目录，故 10-14 凌晨欧冠场落在 2026-10-13 目录。八场齐缺 S2/S3/S4/S5/S6/S7——缺步标注不补造。",
+  "missingSteps": ["S2_profiles", "S3_dc", "S4_lambda", "S5_devig", "S6_fusion", "S7_matrix", "S8_hypothesis", "S9_scheme"]
+ },
+ "shadowRegistered": {
+  "saleDay": "2026-10-14",
+  "legs": 7,
+  "tickets": 14,
+  "ids": "P463~P476",
+  "note": "影子层照常登记(盲测积累不受入票纪律限制)——纯市场锚轮正是影子层价值所在"
+ },
+ "parlayGate": {
+  "status": "不出票",
+  "reason": "今日在售 0 场 < 2 场(方案A门槛)·窗口共16场但 W=2 跨日池取当日=0"
+ },
+ "healthCheck": "yellow(仅 fdSymptom 黄·近14天130场无pinClose 123场=fd断粮已知挂账)·其余七探测全绿"
+}
