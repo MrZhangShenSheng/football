@@ -146,8 +146,36 @@ def check_none_ratio() -> tuple[str, str]:
     return lvl, f"近 7 文件非排除回填 {n} 场·命中全None {bad}（{pct:.0f}%）"
 
 
+def check_espn_blacklist() -> tuple[str, str]:
+    """ESPN 黑名单口径一致性 + 别名表有害重复 tid（批二实证：黑名单陈旧化让
+    「美职」等六项有码却判不可得，圣路易城须人肉补；重复 tid 后者覆盖前者会静默
+    吞掉可用别名）。两者皆为静默失败，须常驻可见。"""
+    sys.path.insert(0, str(Path(__file__).parent))
+    import backfill as bf
+    msgs = []
+    overlap = set(bf.LEAGUE_ESPN) & bf.ESPN_UNAVAILABLE
+    if overlap:
+        msgs.append(f"黑名单与码表交集 {sorted(overlap)}")
+    raw = json.loads((ROOT / "data" / "01-teams" / "_aliases.json").read_text(encoding="utf-8"))
+    seen: dict[str, list] = {}
+    for league, teams in raw.items():
+        if league.startswith("_") or not isinstance(teams, dict):
+            continue
+        for tid, srcs in teams.items():
+            if isinstance(srcs, dict):
+                seen.setdefault(tid, []).append(srcs.get("espn"))
+    harmful = [t for t, v in seen.items()
+               if len(v) > 1 and v[-1] is None and any(x for x in v[:-1])]
+    if harmful:
+        msgs.append(f"有害重复tid {harmful[:4]}")
+    lvl = YELLOW if msgs else GREEN
+    return lvl, "；".join(msgs) if msgs else (
+        f"黑名单 {len(bf.ESPN_UNAVAILABLE)} 项无交集·别名表无有害重复")
+
+
 CHECKS = [
     ("ledgerFreshness", check_ledger_freshness),
+    ("espnBlacklist", check_espn_blacklist),
     ("fdSymptom", check_fd_symptom),
     ("dataCheckProbe", check_data_check_probe),
     ("corruptPiles", check_corrupt_piles),
