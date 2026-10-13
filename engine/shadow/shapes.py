@@ -429,6 +429,9 @@ def _pick_price(tleg, pick, outcome, score):
     if pick in ('胜其他', '平其他', '负其他'):
         want = {'胜其他': 0, '平其他': 1, '负其他': 2}[pick]
         return odds.get(pick) if outcome == want else None
+    if pick in ('other_h', 'other_d', 'other_a'):   # L 族归一 other 键（review fix·2026-10-13）
+        want = {'other_h': 0, 'other_d': 1, 'other_a': 2}[pick]
+        return odds.get(pick) if outcome == want else None
     return odds.get(pick) if pick == f'{h}:{a}' else None
 
 

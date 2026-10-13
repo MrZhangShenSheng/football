@@ -432,9 +432,9 @@ def shadow_all(date=None, out=None):
             if tl['kind'] in ('ttg', 'crs'):
                 src_leg = legs[tl['src']]
                 pool = (src_leg.get('pools') or {}).get(tl['kind']) or {}
-                if tl['kind'] == 'crs':          # 体彩原始键 s01s00 → '1:0'
-                    pool = {(f"{int(k[1:3])}:{int(k[4:6])}" if k.startswith('s') and k[3] == 's' else k): v
-                            for k, v in pool.items()}
+                if tl['kind'] == 'crs':          # 体彩原始键三态归一：s01s00→'1:0'、s1sh/s1sd/s1sa
+                    pool = {(_llm_pick_key(k) or k): v         # →other_*（review fix·L族other腿冻价）
+                            for k, v in pool.items()}          # 复用 _llm_pick_key 与 L 族装载同口径
                 real = {k: float(v) for k, v in pool.items()
                         if k in tl['picks'] and _isnum(v)}
                 if real:

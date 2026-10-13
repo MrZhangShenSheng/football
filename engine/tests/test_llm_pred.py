@@ -103,3 +103,64 @@ def test_chinese_other_keys_mapped():
     out.unlink()
     (pathlib.Path(le.CARDS_ROOT) / "2026-10-14z" / "周二001.json").unlink()
     (pathlib.Path(le.CARDS_ROOT) / "2026-10-14z").rmdir()
+
+
+def test_llm_other_pick_e2e_freeze_and_settle(tmp_path, monkeypatch):
+    """review fix·HIGH 端到端：L 族 other_h 选腿全程打通——建票 picks 含 other_h →
+    shadow_all 覆盖层冻到实盘池 s1sh 真实价 → settle 赛果 6:0（outcome=0 主胜，6:0 属
+    胜其他命中域）→ payout>0。复现路径=reviewer：pools.crs 体彩原始键 s1sh，L 族 picks
+    归一 pick 键 other_h——覆盖层缺 s1sh→other_h 映射则冻不到价、_pick_price 缺 other_*
+    分支则结算恒 miss。开发者 sszhang"""
+    import importlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "shadow"))
+    paper = importlib.import_module("paper")
+    shapes = importlib.import_module("shapes")
+    import llm_pred as le
+    from llm_card import build_card, save_card
+    import subprocess
+
+    DATE = "2026-10-13"
+    # ① 数据卡（市场层 crs 含 s1sh=30.0 真实价）+ llm 冻结预测（p_crs 含 other_h）
+    crs = {f"s{i:02d}s{j:02d}": 5.0 + i + j for i in range(5) for j in range(5)}
+    crs.update({"s1sh": 30.0, "s1sd": 30.0, "s1sa": 30.0, "s00s03": 40.0})
+    cards_root = tmp_path / "cards"
+    preds = []
+    for i in range(1, 5):
+        m = {"matchNumStr": f"周二{i:03d}", "league": "英超", "home": f"A{i}", "away": f"B{i}",
+             "matchTime": "t", "had": {"h": 1.2 + 0.1 * i, "d": 5.0, "a": 9.0}, "crs": dict(crs), "ttg": {}}
+        save_card(build_card(DATE, m, insight_path=None, lineups={}, now="2026-10-13T10:00:00"),
+                  DATE, root=cards_root)
+        preds.append({"code": f"周二{i:03d}",
+                      "p_crs": {"other_h": 0.12, "0:3": 0.10, "1:1": 0.50, "1:0": 0.28},
+                      "keyJudgments": [{"judgment": "j", "evidence": "e"}], "confidence": "low"})
+    monkeypatch.setattr(le, "CARDS_ROOT", cards_root)
+    monkeypatch.setattr(le, "PREDS_ROOT", tmp_path / "preds")
+    le.freeze(DATE, preds)                       # 真实冻结链：卡键集校验+归一落盘
+    # ② shadow_all 全链（假 sporttery 清单+假 REPO；qcache/v4b 快照缺→诚实跳过，subprocess 禁跑）
+    fake_repo = tmp_path / "repo"
+    (fake_repo / "engine" / "cache").mkdir(parents=True)
+    (fake_repo / "engine" / "cache" / "sporttery_matches.json").write_text(json.dumps({"matches": [
+        {"code": f"周二{i:03d}", "matchDate": DATE, "home": f"A{i}", "away": f"B{i}", "league": "英超",
+         "had": {"h": 1.2 + 0.1 * i, "d": 5.0, "a": 9.0}, "crs": dict(crs), "ttg": {"s3": 4.0}}
+        for i in range(1, 5)]}), encoding="utf-8")
+    monkeypatch.setattr(paper, "REPO", str(fake_repo))
+    monkeypatch.setattr(paper, "LLM_PREDS_DIR", str(tmp_path / "preds"))
+    monkeypatch.setattr(paper, "LLM_CARDS_DIR", str(cards_root))
+    monkeypatch.setattr(shapes, "load_qcache", lambda d: {"x": {}})     # 非 None → 不触发 freq_snap 生成
+    monkeypatch.setattr(shapes, "load_v4b_snap", lambda d: None)        # v4b 缺快照 → subprocess 被禁后降级跳过
+    monkeypatch.setattr(subprocess, "run", lambda *a, **k: (_ for _ in ()).throw(RuntimeError("test-no-subproc")))
+    ledger = tmp_path / "paper_tickets.json"
+    out = paper.shadow_all(DATE, out=ledger)
+    assert out["registered"] >= 1
+    tk = next(t for t in paper.load_tickets(ledger) if t["spec_name"] == "llm-31格选腿")
+    assert tk["chain"] and tk["chain"]["chain"] == "llm-31grid-v1"      # Fix 2：L 族链籍 stamp
+    oh_leg = next(l for l in tk["legs"] if "other_h" in l["pick"])
+    assert oh_leg["odds"].get("other_h") == 30.0                        # s1sh→other_h 冻到真实价
+    # （odds_src 由 register 的 _norm_leg 固定键重建丢弃——全族既有行为，非断言面）
+    # ③ 结算：赛果 6:0（outcome=0 主胜，6:0 属胜其他命中域）→ 含 other_h 的注派彩
+    rr = {f"周二{i:03d}": (0, (6, 0)) for i in range(1, 5)}
+    settled = paper.settle_all(rr, date=DATE, path=ledger)
+    ltk = next(t for t in settled if t["spec_name"] == "llm-31格选腿")
+    assert ltk["payout"] > 0
+    oh_settled = next(l for l in ltk["legs"] if "other_h" in l["pick"])
+    assert oh_settled["result"] == "hit" and oh_settled["hitPrice"] == 30.0   # 腿级明细同口径命中
