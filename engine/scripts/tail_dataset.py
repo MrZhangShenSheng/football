@@ -207,7 +207,8 @@ TAIL_LEAGUE_MAP = {
     "日职": "japan", "韩职": "korea", "美职": "usa", "挪超": "norway", "瑞超": "sweden",
     "丹超": "denmark", "沙特": "saudi", "巴西": "brazil", "欧冠": "uefa-champions",
     "欧联": "uefa-europa", "欧国联": "uefa-nations", "世预赛": "world-cup-qual",
-    "世界杯": "world-cup", "解放者杯": "libertadores", "亚冠精英": "asian-u23",
+    "世界杯": "world-cup", "解放者杯": "libertadores",
+    # 亚冠精英无对应库（ACL Elite 未建库）——不映射=模板 None 诚实降级，禁止错挂 asian-u23（review MEDIUM 裁决）
 }
 
 
