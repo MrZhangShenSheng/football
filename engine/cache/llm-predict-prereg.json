@@ -36,5 +36,5 @@
     "预测文件幂等只读禁覆写；数据卡语境层回写后重算 cardHash",
     "主判据 FAIL → LLM 不进任何整体预测叙事；右尾通道独立判定"
   ],
-  "frozenParams": {"boot_B": 2000, "seed": 20261015, "logloss_clip": 1e-06, "min_pool_items": 20, "tail_odds_floor": 30.0, "tail_fixed_cells": ["0:3", "0:4"]}
+  "frozenParams": {"boot_B": 2000, "seed": 20261015, "logloss_clip": 1e-06, "min_pool_items": 20, "tail_odds_floor": 30.0, "tail_fixed_cells": ["0:3", "0:4"], "tail_n_formal": 150}
 }

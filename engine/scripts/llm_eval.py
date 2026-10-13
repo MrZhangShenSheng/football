@@ -59,10 +59,14 @@ def _pick_pool(raw: dict) -> dict:
     return out
 
 
-def actual_key(score: str) -> str | None:
+def actual_key(score: str, pool: dict | None = None) -> str | None:
+    """赛果→计分键（终审 fix：池感知）。真实体彩 31 格不含 4:3/4:4/5:3/5:4/4:5/3:5/5:5——
+    未定格键须按方向落 other_*（否则按结果相关性静默丢行≈1~1.5%·恰为右尾高比分域）。
+    pool 提供时：格键有价返格键，无价返 other_*；pool=None 旧行为（网格≤5 直返）。开发者 sszhang"""
     h, a = (int(x) for x in score.split(":"))
-    if h <= 5 and a <= 5:
-        return f"{h}:{a}"
+    grid = f"{h}:{a}"
+    if h <= 5 and a <= 5 and (pool is None or (pool.get(grid) and float(pool[grid]) > 1.0)):
+        return grid
     return "other_h" if h > a else ("other_d" if h == a else "other_a")
 
 
@@ -206,8 +210,11 @@ def evaluate(days: list[str]) -> dict:
         mkt = market_devig_on_keys(r["_marketPool"], keys)
         if not mkt or r["_actual"] not in mkt:
             continue                                    # 池不足/键缺失→双侧同跳
-        a = r["_actual"]
-        llm = r["p_crs"]
+        a = actual_key(r["_score"], r["_marketPool"])   # 池感知：未定格键落 other_*（终审 fix）
+        llm_raw = r["p_crs"]
+        z = sum(llm_raw.get(k, 0.0) for k in keys)
+        llm = {k: (llm_raw.get(k, 0.0) / z if z > 0 else 1.0 / len(keys)) for k in keys}
+        # ↑ LLM 侧同样在计分键集上条件归一（prereg keyset 字面·双侧对称）
         diffs_full.append(-math.log(max(mkt[a], LOGLLOSS_CLIP)) + math.log(max(llm.get(a, 0.0), LOGLLOSS_CLIP)))
         proxy_split.setdefault(r["_closeProxy"], []).append(diffs_full[-1])
         tk = tail_keys_of(r["_marketPool"])
@@ -224,7 +231,8 @@ def evaluate(days: list[str]) -> dict:
                                - _ll(sum(llm.get(k, 0.0) for k in _event_keys(e, r["_marketPool"])), bool(y[j])))
 
     def verdict(diffs, gate_formal, gate_final):
-        """闸门顺序（review fix·对齐 prereg 字母）：n<formal 一律 INSUFFICIENT（数字照出
+        """词表映射：代码 FAIL=prereg FALSIFIED/续判终态（n≥200 仍 UNDETECTED 方向→FAIL
+        是 prereg verdictRules 的合理外推·终审 LOW 注明）。闸门顺序（review fix·对齐 prereg 字母）：n<formal 一律 INSUFFICIENT（数字照出
         但不判定——防 observe 窗提前 PASS/FAIL 杀轨）；n≥formal 才四态；tail 侧由
         调用方传 gate_formal=150（tailChannel.pass 双条件 CI 下限>0 且 n≥150）。开发者 sszhang"""
         n = len(diffs)
@@ -270,7 +278,9 @@ def check_prereg() -> dict:
     fp = pr["frozenParams"]
     expect = {"boot_B": BOOT_B, "seed": SEED, "logloss_clip": LOGLLOSS_CLIP,
               "min_pool_items": MIN_POOL_ITEMS, "tail_odds_floor": TAIL_ODDS_FLOOR,
-              "tail_fixed_cells": list(TAIL_FIXED_CELLS)}
+              "tail_fixed_cells": list(TAIL_FIXED_CELLS), "tail_n_formal": TAIL_N_FORMAL}
+    if pr.get("primaryCriterion", {}).get("nGate") != N_GATE:      # 闸门常量双向锁（终审 fix）
+        raise SystemExit(f"[prereg] nGate={pr['primaryCriterion']['nGate']} ≠ 模块 N_GATE {N_GATE}")
     for k, v in expect.items():
         if fp.get(k) != v:
             raise SystemExit(f"[prereg] frozenParams.{k}={fp.get(k)} ≠ 模块常量 {v}")

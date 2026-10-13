@@ -35,7 +35,7 @@ def test_evaluate_verdict_machinery(tmp_path, monkeypatch):
         day_rows.append({"code": code, "cardHash": "x" * 16,
                          "p_crs": p, "pRawSum": 1.0, "rawSumWarn": False,
                          "contextStatus": "ok", "keyJudgments": [], "confidence": "medium",
-                         "_marketPool": pool, "_actual": "1:1", "_closeProxy": "lineupLast"})
+                         "_marketPool": pool, "_actual": "1:1", "_score": "1:1", "_closeProxy": "lineupLast"})
     monkeypatch.setattr(le, "_load_day_rows", lambda days: day_rows)
     out = evaluate(["2026-10-14"])
     assert out["primary"]["n"] == 35
@@ -78,3 +78,15 @@ def test_verdict_gates_locked():
         assert out150["tailChannel"]["verdict"] == "PASS"          # n=150 开闸
     finally:
         le._boot_ci_diff = orig
+
+
+def test_actual_key_pool_aware():
+    """终审 fix：未定格键（4:3/4:4/5:3...真实31格不含）按方向落 other_*，不再静默丢行。"""
+    import llm_eval as le
+    pool = {"1:1": 7.0, "4:3": 0}                     # 4:3 无价（真实存档不含此格）
+    assert le.actual_key("1:1", pool) == "1:1"
+    assert le.actual_key("4:3", pool) == "other_h"    # 有比分无价→落 other
+    assert le.actual_key("4:4", pool) == "other_d"
+    assert le.actual_key("3:4", pool) == "other_a"
+    assert le.actual_key("6:0", pool) == "other_h"
+    assert le.actual_key("4:3") == "4:3"              # pool=None 旧行为保留
