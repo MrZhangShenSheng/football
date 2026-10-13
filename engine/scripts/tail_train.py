@@ -353,6 +353,7 @@ def render_report(result_all: dict) -> str:
                  "<li>E2/E3 为 0..5 精确格口径（双侧同网格·outcome 同网格）；other 全口径未进判据（exploratory）</li>"
                  "<li>HistGB 原生吃 nan 与 logistic 的 train-mean 填充 impute 口径不同，仅 exploratory</li>"
                  "<li>特征市场价只用 crsOpen；ttg/had/crs 封盘只作对手盘（防泄漏口径）</li>"
+                "<li>信息不对等残留：模型=开盘+历史特征 vs 对手盘=封盘价——输的部分含开盘→封盘市场吸收的增量（无法完全分解为『模型无信息』；未映射层输更狠佐证特征越多差距越小）</li>"
                  "<li>featMask 分层为红线②要求（防『只在易映射联赛赢』假象）</li>"
                  "<li>主判据 FAIL → tail_pick/影子层不激活（prereg 红线）</li></ul>")
     lines.append("<p style=\"color:#888;font-size:12px\">开发者 sszhang · 判据预注册 engine/cache/tail-model-prereg.json · 铁律 14②/15</p>")
