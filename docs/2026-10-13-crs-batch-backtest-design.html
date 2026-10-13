@@ -1,0 +1,164 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>比分端三层降级链分批回测·设计冻结（判据预注册凭证）</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; line-height: 1.7;
+         max-width: 960px; margin: 2rem auto; padding: 0 1.2rem;
+         color: #1f2933; background: #f7f8fa; }
+  @media (prefers-color-scheme: dark) {
+    body { color: #d7dde3; background: #16191d; }
+    table, th, td { border-color: #3c444d !important; }
+    th { background: #22272d !important; }
+    code, .path { background: #22272d !important; }
+    .warn { background: #2e2418 !important; }
+    .muted { color: #8b949e !important; }
+  }
+  h1 { font-size: 1.5rem; border-bottom: 2px solid #4a6fa5; padding-bottom: .4rem; }
+  h2 { font-size: 1.15rem; margin-top: 2rem; color: #4a6fa5; }
+  table { border-collapse: collapse; width: 100%; margin: .8rem 0; background: transparent; }
+  th, td { border: 1px solid #c8cdd3; padding: .45rem .6rem; text-align: left; vertical-align: top;
+           font-size: .92rem; }
+  th { background: #e8ecf1; white-space: nowrap; }
+  code, .path { font-family: "SF Mono", Menlo, Consolas, monospace; font-size: .85em;
+                background: #eceff3; padding: .05rem .3rem; border-radius: 3px; }
+  .warn { background: #fdf3e3; border-left: 4px solid #c77f0a; padding: .6rem .9rem; margin: .8rem 0; }
+  .meta { color: #6b7480; font-size: .9rem; }
+  .muted { color: #6b7480; }
+  .mono-num { font-variant-numeric: tabular-nums; }
+  ul { margin: .4rem 0; padding-left: 1.4rem; }
+</style>
+</head>
+<body>
+
+<h1>比分端三层降级链分批回测·设计冻结</h1>
+<p class="meta">
+  冻结日期：2026-10-13 · 版本：v1 ·
+  判据凭证：<span class="path">engine/cache/batch-backtest-prereg.json</span>（逐字冻结，跑后禁改口径）·
+  设计来源：<span class="path">docs/superpowers/plans/2026-10-13-crs-batch-backtest.md</span> §设计冻结
+</p>
+<p>对生产比分端三层降级链（市场CRS去水 → market_lambda 反解 → V3W 兜底）做防泄漏的分批回测，
+以真实体彩赔率结算收益率。<strong>判据跑前冻结</strong>：本文档与 prereg JSON 必须先于一切回测代码执行 commit（铁律 14②）。
+回测执行时 <code>check_prereg()</code> 校验指纹一致才允许出报告。</p>
+
+<h2>一、数据源</h2>
+<ul>
+  <li><span class="path">engine/cache/hist_odds/crs_hist_2023-09-01_2025-09-30.json</span>（8575 场）</li>
+  <li><span class="path">engine/cache/hist_odds/crs_hist_2025-10-01_2026-09-28.json</span>（4999 场）</li>
+</ul>
+<p>每场字段：<code>matchId, code, date, league, home, away, score("h:a"), halfScore,
+had{h,d,a}, single, crs(封盘31项), crsOpen(开盘), crsSnapshots, ttg</code>。
+crs 键格式：<code>"5:0"</code> / <code>"other_h"</code> / <code>"other_d"</code> / <code>"other_a"</code>（已归一，与生产 pick 键同构）。</p>
+
+<h2>二、四臂定义（强制路由，非生产降级语义）</h2>
+<table>
+  <thead><tr><th>臂</th><th>输入</th><th>输出排序</th><th>回答</th></tr></thead>
+  <tbody>
+    <tr><td><strong>A0_close_null</strong></td>
+        <td>封盘 crs → <code>mkl.crs_power_devig</code></td>
+        <td>去水概率降序</td>
+        <td>null 天花板（自检≈84%）</td></tr>
+    <tr><td><strong>A1_open_devig</strong></td>
+        <td>开盘 crsOpen → <code>mkl.crs_power_devig</code></td>
+        <td>同上</td>
+        <td>开盘信息价值</td></tr>
+    <tr><td><strong>A2_lambda_reverse</strong></td>
+        <td>封盘 ttg+had → <code>mkl.lam_sum_from_ttg</code>+<code>mkl.solve_lamh</code> → <code>sm.dc_matrix(λ, RHO_ZERO)</code></td>
+        <td>矩阵概率降序</td>
+        <td>反解结构增益</td></tr>
+    <tr><td><strong>A3_v3w_model</strong></td>
+        <td><code>se._predict_match(hid, aid, date-1, ctx, memo, beta=0.05)</code> → matrix</td>
+        <td>矩阵概率降序</td>
+        <td>V3W 纯模型臂（主判据）</td></tr>
+    <tr><td><strong>A4_prod_fallback</strong></td>
+        <td><code>pick_source({"crs": crsOpen归一, "ttg": ttg, "had": had})</code> → None 则 A3</td>
+        <td>各 src 排序</td>
+        <td>生产降级链一致性（预期≈A1）</td></tr>
+  </tbody>
+</table>
+<p class="muted">结算器与预测器物理分离；复用 strength_chain_eval 的 as-of 组件与 bootstrap 工具，不改动生产链任何文件。</p>
+
+<h2>三、窗口</h2>
+<table>
+  <thead><tr><th>窗</th><th>日期区间</th><th>预期场次</th><th>定位</th><th>prereg role</th></tr></thead>
+  <tbody>
+    <tr><td><strong>W1</strong></td><td class="mono-num">2026-07-01 ~ 2026-09-28</td><td class="mono-num">~1000</td>
+        <td>管道验证（结论不作依据）</td><td>pipeline-check</td></tr>
+    <tr><td><strong>W2</strong></td><td class="mono-num">2026-04-01 ~ 2026-09-28</td><td class="mono-num">~2400</td>
+        <td>参考（含参数回望）</td><td>reference-param-lookback</td></tr>
+    <tr><td><strong>W3</strong></td><td class="mono-num">2024-10-01 ~ 2025-09-30</td><td class="mono-num">~2900</td>
+        <td><strong>裁决窗</strong>（真时间外）</td><td>adjudication</td></tr>
+  </tbody>
+</table>
+
+<h2>四、主判据与红线</h2>
+<h3>主判据（唯一）</h3>
+<table>
+  <thead><tr><th>项</th><th>冻结值</th></tr></thead>
+  <tbody>
+    <tr><td>窗口</td><td>W3（裁决窗·真时间外）</td></tr>
+    <tr><td>对比</td><td class="mono-num">A3_v3w_model vs A1_open_devig（基线）</td></tr>
+    <tr><td>指标</td><td>top1 回收率逐场配对差</td></tr>
+    <tr><td>置信区间</td><td>bootstrap95 B=2000</td></tr>
+    <tr><td>PASS 条件</td><td><strong>CI 下限 &gt; 0</strong></td></tr>
+  </tbody>
+</table>
+<h3>次判据（secondary）</h3>
+<table>
+  <thead><tr><th>窗口</th><th>臂</th><th>基线</th><th>指标</th></tr></thead>
+  <tbody>
+    <tr><td>W3</td><td class="mono-num">A2_lambda_reverse</td><td class="mono-num">A1_open_devig</td><td>同上</td></tr>
+    <tr><td>W3</td><td class="mono-num">A4_prod_fallback</td><td class="mono-num">A1_open_devig</td><td>同上·预期≈0</td></tr>
+  </tbody>
+</table>
+<h3>exploratory 锁定</h3>
+<p>以下输出全部标 <code>exploratory: true</code>，不进结论：W1、W2、top2-4、口径二模拟实票、联赛分层。
+（多重比较锁定：主判据唯一，其余输出全部 exploratory。）</p>
+<h3>红线（双条）</h3>
+<div class="warn">
+  <ol>
+    <li>任何臂窗口回收率&gt;1.0 → 先 <code>--leak-audit</code>(A/B as_of-3天)+随机基线，不过不进结论。</li>
+    <li>A0 top1 回收率窗内偏离 0.80~0.88 → 管道 bug 中断。</li>
+  </ol>
+</div>
+
+<h2>五、结算口径</h2>
+<ul>
+  <li><strong>口径一（主判据）</strong>：逐场 top1~4 单关、每注 2 元、封盘价成交。
+      <code>回收率 = Σ派彩 / Σ(2×k)</code>；派彩 = 命中时 <code>2 × odds[pick]</code>。</li>
+  <li><strong>口径二（参考）</strong>：每日按 A3 排序取前 4 场 × 每场 top2 双选组 12 注 24 元模拟票
+      （复刻生产出卡），标 <code>exploratory</code>。</li>
+  <li><strong>配对差</strong>：同场同 k 的逐注派彩差 → <code>_boot_ci_diff(diffs)</code> 95% CI。</li>
+  <li><strong>配对完整性</strong>：缺 crsOpen（&lt;20 项）的场次四臂同跳，禁单臂跳（防选择偏倚）。</li>
+</ul>
+
+<h2>六、已知限制（报告必标，共三条）</h2>
+<table>
+  <thead><tr><th>#</th><th>限制</th><th>影响</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>A2/A4 层2 输入用封盘 ttg/had</td>
+        <td>hist_odds 无 ttgOpen/hadOpen——层2 反解输入非开盘时点，对 A2 的"结构增益"读数需打折</td></tr>
+    <tr><td>2</td><td>A3/A4 决策时点=开赛前一日</td>
+        <td>生产=临场；回测模型臂的信息时点早于生产，回收率读数非生产复刻</td></tr>
+    <tr><td>3</td><td>W1/W2 含 V3W 参数回望</td>
+        <td>HST 10956 场含近期——仅 W3（2024-10~2025-09）为真时间外，故裁决窗唯一</td></tr>
+  </tbody>
+</table>
+
+<h2>七、冻结参数（frozenParams）</h2>
+<table>
+  <thead><tr><th>参数</th><th>值</th><th>含义</th></tr></thead>
+  <tbody>
+    <tr><td><code>beta</code></td><td class="mono-num">0.05</td><td>V3W 时间衰减系数（A3 臂）</td></tr>
+    <tr><td><code>lag_days</code></td><td class="mono-num">2</td><td>模型输入只看 as_of−2 天前联赛库</td></tr>
+    <tr><td><code>decision_day_offset</code></td><td class="mono-num">-1</td><td>决策时点=开赛日前一天</td></tr>
+    <tr><td><code>min_pool_items</code></td><td class="mono-num">20</td><td>价池最小项数（配对完整性过滤）</td></tr>
+    <tr><td><code>k_max</code></td><td class="mono-num">4</td><td>每场最大 pick 数（top1~4）</td></tr>
+    <tr><td><code>boot_B</code></td><td class="mono-num">2000</td><td>bootstrap 重抽样次数</td></tr>
+    <tr><td><code>seed</code></td><td class="mono-num">20261013</td><td>随机种子（复现性）</td></tr>
+  </tbody>
+</table>
+
+<p class="meta">开发者 sszhang · 判据冻结于任何回测代码执行之前 · 跑后禁改口径（铁律 14②）</p>
+
+</body>
+</html>
