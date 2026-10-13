@@ -10,6 +10,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from strength_chain_eval import POOL_OTHER, _score_facts
+import market_lambda as mkl
+import score_matrix as sm
 
 ROOT = Path(__file__).resolve().parents[2]
 HIST_DIR = ROOT / "engine" / "cache" / "hist_odds"
@@ -18,7 +20,9 @@ MIN_POOL_ITEMS = 20
 _MATRIX_OTHER_TO_PICK = {v: p for p, v in POOL_OTHER.items()}   # 's1sh'→'other_h'（实测：未挂牌比分落 other 矩阵键）
 
 def matrix_key_to_pick(k: str) -> str:
-    """矩阵键 's01s00' → pick 键 '1:0'；other_* 三键直通。开发者 sszhang"""
+    """矩阵键 's01s00' → pick 键 '1:0'；other_* 三键直通；s1sh/s1sd/s1sa 矩阵内部键映回 other_*（Controller Ruling 盲区修复）。开发者 sszhang"""
+    if k in _MATRIX_OTHER_TO_PICK:
+        return _MATRIX_OTHER_TO_PICK[k]
     if k.startswith("other_"):
         return k
     if k.startswith("s") and k[3] == "s":
@@ -65,3 +69,28 @@ def settle_row(picks_ranked: list[str], row: dict, k: int) -> dict:
             hit, odds = p, float(crs[p])
     payout = 2.0 * odds if hit else 0.0
     return {"picks": picks, "hit": hit, "odds": odds, "payout": payout, "dropped": dropped}
+
+def _devig_ranked(pool: dict) -> list[str]:
+    p = mkl.crs_power_devig(pool)
+    ranked = [k for k, _ in sorted(p.items(), key=lambda kv: -kv[1])] if p else []
+    return [matrix_key_to_pick(k) for k in ranked]   # crs_power_devig 出矩阵键（sXXsYY/s1sx），映回体彩 pick 键（实测探针 2026-10-13）
+
+def arm_a0(row: dict) -> list[str]:
+    """null 天花板：封盘 CRS power 去水降序。开发者 sszhang"""
+    return _devig_ranked(row["crs"])
+
+def arm_a1(row: dict) -> list[str]:
+    """开盘信息臂：开盘 CRS power 去水降序。"""
+    return _devig_ranked(row["crsOpen"])
+
+def arm_a2(row: dict) -> list[str]:
+    """强制层2：封盘 ttg+had 反解 λ(ρ=0) → 泊松矩阵降序（测反解结构增益，与 A0 同信息源）。"""
+    ttg, had = row["ttg"], row["had"]
+    if len(ttg) < 6 or not (had.get("h") and had.get("d") and had.get("a")):
+        return []
+    lam_sum = mkl.lam_sum_from_ttg(ttg)
+    p3 = mkl.had_devig(had["h"], had["d"], had["a"])
+    lh = mkl.solve_lamh(lam_sum, p3[0])
+    mat = sm.dc_matrix(lh, lam_sum - lh, mkl.RHO_ZERO)
+    ranked = sorted(mat.items(), key=lambda kv: -kv[1])
+    return [matrix_key_to_pick(k) for k, _ in ranked]

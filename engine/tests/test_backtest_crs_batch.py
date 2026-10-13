@@ -7,6 +7,10 @@ def test_matrix_key_to_pick():
     assert matrix_key_to_pick("s01s00") == "1:0"
     assert matrix_key_to_pick("s05s03") == "5:3"
     assert matrix_key_to_pick("other_h") == "other_h"
+    # 盲区修复（Controller Ruling）：score_matrix 矩阵内部"其他"三键须映回体彩价池键
+    assert matrix_key_to_pick("s1sh") == "other_h"
+    assert matrix_key_to_pick("s1sd") == "other_d"
+    assert matrix_key_to_pick("s1sa") == "other_a"
 
 def test_load_window_filters_and_keeps_pairs(tmp_path, monkeypatch):
     # 造 2 场迷你库：1 场两价齐、1 场缺 crsOpen → 只留前者
@@ -37,3 +41,23 @@ def test_settle_row_unlisted_score_falls_to_other():
     row = {"score": "7:0", "crs": {"other_h": 45.0, "1:1": 7.0}}
     r = settle_row(["other_h"], row, 1)
     assert r["hit"] == "other_h" and r["odds"] == 45.0
+
+def test_arm_a0_orders_by_devig_prob():
+    from backtest_crs_batch import arm_a0
+    # crs_power_devig 有 MIN_CRS_CELLS=20 门槛（3键迷你池实测返 {}→IndexError），
+    # 补满 25 键、其余赔率全 >9.0，保持 brief 语义：1:1 赔最低 → 去水概率最高
+    pool = {"1:1": 7.0, "1:0": 8.0, "0:0": 9.0}
+    pool.update({f"{i}:{j}": 12.0 + i + j for i in range(5) for j in range(5)
+                 if f"{i}:{j}" not in pool})
+    row = {"crs": pool, "crsOpen": {}, "had": {}, "ttg": {}}
+    ranked = arm_a0(row)                     # 1:1 赔最低 → 去水概率最高
+    assert ranked[0] == "1:1"
+
+def test_arm_a2_lambda_reverse_orders():
+    from backtest_crs_batch import arm_a2
+    # ttg 池键=真实 hist_odds 口径裸数字 "0".."7"（brief 原 "s{i}" 前缀键实测被
+    # lam_sum_from_ttg 的 TTG_KEYS 过滤→lam_sum=0.0 静默垃圾→top="0:0"）
+    row = {"crs": {}, "crsOpen": {}, "ttg": {f"{i}": 3.0 for i in range(8)},
+           "had": {"h": 1.4, "d": 4.5, "a": 6.5}}
+    ranked = arm_a2(row)                     # 强主 λ→矩阵 top 应为主胜小比分
+    assert ranked[0] in ("1:0", "2:0", "2:1", "3:0")
