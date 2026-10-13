@@ -61,3 +61,22 @@ def test_arm_a2_lambda_reverse_orders():
            "had": {"h": 1.4, "d": 4.5, "a": 6.5}}
     ranked = arm_a2(row)                     # 强主 λ→矩阵 top 应为主胜小比分
     assert ranked[0] in ("1:0", "2:0", "2:1", "3:0")
+
+def test_arm_a3_unmapped_returns_empty():
+    from backtest_crs_batch import arm_a3
+    row = {"home": "不存在的队名XYZ", "away": "同样不存在ABC", "date": "2025-03-01"}
+    assert arm_a3(row, {}, {}) == []
+
+def test_arm_a4_prefers_market_when_open_full():
+    from backtest_crs_batch import arm_a4
+    # crs_power_devig 有 MIN_CRS_CELLS=20 门槛（T4 实测）：brief 原 4×4=16 键会被拦下
+    # 走层2/层3——补满 25 键保持「开盘池齐→层1」语义；ttg 键=真实口径裸数字（T4 探针3）
+    open_pool = {"1:1": 6.0, "1:0": 8.0}
+    open_pool.update({f"{i}:{j}": 12.0 + i + j for i in range(5) for j in range(5)
+                      if f"{i}:{j}" not in open_pool})
+    row = {"crs": {}, "crsOpen": open_pool,
+           "ttg": {f"{i}": 3.0 for i in range(8)}, "had": {"h": 1.5, "d": 4.0, "a": 5.0},
+           "home": "X", "away": "Y", "date": "2025-03-01"}
+    ranked = arm_a4(row, {}, {})             # 开盘 crs 齐 → 层1，排序=开盘 devig 序
+    assert ranked and isinstance(ranked, list)
+    assert ranked[0] == "1:1"                # 1:1 开盘赔最低→去水概率最高；且层1 pick 须已映回体彩 pick 键

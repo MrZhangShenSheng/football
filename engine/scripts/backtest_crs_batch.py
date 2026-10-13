@@ -6,12 +6,15 @@
 防泄漏三道闸：team_state_on(dc_rolling) lag=2；决策价=crsOpen+as_of=开赛前一日；结算只读不回写。
 开发者 sszhang"""
 import json, sys
+from datetime import date, timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from strength_chain_eval import POOL_OTHER, _score_facts
+from strength_chain_eval import POOL_OTHER, _score_facts, _predict_match
 import market_lambda as mkl
 import score_matrix as sm
+import strength_loaders as sl
+from strength_chain_prod import pick_source
 
 ROOT = Path(__file__).resolve().parents[2]
 HIST_DIR = ROOT / "engine" / "cache" / "hist_odds"
@@ -94,3 +97,53 @@ def arm_a2(row: dict) -> list[str]:
     mat = sm.dc_matrix(lh, lam_sum - lh, mkl.RHO_ZERO)
     ranked = sorted(mat.items(), key=lambda kv: -kv[1])
     return [matrix_key_to_pick(k) for k, _ in ranked]
+
+# ---- A3/A4 臂（Task 5·brief Step 3）----
+
+BETA = 0.05                      # prereg frozenParams.beta（V3W λ 乘子 β·与 strength_chain_prod main 同值）
+DECISION_DAY_OFFSET = -1         # prereg frozenParams.decision_day_offset（as_of=开赛前一日·决策时点防泄漏）
+_CTX_CACHE: dict = {}
+
+def build_ctx_cached() -> dict:
+    """34 库全量 ctx·进程级缓存（四臂三窗共享·防交叉污染即共享同一事实源）。"""
+    if "ctx" not in _CTX_CACHE:
+        leagues = sorted({p.stem.removesuffix("_matches")
+                          for p in (ROOT / "data" / "02-results" / "league").glob("*_matches.json")})
+        _CTX_CACHE["ctx"] = sl.build_ctx(leagues)
+    return _CTX_CACHE["ctx"]
+
+def _team_ids(row: dict):
+    """hist 行队名=体彩中文名→zh_to_id 主路（strength_chain_prod:146 生产同款）；
+    _norm_team 兜底英文显示名行（Task5 探针4 实测：中文经 _norm_team 全 None→A3 恒空）。"""
+    aliases = sl.load_aliases()
+    zh = sl.zh_to_id(aliases)
+    def one(name: str):
+        return zh.get(name) or sl._norm_team(name, aliases)
+    return (one(row["home"]), one(row["away"]))
+
+def arm_a3(row: dict, ctx: dict, memo: dict) -> list[str]:
+    """强制层3：V3W 全链·as_of=开赛前一日（决策时点防泄漏）。未映射→[]。开发者 sszhang"""
+    hid, aid = _team_ids(row)
+    if not hid or not aid:
+        return []
+    as_of = date.fromisoformat(row["date"]) + timedelta(days=DECISION_DAY_OFFSET)
+    try:
+        pred = _predict_match(hid, aid, as_of, ctx, memo, BETA)
+    except Exception:
+        return []
+    if not pred:
+        return []
+    mat = pred["matrix"]
+    return [matrix_key_to_pick(k) for k, _ in sorted(mat.items(), key=lambda kv: -kv[1])]
+
+def arm_a4(row: dict, ctx: dict, memo: dict) -> list[str]:
+    """生产降级复刻：开盘价入 pick_source（层1 CRS去水→层2 反解）·None→A3 兜底。开发者 sszhang
+    层1 top5 的 pick=crs_power_devig 输出矩阵键（sXXsYY/s1sx·T4 实测）→一律经 matrix_key_to_pick 映回体彩 pick 键。"""
+    odds = {"crs": row["crsOpen"], "ttg": row["ttg"], "had": row["had"]}
+    src = pick_source(odds)
+    if src:
+        return [matrix_key_to_pick(x["pick"]) for x in src["top5"]] if src["src"] == "market_crs" else \
+               [matrix_key_to_pick(k) for k, _ in sorted(
+                   sm.dc_matrix(src["lam"][0], src["lam"][1], mkl.RHO_ZERO).items(),
+                   key=lambda kv: -kv[1])]
+    return arm_a3(row, ctx, memo)
