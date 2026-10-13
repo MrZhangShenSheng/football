@@ -83,7 +83,7 @@ def fit_scaler(X_train: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         mu = np.nanmean(X_train, axis=0)
         sd = np.nanstd(X_train, axis=0)
     mu = np.where(np.isnan(mu), 0.0, mu)
-    return mu, np.where(sd < 1e-12, 1.0, sd)
+    return mu, np.where(np.isnan(sd) | (sd < 1e-12), 1.0, sd)   # 全None列 nanstd→nan 须一并归 1（未映射分层暴露）
 
 
 def apply_scaler(X: np.ndarray, mu: np.ndarray, sd: np.ndarray) -> np.ndarray:
