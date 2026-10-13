@@ -371,10 +371,7 @@ def build_rows(date_lo: str, date_hi: str, *, hist_dir: Path | None = None,
         feats.update(hst_elo_features(hst_idx, elo_idx, hid, aid, as_of))
         feats.update(ctx_features(lg_idx, row["league"], as_of))
         n_team = sum(1 for v in team.values() if v is None)
-        n_other = sum(1 for k in (*feats,)
-                      if k.startswith(("mkt_", "h_", "a_", "d_", "rest_", "lg_"))
-                      or k.endswith(("_hst_for", "_hst_against")) or k == "elo_diff")
-        n_other = n_other - n_team if n_other > n_team else 0
+        n_other = sum(1 for v in feats.values() if v is None) - n_team   # 非 team 族 None 计数
         feats["nNullTeam"] = n_team
         feats["nNullOther"] = n_other
         # ttg/had/crs 顶层快照：tail_train.market_event_probs 对拍消费（封盘价=市场对手盘）
