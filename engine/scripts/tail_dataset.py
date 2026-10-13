@@ -9,6 +9,7 @@
 开发者 sszhang"""
 import json
 import math
+import re
 import sys
 from datetime import date, timedelta
 from pathlib import Path
@@ -110,7 +111,9 @@ class LeagueIndex:
         loaded_rows = []
         for f in sorted(Path(league_dir).glob("*_matches.json")):
             doc = json.loads(f.read_text(encoding="utf-8"))
-            rows = doc if isinstance(doc, list) else (doc.get("rows") or [])
+            # 真实库两态：33 文件 dict(matches 键) + asian-u23 list 直存——与 ctx_features /
+            # 生产 strength_loaders 同口径（rows 键会静默空读 33 文件=38 维全 None 假数据集）
+            rows = doc if isinstance(doc, list) else (doc.get("matches") or [])
             for r in rows:
                 d = str(r.get("date") or "")
                 gf, ga = r.get(gf_field), r.get(ga_field)
@@ -323,3 +326,106 @@ def hst_elo_features(hst_idx: LeagueIndex, elo_idx: EloIndex,
     ea = elo_idx.elo(away_id, as_of) if away_id else None
     out["elo_diff"] = (eh - ea) if (eh is not None and ea is not None) else None
     return out
+
+
+# ── 组装与落盘（Task 5）────────────────────────────────────────────────────
+import hashlib
+import strength_loaders as sl
+from backtest_crs_batch import load_hist_window
+
+
+def _zh_alias_maps():
+    aliases = sl.load_aliases()
+    return sl.zh_to_id(aliases), aliases
+
+
+def build_rows(date_lo: str, date_hi: str, *, hist_dir: Path | None = None,
+               league_dir: Path | None = None, cache_dir: Path | None = None
+               ) -> tuple[list[dict], dict]:
+    """hist 窗口 → 标签+四族特征行。映射失败队→homeId/awayId=None+球队特征全 None
+    （featMask 语义·诚实降级不剔除）。开发者 sszhang"""
+    lg_dir = league_dir or (ROOT / "data" / "02-results" / "league")
+    c_dir = cache_dir or (ROOT / "engine" / "cache")
+    lg_idx = LeagueIndex(lg_dir)
+    hst_idx = build_hst_index(c_dir)
+    elo_idx = build_elo_index(c_dir)
+    zh, aliases = _zh_alias_maps()
+
+    def one(name: str):
+        return zh.get(name) or sl._norm_team(name, aliases)
+
+    out, mapped, total = [], 0, 0
+    for row in load_hist_window(date_lo, date_hi, hist_dir=hist_dir):
+        if not re.fullmatch(r"\d+:\d+", str(row["score"] or "")):
+            continue    # 无效场次（体彩取消·全库59行）无标签可产——跳过（13574-59=13515 口径）
+        hid, aid = one(row["home"]), one(row["away"])
+        total += 1
+        if hid and aid:
+            mapped += 1
+        as_of = (date.fromisoformat(row["date"])
+                 + timedelta(days=DECISION_DAY_OFFSET)).isoformat()
+        feats: dict[str, float | None] = {}
+        feats.update(market_anchor_features(row))          # 池不足→空dict（11维缺失）
+        team = team_asof_features(lg_idx, hid, aid, as_of)
+        feats.update(team)
+        feats.update(hst_elo_features(hst_idx, elo_idx, hid, aid, as_of))
+        feats.update(ctx_features(lg_idx, row["league"], as_of))
+        n_team = sum(1 for v in team.values() if v is None)
+        n_other = sum(1 for k in (*feats,)
+                      if k.startswith(("mkt_", "h_", "a_", "d_", "rest_", "lg_"))
+                      or k.endswith(("_hst_for", "_hst_against")) or k == "elo_diff")
+        n_other = n_other - n_team if n_other > n_team else 0
+        feats["nNullTeam"] = n_team
+        feats["nNullOther"] = n_other
+        # ttg/had/crs 顶层快照：tail_train.market_event_probs 对拍消费（封盘价=市场对手盘）
+        # 计数键双挂：features 内（61 维特征清单冻结）+ 行顶层（brief 接口定义·Task 6 消费）
+        out.append({"date": row["date"], "code": row["code"], "league": row["league"],
+                    "homeId": hid, "awayId": aid, "score": row["score"],
+                    "ttg": row["ttg"], "had": row["had"], "crs": row["crs"],
+                    "label": label_skeleton(row["score"]),
+                    "nNullTeam": n_team, "nNullOther": n_other, "features": feats})
+    return out, {"count": len(out), "mappedRate": round(mapped / total, 4) if total else None}
+
+
+def _feature_names_ordered(sample: dict) -> list[str]:
+    """键序冻结：市场锚(11)→球队(38)→hst/elo(5)→ctx(5)→计数(2)——由插入序保证。"""
+    return list(sample.keys())
+
+
+def write_dataset(rows: list[dict], out_dir: Path) -> dict:
+    """dataset.jsonl + meta.json（fingerprint=行规范化 sha256 前16位·幂等重建可 diff）。"""
+    out_dir = Path(out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    names = _feature_names_ordered(rows[0]["features"]) if rows else []
+    lines = []
+    for r in rows:
+        r2 = dict(r)
+        r2["features"] = {k: r["features"].get(k) for k in names}
+        lines.append(json.dumps(r2, ensure_ascii=False, sort_keys=True))
+    blob = "\n".join(lines)
+    meta = {"version": FEATURE_VERSION, "count": len(rows),
+            "dateRange": [rows[0]["date"], rows[-1]["date"]] if rows else None,
+            "featureNames": names, "nFeatures": len(names),
+            "fingerprint": hashlib.sha256(blob.encode("utf-8")).hexdigest()[:16]}
+    (out_dir / "dataset.jsonl").write_text(blob + "\n", encoding="utf-8")
+    (out_dir / "meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2),
+                                       encoding="utf-8")
+    return meta
+
+
+def main() -> int:
+    import argparse
+    ap = argparse.ArgumentParser(description="右尾肥尾场次数据集构建器")
+    ap.add_argument("cmd", choices=["build"])
+    ap.add_argument("--from", dest="date_lo", default="2023-09-01")
+    ap.add_argument("--to", dest="date_hi", default="2026-09-28")
+    ap.add_argument("--out", default=str(ROOT / "engine" / "cache" / "tail_dataset"))
+    args = ap.parse_args()
+    rows, stat = build_rows(args.date_lo, args.date_hi)
+    meta = write_dataset(rows, Path(args.out))
+    print(json.dumps({**meta, "mappedRate": stat["mappedRate"]}, ensure_ascii=False))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

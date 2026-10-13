@@ -118,3 +118,58 @@ def test_ctx_features_template_and_month(tmp_path):
     f2 = ctx_features(idx, "澳超", "2025-10-16")
     assert f2["lg_p_tg4"] is None and f2["ctx_month_sin"] is not None
     assert "英超" in TAIL_LEAGUE_MAP
+
+
+# 追加（Task 5）
+from tail_dataset import build_rows, write_dataset
+
+_REAL_LEAGUE_DIR = pathlib.Path(__file__).resolve().parents[2] / "data" / "02-results" / "league"
+
+
+def _mini_hist(tmp_path):
+    pool = {f"{i}:{j}": 8.0 for i in range(3) for j in range(3)}
+    pool.update({"other_h": 40.0, "other_d": 40.0, "other_a": 40.0,
+                 **{f"{i}:{j}": 30.0 for i in range(3, 6) for j in range(6)},
+                 **{f"{i}:{j}": 30.0 for i in range(6) for j in range(3)}})
+    matches = [
+        {"date": "2025-10-16", "code": "四001", "league": "英超", "home": "阿森纳",
+         "away": "切尔西", "score": "2:1", "had": {"h": 1.5, "d": 4.0, "a": 5.0},
+         "ttg": {str(i): 3.0 for i in range(8)}, "crs": dict(pool), "crsOpen": dict(pool)},
+        {"date": "2025-10-17", "code": "四002", "league": "英超", "home": "利物浦",
+         "away": "曼城", "score": "0:5", "had": {"h": 2.2, "d": 3.2, "a": 2.5},
+         "ttg": {str(i): 3.0 for i in range(8)}, "crs": dict(pool), "crsOpen": dict(pool)},
+    ]
+    p = tmp_path / "crs_hist_mini.json"
+    p.write_text(_json.dumps({"matches": matches}), encoding="utf-8")
+    return tmp_path
+
+
+def test_build_rows_end_to_end(tmp_path):
+    hist_dir = _mini_hist(tmp_path)
+    lg_dir = _mini_league(tmp_path)                       # arsenal/chelsea 小库
+    rows, meta = build_rows("2025-10-01", "2025-10-31",
+                            hist_dir=hist_dir, league_dir=lg_dir, cache_dir=tmp_path)
+    assert len(rows) == 2
+    r0 = rows[0]
+    assert r0["homeId"] == "arsenal" and r0["label"] == {"tg": 3, "tgBin": 3, "direction": 0, "cleanSheet": 2}
+    assert r0["crs"] and r0["ttg"]                              # 对拍快照顶层挂载
+    assert r0["features"]["mkt_p_tg_ge5_open"] > 0
+    assert r0["features"]["h_gf_w10"] is None             # 窗不足 MIN_WINDOW_N
+    assert r0["nNullTeam"] > 0                            # 缺失计数入特征
+    assert 0.0 <= meta["mappedRate"] <= 1.0
+    # 真实库 smoke（review 移交·matches 键 dict 库非空读——修雷断言）
+    assert LeagueIndex(_REAL_LEAGUE_DIR).window("arsenal", "2026-10-11", 5)
+
+
+def test_write_dataset_fingerprint_stable(tmp_path):
+    hist_dir = _mini_hist(tmp_path)
+    lg_dir = _mini_league(tmp_path)
+    rows, _ = build_rows("2025-10-01", "2025-10-31",
+                         hist_dir=hist_dir, league_dir=lg_dir, cache_dir=tmp_path)
+    meta1 = write_dataset(rows, tmp_path / "out1")
+    meta2 = write_dataset(rows, tmp_path / "out2")
+    assert meta1["fingerprint"] == meta2["fingerprint"]
+    assert (tmp_path / "out1" / "dataset.jsonl").exists()
+    assert meta1["featureNames"][0] == "mkt_e_tg_open"    # 键序冻结·市场锚打头
+    lines = (tmp_path / "out1" / "dataset.jsonl").read_text(encoding="utf-8").strip().split("\n")
+    assert len(lines) == 2
