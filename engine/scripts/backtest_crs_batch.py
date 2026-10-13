@@ -5,7 +5,7 @@
 设计冻结：docs/superpowers/plans/2026-10-13-crs-batch-backtest.md §设计冻结。
 防泄漏三道闸：team_state_on(dc_rolling) lag=2；决策价=crsOpen+as_of=开赛前一日；结算只读不回写。
 开发者 sszhang"""
-import json, sys
+import json, sys, time
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -274,16 +274,269 @@ def run_leak_audit(win_name: str, *, k: int = CRITERIA_K, hist_dir: Path | None 
             "randomShuffle": se._random_shuffle_baseline(picks, actuals, seed=SEED) if picks else {},
             "redline": "任何臂窗口回收率>1.0 → 先过此审计+随机基线，不过不进结论（prereg redlines[0]）"}
 
-def main(argv: list[str]) -> int:
-    """CLI：run <W1|W2|W3> [--leak-audit]——报告打 stdout（T7 重定向归档）。开发者 sszhang"""
-    if len(argv) < 2 or argv[0] != "run":
-        print("用法: python backtest_crs_batch.py run W1|W2|W3 [--leak-audit]", file=sys.stderr)
-        return 2
-    report = run_window(argv[1], ARM_FNS)
-    if "--leak-audit" in argv[2:]:
-        report["leakAudit"] = run_leak_audit(argv[1])
-    print(json.dumps(report, ensure_ascii=False, indent=1))
+# ---- Task 7：CLI 命令 + 报告归档 + HTML 报告 ----
+
+OUT_DIR = ROOT / "data" / "04-summaries" / "crs-batch-backtest"
+OUT_DIR_NAME = "crs-batch-backtest-report.html"
+WINDOW_ORDER = ("W1", "W2", "W3")
+A0_RECOVERY_BAND = (0.80, 0.88)   # prereg redlines[1]：A0 top1 窗内带（全库口径 84% 容差·出界=管道 bug 中断不放宽）
+LEAK_AUDIT_MAX_DELTA = 0.02       # brief Step 3：|Δrecovery|<2pp 过
+ARM_ORDER = ("A0", "A1", "A2", "A3", "A4")
+ARM_LABELS = {"A0": "A0 封盘null天花板", "A1": "A1 开盘CRS去水",
+              "A2": "A2 λ反解(封盘ttg+had)", "A3": "A3 V3W模型(as_of=前一日)", "A4": "A4 生产降级复刻"}
+LIMITATIONS = (
+    ("A2 封盘反解", "A2 与 A0 同信息源（封盘 ttg+had 反解 λ·ρ=0），测的是矩阵结构增益而非新信息；"
+                 "39 键矩阵中 8 键体彩无价，dropped 与挂牌臂结构性不对等。"),
+    ("决策时点=前一日", "A3 as_of=开赛前一日（DECISION_DAY_OFFSET=-1，prereg 冻结），早于体彩实际可购/临场时点——"
+                   "模型臂决策可用信息少于实票临场口径，对 A3 略偏保守。"),
+    ("W1/W2 参数回望", "V3W 链参数（HST 权重/β=0.05）标定基于含 W1/W2 期的全库，W1/W2 回收率存在样本内乐观偏差；"
+                   "仅 W3（2024-10~2025-09 历史窗）相对干净——prereg exploratoryOnly 已冻结此口径。"),
+)
+SOURCES = ("engine/cache/hist_odds/crs_hist_2023-09-01_2025-09-30.json、crs_hist_2025-10-01_2026-09-28.json"
+           "（crs/crsOpen ≥20 键配对过滤）·判据 engine/cache/batch-backtest-prereg.json（2026-10-13 冻结）"
+           "·A3/A4 链 data/02-results/league/*_matches.json（34 库 ctx·team_state_on lag=2 防泄漏）")
+
+def a0_redline_check(report: dict) -> str | None:
+    """prereg redlines[1]：A0 top1 回收率窗内偏离 0.80~0.88 = 管道 bug 中断。
+    只校 prereg 冻结真窗（区间=真窗全库口径 84% 校准，合成/他窗不适用）。开发者 sszhang"""
+    if report.get("window") not in WINDOW_ORDER:
+        return None
+    rec = (report.get("arms", {}).get("A0", {}) or {}).get("k1", {}).get("recovery")
+    lo, hi = A0_RECOVERY_BAND
+    if rec is None:
+        return f"A0 top1 recovery 缺失（rows={report.get('rows')}·stake=0 管道异常）"
+    if not (lo <= rec <= hi):
+        return f"A0 top1 recovery={rec} 出界 [{lo}, {hi}]（prereg redlines[1]·管道 bug 中断·不放宽区间）"
+    return None
+
+def _needs_leak_audit(report: dict) -> bool:
+    """prereg redlines[0]：任何臂窗口任何 k 回收率>1.0 → 必跑泄漏审计。"""
+    for ks in (report.get("arms") or {}).values():
+        for v in ks.values():
+            if (v or {}).get("recovery") is not None and v["recovery"] > 1.0:
+                return True
+    return False
+
+def _write_json(name: str, doc: dict) -> Path:
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    p = OUT_DIR / name
+    p.write_text(json.dumps(doc, ensure_ascii=False, indent=2), encoding="utf-8")
+    return p
+
+def _print_window_summary(report: dict) -> None:
+    a0 = (report.get("arms", {}).get("A0", {}) or {}).get("k1", {}) or {}
+    print(f"[{report.get('window')}] rows={report.get('rows')} role={report.get('role')} "
+          f"elapsed={report.get('elapsedSec')}s A0.top1.recovery={a0.get('recovery')} "
+          f"(红线带 {A0_RECOVERY_BAND[0]}~{A0_RECOVERY_BAND[1]})")
+    for arm in ARM_ORDER:
+        rate = (report.get("unmappedRate") or {}).get(arm)
+        dropped = ((report.get("arms", {}).get(arm, {}) or {}).get("k1", {}) or {}).get("dropped")
+        print(f"  {arm}: unmappedRate={rate} k1.dropped={dropped}")
+    for c in report.get("criteria", []):
+        print(f"  [判据][{c['role']}] {c['arm']} vs {c['baseline']} k={c['k']}: "
+              f"diffMean={c['diffMean']} ci95={c['ci95']} pairedN={c['pairedN']} "
+              f"(nArm={c['nArm']}/nBaseline={c['nBaseline']}) verdict={c['verdict']} "
+              f"exploratory={c['exploratory']}")
+
+def _run_and_archive(win_name: str) -> tuple[int, dict]:
+    """跑窗→注入耗时/生成时刻→归档 {win}.json→A0 红线自检（出界 rc=1 中断·JSON 先落盘留排查凭证）。"""
+    t0 = time.perf_counter()
+    report = run_window(win_name, ARM_FNS)
+    report["elapsedSec"] = round(time.perf_counter() - t0, 1)
+    report["generatedAt"] = time.strftime("%Y-%m-%d %H:%M:%S")
+    _write_json(f"{win_name}.json", report)
+    _print_window_summary(report)
+    viol = a0_redline_check(report)
+    if viol:
+        print(f"[REDLINE][{win_name}] {viol}", file=sys.stderr)
+        return 1, report
+    return 0, report
+
+def run_leak_audit_archived(win_name: str) -> tuple[int, dict]:
+    """泄漏审计跑+归档 {win}-leakaudit.json+A/B 回收率对照打印；|Δ|<2pp PASS（brief Step 3）。"""
+    t0 = time.perf_counter()
+    rep = run_leak_audit(win_name)
+    rep["elapsedSec"] = round(time.perf_counter() - t0, 1)
+    rep["generatedAt"] = time.strftime("%Y-%m-%d %H:%M:%S")
+    rb = (rep.get("armB") or {}).get("recovery")
+    ra = (rep.get("armA") or {}).get("recovery")
+    if rb is not None and ra is not None:
+        rep["recoveryDelta"] = round(rb - ra, 4)
+        rep["verdict"] = "PASS" if abs(rep["recoveryDelta"]) < LEAK_AUDIT_MAX_DELTA else "FAIL"
+    else:
+        rep["verdict"] = "NO-PAIR"
+    _write_json(f"{win_name}-leakaudit.json", rep)
+    print(f"[leak-audit][{win_name}] B(as_of D{rep.get('decisionDayOffsetB')}) recovery={rb} vs "
+          f"A(D{rep.get('decisionDayOffsetA')}) recovery={ra} Δ={rep.get('recoveryDelta')} "
+          f"verdict={rep['verdict']} pairedN={rep.get('pairedN')}")
+    return (0 if rep["verdict"] == "PASS" else 1), rep
+
+def _esc(x) -> str:
+    return str(x).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+_CSS = ("body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;max-width:1100px;"
+        "margin:24px auto;padding:0 18px;color:#1f2430;background:#fbfbfd}"
+        "h1{font-size:22px}h2{font-size:17px;color:#2b5f9e;border-bottom:2px solid #2b5f9e;"
+        "padding-bottom:4px;margin-top:30px}h3{font-size:15px;margin-bottom:6px}"
+        "table{border-collapse:collapse;margin:10px 0;font-size:13px}"
+        "th,td{border:1px solid #d5d9e0;padding:4px 10px;text-align:right}"
+        "th{background:#eef2f7}th:first-child,td:first-child{text-align:left}"
+        ".sub{display:block;color:#8a92a0;font-size:11px}"
+        ".verdict-PASS{color:#0a7d32;font-weight:700}.verdict-FAIL{color:#c0392b;font-weight:700}"
+        ".verdict-NO-PAIR{color:#777;font-weight:700}.hi{background:#fdeaea}"
+        ".badge-exp{background:#fff2cc;color:#7a5c00;padding:1px 7px;border-radius:3px;font-size:11px}"
+        ".badge-adj{background:#dcefe0;color:#1c5e2e;padding:1px 7px;border-radius:3px;font-size:11px}"
+        ".foot,.sub-line{color:#667;font-size:12px}p{line-height:1.6}")
+
+def build_html_report(reports: dict, audits: dict, meta: dict) -> str:
+    """三窗裁决 HTML：主判据置顶→泄漏审计→窗级明细→限制三条→数据来源与耗时。
+    仅用户报告用 HTML+内嵌 SVG（仓库铁律 9）。开发者 sszhang"""
+    h = ['<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">',
+         "<title>比分端三层降级链分批回测 W1/W2/W3</title>",
+         f"<style>{_CSS}</style></head><body>",
+         '<h1><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" '
+         'style="vertical-align:-4px;color:#2b5f9e"><path d="M4 20h16M7 20v-6M12 20V8M17 20v-10" '
+         'stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg> '
+         "比分端三层降级链分批回测·三窗裁决报告</h1>",
+         f"<p class='sub-line'>生成 {_esc(meta.get('finishedAt'))}·判据预注册 "
+         f"engine/cache/batch-backtest-prereg.json（2026-10-13 冻结·铁律 14② 禁止跑后调口径捞结果）</p>"]
+    # —— 主判据置顶（W3 预注册裁决）——
+    h.append("<h2>主判据（W3·预注册裁决）</h2>")
+    crits = (reports.get("W3", {}) or {}).get("criteria") or []
+    if crits:
+        h.append("<table><tr><th>角色</th><th>臂</th><th>基线</th><th>k</th><th>pairedN</th>"
+                 "<th>nArm</th><th>nBaseline</th><th>diffMean</th><th>CI95</th><th>verdict</th><th>性质</th></tr>")
+        for c in crits:
+            ci_txt = f"[{c['ci95'][0]}, {c['ci95'][1]}]" if c.get("ci95") else "—"
+            dm_txt = c.get("diffMean") if c.get("diffMean") is not None else "—"
+            h.append(f"<tr><td>{_esc(c['role'])}</td><td>{_esc(ARM_LABELS.get(c['arm'], c['arm']))}</td>"
+                     f"<td>{_esc(ARM_LABELS.get(c['baseline'], c['baseline']))}</td><td>{c['k']}</td>"
+                     f"<td>{c['pairedN']}</td><td>{c['nArm']}</td><td>{c['nBaseline']}</td>"
+                     f"<td>{dm_txt}</td><td>{ci_txt}</td>"
+                     f"<td><span class='verdict-{_esc(c['verdict'])}'>{_esc(c['verdict'])}</span></td>"
+                     f"<td>{'exploratory' if c['exploratory'] else '冻结裁决'}</td></tr>")
+        h.append("</table>")
+        h.append("<p>口径：top1 回收率逐场配对差·bootstrap95 B=2000·seed=20261013·"
+                 "PASS=CI 下限&gt;0；配对=两臂都非空的场（行号交集）。</p>")
+    else:
+        h.append("<p>W3 判据未产出（窗口未跑或红线中断）。</p>")
+    # —— 泄漏审计 ——
+    h.append("<h2>泄漏审计 leak-audit（A3 决策日 A/B）</h2>")
+    if audits:
+        h.append("<table><tr><th>窗</th><th>B as_of=赛日前一日 recovery</th><th>A as_of=赛日前三日 recovery</th>"
+                 "<th>Δ 判定</th><th>pairedN</th><th>observedHit</th><th>randomShuffle</th></tr>")
+        for w, a in audits.items():
+            h.append(f"<tr><td>{_esc(w)}</td><td>{(a.get('armB') or {}).get('recovery')}</td>"
+                     f"<td>{(a.get('armA') or {}).get('recovery')}</td>"
+                     f"<td>{'—' if a.get('recoveryDelta') is None else a['recoveryDelta']} "
+                     f"<span class='verdict-{_esc(a.get('verdict'))}'>{_esc(a.get('verdict'))}</span></td>"
+                     f"<td>{a.get('pairedN')}</td><td>{a.get('observedHit')}</td>"
+                     f"<td>hit={(a.get('randomShuffle') or {}).get('hit')}/"
+                     f"perm={(a.get('randomShuffle') or {}).get('n_perm')}</td></tr>")
+        h.append("</table>")
+        h.append("<p>口径：|Δrecovery|&lt;2pp 过；FAIL=泄漏警讯→该窗模型臂结果不进结论（prereg redlines[0]）。</p>")
+    else:
+        h.append("<p>未触发（无臂回收率&gt;1.0 且 W1 未跑）。</p>")
+    # —— 窗级明细 ——
+    h.append("<h2>窗级明细（臂 × k 回收率矩阵）</h2>")
+    for w in WINDOW_ORDER:
+        rep = reports.get(w)
+        if not rep:
+            h.append(f"<h3>{w}（未产出）</h3>")
+            continue
+        badge = ("<span class='badge-exp'>exploratory·参数回望</span>" if w in ("W1", "W2")
+                 else "<span class='badge-adj'>裁决窗</span>")
+        a0 = (rep.get("arms", {}).get("A0", {}) or {}).get("k1", {}) or {}
+        viol = a0_redline_check(rep)
+        a0_txt = f"recovery={a0.get('recovery')}"
+        if viol:
+            a0_txt += f" <span class='verdict-FAIL'>红线出界</span>"
+        h.append(f"<h3>{w} {badge}</h3>")
+        h.append(f"<p>role={_esc(rep.get('role'))}·rows={rep.get('rows')}·耗时={rep.get('elapsedSec')}s"
+                 f"·A0 top1 {a0_txt}（红线带 {A0_RECOVERY_BAND[0]}~{A0_RECOVERY_BAND[1]}）</p>")
+        rates = rep.get("unmappedRate") or {}
+        h.append("<p class='sub-line'>" + "·".join(
+            f"{a} unmapped={rates.get(a)}" for a in ARM_ORDER if rates.get(a) is not None) + "</p>")
+        h.append("<table><tr><th>臂</th>" + "".join(f"<th>k{k}</th>" for k in range(1, K_MAX + 1)) + "</tr>")
+        for arm in ARM_ORDER:
+            cells = []
+            for k in range(1, K_MAX + 1):
+                v = ((rep.get("arms", {}).get(arm, {}) or {}).get(f"k{k}", {}) or {})
+                rec = v.get("recovery")
+                hi = " class='hi'" if rec is not None and rec > 1.0 else ""
+                cells.append(f"<td{hi}>{'' if rec is None else rec}"
+                             f"<span class='sub'>n={v.get('n', 0)}·drop={v.get('dropped', 0)}</span></td>")
+            h.append(f"<tr><td>{_esc(ARM_LABELS[arm])}</td>" + "".join(cells) + "</tr>")
+        h.append("</table>")
+        h.append("<p class='foot'>cell=回收率（派彩/本金·2 元/注·按封盘价结算）；n=有排序场数·drop=无价废注；"
+                 "红底=回收率&gt;1.0（触发 leak-audit 红线）。</p>")
+    # —— 限制三条 ——
+    h.append("<h2>限制</h2><ol>")
+    for t, d in LIMITATIONS:
+        h.append(f"<li><b>{_esc(t)}</b>：{_esc(d)}</li>")
+    h.append("</ol>")
+    # —— 数据来源与耗时 ——
+    h.append("<h2>数据来源与耗时</h2>")
+    h.append(f"<p>{_esc(SOURCES)}</p>")
+    h.append(f"<p>started={_esc(meta.get('startedAt'))}·finished={_esc(meta.get('finishedAt'))}"
+             f"·总耗时={_esc(meta.get('totalElapsedSec'))}s</p><ul>")
+    for w in WINDOW_ORDER:
+        la = (meta.get("leakAudits") or {}).get(w)
+        h.append(f"<li>{w}: run={_esc((meta.get('windows') or {}).get(w))}s"
+                 + (f"·leak-audit={_esc(la)}s" if la is not None else "") + "</li>")
+    h.append("</ul></body></html>")
+    return "\n".join(h)
+
+def cmd_run(win_name: str) -> int:
+    rc, _ = _run_and_archive(win_name)
+    return rc
+
+def cmd_leak_audit(win_name: str) -> int:
+    rc, _ = run_leak_audit_archived(win_name)
+    return rc
+
+def cmd_run_all() -> int:
+    """三窗齐跑→W1 必审计+红线触发窗审计→HTML 报告→主判据 verdict 打印（brief Step 4）。
+    A0 红线出界即中断不续跑；leak-audit FAIL 不中断（不过不进结论·报告标注）。开发者 sszhang"""
+    t0_wall, t0 = time.time(), time.perf_counter()
+    reports, audits, timings, audit_timings = {}, {}, {}, {}
+    for w in WINDOW_ORDER:
+        rc, rep = _run_and_archive(w)
+        if rc:
+            return rc
+        reports[w] = rep
+        timings[w] = rep.get("elapsedSec")
+    for w in WINDOW_ORDER:
+        if w == "W1" or _needs_leak_audit(reports[w]):   # W1 必跑（brief Step 3）；其余 redlines[0] 触发
+            _, audit = run_leak_audit_archived(w)
+            audits[w] = audit
+            audit_timings[w] = audit.get("elapsedSec")
+    meta = {"startedAt": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(t0_wall)),
+            "finishedAt": time.strftime("%Y-%m-%d %H:%M:%S"),
+            "totalElapsedSec": round(time.perf_counter() - t0, 1),
+            "windows": timings, "leakAudits": audit_timings}
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    (OUT_DIR / OUT_DIR_NAME).write_text(build_html_report(reports, audits, meta), encoding="utf-8")
+    print(f"[run-all] HTML 报告 -> {OUT_DIR / OUT_DIR_NAME}")
+    for c in reports.get("W3", {}).get("criteria", []):
+        tag = "主判据" if c["role"] == "primary" else "次判据"
+        print(f"[{tag}] {c['arm']} vs {c['baseline']} k={c['k']}: diffMean={c['diffMean']} "
+              f"ci95={c['ci95']} pairedN={c['pairedN']} verdict={c['verdict']}")
     return 0
 
+def main(argv: list[str] | None = None) -> int:
+    """CLI：run <窗> | leak-audit <窗> | run-all——JSON/HTML 归档 data/04-summaries/crs-batch-backtest/。
+    窗口名守门=load_window_range（prereg 冻结窗，打错即炸不静默）。开发者 sszhang"""
+    import argparse
+    ap = argparse.ArgumentParser(description="比分端三层降级链分批回测（W1/W2/W3·判据预注册）")
+    ap.add_argument("cmd", choices=["run", "run-all", "leak-audit"])
+    ap.add_argument("window", nargs="?", help="W1|W2|W3（prereg 冻结窗）")
+    args = ap.parse_args(argv)
+    if args.cmd == "run-all":
+        return cmd_run_all()
+    if not args.window:
+        ap.error(f"{args.cmd} 需要窗口参数（prereg 冻结窗：{'/'.join(WINDOW_ORDER)}）")
+    return cmd_run(args.window) if args.cmd == "run" else cmd_leak_audit(args.window)
+
 if __name__ == "__main__":
-    raise SystemExit(main(sys.argv[1:]))
+    raise SystemExit(main())

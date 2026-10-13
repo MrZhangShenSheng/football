@@ -1,0 +1,226 @@
+{
+  "window": "W3",
+  "role": "adjudication",
+  "rows": 4383,
+  "arms": {
+    "A0": {
+      "k1": {
+        "n": 4383,
+        "stake": 8766.0,
+        "payout": 7031.6600000000035,
+        "dropped": 0,
+        "recovery": 0.8022
+      },
+      "k2": {
+        "n": 4383,
+        "stake": 17532.0,
+        "payout": 14094.960000000005,
+        "dropped": 0,
+        "recovery": 0.804
+      },
+      "k3": {
+        "n": 4383,
+        "stake": 26298.0,
+        "payout": 21169.459999999992,
+        "dropped": 0,
+        "recovery": 0.805
+      },
+      "k4": {
+        "n": 4383,
+        "stake": 35064.0,
+        "payout": 27871.859999999986,
+        "dropped": 0,
+        "recovery": 0.7949
+      }
+    },
+    "A1": {
+      "k1": {
+        "n": 4383,
+        "stake": 8766.0,
+        "payout": 7048.760000000002,
+        "dropped": 0,
+        "recovery": 0.8041
+      },
+      "k2": {
+        "n": 4383,
+        "stake": 17532.0,
+        "payout": 14088.260000000002,
+        "dropped": 0,
+        "recovery": 0.8036
+      },
+      "k3": {
+        "n": 4383,
+        "stake": 26298.0,
+        "payout": 20836.35999999999,
+        "dropped": 0,
+        "recovery": 0.7923
+      },
+      "k4": {
+        "n": 4383,
+        "stake": 35064.0,
+        "payout": 27686.65999999999,
+        "dropped": 0,
+        "recovery": 0.7896
+      }
+    },
+    "A2": {
+      "k1": {
+        "n": 4225,
+        "stake": 8450.0,
+        "payout": 6965.7000000000035,
+        "dropped": 0,
+        "recovery": 0.8243
+      },
+      "k2": {
+        "n": 4225,
+        "stake": 16900.0,
+        "payout": 13885.2,
+        "dropped": 0,
+        "recovery": 0.8216
+      },
+      "k3": {
+        "n": 4225,
+        "stake": 25350.0,
+        "payout": 20373.499999999985,
+        "dropped": 0,
+        "recovery": 0.8037
+      },
+      "k4": {
+        "n": 4225,
+        "stake": 33800.0,
+        "payout": 26731.799999999992,
+        "dropped": 0,
+        "recovery": 0.7909
+      }
+    },
+    "A3": {
+      "k1": {
+        "n": 3375,
+        "stake": 6750.0,
+        "payout": 5180.1,
+        "dropped": 0,
+        "recovery": 0.7674
+      },
+      "k2": {
+        "n": 3375,
+        "stake": 13500.0,
+        "payout": 10791.700000000003,
+        "dropped": 0,
+        "recovery": 0.7994
+      },
+      "k3": {
+        "n": 3375,
+        "stake": 20250.0,
+        "payout": 15839.600000000002,
+        "dropped": 7,
+        "recovery": 0.7822
+      },
+      "k4": {
+        "n": 3375,
+        "stake": 27000.0,
+        "payout": 20863.7,
+        "dropped": 9,
+        "recovery": 0.7727
+      }
+    },
+    "A4": {
+      "k1": {
+        "n": 4383,
+        "stake": 8766.0,
+        "payout": 7048.760000000002,
+        "dropped": 0,
+        "recovery": 0.8041
+      },
+      "k2": {
+        "n": 4383,
+        "stake": 17532.0,
+        "payout": 14088.260000000002,
+        "dropped": 0,
+        "recovery": 0.8036
+      },
+      "k3": {
+        "n": 4383,
+        "stake": 26298.0,
+        "payout": 20836.35999999999,
+        "dropped": 0,
+        "recovery": 0.7923
+      },
+      "k4": {
+        "n": 4383,
+        "stake": 35064.0,
+        "payout": 27686.65999999999,
+        "dropped": 0,
+        "recovery": 0.7896
+      }
+    }
+  },
+  "unmapped": {
+    "A0": 0,
+    "A1": 0,
+    "A2": 158,
+    "A3": 1008,
+    "A4": 0
+  },
+  "unmappedRate": {
+    "A0": 0.0,
+    "A1": 0.0,
+    "A2": 0.036,
+    "A3": 0.23,
+    "A4": 0.0
+  },
+  "criteria": [
+    {
+      "arm": "A3",
+      "baseline": "A1",
+      "role": "primary",
+      "metric": "top1 回收率逐场配对差",
+      "k": 1,
+      "pairedN": 3375,
+      "nArm": 3375,
+      "nBaseline": 4383,
+      "diffMean": -0.0668,
+      "ci95": [
+        -0.2578,
+        0.1185
+      ],
+      "verdict": "FAIL",
+      "exploratory": false
+    },
+    {
+      "arm": "A2",
+      "baseline": "A1",
+      "role": "secondary",
+      "metric": "同上",
+      "k": 1,
+      "pairedN": 4225,
+      "nArm": 4225,
+      "nBaseline": 4383,
+      "diffMean": 0.039,
+      "ci95": [
+        -0.0759,
+        0.1516
+      ],
+      "verdict": "FAIL",
+      "exploratory": false
+    },
+    {
+      "arm": "A4",
+      "baseline": "A1",
+      "role": "secondary",
+      "metric": "同上·预期≈0",
+      "k": 1,
+      "pairedN": 4383,
+      "nArm": 4383,
+      "nBaseline": 4383,
+      "diffMean": 0.0,
+      "ci95": [
+        0.0,
+        0.0
+      ],
+      "verdict": "FAIL",
+      "exploratory": false
+    }
+  ],
+  "elapsedSec": 528.5,
+  "generatedAt": "2026-10-13 12:47:54"
+}

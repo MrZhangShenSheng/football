@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>比分端三层降级链分批回测 W1/W2/W3</title>
+<style>body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;max-width:1100px;margin:24px auto;padding:0 18px;color:#1f2430;background:#fbfbfd}h1{font-size:22px}h2{font-size:17px;color:#2b5f9e;border-bottom:2px solid #2b5f9e;padding-bottom:4px;margin-top:30px}h3{font-size:15px;margin-bottom:6px}table{border-collapse:collapse;margin:10px 0;font-size:13px}th,td{border:1px solid #d5d9e0;padding:4px 10px;text-align:right}th{background:#eef2f7}th:first-child,td:first-child{text-align:left}.sub{display:block;color:#8a92a0;font-size:11px}.verdict-PASS{color:#0a7d32;font-weight:700}.verdict-FAIL{color:#c0392b;font-weight:700}.verdict-NO-PAIR{color:#777;font-weight:700}.hi{background:#fdeaea}.badge-exp{background:#fff2cc;color:#7a5c00;padding:1px 7px;border-radius:3px;font-size:11px}.badge-adj{background:#dcefe0;color:#1c5e2e;padding:1px 7px;border-radius:3px;font-size:11px}.foot,.sub-line{color:#667;font-size:12px}p{line-height:1.6}</style></head><body>
+<h1><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="vertical-align:-4px;color:#2b5f9e"><path d="M4 20h16M7 20v-6M12 20V8M17 20v-10" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg> 比分端三层降级链分批回测·三窗裁决报告</h1>
+<p class='sub-line'>生成 2026-10-13 12:47:54·判据预注册 engine/cache/batch-backtest-prereg.json（2026-10-13 冻结·铁律 14② 禁止跑后调口径捞结果）</p>
+<h2>主判据（W3·预注册裁决）</h2>
+<table><tr><th>角色</th><th>臂</th><th>基线</th><th>k</th><th>pairedN</th><th>nArm</th><th>nBaseline</th><th>diffMean</th><th>CI95</th><th>verdict</th><th>性质</th></tr>
+<tr><td>primary</td><td>A3 V3W模型(as_of=前一日)</td><td>A1 开盘CRS去水</td><td>1</td><td>3375</td><td>3375</td><td>4383</td><td>-0.0668</td><td>[-0.2578, 0.1185]</td><td><span class='verdict-FAIL'>FAIL</span></td><td>冻结裁决</td></tr>
+<tr><td>secondary</td><td>A2 λ反解(封盘ttg+had)</td><td>A1 开盘CRS去水</td><td>1</td><td>4225</td><td>4225</td><td>4383</td><td>0.039</td><td>[-0.0759, 0.1516]</td><td><span class='verdict-FAIL'>FAIL</span></td><td>冻结裁决</td></tr>
+<tr><td>secondary</td><td>A4 生产降级复刻</td><td>A1 开盘CRS去水</td><td>1</td><td>4383</td><td>4383</td><td>4383</td><td>0.0</td><td>[0.0, 0.0]</td><td><span class='verdict-FAIL'>FAIL</span></td><td>冻结裁决</td></tr>
+</table>
+<p>口径：top1 回收率逐场配对差·bootstrap95 B=2000·seed=20261013·PASS=CI 下限&gt;0；配对=两臂都非空的场（行号交集）。</p>
+<h2>泄漏审计 leak-audit（A3 决策日 A/B）</h2>
+<table><tr><th>窗</th><th>B as_of=赛日前一日 recovery</th><th>A as_of=赛日前三日 recovery</th><th>Δ 判定</th><th>pairedN</th><th>observedHit</th><th>randomShuffle</th></tr>
+<tr><td>W1</td><td>0.7399</td><td>0.7298</td><td>0.0101 <span class='verdict-PASS'>PASS</span></td><td>840</td><td>0.0993</td><td>hit=0.080706/perm=200</td></tr>
+</table>
+<p>口径：|Δrecovery|&lt;2pp 过；FAIL=泄漏警讯→该窗模型臂结果不进结论（prereg redlines[0]）。</p>
+<h2>窗级明细（臂 × k 回收率矩阵）</h2>
+<h3>W1 <span class='badge-exp'>exploratory·参数回望</span></h3>
+<p>role=pipeline-check·rows=1016·耗时=155.2s·A0 top1 recovery=0.8416（红线带 0.8~0.88）</p>
+<p class='sub-line'>A0 unmapped=0.0·A1 unmapped=0.0·A2 unmapped=0.0561·A3 unmapped=0.1732·A4 unmapped=0.0</p>
+<table><tr><th>臂</th><th>k1</th><th>k2</th><th>k3</th><th>k4</th></tr>
+<tr><td>A0 封盘null天花板</td><td>0.8416<span class='sub'>n=1016·drop=0</span></td><td>0.7975<span class='sub'>n=1016·drop=0</span></td><td>0.7507<span class='sub'>n=1016·drop=0</span></td><td>0.7561<span class='sub'>n=1016·drop=0</span></td></tr>
+<tr><td>A1 开盘CRS去水</td><td>0.8234<span class='sub'>n=1016·drop=0</span></td><td>0.7788<span class='sub'>n=1016·drop=0</span></td><td>0.7822<span class='sub'>n=1016·drop=0</span></td><td>0.7653<span class='sub'>n=1016·drop=0</span></td></tr>
+<tr><td>A2 λ反解(封盘ttg+had)</td><td>0.9082<span class='sub'>n=959·drop=0</span></td><td>0.8548<span class='sub'>n=959·drop=0</span></td><td>0.8121<span class='sub'>n=959·drop=0</span></td><td>0.7833<span class='sub'>n=959·drop=0</span></td></tr>
+<tr><td>A3 V3W模型(as_of=前一日)</td><td>0.7399<span class='sub'>n=840·drop=0</span></td><td>0.7963<span class='sub'>n=840·drop=0</span></td><td>0.7618<span class='sub'>n=840·drop=0</span></td><td>0.7375<span class='sub'>n=840·drop=0</span></td></tr>
+<tr><td>A4 生产降级复刻</td><td>0.8234<span class='sub'>n=1016·drop=0</span></td><td>0.7788<span class='sub'>n=1016·drop=0</span></td><td>0.7822<span class='sub'>n=1016·drop=0</span></td><td>0.7653<span class='sub'>n=1016·drop=0</span></td></tr>
+</table>
+<p class='foot'>cell=回收率（派彩/本金·2 元/注·按封盘价结算）；n=有排序场数·drop=无价废注；红底=回收率&gt;1.0（触发 leak-audit 红线）。</p>
+<h3>W2 <span class='badge-exp'>exploratory·参数回望</span></h3>
+<p>role=reference-param-lookback·rows=2056·耗时=303.1s·A0 top1 recovery=0.8913 <span class='verdict-FAIL'>红线出界</span>（红线带 0.8~0.88）</p>
+<p class='sub-line'>A0 unmapped=0.0·A1 unmapped=0.0·A2 unmapped=0.0569·A3 unmapped=0.2028·A4 unmapped=0.0</p>
+<table><tr><th>臂</th><th>k1</th><th>k2</th><th>k3</th><th>k4</th></tr>
+<tr><td>A0 封盘null天花板</td><td>0.8913<span class='sub'>n=2056·drop=0</span></td><td>0.8356<span class='sub'>n=2056·drop=0</span></td><td>0.7738<span class='sub'>n=2056·drop=0</span></td><td>0.7617<span class='sub'>n=2056·drop=0</span></td></tr>
+<tr><td>A1 开盘CRS去水</td><td>0.8945<span class='sub'>n=2056·drop=0</span></td><td>0.8386<span class='sub'>n=2056·drop=0</span></td><td>0.7814<span class='sub'>n=2056·drop=0</span></td><td>0.7592<span class='sub'>n=2056·drop=0</span></td></tr>
+<tr><td>A2 λ反解(封盘ttg+had)</td><td>0.8969<span class='sub'>n=1939·drop=0</span></td><td>0.8364<span class='sub'>n=1939·drop=0</span></td><td>0.7936<span class='sub'>n=1939·drop=0</span></td><td>0.7802<span class='sub'>n=1939·drop=0</span></td></tr>
+<tr><td>A3 V3W模型(as_of=前一日)</td><td>0.6498<span class='sub'>n=1639·drop=0</span></td><td>0.739<span class='sub'>n=1639·drop=0</span></td><td>0.7543<span class='sub'>n=1639·drop=0</span></td><td>0.7299<span class='sub'>n=1639·drop=0</span></td></tr>
+<tr><td>A4 生产降级复刻</td><td>0.8945<span class='sub'>n=2056·drop=0</span></td><td>0.8386<span class='sub'>n=2056·drop=0</span></td><td>0.7814<span class='sub'>n=2056·drop=0</span></td><td>0.7592<span class='sub'>n=2056·drop=0</span></td></tr>
+</table>
+<p class='foot'>cell=回收率（派彩/本金·2 元/注·按封盘价结算）；n=有排序场数·drop=无价废注；红底=回收率&gt;1.0（触发 leak-audit 红线）。</p>
+<h3>W3 <span class='badge-adj'>裁决窗</span></h3>
+<p>role=adjudication·rows=4383·耗时=528.5s·A0 top1 recovery=0.8022（红线带 0.8~0.88）</p>
+<p class='sub-line'>A0 unmapped=0.0·A1 unmapped=0.0·A2 unmapped=0.036·A3 unmapped=0.23·A4 unmapped=0.0</p>
+<table><tr><th>臂</th><th>k1</th><th>k2</th><th>k3</th><th>k4</th></tr>
+<tr><td>A0 封盘null天花板</td><td>0.8022<span class='sub'>n=4383·drop=0</span></td><td>0.804<span class='sub'>n=4383·drop=0</span></td><td>0.805<span class='sub'>n=4383·drop=0</span></td><td>0.7949<span class='sub'>n=4383·drop=0</span></td></tr>
+<tr><td>A1 开盘CRS去水</td><td>0.8041<span class='sub'>n=4383·drop=0</span></td><td>0.8036<span class='sub'>n=4383·drop=0</span></td><td>0.7923<span class='sub'>n=4383·drop=0</span></td><td>0.7896<span class='sub'>n=4383·drop=0</span></td></tr>
+<tr><td>A2 λ反解(封盘ttg+had)</td><td>0.8243<span class='sub'>n=4225·drop=0</span></td><td>0.8216<span class='sub'>n=4225·drop=0</span></td><td>0.8037<span class='sub'>n=4225·drop=0</span></td><td>0.7909<span class='sub'>n=4225·drop=0</span></td></tr>
+<tr><td>A3 V3W模型(as_of=前一日)</td><td>0.7674<span class='sub'>n=3375·drop=0</span></td><td>0.7994<span class='sub'>n=3375·drop=0</span></td><td>0.7822<span class='sub'>n=3375·drop=7</span></td><td>0.7727<span class='sub'>n=3375·drop=9</span></td></tr>
+<tr><td>A4 生产降级复刻</td><td>0.8041<span class='sub'>n=4383·drop=0</span></td><td>0.8036<span class='sub'>n=4383·drop=0</span></td><td>0.7923<span class='sub'>n=4383·drop=0</span></td><td>0.7896<span class='sub'>n=4383·drop=0</span></td></tr>
+</table>
+<p class='foot'>cell=回收率（派彩/本金·2 元/注·按封盘价结算）；n=有排序场数·drop=无价废注；红底=回收率&gt;1.0（触发 leak-audit 红线）。</p>
+<h2>限制</h2><ol>
+<li><b>A2 封盘反解</b>：A2 与 A0 同信息源（封盘 ttg+had 反解 λ·ρ=0），测的是矩阵结构增益而非新信息；39 键矩阵中 8 键体彩无价，dropped 与挂牌臂结构性不对等。</li>
+<li><b>决策时点=前一日</b>：A3 as_of=开赛前一日（DECISION_DAY_OFFSET=-1，prereg 冻结），早于体彩实际可购/临场时点——模型臂决策可用信息少于实票临场口径，对 A3 略偏保守。</li>
+<li><b>W1/W2 参数回望</b>：V3W 链参数（HST 权重/β=0.05）标定基于含 W1/W2 期的全库，W1/W2 回收率存在样本内乐观偏差；仅 W3（2024-10~2025-09 历史窗）相对干净——prereg exploratoryOnly 已冻结此口径。</li>
+</ol>
+<h2>数据来源与耗时</h2>
+<p>engine/cache/hist_odds/crs_hist_2023-09-01_2025-09-30.json、crs_hist_2025-10-01_2026-09-28.json（crs/crsOpen ≥20 键配对过滤）·判据 engine/cache/batch-backtest-prereg.json（2026-10-13 冻结）·A3/A4 链 data/02-results/league/*_matches.json（34 库 ctx·team_state_on lag=2 防泄漏）</p>
+<p>started=2026-10-13 12:26:03·finished=2026-10-13 12:47:54·总耗时=1269.9s</p><ul>
+<li>W1: run=155.2s·leak-audit=283.1s</li>
+<li>W2: run=303.1s</li>
+<li>W3: run=528.5s</li>
+</ul></body></html>

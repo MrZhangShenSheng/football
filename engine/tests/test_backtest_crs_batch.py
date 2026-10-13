@@ -181,3 +181,150 @@ def test_arm_fns_keys_match_arm_key_values():
     from backtest_crs_batch import ARM_FNS, ARM_KEY
     assert set(ARM_FNS) == set(ARM_KEY.values())        # T7 消费同名键防错位
     assert ARM_FNS["A3"].__name__ == "arm_a3" and ARM_FNS["A4"].__name__ == "arm_a4"
+
+
+# ---- Task 7：CLI run/run-all/leak-audit + 归档 + HTML 报告 ----
+# 合成窗口径：A0 top1 recovery 可控（5 场 3 中 @1.4 → 0.84 落红线带内）；WX 非真窗不受红线约束。
+
+def _fake_hist_scores(tmp_path, scores, top_odds=1.4):
+    """n 场合成窗：crs['2:1'] 全场最低赔（top1 恒押 2:1），scores 控制逐场真实比分。"""
+    matches = []
+    for i, score in enumerate(scores):
+        crs = {"2:1": float(top_odds), "1:1": 9.0}
+        crs.update({f"{a}:{b}": 10.0 + a + b for a in range(5) for b in range(5)
+                    if f"{a}:{b}" not in crs})
+        crs["other_h"] = 40.0
+        matches.append({"date": f"2025-03-{i + 1:02d}", "code": f"六{i + 1:02d}", "league": "英超",
+                        "home": "阿森纳", "away": "切尔西", "score": score,
+                        "had": {"h": 1.5, "d": 4.0, "a": 5.0}, "ttg": {str(n): 3.0 for n in range(8)},
+                        "crs": crs, "crsOpen": {**crs, "2:1": float(top_odds) + 0.5}})
+    p = tmp_path / "crs_hist_fake.json"
+    p.write_text(_json.dumps({"matches": matches}), encoding="utf-8")
+    return p
+
+def test_a0_redline_check_band():
+    from backtest_crs_batch import a0_redline_check
+    mk = lambda rec, w="W1": {"window": w, "rows": 3,
+                              "arms": {"A0": {"k1": {"recovery": rec}}}}
+    assert a0_redline_check(mk(0.84)) is None          # 带内
+    assert a0_redline_check(mk(0.80)) is None and a0_redline_check(mk(0.88)) is None  # 闭区间
+    assert "0.79" in a0_redline_check(mk(0.79))        # 下界外 → 管道 bug 中断
+    assert "0.89" in a0_redline_check(mk(0.89))        # 上界外
+    assert a0_redline_check(mk(0.84, w="WX")) is None  # 非冻结真窗不校（区间=真窗全库口径校准）
+
+def test_cmd_run_archives_window_json(tmp_path, monkeypatch, capsys):
+    from backtest_crs_batch import main
+    _fake_hist_scores(tmp_path, ["2:1", "2:1", "2:1", "0:0", "0:0"])   # 3/5 中 @1.4 → 0.84
+    out_dir = tmp_path / "summaries"
+    monkeypatch.setattr("backtest_crs_batch.HIST_DIR", tmp_path)
+    monkeypatch.setattr("backtest_crs_batch.PREREG_PATH", _fake_prereg(tmp_path))
+    monkeypatch.setattr("backtest_crs_batch.OUT_DIR", out_dir)
+    assert main(["run", "WX"]) == 0
+    saved = _json.loads((out_dir / "WX.json").read_text(encoding="utf-8"))
+    assert saved["rows"] == 5
+    assert saved["arms"]["A0"]["k1"]["recovery"] == 0.84
+    assert saved["elapsedSec"] >= 0 and saved["generatedAt"]
+    out = capsys.readouterr().out
+    assert "rows=5" in out and "unmappedRate" in out     # dropped/unmapped 率打印（brief Step2 ③）
+
+def test_cmd_run_redline_aborts(tmp_path, monkeypatch, capsys):
+    from backtest_crs_batch import main
+    bad = {"window": "W1", "rows": 3, "unmapped": {}, "unmappedRate": {},
+           "arms": {"A0": {"k1": {"n": 3, "stake": 6.0, "payout": 3.0, "recovery": 0.5, "dropped": 0}}}}
+    monkeypatch.setattr("backtest_crs_batch.run_window", lambda w, arms, **kw: bad)
+    out_dir = tmp_path / "summaries"
+    monkeypatch.setattr("backtest_crs_batch.OUT_DIR", out_dir)
+    assert main(["run", "W1"]) == 1                     # 出界即中断（prereg redlines[1]·不放宽）
+    assert "REDLINE" in capsys.readouterr().err
+    assert (out_dir / "W1.json").exists()               # 中断前 JSON 已落盘（排查凭证）
+
+def _fake_audit(win, *, rec_b=0.84, rec_a=0.835):
+    return {"window": win, "rows": 5, "k": 1, "decisionDayOffsetB": -1, "decisionDayOffsetA": -3,
+            "armB": {"n": 5, "recovery": rec_b}, "armA": {"n": 5, "recovery": rec_a},
+            "pairedN": 5, "diffMean": 0.0, "ci95": [0.0, 0.0], "observedHit": 0.4,
+            "randomShuffle": {"hit": 0.4, "n_perm": 200}, "redline": "prereg redlines[0]"}
+
+def test_cmd_leak_audit_writes_and_verdict(tmp_path, monkeypatch, capsys):
+    from backtest_crs_batch import main
+    out_dir = tmp_path / "summaries"
+    monkeypatch.setattr("backtest_crs_batch.PREREG_PATH", _fake_prereg(tmp_path))
+    monkeypatch.setattr("backtest_crs_batch.OUT_DIR", out_dir)
+    monkeypatch.setattr("backtest_crs_batch.run_leak_audit",
+                        lambda w, **kw: _fake_audit(w))                  # |Δ|=0.005 < 2pp → PASS
+    assert main(["leak-audit", "WX"]) == 0
+    saved = _json.loads((out_dir / "WX-leakaudit.json").read_text(encoding="utf-8"))
+    assert saved["recoveryDelta"] == 0.005 and saved["verdict"] == "PASS"
+    out = capsys.readouterr().out
+    assert "recovery=0.84" in out and "recovery=0.835" in out           # A/B 回收率对照打印
+    monkeypatch.setattr("backtest_crs_batch.run_leak_audit",
+                        lambda w, **kw: _fake_audit(w, rec_a=0.78))     # |Δ|=6pp → FAIL
+    assert main(["leak-audit", "WX"]) == 1
+    assert "FAIL" in capsys.readouterr().out
+
+def _fake_run_window_factory():
+    def fake_run_window(win, arms, **kw):
+        rep = {"window": win, "role": "synthetic", "rows": 3, "unmapped": {}, "unmappedRate": {},
+               "arms": {a: {f"k{k}": {"n": 3, "stake": 6.0, "payout": 5.04,
+                                      "recovery": 0.84 if k == 1 else 0.95, "dropped": 0}
+                            for k in range(1, 5)} for a in ("A0", "A1", "A2", "A3", "A4")}}
+        if win == "W3":
+            rep["criteria"] = [
+                {"arm": "A3", "baseline": "A1", "role": "primary", "metric": "top1 回收率逐场配对差",
+                 "k": 1, "pairedN": 3, "nArm": 3, "nBaseline": 3, "diffMean": 0.5,
+                 "ci95": [0.1, 0.9], "verdict": "PASS", "exploratory": False},
+                {"arm": "A2", "baseline": "A1", "role": "secondary", "metric": "同上",
+                 "k": 1, "pairedN": 3, "nArm": 3, "nBaseline": 3, "diffMean": -0.2,
+                 "ci95": [-0.5, 0.1], "verdict": "FAIL", "exploratory": False}]
+        return rep
+    return fake_run_window
+
+def test_cmd_run_all_generates_html(tmp_path, monkeypatch, capsys):
+    from backtest_crs_batch import main, OUT_DIR_NAME
+    doc = {"windows": {w: {"from": "2025-03-01", "to": "2025-03-31", "role": "synthetic"}
+                       for w in ("W1", "W2", "W3")},
+           "primaryCriterion": {"window": "W3", "arm": "A3_v3w_model", "baseline": "A1_open_devig",
+                                "metric": "top1 回收率逐场配对差", "ci": "bootstrap95", "pass": "CI 下限 > 0"},
+           "secondary": [{"window": "W3", "arm": "A2_lambda_reverse", "baseline": "A1_open_devig",
+                          "metric": "同上"}]}
+    p = tmp_path / "prereg.json"; p.write_text(_json.dumps(doc), encoding="utf-8")
+    out_dir = tmp_path / "summaries"
+    monkeypatch.setattr("backtest_crs_batch.PREREG_PATH", p)
+    monkeypatch.setattr("backtest_crs_batch.OUT_DIR", out_dir)
+    monkeypatch.setattr("backtest_crs_batch.run_window", _fake_run_window_factory())
+    monkeypatch.setattr("backtest_crs_batch.run_leak_audit",
+                        lambda w, **kw: _fake_audit(w))                  # W1 必跑（brief Step3）
+    assert main(["run-all"]) == 0
+    for w in ("W1", "W2", "W3"):
+        assert (out_dir / f"{w}.json").exists()
+    assert (out_dir / "W1-leakaudit.json").exists()      # W1 必跑
+    assert not (out_dir / "W2-leakaudit.json").exists()  # k1=0.84 ≤1.0 不触发（redlines[0]）
+    html = (out_dir / OUT_DIR_NAME).read_text(encoding="utf-8")
+    assert html.startswith("<!DOCTYPE html>") and '<meta charset="utf-8">' in html
+    assert 0 <= html.index("主判据") < html.index("窗级明细")     # 主判据置顶
+    assert "封盘反解" in html and "决策时点" in html and "参数回望" in html   # 限制节三条
+    assert "数据来源" in html
+    out = capsys.readouterr().out
+    assert "主判据" in out and "PASS" in out            # verdict 打印（brief Step4）
+
+def test_needs_leak_audit_any_k_over_one():
+    from backtest_crs_batch import _needs_leak_audit
+    rep = {"arms": {"A3": {"k1": {"recovery": 0.9}, "k3": {"recovery": 1.2}}}}
+    assert _needs_leak_audit(rep) is True               # 任何臂任何 k >1.0 → 触发（redlines[0]）
+    assert _needs_leak_audit({"arms": {"A0": {"k1": {"recovery": 1.0}}}}) is False   # 恰=1.0 不触发
+    assert _needs_leak_audit({}) is False
+
+def test_build_html_report_contract():
+    from backtest_crs_batch import build_html_report
+    reports = {"W3": _fake_run_window_factory()("W3", None)}
+    audits = {"W1": _fake_audit("W1")}
+    meta = {"startedAt": "2026-10-13 10:00:00", "finishedAt": "2026-10-13 10:30:00",
+            "totalElapsedSec": 1800.0, "windows": {"W3": 900.0}, "leakAudits": {"W1": 300.0}}
+    html = build_html_report(reports, audits, meta)
+    assert html.startswith("<!DOCTYPE html><html lang=\"zh-CN\">")
+    assert "<meta charset=\"utf-8\">" in html
+    assert html.index("主判据") < html.index("窗级明细")           # 置顶
+    assert "pairedN" in html and "0.1" in html                    # CI 数值入表
+    assert "verdict-PASS" in html and "verdict-FAIL" in html      # 徽章分级
+    assert "exploratory" in html.lower() or "探索" in html
+    for kw in ("封盘反解", "决策时点", "参数回望", "数据来源", "1800"):  # 限制三条+来源+耗时
+        assert kw in html
