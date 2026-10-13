@@ -49,3 +49,33 @@ def test_freeze_idempotent_and_strict(tmp_path, monkeypatch):
     doc = json.loads(p1.read_text(encoding="utf-8"))
     assert doc["preds"][0]["confidence"] == "medium"
     assert len(doc["preds"][0]["cardHash"]) == 16
+
+
+def test_chinese_other_keys_mapped():
+    """pick 键存档的中文 other 键（胜/平/负其他）须映射为 other_* 可押（review fix·右尾点名肥档）。"""
+    import llm_pred as le
+    card = {"matchNumStr": "周二001", "league": "英超", "home": "A", "away": "B",
+            "matchTime": "t", "had": {},
+            "crs": {**{f"{i}:{j}": 12.0 for i in range(6) for j in range(6)},
+                    "胜其他": 60.0, "平其他": 60.0, "负其他": 60.0},
+            "ttg": {}}
+    import pathlib, sys, json
+    cards_dir = pathlib.Path(le.CARDS_ROOT) / "2026-10-14z"
+    cards_dir.mkdir(parents=True, exist_ok=True)
+    from llm_card import build_card, save_card
+    c = build_card("2026-10-14z", card, insight_path=None, lineups={}, now="2026-10-14T10:00:00")
+    save_card(c, "2026-10-14z", root=pathlib.Path(le.CARDS_ROOT))
+    pred = {"code": "周二001",
+            "p_crs": {**{f"{i}:{j}": 0.02 for i in range(3) for j in range(3)},
+                      "other_h": 0.3, "other_d": 0.1, "other_a": 0.1},
+            "keyJudgments": [{"judgment": "j", "evidence": "e"}], "confidence": "low"}
+    out = pathlib.Path(le.PREDS_ROOT) / "2026-10-14z.json"
+    if out.exists():
+        out.unlink()
+    p = le.freeze("2026-10-14z", [pred])
+    doc = json.loads(p.read_text(encoding="utf-8"))
+    assert "other_h" in doc["preds"][0]["p_crs"] and abs(sum(doc["preds"][0]["p_crs"].values()) - 1.0) < 1e-9
+    # 清理测试产物
+    out.unlink()
+    (pathlib.Path(le.CARDS_ROOT) / "2026-10-14z" / "周二001.json").unlink()
+    (pathlib.Path(le.CARDS_ROOT) / "2026-10-14z").rmdir()

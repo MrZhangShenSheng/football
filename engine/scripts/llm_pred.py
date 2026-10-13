@@ -67,7 +67,8 @@ def freeze(sale_date: str, preds: list[dict]) -> Path:
         for k, v in market.items():
             kk = k if (":" in k) else (
                 f"{int(k[1:3])}:{int(k[4:6])}" if k.startswith("s") and len(k) == 6 and k[3] == "s"
-                else ("other_h" if k == "s1sh" else "other_d" if k == "s1sd" else "other_a" if k == "s1sa" else None))
+                else ("other_h" if k in ("s1sh", "胜其他") else "other_d" if k in ("s1sd", "平其他")
+                      else "other_a" if k in ("s1sa", "负其他") else None))
             if kk and isinstance(v, (int, float)) and float(v) > 1.0:
                 mk[kk] = float(v)
         keys = list(mk)
