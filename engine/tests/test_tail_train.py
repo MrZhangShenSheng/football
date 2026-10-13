@@ -60,3 +60,36 @@ def test_train_predict_heads_synthetic():
     Xhi = np.column_stack([np.full(10, 2.0), np.zeros(10)])
     Xlo = np.column_stack([np.full(10, -2.0), np.zeros(10)])
     assert predict_event_probs(heads, Xhi)[:, 0].mean() > predict_event_probs(heads, Xlo)[:, 0].mean()
+
+
+# 追加（Task 7）
+from tail_train import split_by_mapping, render_report
+
+
+def test_split_by_mapping():
+    rows = [{"homeId": "arsenal", "awayId": "chelsea", "date": "2025-01-01", "score": "1:1",
+             "label": {"tgBin": 2, "direction": 1, "cleanSheet": 2}, "features": {}},
+            {"homeId": None, "awayId": None, "date": "2025-01-02", "score": "2:2",
+             "label": {"tgBin": 4, "direction": 1, "cleanSheet": 2}, "features": {}}]
+    mapped, unmapped = split_by_mapping(rows)
+    assert len(mapped) == 1 and len(unmapped) == 1
+
+
+def test_render_report_html_and_svg():
+    fake = {"logistic": {"E1": {"n": 4000, "diffMean": 0.012, "ci95": [0.002, 0.022],
+                                "verdict": "PASS"},
+                         "E2": {"n": 4000, "diffMean": -0.004, "ci95": [-0.01, 0.004],
+                                "verdict": "FAIL"},
+                         "E3": {"n": 4000, "diffMean": 0.001, "ci95": [-0.005, 0.007],
+                                "verdict": "FAIL"}},
+            "histgbE1": {"n": 4000, "diffMean": 0.006, "ci95": [-0.002, 0.014],
+                         "verdict": "FAIL"},
+            "mappedLayer": {"E1": {"n": 3000, "diffMean": 0.01, "ci95": [0.0, 0.02],
+                                   "verdict": "FAIL"}},
+            "unmappedLayer": {"E1": {"n": 1000, "diffMean": 0.02, "ci95": [-0.01, 0.05],
+                                     "verdict": "FAIL"}},
+            "datasetMeta": {"version": "tail-v1", "count": 13515, "fingerprint": "abc123"}}
+    html = render_report(fake)
+    assert html.startswith("<!DOCTYPE html><html lang=\"zh-CN\"><head><meta charset=\"utf-8\">")
+    assert "主判据" in html and "PASS" in html and "<svg" in html
+    assert "exploratory" in html

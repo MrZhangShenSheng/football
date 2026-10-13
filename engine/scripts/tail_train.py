@@ -245,18 +245,119 @@ def check_prereg() -> dict:
 def main() -> int:
     import argparse
     ap = argparse.ArgumentParser(description="右尾肥尾模型训练评估链")
-    ap.add_argument("cmd", choices=["run"])
+    ap.add_argument("cmd", choices=["run", "run-all"])
     args = ap.parse_args()
     check_prereg()
     rows, meta = load_dataset()
-    result = run_folds(rows, meta)
+    result = {"logistic": run_folds(rows, meta)}
+    if args.cmd == "run-all":
+        result["histgbE1"] = run_histgb_e1(rows, meta)
+        mapped, unmapped = split_by_mapping(rows)
+        result["mappedLayer"] = {"E1": run_folds(mapped, meta)["E1"]} if len(mapped) > 500 else {"E1": {"n": 0, "verdict": "SKIP"}}
+        result["unmappedLayer"] = {"E1": run_folds(unmapped, meta)["E1"]} if len(unmapped) > 500 else {"E1": {"n": 0, "verdict": "SKIP"}}
     result["datasetMeta"] = {k: meta[k] for k in ("version", "count", "fingerprint")}
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     (OUT_DIR / "run.json").write_text(json.dumps(result, ensure_ascii=False, indent=2),
                                       encoding="utf-8")
-    print(json.dumps({e: result[e] for e in ("E1", "E2", "E3")}, ensure_ascii=False))
+    (OUT_DIR / "tail-model-report.html").write_text(render_report(result), encoding="utf-8")
+    print(json.dumps({e: result["logistic"][e] for e in ("E1", "E2", "E3")}, ensure_ascii=False))
     return 0
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
+# ── HistGB exploratory 对照 + featMask 分层 + 报告（Task 7）────────────────
+from sklearn.ensemble import HistGradientBoostingClassifier
+
+HISTGB_PARAMS = {"max_iter": 300, "learning_rate": 0.06, "random_state": SEED}
+
+
+def run_histgb_e1(rows: list[dict], meta: dict) -> dict:
+    """HistGB tg 头 E1 对照（exploratory·不进判据）。同 folds，逐段累计配对 log-loss 差。
+    HistGB 原生吃 nan（不填均值），impute 口径差异在报告标注。开发者 sszhang"""
+    names = meta["featureNames"]
+    diffs = []
+    for fold in time_folds():
+        train = [r for r in rows if r["date"] < fold["testFrom"]]
+        test = [r for r in rows if fold["testFrom"] <= r["date"] <= fold["testTo"]]
+        if len(train) < 500 or not test:
+            continue
+        Xtr, Xte = feature_matrix(train, names), feature_matrix(test, names)
+        y_tg = np.array([r["label"]["tgBin"] for r in train])
+        clf = HistGradientBoostingClassifier(**HISTGB_PARAMS).fit(Xtr, y_tg)
+        p_tg = clf.predict_proba(Xte)
+        cols = {c: i for i, c in enumerate(clf.classes_)}
+        for i, r in enumerate(test):
+            mk = market_event_probs(r)
+            if mk is None:
+                continue
+            y1 = event_outcomes(r["score"])[0]
+            p_m = sum(p_tg[i, cols[t]] for t in (5, 6, 7) if t in cols)
+            diffs.append(_logloss(mk[0], y1) - _logloss(p_m, y1))
+    if len(diffs) < 30:
+        return {"n": len(diffs), "verdict": "INSUFFICIENT_N", "exploratory": True}
+    ci = _boot_ci_diff(diffs, seed=SEED, n_boot=BOOT_B)
+    return {"n": len(diffs), "diffMean": round(float(np.mean(diffs)), 4),
+            "ci95": [round(float(x), 4) for x in ci],
+            "verdict": "PASS" if ci[0] > 0 else "FAIL", "exploratory": True}
+
+
+def split_by_mapping(rows: list[dict]) -> tuple[list[dict], list[dict]]:
+    """featMask 分层（红线②）：映射成功（两队均有 ID）vs 降级（任一 None）。"""
+    mapped = [r for r in rows if r.get("homeId") and r.get("awayId")]
+    unmapped = [r for r in rows if not (r.get("homeId") and r.get("awayId"))]
+    return mapped, unmapped
+
+
+def _ci_svg_block(result_all: dict) -> str:
+    """三事件族+对照+分层 CI 误差条（内嵌 SVG）。"""
+    items = [("E1 主判据·logistic", result_all.get("logistic", {}).get("E1")),
+             ("E2 次判据", result_all.get("logistic", {}).get("E2")),
+             ("E3 次判据", result_all.get("logistic", {}).get("E3")),
+             ("E1·HistGB(exploratory)", result_all.get("histgbE1")),
+             ("E1·映射层", (result_all.get("mappedLayer") or {}).get("E1")),
+             ("E1·未映射层", (result_all.get("unmappedLayer") or {}).get("E1"))]
+    rows_svg = []
+    scale = 200.0   # 每侧最大渲染幅度
+    for i, (label, d) in enumerate(items):
+        y = 30 + i * 34
+        if not d or "ci95" not in d:
+            rows_svg.append(f'<text x="10" y="{y + 4}" font-size="12" fill="currentColor">{label}: n={d.get("n", 0) if d else 0} 样本不足</text>')
+            continue
+        lo, hi = d["ci95"]
+        x0 = 430 + max(-scale, min(scale, lo * 1000))
+        x1 = 430 + max(-scale, min(scale, hi * 1000))
+        color = "#16a085" if d["verdict"] == "PASS" else "#c0392b"
+        rows_svg.append(f'<line x1="{x0:.0f}" y1="{y}" x2="{x1:.0f}" y2="{y}" stroke="{color}" stroke-width="4"/>'
+                        f'<circle cx="{430 + d["diffMean"] * 1000:.0f}" cy="{y}" r="4" fill="{color}"/>'
+                        f'<text x="10" y="{y + 4}" font-size="12" fill="currentColor">{label}: Δ={d["diffMean"]:+.4f} CI[{lo:+.4f},{hi:+.4f}] {d["verdict"]}</text>')
+    body = "".join(rows_svg)
+    return (f'<svg viewBox="0 0 880 240" width="100%" xmlns="http://www.w3.org/2000/svg">'
+            f'<line x1="430" y1="10" x2="430" y2="230" stroke="#888" stroke-dasharray="4,4"/>'
+            f'<text x="434" y="18" font-size="10" fill="#888">0（平手线·右侧=模型更准）</text>{body}</svg>')
+
+
+def render_report(result_all: dict) -> str:
+    """tail-model-report.html（charset utf-8·主判据置顶·exploratory 全标注·限制节）。"""
+    e1 = result_all.get("logistic", {}).get("E1", {})
+    meta = result_all.get("datasetMeta", {})
+    lines = []
+    lines.append("<!DOCTYPE html><html lang=\"zh-CN\"><head><meta charset=\"utf-8\">")
+    lines.append("<title>右尾肥尾场次模型报告</title></head><body>")
+    lines.append("<h1>右尾肥尾场次模型 · 判据裁决报告</h1>")
+    lines.append(f"<p>主判据 E1（总进球≥5·logistic vs 市场ttg去水·配对log-loss差 CI 下限&gt;0）：<b>{e1.get('verdict')}</b>"
+                 f"（Δ={e1.get('diffMean')}, CI={e1.get('ci95')}, n={e1.get('n')}）</p>")
+    lines.append(f"<p>数据集 {meta.get('version')} · {meta.get('count')} 场 · 指纹 {meta.get('fingerprint')}</p>")
+    lines.append("<h2>CI 总览</h2>")
+    lines.append(_ci_svg_block(result_all))
+    lines.append("<h2>口径与限制</h2><ul>"
+                 "<li>E2/E3 为 0..5 精确格口径（双侧同网格·outcome 同网格）；other 全口径未进判据（exploratory）</li>"
+                 "<li>HistGB 原生吃 nan 与 logistic 的 train-mean 填充 impute 口径不同，仅 exploratory</li>"
+                 "<li>特征市场价只用 crsOpen；ttg/had/crs 封盘只作对手盘（防泄漏口径）</li>"
+                 "<li>featMask 分层为红线②要求（防『只在易映射联赛赢』假象）</li>"
+                 "<li>主判据 FAIL → tail_pick/影子层不激活（prereg 红线）</li></ul>")
+    lines.append("<p style=\"color:#888;font-size:12px\">开发者 sszhang · 判据预注册 engine/cache/tail-model-prereg.json · 铁律 14②/15</p>")
+    lines.append("</body></html>")
+    return "".join(lines)
