@@ -90,3 +90,91 @@ def market_anchor_features(row: dict) -> dict:
         "mkt_entropy_open": ent,
         "mkt_other_mass_open": p_other,
     }
+
+
+# ── league/hst 时间线索引（lag 内建·bisect 查窗）────────────────────────────
+import bisect
+
+STATS_WINDOWS = (10, 38)
+MIN_WINDOW_N = 5
+TEAM_STAT_KEYS = ("gf", "ga", "tg4", "blow", "clean", "beCleaned")
+
+
+class LeagueIndex:
+    """league 库（或 hst 缓存）→ per-team 按日期索引；window() 内建 LEAK_LAG_DAYS 截断。
+
+    gf_field/ga_field 参数化：league 库用 hg/ag（进球），hst 缓存用 hst/ast（射正）。"""
+
+    def __init__(self, league_dir: Path, gf_field: str = "hg", ga_field: str = "ag"):
+        self._by_team: dict[str, dict] = {}
+        for f in sorted(Path(league_dir).glob("*_matches.json")):
+            doc = json.loads(f.read_text(encoding="utf-8"))
+            rows = doc if isinstance(doc, list) else (doc.get("rows") or [])
+            for r in rows:
+                d = str(r.get("date") or "")
+                gf, ga = r.get(gf_field), r.get(ga_field)
+                if not d or gf is None or ga is None:
+                    continue
+                for team, gfor, gaga, is_home in ((r.get("home"), gf, ga, True),
+                                                  (r.get("away"), ga, gf, False)):
+                    slot = self._by_team.setdefault(team, {"dates": [], "rows": []})
+                    slot["dates"].append(d)
+                    slot["rows"].append({"date": d, "gf": int(gfor), "ga": int(gaga),
+                                         "isHome": is_home})
+        for slot in self._by_team.values():
+            order = sorted(range(len(slot["dates"])), key=lambda i: slot["dates"][i])
+            slot["dates"] = [slot["dates"][i] for i in order]
+            slot["rows"] = [slot["rows"][i] for i in order]
+
+    def window(self, team: str, as_of: str, n: int) -> list[dict]:
+        """as_of（含）前 LEAK_LAG_DAYS 天内可见的最近 n 场（铁律14①语义）。"""
+        cutoff = (date.fromisoformat(as_of) - timedelta(days=LEAK_LAG_DAYS)).isoformat()
+        slot = self._by_team.get(team)
+        if not slot:
+            return []
+        hi = bisect.bisect_right(slot["dates"], cutoff)
+        return slot["rows"][max(0, hi - n):hi]
+
+    def last_date_before(self, team: str, as_of: str) -> str | None:
+        """最近一场日期（rest 天数用；同 lag 截断）。"""
+        w = self.window(team, as_of, 1)
+        return w[-1]["date"] if w else None
+
+
+def _window_stats(matches: list[dict]) -> dict | None:
+    n = len(matches)
+    if n < MIN_WINDOW_N:
+        return None
+    tg4 = sum(1 for m in matches if m["gf"] + m["ga"] >= 4)
+    blow = sum(1 for m in matches if abs(m["gf"] - m["ga"]) >= 3)
+    clean = sum(1 for m in matches if m["ga"] == 0)
+    be_cleaned = sum(1 for m in matches if m["gf"] == 0)
+    return {"gf": sum(m["gf"] for m in matches) / n,
+            "ga": sum(m["ga"] for m in matches) / n,
+            "tg4": tg4 / n, "blow": blow / n,
+            "clean": clean / n, "beCleaned": be_cleaned / n}
+
+
+def team_asof_features(idx: LeagueIndex, home_id: str | None, away_id: str | None,
+                       as_of: str) -> dict:
+    """两队近10/38场 6统计×(主/客/差) + rest 2维 = 38 维。任一队窗不足→该窗段全 None
+    （训练侧 train-mean 填充+nNullTeam 计数·prereg features.impute）。开发者 sszhang"""
+    out: dict[str, float | None] = {}
+    stats = {}
+    for side, team in (("h", home_id), ("a", away_id)):
+        stats[side] = {}
+        for w in STATS_WINDOWS:
+            stats[side][w] = _window_stats(idx.window(team, as_of, w)) if team else None
+    for w in STATS_WINDOWS:
+        for k in TEAM_STAT_KEYS:
+            hs, as_ = stats["h"][w], stats["a"][w]
+            hv = hs[k] if hs else None
+            av = as_[k] if as_ else None
+            out[f"h_{k}_w{w}"] = hv
+            out[f"a_{k}_w{w}"] = av
+            out[f"d_{k}_w{w}"] = (hv - av) if (hv is not None and av is not None) else None
+    for side, team in (("h", home_id), ("a", away_id)):
+        last = idx.last_date_before(team, as_of) if team else None
+        out[f"rest_{side}"] = ((date.fromisoformat(as_of) - date.fromisoformat(last)).days
+                               if last else None)
+    return out
