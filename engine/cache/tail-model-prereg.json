@@ -1,0 +1,83 @@
+{
+  "registeredAt": "2026-10-13",
+  "spec": "右尾肥尾场次模型 v1（docs/2026-10-13-tail-model-design.html）",
+  "dataset": {
+    "source": "engine/cache/hist_odds crs_hist_*.json 全量",
+    "loader": "backtest_crs_batch.load_hist_window（crs+crsOpen 均≥20项）",
+    "range": "2023-09-01 ~ 2026-09-28"
+  },
+  "labels": {
+    "tgBin": "min(h+a,7) 共8档",
+    "direction": "主胜0/平1/客胜2",
+    "cleanSheet": "客零封0(h=0,a>0)/主零封1(a=0,h>0)/无2(双方进球或0:0)"
+  },
+  "features": {
+    "marketAnchor": "crsOpen 派生 11 维——唯一市场特征源；ttg/had 封盘禁入特征（留作对手盘）",
+    "teamAsof": "近10/38场 6统计(gf/ga/tg4率/blowout率/零封率/被零封率)×3数(主/客/差) + rest 2维 = 38维",
+    "hstElo": "hst 近20场场均射正 for/against 4维 + elo_diff 1维",
+    "ctx": "联赛模板3维(大球率/屠杀率/客零封大胜率) + 月份sin/cos 2维",
+    "impute": "null→训练窗列均值填充 + 缺失计数2特征(nNullTeam/nNullOther)"
+  },
+  "leakage": {
+    "decisionDayOffset": -1,
+    "leagueLagDays": 2,
+    "eloLagDays": 0,
+    "featurePrice": "crsOpen only"
+  },
+  "folds": {
+    "scheme": "expanding walk-forward",
+    "testSpanMonths": 2,
+    "firstTest": "2025-01",
+    "lastTest": "2026-09-28",
+    "nFolds": 11,
+    "scalerFit": "train-only",
+    "standardize": true
+  },
+  "primaryCriterion": {
+    "event": "E1_tg_ge5",
+    "model": "logistic_heads",
+    "baseline": "market_ttg_power_devig(s5+s6+s7)",
+    "metric": "paired log-loss diff (market − model，正=模型更准)",
+    "ci": "bootstrap95 B=2000",
+    "pass": "CI 下限 > 0",
+    "pooling": "全测试段逐场配对汇总"
+  },
+  "secondary": [
+    {
+      "event": "E2_exact_diff3_cells",
+      "cells": ["3:0", "4:0", "4:1", "5:0", "5:1", "5:2", "0:3", "0:4", "1:4", "0:5", "1:5", "2:5"],
+      "model": "logistic_heads 骨架连乘合成（同12格）",
+      "baseline": "market crs_power_devig 封盘同12格聚合",
+      "outcome": "赛果比分∈同12格（双侧同 0..5 网格口径）",
+      "metric": "同主判据"
+    },
+    {
+      "event": "E3_exact_away_cs_cells",
+      "cells": ["0:3", "0:4", "0:5"],
+      "model": "logistic_heads 合成（同3格）",
+      "baseline": "market 同3格聚合",
+      "outcome": "赛果比分∈同3格",
+      "metric": "同主判据"
+    }
+  ],
+  "exploratoryOnly": ["HistGB E1 对照", "featMask 分层（映射/未映射）", "回收率模拟", "分联赛", "分月", "other 全口径"],
+  "redlines": [
+    "任何回收率模拟为正 → 先 leak-audit+随机基线自证伪（铁律14③）再上报",
+    "主判据 FAIL → tail_pick/影子层不激活，数据集保留为资产，负结果归档",
+    "主判据 PASS → 影子层 50 票 forward，不直接入生产链（铁律15 准入制）"
+  ],
+  "frozenParams": {
+    "C": 1.0,
+    "max_iter": 2000,
+    "leak_lag_days": 2,
+    "decision_day_offset": -1,
+    "boot_B": 2000,
+    "seed": 20261014,
+    "stats_windows": [10, 38],
+    "min_window_n": 5,
+    "hst_window": 20,
+    "min_pool_items": 20,
+    "logloss_clip": 1e-06,
+    "histgb": {"max_iter": 300, "learning_rate": 0.06}
+  }
+}
