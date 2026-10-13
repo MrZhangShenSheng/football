@@ -33,6 +33,7 @@ BOOT_B, SEED, LOGLLOSS_CLIP, MIN_POOL_ITEMS = 2000, 20261015, 1e-6, 20
 TAIL_ODDS_FLOOR = 30.0
 TAIL_FIXED_CELLS = ("0:3", "0:4")
 N_GATE = {"observe": 30, "formal": 100, "final": 200}
+TAIL_N_FORMAL = 150              # prereg tailChannel.pass=CI 下限>0 且 n≥150（review fix 锁闸）
 
 _RESULT_SCORE_RE = re.compile(r"\d+-\d+")          # backfill 现行 result 口径 "h-a"
 
@@ -223,19 +224,25 @@ def evaluate(days: list[str]) -> dict:
                                - _ll(sum(llm.get(k, 0.0) for k in _event_keys(e, r["_marketPool"])), bool(y[j])))
 
     def verdict(diffs, gate_formal, gate_final):
+        """闸门顺序（review fix·对齐 prereg 字母）：n<formal 一律 INSUFFICIENT（数字照出
+        但不判定——防 observe 窗提前 PASS/FAIL 杀轨）；n≥formal 才四态；tail 侧由
+        调用方传 gate_formal=150（tailChannel.pass 双条件 CI 下限>0 且 n≥150）。开发者 sszhang"""
         n = len(diffs)
-        if n < N_GATE["observe"]:
-            return {"n": n, "verdict": "INSUFFICIENT"}
+        if n < gate_formal:
+            stats = {"n": n, "verdict": "INSUFFICIENT"}
+            if n >= N_GATE["observe"]:
+                stats["diffMean"] = round(float(np.mean(diffs)), 4)      # 观察数字照出·不判定
+            return stats
         ci = _boot_ci_diff(diffs, seed=SEED, n_boot=BOOT_B)
         mean = float(np.mean(diffs))
         v = ("PASS" if ci[0] > 0 else
-             "FAIL" if mean <= 0 and n >= gate_formal else
+             "FAIL" if mean <= 0 else
              "UNDETECTED" if mean > 0 and n < gate_final else "FAIL")
         return {"n": n, "diffMean": round(mean, 4), "ci95": [round(float(x), 4) for x in ci], "verdict": v}
 
     return {"days": days,
             "primary": verdict(diffs_full, N_GATE["formal"], N_GATE["final"]),
-            "tailChannel": {**verdict(diffs_tail, N_GATE["formal"], N_GATE["final"]),
+            "tailChannel": {**verdict(diffs_tail, TAIL_N_FORMAL, N_GATE["final"]),
                             "gate": "CI 下限>0 且 n≥150 才开影子专项"},
             "descriptive": {e: ({"n": len(d), "diffMean": round(float(np.mean(d)), 4)}
                                 if len(d) >= N_GATE["observe"] else {"n": len(d)})

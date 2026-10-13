@@ -41,3 +41,40 @@ def test_evaluate_verdict_machinery(tmp_path, monkeypatch):
     assert out["primary"]["n"] == 35
     assert out["primary"]["verdict"] in ("PASS", "FAIL", "UNDETECTED", "INSUFFICIENT")
     assert "tailChannel" in out and "descriptive" in out
+
+
+def test_verdict_gates_locked():
+    """review fix：n<formal 一律 INSUFFICIENT 不判定；tail PASS 锁 n≥150（边界四例）。"""
+    import llm_eval as le
+    orig = le._boot_ci_diff
+    le._boot_ci_diff = lambda d, seed=0, n_boot=0: [1.0, 2.0]   # CI 下限恒>0（诱 PASS）
+    try:
+        rows99 = [0.01] * 99
+        r99 = le.evaluate.__wrapped__(["99场"]) if hasattr(le.evaluate, "__wrapped__") else None
+        # 直接构造 verdict 语义（经 evaluate 内嵌函数不可达，用等价逻辑验证闸门函数行为）
+        # —— 通过 evaluate 的 monkeypatch 装载器复现四边界
+        def rows_of(n):
+            return [{"code": f"c{i}", "cardHash": "x" * 16,
+                     "p_crs": {"1:1": 0.5}, "pRawSum": 1.0, "rawSumWarn": False,
+                     "contextStatus": "ok", "keyJudgments": [], "confidence": "medium",
+                     "_marketPool": {"1:1": 3.0, "1:0": 3.0, "0:1": 3.0, "0:0": 3.0,
+                                     **{f"{i}:{j}": 30.0 for i in range(6) for j in range(6)
+                                        if not (i <= 1 and j <= 1)},
+                                     "胜其他": 60.0, "平其他": 60.0, "负其他": 60.0},
+                     "_actual": "1:1", "_closeProxy": "lineupLast", "_score": "1:1"}
+                    for i in range(n)]
+        le._load_day_rows = lambda days: rows_of(99)
+        out99 = le.evaluate(["x"])
+        assert out99["primary"]["verdict"] == "INSUFFICIENT"      # n=99 <100 不判定
+        assert "diffMean" in out99["primary"]                     # 观察数字照出
+        le._load_day_rows = lambda days: rows_of(100)
+        out100 = le.evaluate(["x"])
+        assert out100["primary"]["verdict"] == "PASS"             # n=100 CI 下限>0 → PASS
+        le._load_day_rows = lambda days: rows_of(149)
+        out149 = le.evaluate(["x"])
+        assert out149["tailChannel"]["verdict"] == "INSUFFICIENT"  # tail n=149 <150 锁
+        le._load_day_rows = lambda days: rows_of(150)
+        out150 = le.evaluate(["x"])
+        assert out150["tailChannel"]["verdict"] == "PASS"          # n=150 开闸
+    finally:
+        le._boot_ci_diff = orig
