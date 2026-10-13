@@ -144,6 +144,50 @@ def gen(sale_date: str) -> int:
     return 0
 
 
+# ── 语境层回写 + 防赛后泄漏三道过滤（spec review R1）───────────────────────
+import re
+
+POST_MATCH_PATTERNS = [
+    r"\bFT\b", r"full[\s-]?time", r"final\s+score", r"match\s+report",
+    r"终场", r"完场", r"全场结束", r"\d+\s*[-:]\s*\d+\s*(完|结束)",
+]
+QUERY_WORDS = ("injury news", "team news", "preview", "predicted lineup")   # 检索建议词（gen 已用）
+
+
+def _is_post_match(entry: dict) -> bool:
+    text = f'{entry.get("title") or ""} {entry.get("excerpt") or ""}'
+    return any(re.search(p, text, re.IGNORECASE) for p in POST_MATCH_PATTERNS)
+
+
+def write_context(sale_date: str, code: str, entries: list[dict], *,
+                  root: Path | None = None) -> dict:
+    """三道过滤：赛后词丢弃 / 发布时间晚于卡 createdAt 丢弃 / 缺 url 或 publishedAt 丢弃。
+    写入后 context=终态（status=ok）禁止二次改写，cardHash 重算。开发者 sszhang"""
+    p = card_paths(sale_date, root=root) / f"{code}.json"
+    card = json.loads(p.read_text(encoding="utf-8"))
+    ctx = card["layers"]["context"]
+    if ctx.get("status") == "ok":
+        raise RuntimeError(f"[write_context] {code} 语境层已终态，禁止改写（凭证纪律）")
+    created = card.get("createdAt") or ""
+    accepted, dropped = [], []
+    for e in entries:
+        if not (e.get("url") and e.get("publishedAt")):
+            dropped.append({"reason": "缺url/publishedAt", "title": e.get("title")}); continue
+        if str(e["publishedAt"]) > created:
+            dropped.append({"reason": "发布晚于卡createdAt", "title": e.get("title")}); continue
+        if _is_post_match(e):
+            dropped.append({"reason": "赛后特征词", "title": e.get("title")}); continue
+        accepted.append({"title": e.get("title"), "url": e["url"],
+                         "publishedAt": e["publishedAt"],
+                         "fetchedAt": datetime.now().isoformat(timespec="seconds"),
+                         "excerpt": (e.get("excerpt") or "")[:600]})
+    ctx["status"] = "ok" if accepted else "未获取"
+    ctx["entries"] = accepted
+    card["cardHash"] = card_hash(card)
+    p.write_text(json.dumps(card, ensure_ascii=False, indent=1), encoding="utf-8")
+    return {"accepted": len(accepted), "dropped": dropped}
+
+
 def main() -> int:
     import argparse
     ap = argparse.ArgumentParser(description="LLM 预测数据卡生成器")

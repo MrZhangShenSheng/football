@@ -1,7 +1,7 @@
 # engine/tests/test_llm_card.py
-import sys, json, pathlib
+import sys, json, pathlib, pytest
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "scripts"))
-from llm_card import build_card, save_card, card_hash, card_paths, match_id_index
+from llm_card import build_card, save_card, card_hash, card_paths, match_id_index, write_context
 
 
 def _mini_archive(tmp_path):
@@ -59,3 +59,40 @@ def test_match_id_index_reverse_lookup(tmp_path):
     assert match_id_index(f) == {"周一001": 2041921, "周一002": 2041922}
     # 文件缺失 → 空 dict（gen 里 mid=None → intel 层诚实降级"未获取"）
     assert match_id_index(tmp_path / "nope.json") == {}
+
+
+def _mk_card(tmp_path):
+    card = build_card("2026-10-13",
+                      {"matchNumStr": "周二001", "league": "英超", "home": "A", "away": "B",
+                       "matchTime": "t", "had": {}, "crs": {}, "ttg": {}},
+                      insight_path=None, lineups={}, now="2026-10-13T18:00:00")
+    save_card(card, "2026-10-13", root=tmp_path)
+    return card
+
+
+def test_context_filters_post_match(tmp_path):
+    _mk_card(tmp_path)
+    entries = [
+        {"title": "Team news: key midfielder doubts", "url": "u1",
+         "publishedAt": "2026-10-13T12:00:00", "excerpt": "preview of rotation plans"},   # 收
+        {"title": "FT: Arsenal 3-0 Chelsea", "url": "u2",
+         "publishedAt": "2026-10-13T12:00:00", "excerpt": "full-time report"},           # 赛后词→丢
+        {"title": "Preview piece", "url": "u3",
+         "publishedAt": "2026-10-13T19:00:00", "excerpt": "fine"},                        # 晚于 createdAt→丢
+    ]
+    r = write_context("2026-10-13", "周二001", entries, root=tmp_path)
+    assert r["accepted"] == 1 and len(r["dropped"]) == 2
+    card = json.loads((tmp_path / "2026-10-13" / "周二001.json").read_text(encoding="utf-8"))
+    assert card["layers"]["context"]["status"] == "ok"
+    assert card["layers"]["context"]["entries"][0]["url"] == "u1"
+
+
+def test_context_frozen_after_written(tmp_path):
+    _mk_card(tmp_path)
+    write_context("2026-10-13", "周二001", [{"title": "t", "url": "u",
+                                             "publishedAt": "2026-10-13T10:00:00", "excerpt": "x"}],
+                  root=tmp_path)
+    with pytest.raises(RuntimeError):
+        write_context("2026-10-13", "周二001", [{"title": "t2", "url": "u2",
+                                                 "publishedAt": "2026-10-13T10:00:00", "excerpt": "x"}],
+                      root=tmp_path)   # 终态禁二次改写
