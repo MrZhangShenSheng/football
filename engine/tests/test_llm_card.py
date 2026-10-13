@@ -96,3 +96,16 @@ def test_context_frozen_after_written(tmp_path):
         write_context("2026-10-13", "周二001", [{"title": "t2", "url": "u2",
                                                  "publishedAt": "2026-10-13T10:00:00", "excerpt": "x"}],
                       root=tmp_path)   # 终态禁二次改写
+
+
+def test_context_frozen_when_all_filtered(tmp_path):
+    """全被滤落『未获取』也是终态——二次改写必须抛（review fix·凭证纪律）。"""
+    _mk_card(tmp_path)
+    r = write_context("2026-10-13", "周二001", [{"title": "FT: A 1-0 B", "url": "u",
+                                                 "publishedAt": "2026-10-13T10:00:00", "excerpt": "x"}],
+                      root=tmp_path)
+    assert r["accepted"] == 0
+    with pytest.raises(RuntimeError):
+        write_context("2026-10-13", "周二001", [{"title": "ok piece", "url": "u",
+                                                 "publishedAt": "2026-10-13T10:00:00", "excerpt": "x"}],
+                      root=tmp_path)

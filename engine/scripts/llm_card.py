@@ -166,8 +166,8 @@ def write_context(sale_date: str, code: str, entries: list[dict], *,
     p = card_paths(sale_date, root=root) / f"{code}.json"
     card = json.loads(p.read_text(encoding="utf-8"))
     ctx = card["layers"]["context"]
-    if ctx.get("status") == "ok":
-        raise RuntimeError(f"[write_context] {code} 语境层已终态，禁止改写（凭证纪律）")
+    if ctx.get("status") in ("ok", "未获取"):
+        raise RuntimeError(f"[write_context] {code} 语境层已终态（ok/未获取两态均终态），禁止改写（凭证纪律）")
     created = card.get("createdAt") or ""
     accepted, dropped = [], []
     for e in entries:
@@ -184,7 +184,9 @@ def write_context(sale_date: str, code: str, entries: list[dict], *,
     ctx["status"] = "ok" if accepted else "未获取"
     ctx["entries"] = accepted
     card["cardHash"] = card_hash(card)
-    p.write_text(json.dumps(card, ensure_ascii=False, indent=1), encoding="utf-8")
+    tmp = p.with_suffix(".tmp")
+    tmp.write_text(json.dumps(card, ensure_ascii=False, indent=1), encoding="utf-8")
+    tmp.rename(p)
     return {"accepted": len(accepted), "dropped": dropped}
 
 
