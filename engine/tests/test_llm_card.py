@@ -1,12 +1,12 @@
 # engine/tests/test_llm_card.py
 import sys, json, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "scripts"))
-from llm_card import build_card, save_card, card_hash, card_paths
+from llm_card import build_card, save_card, card_hash, card_paths, match_id_index
 
 
 def _mini_archive(tmp_path):
     m = {"matchNumStr": "周二001", "league": "英超", "home": "阿森纳", "away": "切尔西",
-         "matchTime": "2026-10-14 03:45", "sellStatus": "ON_SALE",
+         "matchTime": "2026-10-14 03:45", "sellStatus": 1,
          "had": {"h": 1.5, "d": 4.0, "a": 5.0},
          "crs": {"s01s00": 8.0, "s01s01": 7.0}, "ttg": {"s0": 3.0}, "hafu": {}, "hhad": {}}
     doc = {"fetchedAt": "2026-10-13T10:00:00", "source": "sporttery",
@@ -45,3 +45,17 @@ def test_save_card_idempotent_no_overwrite(tmp_path):
     p2 = save_card(card, "2026-10-13", root=tmp_path)
     assert p1 == p2
     assert "HACKED" not in json.loads(p1.read_text(encoding="utf-8"))["layers"]["market"]["crs"]
+
+
+def test_match_id_index_reverse_lookup(tmp_path):
+    # 迷你 sporttery_matches.json：每场含 matchId+code，code=matchNumStr 口径
+    doc = {"fetchedAt": "2026-10-13T10:00:00", "source": "sporttery",
+           "matches": [{"matchId": 2041921, "code": "周一001", "home": "A", "away": "B"},
+                       {"matchId": 2041922, "code": "周一002", "home": "C", "away": "D"},
+                       {"code": "周一003"},                       # 无 matchId → 跳过
+                       {"matchId": 2041924}]}                     # 无 code → 跳过
+    f = tmp_path / "sporttery_matches.json"
+    f.write_text(json.dumps(doc, ensure_ascii=False), encoding="utf-8")
+    assert match_id_index(f) == {"周一001": 2041921, "周一002": 2041922}
+    # 文件缺失 → 空 dict（gen 里 mid=None → intel 层诚实降级"未获取"）
+    assert match_id_index(tmp_path / "nope.json") == {}

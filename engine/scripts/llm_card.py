@@ -26,6 +26,17 @@ def card_paths(sale_date: str, *, root: Path | None = None) -> Path:
     return (root or CARDS_ROOT) / sale_date
 
 
+def match_id_index(matches_file: Path) -> dict:
+    """sporttery_matches.json 在售清单 → {code: matchId} 反查表（code=matchNumStr 口径）。
+    文件缺失/残行（无 code 或无 matchId）诚实跳过，返回空表则 intel 层降级未获取。"""
+    f = Path(matches_file)
+    if not f.exists():
+        return {}
+    doc = json.loads(f.read_text(encoding="utf-8"))
+    return {m.get("code"): m.get("matchId") for m in doc.get("matches") or []
+            if m.get("code") and m.get("matchId") is not None}
+
+
 def card_hash(card: dict) -> str:
     """规范化 sha256 前 16 位（不含 cardHash 自身字段）。"""
     c = {k: v for k, v in card.items() if k != "cardHash"}
@@ -68,7 +79,7 @@ def build_card(sale_date: str, match: dict, *, insight_path: Path | None,
     intel = {"status": "未获取"}
     if insight_path and Path(insight_path).exists():
         doc = json.loads(Path(insight_path).read_text(encoding="utf-8"))
-        intel = {"status": "ok", **{k: doc.get(k) for k in ("injury", "recent", "standing", "h2h", "scorers")
+        intel = {"status": "ok", **{k: doc.get(k) for k in ("injuries", "form", "standing", "h2h", "scorers")
                                     if doc.get(k) is not None}}
     card = {
         "code": match["matchNumStr"], "match": f'{match["home"]} vs {match["away"]}',
@@ -94,7 +105,9 @@ def save_card(card: dict, sale_date: str, *, root: Path | None = None) -> Path:
     p = d / f'{card["code"]}.json'
     if p.exists():
         return p
-    p.write_text(json.dumps(card, ensure_ascii=False, indent=1), encoding="utf-8")
+    tmp = p.with_suffix(".tmp")
+    tmp.write_text(json.dumps(card, ensure_ascii=False, indent=1), encoding="utf-8")
+    tmp.rename(p)          # 原子写：rename 落卡，杜绝半截 JSON
     return p
 
 
@@ -110,11 +123,11 @@ def gen(sale_date: str) -> int:
     if lineups_f.exists():
         ldoc = json.loads(lineups_f.read_text(encoding="utf-8"))
         lineups = (ldoc.get("matches") or {}) if isinstance(ldoc, dict) else {}
+    mid_index = match_id_index(ROOT / "engine" / "cache" / "sporttery_matches.json")
     for day in doc.get("matchDays") or []:
         for m in day.get("matches") or []:
-            if m.get("sellStatus") not in (None, "ON_SALE", "AUTO"):
-                continue
-            mid = m.get("matchId") or m.get("uniformMatchId")
+            # sellStatus 不过滤：当日存档即当日清单（2026-10-13 review 裁定·真实值域 int 1/2 与字符串臆造不符）
+            mid = mid_index.get(m["matchNumStr"])
             insight_path = None
             if mid:
                 ip = ROOT / "engine" / "cache" / f"sporttery_insight_{mid}.json"
