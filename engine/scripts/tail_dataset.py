@@ -41,7 +41,7 @@ def label_skeleton(score: str) -> dict:
 def market_anchor_features(row: dict) -> dict:
     """crsOpen 全套派生 11 维（唯一市场特征源·开盘口径=决策时点合法）。
 
-    三向聚合含 other 归侧；tg 矩/肥尾质量/熵只计精确键（other 不摊·口径冻结）。"""
+    三向聚合含 other 归侧；tg 矩/肥尾质量只计精确键（other 不摊）；熵=全分布含 other 原子（口径冻结）。"""
     pool = row.get("crsOpen") or {}
     if len(pool) < MIN_POOL_ITEMS:
         return {}
