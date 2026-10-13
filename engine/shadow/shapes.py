@@ -47,6 +47,19 @@ PLAN_FAMILIES = [
     {'family': 'D', 'name': 'crs-4串1',    'pool': 'crs',      'shape': '4串1',  'n_legs': 4, 'options': 'single', 'track': 'A'},
     {'family': 'D', 'name': 'crs-双选2串1', 'pool': 'crs',     'shape': '全2关', 'n_legs': 3, 'options': 'dual', 'track': 'A'},
     {'family': 'D', 'name': 'crs-双选单关', 'pool': 'crs',     'shape': '单关',  'n_legs': 7, 'options': 'dual', 'track': 'A'},
+    # D 族变体：剧本分层（2026-10-13 大哥拍板 A'+C' · 预注册 spec）
+    # ── 预注册判据（跑前登记，禁事后改口径·铁律 14②/15）──────────────────────────
+    # 机制：强主场（HAD 三向最低赔 ≤1.40）的 CRS 双选从平局族切大球族——miss 归因实证
+    #   旧 spec 66 腿中 23 腿爆大球全灭（尤文5:0/水晶宫4:0/赫尔辛基6:0 皆 qcache 裸联赛
+    #   模板 1:1+1:0，λ 平移对欧战弱旅降级纯模板=强弱信息入口丢失）；票型定位右尾博弈，
+    #   强主场就该配右尾剧本。市场 HAD 信号只做场景开关不做选腿排序（与 CRS 融合链族
+    #   闸门同性质）。均势场保持原 qcache top2 逻辑（与原版唯一差异=强主场 pick 路由）。
+    # 事后重构警示：23 腿中 7~9 腿可被 3:0+4:0 覆盖的模拟是先看赛果再挑口径，只作立项
+    #   动机不作收益证据。
+    # 判据：50 票结算后对比原版 crs-双选2串1 同期回收率，配对差 CI 下限 >0 才留，
+    #   否则关档。中途不改参数（1.40 阈值/3:0+4:0 组合冻结）。开发者 sszhang
+    {'family': 'D', 'name': 'crs-双选2串1-剧本分层', 'pool': 'crs', 'shape': '全2关',
+     'n_legs': 3, 'options': 'dual', 'track': 'A', 'route': 'big_home'},
     # G 族：右尾贪心（2026-09-09 大哥拍板新增·保留作闯关票对照）——概率预算背包贪心近似：
     # 预算容量 W=-ln(p_budget) 内按密度 d=ln(o)/(-ln(p)) 贪心装入（每损失 1 单位概率
     # 换回最多赔率对数收益）；候选=每场 {HAD 主选项 ∪ CRS top-1 ∪ TTG top-1}，
@@ -154,7 +167,41 @@ def _leg_picks(leg, spec, options_mode, qc):
     picks = _qc_options(leg, kind, qc, 2 if options_mode == 'dual' else 1)
     if picks is None and options_mode == 'dual':   # q 缺该场时降单选（诚实降级不静默弃票）
         picks = _qc_options(leg, kind, qc, 1)
+    if spec.get('route') == 'big_home' and kind == 'crs' and options_mode == 'dual':
+        picks = _route_big_home(leg, picks) or picks   # 池价缺键回退原 picks
     return picks
+
+
+BIG_HOME_ODDS_CAP = 1.40   # 强主场阈值（预注册冻结·2026-10-13）
+
+
+def _route_big_home(leg, fallback_picks):
+    """剧本分层路由（预注册 spec 专用）：HAD 最低赔 ≤1.40 的一方 → CRS 双选切大球族。
+
+    强主=['3:0','4:0'] / 强客=['0:3','0:4']；体彩 CRS 池两键均有价才切换
+    （缺价回退 fallback_picks 防静默错算——冻结价只取 picks 内键，缺键=结算 None）。
+    非强场返回 None（调用方保持原 qcache top2）。开发者 sszhang"""
+    had_o = leg.get('odds') or []
+    if len(had_o) != 3 or any(not x or x <= 1.0 for x in had_o):
+        return None
+    lo = min(had_o)
+    if lo > BIG_HOME_ODDS_CAP:
+        return None
+    side = had_o.index(lo)
+    want = ['3:0', '4:0'] if side == 0 else ['0:3', '0:4']
+    pool = (leg.get('pools') or {}).get('crs') or {}
+    # 体彩池键 s03s00/s04s00（shadow_all 透传原始格式）；两键都有有效价才切换
+    keys = ('s03s00', 's04s00') if side == 0 else ('s00s03', 's00s04')
+    if all(_is_price(pool.get(k)) for k in keys):
+        return want
+    return None
+
+
+def _is_price(v):
+    try:
+        return float(v) > 1.0
+    except (TypeError, ValueError):
+        return False
 
 
 def _skeleton(shape, n):
