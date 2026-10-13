@@ -23,3 +23,17 @@ def test_load_window_filters_and_keeps_pairs(tmp_path, monkeypatch):
     monkeypatch.setattr("backtest_crs_batch.HIST_DIR", tmp_path)
     rows = load_hist_window("2025-03-01", "2025-03-31")
     assert len(rows) == 1 and rows[0]["code"] == "周六001"
+
+def test_settle_row_hit_and_unpriced():
+    from backtest_crs_batch import settle_row
+    row = {"score": "2:1", "crs": {"2:1": 9.5, "1:1": 7.0, "1:0": 8.0, "other_h": 40.0}}
+    r = settle_row(["2:1", "1:1", "1:0"], row, 2)
+    assert r["hit"] == "2:1" and r["odds"] == 9.5 and r["payout"] == 2 * 9.5
+    r2 = settle_row(["9:9", "2:1"], row, 2)   # 9:9 无价 → dropped，次选命中
+    assert r2["dropped"] == 1 and r2["hit"] == "2:1"
+
+def test_settle_row_unlisted_score_falls_to_other():
+    from backtest_crs_batch import settle_row
+    row = {"score": "7:0", "crs": {"other_h": 45.0, "1:1": 7.0}}
+    r = settle_row(["other_h"], row, 1)
+    assert r["hit"] == "other_h" and r["odds"] == 45.0
