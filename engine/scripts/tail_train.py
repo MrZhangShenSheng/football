@@ -264,9 +264,6 @@ def main() -> int:
     return 0
 
 
-if __name__ == "__main__":
-    raise SystemExit(main())
-
 
 # ── HistGB exploratory 对照 + featMask 分层 + 报告（Task 7）────────────────
 from sklearn.ensemble import HistGradientBoostingClassifier
@@ -361,3 +358,6 @@ def render_report(result_all: dict) -> str:
     lines.append("<p style=\"color:#888;font-size:12px\">开发者 sszhang · 判据预注册 engine/cache/tail-model-prereg.json · 铁律 14②/15</p>")
     lines.append("</body></html>")
     return "".join(lines)
+
+if __name__ == "__main__":
+    raise SystemExit(main())
