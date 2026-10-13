@@ -51,6 +51,30 @@ def test_freeze_idempotent_and_strict(tmp_path, monkeypatch):
     assert len(doc["preds"][0]["cardHash"]) == 16
 
 
+def test_llm_family_build_ticket():
+    """L 族建票冒烟：qc=llm_preds 装载口径 {code:{crs:[(pick,p),...] 右尾键内降序}}——
+    picks 已是 pick 键（'0:3' 风格），选场=top1 概率降序前 2 场、每场 top2 双选。"""
+    import importlib
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "shadow"))
+    shapes = importlib.import_module("shapes")
+    legs = [{"code": "周二001", "match": "A vs B", "fused": [0.5, 0.3, 0.2],
+             "odds": [1.5, 4.0, 5.0],
+             "pools": {"crs": {"s00s03": 40.0, "s00s04": 110.0, "s00s05": 350.0, "s01s01": 7.0}}},
+            {"code": "周二002", "match": "C vs D", "fused": [0.4, 0.3, 0.3],
+             "odds": [2.0, 3.4, 3.2],
+             "pools": {"crs": {"s00s03": 35.0, "s00s04": 100.0, "s01s01": 7.5}}}]
+    qc = {"周二001": {"crs": [("0:3", 0.030), ("0:4", 0.008)]},
+          "周二002": {"crs": [("0:3", 0.020), ("0:4", 0.006)]}}
+    spec = next(s for s in shapes.PLAN_FAMILIES if s.get("family") == "L")
+    t = shapes.build_ticket(legs, spec, qc=qc)
+    assert t is not None and len(t["tlegs"]) == 2
+    assert t["tlegs"][0]["picks"] == ["0:3", "0:4"]          # 每场 top2 右尾腿
+    assert t["n_bets"] == 4                                   # 2 场×双选=4 注 2串1
+    # top1 概率降序选场：周二001（0.030）> 周二002（0.020）→ tlegs[0] 须是周二001
+    src_leg = legs[t["tlegs"][0]["src"]]
+    assert src_leg["code"] == "周二001"
+
+
 def test_chinese_other_keys_mapped():
     """pick 键存档的中文 other 键（胜/平/负其他）须映射为 other_* 可押（review fix·右尾点名肥档）。"""
     import llm_pred as le

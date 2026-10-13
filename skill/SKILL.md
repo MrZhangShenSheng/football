@@ -82,6 +82,16 @@ description: |
 
 纪律：国家队/杯赛期 `dc=null` 属**纯市场锚**（DC 无该联赛参数），须按铁律 10 同口径标注，不得把市场锚当模型输出；设计依据 `docs/2026-09-22-sfc-ren9-design.html`。
 
+### LLM 预测步骤（影子 family L 前置）★ 2026-10-13 挂接
+
+预测流程中、**影子层登记（`shadow-all`）之前**按序执行（llm_preds 冻结件缺失时 L 族影子票当日不登记，其余族不受影响）。设计=`docs/2026-10-13-llm-predict-design.html`，判据预注册=`engine/cache/llm-predict-prereg.json`。
+
+1. `python engine/scripts/llm_card.py gen <销售日>` —— 五层数据卡（市场/intel/画像/首发/语境待检索），gen 逐场打印建议检索词
+2. 会话联网检索候选场语境层 → 回写 `llm_card.write_context(销售日, 编号, entries)` ——**三道过滤**：只用 preview 类检索词（禁赛果词）· 赛后特征词条目丢弃 · 发布时间晚于卡 createdAt / 缺 url/publishedAt 丢弃；语境层 ok/未获取两态均终态**禁二次改写**（凭证纪律）
+3. 会话按 spec §3 协议出预测：每场 31 格（市场有价键）p_crs 分布 + 每场 ≥3 条 keyJudgments（judgment+evidence 引用语境层编号）+ confidence 枚举
+4. 会话调用 `llm_pred.freeze(销售日, preds)` —— 逐场校验（键∈市场键集/判断完整）→条件归一→冻结 `engine/cache/llm_preds/{销售日}.json`（幂等只读·凭证）
+5. **纪律：LLM 预测步骤先于当日回填/赛果查询**（防赛后泄漏·铁律 14 同源）；回填后 `python engine/scripts/llm_eval.py run` 对拍结算（主判据=31 格配对 log-loss，右尾通道转正=CI 下限>0 且 n≥150）
+
 ### 影子层（paper trading）★ v5.14 补记
 
 影子票 = 不购买的对照形状，用于在不动真金的前提下积累样本。**正账（真实购买）走 `data/06-tickets/tickets.json`，两者禁止混记。**

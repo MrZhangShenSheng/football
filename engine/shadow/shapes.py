@@ -75,6 +75,18 @@ PLAN_FAMILIES = [
     # 定位=样本外盲测对照（+341.4% 皆样本内回测，docs/predictor_v4b.md 收编标注），非生产概率源。
     {'family': 'V', 'name': 'v4b-双选2串1', 'pool': 'v4b', 'shape': '2串1',
      'n_legs': 2, 'options': 'dual', 'track': 'A'},
+    # L 族：llm-31格选腿（2026-10-13 spec·docs/2026-10-13-llm-predict-design.html §5）——
+    # 会话 LLM 预测冻结分布驱动（engine/cache/llm_preds/{销售日}.json·llm_pred.freeze 产物）：
+    # 选场=右尾键 top1 概率降序取前 2、每场 crs top2 双选 → 2×2=4 注 2串1；
+    # qc=llm_preds 装载（paper.load_llm_preds）：{code:{crs:[(pick,p),...] 右尾键内降序}}，
+    # 右尾键=卡市场层有价键中赔率≥30 ∪ 固定 {0:3,0:4}（与 llm_eval.tail_keys_of 同口径）。
+    # ── 预注册（跑前登记·禁事后改口径）────────────────────────────────────────
+    # forward only：判据=llm-predict-prereg tailChannel（E_tail 聚合二项·CI 下限>0 且
+    # n≥150 才转正）；主判据（31 格配对 log-loss）FAIL 不封锁本通道但封锁整体预测叙事。
+    # 冻结纪律同 qcache/v4b：llm_preds 文件在即用，缺失诚实跳过（L 族当日无票，不自动生成）。
+    # 开发者 sszhang
+    {'family': 'L', 'name': 'llm-31格选腿', 'pool': 'llm_crs', 'shape': '2串1',
+     'n_legs': 2, 'options': 'dual', 'track': 'A'},
 ]
 
 
@@ -160,7 +172,7 @@ def _qc_options(leg, kind, qc, k):
 
 def _leg_picks(leg, spec, options_mode, qc):
     """→ 该腿选项 list（建票展开用）；had 腿 int 选项，ttg/crs 池键 str。"""
-    kind = 'had' if spec['pool'] in ('strong', 'jiao_zhuo', 'ev_best') else ('crs' if spec['pool'] == 'v4b' else spec['pool'])
+    kind = 'had' if spec['pool'] in ('strong', 'jiao_zhuo', 'ev_best') else ('crs' if spec['pool'] in ('v4b', 'llm_crs') else spec['pool'])
     if kind == 'had':
         k = {'single': 1, 'dual': 2, 'dual2': 2, 'triple': 3}[options_mode]
         return _had_options(leg, k)
@@ -332,6 +344,23 @@ def build_ticket(legs, spec, qc=None):
         pool = [(i, legs[i]) for i in ordered[:spec['n_legs']]]
         if len(pool) < 2:
             return None
+    elif spec['pool'] == 'llm_crs':
+        # L 族（2026-10-13 spec·forward only）：选场按 llm 冻结预测右尾键 top1 概率降序
+        # （llm 口径，非市场排序）——qc=llm_preds 装载（paper.load_llm_preds 特供），
+        # picks 已是 pick 键，池价冻结/结算复用 v4b 同款 crs 路径（kind 归 'crs'）。
+        if not qc:
+            return None
+        by_top = {}
+        for code, pools in qc.items():
+            ranked = pools.get('crs') or []
+            if ranked:
+                by_top[code] = ranked[0][1]
+        idx_of = {l['code']: i for i, l in enumerate(legs)}
+        ordered = [idx_of[c] for c in sorted(by_top, key=by_top.get, reverse=True)
+                   if c in idx_of]
+        pool = [(i, legs[i]) for i in ordered[:spec['n_legs']]]
+        if len(pool) < 2:
+            return None
     elif spec['pool'] in ('ttg', 'crs'):
         if not qc:
             return None                     # 无 q 快照整族跳过（qcache 随事故丢失待重建）
@@ -359,7 +388,7 @@ def build_ticket(legs, spec, qc=None):
         picks = _leg_picks(leg, spec, mode, qc)
         if not picks:
             return None                     # ttg/crs 池价/q 全缺该场 → 整票放弃（不建半票）
-        kind = 'had' if spec['pool'] in ('strong', 'jiao_zhuo', 'ev_best') else ('crs' if spec['pool'] == 'v4b' else spec['pool'])
+        kind = 'had' if spec['pool'] in ('strong', 'jiao_zhuo', 'ev_best') else ('crs' if spec['pool'] in ('v4b', 'llm_crs') else spec['pool'])
         if kind == 'had':
             picks = [int(p) for p in picks]
             # 只冻结已买槽（未买槽 None——settle 以槽位有价判"买了且命中"，全槽透传会误判）

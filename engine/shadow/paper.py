@@ -296,6 +296,64 @@ def _isnum(v):
         return False
 
 
+# ── L 族装载（2026-10-13 spec·llm-predict 设计 §5）───────────────────────
+LLM_PREDS_DIR = os.path.join(REPO, 'engine', 'cache', 'llm_preds')
+LLM_CARDS_DIR = os.path.join(REPO, 'engine', 'cache', 'llm_cards')
+LLM_TAIL_ODDS_FLOOR = 30.0        # 右尾键赔率下限（llm-predict-prereg frozenParams 冻结值）
+LLM_TAIL_FIXED = ('0:3', '0:4')   # 强客零封固定右尾格（第一约束：跨窗 84%/97% 最稳档）
+
+
+def _llm_pick_key(k):
+    """市场层 crs 键三态归一 → pick 键（与 llm_pred.freeze/llm_eval._pick_key 同逻辑·勿 import 私有代码）。"""
+    if ':' in k:
+        return k
+    if k.startswith('s') and len(k) == 6 and k[3] == 's':
+        return f"{int(k[1:3])}:{int(k[4:6])}"
+    return ('other_h' if k in ('s1sh', '胜其他') else 'other_d' if k in ('s1sd', '平其他')
+            else 'other_a' if k in ('s1sa', '负其他') else None)
+
+
+def load_llm_preds(date: str):
+    """llm 冻结预测 → L 族 qc：{code: {'crs': [(pick, p), ...] 右尾键内按冻结 p 降序}}。
+    右尾键=该场卡市场层有价键中赔率≥30 ∪ 固定 {0:3,0:4}（与 llm_eval.tail_keys_of 同口径，
+    赔率读数据卡 market 层·freeze 已保证 p_crs 键有价，此处独立复核防卡事后漂移）；
+    llm_preds/{date}.json 缺失 → None（L 族诚实跳过——llm 预测由会话 llm_pred.freeze 预先
+    冻结，本函数只消费不生成）。开发者 sszhang"""
+    p = os.path.join(LLM_PREDS_DIR, f'{date}.json')
+    if not os.path.exists(p):
+        return None
+    try:
+        with open(p, encoding='utf-8') as fh:
+            doc = json.load(fh)
+    except (OSError, json.JSONDecodeError):
+        return None
+    qc = {}
+    for pred in (doc or {}).get('preds') or []:
+        code = pred.get('code')
+        p_crs = pred.get('p_crs') or {}
+        if not code or not p_crs:
+            continue
+        odds = {}                      # 该场卡市场层 {pick 键: 赔率}
+        try:
+            with open(os.path.join(LLM_CARDS_DIR, date, f'{code}.json'), encoding='utf-8') as fh:
+                card = json.load(fh)
+            for k, v in (((card.get('layers') or {}).get('market') or {}).get('crs') or {}).items():
+                kk = _llm_pick_key(k)
+                if kk and _isnum(v) and float(v) > 1.0:
+                    odds[kk] = float(v)
+        except (OSError, json.JSONDecodeError, AttributeError):
+            pass                       # 卡缺失/脏 → odds 空 → 该场右尾键全缺（诚实不选）
+        ranked = []
+        for k, v in sorted(p_crs.items(), key=lambda kv: -float(kv[1])):
+            o = odds.get(k)
+            tail = (o is not None) if k in LLM_TAIL_FIXED else (o is not None and o >= LLM_TAIL_ODDS_FLOOR)
+            if tail:
+                ranked.append((k, float(v)))
+        if ranked:
+            qc[code] = {'crs': ranked}
+    return qc or None
+
+
 def shadow_all(date=None, out=None):
     """当轮在售场次 → 全部 PlanSpec 影子票登记（冻结当刻体彩五池真实价）。
 
@@ -361,6 +419,10 @@ def shadow_all(date=None, out=None):
                     spec_qc = _shapes.load_v4b_snap(date)
                 except Exception:
                     spec_qc = None           # 诚实降级：v4b spec 跳过（映射失败/历史不足皆打印原因）
+        if spec.get('pool') == 'llm_crs':
+            # L 族 forward（2026-10-13 spec）：qc=llm 冻结预测装载（右尾键降序）；无自动生成
+            # ——llm 预测由会话 llm_pred.freeze 预先冻结，文件缺失诚实跳过（L 族当日无票）
+            spec_qc = load_llm_preds(date)
         tk = _shapes.build_ticket(legs, spec, qc=spec_qc)
         if tk is None:
             continue
