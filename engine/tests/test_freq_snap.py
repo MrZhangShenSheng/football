@@ -1,7 +1,7 @@
 # engine/tests/test_freq_snap.py
 # freq_snap 重建测试（2026-09-08）：纯模板排序/λ平移/池价闸门/全局池兜底/冻结幂等
-# +零场不落盘/端到端 C-D 族 6 spec。注入 matches/freq_table/form/zh 隔离网络。
-# 开发者 sszhang
+# +零场不落盘/端到端 C-D 族 7 spec（2026-10-13 剧本分层 spec 入列+1）。
+# 注入 matches/freq_table/form/zh 隔离网络。开发者 sszhang
 import json
 import sys
 from collections import Counter
@@ -135,14 +135,15 @@ def _leg(i, fuse_h):
 
 
 def test_end_to_end_c_d_specs_non_none(tmp_path, monkeypatch):
-    """端到端：snap 产出 → load_qcache → C 族×3 + D 族×3 全部建票成功（恢复铁证）。"""
+    """端到端：snap 产出 → load_qcache → C 族×3 + D 族×4 全部建票成功（恢复铁证）。
+    2026-10-13 起 7 spec：crs-双选2串1-剧本分层（预注册 spec）入 PLAN_FAMILIES 计数+1。"""
     legs = [_leg(i, 0.75 - i * 0.045) for i in range(8)]
     _snap(tmp_path, [_match(l['code']) for l in legs])
     monkeypatch.setattr(shapes, 'QCACHE_DIR', str(tmp_path))
     qc = shapes.load_qcache(DATE)
     assert qc and len(qc) == 8
     c_d = [s for s in shapes.PLAN_FAMILIES if s['family'] in ('C', 'D')]
-    assert len(c_d) == 6
+    assert len(c_d) == 7
     for spec in c_d:
         tk = shapes.build_ticket(legs, spec, qc=qc)
         assert tk is not None, f"{spec['name']} 仍被跳过"

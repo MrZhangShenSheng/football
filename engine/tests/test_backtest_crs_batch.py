@@ -89,7 +89,12 @@ def test_arm_a4_prefers_market_when_open_full():
 import json as _json
 
 def _fake_prereg(tmp_path, *, with_criterion=False):
-    doc = {"windows": {"WX": {"from": "2025-03-01", "to": "2025-03-31", "role": "synthetic"}}}
+    # frozenParams+W1/W2/W3 三窗=check_prereg 指纹闸过闸要件（I-2·main 三命令启动校验）
+    doc = {"windows": {"WX": {"from": "2025-03-01", "to": "2025-03-31", "role": "synthetic"},
+                       **{w: {"from": "2025-01-01", "to": "2025-12-31", "role": "synthetic"}
+                          for w in ("W1", "W2", "W3")}},
+           "frozenParams": {"beta": 0.05, "lag_days": 2, "decision_day_offset": -1,
+                            "min_pool_items": 20, "k_max": 4, "boot_B": 2000, "seed": 20261013}}
     if with_criterion:
         doc["primaryCriterion"] = {"window": "WX", "arm": "A3_v3w_model", "baseline": "A1_open_devig",
                                    "metric": "top1 回收率逐场配对差", "ci": "bootstrap95 B=2000",
@@ -227,16 +232,59 @@ def test_cmd_run_archives_window_json(tmp_path, monkeypatch, capsys):
     out = capsys.readouterr().out
     assert "rows=5" in out and "unmappedRate" in out     # dropped/unmapped 率打印（brief Step2 ③）
 
-def test_cmd_run_redline_aborts(tmp_path, monkeypatch, capsys):
+def test_cmd_run_redline_aborts_on_adjudication_window(tmp_path, monkeypatch, capsys):
+    """I-1 分窗语义：裁决窗（role=adjudication）出带 rc=1 中断不续跑（prereg redlines[1]·不放宽）。"""
     from backtest_crs_batch import main
-    bad = {"window": "W1", "rows": 3, "unmapped": {}, "unmappedRate": {},
+    bad = {"window": "W3", "role": "adjudication", "rows": 3, "unmapped": {}, "unmappedRate": {},
            "arms": {"A0": {"k1": {"n": 3, "stake": 6.0, "payout": 3.0, "recovery": 0.5, "dropped": 0}}}}
     monkeypatch.setattr("backtest_crs_batch.run_window", lambda w, arms, **kw: bad)
+    monkeypatch.setattr("backtest_crs_batch.PREREG_PATH", _fake_prereg(tmp_path))
     out_dir = tmp_path / "summaries"
     monkeypatch.setattr("backtest_crs_batch.OUT_DIR", out_dir)
-    assert main(["run", "W1"]) == 1                     # 出界即中断（prereg redlines[1]·不放宽）
-    assert "REDLINE" in capsys.readouterr().err
-    assert (out_dir / "W1.json").exists()               # 中断前 JSON 已落盘（排查凭证）
+    assert main(["run", "W3"]) == 1                     # 裁决窗出界即中断
+    err = capsys.readouterr().err
+    assert "REDLINE" in err and "REDLINE-WARN" not in err
+    assert (out_dir / "W3.json").exists()               # 中断前 JSON 已落盘（排查凭证）
+
+def test_cmd_run_redline_warns_on_exploratory_window(tmp_path, monkeypatch, capsys):
+    """I-1 分窗语义：exploratory 窗（W1/W2）出带降级 warn+JSON redline 留痕不中断
+    ——HEAD 与 2026-10-13 归档事实对齐（W2 出带 0.8913 时三窗+HTML 跑完归档）。"""
+    from backtest_crs_batch import main
+    bad = {"window": "W2", "role": "reference-param-lookback", "rows": 2056,
+           "unmapped": {}, "unmappedRate": {},
+           "arms": {"A0": {"k1": {"n": 3, "stake": 6.0, "payout": 5.35,
+                                  "recovery": 0.8913, "dropped": 0}}}}   # 归档事实同值出带
+    monkeypatch.setattr("backtest_crs_batch.run_window", lambda w, arms, **kw: bad)
+    monkeypatch.setattr("backtest_crs_batch.PREREG_PATH", _fake_prereg(tmp_path))
+    out_dir = tmp_path / "summaries"
+    monkeypatch.setattr("backtest_crs_batch.OUT_DIR", out_dir)
+    assert main(["run", "W2"]) == 0                     # exploratory 窗出带不中断
+    err = capsys.readouterr().err
+    assert "REDLINE-WARN" in err and "warn 不中断" in err
+    saved = _json.loads((out_dir / "W2.json").read_text(encoding="utf-8"))
+    assert saved["redline"]["status"] == "warn-exploratory"           # JSON 留痕
+    assert saved["redline"]["value"] == 0.8913
+    assert saved["redline"]["band"] == [0.80, 0.88]
+
+def test_check_prereg_fingerprint_gates_main(tmp_path, monkeypatch, capsys):
+    """I-2：frozenParams 与模块常量漂移/三窗缺失 → SystemExit(2) 拒绝出报告（跑前指纹闸）。"""
+    from backtest_crs_batch import main
+    monkeypatch.setattr("backtest_crs_batch.PREREG_PATH", _fake_prereg(tmp_path))
+    monkeypatch.setattr("backtest_crs_batch.run_window", lambda w, arms, **kw: {"window": w})
+    monkeypatch.setattr("backtest_crs_batch.BETA", 0.99)             # 指纹漂移：β 0.05→0.99
+    with pytest.raises(SystemExit) as e:
+        main(["run", "W1"])
+    assert e.value.code == 2
+    err = capsys.readouterr().err
+    assert "PREREG-FINGERPRINT" in err and "beta" in err
+    monkeypatch.setattr("backtest_crs_batch.BETA", 0.05)             # 恢复 β，改打三窗缺失
+    doc = _json.loads(_fake_prereg(tmp_path).read_text(encoding="utf-8"))
+    del doc["windows"]["W3"]
+    p2 = tmp_path / "prereg-no-w3.json"; p2.write_text(_json.dumps(doc), encoding="utf-8")
+    monkeypatch.setattr("backtest_crs_batch.PREREG_PATH", p2)
+    with pytest.raises(SystemExit) as e2:
+        main(["leak-audit", "W1"])
+    assert e2.value.code == 2 and "windows.W3 缺失" in capsys.readouterr().err
 
 def _fake_audit(win, *, rec_b=0.84, rec_a=0.835):
     return {"window": win, "rows": 5, "k": 1, "decisionDayOffsetB": -1, "decisionDayOffsetA": -3,
@@ -274,7 +322,10 @@ def _fake_run_window_factory():
                  "ci95": [0.1, 0.9], "verdict": "PASS", "exploratory": False},
                 {"arm": "A2", "baseline": "A1", "role": "secondary", "metric": "同上",
                  "k": 1, "pairedN": 3, "nArm": 3, "nBaseline": 3, "diffMean": -0.2,
-                 "ci95": [-0.5, 0.1], "verdict": "FAIL", "exploratory": False}]
+                 "ci95": [-0.5, 0.1], "verdict": "FAIL", "exploratory": False},
+                {"arm": "A4", "baseline": "A1", "role": "secondary", "metric": "同上·预期≈0",
+                 "k": 1, "pairedN": 3, "nArm": 3, "nBaseline": 3, "diffMean": 0.0,
+                 "ci95": [0.0, 0.0], "verdict": "FAIL", "exploratory": False}]   # 归档事实：恒等但机械 FAIL
         return rep
     return fake_run_window
 
@@ -282,6 +333,8 @@ def test_cmd_run_all_generates_html(tmp_path, monkeypatch, capsys):
     from backtest_crs_batch import main, OUT_DIR_NAME
     doc = {"windows": {w: {"from": "2025-03-01", "to": "2025-03-31", "role": "synthetic"}
                        for w in ("W1", "W2", "W3")},
+           "frozenParams": {"beta": 0.05, "lag_days": 2, "decision_day_offset": -1,
+                            "min_pool_items": 20, "k_max": 4, "boot_B": 2000, "seed": 20261013},
            "primaryCriterion": {"window": "W3", "arm": "A3_v3w_model", "baseline": "A1_open_devig",
                                 "metric": "top1 回收率逐场配对差", "ci": "bootstrap95", "pass": "CI 下限 > 0"},
            "secondary": [{"window": "W3", "arm": "A2_lambda_reverse", "baseline": "A1_open_devig",
@@ -315,7 +368,12 @@ def test_needs_leak_audit_any_k_over_one():
 
 def test_build_html_report_contract():
     from backtest_crs_batch import build_html_report
-    reports = {"W3": _fake_run_window_factory()("W3", None)}
+    r3 = _fake_run_window_factory()("W3", None)
+    r3["role"] = "adjudication"                      # 真窗 role（裁决窗 k2-4 exploratory 标记生效）
+    w2 = _fake_run_window_factory()("W2", None)
+    w2["role"] = "reference-param-lookback"
+    w2["arms"]["A0"]["k1"]["recovery"] = 0.8913      # 归档事实复刻：W2 出带（I-1 呈现）
+    reports = {"W3": r3, "W2": w2}
     audits = {"W1": _fake_audit("W1")}
     meta = {"startedAt": "2026-10-13 10:00:00", "finishedAt": "2026-10-13 10:30:00",
             "totalElapsedSec": 1800.0, "windows": {"W3": 900.0}, "leakAudits": {"W1": 300.0}}
@@ -328,3 +386,13 @@ def test_build_html_report_contract():
     assert "exploratory" in html.lower() or "探索" in html
     for kw in ("封盘反解", "决策时点", "参数回望", "数据来源", "1800"):  # 限制三条+来源+耗时
         assert kw in html
+    # I-3：A4 metric 含「预期≈0」且 diffMean=0 → 呈现「一致（如预期）」非 FAIL/PASS 框架
+    assert "verdict-IDENT" in html and "一致（如预期）" in html
+    # M-1：判据表 diffMean 单位脚注
+    assert "元/场" in html
+    # I-3/M-3：限制第四条（A4 层2/3）+第五条（口径二 moot）
+    assert "0 触发" in html and "moot" in html
+    # M-2：裁决窗 k2-4 列头 exploratory 标记
+    assert "badge-exp" in html and "top2-4" in html
+    # I-1：exploratory 窗出带=处置说明文字（非裸「红线出界」中断语）
+    assert "排查定性大赛期特征" in html and "红线出界·中断" not in html
