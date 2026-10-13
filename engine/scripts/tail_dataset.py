@@ -107,6 +107,7 @@ class LeagueIndex:
 
     def __init__(self, league_dir: Path, gf_field: str = "hg", ga_field: str = "ag"):
         self._by_team: dict[str, dict] = {}
+        loaded_rows = []
         for f in sorted(Path(league_dir).glob("*_matches.json")):
             doc = json.loads(f.read_text(encoding="utf-8"))
             rows = doc if isinstance(doc, list) else (doc.get("rows") or [])
@@ -115,13 +116,25 @@ class LeagueIndex:
                 gf, ga = r.get(gf_field), r.get(ga_field)
                 if not d or gf is None or ga is None:
                     continue
-                for team, gfor, gaga, is_home in ((r.get("home"), gf, ga, True),
-                                                  (r.get("away"), ga, gf, False)):
-                    slot = self._by_team.setdefault(team, {"dates": [], "rows": []})
-                    slot["dates"].append(d)
-                    slot["rows"].append({"date": d, "gf": int(gfor), "ga": int(gaga),
-                                         "isHome": is_home})
-        for slot in self._by_team.values():
+                loaded_rows.append({"date": d, "home": r.get("home"), "away": r.get("away"),
+                                    "hg": gf, "ag": ga})
+        self._ingest_rows(self, loaded_rows)
+
+    @classmethod
+    def _ingest_rows(cls, idx: "LeagueIndex", rows: list[dict]) -> None:
+        """内存行装载（hst/league 复用；见 build_hst_index）。"""
+        for r in rows:
+            d = str(r.get("date") or "")
+            gf, ga = r.get("hg"), r.get("ag")
+            if not d or gf is None or ga is None:
+                continue
+            for team, gfor, gaga, is_home in ((r.get("home"), gf, ga, True),
+                                              (r.get("away"), ga, gf, False)):
+                slot = idx._by_team.setdefault(team, {"dates": [], "rows": []})
+                slot["dates"].append(d)
+                slot["rows"].append({"date": d, "gf": int(gfor), "ga": int(gaga),
+                                     "isHome": is_home})
+        for slot in idx._by_team.values():
             order = sorted(range(len(slot["dates"])), key=lambda i: slot["dates"][i])
             slot["dates"] = [slot["dates"][i] for i in order]
             slot["rows"] = [slot["rows"][i] for i in order]
@@ -177,4 +190,135 @@ def team_asof_features(idx: LeagueIndex, home_id: str | None, away_id: str | Non
         last = idx.last_date_before(team, as_of) if team else None
         out[f"rest_{side}"] = ((date.fromisoformat(as_of) - date.fromisoformat(last)).days
                                if last else None)
+    return out
+
+
+# ── hst / elo / 上下文 ────────────────────────────────────────────────────
+HST_WINDOW = 20
+HST_KEY = "hst_{lg}.json"
+ELO_GLOB = "elo_history_*_GLOBAL.json"
+# hist 中文名 → 库 key（模板特征路由；未收录→模板 None 诚实降级）
+TAIL_LEAGUE_MAP = {
+    "英超": "england-premier", "英冠": "england-championship", "西甲": "spain-laliga",
+    "西乙": "spain-liga2", "意甲": "italy-serie-a", "意乙": "italy-serie-b",
+    "德甲": "germany-bundesliga", "德乙": "germany-bundesliga2", "法甲": "france-ligue1",
+    "法乙": "france-ligue2", "荷甲": "netherlands-eredivisie", "葡超": "portugal-primeira",
+    "土超": "turkey-super-lig", "希超": "greece-super", "比甲": "belgium-first-a",
+    "日职": "japan", "韩职": "korea", "美职": "usa", "挪超": "norway", "瑞超": "sweden",
+    "丹超": "denmark", "沙特": "saudi", "巴西": "brazil", "欧冠": "uefa-champions",
+    "欧联": "uefa-europa", "欧国联": "uefa-nations", "世预赛": "world-cup-qual",
+    "世界杯": "world-cup", "解放者杯": "libertadores", "亚冠精英": "asian-u23",
+}
+
+
+def build_hst_index(cache_dir: Path) -> LeagueIndex:
+    """hst_{lg}.json 族 → LeagueIndex（gf=射正 hst·ga=被射正 ast）。
+
+    文件名 pattern 与 LeagueIndex 的 *_matches.json glob 不同——重命名临时副本不可取，
+    改为直接扫 hst_*.json 装载（复用 LeagueIndex 的行装载逻辑，注入文件清单）。"""
+    files = sorted(Path(cache_dir).glob("hst_*.json"))
+    rows = []
+    for f in files:
+        doc = json.loads(f.read_text(encoding="utf-8"))
+        for r in doc.get("rows") or []:
+            d = str(r.get("date") or "")
+            if d and r.get("hst") is not None and r.get("ast") is not None:
+                rows.append({"date": d, "home": r.get("home"), "away": r.get("away"),
+                             "hg": r.get("hst"), "ag": r.get("ast")})
+    return _LeagueIndexFromRows(rows)
+
+
+def _LeagueIndexFromRows(rows: list[dict]) -> LeagueIndex:
+    """由内存行构造 LeagueIndex（绕过文件 glob；hst 装载用）。"""
+    idx = LeagueIndex.__new__(LeagueIndex)
+    idx._by_team = {}
+    LeagueIndex._ingest_rows(idx, rows)
+    return idx
+
+
+class EloIndex:
+    """elo_history_*_GLOBAL.json → per-team (dates, elo_pre)。赛前值不含该场赛果
+    （strength_loaders 口径注释：lag=0 无答案泄漏）。"""
+
+    def __init__(self, rows: list[dict]):
+        self._by_team: dict[str, dict] = {}
+        for r in rows:
+            d = str(r.get("date") or "")
+            if not d:
+                continue
+            for team, elo in ((r.get("home"), r.get("elo_home_pre")),
+                              (r.get("away"), r.get("elo_away_pre"))):
+                if team and elo is not None:
+                    slot = self._by_team.setdefault(team, {"dates": [], "elos": []})
+                    slot["dates"].append(d)
+                    slot["elos"].append(float(elo))
+        for slot in self._by_team.values():
+            order = sorted(range(len(slot["dates"])), key=lambda i: slot["dates"][i])
+            slot["dates"] = [slot["dates"][i] for i in order]
+            slot["elos"] = [slot["elos"][i] for i in order]
+
+    def elo(self, team: str, as_of: str) -> float | None:
+        slot = self._by_team.get(team)
+        if not slot:
+            return None
+        hi = bisect.bisect_right(slot["dates"], as_of)
+        return slot["elos"][hi - 1] if hi > 0 else None
+
+
+def build_elo_index(cache_dir: Path) -> EloIndex:
+    rows = []
+    for f in sorted(Path(cache_dir).glob(ELO_GLOB)):
+        doc = json.loads(f.read_text(encoding="utf-8"))
+        rows.extend(doc.get("rows") or [])
+    return EloIndex(rows)
+
+
+def ctx_features(lg_idx: LeagueIndex, league_zh: str, as_of: str) -> dict:
+    """联赛 as-of 模板 3 维（大球率/屠杀率/客零封大胜率·全库行无 league 维故用
+    TAIL_LEAGUE_MAP 路由到主库口径=该库全部场次聚合·as_of 前可见）+ 月份 sin/cos 2 维。
+
+    模板聚合走 LeagueIndex 全队窗口代价高——直接对库文件按日期重扫（轻量·一次性/场）。
+    库文件行在 matches 键下（strength_loaders 同口径）。开发者 sszhang"""
+    out: dict[str, float | None] = {}
+    lg = TAIL_LEAGUE_MAP.get(league_zh)
+    if lg:
+        f = ROOT / "data" / "02-results" / "league" / f"{lg}_matches.json"
+        if f.exists():
+            doc = json.loads(f.read_text(encoding="utf-8"))
+            rows = doc if isinstance(doc, list) else (doc.get("matches") or [])
+            cutoff = (date.fromisoformat(as_of) - timedelta(days=LEAK_LAG_DAYS)).isoformat()
+            visible = [r for r in rows if str(r.get("date") or "") <= cutoff
+                       and r.get("hg") is not None and r.get("ag") is not None]
+            if visible:
+                n = len(visible)
+                out["lg_p_tg4"] = sum(1 for r in visible if int(r["hg"]) + int(r["ag"]) >= 4) / n
+                out["lg_p_blow"] = sum(1 for r in visible
+                                       if abs(int(r["hg"]) - int(r["ag"])) >= 3) / n
+                out["lg_p_away_big"] = sum(1 for r in visible
+                                           if int(r["hg"]) == 0 and int(r["ag"]) >= 3) / n
+    out.setdefault("lg_p_tg4", None)
+    out.setdefault("lg_p_blow", None)
+    out.setdefault("lg_p_away_big", None)
+    m = date.fromisoformat(as_of).month
+    angle = 2 * math.pi * (m - 1) / 12
+    out["ctx_month_sin"] = math.sin(angle)
+    out["ctx_month_cos"] = math.cos(angle)
+    return out
+
+
+def hst_elo_features(hst_idx: LeagueIndex, elo_idx: EloIndex,
+                     home_id: str | None, away_id: str | None, as_of: str) -> dict:
+    """hst 近 HST_WINDOW 场场均射正 for/against（主客各2维）+ elo_diff = 5 维。"""
+    out: dict[str, float | None] = {}
+    for side, team in (("h", home_id), ("a", away_id)):
+        ms = hst_idx.window(team, as_of, HST_WINDOW) if team else []
+        if len(ms) >= MIN_WINDOW_N:
+            out[f"{side}_hst_for"] = sum(m["gf"] for m in ms) / len(ms)
+            out[f"{side}_hst_against"] = sum(m["ga"] for m in ms) / len(ms)
+        else:
+            out[f"{side}_hst_for"] = None
+            out[f"{side}_hst_against"] = None
+    eh = elo_idx.elo(home_id, as_of) if home_id else None
+    ea = elo_idx.elo(away_id, as_of) if away_id else None
+    out["elo_diff"] = (eh - ea) if (eh is not None and ea is not None) else None
     return out

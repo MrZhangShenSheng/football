@@ -81,3 +81,40 @@ def test_team_asof_features_dims_and_null(tmp_path):
     assert f2["h_gf_w10"] is not None and abs(f2["h_gf_w10"] - 1.0) < 1e-9   # chelsea 6 场全客负 1 球
     assert f2["a_gf_w10"] is not None                                       # arsenal 6+1 场
     assert f2["d_gf_w10"] == f2["h_gf_w10"] - f2["a_gf_w10"]
+
+
+# 追加（Task 4）
+from tail_dataset import (build_hst_index, build_elo_index, EloIndex,
+                          ctx_features, TAIL_LEAGUE_MAP)
+
+
+def test_hst_index_reads_shots(tmp_path):
+    (tmp_path / "hst_england-premier.json").write_text(_json.dumps(
+        {"rows": [{"date": "2025-10-01", "home": "arsenal", "away": "chelsea", "hst": 8, "ast": 1}]}),
+        encoding="utf-8")
+    idx = build_hst_index(tmp_path)
+    ms = idx.window("arsenal", "2025-10-05", 5)
+    assert ms and ms[0]["gf"] == 8 and ms[0]["ga"] == 1   # gf=射正
+
+
+def test_elo_index_pre_match_value(tmp_path):
+    (tmp_path / "elo_history_england-premier_GLOBAL.json").write_text(_json.dumps(
+        {"rows": [{"date": "2025-10-01", "home": "arsenal", "away": "chelsea",
+                   "elo_home_pre": 1600.0, "elo_away_pre": 1500.0}]}), encoding="utf-8")
+    ei = build_elo_index(tmp_path)
+    assert ei.elo("arsenal", "2025-10-01") == 1600.0     # 当日赛前值可见（lag=0）
+    assert ei.elo("arsenal", "2025-09-30") is None       # 无更早值 → None
+    assert ei.elo("chelsea", "2025-10-03") == 1500.0
+
+
+def test_ctx_features_template_and_month(tmp_path):
+    _mini_league(tmp_path)                                # arsenal/chelsea 4 场小库
+    idx = LeagueIndex(tmp_path)
+    f = ctx_features(idx, "英超", "2025-10-16")
+    assert f["lg_p_tg4"] is not None and 0.0 <= f["lg_p_tg4"] <= 1.0
+    assert f["lg_p_blow"] is not None
+    assert -1.0 <= f["ctx_month_sin"] <= 1.0
+    # 未映射联赛（如澳超）→ 模板 None 但月份特征仍在
+    f2 = ctx_features(idx, "澳超", "2025-10-16")
+    assert f2["lg_p_tg4"] is None and f2["ctx_month_sin"] is not None
+    assert "英超" in TAIL_LEAGUE_MAP
