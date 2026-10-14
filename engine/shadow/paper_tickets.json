@@ -124290,5 +124290,63 @@
   "result": "pending",
   "payout": null,
   "settledAt": null
+ },
+ {
+  "id": "P493",
+  "spec_name": "llm-31格偏离混串",
+  "track": "A",
+  "date": "2026-10-14",
+  "chain": {
+   "chain": "llm-31grid-v1",
+   "engine": "会话 LLM 31格冻结分布（llm_pred.freeze·方向聚合对市场偏离选腿）",
+   "since": "2026-10-13"
+  },
+  "legs": [
+   {
+    "code": "周三007",
+    "match": "诺维奇 vs 南安普敦",
+    "market": "hhad",
+    "pick": [
+     "a+1"
+    ],
+    "odds": {
+     "a+1": 1.5
+    },
+    "basis": "31格方向聚合 客47+平28=75% vs 市场60%(+15pt)·全盘最大偏离(客向+12.4pt)·conf=medium"
+   },
+   {
+    "code": "周三014",
+    "match": "圣路易城 vs 温哥华",
+    "market": "had",
+    "pick": [
+     "h"
+    ],
+    "odds": {
+     "h": 2.1
+    },
+    "basis": "31格主胜50% vs 市场42%(+7.8pt)·峰值1:1/2:1/1:0皆主不败向·conf=medium"
+   }
+  ],
+  "bets": [
+   {
+    "legs": [
+     [
+      0,
+      "a+1"
+     ],
+     [
+      1,
+      "h"
+     ]
+    ]
+   }
+  ],
+  "n_bets": 1,
+  "mult": 15,
+  "cost": 30,
+  "note": "大哥索要的新模型方案·声明近期不购→只记影子不落真票账本。合赔@3.15全中94.5。选腿唯一依据=31格方向聚合对市场偏离(非假设层)；两腿恰与票A同腿(三线本汇合)。EV基线为负(混串返率~61%)·偏离真伪 n=0 未验。",
+  "result": "pending",
+  "payout": null,
+  "settledAt": null
  }
 ]
