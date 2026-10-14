@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-15",
+ "matchKey": "2041967",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:34",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     1.657,
+     1.216
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:34",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": false
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:34",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1232
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0944
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.0843
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.0776
+     },
+     {
+      "pick": "s01s02",
+      "p": 0.0693
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:34",
+   "payload": {
+    "hid": "norwich",
+    "aid": "southampton",
+    "hstRows": 2041
+   }
+  }
+ }
+}

@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-15",
+ "matchKey": "2041974",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:36",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     6.195,
+     2.085
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:36",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": true
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:36",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s1sh",
+      "p": 0.581
+     },
+     {
+      "pick": "s05s02",
+      "p": 0.0419
+     },
+     {
+      "pick": "s05s01",
+      "p": 0.0402
+     },
+     {
+      "pick": "s04s02",
+      "p": 0.0338
+     },
+     {
+      "pick": "s04s01",
+      "p": 0.0324
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:36",
+   "payload": {
+    "hid": "st-louis-city",
+    "aid": "vancouver-whitecaps",
+    "hstRows": 0
+   }
+  }
+ }
+}

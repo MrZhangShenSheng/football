@@ -1,0 +1,147 @@
+{
+ "schema": 1,
+ "day": "2026-10-14",
+ "matchKey": "2041967",
+ "steps": {
+  "S1_odds": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:32:15",
+   "payload": {
+    "archive": "2026-10-14.json",
+    "fetchedAt": "2026-10-14",
+    "code": "周三007",
+    "pools": [
+     "had",
+     "crs",
+     "ttg",
+     "hhad",
+     "hafu"
+    ],
+    "oddsUpdatedAt": "2026-10-14 09:20:29",
+    "sellStatus": 1
+   }
+  },
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:38",
+   "payload": {
+    "src": "market_crs",
+    "lam": null,
+    "beta": null
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:49:58",
+   "payload": {
+    "method": "1/o",
+    "market": [
+     2.2,
+     3.55,
+     2.55
+    ],
+    "p_mkt": [
+     0.4028,
+     0.2496,
+     0.3475
+    ]
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:38",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s02s01",
+      "p": 0.0973
+     },
+     {
+      "pick": "s01s01",
+      "p": 0.0942
+     },
+     {
+      "pick": "s01s02",
+      "p": 0.0912
+     },
+     {
+      "pick": "s02s02",
+      "p": 0.0787
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.0589
+     }
+    ],
+    "src": "market_crs"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:38",
+   "payload": {
+    "hid": "norwich",
+    "aid": "southampton",
+    "hstRows": 2041
+   }
+  },
+  "S3_dc": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:49:58",
+   "payload": {
+    "league": "england-championship",
+    "dcFile": "england-championship_dc.json",
+    "lambdaHome": 1.906,
+    "lambdaAway": 2.217,
+    "rho": -0.082
+   }
+  },
+  "S6_fusion": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:49:58",
+   "payload": {
+    "a": 0.0,
+    "b": 1.0,
+    "p_fused": [
+     0.4028,
+     0.2496,
+     0.3475
+    ]
+   }
+  },
+  "S8_hypothesis": {
+   "source": "session",
+   "recordedAt": "2026-10-14T12:52:35",
+   "payload": {
+    "verdicts": [
+     "survived"
+    ],
+    "reason": "诺维奇失头号射手图雷(5球/7场全首发)锋线终结力降，圣徒拉林7球/9场火热+伤停4:1占优，客队至少不败(X2)，画面1:1/1:2",
+    "note": "假设survived·与DC同框(λ客2.217>主1.906·p_dc客45%·top1 1-2)",
+    "checks": {
+     "h2h": "圣徒6/10占优→支持；但近3客卡罗路2平1负→收敛为不败非客胜",
+     "injury": "主4(含全首发射手图雷+轮换Diallo)客1(轮换Bragg)→支持",
+     "form": "圣徒5W2D3L vs 主3W0D6L→支持",
+     "market": "主2.20偏主→与假设分歧"
+    },
+    "dcEcho": "λ1.906/2.217·p_dc客45%·top1 1-2 top2 1-1·与假设同框(诚注:DC对市场无优势·非edge)"
+   }
+  },
+  "S9_scheme": {
+   "source": "session",
+   "recordedAt": "2026-10-14T12:52:35",
+   "payload": {
+    "play": "HHAD",
+    "pick": "让球客胜(+1)",
+    "odds": 1.5,
+    "pFused": [
+     0.4028,
+     0.2496,
+     0.3476
+    ],
+    "anchorMode": "market-only(a=0纯市场锚)",
+    "note": "poolSingle.HHAD=0不可单关·须混串；引擎DC腿同向收敛；待21:30首发窗终审"
+   }
+  }
+ }
+}

@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-15",
+ "matchKey": "2041965",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:33",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     2.236,
+     1.429
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:33",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": false
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:33",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s02s01",
+      "p": 0.0915
+     },
+     {
+      "pick": "s01s01",
+      "p": 0.0895
+     },
+     {
+      "pick": "s03s01",
+      "p": 0.0682
+     },
+     {
+      "pick": "s02s02",
+      "p": 0.0653
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.064
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:33",
+   "payload": {
+    "hid": "feyenoord",
+    "aid": "como",
+    "hstRows": 1087
+   }
+  }
+ }
+}

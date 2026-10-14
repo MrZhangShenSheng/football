@@ -1,0 +1,147 @@
+{
+ "schema": 1,
+ "day": "2026-10-14",
+ "matchKey": "2041974",
+ "steps": {
+  "S1_odds": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:32:15",
+   "payload": {
+    "archive": "2026-10-14.json",
+    "fetchedAt": "2026-10-14",
+    "code": "周三014",
+    "pools": [
+     "had",
+     "crs",
+     "ttg",
+     "hhad",
+     "hafu"
+    ],
+    "oddsUpdatedAt": "2026-10-14 09:20:29",
+    "sellStatus": 1
+   }
+  },
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:41",
+   "payload": {
+    "src": "market_crs",
+    "lam": null,
+    "beta": null
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:50:30",
+   "payload": {
+    "method": "1/o",
+    "market": [
+     2.1,
+     3.68,
+     2.62
+    ],
+    "p_mkt": [
+     0.4216,
+     0.2406,
+     0.3379
+    ]
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:41",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1007
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.1007
+     },
+     {
+      "pick": "s01s02",
+      "p": 0.0942
+     },
+     {
+      "pick": "s02s02",
+      "p": 0.0709
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.0565
+     }
+    ],
+    "src": "market_crs"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:41",
+   "payload": {
+    "hid": "st-louis-city",
+    "aid": "vancouver-whitecaps",
+    "hstRows": 0
+   }
+  },
+  "S3_dc": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:50:30",
+   "payload": {
+    "league": "usa",
+    "dcFile": "usa_dc.json",
+    "lambdaHome": 1.701,
+    "lambdaAway": 1.248,
+    "rho": -0.0523
+   }
+  },
+  "S6_fusion": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:50:30",
+   "payload": {
+    "a": 0.0,
+    "b": 1.0,
+    "p_fused": [
+     0.4216,
+     0.2406,
+     0.3379
+    ]
+   }
+  },
+  "S8_hypothesis": {
+   "source": "session",
+   "recordedAt": "2026-10-14T12:52:35",
+   "payload": {
+    "verdicts": [
+     "survived"
+    ],
+    "reason": "温哥华折损主力中卫Blackmon(停赛·26场首发)+二射手穆勒(9球)+主力中场Badwal，近况4W3D3L走低；圣路易城10轮不败+零伤停+9-06客场3:1刚胜对手，主胜画面2:1/3:1",
+    "note": "假设survived·与DC同框(λ主1.701>客1.248·p_dc主47%)",
+    "checks": {
+     "form": "主7W3D0L vs 客4W3D3L→支持",
+     "injury": "主0客6→强支持",
+     "h2h": "历史温哥华5/6→反证，被本季9-06主3:1覆盖",
+     "market": "主2.10同向非逆市"
+    },
+    "dcEcho": "λ1.701/1.248·p_dc主47%·top 1-1/2-1/1-0·与假设同框"
+   }
+  },
+  "S9_scheme": {
+   "source": "session",
+   "recordedAt": "2026-10-14T12:52:35",
+   "payload": {
+    "play": "HAD",
+    "pick": "主胜",
+    "odds": 2.1,
+    "pFused": [
+     0.4216,
+     0.2406,
+     0.3379
+    ],
+    "anchorMode": "market-only(a=0·无fd锚·铁律10禁保底胆)",
+    "note": "引擎让球客胜腿被假设层否决(假设=主胜)；poolSingle.HAD=0不可单关·须混串"
+   }
+  }
+ }
+}

@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-15",
+ "matchKey": "2041972",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:35",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     1.522,
+     1.159
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:35",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": false
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:35",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.145
+     },
+     {
+      "pick": "s00s00",
+      "p": 0.0927
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0919
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.0801
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.0794
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:35",
+   "payload": {
+    "hid": "aston-villa",
+    "aid": "fenerbahce",
+    "hstRows": 1570
+   }
+  }
+ }
+}

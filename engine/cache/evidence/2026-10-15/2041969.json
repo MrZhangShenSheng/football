@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-15",
+ "matchKey": "2041969",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:34",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     2.237,
+     2.64
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:34",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": true
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:34",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s02s02",
+      "p": 0.0664
+     },
+     {
+      "pick": "s01s02",
+      "p": 0.0594
+     },
+     {
+      "pick": "s02s03",
+      "p": 0.0585
+     },
+     {
+      "pick": "s01s03",
+      "p": 0.0523
+     },
+     {
+      "pick": "s1sa",
+      "p": 0.051
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:34",
+   "payload": {
+    "hid": "bodo-glimt",
+    "aid": "dortmund",
+    "hstRows": 0
+   }
+  }
+ }
+}

@@ -1,0 +1,81 @@
+{
+ "schema": 1,
+ "day": "2026-10-14",
+ "matchKey": "2041969",
+ "steps": {
+  "S1_odds": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:32:15",
+   "payload": {
+    "archive": "2026-10-14.json",
+    "fetchedAt": "2026-10-14",
+    "code": "周三009",
+    "pools": [
+     "had",
+     "crs",
+     "ttg",
+     "hhad",
+     "hafu"
+    ],
+    "oddsUpdatedAt": "2026-10-14 11:03:09",
+    "sellStatus": 1
+   }
+  },
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:39",
+   "payload": {
+    "src": "market_crs",
+    "lam": null,
+    "beta": null
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:39",
+   "payload": {
+    "method": "market_crs",
+    "boomGate": 0.05,
+    "water": true
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:39",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s01s02",
+      "p": 0.1045
+     },
+     {
+      "pick": "s01s01",
+      "p": 0.0886
+     },
+     {
+      "pick": "s02s02",
+      "p": 0.0789
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.071
+     },
+     {
+      "pick": "s01s03",
+      "p": 0.0645
+     }
+    ],
+    "src": "market_crs"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-14T12:47:39",
+   "payload": {
+    "hid": "bodo-glimt",
+    "aid": "dortmund",
+    "hstRows": 0
+   }
+  }
+ }
+}

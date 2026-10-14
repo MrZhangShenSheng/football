@@ -1,18 +1,18 @@
 {
- "ranAt": "2026-10-14T10:45:02",
- "overall": "yellow",
+ "ranAt": "2026-10-14T12:55:41",
+ "overall": "green",
  "results": {
   "ledgerFreshness": {
    "level": "green",
-   "msg": "generatedAt 距今 2 天"
+   "msg": "generatedAt 距今 0 天"
   },
   "espnBlacklist": {
    "level": "green",
    "msg": "黑名单 7 项无交集·别名表无有害重复"
   },
   "fdSymptom": {
-   "level": "yellow",
-   "msg": "近 14 天回填 146 场·无 pinClose 139（95%）——fd 断粮期已知挂账"
+   "level": "green",
+   "msg": "近 14 天回填 146 场·无 pinClose 62（42%）"
   },
   "dataCheckProbe": {
    "level": "green",
@@ -32,7 +32,7 @@
   },
   "noneRatio": {
    "level": "green",
-   "msg": "近 7 文件非排除回填 35 场·命中全None 1（3%）"
+   "msg": "近 7 文件非排除回填 33 场·命中全None 1（3%）"
   }
  }
 }
