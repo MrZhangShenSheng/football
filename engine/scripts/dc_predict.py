@@ -32,12 +32,26 @@ def dc_tau(x: int, y: int, lh: float, la: float, rho: float) -> float:
     return 1.0
 
 
+def tau_is_positive(lh: float, la: float, rho: float) -> bool:
+    """四个 tau 修正格是否全正。负 tau 意味着 (λ,ρ) 组合越出 rho 模型有效域
+    （tau(0,0)=1-lh·la·rho>0 要求 lh·la<1/ρ）。"""
+    return min(1.0 - lh * la * rho, 1.0 + lh * rho, 1.0 + la * rho, 1.0 - rho) > 0
+
+
 def score_matrix(lh: float, la: float, rho: float) -> np.ndarray:
+    """7×7 DC 比分矩阵。
+
+    极端 λ 下 rho 修正会出有效域（如 ρ=+0.15 时 lh·la>6.67 则 tau(0,0)<0）。此时
+    退化为纯泊松（ρ=0）——tau(0,0) 在该域本应趋零，泊松天然如此，数学正确。
+    旧实现的 max(...,1e-12) 是把负概率夹成小正数再归一，让全矩阵悄悄失真，已废。
+    """
+    if not tau_is_positive(lh, la, rho):
+        rho = 0.0
     p = np.zeros((7, 7))
     for x in range(7):
         for y in range(7):
             pm = math.exp(-lh) * lh ** x / math.factorial(x) * math.exp(-la) * la ** y / math.factorial(y)
-            p[x, y] = max(pm * dc_tau(x, y, lh, la, rho), 1e-12)
+            p[x, y] = pm * dc_tau(x, y, lh, la, rho)
     p /= p.sum()
     return p
 

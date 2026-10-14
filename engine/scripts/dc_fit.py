@@ -161,7 +161,12 @@ def fit(matches: list[dict], xi: float, use_xg: bool = False):
     params0[n:2 * n] -= params0[n:2 * n].mean()
 
     neg_ll = make_neg_ll(matches, teams, idx, weights, ref, use_xg)
-    bounds = [(None, None)] * (2 * n) + [(0.0, 0.8), (-0.2, 0.1)]
+    # rho 域 2026-10-14 放宽 (-0.2,0.1)→(-0.3,0.15)：原域下 6/26 联赛撞边界（英超/希超/沙职
+    # 顶到 -0.2，法甲/德乙/日职顶到 +0.1），说明真实相关性被边界截断。
+    # 新界由负 tau 风险反推：负侧 -0.3 时 tau(1,0)=1+3*rho=0.1 仍正；正侧 +0.15 时
+    # tau(0,0)=1-lh*la*rho 在 lh*la=6 下为 0.1 仍正。再放宽即触发负 tau
+    # （dc_predict.py:40 的 max(...,1e-12) 是掩盖不是修复，故宁窄不越界）。
+    bounds = [(None, None)] * (2 * n) + [(0.0, 0.8), (-0.3, 0.15)]
     res = minimize(neg_ll, params0, method="L-BFGS-B", bounds=bounds,
                    options={"maxiter": 500, "maxfun": 20000})
     attack = res.x[:n] - res.x[:n].mean()
