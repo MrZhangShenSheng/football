@@ -1,0 +1,200 @@
+{
+ "fetchedAt": "2026-10-14",
+ "source": "sporttery",
+ "matchId": 2041970,
+ "match": {
+  "code": "周三010",
+  "league": "欧冠",
+  "gameweek": "2",
+  "season": "2026/2027",
+  "home": "贝蒂斯",
+  "away": "波尔图",
+  "kickoff": "2026-10-15 03:00",
+  "uniformMatchId": 2513029
+ },
+ "standing": {
+  "away": {
+   "groupName": "",
+   "phaseName": "League Stage",
+   "ranking": "29",
+   "sAwayDrawMatchCnt": "0",
+   "sAwayLossGoalMatchCnt": "0",
+   "sAwayWinGoalMatchCnt": "0",
+   "sDrawMatchCnt": "0",
+   "sLossGoalMatchCnt": "1",
+   "sWinGoalMatchCnt": "0",
+   "seasonName": "2026/2027"
+  },
+  "home": {
+   "groupName": "",
+   "phaseName": "League Stage",
+   "ranking": "12",
+   "sDrawMatchCnt": "0",
+   "sHomeDrawMatchCnt": "0",
+   "sHomeLossGoalMatchCnt": "0",
+   "sHomeWinGoalMatchCnt": "0",
+   "sLossGoalMatchCnt": "0",
+   "sWinGoalMatchCnt": "1",
+   "seasonName": "2026/2027"
+  }
+ },
+ "injuries": {
+  "home": [
+   {
+    "name": "胡尼奥尔·菲尔波",
+    "pos": "后卫",
+    "no": "23",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 1,
+    "starts": 1
+   },
+   {
+    "name": "Antony",
+    "pos": "前锋",
+    "no": "7",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 1,
+    "starts": 1
+   }
+  ],
+  "away": [
+   {
+    "name": "Gabriel Mec",
+    "pos": "前锋",
+    "no": "37",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 0,
+    "starts": 0
+   }
+  ]
+ },
+ "form": {
+  "goalAvg": {
+   "awayGoalAvgCnt": "2.1",
+   "awayGoalAvgCntRatio": "55.3",
+   "homeGoalAvgCnt": "1.7",
+   "homeGoalAvgCntRatio": "44.7",
+   "totalLegCnt": 10
+  },
+  "last10": {
+   "awayDrawMatchCnt": 0,
+   "awayLossGoalMatchCnt": 1,
+   "awayScoreRatio": "90",
+   "awayWinGoalMatchCnt": 9,
+   "homeDrawMatchCnt": 1,
+   "homeLossGoalMatchCnt": 2,
+   "homeScoreRatio": "73",
+   "homeWinGoalMatchCnt": 7,
+   "totalLegCnt": 10
+  },
+  "last10HomeAway": {
+   "awayDrawMatchCnt": 0,
+   "awayLossGoalMatchCnt": 3,
+   "awayScoreRatio": "70",
+   "awayWinGoalMatchCnt": 7,
+   "homeDrawMatchCnt": 1,
+   "homeLossGoalMatchCnt": 0,
+   "homeScoreRatio": "93",
+   "homeWinGoalMatchCnt": 9,
+   "totalLegCnt": 10
+  }
+ },
+ "h2h": {
+  "statistics": {
+   "drawMatchCnt": 0,
+   "drawProbability": "0%",
+   "goalCnt": 0,
+   "lossGoalCnt": 0,
+   "lossGoalMatchCnt": 0,
+   "lossProbability": "0%",
+   "netGoal": 0,
+   "sportteryTeamId": 0,
+   "teamId": 0,
+   "teamShortName": "贝蒂斯",
+   "totalLegCnt": 0,
+   "winGoalMatchCnt": 0,
+   "winProbability": "0%"
+  },
+  "matches": []
+ },
+ "scorers": {
+  "away": {
+   "playerList": [],
+   "sportteryTeamId": 937,
+   "teamId": 1678,
+   "teamShortName": "波尔图",
+   "uniformTeamId": 141
+  },
+  "home": {
+   "playerList": [
+    {
+     "appearanceCnt": 1,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "2.0",
+     "goalCnt": 2,
+     "goalProbability": "67%",
+     "injuryFlag": 0,
+     "personId": 116484,
+     "personName": "Bartra",
+     "playerPositionCode": "Defender",
+     "playerPositionDesc": "后卫",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "5"
+    },
+    {
+     "appearanceCnt": 1,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "1.0",
+     "goalCnt": 1,
+     "goalProbability": "33%",
+     "injuryFlag": 0,
+     "personId": 515624,
+     "personName": "帕罗特",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "19"
+    },
+    {
+     "appearanceCnt": 1,
+     "assistAvgCnt": "1.0",
+     "assistCnt": 1,
+     "assistProbability": "33%",
+     "goalAvgCnt": "0",
+     "goalCnt": 0,
+     "goalProbability": "0%",
+     "injuryFlag": 0,
+     "personId": 103164,
+     "personName": "Isco",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "22"
+    }
+   ],
+   "sportteryTeamId": 505,
+   "teamId": 2025,
+   "teamShortName": "贝蒂斯",
+   "uniformTeamId": 245
+  },
+  "seasonId": 15574,
+  "seasonName": "2026/2027",
+  "tournamentId": 1096,
+  "tournamentShortName": "欧冠",
+  "uniformLeagueId": 30,
+  "uniformMatchId": 2513029
+ }
+}
