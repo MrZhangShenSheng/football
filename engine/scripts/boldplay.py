@@ -26,7 +26,7 @@ from odds_fetch import LEAGUE_CODES   # fd 收盘锚联赛表（铁律10 白名�
 FD_ANCHOR_LEAGUES = frozenset(LEAGUE_CODES.values()) | {
     "SC0", "germany-2-bundesliga", "portugal-primeira"}
 from freq_band import (build_team_form, freq_legs, pools_card, shifted_q, league_base_rates,
-                       lambdas, team_strength, _norm,
+                       lambdas, team_strength, _norm, anchored_q,
                        # task-8 CRS 换源（spec 2026-09-26-crs-fusion-redesign §5）：三池卡
                        # CRS 候选从模板 q 排序切 fused 族 top1/top2
                        fused_legs, load_fusion_crs_safe, DIVERGENCE_FLAG_PP, POOL_MARGIN_DIV)
@@ -669,7 +669,7 @@ def _q_map_for(m: dict, freq_table: dict, form: dict, zh: dict) -> tuple:
     lam = lambdas(league_base_rates(blob),
                   team_strength(form, _norm(zh.get(m.get("home", ""), "")), lg),
                   team_strength(form, _norm(zh.get(m.get("away", ""), "")), lg))
-    return shifted_q(blob, lam), lam
+    return anchored_q(blob, lam, m.get("ttg") or {}), lam   # T6: 与 freq_legs 同锚定
 
 
 def _card_view(m: dict, hafu_map: dict) -> dict:

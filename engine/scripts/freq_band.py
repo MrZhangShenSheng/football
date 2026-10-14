@@ -235,8 +235,9 @@ def freq_legs(odds_day: dict, freq_table: dict, form: dict, zh: dict, band: tupl
         lam = lambdas(base,
                       team_strength(form, _norm(zh.get(m.get("home", ""), "")), lg),
                       team_strength(form, _norm(zh.get(m.get("away", ""), "")), lg))
-        q_pure = shifted_q(blob, None)
-        q_rank = shifted_q(blob, lam)
+        ttg_odds = m.get("ttg") or {}
+        q_pure = anchored_q(blob, None, ttg_odds)     # T6: 锚定先于生存阈——高分格可复活
+        q_rank = anchored_q(blob, lam, ttg_odds)
         best = None                                    # (q, leg)
         for s, o in (m.get("crs") or {}).items():
             if ":" not in s:                           # 胜其他/平其他/负其他
@@ -286,6 +287,26 @@ def _ttg_market_expect(ttg_odds: dict) -> float | None:
     raw = {j: w ** k_exp for j, w in implied.items()}
     z = sum(raw.values())
     return sum((j if j < 7 else TTG_S7_MEAN) * (p / z) for j, p in raw.items())
+
+
+def anchored_q(blob: Counter, lam, ttg_odds: dict) -> dict:
+    """shifted_q + TTG 市场锚定（2026-10-14 低分偏置修正 T6·大哥裁决 C 方案）。
+
+    分维度：先 shifted_q（λ 平移——形状+水平），再指数倾斜把期望总进球锚到
+    体彩 TTG 去水期望（_ttg_market_expect·power 去水+s7=7.4）。同总进球格间
+    相对比例守恒——形状维度（主客分配）不被触碰，冷门能力保留。
+
+    市场缺失/解析失败 → 返回 shifted_q 原值（k=0·锚定是增益不是依赖）。
+    开发者 sszhang"""
+    q = shifted_q(blob, lam)
+    if not q:
+        return q
+    target = _ttg_market_expect(ttg_odds)
+    if not target:
+        return q
+    from ttg_anchor import solve_tilt, tilt_dist
+    k = solve_tilt(q, target)
+    return tilt_dist(q, k)
 
 
 def load_fusion_crs_safe() -> dict:
@@ -359,7 +380,8 @@ def fused_legs(odds_day: dict, freq_table: dict, form: dict, zh: dict,
                 lam_sum, shrunk = shrink_lambda(lam[0] + lam[1], e_mkt, w=cfg["w"])
                 scale = lam_sum / (lam[0] + lam[1])
                 lam = (lam[0] * scale, lam[1] * scale)
-        q_map = shifted_q(blob, lam)
+        q_map = anchored_q(blob, lam, m.get("ttg") or {})   # T6: 模板腿同锚（λ 收缩 w=0.35
+        # 只部分拉平，q 级倾斜补足 TTG 维度；无市场恒等，融合语义不变）
         q = _smooth_shifted(q_map, blob.get("__n", 0), cfg["alphaLidstone"])
         p_mkt = extract_mkt_dist(crs) if len(crs) >= CRS_FUSION_MIN_ITEMS else {}
         pf = fuse_crs(q, p_mkt, r=cfg["r"]) if p_mkt else q
