@@ -21,6 +21,8 @@ SOURCES_MAP = ROOT / "engine" / "cache" / "web_sources.json"
 MATCHES_CACHE = ROOT / "engine" / "cache" / "sporttery_matches.json"
 
 PICK_RE = re.compile(r"^\d{1,2}:\d{1,2}$")
+DIRECTIONS = ("home", "draw", "away")       # 方向型 pick（多数源只给方向·不逼会话转译出假精度）
+PICK_TYPES = ("source_exact", "session_derived")
 FORMAL_N = 30          # 判据①②门槛（prereg 冻结值）
 DEV_N = 15             # 判据③偏离场门槛（prereg 冻结值）
 
@@ -50,8 +52,15 @@ def register_source(raw: str) -> str:
 
 
 def outcome_of(pick: str) -> str:
+    """比分型→派生方向；方向型→直通（方向型源无比分可判·scoreHit 记 None 不记错）。"""
+    if pick in DIRECTIONS:
+        return pick
     h, a = (int(x) for x in pick.split(":"))
     return "home" if h > a else "away" if a > h else "draw"
+
+
+def is_score_pick(pick: str) -> bool:
+    return bool(PICK_RE.match(str(pick)))
 
 
 def _norm_score(s: str) -> str:
@@ -88,8 +97,10 @@ def validate_entry(e: dict, sale_date: str, codes: dict, seen: set) -> list:
     """schema 七校验（设计 §2）。返回 issues 列表，空=过。"""
     issues = []
     code, src, pick = e.get("code"), e.get("source"), str(e.get("pick") or "")
-    if not PICK_RE.match(pick):                                    # ①
-        issues.append(f"{code}/{src}: pick 格式非法 {pick!r}")
+    if not (PICK_RE.match(pick) or pick in DIRECTIONS):            # ①（比分型或方向型）
+        issues.append(f"{code}/{src}: pick 非法 {pick!r}（须 比分 1:1 或方向 home/draw/away）")
+    if e.get("pickType") not in PICK_TYPES:                        # ①b 转译留痕（008 失真教训）
+        issues.append(f"{code}/{src}: pickType 须为 {PICK_TYPES} 之一——会话转译须自认")
     url = str(e.get("url") or "")
     if not url.startswith("http"):                                 # ②
         issues.append(f"{code}/{src}: url 缺失或非 http（铁律1）")
@@ -126,7 +137,8 @@ def detect_consensus(entries: list) -> list:
     for code, rows in sorted(by_code.items()):
         by_pick, by_out = {}, {}
         for r in rows:
-            by_pick.setdefault(r["pick"], []).append(r["source"])
+            if is_score_pick(r["pick"]):            # 比分共识只由比分型源构成（方向型无比分）
+                by_pick.setdefault(r["pick"], []).append(r["source"])
             by_out.setdefault(r["outcome"], []).append(r["source"])
         for pick, srcs in by_pick.items():
             if len(srcs) >= 2:
@@ -240,7 +252,8 @@ def settle(sale_date: str) -> int:
         fav = _market_fav(sale_date, e["code"])
         e["settled"] = {"actual": actual,
                         "directionHit": e["outcome"] == outcome_of(actual),
-                        "scoreHit": e["pick"] == actual,
+                        # 方向型源无比分可判→None（不记 false·否则比分率被结构性拖低）
+                        "scoreHit": (e["pick"] == actual) if is_score_pick(e["pick"]) else None,
                         "vsMarket": {"favOutcome": fav,
                                      "isDeviation": (fav is not None and e["outcome"] != fav)},
                         "settledAt": datetime.now().isoformat(timespec="seconds")}
@@ -271,11 +284,13 @@ def leaderboard(as_json: bool = False) -> int:
             s = e.get("settled")
             if not s:
                 continue
-            st = stats.setdefault(e["source"], {"n": 0, "dir": 0, "score": 0,
+            st = stats.setdefault(e["source"], {"n": 0, "dir": 0, "score": 0, "n_score": 0,
                                                 "n_dev": 0, "dev_dir": 0, "mkt_dir_same_set": 0})
             st["n"] += 1
             st["dir"] += bool(s["directionHit"])
-            st["score"] += bool(s["scoreHit"])
+            if s["scoreHit"] is not None:          # 方向型源不入比分率分母
+                st["n_score"] += 1
+                st["score"] += bool(s["scoreHit"])
             if (s.get("vsMarket") or {}).get("isDeviation"):
                 st["n_dev"] += 1
                 st["dev_dir"] += bool(s["directionHit"])
@@ -290,7 +305,8 @@ def leaderboard(as_json: bool = False) -> int:
         formal = st["n"] >= FORMAL_N
         r = {"source": src, "n": st["n"], "formal": formal,
              "dirRate": round(st["dir"] / st["n"], 4) if st["n"] else None,
-             "scoreRate": round(st["score"] / st["n"], 4) if st["n"] else None,
+             "n_score": st["n_score"],
+             "scoreRate": round(st["score"] / st["n_score"], 4) if st["n_score"] else None,
              "n_dev": st["n_dev"],
              "devHitRate": round(st["dev_dir"] / st["n_dev"], 4) if st["n_dev"] else None,
              "marketHitOnDevSet": (round(st["mkt_dir_same_set"] / st["n_dev"], 4)

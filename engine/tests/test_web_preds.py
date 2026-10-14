@@ -29,7 +29,7 @@ def _iso(tmp_path, monkeypatch):
 
 def _entry(**kw):
     base = {"code": "周三007", "source": "Sports Mole", "pick": "1:1",
-            "publishedAt": "2026-10-13T18:00", "url": "https://x.test/a"}
+            "publishedAt": "2026-10-13T18:00", "url": "https://x.test/a", "pickType": "source_exact"}
     base.update(kw)
     return base
 
@@ -75,6 +75,33 @@ def test_冻结幂等_同批拒_二批增(_iso):
     doc = wp.load_preds("2026-10-14")
     assert len(doc["entries"]) == 2 and len(doc["batches"]) == 2
     assert doc["batches"][0]["batch"] == 1 and doc["batches"][1]["batch"] == 2
+
+
+def test_方向型pick_可录_且不拖比分率(_iso):
+    """多数源只给方向——须能直录，且 scoreHit=None 不入比分率分母（008 转译失真教训）。"""
+    wp.record("2026-10-14", _write(_iso, [
+        _entry(source="DirOnly", pick="home", pickType="source_exact"),
+        _entry(source="ScoreSrc", pick="1:2", pickType="source_exact")]))
+    _results(_iso, "2026-10-15", [
+        {"code": "周三007", "result": "1-2", "odds": {"h": 2.2, "d": 3.55, "a": 2.55}}])
+    wp.settle("2026-10-14")
+    doc = wp.load_preds("2026-10-14")
+    by = {e["source"]: e for e in doc["entries"]}
+    assert by["DirOnly"]["outcome"] == "home"                      # 方向型直通
+    assert by["DirOnly"]["settled"]["directionHit"] is False       # 实际客胜
+    assert by["DirOnly"]["settled"]["scoreHit"] is None            # 无比分可判→None
+    board = wp.leaderboard()["sources"]
+    assert board["DirOnly"]["n"] == 1 and board["DirOnly"]["n_score"] == 0
+    assert board["DirOnly"]["scoreRate"] is None                   # 不被结构性拖低
+    assert board["ScoreSrc"]["n_score"] == 1 and board["ScoreSrc"]["scoreRate"] == 1.0
+
+
+def test_pickType必填_防转译失真(_iso):
+    bad = dict(_entry())
+    bad.pop("pickType")
+    assert wp.record("2026-10-14", _write(_iso, [bad])) == 1
+    assert wp.record("2026-10-14", _write(_iso, [_entry(pickType="瞎填")])) == 1
+    assert wp.record("2026-10-14", _write(_iso, [_entry(pickType="session_derived")])) == 0
 
 
 def test_共识检测_比分与方向(_iso):
