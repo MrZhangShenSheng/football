@@ -29,7 +29,8 @@ def test_map_league_known():
     assert map_league("丹超") == "denmark" and map_league("美职") == "usa"
 
 def test_map_league_unknown_returns_none():
-    assert map_league("欧冠") is None and map_league("英联赛杯") is None
+    # 10-14：欧冠已接入 uefa-champions 池（原断言的「欧冠无映射」是被推翻的旧设计）
+    assert map_league("英联赛杯") is None and map_league("火星联赛") is None
 
 def test_build_freq_table_reads_league_dict_structure(monkeypatch, tmp_path):
     import json as _json

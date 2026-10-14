@@ -16,11 +16,52 @@ LEAGUE_MAP = {          # 体彩中文缩写 → fd 英文 id（2026-08-24 存�
     "荷乙": "netherlands-eerste", "西乙": "spain-laliga2", "意乙": "italy-serie-b",
     # 09-08 补本地库四联赛（体彩裸名实测自 02-results league 字段；无 fd 对应）
     "巴甲": "brazil", "丹超": "denmark", "挪超": "norway", "美职": "usa",
-}                       # 欧冠/杯赛等无对应 → None → 全局池（设计内）
+    # 10-14 低分偏置修正：杯赛映射（此前返回 None → 全局池 2.738，欧冠实测 3.221 差 0.48）
+    "欧冠": "uefa-champions", "欧联": "uefa-europa", "欧罗巴": "uefa-europa",
+}                       # 无对应 → None → 调用方 resolve_pool_key 回退近似池
 
 def map_league(name: str):
     """体彩中文联赛名 → fd id；无映射返回 None（调用方落全局池）。"""
     return LEAGUE_MAP.get(name)
+
+
+# 库文件名 → 频率池键的别名（Ruling R1：不改库文件名，在此消解两处不一致）
+POOL_ALIAS = {"spain-laliga2": "spain-liga2", "germany-2-bundesliga": "germany-bundesliga2"}
+
+# 样本不足独立成池的赛事 → 地域近似池。多键则合并为加权池（非取首个——
+# 2026-10-14 实测缺陷：原实现只取首个在表中者，("japan","korea") 的 korea 永不生效）。
+POOL_FALLBACK = {
+    "解放者杯": ("brazil",),
+    "亚冠精英": ("japan", "korea", "saudi"),
+    "亚冠乙": ("japan", "korea", "saudi"),
+    "日联赛杯": ("japan",),
+}
+
+
+def resolve_pool(name: str, table: dict):
+    """体彩联赛名 → (池键或合成键, 池 Counter)；无可用池返回 (None, None)。
+
+    顺序：LEAGUE_MAP 直接命中（经 POOL_ALIAS 消解键名差异）→ POOL_FALLBACK 近似池
+    （多键合并加权）→ (None, None)（调用方落全局池）。
+    回退近似池而非全局平均：今日 013 解放者杯市场期望 2.22，巴西池 2.489 比全局 2.738 近。
+
+    已知局限（2026-10-14）：亚冠实际进球水平(市场均 3.22)显著高于成员国联赛加权(2.678)，
+    同欧冠 3.221 远高于各国联赛。加权池只是权宜，根治须建 afc.champions 独立库。
+    """
+    key = LEAGUE_MAP.get(name)
+    if key:
+        key = POOL_ALIAS.get(key, key)
+        if key in table:
+            return key, table[key]
+    cands = [c for c in POOL_FALLBACK.get(name, ()) if c in table]
+    if len(cands) == 1:
+        return cands[0], table[cands[0]]
+    if cands:
+        agg = Counter()
+        for c in cands:
+            agg.update(table[c])
+        return "+".join(cands), agg
+    return None, None
 
 def shrink(freq: float, n: int, prior: float, strength: int = PRIOR_STRENGTH) -> float:
     return (freq * n + prior * strength) / (n + strength)
