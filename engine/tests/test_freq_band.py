@@ -146,10 +146,11 @@ def test_freq_legs_three_gates():
 
 
 def test_freq_legs_survival_gate_and_shift_flag():
-    """q<1% 的带内比分出局；有近况输入且过T轴护栏 → shifted 标记。
+    """q<SURVIVE_Q 的带内比分出局；有近况输入且过T轴护栏 → shifted 标记。
     （ca8a069 λ混合分母+T轴护栏后：极端近况(2:0全胜)被护栏降级纯模板，
-    shifted 断言改用温和对称近况+更真实模板基准。）"""
-    table = {"italy-serie-a": Counter({"__n": 1000, "1:1": 300, "1:0": 280, "2:0": 5})}  # 2:0 q=0.5%
+    shifted 断言改用温和对称近况+更真实模板基准。
+    10-14 阈 1%→0.5%：原 2:0 q=0.5% 恰好达标不再被拦，降到 2 场 q=0.2% 以继续验证拦截。）"""
+    table = {"italy-serie-a": Counter({"__n": 1000, "1:1": 300, "1:0": 280, "2:0": 2})}  # 2:0 q=0.2%
     zh = {"国际米兰": "inter", "威尼斯": "venezia"}
     legs = freq_band.freq_legs(_odds_day(), table,
                                {"inter": [(2, 0, freq_band.CURRENT_SEASON, "italy-serie-a")] * 10, "venezia": [(0, 2, freq_band.CURRENT_SEASON, "italy-serie-a")] * 10}, zh,
