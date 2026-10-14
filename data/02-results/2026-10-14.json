@@ -29,18 +29,28 @@
    "grade": "C",
    "inPlan": null,
    "market": {
-    "had": {"h": 2.27, "d": 3.42, "a": 2.52},
-    "hhad": {"goalLine": "-1", "h": 4.60, "d": 4.25, "a": 1.48},
+    "had": {
+     "h": 2.27,
+     "d": 3.42,
+     "a": 2.52
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": 4.6,
+     "d": 4.25,
+     "a": 1.48
+    },
     "poolSingleHAD": 0
    },
    "dcUsed": false,
    "anchorMode": "market-only",
    "note": "三向最均衡场(去水后近三分天下)·divergence 旗标=模板与市场背离·v4b对照 1:1@7.0 与市场最热同向",
-   "result": null,
+   "result": "0-2",
    "directionHit": null,
    "scoreHit": null,
    "optionHit": null,
-   "pinSource": "none"
+   "pinSource": "none",
+   "half": "0:1"
   },
   {
    "idx": 2,
@@ -54,18 +64,28 @@
    "grade": "C",
    "inPlan": null,
    "market": {
-    "had": {"h": 1.18, "d": 5.60, "a": 9.75},
-    "hhad": {"goalLine": "-2", "h": 2.75, "d": 4.20, "a": 1.90},
+    "had": {
+     "h": 1.18,
+     "d": 5.6,
+     "a": 9.75
+    },
+    "hhad": {
+     "goalLine": "-2",
+     "h": 2.75,
+     "d": 4.2,
+     "a": 1.9
+    },
     "poolSingleHAD": 0
    },
    "dcUsed": false,
    "anchorMode": "market-only",
    "note": "主胜 1.18 极端热门·HAD 不可单关(poolSingle.HAD=0)·v4b对照 2:2@19.0 与市场严重背离(模型给平局族·市场给碾压)",
-   "result": null,
+   "result": "3-4",
    "directionHit": null,
    "scoreHit": null,
    "optionHit": null,
-   "pinSource": "none"
+   "pinSource": "none",
+   "half": "1:1"
   },
   {
    "idx": 3,
@@ -79,18 +99,28 @@
    "grade": "C",
    "inPlan": null,
    "market": {
-    "had": {"h": 1.16, "d": 5.70, "a": 11.00},
-    "hhad": {"goalLine": "-2", "h": 2.75, "d": 3.95, "a": 1.95},
+    "had": {
+     "h": 1.16,
+     "d": 5.7,
+     "a": 11.0
+    },
+    "hhad": {
+     "goalLine": "-2",
+     "h": 2.75,
+     "d": 3.95,
+     "a": 1.95
+    },
     "poolSingleHAD": 0
    },
    "dcUsed": false,
    "anchorMode": "market-only",
    "note": "本轮最热主胜 1.16(去水约83%)·HAD 不可单关·v4b对照 1:1@10.5 同属背离",
-   "result": null,
+   "result": "3-0",
    "directionHit": null,
    "scoreHit": null,
    "optionHit": null,
-   "pinSource": "none"
+   "pinSource": "none",
+   "half": "0:0"
   },
   {
    "idx": 4,
@@ -104,18 +134,28 @@
    "grade": "C",
    "inPlan": null,
    "market": {
-    "had": {"h": 2.04, "d": 3.40, "a": 2.90},
-    "hhad": {"goalLine": "-1", "h": 4.05, "d": 3.95, "a": 1.59},
+    "had": {
+     "h": 2.04,
+     "d": 3.4,
+     "a": 2.9
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": 4.05,
+     "d": 3.95,
+     "a": 1.59
+    },
     "poolSingleHAD": 1
    },
    "dcUsed": false,
    "anchorMode": "market-only",
    "note": "HAD 可单关(poolSingle.HAD=1)·三向偏主·CRS族峰值 23.5% 关档·v4b对照 1:1@6.75",
-   "result": null,
+   "result": "3-1",
    "directionHit": null,
    "scoreHit": null,
    "optionHit": null,
-   "pinSource": "none"
+   "pinSource": "none",
+   "half": "2:1"
   },
   {
    "idx": 5,
@@ -130,17 +170,23 @@
    "inPlan": null,
    "market": {
     "had": null,
-    "hhad": {"goalLine": "+3", "h": 2.00, "d": 5.00, "a": 2.33},
+    "hhad": {
+     "goalLine": "+3",
+     "h": 2.0,
+     "d": 5.0,
+     "a": 2.33
+    },
     "poolSingleHAD": null
    },
    "dcUsed": false,
    "anchorMode": "market-only",
    "note": "HAD 三向全空=体彩只售让球盘(让+3 极端档差)·档差最大场·v4b对照 2:2@28.0 无参考价值",
-   "result": null,
+   "result": "3-3",
    "directionHit": null,
    "scoreHit": null,
    "optionHit": null,
-   "pinSource": "none"
+   "pinSource": "none",
+   "half": "2:0"
   },
   {
    "idx": 6,
@@ -154,18 +200,28 @@
    "grade": "C",
    "inPlan": null,
    "market": {
-    "had": {"h": 1.60, "d": 4.25, "a": 3.73},
-    "hhad": {"goalLine": "-1", "h": 2.61, "d": 3.95, "a": 2.03},
+    "had": {
+     "h": 1.6,
+     "d": 4.25,
+     "a": 3.73
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": 2.61,
+     "d": 3.95,
+     "a": 2.03
+    },
     "poolSingleHAD": 0
    },
    "dcUsed": false,
    "anchorMode": "market-only",
    "note": "boldplay 翻身档候选 HAFU aa@6.10 EV+6% 来源于此场——但 EV 正值系模板 q 值虚高(记忆: freq q 口径 EV 虚高15-35pp·温度链缺失)，非真边际；TTG s2 标 EV+28.6% 更属此症",
-   "result": null,
+   "result": "1-0",
    "directionHit": null,
    "scoreHit": null,
    "optionHit": null,
-   "pinSource": "none"
+   "pinSource": "none",
+   "half": "0:0"
   },
   {
    "idx": 7,
@@ -179,18 +235,28 @@
    "grade": "C",
    "inPlan": null,
    "market": {
-    "had": {"h": 7.70, "d": 6.30, "a": 1.19},
-    "hhad": {"goalLine": "+2", "h": 2.05, "d": 4.50, "a": 2.39},
+    "had": {
+     "h": 7.7,
+     "d": 6.3,
+     "a": 1.19
+    },
+    "hhad": {
+     "goalLine": "+2",
+     "h": 2.05,
+     "d": 4.5,
+     "a": 2.39
+    },
     "poolSingleHAD": 0
    },
    "dcUsed": false,
    "anchorMode": "market-only",
    "note": "客胜 1.19 极热·唯一客队大热场·土超 DC 本轮刚重拟(home_adv=0.281 rho=0.018·加拉塔萨攻击力+0.66 联赛第2)但跨联赛不可用·v4b对照 2:2@16.0",
-   "result": null,
+   "result": "1-4",
    "directionHit": null,
    "scoreHit": null,
    "optionHit": null,
-   "pinSource": "none"
+   "pinSource": "none",
+   "half": "1:1"
   },
   {
    "idx": 8,
@@ -204,24 +270,43 @@
    "grade": "C",
    "inPlan": null,
    "market": {
-    "had": {"h": 1.78, "d": 3.70, "a": 3.37},
-    "hhad": {"goalLine": "-1", "h": 3.20, "d": 3.85, "a": 1.80},
+    "had": {
+     "h": 1.78,
+     "d": 3.7,
+     "a": 3.37
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": 3.2,
+     "d": 3.85,
+     "a": 1.8
+    },
     "poolSingleHAD": 1
    },
    "dcUsed": false,
    "anchorMode": "market-only",
    "note": "HAD 可单关·实测跨联赛 DC 不可合成即以此场为例(马竞在西甲参数内·曼联=None)·v4b对照 1:0@11.0 信号0.2434 为八场最高",
-   "result": null,
+   "result": "2-0",
    "directionHit": null,
    "scoreHit": null,
    "optionHit": null,
-   "pinSource": "none"
+   "pinSource": "none",
+   "half": "1:0"
   }
  ],
  "evidenceChain": {
   "dir": "engine/cache/evidence/2026-10-13",
   "note": "S1 按体彩 businessDate(销售日)分目录，故 10-14 凌晨欧冠场落在 2026-10-13 目录。八场齐缺 S2/S3/S4/S5/S6/S7——缺步标注不补造。",
-  "missingSteps": ["S2_profiles", "S3_dc", "S4_lambda", "S5_devig", "S6_fusion", "S7_matrix", "S8_hypothesis", "S9_scheme"]
+  "missingSteps": [
+   "S2_profiles",
+   "S3_dc",
+   "S4_lambda",
+   "S5_devig",
+   "S6_fusion",
+   "S7_matrix",
+   "S8_hypothesis",
+   "S9_scheme"
+  ]
  },
  "shadowRegistered": {
   "saleDay": "2026-10-14",

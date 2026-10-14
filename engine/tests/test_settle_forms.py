@@ -84,3 +84,54 @@ class TestSettlePayoutIdxOptionBets:
         res = bf.settle_payout(t)
         assert res["payout"] == round(2 * 10 * 4.35, 2)
         assert res["winUnits"] == 1
+
+
+def _t046_ticket(hits_idx):
+    """T046 复刻：HAD 6串1 单注×10倍（units=10），无 bets。全赔积 8.36。"""
+    odds = [1.38, 1.38, 1.42, 1.45, 1.46, 1.46]
+    legs = [{"market": "HAD", "pick": "主胜", "odds": o,
+             "result": "hit" if i in hits_idx else "miss", "actual": "2:0(半1:0)"}
+            for i, o in enumerate(odds)]
+    return {"id": "T046", "unitStake": 2, "stake": 20, "units": 10,
+            "shape": "HAD 6串1", "legs": legs}
+
+
+class TestSettlePayoutPlainNoBets:
+    """2026-10-14 T046 事故回归：无 bets 单注票禁走 expand_combos 全组合兜底。"""
+
+    def test_t046_partial_hit_pays_zero(self):
+        """单注 6串1 断一腿=0 派彩——事故实况（5/6 hit 曾误派 151.71）。"""
+        res = bf.settle_payout(_t046_ticket({0, 1, 3, 4, 5}))
+        assert res["payout"] == 0.0
+        assert res["winUnits"] == 0
+        assert res["hits"] == 5
+        assert res["net"] == -20.0
+
+    def test_plain_full_hit_keeps_multiplier(self):
+        """全中按 ×10倍 结算（units 口径）；winUnits=中奖注组数不乘倍数（T-old 同义）。"""
+        res = bf.settle_payout(_t046_ticket(set(range(6))))
+        full = 1.38 * 1.38 * 1.42 * 1.45 * 1.46 * 1.46
+        assert res["winUnits"] == 1
+        assert res["payout"] == round(bf.after_tax(2 * 10 * full), 2)
+
+    def test_single_leg_guan_hit_pays(self):
+        """单关×5倍命中须派彩——expand_combos(1) 空列表曾致命中派 0。"""
+        t = {"id": "T-guan", "unitStake": 2, "stake": 10, "units": 1, "multiplier": 5,
+             "shape": "CRS 单关×5倍",
+             "legs": [{"market": "CRS", "pick": "1:0", "odds": 7.0,
+                       "result": "hit", "actual": "1:0(半0:0)"}]}
+        res = bf.settle_payout(t)
+        assert res["payout"] == round(2 * 5 * 7.0, 2)
+        assert res["winUnits"] == 1
+
+    def test_cuorong_shape_still_expands(self):
+        """容错形状（4串11）不受影响：2/4 hit → 中 1 注 2串1。"""
+        odds = [3.0, 4.0, 5.0, 6.0]
+        legs = [{"market": "CRS", "pick": "x", "odds": o,
+                 "result": "hit" if i < 2 else "miss", "actual": "1:0(半0:0)"}
+                for i, o in enumerate(odds)]
+        t = {"id": "T-cr", "unitStake": 2, "stake": 22, "units": 11,
+             "shape": "CRS 4串11容错(2*3*4)", "legs": legs}
+        res = bf.settle_payout(t)
+        assert res["payout"] == round(2 * 3.0 * 4.0, 2)
+        assert res["winUnits"] == 1

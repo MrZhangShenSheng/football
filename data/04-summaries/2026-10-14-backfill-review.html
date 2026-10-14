@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10-14 回填复盘</title>
+<style>
+  :root { --ink:#1a2233; --mut:#5a6578; --line:#d8dee8; --bg:#f6f7fa; --card:#ffffff;
+          --ok:#1d7a4f; --bad:#b3372f; --warn:#9a6b16; --accent:#2b5ba8; }
+  body { margin:0; padding:24px 16px 64px; background:var(--bg); color:var(--ink);
+         font:15px/1.75 "Microsoft YaHei","PingFang SC",sans-serif; }
+  .wrap { max-width:960px; margin:0 auto; }
+  h1 { font-size:24px; margin:0 0 4px; }
+  h2 { font-size:18px; margin:36px 0 10px; padding-left:10px; border-left:4px solid var(--accent); }
+  .sub { color:var(--mut); font-size:13px; margin-bottom:20px; }
+  table { width:100%; border-collapse:collapse; background:var(--card); font-size:13.5px; }
+  th,td { border:1px solid var(--line); padding:6px 10px; text-align:left; }
+  th { background:#eef1f6; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:14px 18px; margin:12px 0; }
+  .ok { color:var(--ok); } .bad { color:var(--bad); } .warn { color:var(--warn); }
+  .mut { color:var(--mut); }
+  code { background:#eef1f6; padding:1px 5px; border-radius:4px; font-size:12.5px; }
+  .foot { margin-top:40px; font-size:12.5px; color:var(--mut); border-top:1px solid var(--line); padding-top:12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>回填复盘 · 2026-10-14</h1>
+<div class="sub">覆盖两轮：周一001~010（10-12 晚→10-13 凌晨）＋ 欧冠周二004~011（10-14 凌晨）·含 T046 结算事故纠错专节</div>
+
+<h2>一、回填总览</h2>
+<div class="card">
+  <b>26 场全落，体彩对票 26/26。</b>「无匹配 2 场」经查均为已知延期场，非数据洞：<br>
+  ① <b>周三014 莱万特 vs 毕尔巴鄂</b>（2026-09-17，西甲 R6）——延期 27 天遗留，记录已有延期标注（体彩判无效场次）；<br>
+  ② <b>周六006 巴列卡诺 vs 毕尔巴鄂</b>（2026-10-10，西甲）——延期，重赛日待定。<br>
+  欧冠月格式兜底链路（uefa.* 月格式，昨日落地）<b>本轮未被触发</b>——体彩主链全覆盖，首测顺延至下次 ESPN 兜底场景。
+</div>
+
+<h2>二、欧冠轮八场赛果（排除轮·无票无盈亏）</h2>
+<table>
+  <tr><th>编号</th><th>对阵</th><th>赛果</th><th>市场热门</th><th>注</th></tr>
+  <tr><td>周二004</td><td>朗斯 vs 里斯本</td><td>0-2</td><td>客胜 2.52</td><td class="ok">热门中</td></tr>
+  <tr><td>周二005</td><td>国际米兰 vs 布鲁日</td><td>3-4</td><td>主胜 1.18</td><td class="bad">巨冷·客胜 9.75</td></tr>
+  <tr><td>周二006</td><td>阿森纳 vs 里尔</td><td>3-0</td><td>主胜 1.16</td><td class="ok">热门中</td></tr>
+  <tr><td>周二007</td><td>比利亚雷 vs 那不勒斯</td><td>3-1</td><td>主胜</td><td class="ok">热门中</td></tr>
+  <tr><td>周二008</td><td>维京 vs 拜仁</td><td>3-3</td><td>客胜超热</td><td class="bad">超热被平</td></tr>
+  <tr><td>周二009</td><td>莱红牛 vs 埃因霍温</td><td>1-0</td><td>主胜</td><td class="ok">热门中</td></tr>
+  <tr><td>周二010</td><td>加拉塔萨 vs 巴萨</td><td>1-4</td><td>客胜</td><td class="ok">热门中</td></tr>
+  <tr><td>周二011</td><td>马竞 vs 曼联</td><td>2-0</td><td>主胜</td><td class="ok">热门中</td></tr>
+</table>
+<div class="card mut">
+  八场全按 <code>skill/SKILL.md:199</code> 无锚排除（纯市场锚·CRS 闸门族峰值 21.7%~24.0% &lt; 28% 全关）。
+  诚实标注：<b>排除决策无法被赛果验证</b>（未押注即无对错），本轮仅记录两例跨联赛不可测性实证——
+  国米 1.18 超热被布鲁日客胜掀翻、拜仁被维京 3-3 逼平。v4b 对照卡已核三场（1:1/2:2/1:1）全 miss。
+</div>
+
+<h2>三、实票结算与 T046 派彩事故纠错 ★ 本轮最大发现</h2>
+<table>
+  <tr><th>票</th><th>形状</th><th>命中</th><th>派彩</th><th>净</th><th>断腿</th></tr>
+  <tr><td>T046</td><td>HAD 6串1 ×10倍</td><td>5/6</td><td class="bad">0.00（误算 151.71 已纠）</td><td>-20</td><td>周日024 卡利亚里 1-1</td></tr>
+  <tr><td>T047</td><td>CRS 2串1 ×5倍</td><td>1/2</td><td>0.00</td><td>-10</td><td>周一006 第戎 4-2（押 1:1）</td></tr>
+</table>
+<div class="card">
+  <b>事故</b>：T046 单注 6串1 断卡利亚里一腿，实盘派彩必为 0，结算器却派 <span class="bad">151.71 元（roi +658.5%）</span>。<br>
+  <b>根因</b>：<code>settle_payout</code> 对无 <code>bets</code> 字段票一律走 <code>expand_combos</code> 全组合兜底（为 4串11 容错票设计）——
+  单注 6串1 被展开成 57 注容错票，5/6 命中即中 26 个子组合（winUnits=26 的来历）；同路径还会吞掉 ×10 倍乘数（若全中只算 16.72 而非 167.2）。
+  另一处潜伏回归：单关票（n=1）在 <code>expand_combos(1)</code> 得空列表，<b>命中也派 0</b>（T026 的 87 元系旧代码冻结产物）。<br>
+  <b>修复</b>（backfill.py）：新增 <code>_plain_single_combo</code>（恰好一个 N串1 token 或单关，容错/全组合/串4串5/双选/N注 任一即否）＋
+  <code>_shape_mult</code>（形状文本 ×N倍 优先于 multiplier/units）；无 bets 票先判单注、按整票一注×倍数结算，容错票仍走全组合。<br>
+  <b>清账</b>：审计全部 476 张影子/实票账——<b>仅 T046 一张错账</b>（历史纯串1票断腿全为 0，系旧代码判得对，冻结不动）；已重开重结算，账本 meta 由
+  payout 653.46/net −182.54 修正为 <span class="ok">payout 501.75/net −334.25</span>。回归测试 4 张新增，<code>test_settle_forms</code> 12 passed，全量 474 passed。
+</div>
+<svg viewBox="0 0 720 150" width="100%" style="color:var(--ink);max-width:720px" aria-label="结算双路示意">
+  <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="currentColor"/></marker></defs>
+  <g font-size="13" fill="currentColor">
+    <rect x="10" y="55" width="120" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="70" y="80" text-anchor="middle">settle_payout</text>
+    <line x1="130" y1="68" x2="230" y2="32" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar)"/>
+    <line x1="130" y1="82" x2="230" y2="118" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar)"/>
+    <text x="180" y="40" text-anchor="middle" class="ok" font-size="12">单注形状</text>
+    <text x="180" y="128" text-anchor="middle" font-size="12">容错/混串</text>
+    <rect x="235" y="14" width="220" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="345" y="32" text-anchor="middle" font-size="12">整票一注 ×倍数</text>
+    <text x="345" y="48" text-anchor="middle" font-size="11" class="mut">N串1 / 单关 · ×N倍优先</text>
+    <rect x="235" y="98" width="220" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="345" y="116" text-anchor="middle" font-size="12">expand_combos 全组合</text>
+    <text x="345" y="132" text-anchor="middle" font-size="11" class="mut">4串11 / 3场混串 旧形状</text>
+    <line x1="455" y1="34" x2="540" y2="34" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar)"/>
+    <line x1="455" y1="118" x2="540" y2="118" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar)"/>
+    <rect x="545" y="14" width="165" height="40" rx="6" fill="none" stroke="#1d7a4f" stroke-width="1.5"/>
+    <text x="627" y="39" text-anchor="middle" fill="#1d7a4f" font-size="12">断腿=0 · 全中=本金×倍</text>
+    <rect x="545" y="98" width="165" height="40" rx="6" fill="none" stroke="#1d7a4f" stroke-width="1.5"/>
+    <text x="627" y="123" text-anchor="middle" fill="#1d7a4f" font-size="12">子组合逐注累加</text>
+  </g>
+</svg>
+
+<h2>四、影子层结算</h2>
+<table>
+  <tr><th>批次</th><th>参数口径</th><th>结算</th><th>投入</th><th>回款</th><th>回款票</th></tr>
+  <tr><td>周一轮（10-12）</td><td>settle-all 2026-10-12（销售日）</td><td>14/14</td><td>380</td><td>142.72</td><td>5</td></tr>
+  <tr><td>欧冠轮（10-14）</td><td>settle-all 2026-10-13 得 0 → 按开赛日 2026-10-14 绕过（早场轮盲区记忆）</td><td>14/14</td><td>380</td><td>82.98</td><td>3</td></tr>
+</table>
+<div class="card mut">账本累计 476 张（pending 16 含 P349 胜负彩挂账与两延期场关联票）·投入 14064 ·回款 7889.02。</div>
+
+<h2>五、V3W 生产比分端对照（10-13 卡）</h2>
+<table>
+  <tr><th>编号</th><th>对阵</th><th>top1</th><th>p</th><th>实际</th><th>判</th></tr>
+  <tr><td>周一009</td><td>科里蒂巴 v 博塔弗戈</td><td>1:1</td><td>14.2%</td><td>1-1</td><td class="ok">HIT</td></tr>
+  <tr><td>周一003</td><td>马尔默 v 卡尔马</td><td>2:0</td><td>13.7%</td><td>1-0</td><td class="bad">miss</td></tr>
+  <tr><td>周一007</td><td>考文垂 v 纽卡斯尔</td><td>1:1</td><td>13.1%</td><td>4-1</td><td class="bad">miss</td></tr>
+  <tr><td>周一008</td><td>莱万特 v 塞维利亚</td><td>1:1</td><td>12.7%</td><td>3-3</td><td class="bad">miss</td></tr>
+</table>
+<div class="card mut">top1 1/4（25%）vs 均值 q 13.4%——n=4 纯噪声级，方向中性不作结论；三张 warn（leagueWarn/λ 病态）场全 miss 顺带记录。</div>
+
+<h2>六、语料 · 归因 · 模型 · 巡检</h2>
+<div class="card">
+  <b>corpus</b>：924 条（回填 922 · CLV 127 · 跨日合并 66）→ ✅可校准 ✅可消融；trend 338 场/53 轮；
+  校准警示 0%~40% 桶实际 59% vs 预测 38%（系统性低估 22pp，F9 已知偏差勿重开）。<br>
+  <b>attribute</b>：71 错题，F9 主因 61 / F1 6 / F3 2 / F5 2。<br>
+  <b>learn</b>：瑞超/巴甲/挪超/丹超/美职 espn-history 2026 增量＋local 重拟合发布＋温度拟合（exit 0）。<br>
+  <b>dc_fit</b>：fd 16 联赛过一遍——西乙/意乙/希超/比甲 4 库重拟合，12 库缓存新鲜跳过（欧冠属杯赛库不参与）。<br>
+  <b>health_check</b>：🟡 yellow——唯一黄项 fdSymptom（近 14 天 146 场回填 95% 无 pinClose，fd 自 09-20 断粮已知挂账），其余七探测全绿。
+</div>
+
+<h2>七、遗留</h2>
+<div class="card">
+  ① fd 断更持续：pinClose/CLV 继续无兜底，恢复后 <code>verify</code> 幂等救回；<br>
+  ② 欧冠/欧罗巴月格式兜底链路仍待首测（本轮体彩全覆盖未触发）；<br>
+  ③ 两延期场（周三014 / 周六006）重赛后重跑 backfill 自动回填；<br>
+  ④ 欧冠真预测仍隔两道闸（模板闸翻案 / 跨联赛强度标尺 v35 审计），10-28 下轮前若做先立预注册。
+</div>
+
+<div class="foot">
+  数据来源：data/02-results/{2026-10-10,2026-10-11,2026-10-14}.json · data/06-tickets/tickets.json ·
+  engine/shadow/paper_tickets.json · data/03-predictions/2026-10-13-crs.json · data/04-summaries/{corpus,attribution,health-check}.json ·
+  engine/scripts/backfill.py（settle_payout 修复）· engine/tests/test_settle_forms.py<br>
+  开发者 sszhang · 2026-10-14
+</div>
+</div>
+</body>
+</html>

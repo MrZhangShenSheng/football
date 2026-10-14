@@ -299,7 +299,7 @@
           "revoked": false,
           "result": "miss",
           "actual": "3:0(半2:0)",
-          "agreement": "play_diff",
+          "agreement": "excluded",
           "clv_self": null,
           "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
         },
@@ -1450,7 +1450,7 @@
           "odds": 1.48,
           "result": "hit",
           "actual": "3:2(半1:1)",
-          "agreement": "agree",
+          "agreement": "excluded",
           "clv_self": -0.0199,
           "clv_self_note": "末次快照 1.51 @ 2026-09-01T12:01"
         },
@@ -3905,7 +3905,7 @@
           "odds": {
             "0:1": 7.25
           },
-          "agreement": "excluded",
+          "agreement": "play_diff",
           "note": "单选·市场并列最热10.3%·大哥点名保留",
           "result": "miss",
           "actual": "3:2(半0:0)",
@@ -5202,7 +5202,7 @@
           "modelP": 0.054,
           "marketP": 0.024,
           "note": "反差核心·模型实战绩5.4%vs市场身价2.4%·名气水假设主表达腿",
-          "agreement": "excluded"
+          "agreement": "play_diff"
         },
         {
           "code": "周一004",
@@ -5313,7 +5313,7 @@
           "note": "模型最高P=21.8%·双弱攻λ=1.0/0.6·去水池最佳形态·主流独排众议(主流说进球模型说闷战)",
           "result": "miss",
           "actual": "1:2(半1:0)",
-          "agreement": "play_diff"
+          "agreement": "excluded"
         },
         {
           "code": "周二009",
@@ -5332,7 +5332,7 @@
           "note": "λ=2.5/0.5悬殊·boom=0.043接近阈值·top3三格平分(2:0/3:0/1:0)·主流一致3:0",
           "result": "miss",
           "actual": "3:0(半1:0)",
-          "agreement": "play_diff"
+          "agreement": "excluded"
         },
         {
           "code": "周二002",
@@ -5370,7 +5370,7 @@
           "note": "方向全场一致(模型56%客vs市场69%客)·最安全腿·H2H斯洛伐克全胜",
           "result": "miss",
           "actual": "0:4(半0:2)",
-          "agreement": "play_diff"
+          "agreement": "excluded"
         }
       ],
       "settled": {
@@ -5411,7 +5411,7 @@
           "market": "HAD",
           "pick": "主胜",
           "odds": 1.38,
-          "agreement": "excluded",
+          "agreement": "agree",
           "result": "hit",
           "actual": "5:2(半2:0)"
         },
@@ -5446,7 +5446,7 @@
           "market": "HAD",
           "pick": "主胜",
           "odds": 1.45,
-          "agreement": "agree",
+          "agreement": "excluded",
           "agreementNote": "假设层refuted(双残德比)·五挡模型同推",
           "result": "hit",
           "actual": "1:0(半1:0)"
@@ -5458,7 +5458,7 @@
           "market": "HAD",
           "pick": "主胜",
           "odds": 1.46,
-          "agreement": "excluded",
+          "agreement": "agree",
           "result": "hit",
           "actual": "2:1(半1:1)"
         },
@@ -5469,10 +5469,20 @@
           "market": "HAD",
           "pick": "主胜",
           "odds": 1.46,
-          "agreement": "excluded"
+          "agreement": "agree",
+          "result": "hit",
+          "actual": "3:1(半3:1)"
         }
       ],
-      "settled": false,
+      "settled": {
+        "status": "settled",
+        "hits": 5,
+        "winUnits": 0,
+        "payout": 0.0,
+        "net": -20.0,
+        "roi": -100.0,
+        "settledAt": "2026-10-14 10:28"
+      },
       "note": "五挡模型首张实票·全中派彩=2×10×合赔8.36=167.20元·断任一腿=0·6串1单注上限100万内"
     },
     {
@@ -5509,19 +5519,29 @@
           "pick": "1:1",
           "odds": 6.5,
           "agreement": "excluded",
-          "agreementNote": "闯关模型gap=0.060"
+          "agreementNote": "闯关模型gap=0.060",
+          "result": "miss",
+          "actual": "4:2(半3:1)"
         }
       ],
-      "settled": false,
+      "settled": {
+        "status": "settled",
+        "hits": 1,
+        "winUnits": 0,
+        "payout": 0.0,
+        "net": -10.0,
+        "roi": -100.0,
+        "settledAt": "2026-10-14 10:08"
+      },
       "note": "闯关右尾票·全中派彩=2×5×45.5=455.00元·原证据已作废按纪律出票(满100注再评估)·证据状态票面已标注"
     }
   ],
   "meta": {
     "totalTickets": 48,
-    "totalStake": 806.0,
+    "totalStake": 836.0,
     "totalPayout": 501.75,
-    "totalNet": -304.25,
-    "lastUpdated": "2026-10-12",
+    "totalNet": -334.25,
+    "lastUpdated": "2026-10-14",
     "updatedAt": "2026-10-06"
   }
 }

@@ -636,6 +636,29 @@ def expand_combos(n: int) -> list[tuple[int, ...]]:
     return [c for size in range(2, n + 1) for c in combinations(range(n), size)]
 
 
+_PLAIN_BLOCK = re.compile(r"串11|串4|串5|串15|容错|全组合|双选|C\(|[2-9]\d*\s*注")
+_PLAIN_COMBO = re.compile(r"\d+平?串1")
+
+
+def _plain_single_combo(shape: str) -> bool:
+    """单注形状判别（无 bets 票派彩口径）：恰好一个『N串1』token（4平串1 同算）或单关；
+    容错/全组合/串4串5/双选/N注 任一出现即非单注。2026-10-14 立项：T046 单注 6串1 断一腿
+    被全组合兜底误派 26 注 151.71 元（实盘应 0）。开发者 sszhang"""
+    s = str(shape or "")
+    if _PLAIN_BLOCK.search(s):
+        return False
+    return bool(re.search(r"单关", s)) or len(_PLAIN_COMBO.findall(s)) == 1
+
+
+def _shape_mult(ticket: dict) -> int:
+    """单注票倍数：形状文本 ×N倍 为准（T008『×3倍』units=1 未带 multiplier 实证），
+    缺则 multiplier，再缺 units（T046『1注×2元×10倍』units=10）。开发者 sszhang"""
+    m = re.search(r"×(\d+)\s*倍", str(ticket.get("shape") or ""))
+    if m:
+        return int(m.group(1))
+    return int(ticket.get("multiplier") or ticket.get("units") or 1)
+
+
 TAX_THRESHOLD = 10000  # 体彩单注奖金个税起征线（元）
 TAX_RATE = 0.2         # 超线部分税率
 
@@ -673,7 +696,9 @@ def settle_payout(ticket: dict) -> dict:
     票面腿一律参与结算（体彩出票不可撤，revoked 仅作纪律对照展示）。
     注结构：带 bets（[{legs:[腿索引], multiplier:N}]）按 bets 算——4串1复式/倍投/
     共享腿互补等非全组合形状必须显式声明，expand_combos 全组合口径会虚高；
-    无 bets 走全组合兜底（4串11/3场混串等旧形状，倍数1）。
+    无 bets 分两路：单注形状（_plain_single_combo：N串1/单关）按整票一注 ×倍数结算
+    （2026-10-14 T046 事故修复——此前全组合兜底把单注 6串1 断腿误派子组合 151.71 元，
+    且单关 n=1 在 expand_combos 得空列表命中也派 0）；容错/混串旧形状走全组合兜底（倍数1）。
     bets 为 int（登记侧注数口径，T017~T019 教训）：单注票(units=1)退化为全腿一注
     按顶层 multiplier 结算；多注票缺组合信息必须报错——静默兜底会算错派彩。
     """
@@ -684,8 +709,12 @@ def settle_payout(ticket: dict) -> dict:
             raise ValueError(f"{ticket.get('id')}: bets={bets} 为注数口径但 units={ticket.get('units')}，"
                              "缺注组合（[{legs,multiplier}]）无法按形状结算")
         bets = [{"legs": list(range(len(legs))), "multiplier": ticket.get("multiplier", 1)}]
-    combos = ([(tuple(_norm_bet_legs(b["legs"])), b.get("multiplier", 1)) for b in bets]
-              if bets else [(tuple((i, None) for i in c), 1) for c in expand_combos(len(legs))])
+    if bets:
+        combos = [(tuple(_norm_bet_legs(b["legs"])), b.get("multiplier", 1)) for b in bets]
+    elif _plain_single_combo(ticket.get("shape")):
+        combos = [(tuple((i, None) for i in range(len(legs))), _shape_mult(ticket))]
+    else:
+        combos = [(tuple((i, None) for i in c), 1) for c in expand_combos(len(legs))]
     payout, win_units = 0.0, 0
     for pairs, mult in combos:
         if all(_bet_leg_won(legs[i], opt) for i, opt in pairs):
