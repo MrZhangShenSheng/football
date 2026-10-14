@@ -1,0 +1,126 @@
+{
+  "logistic": {
+    "model": "logistic",
+    "segments": [
+      {
+        "fold": 0,
+        "testFrom": "2025-01-01",
+        "n": 541
+      },
+      {
+        "fold": 1,
+        "testFrom": "2025-03-01",
+        "n": 828
+      },
+      {
+        "fold": 2,
+        "testFrom": "2025-05-01",
+        "n": 737
+      },
+      {
+        "fold": 3,
+        "testFrom": "2025-07-01",
+        "n": 665
+      },
+      {
+        "fold": 4,
+        "testFrom": "2025-09-01",
+        "n": 914
+      },
+      {
+        "fold": 5,
+        "testFrom": "2025-11-01",
+        "n": 1238
+      },
+      {
+        "fold": 6,
+        "testFrom": "2026-01-01",
+        "n": 811
+      },
+      {
+        "fold": 7,
+        "testFrom": "2026-03-01",
+        "n": 858
+      },
+      {
+        "fold": 8,
+        "testFrom": "2026-05-01",
+        "n": 590
+      },
+      {
+        "fold": 9,
+        "testFrom": "2026-07-01",
+        "n": 603
+      },
+      {
+        "fold": 10,
+        "testFrom": "2026-09-01",
+        "n": 409
+      }
+    ],
+    "E1": {
+      "n": 8194,
+      "diffMean": -0.0038,
+      "ci95": [
+        -0.0062,
+        -0.0012
+      ],
+      "verdict": "FAIL"
+    },
+    "E2": {
+      "n": 8194,
+      "diffMean": -0.026,
+      "ci95": [
+        -0.0308,
+        -0.0212
+      ],
+      "verdict": "FAIL"
+    },
+    "E3": {
+      "n": 8194,
+      "diffMean": -0.004,
+      "ci95": [
+        -0.0058,
+        -0.0022
+      ],
+      "verdict": "FAIL"
+    }
+  },
+  "histgbE1": {
+    "n": 8194,
+    "diffMean": -0.0562,
+    "ci95": [
+      -0.0656,
+      -0.0468
+    ],
+    "verdict": "FAIL",
+    "exploratory": true
+  },
+  "mappedLayer": {
+    "E1": {
+      "n": 6681,
+      "diffMean": -0.0046,
+      "ci95": [
+        -0.0076,
+        -0.0018
+      ],
+      "verdict": "FAIL"
+    }
+  },
+  "unmappedLayer": {
+    "E1": {
+      "n": 1513,
+      "diffMean": -0.0252,
+      "ci95": [
+        -0.0389,
+        -0.0115
+      ],
+      "verdict": "FAIL"
+    }
+  },
+  "datasetMeta": {
+    "version": "tail-v1",
+    "count": 13515,
+    "fingerprint": "95411da949aae560"
+  }
+}

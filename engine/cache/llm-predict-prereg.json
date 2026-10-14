@@ -1,0 +1,40 @@
+{
+  "registeredAt": "2026-10-13",
+  "spec": "LLM 语境预测层 v1（docs/2026-10-13-llm-predict-design.html·含 review 六修正）",
+  "predictor": "会话内 LLM·31 格比分分布·forward only",
+  "card": {
+    "layers": ["market", "intel", "profile", "lineup", "context"],
+    "contextSearchScope": "快筛后候选场 6~10 场",
+    "contextFilters": ["检索词限 preview/injury/team news", "赛后特征词整条丢弃", "发布时间晚于卡 createdAt 不收"]
+  },
+  "primaryCriterion": {
+    "name": "E_full_31grid",
+    "metric": "逐场配对 log-loss 差（market − llm，正=LLM 更准）",
+    "marketSide": "开赛前最后可得快照 crs power devig（首选 lineup_watch 快照链末帧；缺则数据卡市场层+closeProxy 标记分层报）",
+    "keyset": "市场有价键集·LLM 条件归一",
+    "clip": 1e-06,
+    "ci": "bootstrap95 B=2000",
+    "pass": "CI 下限 > 0",
+    "nGate": {"observe": 30, "formal": 100, "final": 200}
+  },
+  "tailChannel": {
+    "name": "E_tail 右尾选腿器专项通道",
+    "tailKeys": "crs 有价键中封盘赔率 ≥30 的格 ∪ {0:3, 0:4}",
+    "metric": "E_tail 聚合二项 log-loss 配对差（每场计分·P(右尾键集求和)）",
+    "pass": "CI 下限 > 0 且 n ≥ 150",
+    "note": "主判据 FAIL 不封锁此通道；通过后另立专项 prereg 走影子准入"
+  },
+  "verdictRules": {
+    "UNDETECTED": "n≥100 且 CI 跨 0 且 diffMean>0 → 续判至 n=200",
+    "FALSIFIED": "CI 跨 0 且 diffMean≤0（n≥100）",
+    "INSUFFICIENT": "n<100"
+  },
+  "descriptiveOnly": ["E1/E2/E3 事件族（同 tail-model 口径）", "分联赛/分月", "closeProxy 分层"],
+  "redlines": [
+    "forward only：历史回测=训练集考试=作弊，禁止",
+    "预测步骤先于当日回填/赛果查询（会话污染）",
+    "预测文件幂等只读禁覆写；数据卡语境层回写后重算 cardHash",
+    "主判据 FAIL → LLM 不进任何整体预测叙事；右尾通道独立判定"
+  ],
+  "frozenParams": {"boot_B": 2000, "seed": 20261015, "logloss_clip": 1e-06, "min_pool_items": 20, "tail_odds_floor": 30.0, "tail_fixed_cells": ["0:3", "0:4"], "tail_n_formal": 150}
+}

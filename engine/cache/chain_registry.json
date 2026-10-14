@@ -21,6 +21,12 @@
     {"from": "2026-10-07", "engine": "市场置信分带 + V3W 同向双信号（v18_scheme_daily）"}
    ]
   },
+  "llm-31grid-v1": {
+   "role": "L 族 llm 31格预测源（会话冻结 llm_preds·engine/cache/llm_preds）",
+   "epochs": [
+    {"from": "2026-10-13", "engine": "会话 LLM 31格冻结分布（llm_pred.freeze·右尾键选腿）"}
+   ]
+  },
   "market_devig": {
    "role": "A 族选场层（市场去水 strong 排序）",
    "epochs": [

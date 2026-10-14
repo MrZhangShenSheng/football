@@ -1,0 +1,32 @@
+{
+  "window": "W1",
+  "rows": 1016,
+  "k": 1,
+  "decisionDayOffsetB": -1,
+  "decisionDayOffsetA": -3,
+  "armB": {
+    "n": 840,
+    "recovery": 0.7399
+  },
+  "armA": {
+    "n": 840,
+    "recovery": 0.7298
+  },
+  "pairedN": 840,
+  "diffMean": 0.0202,
+  "ci95": [
+    -0.0452,
+    0.0845
+  ],
+  "observedHit": 0.0993,
+  "randomShuffle": {
+    "hit": 0.080706,
+    "n_perm": 200,
+    "seed": 20261013
+  },
+  "redline": "任何臂窗口回收率>1.0 → 先过此审计+随机基线，不过不进结论（prereg redlines[0]）",
+  "elapsedSec": 283.1,
+  "generatedAt": "2026-10-13 12:25:55",
+  "recoveryDelta": 0.0101,
+  "verdict": "PASS"
+}

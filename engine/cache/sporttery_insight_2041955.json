@@ -1,0 +1,246 @@
+{
+ "fetchedAt": "2026-10-13",
+ "source": "sporttery",
+ "matchId": 2041955,
+ "match": {
+  "code": "周二006",
+  "league": "欧冠",
+  "gameweek": "2",
+  "season": "2026/2027",
+  "home": "阿森纳",
+  "away": "里尔",
+  "kickoff": "2026-10-14 03:00",
+  "uniformMatchId": 2513004
+ },
+ "standing": {
+  "away": {
+   "groupName": "",
+   "phaseName": "League Stage",
+   "ranking": "23",
+   "sAwayDrawMatchCnt": "0",
+   "sAwayLossGoalMatchCnt": "0",
+   "sAwayWinGoalMatchCnt": "0",
+   "sDrawMatchCnt": "0",
+   "sLossGoalMatchCnt": "1",
+   "sWinGoalMatchCnt": "0",
+   "seasonName": "2026/2027"
+  },
+  "home": {
+   "groupName": "",
+   "phaseName": "League Stage",
+   "ranking": "15",
+   "sDrawMatchCnt": "0",
+   "sHomeDrawMatchCnt": "0",
+   "sHomeLossGoalMatchCnt": "0",
+   "sHomeWinGoalMatchCnt": "0",
+   "sLossGoalMatchCnt": "0",
+   "sWinGoalMatchCnt": "1",
+   "seasonName": "2026/2027"
+  }
+ },
+ "injuries": {
+  "home": [
+   {
+    "name": "梅里诺",
+    "pos": "中场",
+    "no": "23",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 1,
+    "starts": 1
+   },
+   {
+    "name": "C. Tzolis",
+    "pos": "前锋",
+    "no": "17",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 1,
+    "starts": 0
+   }
+  ],
+  "away": [
+   {
+    "name": "I. Hamza",
+    "pos": "前锋",
+    "no": "29",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 0,
+    "starts": 0
+   },
+   {
+    "name": "E. Mbappé",
+    "pos": "中场",
+    "no": "8",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 1,
+    "starts": 1
+   }
+  ]
+ },
+ "form": {
+  "goalAvg": {
+   "awayGoalAvgCnt": "1.9",
+   "awayGoalAvgCntRatio": "50.0",
+   "homeGoalAvgCnt": "1.9",
+   "homeGoalAvgCntRatio": "50.0",
+   "totalLegCnt": 10
+  },
+  "last10": {
+   "awayDrawMatchCnt": 2,
+   "awayLossGoalMatchCnt": 3,
+   "awayScoreRatio": "57",
+   "awayWinGoalMatchCnt": 5,
+   "homeDrawMatchCnt": 1,
+   "homeLossGoalMatchCnt": 1,
+   "homeScoreRatio": "83",
+   "homeWinGoalMatchCnt": 8,
+   "totalLegCnt": 10
+  },
+  "last10HomeAway": {
+   "awayDrawMatchCnt": 1,
+   "awayLossGoalMatchCnt": 2,
+   "awayScoreRatio": "73",
+   "awayWinGoalMatchCnt": 7,
+   "homeDrawMatchCnt": 1,
+   "homeLossGoalMatchCnt": 2,
+   "homeScoreRatio": "73",
+   "homeWinGoalMatchCnt": 7,
+   "totalLegCnt": 10
+  }
+ },
+ "h2h": {
+  "statistics": {
+   "drawMatchCnt": 0,
+   "drawProbability": "0%",
+   "goalCnt": 0,
+   "lossGoalCnt": 0,
+   "lossGoalMatchCnt": 0,
+   "lossProbability": "0%",
+   "netGoal": 0,
+   "sportteryTeamId": 0,
+   "teamId": 0,
+   "teamShortName": "阿森纳",
+   "totalLegCnt": 0,
+   "winGoalMatchCnt": 0,
+   "winProbability": "0%"
+  },
+  "matches": []
+ },
+ "scorers": {
+  "away": {
+   "playerList": [
+    {
+     "appearanceCnt": 1,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "1.0",
+     "goalCnt": 1,
+     "goalProbability": "50%",
+     "injuryFlag": 0,
+     "personId": 551425,
+     "personName": "上田绮世",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "18"
+    },
+    {
+     "appearanceCnt": 1,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "1.0",
+     "goalCnt": 1,
+     "goalProbability": "50%",
+     "injuryFlag": 0,
+     "personId": 594506,
+     "personName": "Alexsandro Ribeiro",
+     "playerPositionCode": "Defender",
+     "playerPositionDesc": "后卫",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "4"
+    },
+    {
+     "appearanceCnt": 1,
+     "assistAvgCnt": "1.0",
+     "assistCnt": 1,
+     "assistProbability": "50%",
+     "goalAvgCnt": "0",
+     "goalCnt": 0,
+     "goalProbability": "0%",
+     "injuryFlag": 1,
+     "personId": 723741,
+     "personName": "E. Mbappé",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "8"
+    }
+   ],
+   "sportteryTeamId": 180,
+   "teamId": 895,
+   "teamShortName": "里尔",
+   "uniformTeamId": 103
+  },
+  "home": {
+   "playerList": [
+    {
+     "appearanceCnt": 1,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "1.0",
+     "goalCnt": 1,
+     "goalProbability": "100%",
+     "injuryFlag": 0,
+     "personId": 334861,
+     "personName": "M. Ødegaard",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "8"
+    },
+    {
+     "appearanceCnt": 1,
+     "assistAvgCnt": "1.0",
+     "assistCnt": 1,
+     "assistProbability": "100%",
+     "goalAvgCnt": "0",
+     "goalCnt": 0,
+     "goalProbability": "0%",
+     "injuryFlag": 1,
+     "personId": 574629,
+     "personName": "C. Tzolis",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 0,
+     "substituteMatchCnt": 1,
+     "suspensionFlag": 0,
+     "uniformNo": "17"
+    }
+   ],
+   "sportteryTeamId": 1,
+   "teamId": 660,
+   "teamShortName": "阿森纳",
+   "uniformTeamId": 1193
+  },
+  "seasonId": 15574,
+  "seasonName": "2026/2027",
+  "tournamentId": 1096,
+  "tournamentShortName": "欧冠",
+  "uniformLeagueId": 30,
+  "uniformMatchId": 2513004
+ }
+}

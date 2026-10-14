@@ -47,6 +47,19 @@ PLAN_FAMILIES = [
     {'family': 'D', 'name': 'crs-4串1',    'pool': 'crs',      'shape': '4串1',  'n_legs': 4, 'options': 'single', 'track': 'A'},
     {'family': 'D', 'name': 'crs-双选2串1', 'pool': 'crs',     'shape': '全2关', 'n_legs': 3, 'options': 'dual', 'track': 'A'},
     {'family': 'D', 'name': 'crs-双选单关', 'pool': 'crs',     'shape': '单关',  'n_legs': 7, 'options': 'dual', 'track': 'A'},
+    # D 族变体：剧本分层（2026-10-13 大哥拍板 A'+C' · 预注册 spec）
+    # ── 预注册判据（跑前登记，禁事后改口径·铁律 14②/15）──────────────────────────
+    # 机制：强主场（HAD 三向最低赔 ≤1.40）的 CRS 双选从平局族切大球族——miss 归因实证
+    #   旧 spec 66 腿中 23 腿爆大球全灭（尤文5:0/水晶宫4:0/赫尔辛基6:0 皆 qcache 裸联赛
+    #   模板 1:1+1:0，λ 平移对欧战弱旅降级纯模板=强弱信息入口丢失）；票型定位右尾博弈，
+    #   强主场就该配右尾剧本。市场 HAD 信号只做场景开关不做选腿排序（与 CRS 融合链族
+    #   闸门同性质）。均势场保持原 qcache top2 逻辑（与原版唯一差异=强主场 pick 路由）。
+    # 事后重构警示：23 腿中 7~9 腿可被 3:0+4:0 覆盖的模拟是先看赛果再挑口径，只作立项
+    #   动机不作收益证据。
+    # 判据：50 票结算后对比原版 crs-双选2串1 同期回收率，配对差 CI 下限 >0 才留，
+    #   否则关档。中途不改参数（1.40 阈值/3:0+4:0 组合冻结）。开发者 sszhang
+    {'family': 'D', 'name': 'crs-双选2串1-剧本分层', 'pool': 'crs', 'shape': '全2关',
+     'n_legs': 3, 'options': 'dual', 'track': 'A', 'route': 'big_home'},
     # G 族：右尾贪心（2026-09-09 大哥拍板新增·保留作闯关票对照）——概率预算背包贪心近似：
     # 预算容量 W=-ln(p_budget) 内按密度 d=ln(o)/(-ln(p)) 贪心装入（每损失 1 单位概率
     # 换回最多赔率对数收益）；候选=每场 {HAD 主选项 ∪ CRS top-1 ∪ TTG top-1}，
@@ -61,6 +74,18 @@ PLAN_FAMILIES = [
     # 快照源=engine/cache/v4b_snap/{date}.json（predictor_v4b_daily.py 生成，与 qcache 同构）；
     # 定位=样本外盲测对照（+341.4% 皆样本内回测，docs/predictor_v4b.md 收编标注），非生产概率源。
     {'family': 'V', 'name': 'v4b-双选2串1', 'pool': 'v4b', 'shape': '2串1',
+     'n_legs': 2, 'options': 'dual', 'track': 'A'},
+    # L 族：llm-31格选腿（2026-10-13 spec·docs/2026-10-13-llm-predict-design.html §5）——
+    # 会话 LLM 预测冻结分布驱动（engine/cache/llm_preds/{销售日}.json·llm_pred.freeze 产物）：
+    # 选场=右尾键 top1 概率降序取前 2、每场 crs top2 双选 → 2×2=4 注 2串1；
+    # qc=llm_preds 装载（paper.load_llm_preds）：{code:{crs:[(pick,p),...] 右尾键内降序}}，
+    # 右尾键=卡市场层有价键中赔率≥30 ∪ 固定 {0:3,0:4}（与 llm_eval.tail_keys_of 同口径）。
+    # ── 预注册（跑前登记·禁事后改口径）────────────────────────────────────────
+    # forward only：判据=llm-predict-prereg tailChannel（E_tail 聚合二项·CI 下限>0 且
+    # n≥150 才转正）；主判据（31 格配对 log-loss）FAIL 不封锁本通道但封锁整体预测叙事。
+    # 冻结纪律同 qcache/v4b：llm_preds 文件在即用，缺失诚实跳过（L 族当日无票，不自动生成）。
+    # 开发者 sszhang
+    {'family': 'L', 'name': 'llm-31格选腿', 'pool': 'llm_crs', 'shape': '2串1',
      'n_legs': 2, 'options': 'dual', 'track': 'A'},
 ]
 
@@ -147,14 +172,48 @@ def _qc_options(leg, kind, qc, k):
 
 def _leg_picks(leg, spec, options_mode, qc):
     """→ 该腿选项 list（建票展开用）；had 腿 int 选项，ttg/crs 池键 str。"""
-    kind = 'had' if spec['pool'] in ('strong', 'jiao_zhuo', 'ev_best') else ('crs' if spec['pool'] == 'v4b' else spec['pool'])
+    kind = 'had' if spec['pool'] in ('strong', 'jiao_zhuo', 'ev_best') else ('crs' if spec['pool'] in ('v4b', 'llm_crs') else spec['pool'])
     if kind == 'had':
         k = {'single': 1, 'dual': 2, 'dual2': 2, 'triple': 3}[options_mode]
         return _had_options(leg, k)
     picks = _qc_options(leg, kind, qc, 2 if options_mode == 'dual' else 1)
     if picks is None and options_mode == 'dual':   # q 缺该场时降单选（诚实降级不静默弃票）
         picks = _qc_options(leg, kind, qc, 1)
+    if spec.get('route') == 'big_home' and kind == 'crs' and options_mode == 'dual':
+        picks = _route_big_home(leg, picks) or picks   # 池价缺键回退原 picks
     return picks
+
+
+BIG_HOME_ODDS_CAP = 1.40   # 强主场阈值（预注册冻结·2026-10-13）
+
+
+def _route_big_home(leg, fallback_picks):
+    """剧本分层路由（预注册 spec 专用）：HAD 最低赔 ≤1.40 的一方 → CRS 双选切大球族。
+
+    强主=['3:0','4:0'] / 强客=['0:3','0:4']；体彩 CRS 池两键均有价才切换
+    （缺价回退 fallback_picks 防静默错算——冻结价只取 picks 内键，缺键=结算 None）。
+    非强场返回 None（调用方保持原 qcache top2）。开发者 sszhang"""
+    had_o = leg.get('odds') or []
+    if len(had_o) != 3 or any(not x or x <= 1.0 for x in had_o):
+        return None
+    lo = min(had_o)
+    if lo > BIG_HOME_ODDS_CAP:
+        return None
+    side = had_o.index(lo)
+    want = ['3:0', '4:0'] if side == 0 else ['0:3', '0:4']
+    pool = (leg.get('pools') or {}).get('crs') or {}
+    # 体彩池键 s03s00/s04s00（shadow_all 透传原始格式）；两键都有有效价才切换
+    keys = ('s03s00', 's04s00') if side == 0 else ('s00s03', 's00s04')
+    if all(_is_price(pool.get(k)) for k in keys):
+        return want
+    return None
+
+
+def _is_price(v):
+    try:
+        return float(v) > 1.0
+    except (TypeError, ValueError):
+        return False
 
 
 def _skeleton(shape, n):
@@ -285,6 +344,23 @@ def build_ticket(legs, spec, qc=None):
         pool = [(i, legs[i]) for i in ordered[:spec['n_legs']]]
         if len(pool) < 2:
             return None
+    elif spec['pool'] == 'llm_crs':
+        # L 族（2026-10-13 spec·forward only）：选场按 llm 冻结预测右尾键 top1 概率降序
+        # （llm 口径，非市场排序）——qc=llm_preds 装载（paper.load_llm_preds 特供），
+        # picks 已是 pick 键，池价冻结/结算复用 v4b 同款 crs 路径（kind 归 'crs'）。
+        if not qc:
+            return None
+        by_top = {}
+        for code, pools in qc.items():
+            ranked = pools.get('crs') or []
+            if ranked:
+                by_top[code] = ranked[0][1]
+        idx_of = {l['code']: i for i, l in enumerate(legs)}
+        ordered = [idx_of[c] for c in sorted(by_top, key=by_top.get, reverse=True)
+                   if c in idx_of]
+        pool = [(i, legs[i]) for i in ordered[:spec['n_legs']]]
+        if len(pool) < 2:
+            return None
     elif spec['pool'] in ('ttg', 'crs'):
         if not qc:
             return None                     # 无 q 快照整族跳过（qcache 随事故丢失待重建）
@@ -312,7 +388,7 @@ def build_ticket(legs, spec, qc=None):
         picks = _leg_picks(leg, spec, mode, qc)
         if not picks:
             return None                     # ttg/crs 池价/q 全缺该场 → 整票放弃（不建半票）
-        kind = 'had' if spec['pool'] in ('strong', 'jiao_zhuo', 'ev_best') else ('crs' if spec['pool'] == 'v4b' else spec['pool'])
+        kind = 'had' if spec['pool'] in ('strong', 'jiao_zhuo', 'ev_best') else ('crs' if spec['pool'] in ('v4b', 'llm_crs') else spec['pool'])
         if kind == 'had':
             picks = [int(p) for p in picks]
             # 只冻结已买槽（未买槽 None——settle 以槽位有价判"买了且命中"，全槽透传会误判）
@@ -352,6 +428,9 @@ def _pick_price(tleg, pick, outcome, score):
     # crs：精确键 或 方向"其他"键（高比分近似语义）
     if pick in ('胜其他', '平其他', '负其他'):
         want = {'胜其他': 0, '平其他': 1, '负其他': 2}[pick]
+        return odds.get(pick) if outcome == want else None
+    if pick in ('other_h', 'other_d', 'other_a'):   # L 族归一 other 键（review fix·2026-10-13）
+        want = {'other_h': 0, 'other_d': 1, 'other_a': 2}[pick]
         return odds.get(pick) if outcome == want else None
     return odds.get(pick) if pick == f'{h}:{a}' else None
 

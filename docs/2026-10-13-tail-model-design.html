@@ -1,0 +1,165 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>右尾肥尾场次模型（tail-model）设计 · 2026-10-13</title>
+<style>
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;max-width:960px;margin:0 auto;padding:24px;color:#1a1a2e;background:#fafafa;line-height:1.7}
+  h1{border-bottom:3px solid #c0392b;padding-bottom:8px}
+  h2{border-left:5px solid #c0392b;padding-left:10px;margin-top:36px}
+  table{border-collapse:collapse;width:100%;margin:12px 0;background:#fff}
+  th,td{border:1px solid #d5d8dc;padding:6px 10px;text-align:left;font-size:14px}
+  th{background:#f4f6f7}
+  code,pre{background:#eee;padding:2px 5px;border-radius:3px;font-size:13px}
+  pre{padding:12px;overflow-x:auto}
+  .warn{background:#fff3cd;border-left:5px solid #e67e22;padding:10px 14px;margin:12px 0}
+  .ok{background:#e8f8f5;border-left:5px solid #16a085;padding:10px 14px;margin:12px 0}
+  .lock{background:#fdecea;border-left:5px solid #c0392b;padding:10px 14px;margin:12px 0}
+  figure{margin:16px 0;text-align:center}
+  figcaption{font-size:13px;color:#666;margin-top:6px}
+  svg text{font-family:-apple-system,"PingFang SC",sans-serif}
+</style></head><body>
+
+<h1>右尾肥尾场次模型（tail-model）设计</h1>
+<p><b>日期</b>：2026-10-13 · <b>拍板</b>：大哥（brainstorming 会话） · <b>定位</b>：右尾第一约束下的第一条新战线——<b>大比分/冷门场次数据集 → 特征 → 模型拟合</b></p>
+
+<h2>§0 背景与死路边界</h2>
+<div class="lock"><b>与已证死路的边界（本项目合法性根基）</b>
+<ul>
+<li>❌ <b>死路</b> = 31 比分全矩阵排序取 top-k（四臂回测 W3 真样本外 4383 场证模型臂三窗垫底，CLAUDE.md 第一约束第 1 条）</li>
+<li>❌ <b>死路</b> = 赔率的任何确定性变换选腿（铁律 13 数学锁：期望恒等于 1−抽水）</li>
+<li>✅ <b>本项目</b> = 场次级<b>骨架多任务</b>建模（总进球档×方向×零封），只在<b>肥尾区域</b>与市场池聚合概率对拍——市场在大众区域（2:1/1:1）定价强（抽水+热度双压，期望 0.63/0.78），但肥尾区域（0:5 赔 350、1:4 赔 80）买的人最少、定价最粗糙，是模型唯一可能比市场准的窄战场</li>
+</ul></div>
+
+<p><b>数据底子实测</b>（2026-10-13 盘点，hist_odds 全库 13515 场 · 2023-09~2026-09 · 特征可用性近 100%）：</p>
+<table>
+<tr><th>标签候选</th><th>场次</th><th>频率</th><th>评级</th></tr>
+<tr><td>总进球≥5（大球）</td><td>2245</td><td>16.6%</td><td>✅ 厚</td></tr>
+<tr><td>净胜≥3（屠杀·任一方）</td><td>2301</td><td>17.0%</td><td>✅ 厚</td></tr>
+<tr><td>强主零封 3:0+</td><td>1047</td><td>7.8%</td><td>✅ 够</td></tr>
+<tr><td>强客零封 0:3+</td><td>535</td><td>4.0%</td><td>⚠️ 可用</td></tr>
+<tr><td>精确 0:5</td><td>53</td><td>0.4%</td><td>❌ 不可单独建</td></tr>
+</table>
+<p>精确比分太稀无法直接学 → <b>结构化分解</b>：<code>P(0:5) = P(tg=5) × P(客零封|tg=5) × 1.0</code>——稀标签拆成厚骨架，这是本设计的核心一步。</p>
+
+<h2>§1 总体架构（三层解耦）</h2>
+<figure>
+<svg viewBox="0 0 880 400" width="100%" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 z" fill="#566573"/>
+    </marker>
+  </defs>
+  <g stroke="#c0392b" fill="none" stroke-width="2">
+    <rect x="20" y="20" width="840" height="100" rx="8"/>
+    <rect x="20" y="150" width="840" height="100" rx="8"/>
+    <rect x="20" y="280" width="840" height="100" rx="8"/>
+  </g>
+  <text x="40" y="48" font-size="16" font-weight="bold" fill="#c0392b">① 数据集构建器 tail_dataset.py</text>
+  <text x="40" y="74" font-size="13" fill="#333">hist_odds 13515 场（骨架标签+市场锚特征）＋ league 库 as-of 球队特征（映射率 86.8%）</text>
+  <text x="40" y="96" font-size="13" fill="#333">＋ hst 射正 ＋ Elo ＋ 休息天数/赛程 → engine/cache/tail_dataset/dataset.jsonl（冻结凭证·纳git）</text>
+
+  <text x="40" y="178" font-size="16" font-weight="bold" fill="#c0392b">② 训练评估链 tail_train.py</text>
+  <text x="40" y="204" font-size="13" fill="#333">walk-forward 滚动 → logistic 主模型（骨架三轴多头）＋ HistGB exploratory 对照</text>
+  <text x="40" y="226" font-size="13" fill="#333">肥尾族 log-loss 对拍市场池聚合（判据预注册先行 commit·铁律14②）</text>
+
+  <text x="40" y="308" font-size="16" font-weight="bold" fill="#c0392b">③ 出腿接口 tail_pick.py（判 PASS 才激活）</text>
+  <text x="40" y="334" font-size="13" fill="#333">骨架概率×落腿条件频率 = P(0:5)/P(1:4)/… × 体彩价 = EV → EV&gt;1＋冷肥过滤 → 候选腿</text>
+  <text x="40" y="356" font-size="13" fill="#333">→ 影子层新 spec「tail-模型选腿」50 票 forward（铁律15准入制·无审计不入生产链）</text>
+
+  <line x1="440" y1="120" x2="440" y2="148" stroke="#566573" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="440" y1="250" x2="440" y2="278" stroke="#566573" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="455" y="140" font-size="12" fill="#566573">dataset.jsonl</text>
+  <text x="455" y="270" font-size="12" fill="#566573">判 PASS（CI下限&gt;0）</text>
+</svg>
+<figcaption>图1 三层解耦架构：数据集冻结（凭证）→ 训练链判据唯一 → 出腿先进影子</figcaption>
+</figure>
+<p>三层数据流各管一段：<b>数据集</b>冻结特征+标签（可复评凭证）；<b>训练链</b>只回答"肥尾区域模型是否比市场准"（判据唯一）；<b>出腿</b>只在模型判 PASS 后激活，先进影子层不碰实票。</p>
+
+<h2>§2 数据集构建</h2>
+
+<h3>2.1 骨架标签三轴（从 score 一次展开）</h3>
+<table>
+<tr><th>轴</th><th>取值</th><th>正样本量</th></tr>
+<tr><td>tg 档（总进球）</td><td>0,1,2,3,4,5,6,7+（8档）</td><td>每档几百~几千</td></tr>
+<tr><td>方向</td><td>主/平/客（3类）</td><td>厚</td></tr>
+<tr><td>零封</td><td>主零封/客零封/无（3类）</td><td>中等</td></tr>
+</table>
+
+<h3>2.2 特征四族（约30维·全部堆满·大哥拍板）</h3>
+<table>
+<tr><th>族</th><th>特征</th><th>源</th><th>覆盖</th></tr>
+<tr><td>市场锚</td><td>ttg devig 矩（期望/方差/P(≥4)/P(≥5)）、had 结构（最低赔/极差/去水三向）、crs devig 肥尾质量+分布熵、开盘→封盘漂移</td><td>hist_odds 双快照</td><td>100%</td></tr>
+<tr><td>球队 as-of</td><td>两队近10/20/38场：场均进失球、大球率(≥4球占比)、屠杀参与率、零封率、主客分轴</td><td>league 库（34联赛43259场）</td><td>86.8%（zh_to_id）</td></tr>
+<tr><td>攻防质量</td><td>场均射正（hst→球量纲代理，同 strength 链口径）、Elo 差</td><td>hst 缓存（16联赛20825场）/ clubelo</td><td>部分</td></tr>
+<tr><td>上下文</td><td>休息天数双方、联赛大球率/屠杀率模板、轮次阶段</td><td>league 库聚合</td><td>同联赛覆盖</td></tr>
+</table>
+<div class="warn"><b>铁律 13 推论（特征层合法性）</b>：市场锚特征是"对手盘基线"（让模型知道市场怎么定价），<b>非市场的球队 as-of 特征是唯一可能的 alpha 源</b>——纯市场特征训练出的模型只是市场的再变换，数学上不可能有缺口。两队特征缺一不可。</div>
+
+<h3>2.3 防泄漏三道闸（沿用四臂回测同款）</h3>
+<ul>
+<li><b>时间线</b>：as-of 特征一律决策时点=开赛前一日，league 库时间线 lag=2（铁律 14① strict_merged 语义）</li>
+<li><b>输入价</b>：市场锚特征用开盘价（crsOpen/ttg 同理）——封盘价留给结算与对拍，防"临场偷看"</li>
+<li><b>结算只读</b>：对拍与评估只读 dataset，永不回写</li>
+</ul>
+
+<h3>2.4 诚实降级</h3>
+<p>映射失败 13% 场次（澳超/美职/亚冠等 league 库不覆盖联赛）球队特征置 <code>null</code> + <code>featMask</code> 标记位，模型可学"此场无球队特征"本身，<b>不剔除不冒充</b>。</p>
+
+<h3>2.5 物理形态</h3>
+<p><code>engine/cache/tail_dataset/dataset.jsonl</code>（一行一场：标签/特征/featMask/version），纳入 git（凭证纪律同 qcache）。构建器幂等+版本指纹，重建可 diff 验证。</p>
+
+<h2>§3 训练与验证（判据预注册先行）</h2>
+
+<h3>3.1 walk-forward 切分</h3>
+<ul>
+<li>初始训练窗 2023-09~2024-12（16个月）→ 测试窗 2 个月 → 步进滚动至 2026-09（约 10 段）</li>
+<li>每段内 fit：模型参数 + 特征标准化都在训练窗内完成，测试段数据零接触（"不能提前看答案"）</li>
+</ul>
+
+<h3>3.2 判据预注册（engine/cache/tail-model-prereg.json 先于一切代码 commit）</h3>
+<table>
+<tr><th>项</th><th>冻结口径</th></tr>
+<tr><td><b>主判据</b></td><td><b>E1=总进球≥5</b>：logistic 骨架聚合 P vs 市场 ttg 池 devig 聚合 P 的<b>配对 log-loss 差</b>，全测试段汇总 bootstrap 95% CI 下限&gt;0</td></tr>
+<tr><td>次判据</td><td>E2=净胜≥3（对拍 crs 池 |h−a|≥3 键聚合）、E3=客零封大胜 0:3+（对拍 crs 对应键聚合），各自报 CI 不进主判据</td></tr>
+<tr><td>对照</td><td>HistGB 同数据并行，<b>只作 exploratory</b>，不进任何判据（防多重比较·铁律 14②）</td></tr>
+<tr><td>红线①</td><td>出腿模拟若现正回收率 → 铁律 14③ 先自证伪（leak audit + 随机基线）再上报</td></tr>
+<tr><td>红线②</td><td>映射降级场次（featMask）单独分层报——防"模型只在易映射联赛赢"的假象</td></tr>
+<tr><td>红线③</td><td>PASS 后接影子层 50 票 forward，<b>不直接进生产链</b>（铁律 15 准入制：无审计不入链）</td></tr>
+</table>
+
+<h3>3.3 模型形态</h3>
+<ul>
+<li><b>主模型</b>：Logistic 多头——tg 档 8 类 softmax、方向 3 类（条件于 tg 档）、零封 3 类（条件于 tg 档+方向），特征共享；L2 正则；校准天然好（撞 log-loss 判据枪口最稳）</li>
+<li><b>对照</b>：sklearn HistGradientBoostingClassifier 同特征并行（抓交互如"强场×高攻防差→屠杀"），isotonic 校准后仅 exploratory 报告</li>
+</ul>
+
+<h2>§4 出腿接口（判 PASS 才激活）</h2>
+<pre>P_model(0:5) = P(tg=5) × P(客胜|tg=5) × P(零封|tg=5,客胜) × 1.0      ← 骨架三轴连乘
+P_model(1:4) = P(tg=5) × P(客胜|tg=5) × P(非零封|…) × 条件频率        ← 末项=全库统计冻结
+EV = P_model(腿) × 体彩封盘价
+候选 = EV&gt;1 ＋ 冷肥过滤（赔率≥30 的 &gt;4球档 ∪ 0:3/0:4 强客零封档 ∪ other 档）</pre>
+<ul>
+<li>影子层新 spec「tail-模型选腿」（family T）：每日候选腿组票 forward，50 票判据=与市场锚对照票配对差 CI 下限&gt;0</li>
+<li>判 FAIL 处置：<b>数据集保留为资产</b>，负结果归档（"肥尾区域市场也定准了"本身就是重要信息，堵死后续重复投入）</li>
+</ul>
+
+<h2>§5 工程落点</h2>
+<table>
+<tr><th>文件</th><th>职责</th></tr>
+<tr><td><code>engine/scripts/tail_dataset.py</code></td><td>构建器（幂等+版本指纹），产出 dataset.jsonl</td></tr>
+<tr><td><code>engine/scripts/tail_train.py</code></td><td>walk-forward 训练评估，产出 data/04-summaries/tail-model-report.html</td></tr>
+<tr><td><code>engine/scripts/tail_pick.py</code></td><td>出腿接口（判 PASS 后实装）</td></tr>
+<tr><td><code>engine/cache/tail-model-prereg.json</code></td><td>判据冻结（首个 commit·先于一切代码）</td></tr>
+<tr><td><code>engine/tests/test_tail_dataset.py / test_tail_train.py</code></td><td>TDD 全链</td></tr>
+<tr><td><code>engine/shadow/shapes.py</code> family T</td><td>影子 spec（判 PASS 后接入）</td></tr>
+</table>
+
+<h2>§6 限制与已知风险（诚实清单）</h2>
+<ul>
+<li><b>稀有事件校准风险</b>：E3 客零封仅 535 正样本，logistic 条件化结构借力 tg 轴，但 CI 必然宽——判据预注册 E1 为主正是为此</li>
+<li><b>多重比较残留</b>：E1/E2/E3 三族虽预注册主次分明，报告仍须全族同报禁事后挑</li>
+<li><b>HST/Elo 覆盖缺口</b>：16 联赛/欧洲主流，featMask 分层报告防假象</li>
+<li><b>市场聚合对手盘的口径</b>：ttg devig 用 power 法（同 market_lambda.crs_power_devig 家族），crs 聚合含 other 键归并口径须冻结在 prereg</li>
+<li><b>本模型不解决</b>：临场信息差（伤停/首发时点）——lineup_watch 轨继续独立积累，两线并行不合并</li>
+</ul>
+
+<p style="color:#666;font-size:13px;margin-top:40px">数据来源：engine/cache/hist_odds/（13515场实测盘点 2026-10-13）· data/02-results/league/（34联赛43259场）· engine/cache/hst_*.json（16联赛20825场）· 映射率实测 zh_to_id 86.8% · 开发者 sszhang</p>
+</body></html>

@@ -1,0 +1,26 @@
+{
+  "registeredAt": "2026-10-13",
+  "spec": "比分端三层降级链分批回测 v1",
+  "windows": {
+    "W1": {"from": "2026-07-01", "to": "2026-09-28", "role": "pipeline-check"},
+    "W2": {"from": "2026-04-01", "to": "2026-09-28", "role": "reference-param-lookback"},
+    "W3": {"from": "2024-10-01", "to": "2025-09-30", "role": "adjudication"}
+  },
+  "arms": ["A0_close_null", "A1_open_devig", "A2_lambda_reverse", "A3_v3w_model", "A4_prod_fallback"],
+  "primaryCriterion": {
+    "window": "W3", "arm": "A3_v3w_model", "baseline": "A1_open_devig",
+    "metric": "top1 回收率逐场配对差", "ci": "bootstrap95 B=2000",
+    "pass": "CI 下限 > 0"
+  },
+  "secondary": [
+    {"window": "W3", "arm": "A2_lambda_reverse", "baseline": "A1_open_devig", "metric": "同上"},
+    {"window": "W3", "arm": "A4_prod_fallback", "baseline": "A1_open_devig", "metric": "同上·预期≈0"}
+  ],
+  "exploratoryOnly": ["W1", "W2", "top2-4", "口径二模拟实票", "联赛分层"],
+  "redlines": [
+    "任何臂窗口回收率>1.0 → 先 --leak-audit(A/B as_of-3天)+随机基线，不过不进结论",
+    "A0 top1 回收率窗内偏离 0.80~0.88 → 管道 bug 中断"
+  ],
+  "frozenParams": {"beta": 0.05, "lag_days": 2, "decision_day_offset": -1,
+                   "min_pool_items": 20, "k_max": 4, "boot_B": 2000, "seed": 20261013}
+}
