@@ -28,11 +28,22 @@ def shrink(freq: float, n: int, prior: float, strength: int = PRIOR_STRENGTH) ->
 def norm_score(hg, ag) -> str:
     return f"{int(hg)}:{int(ag)}"
 
-# 本地赛果库联赛（fd 不覆盖，无条件进频率池；与 freq_band.LEAGUE_STORE 口径一致——
-# 09-08 扩容 espn-history 回填的巴丹挪美；杯赛库 coppa-italia/dfb-pokal/libertadores
-# 跨联赛队源混杂不做模板，设计内排除）
+# 本地赛果库准入（2026-10-14 低分偏置修正）：按样本量准入替代原「杯赛库不进频率池」。
+# 原设计排除杯赛因「跨联赛队源混杂」，但欧冠 1043 场实测期望 3.221，而被迫套全局池
+# 2.738 正是 −0.49 球主犯（见 docs/plans/2026-10-14-crs-low-score-bias-design.md）。
+# 样本>=800 即独立成池；不足者由调用方回退地域近似池，不落全局平均。
+POOL_MIN_N = 800
 LOCAL_POOL = ("japan", "korea", "sweden", "saudi", "brazil", "denmark", "norway", "usa")
 FD_BACKED = frozenset(DIVS.values())   # fd 覆盖联赛键集（镜像库仅 fd 断粮时导入防双算）
+
+
+def _load_rows(path: str) -> list:
+    """库文件赛果行（准入判定与导入共用一次解析）。"""
+    try:
+        data = json.load(open(path, encoding="utf-8"))
+    except (OSError, ValueError):
+        return []
+    return data.get("matches", []) if isinstance(data, dict) else (data or [])
 
 
 def build_freq_table() -> dict:
@@ -57,11 +68,10 @@ def build_freq_table() -> dict:
         if key in FD_BACKED:
             if (table.get(key) or Counter()).get("__n", 0):
                 continue                               # fd 活着 → 跳过镜像防双算
-        elif key not in LOCAL_POOL:
-            continue                                   # 杯赛库不进频率池（设计内）
+        rows = _load_rows(path)
+        if key not in FD_BACKED and key not in LOCAL_POOL and len(rows) < POOL_MIN_N:
+            continue                                   # 样本不足 → 不成池（调用方回退近似池）
         blob = table.setdefault(key, Counter())
-        data = json.load(open(path, encoding="utf-8"))
-        rows = data.get("matches", []) if isinstance(data, dict) else (data or [])
         for m in rows:
             try:
                 blob[norm_score(m["hg"], m["ag"])] += 1; blob["__n"] += 1
