@@ -1,0 +1,104 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>网络预测源记录与打分层（web-source-score）设计 · 2026-10-14</title>
+<style>
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;max-width:960px;margin:0 auto;padding:24px;color:#1a1a2e;background:#fafafa;line-height:1.7}
+  h1{border-bottom:3px solid #2980b9;padding-bottom:8px}
+  h2{border-left:5px solid #2980b9;padding-left:10px;margin-top:36px}
+  h3{color:#1f618d;margin-top:24px}
+  table{border-collapse:collapse;width:100%;margin:12px 0;background:#fff}
+  th,td{border:1px solid #d5d8dc;padding:6px 10px;text-align:left;font-size:14px}
+  th{background:#f4f6f7}
+  code,pre{background:#eee;padding:2px 5px;border-radius:3px;font-size:13px}
+  pre{padding:12px;overflow-x:auto}
+  .warn{background:#fff3cd;border-left:5px solid #e67e22;padding:10px 14px;margin:12px 0}
+  .lock{background:#fdecea;border-left:5px solid #c0392b;padding:10px 14px;margin:12px 0}
+  .ok{background:#e8f8f5;border-left:5px solid #16a085;padding:10px 14px;margin:12px 0}
+</style></head><body>
+
+<h1>网络预测源记录与打分层（web-source-score）</h1>
+<p><b>日期</b>：2026-10-14 · <b>拍板</b>：大哥（brainstorming 会话四问四答） · <b>定位</b>：把散落的网络预测变成<b>可回溯账本</b>，forward 积累后回答"听谁的、防谁"——纯观察层，零决策侵入</p>
+
+<h2>§0 由来与定位</h2>
+<p>2026-10-14 周三轮终审时，会话四路检索拿到 Sports Mole / Statz.ai / SportsGambler / SportyTrader / Forebet 等源对 007、014 等场的预测，其中 Statz.ai 顶格 1-1 与本地 LLM 31 格峰值逐格同框。但这些情报<b>用完即弃</b>：没有账本，不知某源历史命中率，也无法判断"多源同框"是真信号还是集体复读热门。本层即为此立。</p>
+<div class="lock"><b>定位铁线</b>：纯观察层。不参与选腿、不排序候选、不加权共识分。若将来数据证明有决策价值，须另走组件准入制审计（v35 成例）方可入链。</div>
+
+<h3>四问四答（设计拍板记录）</h3>
+<table><tr><th>问</th><th>拍板</th></tr>
+<tr><td>首要产出</td><td><b>B：信誉榜 + 共识信号</b>（A 过瘦漏掉同框信号；C 概率层源寥寥，不值全链成本）</td></tr>
+<tr><td>录入形态</td><td><b>B：会话录入 + 工具冻结</b>（A 无纪律事后可改；C 爬虫工程重、反爬脆、YAGNI）</td></tr>
+<tr><td>打分口径</td><td><b>B：双率 + 市场对标</b>·n≥30 方出结论（A 答不了"是否只复读热门"；C 时间衰减在 n&lt;100 下全是噪声）</td></tr>
+<tr><td>反哺方式</td><td><b>A：纯展示</b>（B 软闸有行为面需预注册；C 硬权重侵入选腿链属越权）</td></tr>
+</table>
+
+<h2>§1 架构与数据流</h2>
+<p>新增一件工具 <code>engine/scripts/web_preds.py</code>，四子命令：</p>
+<table><tr><th>子命令</th><th>职责</th></tr>
+<tr><td><code>record &lt;销售日&gt; &lt;entries.json&gt;</code></td><td>会话检索后按 schema 填条目文件 → 逐条七校验 → <b>分批冻结</b>入 <code>data/05-trends/{date}-webpreds.json</code>。批次制：每批一 batchHash，<b>追加不覆盖</b>，已录条目永不可改</td></tr>
+<tr><td><code>settle &lt;销售日&gt;</code></td><td>从 <code>data/02-results/</code> 取实际比分 → 判三格（方向/比分/市场对标）→ 写入<b>结算区</b>（与冻结区物理分离）</td></tr>
+<tr><td><code>why &lt;日|源|场次&gt;</code></td><td>三向回溯：按日出全卷、按源出历史、按场出全貌（仿 <code>paper.py why</code> 成例）</td></tr>
+<tr><td><code>leaderboard [--json]</code></td><td>汇总 <code>data/04-summaries/web-source-ledger.json</code>：每源 n / 方向率 / 比分率 / 对标值；n&lt;30 标"积累中"不出口径</td></tr>
+</table>
+
+<p><b>数据流</b>：WebSearch → 会话填 entries → <code>record</code> 冻结 → 次日 <code>settle</code> → <code>leaderboard</code> 出榜 → 预测报告尾部"信源参考"区块展示。</p>
+
+<h3>回溯三道锁（大哥追问补强）</h3>
+<ol>
+<li><b>单一事实源</b>：唯一真相只存 <code>05-trends/{date}-webpreds.json</code> 按日切片（与 02-results/05-trends 全仓惯例同构）；信誉榜只是<b>视图</b>，leaderboard 现算现写不另存二级真相——永无"榜与明细打架"</li>
+<li><b>why 一键三向</b>：<code>why 2026-10-14</code>（按日）/ <code>why Sports-Mole</code>（按源）/ <code>why 周三007</code>（按场），纯读不改</li>
+<li><b>防篡改对账</b>：冻结预测区（batchHash 指纹覆盖）与结算区物理两分，"当时录了什么"与"后来结了什么"永远可分账；record/settle 后 git 留凭证提交</li>
+</ol>
+<div class="ok">四路独立回溯：<b>按日有切片 · 按源按场有 why · 按格有 hash · 按历史有 git</b></div>
+
+<h3>源名归一</h3>
+<p><code>engine/cache/web_sources.json</code> slug 映射表，首见自动注册——防 "Sports Mole" / "sportsmole" / "SportsMole" 三写分裂同一源。</p>
+
+<h3>共识信号</h3>
+<p>record 时自动检测同场：<b>≥2 源同比分</b>→比分共识例；<b>≥3 源同方向</b>→方向共识例。各生成独立 consensus 条目附成员源册，settle 一并结算，满 30 例方判。</p>
+
+<h2>§2 判据预注册（冻结·改动即立项）</h2>
+<div class="lock"><b>以下五条判据随本文档冻结于 2026-10-14</b>。forward only：跑后不得挑口径、不得事后换阈值（铁律 14）。</div>
+<ol>
+<li><b>方向率</b> = Σ directionHit ÷ n。<b>n≥30 方出列</b>，不足只报"积累中 n/30"</li>
+<li><b>比分率</b> = Σ scoreHit ÷ n（同 n≥30 门槛）</li>
+<li><b>市场对标差</b> = 该源<b>偏离场</b>（源方向 ≠ 市场热门方向）的方向率 −<b>同场次集</b>上市场热门自身的命中率。配对同集方成立：正＝源有真信息差，负＝复读机现形。<b>偏离场 n_dev≥15 方报此列</b></li>
+<li><b>市场热门口径</b> = 体彩 HAD 去水后最高概率方向。fd 断粮期无 Pinnacle 收盘可用，诚实标注，全场次统一口径不混源</li>
+<li><b>共识例结算</b>：比分共识例记比分率、方向共识例记方向率，各满 30 例方判</li>
+</ol>
+
+<h3>条目 schema（冻结区）</h3>
+<pre>{"code": "周三007", "matchDay": "2026-10-15", "source": "Sports-Mole",
+ "pick": "1:1", "outcome": "draw",          ← 工具派生，录者不填
+ "publishedAt": "2026-10-12T18:00", "url": "https://…", "batch": 1}</pre>
+<p><b>record 七校验</b>：① pick 形如 <code>^\d+:\d+$</code> ② url 必带且 http 开头 ③ publishedAt ≤ 开赛时刻（赛后源直接拒·防泄漏）④ code 须在当日在售清单 ⑤ source 过归一表（首见自动注册）⑥ 同批同源同场唯一（防重录）⑦ outcome 由 pick 派生后落卷。</p>
+
+<h3>结算区（settle 写）</h3>
+<pre>{"actual": "1:2", "directionHit": true, "scoreHit": false,
+ "vsMarket": {"favOutcome": "home", "isDeviation": true}}</pre>
+
+<h2>§3 集成点 · 测试 · 范围</h2>
+<h3>集成点（最小侵入）</h3>
+<ol>
+<li><b>backfill 不挂</b>：settle 先手动跑满三个轮次，验证对票无误后再议入自动链（一次一处）</li>
+<li><b>首推展示</b>：预测报告尾部"信源参考"区块，v1 手工贴榜</li>
+<li><b>LLM 卡 context 层不碰</b>：web 情报与 LLM 语境层物理隔离，防 cardHash 链污染</li>
+<li>health_check 不加探测器（观察层无健康面）；webpreds 随轮 git 提交</li>
+</ol>
+
+<h3>测试清单（test_web_preds.py · 10 例）</h3>
+<p>schema 七条各一反例 ｜ slug 归一 ｜ 冻结幂等（同批拒·二批增）｜ outcome 派生 ｜ settle 三判据 + day±1 对票 ｜ n&lt;30 出"积累中" ｜ 对标配对基线 ｜ 共识检测与例册 ｜ why 三向 ｜ leaderboard 出力。</p>
+
+<h3>铁律对照</h3>
+<table><tr><th>铁律</th><th>本设计落点</th></tr>
+<tr><td>铁律 1（url 强制）</td><td>schema 校验②：无 url 直接拒录</td></tr>
+<tr><td>铁律 4（配额尽即空批）</td><td>检索无果即空批，不编造源预测</td></tr>
+<tr><td>铁律 14（判据冻结）</td><td>§2 五判据随本文档冻结</td></tr>
+<tr><td>组件准入制</td><td>纯观察层零侵入；入链须另立审计案</td></tr>
+</table>
+
+<h3>范围（YAGNI 后）</h3>
+<p><b>做</b>：<code>web_preds.py</code>（约 300 行）+ <code>test_web_preds.py</code>（10 例）+ <code>web_sources.json</code> 空表起步 + 本设计文档。<br>
+<b>不做</b>：爬虫、概率层（Brier/log-loss）、硬权重、health_check 探测器、backfill 自动挂链、时间衰减、源分级。</p>
+
+<div class="warn"><b>预期诚实声明</b>：本层最可能的结局是"各源方向率≈市场热门命中率、对标差≈0"——即网络预测多为复读机，无信息差。<b>这个负结果本身即有价值</b>（省掉未来每轮的检索成本），与 tail-model FAIL 同等对待：按预注册红线处置，数据留作资产，不事后改判据抢救。</div>
+
+</body></html>
