@@ -15,6 +15,7 @@ import math
 import numpy as np
 
 from dc_fit import dc_tau
+from dc_predict import tau_is_positive   # T5 统一：与生产比分端同一有效域判据
 
 BETA = 0.3            # 阶段0 手写乘子强度（学习器替换对象）
 PRIOR_K = 2.0         # 小样本向联赛均值收缩的先验场次
@@ -116,12 +117,16 @@ def lambda_mult(f, side, disable=()):
 
 
 def score_matrix(lh, la, rho):
-    """修正后 λ 重建 7×7 DC 比分矩阵（低分 tau 修正，构造同 backtest.dc_three 但独立实现不动 backtest）。"""
+    """修正后 λ 重建 7×7 DC 比分矩阵。与 dc_predict.score_matrix 同口径（10-14 T5 统一）：
+    越 rho 有效域退化为纯泊松，替代 max(...,1e-12) 夹负为正的静默失真。
+    独立实现不动 backtest。"""
+    if not tau_is_positive(lh, la, rho):
+        rho = 0.0
     p = np.zeros((7, 7))
     for x in range(7):
         for y in range(7):
             pm = math.exp(-lh) * lh ** x / math.factorial(x) * math.exp(-la) * la ** y / math.factorial(y)
-            p[x, y] = max(pm * dc_tau(x, y, lh, la, rho), 1e-12)
+            p[x, y] = pm * dc_tau(x, y, lh, la, rho)
     p /= p.sum()
     return p
 
