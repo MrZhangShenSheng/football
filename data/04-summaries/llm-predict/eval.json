@@ -1,0 +1,35 @@
+{
+  "days": [
+    "2026-10-14"
+  ],
+  "primary": {
+    "n": 11,
+    "verdict": "INSUFFICIENT"
+  },
+  "tailChannel": {
+    "n": 11,
+    "verdict": "INSUFFICIENT",
+    "gate": "CI 下限>0 且 n≥150 才开影子专项"
+  },
+  "descriptive": {
+    "E1": {
+      "n": 11
+    },
+    "E2": {
+      "n": 11
+    },
+    "E3": {
+      "n": 11
+    }
+  },
+  "closeProxySplit": {
+    "cardTime": {
+      "n": 5,
+      "diffMean": -5.7379
+    },
+    "lineupLast": {
+      "n": 6,
+      "diffMean": -2.0134
+    }
+  }
+}

@@ -1,11 +1,194 @@
 {
- "generatedAt": "2026-10-14T15:58:49",
+ "generatedAt": "2026-10-15T09:42:53",
  "prereg": {
   "formalN": 30,
   "devN": 15,
   "note": "判据冻结于 2026-10-14 设计档·forward only（铁律14）"
  },
- "sources": {},
+ "sources": {
+  "Forebet": {
+   "source": "Forebet",
+   "n": 5,
+   "formal": false,
+   "dirRate": 0.8,
+   "n_score": 3,
+   "scoreRate": 0.0,
+   "n_dev": 1,
+   "devHitRate": 1.0,
+   "marketHitOnDevSet": 0.0,
+   "vsMarket": null,
+   "verdict": "积累中 5/30"
+  },
+  "SportyTrader": {
+   "source": "SportyTrader",
+   "n": 2,
+   "formal": false,
+   "dirRate": 0.5,
+   "n_score": 1,
+   "scoreRate": 0.0,
+   "n_dev": 2,
+   "devHitRate": 0.5,
+   "marketHitOnDevSet": 0.5,
+   "vsMarket": null,
+   "verdict": "积累中 2/30"
+  },
+  "Squawka": {
+   "source": "Squawka",
+   "n": 2,
+   "formal": false,
+   "dirRate": 1.0,
+   "n_score": 2,
+   "scoreRate": 0.0,
+   "n_dev": 1,
+   "devHitRate": 1.0,
+   "marketHitOnDevSet": 0.0,
+   "vsMarket": null,
+   "verdict": "积累中 2/30"
+  },
+  "Sports-Mole": {
+   "source": "Sports-Mole",
+   "n": 2,
+   "formal": false,
+   "dirRate": 0.5,
+   "n_score": 1,
+   "scoreRate": 0.0,
+   "n_dev": 1,
+   "devHitRate": 0.0,
+   "marketHitOnDevSet": 1.0,
+   "vsMarket": null,
+   "verdict": "积累中 2/30"
+  },
+  "Footballpark": {
+   "source": "Footballpark",
+   "n": 2,
+   "formal": false,
+   "dirRate": 0.0,
+   "n_score": 2,
+   "scoreRate": 0.0,
+   "n_dev": 2,
+   "devHitRate": 0.0,
+   "marketHitOnDevSet": 1.0,
+   "vsMarket": null,
+   "verdict": "积累中 2/30"
+  },
+  "Statz-Ai": {
+   "source": "Statz-Ai",
+   "n": 1,
+   "formal": false,
+   "dirRate": 0.0,
+   "n_score": 1,
+   "scoreRate": 0.0,
+   "n_dev": 1,
+   "devHitRate": 0.0,
+   "marketHitOnDevSet": 0.0,
+   "vsMarket": null,
+   "verdict": "积累中 1/30"
+  },
+  "Football-Whispers": {
+   "source": "Football-Whispers",
+   "n": 1,
+   "formal": false,
+   "dirRate": 0.0,
+   "n_score": 1,
+   "scoreRate": 0.0,
+   "n_dev": 1,
+   "devHitRate": 0.0,
+   "marketHitOnDevSet": 0.0,
+   "vsMarket": null,
+   "verdict": "积累中 1/30"
+  },
+  "Rotowire": {
+   "source": "Rotowire",
+   "n": 1,
+   "formal": false,
+   "dirRate": 0.0,
+   "n_score": 1,
+   "scoreRate": 0.0,
+   "n_dev": 1,
+   "devHitRate": 0.0,
+   "marketHitOnDevSet": 0.0,
+   "vsMarket": null,
+   "verdict": "积累中 1/30"
+  },
+  "Ats-Io": {
+   "source": "Ats-Io",
+   "n": 1,
+   "formal": false,
+   "dirRate": 1.0,
+   "n_score": 1,
+   "scoreRate": 0.0,
+   "n_dev": 0,
+   "devHitRate": null,
+   "marketHitOnDevSet": null,
+   "vsMarket": null,
+   "verdict": "积累中 1/30"
+  },
+  "Sportsgambler": {
+   "source": "Sportsgambler",
+   "n": 1,
+   "formal": false,
+   "dirRate": 1.0,
+   "n_score": 0,
+   "scoreRate": null,
+   "n_dev": 1,
+   "devHitRate": 1.0,
+   "marketHitOnDevSet": 0.0,
+   "vsMarket": null,
+   "verdict": "积累中 1/30"
+  },
+  "Footballpredictions-Com": {
+   "source": "Footballpredictions-Com",
+   "n": 1,
+   "formal": false,
+   "dirRate": 0.0,
+   "n_score": 0,
+   "scoreRate": null,
+   "n_dev": 1,
+   "devHitRate": 0.0,
+   "marketHitOnDevSet": 0.0,
+   "vsMarket": null,
+   "verdict": "积累中 1/30"
+  },
+  "Ghanasoccernet": {
+   "source": "Ghanasoccernet",
+   "n": 1,
+   "formal": false,
+   "dirRate": 1.0,
+   "n_score": 0,
+   "scoreRate": null,
+   "n_dev": 0,
+   "devHitRate": null,
+   "marketHitOnDevSet": null,
+   "vsMarket": null,
+   "verdict": "积累中 1/30"
+  },
+  "Bettingtips-Today": {
+   "source": "Bettingtips-Today",
+   "n": 1,
+   "formal": false,
+   "dirRate": 1.0,
+   "n_score": 1,
+   "scoreRate": 1.0,
+   "n_dev": 0,
+   "devHitRate": null,
+   "marketHitOnDevSet": null,
+   "vsMarket": null,
+   "verdict": "积累中 1/30"
+  },
+  "Todaymatchprediction": {
+   "source": "Todaymatchprediction",
+   "n": 1,
+   "formal": false,
+   "dirRate": 1.0,
+   "n_score": 0,
+   "scoreRate": null,
+   "n_dev": 0,
+   "devHitRate": null,
+   "marketHitOnDevSet": null,
+   "vsMarket": null,
+   "verdict": "积累中 1/30"
+  }
+ },
  "consensus": {
   "score": {
    "n": 0,
@@ -14,10 +197,10 @@
    "verdict": "积累中 0/30"
   },
   "direction": {
-   "n": 0,
-   "hit": 0,
-   "rate": null,
-   "verdict": "积累中 0/30"
+   "n": 1,
+   "hit": 1,
+   "rate": 1.0,
+   "verdict": "积累中 1/30"
   }
  }
 }

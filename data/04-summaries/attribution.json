@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-14",
+  "generatedAt": "2026-10-15",
   "records": {
     "2026-08-23|周日015|HAD": {
       "primary": "F9",
@@ -159,7 +159,7 @@
         "pinSource": "okooo",
         "oddsDrift": {
           "pickOdds": 2.16,
-          "laterOdds": 3.13
+          "laterOdds": 5.0
         }
       },
       "confidence": "high",
@@ -168,9 +168,7 @@
     },
     "2026-08-25|周三005|HAD": {
       "primary": "F9",
-      "secondary": [
-        "F10"
-      ],
+      "secondary": [],
       "evidence": {
         "pfinalPick": 0.294,
         "dcBest": null,
@@ -179,11 +177,7 @@
         "resultIdx": 0,
         "result": "4-0",
         "pickDeviation": true,
-        "pinSource": "okooo",
-        "oddsDrift": {
-          "pickOdds": 3.8,
-          "laterOdds": 4.25
-        }
+        "pinSource": "okooo"
       },
       "confidence": "high",
       "source": "rule",
@@ -191,7 +185,9 @@
     },
     "2026-08-25|周三007|HAD": {
       "primary": "F3",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": 0.334,
         "dcBest": null,
@@ -199,7 +195,11 @@
         "pickIdx": 1,
         "resultIdx": 0,
         "result": "3-1",
-        "pinSource": "okooo"
+        "pinSource": "okooo",
+        "oddsDrift": {
+          "pickOdds": 3.35,
+          "laterOdds": 3.55
+        }
       },
       "confidence": "high",
       "source": "rule",
@@ -221,7 +221,7 @@
         "pinSource": "okooo",
         "oddsDrift": {
           "pickOdds": 3.35,
-          "laterOdds": 3.8
+          "laterOdds": 3.95
         }
       },
       "confidence": "high",
@@ -230,7 +230,9 @@
     },
     "2026-08-26|周三008|HAD": {
       "primary": "F9",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": 0.53,
         "dcBest": null,
@@ -238,7 +240,11 @@
         "pickIdx": 0,
         "resultIdx": 2,
         "result": "1-2",
-        "pinSource": "okooo"
+        "pinSource": "okooo",
+        "oddsDrift": {
+          "pickOdds": 1.78,
+          "laterOdds": 3.47
+        }
       },
       "confidence": "high",
       "source": "rule",
@@ -845,7 +851,7 @@
         "lambdaGap": 3.57,
         "oddsDrift": {
           "pickOdds": 1.79,
-          "laterOdds": 3.48
+          "laterOdds": 15.0
         }
       },
       "confidence": "high",
@@ -854,7 +860,9 @@
     },
     "2026-09-02|周三007|HAD": {
       "primary": "F9",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": 0.511,
         "dcBest": 0,
@@ -862,7 +870,11 @@
         "pickIdx": 0,
         "resultIdx": 2,
         "result": "0-3",
-        "pinSource": "fd"
+        "pinSource": "fd",
+        "oddsDrift": {
+          "pickOdds": 2.15,
+          "laterOdds": 2.2
+        }
       },
       "confidence": "high",
       "source": "rule",
@@ -870,7 +882,9 @@
     },
     "2026-09-02|周三011|HAD": {
       "primary": "F1",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": 0.612,
         "dcBest": 2,
@@ -879,7 +893,11 @@
         "resultIdx": 1,
         "result": "1-1",
         "pinSource": "fd",
-        "lambdaGap": 2.05
+        "lambdaGap": 2.05,
+        "oddsDrift": {
+          "pickOdds": 2.22,
+          "laterOdds": 2.85
+        }
       },
       "confidence": "high",
       "source": "rule",
@@ -1246,7 +1264,9 @@
     },
     "2026-10-07|周三001|HAD": {
       "primary": "F9",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": 0.571,
         "dcBest": null,
@@ -1254,7 +1274,11 @@
         "pickIdx": 2,
         "resultIdx": 1,
         "result": "0-0",
-        "pinSource": "okooo"
+        "pinSource": "okooo",
+        "oddsDrift": {
+          "pickOdds": 1.55,
+          "laterOdds": 4.3
+        }
       },
       "confidence": "high",
       "source": "rule",
@@ -1262,7 +1286,9 @@
     },
     "2026-10-07|周三002|HAD": {
       "primary": "F9",
-      "secondary": [],
+      "secondary": [
+        "F10"
+      ],
       "evidence": {
         "pfinalPick": 0.318,
         "dcBest": 0,
@@ -1271,7 +1297,11 @@
         "resultIdx": 0,
         "result": "2-1",
         "pickDeviation": true,
-        "pinSource": "okooo"
+        "pinSource": "okooo",
+        "oddsDrift": {
+          "pickOdds": 2.8,
+          "laterOdds": 3.8
+        }
       },
       "confidence": "high",
       "source": "rule",

@@ -24,7 +24,7 @@
    "legs": [
     "周三007 诺维奇vs南安普敦 TTG 2球 @4.40（poolSingle.TTG=1 可单关；DC top2=1-1·假设画面 1:1 之进球表达）"
    ],
-   "combined": 4.40,
+   "combined": 4.4,
    "payoutIfHit": "44元",
    "note": "1:1 与 1:2 同为假设画面；s2 覆盖 1:1/0:2/2:0 画面，方向无关 lottery 性质"
   },
@@ -51,20 +51,520 @@
   }
  ],
  "matches": [
-  {"idx": 1, "code": "周三001", "matchId": 2041990, "league": "亚冠乙", "match": "墨胜利 vs 首尔FC", "kickoff": "2026-10-14 15:45", "pick": "排除:纯市场锚(无DC无画像·pure_template)", "odds": {"h": 1.55, "d": 4.0, "a": 4.3}, "grade": "D", "inPlan": null, "dcUsed": false, "anchorMode": "market-only", "evidenceNote": "S2 无数据（亚冠乙无 espn 码）", "result": null, "directionHit": null, "scoreHit": null, "optionHit": null, "pinSource": "none"},
-  {"idx": 2, "code": "周三002", "matchId": 2041962, "league": "亚冠精英", "match": "神户胜利 vs 全北现代", "kickoff": "2026-10-14 18:00", "pick": "排除:纯市场锚(无DC无画像·pure_template)", "odds": {"h": 1.5, "d": 3.8, "a": 5.0}, "grade": "D", "inPlan": null, "dcUsed": false, "anchorMode": "market-only", "result": null, "directionHit": null, "scoreHit": null, "optionHit": null, "pinSource": "none"},
-  {"idx": 3, "code": "周三003", "matchId": 2041963, "league": "亚冠精英", "match": "柏太阳神 vs 曼谷港务", "kickoff": "2026-10-14 18:00", "pick": "排除:纯市场锚(无DC无画像·pure_template)", "odds": {"h": 1.08, "d": 7.3, "a": 15.0}, "grade": "D", "inPlan": null, "dcUsed": false, "anchorMode": "market-only", "result": null, "directionHit": null, "scoreHit": null, "optionHit": null, "pinSource": "none"},
-  {"idx": 4, "code": "周三004", "matchId": 2041964, "league": "日联赛杯", "match": "横滨水手 vs 清水鼓动", "kickoff": "2026-10-14 18:00", "pick": "排除:纯市场锚(无DC无画像·pure_template)", "odds": {"h": 1.87, "d": 3.25, "a": 3.5}, "grade": "D", "inPlan": null, "dcUsed": false, "anchorMode": "market-only", "result": null, "directionHit": null, "scoreHit": null, "optionHit": null, "pinSource": "none"},
-  {"idx": 5, "code": "周三005", "matchId": 2041965, "league": "欧冠", "match": "费耶诺德 vs 科莫", "kickoff": "2026-10-15 00:45", "pick": "排除:纯市场锚(无DC无画像·pure_template)", "odds": {"h": 3.48, "d": 3.85, "a": 1.72}, "grade": "C", "inPlan": null, "dcUsed": false, "anchorMode": "market-only", "result": null, "directionHit": null, "scoreHit": null, "optionHit": null, "pinSource": "none"},
-  {"idx": 6, "code": "周三006", "matchId": 2041966, "league": "欧冠", "match": "LASK林茨 vs 利物浦", "kickoff": "2026-10-15 00:45", "pick": "闯关票腿(自动车道)·主链排除", "odds": {"h": 9.4, "d": 5.7, "a": 1.18}, "grade": "C", "inPlan": "闯关票", "dcUsed": false, "anchorMode": "market-only", "result": null, "directionHit": null, "scoreHit": null, "optionHit": null, "pinSource": "none"},
-  {"idx": 7, "code": "周三007", "matchId": 2041967, "league": "英冠", "match": "诺维奇 vs 南安普敦", "kickoff": "2026-10-15 02:45", "pick": "HHAD 让球客胜(+1)·候选待终审", "odds": {"h": 2.2, "d": 3.55, "a": 2.55}, "star": 3, "grade": "B", "inPlan": "票A+票B", "dcUsed": true, "anchorMode": "market-only(p_fused a=0纯市场锚)", "hypothesis": {"assumption": "诺维奇失头号射手图雷(5球/7场全首发)锋线终结力降，圣徒拉林7球/9场火热+伤停4:1占优，客队至少不败(X2)，画面1:1/1:2", "verdict": "survived", "matchPlay": {"rotation": "双方周六均战罢·4天间隔常规轮换·无杯赛分心", "tactics": "诺维奇主场压出(第19位保级压力)·圣徒中低位块+拉林反击点", "goalSource": "诺维奇失图雷后定位球权重升·圣徒拉林(7球)+Azaz(5助攻)", "script": "主队高压终结乏力·圣徒抓转换·1:1/1:2画面", "specialVars": "诺维奇本季0平局(3胜6负)·圣徒H2H 6/10占优但近3次做客卡罗路不胜"}, "checks": {"h2h": "圣徒6/10占优→支持；近3客卡罗路2平1负→收敛为不败非客胜", "injury": "主4(图雷全首发+Diallo轮换)客1(Bragg轮换)→支持", "form": "圣徒5W2D3L vs 主3W0D6L→支持", "market": "主2.20偏主→与假设分歧"}}, "dc": {"lambdaHome": 1.906, "lambdaAway": 2.217, "p_dc": [0.335, 0.2152, 0.4498], "top_scores": [["1-2", 0.0767], ["1-1", 0.0749], ["2-2", 0.0731], ["2-1", 0.066]], "echo": "与假设同框"}, "fused": [0.4028, 0.2496, 0.3476], "chainSteps": ["dc_fit(fd恢复重拟合·366+场两季)", "dc_predict λ/matrix", "fuse(a=0·纯市场锚)", "温度链 T=1.3"], "webCheck": "网络四源印证(Sports Mole/Sportskeeda/Statz.ai/WhoScored·10-14): 诺维奇队长McLean脚踝伤缺+英冠最烂防线9轮失19球; Statz.ai顶格预测1-1次选2-1/1-2与LLM31格峰值同框; 圣徒近期连场2+球", "note": "全轮唯一 fd 全锚场·证据链 S1~S9 齐；HHAD 不可单关须混串；CRS 关档(族峰值22.4%)", "result": null, "directionHit": null, "scoreHit": null, "optionHit": null, "pinSource": "pending(fd收盘赛后补)"},
-  {"idx": 8, "code": "周三008", "matchId": 2041968, "league": "欧冠", "match": "罗马 vs 皇马", "kickoff": "2026-10-15 03:00", "pick": "排除:纯市场锚(无DC无画像·pure_template)", "odds": {"h": 3.47, "d": 3.95, "a": 1.7}, "grade": "C", "inPlan": null, "dcUsed": false, "anchorMode": "market-only", "result": null, "directionHit": null, "scoreHit": null, "optionHit": null, "pinSource": "none"},
-  {"idx": 9, "code": "周三009", "matchId": 2041969, "league": "欧冠", "match": "博德闪耀 vs 多特蒙德", "kickoff": "2026-10-15 03:00", "pick": "闯关票腿(自动车道)·主链排除", "odds": {"h": 3.02, "d": 3.83, "a": 1.86}, "grade": "C", "inPlan": "闯关票", "dcUsed": false, "anchorMode": "market-only", "result": null, "directionHit": null, "scoreHit": null, "optionHit": null, "pinSource": "none"},
-  {"idx": 10, "code": "周三010", "matchId": 2041970, "league": "欧冠", "match": "贝蒂斯 vs 波尔图", "kickoff": "2026-10-15 03:00", "pick": "排除:纯市场锚(无DC无画像·pure_template)", "odds": {"h": 1.83, "d": 3.5, "a": 3.36}, "grade": "C", "inPlan": null, "dcUsed": false, "anchorMode": "market-only", "result": null, "directionHit": null, "scoreHit": null, "optionHit": null, "pinSource": "none"},
-  {"idx": 11, "code": "周三011", "matchId": 2041971, "league": "欧冠", "match": "曼城 vs 巴黎圣曼", "kickoff": "2026-10-15 03:00", "pick": "排除:纯市场锚(无DC无画像·pure_template)", "odds": {"h": 1.98, "d": 3.65, "a": 2.85}, "grade": "C", "inPlan": null, "dcUsed": false, "anchorMode": "market-only", "result": null, "directionHit": null, "scoreHit": null, "optionHit": null, "pinSource": "none"},
-  {"idx": 12, "code": "周三012", "matchId": 2041972, "league": "欧冠", "match": "维拉 vs 费内巴切", "kickoff": "2026-10-15 03:00", "pick": "排除:纯市场锚(无DC无画像·pure_template)", "odds": {"h": 1.49, "d": 4.0, "a": 4.8}, "grade": "C", "inPlan": null, "dcUsed": false, "anchorMode": "market-only", "result": null, "directionHit": null, "scoreHit": null, "optionHit": null, "pinSource": "none"},
-  {"idx": 13, "code": "周三013", "matchId": 2041973, "league": "解放者杯", "match": "弗鲁米嫩 vs 帕梅拉斯", "kickoff": "2026-10-15 08:30", "pick": "排除:纯市场锚(无DC无画像·pure_template)", "odds": {"h": 2.7, "d": 2.68, "a": 2.6}, "grade": "D", "inPlan": null, "dcUsed": false, "anchorMode": "market-only", "note": "实力链日卡选场(src=market_crs 1:1@15.6%)——影子对照材料非真票候选", "result": null, "directionHit": null, "scoreHit": null, "optionHit": null, "pinSource": "none"},
-  {"idx": 14, "code": "周三014", "matchId": 2041974, "league": "美职", "match": "圣路易城 vs 温哥华", "kickoff": "2026-10-15 08:30", "pick": "HAD 主胜·候选待终审", "odds": {"h": 2.1, "d": 3.68, "a": 2.62}, "star": 2, "grade": "B", "inPlan": "票A", "dcUsed": true, "anchorMode": "market-only(a=0·无fd锚·铁律10禁保底胆)", "hypothesis": {"assumption": "温哥华折损主力中卫Blackmon(停赛·26场首发)+二射手穆勒(9球)+主力中场Badwal，近况4W3D3L走低；圣路易城10轮不败7W3D0L+零伤停+9-06客场3:1刚胜对手，主胜画面2:1/3:1", "verdict": "survived", "matchPlay": {"rotation": "MLS常规赛末段·主2客1·无杯赛", "tactics": "主队高压Navarro支点(17球)·客队缺Blackmon后防重组", "goalSource": "主Navarro+Becher双枪·客失穆勒后怀特(17球)独木", "script": "主队压制·2:1/3:1画面", "specialVars": "H2H历史温哥华5/6碾压但本季9-06已客场3:1翻盘"}, "checks": {"form": "主7W3D0L vs 客4W3D3L→支持", "injury": "主0客6→强支持", "h2h": "历史反证被本季9-06覆盖", "market": "主2.10同向非逆市"}}, "dc": {"lambdaHome": 1.701, "lambdaAway": 1.248, "p_dc": [0.4737, 0.2507, 0.2756], "top_scores": [["1-1", 0.1173], ["2-1", 0.0948], ["1-0", 0.0834], ["2-0", 0.0729]], "echo": "与假设同框"}, "fused": [0.4216, 0.2406, 0.3379], "chainSteps": ["dc_fit(local·learn发布v10)", "dc_predict λ/matrix", "fuse(a=0·纯市场锚)", "温度链 T=1.3"], "webCheck": "网络三源印证(SportsGambler/SportyTrader/Yahoo·10-14): 圣路易城五连胜+19球火力·市场+118(~46%)与体彩2.10同向; 温哥华全MLS失球第二少(30)争西区头名→小胜画面非大胜·与LLM31格2:1/1:0峰值一致", "note": "引擎DC腿(让球客胜@1.56 p0.568)被假设层否决——选腿以假设为准(铁律12)；HAD不可单关须混串；证据链 S1~S9 齐", "result": null, "directionHit": null, "scoreHit": null, "optionHit": null, "pinSource": "none(美职不在fd)"}
+  {
+   "idx": 1,
+   "code": "周三001",
+   "matchId": 2041990,
+   "league": "亚冠乙",
+   "match": "墨胜利 vs 首尔FC",
+   "kickoff": "2026-10-14 15:45",
+   "pick": "排除:纯市场锚(无DC无画像·pure_template)",
+   "odds": {
+    "h": 1.55,
+    "d": 4.0,
+    "a": 4.3
+   },
+   "grade": "D",
+   "inPlan": null,
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "evidenceNote": "S2 无数据（亚冠乙无 espn 码）",
+   "result": "3-0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "half": "0:0",
+   "preSnapshots": {
+    "matchId": 2041990,
+    "lastOddsAt": "2026-10-14T12:32:15+08:00",
+    "lastIntelAt": "2026-10-14T13:56:12+08:00"
+   }
+  },
+  {
+   "idx": 2,
+   "code": "周三002",
+   "matchId": 2041962,
+   "league": "亚冠精英",
+   "match": "神户胜利 vs 全北现代",
+   "kickoff": "2026-10-14 18:00",
+   "pick": "排除:纯市场锚(无DC无画像·pure_template)",
+   "odds": {
+    "h": 1.5,
+    "d": 3.8,
+    "a": 5.0
+   },
+   "grade": "D",
+   "inPlan": null,
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "result": "2-0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "half": "1:0",
+   "preSnapshots": {
+    "matchId": 2041962,
+    "lastOddsAt": "2026-10-14T12:32:15+08:00",
+    "lastIntelAt": "2026-10-14T13:56:13+08:00"
+   }
+  },
+  {
+   "idx": 3,
+   "code": "周三003",
+   "matchId": 2041963,
+   "league": "亚冠精英",
+   "match": "柏太阳神 vs 曼谷港务",
+   "kickoff": "2026-10-14 18:00",
+   "pick": "排除:纯市场锚(无DC无画像·pure_template)",
+   "odds": {
+    "h": 1.08,
+    "d": 7.3,
+    "a": 15.0
+   },
+   "grade": "D",
+   "inPlan": null,
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "result": "5-1",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "half": "5:0",
+   "preSnapshots": {
+    "matchId": 2041963,
+    "lastOddsAt": "2026-10-14T12:32:15+08:00",
+    "lastIntelAt": "2026-10-14T13:56:13+08:00"
+   }
+  },
+  {
+   "idx": 4,
+   "code": "周三004",
+   "matchId": 2041964,
+   "league": "日联赛杯",
+   "match": "横滨水手 vs 清水鼓动",
+   "kickoff": "2026-10-14 18:00",
+   "pick": "排除:纯市场锚(无DC无画像·pure_template)",
+   "odds": {
+    "h": 1.87,
+    "d": 3.25,
+    "a": 3.5
+   },
+   "grade": "D",
+   "inPlan": null,
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "result": "2-1",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "half": "0:0",
+   "preSnapshots": {
+    "matchId": 2041964,
+    "lastOddsAt": "2026-10-14T12:32:15+08:00",
+    "lastIntelAt": "2026-10-14T13:56:14+08:00"
+   }
+  },
+  {
+   "idx": 5,
+   "code": "周三005",
+   "matchId": 2041965,
+   "league": "欧冠",
+   "match": "费耶诺德 vs 科莫",
+   "kickoff": "2026-10-15 00:45",
+   "pick": "排除:纯市场锚(无DC无画像·pure_template)",
+   "odds": {
+    "h": 3.48,
+    "d": 3.85,
+    "a": 1.72
+   },
+   "grade": "C",
+   "inPlan": null,
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "result": "3-2",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "half": "1:1",
+   "preSnapshots": {
+    "matchId": 2041965,
+    "lastOddsAt": "2026-10-14T12:32:15+08:00",
+    "lastIntelAt": "2026-10-14T13:56:15+08:00"
+   }
+  },
+  {
+   "idx": 6,
+   "code": "周三006",
+   "matchId": 2041966,
+   "league": "欧冠",
+   "match": "LASK林茨 vs 利物浦",
+   "kickoff": "2026-10-15 00:45",
+   "pick": "闯关票腿(自动车道)·主链排除",
+   "odds": {
+    "h": 9.4,
+    "d": 5.7,
+    "a": 1.18
+   },
+   "grade": "C",
+   "inPlan": "闯关票",
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "result": "3-6",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "half": "0:3",
+   "preSnapshots": {
+    "matchId": 2041966,
+    "lastOddsAt": "2026-10-14T12:32:15+08:00",
+    "lastIntelAt": "2026-10-14T13:56:16+08:00"
+   }
+  },
+  {
+   "idx": 7,
+   "code": "周三007",
+   "matchId": 2041967,
+   "league": "英冠",
+   "match": "诺维奇 vs 南安普敦",
+   "kickoff": "2026-10-15 02:45",
+   "pick": "HHAD 让球客胜(+1)·候选待终审",
+   "odds": {
+    "h": 2.2,
+    "d": 3.55,
+    "a": 2.55
+   },
+   "star": 3,
+   "grade": "B",
+   "inPlan": "票A+票B",
+   "dcUsed": true,
+   "anchorMode": "market-only(p_fused a=0纯市场锚)",
+   "hypothesis": {
+    "assumption": "诺维奇失头号射手图雷(5球/7场全首发)锋线终结力降，圣徒拉林7球/9场火热+伤停4:1占优，客队至少不败(X2)，画面1:1/1:2",
+    "verdict": "survived",
+    "matchPlay": {
+     "rotation": "双方周六均战罢·4天间隔常规轮换·无杯赛分心",
+     "tactics": "诺维奇主场压出(第19位保级压力)·圣徒中低位块+拉林反击点",
+     "goalSource": "诺维奇失图雷后定位球权重升·圣徒拉林(7球)+Azaz(5助攻)",
+     "script": "主队高压终结乏力·圣徒抓转换·1:1/1:2画面",
+     "specialVars": "诺维奇本季0平局(3胜6负)·圣徒H2H 6/10占优但近3次做客卡罗路不胜"
+    },
+    "checks": {
+     "h2h": "圣徒6/10占优→支持；近3客卡罗路2平1负→收敛为不败非客胜",
+     "injury": "主4(图雷全首发+Diallo轮换)客1(Bragg轮换)→支持",
+     "form": "圣徒5W2D3L vs 主3W0D6L→支持",
+     "market": "主2.20偏主→与假设分歧"
+    }
+   },
+   "dc": {
+    "lambdaHome": 1.906,
+    "lambdaAway": 2.217,
+    "p_dc": [
+     0.335,
+     0.2152,
+     0.4498
+    ],
+    "top_scores": [
+     [
+      "1-2",
+      0.0767
+     ],
+     [
+      "1-1",
+      0.0749
+     ],
+     [
+      "2-2",
+      0.0731
+     ],
+     [
+      "2-1",
+      0.066
+     ]
+    ],
+    "echo": "与假设同框"
+   },
+   "fused": [
+    0.4028,
+    0.2496,
+    0.3476
+   ],
+   "chainSteps": [
+    "dc_fit(fd恢复重拟合·366+场两季)",
+    "dc_predict λ/matrix",
+    "fuse(a=0·纯市场锚)",
+    "温度链 T=1.3"
+   ],
+   "webCheck": "网络四源印证(Sports Mole/Sportskeeda/Statz.ai/WhoScored·10-14): 诺维奇队长McLean脚踝伤缺+英冠最烂防线9轮失19球; Statz.ai顶格预测1-1次选2-1/1-2与LLM31格峰值同框; 圣徒近期连场2+球",
+   "note": "全轮唯一 fd 全锚场·证据链 S1~S9 齐；HHAD 不可单关须混串；CRS 关档(族峰值22.4%)",
+   "result": "0-1",
+   "directionHit": false,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "half": "0:0",
+   "preSnapshots": {
+    "matchId": 2041967,
+    "lastOddsAt": "2026-10-14T12:32:15+08:00",
+    "lastIntelAt": "2026-10-14T12:36:09+08:00"
+   }
+  },
+  {
+   "idx": 8,
+   "code": "周三008",
+   "matchId": 2041968,
+   "league": "欧冠",
+   "match": "罗马 vs 皇马",
+   "kickoff": "2026-10-15 03:00",
+   "pick": "排除:纯市场锚(无DC无画像·pure_template)",
+   "odds": {
+    "h": 3.47,
+    "d": 3.95,
+    "a": 1.7
+   },
+   "grade": "C",
+   "inPlan": null,
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "result": "3-4",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "half": "1:1",
+   "preSnapshots": {
+    "matchId": 2041968,
+    "lastOddsAt": "2026-10-14T12:32:15+08:00",
+    "lastIntelAt": "2026-10-14T13:56:17+08:00"
+   }
+  },
+  {
+   "idx": 9,
+   "code": "周三009",
+   "matchId": 2041969,
+   "league": "欧冠",
+   "match": "博德闪耀 vs 多特蒙德",
+   "kickoff": "2026-10-15 03:00",
+   "pick": "闯关票腿(自动车道)·主链排除",
+   "odds": {
+    "h": 3.02,
+    "d": 3.83,
+    "a": 1.86
+   },
+   "grade": "C",
+   "inPlan": "闯关票",
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "result": "1-0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "half": "0:0",
+   "preSnapshots": {
+    "matchId": 2041969,
+    "lastOddsAt": "2026-10-14T12:32:15+08:00",
+    "lastIntelAt": "2026-10-14T13:56:18+08:00"
+   }
+  },
+  {
+   "idx": 10,
+   "code": "周三010",
+   "matchId": 2041970,
+   "league": "欧冠",
+   "match": "贝蒂斯 vs 波尔图",
+   "kickoff": "2026-10-15 03:00",
+   "pick": "排除:纯市场锚(无DC无画像·pure_template)",
+   "odds": {
+    "h": 1.83,
+    "d": 3.5,
+    "a": 3.36
+   },
+   "grade": "C",
+   "inPlan": null,
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "result": "3-2",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "half": "0:0",
+   "preSnapshots": {
+    "matchId": 2041970,
+    "lastOddsAt": "2026-10-14T12:32:15+08:00",
+    "lastIntelAt": "2026-10-14T13:56:18+08:00"
+   }
+  },
+  {
+   "idx": 11,
+   "code": "周三011",
+   "matchId": 2041971,
+   "league": "欧冠",
+   "match": "曼城 vs 巴黎圣曼",
+   "kickoff": "2026-10-15 03:00",
+   "pick": "排除:纯市场锚(无DC无画像·pure_template)",
+   "odds": {
+    "h": 1.98,
+    "d": 3.65,
+    "a": 2.85
+   },
+   "grade": "C",
+   "inPlan": null,
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "result": "2-4",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "half": "0:3",
+   "preSnapshots": {
+    "matchId": 2041971,
+    "lastOddsAt": "2026-10-14T12:32:15+08:00",
+    "lastIntelAt": "2026-10-14T13:56:19+08:00"
+   }
+  },
+  {
+   "idx": 12,
+   "code": "周三012",
+   "matchId": 2041972,
+   "league": "欧冠",
+   "match": "维拉 vs 费内巴切",
+   "kickoff": "2026-10-15 03:00",
+   "pick": "排除:纯市场锚(无DC无画像·pure_template)",
+   "odds": {
+    "h": 1.49,
+    "d": 4.0,
+    "a": 4.8
+   },
+   "grade": "C",
+   "inPlan": null,
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "result": "6-0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "half": "3:0",
+   "preSnapshots": {
+    "matchId": 2041972,
+    "lastOddsAt": "2026-10-14T12:32:15+08:00",
+    "lastIntelAt": "2026-10-14T13:56:20+08:00"
+   }
+  },
+  {
+   "idx": 13,
+   "code": "周三013",
+   "matchId": 2041973,
+   "league": "解放者杯",
+   "match": "弗鲁米嫩 vs 帕梅拉斯",
+   "kickoff": "2026-10-15 08:30",
+   "pick": "排除:纯市场锚(无DC无画像·pure_template)",
+   "odds": {
+    "h": 2.7,
+    "d": 2.68,
+    "a": 2.6
+   },
+   "grade": "D",
+   "inPlan": null,
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "note": "实力链日卡选场(src=market_crs 1:1@15.6%)——影子对照材料非真票候选",
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none"
+  },
+  {
+   "idx": 14,
+   "code": "周三014",
+   "matchId": 2041974,
+   "league": "美职",
+   "match": "圣路易城 vs 温哥华",
+   "kickoff": "2026-10-15 08:30",
+   "pick": "HAD 主胜·候选待终审",
+   "odds": {
+    "h": 2.1,
+    "d": 3.68,
+    "a": 2.62
+   },
+   "star": 2,
+   "grade": "B",
+   "inPlan": "票A",
+   "dcUsed": true,
+   "anchorMode": "market-only(a=0·无fd锚·铁律10禁保底胆)",
+   "hypothesis": {
+    "assumption": "温哥华折损主力中卫Blackmon(停赛·26场首发)+二射手穆勒(9球)+主力中场Badwal，近况4W3D3L走低；圣路易城10轮不败7W3D0L+零伤停+9-06客场3:1刚胜对手，主胜画面2:1/3:1",
+    "verdict": "survived",
+    "matchPlay": {
+     "rotation": "MLS常规赛末段·主2客1·无杯赛",
+     "tactics": "主队高压Navarro支点(17球)·客队缺Blackmon后防重组",
+     "goalSource": "主Navarro+Becher双枪·客失穆勒后怀特(17球)独木",
+     "script": "主队压制·2:1/3:1画面",
+     "specialVars": "H2H历史温哥华5/6碾压但本季9-06已客场3:1翻盘"
+    },
+    "checks": {
+     "form": "主7W3D0L vs 客4W3D3L→支持",
+     "injury": "主0客6→强支持",
+     "h2h": "历史反证被本季9-06覆盖",
+     "market": "主2.10同向非逆市"
+    }
+   },
+   "dc": {
+    "lambdaHome": 1.701,
+    "lambdaAway": 1.248,
+    "p_dc": [
+     0.4737,
+     0.2507,
+     0.2756
+    ],
+    "top_scores": [
+     [
+      "1-1",
+      0.1173
+     ],
+     [
+      "2-1",
+      0.0948
+     ],
+     [
+      "1-0",
+      0.0834
+     ],
+     [
+      "2-0",
+      0.0729
+     ]
+    ],
+    "echo": "与假设同框"
+   },
+   "fused": [
+    0.4216,
+    0.2406,
+    0.3379
+   ],
+   "chainSteps": [
+    "dc_fit(local·learn发布v10)",
+    "dc_predict λ/matrix",
+    "fuse(a=0·纯市场锚)",
+    "温度链 T=1.3"
+   ],
+   "webCheck": "网络三源印证(SportsGambler/SportyTrader/Yahoo·10-14): 圣路易城五连胜+19球火力·市场+118(~46%)与体彩2.10同向; 温哥华全MLS失球第二少(30)争西区头名→小胜画面非大胜·与LLM31格2:1/1:0峰值一致",
+   "note": "引擎DC腿(让球客胜@1.56 p0.568)被假设层否决——选腿以假设为准(铁律12)；HAD不可单关须混串；证据链 S1~S9 齐",
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none(美职不在fd)"
+  }
  ],
  "shadowRegistered": "P477~P490(10-15开赛日14票·五池价冻结)+10-14销售日0新增(4亚冠杯赛无模型)",
  "parlayGate": "方案A出票面2串1复式8元(009+006双选)·方案B今日<10场不出",

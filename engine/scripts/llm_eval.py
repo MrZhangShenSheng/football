@@ -153,20 +153,24 @@ def _load_results(days: list[str]) -> dict[str, str]:
     out = {}
     for d in days:
         for off in (-1, 0, 1):
-            f = RESULTS_ROOT / f"{_shift_day(d, off)}.json"
-            if not f.exists():
-                continue
-            try:
-                doc = json.loads(f.read_text(encoding="utf-8"))
-            except (OSError, json.JSONDecodeError):
-                continue
-            for m in (doc.get("matches") or doc.get("records") or []):
-                code, sc = m.get("code"), m.get("score") or m.get("finalScore")
-                if not sc:
-                    r = m.get("result")
-                    sc = r.replace("-", ":") if isinstance(r, str) and _RESULT_SCORE_RE.fullmatch(r) else None
-                if code and sc and ":" in str(sc):
-                    out[str(code)] = str(sc)
+            base = RESULTS_ROOT / _shift_day(d, off)
+            # -rN 拆轮文件同读（2026-10-15 盲区实证：同日第二轮赛果在 -r1，仅拼主文件名则
+            # 该轮码全丢→n=0）；主文件列最后，同码后写覆盖（主文件=终审版纪律）
+            files = sorted(RESULTS_ROOT.glob(base.name + "-r*.json")) + [Path(str(base) + ".json")]
+            for f in files:
+                if not f.exists():
+                    continue
+                try:
+                    doc = json.loads(f.read_text(encoding="utf-8"))
+                except (OSError, json.JSONDecodeError):
+                    continue
+                for m in (doc.get("matches") or doc.get("records") or []):
+                    code, sc = m.get("code"), m.get("score") or m.get("finalScore")
+                    if not sc:
+                        r = m.get("result")
+                        sc = r.replace("-", ":") if isinstance(r, str) and _RESULT_SCORE_RE.fullmatch(r) else None
+                    if code and sc and ":" in str(sc):
+                        out[str(code)] = str(sc)
     return out
 
 
