@@ -1,0 +1,171 @@
+{
+ "fetchedAt": "2026-10-15",
+ "source": "sporttery",
+ "matchId": 2041979,
+ "match": {
+  "code": "周四005",
+  "league": "欧罗巴",
+  "gameweek": "2",
+  "season": "2026/2027",
+  "home": "萨尔茨堡",
+  "away": "AC米兰",
+  "kickoff": "2026-10-16 00:45",
+  "uniformMatchId": 2513018
+ },
+ "standing": {
+  "away": {
+   "groupName": "",
+   "phaseName": "League Stage",
+   "ranking": "29",
+   "sAwayDrawMatchCnt": "0",
+   "sAwayLossGoalMatchCnt": "0",
+   "sAwayWinGoalMatchCnt": "0",
+   "sDrawMatchCnt": "0",
+   "sLossGoalMatchCnt": "1",
+   "sWinGoalMatchCnt": "0",
+   "seasonName": "2026/2027"
+  },
+  "home": {
+   "groupName": "",
+   "phaseName": "League Stage",
+   "ranking": "14",
+   "sDrawMatchCnt": "0",
+   "sHomeDrawMatchCnt": "0",
+   "sHomeLossGoalMatchCnt": "0",
+   "sHomeWinGoalMatchCnt": "0",
+   "sLossGoalMatchCnt": "0",
+   "sWinGoalMatchCnt": "1",
+   "seasonName": "2026/2027"
+  }
+ },
+ "injuries": {
+  "home": [],
+  "away": [
+   {
+    "name": "M. Gabbia",
+    "pos": "后卫",
+    "no": "46",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 0,
+    "starts": 0
+   },
+   {
+    "name": "A·塞勒梅克",
+    "pos": "前锋",
+    "no": "56",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 1,
+    "starts": 0
+   }
+  ]
+ },
+ "form": {
+  "goalAvg": {
+   "awayGoalAvgCnt": "1.6",
+   "awayGoalAvgCntRatio": "42.1",
+   "homeGoalAvgCnt": "2.2",
+   "homeGoalAvgCntRatio": "57.9",
+   "totalLegCnt": 10
+  },
+  "last10": {
+   "awayDrawMatchCnt": 4,
+   "awayLossGoalMatchCnt": 2,
+   "awayScoreRatio": "53",
+   "awayWinGoalMatchCnt": 4,
+   "homeDrawMatchCnt": 2,
+   "homeLossGoalMatchCnt": 1,
+   "homeScoreRatio": "77",
+   "homeWinGoalMatchCnt": 7,
+   "totalLegCnt": 10
+  },
+  "last10HomeAway": {
+   "awayDrawMatchCnt": 4,
+   "awayLossGoalMatchCnt": 2,
+   "awayScoreRatio": "53",
+   "awayWinGoalMatchCnt": 4,
+   "homeDrawMatchCnt": 0,
+   "homeLossGoalMatchCnt": 3,
+   "homeScoreRatio": "70",
+   "homeWinGoalMatchCnt": 7,
+   "totalLegCnt": 10
+  }
+ },
+ "h2h": {
+  "statistics": {
+   "drawMatchCnt": 1,
+   "drawProbability": "50%",
+   "goalCnt": 0,
+   "lossGoalCnt": 0,
+   "lossGoalMatchCnt": 1,
+   "lossProbability": "50%",
+   "netGoal": 0,
+   "sportteryTeamId": 0,
+   "teamId": 0,
+   "teamShortName": "萨尔茨堡",
+   "totalLegCnt": 2,
+   "winGoalMatchCnt": 0,
+   "winProbability": "0%"
+  },
+  "matches": [
+   {
+    "date": "2022-11-03",
+    "home": "AC米兰",
+    "score": "4:0",
+    "ht": "1:0",
+    "away": "萨尔茨堡",
+    "winner": "away"
+   },
+   {
+    "date": "2022-09-07",
+    "home": "萨尔茨堡",
+    "score": "1:1",
+    "ht": "1:1",
+    "away": "AC米兰",
+    "winner": "draw"
+   }
+  ]
+ },
+ "scorers": {
+  "away": {
+   "playerList": [],
+   "sportteryTeamId": 116,
+   "teamId": 1240,
+   "teamShortName": "AC米兰",
+   "uniformTeamId": 125
+  },
+  "home": {
+   "playerList": [
+    {
+     "appearanceCnt": 1,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "1.0",
+     "goalCnt": 1,
+     "goalProbability": "100%",
+     "injuryFlag": 0,
+     "personId": 271788,
+     "personName": "高迪诺",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "9"
+    }
+   ],
+   "sportteryTeamId": 335,
+   "teamId": 165,
+   "teamShortName": "萨尔茨堡",
+   "uniformTeamId": 1366
+  },
+  "seasonId": 15335,
+  "seasonName": "2026/2027",
+  "tournamentId": 1103,
+  "tournamentShortName": "欧罗巴",
+  "uniformLeagueId": 23,
+  "uniformMatchId": 2513018
+ }
+}

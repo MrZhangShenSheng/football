@@ -27,13 +27,25 @@ def _parse_score(s):
     return (int(m.group(1)), int(m.group(2))) if m else None
 
 
+_DATE_RE = re.compile(r'^(\d{4}-\d{2}-\d{2})(?:-r\d+)?$')
+
+
 def load_rounds():
-    """→ [{date, legs: [...]}]（日期升序；仅含有赛果的场次）。"""
-    rounds = []
+    """→ [{date, legs: [...]}]（日期升序；仅含有赛果的场次）。
+
+    同日拆轮文件（YYYY-MM-DD-rN.json）归并入同一销售日。同 code 冲突时主文件胜：
+    ASCII '-'(0x2D) < '.'(0x2E) 使 '...-r1.json' 排在 '....json' 之前，主文件后写覆盖
+    （与 llm_eval._load_results 同口径）。原版用 fname[:-5] 当日期，-rN 变成
+    '2026-10-14-r1' 永不匹配查询日 → 该轮票结构性卡死 pending。
+    """
+    rounds = {}
     for fname in sorted(os.listdir(RESULTS_DIR)):
         if not fname.endswith('.json') or fname.startswith('_'):
             continue
-        date = fname[:-5]
+        mdate = _DATE_RE.match(fname[:-5])
+        if not mdate:
+            continue
+        date = mdate.group(1)
         try:
             with open(os.path.join(RESULTS_DIR, fname), encoding='utf-8') as fh:
                 data = json.load(fh)
@@ -50,5 +62,7 @@ def load_rounds():
                 'half': _parse_score(rec.get('half')),
             })
         if legs:
-            rounds.append({'date': date, 'legs': legs})
-    return rounds
+            by_code = {l['code']: l for l in rounds.get(date, [])}
+            by_code.update({l['code']: l for l in legs})
+            rounds[date] = list(by_code.values())
+    return [{'date': d, 'legs': rounds[d]} for d in sorted(rounds)]

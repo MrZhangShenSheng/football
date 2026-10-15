@@ -121891,7 +121891,10 @@
      null,
      null,
      1.18
-    ]
+    ],
+    "actual": "3:6",
+    "hitPrice": 1.18,
+    "result": "hit"
    },
    {
     "code": "周三012",
@@ -121904,7 +121907,10 @@
      1.49,
      null,
      null
-    ]
+    ],
+    "actual": "6:0",
+    "hitPrice": 1.49,
+    "result": "hit"
    },
    {
     "code": "周三008",
@@ -121917,7 +121923,10 @@
      null,
      null,
      1.7
-    ]
+    ],
+    "actual": "3:4",
+    "hitPrice": 1.7,
+    "result": "hit"
    },
    {
     "code": "周三005",
@@ -121930,7 +121939,9 @@
      null,
      null,
      1.72
-    ]
+    ],
+    "actual": "3:2",
+    "result": "miss"
    },
    {
     "code": "周三010",
@@ -121943,7 +121954,10 @@
      1.83,
      null,
      null
-    ]
+    ],
+    "actual": "3:2",
+    "hitPrice": 1.83,
+    "result": "hit"
    },
    {
     "code": "周三009",
@@ -121956,7 +121970,9 @@
      null,
      null,
      1.86
-    ]
+    ],
+    "actual": "1:0",
+    "result": "miss"
    },
    {
     "code": "周三011",
@@ -121969,7 +121985,9 @@
      1.98,
      null,
      null
-    ]
+    ],
+    "actual": "2:4",
+    "result": "miss"
    },
    {
     "code": "周三014",
@@ -121982,7 +122000,9 @@
      2.1,
      null,
      null
-    ]
+    ],
+    "actual": "0:0",
+    "result": "miss"
    }
   ],
   "bets": [
@@ -122026,9 +122046,9 @@
   "n_bets": 1,
   "mult": 15,
   "cost": 30,
-  "result": "pending",
-  "payout": null,
-  "settledAt": null
+  "result": "settled",
+  "payout": 0.0,
+  "settledAt": "2026-10-15T13:37:19"
  },
  {
   "id": "P478",
@@ -123940,7 +123960,9 @@
     ],
     "odds": {
      "s7": 13.0
-    }
+    },
+    "actual": "0:0",
+    "result": "miss"
    },
    {
     "code": "周三009",
@@ -123951,7 +123973,9 @@
     ],
     "odds": {
      "s7": 9.5
-    }
+    },
+    "actual": "1:0",
+    "result": "miss"
    },
    {
     "code": "周三008",
@@ -123962,7 +123986,9 @@
     ],
     "odds": {
      "s2": 4.9
-    }
+    },
+    "actual": "3:4",
+    "result": "miss"
    },
    {
     "code": "周三011",
@@ -123973,7 +123999,9 @@
     ],
     "odds": {
      "s2": 4.5
-    }
+    },
+    "actual": "2:4",
+    "result": "miss"
    }
   ],
   "bets": [
@@ -124001,9 +124029,9 @@
   "n_bets": 1,
   "mult": 15,
   "cost": 30,
-  "result": "pending",
-  "payout": null,
-  "settledAt": null
+  "result": "settled",
+  "payout": 0.0,
+  "settledAt": "2026-10-15T13:37:19"
  },
  {
   "id": "P490",
@@ -124436,7 +124464,11 @@
     "odds": {
      "a+1": 1.5
     },
-    "basis": "31格方向聚合 客47+平28=75% vs 市场60%(+15pt)·全盘最大偏离(客向+12.4pt)·conf=medium"
+    "basis": "31格方向聚合 客47+平28=75% vs 市场60%(+15pt)·全盘最大偏离(客向+12.4pt)·conf=medium",
+    "actual": "0:1",
+    "goalLine": -1.0,
+    "hitPrice": 1.5,
+    "result": "hit"
    },
    {
     "code": "周三014",
@@ -124448,7 +124480,9 @@
     "odds": {
      "h": 2.1
     },
-    "basis": "31格主胜50% vs 市场42%(+7.8pt)·峰值1:1/2:1/1:0皆主不败向·conf=medium"
+    "basis": "31格主胜50% vs 市场42%(+7.8pt)·峰值1:1/2:1/1:0皆主不败向·conf=medium",
+    "actual": "0:0",
+    "result": "miss"
    }
   ],
   "bets": [
@@ -124468,9 +124502,9 @@
   "n_bets": 1,
   "mult": 15,
   "cost": 30,
-  "note": "大哥索要的新模型方案·声明近期不购→只记影子不落真票账本。合赔@3.15全中94.5。选腿唯一依据=31格方向聚合对市场偏离(非假设层)；两腿恰与票A同腿(三线本汇合)。EV基线为负(混串返率~61%)·偏离真伪 n=0 未验。",
-  "result": "pending",
-  "payout": null,
-  "settledAt": null
+  "note": "大哥索要的新模型方案·声明近期不购→只记影子不落真票账本。合赔@3.15全中94.5。选腿唯一依据=31格方向聚合对市场偏离(非假设层)；两腿恰与票A同腿(三线本汇合)。EV基线为负(混串返率~61%)·偏离真伪 n=0 未验。 ｜判腿修正(2026-10-15)：腿1 market=hhad 原无 goalLine，shapes._pick_price 缺 hhad 分支致兜底判灭；补 goalLine=-1 并重结算。 ｜判腿修正(2026-10-15)：腿1 market=hhad 原无 goalLine，shapes._pick_price 缺 hhad 分支致兜底判灭；补 goalLine=-1 并重结算。",
+  "result": "settled",
+  "payout": 0.0,
+  "settledAt": "2026-10-15T13:50:20"
  }
 ]

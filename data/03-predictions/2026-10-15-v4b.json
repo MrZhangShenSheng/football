@@ -1,0 +1,196 @@
+{
+ "date": "2026-10-15",
+ "model": "predictor_v4b",
+ "nCalc": 9,
+ "nSkip": 1,
+ "skips": [
+  {
+   "code": "周三011",
+   "match": "曼城 vs 巴黎圣曼",
+   "skipReason": "别名映射失败（国家队/亚运/未收录队——模型不可算）"
+  }
+ ],
+ "status": "样本内回测未过盲测——对照源非生产概率源（docs/predictor_v4b.md 收编标注）",
+ "matches": [
+  {
+   "code": "周三005",
+   "league": null,
+   "match": "None vs None",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.16,
+     "odds": null
+    },
+    {
+     "pick": "0:0",
+     "signal": 0.095,
+     "odds": null
+    }
+   ],
+   "marketHot": null,
+   "fusionTop": null,
+   "agreeWithMarket": false
+  },
+  {
+   "code": "周三006",
+   "league": null,
+   "match": "None vs None",
+   "v4bTop2": [
+    {
+     "pick": "0:1",
+     "signal": 0.255,
+     "odds": null
+    },
+    {
+     "pick": "0:2",
+     "signal": 0.21,
+     "odds": null
+    }
+   ],
+   "marketHot": null,
+   "fusionTop": null,
+   "agreeWithMarket": false
+  },
+  {
+   "code": "周三007",
+   "league": null,
+   "match": "None vs None",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.26,
+     "odds": null
+    },
+    {
+     "pick": "0:0",
+     "signal": 0.17,
+     "odds": null
+    }
+   ],
+   "marketHot": null,
+   "fusionTop": null,
+   "agreeWithMarket": false
+  },
+  {
+   "code": "周三008",
+   "league": null,
+   "match": "None vs None",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.19,
+     "odds": null
+    },
+    {
+     "pick": "0:0",
+     "signal": 0.1128,
+     "odds": null
+    }
+   ],
+   "marketHot": null,
+   "fusionTop": null,
+   "agreeWithMarket": false
+  },
+  {
+   "code": "周三009",
+   "league": null,
+   "match": "None vs None",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.155,
+     "odds": null
+    },
+    {
+     "pick": "2:1",
+     "signal": 0.135,
+     "odds": null
+    }
+   ],
+   "marketHot": null,
+   "fusionTop": null,
+   "agreeWithMarket": false
+  },
+  {
+   "code": "周三010",
+   "league": null,
+   "match": "None vs None",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.16,
+     "odds": null
+    },
+    {
+     "pick": "0:0",
+     "signal": 0.095,
+     "odds": null
+    }
+   ],
+   "marketHot": null,
+   "fusionTop": null,
+   "agreeWithMarket": false
+  },
+  {
+   "code": "周三012",
+   "league": null,
+   "match": "None vs None",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.16,
+     "odds": null
+    },
+    {
+     "pick": "2:2",
+     "signal": 0.125,
+     "odds": null
+    }
+   ],
+   "marketHot": null,
+   "fusionTop": null,
+   "agreeWithMarket": false
+  },
+  {
+   "code": "周三013",
+   "league": null,
+   "match": "None vs None",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.16,
+     "odds": null
+    },
+    {
+     "pick": "0:0",
+     "signal": 0.095,
+     "odds": null
+    }
+   ],
+   "marketHot": null,
+   "fusionTop": null,
+   "agreeWithMarket": false
+  },
+  {
+   "code": "周三014",
+   "league": null,
+   "match": "None vs None",
+   "v4bTop2": [
+    {
+     "pick": "1:0",
+     "signal": 0.2434,
+     "odds": null
+    },
+    {
+     "pick": "2:1",
+     "signal": 0.2316,
+     "odds": null
+    }
+   ],
+   "marketHot": null,
+   "fusionTop": null,
+   "agreeWithMarket": false
+  }
+ ]
+}

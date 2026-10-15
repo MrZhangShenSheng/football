@@ -3,7 +3,7 @@
  "n_total": 938,
  "n_rounds": 54,
  "readiness": {
-  "n_result": 934,
+  "n_result": 936,
   "n_clv": 131,
   "n_pfinal": 642,
   "n_dedup_merged": 66,
@@ -37507,8 +37507,17 @@
    "clv": null,
    "clv_approx_dk": null,
    "clv_note": null,
-   "pinClose": null,
-   "pinSource": "none",
+   "pinClose": [
+    0.4072,
+    0.2676,
+    0.3252
+   ],
+   "pinSource": "fd",
+   "p_pinnacle": [
+    0.4072,
+    0.2676,
+    0.3252
+   ],
    "round": "2026-10-14-r1"
   },
   {
@@ -37711,7 +37720,7 @@
    "in_plan": null,
    "chain": null,
    "pools": null,
-   "result": null,
+   "result": "1-2",
    "directionHit": null,
    "scoreHit": null,
    "optionHit": null,
@@ -37778,7 +37787,7 @@
    "in_plan": "票A",
    "chain": null,
    "pools": null,
-   "result": null,
+   "result": "0-0",
    "directionHit": null,
    "scoreHit": null,
    "optionHit": null,
@@ -37791,7 +37800,7 @@
    "clv_approx_dk": null,
    "clv_note": null,
    "pinClose": null,
-   "pinSource": "none(美职不在fd)",
+   "pinSource": "none",
    "round": "2026-10-14-r1"
   },
   {

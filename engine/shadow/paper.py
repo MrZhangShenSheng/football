@@ -118,8 +118,11 @@ def _norm_leg(leg):
         odds = [kv.get(k) for k in (0, 1, 2)]      # 未买槽 None（bets 只含 picks 内键，永不触及）
     else:
         odds = {str(k): float(v) for k, v in raw.items()}
-    return {'code': leg.get('code'), 'match': leg.get('match'),
-            'market': market, 'pick': pick, 'odds': odds}
+    out = {'code': leg.get('code'), 'match': leg.get('match'),
+           'market': market, 'pick': pick, 'odds': odds}
+    if leg.get('goalLine') is not None:
+        out['goalLine'] = float(leg['goalLine'])      # 让球线随腿冻结（hhad 判腿唯一依据）
+    return out
 
 
 def freeze_legs(round_legs, ticket):
@@ -176,7 +179,8 @@ def _settle_view(ticket, round_results):
             if leg['market'] != 'had' and score is None:
                 return None                # ttg/crs 腿缺比分不可结算（shapes._hit_of 需 score）
             legs_out.append({'code': leg['code'], 'outcome': outcome, 'score': score})
-        tlegs.append({'src': len(legs_out) - 1, 'kind': leg['market'], 'odds': leg['odds']})
+        tlegs.append({'src': len(legs_out) - 1, 'kind': leg['market'], 'odds': leg['odds'],
+                      'goalLine': leg.get('goalLine')})     # 让球线（hhad 判腿需·非让球腿为 None）
         # 体彩无效场次：腿按 1.00 计（shapes.settle void 分支），先于缺比分判定
     return legs_out, {'tlegs': tlegs, 'bets': ticket['bets'], 'mult': ticket['mult']}
 
@@ -211,7 +215,7 @@ def _annotate_legs(ticket, legs_view, shapes):
             continue
         sc = lv.get('score')
         leg['actual'] = f"{sc[0]}:{sc[1]}" if sc else None
-        tleg = {'kind': leg['market'], 'odds': leg['odds']}
+        tleg = {'kind': leg['market'], 'odds': leg['odds'], 'goalLine': leg.get('goalLine')}
         hit = False
         for p in leg['pick']:
             price = shapes._pick_price(tleg, p, lv.get('outcome'), sc)

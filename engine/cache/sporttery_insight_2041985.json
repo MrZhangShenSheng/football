@@ -1,0 +1,245 @@
+{
+ "fetchedAt": "2026-10-15",
+ "source": "sporttery",
+ "matchId": 2041985,
+ "match": {
+  "code": "周四012",
+  "league": "欧罗巴",
+  "gameweek": "2",
+  "season": "2026/2027",
+  "home": "本菲卡",
+  "away": "凯尔特人",
+  "kickoff": "2026-10-16 03:00",
+  "uniformMatchId": 2513032
+ },
+ "standing": {
+  "away": {
+   "groupName": "",
+   "phaseName": "League Stage",
+   "ranking": "28",
+   "sAwayDrawMatchCnt": "0",
+   "sAwayLossGoalMatchCnt": "0",
+   "sAwayWinGoalMatchCnt": "0",
+   "sDrawMatchCnt": "0",
+   "sLossGoalMatchCnt": "1",
+   "sWinGoalMatchCnt": "0",
+   "seasonName": "2026/2027"
+  },
+  "home": {
+   "groupName": "",
+   "phaseName": "League Stage",
+   "ranking": "7",
+   "sDrawMatchCnt": "0",
+   "sHomeDrawMatchCnt": "0",
+   "sHomeLossGoalMatchCnt": "0",
+   "sHomeWinGoalMatchCnt": "0",
+   "sLossGoalMatchCnt": "0",
+   "sWinGoalMatchCnt": "1",
+   "seasonName": "2026/2027"
+  }
+ },
+ "injuries": {
+  "home": [
+   {
+    "name": "苏达科夫",
+    "pos": "中场",
+    "no": "10",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 1,
+    "starts": 1
+   }
+  ],
+  "away": [
+   {
+    "name": "约翰斯顿",
+    "pos": "后卫",
+    "no": "2",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 0,
+    "starts": 0
+   }
+  ]
+ },
+ "form": {
+  "goalAvg": {
+   "awayGoalAvgCnt": "1.5",
+   "awayGoalAvgCntRatio": "33.3",
+   "homeGoalAvgCnt": "3.0",
+   "homeGoalAvgCntRatio": "66.7",
+   "totalLegCnt": 10
+  },
+  "last10": {
+   "awayDrawMatchCnt": 0,
+   "awayLossGoalMatchCnt": 4,
+   "awayScoreRatio": "60",
+   "awayWinGoalMatchCnt": 6,
+   "homeDrawMatchCnt": 0,
+   "homeLossGoalMatchCnt": 1,
+   "homeScoreRatio": "90",
+   "homeWinGoalMatchCnt": 9,
+   "totalLegCnt": 10
+  },
+  "last10HomeAway": {
+   "awayDrawMatchCnt": 1,
+   "awayLossGoalMatchCnt": 3,
+   "awayScoreRatio": "63",
+   "awayWinGoalMatchCnt": 6,
+   "homeDrawMatchCnt": 1,
+   "homeLossGoalMatchCnt": 1,
+   "homeScoreRatio": "83",
+   "homeWinGoalMatchCnt": 8,
+   "totalLegCnt": 10
+  }
+ },
+ "h2h": {
+  "statistics": {
+   "drawMatchCnt": 1,
+   "drawProbability": "50%",
+   "goalCnt": 0,
+   "lossGoalCnt": 0,
+   "lossGoalMatchCnt": 0,
+   "lossProbability": "0%",
+   "netGoal": 0,
+   "sportteryTeamId": 0,
+   "teamId": 0,
+   "teamShortName": "本菲卡",
+   "totalLegCnt": 2,
+   "winGoalMatchCnt": 1,
+   "winProbability": "50%"
+  },
+  "matches": [
+   {
+    "date": "2012-11-21",
+    "home": "本菲卡",
+    "score": "2:1",
+    "ht": "1:1",
+    "away": "凯尔特人",
+    "winner": "home"
+   },
+   {
+    "date": "2012-09-20",
+    "home": "凯尔特人",
+    "score": "0:0",
+    "ht": "0:0",
+    "away": "本菲卡",
+    "winner": "draw"
+   }
+  ]
+ },
+ "scorers": {
+  "away": {
+   "playerList": [
+    {
+     "appearanceCnt": 1,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "1.0",
+     "goalCnt": 1,
+     "goalProbability": "100%",
+     "injuryFlag": 0,
+     "personId": 642330,
+     "personName": "M. Baur",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "22"
+    },
+    {
+     "appearanceCnt": 1,
+     "assistAvgCnt": "1.0",
+     "assistCnt": 1,
+     "assistProbability": "100%",
+     "goalAvgCnt": "0",
+     "goalCnt": 0,
+     "goalProbability": "0%",
+     "injuryFlag": 0,
+     "personId": 323402,
+     "personName": "蒂尔尼",
+     "playerPositionCode": "Defender",
+     "playerPositionDesc": "后卫",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "63"
+    }
+   ],
+   "sportteryTeamId": 211,
+   "teamId": 1898,
+   "teamShortName": "凯尔特人",
+   "uniformTeamId": 55
+  },
+  "home": {
+   "playerList": [
+    {
+     "appearanceCnt": 1,
+     "assistAvgCnt": "1.0",
+     "assistCnt": 1,
+     "assistProbability": "20%",
+     "goalAvgCnt": "1.0",
+     "goalCnt": 1,
+     "goalProbability": "50%",
+     "injuryFlag": 0,
+     "personId": 574689,
+     "personName": "J. Kamiński",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "13"
+    },
+    {
+     "appearanceCnt": 1,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "1.0",
+     "goalCnt": 1,
+     "goalProbability": "50%",
+     "injuryFlag": 0,
+     "personId": 324923,
+     "personName": "卢凯巴基奥",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "11"
+    },
+    {
+     "appearanceCnt": 5,
+     "assistAvgCnt": "0.4",
+     "assistCnt": 2,
+     "assistProbability": "40%",
+     "goalAvgCnt": "0",
+     "goalCnt": 0,
+     "goalProbability": "0%",
+     "injuryFlag": 0,
+     "personId": 454794,
+     "personName": "巴",
+     "playerPositionCode": "Defender",
+     "playerPositionDesc": "后卫",
+     "startedMatchCnt": 5,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "6"
+    }
+   ],
+   "sportteryTeamId": 267,
+   "teamId": 1679,
+   "teamShortName": "本菲卡",
+   "uniformTeamId": 220
+  },
+  "seasonId": 15335,
+  "seasonName": "2026/2027",
+  "tournamentId": 1103,
+  "tournamentShortName": "欧罗巴",
+  "uniformLeagueId": 23,
+  "uniformMatchId": 2513032
+ }
+}

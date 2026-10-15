@@ -20,11 +20,13 @@
 """
 import json
 import os
+import re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 QCACHE_DIR = os.path.join(HERE, 'qcache')
 
 BET_UNIT = 2      # 单注 2 元（与实票账本/narrative.SHADOW_BET_UNIT 同源）
+_HHAD_RE = re.compile(r'^([hda])([+-]\d+)$')      # 让球腿 pick：方向 + 主队让球数
 BUDGET = 30       # 等成本预算上限（mult=⌊30/(n_bets*2)⌋ 至少 1）
 
 
@@ -425,6 +427,22 @@ def _pick_price(tleg, pick, outcome, score):
         total = h + a
         key = f's{min(total, 7)}'
         return odds.get(pick) if pick == key else None
+    if kind == 'hhad':
+        # 让球盘：让球结果 =(主队得分 + goalLine) vs 客队得分（体彩口径·主队视角，
+        # 与 boldplay._hhad_odds/_leg_hit 同源）。让球线取腿上 goalLine 为准——pick
+        # 字面的数字曾按客队视角记（P493 买 goalLine=-1 却记 'a+1'），不可用作让球线。
+        m = _HHAD_RE.match(str(pick))
+        if not m:
+            return None
+        side = m.group(1)
+        gl = tleg.get('goalLine')
+        if gl is None:
+            gl = int(m.group(2))            # 旧腿无 goalLine → 退回 pick 字面（口径自担）
+        diff = (h + float(gl)) - a
+        got = 'h' if diff > 0 else ('d' if diff == 0 else 'a')
+        return odds.get(pick) if side == got else None
+    if kind == 'hafu':
+        return None                # 半全场需半场比分，结算视图未提供 → 保守判灭（账本无在用腿）
     # crs：精确键 或 方向"其他"键（高比分近似语义）
     if pick in ('胜其他', '平其他', '负其他'):
         want = {'胜其他': 0, '平其他': 1, '负其他': 2}[pick]
