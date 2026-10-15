@@ -5,32 +5,56 @@
   "shadow_qcache": {
    "role": "影子层 D/C/G 族候选源（shapes 经 qcache 快照消费）",
    "epochs": [
-    {"from": "2026-09-08", "to": "2026-10-12", "engine": "freq_band λ平移链（freq_snap v1）"},
-    {"from": "2026-10-13", "engine": "V3W-v2 实力链（strength_chain_eval._predict_match·与生产比分端同源）"}
+    {
+     "from": "2026-09-08",
+     "to": "2026-10-12",
+     "engine": "freq_band λ平移链（freq_snap v1）"
+    },
+    {
+     "from": "2026-10-13",
+     "engine": "V3W-v2 实力链（strength_chain_eval._predict_match·与生产比分端同源）"
+    }
    ]
   },
   "shadow_v4b": {
    "role": "V 族 v4b 快照源",
    "epochs": [
-    {"from": "2026-09-30", "engine": "v4b 多场景状态加成（predictor_v4b_daily）"}
+    {
+     "from": "2026-09-30",
+     "engine": "v4b 多场景状态加成（predictor_v4b_daily）"
+    }
    ]
   },
   "shadow_v18": {
    "role": "v18 五挡双信号执行器（独立登记·非 PLAN_FAMILIES）",
    "epochs": [
-    {"from": "2026-10-07", "engine": "市场置信分带 + V3W 同向双信号（v18_scheme_daily）"}
-   ]
-  },
-  "llm-31grid-v1": {
-   "role": "L 族 llm 31格预测源（会话冻结 llm_preds·engine/cache/llm_preds）",
-   "epochs": [
-    {"from": "2026-10-13", "engine": "会话 LLM 31格冻结分布（llm_pred.freeze·右尾键选腿）"}
+    {
+     "from": "2026-10-07",
+     "engine": "市场置信分带 + V3W 同向双信号（v18_scheme_daily）"
+    }
    ]
   },
   "market_devig": {
    "role": "A 族选场层（市场去水 strong 排序）",
    "epochs": [
-    {"from": "2026-09-08", "engine": "体彩 HAD 去水主概率降序"}
+    {
+     "from": "2026-09-08",
+     "engine": "体彩 HAD 去水主概率降序"
+    }
+   ]
+  },
+  "llm-31grid": {
+   "role": "L 族 llm 31格预测源（会话冻结 llm_preds·engine/cache/llm_preds）",
+   "epochs": [
+    {
+     "from": "2026-10-13",
+     "to": "2026-10-14",
+     "engine": "会话 LLM 31格冻结分布（llm_pred.freeze·右尾键选腿）"
+    },
+    {
+     "from": "2026-10-15",
+     "engine": "会话 LLM 31格冻结分布·TTG锚市场v2（llm_pred.freeze 倾斜·形状维度保留·docs/plans/2026-10-14-crs-low-score-bias-design.md §三.3）"
+    }
    ]
   }
  }

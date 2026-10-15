@@ -3,9 +3,19 @@
   "spec": "LLM 语境预测层 v1（docs/2026-10-13-llm-predict-design.html·含 review 六修正）",
   "predictor": "会话内 LLM·31 格比分分布·forward only",
   "card": {
-    "layers": ["market", "intel", "profile", "lineup", "context"],
+    "layers": [
+      "market",
+      "intel",
+      "profile",
+      "lineup",
+      "context"
+    ],
     "contextSearchScope": "快筛后候选场 6~10 场",
-    "contextFilters": ["检索词限 preview/injury/team news", "赛后特征词整条丢弃", "发布时间晚于卡 createdAt 不收"]
+    "contextFilters": [
+      "检索词限 preview/injury/team news",
+      "赛后特征词整条丢弃",
+      "发布时间晚于卡 createdAt 不收"
+    ]
   },
   "primaryCriterion": {
     "name": "E_full_31grid",
@@ -15,7 +25,11 @@
     "clip": 1e-06,
     "ci": "bootstrap95 B=2000",
     "pass": "CI 下限 > 0",
-    "nGate": {"observe": 30, "formal": 100, "final": 200}
+    "nGate": {
+      "observe": 30,
+      "formal": 100,
+      "final": 200
+    }
   },
   "tailChannel": {
     "name": "E_tail 右尾选腿器专项通道",
@@ -29,12 +43,40 @@
     "FALSIFIED": "CI 跨 0 且 diffMean≤0（n≥100）",
     "INSUFFICIENT": "n<100"
   },
-  "descriptiveOnly": ["E1/E2/E3 事件族（同 tail-model 口径）", "分联赛/分月", "closeProxy 分层"],
+  "descriptiveOnly": [
+    "E1/E2/E3 事件族（同 tail-model 口径）",
+    "分联赛/分月",
+    "closeProxy 分层"
+  ],
   "redlines": [
     "forward only：历史回测=训练集考试=作弊，禁止",
     "预测步骤先于当日回填/赛果查询（会话污染）",
     "预测文件幂等只读禁覆写；数据卡语境层回写后重算 cardHash",
     "主判据 FAIL → LLM 不进任何整体预测叙事；右尾通道独立判定"
   ],
-  "frozenParams": {"boot_B": 2000, "seed": 20261015, "logloss_clip": 1e-06, "min_pool_items": 20, "tail_odds_floor": 30.0, "tail_fixed_cells": ["0:3", "0:4"], "tail_n_formal": 150}
+  "frozenParams": {
+    "boot_B": 2000,
+    "seed": 20261015,
+    "logloss_clip": 1e-06,
+    "min_pool_items": 20,
+    "tail_odds_floor": 30.0,
+    "tail_fixed_cells": [
+      "0:3",
+      "0:4"
+    ],
+    "tail_n_formal": 150
+  },
+  "v2": {
+    "registeredAt": "2026-10-15",
+    "appliesFrom": "2026-10-15",
+    "change": "冻结前 TTG 维度锚市场（大哥拍板直接上 v2）——治 v1 首轮实测系统偏低 -0.78 球",
+    "anchor": {
+      "target": "卡市场层 TTG power 去水期望（freq_band._ttg_market_expect·s7=7.4；不可达退化朴素去水 s7=7）",
+      "mechanism": "指数倾斜 p2(s)~p(s)*exp(k*t(s))·k 二分解出（ttg_anchor.solve_tilt·K_RANGE=(-2,2)）",
+      "shapeDimension": "同总进球格间比例守恒——主客分配完全保留（C 方案）",
+      "noMarket": "卡缺 ttg -> 不锚·anchor=null 留痕（增益不是依赖）"
+    },
+    "criteria": "v1 主判据/tail 通道/nGate 全部沿用不变；另登记 v1-vs-v2 前瞻对照为 forward 观察项（非判据）",
+    "evidence": "docs/plans/2026-10-14-crs-low-score-bias-design.md（低分偏置归因与修复）+ 2026-10-14 夜 12 场实况回测：未锚差 2.05 球/锚后差 1.22 球"
+  }
 }

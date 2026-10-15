@@ -20,7 +20,7 @@ POOL_CHAIN = {
     'strong': 'market_devig', 'jiao_zhuo': 'market_devig', 'ev_best': 'market_devig',
     'ttg': 'shadow_qcache', 'crs': 'shadow_qcache', 'tail_greedy': 'shadow_qcache',
     'v4b': 'shadow_v4b',
-    'llm_crs': 'llm-31grid-v1',          # L 族（2026-10-13 spec·review fix MEDIUM 补登）
+    'llm_crs': 'llm-31grid',            # L 族（v1 至 10-14 / v2 TTG锚市场自 10-15·epoch 见注册表）
 }
 
 # 不在 PLAN_FAMILIES 的独立执行器 spec → 链名（spec_name 直查）

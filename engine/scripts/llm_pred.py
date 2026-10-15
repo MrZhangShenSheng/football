@@ -15,6 +15,23 @@ PREDS_ROOT = ROOT / "engine" / "cache" / "llm_preds"
 CARDS_ROOT = ROOT / "engine" / "cache" / "llm_cards"
 CONF_LEVELS = ("low", "medium", "high")
 RAW_SUM_WARN = (0.5, 2.0)
+# 2026-10-15 大哥拍板直接上 v2：冻结前 TTG 维度锚市场（治臣填格低分倾向 −0.78 球），
+# 形状维度（同总进球格间主客分配）保留独立判断。epoch 登记 engine/cache/chain_registry.json。
+CHAIN_VERSION = "llm-31grid-v2"
+
+
+def _market_ttg(card: dict) -> float | None:
+    """卡市场层 TTG 赔率 → 期望总进球。与生产链同口径优先（freq_band power 去水+s7=7.4），
+    freq_band 不可达时退化 ttg_anchor 朴素去水（s7=7）——锚定是增益不是依赖。"""
+    ttg = ((card.get("layers") or {}).get("market") or {}).get("ttg") or {}
+    if not ttg:
+        return None
+    try:
+        from freq_band import _ttg_market_expect
+        return _ttg_market_expect(ttg)
+    except Exception:                                  # noqa: BLE001 —— 独立可跑降级
+        from ttg_anchor import market_ttg_expect
+        return market_ttg_expect(ttg)
 
 
 def validate_pred(pred: dict, market_keys: list[str]) -> tuple[bool, list[str]]:
@@ -54,7 +71,8 @@ def freeze(sale_date: str, preds: list[dict]) -> Path:
     out = PREDS_ROOT / f"{sale_date}.json"
     if out.exists():
         return out
-    frozen = {"frozenAt": datetime.now().isoformat(timespec="seconds"), "preds": []}
+    frozen = {"frozenAt": datetime.now().isoformat(timespec="seconds"),
+              "chain": CHAIN_VERSION, "preds": []}
     for pred in preds:
         card_p = CARDS_ROOT / sale_date / f'{pred.get("code")}.json'
         if not card_p.exists():
@@ -76,11 +94,26 @@ def freeze(sale_date: str, preds: list[dict]) -> Path:
         if not good:
             raise SystemExit(f'[llm_pred] 校验失败拒冻结: {issues}')
         norm, raw_sum = normalize_to_keys(pred["p_crs"], keys)
+        # v2 锚定：TTG 维度锚市场、形状维度保留（同总进球格间比例守恒）。
+        # 无市场 TTG（卡缺 ttg）→ 不锚，anchor=null 留痕——锚定是增益不是依赖。
+        anchor = None
+        target = _market_ttg(card)
+        if target:
+            from ttg_anchor import dist_expect, solve_tilt, tilt_dist
+            before = dist_expect(norm)
+            if abs(before - target) > 1e-9:
+                k = solve_tilt(norm, target)
+                norm = tilt_dist(norm, k)
+            else:
+                k = 0.0
+            anchor = {"k": round(k, 4), "before": round(before, 3),
+                      "target": round(target, 3)}
         frozen["preds"].append({
             "code": pred["code"], "cardHash": card["cardHash"], "p_crs": norm,
             "pRawSum": round(raw_sum, 4),
             "rawSumWarn": not (RAW_SUM_WARN[0] <= raw_sum <= RAW_SUM_WARN[1]),
             "contextStatus": ctx.get("status"),
+            "anchor": anchor,
             "keyJudgments": pred["keyJudgments"], "confidence": pred["confidence"]})
     PREDS_ROOT.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(frozen, ensure_ascii=False, indent=1), encoding="utf-8")

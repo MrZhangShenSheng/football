@@ -153,7 +153,8 @@ def test_llm_other_pick_e2e_freeze_and_settle(tmp_path, monkeypatch):
     out = paper.shadow_all(DATE, out=ledger)
     assert out["registered"] >= 1
     tk = next(t for t in paper.load_tickets(ledger) if t["spec_name"] == "llm-31格选腿")
-    assert tk["chain"] and tk["chain"]["chain"] == "llm-31grid-v1"      # Fix 2：L 族链籍 stamp
+    assert tk["chain"] and tk["chain"]["chain"] == "llm-31grid"         # Fix 2：L 族链籍 stamp
+    # 10-15 链名统一 llm-31grid（v1/v2 以 epoch 区分·原字面 llm-31grid-v1 由注册表收编）
     oh_leg = next(l for l in tk["legs"] if "other_h" in l["pick"])
     assert oh_leg["odds"].get("other_h") == 30.0                        # s1sh→other_h 冻到真实价
     # （odds_src 由 register 的 _norm_leg 固定键重建丢弃——全族既有行为，非断言面）

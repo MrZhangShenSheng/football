@@ -16,9 +16,13 @@ import math
 
 K_RANGE = (-2.0, 2.0)   # 二分域：覆盖期望 0.5~8 球
 K_ITERS = 80            # 二分精度远超 1e-6 容差
+OTHER_TOTAL_MEAN = 7.0  # other_* 桶条件均值（未定格比分≥6球·与 TTG s7≈7.4 同量级；
+                        #  桶质量通常 1~6%，取值敏感性可忽略）
 
 
-def _total(score: str) -> int:
+def _total(score: str) -> float:
+    if score.startswith("other_"):
+        return OTHER_TOTAL_MEAN
     h, a = (int(x) for x in score.split(":"))
     return h + a
 
