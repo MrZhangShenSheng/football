@@ -113,6 +113,21 @@
     "harmed": 0
    },
    "createdAt": "2026-10-16"
+  },
+  {
+   "id": "R021",
+   "text": "影子层 shadow-all 的成轮判定与 L 族取卷须同日期口径：现按开赛日成轮、按销售日取卷,早场轮二者不可兼得",
+   "why": "2026-10-16 实证：11 场在售中 10 场挂 10-17 凌晨开赛。按 10-17 跑→成轮但 load_llm_preds('2026-10-17') 找不到卷(卡与卷均在销售日 10-16)，L 族诚实跳过；按 10-16 跑→可用场 1<4 判不成轮。叠加幂等保护(registered=0 不重登)，L 族这一轮彻底漏登——llm-31格 轨断样本",
+   "stage": "candidate",
+   "form": "gate",
+   "trigger": "shadow-all 登记后核 L 族票数：pool=llm_crs 票数为 0 而 llm_preds/{销售日}.json 存在即触发",
+   "record": {
+    "rounds": 0,
+    "blocked": 0,
+    "saved": 0,
+    "harmed": 0
+   },
+   "createdAt": "2026-10-16"
   }
  ],
  "active_shadow": [
