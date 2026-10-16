@@ -73,9 +73,108 @@ def _lineup_layer(code: str, lineups: dict) -> dict:
     return {"status": "未获取"}
 
 
+def _devig_layer(match: dict) -> dict:
+    """五池去水概率（llm-autonomy-prereg ourModels §2）。
+
+    市场原始赔率含抽水,直接读易误判「市场认为多少概率」——去水后才是可比的市场概率。
+    had/hhad 用 1/o 归一;crs 用 power devig(market_lambda 同口径,与生产链一致)。
+    任一池缺失或解析失败→该池 null 留痕(禁伪造)。开发者 sszhang"""
+    out = {}
+    for pool in ("had", "hhad"):
+        o = match.get(pool) or {}
+        try:
+            vals = {k: float(v) for k, v in o.items() if float(v) > 1.0}
+            s = sum(1.0 / v for v in vals.values())
+            out[pool] = {k: round(1.0 / v / s, 4) for k, v in vals.items()} if s else None
+        except (TypeError, ValueError):
+            out[pool] = None
+    try:
+        import market_lambda as mkl
+        crs = {k: float(v) for k, v in (match.get("crs") or {}).items()
+               if _isnum(v) and float(v) > 1.0}
+        out["crs"] = ({k: round(v, 4) for k, v in mkl.crs_power_devig(crs).items()}
+                      if len(crs) >= 20 else None)
+    except Exception:                                      # noqa: BLE001 —— 去水失败不拖垮装卡
+        out["crs"] = None
+    for pool in ("ttg", "hafu"):
+        o = match.get(pool) or {}
+        try:
+            vals = {k: float(v) for k, v in o.items() if _isnum(v) and float(v) > 1.0}
+            s = sum(1.0 / v for v in vals.values())
+            out[pool] = {k: round(1.0 / v / s, 4) for k, v in vals.items()} if s else None
+        except (TypeError, ValueError):
+            out[pool] = None
+    return out
+
+
+def _isnum(v) -> bool:
+    try:
+        float(v)
+        return True
+    except (TypeError, ValueError):
+        return False
+
+
+def _our_models_layer(sale_date: str, code: str) -> dict:
+    """本地已算结论层（大哥 2026-10-16：上下文须含「我们自己算出来的」）。
+
+    装 V3W 实力链比分卡（生产比分端·三层降级来源标记 src + water 闸 + ttgBoom）与 v4b 快照。
+    缺失/不可算一律标 status 留痕——诚实缺口优于空值伪装（prereg card.honestGaps）。
+    开发者 sszhang"""
+    out = {}
+    p = ROOT / "data" / "03-predictions" / f"{sale_date}-crs.json"
+    if p.exists():
+        try:
+            doc = json.loads(p.read_text(encoding="utf-8"))
+            row = next((m for m in doc.get("matches") or [] if m.get("code") == code), None)
+            # ⚠️ src 必读（2026-10-16 实测教训）：生产比分端是三层降级，src=market_crs 时
+            # crsTop5 本质就是市场去水本身（实测 10-16 十一场全 market_crs，与市场 TOP5
+            # 差 <0.005）——此时它**不是独立参考**，拿它当第二意见等于重复看赔率。
+            # 该层真正的独立信号是 water（三水闸）/ttgBoom（爆量）/src（来源自白）。
+            independent = row.get("src") not in ("market_crs", None) if row else None
+            out["v3wChain"] = ({"status": "ok", "model": doc.get("model"),
+                                "src": row.get("src"), "lam": row.get("lam"),
+                                "crsTop5": row.get("crs_top5"),
+                                "ttgBoom": row.get("ttgBoom"), "water": row.get("water"),
+                                "leagueWarn": row.get("leagueWarn"),
+                                "independentOfMarket": independent,
+                                "useNote": ("src=market_crs → crsTop5≈市场去水，勿当独立第二"
+                                            "意见；独立信号看 water/ttgBoom"
+                                            if independent is False else
+                                            "src 非 market_crs → crsTop5 含模型独立成分")}
+                               if row else {"status": "该场未在比分卡"})
+        except (OSError, json.JSONDecodeError, KeyError):
+            out["v3wChain"] = {"status": "读取失败"}
+    else:
+        out["v3wChain"] = {"status": "未获取"}
+
+    p = ROOT / "data" / "03-predictions" / f"{sale_date}-v4b.json"
+    if p.exists():
+        try:
+            doc = json.loads(p.read_text(encoding="utf-8"))
+            row = next((m for m in doc.get("matches") or [] if m.get("code") == code), None)
+            if row:
+                out["v4b"] = {"status": "ok", **{k: row.get(k) for k in
+                                                 ("pick", "p", "scenario") if k in row}}
+            else:
+                skip = next((s for s in doc.get("skips") or [] if s.get("code") == code), None)
+                out["v4b"] = {"status": "不可算", "reason": skip.get("skipReason")} if skip \
+                    else {"status": "该场未在 v4b"}
+        except (OSError, json.JSONDecodeError):
+            out["v4b"] = {"status": "读取失败"}
+    else:
+        out["v4b"] = {"status": "未获取"}
+    return out
+
+
 def build_card(sale_date: str, match: dict, *, insight_path: Path | None,
                lineups: dict, now: str | None = None) -> dict:
-    """match=score_odds 存档行 → 五层数据卡。开发者 sszhang"""
+    """match=score_odds 存档行 → 七层数据卡（v3 厚卡·2026-10-16 ourModels+devig 接入）。
+
+    v3 相对 v2 的两处加厚（prereg designPrinciple「充分上下文进」）：
+      ① ourModels 层——V3W 实力链/v4b 等本地已算结论（大哥：上下文须含我们自己算出来的）
+      ② market 层补齐 hhad/hafu 两池 + devig 去水概率（原仅 had/crs/ttg 原始赔率）
+    开发者 sszhang"""
     intel = {"status": "未获取"}
     if insight_path and Path(insight_path).exists():
         doc = json.loads(Path(insight_path).read_text(encoding="utf-8"))
@@ -86,11 +185,15 @@ def build_card(sale_date: str, match: dict, *, insight_path: Path | None,
         "league": match["league"], "kickoff": match.get("matchTime"), "saleDate": sale_date,
         "layers": {
             "market": {"had": match.get("had") or {}, "crs": match.get("crs") or {},
-                       "ttg": match.get("ttg") or {}, "oddsUpdatedAt": match.get("oddsUpdatedAt")},
+                       "ttg": match.get("ttg") or {}, "hhad": match.get("hhad") or {},
+                       "hafu": match.get("hafu") or {},
+                       "devig": _devig_layer(match),
+                       "oddsUpdatedAt": match.get("oddsUpdatedAt")},
             "intel": intel,
             "profile": _profile_layer(match["league"]),
             "lineup": _lineup_layer(match["matchNumStr"], lineups),
             "context": {"status": "pending", "entries": []},
+            "ourModels": _our_models_layer(sale_date, match["matchNumStr"]),
         },
         "createdAt": now or datetime.now().isoformat(timespec="seconds"),
     }

@@ -52,27 +52,20 @@ def test_freeze_idempotent_and_strict(tmp_path, monkeypatch):
 
 
 def test_llm_family_build_ticket():
-    """L 族建票冒烟：qc=llm_preds 装载口径 {code:{crs:[(pick,p),...] 右尾键内降序}}——
-    picks 已是 pick 键（'0:3' 风格），选场=top1 概率降序前 2 场、每场 top2 双选。"""
+    """L 族 v2 停用回归锁（2026-10-16 大哥拍板淘汰）。
+
+    原测试锁的是 v2 选腿行为（右尾 top1 降序选场 + 每场 top2 双选 → 4 注 2串1）。
+    v2 已淘汰：实测右尾选腿与模型最看好格交集 0/22，@30 赔率阈值筛候选池等于『只准押
+    市场认为不会发生的事』（R022）。此处转为锁死停用状态，防 spec 被误恢复；
+    v3 自主判断轨的出票口径（Q1）待拍板，定后另立测试。"""
     import importlib
     sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "shadow"))
     shapes = importlib.import_module("shapes")
-    legs = [{"code": "周二001", "match": "A vs B", "fused": [0.5, 0.3, 0.2],
-             "odds": [1.5, 4.0, 5.0],
-             "pools": {"crs": {"s00s03": 40.0, "s00s04": 110.0, "s00s05": 350.0, "s01s01": 7.0}}},
-            {"code": "周二002", "match": "C vs D", "fused": [0.4, 0.3, 0.3],
-             "odds": [2.0, 3.4, 3.2],
-             "pools": {"crs": {"s00s03": 35.0, "s00s04": 100.0, "s01s01": 7.5}}}]
-    qc = {"周二001": {"crs": [("0:3", 0.030), ("0:4", 0.008)]},
-          "周二002": {"crs": [("0:3", 0.020), ("0:4", 0.006)]}}
-    spec = next(s for s in shapes.PLAN_FAMILIES if s.get("family") == "L")
-    t = shapes.build_ticket(legs, spec, qc=qc)
-    assert t is not None and len(t["tlegs"]) == 2
-    assert t["tlegs"][0]["picks"] == ["0:3", "0:4"]          # 每场 top2 右尾腿
-    assert t["n_bets"] == 4                                   # 2 场×双选=4 注 2串1
-    # top1 概率降序选场：周二001（0.030）> 周二002（0.020）→ tlegs[0] 须是周二001
-    src_leg = legs[t["tlegs"][0]["src"]]
-    assert src_leg["code"] == "周二001"
+    assert not [s for s in shapes.PLAN_FAMILIES if s.get("family") == "L"], \
+        "L 族 spec 已停用(R022)；若需恢复出票须先拍板 Q1 出票口径并过铁律 15 准入"
+    assert not [s for s in shapes.PLAN_FAMILIES if s.get("pool") == "llm_crs"]
+    # 其余 15 票型不受牵连（停用须是外科式的）
+    assert len(shapes.PLAN_FAMILIES) == 15
 
 
 def test_chinese_other_keys_mapped():
@@ -151,17 +144,14 @@ def test_llm_other_pick_e2e_freeze_and_settle(tmp_path, monkeypatch):
     monkeypatch.setattr(subprocess, "run", lambda *a, **k: (_ for _ in ()).throw(RuntimeError("test-no-subproc")))
     ledger = tmp_path / "paper_tickets.json"
     out = paper.shadow_all(DATE, out=ledger)
-    assert out["registered"] >= 1
-    tk = next(t for t in paper.load_tickets(ledger) if t["spec_name"] == "llm-31格选腿")
-    assert tk["chain"] and tk["chain"]["chain"] == "llm-31grid"         # Fix 2：L 族链籍 stamp
-    # 10-15 链名统一 llm-31grid（v1/v2 以 epoch 区分·原字面 llm-31grid-v1 由注册表收编）
-    oh_leg = next(l for l in tk["legs"] if "other_h" in l["pick"])
-    assert oh_leg["odds"].get("other_h") == 30.0                        # s1sh→other_h 冻到真实价
-    # （odds_src 由 register 的 _norm_leg 固定键重建丢弃——全族既有行为，非断言面）
-    # ③ 结算：赛果 6:0（outcome=0 主胜，6:0 属胜其他命中域）→ 含 other_h 的注派彩
-    rr = {f"周二{i:03d}": (0, (6, 0)) for i in range(1, 5)}
-    settled = paper.settle_all(rr, date=DATE, path=ledger)
-    ltk = next(t for t in settled if t["spec_name"] == "llm-31格选腿")
-    assert ltk["payout"] > 0
-    oh_settled = next(l for l in ltk["legs"] if "other_h" in l["pick"])
-    assert oh_settled["result"] == "hit" and oh_settled["hitPrice"] == 30.0   # 腿级明细同口径命中
+    # ③ v2 停用后的回归锁（2026-10-16 大哥拍板淘汰·R022）：
+    #    冻结链(freeze)与装载(load_llm_preds)仍须工作——v3 自主判断轨继续复用；
+    #    但 L 族不再产任何票（spec 已注释停用），此处锁死防误恢复。
+    assert not any(t["spec_name"] == "llm-31格选腿" for t in paper.load_tickets(ledger)), \
+        "L 族 v2 已淘汰(R022 赔率阈值筛候选池)，不应再产票"
+    assert paper.load_llm_preds(DATE) is not None                  # 装载链仍可用（v3 复用）
+    qc = paper.load_llm_preds(DATE)
+    assert len(qc) == 4 and all("crs" in v for v in qc.values())
+    # other 键三态归一仍须正确（v3 出票口径待定，但键口径是公共地基）
+    oh = [k for k, _ in qc["周二001"]["crs"]]
+    assert "other_h" in oh                                         # s1sh→other_h 归一未坏

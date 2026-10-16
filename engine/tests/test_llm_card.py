@@ -24,7 +24,9 @@ def test_build_card_layers_and_hash(tmp_path):
                        "crs": {"s01s00": 8.0}, "ttg": {"s0": 3.0}},
                       insight_path=None, lineups={})
     assert card["code"] == "周二001"
-    assert set(card["layers"]) == {"market", "intel", "profile", "lineup", "context"}
+    # v3 厚卡七层（2026-10-16 ourModels 接入·llm-autonomy-prereg card.layers）
+    assert set(card["layers"]) == {"market", "intel", "profile", "lineup", "context",
+                                   "ourModels"}
     assert card["layers"]["market"]["crs"] == {"s01s00": 8.0}
     assert card["layers"]["intel"]["status"] == "未获取"          # insight_path=None 诚实降级
     assert card["layers"]["context"] == {"status": "pending", "entries": []}
@@ -32,6 +34,27 @@ def test_build_card_layers_and_hash(tmp_path):
     # 同卡同 hash（createdAt 固定注入时）
     c2 = dict(card); c2["layers"] = dict(card["layers"])
     assert card_hash(c2) == card_hash(card)
+
+
+def test_v3_devig_layer_and_honest_gaps():
+    """v3 厚卡：去水概率算出 + 缺源诚实标注（prereg card.honestGaps·禁空值伪装）。"""
+    card = build_card("2026-10-13",
+                      {"matchNumStr": "周二001", "league": "英超", "home": "A", "away": "B",
+                       "matchTime": "2026-10-14 03:45",
+                       "had": {"h": 2.0, "d": 4.0, "a": 4.0},
+                       "hhad": {"h": 1.8, "d": 3.5, "a": 4.5},
+                       "crs": {"s01s00": 8.0}, "ttg": {"s0": 3.0, "s1": 3.0}},
+                      insight_path=None, lineups={})
+    dv = card["layers"]["market"]["devig"]
+    # had 去水：1/2 : 1/4 : 1/4 → 0.5/0.25/0.25（抽水剥离后归一）
+    assert dv["had"] == {"h": 0.5, "d": 0.25, "a": 0.25}
+    assert abs(sum(dv["ttg"].values()) - 1.0) < 1e-6
+    assert dv["crs"] is None                  # 仅 1 键 <20 → 不足以去水,诚实 null
+    assert dv["hafu"] is None                 # 该池未给 → null 而非 {}
+    # ourModels：无对应日期产出 → 标注未获取,不伪造
+    om = card["layers"]["ourModels"]
+    assert om["v3wChain"]["status"] in ("未获取", "该场未在比分卡", "读取失败")
+    assert om["v4b"]["status"] in ("未获取", "该场未在 v4b", "不可算", "读取失败")
 
 
 def test_save_card_idempotent_no_overwrite(tmp_path):
