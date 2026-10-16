@@ -1,0 +1,517 @@
+{
+ "schemaVersion": 1,
+ "createdAt": "2026-10-16",
+ "note": "经验规则化系统·唯一'预测生效'源（大哥拍板A）。三段生命周期判据冻结于设计§3。影子层规则由 rule_brief.py 每轮注入（≤15条），执行回执落 briefs/，rule_settle.py 回测拦截账。gate 段规则在 active_shadow 内以 stage=gate 区分。",
+ "candidates": [
+  {
+   "record": {
+    "rounds": 0,
+    "blocked": 0,
+    "saved": 0,
+    "harmed": 0
+   },
+   "evidence": [
+    {
+     "round": "2026-10 跨窗回测",
+     "detail": "2:1期望0.63/1:1=0.78",
+     "loss": null
+    }
+   ],
+   "rulings": [],
+   "id": "R012",
+   "addedAt": "2026-10-16",
+   "source": "CLAUDE.md右尾约束操作推论/W3热区分解",
+   "stage": "candidate",
+   "form": "checklist",
+   "text": "避开热区：2:1/1:1 高热档不押（2:1 单注期望 0.63 全场最差）",
+   "why": "W3 强场赔率分解：大众比分被抽水+热度双压"
+  },
+  {
+   "record": {
+    "rounds": 0,
+    "blocked": 0,
+    "saved": 0,
+    "harmed": 0
+   },
+   "evidence": [
+    {
+     "round": "W3+近窗",
+     "detail": "0:3+0:4 跨窗稳定",
+     "loss": null
+    }
+   ],
+   "rulings": [],
+   "id": "R013",
+   "addedAt": "2026-10-16",
+   "source": "CLAUDE.md右尾约束/W3证据",
+   "stage": "candidate",
+   "form": "checklist",
+   "text": "只押冷+肥：强客零封 0:3/0:4（跨窗84%/97%）、>4球大比分、other 档",
+   "why": "买客队大胜的人最少，池子最冷返还最松"
+  },
+  {
+   "record": {
+    "rounds": 0,
+    "blocked": 0,
+    "saved": 0,
+    "harmed": 0
+   },
+   "evidence": [
+    {
+     "round": "W3",
+     "detail": "期望1.00~1.03边缘",
+     "loss": null
+    }
+   ],
+   "rulings": [],
+   "id": "R014",
+   "addedAt": "2026-10-16",
+   "source": "CLAUDE.md右尾约束",
+   "stage": "candidate",
+   "form": "checklist",
+   "text": "不选冷而不肥：1:0/0:1 类 @6-7 期望仅 1.00 边缘，无右尾爆点",
+   "why": "大哥 2026-10-13 补充：冷+肥缺一不可"
+  },
+  {
+   "record": {
+    "rounds": 0,
+    "blocked": 0,
+    "saved": 0,
+    "harmed": 0
+   },
+   "evidence": [
+    {
+     "round": "2026-10-13",
+     "detail": "连乘锁实证",
+     "loss": null
+    }
+   ],
+   "rulings": [],
+   "id": "R015",
+   "addedAt": "2026-10-16",
+   "source": "CLAUDE.md串关数学锁",
+   "stage": "candidate",
+   "form": "checklist",
+   "text": "串关只买方差不买期望：串关期望=单关注望连乘，'中了就拉正'是幸存者视角",
+   "why": "实测 74.5%→2串63.4%→3/4串0%"
+  }
+ ],
+ "active_shadow": [
+  {
+   "record": {
+    "rounds": 0,
+    "blocked": 0,
+    "saved": 0,
+    "harmed": 0
+   },
+   "evidence": [
+    {
+     "round": "2026-10-15",
+     "legs": [
+      "周四013"
+     ],
+     "loss": 20
+    }
+   ],
+   "rulings": [
+    "2026-10-16 设计落档(f53b89e5)拍板①入影子"
+   ],
+   "id": "R001",
+   "addedAt": "2026-10-16",
+   "source": "2026-10-15 T048复盘",
+   "stage": "shadow",
+   "form": "gate",
+   "trigger": {
+    "play": "HAFU",
+    "parlayMin": 3
+   },
+   "text": "HAFU 腿禁入 3 串以上过关，只可单关或 2 串",
+   "why": "013 方向全对(哥本哈根3:0)死于半场0:0——方向对也死"
+  },
+  {
+   "record": {
+    "rounds": 0,
+    "blocked": 0,
+    "saved": 0,
+    "harmed": 0
+   },
+   "evidence": [
+    {
+     "round": "2026-10-15",
+     "legs": [
+      "周四001"
+     ],
+     "loss": 20
+    }
+   ],
+   "rulings": [
+    "2026-10-16 设计落档(f53b89e5)拍板①入影子"
+   ],
+   "id": "R002",
+   "addedAt": "2026-10-16",
+   "source": "2026-10-15 T048复盘",
+   "stage": "shadow",
+   "form": "gate",
+   "trigger": {
+    "deviationPtMax": 2
+   },
+   "text": "贴平腿禁入票：|臣-市场|<2pt 的腿=臣无信息量，入票纯凑数",
+   "why": "001 s2 偏离+0.5pt 仍入 T048，凑数腿杀票"
+  },
+  {
+   "record": {
+    "rounds": 0,
+    "blocked": 0,
+    "saved": 0,
+    "harmed": 0
+   },
+   "evidence": [
+    {
+     "round": "2026-10-15",
+     "legs": [
+      "周四014"
+     ],
+     "loss": 20
+    }
+   ],
+   "rulings": [
+    "2026-10-16 设计落档(f53b89e5)拍板①入影子"
+   ],
+   "id": "R003",
+   "addedAt": "2026-10-16",
+   "source": "2026-10-15 T048复盘",
+   "stage": "shadow",
+   "form": "gate",
+   "trigger": {
+    "poolPayoutMin": 0.85
+   },
+   "text": "深水盘禁入：玩法池返还率<85% 且无信息优势的场整场不碰",
+   "why": "014 TTG 返还率 79.7%，抽水 20% 无 EV 可言"
+  },
+  {
+   "record": {
+    "rounds": 0,
+    "blocked": 0,
+    "saved": 0,
+    "harmed": 0
+   },
+   "evidence": [
+    {
+     "round": "2026-10-15",
+     "legs": [
+      "周四006"
+     ],
+     "loss": 0
+    }
+   ],
+   "rulings": [
+    "2026-10-16 设计落档(f53b89e5)拍板①入影子"
+   ],
+   "id": "R004",
+   "addedAt": "2026-10-16",
+   "source": "2026-10-15 T048复盘·006事件",
+   "stage": "shadow",
+   "form": "checklist",
+   "text": "medium+偏离场伤停须网络源二次核验（体彩伤停表'伤1'可为周末缺阵残留）",
+   "why": "006 Ünal '伤缺'实为可出场，臣推荐作废"
+  },
+  {
+   "record": {
+    "rounds": 0,
+    "blocked": 0,
+    "saved": 0,
+    "harmed": 0
+   },
+   "evidence": [
+    {
+     "round": "2026-10-15",
+     "legs": [
+      "周四014"
+     ],
+     "loss": 0
+    }
+   ],
+   "rulings": [
+    "2026-10-16 设计落档(f53b89e5)拍板①入影子"
+   ],
+   "id": "R005",
+   "addedAt": "2026-10-16",
+   "source": "2026-10-15 T048复盘·014事件",
+   "stage": "shadow",
+   "form": "checklist",
+   "text": "赛事身份三验：联赛/轮次/两队全名交叉核（中文名撞名：拉普大学≠基多大学）",
+   "why": "014 对手臣认错，解放者杯半决赛性质全变"
+  },
+  {
+   "record": {
+    "rounds": 0,
+    "blocked": 0,
+    "saved": 0,
+    "harmed": 0
+   },
+   "evidence": [
+    {
+     "round": "2026-10-15",
+     "legs": [
+      "周四013"
+     ],
+     "loss": 20
+    }
+   ],
+   "rulings": [
+    "2026-10-16 设计落档(f53b89e5)拍板①入影子"
+   ],
+   "id": "R006",
+   "addedAt": "2026-10-16",
+   "source": "2026-10-15 T048复盘",
+   "stage": "shadow",
+   "form": "checklist",
+   "text": "临场赔率上抬>5%的腿须重审中率，非只算 EV 改善",
+   "why": "013 涨到 3.85 臣只算 EV 转正仍死——价涨=市场定价更难中"
+  },
+  {
+   "record": {
+    "rounds": 0,
+    "blocked": 0,
+    "saved": 0,
+    "harmed": 0
+   },
+   "evidence": [
+    {
+     "round": "2026-10-15",
+     "legs": [
+      "周四009"
+     ],
+     "loss": 20
+    }
+   ],
+   "rulings": [
+    "2026-10-16 设计落档(f53b89e5)拍板①入影子"
+   ],
+   "id": "R007",
+   "addedAt": "2026-10-16",
+   "source": "2026-10-15 T048复盘·009/010",
+   "stage": "shadow",
+   "form": "checklist",
+   "text": "low 置信背离场（市场vs近况分裂）可观察，禁作主推",
+   "why": "009/010 臣自己都只敢标 low，却进了我给的出票视野"
+  },
+  {
+   "record": {
+    "rounds": 0,
+    "blocked": 0,
+    "saved": 0,
+    "harmed": 0
+   },
+   "evidence": [
+    {
+     "round": "2026-10-15",
+     "legs": [
+      "周四006"
+     ],
+     "loss": 0
+    }
+   ],
+   "rulings": [
+    "2026-10-16 设计落档(f53b89e5)拍板①入影子"
+   ],
+   "id": "R008",
+   "addedAt": "2026-10-16",
+   "source": "2026-10-15 T048复盘·006冻结僵局",
+   "stage": "shadow",
+   "form": "checklist",
+   "text": "冻结后发现错误走 -r1 修正卷（revisionOf+理由），原卷永不改",
+   "why": "006 证伪后冻结卷改不动，作废推荐只留对话痕"
+  },
+  {
+   "record": {
+    "rounds": 0,
+    "blocked": 0,
+    "saved": 0,
+    "harmed": 0
+   },
+   "evidence": [
+    {
+     "round": "2026-09-18",
+     "legs": [
+      "当日5腿"
+     ],
+     "loss": null
+    }
+   ],
+   "rulings": [
+    "2026-09-22 拍板转正·2026-10-16 迁册（enforcedBy 上游代码）"
+   ],
+   "id": "R009",
+   "addedAt": "2026-10-16",
+   "source": "SKILL铁律12/v5.11转正",
+   "stage": "gate",
+   "form": "gate",
+   "trigger": {
+    "requiresHypothesis": true
+   },
+   "enforcedBy": "hypothesis.filter_buyable（boldplay 引擎腿默认 pending）",
+   "text": "假设层 pending/refuted 腿不出票",
+   "why": "09-18 会话 EV 排序捞腿冒充假设驱动"
+  },
+  {
+   "record": {
+    "rounds": 0,
+    "blocked": 0,
+    "saved": 0,
+    "harmed": 0
+   },
+   "evidence": [
+    {
+     "round": "2026-09-18",
+     "legs": [],
+     "loss": null
+    }
+   ],
+   "rulings": [
+    "memory 教训拆行为部分入册·叙事留原条目"
+   ],
+   "id": "R010",
+   "addedAt": "2026-10-16",
+   "source": "SKILL铁律13内核+memory feedback_purchase_criteria",
+   "stage": "shadow",
+   "form": "checklist",
+   "text": "EV 不选腿：禁用 EV 排序选腿、禁以 EV 当推荐卖点或劝退理由",
+   "why": "三轮证伪+大哥'购买标准=解释力非EV'（09-18 连犯三轮）"
+  },
+  {
+   "record": {
+    "rounds": 0,
+    "blocked": 0,
+    "saved": 0,
+    "harmed": 0
+   },
+   "evidence": [
+    {
+     "round": "2026-08-31",
+     "legs": [
+      "011"
+     ],
+     "loss": null
+    }
+   ],
+   "rulings": [],
+   "id": "R011",
+   "addedAt": "2026-10-16",
+   "source": "SKILL铁律9",
+   "stage": "shadow",
+   "form": "checklist",
+   "text": "同场限一玩法、不同场可混串（最易看反）",
+   "why": "08-31 误读致方案系统性漏混串优化"
+  },
+  {
+   "record": {
+    "rounds": 0,
+    "blocked": 0,
+    "saved": 0,
+    "harmed": 0
+   },
+   "evidence": [
+    {
+     "round": "历史",
+     "legs": [],
+     "loss": null
+    }
+   ],
+   "rulings": [],
+   "id": "R016",
+   "addedAt": "2026-10-16",
+   "source": "memory predict-full-pipeline",
+   "stage": "shadow",
+   "form": "checklist",
+   "text": "新销售轮全流程不可跳：freq q 口径 EV 虚高 15-35pp（温度链缺失）",
+   "why": "特殊票型也须完整 Step1-7"
+  },
+  {
+   "record": {
+    "rounds": 0,
+    "blocked": 0,
+    "saved": 0,
+    "harmed": 0
+   },
+   "evidence": [
+    {
+     "round": "T033",
+     "legs": [],
+     "loss": null
+    }
+   ],
+   "rulings": [],
+   "id": "R017",
+   "addedAt": "2026-10-16",
+   "source": "memory h2h-data-gap",
+   "stage": "shadow",
+   "form": "checklist",
+   "text": "比分/H2H 判断前必查赛季完整度：缓存无≠历史无，样本<200 不得单独作剔除依据",
+   "why": "T033 出票后才发现米堡主场负绩"
+  },
+  {
+   "record": {
+    "rounds": 0,
+    "blocked": 0,
+    "saved": 0,
+    "harmed": 0
+   },
+   "evidence": [
+    {
+     "round": "2026-09-17",
+     "legs": [
+      "6条"
+     ],
+     "loss": null
+    }
+   ],
+   "rulings": [],
+   "id": "R018",
+   "addedAt": "2026-10-16",
+   "source": "SKILL:199 转正补条款",
+   "stage": "gate",
+   "form": "gate",
+   "trigger": {
+    "noAnchorPureTemplate": true
+   },
+   "enforcedBy": "boldplay low_conf/pure_template flags + 假设层",
+   "text": "无锚场（dc_used=false）纯模板腿=pending 不得入票",
+   "why": "09-17 杯赛轮 6 条 dc=null 模板腿入票反例"
+  },
+  {
+   "record": {
+    "rounds": 0,
+    "blocked": 0,
+    "saved": 0,
+    "harmed": 0
+   },
+   "evidence": [
+    {
+     "round": "T029",
+     "legs": [],
+     "loss": null
+    }
+   ],
+   "rulings": [],
+   "id": "R019",
+   "addedAt": "2026-10-16",
+   "source": "memory ticket-recommend-alignment v5.8",
+   "stage": "shadow",
+   "form": "checklist",
+   "text": "实票登记必跑对照回执（agreement 五值），复核新结论须立即回写系统字段",
+   "why": "T029 回执口径滞后坑"
+  }
+ ],
+ "retired": [],
+ "gates": {
+  "R009": {
+   "module": "hypothesis.filter_buyable",
+   "since": "2026-09-22"
+  },
+  "R018": {
+   "module": "boldplay flags+假设层",
+   "since": "2026-09-22"
+  }
+ }
+}

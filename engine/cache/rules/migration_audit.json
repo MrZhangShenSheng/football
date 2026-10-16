@@ -1,0 +1,97 @@
+{
+ "generatedAt": "2026-10-16",
+ "note": "首批迁移审计表（主公过目后旧条目加指针——memory 指针债记 Ruling R2 下轮补）。判别原则=只迁行为禁令不迁流程描述。",
+ "rows": [
+  {
+   "source": "T048复盘",
+   "item": "HAFU过关/贴平腿/深水盘/假伤停/撞名/价涨/背离low/修正卷",
+   "dest": "R001-R008",
+   "stage": "shadow",
+   "ruling": "设计落档视同拍板①"
+  },
+  {
+   "source": "SKILL铁律12(假设先行)",
+   "item": "pending/refuted不出票",
+   "dest": "R009",
+   "stage": "gate(enforcedBy hypothesis)",
+   "ruling": "已在代码强制，迁册记籍"
+  },
+  {
+   "source": "SKILL铁律13内核",
+   "item": "EV不选腿/禁劝退",
+   "dest": "R010",
+   "stage": "shadow",
+   "ruling": "行为禁令"
+  },
+  {
+   "source": "SKILL铁律9",
+   "item": "同场限一玩法",
+   "dest": "R011",
+   "stage": "shadow",
+   "ruling": "行为禁令（boldplay asserts 部分强制）"
+  },
+  {
+   "source": "CLAUDE.md右尾操作推论",
+   "item": "避热区/冷肥/不冷不肥/串关方差",
+   "dest": "R012-R015",
+   "stage": "candidate",
+   "ruling": "右尾定位级约束留CLAUDE.md，操作细则入册候选"
+  },
+  {
+   "source": "SKILL铁律199条",
+   "item": "无锚纯模板腿不入票",
+   "dest": "R018",
+   "stage": "gate",
+   "ruling": "enforcedBy boldplay+假设层"
+  },
+  {
+   "source": "memory predict-full-pipeline",
+   "item": "全流程不可跳",
+   "dest": "R016",
+   "stage": "shadow",
+   "ruling": "行为部分入册，叙事留memory"
+  },
+  {
+   "source": "memory h2h-data-gap",
+   "item": "判断前查赛季完整度",
+   "dest": "R017",
+   "stage": "shadow",
+   "ruling": "同上"
+  },
+  {
+   "source": "memory ticket-recommend-alignment",
+   "item": "登记必跑对照回执",
+   "dest": "R019",
+   "stage": "shadow",
+   "ruling": "同上"
+  },
+  {
+   "source": "memory hitrate-vs-implied",
+   "item": "报命中率必三件套",
+   "dest": null,
+   "stage": null,
+   "ruling": "留memory——汇报纪律非预测流程"
+  },
+  {
+   "source": "SKILL铁律8(CRS融合链)",
+   "item": "四步链条描述",
+   "dest": null,
+   "stage": null,
+   "ruling": "留SKILL——流程结构描述非行为禁令"
+  },
+  {
+   "source": "SKILL铁律14(回测纪律)",
+   "item": "预注册/自证伪",
+   "dest": null,
+   "stage": null,
+   "ruling": "留SKILL——研究方法论，规则册§3已内化其精神"
+  },
+  {
+   "source": "CLAUDE.md项目第一约束",
+   "item": "右尾博弈定位",
+   "dest": null,
+   "stage": null,
+   "ruling": "留CLAUDE.md——全局方向；操作推论已拆R012-R015"
+  }
+ ]
+}
