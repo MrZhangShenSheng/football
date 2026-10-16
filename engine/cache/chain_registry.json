@@ -53,7 +53,9 @@
     },
     {
      "from": "2026-10-15",
-     "engine": "会话 LLM 31格冻结分布·TTG锚市场v2（llm_pred.freeze 倾斜·形状维度保留·docs/plans/2026-10-14-crs-low-score-bias-design.md §三.3）"
+     "engine": "会话 LLM 31格冻结分布·TTG锚市场v2（llm_pred.freeze 倾斜·形状维度保留·docs/plans/2026-10-14-crs-low-score-bias-design.md §三.3）",
+     "to": "2026-10-16",
+     "retiredReason": "大哥 2026-10-16 拍板淘汰：判断与产出脱钩实测——tilt 锚定把分布推向市场 TVD 相对缩减 53.9%(冻结卷离市场0.073 < 离原始判断0.126·11场8场更近市场)；右尾选腿与模型最看好格 交集 0/22(模型9场首位为1:1/2:1，实选0:3/3:3/4:1/5:1/4:0)；tilt 单参数全局缩放致 TTG 与形状耦合，设计宣称的『形状维度保留』在该实现下不成立。后继轨见 docs/superpowers/plans/2026-10-16-llm-context-autonomy.md"
     }
    ]
   }

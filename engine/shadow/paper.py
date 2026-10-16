@@ -317,6 +317,40 @@ def _llm_pick_key(k):
             else 'other_a' if k in ('s1sa', '负其他') else None)
 
 
+def _sale_date_of(match_date: str):
+    """开赛日 → 体彩销售日（R021 修·2026-10-16）。
+
+    凌晨场的销售日=开赛日前一天（体彩「周五00X」挂在周五售、周六凌晨开赛）。不靠日历硬减：
+    以 score_odds 存档为准反查——存档按销售日分文件、内含 matchDays[].matches[].matchTime，
+    命中含该开赛日场次的最近销售日即答案；查不到退化为 date-1 天，再不行返回 date 本身。
+    开发者 sszhang"""
+    arch = os.path.join(REPO, 'engine', 'cache', 'score_odds')
+    try:
+        cands = sorted((f[:-5] for f in os.listdir(arch) if f.endswith('.json')),
+                       reverse=True)
+    except OSError:
+        cands = []
+    for sd in cands:
+        if sd > match_date:                       # 销售日不晚于开赛日
+            continue
+        try:
+            with open(os.path.join(arch, f'{sd}.json'), encoding='utf-8') as fh:
+                doc = json.load(fh)
+        except (OSError, json.JSONDecodeError):
+            continue
+        for md in (doc or {}).get('matchDays') or []:
+            for m in md.get('matches') or []:
+                if str(m.get('matchTime') or '')[:10] == match_date:
+                    return sd
+        if sd < match_date:                       # 已翻过比开赛日更早的档仍未命中 → 止损
+            break
+    try:
+        d = _datetime.date.fromisoformat(match_date) - _datetime.timedelta(days=1)
+        return d.isoformat()
+    except ValueError:
+        return match_date
+
+
 def load_llm_preds(date: str):
     """llm 冻结预测 → L 族 qc：{code: {'crs': [(pick, p), ...] 右尾键内按冻结 p 降序}}。
     右尾键=该场卡市场层有价键中赔率≥30 ∪ 固定 {0:3,0:4}（与 llm_eval.tail_keys_of 同口径，
@@ -438,7 +472,10 @@ def shadow_all(date=None, out=None):
         if spec.get('pool') == 'llm_crs':
             # L 族 forward（2026-10-13 spec）：qc=llm 冻结预测装载（右尾键降序）；无自动生成
             # ——llm 预测由会话 llm_pred.freeze 预先冻结，文件缺失诚实跳过（L 族当日无票）
-            spec_qc = load_llm_preds(date)
+            # 日期口径解耦（R021·2026-10-16 修）：本函数筛场按 matchDate=开赛日（其余 15 票型
+            # 依赖，勿动），而 llm 卡/卷落在**销售日**——凌晨场轮二者必然错开（10-16 售、
+            # 10-17 开赛 → 按开赛日取卷找不到文件，L 族整轮静默漏登）。此处按销售日取卷。
+            spec_qc = load_llm_preds(_sale_date_of(date)) or load_llm_preds(date)
         tk = _shapes.build_ticket(legs, spec, qc=spec_qc)
         if tk is None:
             continue

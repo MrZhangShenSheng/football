@@ -87,8 +87,14 @@ PLAN_FAMILIES = [
     # n≥150 才转正）；主判据（31 格配对 log-loss）FAIL 不封锁本通道但封锁整体预测叙事。
     # 冻结纪律同 qcache/v4b：llm_preds 文件在即用，缺失诚实跳过（L 族当日无票，不自动生成）。
     # 开发者 sszhang
-    {'family': 'L', 'name': 'llm-31格选腿', 'pool': 'llm_crs', 'shape': '2串1',
-     'n_legs': 2, 'options': 'dual', 'track': 'A'},
+    # ⛔ 2026-10-16 大哥拍板停用（v2 淘汰）：实测判断与产出脱钩——tilt 锚定把分布推向市场
+    # TVD 相对缩减 53.9%，右尾选腿与模型最看好格交集 0/22（模型 9/11 场首位 1:1 或 2:1，
+    # 实选 0:3/3:3/4:1/5:1/4:0）。@30 右尾阈值按定义只取市场认为极不可能的格=规定「只准押
+    # 市场认为不会发生的事」（R022）。chain_registry llm-31grid v2 epoch 已收口 to=2026-10-16。
+    # 后继轨见 docs/superpowers/plans/2026-10-16-llm-context-autonomy.md（Q1 出票口径待拍板）。
+    # 保留条目注释而非删除=口径断点留痕（历史 P492/P493 等票的 spec 可回溯）。
+    # {'family': 'L', 'name': 'llm-31格选腿', 'pool': 'llm_crs', 'shape': '2串1',
+    #  'n_legs': 2, 'options': 'dual', 'track': 'A'},
 ]
 
 
