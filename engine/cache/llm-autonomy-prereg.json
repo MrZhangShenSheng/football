@@ -1,0 +1,104 @@
+{
+ "registeredAt": "2026-10-16",
+ "spec": "LLM 语境自主判断层 v3（docs/superpowers/plans/2026-10-16-llm-context-autonomy.md）",
+ "predictor": "会话内 LLM·结构化自主判断·forward only",
+ "supersedes": {
+  "chain": "llm-31grid",
+  "retiredEpoch": "2026-10-15 → 2026-10-16（v2 TTG锚市场）",
+  "oldPrereg": "engine/cache/llm-predict-prereg.json（不修改·跑前冻结凭证留痕）",
+  "why": "大哥 2026-10-16 拍板：v2 判断与产出脱钩实测——tilt 锚定推向市场 TVD 相对缩减 53.9%；右尾选腿与模型最看好格交集 0/22；@30 赔率阈值筛候选池等于『只准押市场认为不会发生的事』（R022）。样本计数从 0 重起（口径断点）",
+  "sampleBreak": "v1/v2 三轮样本（10-14/10-15/10-16）与本 prereg 不可比，禁合并计数"
+ },
+ "designPrinciple": "充分上下文进、自主判断出——厚卡装齐本地已算结论，输出端不强制 31 格穷举；判断本身即产出与受测对象",
+ "card": {
+  "layers": ["market", "intel", "profile", "lineup", "context", "ourModels"],
+  "ourModelsContent": [
+   "V3W 实力链比分卡（data/03-predictions/{销售日}-crs.json·crs_top5 + ttgBoom + water 闸 + src 三层来源）",
+   "市场五池去水概率（had/crs/ttg/hhad/hafu·market_lambda power devig）",
+   "v4b 快照（可算场；不可算场标 skipReason 不伪造）",
+   "联赛画像（场均进球/主胜率等·data/00-leagues）"
+  ],
+  "contextFilters": [
+   "检索词限 preview/injury/team news",
+   "赛后特征词整条丢弃",
+   "发布时间晚于卡 createdAt 不收"
+  ],
+  "honestGaps": "任何层缺失标『未获取』并计入 gapFlags，禁空值伪装成已知"
+ },
+ "outputContract": {
+  "form": "结构化·非固定长度（Q3 拍板：不逼模型凭空产 31 个数）",
+  "required": [
+   "direction: 走向判断（主胜/平/客胜倾向或明确不站边）+ evidence",
+   "goalBand: 进球区间（如『2-3 球』）+ evidence",
+   "keyCells: 关键格列表（1~5 个·每个带 cell + 理由）——允许为空（判断不支持任何具体格时）",
+   "against: 反对项（与结论相悖的证据·必填≥1 条或显式写 none 并说明）",
+   "confidence: low|medium|high"
+  ],
+  "forbidden": [
+   "穷举 31 格概率（v2 填表模式·与设计原则相悖）",
+   "由泊松摊格凑数充当判断",
+   "无 evidence 的 judgment"
+  ],
+  "note": "keyCells 可空是刻意设计——『我判断不出具体比分』是合法且诚实的产出"
+ },
+ "primaryCriterion": {
+  "name": "E_direction",
+  "metric": "走向判断准确率 vs 市场去水 argmax 基线（配对·每场计分）",
+  "marketSide": "开赛前最后可得 HAD power devig argmax",
+  "scoring": "命中=1 不中=0；模型明确『不站边』的场计入 descriptiveOnly 不入主判据分母",
+  "ci": "bootstrap95 B=2000",
+  "pass": "CI 下限 > 0（模型准确率 − 市场基线准确率）",
+  "nGate": {"observe": 30, "formal": 100, "final": 200}
+ },
+ "secondaryCriteria": [
+  {
+   "name": "E_goalBand",
+   "metric": "进球区间命中率 vs 市场 TTG 去水众数区间基线（配对）",
+   "pass": "CI 下限 > 0",
+   "nGate": {"formal": 100}
+  },
+  {
+   "name": "E_keyCells",
+   "metric": "关键格命中率（实际比分 ∈ keyCells）vs 同数量市场最高概率格基线（配对·按 keyCells 个数对等取市场 topN）",
+   "pass": "CI 下限 > 0",
+   "nGate": {"formal": 100},
+   "note": "keyCells 为空的场不入此判据分母（诚实弃权不罚不奖）"
+  },
+  {
+   "name": "E_calibration",
+   "metric": "confidence 分层后各判据准确率单调性（high ≥ medium ≥ low）",
+   "pass": "描述性·不设门",
+   "note": "测模型是否知道自己什么时候不知道"
+  }
+ ],
+ "verdictRules": {
+  "UNDETECTED": "n≥100 且 CI 跨 0 且点估计>0 → 续判至 n=200",
+  "FALSIFIED": "CI 跨 0 且点估计≤0（n≥100）",
+  "INSUFFICIENT": "n<100"
+ },
+ "descriptiveOnly": [
+  "『不站边』场占比与其后验分布",
+  "against 项事后是否成立（反对项质量）",
+  "分联赛/分月",
+  "gapFlags 分层（上下文完整度对准确率的影响）"
+ ],
+ "redlines": [
+  "forward only：模型见过历史赛果，历史回测=训练集考试=作弊，禁止",
+  "判断步骤必先于当日任何回填/赛果查询（会话上下文污染）",
+  "判断文件幂等只读禁覆写；修正走 -rN 修正卷（R008）",
+  "数据卡语境层回写后重算 cardHash",
+  "出票口径（Q1）未拍板前：本轨只在影子层 forward，不接出票主流程（铁律 15 组件准入制）",
+  "禁以赔率阈值筛选候选池（R022）——候选池为全部市场有价键或由判断直接给出"
+ ],
+ "frozenParams": {
+  "boot_B": 2000,
+  "seed": 20261016,
+  "keyCells_max": 5,
+  "confidence_levels": ["low", "medium", "high"]
+ },
+ "openQuestions": {
+  "Q1": "出票口径未定（判断关键格×市场价偏离筛选 vs 只出方向盘）——定后另立出票专项 prereg，不改本文件",
+  "note": "本 prereg 只管判断质量测量；出票是独立准入问题"
+ },
+ "developer": "sszhang"
+}
