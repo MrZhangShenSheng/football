@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-16",
+ "matchKey": "2042040",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:52",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     1.043,
+     1.398
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:52",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": false
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:52",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1351
+     },
+     {
+      "pick": "s00s01",
+      "p": 0.1136
+     },
+     {
+      "pick": "s00s00",
+      "p": 0.0953
+     },
+     {
+      "pick": "s01s02",
+      "p": 0.0887
+     },
+     {
+      "pick": "s00s02",
+      "p": 0.0851
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:52",
+   "payload": {
+    "hid": "bologna",
+    "aid": "inter",
+    "hstRows": 1570
+   }
+  }
+ }
+}

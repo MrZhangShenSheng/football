@@ -5,7 +5,7 @@
  "steps": {
   "S1_odds": {
    "source": "code",
-   "recordedAt": "2026-10-16T09:21:31",
+   "recordedAt": "2026-10-16T11:21:42",
    "payload": {
     "archive": "2026-10-16.json",
     "fetchedAt": "2026-10-16",
@@ -18,7 +18,63 @@
      "hafu"
     ],
     "oddsUpdatedAt": "2026-10-15 13:27:15",
-    "sellStatus": 2
+    "sellStatus": 1
+   }
+  },
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:43",
+   "payload": {
+    "src": "market_crs",
+    "lam": null,
+    "beta": null
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:43",
+   "payload": {
+    "method": "market_crs",
+    "boomGate": 0.05,
+    "water": true
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:43",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s02s01",
+      "p": 0.1084
+     },
+     {
+      "pick": "s01s01",
+      "p": 0.0899
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.0749
+     },
+     {
+      "pick": "s03s01",
+      "p": 0.0709
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.0673
+     }
+    ],
+    "src": "market_crs"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:43",
+   "payload": {
+    "hid": "heerenveen",
+    "aid": "excelsior-rotterdam",
+    "hstRows": 1087
    }
   }
  }

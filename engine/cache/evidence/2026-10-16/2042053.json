@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-16",
+ "matchKey": "2042053",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:57",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     1.529,
+     1.394
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:57",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": false
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:57",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1354
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0876
+     },
+     {
+      "pick": "s01s02",
+      "p": 0.0799
+     },
+     {
+      "pick": "s00s00",
+      "p": 0.0745
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.0629
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:57",
+   "payload": {
+    "hid": "osasuna",
+    "aid": "racing-santander",
+    "hstRows": 1589
+   }
+  }
+ }
+}

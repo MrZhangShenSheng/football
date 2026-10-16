@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-16",
+ "matchKey": "2042026",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:48",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     1.446,
+     1.282
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:48",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": false
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:48",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1431
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0876
+     },
+     {
+      "pick": "s00s00",
+      "p": 0.0873
+     },
+     {
+      "pick": "s01s02",
+      "p": 0.0777
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.0726
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:48",
+   "payload": {
+    "hid": "espanyol",
+    "aid": "atletico-madrid",
+    "hstRows": 1589
+   }
+  }
+ }
+}

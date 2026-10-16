@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-16",
+ "matchKey": "2042063",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:24:00",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     1.649,
+     1.964
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:24:00",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": false
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:24:00",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.0984
+     },
+     {
+      "pick": "s01s02",
+      "p": 0.0858
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.072
+     },
+     {
+      "pick": "s02s02",
+      "p": 0.0707
+     },
+     {
+      "pick": "s01s03",
+      "p": 0.0561
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:24:00",
+   "payload": {
+    "hid": "groningen",
+    "aid": "ajax",
+    "hstRows": 1087
+   }
+  }
+ }
+}

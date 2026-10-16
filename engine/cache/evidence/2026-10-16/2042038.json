@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-16",
+ "matchKey": "2042038",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:52",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     2.107,
+     0.988
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:52",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": false
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:52",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1113
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.1005
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0993
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.0783
+     },
+     {
+      "pick": "s03s00",
+      "p": 0.0706
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:52",
+   "payload": {
+    "hid": "villarreal",
+    "aid": "elche",
+    "hstRows": 1589
+   }
+  }
+ }
+}

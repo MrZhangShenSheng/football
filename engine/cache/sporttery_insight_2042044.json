@@ -1,0 +1,243 @@
+{
+ "fetchedAt": "2026-10-16",
+ "source": "sporttery",
+ "matchId": 2042044,
+ "match": {
+  "code": "周六027",
+  "league": "荷甲",
+  "gameweek": "9",
+  "season": "2026/2027",
+  "home": "特尔斯达",
+  "away": "费耶诺德",
+  "kickoff": "2026-10-18 02:00",
+  "uniformMatchId": 2513533
+ },
+ "standing": {
+  "away": {
+   "groupName": "",
+   "phaseName": "Regular Season",
+   "ranking": "1",
+   "sAwayDrawMatchCnt": "0",
+   "sAwayLossGoalMatchCnt": "0",
+   "sAwayWinGoalMatchCnt": "4",
+   "sDrawMatchCnt": "2",
+   "sLossGoalMatchCnt": "0",
+   "sWinGoalMatchCnt": "6",
+   "seasonName": "2026/2027"
+  },
+  "home": {
+   "groupName": "",
+   "phaseName": "Regular Season",
+   "ranking": "15",
+   "sDrawMatchCnt": "3",
+   "sHomeDrawMatchCnt": "2",
+   "sHomeLossGoalMatchCnt": "2",
+   "sHomeWinGoalMatchCnt": "0",
+   "sLossGoalMatchCnt": "4",
+   "sWinGoalMatchCnt": "1",
+   "seasonName": "2026/2027"
+  }
+ },
+ "injuries": {
+  "home": [],
+  "away": []
+ },
+ "form": {
+  "goalAvg": {
+   "awayGoalAvgCnt": "3.1",
+   "awayGoalAvgCntRatio": "79.5",
+   "homeGoalAvgCnt": "0.8",
+   "homeGoalAvgCntRatio": "20.5",
+   "totalLegCnt": 10
+  },
+  "last10": {
+   "awayDrawMatchCnt": 2,
+   "awayLossGoalMatchCnt": 1,
+   "awayScoreRatio": "77",
+   "awayWinGoalMatchCnt": 7,
+   "homeDrawMatchCnt": 3,
+   "homeLossGoalMatchCnt": 6,
+   "homeScoreRatio": "20",
+   "homeWinGoalMatchCnt": 1,
+   "totalLegCnt": 10
+  },
+  "last10HomeAway": {
+   "awayDrawMatchCnt": 2,
+   "awayLossGoalMatchCnt": 1,
+   "awayScoreRatio": "77",
+   "awayWinGoalMatchCnt": 7,
+   "homeDrawMatchCnt": 3,
+   "homeLossGoalMatchCnt": 3,
+   "homeScoreRatio": "50",
+   "homeWinGoalMatchCnt": 4,
+   "totalLegCnt": 10
+  }
+ },
+ "h2h": {
+  "statistics": {
+   "drawMatchCnt": 0,
+   "drawProbability": "0%",
+   "goalCnt": 0,
+   "lossGoalCnt": 0,
+   "lossGoalMatchCnt": 2,
+   "lossProbability": "100%",
+   "netGoal": 0,
+   "sportteryTeamId": 0,
+   "teamId": 0,
+   "teamShortName": "特尔斯达",
+   "totalLegCnt": 2,
+   "winGoalMatchCnt": 0,
+   "winProbability": "0%"
+  },
+  "matches": [
+   {
+    "date": "2026-02-23",
+    "home": "费耶诺德",
+    "score": "2:1",
+    "ht": "2:1",
+    "away": "特尔斯达",
+    "winner": "away"
+   },
+   {
+    "date": "2025-11-30",
+    "home": "特尔斯达",
+    "score": "1:2",
+    "ht": "0:1",
+    "away": "费耶诺德",
+    "winner": "away"
+   }
+  ]
+ },
+ "scorers": {
+  "away": {
+   "playerList": [
+    {
+     "appearanceCnt": 8,
+     "assistAvgCnt": "0.5",
+     "assistCnt": 4,
+     "assistProbability": "21%",
+     "goalAvgCnt": "0.6",
+     "goalCnt": 5,
+     "goalProbability": "19%",
+     "injuryFlag": 0,
+     "personId": 798393,
+     "personName": "G. Zechiël",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 8,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "8"
+    },
+    {
+     "appearanceCnt": 7,
+     "assistAvgCnt": "0.1",
+     "assistCnt": 1,
+     "assistProbability": "5%",
+     "goalAvgCnt": "0.7",
+     "goalCnt": 5,
+     "goalProbability": "19%",
+     "injuryFlag": 0,
+     "personId": 724952,
+     "personName": "Nacho Ferri",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 4,
+     "substituteMatchCnt": 3,
+     "suspensionFlag": 0,
+     "uniformNo": "19"
+    },
+    {
+     "appearanceCnt": 7,
+     "assistAvgCnt": "0.1",
+     "assistCnt": 1,
+     "assistProbability": "5%",
+     "goalAvgCnt": "0.7",
+     "goalCnt": 5,
+     "goalProbability": "19%",
+     "injuryFlag": 0,
+     "personId": 694479,
+     "personName": "A. Hadj Moussa",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 7,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "23"
+    }
+   ],
+   "sportteryTeamId": 245,
+   "teamId": 1518,
+   "teamShortName": "费耶诺德",
+   "uniformTeamId": 188
+  },
+  "home": {
+   "playerList": [
+    {
+     "appearanceCnt": 8,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.3",
+     "goalCnt": 2,
+     "goalProbability": "25%",
+     "injuryFlag": 0,
+     "personId": 537640,
+     "personName": "T. Owusu",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 8,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "10"
+    },
+    {
+     "appearanceCnt": 8,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.3",
+     "goalCnt": 2,
+     "goalProbability": "25%",
+     "injuryFlag": 0,
+     "personId": 262099,
+     "personName": "科曼",
+     "playerPositionCode": "Goalkeeper",
+     "playerPositionDesc": "守门员",
+     "startedMatchCnt": 8,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "1"
+    },
+    {
+     "appearanceCnt": 7,
+     "assistAvgCnt": "0.1",
+     "assistCnt": 1,
+     "assistProbability": "25%",
+     "goalAvgCnt": "0.1",
+     "goalCnt": 1,
+     "goalProbability": "13%",
+     "injuryFlag": 0,
+     "personId": 408004,
+     "personName": "N. Þórisson",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 6,
+     "substituteMatchCnt": 1,
+     "suspensionFlag": 0,
+     "uniformNo": "11"
+    }
+   ],
+   "sportteryTeamId": 1475,
+   "teamId": 1544,
+   "teamShortName": "特尔斯达",
+   "uniformTeamId": 487
+  },
+  "seasonId": 15472,
+  "seasonName": "2026/2027",
+  "tournamentId": 82,
+  "tournamentShortName": "荷甲",
+  "uniformLeagueId": 76,
+  "uniformMatchId": 2513533
+ }
+}

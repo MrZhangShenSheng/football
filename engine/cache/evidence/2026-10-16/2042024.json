@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-16",
+ "matchKey": "2042024",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:47",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     1.534,
+     1.138
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:47",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": false
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:47",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1497
+     },
+     {
+      "pick": "s00s00",
+      "p": 0.0982
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0925
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.0813
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.077
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:47",
+   "payload": {
+    "hid": "everton",
+    "aid": "chelsea",
+    "hstRows": 1570
+   }
+  }
+ }
+}

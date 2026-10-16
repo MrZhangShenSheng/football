@@ -1,0 +1,271 @@
+{
+ "fetchedAt": "2026-10-16",
+ "source": "sporttery",
+ "matchId": 2042009,
+ "match": {
+  "code": "周五008",
+  "league": "法甲",
+  "gameweek": "7",
+  "season": "2026/2027",
+  "home": "勒芒",
+  "away": "图卢兹",
+  "kickoff": "2026-10-17 02:45",
+  "uniformMatchId": 2513386
+ },
+ "standing": {
+  "away": {
+   "groupName": "",
+   "phaseName": "Regular Season",
+   "ranking": "15",
+   "sAwayDrawMatchCnt": "3",
+   "sAwayLossGoalMatchCnt": "0",
+   "sAwayWinGoalMatchCnt": "0",
+   "sDrawMatchCnt": "3",
+   "sLossGoalMatchCnt": "2",
+   "sWinGoalMatchCnt": "1",
+   "seasonName": "2026/2027"
+  },
+  "home": {
+   "groupName": "",
+   "phaseName": "Regular Season",
+   "ranking": "14",
+   "sDrawMatchCnt": "3",
+   "sHomeDrawMatchCnt": "2",
+   "sHomeLossGoalMatchCnt": "0",
+   "sHomeWinGoalMatchCnt": "1",
+   "sLossGoalMatchCnt": "2",
+   "sWinGoalMatchCnt": "1",
+   "seasonName": "2026/2027"
+  }
+ },
+ "injuries": {
+  "home": [
+   {
+    "name": "S. Yohou",
+    "pos": "后卫",
+    "no": "17",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 4,
+    "starts": 3
+   },
+   {
+    "name": "E. Colas",
+    "pos": "前锋",
+    "no": "28",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 1,
+    "starts": 0
+   },
+   {
+    "name": "A. Bourabaa",
+    "pos": "中场",
+    "no": "11",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 5,
+    "starts": 5
+   }
+  ],
+  "away": []
+ },
+ "form": {
+  "goalAvg": {
+   "awayGoalAvgCnt": "1.3",
+   "awayGoalAvgCntRatio": "52.0",
+   "homeGoalAvgCnt": "1.2",
+   "homeGoalAvgCntRatio": "48.0",
+   "totalLegCnt": 10
+  },
+  "last10": {
+   "awayDrawMatchCnt": 3,
+   "awayLossGoalMatchCnt": 5,
+   "awayScoreRatio": "30",
+   "awayWinGoalMatchCnt": 2,
+   "homeDrawMatchCnt": 5,
+   "homeLossGoalMatchCnt": 4,
+   "homeScoreRatio": "27",
+   "homeWinGoalMatchCnt": 1,
+   "totalLegCnt": 10
+  },
+  "last10HomeAway": {
+   "awayDrawMatchCnt": 4,
+   "awayLossGoalMatchCnt": 4,
+   "awayScoreRatio": "33",
+   "awayWinGoalMatchCnt": 2,
+   "homeDrawMatchCnt": 4,
+   "homeLossGoalMatchCnt": 2,
+   "homeScoreRatio": "53",
+   "homeWinGoalMatchCnt": 4,
+   "totalLegCnt": 10
+  }
+ },
+ "h2h": {
+  "statistics": {
+   "drawMatchCnt": 0,
+   "drawProbability": "0%",
+   "goalCnt": 0,
+   "lossGoalCnt": 0,
+   "lossGoalMatchCnt": 2,
+   "lossProbability": "100%",
+   "netGoal": 0,
+   "sportteryTeamId": 0,
+   "teamId": 0,
+   "teamShortName": "勒芒",
+   "totalLegCnt": 2,
+   "winGoalMatchCnt": 0,
+   "winProbability": "0%"
+  },
+  "matches": [
+   {
+    "date": "2010-01-31",
+    "home": "勒芒",
+    "score": "1:3",
+    "ht": "0:0",
+    "away": "图卢兹",
+    "winner": "away"
+   },
+   {
+    "date": "2009-09-20",
+    "home": "图卢兹",
+    "score": "2:0",
+    "ht": "1:0",
+    "away": "勒芒",
+    "winner": "away"
+   }
+  ]
+ },
+ "scorers": {
+  "away": {
+   "playerList": [
+    {
+     "appearanceCnt": 4,
+     "assistAvgCnt": "0.3",
+     "assistCnt": 1,
+     "assistProbability": "14%",
+     "goalAvgCnt": "1.0",
+     "goalCnt": 4,
+     "goalProbability": "44%",
+     "injuryFlag": 0,
+     "personId": 462665,
+     "personName": "C.滕斯泰特",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 2,
+     "substituteMatchCnt": 2,
+     "suspensionFlag": 0,
+     "uniformNo": "20"
+    },
+    {
+     "appearanceCnt": 6,
+     "assistAvgCnt": "0.2",
+     "assistCnt": 1,
+     "assistProbability": "14%",
+     "goalAvgCnt": "0.3",
+     "goalCnt": 2,
+     "goalProbability": "22%",
+     "injuryFlag": 0,
+     "personId": 717789,
+     "personName": "T. Jørgensen",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 6,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "8"
+    },
+    {
+     "appearanceCnt": 5,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.2",
+     "goalCnt": 1,
+     "goalProbability": "11%",
+     "injuryFlag": 0,
+     "personId": 880844,
+     "personName": "奥蓬",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 0,
+     "substituteMatchCnt": 5,
+     "suspensionFlag": 0,
+     "uniformNo": "11"
+    }
+   ],
+   "sportteryTeamId": 192,
+   "teamId": 899,
+   "teamShortName": "图卢兹",
+   "uniformTeamId": 227
+  },
+  "home": {
+   "playerList": [
+    {
+     "appearanceCnt": 6,
+     "assistAvgCnt": "0.2",
+     "assistCnt": 1,
+     "assistProbability": "13%",
+     "goalAvgCnt": "0.7",
+     "goalCnt": 4,
+     "goalProbability": "40%",
+     "injuryFlag": 0,
+     "personId": 307602,
+     "personName": "L.马福塔",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 6,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "14"
+    },
+    {
+     "appearanceCnt": 5,
+     "assistAvgCnt": "0.4",
+     "assistCnt": 2,
+     "assistProbability": "25%",
+     "goalAvgCnt": "0.6",
+     "goalCnt": 3,
+     "goalProbability": "30%",
+     "injuryFlag": 1,
+     "personId": 809679,
+     "personName": "A. Bourabaa",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 5,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "11"
+    },
+    {
+     "appearanceCnt": 6,
+     "assistAvgCnt": "0.3",
+     "assistCnt": 2,
+     "assistProbability": "25%",
+     "goalAvgCnt": "0.2",
+     "goalCnt": 1,
+     "goalProbability": "10%",
+     "injuryFlag": 0,
+     "personId": 625567,
+     "personName": "L. Calodat",
+     "playerPositionCode": "Defender",
+     "playerPositionDesc": "后卫",
+     "startedMatchCnt": 4,
+     "substituteMatchCnt": 2,
+     "suspensionFlag": 0,
+     "uniformNo": "22"
+    }
+   ],
+   "sportteryTeamId": 195,
+   "teamId": 905,
+   "teamShortName": "勒芒",
+   "uniformTeamId": 332
+  },
+  "seasonId": 15575,
+  "seasonName": "2026/2027",
+  "tournamentId": 81,
+  "tournamentShortName": "法甲",
+  "uniformLeagueId": 74,
+  "uniformMatchId": 2513386
+ }
+}

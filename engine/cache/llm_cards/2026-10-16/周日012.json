@@ -1,0 +1,328 @@
+{
+ "code": "周日012",
+ "match": "佛罗伦萨 vs 科莫",
+ "league": "意甲",
+ "kickoff": "21:00:00",
+ "saleDate": "2026-10-16",
+ "layers": {
+  "market": {
+   "had": {
+    "a": 1.91,
+    "d": 3.45,
+    "h": 3.17
+   },
+   "crs": {
+    "0:0": 15.0,
+    "0:1": 8.5,
+    "0:2": 10.0,
+    "0:3": 17.0,
+    "0:4": 40.0,
+    "0:5": 100.0,
+    "1:0": 11.5,
+    "1:1": 6.5,
+    "1:2": 7.0,
+    "1:3": 14.0,
+    "1:4": 30.0,
+    "1:5": 90.0,
+    "2:0": 17.0,
+    "2:1": 9.0,
+    "2:2": 12.0,
+    "2:3": 20.0,
+    "2:4": 50.0,
+    "2:5": 150.0,
+    "3:0": 40.0,
+    "3:1": 24.0,
+    "3:2": 26.0,
+    "3:3": 50.0,
+    "4:0": 100.0,
+    "4:1": 75.0,
+    "4:2": 90.0,
+    "5:0": 500.0,
+    "5:1": 300.0,
+    "5:2": 350.0,
+    "负其他": 50.0,
+    "平其他": 350.0,
+    "胜其他": 90.0
+   },
+   "ttg": {
+    "s0": 15.0,
+    "s1": 5.4,
+    "s2": 3.7,
+    "s3": 3.5,
+    "s4": 5.0,
+    "s5": 8.0,
+    "s6": 14.0,
+    "s7": 20.0
+   },
+   "oddsUpdatedAt": "2026-10-16 09:42:06"
+  },
+  "intel": {
+   "status": "ok",
+   "injuries": {
+    "home": [],
+    "away": []
+   },
+   "form": {
+    "goalAvg": {
+     "awayGoalAvgCnt": "1.5",
+     "awayGoalAvgCntRatio": "38.5",
+     "homeGoalAvgCnt": "2.4",
+     "homeGoalAvgCntRatio": "61.5",
+     "totalLegCnt": 10
+    },
+    "last10": {
+     "awayDrawMatchCnt": 3,
+     "awayLossGoalMatchCnt": 3,
+     "awayScoreRatio": "50",
+     "awayWinGoalMatchCnt": 4,
+     "homeDrawMatchCnt": 2,
+     "homeLossGoalMatchCnt": 4,
+     "homeScoreRatio": "47",
+     "homeWinGoalMatchCnt": 4,
+     "totalLegCnt": 10
+    },
+    "last10HomeAway": {
+     "awayDrawMatchCnt": 3,
+     "awayLossGoalMatchCnt": 3,
+     "awayScoreRatio": "50",
+     "awayWinGoalMatchCnt": 4,
+     "homeDrawMatchCnt": 4,
+     "homeLossGoalMatchCnt": 2,
+     "homeScoreRatio": "53",
+     "homeWinGoalMatchCnt": 4,
+     "totalLegCnt": 10
+    }
+   },
+   "standing": {
+    "away": {
+     "groupName": "",
+     "phaseName": "Regular Season",
+     "ranking": "7",
+     "sAwayDrawMatchCnt": "1",
+     "sAwayLossGoalMatchCnt": "1",
+     "sAwayWinGoalMatchCnt": "2",
+     "sDrawMatchCnt": "2",
+     "sLossGoalMatchCnt": "1",
+     "sWinGoalMatchCnt": "3",
+     "seasonName": "2026/2027"
+    },
+    "home": {
+     "groupName": "",
+     "phaseName": "Regular Season",
+     "ranking": "19",
+     "sDrawMatchCnt": "1",
+     "sHomeDrawMatchCnt": "1",
+     "sHomeLossGoalMatchCnt": "2",
+     "sHomeWinGoalMatchCnt": "0",
+     "sLossGoalMatchCnt": "4",
+     "sWinGoalMatchCnt": "1",
+     "seasonName": "2026/2027"
+    }
+   },
+   "h2h": {
+    "statistics": {
+     "drawMatchCnt": 0,
+     "drawProbability": "0%",
+     "goalCnt": 0,
+     "lossGoalCnt": 0,
+     "lossGoalMatchCnt": 3,
+     "lossProbability": "60%",
+     "netGoal": 0,
+     "sportteryTeamId": 0,
+     "teamId": 0,
+     "teamShortName": "佛罗伦萨",
+     "totalLegCnt": 5,
+     "winGoalMatchCnt": 2,
+     "winProbability": "40%"
+    },
+    "matches": [
+     {
+      "date": "2026-02-14",
+      "home": "科莫",
+      "score": "1:2",
+      "ht": "0:1",
+      "away": "佛罗伦萨",
+      "winner": "home"
+     },
+     {
+      "date": "2026-01-28",
+      "home": "佛罗伦萨",
+      "score": "1:3",
+      "ht": "1:1",
+      "away": "科莫",
+      "winner": "away"
+     },
+     {
+      "date": "2025-09-22",
+      "home": "佛罗伦萨",
+      "score": "1:2",
+      "ht": "1:0",
+      "away": "科莫",
+      "winner": "away"
+     },
+     {
+      "date": "2025-02-16",
+      "home": "佛罗伦萨",
+      "score": "0:2",
+      "ht": "0:1",
+      "away": "科莫",
+      "winner": "away"
+     },
+     {
+      "date": "2024-11-24",
+      "home": "科莫",
+      "score": "0:2",
+      "ht": "0:1",
+      "away": "佛罗伦萨",
+      "winner": "home"
+     }
+    ]
+   },
+   "scorers": {
+    "away": {
+     "playerList": [
+      {
+       "appearanceCnt": 6,
+       "assistAvgCnt": "0.2",
+       "assistCnt": 1,
+       "assistProbability": "14%",
+       "goalAvgCnt": "0.3",
+       "goalCnt": 2,
+       "goalProbability": "22%",
+       "injuryFlag": 0,
+       "personId": 667463,
+       "personName": "巴图里纳",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 5,
+       "substituteMatchCnt": 1,
+       "suspensionFlag": 0,
+       "uniformNo": "20"
+      },
+      {
+       "appearanceCnt": 6,
+       "assistAvgCnt": "0.2",
+       "assistCnt": 1,
+       "assistProbability": "14%",
+       "goalAvgCnt": "0.3",
+       "goalCnt": 2,
+       "goalProbability": "22%",
+       "injuryFlag": 0,
+       "personId": 769667,
+       "personName": "Assane Diao",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 5,
+       "substituteMatchCnt": 1,
+       "suspensionFlag": 0,
+       "uniformNo": "11"
+      },
+      {
+       "appearanceCnt": 6,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "0.3",
+       "goalCnt": 2,
+       "goalProbability": "22%",
+       "injuryFlag": 0,
+       "personId": 499168,
+       "personName": "A. Douvikas",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 5,
+       "substituteMatchCnt": 1,
+       "suspensionFlag": 0,
+       "uniformNo": "9"
+      }
+     ],
+     "sportteryTeamId": 1040070,
+     "teamId": 1283,
+     "teamShortName": "科莫",
+     "uniformTeamId": 51033
+    },
+    "home": {
+     "playerList": [
+      {
+       "appearanceCnt": 6,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "0.5",
+       "goalCnt": 3,
+       "goalProbability": "38%",
+       "injuryFlag": 0,
+       "personId": 832386,
+       "personName": "F. Mastantuono",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 6,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "30"
+      },
+      {
+       "appearanceCnt": 6,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "0.3",
+       "goalCnt": 2,
+       "goalProbability": "25%",
+       "injuryFlag": 0,
+       "personId": 666993,
+       "personName": "M. Pellegrino",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 4,
+       "substituteMatchCnt": 2,
+       "suspensionFlag": 0,
+       "uniformNo": "32"
+      },
+      {
+       "appearanceCnt": 5,
+       "assistAvgCnt": "0.2",
+       "assistCnt": 1,
+       "assistProbability": "14%",
+       "goalAvgCnt": "0.2",
+       "goalCnt": 1,
+       "goalProbability": "13%",
+       "injuryFlag": 0,
+       "personId": 335207,
+       "personName": "R. Mandragora",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 3,
+       "substituteMatchCnt": 2,
+       "suspensionFlag": 0,
+       "uniformNo": "8"
+      }
+     ],
+     "sportteryTeamId": 122,
+     "teamId": 1259,
+     "teamShortName": "佛罗伦萨",
+     "uniformTeamId": 198
+    },
+    "seasonId": 15467,
+    "seasonName": "2026/2027",
+    "tournamentId": 79,
+    "tournamentShortName": "意甲",
+    "uniformLeagueId": 73,
+    "uniformMatchId": 2513553
+   }
+  },
+  "profile": {
+   "status": "ok",
+   "league": "italy-serie-a"
+  },
+  "lineup": {
+   "status": "未获取"
+  },
+  "context": {
+   "status": "pending",
+   "entries": []
+  }
+ },
+ "createdAt": "2026-10-16T11:26:00",
+ "cardHash": "0c3c70fcc848a84e"
+}

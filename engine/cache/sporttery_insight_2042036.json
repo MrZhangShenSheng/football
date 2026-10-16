@@ -1,0 +1,253 @@
+{
+ "fetchedAt": "2026-10-16",
+ "source": "sporttery",
+ "matchId": 2042036,
+ "match": {
+  "code": "周六019",
+  "league": "英超",
+  "gameweek": "7",
+  "season": "2026/2027",
+  "home": "曼城",
+  "away": "伊普斯",
+  "kickoff": "2026-10-17 22:00",
+  "uniformMatchId": 2513521
+ },
+ "standing": {
+  "away": {
+   "groupName": "",
+   "phaseName": "Regular Season",
+   "ranking": "10",
+   "sAwayDrawMatchCnt": "0",
+   "sAwayLossGoalMatchCnt": "2",
+   "sAwayWinGoalMatchCnt": "1",
+   "sDrawMatchCnt": "0",
+   "sLossGoalMatchCnt": "3",
+   "sWinGoalMatchCnt": "3",
+   "seasonName": "2026/2027"
+  },
+  "home": {
+   "groupName": "",
+   "phaseName": "Regular Season",
+   "ranking": "1",
+   "sDrawMatchCnt": "0",
+   "sHomeDrawMatchCnt": "0",
+   "sHomeLossGoalMatchCnt": "0",
+   "sHomeWinGoalMatchCnt": "3",
+   "sLossGoalMatchCnt": "0",
+   "sWinGoalMatchCnt": "6",
+   "seasonName": "2026/2027"
+  }
+ },
+ "injuries": {
+  "home": [
+   {
+    "name": "E. Anderson",
+    "pos": "中场",
+    "no": "5",
+    "injury": 1,
+    "suspension": 0,
+    "apps": 6,
+    "starts": 6
+   }
+  ],
+  "away": []
+ },
+ "form": {
+  "goalAvg": {
+   "awayGoalAvgCnt": "2.1",
+   "awayGoalAvgCntRatio": "45.7",
+   "homeGoalAvgCnt": "2.5",
+   "homeGoalAvgCntRatio": "54.3",
+   "totalLegCnt": 10
+  },
+  "last10": {
+   "awayDrawMatchCnt": 0,
+   "awayLossGoalMatchCnt": 4,
+   "awayScoreRatio": "60",
+   "awayWinGoalMatchCnt": 6,
+   "homeDrawMatchCnt": 0,
+   "homeLossGoalMatchCnt": 2,
+   "homeScoreRatio": "80",
+   "homeWinGoalMatchCnt": 8,
+   "totalLegCnt": 10
+  },
+  "last10HomeAway": {
+   "awayDrawMatchCnt": 2,
+   "awayLossGoalMatchCnt": 4,
+   "awayScoreRatio": "47",
+   "awayWinGoalMatchCnt": 4,
+   "homeDrawMatchCnt": 1,
+   "homeLossGoalMatchCnt": 2,
+   "homeScoreRatio": "73",
+   "homeWinGoalMatchCnt": 7,
+   "totalLegCnt": 10
+  }
+ },
+ "h2h": {
+  "statistics": {
+   "drawMatchCnt": 0,
+   "drawProbability": "0%",
+   "goalCnt": 0,
+   "lossGoalCnt": 0,
+   "lossGoalMatchCnt": 0,
+   "lossProbability": "0%",
+   "netGoal": 0,
+   "sportteryTeamId": 0,
+   "teamId": 0,
+   "teamShortName": "曼城",
+   "totalLegCnt": 2,
+   "winGoalMatchCnt": 2,
+   "winProbability": "100%"
+  },
+  "matches": [
+   {
+    "date": "2025-01-20",
+    "home": "伊普斯",
+    "score": "0:6",
+    "ht": "0:3",
+    "away": "曼城",
+    "winner": "home"
+   },
+   {
+    "date": "2024-08-24",
+    "home": "曼城",
+    "score": "4:1",
+    "ht": "3:1",
+    "away": "伊普斯",
+    "winner": "home"
+   }
+  ]
+ },
+ "scorers": {
+  "away": {
+   "playerList": [
+    {
+     "appearanceCnt": 6,
+     "assistAvgCnt": "0.2",
+     "assistCnt": 1,
+     "assistProbability": "14%",
+     "goalAvgCnt": "0.3",
+     "goalCnt": 2,
+     "goalProbability": "22%",
+     "injuryFlag": 0,
+     "personId": 675994,
+     "personName": "Emersonn",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 6,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "19"
+    },
+    {
+     "appearanceCnt": 6,
+     "assistAvgCnt": "0.2",
+     "assistCnt": 1,
+     "assistProbability": "14%",
+     "goalAvgCnt": "0.3",
+     "goalCnt": 2,
+     "goalProbability": "22%",
+     "injuryFlag": 0,
+     "personId": 580888,
+     "personName": "L.戴维斯",
+     "playerPositionCode": "Defender",
+     "playerPositionDesc": "后卫",
+     "startedMatchCnt": 6,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "3"
+    },
+    {
+     "appearanceCnt": 5,
+     "assistAvgCnt": "0.2",
+     "assistCnt": 1,
+     "assistProbability": "14%",
+     "goalAvgCnt": "0.2",
+     "goalCnt": 1,
+     "goalProbability": "11%",
+     "injuryFlag": 0,
+     "personId": 529641,
+     "personName": "J.克拉克",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 2,
+     "substituteMatchCnt": 3,
+     "suspensionFlag": 0,
+     "uniformNo": "47"
+    }
+   ],
+   "sportteryTeamId": 48,
+   "teamId": 685,
+   "teamShortName": "伊普斯",
+   "uniformTeamId": 507
+  },
+  "home": {
+   "playerList": [
+    {
+     "appearanceCnt": 6,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "1.0",
+     "goalCnt": 6,
+     "goalProbability": "38%",
+     "injuryFlag": 0,
+     "personId": 441484,
+     "personName": "E. Håland",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 6,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "9"
+    },
+    {
+     "appearanceCnt": 6,
+     "assistAvgCnt": "0.3",
+     "assistCnt": 2,
+     "assistProbability": "15%",
+     "goalAvgCnt": "0.7",
+     "goalCnt": 4,
+     "goalProbability": "25%",
+     "injuryFlag": 0,
+     "personId": 559939,
+     "personName": "M.切尔基",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 5,
+     "substituteMatchCnt": 1,
+     "suspensionFlag": 0,
+     "uniformNo": "10"
+    },
+    {
+     "appearanceCnt": 6,
+     "assistAvgCnt": "0.5",
+     "assistCnt": 3,
+     "assistProbability": "23%",
+     "goalAvgCnt": "0.3",
+     "goalCnt": 2,
+     "goalProbability": "13%",
+     "injuryFlag": 0,
+     "personId": 529560,
+     "personName": "塞梅尼奥",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 6,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "42"
+    }
+   ],
+   "sportteryTeamId": 12,
+   "teamId": 676,
+   "teamShortName": "曼城",
+   "uniformTeamId": 217
+  },
+  "seasonId": 15374,
+  "seasonName": "2026/2027",
+  "tournamentId": 127,
+  "tournamentShortName": "英超",
+  "uniformLeagueId": 72,
+  "uniformMatchId": 2513521
+ }
+}

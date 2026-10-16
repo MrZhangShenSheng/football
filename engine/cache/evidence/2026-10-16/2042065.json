@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-16",
+ "matchKey": "2042065",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:24:00",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     0.912,
+     1.491
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:24:00",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": false
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:24:00",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1526
+     },
+     {
+      "pick": "s00s00",
+      "p": 0.1201
+     },
+     {
+      "pick": "s00s01",
+      "p": 0.1053
+     },
+     {
+      "pick": "s00s02",
+      "p": 0.1006
+     },
+     {
+      "pick": "s01s02",
+      "p": 0.0917
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:24:00",
+   "payload": {
+    "hid": "nottingham-forest",
+    "aid": "arsenal",
+    "hstRows": 1570
+   }
+  }
+ }
+}

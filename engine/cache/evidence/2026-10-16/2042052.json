@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-16",
+ "matchKey": "2042052",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:57",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     1.541,
+     0.983
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:57",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": false
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:57",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1292
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.1158
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.0952
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0935
+     },
+     {
+      "pick": "s00s00",
+      "p": 0.088
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:57",
+   "payload": {
+    "hid": "udinese",
+    "aid": "lecce",
+    "hstRows": 1570
+   }
+  }
+ }
+}

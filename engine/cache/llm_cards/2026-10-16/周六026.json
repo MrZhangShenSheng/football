@@ -1,0 +1,368 @@
+{
+ "code": "周六026",
+ "match": "贝蒂斯 vs 巴萨",
+ "league": "西甲",
+ "kickoff": "00:30:00",
+ "saleDate": "2026-10-16",
+ "layers": {
+  "market": {
+   "had": {
+    "a": 1.32,
+    "d": 5.2,
+    "h": 5.6
+   },
+   "crs": {
+    "0:0": 40.0,
+    "0:1": 14.0,
+    "0:2": 11.0,
+    "0:3": 12.0,
+    "0:4": 18.0,
+    "0:5": 35.0,
+    "1:0": 28.0,
+    "1:1": 11.0,
+    "1:2": 8.0,
+    "1:3": 9.0,
+    "1:4": 14.0,
+    "1:5": 25.0,
+    "2:0": 50.0,
+    "2:1": 16.0,
+    "2:2": 12.0,
+    "2:3": 14.0,
+    "2:4": 20.0,
+    "2:5": 45.0,
+    "3:0": 90.0,
+    "3:1": 40.0,
+    "3:2": 26.0,
+    "3:3": 28.0,
+    "4:0": 300.0,
+    "4:1": 100.0,
+    "4:2": 90.0,
+    "5:0": 500.0,
+    "5:1": 300.0,
+    "5:2": 300.0,
+    "负其他": 10.0,
+    "平其他": 100.0,
+    "胜其他": 60.0
+   },
+   "ttg": {
+    "s0": 40.0,
+    "s1": 11.0,
+    "s2": 5.75,
+    "s3": 3.85,
+    "s4": 4.05,
+    "s5": 5.1,
+    "s6": 7.75,
+    "s7": 7.5
+   },
+   "oddsUpdatedAt": "2026-10-16 09:42:06"
+  },
+  "intel": {
+   "status": "ok",
+   "injuries": {
+    "home": [],
+    "away": []
+   },
+   "form": {
+    "goalAvg": {
+     "awayGoalAvgCnt": "4.3",
+     "awayGoalAvgCntRatio": "68.3",
+     "homeGoalAvgCnt": "2.0",
+     "homeGoalAvgCntRatio": "31.7",
+     "totalLegCnt": 10
+    },
+    "last10": {
+     "awayDrawMatchCnt": 0,
+     "awayLossGoalMatchCnt": 0,
+     "awayScoreRatio": "100",
+     "awayWinGoalMatchCnt": 10,
+     "homeDrawMatchCnt": 1,
+     "homeLossGoalMatchCnt": 1,
+     "homeScoreRatio": "83",
+     "homeWinGoalMatchCnt": 8,
+     "totalLegCnt": 10
+    },
+    "last10HomeAway": {
+     "awayDrawMatchCnt": 1,
+     "awayLossGoalMatchCnt": 2,
+     "awayScoreRatio": "73",
+     "awayWinGoalMatchCnt": 7,
+     "homeDrawMatchCnt": 1,
+     "homeLossGoalMatchCnt": 0,
+     "homeScoreRatio": "93",
+     "homeWinGoalMatchCnt": 9,
+     "totalLegCnt": 10
+    }
+   },
+   "standing": {
+    "away": {
+     "groupName": "",
+     "phaseName": "Regular Season",
+     "ranking": "1",
+     "sAwayDrawMatchCnt": "0",
+     "sAwayLossGoalMatchCnt": "0",
+     "sAwayWinGoalMatchCnt": "4",
+     "sDrawMatchCnt": "0",
+     "sLossGoalMatchCnt": "0",
+     "sWinGoalMatchCnt": "8",
+     "seasonName": "2026/2027"
+    },
+    "home": {
+     "groupName": "",
+     "phaseName": "Regular Season",
+     "ranking": "3",
+     "sDrawMatchCnt": "1",
+     "sHomeDrawMatchCnt": "0",
+     "sHomeLossGoalMatchCnt": "0",
+     "sHomeWinGoalMatchCnt": "4",
+     "sLossGoalMatchCnt": "1",
+     "sWinGoalMatchCnt": "6",
+     "seasonName": "2026/2027"
+    }
+   },
+   "h2h": {
+    "statistics": {
+     "drawMatchCnt": 3,
+     "drawProbability": "30%",
+     "goalCnt": 0,
+     "lossGoalCnt": 0,
+     "lossGoalMatchCnt": 7,
+     "lossProbability": "70%",
+     "netGoal": 0,
+     "sportteryTeamId": 0,
+     "teamId": 0,
+     "teamShortName": "贝蒂斯",
+     "totalLegCnt": 10,
+     "winGoalMatchCnt": 0,
+     "winProbability": "0%"
+    },
+    "matches": [
+     {
+      "date": "2026-05-18",
+      "home": "巴萨",
+      "score": "3:1",
+      "ht": "1:0",
+      "away": "贝蒂斯",
+      "winner": "away"
+     },
+     {
+      "date": "2025-12-07",
+      "home": "贝蒂斯",
+      "score": "3:5",
+      "ht": "1:4",
+      "away": "巴萨",
+      "winner": "away"
+     },
+     {
+      "date": "2025-04-06",
+      "home": "巴萨",
+      "score": "1:1",
+      "ht": "1:1",
+      "away": "贝蒂斯",
+      "winner": "draw"
+     },
+     {
+      "date": "2025-01-16",
+      "home": "巴萨",
+      "score": "5:1",
+      "ht": "2:0",
+      "away": "贝蒂斯",
+      "winner": "away"
+     },
+     {
+      "date": "2024-12-07",
+      "home": "贝蒂斯",
+      "score": "2:2",
+      "ht": "0:1",
+      "away": "巴萨",
+      "winner": "draw"
+     },
+     {
+      "date": "2024-01-22",
+      "home": "贝蒂斯",
+      "score": "2:4",
+      "ht": "0:1",
+      "away": "巴萨",
+      "winner": "away"
+     },
+     {
+      "date": "2023-09-17",
+      "home": "巴萨",
+      "score": "5:0",
+      "ht": "2:0",
+      "away": "贝蒂斯",
+      "winner": "away"
+     },
+     {
+      "date": "2023-04-30",
+      "home": "巴萨",
+      "score": "4:0",
+      "ht": "3:0",
+      "away": "贝蒂斯",
+      "winner": "away"
+     },
+     {
+      "date": "2023-02-02",
+      "home": "贝蒂斯",
+      "score": "1:2",
+      "ht": "0:0",
+      "away": "巴萨",
+      "winner": "away"
+     },
+     {
+      "date": "2023-01-13",
+      "home": "贝蒂斯",
+      "score": "1:1",
+      "ht": "0:1",
+      "away": "巴萨",
+      "winner": "draw"
+     }
+    ]
+   },
+   "scorers": {
+    "away": {
+     "playerList": [
+      {
+       "appearanceCnt": 7,
+       "assistAvgCnt": "0.4",
+       "assistCnt": 3,
+       "assistProbability": "12%",
+       "goalAvgCnt": "1.7",
+       "goalCnt": 12,
+       "goalProbability": "38%",
+       "injuryFlag": 0,
+       "personId": 429714,
+       "personName": "拉菲尼亚",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 7,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "11"
+      },
+      {
+       "appearanceCnt": 8,
+       "assistAvgCnt": "0.6",
+       "assistCnt": 5,
+       "assistProbability": "20%",
+       "goalAvgCnt": "0.9",
+       "goalCnt": 7,
+       "goalProbability": "22%",
+       "injuryFlag": 0,
+       "personId": 723652,
+       "personName": "亚马尔",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 8,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "10"
+      },
+      {
+       "appearanceCnt": 7,
+       "assistAvgCnt": "0.3",
+       "assistCnt": 2,
+       "assistProbability": "8%",
+       "goalAvgCnt": "0.6",
+       "goalCnt": 4,
+       "goalProbability": "13%",
+       "injuryFlag": 0,
+       "personId": 697766,
+       "personName": "费尔明",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 5,
+       "substituteMatchCnt": 2,
+       "suspensionFlag": 0,
+       "uniformNo": "7"
+      }
+     ],
+     "sportteryTeamId": 401,
+     "teamId": 2017,
+     "teamShortName": "巴萨",
+     "uniformTeamId": 246
+    },
+    "home": {
+     "playerList": [
+      {
+       "appearanceCnt": 8,
+       "assistAvgCnt": "0.3",
+       "assistCnt": 2,
+       "assistProbability": "29%",
+       "goalAvgCnt": "0.3",
+       "goalCnt": 2,
+       "goalProbability": "14%",
+       "injuryFlag": 0,
+       "personId": 402218,
+       "personName": "J. Hernández",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 6,
+       "substituteMatchCnt": 2,
+       "suspensionFlag": 0,
+       "uniformNo": "9"
+      },
+      {
+       "appearanceCnt": 7,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "0.3",
+       "goalCnt": 2,
+       "goalProbability": "14%",
+       "injuryFlag": 0,
+       "personId": 820183,
+       "personName": "Pablo García",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 3,
+       "substituteMatchCnt": 4,
+       "suspensionFlag": 0,
+       "uniformNo": "33"
+      },
+      {
+       "appearanceCnt": 5,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "0.4",
+       "goalCnt": 2,
+       "goalProbability": "14%",
+       "injuryFlag": 0,
+       "personId": 628194,
+       "personName": "埃扎勒祖利",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 4,
+       "substituteMatchCnt": 1,
+       "suspensionFlag": 0,
+       "uniformNo": "10"
+      }
+     ],
+     "sportteryTeamId": 505,
+     "teamId": 2025,
+     "teamShortName": "贝蒂斯",
+     "uniformTeamId": 245
+    },
+    "seasonId": 15485,
+    "seasonName": "2026/2027",
+    "tournamentId": 128,
+    "tournamentShortName": "西甲",
+    "uniformLeagueId": 24,
+    "uniformMatchId": 2513537
+   }
+  },
+  "profile": {
+   "status": "ok",
+   "league": "spain-laliga"
+  },
+  "lineup": {
+   "status": "未获取"
+  },
+  "context": {
+   "status": "pending",
+   "entries": []
+  }
+ },
+ "createdAt": "2026-10-16T11:25:52",
+ "cardHash": "9a3a55de8a8d4f6c"
+}

@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-16",
+ "matchKey": "2042041",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:53",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     1.402,
+     1.234
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:53",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": false
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:53",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1538
+     },
+     {
+      "pick": "s00s00",
+      "p": 0.1015
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0869
+     },
+     {
+      "pick": "s01s02",
+      "p": 0.0765
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.0706
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:53",
+   "payload": {
+    "hid": "newcastle",
+    "aid": "aston-villa",
+    "hstRows": 1570
+   }
+  }
+ }
+}

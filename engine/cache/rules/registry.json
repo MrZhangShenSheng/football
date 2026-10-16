@@ -98,6 +98,21 @@
    "text": "串关只买方差不买期望：串关期望=单关注望连乘，'中了就拉正'是幸存者视角",
    "why": "实测 74.5%→2串63.4%→3/4串0%",
    "flags": []
+  },
+  {
+   "id": "R020",
+   "text": "比分端 water 闸与选场排序禁跨层混用：层1 市场 ttg_boom 与层2/3 矩阵 other 桶量纲差一个量级",
+   "why": "2026-10-16 实证：同阈值 0.05 卡两种量纲——今晚 11 场有市场盘者被闸掉 10 场(ttg_boom 0.05~0.19)，而兜底层几乎全过(matrix other 0.003~0.03)，选场 100% 落 v3w_fallback，与 U2『市场主干最优』判决相悖（strength_chain_prod.py:224 自带预警已触发）",
+   "stage": "candidate",
+   "form": "gate",
+   "trigger": "strength_chain_prod.py 每日 picks src 构成：层2/3 占比 >50% 即触发",
+   "record": {
+    "rounds": 0,
+    "blocked": 0,
+    "saved": 0,
+    "harmed": 0
+   },
+   "createdAt": "2026-10-16"
   }
  ],
  "active_shadow": [

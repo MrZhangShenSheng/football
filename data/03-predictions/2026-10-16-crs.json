@@ -1,0 +1,2073 @@
+{
+ "date": "2026-10-16",
+ "model": "market-3layer (CRS devig → lambda solver → V3W fallback)",
+ "params": {
+  "boom": 0.05,
+  "had_hot": 1.5,
+  "boomGate": 0.05,
+  "rho": 0.0,
+  "legacyUntil": "2026-10-18",
+  "boomGateNote": "layer1=ttg 6+7 · layer2/3=matrix other bucket"
+ },
+ "generatedAt": "2026-10-16T11:24:00",
+ "matches": [
+  {
+   "code": "周五001",
+   "match": "悉尼FC v 西悉尼",
+   "matchId": "2042003",
+   "league": "澳超",
+   "leagueWarn": false,
+   "src": "market_crs",
+   "lam": null,
+   "crs_top5": [
+    {
+     "pick": "s01s01",
+     "p": 0.1171
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.1071
+    },
+    {
+     "pick": "s01s02",
+     "p": 0.079
+    },
+    {
+     "pick": "s01s00",
+     "p": 0.0746
+    },
+    {
+     "pick": "s02s02",
+     "p": 0.0746
+    }
+   ],
+   "ttgBoom": 0.09736535523855963,
+   "water": true
+  },
+  {
+   "code": "周五002",
+   "match": "科特布斯 v 纽伦堡",
+   "matchId": "2042013",
+   "league": "德乙",
+   "leagueWarn": false,
+   "src": "market_crs",
+   "lam": null,
+   "crs_top5": [
+    {
+     "pick": "s01s02",
+     "p": 0.0971
+    },
+    {
+     "pick": "s01s01",
+     "p": 0.0801
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.0756
+    },
+    {
+     "pick": "s02s02",
+     "p": 0.0756
+    },
+    {
+     "pick": "s01s03",
+     "p": 0.0589
+    }
+   ],
+   "ttgBoom": 0.1902651800261029,
+   "water": true
+  },
+  {
+   "code": "周五003",
+   "match": "布鲁马波 v 佐加顿斯",
+   "matchId": "2042004",
+   "league": "瑞超",
+   "leagueWarn": true,
+   "src": "market_crs",
+   "lam": null,
+   "crs_top5": [
+    {
+     "pick": "s01s02",
+     "p": 0.1158
+    },
+    {
+     "pick": "s00s02",
+     "p": 0.0955
+    },
+    {
+     "pick": "s00s01",
+     "p": 0.0836
+    },
+    {
+     "pick": "s01s03",
+     "p": 0.0811
+    },
+    {
+     "pick": "s01s01",
+     "p": 0.0787
+    }
+   ],
+   "ttgBoom": 0.11853624051775682,
+   "water": true,
+   "legacy": {
+    "lam": [
+     1.246,
+     2.977
+    ],
+    "top5": [
+     {
+      "pick": "s1sa",
+      "p": 0.0815
+     },
+     {
+      "pick": "s01s02",
+      "p": 0.0809
+     },
+     {
+      "pick": "s01s03",
+      "p": 0.0803
+     },
+     {
+      "pick": "s00s02",
+      "p": 0.0649
+     },
+     {
+      "pick": "s00s03",
+      "p": 0.0644
+     }
+    ],
+    "boomP": 0.0833
+   }
+  },
+  {
+   "code": "周五004",
+   "match": "海伦芬 v SBV精英",
+   "matchId": "2042005",
+   "league": "荷甲",
+   "leagueWarn": false,
+   "src": "market_crs",
+   "lam": null,
+   "crs_top5": [
+    {
+     "pick": "s02s01",
+     "p": 0.1084
+    },
+    {
+     "pick": "s01s01",
+     "p": 0.0899
+    },
+    {
+     "pick": "s02s00",
+     "p": 0.0749
+    },
+    {
+     "pick": "s03s01",
+     "p": 0.0709
+    },
+    {
+     "pick": "s01s00",
+     "p": 0.0673
+    }
+   ],
+   "ttgBoom": 0.13532653304200498,
+   "water": true,
+   "legacy": {
+    "lam": [
+     1.919,
+     1.432
+    ],
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1085
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0924
+     },
+     {
+      "pick": "s01s02",
+      "p": 0.069
+     },
+     {
+      "pick": "s02s02",
+      "p": 0.0662
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.0645
+     }
+    ],
+    "boomP": 0.0174
+   }
+  },
+  {
+   "code": "周五005",
+   "match": "登博思 v 奥斯",
+   "matchId": "2042006",
+   "league": "荷乙",
+   "leagueWarn": false,
+   "src": "market_crs",
+   "lam": null,
+   "crs_top5": [
+    {
+     "pick": "s02s01",
+     "p": 0.108
+    },
+    {
+     "pick": "s01s01",
+     "p": 0.0874
+    },
+    {
+     "pick": "s03s01",
+     "p": 0.0752
+    },
+    {
+     "pick": "s02s00",
+     "p": 0.0676
+    },
+    {
+     "pick": "s02s02",
+     "p": 0.0643
+    }
+   ],
+   "ttgBoom": 0.14775681088686923,
+   "water": true
+  },
+  {
+   "code": "周五006",
+   "match": "法兰克福 v 科隆",
+   "matchId": "2042007",
+   "league": "德甲",
+   "leagueWarn": true,
+   "src": "market_crs",
+   "lam": null,
+   "crs_top5": [
+    {
+     "pick": "s02s01",
+     "p": 0.104
+    },
+    {
+     "pick": "s01s01",
+     "p": 0.0934
+    },
+    {
+     "pick": "s01s02",
+     "p": 0.0753
+    },
+    {
+     "pick": "s02s02",
+     "p": 0.0712
+    },
+    {
+     "pick": "s03s01",
+     "p": 0.0613
+    }
+   ],
+   "ttgBoom": 0.16004818723486267,
+   "water": true,
+   "legacy": {
+    "lam": [
+     4.956,
+     1.83
+    ],
+    "top5": [
+     {
+      "pick": "s1sh",
+      "p": 0.3743
+     },
+     {
+      "pick": "s04s01",
+      "p": 0.052
+     },
+     {
+      "pick": "s05s01",
+      "p": 0.0515
+     },
+     {
+      "pick": "s04s02",
+      "p": 0.0475
+     },
+     {
+      "pick": "s05s02",
+      "p": 0.0471
+     }
+    ],
+    "boomP": 0.3832
+   }
+  },
+  {
+   "code": "周五007",
+   "match": "弗洛西诺 v 萨索洛",
+   "matchId": "2042008",
+   "league": "意甲",
+   "leagueWarn": true,
+   "src": "market_crs",
+   "lam": null,
+   "crs_top5": [
+    {
+     "pick": "s01s01",
+     "p": 0.1077
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.0931
+    },
+    {
+     "pick": "s01s02",
+     "p": 0.0901
+    },
+    {
+     "pick": "s02s02",
+     "p": 0.075
+    },
+    {
+     "pick": "s01s00",
+     "p": 0.0611
+    }
+   ],
+   "ttgBoom": 0.12457516759121695,
+   "water": true,
+   "legacy": {
+    "lam": [
+     1.645,
+     0.947
+    ],
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1257
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.114
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.1013
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0959
+     },
+     {
+      "pick": "s00s00",
+      "p": 0.084
+     }
+    ],
+    "boomP": 0.0073
+   }
+  },
+  {
+   "code": "周五008",
+   "match": "勒芒 v 图卢兹",
+   "matchId": "2042009",
+   "league": "法甲",
+   "leagueWarn": false,
+   "src": "market_crs",
+   "lam": null,
+   "crs_top5": [
+    {
+     "pick": "s01s01",
+     "p": 0.1033
+    },
+    {
+     "pick": "s01s02",
+     "p": 0.1033
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.0897
+    },
+    {
+     "pick": "s00s01",
+     "p": 0.0747
+    },
+    {
+     "pick": "s02s02",
+     "p": 0.0671
+    }
+   ],
+   "ttgBoom": 0.10350266165010788,
+   "water": true,
+   "legacy": {
+    "lam": [
+     1.326,
+     1.125
+    ],
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1287
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.1142
+     },
+     {
+      "pick": "s00s01",
+      "p": 0.0969
+     },
+     {
+      "pick": "s00s00",
+      "p": 0.0863
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0853
+     }
+    ],
+    "boomP": 0.0035
+   }
+  },
+  {
+   "code": "周五009",
+   "match": "伯恩利 v 伍尔弗",
+   "matchId": "2042010",
+   "league": "英冠",
+   "leagueWarn": false,
+   "src": "market_crs",
+   "lam": null,
+   "crs_top5": [
+    {
+     "pick": "s01s01",
+     "p": 0.1314
+    },
+    {
+     "pick": "s01s02",
+     "p": 0.1104
+    },
+    {
+     "pick": "s00s01",
+     "p": 0.0886
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.0857
+    },
+    {
+     "pick": "s01s00",
+     "p": 0.0697
+    }
+   ],
+   "ttgBoom": 0.0744388451525469,
+   "water": true,
+   "legacy": {
+    "lam": [
+     1.949,
+     0.972
+    ],
+    "top5": [
+     {
+      "pick": "s01s00",
+      "p": 0.105
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.1023
+     },
+     {
+      "pick": "s01s01",
+      "p": 0.1021
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0995
+     },
+     {
+      "pick": "s03s00",
+      "p": 0.0664
+     }
+    ],
+    "boomP": 0.0153
+   }
+  },
+  {
+   "code": "周五010",
+   "match": "拉科 v 莱万特",
+   "matchId": "2042011",
+   "league": "西甲",
+   "leagueWarn": true,
+   "src": "market_crs",
+   "lam": null,
+   "crs_top5": [
+    {
+     "pick": "s01s01",
+     "p": 0.1306
+    },
+    {
+     "pick": "s01s00",
+     "p": 0.1096
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.1096
+    },
+    {
+     "pick": "s00s01",
+     "p": 0.0824
+    },
+    {
+     "pick": "s02s00",
+     "p": 0.0824
+    }
+   ],
+   "ttgBoom": 0.05577214244476911,
+   "water": true,
+   "legacy": {
+    "lam": [
+     1.476,
+     1.107
+    ],
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1305
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.1045
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0911
+     },
+     {
+      "pick": "s00s00",
+      "p": 0.0826
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.0823
+     }
+    ],
+    "boomP": 0.0051
+   }
+  },
+  {
+   "code": "周五011",
+   "match": "米拉索尔 v 巴西国际",
+   "matchId": "2042012",
+   "league": "巴甲",
+   "leagueWarn": false,
+   "src": "market_crs",
+   "lam": null,
+   "crs_top5": [
+    {
+     "pick": "s01s01",
+     "p": 0.1353
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.1061
+    },
+    {
+     "pick": "s01s00",
+     "p": 0.0984
+    },
+    {
+     "pick": "s01s02",
+     "p": 0.0781
+    },
+    {
+     "pick": "s00s01",
+     "p": 0.0737
+    }
+   ],
+   "ttgBoom": 0.04944691167622837,
+   "water": false,
+   "legacy": {
+    "lam": [
+     1.303,
+     1.284
+    ],
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1409
+     },
+     {
+      "pick": "s00s00",
+      "p": 0.0902
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.0831
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.082
+     },
+     {
+      "pick": "s00s01",
+      "p": 0.0816
+     }
+    ],
+    "boomP": 0.0044
+   }
+  },
+  {
+   "code": "周六001",
+   "match": "麦克阿瑟 v 珀斯",
+   "skip": "no_data"
+  },
+  {
+   "code": "周六002",
+   "match": "鹿岛鹿角 v 长崎航海",
+   "matchId": "2042020",
+   "league": "日职",
+   "leagueWarn": true,
+   "src": "v3w_fallback",
+   "lam": [
+    3.011,
+    1.241
+   ],
+   "had": {
+    "h": 0.7384,
+    "d": 0.1274,
+    "a": 0.1342
+   },
+   "crs_top5": [
+    {
+     "pick": "s1sh",
+     "p": 0.0849
+    },
+    {
+     "pick": "s03s01",
+     "p": 0.0804
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.0801
+    },
+    {
+     "pick": "s03s00",
+     "p": 0.0648
+    },
+    {
+     "pick": "s02s00",
+     "p": 0.0646
+    }
+   ],
+   "boomP": 0.0866,
+   "water": true,
+   "flags": [
+    "dc_source:rolling",
+    "no_elo",
+    "no_xg"
+   ]
+  },
+  {
+   "code": "周六003",
+   "match": "蔚山现代 v 富川FC",
+   "matchId": "2042021",
+   "league": "韩职",
+   "leagueWarn": true,
+   "src": "v3w_fallback",
+   "lam": [
+    2.102,
+    1.007
+   ],
+   "had": {
+    "h": 0.6109,
+    "d": 0.2313,
+    "a": 0.1578
+   },
+   "crs_top5": [
+    {
+     "pick": "s01s01",
+     "p": 0.1088
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.0993
+    },
+    {
+     "pick": "s02s00",
+     "p": 0.0986
+    },
+    {
+     "pick": "s01s00",
+     "p": 0.0795
+    },
+    {
+     "pick": "s03s01",
+     "p": 0.0696
+    }
+   ],
+   "boomP": 0.0211,
+   "water": false,
+   "flags": [
+    "dc_source:rolling",
+    "no_elo",
+    "no_xg"
+   ]
+  },
+  {
+   "code": "周六004",
+   "match": "中央海岸 v 纽喷气机",
+   "skip": "no_data"
+  },
+  {
+   "code": "周六005",
+   "match": "柏太阳神 v 名古屋鲸",
+   "matchId": "2042023",
+   "league": "日职",
+   "leagueWarn": true,
+   "src": "v3w_fallback",
+   "lam": [
+    3.024,
+    1.255
+   ],
+   "had": {
+    "h": 0.7376,
+    "d": 0.1274,
+    "a": 0.135
+   },
+   "crs_top5": [
+    {
+     "pick": "s1sh",
+     "p": 0.0863
+    },
+    {
+     "pick": "s03s01",
+     "p": 0.0802
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.0795
+    },
+    {
+     "pick": "s03s00",
+     "p": 0.0639
+    },
+    {
+     "pick": "s02s00",
+     "p": 0.0634
+    }
+   ],
+   "boomP": 0.0881,
+   "water": true,
+   "flags": [
+    "dc_source:rolling",
+    "no_elo",
+    "no_xg"
+   ]
+  },
+  {
+   "code": "周六006",
+   "match": "宫崎牛鸟 v 磐田喜悦",
+   "skip": "no_data"
+  },
+  {
+   "code": "周六007",
+   "match": "埃弗顿 v 切尔西",
+   "matchId": "2042024",
+   "league": "英超",
+   "leagueWarn": false,
+   "src": "v3w_fallback",
+   "lam": [
+    1.534,
+    1.138
+   ],
+   "had": {
+    "h": 0.4352,
+    "d": 0.3119,
+    "a": 0.253
+   },
+   "crs_top5": [
+    {
+     "pick": "s01s01",
+     "p": 0.1497
+    },
+    {
+     "pick": "s00s00",
+     "p": 0.0982
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.0925
+    },
+    {
+     "pick": "s02s00",
+     "p": 0.0813
+    },
+    {
+     "pick": "s01s00",
+     "p": 0.077
+    }
+   ],
+   "boomP": 0.0061,
+   "water": false,
+   "flags": [
+    "dc_source:rolling",
+    "hst_source:proxy"
+   ]
+  },
+  {
+   "code": "周六009",
+   "match": "西班牙人 v 马竞",
+   "matchId": "2042026",
+   "league": "西甲",
+   "leagueWarn": true,
+   "src": "v3w_fallback",
+   "lam": [
+    1.446,
+    1.282
+   ],
+   "had": {
+    "h": 0.3878,
+    "d": 0.2995,
+    "a": 0.3127
+   },
+   "crs_top5": [
+    {
+     "pick": "s01s01",
+     "p": 0.1431
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.0876
+    },
+    {
+     "pick": "s00s00",
+     "p": 0.0873
+    },
+    {
+     "pick": "s01s02",
+     "p": 0.0777
+    },
+    {
+     "pick": "s01s00",
+     "p": 0.0726
+    }
+   ],
+   "boomP": 0.0058,
+   "water": false,
+   "flags": [
+    "dc_source:rolling",
+    "hst_source:proxy"
+   ]
+  },
+  {
+   "code": "周六011",
+   "match": "威尼斯 v 那不勒斯",
+   "matchId": "2042028",
+   "league": "意甲",
+   "leagueWarn": true,
+   "src": "v3w_fallback",
+   "lam": [
+    1.17,
+    1.175
+   ],
+   "had": {
+    "h": 0.3481,
+    "d": 0.301,
+    "a": 0.3509
+   },
+   "crs_top5": [
+    {
+     "pick": "s01s01",
+     "p": 0.1421
+    },
+    {
+     "pick": "s00s00",
+     "p": 0.1061
+    },
+    {
+     "pick": "s00s01",
+     "p": 0.1023
+    },
+    {
+     "pick": "s01s00",
+     "p": 0.1018
+    },
+    {
+     "pick": "s01s02",
+     "p": 0.0774
+    }
+   ],
+   "boomP": 0.0027,
+   "water": false,
+   "flags": [
+    "dc_source:rolling",
+    "hst_source:proxy",
+    "no_elo"
+   ]
+  },
+  {
+   "code": "周六013",
+   "match": "埃沃斯堡 v 奥格斯堡",
+   "matchId": "2042030",
+   "league": "德甲",
+   "leagueWarn": true,
+   "src": "v3w_fallback",
+   "lam": [
+    2.324,
+    1.303
+   ],
+   "had": {
+    "h": 0.6144,
+    "d": 0.1689,
+    "a": 0.2168
+   },
+   "crs_top5": [
+    {
+     "pick": "s02s01",
+     "p": 0.0936
+    },
+    {
+     "pick": "s01s00",
+     "p": 0.0739
+    },
+    {
+     "pick": "s03s01",
+     "p": 0.0725
+    },
+    {
+     "pick": "s02s00",
+     "p": 0.0718
+    },
+    {
+     "pick": "s01s01",
+     "p": 0.0685
+    }
+   ],
+   "boomP": 0.0335,
+   "water": false,
+   "flags": [
+    "dc_source:rolling",
+    "hst_source:proxy",
+    "no_elo"
+   ]
+  },
+  {
+   "code": "周六014",
+   "match": "不来梅 v 帕德博恩",
+   "matchId": "2042031",
+   "league": "德甲",
+   "leagueWarn": true,
+   "src": "v3w_fallback",
+   "lam": [
+    2.138,
+    1.386
+   ],
+   "had": {
+    "h": 0.5412,
+    "d": 0.2191,
+    "a": 0.2397
+   },
+   "crs_top5": [
+    {
+     "pick": "s02s01",
+     "p": 0.0934
+    },
+    {
+     "pick": "s01s01",
+     "p": 0.0932
+    },
+    {
+     "pick": "s02s00",
+     "p": 0.0674
+    },
+    {
+     "pick": "s03s01",
+     "p": 0.0665
+    },
+    {
+     "pick": "s02s02",
+     "p": 0.0647
+    }
+   ],
+   "boomP": 0.025,
+   "water": false,
+   "flags": [
+    "dc_source:rolling",
+    "hst_source:proxy",
+    "no_elo"
+   ]
+  },
+  {
+   "code": "周六015",
+   "match": "沙尔克04 v 美因茨",
+   "matchId": "2042032",
+   "league": "德甲",
+   "leagueWarn": true,
+   "src": "v3w_fallback",
+   "lam": [
+    1.834,
+    1.176
+   ],
+   "had": {
+    "h": 0.5438,
+    "d": 0.1968,
+    "a": 0.2594
+   },
+   "crs_top5": [
+    {
+     "pick": "s01s00",
+     "p": 0.1064
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.0975
+    },
+    {
+     "pick": "s01s01",
+     "p": 0.0904
+    },
+    {
+     "pick": "s02s00",
+     "p": 0.0829
+    },
+    {
+     "pick": "s00s01",
+     "p": 0.0739
+    }
+   ],
+   "boomP": 0.0126,
+   "water": false,
+   "flags": [
+    "dc_source:rolling",
+    "hst_source:proxy",
+    "no_elo"
+   ]
+  },
+  {
+   "code": "周六016",
+   "match": "汉堡 v 斯图加特",
+   "matchId": "2042033",
+   "league": "德甲",
+   "leagueWarn": true,
+   "src": "v3w_fallback",
+   "lam": [
+    1.727,
+    1.704
+   ],
+   "had": {
+    "h": 0.4063,
+    "d": 0.1967,
+    "a": 0.397
+   },
+   "crs_top5": [
+    {
+     "pick": "s02s01",
+     "p": 0.0822
+    },
+    {
+     "pick": "s01s02",
+     "p": 0.0811
+    },
+    {
+     "pick": "s01s01",
+     "p": 0.0809
+    },
+    {
+     "pick": "s01s00",
+     "p": 0.0701
+    },
+    {
+     "pick": "s02s02",
+     "p": 0.0701
+    }
+   ],
+   "boomP": 0.0166,
+   "water": false,
+   "flags": [
+    "dc_source:rolling",
+    "hst_source:proxy",
+    "no_elo"
+   ]
+  },
+  {
+   "code": "周六017",
+   "match": "柏林联合 v 多特蒙德",
+   "matchId": "2042034",
+   "league": "德甲",
+   "leagueWarn": true,
+   "src": "v3w_fallback",
+   "lam": [
+    1.73,
+    1.843
+   ],
+   "had": {
+    "h": 0.3612,
+    "d": 0.232,
+    "a": 0.4069
+   },
+   "crs_top5": [
+    {
+     "pick": "s01s01",
+     "p": 0.0955
+    },
+    {
+     "pick": "s01s02",
+     "p": 0.0825
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.0774
+    },
+    {
+     "pick": "s02s02",
+     "p": 0.0713
+    },
+    {
+     "pick": "s01s03",
+     "p": 0.0507
+    }
+   ],
+   "boomP": 0.0201,
+   "water": false,
+   "flags": [
+    "dc_source:rolling",
+    "hst_source:proxy"
+   ]
+  },
+  {
+   "code": "周六018",
+   "match": "布伦特 v 利物浦",
+   "matchId": "2042035",
+   "league": "英超",
+   "leagueWarn": false,
+   "src": "v3w_fallback",
+   "lam": [
+    1.489,
+    1.084
+   ],
+   "had": {
+    "h": 0.4355,
+    "d": 0.3183,
+    "a": 0.2462
+   },
+   "crs_top5": [
+    {
+     "pick": "s01s01",
+     "p": 0.1528
+    },
+    {
+     "pick": "s00s00",
+     "p": 0.1059
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.0917
+    },
+    {
+     "pick": "s02s00",
+     "p": 0.0846
+    },
+    {
+     "pick": "s01s00",
+     "p": 0.084
+    }
+   ],
+   "boomP": 0.0052,
+   "water": false,
+   "flags": [
+    "dc_source:rolling",
+    "hst_source:proxy"
+   ]
+  },
+  {
+   "code": "周六019",
+   "match": "曼城 v 伊普斯",
+   "matchId": "2042036",
+   "league": "英超",
+   "leagueWarn": false,
+   "src": "v3w_fallback",
+   "lam": [
+    1.963,
+    0.86
+   ],
+   "had": {
+    "h": 0.6077,
+    "d": 0.2592,
+    "a": 0.1331
+   },
+   "crs_top5": [
+    {
+     "pick": "s01s01",
+     "p": 0.1244
+    },
+    {
+     "pick": "s02s00",
+     "p": 0.1145
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.0985
+    },
+    {
+     "pick": "s01s00",
+     "p": 0.0925
+    },
+    {
+     "pick": "s00s00",
+     "p": 0.0835
+    }
+   ],
+   "boomP": 0.0155,
+   "water": false,
+   "flags": [
+    "dc_source:rolling",
+    "hst_source:proxy",
+    "no_elo"
+   ]
+  },
+  {
+   "code": "周六020",
+   "match": "富勒姆 v 赫尔城",
+   "matchId": "2042037",
+   "league": "英超",
+   "leagueWarn": false,
+   "src": "v3w_fallback",
+   "lam": [
+    1.369,
+    1.029
+   ],
+   "had": {
+    "h": 0.4153,
+    "d": 0.3334,
+    "a": 0.2513
+   },
+   "crs_top5": [
+    {
+     "pick": "s01s01",
+     "p": 0.1589
+    },
+    {
+     "pick": "s00s00",
+     "p": 0.1217
+    },
+    {
+     "pick": "s01s00",
+     "p": 0.0936
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.0876
+    },
+    {
+     "pick": "s02s00",
+     "p": 0.0852
+    }
+   ],
+   "boomP": 0.0036,
+   "water": false,
+   "flags": [
+    "dc_source:rolling",
+    "hst_source:proxy",
+    "no_elo"
+   ]
+  },
+  {
+   "code": "周六021",
+   "match": "比利亚雷 v 埃尔切",
+   "matchId": "2042038",
+   "league": "西甲",
+   "leagueWarn": true,
+   "src": "v3w_fallback",
+   "lam": [
+    2.107,
+    0.988
+   ],
+   "had": {
+    "h": 0.6135,
+    "d": 0.2356,
+    "a": 0.1508
+   },
+   "crs_top5": [
+    {
+     "pick": "s01s01",
+     "p": 0.1113
+    },
+    {
+     "pick": "s02s00",
+     "p": 0.1005
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.0993
+    },
+    {
+     "pick": "s01s00",
+     "p": 0.0783
+    },
+    {
+     "pick": "s03s00",
+     "p": 0.0706
+    }
+   ],
+   "boomP": 0.0213,
+   "water": false,
+   "flags": [
+    "dc_source:rolling",
+    "hst_source:proxy",
+    "no_elo"
+   ]
+  },
+  {
+   "code": "周六022",
+   "match": "斯特拉斯 v 巴黎圣曼",
+   "matchId": "2042039",
+   "league": "法甲",
+   "leagueWarn": false,
+   "src": "v3w_fallback",
+   "lam": [
+    1.535,
+    1.626
+   ],
+   "had": {
+    "h": 0.3784,
+    "d": 0.2039,
+    "a": 0.4177
+   },
+   "crs_top5": [
+    {
+     "pick": "s01s01",
+     "p": 0.0899
+    },
+    {
+     "pick": "s01s02",
+     "p": 0.086
+    },
+    {
+     "pick": "s00s01",
+     "p": 0.0848
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.0812
+    },
+    {
+     "pick": "s01s00",
+     "p": 0.0809
+    }
+   ],
+   "boomP": 0.0114,
+   "water": false,
+   "flags": [
+    "dc_source:rolling",
+    "hst_source:proxy"
+   ]
+  },
+  {
+   "code": "周六023",
+   "match": "博洛尼亚 v 国际米兰",
+   "matchId": "2042040",
+   "league": "意甲",
+   "leagueWarn": true,
+   "src": "v3w_fallback",
+   "lam": [
+    1.043,
+    1.398
+   ],
+   "had": {
+    "h": 0.2726,
+    "d": 0.2849,
+    "a": 0.4425
+   },
+   "crs_top5": [
+    {
+     "pick": "s01s01",
+     "p": 0.1351
+    },
+    {
+     "pick": "s00s01",
+     "p": 0.1136
+    },
+    {
+     "pick": "s00s00",
+     "p": 0.0953
+    },
+    {
+     "pick": "s01s02",
+     "p": 0.0887
+    },
+    {
+     "pick": "s00s02",
+     "p": 0.0851
+    }
+   ],
+   "boomP": 0.0039,
+   "water": false,
+   "flags": [
+    "dc_source:rolling",
+    "hst_source:proxy"
+   ]
+  },
+  {
+   "code": "周六024",
+   "match": "纽卡斯尔 v 维拉",
+   "matchId": "2042041",
+   "league": "英超",
+   "leagueWarn": false,
+   "src": "v3w_fallback",
+   "lam": [
+    1.402,
+    1.234
+   ],
+   "had": {
+    "h": 0.3787,
+    "d": 0.3203,
+    "a": 0.3009
+   },
+   "crs_top5": [
+    {
+     "pick": "s01s01",
+     "p": 0.1538
+    },
+    {
+     "pick": "s00s00",
+     "p": 0.1015
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.0869
+    },
+    {
+     "pick": "s01s02",
+     "p": 0.0765
+    },
+    {
+     "pick": "s01s00",
+     "p": 0.0706
+    }
+   ],
+   "boomP": 0.0049,
+   "water": false,
+   "flags": [
+    "dc_source:rolling",
+    "hst_source:proxy"
+   ]
+  },
+  {
+   "code": "周六025",
+   "match": "拜仁 v 莱红牛",
+   "matchId": "2042042",
+   "league": "德甲",
+   "leagueWarn": true,
+   "src": "v3w_fallback",
+   "lam": [
+    3.619,
+    1.023
+   ],
+   "had": {
+    "h": 0.8383,
+    "d": 0.1004,
+    "a": 0.0613
+   },
+   "crs_top5": [
+    {
+     "pick": "s1sh",
+     "p": 0.1585
+    },
+    {
+     "pick": "s03s01",
+     "p": 0.0779
+    },
+    {
+     "pick": "s03s00",
+     "p": 0.0761
+    },
+    {
+     "pick": "s04s01",
+     "p": 0.0705
+    },
+    {
+     "pick": "s04s00",
+     "p": 0.0689
+    }
+   ],
+   "boomP": 0.1591,
+   "water": true,
+   "flags": [
+    "dc_source:rolling",
+    "hst_source:proxy"
+   ]
+  },
+  {
+   "code": "周六026",
+   "match": "贝蒂斯 v 巴萨",
+   "matchId": "2042043",
+   "league": "西甲",
+   "leagueWarn": true,
+   "src": "v3w_fallback",
+   "lam": [
+    1.314,
+    1.9
+   ],
+   "had": {
+    "h": 0.2467,
+    "d": 0.2599,
+    "a": 0.4934
+   },
+   "crs_top5": [
+    {
+     "pick": "s01s01",
+     "p": 0.1185
+    },
+    {
+     "pick": "s01s02",
+     "p": 0.0953
+    },
+    {
+     "pick": "s00s02",
+     "p": 0.0726
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.0659
+    },
+    {
+     "pick": "s02s02",
+     "p": 0.0626
+    }
+   ],
+   "boomP": 0.0155,
+   "water": false,
+   "flags": [
+    "dc_source:rolling",
+    "hst_source:proxy"
+   ]
+  },
+  {
+   "code": "周六027",
+   "match": "特尔斯达 v 费耶诺德",
+   "matchId": "2042044",
+   "league": "荷甲",
+   "leagueWarn": false,
+   "src": "v3w_fallback",
+   "lam": [
+    1.321,
+    2.289
+   ],
+   "had": {
+    "h": 0.202,
+    "d": 0.2165,
+    "a": 0.5815
+   },
+   "crs_top5": [
+    {
+     "pick": "s01s02",
+     "p": 0.0936
+    },
+    {
+     "pick": "s01s01",
+     "p": 0.0921
+    },
+    {
+     "pick": "s01s03",
+     "p": 0.0714
+    },
+    {
+     "pick": "s00s02",
+     "p": 0.0709
+    },
+    {
+     "pick": "s02s02",
+     "p": 0.0618
+    }
+   ],
+   "boomP": 0.0318,
+   "water": false,
+   "flags": [
+    "dc_source:rolling",
+    "hst_source:proxy"
+   ]
+  },
+  {
+   "code": "周六028",
+   "match": "罗马 v 热那亚",
+   "matchId": "2042045",
+   "league": "意甲",
+   "leagueWarn": true,
+   "src": "v3w_fallback",
+   "lam": [
+    1.818,
+    0.704
+   ],
+   "had": {
+    "h": 0.6336,
+    "d": 0.2342,
+    "a": 0.1322
+   },
+   "crs_top5": [
+    {
+     "pick": "s01s00",
+     "p": 0.1393
+    },
+    {
+     "pick": "s02s00",
+     "p": 0.1327
+    },
+    {
+     "pick": "s01s01",
+     "p": 0.1094
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.0934
+    },
+    {
+     "pick": "s00s00",
+     "p": 0.0869
+    }
+   ],
+   "boomP": 0.011,
+   "water": false,
+   "flags": [
+    "dc_source:rolling",
+    "hst_source:proxy"
+   ]
+  },
+  {
+   "code": "周六029",
+   "match": "巴伦西亚 v 毕尔巴鄂",
+   "matchId": "2042046",
+   "league": "西甲",
+   "leagueWarn": true,
+   "src": "v3w_fallback",
+   "lam": [
+    1.434,
+    1.138
+   ],
+   "had": {
+    "h": 0.4159,
+    "d": 0.3072,
+    "a": 0.2769
+   },
+   "crs_top5": [
+    {
+     "pick": "s01s01",
+     "p": 0.1472
+    },
+    {
+     "pick": "s00s00",
+     "p": 0.0989
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.0894
+    },
+    {
+     "pick": "s01s00",
+     "p": 0.087
+    },
+    {
+     "pick": "s02s00",
+     "p": 0.0786
+    }
+   ],
+   "boomP": 0.0047,
+   "water": false,
+   "flags": [
+    "dc_source:rolling",
+    "hst_source:proxy"
+   ]
+  },
+  {
+   "code": "周日003",
+   "match": "首尔FC v 金泉尚武",
+   "matchId": "2042050",
+   "league": "韩职",
+   "leagueWarn": true,
+   "src": "v3w_fallback",
+   "lam": [
+    2.098,
+    0.63
+   ],
+   "had": {
+    "h": 0.7028,
+    "d": 0.2111,
+    "a": 0.0861
+   },
+   "crs_top5": [
+    {
+     "pick": "s02s00",
+     "p": 0.1438
+    },
+    {
+     "pick": "s01s00",
+     "p": 0.124
+    },
+    {
+     "pick": "s03s00",
+     "p": 0.1006
+    },
+    {
+     "pick": "s01s01",
+     "p": 0.0995
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.0906
+    }
+   ],
+   "boomP": 0.0204,
+   "water": false,
+   "flags": [
+    "dc_source:rolling",
+    "no_elo",
+    "no_xg"
+   ]
+  },
+  {
+   "code": "周日004",
+   "match": "兹沃勒 v 前进之鹰",
+   "matchId": "2042051",
+   "league": "荷甲",
+   "leagueWarn": false,
+   "src": "v3w_fallback",
+   "lam": [
+    1.714,
+    1.936
+   ],
+   "had": {
+    "h": 0.3363,
+    "d": 0.2383,
+    "a": 0.4254
+   },
+   "crs_top5": [
+    {
+     "pick": "s01s01",
+     "p": 0.0972
+    },
+    {
+     "pick": "s01s02",
+     "p": 0.0835
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.0739
+    },
+    {
+     "pick": "s02s02",
+     "p": 0.0715
+    },
+    {
+     "pick": "s01s03",
+     "p": 0.0539
+    }
+   ],
+   "boomP": 0.0225,
+   "water": false,
+   "flags": [
+    "dc_source:rolling",
+    "hst_source:proxy"
+   ]
+  },
+  {
+   "code": "周日005",
+   "match": "乌迪内斯 v 莱切",
+   "matchId": "2042052",
+   "league": "意甲",
+   "leagueWarn": true,
+   "src": "v3w_fallback",
+   "lam": [
+    1.541,
+    0.983
+   ],
+   "had": {
+    "h": 0.4949,
+    "d": 0.2717,
+    "a": 0.2335
+   },
+   "crs_top5": [
+    {
+     "pick": "s01s01",
+     "p": 0.1292
+    },
+    {
+     "pick": "s01s00",
+     "p": 0.1158
+    },
+    {
+     "pick": "s02s00",
+     "p": 0.0952
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.0935
+    },
+    {
+     "pick": "s00s00",
+     "p": 0.088
+    }
+   ],
+   "boomP": 0.0056,
+   "water": false,
+   "flags": [
+    "dc_source:rolling",
+    "hst_source:proxy"
+   ]
+  },
+  {
+   "code": "周日006",
+   "match": "奥萨苏纳 v 桑坦德",
+   "matchId": "2042053",
+   "league": "西甲",
+   "leagueWarn": true,
+   "src": "v3w_fallback",
+   "lam": [
+    1.529,
+    1.394
+   ],
+   "had": {
+    "h": 0.3864,
+    "d": 0.2875,
+    "a": 0.3261
+   },
+   "crs_top5": [
+    {
+     "pick": "s01s01",
+     "p": 0.1354
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.0876
+    },
+    {
+     "pick": "s01s02",
+     "p": 0.0799
+    },
+    {
+     "pick": "s00s00",
+     "p": 0.0745
+    },
+    {
+     "pick": "s02s00",
+     "p": 0.0629
+    }
+   ],
+   "boomP": 0.008,
+   "water": false,
+   "flags": [
+    "dc_source:rolling",
+    "hst_source:proxy",
+    "no_elo"
+   ]
+  },
+  {
+   "code": "周日010",
+   "match": "利兹联 v 曼联",
+   "matchId": "2042057",
+   "league": "英超",
+   "leagueWarn": false,
+   "src": "v3w_fallback",
+   "lam": [
+    1.469,
+    1.11
+   ],
+   "had": {
+    "h": 0.4541,
+    "d": 0.2601,
+    "a": 0.2858
+   },
+   "crs_top5": [
+    {
+     "pick": "s01s01",
+     "p": 0.1237
+    },
+    {
+     "pick": "s01s00",
+     "p": 0.1114
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.0909
+    },
+    {
+     "pick": "s00s01",
+     "p": 0.0842
+    },
+    {
+     "pick": "s02s00",
+     "p": 0.0819
+    }
+   ],
+   "boomP": 0.005,
+   "water": false,
+   "flags": [
+    "dc_source:rolling",
+    "hst_source:proxy",
+    "no_elo"
+   ]
+  },
+  {
+   "code": "周日012",
+   "match": "佛罗伦萨 v 科莫",
+   "matchId": "2042059",
+   "league": "意甲",
+   "leagueWarn": true,
+   "src": "v3w_fallback",
+   "lam": [
+    1.067,
+    1.353
+   ],
+   "had": {
+    "h": 0.287,
+    "d": 0.2883,
+    "a": 0.4247
+   },
+   "crs_top5": [
+    {
+     "pick": "s01s01",
+     "p": 0.1366
+    },
+    {
+     "pick": "s00s01",
+     "p": 0.1121
+    },
+    {
+     "pick": "s00s00",
+     "p": 0.0972
+    },
+    {
+     "pick": "s01s02",
+     "p": 0.0868
+    },
+    {
+     "pick": "s01s00",
+     "p": 0.0866
+    }
+   ],
+   "boomP": 0.0035,
+   "water": false,
+   "flags": [
+    "dc_source:rolling",
+    "hst_source:proxy",
+    "no_elo"
+   ]
+  },
+  {
+   "code": "周日016",
+   "match": "格罗宁根 v 阿贾克斯",
+   "matchId": "2042063",
+   "league": "荷甲",
+   "leagueWarn": false,
+   "src": "v3w_fallback",
+   "lam": [
+    1.649,
+    1.964
+   ],
+   "had": {
+    "h": 0.3174,
+    "d": 0.2385,
+    "a": 0.4442
+   },
+   "crs_top5": [
+    {
+     "pick": "s01s01",
+     "p": 0.0984
+    },
+    {
+     "pick": "s01s02",
+     "p": 0.0858
+    },
+    {
+     "pick": "s02s01",
+     "p": 0.072
+    },
+    {
+     "pick": "s02s02",
+     "p": 0.0707
+    },
+    {
+     "pick": "s01s03",
+     "p": 0.0561
+    }
+   ],
+   "boomP": 0.0221,
+   "water": false,
+   "flags": [
+    "dc_source:rolling",
+    "hst_source:proxy"
+   ]
+  },
+  {
+   "code": "周日018",
+   "match": "诺丁汉 v 阿森纳",
+   "matchId": "2042065",
+   "league": "英超",
+   "leagueWarn": false,
+   "src": "v3w_fallback",
+   "lam": [
+    0.912,
+    1.491
+   ],
+   "had": {
+    "h": 0.201,
+    "d": 0.3213,
+    "a": 0.4776
+   },
+   "crs_top5": [
+    {
+     "pick": "s01s01",
+     "p": 0.1526
+    },
+    {
+     "pick": "s00s00",
+     "p": 0.1201
+    },
+    {
+     "pick": "s00s01",
+     "p": 0.1053
+    },
+    {
+     "pick": "s00s02",
+     "p": 0.1006
+    },
+    {
+     "pick": "s01s02",
+     "p": 0.0917
+    }
+   ],
+   "boomP": 0.0047,
+   "water": false,
+   "flags": [
+    "dc_source:rolling",
+    "hst_source:proxy"
+   ]
+  }
+ ],
+ "picks": [
+  {
+   "code": "周六020",
+   "match": "富勒姆 v 赫尔城",
+   "league": "英超",
+   "leagueWarn": false,
+   "src": "v3w_fallback",
+   "pick": "s01s01",
+   "p": 0.1589
+  },
+  {
+   "code": "周六024",
+   "match": "纽卡斯尔 v 维拉",
+   "league": "英超",
+   "leagueWarn": false,
+   "src": "v3w_fallback",
+   "pick": "s01s01",
+   "p": 0.1538
+  },
+  {
+   "code": "周六018",
+   "match": "布伦特 v 利物浦",
+   "league": "英超",
+   "leagueWarn": false,
+   "src": "v3w_fallback",
+   "pick": "s01s01",
+   "p": 0.1528
+  },
+  {
+   "code": "周日018",
+   "match": "诺丁汉 v 阿森纳",
+   "league": "英超",
+   "leagueWarn": false,
+   "src": "v3w_fallback",
+   "pick": "s01s01",
+   "p": 0.1526
+  }
+ ]
+}

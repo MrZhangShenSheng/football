@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-16",
+ "matchKey": "2042021",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:46",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     2.102,
+     1.007
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:46",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": false
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:46",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1088
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0993
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.0986
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.0795
+     },
+     {
+      "pick": "s03s01",
+      "p": 0.0696
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:46",
+   "payload": {
+    "hid": "ulsan",
+    "aid": "bucheon-fc",
+    "hstRows": 0
+   }
+  }
+ }
+}

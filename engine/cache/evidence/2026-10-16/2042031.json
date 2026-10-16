@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-16",
+ "matchKey": "2042031",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:49",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     2.138,
+     1.386
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:49",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": false
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:49",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s02s01",
+      "p": 0.0934
+     },
+     {
+      "pick": "s01s01",
+      "p": 0.0932
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.0674
+     },
+     {
+      "pick": "s03s01",
+      "p": 0.0665
+     },
+     {
+      "pick": "s02s02",
+      "p": 0.0647
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:49",
+   "payload": {
+    "hid": "werder-bremen",
+    "aid": "paderborn",
+    "hstRows": 1259
+   }
+  }
+ }
+}

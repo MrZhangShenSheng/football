@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-16",
+ "matchKey": "2042032",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:50",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     1.834,
+     1.176
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:50",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": false
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:50",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s01s00",
+      "p": 0.1064
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0975
+     },
+     {
+      "pick": "s01s01",
+      "p": 0.0904
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.0829
+     },
+     {
+      "pick": "s00s01",
+      "p": 0.0739
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-16T11:23:50",
+   "payload": {
+    "hid": "schalke",
+    "aid": "mainz",
+    "hstRows": 1078
+   }
+  }
+ }
+}
