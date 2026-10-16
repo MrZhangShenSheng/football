@@ -196,7 +196,14 @@ def main() -> int:
     ap.add_argument("cmd", choices=["gen"])
     ap.add_argument("sale_date")
     args = ap.parse_args()
-    return gen(args.sale_date)
+    rc = gen(args.sale_date)
+    try:                                   # 规则简报（rules-registry）：best-effort 不熔断出卡
+        import rule_brief
+        out = rule_brief.compile_brief(args.sale_date)
+        print(f"[llm_card] 规则简报 → {out}（填格前必读）")
+    except Exception as e:                 # noqa: BLE001
+        print(f"[llm_card] 规则简报跳过：{e}")
+    return rc
 
 
 if __name__ == "__main__":

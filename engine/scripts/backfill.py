@@ -902,6 +902,13 @@ def main() -> None:
     if res.get("pin_pending"):
         log("backfill", f"fd 覆盖联赛 pinClose 待补 {res['pin_pending']} 场"
                        f"（fd 当日行英国下午更新·晚间重跑 verify 救回，幂等）")
+    try:                                   # 规则结算（rules-registry）：best-effort 不熔断回填
+        import rule_settle
+        st = rule_settle.settle(day_limit or datetime.now().strftime("%Y-%m-%d"))
+        log("backfill", f"规则结算：回执 {st['receipts']} 条 · 救 {st['saved']}/误 {st['harmed']}"
+                        f"/不可判 {st['unknown']} · 模式证据 +{st['patterns']}")
+    except Exception as e:                 # noqa: BLE001
+        log("backfill", f"规则结算跳过：{e}")
     log("backfill", "回填后跑 run.py corpus 刷新语料+趋势报告")
 
 
