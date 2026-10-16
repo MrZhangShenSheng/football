@@ -371,7 +371,7 @@
           "odds": 11.0,
           "result": "miss",
           "actual": "4:1(半1:1)",
-          "agreement": "no_rec",
+          "agreement": "excluded",
           "clv_self": null,
           "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
         },
@@ -440,7 +440,7 @@
           "odds": 11.0,
           "result": "miss",
           "actual": "4:1(半1:1)",
-          "agreement": "no_rec",
+          "agreement": "excluded",
           "clv_self": null,
           "clv_self_note": "时序未覆盖（08-30 前出票或快照无该池）"
         },
@@ -1463,7 +1463,7 @@
           "odds": 1.79,
           "result": "miss",
           "actual": "4-2",
-          "agreement": "play_diff",
+          "agreement": "excluded",
           "clv_self": 0.0229,
           "clv_self_note": "末次快照 1.75 @ 2026-09-02T11:06"
         },
@@ -5534,14 +5534,207 @@
         "settledAt": "2026-10-14 10:08"
       },
       "note": "闯关右尾票·全中派彩=2×5×45.5=455.00元·原证据已作废按纪律出票(满100注再评估)·证据状态票面已标注"
+    },
+    {
+      "id": "T048",
+      "source": "方案转正(2026-10-15-boldplay seq=38 upset档四腿)",
+      "placedAt": "2026-10-15 19:30",
+      "matchDays": [
+        "2026-10-15",
+        "2026-10-16"
+      ],
+      "shape": "四腿混合过关(3串1×4 + 4串1×1)",
+      "shapeDetail": "5注×2元×2倍=20元",
+      "stake": 20,
+      "unitStake": 2,
+      "units": 10,
+      "legs": [
+        {
+          "code": "周四009",
+          "league": "欧罗巴",
+          "match": "霍芬海姆 vs 贝西克塔",
+          "market": "HAFU",
+          "pick": "dh",
+          "pickZh": "半场平/全场主胜",
+          "odds": 5.1,
+          "q": 0.1994,
+          "result": "miss",
+          "actual": "2:3(半0:0)",
+          "agreement": "no_rec",
+          "priceNote": "票面按19:11实时价记；方案卡13:16冻结价@5.1（同价）",
+          "clv_self": null,
+          "clv_self_note": null
+        },
+        {
+          "code": "周四013",
+          "league": "欧协联",
+          "match": "哥本哈根 vs 布拉加",
+          "market": "HAFU",
+          "pick": "hh",
+          "pickZh": "半场主胜/全场主胜",
+          "odds": 3.85,
+          "q": 0.2661,
+          "result": "miss",
+          "actual": "3:0(半0:0)",
+          "agreement": "no_rec",
+          "priceNote": "票面按19:11实时价记；方案卡13:16冻结价@3.6（涨+0.25）",
+          "clv_self": null,
+          "clv_self_note": null
+        },
+        {
+          "code": "周四014",
+          "league": "解放者杯",
+          "match": "拉普大学 vs 弗拉门戈",
+          "market": "TTG",
+          "pick": "s3",
+          "pickZh": "总进球3",
+          "odds": 4.15,
+          "q": 0.2264,
+          "result": "miss",
+          "actual": "0:0(半0:0)",
+          "agreement": "no_rec",
+          "priceNote": "票面按19:11实时价记；方案卡13:16冻结价@4.15（同价）",
+          "clv_self": null,
+          "clv_self_note": null
+        },
+        {
+          "code": "周四001",
+          "league": "欧罗巴",
+          "match": "里昂 vs 水晶宫",
+          "market": "TTG",
+          "pick": "s2",
+          "pickZh": "总进球2",
+          "odds": 4.2,
+          "q": 0.2222,
+          "result": "miss",
+          "actual": "3:2(半2:0)",
+          "agreement": "no_rec",
+          "priceNote": "票面按19:11实时价记；方案卡13:16冻结价@3.85（涨+0.35）",
+          "clv_self": null,
+          "clv_self_note": null
+        }
+      ],
+      "bets": [
+        {
+          "n": 3,
+          "legs": [
+            0,
+            1,
+            2
+          ],
+          "legCodes": [
+            "周四009",
+            "周四013",
+            "周四014"
+          ],
+          "drop": [
+            "周四001"
+          ],
+          "multiplier": 2,
+          "combOdds": 81.49,
+          "payout": 325.94,
+          "q": 0.01201
+        },
+        {
+          "n": 3,
+          "legs": [
+            0,
+            1,
+            3
+          ],
+          "legCodes": [
+            "周四009",
+            "周四013",
+            "周四001"
+          ],
+          "drop": [
+            "周四014"
+          ],
+          "multiplier": 2,
+          "combOdds": 82.47,
+          "payout": 329.87,
+          "q": 0.01179
+        },
+        {
+          "n": 3,
+          "legs": [
+            0,
+            2,
+            3
+          ],
+          "legCodes": [
+            "周四009",
+            "周四014",
+            "周四001"
+          ],
+          "drop": [
+            "周四013"
+          ],
+          "multiplier": 2,
+          "combOdds": 88.89,
+          "payout": 355.57,
+          "q": 0.01003
+        },
+        {
+          "n": 3,
+          "legs": [
+            1,
+            2,
+            3
+          ],
+          "legCodes": [
+            "周四013",
+            "周四014",
+            "周四001"
+          ],
+          "drop": [
+            "周四009"
+          ],
+          "multiplier": 2,
+          "combOdds": 67.11,
+          "payout": 268.42,
+          "q": 0.01339
+        },
+        {
+          "n": 4,
+          "legs": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "legCodes": [
+            "周四009",
+            "周四013",
+            "周四014",
+            "周四001"
+          ],
+          "drop": null,
+          "multiplier": 2,
+          "combOdds": 342.24,
+          "payout": 1368.95,
+          "q": 0.00267
+        }
+      ],
+      "settled": {
+        "status": "settled",
+        "hits": 0,
+        "winUnits": 0,
+        "payout": 0.0,
+        "net": -20.0,
+        "roi": -100.0,
+        "settledAt": "2026-10-16 11:18"
+      },
+      "payoutShape": "按形状结算:中3腿→回对应1注3串1(268~356元)/中4腿→回全5注共2649元/中≤2腿→0",
+      "note": "用户自主加倍出票(方案卡原 upset 档 cost=2元，用户改混合过关×2倍=20元)。四腿同中0.266%·有回款3.92%(≈1/26)·期望回款18.62元·返还率93.1%。臣当时建议只出两注3串1(弃014/弃001，8元·EV-2~3%)，因014(TTG返还率79.7%深水+无信息优势)与001单腿EV负；用户选全套20元留痕以备检验。014 对手更正：阿根廷拉普拉塔大学生(非基多大学)·解放者杯半决赛首回合。票面赔率待主公以票面校正(013/001 两腿 13:16→19:11 曾涨价)。"
     }
   ],
   "meta": {
-    "totalTickets": 48,
-    "totalStake": 836.0,
+    "totalTickets": 49,
+    "totalStake": 856.0,
     "totalPayout": 501.75,
-    "totalNet": -334.25,
-    "lastUpdated": "2026-10-14",
+    "totalNet": -354.25,
+    "lastUpdated": "2026-10-16",
     "updatedAt": "2026-10-06"
   }
 }

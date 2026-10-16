@@ -1,0 +1,420 @@
+{
+ "date": "2026-10-15",
+ "version": "v5.17",
+ "saleDay": "2026-10-15",
+ "roundNote": "全欧战之夜（欧罗巴10+欧协联2+解放者杯1·周四007取消）。杯赛轮无 DC，全部纯市场锚。LLM v2 锚定链首跑（13场）。T048 四腿混合过关 20 元（大哥自主加倍）。",
+ "plans": [
+  {
+   "plan": "T048·四腿混合过关",
+   "type": "3串1×4+4串1",
+   "stake": "20元·已出票",
+   "legs": [
+    "周四009 HAFU dh @5.10",
+    "周四013 HAFU hh @3.85",
+    "周四014 TTG s3 @4.15",
+    "周四001 TTG s2 @4.20"
+   ]
+  }
+ ],
+ "matches": [
+  {
+   "idx": 1,
+   "code": "周四001",
+   "matchId": 2041975,
+   "league": "欧罗巴",
+   "match": "里昂 vs 水晶宫",
+   "kickoff": "2026-10-16",
+   "pick": "T048腿",
+   "odds": {
+    "h": "2.38",
+    "d": "3.25",
+    "a": "2.49"
+   },
+   "grade": "C",
+   "inPlan": "T048",
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "llmTop1": "1:1",
+   "llmConf": "low",
+   "result": "3-2",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "half": "2:0",
+   "preSnapshots": {
+    "matchId": 2041975,
+    "lastOddsAt": "2026-10-15T19:11:39+08:00",
+    "lastIntelAt": "2026-10-15T13:22:13+08:00"
+   }
+  },
+  {
+   "idx": 2,
+   "code": "周四002",
+   "matchId": 2041976,
+   "league": "欧罗巴",
+   "match": "托林斯 vs 桑德兰",
+   "kickoff": "2026-10-16",
+   "pick": "排除:纯市场锚(无DC无画像·pure_template)",
+   "odds": {
+    "h": "10.50",
+    "d": "6.10",
+    "a": "1.15"
+   },
+   "grade": "C",
+   "inPlan": null,
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "llmTop1": "0:2",
+   "llmConf": "medium",
+   "result": "1-2",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "half": "1:0",
+   "preSnapshots": {
+    "matchId": 2041976,
+    "lastOddsAt": "2026-10-15T19:11:39+08:00",
+    "lastIntelAt": "2026-10-15T13:22:15+08:00"
+   }
+  },
+  {
+   "idx": 3,
+   "code": "周四003",
+   "matchId": 2041977,
+   "league": "欧罗巴",
+   "match": "波兹南 vs 勒沃库森",
+   "kickoff": "2026-10-16",
+   "pick": "排除:纯市场锚(无DC无画像·pure_template)",
+   "odds": {
+    "h": "5.65",
+    "d": "5.00",
+    "a": "1.33"
+   },
+   "grade": "C",
+   "inPlan": null,
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "llmTop1": "1:2",
+   "llmConf": "low",
+   "result": "0-4",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "half": "0:3",
+   "preSnapshots": {
+    "matchId": 2041977,
+    "lastOddsAt": "2026-10-15T19:11:39+08:00",
+    "lastIntelAt": "2026-10-15T13:22:15+08:00"
+   }
+  },
+  {
+   "idx": 4,
+   "code": "周四004",
+   "matchId": 2041978,
+   "league": "欧罗巴",
+   "match": "圣吉联合 vs 皇家社会",
+   "kickoff": "2026-10-16",
+   "pick": "排除:纯市场锚(无DC无画像·pure_template)",
+   "odds": {
+    "h": "2.38",
+    "d": "3.40",
+    "a": "2.42"
+   },
+   "grade": "C",
+   "inPlan": null,
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "llmTop1": "1:1",
+   "llmConf": "low",
+   "result": "1-1",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "half": "0:0",
+   "preSnapshots": {
+    "matchId": 2041978,
+    "lastOddsAt": "2026-10-15T19:11:39+08:00",
+    "lastIntelAt": "2026-10-15T13:22:16+08:00"
+   }
+  },
+  {
+   "idx": 5,
+   "code": "周四005",
+   "matchId": 2041979,
+   "league": "欧罗巴",
+   "match": "萨尔茨堡 vs AC米兰",
+   "kickoff": "2026-10-16",
+   "pick": "排除:纯市场锚(无DC无画像·pure_template)",
+   "odds": {
+    "h": "3.90",
+    "d": "3.75",
+    "a": "1.65"
+   },
+   "grade": "C",
+   "inPlan": null,
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "llmTop1": "1:2",
+   "llmConf": "low",
+   "result": "0-4",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "half": "0:2",
+   "preSnapshots": {
+    "matchId": 2041979,
+    "lastOddsAt": "2026-10-15T19:11:39+08:00",
+    "lastIntelAt": "2026-10-15T13:22:17+08:00"
+   }
+  },
+  {
+   "idx": 6,
+   "code": "周四006",
+   "matchId": 2041989,
+   "league": "欧协联",
+   "match": "克拉约瓦 vs 赫塔费",
+   "kickoff": "2026-10-16",
+   "pick": "排除:纯市场锚(无DC无画像·pure_template)",
+   "odds": {
+    "h": "2.58",
+    "d": "2.90",
+    "a": "2.52"
+   },
+   "grade": "C",
+   "inPlan": null,
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "llmTop1": "1:0",
+   "llmConf": "medium",
+   "result": "1-1",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "half": "0:0",
+   "preSnapshots": {
+    "matchId": 2041989,
+    "lastOddsAt": "2026-10-15T19:11:39+08:00",
+    "lastIntelAt": "2026-10-15T13:22:18+08:00"
+   }
+  },
+  {
+   "idx": 7,
+   "code": "周四008",
+   "matchId": 2041981,
+   "league": "欧罗巴",
+   "match": "塞尔塔 vs 尤文图斯",
+   "kickoff": "2026-10-16",
+   "pick": "排除:纯市场锚(无DC无画像·pure_template)",
+   "odds": {
+    "h": "3.38",
+    "d": "3.18",
+    "a": "1.93"
+   },
+   "grade": "C",
+   "inPlan": null,
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "llmTop1": "1:1",
+   "llmConf": "low",
+   "result": "1-2",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "half": "1:0",
+   "preSnapshots": {
+    "matchId": 2041981,
+    "lastOddsAt": "2026-10-15T19:11:39+08:00",
+    "lastIntelAt": "2026-10-15T13:22:18+08:00"
+   }
+  },
+  {
+   "idx": 8,
+   "code": "周四009",
+   "matchId": 2041982,
+   "league": "欧罗巴",
+   "match": "霍芬海姆 vs 贝西克塔",
+   "kickoff": "2026-10-16",
+   "pick": "T048腿",
+   "odds": {
+    "h": "1.75",
+    "d": "3.85",
+    "a": "3.35"
+   },
+   "grade": "C",
+   "inPlan": "T048",
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "llmTop1": "2:2",
+   "llmConf": "low",
+   "result": "2-3",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "half": "0:0",
+   "preSnapshots": {
+    "matchId": 2041982,
+    "lastOddsAt": "2026-10-15T19:11:39+08:00",
+    "lastIntelAt": "2026-10-15T13:22:19+08:00"
+   }
+  },
+  {
+   "idx": 9,
+   "code": "周四010",
+   "matchId": 2041983,
+   "league": "欧罗巴",
+   "match": "马赛 vs 奥林匹亚",
+   "kickoff": "2026-10-16",
+   "pick": "排除:纯市场锚(无DC无画像·pure_template)",
+   "odds": {
+    "h": "2.02",
+    "d": "3.40",
+    "a": "2.94"
+   },
+   "grade": "C",
+   "inPlan": null,
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "llmTop1": "1:1",
+   "llmConf": "low",
+   "result": "0-1",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "half": "0:1",
+   "preSnapshots": {
+    "matchId": 2041983,
+    "lastOddsAt": "2026-10-15T19:11:39+08:00",
+    "lastIntelAt": "2026-10-15T13:22:20+08:00"
+   }
+  },
+  {
+   "idx": 10,
+   "code": "周四011",
+   "matchId": 2041984,
+   "league": "欧罗巴",
+   "match": "伯恩茅斯 vs 格风暴",
+   "kickoff": "2026-10-16",
+   "pick": "排除:纯市场锚(无DC无画像·pure_template)",
+   "odds": null,
+   "grade": "C",
+   "inPlan": null,
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "llmTop1": "2:1",
+   "llmConf": "low",
+   "result": "3-0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "half": "1:0",
+   "preSnapshots": {
+    "matchId": 2041984,
+    "lastOddsAt": "2026-10-15T19:11:39+08:00",
+    "lastIntelAt": "2026-10-15T13:22:21+08:00"
+   }
+  },
+  {
+   "idx": 11,
+   "code": "周四012",
+   "matchId": 2041985,
+   "league": "欧罗巴",
+   "match": "本菲卡 vs 凯尔特人",
+   "kickoff": "2026-10-16",
+   "pick": "排除:纯市场锚(无DC无画像·pure_template)",
+   "odds": {
+    "h": "1.10",
+    "d": "6.90",
+    "a": "13.25"
+   },
+   "grade": "C",
+   "inPlan": null,
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "llmTop1": "2:0",
+   "llmConf": "medium",
+   "result": "4-1",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "half": "3:0",
+   "preSnapshots": {
+    "matchId": 2041985,
+    "lastOddsAt": "2026-10-15T19:11:39+08:00",
+    "lastIntelAt": "2026-10-15T13:22:21+08:00"
+   }
+  },
+  {
+   "idx": 12,
+   "code": "周四013",
+   "matchId": 2041986,
+   "league": "欧协联",
+   "match": "哥本哈根 vs 布拉加",
+   "kickoff": "2026-10-16",
+   "pick": "T048腿",
+   "odds": {
+    "h": "2.30",
+    "d": "2.95",
+    "a": "2.81"
+   },
+   "grade": "C",
+   "inPlan": "T048",
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "llmTop1": "1:1",
+   "llmConf": "low",
+   "result": "3-0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "half": "0:0",
+   "preSnapshots": {
+    "matchId": 2041986,
+    "lastOddsAt": "2026-10-15T19:11:39+08:00",
+    "lastIntelAt": "2026-10-15T13:22:22+08:00"
+   }
+  },
+  {
+   "idx": 13,
+   "code": "周四014",
+   "matchId": 2041987,
+   "league": "解放者杯",
+   "match": "拉普大学 vs 弗拉门戈",
+   "kickoff": "2026-10-16",
+   "pick": "T048腿",
+   "odds": {
+    "h": "3.97",
+    "d": "2.80",
+    "a": "1.92"
+   },
+   "grade": "C",
+   "inPlan": "T048",
+   "dcUsed": false,
+   "anchorMode": "market-only",
+   "llmTop1": "0:1",
+   "llmConf": "low",
+   "result": "0-0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "half": "0:0",
+   "preSnapshots": {
+    "matchId": 2041987,
+    "lastOddsAt": "2026-10-15T19:11:39+08:00",
+    "lastIntelAt": "2026-10-15T13:22:23+08:00"
+   }
+  }
+ ]
+}
