@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>经验规则化系统（rules-registry）设计 · 2026-10-16</title>
+<style>
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;max-width:960px;margin:0 auto;padding:24px;color:#1a1a2e;background:#fafafa;line-height:1.7}
+  h1{border-bottom:3px solid #16a085;padding-bottom:8px}
+  h2{border-left:5px solid #16a085;padding-left:10px;margin-top:36px}
+  table{border-collapse:collapse;width:100%;margin:12px 0;background:#fff}
+  th,td{border:1px solid #d5d8dc;padding:6px 10px;text-align:left;font-size:14px}
+  th{background:#f4f6f7}
+  code,pre{background:#eee;padding:2px 5px;border-radius:3px;font-size:13px}
+  pre{padding:12px;overflow-x:auto}
+  .lock{background:#fdecea;border-left:5px solid #c0392b;padding:10px 14px;margin:12px 0}
+  .ok{background:#e8f8f5;border-left:5px solid #16a085;padding:10px 14px;margin:12px 0}
+  figure{margin:16px 0;text-align:center}
+  svg text{font-family:-apple-system,"PingFang SC",sans-serif}
+</style></head><body>
+
+<h1>经验规则化系统（rules-registry）设计</h1>
+<p><b>日期</b>：2026-10-16 · <b>拍板</b>：大哥（brainstorming 三问三答 + 设计五节逐节确认） ·
+<b>动机</b>：T048 之役三腿死于可预防教训（HAFU 过关／贴平腿／深水盘）——教训躺在 memory 里会被遗忘，
+必须成为每次预测<b>强制经过</b>的核心逻辑；且<b>未来所有经验</b>都须有入编通道，规则本身也要能被证伪退役；
+全程 context 可控。</p>
+
+<h2>§0 三大拍板（设计前提）</h2>
+<table><tr><th>问</th><th>拍板</th><th>否决项与理由</th></tr>
+<tr><td>治理形态</td><td><b>C：自动候选＋人工转正闸</b>——复盘/结算自动产候选，主公拍板才入编</td>
+<td>A 人工 curated 会漏；B 全自动转正＝结论跑在证据前面（本仓回测自泄漏同病）</td></tr>
+<tr><td>生效形态</td><td><b>D：规则三段生命周期</b>——候选→简报影子→硬闸转正，结算自动回测规则战绩，可退役</td>
+<td>A 静态分流缺影子期——单例立规是臣 0.5 球标记案旧病；B 预算截断可能截掉最重要的规则；C 纯检索＝006 假伤停的失败模式本身</td></tr>
+<tr><td>知识边界</td><td><b>A：规则册＝唯一"预测生效"源</b>——memory 降为纯叙事档案，SKILL 旧铁律行为禁令类迁入</td>
+<td>多处并存必漂移（铁律4 融合公式漂移致复算 EV 差 19pp 实证）；编译自然语言源工程上脆</td></tr></table>
+
+<h2>§1 总体架构：四件新物与一条数据流</h2>
+<table><tr><th>组件</th><th>位置</th><th>职责</th></tr>
+<tr><td>规则册</td><td><code>engine/cache/rules/registry.json</code></td><td>唯一事实源。三段：<code>candidates</code>（候选池）／<code>active_shadow</code>（简报影子层）／<code>retired</code>（退役档案），外加 <code>gates</code> 索引指向已转正入代码的规则（册记条文与战绩，代码为执行体）</td></tr>
+<tr><td>简报编译器</td><td><code>engine/scripts/rule_brief.py</code></td><td>每轮 llm_card gen 后、填 31 格前跑：shadow 全量＋场景命中候选 → 本轮简报（15 条硬顶）</td></tr>
+<tr><td>结算钩子</td><td>挂回填结算链尾</td><td>①回测 shadow 规则拦截账（被拦腿实际死活）；②已知模式检测器给候选自动加证据计数</td></tr>
+<tr><td>硬闸</td><td><code>engine/scripts/leg_gate.py</code></td><td>拍板②转正规则的代码落地；实票与影子票登记前强制过闸，违反即拒</td></tr></table>
+
+<figure><svg viewBox="0 0 760 200" width="100%" style="color:#1a1a2e;max-width:760px">
+<defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="currentColor"/></marker></defs>
+<g font-size="13" fill="currentColor">
+<rect x="15" y="30" width="120" height="46" rx="6" fill="none" stroke="currentColor" stroke-width="1.4"/><text x="75" y="50" text-anchor="middle">复盘起草</text><text x="75" y="67" text-anchor="middle" font-size="11">＋模板扫描</text>
+<rect x="170" y="30" width="110" height="46" rx="6" fill="none" stroke="currentColor" stroke-width="1.4"/><text x="225" y="57" text-anchor="middle">候选池</text>
+<rect x="315" y="30" width="130" height="46" rx="6" fill="none" stroke="#16a085" stroke-width="1.6"/><text x="380" y="50" text-anchor="middle" fill="#16a085">简报影子层</text><text x="380" y="67" text-anchor="middle" font-size="11" fill="#16a085">每轮注入·执行留痕</text>
+<rect x="480" y="30" width="120" height="46" rx="6" fill="none" stroke="#c0392b" stroke-width="1.8"/><text x="540" y="50" text-anchor="middle" fill="#c0392b">硬闸(代码)</text><text x="540" y="67" text-anchor="middle" font-size="11" fill="#c0392b">机器强制·零context</text>
+<rect x="635" y="30" width="110" height="46" rx="6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="4 3"/><text x="690" y="50" text-anchor="middle">退役档案</text><text x="690" y="67" text-anchor="middle" font-size="11">可检索·永不注入</text>
+<line x1="135" y1="53" x2="168" y2="53" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)"/>
+<line x1="280" y1="53" x2="313" y2="53" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)"/><text x="296" y="42" text-anchor="middle" font-size="11">拍板①</text>
+<line x1="445" y1="53" x2="478" y2="53" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)"/><text x="461" y="42" text-anchor="middle" font-size="11">拍板②</text>
+<line x1="600" y1="53" x2="633" y2="53" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)" stroke-dasharray="4 3"/><text x="616" y="42" text-anchor="middle" font-size="11">误伤≥2</text>
+<rect x="315" y="120" width="285" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="1.2"/><text x="457" y="145" text-anchor="middle" font-size="12">结算钩子：拦截账回测＋候选证据自动计数</text>
+<line x1="380" y1="76" x2="400" y2="118" stroke="currentColor" stroke-width="1.2" marker-end="url(#ar)"/>
+<line x1="560" y1="120" x2="545" y2="78" stroke="currentColor" stroke-width="1.2" marker-end="url(#ar)"/>
+<line x1="240" y1="76" x2="330" y2="118" stroke="currentColor" stroke-width="1.2" marker-end="url(#ar)" stroke-dasharray="3 3"/>
+</g></svg></figure>
+
+<h2>§2 规则 schema 与候选提取双通道</h2>
+<pre>{"id": "R017", "addedAt": "2026-10-16", "source": "T048复盘",
+ "stage": "candidate",          // candidate | shadow | gate | retired
+ "form": "gate",                // gate=可代码化硬闸 | checklist=须人执行清单
+ "trigger": {"play": "HAFU", "parlayMin": 3},   // 机器可判条件（gate 型必填）
+ "text": "HAFU 腿禁入 3 串以上过关，只可单关或 2 串",
+ "why": "013 方向全对(哥本哈根3:0)死于半场0:0——方向对也死",
+ "evidence": [{"round": "2026-10-15", "legs": ["周四013"], "loss": 20}],
+ "record": {"rounds": 0, "blocked": 0, "saved": 0, "harmed": 0},
+ "rulings": ["2026-10-16 主公拍板①入影子"]}</pre>
+<div class="lock"><b>gate 型必须带 trigger</b>——无机器可判条件者永远升不了硬闸，只能停在简报层当日程提醒。</div>
+<p><b>双通道</b>：①<b>复盘起草（主通道）</b>——每轮回填复盘末尾强制二选一：起草候选或声明"本轮无新教训"，<b>不许沉默跳过</b>；text/why 臣写，证据字段从账本自动拉填。②<b>模板扫描（辅通道）</b>——结算钩子内置模式检测器（首版三模式：HAFU 过关腿死亡／贴平腿入票死亡／深水池腿死亡），命中给<b>已有候选</b>证据计数＋1；<b>不能凭空立新候选</b>——防机器归纳伪规则。</p>
+
+<h2>§3 生命周期判据（冻结数字）</h2>
+<table><tr><th>转换</th><th>判据（跑前冻结，改数字须拍板留痕）</th></tr>
+<tr><td>候选 → 影子（拍板①）</td><td>证据 ≥1 实战损失事件；主公拍板即可，无最低轮数</td></tr>
+<tr><td>影子 → 硬闸（拍板②）</td><td>record 满 <b>5 轮</b> 且 <b>saved ≥1</b> 且 <b>harmed = 0</b>；不满足继续影子</td></tr>
+<tr><td>硬闸 → 降级/退役</td><td><b>harmed ≥2</b> 自动降回影子层标红待审；连续 <b>20 轮零触发</b> 标灰（场景消失，主公定夺）</td></tr>
+<tr><td>候选淘汰</td><td>30 天无新证据且未获拍板① → 标 <code>stale</code>（不删）</td></tr></table>
+<ul>
+<li>判据只管 gate 型；checklist 型永停简报层，靠"连续 20 轮未执行留痕"触发同款复审</li>
+<li><b>单例可入影子、不可直入硬闸</b>——5 轮影子是单例过拟合的最低保险</li>
+<li>退役不是删除：retired 全量留档，可检索性不丢（与"已证伪因素线清单"同构）</li>
+</ul>
+<p>初版量预估：候选池 15-20 条（本轮 8 条＋历史迁移），影子层首批 8-10 条，硬闸 0 条——前 5 轮全靠简报层与执行留痕，即影子期本义。</p>
+
+<h2>§4 旧经验迁移方案</h2>
+<div class="ok"><b>判别原则：只迁"行为禁令"，不迁"流程描述"。</b>——它管的是臣不许/必须做什么（禁令），还是描述系统怎么运转（结构）？前者入册，后者原地不动。</div>
+<table><tr><th>旧载体</th><th>去向</th></tr>
+<tr><td>SKILL.md 十四铁律</td><td>铁律 8（融合链四步）、5（模型≠必中）等流程/认知描述——留 SKILL；铁律 13 内核（EV 不选腿）、12（假设先行）、9（同场限一玩法）等行为禁令——入册</td></tr>
+<tr><td>memory 教训条目</td><td>行为部分（如 h2h-data-gap"判断前必查赛季完整度"）拆出入册；叙事留原地＋指针指向规则 id</td></tr>
+<tr><td>CLAUDE.md</td><td>项目第一约束（右尾）留 CLAUDE.md；其"操作推论"节（避热区/冷肥/不冷不肥）直接作用于选腿——拆出入册</td></tr></table>
+<p>段位判定：有实战损失证据者直接入影子（如铁律 9 的 011 混串案）；纯推理/证据久远者入候选。执行为一次性迁移任务，产出<b>迁移审计表</b>（旧条目→规则 id/留原地理由/段位），主公过目后旧条目加指针。<b>分两批</b>：首批只迁选腿/出票/核查三类（约 15-20 条，本轮 8 条并入）；第二批待首批跑稳再议。</p>
+
+<h2>§5 Context 控制细则</h2>
+<table><tr><th>层</th><th>常态成本</th></tr>
+<tr><td>硬闸（代码）</td><td><b>零</b></td></tr>
+<tr><td>简报</td><td>每轮 ≤15 条 ≈ 1500 token 封顶</td></tr>
+<tr><td>候选池/退役档案</td><td><b>零</b>（转正评审按需读）</td></tr>
+<tr><td>memory（降级后）</td><td>索引常载不变，条目不再承担预测义务</td></tr></table>
+<p><b>编译时点</b>：rule_brief.py 在 llm_card gen 后、填 31 格前——卡面摘要（~4000 token）＋简报（≤1500）合计 ≤6000 token。简报落盘 <code>engine/cache/rules/briefs/{date}.md</code>（凭证），两节：影子层全量（id｜条文｜战绩一行）＋候选池 trigger 命中者（仅提示）。<b>溢出策略</b>：超 15 条按 record.saved 降序保留，截断者列 id 明示"未注入 N 条"。</p>
+<p><b>执行回执</b>（影子期关键留痕）：臣每轮预测完成后在简报末尾追加——每条触发规则一行：<code>R017 触发：拦下 周四013 HAFU hh（拟入3串）</code>。<b>被拦腿必记 code＋pick</b>，结算钩子据此查赛果算 saved（拦腿死了＝救）/harmed（拦腿活了＝误伤）。</p>
+
+<h2>§6 与既有制度的关系</h2>
+<ul>
+<li>与<b>组件准入制</b>同构：规则的影子期≈组件影子期，拍板②≈幸存链 PASS——本仓最成熟制度直接复用</li>
+<li>与<b>影子票</b>互补：影子票验证<b>票</b>的战绩，规则册验证<b>规则</b>的战绩</li>
+<li>与<b>prereg 纪律</b>一致：§3 判据跑前冻结，改数字须拍板留痕</li>
+</ul>
+
+<h2>§7 实施范围（YAGNI 后）</h2>
+<p><b>做</b>：registry.json＋rule_brief.py＋结算钩子（拦截账+三模式检测）＋leg_gate.py＋简报回执制＋首批迁移（含 T048 八条新教训）。<br>
+<b>不做</b>：自然语言编译（C 方案否决）；条件匹配注入（规模大了再上）；第二批迁移；规则自动起草。</p>
+
+</body></html>
