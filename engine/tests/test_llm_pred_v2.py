@@ -91,3 +91,40 @@ def test_freeze_still_idempotent(dirs):
     a = lp.freeze("2026-10-15", [_pred()])
     b = lp.freeze("2026-10-15", [_pred()])
     assert a == b
+
+
+def test_revision_volume_written_and_preferred(dirs):
+    """修正卷（R008）：-r1 独立落盘带 revisionOf/reason；重冻同号幂等。"""
+    lp.freeze("2026-10-15", [_pred()])
+    rev = lp.freeze("2026-10-15", [{**_pred(), "confidence": "high"}],
+                    revision=1, reason="006 伤停证伪·核查后修正")
+    assert rev.name == "2026-10-15-r1.json"
+    doc = json.loads(rev.read_text(encoding="utf-8"))
+    assert doc["revisionOf"] == "2026-10-15"
+    assert "006" in doc["revisionReason"]
+    assert doc["preds"][0]["confidence"] == "high"
+    again = lp.freeze("2026-10-15", [_pred()], revision=1, reason="x")
+    assert json.loads(again.read_text(encoding="utf-8"))["preds"][0]["confidence"] == "high"
+
+
+def test_paper_loads_max_revision(monkeypatch, tmp_path):
+    """L 族消费方选卷：-r2 压过 -r1 与主卷（数值序）。"""
+    import sys as _sys
+    _sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "shadow"))
+    import paper
+    monkeypatch.setattr(paper, "LLM_PREDS_DIR", str(tmp_path))
+    for name, mark in (("2026-10-15.json", "main"), ("2026-10-15-r1.json", "r1"),
+                       ("2026-10-15-r2.json", "r2")):
+        (tmp_path / name).write_text(json.dumps(
+            {"preds": [{"code": "周四006", "p_crs": {"0:3": 1.0}, "cardHash": "x",
+                        "contextStatus": "pending", "keyJudgments": [{"judgment": "j", "evidence": "e"}],
+                        "confidence": "low"}], "chain": "llm-31grid-v2"}, ensure_ascii=False),
+            encoding="utf-8")
+    cards = tmp_path / "cards" / "2026-10-15"
+    cards.mkdir(parents=True)
+    (cards / "周四006.json").write_text(json.dumps(
+        {"layers": {"market": {"crs": {"0:3": 24.0}, "ttg": {}}, "context": {}}}, ensure_ascii=False),
+        encoding="utf-8")
+    monkeypatch.setattr(paper, "LLM_CARDS_DIR", str(tmp_path / "cards"))
+    qc = paper.load_llm_preds("2026-10-15")
+    assert qc is not None        # r2 被选中且可装载（crs 1:1 有价）

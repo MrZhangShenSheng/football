@@ -66,13 +66,21 @@ def normalize_to_keys(p_crs: dict, keys: list[str]) -> tuple[dict, float]:
     return {k: v / z for k, v in sub.items()}, raw_sum
 
 
-def freeze(sale_date: str, preds: list[dict]) -> Path:
-    """逐场校验（键集=该场数据卡市场层有价键）→归一→写冻结文件。幂等只读。"""
-    out = PREDS_ROOT / f"{sale_date}.json"
+def freeze(sale_date: str, preds: list[dict], revision: int | None = None,
+           reason: str | None = None) -> Path:
+    """逐场校验→归一→v2锚定→写冻结卷。主卷幂等只读（防事后改）。
+
+    修正卷（rules-registry R008）：revision=N 写 {date}-r{N}.json，带 revisionOf+
+    revisionReason，消费方（llm_eval/L族）按 -rN 优先读。修正卷不必先有主卷。"""
+    suffix = f"-r{revision}" if revision else ""
+    out = PREDS_ROOT / f"{sale_date}{suffix}.json"
     if out.exists():
         return out
     frozen = {"frozenAt": datetime.now().isoformat(timespec="seconds"),
               "chain": CHAIN_VERSION, "preds": []}
+    if revision:
+        frozen["revisionOf"] = sale_date
+        frozen["revisionReason"] = reason or ""
     for pred in preds:
         card_p = CARDS_ROOT / sale_date / f'{pred.get("code")}.json'
         if not card_p.exists():

@@ -323,9 +323,21 @@ def load_llm_preds(date: str):
     赔率读数据卡 market 层·freeze 已保证 p_crs 键有价，此处独立复核防卡事后漂移）；
     llm_preds/{date}.json 缺失 → None（L 族诚实跳过——llm 预测由会话 llm_pred.freeze 预先
     冻结，本函数只消费不生成）。开发者 sszhang"""
-    p = os.path.join(LLM_PREDS_DIR, f'{date}.json')
-    if not os.path.exists(p):
-        return None
+    # 修正卷优先（rules-registry R008）：-rN 取最大 N（数值序），无则主卷
+    p = None
+    try:
+        revs = sorted((f for f in os.listdir(LLM_PREDS_DIR)
+                       if f.startswith(f'{date}-r') and f.endswith('.json')),
+                      key=lambda f: int(f[:-5].split('-r')[-1]))
+        if revs:
+            p = os.path.join(LLM_PREDS_DIR, revs[-1])
+    except OSError:
+        pass
+    if p is None:
+        _main = os.path.join(LLM_PREDS_DIR, f'{date}.json')
+        if not os.path.exists(_main):
+            return None
+        p = _main
     try:
         with open(p, encoding='utf-8') as fh:
             doc = json.load(fh)

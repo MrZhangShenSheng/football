@@ -179,8 +179,16 @@ def _load_day_rows(days: list[str]) -> list[dict]:
     无赛果场跳过（结算期未到）；缺卡跳过（无市场兜底池）。"""
     rows, results = [], _load_results(days)
     for d in days:
-        pf = PREDS_ROOT / f"{d}.json"
-        if not pf.exists():
+        # 修正卷优先（rules-registry R008）：-rN 取最大 N，无则主卷
+        pf = None
+        revs = sorted(PREDS_ROOT.glob(f"{d}-r*.json"),
+                      key=lambda p: int(p.stem.split("-r")[-1]))
+        if revs:
+            pf = revs[-1]
+        else:
+            cand = PREDS_ROOT / f"{d}.json"
+            pf = cand if cand.exists() else None
+        if pf is None:
             continue
         preds = json.loads(pf.read_text(encoding="utf-8")).get("preds") or []
         for pr in preds:
