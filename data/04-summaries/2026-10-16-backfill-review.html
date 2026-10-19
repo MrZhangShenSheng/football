@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>回填复盘 · 2026-10-16（周五轮）</title>
+<style>
+  :root { --ink:#1a2233; --mut:#5a6578; --line:#d8dee8; --bg:#f6f7fa; --card:#fff;
+          --ok:#1d7a4f; --bad:#b3372f; --warn:#9a6b16; --accent:#2b5ba8; }
+  body { margin:0; padding:24px 16px 64px; background:var(--bg); color:var(--ink);
+         font:15px/1.75 "Microsoft YaHei","PingFang SC",sans-serif; }
+  .wrap { max-width:960px; margin:0 auto; }
+  h1 { font-size:24px; margin:0 0 4px; }
+  h2 { font-size:18px; margin:34px 0 10px; padding-left:10px; border-left:4px solid var(--accent); }
+  .sub { color:var(--mut); font-size:13px; margin-bottom:18px; }
+  table { width:100%; border-collapse:collapse; background:var(--card); font-size:13px; }
+  th,td { border:1px solid var(--line); padding:4px 8px; text-align:left; }
+  th { background:#eef1f6; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:14px 18px; margin:12px 0; }
+  .ok { color:var(--ok); } .bad { color:var(--bad); } .warn { color:var(--warn); } .mut { color:var(--mut); }
+  code { background:#eef1f6; padding:1px 5px; border-radius:4px; font-size:12.5px; }
+  .foot { margin-top:40px; font-size:12.5px; color:var(--mut); border-top:1px solid var(--line); padding-top:12px; }
+  td.c { text-align:center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>回填复盘 · 2026-10-16（周五轮）</h1>
+<div class="sub">销售日 2026-10-16 · 45 场（周五11 + 周六26 + 周日8）全部回填 · 整轮无实票 ·
+本文件系 10-19 回填会话补建轮次文件后的回填复盘</div>
+
+<h2>〇、轮次文件补建（本次回填的前置动作）</h2>
+<div class="card">
+预测会话（<code>65c73494</code>）落了预测卡与影子层但<b>未建 <code>02-results/2026-10-16.json</code> 轮次文件</b>——backfill
+无对象可回填。本次回填会话已按当日冻结存档补建（45 场）：
+<ul>
+<li>场次/盘口 = <code>engine/cache/score_odds/2026-10-16.json</code>（dump-odds 当日存档）</li>
+<li>matchId / 比分端链路 = <code>2026-10-16-crs.json</code>（market_crs 11 + v3w_fallback 31 + 缺 3）</li>
+<li>LLM 判断 = <code>llm_preds/2026-10-16.json</code>（ca6185c2 冻结·11 场周五批）</li>
+<li>会话推荐原文 = git 提交信息（周五007 HAD 主胜 @2.35 单关 2 元·待拍板）</li>
+</ul>
+<b class="warn">同款缺口挂账：<code>2026-10-12.json</code> 亦无轮次文件</b>（存档 <code>score_odds/2026-10-12.json</code> 在），
+待主公拍板是否回补。<span class="mut">建档行为不一致：10-14 轮"不出票"仍建档，10-12 / 10-16 未建。</span></div>
+
+<h2>一、会话推荐与 LLM v2 表现（n=11·descriptive）</h2>
+<table>
+  <tr><th>项目</th><th>结果</th><th>说明</th></tr>
+  <tr><td><b>周五007</b> 弗洛西诺 vs 萨索洛<br>会话提交推荐</td><td class="ok"><b>命中</b> 4-2 主胜 @2.35</td><td>待拍板未买（approved=false）→ 整轮无实票。萨索洛客场 0-3-7 得分率 10% + 双后卫伤缺，市场开成平盘 37.7%/36.9%——方向判断对市场的一次超额</td></tr>
+  <tr><td>LLM v2 31格 走向</td><td class="warn">6/11 = 54.5%</td><td>低于市场热门基线 59.1%（n=11 无统计意义·判据门 n≥30）</td></tr>
+  <tr><td>LLM v2 31格 比分 top1</td><td class="warn">2/11 = 18.2%</td><td>005 登博思 2-1 与 007 弗洛西诺方向场命中精确比分</td></tr>
+  <tr><td>市场热门（had 最低赔向）</td><td>26/44 = 59.1%</td><td>45 场中周六025 拜仁无 HAD 池，基线 n=44</td></tr>
+</table>
+
+<h2>二、影子层结算（挂 2026-10-17 · 15 票全结）</h2>
+<table>
+  <tr><th>族</th><th>票</th><th>投入</th><th>回款</th><th>结果</th></tr>
+  <tr><td>容错族</td><td>P496 4串11 · P498 全2关-6 · P499 全2关-4</td><td class="c">76</td><td class="ok c">53.09</td><td class="ok">3/3 回款（13.54 / 20.46 / 19.09）</td></tr>
+  <tr><td>方向混串</td><td>P494 8串1 · P495 4串1 · P497 4串1+2双选</td><td class="c">84</td><td class="c">0</td><td class="bad">全灭</td></tr>
+  <tr><td>ttg 族</td><td>P500 ttg-4串1 · P501 双选2串1 · P502 单关</td><td class="c">84</td><td class="c">0</td><td class="bad">全灭</td></tr>
+  <tr><td>crs 族</td><td>P503 4串1 · P504/P506 双选2串1 · P505 双选单关</td><td class="c">106</td><td class="c">0</td><td class="bad">全灭</td></tr>
+  <tr><td>g-tail / v4b</td><td>P507 贪心串1 · P508 v4b-双选2串1</td><td class="c">54</td><td class="c">0</td><td class="bad">全灭</td></tr>
+  <tr><td><b>合计</b></td><td>15 张</td><td class="c"><b>404</b></td><td class="c"><b>53.09</b></td><td class="bad"><b>净 −350.91（−86.9%）</b></td></tr>
+</table>
+<div class="card">影子账（非实票）。本轮超进球夜（见下）直接打爆 ttg/crs 两族 7 张：总进球端系统性押中低区间，
+比分端族峰值全落 1:1/2:1 常规区。容错族回款率 3/3 延续 636 轮形状回测结论（方差容错族回款轮占比 96.8%），
+但整轮 <b>−86.9%</b> 与右尾纪律一致：接受大开大合，forward 不停。</div>
+
+<h2>三、肥尾观察：超进球夜（右尾视角）</h2>
+<svg viewBox="0 0 640 150" role="img" aria-label="总进球分布条形图" style="width:100%;max-width:640px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px">
+  <defs>
+    <symbol id="bar-ok" viewBox="0 0 10 10"><rect x="0" y="0" width="10" height="10" fill="currentColor"/></symbol>
+  </defs>
+  <g font-size="12" fill="#5a6578">
+    <text x="18" y="30">0球</text><text x="18" y="55">1球</text><text x="18" y="80">2球</text><text x="18" y="105">3球</text><text x="18" y="130">4+球</text>
+  </g>
+  <g color="#2b5ba8">
+    <rect x="50" y="18"  width="24"  height="14" fill="currentColor"/>
+    <rect x="50" y="43"  width="48"  height="14" fill="currentColor"/>
+    <rect x="50" y="68"  width="60"  height="14" fill="currentColor"/>
+    <rect x="50" y="93"  width="42"  height="14" fill="currentColor"/>
+    <rect x="50" y="118" width="96"  height="14" fill="currentColor" style="color:#9a6b16"/>
+  </g>
+  <g font-size="12" fill="#1a2233">
+    <text x="154" y="30">4 场</text><text x="154" y="55">8 场</text><text x="154" y="80">10 场</text><text x="154" y="105">7 场</text><text x="154" y="130">16 场（36%）</text>
+  </g>
+  <g font-size="11.5" fill="#9a6b16">
+    <text x="240" y="129">◀ 4+球占 16/45：均总球 2.93 球，周五007 4-2 / 拜仁 6-1 / 贝蒂斯 2-5 / 格罗宁根 2-5 在列</text>
+  </g>
+</svg>
+<div class="card">
+8 场 5+ 球大比分：<b>拜仁 6-1、贝蒂斯 2-5、格罗宁根 2-5、埃沃斯堡 4-3、特尔斯达 3-4、曼城 3-2、兹沃勒 4-1、弗洛西诺 4-2</b>。
+其中<b>两场"强客零封大胜"形态</b>（贝蒂斯 2-5 巴萨 / 格罗宁根 2-5 阿贾克斯——客队 5 球级别）与 crs-batch 回测的
+跨窗稳定段（强客零封大球 W3 84.2% + 近窗 97.1%）同形态，但本轮影子 crs 族该两场均未押中——
+<b>跨窗稳定 ≠ 逐轮命中</b>，84%/97% 是长程频率不是单轮保证，右尾钱的正确心理预期。
+<span class="mut">逐场比分明细见 <code>02-results/2026-10-16.json</code>（45 场全量+半场），此处不重复罗列。</span></div>
+
+<h2>四、配套链（学习就绪度）</h2>
+<div class="card">
+<b>corpus</b> 996 条（+45，跨日同场合并 66·改选保留 125）·门槛：✅可校准 ✅可消融 ·
+<b>attribute</b> 71 场错题（F9 主因 61 场 avgGap 0.346·已知结构性低估）·
+<b>trend</b> 340 场 / 56 轮（0~40% 桶低估 22pp 警示持续）·
+<b>calibrate</b> n=391：a=0.0 维持（最优 0.05 改善 0.02% &lt; 1% 护栏）·
+<b>ablate</b> 全维持（开季修正 RPS CI 跨 0）·
+<b>recalibrate</b> 7 bins n=996 ·
+<b>learn</b> 非fd联赛增量：ESPN history 全量刷新（~2026-10-18）·发布 <span class="ok">brazil v12 / norway v10 / usa v12</span>·
+拒绝发布 japan(1.0087)/saudi(0.9481)/sweden(1.0695)/denmark(1.1243)（均劣于现役）·
+band-calib 拉 fd 2425 ReadTimeout×2 降级（断粮期已知）·
+<b>dc_fit</b> fd 联赛缓存零新增全跳过（英超 odds CSV 缺失）·
+<b>health_check 🟡 yellow</b>：ledger 3 天未刷（无预测会话·下轮 update 自动救）/ fd 断粮挂账 / noneRatio 21%（本轮补建文件 44 场无 pick 的结构性产物·非格式漂移）
+</div>
+
+<h2>五、教训与挂账</h2>
+<table>
+  <tr><th>#</th><th>事项</th><th>状态/待办</th></tr>
+  <tr><td>1</td><td><b>fd 断粮持续 ~40 天</b>（CSV 停在 09-11）</td><td class="warn">pinClose 待补 116 场 · fd 联赛 DC 冻结 · 本轮 CLV 不可算（无锚）· 英超 odds CSV 缺失。恢复后跑 <code>run.py verify</code> 幂等救回（记忆 fd-csv-outage 有显式传码方案）</td></tr>
+  <tr><td>2</td><td><b>轮次文件建档缺口</b>：approved=false 轮会话漏建（10-12 / 10-16）</td><td class="warn">10-16 本次已补；<b>10-12 待主公拍板是否回补</b>（存档在，成本与本次相当）。治本项：建档步骤与 approved 状态解耦，宜入规则册候选</td></tr>
+  <tr><td>3</td><td>周五007 推荐 4-2 命中 @2.35 未买</td><td>诚实记录：待拍板流程走完（approved=false），无实票无得失。方向判断相对市场平盘的一次超额，forward 数据归档</td></tr>
+  <tr><td>4</td><td>影子层 crs/ttg 族 7 张全灭</td><td>超进球夜 + 比分端常规区押注的双重结果。判据预注册不中途改，继续 forward（P477 剧本分层 50 票判据等）</td></tr>
+  <tr><td>5</td><td>health noneRatio 21%</td><td>补建轮次文件 44 场无 pick 进 None 分母的结构性抬升。不改探测器（改动面控制），下轮正常预测轮自然稀释</td></tr>
+</table>
+
+<div class="foot">
+<b>数据来源清单（忠实度抽查用）</b>：场次/盘口 <code>engine/cache/score_odds/2026-10-16.json</code> ·
+链路/主客ID <code>data/03-predictions/2026-10-16-crs.json</code> ·
+LLM <code>engine/cache/llm_preds/2026-10-16.json</code> ·
+赛果/半场 <code>data/02-results/2026-10-16.json</code>（体彩编号对票 45/45）·
+影子账 <code>engine/shadow/paper_tickets.json</code> ·
+统计 <code>04-summaries/corpus.json / attribution.json / health-check.json</code> ·
+推荐原文 <code>git 65c73494 提交信息</code>。<br>
+本轮无实票：tickets.json 无变化，tickets.html 未重刷。生成于 2026-10-19 回填会话 · sszhang
+</div>
+</div>
+</body>
+</html>

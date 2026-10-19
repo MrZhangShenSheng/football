@@ -1,0 +1,2096 @@
+{
+ "date": "2026-10-16",
+ "version": "v5.19",
+ "saleDay": "2026-10-16",
+ "roundNote": "补建于 2026-10-19 回填会话：预测会话(65c73494)未建轮次文件，本文件由回填会话按当日冻结存档重建（场次/盘口=score_odds dump-odds 存档·链路=crs.json·LLM=llm_preds·推荐=提交信息原文）·seq40 方案 approved=false 未拍板，整轮无实票。45 场=周五11+周六26+周日8。",
+ "plans": [
+  {
+   "plan": "无实票",
+   "type": "—",
+   "stake": "0元",
+   "legs": [
+    "boldplay seq40 方案卡 approved=false 未拍板（03-predictions/2026-10-16-boldplay.json）",
+    "会话提交推荐：周五007 弗洛西诺 HAD 主胜 @2.35 单关 2 元（待拍板·后未买）",
+    "影子层 15 票/29 腿已登记挂 2026-10-17（engine/shadow/paper_tickets.json）"
+   ]
+  }
+ ],
+ "matches": [
+  {
+   "idx": 1,
+   "code": "周五001",
+   "matchId": 2042003,
+   "league": "澳超",
+   "match": "悉尼FC vs 西悉尼",
+   "date": "2026-10-16",
+   "kickoff": "2026-10-16",
+   "pick": null,
+   "odds": {
+    "h": 2.09,
+    "d": 3.5,
+    "a": 2.74
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 2.09,
+     "d": 3.5,
+     "a": 2.74
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": 4.18,
+     "d": 3.9,
+     "a": 1.58
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "market_crs",
+   "llmTop1": "1:1",
+   "llmConf": "low",
+   "note": null,
+   "result": "0-0",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042003,
+    "lastOddsAt": "2026-10-16T11:21:42+08:00",
+    "lastIntelAt": "2026-10-16T11:26:41+08:00"
+   }
+  },
+  {
+   "idx": 2,
+   "code": "周五002",
+   "matchId": 2042013,
+   "league": "德乙",
+   "match": "科特布斯 vs 纽伦堡",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": null,
+   "odds": {
+    "h": 3.03,
+    "d": 4.05,
+    "a": 1.81
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 3.03,
+     "d": 4.05,
+     "a": 1.81
+    },
+    "hhad": {
+     "goalLine": "+1",
+     "h": 1.75,
+     "d": 4.0,
+     "a": 3.25
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "market_crs",
+   "llmTop1": "1:2",
+   "llmConf": "medium",
+   "note": null,
+   "result": "1-1",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042013,
+    "lastOddsAt": "2026-10-16T11:21:42+08:00",
+    "lastIntelAt": "2026-10-16T11:26:58+08:00"
+   }
+  },
+  {
+   "idx": 3,
+   "code": "周五003",
+   "matchId": 2042004,
+   "league": "瑞超",
+   "match": "布鲁马波 vs 佐加顿斯",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": null,
+   "odds": {
+    "h": 5.9,
+    "d": 4.7,
+    "a": 1.34
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 5.9,
+     "d": 4.7,
+     "a": 1.34
+    },
+    "hhad": {
+     "goalLine": "+1",
+     "h": 2.65,
+     "d": 3.82,
+     "a": 2.04
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "market_crs",
+   "llmTop1": "1:2",
+   "llmConf": "medium",
+   "note": null,
+   "result": "0-2",
+   "half": "0:1",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042004,
+    "lastOddsAt": "2026-10-16T11:21:42+08:00",
+    "lastIntelAt": "2026-10-16T11:26:42+08:00"
+   }
+  },
+  {
+   "idx": 4,
+   "code": "周五004",
+   "matchId": 2042005,
+   "league": "荷甲",
+   "match": "海伦芬 vs SBV精英",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": null,
+   "odds": {
+    "h": 1.5,
+    "d": 4.2,
+    "a": 4.45
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 1.5,
+     "d": 4.2,
+     "a": 4.45
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": 2.43,
+     "d": 3.8,
+     "a": 2.2
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "market_crs",
+   "llmTop1": "1:1",
+   "llmConf": "low",
+   "note": null,
+   "result": "4-0",
+   "half": "1:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042005,
+    "lastOddsAt": "2026-10-16T09:21:31+08:00",
+    "lastIntelAt": "2026-10-16T11:26:43+08:00"
+   }
+  },
+  {
+   "idx": 5,
+   "code": "周五005",
+   "matchId": 2042006,
+   "league": "荷乙",
+   "match": "登博思 vs 奥斯",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": null,
+   "odds": {
+    "h": 1.54,
+    "d": 4.25,
+    "a": 4.08
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 1.54,
+     "d": 4.25,
+     "a": 4.08
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": 2.54,
+     "d": 3.75,
+     "a": 2.13
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "market_crs",
+   "llmTop1": "2:1",
+   "llmConf": "medium",
+   "note": null,
+   "result": "2-1",
+   "half": "2:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042006,
+    "lastOddsAt": "2026-10-16T11:21:42+08:00",
+    "lastIntelAt": "2026-10-16T11:26:43+08:00"
+   }
+  },
+  {
+   "idx": 6,
+   "code": "周五006",
+   "matchId": 2042007,
+   "league": "德甲",
+   "match": "法兰克福 vs 科隆",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": null,
+   "odds": {
+    "h": 1.76,
+    "d": 3.9,
+    "a": 3.28
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 1.76,
+     "d": 3.9,
+     "a": 3.28
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": 3.15,
+     "d": 3.9,
+     "a": 1.8
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "market_crs",
+   "llmTop1": "2:1",
+   "llmConf": "medium",
+   "note": null,
+   "result": "1-0",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042007,
+    "lastOddsAt": "2026-10-16T11:21:42+08:00",
+    "lastIntelAt": "2026-10-16T11:26:44+08:00"
+   }
+  },
+  {
+   "idx": 7,
+   "code": "周五007",
+   "matchId": 2042008,
+   "league": "意甲",
+   "match": "弗洛西诺 vs 萨索洛",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": "HAD 主胜",
+   "odds": {
+    "h": 2.35,
+    "d": 3.48,
+    "a": 2.4
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 2.35,
+     "d": 3.48,
+     "a": 2.4
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": 4.85,
+     "d": 4.3,
+     "a": 1.45
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "market_crs",
+   "llmTop1": "2:1",
+   "llmConf": "medium",
+   "note": "会话提交推荐 HAD 主胜 @2.35 单关2元·待拍板（后未买，整轮无实票）·git 65c73494",
+   "result": "4-2",
+   "half": "3:2",
+   "directionHit": true,
+   "scoreHit": null,
+   "optionHit": true,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042008,
+    "lastOddsAt": "2026-10-16T09:21:31+08:00",
+    "lastIntelAt": "2026-10-16T11:26:30+08:00"
+   }
+  },
+  {
+   "idx": 8,
+   "code": "周五008",
+   "matchId": 2042009,
+   "league": "法甲",
+   "match": "勒芒 vs 图卢兹",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": null,
+   "odds": {
+    "h": 2.8,
+    "d": 3.48,
+    "a": 2.06
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 2.8,
+     "d": 3.48,
+     "a": 2.06
+    },
+    "hhad": {
+     "goalLine": "+1",
+     "h": 1.57,
+     "d": 3.95,
+     "a": 4.2
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "market_crs",
+   "llmTop1": "1:1",
+   "llmConf": "low",
+   "note": null,
+   "result": "0-3",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042009,
+    "lastOddsAt": "2026-10-16T09:21:31+08:00",
+    "lastIntelAt": "2026-10-16T11:26:31+08:00"
+   }
+  },
+  {
+   "idx": 9,
+   "code": "周五009",
+   "matchId": 2042010,
+   "league": "英冠",
+   "match": "伯恩利 vs 伍尔弗",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": null,
+   "odds": {
+    "h": 2.79,
+    "d": 3.3,
+    "a": 2.14
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 2.79,
+     "d": 3.3,
+     "a": 2.14
+    },
+    "hhad": {
+     "goalLine": "+1",
+     "h": 1.53,
+     "d": 3.95,
+     "a": 4.5
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "market_crs",
+   "llmTop1": "1:1",
+   "llmConf": "medium",
+   "note": null,
+   "result": "1-2",
+   "half": "1:1",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042010,
+    "lastOddsAt": "2026-10-16T09:21:31+08:00",
+    "lastIntelAt": "2026-10-16T11:26:45+08:00"
+   }
+  },
+  {
+   "idx": 10,
+   "code": "周五010",
+   "matchId": 2042011,
+   "league": "西甲",
+   "match": "拉科 vs 莱万特",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": null,
+   "odds": {
+    "h": 2.01,
+    "d": 3.15,
+    "a": 3.18
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 2.01,
+     "d": 3.15,
+     "a": 3.18
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": 4.27,
+     "d": 3.6,
+     "a": 1.62
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "market_crs",
+   "llmTop1": "1:1",
+   "llmConf": "low",
+   "note": null,
+   "result": "1-1",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042011,
+    "lastOddsAt": "2026-10-16T09:21:31+08:00",
+    "lastIntelAt": "2026-10-16T11:26:32+08:00"
+   }
+  },
+  {
+   "idx": 11,
+   "code": "周五011",
+   "matchId": 2042012,
+   "league": "巴甲",
+   "match": "米拉索尔 vs 巴西国际",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": null,
+   "odds": {
+    "h": 2.05,
+    "d": 3.05,
+    "a": 3.2
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 2.05,
+     "d": 3.05,
+     "a": 3.2
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": 4.4,
+     "d": 3.66,
+     "a": 1.59
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "market_crs",
+   "llmTop1": "1:1",
+   "llmConf": "medium",
+   "note": null,
+   "result": "2-0",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042012,
+    "lastOddsAt": "2026-10-16T11:21:42+08:00",
+    "lastIntelAt": "2026-10-16T11:26:33+08:00"
+   }
+  },
+  {
+   "idx": 12,
+   "code": "周六001",
+   "matchId": null,
+   "league": "澳超",
+   "match": "麦克阿瑟 vs 珀斯",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": null,
+   "odds": {
+    "h": 1.7,
+    "d": 3.6,
+    "a": 3.8
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 1.7,
+     "d": 3.6,
+     "a": 3.8
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": 3.2,
+     "d": 3.55,
+     "a": 1.87
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": null,
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "2-1",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042019,
+    "lastOddsAt": "2026-10-16T11:21:42+08:00",
+    "lastIntelAt": "2026-10-16T11:25:34+08:00"
+   }
+  },
+  {
+   "idx": 13,
+   "code": "周六002",
+   "matchId": 2042020,
+   "league": "日职",
+   "match": "鹿岛鹿角 vs 长崎航海",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": null,
+   "odds": {
+    "h": 1.44,
+    "d": 4.0,
+    "a": 5.4
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 1.44,
+     "d": 4.0,
+     "a": 5.4
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": 2.5,
+     "d": 3.25,
+     "a": 2.37
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "2-0",
+   "half": "2:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042020,
+    "lastOddsAt": "2026-10-16T11:21:42+08:00",
+    "lastIntelAt": "2026-10-16T11:25:35+08:00"
+   }
+  },
+  {
+   "idx": 14,
+   "code": "周六003",
+   "matchId": 2042021,
+   "league": "韩职",
+   "match": "蔚山现代 vs 富川FC",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": null,
+   "odds": {
+    "h": 1.52,
+    "d": 3.83,
+    "a": 4.75
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 1.52,
+     "d": 3.83,
+     "a": 4.75
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": 2.67,
+     "d": 3.4,
+     "a": 2.17
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "2-1",
+   "half": "0:1",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042021,
+    "lastOddsAt": "2026-10-16T11:21:42+08:00",
+    "lastIntelAt": "2026-10-16T11:25:36+08:00"
+   }
+  },
+  {
+   "idx": 15,
+   "code": "周六004",
+   "matchId": null,
+   "league": "澳超",
+   "match": "中央海岸 vs 纽喷气机",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": null,
+   "odds": {
+    "h": 3.39,
+    "d": 3.9,
+    "a": 1.73
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 3.39,
+     "d": 3.9,
+     "a": 1.73
+    },
+    "hhad": {
+     "goalLine": "+1",
+     "h": 1.86,
+     "d": 3.85,
+     "a": 3.02
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": null,
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "2-2",
+   "half": "1:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042022,
+    "lastOddsAt": "2026-10-16T11:21:42+08:00",
+    "lastIntelAt": "2026-10-16T11:25:37+08:00"
+   }
+  },
+  {
+   "idx": 16,
+   "code": "周六005",
+   "matchId": 2042023,
+   "league": "日职",
+   "match": "柏太阳神 vs 名古屋鲸",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": null,
+   "odds": {
+    "h": 1.52,
+    "d": 4.1,
+    "a": 4.4
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 1.52,
+     "d": 4.1,
+     "a": 4.4
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": 2.6,
+     "d": 3.52,
+     "a": 2.17
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "1-3",
+   "half": "1:2",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042023,
+    "lastOddsAt": "2026-10-16T11:21:42+08:00",
+    "lastIntelAt": "2026-10-16T11:25:38+08:00"
+   }
+  },
+  {
+   "idx": 17,
+   "code": "周六006",
+   "matchId": null,
+   "league": "日乙",
+   "match": "宫崎牛鸟 vs 磐田喜悦",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": null,
+   "odds": {
+    "h": 2.34,
+    "d": 3.14,
+    "a": 2.61
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 2.34,
+     "d": 3.14,
+     "a": 2.61
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": 5.26,
+     "d": 4.0,
+     "a": 1.45
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": null,
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "1-1",
+   "half": "1:1",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042081,
+    "lastOddsAt": "2026-10-16T11:21:42+08:00",
+    "lastIntelAt": "2026-10-16T11:25:39+08:00"
+   }
+  },
+  {
+   "idx": 18,
+   "code": "周六007",
+   "matchId": 2042024,
+   "league": "英超",
+   "match": "埃弗顿 vs 切尔西",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": null,
+   "odds": {
+    "h": 3.05,
+    "d": 3.43,
+    "a": 1.96
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 3.05,
+     "d": 3.43,
+     "a": 1.96
+    },
+    "hhad": {
+     "goalLine": "+1",
+     "h": 1.65,
+     "d": 3.75,
+     "a": 3.9
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "0-2",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042024,
+    "lastOddsAt": "2026-10-16T11:21:42+08:00",
+    "lastIntelAt": "2026-10-16T11:25:40+08:00"
+   }
+  },
+  {
+   "idx": 19,
+   "code": "周六009",
+   "matchId": 2042026,
+   "league": "西甲",
+   "match": "西班牙人 vs 马竞",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": null,
+   "odds": {
+    "h": 4.5,
+    "d": 3.7,
+    "a": 1.57
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 4.5,
+     "d": 3.7,
+     "a": 1.57
+    },
+    "hhad": {
+     "goalLine": "+1",
+     "h": 2.08,
+     "d": 3.45,
+     "a": 2.8
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "0-1",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042026,
+    "lastOddsAt": "2026-10-16T11:21:42+08:00",
+    "lastIntelAt": "2026-10-16T11:25:40+08:00"
+   }
+  },
+  {
+   "idx": 20,
+   "code": "周六011",
+   "matchId": 2042028,
+   "league": "意甲",
+   "match": "威尼斯 vs 那不勒斯",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": null,
+   "odds": {
+    "h": 4.2,
+    "d": 3.75,
+    "a": 1.6
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 4.2,
+     "d": 3.75,
+     "a": 1.6
+    },
+    "hhad": {
+     "goalLine": "+1",
+     "h": 2.06,
+     "d": 3.45,
+     "a": 2.82
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "1-0",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042028,
+    "lastOddsAt": "2026-10-16T11:21:42+08:00",
+    "lastIntelAt": "2026-10-16T11:25:41+08:00"
+   }
+  },
+  {
+   "idx": 21,
+   "code": "周六013",
+   "matchId": 2042030,
+   "league": "德甲",
+   "match": "埃沃斯堡 vs 奥格斯堡",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": null,
+   "odds": {
+    "h": 2.26,
+    "d": 3.6,
+    "a": 2.45
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 2.26,
+     "d": 3.6,
+     "a": 2.45
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": 4.55,
+     "d": 4.3,
+     "a": 1.48
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "4-3",
+   "half": "3:1",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042030,
+    "lastOddsAt": "2026-10-16T11:21:42+08:00",
+    "lastIntelAt": "2026-10-16T11:25:42+08:00"
+   }
+  },
+  {
+   "idx": 22,
+   "code": "周六014",
+   "matchId": 2042031,
+   "league": "德甲",
+   "match": "不来梅 vs 帕德博恩",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": null,
+   "odds": {
+    "h": 1.59,
+    "d": 3.9,
+    "a": 4.1
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 1.59,
+     "d": 3.9,
+     "a": 4.1
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": 2.75,
+     "d": 3.6,
+     "a": 2.05
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "2-2",
+   "half": "0:2",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042031,
+    "lastOddsAt": "2026-10-16T11:21:42+08:00",
+    "lastIntelAt": "2026-10-16T11:25:43+08:00"
+   }
+  },
+  {
+   "idx": 23,
+   "code": "周六015",
+   "matchId": 2042032,
+   "league": "德甲",
+   "match": "沙尔克04 vs 美因茨",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": null,
+   "odds": {
+    "h": 2.85,
+    "d": 3.45,
+    "a": 2.05
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 2.85,
+     "d": 3.45,
+     "a": 2.05
+    },
+    "hhad": {
+     "goalLine": "+1",
+     "h": 1.59,
+     "d": 3.9,
+     "a": 4.1
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "0-1",
+   "half": "0:1",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042032,
+    "lastOddsAt": "2026-10-16T11:21:42+08:00",
+    "lastIntelAt": "2026-10-16T11:25:43+08:00"
+   }
+  },
+  {
+   "idx": 24,
+   "code": "周六016",
+   "matchId": 2042033,
+   "league": "德甲",
+   "match": "汉堡 vs 斯图加特",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": null,
+   "odds": {
+    "h": 3.78,
+    "d": 4.1,
+    "a": 1.61
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 3.78,
+     "d": 4.1,
+     "a": 1.61
+    },
+    "hhad": {
+     "goalLine": "+1",
+     "h": 2.01,
+     "d": 3.8,
+     "a": 2.72
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "1-0",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042033,
+    "lastOddsAt": "2026-10-16T11:21:42+08:00",
+    "lastIntelAt": "2026-10-16T11:25:44+08:00"
+   }
+  },
+  {
+   "idx": 25,
+   "code": "周六017",
+   "matchId": 2042034,
+   "league": "德甲",
+   "match": "柏林联合 vs 多特蒙德",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": null,
+   "odds": {
+    "h": 4.95,
+    "d": 4.3,
+    "a": 1.44
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 4.95,
+     "d": 4.3,
+     "a": 1.44
+    },
+    "hhad": {
+     "goalLine": "+1",
+     "h": 2.35,
+     "d": 3.6,
+     "a": 2.35
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "0-0",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042034,
+    "lastOddsAt": "2026-10-16T11:21:42+08:00",
+    "lastIntelAt": "2026-10-16T11:25:45+08:00"
+   }
+  },
+  {
+   "idx": 26,
+   "code": "周六018",
+   "matchId": 2042035,
+   "league": "英超",
+   "match": "布伦特 vs 利物浦",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": null,
+   "odds": {
+    "h": 2.19,
+    "d": 3.45,
+    "a": 2.62
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 2.19,
+     "d": 3.45,
+     "a": 2.62
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": 4.55,
+     "d": 4.05,
+     "a": 1.51
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "1-2",
+   "half": "1:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042035,
+    "lastOddsAt": "2026-10-16T11:21:42+08:00",
+    "lastIntelAt": "2026-10-16T11:25:46+08:00"
+   }
+  },
+  {
+   "idx": 27,
+   "code": "周六019",
+   "matchId": 2042036,
+   "league": "英超",
+   "match": "曼城 vs 伊普斯",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": null,
+   "odds": {
+    "h": 1.12,
+    "d": 6.9,
+    "a": 11.0
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 1.12,
+     "d": 6.9,
+     "a": 11.0
+    },
+    "hhad": {
+     "goalLine": "-2",
+     "h": 2.32,
+     "d": 4.0,
+     "a": 2.23
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "3-2",
+   "half": "2:1",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042036,
+    "lastOddsAt": "2026-10-16T11:21:42+08:00",
+    "lastIntelAt": "2026-10-16T11:25:47+08:00"
+   }
+  },
+  {
+   "idx": 28,
+   "code": "周六020",
+   "matchId": 2042037,
+   "league": "英超",
+   "match": "富勒姆 vs 赫尔城",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": null,
+   "odds": {
+    "h": 1.46,
+    "d": 3.8,
+    "a": 5.5
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 1.46,
+     "d": 3.8,
+     "a": 5.5
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": 2.55,
+     "d": 3.35,
+     "a": 2.28
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "1-0",
+   "half": "1:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042037,
+    "lastOddsAt": "2026-10-16T11:21:42+08:00",
+    "lastIntelAt": "2026-10-16T11:25:48+08:00"
+   }
+  },
+  {
+   "idx": 29,
+   "code": "周六021",
+   "matchId": 2042038,
+   "league": "西甲",
+   "match": "比利亚雷 vs 埃尔切",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": null,
+   "odds": {
+    "h": 1.31,
+    "d": 4.8,
+    "a": 6.35
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 1.31,
+     "d": 4.8,
+     "a": 6.35
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": 2.0,
+     "d": 3.65,
+     "a": 2.81
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "0-0",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042038,
+    "lastOddsAt": "2026-10-16T11:21:42+08:00",
+    "lastIntelAt": "2026-10-16T11:25:49+08:00"
+   }
+  },
+  {
+   "idx": 30,
+   "code": "周六022",
+   "matchId": 2042039,
+   "league": "法甲",
+   "match": "斯特拉斯 vs 巴黎圣曼",
+   "date": "2026-10-17",
+   "kickoff": "2026-10-17",
+   "pick": null,
+   "odds": {
+    "h": 5.65,
+    "d": 5.0,
+    "a": 1.33
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 5.65,
+     "d": 5.0,
+     "a": 1.33
+    },
+    "hhad": {
+     "goalLine": "+1",
+     "h": 2.75,
+     "d": 4.05,
+     "a": 1.93
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "1-3",
+   "half": "1:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042039,
+    "lastOddsAt": "2026-10-16T11:21:42+08:00",
+    "lastIntelAt": "2026-10-16T11:25:49+08:00"
+   }
+  },
+  {
+   "idx": 31,
+   "code": "周六023",
+   "matchId": 2042040,
+   "league": "意甲",
+   "match": "博洛尼亚 vs 国际米兰",
+   "date": "2026-10-18",
+   "kickoff": "2026-10-18",
+   "pick": null,
+   "odds": {
+    "h": 5.1,
+    "d": 3.95,
+    "a": 1.47
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 5.1,
+     "d": 3.95,
+     "a": 1.47
+    },
+    "hhad": {
+     "goalLine": "+1",
+     "h": 2.25,
+     "d": 3.45,
+     "a": 2.53
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "1-3",
+   "half": "1:1",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none"
+  },
+  {
+   "idx": 32,
+   "code": "周六024",
+   "matchId": 2042041,
+   "league": "英超",
+   "match": "纽卡斯尔 vs 维拉",
+   "date": "2026-10-18",
+   "kickoff": "2026-10-18",
+   "pick": null,
+   "odds": {
+    "h": 1.97,
+    "d": 3.6,
+    "a": 2.92
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 1.97,
+     "d": 3.6,
+     "a": 2.92
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": 3.85,
+     "d": 3.85,
+     "a": 1.64
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "0-1",
+   "half": "0:1",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none"
+  },
+  {
+   "idx": 33,
+   "code": "周六025",
+   "matchId": 2042042,
+   "league": "德甲",
+   "match": "拜仁 vs 莱红牛",
+   "date": "2026-10-18",
+   "kickoff": "2026-10-18",
+   "pick": null,
+   "odds": null,
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "hhad": {
+     "goalLine": "-2",
+     "h": 2.02,
+     "d": 4.65,
+     "a": 2.39
+    },
+    "poolSingleHAD": 0
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "6-1",
+   "half": "3:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none"
+  },
+  {
+   "idx": 34,
+   "code": "周六026",
+   "matchId": 2042043,
+   "league": "西甲",
+   "match": "贝蒂斯 vs 巴萨",
+   "date": "2026-10-18",
+   "kickoff": "2026-10-18",
+   "pick": null,
+   "odds": {
+    "h": 5.6,
+    "d": 5.2,
+    "a": 1.32
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 5.6,
+     "d": 5.2,
+     "a": 1.32
+    },
+    "hhad": {
+     "goalLine": "+1",
+     "h": 2.75,
+     "d": 4.0,
+     "a": 1.94
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "2-5",
+   "half": "1:2",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none"
+  },
+  {
+   "idx": 35,
+   "code": "周六027",
+   "matchId": 2042044,
+   "league": "荷甲",
+   "match": "特尔斯达 vs 费耶诺德",
+   "date": "2026-10-18",
+   "kickoff": "2026-10-18",
+   "pick": null,
+   "odds": {
+    "h": 7.95,
+    "d": 5.25,
+    "a": 1.23
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 7.95,
+     "d": 5.25,
+     "a": 1.23
+    },
+    "hhad": {
+     "goalLine": "+1",
+     "h": 3.22,
+     "d": 4.0,
+     "a": 1.76
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "3-4",
+   "half": "2:3",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none"
+  },
+  {
+   "idx": 36,
+   "code": "周六028",
+   "matchId": 2042045,
+   "league": "意甲",
+   "match": "罗马 vs 热那亚",
+   "date": "2026-10-18",
+   "kickoff": "2026-10-18",
+   "pick": null,
+   "odds": {
+    "h": 1.3,
+    "d": 4.5,
+    "a": 7.25
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 1.3,
+     "d": 4.5,
+     "a": 7.25
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": 2.03,
+     "d": 3.5,
+     "a": 2.85
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "2-0",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none"
+  },
+  {
+   "idx": 37,
+   "code": "周六029",
+   "matchId": 2042046,
+   "league": "西甲",
+   "match": "巴伦西亚 vs 毕尔巴鄂",
+   "date": "2026-10-18",
+   "kickoff": "2026-10-18",
+   "pick": null,
+   "odds": {
+    "h": 3.2,
+    "d": 3.1,
+    "a": 2.03
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 3.2,
+     "d": 3.1,
+     "a": 2.03
+    },
+    "hhad": {
+     "goalLine": "+1",
+     "h": 1.6,
+     "d": 3.6,
+     "a": 4.42
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "0-0",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none"
+  },
+  {
+   "idx": 38,
+   "code": "周日003",
+   "matchId": 2042050,
+   "league": "韩职",
+   "match": "首尔FC vs 金泉尚武",
+   "date": "2026-10-18",
+   "kickoff": "2026-10-18",
+   "pick": null,
+   "odds": {
+    "h": 1.33,
+    "d": 4.35,
+    "a": 6.75
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 1.33,
+     "d": 4.35,
+     "a": 6.75
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": 2.15,
+     "d": 3.4,
+     "a": 2.7
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "2-2",
+   "half": "1:1",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none"
+  },
+  {
+   "idx": 39,
+   "code": "周日004",
+   "matchId": 2042051,
+   "league": "荷甲",
+   "match": "兹沃勒 vs 前进之鹰",
+   "date": "2026-10-18",
+   "kickoff": "2026-10-18",
+   "pick": null,
+   "odds": {
+    "h": 3.2,
+    "d": 3.7,
+    "a": 1.83
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 3.2,
+     "d": 3.7,
+     "a": 1.83
+    },
+    "hhad": {
+     "goalLine": "+1",
+     "h": 1.75,
+     "d": 3.95,
+     "a": 3.28
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "4-1",
+   "half": "0:1",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none"
+  },
+  {
+   "idx": 40,
+   "code": "周日005",
+   "matchId": 2042052,
+   "league": "意甲",
+   "match": "乌迪内斯 vs 莱切",
+   "date": "2026-10-18",
+   "kickoff": "2026-10-18",
+   "pick": null,
+   "odds": {
+    "h": 1.69,
+    "d": 3.4,
+    "a": 4.1
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 1.69,
+     "d": 3.4,
+     "a": 4.1
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": 3.3,
+     "d": 3.35,
+     "a": 1.9
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "0-3",
+   "half": "0:2",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none"
+  },
+  {
+   "idx": 41,
+   "code": "周日006",
+   "matchId": 2042053,
+   "league": "西甲",
+   "match": "奥萨苏纳 vs 桑坦德",
+   "date": "2026-10-18",
+   "kickoff": "2026-10-18",
+   "pick": null,
+   "odds": {
+    "h": 1.92,
+    "d": 3.5,
+    "a": 3.1
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 1.92,
+     "d": 3.5,
+     "a": 3.1
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": 3.75,
+     "d": 3.8,
+     "a": 1.67
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "2-0",
+   "half": "1:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none"
+  },
+  {
+   "idx": 42,
+   "code": "周日010",
+   "matchId": 2042057,
+   "league": "英超",
+   "match": "利兹联 vs 曼联",
+   "date": "2026-10-18",
+   "kickoff": "2026-10-18",
+   "pick": null,
+   "odds": {
+    "h": 2.22,
+    "d": 3.4,
+    "a": 2.6
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 2.22,
+     "d": 3.4,
+     "a": 2.6
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": 4.5,
+     "d": 4.15,
+     "a": 1.5
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "1-1",
+   "half": "0:1",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none"
+  },
+  {
+   "idx": 43,
+   "code": "周日012",
+   "matchId": 2042059,
+   "league": "意甲",
+   "match": "佛罗伦萨 vs 科莫",
+   "date": "2026-10-18",
+   "kickoff": "2026-10-18",
+   "pick": null,
+   "odds": {
+    "h": 3.17,
+    "d": 3.45,
+    "a": 1.91
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 3.17,
+     "d": 3.45,
+     "a": 1.91
+    },
+    "hhad": {
+     "goalLine": "+1",
+     "h": 1.68,
+     "d": 3.7,
+     "a": 3.8
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "1-3",
+   "half": "1:2",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none"
+  },
+  {
+   "idx": 44,
+   "code": "周日016",
+   "matchId": 2042063,
+   "league": "荷甲",
+   "match": "格罗宁根 vs 阿贾克斯",
+   "date": "2026-10-18",
+   "kickoff": "2026-10-18",
+   "pick": null,
+   "odds": {
+    "h": 3.9,
+    "d": 4.1,
+    "a": 1.59
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 3.9,
+     "d": 4.1,
+     "a": 1.59
+    },
+    "hhad": {
+     "goalLine": "+1",
+     "h": 2.03,
+     "d": 3.85,
+     "a": 2.65
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "2-5",
+   "half": "0:2",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none"
+  },
+  {
+   "idx": 45,
+   "code": "周日018",
+   "matchId": 2042065,
+   "league": "英超",
+   "match": "诺丁汉 vs 阿森纳",
+   "date": "2026-10-18",
+   "kickoff": "2026-10-18",
+   "pick": null,
+   "odds": {
+    "h": 5.35,
+    "d": 3.7,
+    "a": 1.49
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": 5.35,
+     "d": 3.7,
+     "a": 1.49
+    },
+    "hhad": {
+     "goalLine": "+1",
+     "h": 2.26,
+     "d": 3.25,
+     "a": 2.65
+    },
+    "poolSingleHAD": 1
+   },
+   "dcUsed": false,
+   "anchorMode": "v3w_fallback",
+   "llmTop1": null,
+   "llmConf": null,
+   "note": null,
+   "result": "0-1",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none"
+  }
+ ]
+}
