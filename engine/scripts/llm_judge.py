@@ -225,6 +225,35 @@ def load_judgments(sale_date: str, *, root: Path | None = None) -> dict | None:
         return None
 
 
+def load_volumes(sale_date: str, *, root: Path | None = None) -> list[dict]:
+    """该日全部卷（主卷+各修正卷·frozenAt 升序）。
+
+    修正卷重述全量时会用卷级 now 重新盖戳——直接读最新卷会把早判好的场误标成
+    「开赛后冻结」。阅卷侧用最早凭证语义（eval 侧 load：每 code 取最早出现的卷），
+    补录不洗白 late、早冻结不被重述抹掉。开发者 sszhang"""
+    base = Path(root) if root else JUDGMENTS_ROOT
+    if not base.exists():
+        return []
+    paths = []
+    main = base / f"{sale_date}.json"
+    if main.exists():
+        paths.append(main)
+    try:
+        revs = sorted((f for f in base.iterdir()
+                       if f.name.startswith(f"{sale_date}-r") and f.suffix == ".json"),
+                      key=lambda f: int(f.stem.split("-r")[-1]))
+        paths += revs
+    except (OSError, ValueError):
+        pass
+    docs = []
+    for p in paths:
+        try:
+            docs.append(json.loads(p.read_text(encoding="utf-8")))
+        except (OSError, json.JSONDecodeError):
+            continue
+    return sorted(docs, key=lambda d: d.get("frozenAt") or "")
+
+
 def main() -> int:
     import argparse
     ap = argparse.ArgumentParser(description="LLM 结构化自主判断冻结器（v3）")
