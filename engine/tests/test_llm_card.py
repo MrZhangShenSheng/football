@@ -1,5 +1,6 @@
 # engine/tests/test_llm_card.py
 import sys, json, pathlib, pytest
+from pathlib import Path as _Path
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "scripts"))
 from llm_card import build_card, save_card, card_hash, card_paths, match_id_index, write_context
 
@@ -213,6 +214,27 @@ def test_rebuild_gate_and_preservation(tmp_path):
     assert not preds_exist("2026-10-16", root=preds)
     (preds / "2026-10-16.json").write_text("{}", encoding="utf-8")
     assert preds_exist("2026-10-16", root=preds)
+
+
+def test_season_tag_on_history():
+    """历史行赛季标（大哥 2026-10-19：历史日期需增加赛季）——H2H 与近期明细逐行。"""
+    from llm_card import _season_of
+    # 欧洲赛季 7 月分界：2026-09 → 2627；2025-05 → 2425；2023-09 → 2324
+    assert _season_of("2026-09-02") == "2627"
+    assert _season_of("2025-05-14") == "2425"
+    assert _season_of("2023-09-17") == "2324"
+    assert _season_of("2026-07-01") == "2627"
+    assert _season_of("2026-06-30") == "2526"
+    assert _season_of("") is None and _season_of(None) is None
+    # 卡内 H2H 逐行注入（真 insight 文件读仓）
+    card = build_card("2026-10-16",
+                      {"matchNumStr": "周X001", "league": "德乙", "home": "A", "away": "B",
+                       "matchTime": "03:00:00", "had": {}, "crs": {}, "ttg": {}},
+                      insight_path=_Path("engine/cache/sporttery_insight_2042008.json"),
+                      lineups={}, now="2026-10-16T11:00:00")
+    h2h = card["layers"]["intel"]["h2h"]["matches"]
+    assert h2h and all("season" in x for x in h2h)
+    assert h2h[0]["season"] == "2627"
 
 
 def test_enrichment_lambda_recent_drift(tmp_path, monkeypatch):

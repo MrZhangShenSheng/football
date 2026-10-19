@@ -117,6 +117,19 @@ def _isnum(v) -> bool:
         return False
 
 
+def _season_of(date_str) -> str | None:
+    """日期 → 欧洲赛季码（repo 口径 2526/2627；7 月起算新赛季）。
+
+    H2H 横跨多赛季（不同阵容不同级别）,近期明细跨 90 天也可能跨赛季——无赛季标的
+    历史行没法掂量权重（大哥 2026-10-19：历史比赛日期需增加赛季）。开发者 sszhang"""
+    m = re.match(r"^(\d{4})-(\d{2})", str(date_str or ""))
+    if not m:
+        return None
+    y, mo = int(m.group(1)), int(m.group(2))
+    sy = y if mo >= 7 else y - 1
+    return f"{sy % 100:02d}{(sy + 1) % 100:02d}"
+
+
 def _our_models_layer(sale_date: str, code: str) -> dict:
     """本地已算结论层（大哥 2026-10-16：上下文须含「我们自己算出来的」）。
 
@@ -331,7 +344,8 @@ def _team_recent(team_id: str | None, horizon_date: str, rows: list[dict],
             home = r["hid"] == team_id
             gf, ga_ = (r["hg"], r["ag"]) if home else (r["ag"], r["hg"])
             opp = r["aid"] if home else r["hid"]
-            recent.append({"date": r["date"], "opp": id2zh.get(opp, opp),
+            recent.append({"date": r["date"], "season": _season_of(r["date"]),
+                           "opp": id2zh.get(opp, opp),
                            "ha": "主" if home else "客",
                            "score": f"{gf}-{ga_}",
                            "res": "胜" if gf > ga_ else "平" if gf == ga_ else "负",
@@ -510,6 +524,9 @@ def build_card(sale_date: str, match: dict, *, insight_path: Path | None,
         doc = json.loads(Path(insight_path).read_text(encoding="utf-8"))
         intel = {"status": "ok", **{k: doc.get(k) for k in ("injuries", "form", "standing", "h2h", "scorers")
                                     if doc.get(k) is not None}}
+        # H2H 逐行补赛季标（横跨多赛季=不同阵容不同级别,无赛季标没法掂量权重）
+        for x in ((intel.get("h2h") or {}).get("matches") or []):
+            x["season"] = _season_of(x.get("date"))
     card = {
         "code": match["matchNumStr"], "match": f'{match["home"]} vs {match["away"]}',
         "league": match["league"], "kickoff": match.get("matchTime"), "saleDate": sale_date,
