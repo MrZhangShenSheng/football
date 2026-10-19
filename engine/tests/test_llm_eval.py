@@ -11,6 +11,19 @@ def _full_pool():
     return pool
 
 
+# 真实体彩 31 格池形状（28 定格 + 3 兜底·与 10-14 周三008 实卡一致）：
+# 3:4 等不在定格内,须由 other_* 接住
+_GRID_31 = ["0:0", "0:1", "0:2", "0:3", "0:4", "0:5", "1:0", "1:1", "1:2", "1:3",
+            "1:4", "1:5", "2:0", "2:1", "2:2", "2:3", "2:4", "2:5", "3:0", "3:1",
+            "3:2", "3:3", "4:0", "4:1", "4:2", "5:0", "5:1", "5:2"]
+
+
+def _pool31():
+    pool = {k: (8.0 if sum(map(int, k.split(":"))) <= 3 else 30.0) for k in _GRID_31}
+    pool.update({"other_h": 60.0, "other_d": 60.0, "other_a": 60.0})
+    return pool
+
+
 def test_actual_key_grid_and_other():
     assert actual_key("2:1") == "2:1"
     assert actual_key("0:3") == "0:3"
@@ -66,6 +79,79 @@ def test_kj_cohort_split(monkeypatch):
     for r in rows:
         r.pop("_kjCohort")
     assert evaluate(["2026-10-14"])["kjCohortSplit"]["unknown"]["n"] == 35
+
+
+def test_resolution_minpos_and_zerocells(monkeypatch):
+    """v3.4：分布分辨率双口径。主看 minPos——实测周三/周四 minPos 卡 0.01 带 13~16
+    零格、周五 0.00054 零格 0,zeroCells 只显示'14→0'看不出 20 倍细化幅度。"""
+    import llm_eval as le
+    pool = _full_pool()
+    keys = list(pool)
+    rows = []
+    # 粗卷 10 场：末 14 格填 0,其余均分（刻度 1%）
+    for i in range(10):
+        p = {k: 0.0 for k in keys}
+        for k in keys[:len(keys) - 14]:
+            p[k] = 1.0 / (len(keys) - 14)
+        rows.append({"code": f"三{i:03d}", "cardHash": "x" * 16, "p_crs": p,
+                     "pRawSum": 1.0, "rawSumWarn": False, "contextStatus": "ok",
+                     "keyJudgments": [], "confidence": "low", "_marketPool": pool,
+                     "_actual": keys[0], "_score": "1:1", "_closeProxy": "lineupLast"})
+    # 细卷 10 场：全格有正值,尾巴压到 5e-4
+    for i in range(10):
+        p = {k: 5e-4 for k in keys}
+        p[keys[0]] = 1.0 - 5e-4 * (len(keys) - 1)
+        rows.append({"code": f"五{i:03d}", "cardHash": "x" * 16, "p_crs": p,
+                     "pRawSum": 1.0, "rawSumWarn": False, "contextStatus": "ok",
+                     "keyJudgments": [], "confidence": "low", "_marketPool": pool,
+                     "_actual": keys[0], "_score": "1:1", "_closeProxy": "lineupLast"})
+    monkeypatch.setattr(le, "_load_day_rows", lambda days: rows)
+    out = evaluate(["2026-10-14"])
+    res = out["resolution"]
+    assert res["n"] == 20 and res["zeroFreeScenes"] == 10
+    assert res["zeroCellsMax"] == 14 and res["missingKeysTotal"] == 0
+    three, five = res["byDay"]["三0"], res["byDay"]["五0"]
+    assert three["zeroCellsMean"] == 14.0 and five["zeroCellsMean"] == 0.0
+    # minPos 分辨出 20 倍差（zeroCells 看不出的那部分）
+    assert five["minPosMedian"] < three["minPosMedian"] / 10
+    assert three["zeroMktMassMean"] > 0        # 零格在市场眼里有真实概率质量
+
+
+def test_pool_outside_score_goes_other(monkeypatch):
+    """v3.4 修误杀：池外比分（3:4）本该由 other_a 接住并正常计分,不该整场跳。
+    原 bug=守卫查裸键 actual_key(sc)、计分用池感知键 actual_key(sc,pool),两键不同源
+    → 周三008 被误杀,n 悄悄 38→37。"""
+    import llm_eval as le
+    pool = _pool31()                                    # 真实 31 格池（无 3:4）
+    assert "3:4" not in pool and "other_a" in pool      # 前提：池无此格,有客胜兜底
+    p = {k: 1.0 / len(pool) for k in pool}
+    row = {"code": "三008", "cardHash": "x" * 16, "p_crs": p, "pRawSum": 1.0,
+           "rawSumWarn": False, "contextStatus": "ok", "keyJudgments": [],
+           "confidence": "low", "_marketPool": pool,
+           "_actual": "3:4", "_score": "3:4", "_closeProxy": "lineupLast"}
+    monkeypatch.setattr(le, "_load_day_rows", lambda days: [row])
+    out = evaluate(["2026-10-14"])
+    assert out["primary"]["n"] == 1 and out["skipped"]["n"] == 0
+
+
+def test_skipped_not_silent(monkeypatch):
+    """v3.4：真跳过（市场池不足）禁静默,逐场留痕使 n 的缺口可追。"""
+    import llm_eval as le
+    pool = _full_pool()
+    p = {k: 1.0 / len(pool) for k in pool}
+    good = {"code": "三001", "cardHash": "x" * 16, "p_crs": p, "pRawSum": 1.0,
+            "rawSumWarn": False, "contextStatus": "ok", "keyJudgments": [],
+            "confidence": "low", "_marketPool": pool, "_actual": list(pool)[0],
+            "_score": "1:1", "_closeProxy": "lineupLast"}
+    thin = {k: pool[k] for k in list(pool)[:3]}         # 池不足（< min_pool_items）
+    bad = dict(good, code="三009", _marketPool=thin, p_crs={k: 1 / 3 for k in thin})
+    monkeypatch.setattr(le, "_load_day_rows", lambda days: [good, bad])
+    out = evaluate(["2026-10-14"])
+    assert out["primary"]["n"] == 1                  # 只计分 1 场
+    assert out["skipped"]["n"] == 1
+    s = out["skipped"]["rows"][0]
+    assert s["code"] == "三009" and "池" in s["reason"]
+    assert out["resolution"]["n"] == 2               # 分辨率含跳过场（与计分无关）
 
 
 def test_verdict_gates_locked():

@@ -217,17 +217,78 @@ def _load_day_rows(days: list[str]) -> list[dict]:
     return rows
 
 
+def _resolution_of(row: dict) -> dict:
+    """单场分布分辨率（descriptive·v3.4 2026-10-19）。
+
+    双口径,主看 minPos：
+    - zeroCells = 市场有价但 LLM 填 0 的格数（0/1 式粗判·自伤风险直接项）
+    - minPos    = 分布最小正值（连续可读·真正的分辨率尺）
+    - zeroMktMass = 那些零格在市场眼里的概率合计（被判成"不可能"的市场质量）
+
+    为何主看 minPos：实测 10-14~16 三天,周三/周四每场 13~16 个零格、最小正值
+    卡在 0.01（只会用 1% 为刻度,更小的干脆写 0）；周五零格 0 个、最小正值
+    0.00054。zeroCells 只显示"14→0",看不出 20 倍的细化幅度；退化时也会先从
+    minPos 抬头开始,比 zeroCells 更早报警。
+    填 0 = 断言"不可能"(log 计分罚 -10 级)，填 0.0005 = "几乎不可能但不排除"
+    (罚 -2 级)——同样不看好,计分差五倍。
+    """
+    pool, p = row.get("_marketPool") or {}, row.get("p_crs") or {}
+    inpool = {k: float(v) for k, v in p.items() if k in pool}
+    zero_keys = [k for k, v in inpool.items() if v <= LOGLLOSS_CLIP]
+    pos = [v for v in inpool.values() if v > LOGLLOSS_CLIP]
+    mkt_all = market_devig_on_keys(pool, list(inpool)) or {}
+    return {"code": row.get("code"),
+            "nKeys": len(inpool),
+            "missingKeys": len([k for k in pool if k not in p]),  # 整格没写（≠填0）
+            "zeroCells": len(zero_keys),
+            "minPos": round(min(pos), 6) if pos else None,
+            "zeroMktMass": round(sum(mkt_all.get(k, 0.0) for k in zero_keys), 4)}
+
+
+def _resolution_agg(res_rows: list[dict]) -> dict:
+    """分辨率聚合。minPos 用中位数（抗单场离群）,zeroCells 看均值+max。"""
+    if not res_rows:
+        return {}
+    zc = [r["zeroCells"] for r in res_rows]
+    mp = sorted(r["minPos"] for r in res_rows if r["minPos"] is not None)
+    mm = [r["zeroMktMass"] for r in res_rows]
+    return {"n": len(res_rows),
+            "zeroCellsMean": round(float(np.mean(zc)), 2),
+            "zeroCellsMax": max(zc),
+            "zeroFreeScenes": sum(1 for x in zc if x == 0),   # 满格场数（越多越好）
+            "minPosMedian": round(float(np.median(mp)), 6) if mp else None,
+            "minPosWorst": mp[-1] if mp else None,            # 最粗的那场（刻度最大）
+            "zeroMktMassMean": round(float(np.mean(mm)), 4),
+            "zeroMktMassMax": round(max(mm), 4),
+            "missingKeysTotal": sum(r["missingKeys"] for r in res_rows),
+            "note": "主看 minPosMedian（分辨率尺）；zeroCells 为粗判。"
+                    "退化预警=minPos 抬向 0.01 或 zeroCells 均值>3"}
+
+
 def evaluate(days: list[str]) -> dict:
     rows = _load_day_rows(days)
     diffs_full, diffs_tail, desc = [], [], {"E1": [], "E2": [], "E3": []}
     proxy_split = {"cardTime": [], "lineupLast": []}
     kj_split: dict[str, list[float]] = {}        # 判断口径分层（v1 压缩卷 vs v2 拆分卷）
+    res_rows: list[dict] = []                    # 分布分辨率（下方 _resolution 聚合）
+    skipped: list[dict] = []                     # 跳过账（禁静默·逐场留痕）
     for r in rows:
+        # 分辨率先记：分布形状与是否计分无关,跳过的场也要统计（v3.4 2026-10-19）
+        res_rows.append(_resolution_of(r))
         keys = [k for k in r["p_crs"] if k in r["_marketPool"]]
         mkt = market_devig_on_keys(r["_marketPool"], keys)
-        if not mkt or r["_actual"] not in mkt:
+        # 池感知键先算,守卫与计分必须同键（v3.4 2026-10-19 修误杀）：
+        # 原守卫查 r["_actual"]=actual_key(sc) 裸键（_load_day_rows 不传 pool）,
+        # 而计分用 actual_key(sc, pool) 池映射键 → 两键不同源。周三008 赛果 3:4
+        # 被 other_a 正确接住且 other_a 在 mkt 内,却因裸键"3:4"不在 mkt 被整场跳,
+        # n 悄悄 38→37。池外比分本该由 other_* 计分,不是跳过
+        a = actual_key(r["_score"], r["_marketPool"]) if r.get("_score") else r["_actual"]
+        if not mkt or a not in mkt:
+            # 禁静默（仓库纪律"跳过原因逐场打印"）：真跳过逐场留痕,n 的缺口可追
+            skipped.append({"code": r.get("code"), "score": r.get("_score"),
+                            "actualKey": a, "rawKey": r.get("_actual"),
+                            "reason": "真相格不在计分键集" if mkt else "市场池不足"})
             continue                                    # 池不足/键缺失→双侧同跳
-        a = actual_key(r["_score"], r["_marketPool"])   # 池感知：未定格键落 other_*（终审 fix）
         llm_raw = r["p_crs"]
         z = sum(llm_raw.get(k, 0.0) for k in keys)
         llm = {k: (llm_raw.get(k, 0.0) / z if z > 0 else 1.0 / len(keys)) for k in keys}
@@ -278,7 +339,16 @@ def evaluate(days: list[str]) -> dict:
             # 判断口径分层（descriptive·v3.4）：v1-compressed=单条压缩卷（10-14~16 遗留,
             # 不改写）/ v2-split=≥3 条拆分卷。非判据,只供"抬门槛是否改善"观察
             "kjCohortSplit": {k: {"n": len(v), "diffMean": round(float(np.mean(v)), 4)}
-                              for k, v in kj_split.items() if v}}
+                              for k, v in kj_split.items() if v},
+            # 分布分辨率（descriptive·v3.4）：填 0=断言"不可能"的自伤源头。按销售日分层
+            # ——周三/周四 minPos 卡 0.01 带 13~16 零格 vs 周五 0.00054 零格 0,
+            # 手法细化的幅度只有 minPos 看得出。非判据,不入 PASS/FAIL
+            "resolution": {**_resolution_agg(res_rows),
+                           "byDay": {d: _resolution_agg([r for r in res_rows
+                                                         if (r["code"] or "")[:2] == d])
+                                     for d in sorted({(r["code"] or "")[:2] for r in res_rows})}},
+            # 跳过账（禁静默）：双侧同跳的场逐条留痕,n 的缺口可追
+            "skipped": {"n": len(skipped), "rows": skipped}}
 
 
 def _event_keys(event: str, pool: dict) -> list[str]:
@@ -321,8 +391,16 @@ def main() -> int:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     (OUT_DIR / "eval.json").write_text(json.dumps(result, ensure_ascii=False, indent=2),
                                        encoding="utf-8")
-    print(json.dumps({"primary": result["primary"], "tailChannel": result["tailChannel"]},
+    res = result.get("resolution") or {}
+    print(json.dumps({"primary": result["primary"], "tailChannel": result["tailChannel"],
+                      # 分辨率与跳过账上精简视图（v3.4）：原先只印判据两行,零格自伤与
+                      # n 的缺口都要手工探针才看得见
+                      "resolution": {k: res.get(k) for k in
+                                     ("minPosMedian", "zeroCellsMean", "zeroFreeScenes", "n")},
+                      "skipped": result["skipped"]["n"]},
                      ensure_ascii=False))
+    for s in result["skipped"]["rows"]:                 # 逐场打印跳过原因（禁静默）
+        print(f"  [skip] {s['code']} 赛果{s['score']} 格{s['actualKey']} ← {s['reason']}")
     return 0
 
 

@@ -5,34 +5,34 @@
     "2026-10-16"
   ],
   "primary": {
-    "n": 37,
+    "n": 38,
     "verdict": "INSUFFICIENT",
-    "diffMean": -1.06
+    "diffMean": -1.0352
   },
   "tailChannel": {
-    "n": 37,
+    "n": 38,
     "verdict": "INSUFFICIENT",
-    "diffMean": -0.0492,
+    "diffMean": -0.0454,
     "gate": "CI 下限>0 且 n≥150 才开影子专项"
   },
   "descriptive": {
     "E1": {
-      "n": 37,
-      "diffMean": -0.1201
+      "n": 38,
+      "diffMean": -0.1392
     },
     "E2": {
-      "n": 37,
-      "diffMean": -0.0487
+      "n": 38,
+      "diffMean": -0.0459
     },
     "E3": {
-      "n": 37,
-      "diffMean": 0.0009
+      "n": 38,
+      "diffMean": 0.0006
     }
   },
   "closeProxySplit": {
     "cardTime": {
-      "n": 7,
-      "diffMean": -3.9498
+      "n": 8,
+      "diffMean": -3.4704
     },
     "lineupLast": {
       "n": 30,
@@ -41,8 +41,62 @@
   },
   "kjCohortSplit": {
     "v1-compressed": {
-      "n": 37,
-      "diffMean": -1.06
+      "n": 38,
+      "diffMean": -1.0352
     }
+  },
+  "resolution": {
+    "n": 38,
+    "zeroCellsMean": 9.89,
+    "zeroCellsMax": 16,
+    "zeroFreeScenes": 11,
+    "minPosMedian": 0.01,
+    "minPosWorst": 0.025659,
+    "zeroMktMassMean": 0.0813,
+    "zeroMktMassMax": 0.1761,
+    "missingKeysTotal": 0,
+    "note": "主看 minPosMedian（分辨率尺）；zeroCells 为粗判。退化预警=minPos 抬向 0.01 或 zeroCells 均值>3",
+    "byDay": {
+      "周三": {
+        "n": 14,
+        "zeroCellsMean": 14.43,
+        "zeroCellsMax": 16,
+        "zeroFreeScenes": 0,
+        "minPosMedian": 0.014616,
+        "minPosWorst": 0.02,
+        "zeroMktMassMean": 0.1341,
+        "zeroMktMassMax": 0.1761,
+        "missingKeysTotal": 0,
+        "note": "主看 minPosMedian（分辨率尺）；zeroCells 为粗判。退化预警=minPos 抬向 0.01 或 zeroCells 均值>3"
+      },
+      "周五": {
+        "n": 11,
+        "zeroCellsMean": 0.0,
+        "zeroCellsMax": 0,
+        "zeroFreeScenes": 11,
+        "minPosMedian": 0.001574,
+        "minPosWorst": 0.003096,
+        "zeroMktMassMean": 0.0,
+        "zeroMktMassMax": 0,
+        "missingKeysTotal": 0,
+        "note": "主看 minPosMedian（分辨率尺）；zeroCells 为粗判。退化预警=minPos 抬向 0.01 或 zeroCells 均值>3"
+      },
+      "周四": {
+        "n": 13,
+        "zeroCellsMean": 13.38,
+        "zeroCellsMax": 14,
+        "zeroFreeScenes": 0,
+        "minPosMedian": 0.016301,
+        "minPosWorst": 0.025659,
+        "zeroMktMassMean": 0.0933,
+        "zeroMktMassMax": 0.1696,
+        "missingKeysTotal": 0,
+        "note": "主看 minPosMedian（分辨率尺）；zeroCells 为粗判。退化预警=minPos 抬向 0.01 或 zeroCells 均值>3"
+      }
+    }
+  },
+  "skipped": {
+    "n": 0,
+    "rows": []
   }
 }
