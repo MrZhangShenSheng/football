@@ -84,7 +84,25 @@ code { background:var(--hl); padding:1px 5px; border-radius:4px; font-size:.88em
 <li>全仓 pytest 回归</li>
 </ul>
 
-<h2>四、不做的事</h2>
+<h2>四、评审修正（自审 2026-10-19·四点）</h2>
+<table>
+<tr><th>#</th><th>问题</th><th>修正</th></tr>
+<tr><td>❶</td><td>赛制标原判据「TAIL_LEAGUE_MAP 命中=league」会把欧罗巴/意大利杯等杯赛键误标成联赛——防轮换盲区却标反了</td><td>判据改为「<code>data/00-leagues/{key}.json</code> 画像存在 = 正牌联赛」（仅 17-8 个主流联赛有画像），否则一律杯赛/次级赛轮</td></tr>
+<tr><td>❷</td><td>evidence 只禁市场复读可能逼出动机性编造</td><td>硬规矩补半句：「并显式陈述与市场的偏离方向」——偏离可为零，但必须明说</td></tr>
+<tr><td>❸</td><td>H2H 聚合未定视角</td><td>统一切换到<b>当前主队视角</b>（winner 字段经查不可靠,聚合从比分直接算）</td></tr>
+<tr><td>❹</td><td>卡面定序无落地机制（不存在渲染器）</td><td>新增 <code>llm_card view &lt;date&gt; &lt;code&gt;</code>：市场正身→判断材料→缺口置尾 的阅读版</td></tr>
+</table>
+
+<h2>五、补充数据（分岔六拍板 A·2026-10-19）</h2>
+<ul>
+<li><b>伤停×射手交叉</b>：<code>intel.keyAbsences</code>——伤停名单与射手榜交集,带队内射手榜位次与进球数（009「两队前三射手全伤」由人脑 join 变系统字段）</li>
+<li><b>射手榜 top3→top5</b>（<code>scorers.top5</code>,原始 playerList 保留审计）</li>
+<li><b>主客场进球产出分</b>：teamRecent 每队加 <code>homeGF/GA、awayGF/GA</code>（联赛库 hg/ag 按主客身份聚合,90 天窗）</li>
+<li><b>教练数据</b>：无源,诚实区（需新采集源立项,优先级低于临场信息差）</li>
+<li><b>天气</b>：无源,候选区不立项（效应量小于阵容/轮换/动机；要做走组件准入单独立项）</li>
+</ul>
+
+<h2>六、不做的事</h2>
 <ul>
 <li>不删 devig.crs 全量（阅卷基线依赖）；不删 h2h.matches 全文（审计回查）；不动 prereg 判据本体（只增 note）；不机器强校验 evidence 反市场复读</li>
 </ul>
