@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM 输入膳食评审 v3.4</title>
+<style>
+:root { --ink:#1a1a2e; --sub:#5a5a72; --line:#d8d8e4; --bg:#fafafc; --card:#fff;
+        --ok:#1a7a4a; --warn:#a05a00; --bad:#b03030; --hl:#eef3fb; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --ink:#e4e4ee; --sub:#9a9ab2; --line:#3a3a4c; --bg:#16161f; --card:#1e1e2a; --hl:#23233a; }}
+body { font-family:"Microsoft YaHei",system-ui,sans-serif; background:var(--bg); color:var(--ink);
+       margin:0; line-height:1.75; }
+main { max-width:880px; margin:0 auto; padding:24px 20px 80px; }
+h1 { font-size:1.5rem; margin:8px 0 2px; }
+h2 { font-size:1.15rem; margin:36px 0 10px; padding-left:10px; border-left:4px solid var(--sub); }
+.meta { color:var(--sub); font-size:.9rem; }
+table { border-collapse:collapse; width:100%; margin:12px 0; background:var(--card);
+        font-size:.92rem; }
+th,td { border:1px solid var(--line); padding:7px 10px; text-align:left; vertical-align:top; }
+th { background:var(--hl); }
+code { background:var(--hl); padding:1px 5px; border-radius:4px; font-size:.88em; }
+.tag { display:inline-block; padding:0 8px; border-radius:10px; font-size:.8rem; margin-right:6px; }
+.ok { background:#e2f2e9; color:var(--ok); } .warn { background:#f7ecd9; color:var(--warn); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ok { background:#17301f; }
+  :root:not([data-theme="light"]) .warn { background:#33270f; } }
+</style>
+</head>
+<body>
+<main>
+<h1>LLM 输入膳食评审——卡面 v3.4 改造设计</h1>
+<p class="meta">2026-10-19 · 大哥逐岔拍板（五岔全录）· 执行者 sszhang · 前置：<code>docs/superpowers/plans/2026-10-16-llm-context-autonomy.md</code></p>
+
+<h2>〇、评审结论</h2>
+<p>以 007 卡为标本，对照本仓证伪史逐层审计。结论：<b>缺的集中在临场维度</b>（首发/语境——全仓唯一未证伪的正期望方向，两层全是空），<b>胖的全在市场重复呈现</b>（同一个 37.7/25.4/36.9 以五种形态锚定模型——正是「按赔率预测」的结构性根源）。</p>
+
+<h2>一、判决记录（五岔）</h2>
+<table>
+<tr><th>#</th><th>分岔</th><th>拍板</th><th>要点</th></tr>
+<tr><td>1</td><td>市场瘦身口径</td><td><b>a</b></td><td>市场只留一个正身：五池原始价（可买性）+ 去水 HAD/TTG/CRS-TOP8；lambda 标注「市场衍生物」；v3wChain 只留 water/ttgBoom/src；drift 单 tick 缩一行</td></tr>
+<tr><td>2</td><td>H2H 呈现</td><td><b>A</b></td><td>赛季分解一行 + 最近 2 场全文（九场全文的历史在 insight 缓存可回查）</td></tr>
+<tr><td>3</td><td>standing 瘦身</td><td><b>A</b></td><td>留 ranking + 双方主客分拆（espn 表没有的真信号）；删与 espn 重复的总成绩/seasonName/phaseName 等</td></tr>
+<tr><td>4</td><td>缺口补齐</td><td><b>A</b></td><td>对手排位 join + 赛制性质标 + gen 前置 lineup tick 三件齐做；语境检索定为每轮固定步骤</td></tr>
+<tr><td>5</td><td>注意力机制</td><td><b>a</b></td><td>判定硬规矩：市场是基线不是答案——evidence 只复述市场数字按未做功课拒收；卡面段落定序：市场在前·判断材料居中·缺口置尾</td></tr>
+</table>
+
+<h2>二、卡面改造明细（llm_card）</h2>
+<h3>2.1 市场正身化</h3>
+<ul>
+<li>保留：五池原始价（可买性）、devig had/ttg（全量）、devig crs（<b>全量保留</b>——阅卷器
+<code>_baselines</code> 依赖 power devig 做基线，砍了会静默退化为朴素去水；注意力靠段落定序解决，不靠删数据）</li>
+<li><code>marketLambda</code> 加 <code>role: "market-derived"</code></li>
+<li><code>v3wChain</code> 删 <code>crsTop5</code>/<code>lam</code>（市场复印件），只留 <code>src/water/ttgBoom/independentOfMarket/useNote</code></li>
+<li><code>drift</code>：<code>ticks ≤ 1</code> 时缩为 <code>{"status": "单调无对照(ticks=1)"}</code></li>
+</ul>
+<h3>2.2 H2H 聚合</h3>
+<ul>
+<li><code>intel.h2h</code> 增 <code>seasonAgg</code>：按 v3.3 赛季标聚合，形如
+<code>2627(1) 1平 · 2425(2) 弗2胜 · 2324(2) 萨2胜</code>（胜者归属按主队视角换算）</li>
+<li>增 <code>recent2</code>（最近 2 场带赛季全文）；原 <code>matches</code> 数组保留（审计可回查，注意力走摘要）</li>
+</ul>
+<h3>2.3 standing 瘦身</h3>
+<ul>
+<li><code>intel.standing</code> → <code>{home: {ranking, 主分拆, 客分拆}, away: {...}}</code>，其余原始键不进卡</li>
+</ul>
+<h3>2.4 缺口补齐三件</h3>
+<ul>
+<li><b>对手排位 join</b>：<code>teamRecent</code> 每行加 <code>oppPos</code>（对手当前 espn 排位；跨联赛/查不到 = null 不伪造）——近期形态从输赢序列升级为对手加权形态</li>
+<li><b>赛制性质标</b>：卡头 <code>competitionType</code>——TAIL_LEAGUE_MAP 命中 = <code>league</code>（附 roundsPlayed），不命中 = <code>杯赛/未映射轮（轮换高风险·英锦标赛教训）</code></li>
+<li><b>gen 前置 tick</b>：<code>llm_card gen</code> 先 best-effort 跑一发 <code>lineup_watch</code>（晚场轮首发或已公布，卡能吃到就吃，失败不熔断）</li>
+<li>语境检索定为每轮固定步骤：context-todo → 会话检索 → write_context（流程约定，写进本文档与 plan）</li>
+</ul>
+<h3>2.5 判定协议硬规矩</h3>
+<ul>
+<li><code>llm_judge</code> 输出契约说明加红字：<b>「市场是基线不是答案——direction/goalBand/keyCells 的 evidence 必须引用市场以外材料（伤停/形态/排名/赛制/近期对手质量），只复述市场数字的判断按未做功课拒收」</b>（会话纪律，不做机器强校验——正则拦不住换说法的复读）</li>
+<li>卡面段落定序（渲染序，非 JSON 键序）：市场正身 → 判断材料（intel/积分榜/近期/模型信号）→ 缺口置尾</li>
+<li>prereg 增补一行 note（首次样本前的修订，记档）</li>
+</ul>
+
+<h2>三、测试与验收</h2>
+<ul>
+<li>卡测试：市场正身（v3wChain 无 crsTop5、drift 缩行、lambda role）、H2H seasonAgg 聚合正确性（2627 1平/2425 弗2胜/2324 萨2胜）、standing 瘦身键集、oppPos join（含 null 不伪造）、competitionType 两态、gen 前置 tick（subprocess mock）</li>
+<li>渲染 007 卡人工复核注意力序</li>
+<li>全仓 pytest 回归</li>
+</ul>
+
+<h2>四、不做的事</h2>
+<ul>
+<li>不删 devig.crs 全量（阅卷基线依赖）；不删 h2h.matches 全文（审计回查）；不动 prereg 判据本体（只增 note）；不机器强校验 evidence 反市场复读</li>
+</ul>
+</main>
+</body>
+</html>
