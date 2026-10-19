@@ -1,6 +1,13 @@
 {
  "league": "italy-serie-a",
- "source": "fd CSV FTHG/FTAG",
+ "source": "espn-history",
+ "seasons": [
+  "2026",
+  "2026"
+ ],
+ "fetchedAt": "2026-10-19",
+ "cup": false,
+ "droppedUnmapped": 0,
  "matches": [
   {
    "date": "2022-02-05",
@@ -12083,6 +12090,132 @@
    "away": "lecce",
    "hg": 3,
    "ag": 0
+  },
+  {
+   "date": "2026-10-10",
+   "home": "genoa",
+   "away": "fiorentina",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-10-10",
+   "home": "inter",
+   "away": "parma",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2026-10-10",
+   "home": "napoli",
+   "away": "frosinone",
+   "hg": 3,
+   "ag": 0
+  },
+  {
+   "date": "2026-10-11",
+   "home": "como",
+   "away": "roma",
+   "hg": 0,
+   "ag": 0
+  },
+  {
+   "date": "2026-10-11",
+   "home": "lazio",
+   "away": "monza",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2026-10-11",
+   "home": "lecce",
+   "away": "bologna",
+   "hg": 1,
+   "ag": 2
+  },
+  {
+   "date": "2026-10-11",
+   "home": "sassuolo",
+   "away": "ac-milan",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-10-11",
+   "home": "cagliari",
+   "away": "juventus",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-10-12",
+   "home": "atalanta",
+   "away": "venezia",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2026-10-12",
+   "home": "torino",
+   "away": "udinese",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-10-16",
+   "home": "frosinone",
+   "away": "sassuolo",
+   "hg": 4,
+   "ag": 2
+  },
+  {
+   "date": "2026-10-17",
+   "home": "venezia",
+   "away": "napoli",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2026-10-17",
+   "home": "bologna",
+   "away": "inter",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2026-10-17",
+   "home": "roma",
+   "away": "genoa",
+   "hg": 2,
+   "ag": 0
+  },
+  {
+   "date": "2026-10-18",
+   "home": "udinese",
+   "away": "lecce",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2026-10-18",
+   "home": "fiorentina",
+   "away": "como",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2026-10-18",
+   "home": "ac-milan",
+   "away": "atalanta",
+   "hg": 3,
+   "ag": 2
+  },
+  {
+   "date": "2026-10-18",
+   "home": "juventus",
+   "away": "lazio",
+   "hg": 0,
+   "ag": 3
   }
  ]
 }

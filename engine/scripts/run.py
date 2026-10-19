@@ -22,6 +22,7 @@ fit/predict/backtest 用联赛全名：spain-laliga / france-ligue1 / france-lig
 本地赛果联赛（espn history 回填）：japan / saudi / sweden；体彩源（sporttery league-results 回填）：korea
 """
 import json
+import pathlib
 import subprocess
 import sys
 from datetime import date
@@ -66,6 +67,29 @@ def sh(*args: str) -> None:
     subprocess.run([sys.executable, *args], check=False, cwd=str(__import__("pathlib").Path(__file__).parent))
 
 
+def espn_refresh_insale() -> None:
+    """在售联赛 espn 历史库+积分榜增量刷新（v3.1·llm 卡近期明细/积分榜的料源）。
+
+    fd CSV 09-20 断粮后联赛库停更,近期明细层无米下锅——体彩在售清单里的联赛凡
+    LEAGUE_ESPN 有码者,history(当季)+standings 各一发。best-effort:无码/失败打印跳过,
+    不熔断 update。开发者 sszhang"""
+    from backfill import LEAGUE_ESPN            # zh→espn 码单一来源（corpus 口径）
+    cache = pathlib.Path(__file__).parent.parent / "cache" / "sporttery_matches.json"
+    try:
+        ms = json.loads(cache.read_text(encoding="utf-8")).get("matches") or []
+    except (OSError, json.JSONDecodeError):
+        ms = []
+    leagues = sorted({m.get("league") for m in ms if m.get("league")})
+    year = str(int(CURRENT_SEASON[:2]) + 2000)
+    for zh in leagues:
+        code = LEAGUE_ESPN.get(zh)
+        if not code:
+            log("run", f"espn 刷新跳过 {zh}（LEAGUE_ESPN 无码）")
+            continue
+        sh("espn_fetch.py", "history", code, year)
+        sh("espn_fetch.py", "standings", code)
+
+
 def main() -> None:
     cmd = sys.argv[1] if len(sys.argv) > 1 else "help"
     rest = sys.argv[2:]
@@ -82,6 +106,7 @@ def main() -> None:
         sh("euro_fetch.py", "today")            # 欧指锚路径1第一步：99家平均欧指日存档（只采不判·docs/2026-09-23-euro-anchor-design.html）
         sh("build_index.py")
         sh("league_profile.py", "--all")
+        espn_refresh_insale()                  # v3.1: 在售联赛 espn 库/积分榜增量（llm 卡料源）
     elif cmd == "fit":
         if rest:
             sh("dc_fit.py", *rest[:2], "--auto")

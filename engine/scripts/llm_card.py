@@ -204,61 +204,114 @@ def _kickoff_dt(match: dict, business_date: str | None,
     return _norm_ts(f"{d} {t}") if d else None
 
 
-_RECENT_CACHE: dict = {}          # (horizon_date,) → 解析后的近期赛程列表（一次 gen 只扫一遍）
+_RECENT_CACHE: dict = {}          # (root, horizon, league) → ID 空间赛果池（一次 gen 只扫一遍）
 
 
-def _parse_results_scan(horizon_date: str, days: int, root: Path) -> list[dict]:
-    """扫 horizon 前 days 天的每日回填库+体彩结果缓存 → [{date, home, away, hg, ag}]。
+@lru_cache(maxsize=1)
+def _alias_maps() -> tuple[dict, dict]:
+    """(zh→id, id→zh) 单一来源=strength_loaders.load_aliases。开发者 sszhang"""
+    try:
+        import strength_loaders as sl
+        al = sl.load_aliases()
+    except Exception:                                      # noqa: BLE001
+        return {}, {}
+    zh2: dict = {}
+    id2: dict = {}
+    for tid, srcs in al.items():
+        if srcs.get("zh"):
+            zh2.setdefault(srcs["zh"], tid)
+            id2.setdefault(tid, srcs["zh"])
+    return zh2, id2
 
-    联赛库(fd)止于 09-20 断粮不可用于近期；此扫描覆盖我们回填过的每一天,
-    覆盖不到的天就是覆盖不到（coverageDays 如实回带,不造场）。开发者 sszhang"""
-    hit_dates = []
-    d = date.fromisoformat(horizon_date)
-    for i in range(1, days + 1):
-        hit_dates.append((d - timedelta(days=i)).isoformat())
+
+def _norm_to_id(name: str) -> str | None:
+    """任意名（fd id/ESPN 显示名/zh/zh变体）→ 规范 id；不可映射 None。
+
+    zh 匹配须含 variants（与 sl.zh_to_id 同口径——『弗洛西诺』非 canonical zh,漏了
+    variants 整队近期明细会静默清空）。开发者 sszhang"""
+    try:
+        import strength_loaders as sl
+        al = sl.load_aliases()
+    except Exception:                                      # noqa: BLE001
+        return None
+    if name in al:
+        return name
+    kebab = str(name).lower().replace(" ", "-").replace("'", "")
+    if kebab in al:
+        return kebab
+    for tid, srcs in al.items():
+        e = srcs.get("espn")
+        if e and str(e).lower() == str(name).lower():
+            return tid
+        for zh in [srcs.get("zh"), *(srcs.get("variants") or [])]:
+            if zh and zh == name:
+                return tid
+    return None
+
+
+def _parse_results_pool(horizon_date: str, days: int, league_zh: str,
+                        root: Path) -> list[dict]:
+    """近期赛果池（ID 空间统一）：每日回填库+体彩缓存+联赛库 三源合一。
+
+    ① 每日回填库/体彩缓存：zh 队名 → _norm_to_id 归一,映射不了的行丢弃（该队近期
+       会以「队名不可映射」如实标注,不造场）；
+    ② 联赛库（espn history 刷新·本次起重新纳入——v3.1 前因 fd 断粮止于 09-20 被排除,
+       现由 update 流水线对在售联赛增量刷新,是 fd/espn 覆盖联赛最全的近期货源）；
+    ③ 精确 (date,hid,aid) 去重 + 近邻去重（3 日内同对阵同比分=双源日期口径差）。
+    开发者 sszhang"""
+    d0 = date.fromisoformat(horizon_date)
+    lo = (d0 - timedelta(days=days)).isoformat()
+    hi = (d0 - timedelta(days=1)).isoformat()              # 窗口=开赛日前 1~days 天
     out: dict[tuple, dict] = {}
-    scanned = 0
-    for day in hit_dates:
+
+    def put(day, h, a, hg, ag, src):
+        hid, aid = _norm_to_id(h), _norm_to_id(a)
+        if not hid or not aid or not (lo <= day <= hi):
+            return
+        out.setdefault((day, hid, aid),
+                       {"date": day, "hid": hid, "aid": aid, "hg": hg, "ag": ag,
+                        "src": src})
+
+    for day in [(d0 - timedelta(days=i)).isoformat() for i in range(1, days + 1)]:
         p = root / "data" / "02-results" / f"{day}.json"
-        if p.exists():
-            scanned += 1
-            try:
-                doc = json.loads(p.read_text(encoding="utf-8"))
-            except (OSError, json.JSONDecodeError):
-                continue
-            for m in doc.get("matches") or []:
-                parts = str(m.get("match") or "").split(" vs ")
-                res = str(m.get("result") or "")
-                if len(parts) != 2 or ":" not in res and "-" not in res:
-                    continue
-                mm = re.match(r"^\s*(\d+)\s*[-:]\s*(\d+)\s*$", res)
-                if not mm:
-                    continue
-                key = (day, parts[0], parts[1])
-                out[key] = {"date": day, "home": parts[0], "away": parts[1],
-                            "hg": int(mm.group(1)), "ag": int(mm.group(2))}
+        if not p.exists():
+            continue
+        try:
+            doc = json.loads(p.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        for m in doc.get("matches") or []:
+            parts = str(m.get("match") or "").split(" vs ")
+            mm = re.match(r"^\s*(\d+)\s*[-:]\s*(\d+)\s*$", str(m.get("result") or ""))
+            if len(parts) == 2 and mm:
+                put(day, parts[0], parts[1], int(mm.group(1)), int(mm.group(2)), "daily")
     for f in (root / "engine" / "cache").glob("sporttery_results_*.json"):
         try:
             doc = json.loads(f.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError):
             continue
         for m in doc.get("matches") or []:
-            md = str(m.get("matchDate") or "")[:10]
-            sc = str(m.get("score") or "")
-            if not md or md not in hit_dates or ":" not in sc:
-                continue
-            mm = re.match(r"^\s*(\d+)\s*:\s*(\d+)\s*$", sc)
-            if not mm:
-                continue
-            key = (md, m.get("home"), m.get("away"))
-            out.setdefault(key, {"date": md, "home": m.get("home"), "away": m.get("away"),
-                                 "hg": int(mm.group(1)), "ag": int(mm.group(2))})
+            mm = re.match(r"^\s*(\d+)\s*:\s*(\d+)\s*$", str(m.get("score") or ""))
+            if mm and str(m.get("matchDate") or "")[:10]:
+                put(str(m["matchDate"])[:10], m.get("home"), m.get("away"),
+                    int(mm.group(1)), int(mm.group(2)), "cache")
+    lg_key = (TAIL_LEAGUE_MAP or {}).get(league_zh)
+    if lg_key:
+        lp = root / "data" / "02-results" / "league" / f"{lg_key}_matches.json"
+        if lp.exists():
+            try:
+                rows = json.loads(lp.read_text(encoding="utf-8")).get("matches") or []
+            except (OSError, json.JSONDecodeError):
+                rows = []
+            for r in rows:
+                put(str(r.get("date"))[:10], r.get("home"), r.get("away"),
+                    r.get("hg"), r.get("ag"), "lib")
     rows = sorted(out.values(), key=lambda r: r["date"], reverse=True)
-    # 近邻去重：同一对阵同比分 3 天内重复 = 双源日期口径差（体彩销售期 vs 开赛日）,
-    # 非真实连赛两场——保留首见（较晚日）。真实同对阵同比分 3 日两遇在俱乐部赛事不存在。
     dedup, seen = [], {}
     for r in rows:
-        key = (r["home"], r["away"], r["hg"], r["ag"])
+        # 朝向不变键：双源对同一场的主客写法可相反（cache 按体彩主客,lib 按 espn 主客）,
+        # 含朝向的键会把同一场当两场双计
+        key = (tuple(sorted([r["hid"], r["aid"]])), tuple(sorted([r["hg"], r["ag"]])))
         prev = seen.get(key)
         if prev is not None and abs((date.fromisoformat(prev) -
                                      date.fromisoformat(r["date"])).days) <= 3:
@@ -268,26 +321,27 @@ def _parse_results_scan(horizon_date: str, days: int, root: Path) -> list[dict]:
     return dedup
 
 
-def _team_recent(team: str, horizon_date: str, rows: list[dict],
+def _team_recent(team_id: str | None, horizon_date: str, rows: list[dict],
                  n: int = 8) -> dict:
-    """单队近期明细：last N（date/对手/主客/比分/结果）+ restDays + 14 天场数。"""
+    """单队近期明细（ID 匹配·对手回显 zh 优先）：last N + restDays + 14 天场数。"""
+    _, id2zh = _alias_maps()
     recent = []
     for r in rows:
-        if r["home"] == team or r["away"] == team:
-            home = r["home"] == team
+        if r["hid"] == team_id or r["aid"] == team_id:
+            home = r["hid"] == team_id
             gf, ga_ = (r["hg"], r["ag"]) if home else (r["ag"], r["hg"])
-            recent.append({"date": r["date"],
-                           "opp": r["away"] if home else r["home"],
+            opp = r["aid"] if home else r["hid"]
+            recent.append({"date": r["date"], "opp": id2zh.get(opp, opp),
                            "ha": "主" if home else "客",
                            "score": f"{gf}-{ga_}",
-                           "res": "胜" if gf > ga_ else "平" if gf == ga_ else "负"})
+                           "res": "胜" if gf > ga_ else "平" if gf == ga_ else "负",
+                           "src": r["src"]})
             if len(recent) >= n:
                 break
     out: dict = {"recent": recent}
     if recent:
-        last = date.fromisoformat(recent[0]["date"])
-        out["restDays"] = (date.fromisoformat(horizon_date) - last).days
         hz = date.fromisoformat(horizon_date)
+        out["restDays"] = (hz - date.fromisoformat(recent[0]["date"])).days
         out["matches14d"] = sum(1 for r in recent
                                 if (hz - date.fromisoformat(r["date"])).days <= 14)
     else:
@@ -298,11 +352,7 @@ def _team_recent(team: str, horizon_date: str, rows: list[dict],
 
 def _elo_of(team: str) -> float | None:
     """zh 队名 → clubelo rating（data/01-teams/**；文件缺=未获取,不造数）。"""
-    try:
-        import strength_loaders as sl
-        tid = (sl.zh_to_id() or {}).get(team)
-    except Exception:                                      # noqa: BLE001
-        return None
+    tid = _norm_to_id(team)
     if not tid:
         return None
     hits = sorted((ROOT / "data" / "01-teams").glob(f"*/{tid}.json"))
@@ -315,34 +365,72 @@ def _elo_of(team: str) -> float | None:
         return None
 
 
-def _team_deep_layer(sale_date: str, code: str, home: str, away: str,
-                     business_date: str | None) -> dict:
+def _standings_layer(league_zh: str, home: str, away: str) -> dict:
+    """联赛积分榜整表（espn·update 流水线刷新）+ 双队行——大哥点名的『当前联赛球队排名』。"""
+    lg_key = (TAIL_LEAGUE_MAP or {}).get(league_zh)
+    if not lg_key:
+        return {"status": "联赛未映射"}
+    p = ROOT / "data" / "00-leagues" / f"{lg_key}.json"
+    if not p.exists():
+        return {"status": "未获取"}
+    try:
+        rows = json.loads(p.read_text(encoding="utf-8")).get("standings") or []
+    except (OSError, json.JSONDecodeError):
+        return {"status": "读取失败"}
+    if not rows:
+        return {"status": "未获取（先跑 espn_fetch standings）"}
+    hid, aid = _norm_to_id(home), _norm_to_id(away)
+    try:
+        import strength_loaders as sl
+        al = sl.load_aliases()
+    except Exception:                                      # noqa: BLE001
+        al = {}
+
+    def row_of(tid):
+        if not tid:
+            return None
+        for r in rows:                                     # espn 显示名 → id → 别名行
+            if _norm_to_id(r.get("team") or "") == tid:
+                return r
+        return None
+
+    return {"status": "ok", "source": "espn", "nTeams": len(rows),
+            "tableTop": rows[:6], "home": row_of(hid), "away": row_of(aid),
+            "note": "全表见 data/00-leagues/{lg}.json standings（pos/played/W-D-L/GF-GA/pts）"}
+
+
+def _team_deep_layer(sale_date: str, code: str, league_zh: str,
+                     home: str, away: str, business_date: str | None) -> dict:
     """近期明细层：两队 last8+restDays+14天场数+Elo（大哥 2026-10-19『数据不够详细』）。
 
-    horizon=真实开赛日（sporttery matchDate 优先,businessDate 退化）；21 天窗口,来源=
-    每日回填库+体彩结果缓存,覆盖规模如实回带（scannedMatches）。开发者 sszhang"""
+    horizon=真实开赛日（sporttery matchDate 优先,businessDate 退化）；21 天窗口,三源
+    合一（回填库/体彩缓存/联赛库）ID 空间统一去重。开发者 sszhang"""
     horizon = _match_date_index().get(code) or business_date or sale_date
     try:
         horizon = date.fromisoformat(str(horizon)[:10]).isoformat()
     except ValueError:
         return {"status": "horizon 不可解析", "horizon": horizon}
-    cache_key = (str(ROOT), horizon)
+    cache_key = (str(ROOT), horizon, league_zh)
     rows = _RECENT_CACHE.get(cache_key)
     if rows is None:
-        rows = _parse_results_scan(horizon, 21, ROOT)
-        _RECENT_CACHE[cache_key] = rows
+        rows = _parse_results_pool(horizon, 90, league_zh, ROOT)   # 90 天:21 天够不着
+        _RECENT_CACHE[cache_key] = rows                            # 季初轮次,近10场会缺
+    hid, aid = _norm_to_id(home), _norm_to_id(away)
     # 排除本场自身：回填库若已含本场赛果（赛后重建卡的场景）,决不能混进「近期」——
     # 那是把答案喂进预测输入。
-    rows = [r for r in rows if {r["home"], r["away"]} != {home, away}]
-    deep_home, deep_away = _team_recent(home, horizon, rows), _team_recent(away, horizon, rows)
-    for t in (deep_home, deep_away):
-        if 0 < len(t["recent"]) < 3:
-            # 回填覆盖稀疏时 restDays 只是上界（真实最近一场可能未入库）——须让读者知情
-            t["sparseNote"] = "回填库窗口内该队场次<3,restDays 为上界"
+    if hid and aid:
+        rows = [r for r in rows if {r["hid"], r["aid"]} != {hid, aid}]
+    deep_home = _team_recent(hid, horizon, rows)
+    deep_away = _team_recent(aid, horizon, rows)
+    for t, nm in ((deep_home, home), (deep_away, away)):
+        if _norm_to_id(nm) is None:
+            t["note"] = "队名不可映射（aliases 无此队）"
+        elif 0 < len(t["recent"]) < 3:
+            # 覆盖稀疏时 restDays 只是上界（真实最近一场可能未入库）——须让读者知情
+            t["sparseNote"] = "三源窗口内该队场次<3,restDays 为上界"
     return {
-        "horizon": horizon, "windowDays": 21, "scannedMatches": len(rows),
-        "source": "data/02-results 每日回填库 + engine/cache/sporttery_results_* 缓存"
-                  "（fd 联赛库止于 09-20 断粮不用于近期）",
+        "horizon": horizon, "windowDays": 90, "poolMatches": len(rows),
+        "source": "每日回填库 + 体彩缓存 + 联赛库（espn history 刷新·ID 空间统一去重）",
         "home": {**deep_home, "elo": _elo_of(home)},
         "away": {**deep_away, "elo": _elo_of(away)},
     }
@@ -440,13 +528,15 @@ def build_card(sale_date: str, match: dict, *, insight_path: Path | None,
                        "drift": _drift_layer(sale_date, match["matchNumStr"]),
                        "oddsUpdatedAt": match.get("oddsUpdatedAt")},
             "intel": intel,
-            "profile": _profile_layer(match["league"]),
+            "profile": {**_profile_layer(match["league"]),
+                        "standings": _standings_layer(match["league"],
+                                                      match["home"], match["away"])},
             "lineup": _lineup_layer(match["matchNumStr"], lineups),
             "context": {"status": "pending", "entries": []},
             "ourModels": {**_our_models_layer(sale_date, match["matchNumStr"]),
                           "marketLambda": _market_lambda_layer(match),
                           "teamRecent": _team_deep_layer(
-                              sale_date, match["matchNumStr"],
+                              sale_date, match["matchNumStr"], match["league"],
                               match["home"], match["away"], business_date)},
         },
         "createdAt": now or datetime.now().isoformat(timespec="seconds"),

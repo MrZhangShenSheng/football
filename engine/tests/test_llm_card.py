@@ -237,7 +237,7 @@ def test_enrichment_lambda_recent_drift(tmp_path, monkeypatch):
         {"match": "弗洛西诺 vs 萨索洛", "result": "4-2"},          # 本场自身→必须排除
         {"match": "弗洛西诺 vs 那不勒斯", "result": "0-3"},        # 10-11 与体彩缓存 10-12 重复→去重
         {"match": "萨索洛 vs AC米兰", "result": "1-1"},
-        {"match": "萨索洛 vs 尤文", "result": "0-1"},
+        {"match": "萨索洛 vs 尤文图斯", "result": "0-1"},
     ]
     (res / "2026-10-11.json").write_text(
         json.dumps({"date": "2026-10-11", "matches": rows}, ensure_ascii=False),
@@ -252,11 +252,11 @@ def test_enrichment_lambda_recent_drift(tmp_path, monkeypatch):
     ]}, ensure_ascii=False), encoding="utf-8")
     monkeypatch.setattr(lc, "ROOT", repo)
     monkeypatch.setattr(lc, "_RECENT_CACHE", {})
-    deep = lc._team_deep_layer("2026-10-16", "周五007", "弗洛西诺", "萨索洛", None)
+    deep = lc._team_deep_layer("2026-10-16", "周五007", "意甲", "弗洛西诺", "萨索洛", None)
     fr = deep["home"]["recent"]
     assert all(not (r["opp"] == "萨索洛") for r in fr)         # 自身两向均不入
     assert sum(1 for r in fr if r["opp"] == "那不勒斯") == 1    # 跨源重复只剩一条
-    assert deep["away"]["recent"][-1]["opp"] == "尤文"          # AC米兰 1-1 已去重
+    assert deep["away"]["recent"][-1]["opp"] == "尤文图斯"      # AC米兰 1-1 已去重
 
     # drift：快照链 first→last
     tr = repo / "data" / "05-trends"
