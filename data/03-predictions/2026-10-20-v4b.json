@@ -1,0 +1,177 @@
+{
+ "date": "2026-10-20",
+ "model": "predictor_v4b",
+ "nCalc": 7,
+ "nSkip": 1,
+ "skips": [
+  {
+   "code": "周一002",
+   "match": "代格福什 vs 卡尔马",
+   "skipReason": "别名映射失败（国家队/亚运/未收录队——模型不可算）"
+  }
+ ],
+ "status": "样本内回测未过盲测——对照源非生产概率源（docs/predictor_v4b.md 收编标注）",
+ "matches": [
+  {
+   "code": "周一001",
+   "league": "意甲",
+   "match": "蒙扎 vs 卡利亚里",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.16,
+     "odds": 5.45
+    },
+    {
+     "pick": "0:0",
+     "signal": 0.095,
+     "odds": 10.0
+    }
+   ],
+   "marketHot": {
+    "pick": "1:1",
+    "odds": 5.45
+   },
+   "fusionTop": null,
+   "agreeWithMarket": true
+  },
+  {
+   "code": "周一003",
+   "league": "意甲",
+   "match": "帕尔马 vs 都灵",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.16,
+     "odds": 5.25
+    },
+    {
+     "pick": "0:0",
+     "signal": 0.095,
+     "odds": 7.5
+    }
+   ],
+   "marketHot": {
+    "pick": "1:1",
+    "odds": 5.25
+   },
+   "fusionTop": null,
+   "agreeWithMarket": true
+  },
+  {
+   "code": "周一004",
+   "league": "法乙",
+   "match": "罗德兹 vs 蒙彼利埃",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.215,
+     "odds": 6.4
+    },
+    {
+     "pick": "0:0",
+     "signal": 0.17,
+     "odds": 17.5
+    }
+   ],
+   "marketHot": {
+    "pick": "1:1",
+    "odds": 6.4
+   },
+   "fusionTop": null,
+   "agreeWithMarket": true
+  },
+  {
+   "code": "周一005",
+   "league": "英超",
+   "match": "热刺 vs 考文垂",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.155,
+     "odds": 8.0
+    },
+    {
+     "pick": "1:2",
+     "signal": 0.13,
+     "odds": 15.0
+    }
+   ],
+   "marketHot": {
+    "pick": "2:1",
+    "odds": 6.8
+   },
+   "fusionTop": null,
+   "agreeWithMarket": false
+  },
+  {
+   "code": "周一006",
+   "league": "西甲",
+   "match": "赫塔费 vs 巴列卡诺",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.16,
+     "odds": 4.8
+    },
+    {
+     "pick": "0:0",
+     "signal": 0.095,
+     "odds": 6.5
+    }
+   ],
+   "marketHot": {
+    "pick": "1:1",
+    "odds": 4.8
+   },
+   "fusionTop": null,
+   "agreeWithMarket": true
+  },
+  {
+   "code": "周一007",
+   "league": "葡超",
+   "match": "布拉加 vs 吉维森特",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.19,
+     "odds": 6.8
+    },
+    {
+     "pick": "0:0",
+     "signal": 0.1128,
+     "odds": 11.0
+    }
+   ],
+   "marketHot": {
+    "pick": "1:0",
+    "odds": 5.5
+   },
+   "fusionTop": null,
+   "agreeWithMarket": false
+  },
+  {
+   "code": "周一008",
+   "league": "巴甲",
+   "match": "科林蒂安 vs 维多利亚",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.215,
+     "odds": 7.0
+    },
+    {
+     "pick": "0:0",
+     "signal": 0.17,
+     "odds": 10.0
+    }
+   ],
+   "marketHot": {
+    "pick": "1:0",
+    "odds": 6.0
+   },
+   "fusionTop": null,
+   "agreeWithMarket": false
+  }
+ ]
+}

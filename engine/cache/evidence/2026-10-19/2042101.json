@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-19",
+ "matchKey": "2042101",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-19T20:11:02",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     1.736,
+     1.687
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-19T20:11:02",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": false
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-19T20:11:02",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s02s01",
+      "p": 0.0829
+     },
+     {
+      "pick": "s01s01",
+      "p": 0.0812
+     },
+     {
+      "pick": "s01s02",
+      "p": 0.0806
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.071
+     },
+     {
+      "pick": "s02s02",
+      "p": 0.0699
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-19T20:11:02",
+   "payload": {
+    "hid": "paris-saint-germain",
+    "aid": "barcelona",
+    "hstRows": 1343
+   }
+  }
+ }
+}

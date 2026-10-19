@@ -1,0 +1,986 @@
+{
+ "code": "周一003",
+ "match": "帕尔马 vs 都灵",
+ "league": "意甲",
+ "kickoff": "02:45:00",
+ "saleDate": "2026-10-19",
+ "competitionType": {
+  "type": "league",
+  "roundsPlayed": 7
+ },
+ "kickoffAt": "2026-10-20 02:45:00",
+ "businessDate": "2026-10-19",
+ "kickoffSrc": "sporttery",
+ "layers": {
+  "market": {
+   "had": {
+    "a": 2.1,
+    "d": 2.86,
+    "h": 3.29
+   },
+   "crs": {
+    "0:0": 7.5,
+    "0:1": 6.0,
+    "0:2": 9.0,
+    "0:3": 22.0,
+    "0:4": 70.0,
+    "0:5": 250.0,
+    "1:0": 7.7,
+    "1:1": 5.25,
+    "1:2": 8.0,
+    "1:3": 20.0,
+    "1:4": 70.0,
+    "1:5": 250.0,
+    "2:0": 14.0,
+    "2:1": 10.0,
+    "2:2": 14.0,
+    "2:3": 33.0,
+    "2:4": 100.0,
+    "2:5": 400.0,
+    "3:0": 35.0,
+    "3:1": 30.0,
+    "3:2": 50.0,
+    "3:3": 75.0,
+    "4:0": 150.0,
+    "4:1": 100.0,
+    "4:2": 175.0,
+    "5:0": 500.0,
+    "5:1": 500.0,
+    "5:2": 500.0,
+    "负其他": 175.0,
+    "平其他": 350.0,
+    "胜其他": 300.0
+   },
+   "ttg": {
+    "s0": 7.5,
+    "s1": 3.9,
+    "s2": 2.95,
+    "s3": 3.8,
+    "s4": 7.0,
+    "s5": 16.0,
+    "s6": 30.0,
+    "s7": 42.0
+   },
+   "hhad": {
+    "a": 5.1,
+    "d": 3.37,
+    "h": 1.57,
+    "goalLine": "+1"
+   },
+   "hafu": {
+    "aa": 4.0,
+    "ad": 15.0,
+    "ah": 32.0,
+    "da": 4.4,
+    "dd": 3.95,
+    "dh": 7.25,
+    "ha": 28.0,
+    "hd": 15.0,
+    "hh": 5.4
+   },
+   "devig": {
+    "had": {
+     "a": 0.4215,
+     "d": 0.3095,
+     "h": 0.269
+    },
+    "hhad": {
+     "a": 0.1736,
+     "d": 0.2627,
+     "h": 0.5638
+    },
+    "crs": {
+     "s00s00": 0.1003,
+     "s00s01": 0.1294,
+     "s00s02": 0.0815,
+     "s00s03": 0.0294,
+     "s00s04": 0.0078,
+     "s00s05": 0.0018,
+     "s01s00": 0.0974,
+     "s01s01": 0.1507,
+     "s01s02": 0.0932,
+     "s01s03": 0.0328,
+     "s01s04": 0.0078,
+     "s01s05": 0.0018,
+     "s02s00": 0.0492,
+     "s02s01": 0.0723,
+     "s02s02": 0.0492,
+     "s02s03": 0.0185,
+     "s02s04": 0.0052,
+     "s02s05": 0.0011,
+     "s03s00": 0.0173,
+     "s03s01": 0.0206,
+     "s03s02": 0.0115,
+     "s03s03": 0.0072,
+     "s04s00": 0.0033,
+     "s04s01": 0.0052,
+     "s04s02": 0.0028,
+     "s05s00": 0.0008,
+     "s05s01": 0.0008,
+     "s05s02": 0.0008
+    },
+    "ttg": {
+     "s0": 0.1063,
+     "s1": 0.2044,
+     "s2": 0.2702,
+     "s3": 0.2098,
+     "s4": 0.1139,
+     "s5": 0.0498,
+     "s6": 0.0266,
+     "s7": 0.019
+    },
+    "hafu": {
+     "aa": 0.1994,
+     "ad": 0.0532,
+     "ah": 0.0249,
+     "da": 0.1813,
+     "dd": 0.2019,
+     "dh": 0.11,
+     "ha": 0.0285,
+     "hd": 0.0532,
+     "hh": 0.1477
+    }
+   },
+   "drift": {
+    "status": "单调无对照(ticks=1)",
+    "snapshotsAt": [
+     "2026-10-19T20:00:29+08:00"
+    ]
+   },
+   "oddsUpdatedAt": "2026-10-19 14:41:38"
+  },
+  "intel": {
+   "status": "ok",
+   "injuries": {
+    "home": [
+     {
+      "name": "H. Nicolussi",
+      "pos": "中场",
+      "no": "41",
+      "injury": 1,
+      "suspension": 0,
+      "apps": 0,
+      "starts": 0
+     },
+     {
+      "name": "P. Almqvist",
+      "pos": "前锋",
+      "no": "11",
+      "injury": 1,
+      "suspension": 0,
+      "apps": 5,
+      "starts": 0
+     },
+     {
+      "name": "N. Elphege",
+      "pos": "前锋",
+      "no": "23",
+      "injury": 1,
+      "suspension": 0,
+      "apps": 5,
+      "starts": 2
+     }
+    ],
+    "away": [
+     {
+      "name": "伊斯雷尔",
+      "pos": "守门员",
+      "no": "81",
+      "injury": 1,
+      "suspension": 0,
+      "apps": 0,
+      "starts": 0
+     },
+     {
+      "name": "N. Patterson",
+      "pos": "后卫",
+      "no": "2",
+      "injury": 1,
+      "suspension": 0,
+      "apps": 2,
+      "starts": 0
+     },
+     {
+      "name": "E. İlkhan",
+      "pos": "中场",
+      "no": "6",
+      "injury": 1,
+      "suspension": 0,
+      "apps": 4,
+      "starts": 0
+     },
+     {
+      "name": "N. Fortini",
+      "pos": "后卫",
+      "no": "29",
+      "injury": 1,
+      "suspension": 0,
+      "apps": 5,
+      "starts": 4
+     }
+    ]
+   },
+   "form": {
+    "goalAvg": {
+     "awayGoalAvgCnt": "1.2",
+     "awayGoalAvgCntRatio": "63.2",
+     "homeGoalAvgCnt": "0.7",
+     "homeGoalAvgCntRatio": "36.8",
+     "totalLegCnt": 10
+    },
+    "last10": {
+     "awayDrawMatchCnt": 2,
+     "awayLossGoalMatchCnt": 4,
+     "awayScoreRatio": "47",
+     "awayWinGoalMatchCnt": 4,
+     "homeDrawMatchCnt": 2,
+     "homeLossGoalMatchCnt": 6,
+     "homeScoreRatio": "27",
+     "homeWinGoalMatchCnt": 2,
+     "totalLegCnt": 10
+    },
+    "last10HomeAway": {
+     "awayDrawMatchCnt": 3,
+     "awayLossGoalMatchCnt": 4,
+     "awayScoreRatio": "40",
+     "awayWinGoalMatchCnt": 3,
+     "homeDrawMatchCnt": 4,
+     "homeLossGoalMatchCnt": 3,
+     "homeScoreRatio": "43",
+     "homeWinGoalMatchCnt": 3,
+     "totalLegCnt": 10
+    }
+   },
+   "standing": {
+    "home": {
+     "ranking": "16",
+     "home": {
+      "W": "1",
+      "D": "1",
+      "L": "1"
+     },
+     "away": {
+      "W": null,
+      "D": null,
+      "L": null
+     }
+    },
+    "away": {
+     "ranking": "13",
+     "home": {
+      "W": null,
+      "D": null,
+      "L": null
+     },
+     "away": {
+      "W": "1",
+      "D": "1",
+      "L": "1"
+     }
+    }
+   },
+   "h2h": {
+    "statistics": {
+     "drawMatchCnt": 4,
+     "drawProbability": "40%",
+     "goalCnt": 0,
+     "lossGoalCnt": 0,
+     "lossGoalMatchCnt": 3,
+     "lossProbability": "30%",
+     "netGoal": 0,
+     "sportteryTeamId": 0,
+     "teamId": 0,
+     "teamShortName": "帕尔马",
+     "totalLegCnt": 10,
+     "winGoalMatchCnt": 3,
+     "winProbability": "30%"
+    },
+    "matches": [
+     {
+      "date": "2026-03-14",
+      "home": "都灵",
+      "score": "4:1",
+      "ht": "1:1",
+      "away": "帕尔马",
+      "winner": "away",
+      "season": "2526"
+     },
+     {
+      "date": "2025-09-30",
+      "home": "帕尔马",
+      "score": "2:1",
+      "ht": "1:0",
+      "away": "都灵",
+      "winner": "home",
+      "season": "2526"
+     },
+     {
+      "date": "2025-03-08",
+      "home": "帕尔马",
+      "score": "2:2",
+      "ht": "0:1",
+      "away": "都灵",
+      "winner": "draw",
+      "season": "2425"
+     },
+     {
+      "date": "2025-01-06",
+      "home": "都灵",
+      "score": "0:0",
+      "ht": "0:0",
+      "away": "帕尔马",
+      "winner": "draw",
+      "season": "2425"
+     },
+     {
+      "date": "2021-05-04",
+      "home": "都灵",
+      "score": "1:0",
+      "ht": "0:0",
+      "away": "帕尔马",
+      "winner": "away",
+      "season": "2021"
+     },
+     {
+      "date": "2021-01-03",
+      "home": "帕尔马",
+      "score": "0:3",
+      "ht": "0:1",
+      "away": "都灵",
+      "winner": "away",
+      "season": "2021"
+     },
+     {
+      "date": "2020-06-21",
+      "home": "都灵",
+      "score": "1:1",
+      "ht": "1:1",
+      "away": "帕尔马",
+      "winner": "draw",
+      "season": "1920"
+     },
+     {
+      "date": "2019-10-01",
+      "home": "帕尔马",
+      "score": "3:2",
+      "ht": "2:2",
+      "away": "都灵",
+      "winner": "home",
+      "season": "1920"
+     },
+     {
+      "date": "2019-04-06",
+      "home": "帕尔马",
+      "score": "0:0",
+      "ht": "0:0",
+      "away": "都灵",
+      "winner": "draw",
+      "season": "1819"
+     },
+     {
+      "date": "2018-11-10",
+      "home": "都灵",
+      "score": "1:2",
+      "ht": "1:2",
+      "away": "帕尔马",
+      "winner": "home",
+      "season": "1819"
+     }
+    ],
+    "seasonAgg": "主队(帕尔马)视角 2526(2) 胜1负1 · 2425(2) 平2 · 2021(2) 负2 · 1920(2) 胜1平1 · 1819(2) 胜1平1",
+    "recent2": [
+     {
+      "date": "2026-03-14",
+      "home": "都灵",
+      "score": "4:1",
+      "ht": "1:1",
+      "away": "帕尔马",
+      "winner": "away",
+      "season": "2526"
+     },
+     {
+      "date": "2025-09-30",
+      "home": "帕尔马",
+      "score": "2:1",
+      "ht": "1:0",
+      "away": "都灵",
+      "winner": "home",
+      "season": "2526"
+     }
+    ]
+   },
+   "scorers": {
+    "away": {
+     "playerList": [
+      {
+       "appearanceCnt": 4,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "0.5",
+       "goalCnt": 2,
+       "goalProbability": "29%",
+       "injuryFlag": 0,
+       "personId": 427663,
+       "personName": "S. Kulenovic",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 0,
+       "substituteMatchCnt": 4,
+       "suspensionFlag": 0,
+       "uniformNo": "17"
+      },
+      {
+       "appearanceCnt": 4,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "0.5",
+       "goalCnt": 2,
+       "goalProbability": "29%",
+       "injuryFlag": 0,
+       "personId": 390123,
+       "personName": "亚当斯",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 3,
+       "substituteMatchCnt": 1,
+       "suspensionFlag": 0,
+       "uniformNo": "19"
+      },
+      {
+       "appearanceCnt": 6,
+       "assistAvgCnt": "0.2",
+       "assistCnt": 1,
+       "assistProbability": "20%",
+       "goalAvgCnt": "0.2",
+       "goalCnt": 1,
+       "goalProbability": "14%",
+       "injuryFlag": 0,
+       "personId": 335207,
+       "personName": "R. Mandragora",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 4,
+       "substituteMatchCnt": 2,
+       "suspensionFlag": 0,
+       "uniformNo": "8"
+      }
+     ],
+     "sportteryTeamId": 136,
+     "teamId": 1268,
+     "teamShortName": "都灵",
+     "uniformTeamId": 126,
+     "top5": [
+      {
+       "appearanceCnt": 4,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "0.5",
+       "goalCnt": 2,
+       "goalProbability": "29%",
+       "injuryFlag": 0,
+       "personId": 427663,
+       "personName": "S. Kulenovic",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 0,
+       "substituteMatchCnt": 4,
+       "suspensionFlag": 0,
+       "uniformNo": "17"
+      },
+      {
+       "appearanceCnt": 4,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "0.5",
+       "goalCnt": 2,
+       "goalProbability": "29%",
+       "injuryFlag": 0,
+       "personId": 390123,
+       "personName": "亚当斯",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 3,
+       "substituteMatchCnt": 1,
+       "suspensionFlag": 0,
+       "uniformNo": "19"
+      },
+      {
+       "appearanceCnt": 6,
+       "assistAvgCnt": "0.2",
+       "assistCnt": 1,
+       "assistProbability": "20%",
+       "goalAvgCnt": "0.2",
+       "goalCnt": 1,
+       "goalProbability": "14%",
+       "injuryFlag": 0,
+       "personId": 335207,
+       "personName": "R. Mandragora",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 4,
+       "substituteMatchCnt": 2,
+       "suspensionFlag": 0,
+       "uniformNo": "8"
+      }
+     ]
+    },
+    "home": {
+     "playerList": [
+      {
+       "appearanceCnt": 5,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "0.4",
+       "goalCnt": 2,
+       "goalProbability": "50%",
+       "injuryFlag": 0,
+       "personId": 648153,
+       "personName": "J.罗梅罗",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 2,
+       "substituteMatchCnt": 3,
+       "suspensionFlag": 0,
+       "uniformNo": "9"
+      },
+      {
+       "appearanceCnt": 5,
+       "assistAvgCnt": "0.2",
+       "assistCnt": 1,
+       "assistProbability": "33%",
+       "goalAvgCnt": "0.2",
+       "goalCnt": 1,
+       "goalProbability": "25%",
+       "injuryFlag": 1,
+       "personId": 478614,
+       "personName": "P. Almqvist",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 0,
+       "substituteMatchCnt": 5,
+       "suspensionFlag": 0,
+       "uniformNo": "11"
+      },
+      {
+       "appearanceCnt": 6,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "0.2",
+       "goalCnt": 1,
+       "goalProbability": "25%",
+       "injuryFlag": 0,
+       "personId": 923934,
+       "personName": "隆塔尼",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 4,
+       "substituteMatchCnt": 2,
+       "suspensionFlag": 0,
+       "uniformNo": "76"
+      }
+     ],
+     "sportteryTeamId": 130,
+     "teamId": 1243,
+     "teamShortName": "帕尔马",
+     "uniformTeamId": 418,
+     "top5": [
+      {
+       "appearanceCnt": 5,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "0.4",
+       "goalCnt": 2,
+       "goalProbability": "50%",
+       "injuryFlag": 0,
+       "personId": 648153,
+       "personName": "J.罗梅罗",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 2,
+       "substituteMatchCnt": 3,
+       "suspensionFlag": 0,
+       "uniformNo": "9"
+      },
+      {
+       "appearanceCnt": 5,
+       "assistAvgCnt": "0.2",
+       "assistCnt": 1,
+       "assistProbability": "33%",
+       "goalAvgCnt": "0.2",
+       "goalCnt": 1,
+       "goalProbability": "25%",
+       "injuryFlag": 1,
+       "personId": 478614,
+       "personName": "P. Almqvist",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 0,
+       "substituteMatchCnt": 5,
+       "suspensionFlag": 0,
+       "uniformNo": "11"
+      },
+      {
+       "appearanceCnt": 6,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "0.2",
+       "goalCnt": 1,
+       "goalProbability": "25%",
+       "injuryFlag": 0,
+       "personId": 923934,
+       "personName": "隆塔尼",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 4,
+       "substituteMatchCnt": 2,
+       "suspensionFlag": 0,
+       "uniformNo": "76"
+      }
+     ]
+    },
+    "seasonId": 15467,
+    "seasonName": "2026/2027",
+    "tournamentId": 79,
+    "tournamentShortName": "意甲",
+    "uniformLeagueId": 73,
+    "uniformMatchId": 2513504
+   },
+   "keyAbsences": {
+    "home": [
+     {
+      "rank": 2,
+      "name": "P. Almqvist",
+      "goals": 1
+     }
+    ],
+    "away": []
+   }
+  },
+  "profile": {
+   "status": "ok",
+   "league": "italy-serie-a",
+   "standings": {
+    "status": "ok",
+    "source": "espn",
+    "nTeams": 20,
+    "tableTop": [
+     {
+      "pos": 1,
+      "team": "Internazionale",
+      "played": 7,
+      "won": 6,
+      "drawn": 1,
+      "lost": 0,
+      "gf": 21,
+      "ga": 9,
+      "gd": 12,
+      "pts": 19
+     },
+     {
+      "pos": 2,
+      "team": "Lazio",
+      "played": 7,
+      "won": 6,
+      "drawn": 1,
+      "lost": 0,
+      "gf": 14,
+      "ga": 4,
+      "gd": 10,
+      "pts": 19
+     },
+     {
+      "pos": 3,
+      "team": "AS Roma",
+      "played": 7,
+      "won": 5,
+      "drawn": 2,
+      "lost": 0,
+      "gf": 16,
+      "ga": 3,
+      "gd": 13,
+      "pts": 17
+     },
+     {
+      "pos": 4,
+      "team": "AC Milan",
+      "played": 7,
+      "won": 4,
+      "drawn": 3,
+      "lost": 0,
+      "gf": 14,
+      "ga": 7,
+      "gd": 7,
+      "pts": 15
+     },
+     {
+      "pos": 5,
+      "team": "Como",
+      "played": 7,
+      "won": 4,
+      "drawn": 2,
+      "lost": 1,
+      "gf": 12,
+      "ga": 7,
+      "gd": 5,
+      "pts": 14
+     },
+     {
+      "pos": 6,
+      "team": "Cagliari",
+      "played": 6,
+      "won": 4,
+      "drawn": 1,
+      "lost": 1,
+      "gf": 6,
+      "ga": 3,
+      "gd": 3,
+      "pts": 13
+     }
+    ],
+    "home": {
+     "pos": 16,
+     "team": "Parma",
+     "played": 6,
+     "won": 1,
+     "drawn": 1,
+     "lost": 4,
+     "gf": 4,
+     "ga": 10,
+     "gd": -6,
+     "pts": 4
+    },
+    "away": {
+     "pos": 13,
+     "team": "Torino",
+     "played": 6,
+     "won": 2,
+     "drawn": 1,
+     "lost": 3,
+     "gf": 7,
+     "ga": 9,
+     "gd": -2,
+     "pts": 7
+    },
+    "note": "全表见 data/00-leagues/{lg}.json standings（pos/played/W-D-L/GF-GA/pts）"
+   }
+  },
+  "lineup": {
+   "status": "未获取"
+  },
+  "context": {
+   "status": "ok",
+   "entries": [
+    {
+     "title": "Parma vs Torino team news (Yahoo 2026-10 preview)",
+     "url": "https://sports.yahoo.com/articles/preview-parma-vs-torino-team-184500611.html",
+     "publishedAt": "2026-10-17T18:45:00",
+     "fetchedAt": "2026-10-19T20:22:56",
+     "excerpt": "帕尔马下滑无止境: Almqvist(小腿)/Nicolussi Caviglia(腹股沟)/Elphege(阑尾炎)缺,Gilardino 依赖 Romero。都灵起势: Ndiaye 淤伤/Fortini 内收肌。上季同场都灵 4-1 胜;帕尔马对都灵近 9 场 6 场覆盖 +0.25 盘。"
+    }
+   ]
+  },
+  "ourModels": {
+   "v3wChain": {
+    "status": "ok",
+    "src": "market_crs",
+    "water": false,
+    "ttgBoom": 0.034171818410270734,
+    "leagueWarn": true,
+    "independentOfMarket": false,
+    "useNote": "src=market_crs → 本信号≈市场去水，勿当独立第二意见；独立信号看 water/ttgBoom"
+   },
+   "v4b": {
+    "status": "未获取"
+   },
+   "marketLambda": {
+    "status": "ok",
+    "role": "market-derived",
+    "lamH": 0.96,
+    "lamA": 1.34,
+    "lamSum": 2.3,
+    "rho": 0.0,
+    "note": "市场隐含主客期望进球（去水后反解）——进球带判断的市场参照,非独立意见"
+   },
+   "teamRecent": {
+    "horizon": "2026-10-20",
+    "windowDays": 90,
+    "poolMatches": 983,
+    "source": "每日回填库 + 体彩缓存 + 联赛库（espn history 刷新·ID 空间统一去重）",
+    "home": {
+     "recent": [
+      {
+       "date": "2026-10-11",
+       "season": "2627",
+       "opp": "国际米兰",
+       "ha": "客",
+       "score": "0-3",
+       "res": "负",
+       "src": "cache",
+       "oppPos": 1
+      },
+      {
+       "date": "2026-09-20",
+       "season": "2627",
+       "opp": "热那亚",
+       "ha": "主",
+       "score": "2-1",
+       "res": "胜",
+       "src": "cache",
+       "oppPos": 18
+      },
+      {
+       "date": "2026-09-15",
+       "season": "2627",
+       "opp": "科莫",
+       "ha": "客",
+       "score": "1-2",
+       "res": "负",
+       "src": "cache",
+       "oppPos": 5
+      },
+      {
+       "date": "2026-09-06",
+       "season": "2627",
+       "opp": "蒙扎",
+       "ha": "主",
+       "score": "1-1",
+       "res": "平",
+       "src": "daily",
+       "oppPos": 15
+      },
+      {
+       "date": "2026-08-29",
+       "season": "2627",
+       "opp": "尤文图斯",
+       "ha": "客",
+       "score": "0-2",
+       "res": "负",
+       "src": "daily",
+       "oppPos": 8
+      },
+      {
+       "date": "2026-08-23",
+       "season": "2627",
+       "opp": "卡利亚里",
+       "ha": "主",
+       "score": "0-1",
+       "res": "负",
+       "src": "cache",
+       "oppPos": 6
+      }
+     ],
+     "homeGfGa": [
+      1.0,
+      1.0,
+      3
+     ],
+     "awayGfGa": [
+      0.33,
+      2.33,
+      3
+     ],
+     "restDays": 9,
+     "matches14d": 1,
+     "elo": null
+    },
+    "away": {
+     "recent": [
+      {
+       "date": "2026-10-12",
+       "season": "2627",
+       "opp": "乌迪内斯",
+       "ha": "主",
+       "score": "2-1",
+       "res": "胜",
+       "src": "lib",
+       "oppPos": 17
+      },
+      {
+       "date": "2026-09-19",
+       "season": "2627",
+       "opp": "博洛尼亚",
+       "ha": "客",
+       "score": "1-1",
+       "res": "平",
+       "src": "cache",
+       "oppPos": 14
+      },
+      {
+       "date": "2026-09-15",
+       "season": "2627",
+       "opp": "罗马",
+       "ha": "主",
+       "score": "0-2",
+       "res": "负",
+       "src": "cache",
+       "oppPos": 3
+      },
+      {
+       "date": "2026-09-05",
+       "season": "2627",
+       "opp": "佛罗伦萨",
+       "ha": "客",
+       "score": "2-1",
+       "res": "胜",
+       "src": "daily",
+       "oppPos": 19
+      },
+      {
+       "date": "2026-09-01",
+       "season": "2627",
+       "opp": "蒙扎",
+       "ha": "主",
+       "score": "0-1",
+       "res": "负",
+       "src": "daily",
+       "oppPos": 15
+      },
+      {
+       "date": "2026-08-29",
+       "season": "2627",
+       "opp": "萨索洛",
+       "ha": "客",
+       "score": "1-2",
+       "res": "负",
+       "src": "lib",
+       "oppPos": 12
+      },
+      {
+       "date": "2026-08-24",
+       "season": "2627",
+       "opp": "AC米兰",
+       "ha": "主",
+       "score": "1-2",
+       "res": "负",
+       "src": "cache",
+       "oppPos": 4
+      }
+     ],
+     "homeGfGa": [
+      0.75,
+      1.5,
+      4
+     ],
+     "awayGfGa": [
+      1.33,
+      1.33,
+      3
+     ],
+     "restDays": 8,
+     "matches14d": 1,
+     "elo": null
+    }
+   }
+  }
+ },
+ "createdAt": "2026-10-19T20:17:30",
+ "cardHash": "4ef13368017556ab"
+}

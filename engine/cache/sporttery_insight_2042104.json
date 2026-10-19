@@ -1,0 +1,235 @@
+{
+ "fetchedAt": "2026-10-19",
+ "source": "sporttery",
+ "matchId": 2042104,
+ "match": {
+  "code": "周二009",
+  "league": "欧冠",
+  "gameweek": "3",
+  "season": "2026/2027",
+  "home": "斯图加特",
+  "away": "马竞",
+  "kickoff": "2026-10-21 03:00",
+  "uniformMatchId": 2514147
+ },
+ "standing": {
+  "away": {
+   "groupName": "",
+   "phaseName": "League Stage",
+   "ranking": "15",
+   "sAwayDrawMatchCnt": "0",
+   "sAwayLossGoalMatchCnt": "1",
+   "sAwayWinGoalMatchCnt": "0",
+   "sDrawMatchCnt": "0",
+   "sLossGoalMatchCnt": "1",
+   "sWinGoalMatchCnt": "1",
+   "seasonName": "2026/2027"
+  },
+  "home": {
+   "groupName": "",
+   "phaseName": "League Stage",
+   "ranking": "4",
+   "sDrawMatchCnt": "0",
+   "sHomeDrawMatchCnt": "0",
+   "sHomeLossGoalMatchCnt": "0",
+   "sHomeWinGoalMatchCnt": "1",
+   "sLossGoalMatchCnt": "0",
+   "sWinGoalMatchCnt": "2",
+   "seasonName": "2026/2027"
+  }
+ },
+ "injuries": {
+  "home": [],
+  "away": []
+ },
+ "form": {
+  "goalAvg": {
+   "awayGoalAvgCnt": "2.0",
+   "awayGoalAvgCntRatio": "47.6",
+   "homeGoalAvgCnt": "2.2",
+   "homeGoalAvgCntRatio": "52.4",
+   "totalLegCnt": 10
+  },
+  "last10": {
+   "awayDrawMatchCnt": 1,
+   "awayLossGoalMatchCnt": 2,
+   "awayScoreRatio": "73",
+   "awayWinGoalMatchCnt": 7,
+   "homeDrawMatchCnt": 0,
+   "homeLossGoalMatchCnt": 4,
+   "homeScoreRatio": "60",
+   "homeWinGoalMatchCnt": 6,
+   "totalLegCnt": 10
+  },
+  "last10HomeAway": {
+   "awayDrawMatchCnt": 0,
+   "awayLossGoalMatchCnt": 5,
+   "awayScoreRatio": "50",
+   "awayWinGoalMatchCnt": 5,
+   "homeDrawMatchCnt": 3,
+   "homeLossGoalMatchCnt": 1,
+   "homeScoreRatio": "70",
+   "homeWinGoalMatchCnt": 6,
+   "totalLegCnt": 10
+  }
+ },
+ "h2h": {
+  "statistics": {
+   "drawMatchCnt": 1,
+   "drawProbability": "100%",
+   "goalCnt": 0,
+   "lossGoalCnt": 0,
+   "lossGoalMatchCnt": 0,
+   "lossProbability": "0%",
+   "netGoal": 0,
+   "sportteryTeamId": 0,
+   "teamId": 0,
+   "teamShortName": "斯图加特",
+   "totalLegCnt": 1,
+   "winGoalMatchCnt": 0,
+   "winProbability": "0%"
+  },
+  "matches": [
+   {
+    "date": "2018-08-05",
+    "home": "斯图加特",
+    "score": "1:1",
+    "ht": "0:0",
+    "away": "马竞",
+    "winner": "draw"
+   }
+  ]
+ },
+ "scorers": {
+  "away": {
+   "playerList": [
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "33%",
+     "injuryFlag": 0,
+     "personId": 428612,
+     "personName": "卢克曼",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 0,
+     "substituteMatchCnt": 2,
+     "suspensionFlag": 0,
+     "uniformNo": "11"
+    },
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "33%",
+     "injuryFlag": 0,
+     "personId": 651865,
+     "personName": "Pablo Barrios Rivas",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 2,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "8"
+    },
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "33%",
+     "injuryFlag": 0,
+     "personId": 314119,
+     "personName": "略伦特",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 2,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "14"
+    }
+   ],
+   "sportteryTeamId": 172,
+   "teamId": 2020,
+   "teamShortName": "马竞",
+   "uniformTeamId": 145
+  },
+  "home": {
+   "playerList": [
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "2.0",
+     "goalCnt": 4,
+     "goalProbability": "80%",
+     "injuryFlag": 0,
+     "personId": 386977,
+     "personName": "E. Demirović",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 1,
+     "substituteMatchCnt": 1,
+     "suspensionFlag": 0,
+     "uniformNo": "9"
+    },
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "1.0",
+     "assistCnt": 2,
+     "assistProbability": "40%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "20%",
+     "injuryFlag": 0,
+     "personId": 403237,
+     "personName": "温达夫",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 2,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "26"
+    },
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "1.0",
+     "assistCnt": 2,
+     "assistProbability": "40%",
+     "goalAvgCnt": "0",
+     "goalCnt": 0,
+     "goalProbability": "0%",
+     "injuryFlag": 0,
+     "personId": 506145,
+     "personName": "A. Stiller",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 2,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "6"
+    }
+   ],
+   "sportteryTeamId": 152,
+   "teamId": 962,
+   "teamShortName": "斯图加特",
+   "uniformTeamId": 257
+  },
+  "seasonId": 15574,
+  "seasonName": "2026/2027",
+  "tournamentId": 1096,
+  "tournamentShortName": "欧冠",
+  "uniformLeagueId": 30,
+  "uniformMatchId": 2514147
+ }
+}

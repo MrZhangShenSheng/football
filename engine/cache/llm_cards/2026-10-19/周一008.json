@@ -1,0 +1,855 @@
+{
+ "code": "周一008",
+ "match": "科林蒂安 vs 维多利亚",
+ "league": "巴甲",
+ "kickoff": "07:00:00",
+ "saleDate": "2026-10-19",
+ "competitionType": {
+  "type": "cup",
+  "roundsPlayed": null,
+  "note": "杯赛/未映射轮——轮换高风险（英锦标赛教训:小组赛大轮换曾零覆盖）"
+ },
+ "kickoffAt": "2026-10-20 07:00:00",
+ "businessDate": "2026-10-19",
+ "kickoffSrc": "sporttery",
+ "layers": {
+  "market": {
+   "had": {
+    "a": 5.8,
+    "d": 3.75,
+    "h": 1.45
+   },
+   "crs": {
+    "0:0": 10.0,
+    "0:1": 12.0,
+    "0:2": 25.0,
+    "0:3": 90.0,
+    "0:4": 300.0,
+    "0:5": 750.0,
+    "1:0": 6.0,
+    "1:1": 7.0,
+    "1:2": 16.0,
+    "1:3": 45.0,
+    "1:4": 175.0,
+    "1:5": 650.0,
+    "2:0": 6.8,
+    "2:1": 6.5,
+    "2:2": 16.0,
+    "2:3": 60.0,
+    "2:4": 250.0,
+    "2:5": 650.0,
+    "3:0": 11.0,
+    "3:1": 12.0,
+    "3:2": 25.0,
+    "3:3": 80.0,
+    "4:0": 23.0,
+    "4:1": 28.0,
+    "4:2": 60.0,
+    "5:0": 60.0,
+    "5:1": 80.0,
+    "5:2": 120.0,
+    "负其他": 300.0,
+    "平其他": 550.0,
+    "胜其他": 55.0
+   },
+   "ttg": {
+    "s0": 10.0,
+    "s1": 4.2,
+    "s2": 3.05,
+    "s3": 3.5,
+    "s4": 6.25,
+    "s5": 13.0,
+    "s6": 25.0,
+    "s7": 40.0
+   },
+   "hhad": {
+    "a": 2.3,
+    "d": 2.9,
+    "h": 2.86,
+    "goalLine": "-1"
+   },
+   "hafu": {
+    "aa": 11.0,
+    "ad": 18.0,
+    "ah": 25.0,
+    "da": 12.5,
+    "dd": 5.2,
+    "dh": 3.8,
+    "ha": 50.0,
+    "hd": 18.0,
+    "hh": 2.2
+   },
+   "devig": {
+    "had": {
+     "a": 0.1527,
+     "d": 0.2363,
+     "h": 0.611
+    },
+    "hhad": {
+     "a": 0.385,
+     "d": 0.3054,
+     "h": 0.3096
+    },
+    "crs": {
+     "s00s00": 0.0736,
+     "s00s01": 0.0599,
+     "s00s02": 0.0261,
+     "s00s03": 0.0061,
+     "s00s04": 0.0016,
+     "s00s05": 0.0006,
+     "s01s00": 0.1313,
+     "s01s01": 0.1103,
+     "s01s02": 0.0432,
+     "s01s03": 0.0134,
+     "s01s04": 0.0029,
+     "s01s05": 0.0006,
+     "s02s00": 0.1139,
+     "s02s01": 0.1199,
+     "s02s02": 0.0432,
+     "s02s03": 0.0097,
+     "s02s04": 0.0019,
+     "s02s05": 0.0006,
+     "s03s00": 0.0661,
+     "s03s01": 0.0599,
+     "s03s02": 0.0261,
+     "s03s03": 0.007,
+     "s04s00": 0.0286,
+     "s04s01": 0.0229,
+     "s04s02": 0.0097,
+     "s05s00": 0.0097,
+     "s05s01": 0.007,
+     "s05s02": 0.0044
+    },
+    "ttg": {
+     "s0": 0.0798,
+     "s1": 0.1899,
+     "s2": 0.2615,
+     "s3": 0.2279,
+     "s4": 0.1276,
+     "s5": 0.0614,
+     "s6": 0.0319,
+     "s7": 0.0199
+    },
+    "hafu": {
+     "aa": 0.0726,
+     "ad": 0.0444,
+     "ah": 0.0319,
+     "da": 0.0639,
+     "dd": 0.1536,
+     "dh": 0.2102,
+     "ha": 0.016,
+     "hd": 0.0444,
+     "hh": 0.363
+    }
+   },
+   "drift": {
+    "status": "单调无对照(ticks=1)",
+    "snapshotsAt": [
+     "2026-10-19T20:00:29+08:00"
+    ]
+   },
+   "oddsUpdatedAt": "2026-10-19 13:50:36"
+  },
+  "intel": {
+   "status": "ok",
+   "injuries": {
+    "home": [
+     {
+      "name": "德佩",
+      "pos": "前锋",
+      "no": "10",
+      "injury": 0,
+      "suspension": 1,
+      "apps": 14,
+      "starts": 11
+     }
+    ],
+    "away": [
+     {
+      "name": "Cacá",
+      "pos": "后卫",
+      "no": "25",
+      "injury": 0,
+      "suspension": 1,
+      "apps": 23,
+      "starts": 23
+     }
+    ]
+   },
+   "form": {
+    "goalAvg": {
+     "awayGoalAvgCnt": "1.1",
+     "awayGoalAvgCntRatio": "57.9",
+     "homeGoalAvgCnt": "0.8",
+     "homeGoalAvgCntRatio": "42.1",
+     "totalLegCnt": 10
+    },
+    "last10": {
+     "awayDrawMatchCnt": 1,
+     "awayLossGoalMatchCnt": 6,
+     "awayScoreRatio": "33",
+     "awayWinGoalMatchCnt": 3,
+     "homeDrawMatchCnt": 1,
+     "homeLossGoalMatchCnt": 8,
+     "homeScoreRatio": "13",
+     "homeWinGoalMatchCnt": 1,
+     "totalLegCnt": 10
+    },
+    "last10HomeAway": {
+     "awayDrawMatchCnt": 2,
+     "awayLossGoalMatchCnt": 7,
+     "awayScoreRatio": "17",
+     "awayWinGoalMatchCnt": 1,
+     "homeDrawMatchCnt": 1,
+     "homeLossGoalMatchCnt": 6,
+     "homeScoreRatio": "33",
+     "homeWinGoalMatchCnt": 3,
+     "totalLegCnt": 10
+    }
+   },
+   "standing": {
+    "home": {
+     "ranking": "16",
+     "home": {
+      "W": "5",
+      "D": "3",
+      "L": "7"
+     },
+     "away": {
+      "W": null,
+      "D": null,
+      "L": null
+     }
+    },
+    "away": {
+     "ranking": "13",
+     "home": {
+      "W": null,
+      "D": null,
+      "L": null
+     },
+     "away": {
+      "W": "0",
+      "D": "5",
+      "L": "10"
+     }
+    }
+   },
+   "h2h": {
+    "statistics": {
+     "drawMatchCnt": 5,
+     "drawProbability": "50%",
+     "goalCnt": 0,
+     "lossGoalCnt": 0,
+     "lossGoalMatchCnt": 1,
+     "lossProbability": "10%",
+     "netGoal": 0,
+     "sportteryTeamId": 0,
+     "teamId": 0,
+     "teamShortName": "科林蒂安",
+     "totalLegCnt": 10,
+     "winGoalMatchCnt": 4,
+     "winProbability": "40%"
+    },
+    "matches": [
+     {
+      "date": "2026-04-19",
+      "home": "维多利亚",
+      "score": "0:0",
+      "ht": "0:0",
+      "away": "科林蒂安",
+      "winner": "draw",
+      "season": "2526"
+     },
+     {
+      "date": "2025-10-26",
+      "home": "维多利亚",
+      "score": "0:1",
+      "ht": "0:0",
+      "away": "科林蒂安",
+      "winner": "home",
+      "season": "2526"
+     },
+     {
+      "date": "2025-06-02",
+      "home": "科林蒂安",
+      "score": "0:0",
+      "ht": "0:0",
+      "away": "维多利亚",
+      "winner": "draw",
+      "season": "2425"
+     },
+     {
+      "date": "2024-11-10",
+      "home": "维多利亚",
+      "score": "1:2",
+      "ht": "1:1",
+      "away": "科林蒂安",
+      "winner": "home",
+      "season": "2425"
+     },
+     {
+      "date": "2024-07-05",
+      "home": "科林蒂安",
+      "score": "3:2",
+      "ht": "2:1",
+      "away": "维多利亚",
+      "winner": "home",
+      "season": "2425"
+     },
+     {
+      "date": "2018-10-22",
+      "home": "维多利亚",
+      "score": "2:2",
+      "ht": "1:1",
+      "away": "科林蒂安",
+      "winner": "draw",
+      "season": "1819"
+     },
+     {
+      "date": "2018-06-10",
+      "home": "科林蒂安",
+      "score": "0:0",
+      "ht": "0:0",
+      "away": "维多利亚",
+      "winner": "draw",
+      "season": "1718"
+     },
+     {
+      "date": "2018-05-11",
+      "home": "科林蒂安",
+      "score": "3:1",
+      "ht": "1:0",
+      "away": "维多利亚",
+      "winner": "home",
+      "season": "1718"
+     },
+     {
+      "date": "2018-04-26",
+      "home": "维多利亚",
+      "score": "0:0",
+      "ht": "0:0",
+      "away": "科林蒂安",
+      "winner": "draw",
+      "season": "1718"
+     },
+     {
+      "date": "2017-08-20",
+      "home": "科林蒂安",
+      "score": "0:1",
+      "ht": "0:1",
+      "away": "维多利亚",
+      "winner": "away",
+      "season": "1718"
+     }
+    ],
+    "seasonAgg": "主队(科林蒂安)视角 2526(2) 胜1平1 · 2425(3) 胜2平1 · 1819(1) 平1 · 1718(4) 胜1平2负1",
+    "recent2": [
+     {
+      "date": "2026-04-19",
+      "home": "维多利亚",
+      "score": "0:0",
+      "ht": "0:0",
+      "away": "科林蒂安",
+      "winner": "draw",
+      "season": "2526"
+     },
+     {
+      "date": "2025-10-26",
+      "home": "维多利亚",
+      "score": "0:1",
+      "ht": "0:0",
+      "away": "科林蒂安",
+      "winner": "home",
+      "season": "2526"
+     }
+    ]
+   },
+   "scorers": {
+    "away": {
+     "playerList": [
+      {
+       "appearanceCnt": 23,
+       "assistAvgCnt": "0",
+       "assistCnt": 1,
+       "assistProbability": "4%",
+       "goalAvgCnt": "0.4",
+       "goalCnt": 9,
+       "goalProbability": "27%",
+       "injuryFlag": 0,
+       "personId": 819153,
+       "personName": "Renê",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 18,
+       "substituteMatchCnt": 5,
+       "suspensionFlag": 0,
+       "uniformNo": "91"
+      },
+      {
+       "appearanceCnt": 28,
+       "assistAvgCnt": "0.2",
+       "assistCnt": 6,
+       "assistProbability": "25%",
+       "goalAvgCnt": "0.2",
+       "goalCnt": 5,
+       "goalProbability": "15%",
+       "injuryFlag": 0,
+       "personId": 472497,
+       "personName": "Erick",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 24,
+       "substituteMatchCnt": 4,
+       "suspensionFlag": 0,
+       "uniformNo": "33"
+      },
+      {
+       "appearanceCnt": 27,
+       "assistAvgCnt": "0.1",
+       "assistCnt": 4,
+       "assistProbability": "17%",
+       "goalAvgCnt": "0.2",
+       "goalCnt": 5,
+       "goalProbability": "15%",
+       "injuryFlag": 0,
+       "personId": 396082,
+       "personName": "Matheus Fogaça",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 23,
+       "substituteMatchCnt": 4,
+       "suspensionFlag": 0,
+       "uniformNo": "10"
+      }
+     ],
+     "sportteryTeamId": 1097,
+     "teamId": 306,
+     "teamShortName": "维多利亚",
+     "uniformTeamId": 457,
+     "top5": [
+      {
+       "appearanceCnt": 23,
+       "assistAvgCnt": "0",
+       "assistCnt": 1,
+       "assistProbability": "4%",
+       "goalAvgCnt": "0.4",
+       "goalCnt": 9,
+       "goalProbability": "27%",
+       "injuryFlag": 0,
+       "personId": 819153,
+       "personName": "Renê",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 18,
+       "substituteMatchCnt": 5,
+       "suspensionFlag": 0,
+       "uniformNo": "91"
+      },
+      {
+       "appearanceCnt": 28,
+       "assistAvgCnt": "0.2",
+       "assistCnt": 6,
+       "assistProbability": "25%",
+       "goalAvgCnt": "0.2",
+       "goalCnt": 5,
+       "goalProbability": "15%",
+       "injuryFlag": 0,
+       "personId": 472497,
+       "personName": "Erick",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 24,
+       "substituteMatchCnt": 4,
+       "suspensionFlag": 0,
+       "uniformNo": "33"
+      },
+      {
+       "appearanceCnt": 27,
+       "assistAvgCnt": "0.1",
+       "assistCnt": 4,
+       "assistProbability": "17%",
+       "goalAvgCnt": "0.2",
+       "goalCnt": 5,
+       "goalProbability": "15%",
+       "injuryFlag": 0,
+       "personId": 396082,
+       "personName": "Matheus Fogaça",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 23,
+       "substituteMatchCnt": 4,
+       "suspensionFlag": 0,
+       "uniformNo": "10"
+      }
+     ]
+    },
+    "home": {
+     "playerList": [
+      {
+       "appearanceCnt": 20,
+       "assistAvgCnt": "0.1",
+       "assistCnt": 2,
+       "assistProbability": "8%",
+       "goalAvgCnt": "0.2",
+       "goalCnt": 4,
+       "goalProbability": "13%",
+       "injuryFlag": 0,
+       "personId": 895899,
+       "personName": "André",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 14,
+       "substituteMatchCnt": 6,
+       "suspensionFlag": 0,
+       "uniformNo": "49"
+      },
+      {
+       "appearanceCnt": 27,
+       "assistAvgCnt": "0.2",
+       "assistCnt": 6,
+       "assistProbability": "25%",
+       "goalAvgCnt": "0.1",
+       "goalCnt": 3,
+       "goalProbability": "9%",
+       "injuryFlag": 0,
+       "personId": 534453,
+       "personName": "R. Garro",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 21,
+       "substituteMatchCnt": 6,
+       "suspensionFlag": 0,
+       "uniformNo": "8"
+      },
+      {
+       "appearanceCnt": 19,
+       "assistAvgCnt": "0.1",
+       "assistCnt": 2,
+       "assistProbability": "8%",
+       "goalAvgCnt": "0.2",
+       "goalCnt": 3,
+       "goalProbability": "9%",
+       "injuryFlag": 0,
+       "personId": 474975,
+       "personName": "Yuri Alberto",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 18,
+       "substituteMatchCnt": 1,
+       "suspensionFlag": 0,
+       "uniformNo": "9"
+      }
+     ],
+     "sportteryTeamId": 567,
+     "teamId": 320,
+     "teamShortName": "科林蒂安",
+     "uniformTeamId": 85,
+     "top5": [
+      {
+       "appearanceCnt": 20,
+       "assistAvgCnt": "0.1",
+       "assistCnt": 2,
+       "assistProbability": "8%",
+       "goalAvgCnt": "0.2",
+       "goalCnt": 4,
+       "goalProbability": "13%",
+       "injuryFlag": 0,
+       "personId": 895899,
+       "personName": "André",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 14,
+       "substituteMatchCnt": 6,
+       "suspensionFlag": 0,
+       "uniformNo": "49"
+      },
+      {
+       "appearanceCnt": 27,
+       "assistAvgCnt": "0.2",
+       "assistCnt": 6,
+       "assistProbability": "25%",
+       "goalAvgCnt": "0.1",
+       "goalCnt": 3,
+       "goalProbability": "9%",
+       "injuryFlag": 0,
+       "personId": 534453,
+       "personName": "R. Garro",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 21,
+       "substituteMatchCnt": 6,
+       "suspensionFlag": 0,
+       "uniformNo": "8"
+      },
+      {
+       "appearanceCnt": 19,
+       "assistAvgCnt": "0.1",
+       "assistCnt": 2,
+       "assistProbability": "8%",
+       "goalAvgCnt": "0.2",
+       "goalCnt": 3,
+       "goalProbability": "9%",
+       "injuryFlag": 0,
+       "personId": 474975,
+       "personName": "Yuri Alberto",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 18,
+       "substituteMatchCnt": 1,
+       "suspensionFlag": 0,
+       "uniformNo": "9"
+      }
+     ]
+    },
+    "seasonId": 14239,
+    "seasonName": "2026",
+    "tournamentId": 84,
+    "tournamentShortName": "巴甲",
+    "uniformLeagueId": 31,
+    "uniformMatchId": 2513505
+   },
+   "keyAbsences": {
+    "home": [],
+    "away": []
+   }
+  },
+  "profile": {
+   "status": "未映射",
+   "league": "巴甲",
+   "standings": {
+    "status": "联赛未映射"
+   }
+  },
+  "lineup": {
+   "status": "未获取"
+  },
+  "context": {
+   "status": "ok",
+   "entries": [
+    {
+     "title": "Corinthians vs Vitoria relegation six-pointer (tips.gg Brasileirao R31)",
+     "url": "https://tips.gg/article/corinthians-paulista-vs-vitoria-20-10-2026",
+     "publishedAt": "2026-10-19T11:00:00",
+     "fetchedAt": "2026-10-19T20:22:56",
+     "excerpt": "巴甲 R31 保级六分战: 科林蒂安 17 名 32 分(降级区内),维多利亚 14 名 36 分。维多利亚 2026 客场 0 胜(全年客场虫)。市场价偏科林蒂安。Neo Quimica 主场。"
+    }
+   ]
+  },
+  "ourModels": {
+   "v3wChain": {
+    "status": "ok",
+    "src": "market_crs",
+    "water": false,
+    "ttgBoom": 0.03993669842466884,
+    "leagueWarn": false,
+    "independentOfMarket": false,
+    "useNote": "src=market_crs → 本信号≈市场去水，勿当独立第二意见；独立信号看 water/ttgBoom"
+   },
+   "v4b": {
+    "status": "未获取"
+   },
+   "marketLambda": {
+    "status": "ok",
+    "role": "market-derived",
+    "lamH": 1.74,
+    "lamA": 0.74,
+    "lamSum": 2.48,
+    "rho": 0.0,
+    "note": "市场隐含主客期望进球（去水后反解）——进球带判断的市场参照,非独立意见"
+   },
+   "teamRecent": {
+    "horizon": "2026-10-20",
+    "windowDays": 90,
+    "poolMatches": 980,
+    "source": "每日回填库 + 体彩缓存 + 联赛库（espn history 刷新·ID 空间统一去重）",
+    "home": {
+     "recent": [
+      {
+       "date": "2026-10-08",
+       "season": "2627",
+       "opp": "巴西国际",
+       "ha": "客",
+       "score": "1-2",
+       "res": "负",
+       "src": "cache",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-17",
+       "season": "2627",
+       "opp": "拉普大学",
+       "ha": "主",
+       "score": "0-1",
+       "res": "负",
+       "src": "daily",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-14",
+       "season": "2627",
+       "opp": "弗拉门戈",
+       "ha": "客",
+       "score": "1-2",
+       "res": "负",
+       "src": "cache",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-10",
+       "season": "2627",
+       "opp": "拉普大学",
+       "ha": "客",
+       "score": "1-1",
+       "res": "平",
+       "src": "daily",
+       "oppPos": null
+      },
+      {
+       "date": "2026-08-03",
+       "season": "2627",
+       "opp": "巴西国际",
+       "ha": "客",
+       "score": "0-2",
+       "res": "负",
+       "src": "cache",
+       "oppPos": null
+      },
+      {
+       "date": "2026-07-31",
+       "season": "2627",
+       "opp": "巴竞技",
+       "ha": "主",
+       "score": "0-0",
+       "res": "平",
+       "src": "cache",
+       "oppPos": null
+      },
+      {
+       "date": "2026-07-24",
+       "season": "2627",
+       "opp": "里莫",
+       "ha": "主",
+       "score": "3-0",
+       "res": "胜",
+       "src": "cache",
+       "oppPos": null
+      }
+     ],
+     "homeGfGa": [
+      1.0,
+      0.33,
+      3
+     ],
+     "awayGfGa": [
+      0.75,
+      1.75,
+      4
+     ],
+     "restDays": 12,
+     "matches14d": 1,
+     "elo": null
+    },
+    "away": {
+     "recent": [
+      {
+       "date": "2026-10-11",
+       "season": "2627",
+       "opp": "圣保罗",
+       "ha": "客",
+       "score": "1-2",
+       "res": "负",
+       "src": "cache",
+       "oppPos": null
+      },
+      {
+       "date": "2026-10-08",
+       "season": "2627",
+       "opp": "沙佩科",
+       "ha": "主",
+       "score": "4-0",
+       "res": "胜",
+       "src": "cache",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-08",
+       "season": "2627",
+       "opp": "格雷米奥",
+       "ha": "主",
+       "score": "1-0",
+       "res": "胜",
+       "src": "daily",
+       "oppPos": null
+      },
+      {
+       "date": "2026-08-27",
+       "season": "2627",
+       "opp": "达伽马",
+       "ha": "客",
+       "score": "0-1",
+       "res": "负",
+       "src": "cache",
+       "oppPos": null
+      },
+      {
+       "date": "2026-08-10",
+       "season": "2627",
+       "opp": "弗拉门戈",
+       "ha": "客",
+       "score": "0-2",
+       "res": "负",
+       "src": "cache",
+       "oppPos": null
+      },
+      {
+       "date": "2026-08-07",
+       "season": "2627",
+       "opp": "巴竞技",
+       "ha": "主",
+       "score": "4-0",
+       "res": "胜",
+       "src": "cache",
+       "oppPos": null
+      },
+      {
+       "date": "2026-08-04",
+       "season": "2627",
+       "opp": "巴竞技",
+       "ha": "客",
+       "score": "0-2",
+       "res": "负",
+       "src": "cache",
+       "oppPos": null
+      },
+      {
+       "date": "2026-07-30",
+       "season": "2627",
+       "opp": "帕梅拉斯",
+       "ha": "主",
+       "score": "0-4",
+       "res": "负",
+       "src": "cache",
+       "oppPos": null
+      }
+     ],
+     "homeGfGa": [
+      2.25,
+      1.0,
+      4
+     ],
+     "awayGfGa": [
+      0.25,
+      1.75,
+      4
+     ],
+     "restDays": 9,
+     "matches14d": 2,
+     "elo": null
+    }
+   }
+  }
+ },
+ "createdAt": "2026-10-19T20:18:59",
+ "cardHash": "a31dbb4664593f19"
+}

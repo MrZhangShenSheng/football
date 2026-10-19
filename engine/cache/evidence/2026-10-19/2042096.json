@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-19",
+ "matchKey": "2042096",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-19T20:11:01",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     4.323,
+     0.859
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-19T20:11:01",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": true
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-19T20:11:01",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s1sh",
+      "p": 0.2671
+     },
+     {
+      "pick": "s04s00",
+      "p": 0.0818
+     },
+     {
+      "pick": "s03s00",
+      "p": 0.0757
+     },
+     {
+      "pick": "s05s00",
+      "p": 0.0707
+     },
+     {
+      "pick": "s04s01",
+      "p": 0.0702
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-19T20:11:01",
+   "payload": {
+    "hid": "fenerbahce",
+    "aid": "slavia-praha",
+    "hstRows": 1161
+   }
+  }
+ }
+}

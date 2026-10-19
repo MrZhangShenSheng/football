@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-19",
+ "matchKey": "2042100",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-19T20:11:01",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     3.499,
+     0.967
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-19T20:11:01",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": true
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-19T20:11:01",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s1sh",
+      "p": 0.1422
+     },
+     {
+      "pick": "s03s00",
+      "p": 0.0821
+     },
+     {
+      "pick": "s03s01",
+      "p": 0.0793
+     },
+     {
+      "pick": "s04s00",
+      "p": 0.0718
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.0704
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-19T20:11:01",
+   "payload": {
+    "hid": "roma",
+    "aid": "slovan-bratislava",
+    "hstRows": 1570
+   }
+  }
+ }
+}
