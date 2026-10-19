@@ -147,16 +147,18 @@ def _our_models_layer(sale_date: str, code: str) -> dict:
             # 差 <0.005）——此时它**不是独立参考**，拿它当第二意见等于重复看赔率。
             # 该层真正的独立信号是 water（三水闸）/ttgBoom（爆量）/src（来源自白）。
             independent = row.get("src") not in ("market_crs", None) if row else None
-            out["v3wChain"] = ({"status": "ok", "model": doc.get("model"),
-                                "src": row.get("src"), "lam": row.get("lam"),
-                                "crsTop5": row.get("crs_top5"),
-                                "ttgBoom": row.get("ttgBoom"), "water": row.get("water"),
+            # v3.4 市场正身化：crsTop5/lam 是市场复印件（src=market_crs 时与去水全同），
+            # 出卡——独立信号只留 water/ttgBoom/src
+            out["v3wChain"] = ({"status": "ok",
+                                "src": row.get("src"),
+                                "water": row.get("water"),
+                                "ttgBoom": row.get("ttgBoom"),
                                 "leagueWarn": row.get("leagueWarn"),
                                 "independentOfMarket": independent,
-                                "useNote": ("src=market_crs → crsTop5≈市场去水，勿当独立第二"
+                                "useNote": ("src=market_crs → 本信号≈市场去水，勿当独立第二"
                                             "意见；独立信号看 water/ttgBoom"
                                             if independent is False else
-                                            "src 非 market_crs → crsTop5 含模型独立成分")}
+                                            "src 非 market_crs → 含模型独立成分")}
                                if row else {"status": "该场未在比分卡"})
         except (OSError, json.JSONDecodeError, KeyError):
             out["v3wChain"] = {"status": "读取失败"}
@@ -334,15 +336,42 @@ def _parse_results_pool(horizon_date: str, days: int, league_zh: str,
     return dedup
 
 
+def _pos_map(league_zh: str) -> dict:
+    """联赛 espn 表 {对手id: 当前排位}（近期明细 oppPos join 用；无表=空 map）。"""
+    lg_key = (TAIL_LEAGUE_MAP or {}).get(league_zh)
+    if not lg_key:
+        return {}
+    p = ROOT / "data" / "00-leagues" / f"{lg_key}.json"
+    if not p.exists():
+        return {}
+    try:
+        rows = json.loads(p.read_text(encoding="utf-8")).get("standings") or []
+    except (OSError, json.JSONDecodeError):
+        return {}
+    out = {}
+    for r in rows:
+        tid = _norm_to_id(r.get("team") or "")
+        if tid:
+            out[tid] = r.get("pos")
+    return out
+
+
 def _team_recent(team_id: str | None, horizon_date: str, rows: list[dict],
                  n: int = 8) -> dict:
-    """单队近期明细（ID 匹配·对手回显 zh 优先）：last N + restDays + 14 天场数。"""
+    """单队近期明细（ID 匹配·对手回显 zh 优先）：last N + restDays + 14 天场数
+    + 主客场进球产出分（v3.4 分岔六A·联赛库 hg/ag 按主客身份聚合）。"""
     _, id2zh = _alias_maps()
     recent = []
+    hg_h = ga_h = hg_a = ga_a = 0
+    nh = na = 0
     for r in rows:
         if r["hid"] == team_id or r["aid"] == team_id:
             home = r["hid"] == team_id
             gf, ga_ = (r["hg"], r["ag"]) if home else (r["ag"], r["hg"])
+            if home:
+                hg_h, ga_h, nh = hg_h + r["hg"], ga_h + r["ag"], nh + 1
+            else:
+                hg_a, ga_a, na = hg_a + gf, ga_a + ga_, na + 1
             opp = r["aid"] if home else r["hid"]
             recent.append({"date": r["date"], "season": _season_of(r["date"]),
                            "opp": id2zh.get(opp, opp),
@@ -353,6 +382,8 @@ def _team_recent(team_id: str | None, horizon_date: str, rows: list[dict],
             if len(recent) >= n:
                 break
     out: dict = {"recent": recent}
+    out["homeGfGa"] = ([round(hg_h / nh, 2), round(ga_h / nh, 2), nh] if nh else None)
+    out["awayGfGa"] = ([round(hg_a / na, 2), round(ga_a / na, 2), na] if na else None)
     if recent:
         hz = date.fromisoformat(horizon_date)
         out["restDays"] = (hz - date.fromisoformat(recent[0]["date"])).days
@@ -436,6 +467,13 @@ def _team_deep_layer(sale_date: str, code: str, league_zh: str,
         rows = [r for r in rows if {r["hid"], r["aid"]} != {hid, aid}]
     deep_home = _team_recent(hid, horizon, rows)
     deep_away = _team_recent(aid, horizon, rows)
+    # 对手排位 join（v3.4 分岔四A）：近期形态从输赢序列升级为对手加权形态；
+    # 杯赛对手跨联赛查不到 → null 不伪造
+    if hid and aid:
+        smap = _pos_map(league_zh)
+        for t in (deep_home, deep_away):
+            for r in t["recent"]:
+                r["oppPos"] = smap.get(_norm_to_id(r["opp"]))
     for t, nm in ((deep_home, home), (deep_away, away)):
         if _norm_to_id(nm) is None:
             t["note"] = "队名不可映射（aliases 无此队）"
@@ -473,7 +511,11 @@ def _drift_layer(sale_date: str, code: str) -> dict:
                     seen.setdefault(pool, []).append(vals)
     if not seen:
         return {"status": "快照无该场"}
-    out: dict = {"ticks": max(len(v) for v in seen.values()),
+    ticks = max(len(v) for v in seen.values())
+    if ticks <= 1:
+        # 单快照无对照可言——五个 0.0% 的假漂移占位不如一行实话（v3.4 评审修正）
+        return {"status": "单调无对照(ticks=1)", "snapshotsAt": [s.get("at") for s in snaps]}
+    out: dict = {"ticks": ticks,
                  "snapshotsAt": [s.get("at") for s in snaps if s.get("matches")]}
     for pool, hist in seen.items():
         first, last = hist[0], hist[-1]
@@ -503,11 +545,28 @@ def _market_lambda_layer(match: dict) -> dict:
         lam_a = lam_sum - lh
         if lh <= 0 or lam_a <= 0:
             return {"status": "反解失败"}                  # 负期望进球=输入病,宁可不给
-        return {"status": "ok", "lamH": round(lh, 2), "lamA": round(lam_a, 2),
+        return {"status": "ok", "role": "market-derived",
+                "lamH": round(lh, 2), "lamA": round(lam_a, 2),
                 "lamSum": round(lam_sum, 2), "rho": 0.0,
-                "note": "市场隐含主客期望进球（去水后）——进球带判断的市场参照"}
+                "note": "市场隐含主客期望进球（去水后反解）——进球带判断的市场参照,非独立意见"}
     except Exception:                                      # noqa: BLE001 —— 缺料不拖垮装卡
         return {"status": "反解失败"}
+
+
+def _competition_type(league_zh: str) -> dict:
+    """赛制性质：画像存在=正牌联赛（带 roundsPlayed）,否则杯赛/次级赛轮（轮换高风险）。"""
+    lg_key = (TAIL_LEAGUE_MAP or {}).get(league_zh)
+    prof = ROOT / "data" / "00-leagues" / f"{lg_key}.json" if lg_key else None
+    if lg_key and prof.exists():
+        try:
+            doc = json.loads(prof.read_text(encoding="utf-8"))
+            rp = doc.get("roundsPlayed") or max(
+                (s.get("played") or 0 for s in doc.get("standings") or []), default=None)
+        except (OSError, json.JSONDecodeError):
+            rp = None
+        return {"type": "league", "roundsPlayed": rp}
+    return {"type": "cup", "roundsPlayed": None,
+            "note": "杯赛/未映射轮——轮换高风险（英锦标赛教训:小组赛大轮换曾零覆盖）"}
 
 
 def build_card(sale_date: str, match: dict, *, insight_path: Path | None,
@@ -524,12 +583,65 @@ def build_card(sale_date: str, match: dict, *, insight_path: Path | None,
         doc = json.loads(Path(insight_path).read_text(encoding="utf-8"))
         intel = {"status": "ok", **{k: doc.get(k) for k in ("injuries", "form", "standing", "h2h", "scorers")
                                     if doc.get(k) is not None}}
-        # H2H 逐行补赛季标（横跨多赛季=不同阵容不同级别,无赛季标没法掂量权重）
-        for x in ((intel.get("h2h") or {}).get("matches") or []):
+        # H2H 逐行补赛季标 + 赛季聚合（v3.4 分岔二A:一行分解+近2场;比分解说,不读
+        # winner 字段——实测 winner 与比分矛盾(西悉尼0:2悉尼FC winner=home)）
+        h2h_rows = ((intel.get("h2h") or {}).get("matches") or [])
+        for x in h2h_rows:
             x["season"] = _season_of(x.get("date"))
+        home_nm, away_nm = match["home"], match["away"]
+        agg: dict[str, dict[str, int]] = {}
+        for x in h2h_rows:
+            mm = re.match(r"^(\d+)\s*:\s*(\d+)$", str(x.get("score") or ""))
+            if not mm:
+                continue
+            hg, ag = int(mm.group(1)), int(mm.group(2))
+            # 视角=当前主队：该行主队==当前主队 → 主场比分即其进失
+            is_home = x.get("home") == home_nm
+            res = "平" if hg == ag else ("胜" if (hg > ag) == is_home else "负")
+            s = agg.setdefault(x.get("season") or "?", {"胜": 0, "平": 0, "负": 0})
+            s[res] += 1
+        agg_txt = " · ".join(
+            f"{s}({sum(v.values())}) " + "".join(f"{k}{n}" for k, n in v.items() if n)
+            for s, v in agg.items()) or "无交手"
+        if isinstance(intel.get("h2h"), dict):
+            intel["h2h"]["seasonAgg"] = f"主队({home_nm})视角 {agg_txt}"
+            intel["h2h"]["recent2"] = h2h_rows[:2]
+        # standing 瘦身（v3.4 分岔三A）：留 ranking+主客分拆,删与 espn 表重复的原始键
+        st_raw = intel.get("standing")
+
+        def _split(side_raw):
+            return {"home": {"W": side_raw.get("sHomeWinGoalMatchCnt"),
+                             "D": side_raw.get("sHomeDrawMatchCnt"),
+                             "L": side_raw.get("sHomeLossGoalMatchCnt")},
+                    "away": {"W": side_raw.get("sAwayWinGoalMatchCnt"),
+                             "D": side_raw.get("sAwayDrawMatchCnt"),
+                             "L": side_raw.get("sAwayLossGoalMatchCnt")}}
+
+        if isinstance(st_raw, dict) and st_raw.get("home"):
+            intel["standing"] = {
+                "home": {"ranking": st_raw["home"].get("ranking"),
+                         **_split(st_raw["home"])},
+                "away": {"ranking": st_raw["away"].get("ranking"),
+                         **_split(st_raw["away"])}}
+        # 伤停×射手交叉 + 射手榜 top5（v3.4 分岔六A）
+        key_abs: dict = {}
+        for side in ("home", "away"):
+            pl = ((intel.get("scorers") or {}).get(side) or {}).get("playerList") or []
+            ranked = sorted(pl, key=lambda p: -(p.get("goalCnt") or 0))
+            inj_names = {x.get("name") for x in (intel.get("injuries") or {}).get(side) or []}
+            key_abs[side] = [{"rank": i, "name": p.get("personName"),
+                              "goals": p.get("goalCnt")}
+                             for i, p in enumerate(ranked, 1) if p.get("personName") in inj_names]
+            if isinstance(intel.get("scorers"), dict) and (intel["scorers"].get(side) or {}):
+                intel["scorers"][side]["top5"] = ranked[:5]
+        intel["keyAbsences"] = key_abs
     card = {
         "code": match["matchNumStr"], "match": f'{match["home"]} vs {match["away"]}',
         "league": match["league"], "kickoff": match.get("matchTime"), "saleDate": sale_date,
+        # 赛制性质标（v3.4 评审修正❶）：判据=画像文件存在性而非映射命中——
+        # TAIL_LEAGUE_MAP 收着欧冠/意大利杯等杯赛键,按命中判会把欧战轮标成联赛,
+        # 恰恰漏掉轮换风险最高的赛事（英锦标赛教训）
+        "competitionType": _competition_type(match["league"]),
         # kickoffAt=完整开赛时刻（matchTime 仅时分秒 + businessDate 日期拼成）；
         # kickoff 原字段保留不动（下游已有消费者）。时间闸只认 kickoffAt。
         "kickoffAt": _kickoff_dt(match, business_date), "businessDate": business_date,
@@ -612,6 +724,13 @@ def gen(sale_date: str, *, rebuild: bool = False) -> int:
             f"[llm_card] 拒绝重建 {sale_date}：该日判断已冻结"
             f"（engine/cache/llm_preds/{sale_date}.json 存在）——卡已是凭证链一环,"
             f"重建等于篡改。新层只对此后新建的卡生效。")
+    # v3.4 分岔四A：先 best-effort 跑一发 lineup_watch——晚场轮首发或已公布,
+    # 卡能吃到就吃；失败/超时不熔断出卡
+    try:
+        subprocess.run([sys.executable, str(ROOT / "engine" / "scripts" / "lineup_watch.py")],
+                       timeout=300, check=False)
+    except Exception:                                      # noqa: BLE001 —— fail-open
+        print("[llm_card] lineup tick 跳过（超时/失败,首发层将如实标注）")
     arc = ARCHIVE_ROOT / f"{sale_date}.json"
     if not arc.exists():
         raise SystemExit(f"[llm_card] 缺当日存档 {arc}（先跑 run.py update）")
@@ -793,14 +912,91 @@ def context_status(sale_date: str, *, root: Path | None = None) -> dict:
     }
 
 
+def _view(sale_date: str, code: str) -> str:
+    """阅读版渲染（v3.4 评审修正❹·卡面定序落地）：市场正身→判断材料→缺口置尾。"""
+    p = card_paths(sale_date) / f"{code}.json"
+    card = json.loads(p.read_text(encoding="utf-8"))
+    ly = card["layers"]
+    mk, om = ly["market"], ly["ourModels"]
+    L = [f"◆ {card['code']} {card['match']} {card['league']} "
+         f"开赛{card.get('kickoffAt') or card.get('kickoff')} "
+         f"[{(card.get('competitionType') or {}).get('type', '?')}]"]
+    L.append("── 市场正身（基线,非答案）────────")
+    L.append(f"  HAD {mk['had']}  去水 {(mk['devig'] or {}).get('had')}")
+    L.append(f"  TTG去水 {(mk['devig'] or {}).get('ttg')}")
+    dcrs = sorted(((mk['devig'] or {}).get('crs') or {}).items(), key=lambda kv: -kv[1])[:8]
+    L.append("  CRS去水TOP8: " + " ".join(f"{k}={v}" for k, v in dcrs))
+    lam = om.get("marketLambda") or {}
+    if lam.get("status") == "ok":
+        L.append(f"  λ[市场衍生] 主{lam['lamH']} 客{lam['lamA']}")
+    dr = mk.get("drift") or {}
+    if dr.get("ticks") and dr.get("ticks") > 1:
+        seg = " ".join(f"{k} {v['first']}→{v['last']}({v['pct']:+}%)"
+                       for k, v in (dr.get("had") or {}).items())
+        L.append(f"  漂移(ticks={dr['ticks']}): {seg}")
+    else:
+        L.append(f"  漂移: {dr.get('status', '未获取')}")
+    v3 = om.get("v3wChain") or {}
+    boom = v3.get("ttgBoom")
+    L.append(f"  独立信号: water={v3.get('water')} "
+             f"ttgBoom={round(boom, 4) if isinstance(boom, (int, float)) else boom} "
+             f"src={v3.get('src')}")
+    L.append("── 判断材料 ────────────────")
+    it = ly["intel"]
+    if it.get("status") == "ok":
+        for side, zh in (("home", "主"), ("away", "客")):
+            for a in (it.get("keyAbsences") or {}).get(side) or []:
+                L.append(f"  ⚠{zh}伤停×射手: {a['name']}(队内射手榜第{a['rank']}·{a['goals']}球)")
+        h = it.get("h2h") or {}
+        L.append(f"  H2H: {h.get('seasonAgg')}")
+        L.append("  近2: " + "；".join(
+            f"{x.get('date')}({x.get('season')}) {x.get('home')}{x.get('score')}{x.get('away')}"
+            for x in h.get("recent2") or []))
+        st = it.get("standing") or {}
+        for side, zh in (("home", "主"), ("away", "客")):
+            s = st.get(side) or {}
+            if s:
+                L.append(f"  {zh}排名{s.get('ranking')} 赛季主客分 "
+                         f"主{s.get('home')} 客{s.get('away')}")
+        ps = ((ly.get("profile") or {}).get("standings") or {})
+        for side, zh in (("home", "主"), ("away", "客")):
+            r = ps.get(side)
+            if r:
+                L.append(f"  {zh}榜行: 第{r['pos']} {r['played']}赛 {r['won']}-{r['drawn']}"
+                         f"-{r['lost']} 进{r['gf']}失{r['ga']} {r['pts']}分")
+        tr = om.get("teamRecent") or {}
+        home_nm, away_nm = card["match"].split(" vs ")
+        for side, name in (("home", home_nm), ("away", away_nm)):
+            t = tr.get(side) or {}
+            L.append(f"  {name} rest={t.get('restDays')} "
+                     f"主均进失{t.get('homeGfGa')} 客均进失{t.get('awayGfGa')} elo={t.get('elo')}")
+            for r in t.get("recent") or []:
+                pos = r.get("oppPos")
+                L.append(f"    {r['date']}({r.get('season')}) {r['ha']}vs {r['opp']}"
+                         f"[第{pos if pos else '?'}名] {r['score']} {r['res']}")
+    L.append("── 缺口（如实）────────────")
+    L.append(f"  lineup={(ly.get('lineup') or {}).get('status')}  "
+             f"context={(ly.get('context') or {}).get('status')}  "
+             f"intel={it.get('status')}  "
+             f"v4b={(om.get('v4b') or {}).get('status')}  "
+             f"devigCrs={'有' if (mk.get('devig') or {}).get('crs') else '无'}")
+    return "\n".join(L)
+
+
 def main() -> int:
     import argparse
     ap = argparse.ArgumentParser(description="LLM 预测数据卡生成器")
-    ap.add_argument("cmd", choices=["gen", "context-todo", "context-status"])
+    ap.add_argument("cmd", choices=["gen", "context-todo", "context-status", "view"])
     ap.add_argument("sale_date")
+    ap.add_argument("code", nargs="?", default=None, help="view 用场次码")
     ap.add_argument("--rebuild", action="store_true",
                     help="存量卡加层重建（判断已冻结则硬拒）")
     args = ap.parse_args()
+    if args.cmd == "view":
+        if not args.code:
+            raise SystemExit("[llm_card] view 需场次码：view <sale_date> <code>")
+        print(_view(args.sale_date, args.code))
+        return 0
     if args.cmd == "context-todo":
         rows = [r for r in context_todo(args.sale_date) if r["todo"]]
         print(json.dumps(rows, ensure_ascii=False, indent=1))

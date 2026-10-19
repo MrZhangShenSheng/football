@@ -237,6 +237,88 @@ def test_season_tag_on_history():
     assert h2h[0]["season"] == "2627"
 
 
+def _card007():
+    import json as _j
+    arch = _j.loads(_Path("engine/cache/score_odds/2026-10-16.json").read_text(encoding="utf-8"))
+    day = next(d for d in arch["matchDays"]
+               if any(m["matchNumStr"] == "周五007" for m in d["matches"]))
+    row = next(m for m in day["matches"] if m["matchNumStr"] == "周五007")
+    return build_card("2026-10-16", row,
+                      insight_path=_Path("engine/cache/sporttery_insight_2042008.json"),
+                      lineups={}, business_date=day.get("businessDate"))
+
+
+def test_v34_market_slimmed():
+    """v3.4 分岔一A 市场正身化：v3wChain 出掉市场复印件,lambda 标衍生物,单 tick 缩行。"""
+    card = _card007()
+    om = card["layers"]["ourModels"]
+    v3 = om["v3wChain"]
+    assert "crsTop5" not in v3 and "lam" not in v3          # 市场复印件已出卡
+    assert {"src", "water", "ttgBoom", "independentOfMarket"} <= set(v3)
+    assert om["marketLambda"]["role"] == "market-derived"    # 衍生物标注
+    # devig.crs 全量保留——阅卷器 power devig 基线依赖,砍了会静默退化
+    assert len(card["layers"]["market"]["devig"]["crs"]) > 20
+    dr = card["layers"]["market"]["drift"]
+    assert dr["status"].startswith("单调无对照") and "ticks" not in dr
+
+
+def test_v34_h2h_agg_and_standing_slim():
+    """v3.4 分岔二/三A：H2H 赛季聚合（主队视角·从比分算）+ standing 瘦身。"""
+    card = _card007()
+    h = card["layers"]["intel"]["h2h"]
+    # 弗洛西诺(主)视角实测：2627 1平 · 2425 1胜1负 · 2324 1胜1负 · 1819/1516 各2场
+    # （聚合从比分算,不读 winner 字段——实测 winner 与比分有矛盾行）
+    assert "主队(弗洛西诺)视角" in h["seasonAgg"]
+    assert "2627(1) 平1" in h["seasonAgg"] and "2425(2) 胜1负1" in h["seasonAgg"]
+    assert len(h["recent2"]) == 2 and h["recent2"][0]["season"] == "2627"
+    assert h["matches"]                                      # 全文仍在（审计回查）
+    st = card["layers"]["intel"]["standing"]
+    assert set(st["home"]) == {"ranking", "home", "away"}    # 原始 20 键已瘦
+    # 体彩计数为字符串型,原样透传不强转（下游只读不算）
+    assert int(st["home"]["home"]["W"]) == 2 and int(st["away"]["away"]["W"]) == 0
+
+
+def test_v34_opp_pos_and_gf_ga_and_absences():
+    """v3.4 分岔四/六A：对手排位 join + 主客进球分 + 伤停×射手交叉。"""
+    card = _card007()
+    tr = card["layers"]["ourModels"]["teamRecent"]
+    rec = tr["home"]["recent"]
+    assert all("oppPos" in r for r in rec)                   # 逐行带 oppPos
+    nap = next(r for r in rec if r["opp"] == "那不勒斯")
+    assert isinstance(nap["oppPos"], int)                    # 那不勒斯在榜,有位次
+    assert tr["home"]["homeGfGa"] and len(tr["home"]["homeGfGa"]) == 3
+    assert tr["away"]["awayGfGa"]
+    # 萨索洛 Odenthal 2 球且伤 → 必须被交叉出来
+    abs_away = card["layers"]["intel"]["keyAbsences"]["away"]
+    assert any("Odenthal" in (a["name"] or "") for a in abs_away)
+    assert all({"rank", "name", "goals"} == set(a) for a in abs_away)
+    assert len(card["layers"]["intel"]["scorers"]["away"]["top5"]) <= 5
+
+
+def test_v34_competition_type():
+    """v3.4 修正❶：赛制标判据=画像存在性（杯赛键不得误标 league）。"""
+    from llm_card import _competition_type
+    assert _competition_type("意甲")["type"] == "league"
+    assert _competition_type("欧罗巴")["type"] == "cup"      # 映射命中但无画像
+    assert _competition_type("子虚乌有杯")["type"] == "cup"
+    assert "轮换高风险" in _competition_type("欧罗巴")["note"]
+
+
+def test_v34_view_order(tmp_path, monkeypatch):
+    """v3.4 修正❹：view 渲染定序——市场在前,判断材料居中,缺口置尾。"""
+    import llm_card as lc
+    monkeypatch.setattr(lc, "CARDS_ROOT", tmp_path)
+    card = _card007()
+    d = lc.card_paths("2026-10-16")
+    d.mkdir(parents=True, exist_ok=True)
+    (d / "周五007.json").write_text(json.dumps(card, ensure_ascii=False), encoding="utf-8")
+    txt = lc._view("2026-10-16", "周五007")
+    i_mk, i_jd, i_gap = txt.find("市场正身"), txt.find("判断材料"), txt.find("缺口")
+    assert 0 < i_mk < i_jd < i_gap                           # 定序落地
+    assert "基线,非答案" in txt and "伤停×射手" in txt
+    assert "λ[市场衍生]" in txt
+
+
 def test_enrichment_lambda_recent_drift(tmp_path, monkeypatch):
     """v3.1 加厚三件套：λ 反解健康 / 近期明细去自身+近邻去重 / 漂移层。"""
     import llm_card as lc

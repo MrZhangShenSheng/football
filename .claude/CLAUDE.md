@@ -29,6 +29,14 @@
 | **"跑下回测"** | run.py backtest → 与市场基线对比 | RPS 对照表 |
 | **"帮我复核这场 XX"** | football-live-assessment skill（单场临场评估：数据核验→伤停首发→概率重估→玩法比较→风险结论，**只分析不下注**；读仓库缓存，旧缓存须标注数据模式，与主 skill"临场复核"分工=单场深挖 vs 全流程出票） | 临场评估报告（证据等级+概率区间+EV 门槛） |
 
+**LLM 判断轨固定步（v3.4·2026-10-19 设计=docs/plans/2026-10-19-llm-input-diet-design.html）**：
+走 llm 判断时，① `python engine/scripts/llm_card.py gen <销售日>`（自带 lineup tick 前置，best-effort 不熔断）
+→ ② `llm_card.py context-todo <销售日>` 列待检索场 → **真检索真回写 `write_context`（每轮规定动作，不是可选项；
+三道防赛后泄漏过滤已内建）** → ③ 判断前 `llm_card.py view <销售日> <场次码>` 读阅读版（定序=市场正身→判断材料→缺口）。
+**判定硬规矩（市场是基线不是答案）**：direction/goalBand/keyCells 的 evidence 必须引用市场以外材料
+（伤停×射手/形态/排名/赛制/近期对手质量），**并显式陈述与市场的偏离方向**（偏离可为零但须明说）；
+只复述市场数字的判断按未做功课拒收。卡内 marketLambda/v3wChain(src=market_crs) 均属市场衍生物，不算第二意见。
+
 约定：预测命令自带数据刷新（用户永远不用手动 run.py）；每次流程结束自动 commit（git 历史=预测锁定凭证）。
 **命令路径铁律**：run.py 不在仓库根目录，主入口一律 `python engine/scripts/run.py <子命令>`（update/verify/corpus/learn/backtest）；其余脚本同在 `engine/scripts/`。
 **单写会话纪律（2026-08-25 两次 21 提交大冲突教训 47e1f87/8f481c5）**：预测/回填写会话开始先 `git pull`；同一时间只开一个写会话，开新会话前确认旧会话已 commit。
