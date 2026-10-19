@@ -8,9 +8,10 @@
 判据预注册 engine/cache/llm-predict-prereg.json。开发者 sszhang"""
 import hashlib
 import json
+import re
 import subprocess
 import sys
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from functools import lru_cache
 from pathlib import Path
 
@@ -203,6 +204,210 @@ def _kickoff_dt(match: dict, business_date: str | None,
     return _norm_ts(f"{d} {t}") if d else None
 
 
+_RECENT_CACHE: dict = {}          # (horizon_date,) → 解析后的近期赛程列表（一次 gen 只扫一遍）
+
+
+def _parse_results_scan(horizon_date: str, days: int, root: Path) -> list[dict]:
+    """扫 horizon 前 days 天的每日回填库+体彩结果缓存 → [{date, home, away, hg, ag}]。
+
+    联赛库(fd)止于 09-20 断粮不可用于近期；此扫描覆盖我们回填过的每一天,
+    覆盖不到的天就是覆盖不到（coverageDays 如实回带,不造场）。开发者 sszhang"""
+    hit_dates = []
+    d = date.fromisoformat(horizon_date)
+    for i in range(1, days + 1):
+        hit_dates.append((d - timedelta(days=i)).isoformat())
+    out: dict[tuple, dict] = {}
+    scanned = 0
+    for day in hit_dates:
+        p = root / "data" / "02-results" / f"{day}.json"
+        if p.exists():
+            scanned += 1
+            try:
+                doc = json.loads(p.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                continue
+            for m in doc.get("matches") or []:
+                parts = str(m.get("match") or "").split(" vs ")
+                res = str(m.get("result") or "")
+                if len(parts) != 2 or ":" not in res and "-" not in res:
+                    continue
+                mm = re.match(r"^\s*(\d+)\s*[-:]\s*(\d+)\s*$", res)
+                if not mm:
+                    continue
+                key = (day, parts[0], parts[1])
+                out[key] = {"date": day, "home": parts[0], "away": parts[1],
+                            "hg": int(mm.group(1)), "ag": int(mm.group(2))}
+    for f in (root / "engine" / "cache").glob("sporttery_results_*.json"):
+        try:
+            doc = json.loads(f.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        for m in doc.get("matches") or []:
+            md = str(m.get("matchDate") or "")[:10]
+            sc = str(m.get("score") or "")
+            if not md or md not in hit_dates or ":" not in sc:
+                continue
+            mm = re.match(r"^\s*(\d+)\s*:\s*(\d+)\s*$", sc)
+            if not mm:
+                continue
+            key = (md, m.get("home"), m.get("away"))
+            out.setdefault(key, {"date": md, "home": m.get("home"), "away": m.get("away"),
+                                 "hg": int(mm.group(1)), "ag": int(mm.group(2))})
+    rows = sorted(out.values(), key=lambda r: r["date"], reverse=True)
+    # 近邻去重：同一对阵同比分 3 天内重复 = 双源日期口径差（体彩销售期 vs 开赛日）,
+    # 非真实连赛两场——保留首见（较晚日）。真实同对阵同比分 3 日两遇在俱乐部赛事不存在。
+    dedup, seen = [], {}
+    for r in rows:
+        key = (r["home"], r["away"], r["hg"], r["ag"])
+        prev = seen.get(key)
+        if prev is not None and abs((date.fromisoformat(prev) -
+                                     date.fromisoformat(r["date"])).days) <= 3:
+            continue
+        seen[key] = r["date"]
+        dedup.append(r)
+    return dedup
+
+
+def _team_recent(team: str, horizon_date: str, rows: list[dict],
+                 n: int = 8) -> dict:
+    """单队近期明细：last N（date/对手/主客/比分/结果）+ restDays + 14 天场数。"""
+    recent = []
+    for r in rows:
+        if r["home"] == team or r["away"] == team:
+            home = r["home"] == team
+            gf, ga_ = (r["hg"], r["ag"]) if home else (r["ag"], r["hg"])
+            recent.append({"date": r["date"],
+                           "opp": r["away"] if home else r["home"],
+                           "ha": "主" if home else "客",
+                           "score": f"{gf}-{ga_}",
+                           "res": "胜" if gf > ga_ else "平" if gf == ga_ else "负"})
+            if len(recent) >= n:
+                break
+    out: dict = {"recent": recent}
+    if recent:
+        last = date.fromisoformat(recent[0]["date"])
+        out["restDays"] = (date.fromisoformat(horizon_date) - last).days
+        hz = date.fromisoformat(horizon_date)
+        out["matches14d"] = sum(1 for r in recent
+                                if (hz - date.fromisoformat(r["date"])).days <= 14)
+    else:
+        out["restDays"] = None
+        out["matches14d"] = None
+    return out
+
+
+def _elo_of(team: str) -> float | None:
+    """zh 队名 → clubelo rating（data/01-teams/**；文件缺=未获取,不造数）。"""
+    try:
+        import strength_loaders as sl
+        tid = (sl.zh_to_id() or {}).get(team)
+    except Exception:                                      # noqa: BLE001
+        return None
+    if not tid:
+        return None
+    hits = sorted((ROOT / "data" / "01-teams").glob(f"*/{tid}.json"))
+    if not hits:
+        return None
+    try:
+        t = json.loads(hits[0].read_text(encoding="utf-8"))
+        return (t.get("elo") or {}).get("rating")
+    except (OSError, json.JSONDecodeError):
+        return None
+
+
+def _team_deep_layer(sale_date: str, code: str, home: str, away: str,
+                     business_date: str | None) -> dict:
+    """近期明细层：两队 last8+restDays+14天场数+Elo（大哥 2026-10-19『数据不够详细』）。
+
+    horizon=真实开赛日（sporttery matchDate 优先,businessDate 退化）；21 天窗口,来源=
+    每日回填库+体彩结果缓存,覆盖规模如实回带（scannedMatches）。开发者 sszhang"""
+    horizon = _match_date_index().get(code) or business_date or sale_date
+    try:
+        horizon = date.fromisoformat(str(horizon)[:10]).isoformat()
+    except ValueError:
+        return {"status": "horizon 不可解析", "horizon": horizon}
+    cache_key = (str(ROOT), horizon)
+    rows = _RECENT_CACHE.get(cache_key)
+    if rows is None:
+        rows = _parse_results_scan(horizon, 21, ROOT)
+        _RECENT_CACHE[cache_key] = rows
+    # 排除本场自身：回填库若已含本场赛果（赛后重建卡的场景）,决不能混进「近期」——
+    # 那是把答案喂进预测输入。
+    rows = [r for r in rows if {r["home"], r["away"]} != {home, away}]
+    deep_home, deep_away = _team_recent(home, horizon, rows), _team_recent(away, horizon, rows)
+    for t in (deep_home, deep_away):
+        if 0 < len(t["recent"]) < 3:
+            # 回填覆盖稀疏时 restDays 只是上界（真实最近一场可能未入库）——须让读者知情
+            t["sparseNote"] = "回填库窗口内该队场次<3,restDays 为上界"
+    return {
+        "horizon": horizon, "windowDays": 21, "scannedMatches": len(rows),
+        "source": "data/02-results 每日回填库 + engine/cache/sporttery_results_* 缓存"
+                  "（fd 联赛库止于 09-20 断粮不用于近期）",
+        "home": {**deep_home, "elo": _elo_of(home)},
+        "away": {**deep_away, "elo": _elo_of(away)},
+    }
+
+
+def _drift_layer(sale_date: str, code: str) -> dict:
+    """赔率漂移：05-trends 快照链 first→last（R006 的输入面——价涨=市场定价更难中）。"""
+    p = ROOT / "data" / "05-trends" / f"{sale_date}-odds.json"
+    if not p.exists():
+        return {"status": "未获取"}
+    try:
+        doc = json.loads(p.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {"status": "读取失败"}
+    seen: dict[str, list[dict]] = {}
+    snaps = doc.get("snapshots") or []
+    for s in snaps:
+        for m in s.get("matches") or []:
+            if m.get("code") != code:
+                continue
+            for pool in ("had", "hhad"):
+                o = m.get(pool) or {}
+                vals = {k: float(o[k]) for k in ("h", "d", "a")
+                        if _isnum(o.get(k)) and float(o[k]) > 1.0}
+                if vals:
+                    seen.setdefault(pool, []).append(vals)
+    if not seen:
+        return {"status": "快照无该场"}
+    out: dict = {"ticks": max(len(v) for v in seen.values()),
+                 "snapshotsAt": [s.get("at") for s in snaps if s.get("matches")]}
+    for pool, hist in seen.items():
+        first, last = hist[0], hist[-1]
+        out[pool] = {k: {"first": first[k], "last": last[k],
+                         "pct": round((last[k] - first[k]) / first[k] * 100, 1)}
+                     for k in first if k in last}
+    return out
+
+
+def _market_lambda_layer(match: dict) -> dict:
+    """市场隐含进球期望（层2 反解·ρ=0）——进球带判断的直接参照。
+
+    ttg 总球分布反解 λsum,HAD 去水主胜份额定 λ分配。缺任一池→未获取。开发者 sszhang"""
+    try:
+        import market_lambda as mkl
+        # 键须归一为 "0".."7"（TTG_KEYS 收数字串;裸喂 s0..s7 会被整表滤空,λsum=0 出负 λ）
+        ttg = {str(k)[1:]: float(v) for k, v in (match.get("ttg") or {}).items()
+               if str(k).startswith("s") and _isnum(v) and float(v) > 1.0}
+        had = match.get("had") or {}
+        if len(ttg) < 4 or not all(_isnum(had.get(k)) for k in ("h", "d", "a")):
+            return {"status": "未获取"}
+        lam_sum = mkl.lam_sum_from_ttg(ttg)
+        if lam_sum <= 0.1:
+            return {"status": "反解失败"}
+        p3 = mkl.had_devig(float(had["h"]), float(had["d"]), float(had["a"]))
+        lh = mkl.solve_lamh(lam_sum, p3[0])
+        lam_a = lam_sum - lh
+        if lh <= 0 or lam_a <= 0:
+            return {"status": "反解失败"}                  # 负期望进球=输入病,宁可不给
+        return {"status": "ok", "lamH": round(lh, 2), "lamA": round(lam_a, 2),
+                "lamSum": round(lam_sum, 2), "rho": 0.0,
+                "note": "市场隐含主客期望进球（去水后）——进球带判断的市场参照"}
+    except Exception:                                      # noqa: BLE001 —— 缺料不拖垮装卡
+        return {"status": "反解失败"}
+
+
 def build_card(sale_date: str, match: dict, *, insight_path: Path | None,
                lineups: dict, now: str | None = None,
                business_date: str | None = None) -> dict:
@@ -232,12 +437,17 @@ def build_card(sale_date: str, match: dict, *, insight_path: Path | None,
                        "ttg": match.get("ttg") or {}, "hhad": match.get("hhad") or {},
                        "hafu": match.get("hafu") or {},
                        "devig": _devig_layer(match),
+                       "drift": _drift_layer(sale_date, match["matchNumStr"]),
                        "oddsUpdatedAt": match.get("oddsUpdatedAt")},
             "intel": intel,
             "profile": _profile_layer(match["league"]),
             "lineup": _lineup_layer(match["matchNumStr"], lineups),
             "context": {"status": "pending", "entries": []},
-            "ourModels": _our_models_layer(sale_date, match["matchNumStr"]),
+            "ourModels": {**_our_models_layer(sale_date, match["matchNumStr"]),
+                          "marketLambda": _market_lambda_layer(match),
+                          "teamRecent": _team_deep_layer(
+                              sale_date, match["matchNumStr"],
+                              match["home"], match["away"], business_date)},
         },
         "createdAt": now or datetime.now().isoformat(timespec="seconds"),
     }

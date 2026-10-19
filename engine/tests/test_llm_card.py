@@ -215,6 +215,63 @@ def test_rebuild_gate_and_preservation(tmp_path):
     assert preds_exist("2026-10-16", root=preds)
 
 
+def test_enrichment_lambda_recent_drift(tmp_path, monkeypatch):
+    """v3.1 加厚三件套：λ 反解健康 / 近期明细去自身+近邻去重 / 漂移层。"""
+    import llm_card as lc
+    # λ：真实形态 TTG（3.55@3球最热）→ λsum≈3.3 且主客均为正
+    m = {"ttg": {"s0": 22.0, "s1": 7.0, "s2": 4.25, "s3": 3.55, "s4": 4.5,
+                 "s5": 6.5, "s6": 10.5, "s7": 13.0},
+         "had": {"h": 2.35, "d": 3.48, "a": 2.40}}
+    lam = lc._market_lambda_layer(m)
+    assert lam["status"] == "ok" and 2.5 < lam["lamSum"] < 4.5
+    assert lam["lamH"] > 0 and lam["lamA"] > 0
+    # 键喂错形态（s0..s7 直接进）也不再出 λsum=0 假成功
+    bad = lc._market_lambda_layer({"ttg": {"s0": 22.0}, "had": {}})
+    assert bad["status"] in ("未获取", "反解失败")
+
+    # 近期明细：tmp 仓库扫 02-results——自身排除 + 3 日内同对阵同比分去重
+    repo = tmp_path / "repo"
+    res = repo / "data" / "02-results"
+    res.mkdir(parents=True)
+    rows = [
+        {"match": "弗洛西诺 vs 萨索洛", "result": "4-2"},          # 本场自身→必须排除
+        {"match": "弗洛西诺 vs 那不勒斯", "result": "0-3"},        # 10-11 与体彩缓存 10-12 重复→去重
+        {"match": "萨索洛 vs AC米兰", "result": "1-1"},
+        {"match": "萨索洛 vs 尤文", "result": "0-1"},
+    ]
+    (res / "2026-10-11.json").write_text(
+        json.dumps({"date": "2026-10-11", "matches": rows}, ensure_ascii=False),
+        encoding="utf-8")
+    cache = repo / "engine" / "cache"
+    cache.mkdir(parents=True)
+    (cache / "sporttery_results_x.json").write_text(json.dumps({"matches": [
+        {"home": "弗洛西诺", "away": "那不勒斯", "matchDate": "2026-10-12",
+         "score": "0:3"},                                        # 同对阵同比分 3 日内→去重
+        {"home": "萨索洛", "away": "弗洛西诺", "matchDate": "2026-10-16",
+         "score": "2:4"},                                        # 本场另一侧写法→排除
+    ]}, ensure_ascii=False), encoding="utf-8")
+    monkeypatch.setattr(lc, "ROOT", repo)
+    monkeypatch.setattr(lc, "_RECENT_CACHE", {})
+    deep = lc._team_deep_layer("2026-10-16", "周五007", "弗洛西诺", "萨索洛", None)
+    fr = deep["home"]["recent"]
+    assert all(not (r["opp"] == "萨索洛") for r in fr)         # 自身两向均不入
+    assert sum(1 for r in fr if r["opp"] == "那不勒斯") == 1    # 跨源重复只剩一条
+    assert deep["away"]["recent"][-1]["opp"] == "尤文"          # AC米兰 1-1 已去重
+
+    # drift：快照链 first→last
+    tr = repo / "data" / "05-trends"
+    tr.mkdir(parents=True)
+    (tr / "2026-10-16-odds.json").write_text(json.dumps({"snapshots": [
+        {"at": "t1", "matches": [{"code": "周五007",
+                                  "had": {"h": 2.6, "d": 3.4, "a": 2.3}}]},
+        {"at": "t2", "matches": [{"code": "周五007",
+                                  "had": {"h": 2.35, "d": 3.48, "a": 2.4}}]},
+    ]}), encoding="utf-8")
+    d = lc._drift_layer("2026-10-16", "周五007")
+    assert d["ticks"] == 2 and d["had"]["h"]["pct"] == round((2.35 - 2.6) / 2.6 * 100, 1)
+    assert lc._drift_layer("1999-01-01", "x")["status"] == "未获取"
+
+
 def test_norm_ts_mixed_formats():
     """时刻串规范化：kickoff 空格分隔 vs publishedAt 带 'T',裸比会误判（0x54 > 0x20）。"""
     from llm_card import _norm_ts
