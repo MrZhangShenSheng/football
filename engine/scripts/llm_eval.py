@@ -208,8 +208,12 @@ def _load_day_rows(days: list[str]) -> list[dict]:
                 ak = actual_key(sc)
             except ValueError:
                 continue                                # 非比分脏值，跳过
+            # 判断口径留痕（v3.4 2026-10-19）：旧卷「三条压成一条」与新卷 ≥3 条不同质,
+            # 旧卷是凭证不改写 → 评测侧分层标注,descriptive 可分开看
+            n_kj = len(pr.get("keyJudgments") or [])
             rows.append({**pr, "_marketPool": pool, "_actual": ak,
-                         "_closeProxy": proxy, "_score": sc})
+                         "_closeProxy": proxy, "_score": sc, "_nKj": n_kj,
+                         "_kjCohort": "v1-compressed" if n_kj < 3 else "v2-split"})
     return rows
 
 
@@ -217,6 +221,7 @@ def evaluate(days: list[str]) -> dict:
     rows = _load_day_rows(days)
     diffs_full, diffs_tail, desc = [], [], {"E1": [], "E2": [], "E3": []}
     proxy_split = {"cardTime": [], "lineupLast": []}
+    kj_split: dict[str, list[float]] = {}        # 判断口径分层（v1 压缩卷 vs v2 拆分卷）
     for r in rows:
         keys = [k for k in r["p_crs"] if k in r["_marketPool"]]
         mkt = market_devig_on_keys(r["_marketPool"], keys)
@@ -229,6 +234,7 @@ def evaluate(days: list[str]) -> dict:
         # ↑ LLM 侧同样在计分键集上条件归一（prereg keyset 字面·双侧对称）
         diffs_full.append(-math.log(max(mkt[a], LOGLLOSS_CLIP)) + math.log(max(llm.get(a, 0.0), LOGLLOSS_CLIP)))
         proxy_split.setdefault(r["_closeProxy"], []).append(diffs_full[-1])
+        kj_split.setdefault(r.get("_kjCohort") or "unknown", []).append(diffs_full[-1])
         tk = tail_keys_of(r["_marketPool"])
         if tk:
             pl = sum(llm.get(k, 0.0) for k in tk)
@@ -268,7 +274,11 @@ def evaluate(days: list[str]) -> dict:
                                 if len(d) >= N_GATE["observe"] else {"n": len(d)})
                             for e, d in desc.items()},
             "closeProxySplit": {k: {"n": len(v), "diffMean": round(float(np.mean(v)), 4)}
-                                for k, v in proxy_split.items() if v}}
+                                for k, v in proxy_split.items() if v},
+            # 判断口径分层（descriptive·v3.4）：v1-compressed=单条压缩卷（10-14~16 遗留,
+            # 不改写）/ v2-split=≥3 条拆分卷。非判据,只供"抬门槛是否改善"观察
+            "kjCohortSplit": {k: {"n": len(v), "diffMean": round(float(np.mean(v)), 4)}
+                              for k, v in kj_split.items() if v}}
 
 
 def _event_keys(event: str, pool: dict) -> list[str]:

@@ -1,35 +1,48 @@
 {
   "days": [
-    "2026-10-14"
+    "2026-10-14",
+    "2026-10-15",
+    "2026-10-16"
   ],
   "primary": {
-    "n": 11,
-    "verdict": "INSUFFICIENT"
+    "n": 37,
+    "verdict": "INSUFFICIENT",
+    "diffMean": -1.06
   },
   "tailChannel": {
-    "n": 11,
+    "n": 37,
     "verdict": "INSUFFICIENT",
+    "diffMean": -0.0492,
     "gate": "CI 下限>0 且 n≥150 才开影子专项"
   },
   "descriptive": {
     "E1": {
-      "n": 11
+      "n": 37,
+      "diffMean": -0.1201
     },
     "E2": {
-      "n": 11
+      "n": 37,
+      "diffMean": -0.0487
     },
     "E3": {
-      "n": 11
+      "n": 37,
+      "diffMean": 0.0009
     }
   },
   "closeProxySplit": {
     "cardTime": {
-      "n": 5,
-      "diffMean": -5.7379
+      "n": 7,
+      "diffMean": -3.9498
     },
     "lineupLast": {
-      "n": 6,
-      "diffMean": -2.0134
+      "n": 30,
+      "diffMean": -0.3858
+    }
+  },
+  "kjCohortSplit": {
+    "v1-compressed": {
+      "n": 37,
+      "diffMean": -1.06
     }
   }
 }

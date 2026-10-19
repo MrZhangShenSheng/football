@@ -88,8 +88,8 @@ description: |
 
 1. `python engine/scripts/llm_card.py gen <销售日>` —— 五层数据卡（市场/intel/画像/首发/语境待检索），gen 逐场打印建议检索词
 2. 会话联网检索候选场语境层 → 回写 `llm_card.write_context(销售日, 编号, entries)` ——**三道过滤**：只用 preview 类检索词（禁赛果词）· 赛后特征词条目丢弃 · 发布时间晚于卡 createdAt / 缺 url/publishedAt 丢弃；语境层 ok/未获取两态均终态**禁二次改写**（凭证纪律）
-3. 会话按 spec §3 协议出预测：每场 31 格（市场有价键）p_crs 分布 + 每场 ≥3 条 keyJudgments（judgment+evidence 引用语境层编号）+ confidence 枚举
-4. 会话调用 `llm_pred.freeze(销售日, preds)` —— 逐场校验（键∈市场键集/判断完整）→条件归一→冻结 `engine/cache/llm_preds/{销售日}.json`（幂等只读·凭证）
+3. 判断前先 `python engine/scripts/llm_card.py view <销售日> <场次码>` 读阅读版（v3.4·定序=市场正身→判断材料→缺口），再按 spec §3 协议出预测：每场 31 格（市场有价键）p_crs 分布 + 每场 **≥3 条独立 keyJudgments**（judgment+evidence 引用语境层编号）+ confidence 枚举。**一条一个独立论点，禁把形态+H2H+伤停压进单条 evidence**（压扁后无法逐条评判对错=归因失效；2026-10-19 起 freeze 硬校验条数，10-14~16 遗留压缩卷按 `kjCohortSplit=v1-compressed` 分层留痕不改写）。**evidence 须引市场以外材料并显式陈述与市场的偏离方向**（偏离可为零但须明说；只复述市场数字按未做功课拒收——marketLambda/v3wChain(src=market_crs) 均属市场衍生物不算第二意见）
+4. 会话调用 `llm_pred.freeze(销售日, preds)` —— 逐场校验（键∈市场键集/判断 ≥3 条且完整/confidence 枚举）→条件归一→冻结 `engine/cache/llm_preds/{销售日}.json`（幂等只读·凭证）
 5. **纪律：LLM 预测步骤先于当日回填/赛果查询**（防赛后泄漏·铁律 14 同源）；回填后 `python engine/scripts/llm_eval.py run` 对拍结算（主判据=31 格配对 log-loss，右尾通道转正=CI 下限>0 且 n≥150）
 
 ### 影子层（paper trading）★ v5.14 补记

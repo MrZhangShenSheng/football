@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[2]
 PREDS_ROOT = ROOT / "engine" / "cache" / "llm_preds"
 CARDS_ROOT = ROOT / "engine" / "cache" / "llm_cards"
 CONF_LEVELS = ("low", "medium", "high")
+KJ_MIN = 3                      # keyJudgments 条数门槛（SKILL.md §3·v3.4 补入校验）
 RAW_SUM_WARN = (0.5, 2.0)
 # 2026-10-15 大哥拍板直接上 v2：冻结前 TTG 维度锚市场（治臣填格低分倾向 −0.78 球），
 # 形状维度（同总进球格间主客分配）保留独立判断。epoch 登记 engine/cache/chain_registry.json。
@@ -48,8 +49,14 @@ def validate_pred(pred: dict, market_keys: list[str]) -> tuple[bool, list[str]]:
         if not (isinstance(v, (int, float)) and 0.0 <= float(v) <= 1.0):
             issues.append(f'{pred.get("code")}: {k} 值非法 {v}')
     kj = pred.get("keyJudgments") or []
-    if not kj or any(not (x.get("judgment") and x.get("evidence")) for x in kj):
-        issues.append(f'{pred.get("code")}: keyJudgments 缺失或不完整')
+    # 条数门槛 ≥3（v3.4 2026-10-19 补齐 SKILL.md §3 规格——原校验只判 ≥1,放过了
+    # 10-14~16 三天 38 场「三条压成一条」的卷:形态+H2H+伤停挤在单个 evidence 字段,
+    # 压扁后无法逐条评判对错=归因失效。旧卷是凭证不改写,按 KJ_V1_COMPRESSED 留痕）
+    if len(kj) < KJ_MIN:
+        issues.append(f'{pred.get("code")}: keyJudgments 需≥{KJ_MIN} 条（现 {len(kj)} 条）'
+                      f'——每条一个独立论点,勿把多论据压进单条 evidence')
+    if any(not (x.get("judgment") and x.get("evidence")) for x in kj):
+        issues.append(f'{pred.get("code")}: keyJudgments 条目不完整（judgment/evidence 缺）')
     if pred.get("confidence") not in CONF_LEVELS:
         issues.append(f'{pred.get("code")}: confidence 非法')
     return (not issues), issues

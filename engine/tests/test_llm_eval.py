@@ -43,6 +43,31 @@ def test_evaluate_verdict_machinery(tmp_path, monkeypatch):
     assert "tailChannel" in out and "descriptive" in out
 
 
+def test_kj_cohort_split(monkeypatch):
+    """v3.4：判断口径分层留痕——v1 压缩卷（<3条）与 v2 拆分卷（≥3条）分开报,
+    旧卷是凭证不改写,只在评测侧标注。非判据,descriptive 用。"""
+    import llm_eval as le
+    pool = _full_pool()
+    rows = []
+    for i in range(35):
+        p = {k: (0.05 if k != "1:1" else 0.2) for k in pool}
+        cohort = "v1-compressed" if i < 20 else "v2-split"
+        rows.append({"code": f"二{i:03d}", "cardHash": "x" * 16, "p_crs": p,
+                     "pRawSum": 1.0, "rawSumWarn": False, "contextStatus": "ok",
+                     "keyJudgments": [], "confidence": "medium",
+                     "_marketPool": pool, "_actual": "1:1", "_score": "1:1",
+                     "_closeProxy": "lineupLast", "_kjCohort": cohort})
+    monkeypatch.setattr(le, "_load_day_rows", lambda days: rows)
+    out = evaluate(["2026-10-14"])
+    ks = out["kjCohortSplit"]
+    assert ks["v1-compressed"]["n"] == 20 and ks["v2-split"]["n"] == 15
+    assert "diffMean" in ks["v1-compressed"]
+    # 行缺口径标 → unknown 兜底（不炸）
+    for r in rows:
+        r.pop("_kjCohort")
+    assert evaluate(["2026-10-14"])["kjCohortSplit"]["unknown"]["n"] == 35
+
+
 def test_verdict_gates_locked():
     """review fix：n<formal 一律 INSUFFICIENT 不判定；tail PASS 锁 n≥150（边界四例）。"""
     import llm_eval as le

@@ -4,10 +4,15 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "scripts"))
 from llm_pred import validate_pred, normalize_to_keys, freeze
 
 
+def _kj3():
+    """≥3 条独立判断（v3.4 门槛·一条一个论点）。"""
+    return [{"judgment": f"j{i}", "evidence": f"语境层#{i}"} for i in (1, 2, 3)]
+
+
 def test_validate_and_issues():
     keys = ["1:1", "1:0", "0:1"]
     ok = {"code": "周二001", "p_crs": {"1:1": 0.5, "1:0": 0.3, "0:1": 0.2},
-          "keyJudgments": [{"judgment": "j", "evidence": "语境层#1"}], "confidence": "medium"}
+          "keyJudgments": _kj3(), "confidence": "medium"}
     good, issues = validate_pred(ok, keys)
     assert good and not issues
     bad = dict(ok, p_crs={"1:1": 0.9, "9:9": 0.1})                    # 9:9 不在键集
@@ -16,6 +21,28 @@ def test_validate_and_issues():
     bad2 = dict(ok, keyJudgments=[])                                   # 无判断
     good3, issues3 = validate_pred(bad2, keys)
     assert not good3
+
+
+def test_kj_min3_gate():
+    """v3.4：keyJudgments 条数硬门槛 ≥3——补齐 SKILL.md §3 规格（原校验只判 ≥1,
+    放过了 10-14~16 三天 38 场「三条压成一条」的卷）。"""
+    keys = ["1:1", "1:0", "0:1"]
+    base = {"code": "周二001", "p_crs": {"1:1": 0.5, "1:0": 0.3, "0:1": 0.2},
+            "confidence": "medium"}
+    # 单条压缩卷（旧规格形态：多论据挤进一个 evidence）→ 拒
+    one = dict(base, keyJudgments=[{"judgment": "不站边",
+                                    "evidence": "形态+H2H+伤停全挤这一条"}])
+    good, issues = validate_pred(one, keys)
+    assert not good and any("≥3" in i and "现 1 条" in i for i in issues)
+    assert any("勿把多论据压进单条" in i for i in issues)
+    # 2 条仍拒,3 条过
+    assert not validate_pred(dict(base, keyJudgments=_kj3()[:2]), keys)[0]
+    assert validate_pred(dict(base, keyJudgments=_kj3()), keys)[0]
+    # 条数够但条目残缺（evidence 空）仍拒
+    broken = _kj3()
+    broken[1] = {"judgment": "j2", "evidence": ""}
+    good2, issues2 = validate_pred(dict(base, keyJudgments=broken), keys)
+    assert not good2 and any("条目不完整" in i for i in issues2)
 
 
 def test_normalize_to_keys():
@@ -42,7 +69,7 @@ def test_freeze_idempotent_and_strict(tmp_path, monkeypatch):
     save_card(card, "2026-10-13", root=tmp_path / "cards")
     monkeypatch.setattr("llm_pred.CARDS_ROOT", tmp_path / "cards")
     pred = {"code": "周二001", "p_crs": {"1:1": 0.5, "1:0": 0.3, "0:1": 0.2},
-            "keyJudgments": [{"judgment": "j", "evidence": "e"}], "confidence": "medium"}
+            "keyJudgments": _kj3(), "confidence": "medium"}
     p1 = freeze("2026-10-13", [pred])
     assert p1.exists()
     p2 = freeze("2026-10-13", [dict(pred, confidence="high")])     # 幂等不覆写
@@ -85,7 +112,7 @@ def test_chinese_other_keys_mapped():
     pred = {"code": "周二001",
             "p_crs": {**{f"{i}:{j}": 0.02 for i in range(3) for j in range(3)},
                       "other_h": 0.3, "other_d": 0.1, "other_a": 0.1},
-            "keyJudgments": [{"judgment": "j", "evidence": "e"}], "confidence": "low"}
+            "keyJudgments": _kj3(), "confidence": "low"}
     out = pathlib.Path(le.PREDS_ROOT) / "2026-10-14z.json"
     if out.exists():
         out.unlink()
@@ -125,7 +152,7 @@ def test_llm_other_pick_e2e_freeze_and_settle(tmp_path, monkeypatch):
                   DATE, root=cards_root)
         preds.append({"code": f"周二{i:03d}",
                       "p_crs": {"other_h": 0.12, "0:3": 0.10, "1:1": 0.50, "1:0": 0.28},
-                      "keyJudgments": [{"judgment": "j", "evidence": "e"}], "confidence": "low"})
+                      "keyJudgments": _kj3(), "confidence": "low"})
     monkeypatch.setattr(le, "CARDS_ROOT", cards_root)
     monkeypatch.setattr(le, "PREDS_ROOT", tmp_path / "preds")
     le.freeze(DATE, preds)                       # 真实冻结链：卡键集校验+归一落盘

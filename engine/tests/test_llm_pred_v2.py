@@ -9,6 +9,11 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 import llm_pred as lp
 
+
+def _kj3():
+    """≥3 条独立判断（v3.4 门槛·validate_pred 硬校验）。"""
+    return [{"judgment": f"j{i}", "evidence": f"语境层#{i}"} for i in (1, 2, 3)]
+
 TTG = {"s0": 24.0, "s1": 7.75, "s2": 4.55, "s3": 3.70, "s4": 4.50,
        "s5": 6.50, "s6": 11.00, "s7": 13.00}          # 去水期望 ≈3.42
 CRS = {"1:1": 8.5, "1:0": 13.0, "0:1": 14.0, "2:1": 8.25, "0:0": 22.0,
@@ -42,7 +47,7 @@ def _mk_card(root, code="周三009", with_ttg=True):
 def _pred():
     return {"code": "周三009",
             "p_crs": dict(LOW_GRID),
-            "keyJudgments": [{"judgment": "测试", "evidence": "测试"}],
+            "keyJudgments": _kj3(),
             "confidence": "medium"}
 
 
@@ -117,7 +122,7 @@ def test_paper_loads_max_revision(monkeypatch, tmp_path):
                        ("2026-10-15-r2.json", "r2")):
         (tmp_path / name).write_text(json.dumps(
             {"preds": [{"code": "周四006", "p_crs": {"0:3": 1.0}, "cardHash": "x",
-                        "contextStatus": "pending", "keyJudgments": [{"judgment": "j", "evidence": "e"}],
+                        "contextStatus": "pending", "keyJudgments": _kj3(),
                         "confidence": "low"}], "chain": "llm-31grid-v2"}, ensure_ascii=False),
             encoding="utf-8")
     cards = tmp_path / "cards" / "2026-10-15"
