@@ -88,9 +88,23 @@ description: |
 
 1. `python engine/scripts/llm_card.py gen <销售日>` —— 五层数据卡（市场/intel/画像/首发/语境待检索），gen 逐场打印建议检索词
 2. 会话联网检索候选场语境层 → 回写 `llm_card.write_context(销售日, 编号, entries)` ——**三道过滤**：只用 preview 类检索词（禁赛果词）· 赛后特征词条目丢弃 · 发布时间晚于卡 createdAt / 缺 url/publishedAt 丢弃；语境层 ok/未获取两态均终态**禁二次改写**（凭证纪律）
-3. 判断前先 `python engine/scripts/llm_card.py view <销售日> <场次码>` 读阅读版（v3.4·定序=市场正身→判断材料→缺口），再按 spec §3 协议出预测：每场 31 格（市场有价键）p_crs 分布 + 每场 **≥3 条独立 keyJudgments**（judgment+evidence 引用语境层编号）+ confidence 枚举。**一条一个独立论点，禁把形态+H2H+伤停压进单条 evidence**（压扁后无法逐条评判对错=归因失效；2026-10-19 起 freeze 硬校验条数，10-14~16 遗留压缩卷按 `kjCohortSplit=v1-compressed` 分层留痕不改写）。**evidence 须引市场以外材料并显式陈述与市场的偏离方向**（偏离可为零但须明说；只复述市场数字按未做功课拒收——marketLambda/v3wChain(src=market_crs) 均属市场衍生物不算第二意见）
-4. 会话调用 `llm_pred.freeze(销售日, preds)` —— 逐场校验（键∈市场键集/判断 ≥3 条且完整/confidence 枚举）→条件归一→冻结 `engine/cache/llm_preds/{销售日}.json`（幂等只读·凭证）
-5. **纪律：LLM 预测步骤先于当日回填/赛果查询**（防赛后泄漏·铁律 14 同源）；回填后 `python engine/scripts/llm_eval.py run` 对拍结算（主判据=31 格配对 log-loss，右尾通道转正=CI 下限>0 且 n≥150）
+3. 判断前先 `python engine/scripts/llm_card.py view <销售日> <场次码>` 读阅读版（v3.4·定序=市场正身→判断材料→缺口），再出预测。**v3.6（2026-10-21）起输入=三参数，不再手填 31 格**——手填的格内分配是净负债（10-19 八场回放：手填 diffMean −0.175 → 机器生成 +0.013，7/8 场改善；003 型单场 −0.718→−0.079）。会话只给方向判断，31 格形状由市场带内比例继承生成：
+
+```python
+{"code": "周一001",
+ "direction": {"h": .42, "d": .27, "a": .31},   # 三向质量·和≈1（唯一的"叫板"处）
+ "evidenceTier": "structural",                   # state|structural|info → 幅度上限 2/8/∞ pt
+ "shape": {"type": "open"},                      # crush|lock|leaky|open，可选 xgSum/xgDiff
+ "cellOverrides": {},                            # ≤5 格人工钉死，每格须有 kj 支撑
+ "keyJudgments": [...], "confidence": "medium"}  # ≥3 条，口径同下
+```
+
+   `evidenceTier` 三级与幅度上限挂钩（**叫板幅度要用证据兑**）：`state`=阵容/伤停实据仅 ±2pt、`structural`=xG/结构证据 ±8pt、`info`=消息面无上限但只配小幅。`shape.type` 四型按型基线计入大球预算（lock ×0.54 / leaky ×1.29 / crush ×1.12 / open ×0.97），给 `xgSum` 则带宽锚与大球预算两闸豁免（有证据抬带）。**每场仍须 ≥3 条独立 keyJudgments**（judgment+evidence 引用语境层编号）+ confidence 枚举。**一条一个独立论点，禁把形态+H2H+伤停压进单条 evidence**（压扁后无法逐条评判对错=归因失效；2026-10-19 起 freeze 硬校验条数，10-14~16 遗留压缩卷按 `kjCohortSplit=v1-compressed` 分层留痕不改写）。**evidence 须引市场以外材料并显式陈述与市场的偏离方向**（偏离可为零但须明说；只复述市场数字按未做功课拒收——marketLambda/v3wChain(src=market_crs) 均属市场衍生物不算第二意见）
+4. 会话调用 `llm_pred.freeze(销售日, preds)` —— 按 `preds[0]` 有无 `direction` 键**自动分发 v3/v2**：
+   - **v3 结构化链**（有 direction）：输入校验 → `generate_dist` 生成 31 格 → **四道拒冻闸**（大球带预算 ±2% / 单格比值 [0.5,2.5] / 总球期望带宽 ±1.5 球 / 幅度≤等级上限）→ 冻结，卷带 `chain=llm-31grid-v3`、`genCohort=v3-structured`、`checks`、`valueCells`（比值>1.5 且 p>3% 的格·选腿参考）。**不过闸=整批拒冻并逐项打印**，改判断或补证据等级，别改闸。
+   - **v2 兜底格式**（手填 `p_crs` 31 格）：原链保留，仅用于生成器不适用的特例（如市场 CRS 池不足 20 格）。
+   两者同日不混格（卷名不区分，先到先冻结）。冻结件=`engine/cache/llm_preds/{销售日}.json`（幂等只读·凭证）
+5. **纪律：LLM 预测步骤先于当日回填/赛果查询**（防赛后泄漏·铁律 14 同源）；回填后 `python engine/scripts/llm_eval.py run` 对拍结算（主判据=31 格配对 log-loss，右尾通道转正=CI 下限>0 且 n≥150）。两代并存期看 `genCohortSplit`（freehand vs v3-structured）分开读，混算会让手填卷的拖累掩盖生成链的改善
 
 ### 影子层（paper trading）★ v5.14 补记
 
