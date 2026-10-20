@@ -225,6 +225,56 @@ def _apply_xg(p: dict, shape: dict) -> dict:
     return out
 
 
+BIG_BAND_TOL = 0.02                 # 大球带与市场偏差上限（P6/P20：治每场 −4pt 欠账）
+CELL_RATIO = (0.5, 2.5)             # 单格/市场比值闸（P10/P11；003 型 0.49 倍被拦）
+OTHER_CELL_RATIO = (0.3, 3.0)       # other_* 兜底格放宽
+ANCHOR_BAND = 1.5                   # 总球期望带宽（P9 松锚：±1.5 球内自由）
+TIER_CAP = {"state": 0.02, "structural": 0.08, "info": None}   # P8 证据等级→幅度上限
+WARN_SHIFT = 0.12                   # 方向偏离留痕线（不拒冻）
+
+
+def _ttg_expect(dist: dict) -> float:
+    return sum(v * tot_of_key(k) for k, v in dist.items())
+
+
+def check_generated(dist: dict, market: dict, evidence_tier: str, *,
+                    direction: dict, shape: dict,
+                    overrides: dict | None) -> tuple[bool, list[str]]:
+    """生成结果四闸（设计 §5.1·拒冻级）+警告级留痕。违者逐项打印禁静默。开发者 sszhang"""
+    issues, warns = [], []
+    mz = sum(market.values()) or 1.0
+    mkt = {k: v / mz for k, v in market.items()}        # 市场参照归一（比值/带质量同尺）
+    big_l = sum(v for k, v in dist.items() if tot_of_key(k) >= 4)
+    big_m = sum(v for k, v in mkt.items() if tot_of_key(k) >= 4)
+    if abs(big_l - big_m) > BIG_BAND_TOL:
+        issues.append(f"大球带质量 {big_l:.1%} 偏离市场 {big_m:.1%} 超 ±{BIG_BAND_TOL:.0%}")
+    ov = overrides or {}
+    for k in dist:
+        if k in ov:
+            continue                                  # 覆盖格豁免比值闸（kj 已证）
+        m = mkt.get(k)
+        if not m:
+            continue
+        lo, hi = OTHER_CELL_RATIO if k.startswith("other_") else CELL_RATIO
+        if not lo <= dist[k] / m <= hi:
+            issues.append(f"格 {k} 比值 {dist[k] / m:.2f} 出界 [{lo},{hi}]")
+    dl, dm = _ttg_expect(dist), _ttg_expect(mkt)
+    if abs(dl - dm) > ANCHOR_BAND and not isinstance((shape or {}).get("xgSum"), (int, float)):
+        issues.append(f"总球期望 {dl:.2f} 距市场 {dm:.2f} 超 ±{ANCHOR_BAND} 且无 xgSum 证据")
+    cap = TIER_CAP.get(evidence_tier)
+    mkt_dir = {x: sum(v for k, v in mkt.items() if dir_of_key(k) == x) for x in "hda"}
+    shift = max(direction[x] - mkt_dir[x] for x in "hda")
+    if cap is not None and shift > cap:
+        issues.append(f"幅度 {shift:+.1%} 超等级上限 {cap:+.0%}（{evidence_tier}）")
+    if shift > WARN_SHIFT:
+        warns.append(f"方向偏离市场 {shift:+.1%}（>{WARN_SHIFT:.0%} 留痕）")
+    if len(ov) == OVERRIDE_MAX:
+        warns.append(f"cellOverrides 用满 {OVERRIDE_MAX} 格")
+    if evidence_tier == "state":
+        warns.append("state 级证据（有 xG 数据时该用 structural）")
+    return (not issues), issues + [f"[warn] {w}" for w in warns]
+
+
 def generate_dist(direction: dict, market: dict, shape: dict,
                   overrides: dict | None = None) -> dict:
     """五步确定性生成 31 格（设计 §4.1）。market=去水 pick 键分布（须含全部计分键）。

@@ -9,8 +9,8 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from llm_pred import (dir_of_key, generate_dist, tot_of_key,        # noqa: E402
-                      validate_structured)
+from llm_pred import (check_generated, dir_of_key, generate_dist,  # noqa: E402
+                      tot_of_key, validate_structured)
 
 # 近似 31 格市场形状（和≈0.94，带内比例是真参照——生成器按带归一故不要求和为 1）
 MKT = {"1:0": 0.10, "2:0": 0.07, "2:1": 0.09, "1:1": 0.15, "0:0": 0.07,
@@ -120,3 +120,82 @@ def test_validate_structured():
     assert not validate_structured(bad, list(MKT))[0]
     bad = dict(good, confidence="很高")                                   # confidence 枚举
     assert not validate_structured(bad, list(MKT))[0]
+
+
+# ── Task 5：生成结果四闸（拒冻级）──────────────────────────────────────
+_MKT5 = dict(MKT, **{"3:0": 0.03, "3:1": 0.025, "2:2": 0.04, "0:4": 0.01,
+                     "4:0": 0.008, "4:1": 0.006, "2:3": 0.012})
+# _MKT5 归一后三向≈{h:.354, d:.280, a:.365}（探针实测）。_D5 的 a=.45 对市场 +8.5pt
+# 已超 structural 上限 8pt——闸4 口径下它是「须 info 级」的叫板,不能当四闸通例基线。
+_D5 = {"h": .30, "d": .25, "a": .45}
+_D5_MILD = {"h": .32, "d": .26, "a": .42}        # +5.5pt：structural 级可承载的叫板
+
+
+def _renorm(d):
+    z = sum(d.values())
+    return {k: v / z for k, v in d.items()}
+
+
+def test_check_generated_passes_band_inheritance():
+    d = generate_dist(_D5_MILD, _MKT5, {})
+    ok, issues = check_generated(d, _MKT5, "structural", direction=_D5_MILD,
+                                 shape={}, overrides=None)
+    assert ok, issues                                  # 纯带内继承必过四闸
+    # 同一分布换 state 级（≤2pt）即被幅度闸拦——等级挂钩生效
+    ok2, iss2 = check_generated(d, _MKT5, "state", direction=_D5_MILD,
+                                shape={}, overrides=None)
+    assert not ok2 and any("幅度" in i for i in iss2)
+
+
+def test_gate1_big_band_budget():
+    d = generate_dist(_D5, _MKT5, {})
+    flat = _renorm({k: (v * .5 if tot_of_key(k) >= 4 else v) for k, v in d.items()})
+    ok, issues = check_generated(flat, _MKT5, "info", direction=_D5,
+                                 shape={}, overrides=None)
+    assert not ok and any("大球带" in i for i in issues)
+
+
+def test_gate2_cell_ratio_and_override_exemption():
+    d = generate_dist(_D5, _MKT5, {})
+    sq = _renorm({**d, "0:3": d["0:3"] * .3})          # 003 型：单格压到 0.3 倍
+    ok, issues = check_generated(sq, _MKT5, "info", direction=_D5,
+                                 shape={}, overrides=None)
+    assert not ok and any("0:3" in i and "比值" in i for i in issues)
+    # 豁免：覆盖格（有 kj 证据）不触发比值闸
+    ok, issues = check_generated(sq, _MKT5, "info", direction=_D5,
+                                 shape={}, overrides={"0:3": sq["0:3"]})
+    assert ok, issues
+
+
+def test_gate3_anchor_band_and_xg_exemption():
+    # ×6 膨胀 TTG 偏离 +1.494 恰压在 ±1.5 线内（探针实测）——取 ×10 才真超线
+    d3 = {"h": .34, "d": .33, "a": .33}
+    fat = {k: (v * 10 if tot_of_key(k) >= 5 else v) for k, v in _MKT5.items()}
+    hi = generate_dist(d3, fat, {"type": "leaky"})
+    ok, issues = check_generated(hi, _MKT5, "info", direction=d3,
+                                 shape={"type": "leaky"}, overrides=None)
+    assert not ok and any("总球期望" in i for i in issues)
+    # xgSum 在手=有证据，带宽锚豁免（大球带闸仍另行把关）
+    ok, issues = check_generated(hi, _MKT5, "info", direction=d3,
+                                 shape={"type": "leaky", "xgSum": 3.9}, overrides=None)
+    assert not any("总球期望" in i for i in issues)
+
+
+def test_gate4_tier_amplitude():
+    hot = {x: (.44 if x == "a" else .28) for x in "hda"}
+    d4 = generate_dist(hot, _MKT5, {})
+    ok, issues = check_generated(d4, _MKT5, "state", direction=hot,
+                                 shape={}, overrides=None)
+    assert not ok and any("幅度" in i for i in issues)   # state 级 ≤2pt
+    ok, _ = check_generated(d4, _MKT5, "info", direction=hot, shape={}, overrides=None)
+    assert ok                                            # info 级无上限
+
+
+def test_warn_level_never_blocks():
+    """警告级只留痕不拒冻：>12pt 偏离/满 5 覆盖/state 级三条都带 [warn] 前缀。"""
+    hot = {"h": .20, "d": .20, "a": .60}
+    d = generate_dist(hot, _MKT5, {})
+    ok, issues = check_generated(d, _MKT5, "info", direction=hot, shape={},
+                                 overrides=None)
+    assert ok                                            # 有 warn 但不拒
+    assert any(i.startswith("[warn]") and "方向偏离" in i for i in issues)
