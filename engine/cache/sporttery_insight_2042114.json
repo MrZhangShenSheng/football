@@ -1,0 +1,235 @@
+{
+ "fetchedAt": "2026-10-20",
+ "source": "sporttery",
+ "matchId": 2042114,
+ "match": {
+  "code": "周三009",
+  "league": "欧冠",
+  "gameweek": "3",
+  "season": "2026/2027",
+  "home": "贝蒂斯",
+  "away": "费耶诺德",
+  "kickoff": "2026-10-22 03:00",
+  "uniformMatchId": 2514157
+ },
+ "standing": {
+  "away": {
+   "groupName": "",
+   "phaseName": "League Stage",
+   "ranking": "23",
+   "sAwayDrawMatchCnt": "0",
+   "sAwayLossGoalMatchCnt": "1",
+   "sAwayWinGoalMatchCnt": "0",
+   "sDrawMatchCnt": "0",
+   "sLossGoalMatchCnt": "1",
+   "sWinGoalMatchCnt": "1",
+   "seasonName": "2026/2027"
+  },
+  "home": {
+   "groupName": "",
+   "phaseName": "League Stage",
+   "ranking": "9",
+   "sDrawMatchCnt": "0",
+   "sHomeDrawMatchCnt": "0",
+   "sHomeLossGoalMatchCnt": "0",
+   "sHomeWinGoalMatchCnt": "1",
+   "sLossGoalMatchCnt": "0",
+   "sWinGoalMatchCnt": "2",
+   "seasonName": "2026/2027"
+  }
+ },
+ "injuries": {
+  "home": [],
+  "away": []
+ },
+ "form": {
+  "goalAvg": {
+   "awayGoalAvgCnt": "3.4",
+   "awayGoalAvgCntRatio": "61.8",
+   "homeGoalAvgCnt": "2.1",
+   "homeGoalAvgCntRatio": "38.2",
+   "totalLegCnt": 10
+  },
+  "last10": {
+   "awayDrawMatchCnt": 2,
+   "awayLossGoalMatchCnt": 1,
+   "awayScoreRatio": "77",
+   "awayWinGoalMatchCnt": 7,
+   "homeDrawMatchCnt": 1,
+   "homeLossGoalMatchCnt": 2,
+   "homeScoreRatio": "73",
+   "homeWinGoalMatchCnt": 7,
+   "totalLegCnt": 10
+  },
+  "last10HomeAway": {
+   "awayDrawMatchCnt": 1,
+   "awayLossGoalMatchCnt": 1,
+   "awayScoreRatio": "83",
+   "awayWinGoalMatchCnt": 8,
+   "homeDrawMatchCnt": 1,
+   "homeLossGoalMatchCnt": 1,
+   "homeScoreRatio": "83",
+   "homeWinGoalMatchCnt": 8,
+   "totalLegCnt": 10
+  }
+ },
+ "h2h": {
+  "statistics": {
+   "drawMatchCnt": 0,
+   "drawProbability": "0%",
+   "goalCnt": 0,
+   "lossGoalCnt": 0,
+   "lossGoalMatchCnt": 0,
+   "lossProbability": "0%",
+   "netGoal": 0,
+   "sportteryTeamId": 0,
+   "teamId": 0,
+   "teamShortName": "贝蒂斯",
+   "totalLegCnt": 1,
+   "winGoalMatchCnt": 1,
+   "winProbability": "100%"
+  },
+  "matches": [
+   {
+    "date": "2026-01-30",
+    "home": "贝蒂斯",
+    "score": "2:1",
+    "ht": "2:0",
+    "away": "费耶诺德",
+    "winner": "home"
+   }
+  ]
+ },
+ "scorers": {
+  "away": {
+   "playerList": [
+    {
+     "appearanceCnt": 1,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "1.0",
+     "goalCnt": 1,
+     "goalProbability": "33%",
+     "injuryFlag": 0,
+     "personId": 560623,
+     "personName": "S. Steijn",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 0,
+     "substituteMatchCnt": 1,
+     "suspensionFlag": 0,
+     "uniformNo": "14"
+    },
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "33%",
+     "injuryFlag": 0,
+     "personId": 694479,
+     "personName": "A. Hadj Moussa",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 2,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "23"
+    },
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "33%",
+     "injuryFlag": 0,
+     "personId": 798393,
+     "personName": "G. Zechiël",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 2,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "8"
+    }
+   ],
+   "sportteryTeamId": 245,
+   "teamId": 1518,
+   "teamShortName": "费耶诺德",
+   "uniformTeamId": 188
+  },
+  "home": {
+   "playerList": [
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "1.0",
+     "goalCnt": 2,
+     "goalProbability": "33%",
+     "injuryFlag": 0,
+     "personId": 116484,
+     "personName": "Bartra",
+     "playerPositionCode": "Defender",
+     "playerPositionDesc": "后卫",
+     "startedMatchCnt": 2,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "5"
+    },
+    {
+     "appearanceCnt": 2,
+     "assistAvgCnt": "0.5",
+     "assistCnt": 1,
+     "assistProbability": "20%",
+     "goalAvgCnt": "0.5",
+     "goalCnt": 1,
+     "goalProbability": "17%",
+     "injuryFlag": 0,
+     "personId": 103164,
+     "personName": "Isco",
+     "playerPositionCode": "Midfielder",
+     "playerPositionDesc": "中场",
+     "startedMatchCnt": 2,
+     "substituteMatchCnt": 0,
+     "suspensionFlag": 0,
+     "uniformNo": "22"
+    },
+    {
+     "appearanceCnt": 1,
+     "assistAvgCnt": "0",
+     "assistCnt": 0,
+     "assistProbability": "0%",
+     "goalAvgCnt": "1.0",
+     "goalCnt": 1,
+     "goalProbability": "17%",
+     "injuryFlag": 0,
+     "personId": 402218,
+     "personName": "J. Hernández",
+     "playerPositionCode": "Forward",
+     "playerPositionDesc": "前锋",
+     "startedMatchCnt": 0,
+     "substituteMatchCnt": 1,
+     "suspensionFlag": 0,
+     "uniformNo": "9"
+    }
+   ],
+   "sportteryTeamId": 505,
+   "teamId": 2025,
+   "teamShortName": "贝蒂斯",
+   "uniformTeamId": 245
+  },
+  "seasonId": 15574,
+  "seasonName": "2026/2027",
+  "tournamentId": 1096,
+  "tournamentShortName": "欧冠",
+  "uniformLeagueId": 30,
+  "uniformMatchId": 2514157
+ }
+}

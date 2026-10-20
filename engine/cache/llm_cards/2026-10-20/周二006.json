@@ -1,0 +1,839 @@
+{
+ "code": "周二006",
+ "match": "巴黎圣曼 vs 巴萨",
+ "league": "欧冠",
+ "kickoff": "03:00:00",
+ "saleDate": "2026-10-20",
+ "competitionType": {
+  "type": "cup",
+  "roundsPlayed": null,
+  "note": "杯赛/未映射轮——轮换高风险（英锦标赛教训:小组赛大轮换曾零覆盖）"
+ },
+ "kickoffAt": "2026-10-21 03:00:00",
+ "businessDate": "2026-10-20",
+ "kickoffSrc": "sporttery",
+ "layers": {
+  "market": {
+   "had": {
+    "a": 2.13,
+    "d": 4.33,
+    "h": 2.33
+   },
+   "crs": {
+    "0:0": 45.0,
+    "0:1": 28.0,
+    "0:2": 26.0,
+    "0:3": 34.0,
+    "0:4": 65.0,
+    "0:5": 140.0,
+    "1:0": 30.0,
+    "1:1": 12.5,
+    "1:2": 10.0,
+    "1:3": 15.0,
+    "1:4": 26.0,
+    "1:5": 60.0,
+    "2:0": 27.0,
+    "2:1": 10.5,
+    "2:2": 9.6,
+    "2:3": 12.0,
+    "2:4": 23.0,
+    "2:5": 50.0,
+    "3:0": 35.0,
+    "3:1": 15.5,
+    "3:2": 13.0,
+    "3:3": 17.0,
+    "4:0": 70.0,
+    "4:1": 27.0,
+    "4:2": 24.0,
+    "5:0": 160.0,
+    "5:1": 65.0,
+    "5:2": 55.0,
+    "负其他": 12.5,
+    "平其他": 41.0,
+    "胜其他": 13.0
+   },
+   "ttg": {
+    "s0": 45.0,
+    "s1": 19.0,
+    "s2": 7.7,
+    "s3": 4.8,
+    "s4": 4.2,
+    "s5": 4.5,
+    "s6": 5.8,
+    "s7": 4.8
+   },
+   "hhad": {
+    "a": 3.88,
+    "d": 4.5,
+    "h": 1.54,
+    "goalLine": "+1"
+   },
+   "hafu": {
+    "aa": 3.45,
+    "ad": 13.0,
+    "ah": 17.0,
+    "da": 6.25,
+    "dd": 9.0,
+    "dh": 7.1,
+    "ha": 16.0,
+    "hd": 13.0,
+    "hh": 3.6
+   },
+   "devig": {
+    "had": {
+     "a": 0.4156,
+     "d": 0.2044,
+     "h": 0.3799
+    },
+    "hhad": {
+     "a": 0.2282,
+     "d": 0.1968,
+     "h": 0.575
+    },
+    "crs": {
+     "s00s00": 0.017,
+     "s00s01": 0.0282,
+     "s00s02": 0.0305,
+     "s00s03": 0.0229,
+     "s00s04": 0.0114,
+     "s00s05": 0.005,
+     "s01s00": 0.0262,
+     "s01s01": 0.0669,
+     "s01s02": 0.0849,
+     "s01s03": 0.055,
+     "s01s04": 0.0305,
+     "s01s05": 0.0125,
+     "s02s00": 0.0293,
+     "s02s01": 0.0806,
+     "s02s02": 0.0887,
+     "s02s03": 0.0699,
+     "s02s04": 0.0348,
+     "s02s05": 0.0152,
+     "s03s00": 0.0222,
+     "s03s01": 0.0531,
+     "s03s02": 0.0641,
+     "s03s03": 0.0481,
+     "s04s00": 0.0106,
+     "s04s01": 0.0293,
+     "s04s02": 0.0333,
+     "s05s00": 0.0044,
+     "s05s01": 0.0114,
+     "s05s02": 0.0137
+    },
+    "ttg": {
+     "s0": 0.0177,
+     "s1": 0.042,
+     "s2": 0.1036,
+     "s3": 0.1661,
+     "s4": 0.1899,
+     "s5": 0.1772,
+     "s6": 0.1375,
+     "s7": 0.1661
+    },
+    "hafu": {
+     "aa": 0.231,
+     "ad": 0.0613,
+     "ah": 0.0469,
+     "da": 0.1275,
+     "dd": 0.0886,
+     "dh": 0.1122,
+     "ha": 0.0498,
+     "hd": 0.0613,
+     "hh": 0.2214
+    }
+   },
+   "drift": {
+    "status": "单调无对照(ticks=1)",
+    "snapshotsAt": [
+     "2026-10-20T16:45:05+08:00"
+    ]
+   },
+   "oddsUpdatedAt": "2026-10-20 15:42:15"
+  },
+  "intel": {
+   "status": "ok",
+   "injuries": {
+    "home": [],
+    "away": []
+   },
+   "form": {
+    "goalAvg": {
+     "awayGoalAvgCnt": "4.3",
+     "awayGoalAvgCntRatio": "64.2",
+     "homeGoalAvgCnt": "2.4",
+     "homeGoalAvgCntRatio": "35.8",
+     "totalLegCnt": 10
+    },
+    "last10": {
+     "awayDrawMatchCnt": 0,
+     "awayLossGoalMatchCnt": 0,
+     "awayScoreRatio": "100",
+     "awayWinGoalMatchCnt": 10,
+     "homeDrawMatchCnt": 2,
+     "homeLossGoalMatchCnt": 2,
+     "homeScoreRatio": "67",
+     "homeWinGoalMatchCnt": 6,
+     "totalLegCnt": 10
+    },
+    "last10HomeAway": {
+     "awayDrawMatchCnt": 1,
+     "awayLossGoalMatchCnt": 2,
+     "awayScoreRatio": "73",
+     "awayWinGoalMatchCnt": 7,
+     "homeDrawMatchCnt": 3,
+     "homeLossGoalMatchCnt": 1,
+     "homeScoreRatio": "70",
+     "homeWinGoalMatchCnt": 6,
+     "totalLegCnt": 10
+    }
+   },
+   "standing": {
+    "home": {
+     "ranking": "1",
+     "home": {
+      "W": "1",
+      "D": "0",
+      "L": "0"
+     },
+     "away": {
+      "W": null,
+      "D": null,
+      "L": null
+     }
+    },
+    "away": {
+     "ranking": "2",
+     "home": {
+      "W": null,
+      "D": null,
+      "L": null
+     },
+     "away": {
+      "W": "1",
+      "D": "0",
+      "L": "0"
+     }
+    }
+   },
+   "h2h": {
+    "statistics": {
+     "drawMatchCnt": 1,
+     "drawProbability": "11%",
+     "goalCnt": 0,
+     "lossGoalCnt": 0,
+     "lossGoalMatchCnt": 4,
+     "lossProbability": "44%",
+     "netGoal": 0,
+     "sportteryTeamId": 0,
+     "teamId": 0,
+     "teamShortName": "巴黎圣曼",
+     "totalLegCnt": 9,
+     "winGoalMatchCnt": 4,
+     "winProbability": "44%"
+    },
+    "matches": [
+     {
+      "date": "2025-10-02",
+      "home": "巴萨",
+      "score": "1:2",
+      "ht": "1:1",
+      "away": "巴黎圣曼",
+      "winner": "home",
+      "season": "2526"
+     },
+     {
+      "date": "2024-04-17",
+      "home": "巴萨",
+      "score": "1:4",
+      "ht": "1:1",
+      "away": "巴黎圣曼",
+      "winner": "home",
+      "season": "2324"
+     },
+     {
+      "date": "2024-04-11",
+      "home": "巴黎圣曼",
+      "score": "2:3",
+      "ht": "0:1",
+      "away": "巴萨",
+      "winner": "away",
+      "season": "2324"
+     },
+     {
+      "date": "2021-03-11",
+      "home": "巴黎圣曼",
+      "score": "1:1",
+      "ht": "1:1",
+      "away": "巴萨",
+      "winner": "draw",
+      "season": "2021"
+     },
+     {
+      "date": "2021-02-17",
+      "home": "巴萨",
+      "score": "1:4",
+      "ht": "1:1",
+      "away": "巴黎圣曼",
+      "winner": "home",
+      "season": "2021"
+     },
+     {
+      "date": "2017-03-09",
+      "home": "巴萨",
+      "score": "6:1",
+      "ht": "2:0",
+      "away": "巴黎圣曼",
+      "winner": "away",
+      "season": "1617"
+     },
+     {
+      "date": "2017-02-15",
+      "home": "巴黎圣曼",
+      "score": "4:0",
+      "ht": "2:0",
+      "away": "巴萨",
+      "winner": "home",
+      "season": "1617"
+     },
+     {
+      "date": "2015-04-22",
+      "home": "巴萨",
+      "score": "2:0",
+      "ht": "2:0",
+      "away": "巴黎圣曼",
+      "winner": "away",
+      "season": "1415"
+     },
+     {
+      "date": "2015-04-16",
+      "home": "巴黎圣曼",
+      "score": "1:3",
+      "ht": "0:1",
+      "away": "巴萨",
+      "winner": "away",
+      "season": "1415"
+     }
+    ],
+    "seasonAgg": "主队(巴黎圣曼)视角 2526(1) 胜1 · 2324(2) 胜1负1 · 2021(2) 胜1平1 · 1617(2) 胜1负1 · 1415(2) 负2",
+    "recent2": [
+     {
+      "date": "2025-10-02",
+      "home": "巴萨",
+      "score": "1:2",
+      "ht": "1:1",
+      "away": "巴黎圣曼",
+      "winner": "home",
+      "season": "2526"
+     },
+     {
+      "date": "2024-04-17",
+      "home": "巴萨",
+      "score": "1:4",
+      "ht": "1:1",
+      "away": "巴黎圣曼",
+      "winner": "home",
+      "season": "2324"
+     }
+    ]
+   },
+   "scorers": {
+    "away": {
+     "playerList": [
+      {
+       "appearanceCnt": 1,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "2.0",
+       "goalCnt": 2,
+       "goalProbability": "22%",
+       "injuryFlag": 0,
+       "personId": 429714,
+       "personName": "拉菲尼亚",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 1,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "11"
+      },
+      {
+       "appearanceCnt": 2,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "1.0",
+       "goalCnt": 2,
+       "goalProbability": "22%",
+       "injuryFlag": 0,
+       "personId": 540856,
+       "personName": "阿德耶米",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 1,
+       "substituteMatchCnt": 1,
+       "suspensionFlag": 0,
+       "uniformNo": "14"
+      },
+      {
+       "appearanceCnt": 2,
+       "assistAvgCnt": "2.0",
+       "assistCnt": 4,
+       "assistProbability": "57%",
+       "goalAvgCnt": "0.5",
+       "goalCnt": 1,
+       "goalProbability": "11%",
+       "injuryFlag": 0,
+       "personId": 723652,
+       "personName": "亚马尔",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 2,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "10"
+      }
+     ],
+     "sportteryTeamId": 401,
+     "teamId": 2017,
+     "teamShortName": "巴萨",
+     "uniformTeamId": 246,
+     "top5": [
+      {
+       "appearanceCnt": 1,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "2.0",
+       "goalCnt": 2,
+       "goalProbability": "22%",
+       "injuryFlag": 0,
+       "personId": 429714,
+       "personName": "拉菲尼亚",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 1,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "11"
+      },
+      {
+       "appearanceCnt": 2,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "1.0",
+       "goalCnt": 2,
+       "goalProbability": "22%",
+       "injuryFlag": 0,
+       "personId": 540856,
+       "personName": "阿德耶米",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 1,
+       "substituteMatchCnt": 1,
+       "suspensionFlag": 0,
+       "uniformNo": "14"
+      },
+      {
+       "appearanceCnt": 2,
+       "assistAvgCnt": "2.0",
+       "assistCnt": 4,
+       "assistProbability": "57%",
+       "goalAvgCnt": "0.5",
+       "goalCnt": 1,
+       "goalProbability": "11%",
+       "injuryFlag": 0,
+       "personId": 723652,
+       "personName": "亚马尔",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 2,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "10"
+      }
+     ]
+    },
+    "home": {
+     "playerList": [
+      {
+       "appearanceCnt": 2,
+       "assistAvgCnt": "1.5",
+       "assistCnt": 3,
+       "assistProbability": "43%",
+       "goalAvgCnt": "1.5",
+       "goalCnt": 3,
+       "goalProbability": "30%",
+       "injuryFlag": 0,
+       "personId": 320112,
+       "personName": "O. Dembélé",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 2,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "10"
+      },
+      {
+       "appearanceCnt": 2,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "1.5",
+       "goalCnt": 3,
+       "goalProbability": "30%",
+       "injuryFlag": 0,
+       "personId": 420666,
+       "personName": "托雷斯",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 1,
+       "substituteMatchCnt": 1,
+       "suspensionFlag": 0,
+       "uniformNo": "9"
+      },
+      {
+       "appearanceCnt": 1,
+       "assistAvgCnt": "1.0",
+       "assistCnt": 1,
+       "assistProbability": "14%",
+       "goalAvgCnt": "1.0",
+       "goalCnt": 1,
+       "goalProbability": "10%",
+       "injuryFlag": 0,
+       "personId": 685549,
+       "personName": "D. Doué",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 1,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "14"
+      }
+     ],
+     "sportteryTeamId": 187,
+     "teamId": 886,
+     "teamShortName": "巴黎圣曼",
+     "uniformTeamId": 178,
+     "top5": [
+      {
+       "appearanceCnt": 2,
+       "assistAvgCnt": "1.5",
+       "assistCnt": 3,
+       "assistProbability": "43%",
+       "goalAvgCnt": "1.5",
+       "goalCnt": 3,
+       "goalProbability": "30%",
+       "injuryFlag": 0,
+       "personId": 320112,
+       "personName": "O. Dembélé",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 2,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "10"
+      },
+      {
+       "appearanceCnt": 2,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "1.5",
+       "goalCnt": 3,
+       "goalProbability": "30%",
+       "injuryFlag": 0,
+       "personId": 420666,
+       "personName": "托雷斯",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 1,
+       "substituteMatchCnt": 1,
+       "suspensionFlag": 0,
+       "uniformNo": "9"
+      },
+      {
+       "appearanceCnt": 1,
+       "assistAvgCnt": "1.0",
+       "assistCnt": 1,
+       "assistProbability": "14%",
+       "goalAvgCnt": "1.0",
+       "goalCnt": 1,
+       "goalProbability": "10%",
+       "injuryFlag": 0,
+       "personId": 685549,
+       "personName": "D. Doué",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 1,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "14"
+      }
+     ]
+    },
+    "seasonId": 15574,
+    "seasonName": "2026/2027",
+    "tournamentId": 1096,
+    "tournamentShortName": "欧冠",
+    "uniformLeagueId": 30,
+    "uniformMatchId": 2514152
+   },
+   "keyAbsences": {
+    "home": [],
+    "away": []
+   }
+  },
+  "profile": {
+   "status": "未获取",
+   "league": "欧冠",
+   "standings": {
+    "status": "未获取"
+   }
+  },
+  "lineup": {
+   "status": "未获取"
+  },
+  "context": {
+   "status": "ok",
+   "entries": [
+    {
+     "title": "PSG vs Barcelona team news (SportsMole 10-20)",
+     "url": "https://www.sportsmole.co.uk/football/psg/champions-league/team-news/psg-vs-barcelona-injury-suspension-list-predicted-xis_607162.html",
+     "publishedAt": "2026-10-20T02:00:00",
+     "fetchedAt": "2026-10-20T16:54:03",
+     "excerpt": "巴萨 6 缺: Kounde(踝)/Eric Garcia(大腿撕裂3-4周)/Raphinha(腘绳肌3周)/Balde(腘绳肌)/ter Stegen(长期)/De Jong(恢复中)——赛前48h双重打击。PSG: Nuno Mendes(大腿)缺,Mayulu(死腿)疑。巴萨防线半残。"
+    }
+   ]
+  },
+  "ourModels": {
+   "v3wChain": {
+    "status": "ok",
+    "src": "market_crs",
+    "water": true,
+    "ttgBoom": 0.30518390540546864,
+    "leagueWarn": true,
+    "independentOfMarket": false,
+    "useNote": "src=market_crs → 本信号≈市场去水，勿当独立第二意见；独立信号看 water/ttgBoom"
+   },
+   "v4b": {
+    "status": "该场未在 v4b"
+   },
+   "marketLambda": {
+    "status": "ok",
+    "role": "market-derived",
+    "lamH": 2.16,
+    "lamA": 2.28,
+    "lamSum": 4.43,
+    "rho": 0.0,
+    "note": "市场隐含主客期望进球（去水后反解）——进球带判断的市场参照,非独立意见"
+   },
+   "teamRecent": {
+    "horizon": "2026-10-21",
+    "windowDays": 90,
+    "poolMatches": 989,
+    "source": "每日回填库 + 体彩缓存 + 联赛库（espn history 刷新·ID 空间统一去重）",
+    "home": {
+     "recent": [
+      {
+       "date": "2026-10-17",
+       "season": "2627",
+       "opp": "斯特拉斯堡",
+       "ha": "客",
+       "score": "3-1",
+       "res": "胜",
+       "src": "cache",
+       "oppPos": null
+      },
+      {
+       "date": "2026-10-15",
+       "season": "2627",
+       "opp": "曼城",
+       "ha": "客",
+       "score": "4-2",
+       "res": "胜",
+       "src": "cache",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-21",
+       "season": "2627",
+       "opp": "马赛",
+       "ha": "客",
+       "score": "2-1",
+       "res": "胜",
+       "src": "cache",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-14",
+       "season": "2627",
+       "opp": "布雷斯特",
+       "ha": "客",
+       "score": "1-0",
+       "res": "胜",
+       "src": "cache",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-10",
+       "season": "2627",
+       "opp": "布拉迪斯",
+       "ha": "主",
+       "score": "6-1",
+       "res": "胜",
+       "src": "daily",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-05",
+       "season": "2627",
+       "opp": "摩纳哥",
+       "ha": "主",
+       "score": "1-2",
+       "res": "负",
+       "src": "cache",
+       "oppPos": null
+      },
+      {
+       "date": "2026-08-29",
+       "season": "2627",
+       "opp": "里尔",
+       "ha": "客",
+       "score": "2-2",
+       "res": "平",
+       "src": "cache",
+       "oppPos": null
+      },
+      {
+       "date": "2026-08-13",
+       "season": "2627",
+       "opp": "维拉",
+       "ha": "主",
+       "score": "2-1",
+       "res": "胜",
+       "src": "cache",
+       "oppPos": null
+      }
+     ],
+     "homeGfGa": [
+      3.0,
+      1.33,
+      3
+     ],
+     "awayGfGa": [
+      2.4,
+      1.2,
+      5
+     ],
+     "restDays": 4,
+     "matches14d": 2,
+     "elo": null
+    },
+    "away": {
+     "recent": [
+      {
+       "date": "2026-10-16",
+       "season": "2627",
+       "opp": "贝蒂斯",
+       "ha": "客",
+       "score": "5-2",
+       "res": "胜",
+       "src": "daily",
+       "oppPos": null
+      },
+      {
+       "date": "2026-10-14",
+       "season": "2627",
+       "opp": "加拉塔萨",
+       "ha": "客",
+       "score": "4-1",
+       "res": "胜",
+       "src": "daily",
+       "oppPos": null
+      },
+      {
+       "date": "2026-10-11",
+       "season": "2627",
+       "opp": "赫塔费",
+       "ha": "主",
+       "score": "3-0",
+       "res": "胜",
+       "src": "cache",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-20",
+       "season": "2627",
+       "opp": "塞维利亚",
+       "ha": "客",
+       "score": "3-1",
+       "res": "胜",
+       "src": "cache",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-17",
+       "season": "2627",
+       "opp": "桑坦德",
+       "ha": "主",
+       "score": "7-2",
+       "res": "胜",
+       "src": "daily",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-13",
+       "season": "2627",
+       "opp": "莱万特",
+       "ha": "客",
+       "score": "4-2",
+       "res": "胜",
+       "src": "cache",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-10",
+       "season": "2627",
+       "opp": "费耶诺德",
+       "ha": "主",
+       "score": "5-1",
+       "res": "胜",
+       "src": "daily",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-06",
+       "season": "2627",
+       "opp": "巴伦西亚",
+       "ha": "客",
+       "score": "5-0",
+       "res": "胜",
+       "src": "daily",
+       "oppPos": null
+      }
+     ],
+     "homeGfGa": [
+      5.0,
+      1.0,
+      3
+     ],
+     "awayGfGa": [
+      4.2,
+      1.2,
+      5
+     ],
+     "restDays": 5,
+     "matches14d": 3,
+     "elo": null
+    }
+   },
+   "xg": {
+    "status": "no_data（fd 不覆盖或存档缺·odds_fetch 先跑）"
+   }
+  }
+ },
+ "createdAt": "2026-10-20T16:47:11",
+ "cardHash": "88b9cb68c6d6254f"
+}

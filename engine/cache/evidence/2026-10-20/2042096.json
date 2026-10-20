@@ -5,10 +5,10 @@
  "steps": {
   "S1_odds": {
    "source": "code",
-   "recordedAt": "2026-10-19T20:00:29",
+   "recordedAt": "2026-10-20T16:45:06",
    "payload": {
-    "archive": "2026-10-19.json",
-    "fetchedAt": "2026-10-19",
+    "archive": "2026-10-20.json",
+    "fetchedAt": "2026-10-20",
     "code": "周二001",
     "pools": [
      "had",
@@ -17,8 +17,64 @@
      "hhad",
      "hafu"
     ],
-    "oddsUpdatedAt": "2026-10-19 13:59:17",
+    "oddsUpdatedAt": "2026-10-20 16:06:08",
     "sellStatus": 1
+   }
+  },
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-20T16:45:54",
+   "payload": {
+    "src": "market_crs",
+    "lam": null,
+    "beta": null
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-20T16:45:54",
+   "payload": {
+    "method": "market_crs",
+    "boomGate": 0.05,
+    "water": true
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-20T16:45:54",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s02s01",
+      "p": 0.1383
+     },
+     {
+      "pick": "s01s01",
+      "p": 0.0952
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.0952
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.0808
+     },
+     {
+      "pick": "s03s01",
+      "p": 0.0784
+     }
+    ],
+    "src": "market_crs"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-20T16:45:54",
+   "payload": {
+    "hid": "fenerbahce",
+    "aid": "slavia-praha",
+    "hstRows": 1161
    }
   }
  }

@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-20",
+ "matchKey": "2042118",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-20T16:46:04",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     1.895,
+     1.143
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-20T16:46:04",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": false
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-20T16:46:04",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1154
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0984
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.086
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.0792
+     },
+     {
+      "pick": "s03s01",
+      "p": 0.0621
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-20T16:46:04",
+   "payload": {
+    "hid": "palmeiras",
+    "aid": "fluminense",
+    "hstRows": 0
+   }
+  }
+ }
+}

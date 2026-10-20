@@ -1,0 +1,940 @@
+{
+ "code": "周三001",
+ "match": "东京FC vs 柏太阳神",
+ "league": "日职",
+ "kickoff": "18:00:00",
+ "saleDate": "2026-10-20",
+ "competitionType": {
+  "type": "league",
+  "roundsPlayed": 10
+ },
+ "kickoffAt": "2026-10-21 18:00:00",
+ "businessDate": "2026-10-21",
+ "kickoffSrc": "sporttery",
+ "layers": {
+  "market": {
+   "had": {
+    "a": 2.78,
+    "d": 3.45,
+    "h": 2.09
+   },
+   "crs": {
+    "0:0": 15.0,
+    "0:1": 11.0,
+    "0:2": 16.0,
+    "0:3": 32.0,
+    "0:4": 90.0,
+    "0:5": 350.0,
+    "1:0": 9.0,
+    "1:1": 6.75,
+    "1:2": 8.5,
+    "1:3": 20.0,
+    "1:4": 55.0,
+    "1:5": 200.0,
+    "2:0": 11.5,
+    "2:1": 7.5,
+    "2:2": 10.5,
+    "2:3": 24.0,
+    "2:4": 75.0,
+    "2:5": 250.0,
+    "3:0": 20.0,
+    "3:1": 15.0,
+    "3:2": 20.0,
+    "3:3": 45.0,
+    "4:0": 50.0,
+    "4:1": 34.0,
+    "4:2": 55.0,
+    "5:0": 150.0,
+    "5:1": 100.0,
+    "5:2": 150.0,
+    "负其他": 70.0,
+    "平其他": 200.0,
+    "胜其他": 50.0
+   },
+   "ttg": {
+    "s0": 15.0,
+    "s1": 5.6,
+    "s2": 3.65,
+    "s3": 3.4,
+    "s4": 4.9,
+    "s5": 8.0,
+    "s6": 15.0,
+    "s7": 22.0
+   },
+   "hhad": {
+    "a": 1.56,
+    "d": 3.85,
+    "h": 4.4,
+    "goalLine": "-1"
+   },
+   "hafu": {
+    "aa": 4.5,
+    "ad": 14.0,
+    "ah": 20.0,
+    "da": 6.8,
+    "dd": 6.0,
+    "dh": 5.3,
+    "ha": 26.0,
+    "hd": 14.0,
+    "hh": 3.35
+   },
+   "devig": {
+    "had": {
+     "a": 0.3189,
+     "d": 0.257,
+     "h": 0.4242
+    },
+    "hhad": {
+     "a": 0.5683,
+     "d": 0.2303,
+     "h": 0.2015
+    },
+    "crs": {
+     "s00s00": 0.0481,
+     "s00s01": 0.0681,
+     "s00s02": 0.0448,
+     "s00s03": 0.0206,
+     "s00s04": 0.0065,
+     "s00s05": 0.0014,
+     "s01s00": 0.0853,
+     "s01s01": 0.1178,
+     "s01s02": 0.091,
+     "s01s03": 0.0349,
+     "s01s04": 0.0112,
+     "s01s05": 0.0026,
+     "s02s00": 0.0648,
+     "s02s01": 0.1046,
+     "s02s02": 0.0718,
+     "s02s03": 0.0284,
+     "s02s04": 0.0079,
+     "s02s05": 0.0021,
+     "s03s00": 0.0349,
+     "s03s01": 0.0481,
+     "s03s02": 0.0349,
+     "s03s03": 0.0141,
+     "s04s00": 0.0125,
+     "s04s01": 0.0192,
+     "s04s02": 0.0112,
+     "s05s00": 0.0036,
+     "s05s01": 0.0057,
+     "s05s02": 0.0036
+    },
+    "ttg": {
+     "s0": 0.0531,
+     "s1": 0.1423,
+     "s2": 0.2184,
+     "s3": 0.2344,
+     "s4": 0.1627,
+     "s5": 0.0996,
+     "s6": 0.0531,
+     "s7": 0.0362
+    },
+    "hafu": {
+     "aa": 0.1771,
+     "ad": 0.0569,
+     "ah": 0.0399,
+     "da": 0.1172,
+     "dd": 0.1329,
+     "dh": 0.1504,
+     "ha": 0.0307,
+     "hd": 0.0569,
+     "hh": 0.238
+    }
+   },
+   "drift": {
+    "status": "单调无对照(ticks=1)",
+    "snapshotsAt": [
+     "2026-10-20T16:45:05+08:00"
+    ]
+   },
+   "oddsUpdatedAt": "2026-10-20 09:50:49"
+  },
+  "intel": {
+   "status": "ok",
+   "injuries": {
+    "home": [],
+    "away": []
+   },
+   "form": {
+    "goalAvg": {
+     "awayGoalAvgCnt": "2.5",
+     "awayGoalAvgCntRatio": "53.2",
+     "homeGoalAvgCnt": "2.2",
+     "homeGoalAvgCntRatio": "46.8",
+     "totalLegCnt": 10
+    },
+    "last10": {
+     "awayDrawMatchCnt": 1,
+     "awayLossGoalMatchCnt": 4,
+     "awayScoreRatio": "53",
+     "awayWinGoalMatchCnt": 5,
+     "homeDrawMatchCnt": 1,
+     "homeLossGoalMatchCnt": 1,
+     "homeScoreRatio": "83",
+     "homeWinGoalMatchCnt": 8,
+     "totalLegCnt": 10
+    },
+    "last10HomeAway": {
+     "awayDrawMatchCnt": 1,
+     "awayLossGoalMatchCnt": 3,
+     "awayScoreRatio": "63",
+     "awayWinGoalMatchCnt": 6,
+     "homeDrawMatchCnt": 0,
+     "homeLossGoalMatchCnt": 3,
+     "homeScoreRatio": "70",
+     "homeWinGoalMatchCnt": 7,
+     "totalLegCnt": 10
+    }
+   },
+   "standing": {
+    "home": {
+     "ranking": "3",
+     "home": {
+      "W": "4",
+      "D": "0",
+      "L": "1"
+     },
+     "away": {
+      "W": null,
+      "D": null,
+      "L": null
+     }
+    },
+    "away": {
+     "ranking": "5",
+     "home": {
+      "W": null,
+      "D": null,
+      "L": null
+     },
+     "away": {
+      "W": "4",
+      "D": "0",
+      "L": "1"
+     }
+    }
+   },
+   "h2h": {
+    "statistics": {
+     "drawMatchCnt": 3,
+     "drawProbability": "30%",
+     "goalCnt": 0,
+     "lossGoalCnt": 0,
+     "lossGoalMatchCnt": 4,
+     "lossProbability": "40%",
+     "netGoal": 0,
+     "sportteryTeamId": 0,
+     "teamId": 0,
+     "teamShortName": "东京FC",
+     "totalLegCnt": 10,
+     "winGoalMatchCnt": 3,
+     "winProbability": "30%"
+    },
+    "matches": [
+     {
+      "date": "2026-04-29",
+      "home": "柏太阳神",
+      "score": "1:3",
+      "ht": "0:1",
+      "away": "东京FC",
+      "winner": "home",
+      "season": "2526"
+     },
+     {
+      "date": "2026-02-28",
+      "home": "东京FC",
+      "score": "0:2",
+      "ht": "0:0",
+      "away": "柏太阳神",
+      "winner": "away",
+      "season": "2526"
+     },
+     {
+      "date": "2025-07-05",
+      "home": "柏太阳神",
+      "score": "1:0",
+      "ht": "0:0",
+      "away": "东京FC",
+      "winner": "away",
+      "season": "2526"
+     },
+     {
+      "date": "2025-04-11",
+      "home": "东京FC",
+      "score": "1:1",
+      "ht": "1:0",
+      "away": "柏太阳神",
+      "winner": "draw",
+      "season": "2425"
+     },
+     {
+      "date": "2024-07-30",
+      "home": "东京FC",
+      "score": "0:1",
+      "ht": "-:-",
+      "away": "柏太阳神",
+      "winner": "away",
+      "season": "2425"
+     },
+     {
+      "date": "2024-07-06",
+      "home": "柏太阳神",
+      "score": "3:2",
+      "ht": "2:1",
+      "away": "东京FC",
+      "winner": "away",
+      "season": "2425"
+     },
+     {
+      "date": "2024-05-11",
+      "home": "东京FC",
+      "score": "3:3",
+      "ht": "3:1",
+      "away": "柏太阳神",
+      "winner": "draw",
+      "season": "2324"
+     },
+     {
+      "date": "2023-07-01",
+      "home": "东京FC",
+      "score": "1:0",
+      "ht": "1:0",
+      "away": "柏太阳神",
+      "winner": "home",
+      "season": "2324"
+     },
+     {
+      "date": "2023-02-26",
+      "home": "柏太阳神",
+      "score": "1:1",
+      "ht": "1:1",
+      "away": "东京FC",
+      "winner": "draw",
+      "season": "2223"
+     },
+     {
+      "date": "2022-08-27",
+      "home": "柏太阳神",
+      "score": "3:6",
+      "ht": "0:2",
+      "away": "东京FC",
+      "winner": "home",
+      "season": "2223"
+     }
+    ],
+    "seasonAgg": "主队(东京FC)视角 2526(3) 胜1负2 · 2425(3) 平1负2 · 2324(2) 胜1平1 · 2223(2) 胜1平1",
+    "recent2": [
+     {
+      "date": "2026-04-29",
+      "home": "柏太阳神",
+      "score": "1:3",
+      "ht": "0:1",
+      "away": "东京FC",
+      "winner": "home",
+      "season": "2526"
+     },
+     {
+      "date": "2026-02-28",
+      "home": "东京FC",
+      "score": "0:2",
+      "ht": "0:0",
+      "away": "柏太阳神",
+      "winner": "away",
+      "season": "2526"
+     }
+    ]
+   },
+   "scorers": {
+    "away": {
+     "playerList": [
+      {
+       "appearanceCnt": 10,
+       "assistAvgCnt": "0.2",
+       "assistCnt": 2,
+       "assistProbability": "12%",
+       "goalAvgCnt": "0.7",
+       "goalCnt": 7,
+       "goalProbability": "37%",
+       "injuryFlag": 0,
+       "personId": 437026,
+       "personName": "Y. Segawa",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 0,
+       "substituteMatchCnt": 10,
+       "suspensionFlag": 0,
+       "uniformNo": "20"
+      },
+      {
+       "appearanceCnt": 10,
+       "assistAvgCnt": "0.3",
+       "assistCnt": 3,
+       "assistProbability": "18%",
+       "goalAvgCnt": "0.3",
+       "goalCnt": 3,
+       "goalProbability": "16%",
+       "injuryFlag": 0,
+       "personId": 596911,
+       "personName": "Y. Koizumi",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 10,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "8"
+      },
+      {
+       "appearanceCnt": 10,
+       "assistAvgCnt": "0.1",
+       "assistCnt": 1,
+       "assistProbability": "6%",
+       "goalAvgCnt": "0.3",
+       "goalCnt": 3,
+       "goalProbability": "16%",
+       "injuryFlag": 0,
+       "personId": 690332,
+       "personName": "T. Kubo",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 9,
+       "substituteMatchCnt": 1,
+       "suspensionFlag": 0,
+       "uniformNo": "24"
+      }
+     ],
+     "sportteryTeamId": 552,
+     "teamId": 1331,
+     "teamShortName": "柏太阳神",
+     "uniformTeamId": 369,
+     "top5": [
+      {
+       "appearanceCnt": 10,
+       "assistAvgCnt": "0.2",
+       "assistCnt": 2,
+       "assistProbability": "12%",
+       "goalAvgCnt": "0.7",
+       "goalCnt": 7,
+       "goalProbability": "37%",
+       "injuryFlag": 0,
+       "personId": 437026,
+       "personName": "Y. Segawa",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 0,
+       "substituteMatchCnt": 10,
+       "suspensionFlag": 0,
+       "uniformNo": "20"
+      },
+      {
+       "appearanceCnt": 10,
+       "assistAvgCnt": "0.3",
+       "assistCnt": 3,
+       "assistProbability": "18%",
+       "goalAvgCnt": "0.3",
+       "goalCnt": 3,
+       "goalProbability": "16%",
+       "injuryFlag": 0,
+       "personId": 596911,
+       "personName": "Y. Koizumi",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 10,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "8"
+      },
+      {
+       "appearanceCnt": 10,
+       "assistAvgCnt": "0.1",
+       "assistCnt": 1,
+       "assistProbability": "6%",
+       "goalAvgCnt": "0.3",
+       "goalCnt": 3,
+       "goalProbability": "16%",
+       "injuryFlag": 0,
+       "personId": 690332,
+       "personName": "T. Kubo",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 9,
+       "substituteMatchCnt": 1,
+       "suspensionFlag": 0,
+       "uniformNo": "24"
+      }
+     ]
+    },
+    "home": {
+     "playerList": [
+      {
+       "appearanceCnt": 10,
+       "assistAvgCnt": "0.4",
+       "assistCnt": 4,
+       "assistProbability": "24%",
+       "goalAvgCnt": "0.7",
+       "goalCnt": 7,
+       "goalProbability": "33%",
+       "injuryFlag": 0,
+       "personId": 674490,
+       "personName": "M. Nagakura",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 9,
+       "substituteMatchCnt": 1,
+       "suspensionFlag": 0,
+       "uniformNo": "26"
+      },
+      {
+       "appearanceCnt": 10,
+       "assistAvgCnt": "0.2",
+       "assistCnt": 2,
+       "assistProbability": "12%",
+       "goalAvgCnt": "0.4",
+       "goalCnt": 4,
+       "goalProbability": "19%",
+       "injuryFlag": 0,
+       "personId": 597490,
+       "personName": "Marcelo Ryan",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 9,
+       "substituteMatchCnt": 1,
+       "suspensionFlag": 0,
+       "uniformNo": "9"
+      },
+      {
+       "appearanceCnt": 9,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "0.4",
+       "goalCnt": 4,
+       "goalProbability": "19%",
+       "injuryFlag": 0,
+       "personId": 789255,
+       "personName": "S. Anzai",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 6,
+       "substituteMatchCnt": 3,
+       "suspensionFlag": 0,
+       "uniformNo": "7"
+      }
+     ],
+     "sportteryTeamId": 548,
+     "teamId": 1330,
+     "teamShortName": "东京FC",
+     "uniformTeamId": 155,
+     "top5": [
+      {
+       "appearanceCnt": 10,
+       "assistAvgCnt": "0.4",
+       "assistCnt": 4,
+       "assistProbability": "24%",
+       "goalAvgCnt": "0.7",
+       "goalCnt": 7,
+       "goalProbability": "33%",
+       "injuryFlag": 0,
+       "personId": 674490,
+       "personName": "M. Nagakura",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 9,
+       "substituteMatchCnt": 1,
+       "suspensionFlag": 0,
+       "uniformNo": "26"
+      },
+      {
+       "appearanceCnt": 10,
+       "assistAvgCnt": "0.2",
+       "assistCnt": 2,
+       "assistProbability": "12%",
+       "goalAvgCnt": "0.4",
+       "goalCnt": 4,
+       "goalProbability": "19%",
+       "injuryFlag": 0,
+       "personId": 597490,
+       "personName": "Marcelo Ryan",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 9,
+       "substituteMatchCnt": 1,
+       "suspensionFlag": 0,
+       "uniformNo": "9"
+      },
+      {
+       "appearanceCnt": 9,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "0.4",
+       "goalCnt": 4,
+       "goalProbability": "19%",
+       "injuryFlag": 0,
+       "personId": 789255,
+       "personName": "S. Anzai",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 6,
+       "substituteMatchCnt": 3,
+       "suspensionFlag": 0,
+       "uniformNo": "7"
+      }
+     ]
+    },
+    "seasonId": 14253,
+    "seasonName": "2026",
+    "tournamentId": 50,
+    "tournamentShortName": "日职",
+    "uniformLeagueId": 28,
+    "uniformMatchId": 2514151
+   },
+   "keyAbsences": {
+    "home": [],
+    "away": []
+   }
+  },
+  "profile": {
+   "status": "ok",
+   "league": "japan",
+   "standings": {
+    "status": "ok",
+    "source": "espn",
+    "nTeams": 20,
+    "tableTop": [
+     {
+      "pos": 1,
+      "team": "Sanfrecce Hiroshima",
+      "played": 10,
+      "won": 7,
+      "drawn": 2,
+      "lost": 1,
+      "gf": 25,
+      "ga": 6,
+      "gd": 19,
+      "pts": 23
+     },
+     {
+      "pos": 2,
+      "team": "Machida Zelvia",
+      "played": 10,
+      "won": 7,
+      "drawn": 2,
+      "lost": 1,
+      "gf": 25,
+      "ga": 10,
+      "gd": 15,
+      "pts": 23
+     },
+     {
+      "pos": 3,
+      "team": "FC Tokyo",
+      "played": 10,
+      "won": 7,
+      "drawn": 2,
+      "lost": 1,
+      "gf": 21,
+      "ga": 8,
+      "gd": 13,
+      "pts": 23
+     },
+     {
+      "pos": 4,
+      "team": "Vissel Kobe",
+      "played": 10,
+      "won": 7,
+      "drawn": 1,
+      "lost": 2,
+      "gf": 17,
+      "ga": 9,
+      "gd": 8,
+      "pts": 22
+     },
+     {
+      "pos": 5,
+      "team": "Kashiwa Reysol",
+      "played": 10,
+      "won": 7,
+      "drawn": 0,
+      "lost": 3,
+      "gf": 22,
+      "ga": 17,
+      "gd": 5,
+      "pts": 21
+     },
+     {
+      "pos": 6,
+      "team": "Kashima Antlers",
+      "played": 10,
+      "won": 6,
+      "drawn": 1,
+      "lost": 3,
+      "gf": 21,
+      "ga": 16,
+      "gd": 5,
+      "pts": 19
+     }
+    ],
+    "home": {
+     "pos": 3,
+     "team": "FC Tokyo",
+     "played": 10,
+     "won": 7,
+     "drawn": 2,
+     "lost": 1,
+     "gf": 21,
+     "ga": 8,
+     "gd": 13,
+     "pts": 23
+    },
+    "away": {
+     "pos": 5,
+     "team": "Kashiwa Reysol",
+     "played": 10,
+     "won": 7,
+     "drawn": 0,
+     "lost": 3,
+     "gf": 22,
+     "ga": 17,
+     "gd": 5,
+     "pts": 21
+    },
+    "note": "全表见 data/00-leagues/{lg}.json standings（pos/played/W-D-L/GF-GA/pts）"
+   }
+  },
+  "lineup": {
+   "status": "未获取"
+  },
+  "context": {
+   "status": "pending",
+   "entries": []
+  },
+  "ourModels": {
+   "v3wChain": {
+    "status": "ok",
+    "src": "v3w_fallback",
+    "water": true,
+    "ttgBoom": null,
+    "leagueWarn": true,
+    "independentOfMarket": true,
+    "useNote": "src 非 market_crs → 含模型独立成分"
+   },
+   "v4b": {
+    "status": "该场未在 v4b"
+   },
+   "marketLambda": {
+    "status": "ok",
+    "role": "market-derived",
+    "lamH": 1.58,
+    "lamA": 1.38,
+    "lamSum": 2.96,
+    "rho": 0.0,
+    "note": "市场隐含主客期望进球（去水后反解）——进球带判断的市场参照,非独立意见"
+   },
+   "teamRecent": {
+    "horizon": "2026-10-21",
+    "windowDays": 90,
+    "poolMatches": 1050,
+    "source": "每日回填库 + 体彩缓存 + 联赛库（espn history 刷新·ID 空间统一去重）",
+    "home": {
+     "recent": [
+      {
+       "date": "2026-10-17",
+       "season": "2627",
+       "opp": "东京绿茵",
+       "ha": "客",
+       "score": "4-0",
+       "res": "胜",
+       "src": "lib",
+       "oppPos": 20
+      },
+      {
+       "date": "2026-10-10",
+       "season": "2627",
+       "opp": "浦和红钻",
+       "ha": "主",
+       "score": "3-0",
+       "res": "胜",
+       "src": "lib",
+       "oppPos": 9
+      },
+      {
+       "date": "2026-09-19",
+       "season": "2627",
+       "opp": "名古屋鲸",
+       "ha": "主",
+       "score": "1-0",
+       "res": "胜",
+       "src": "lib",
+       "oppPos": 12
+      },
+      {
+       "date": "2026-09-12",
+       "season": "2627",
+       "opp": "大阪钢巴",
+       "ha": "客",
+       "score": "2-0",
+       "res": "胜",
+       "src": "lib",
+       "oppPos": 18
+      },
+      {
+       "date": "2026-09-06",
+       "season": "2627",
+       "opp": "京都不死鸟",
+       "ha": "主",
+       "score": "2-0",
+       "res": "胜",
+       "src": "daily",
+       "oppPos": 16
+      },
+      {
+       "date": "2026-09-02",
+       "season": "2627",
+       "opp": "清水鼓动",
+       "ha": "客",
+       "score": "1-1",
+       "res": "平",
+       "src": "lib",
+       "oppPos": 10
+      },
+      {
+       "date": "2026-08-29",
+       "season": "2627",
+       "opp": "长崎航海",
+       "ha": "客",
+       "score": "3-0",
+       "res": "胜",
+       "src": "lib",
+       "oppPos": 15
+      },
+      {
+       "date": "2026-08-21",
+       "season": "2627",
+       "opp": "千叶市原",
+       "ha": "主",
+       "score": "2-0",
+       "res": "胜",
+       "src": "cache",
+       "oppPos": null
+      }
+     ],
+     "homeGfGa": [
+      2.0,
+      0.0,
+      4
+     ],
+     "awayGfGa": [
+      2.5,
+      0.25,
+      4
+     ],
+     "restDays": 4,
+     "matches14d": 2,
+     "elo": null
+    },
+    "away": {
+     "recent": [
+      {
+       "date": "2026-10-17",
+       "season": "2627",
+       "opp": "名古屋鲸",
+       "ha": "主",
+       "score": "1-3",
+       "res": "负",
+       "src": "cache",
+       "oppPos": 12
+      },
+      {
+       "date": "2026-10-09",
+       "season": "2627",
+       "opp": "神户胜利",
+       "ha": "主",
+       "score": "4-2",
+       "res": "胜",
+       "src": "cache",
+       "oppPos": 4
+      },
+      {
+       "date": "2026-09-20",
+       "season": "2627",
+       "opp": "町田泽维",
+       "ha": "客",
+       "score": "4-2",
+       "res": "胜",
+       "src": "cache",
+       "oppPos": 2
+      },
+      {
+       "date": "2026-09-17",
+       "season": "2627",
+       "opp": "全北现代",
+       "ha": "客",
+       "score": "1-2",
+       "res": "负",
+       "src": "daily",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-12",
+       "season": "2627",
+       "opp": "京都不死鸟",
+       "ha": "客",
+       "score": "3-2",
+       "res": "胜",
+       "src": "daily",
+       "oppPos": 16
+      },
+      {
+       "date": "2026-09-06",
+       "season": "2627",
+       "opp": "横滨水手",
+       "ha": "主",
+       "score": "0-2",
+       "res": "负",
+       "src": "lib",
+       "oppPos": 8
+      },
+      {
+       "date": "2026-09-02",
+       "season": "2627",
+       "opp": "大阪樱花",
+       "ha": "客",
+       "score": "0-2",
+       "res": "负",
+       "src": "lib",
+       "oppPos": 13
+      },
+      {
+       "date": "2026-08-29",
+       "season": "2627",
+       "opp": "清水鼓动",
+       "ha": "客",
+       "score": "1-0",
+       "res": "胜",
+       "src": "daily",
+       "oppPos": 10
+      }
+     ],
+     "homeGfGa": [
+      1.67,
+      2.33,
+      3
+     ],
+     "awayGfGa": [
+      1.8,
+      1.6,
+      5
+     ],
+     "restDays": 4,
+     "matches14d": 2,
+     "elo": null
+    }
+   },
+   "xg": {
+    "status": "no_data（fd 不覆盖或存档缺·odds_fetch 先跑）"
+   }
+  }
+ },
+ "createdAt": "2026-10-20T16:47:26",
+ "cardHash": "eca0b2f81b887f33"
+}

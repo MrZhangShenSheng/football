@@ -1,0 +1,684 @@
+{
+ "code": "周二008",
+ "match": "曼城 vs 雅典AEK",
+ "league": "欧冠",
+ "kickoff": "03:00:00",
+ "saleDate": "2026-10-20",
+ "competitionType": {
+  "type": "cup",
+  "roundsPlayed": null,
+  "note": "杯赛/未映射轮——轮换高风险（英锦标赛教训:小组赛大轮换曾零覆盖）"
+ },
+ "kickoffAt": "2026-10-21 03:00:00",
+ "businessDate": "2026-10-20",
+ "kickoffSrc": "sporttery",
+ "layers": {
+  "market": {
+   "had": {},
+   "crs": {
+    "0:0": 37.0,
+    "0:1": 60.0,
+    "0:2": 175.0,
+    "0:3": 550.0,
+    "0:4": 1000.0,
+    "0:5": 1000.0,
+    "1:0": 11.0,
+    "1:1": 18.0,
+    "1:2": 60.0,
+    "1:3": 250.0,
+    "1:4": 750.0,
+    "1:5": 1000.0,
+    "2:0": 6.75,
+    "2:1": 9.5,
+    "2:2": 31.0,
+    "2:3": 150.0,
+    "2:4": 550.0,
+    "2:5": 1000.0,
+    "3:0": 6.0,
+    "3:1": 9.0,
+    "3:2": 30.0,
+    "3:3": 110.0,
+    "4:0": 7.25,
+    "4:1": 12.0,
+    "4:2": 37.0,
+    "5:0": 11.0,
+    "5:1": 18.0,
+    "5:2": 60.0,
+    "负其他": 550.0,
+    "平其他": 500.0,
+    "胜其他": 6.5
+   },
+   "ttg": {
+    "s0": 37.0,
+    "s1": 10.5,
+    "s2": 6.0,
+    "s3": 4.2,
+    "s4": 4.1,
+    "s5": 5.0,
+    "s6": 7.4,
+    "s7": 6.75
+   },
+   "hhad": {
+    "a": 3.51,
+    "d": 4.55,
+    "h": 1.6,
+    "goalLine": "-2"
+   },
+   "hafu": {
+    "aa": 45.0,
+    "ad": 34.0,
+    "ah": 28.0,
+    "da": 58.0,
+    "dd": 19.0,
+    "dh": 4.55,
+    "ha": 125.0,
+    "hd": 34.0,
+    "hh": 1.19
+   },
+   "devig": {
+    "had": null,
+    "hhad": {
+     "a": 0.2522,
+     "d": 0.1946,
+     "h": 0.5533
+    },
+    "crs": {
+     "s00s00": 0.0195,
+     "s00s01": 0.0115,
+     "s00s02": 0.0036,
+     "s00s03": 0.001,
+     "s00s04": 0.0005,
+     "s00s05": 0.0005,
+     "s01s00": 0.0732,
+     "s01s01": 0.0428,
+     "s01s02": 0.0115,
+     "s01s03": 0.0024,
+     "s01s04": 0.0007,
+     "s01s05": 0.0005,
+     "s02s00": 0.1247,
+     "s02s01": 0.0859,
+     "s02s02": 0.0236,
+     "s02s03": 0.0042,
+     "s02s04": 0.001,
+     "s02s05": 0.0005,
+     "s03s00": 0.1417,
+     "s03s01": 0.0911,
+     "s03s02": 0.0245,
+     "s03s03": 0.0059,
+     "s04s00": 0.1153,
+     "s04s01": 0.0666,
+     "s04s02": 0.0195,
+     "s05s00": 0.0732,
+     "s05s01": 0.0428,
+     "s05s02": 0.0115
+    },
+    "ttg": {
+     "s0": 0.0215,
+     "s1": 0.0759,
+     "s2": 0.1329,
+     "s3": 0.1898,
+     "s4": 0.1945,
+     "s5": 0.1595,
+     "s6": 0.1077,
+     "s7": 0.1181
+    },
+    "hafu": {
+     "aa": 0.0177,
+     "ad": 0.0234,
+     "ah": 0.0285,
+     "da": 0.0137,
+     "dd": 0.0419,
+     "dh": 0.1752,
+     "ha": 0.0064,
+     "hd": 0.0234,
+     "hh": 0.6697
+    }
+   },
+   "drift": {
+    "status": "单调无对照(ticks=1)",
+    "snapshotsAt": [
+     "2026-10-20T16:45:05+08:00"
+    ]
+   },
+   "oddsUpdatedAt": "2026-10-19 13:59:17"
+  },
+  "intel": {
+   "status": "ok",
+   "injuries": {
+    "home": [],
+    "away": []
+   },
+   "form": {
+    "goalAvg": {
+     "awayGoalAvgCnt": "2.8",
+     "awayGoalAvgCntRatio": "50.0",
+     "homeGoalAvgCnt": "2.8",
+     "homeGoalAvgCntRatio": "50.0",
+     "totalLegCnt": 10
+    },
+    "last10": {
+     "awayDrawMatchCnt": 2,
+     "awayLossGoalMatchCnt": 1,
+     "awayScoreRatio": "77",
+     "awayWinGoalMatchCnt": 7,
+     "homeDrawMatchCnt": 0,
+     "homeLossGoalMatchCnt": 1,
+     "homeScoreRatio": "90",
+     "homeWinGoalMatchCnt": 9,
+     "totalLegCnt": 10
+    },
+    "last10HomeAway": {
+     "awayDrawMatchCnt": 4,
+     "awayLossGoalMatchCnt": 1,
+     "awayScoreRatio": "63",
+     "awayWinGoalMatchCnt": 5,
+     "homeDrawMatchCnt": 1,
+     "homeLossGoalMatchCnt": 2,
+     "homeScoreRatio": "73",
+     "homeWinGoalMatchCnt": 7,
+     "totalLegCnt": 10
+    }
+   },
+   "standing": {
+    "home": {
+     "ranking": "17",
+     "home": {
+      "W": "0",
+      "D": "0",
+      "L": "1"
+     },
+     "away": {
+      "W": null,
+      "D": null,
+      "L": null
+     }
+    },
+    "away": {
+     "ranking": "20",
+     "home": {
+      "W": null,
+      "D": null,
+      "L": null
+     },
+     "away": {
+      "W": "0",
+      "D": "0",
+      "L": "1"
+     }
+    }
+   },
+   "h2h": {
+    "statistics": {
+     "drawMatchCnt": 0,
+     "drawProbability": "0%",
+     "goalCnt": 0,
+     "lossGoalCnt": 0,
+     "lossGoalMatchCnt": 0,
+     "lossProbability": "0%",
+     "netGoal": 0,
+     "sportteryTeamId": 0,
+     "teamId": 0,
+     "teamShortName": "曼城",
+     "totalLegCnt": 0,
+     "winGoalMatchCnt": 0,
+     "winProbability": "0%"
+    },
+    "matches": [],
+    "seasonAgg": "主队(曼城)视角 无交手",
+    "recent2": []
+   },
+   "scorers": {
+    "away": {
+     "playerList": [
+      {
+       "appearanceCnt": 2,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "0.5",
+       "goalCnt": 1,
+       "goalProbability": "50%",
+       "injuryFlag": 0,
+       "personId": 448109,
+       "personName": "马耶尔",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 2,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "14"
+      },
+      {
+       "appearanceCnt": 2,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "0.5",
+       "goalCnt": 1,
+       "goalProbability": "50%",
+       "injuryFlag": 0,
+       "personId": 270586,
+       "personName": "R. Marin",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 2,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "18"
+      },
+      {
+       "appearanceCnt": 2,
+       "assistAvgCnt": "0.5",
+       "assistCnt": 1,
+       "assistProbability": "100%",
+       "goalAvgCnt": "0",
+       "goalCnt": 0,
+       "goalProbability": "0%",
+       "injuryFlag": 0,
+       "personId": 593482,
+       "personName": "S. Pilios",
+       "playerPositionCode": "Defender",
+       "playerPositionDesc": "后卫",
+       "startedMatchCnt": 2,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "3"
+      }
+     ],
+     "sportteryTeamId": 277,
+     "teamId": 1042,
+     "teamShortName": "雅典AEK",
+     "uniformTeamId": 2112,
+     "top5": [
+      {
+       "appearanceCnt": 2,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "0.5",
+       "goalCnt": 1,
+       "goalProbability": "50%",
+       "injuryFlag": 0,
+       "personId": 448109,
+       "personName": "马耶尔",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 2,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "14"
+      },
+      {
+       "appearanceCnt": 2,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "0.5",
+       "goalCnt": 1,
+       "goalProbability": "50%",
+       "injuryFlag": 0,
+       "personId": 270586,
+       "personName": "R. Marin",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 2,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "18"
+      },
+      {
+       "appearanceCnt": 2,
+       "assistAvgCnt": "0.5",
+       "assistCnt": 1,
+       "assistProbability": "100%",
+       "goalAvgCnt": "0",
+       "goalCnt": 0,
+       "goalProbability": "0%",
+       "injuryFlag": 0,
+       "personId": 593482,
+       "personName": "S. Pilios",
+       "playerPositionCode": "Defender",
+       "playerPositionDesc": "后卫",
+       "startedMatchCnt": 2,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "3"
+      }
+     ]
+    },
+    "home": {
+     "playerList": [
+      {
+       "appearanceCnt": 2,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "2.0",
+       "goalCnt": 4,
+       "goalProbability": "100%",
+       "injuryFlag": 0,
+       "personId": 441484,
+       "personName": "E. Håland",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 2,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "9"
+      },
+      {
+       "appearanceCnt": 1,
+       "assistAvgCnt": "1.0",
+       "assistCnt": 1,
+       "assistProbability": "25%",
+       "goalAvgCnt": "0",
+       "goalCnt": 0,
+       "goalProbability": "0%",
+       "injuryFlag": 0,
+       "personId": 541344,
+       "personName": "R. Aït Nouri",
+       "playerPositionCode": "Defender",
+       "playerPositionDesc": "后卫",
+       "startedMatchCnt": 0,
+       "substituteMatchCnt": 1,
+       "suspensionFlag": 0,
+       "uniformNo": "21"
+      },
+      {
+       "appearanceCnt": 2,
+       "assistAvgCnt": "0.5",
+       "assistCnt": 1,
+       "assistProbability": "25%",
+       "goalAvgCnt": "0",
+       "goalCnt": 0,
+       "goalProbability": "0%",
+       "injuryFlag": 0,
+       "personId": 574083,
+       "personName": "伊利芒·恩迪亚耶",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 0,
+       "substituteMatchCnt": 2,
+       "suspensionFlag": 0,
+       "uniformNo": "7"
+      }
+     ],
+     "sportteryTeamId": 12,
+     "teamId": 676,
+     "teamShortName": "曼城",
+     "uniformTeamId": 217,
+     "top5": [
+      {
+       "appearanceCnt": 2,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "2.0",
+       "goalCnt": 4,
+       "goalProbability": "100%",
+       "injuryFlag": 0,
+       "personId": 441484,
+       "personName": "E. Håland",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 2,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "9"
+      },
+      {
+       "appearanceCnt": 1,
+       "assistAvgCnt": "1.0",
+       "assistCnt": 1,
+       "assistProbability": "25%",
+       "goalAvgCnt": "0",
+       "goalCnt": 0,
+       "goalProbability": "0%",
+       "injuryFlag": 0,
+       "personId": 541344,
+       "personName": "R. Aït Nouri",
+       "playerPositionCode": "Defender",
+       "playerPositionDesc": "后卫",
+       "startedMatchCnt": 0,
+       "substituteMatchCnt": 1,
+       "suspensionFlag": 0,
+       "uniformNo": "21"
+      },
+      {
+       "appearanceCnt": 2,
+       "assistAvgCnt": "0.5",
+       "assistCnt": 1,
+       "assistProbability": "25%",
+       "goalAvgCnt": "0",
+       "goalCnt": 0,
+       "goalProbability": "0%",
+       "injuryFlag": 0,
+       "personId": 574083,
+       "personName": "伊利芒·恩迪亚耶",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 0,
+       "substituteMatchCnt": 2,
+       "suspensionFlag": 0,
+       "uniformNo": "7"
+      }
+     ]
+    },
+    "seasonId": 15574,
+    "seasonName": "2026/2027",
+    "tournamentId": 1096,
+    "tournamentShortName": "欧冠",
+    "uniformLeagueId": 30,
+    "uniformMatchId": 2514149
+   },
+   "keyAbsences": {
+    "home": [],
+    "away": []
+   }
+  },
+  "profile": {
+   "status": "未获取",
+   "league": "欧冠",
+   "standings": {
+    "status": "未获取"
+   }
+  },
+  "lineup": {
+   "status": "未获取"
+  },
+  "context": {
+   "status": "ok",
+   "entries": [
+    {
+     "title": "Man City vs AEK Athens UCL MD3 (CBS/Yahoo)",
+     "url": "https://www.cbssports.com/soccer/news/uefa-champions-league-schedule-matchday-2",
+     "publishedAt": "2026-10-19T12:00:00",
+     "fetchedAt": "2026-10-20T16:54:03",
+     "excerpt": "欧冠 MD3。曼城英超榜首(21分)。雅典AEK 客场。具名伤缺未详(信息薄,卡内 insight 补)。"
+    }
+   ]
+  },
+  "ourModels": {
+   "v3wChain": {
+    "status": "ok",
+    "src": "market_crs",
+    "water": true,
+    "ttgBoom": 0.2193358808940405,
+    "leagueWarn": true,
+    "independentOfMarket": false,
+    "useNote": "src=market_crs → 本信号≈市场去水，勿当独立第二意见；独立信号看 water/ttgBoom"
+   },
+   "v4b": {
+    "status": "该场未在 v4b"
+   },
+   "marketLambda": {
+    "status": "未获取"
+   },
+   "teamRecent": {
+    "horizon": "2026-10-21",
+    "windowDays": 90,
+    "poolMatches": 989,
+    "source": "每日回填库 + 体彩缓存 + 联赛库（espn history 刷新·ID 空间统一去重）",
+    "home": {
+     "recent": [
+      {
+       "date": "2026-10-17",
+       "season": "2627",
+       "opp": "伊普斯",
+       "ha": "主",
+       "score": "3-2",
+       "res": "胜",
+       "src": "cache",
+       "oppPos": null
+      },
+      {
+       "date": "2026-10-15",
+       "season": "2627",
+       "opp": "巴黎圣日耳曼",
+       "ha": "主",
+       "score": "2-4",
+       "res": "负",
+       "src": "cache",
+       "oppPos": null
+      },
+      {
+       "date": "2026-10-11",
+       "season": "2627",
+       "opp": "利物浦",
+       "ha": "客",
+       "score": "3-0",
+       "res": "胜",
+       "src": "daily",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-20",
+       "season": "2627",
+       "opp": "桑德兰",
+       "ha": "主",
+       "score": "5-3",
+       "res": "胜",
+       "src": "cache",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-13",
+       "season": "2627",
+       "opp": "曼联",
+       "ha": "客",
+       "score": "1-0",
+       "res": "胜",
+       "src": "cache",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-09",
+       "season": "2627",
+       "opp": "波尔图",
+       "ha": "客",
+       "score": "2-0",
+       "res": "胜",
+       "src": "daily",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-05",
+       "season": "2627",
+       "opp": "考文垂",
+       "ha": "主",
+       "score": "1-0",
+       "res": "胜",
+       "src": "daily",
+       "oppPos": null
+      },
+      {
+       "date": "2026-08-29",
+       "season": "2627",
+       "opp": "水晶宫",
+       "ha": "客",
+       "score": "4-1",
+       "res": "胜",
+       "src": "cache",
+       "oppPos": null
+      }
+     ],
+     "homeGfGa": [
+      2.75,
+      2.25,
+      4
+     ],
+     "awayGfGa": [
+      2.5,
+      0.25,
+      4
+     ],
+     "restDays": 4,
+     "matches14d": 3,
+     "elo": null
+    },
+    "away": {
+     "recent": [
+      {
+       "date": "2026-10-14",
+       "season": "2627",
+       "opp": "顿矿工",
+       "ha": "客",
+       "score": "1-3",
+       "res": "负",
+       "src": "lib",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-09",
+       "season": "2627",
+       "opp": "LASK林茨",
+       "ha": "主",
+       "score": "1-0",
+       "res": "胜",
+       "src": "daily",
+       "oppPos": null
+      },
+      {
+       "date": "2026-08-27",
+       "season": "2627",
+       "opp": "索列夫",
+       "ha": "主",
+       "score": "4-0",
+       "res": "胜",
+       "src": "cache",
+       "oppPos": null
+      },
+      {
+       "date": "2026-08-19",
+       "season": "2627",
+       "opp": "索列夫",
+       "ha": "客",
+       "score": "0-0",
+       "res": "平",
+       "src": "cache",
+       "oppPos": null
+      }
+     ],
+     "homeGfGa": [
+      2.5,
+      0.0,
+      2
+     ],
+     "awayGfGa": [
+      0.5,
+      1.5,
+      2
+     ],
+     "restDays": 7,
+     "matches14d": 1,
+     "elo": null
+    }
+   },
+   "xg": {
+    "status": "no_data（fd 不覆盖或存档缺·odds_fetch 先跑）"
+   }
+  }
+ },
+ "createdAt": "2026-10-20T16:47:11",
+ "cardHash": "7a4422a593bb38fe"
+}

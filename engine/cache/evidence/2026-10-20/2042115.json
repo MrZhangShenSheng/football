@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-20",
+ "matchKey": "2042115",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-20T16:46:02",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     2.601,
+     1.128
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-20T16:46:02",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": true
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-20T16:46:02",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s02s01",
+      "p": 0.0916
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.0813
+     },
+     {
+      "pick": "s03s01",
+      "p": 0.0795
+     },
+     {
+      "pick": "s01s01",
+      "p": 0.0752
+     },
+     {
+      "pick": "s03s00",
+      "p": 0.0705
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-20T16:46:02",
+   "payload": {
+    "hid": "bayern",
+    "aid": "arsenal",
+    "hstRows": 1259
+   }
+  }
+ }
+}

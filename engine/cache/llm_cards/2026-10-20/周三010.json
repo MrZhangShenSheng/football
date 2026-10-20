@@ -1,0 +1,831 @@
+{
+ "code": "周三010",
+ "match": "拜仁 vs 阿森纳",
+ "league": "欧冠",
+ "kickoff": "03:00:00",
+ "saleDate": "2026-10-20",
+ "competitionType": {
+  "type": "cup",
+  "roundsPlayed": null,
+  "note": "杯赛/未映射轮——轮换高风险（英锦标赛教训:小组赛大轮换曾零覆盖）"
+ },
+ "kickoffAt": "2026-10-22 03:00:00",
+ "businessDate": "2026-10-21",
+ "kickoffSrc": "sporttery",
+ "layers": {
+  "market": {
+   "had": {
+    "a": 3.14,
+    "d": 3.55,
+    "h": 1.89
+   },
+   "crs": {
+    "0:0": 18.0,
+    "0:1": 13.5,
+    "0:2": 20.0,
+    "0:3": 45.0,
+    "0:4": 120.0,
+    "0:5": 350.0,
+    "1:0": 9.5,
+    "1:1": 7.5,
+    "1:2": 9.0,
+    "1:3": 20.0,
+    "1:4": 65.0,
+    "1:5": 250.0,
+    "2:0": 11.0,
+    "2:1": 7.0,
+    "2:2": 11.0,
+    "2:3": 21.0,
+    "2:4": 70.0,
+    "2:5": 250.0,
+    "3:0": 18.0,
+    "3:1": 12.0,
+    "3:2": 17.0,
+    "3:3": 35.0,
+    "4:0": 40.0,
+    "4:1": 28.0,
+    "4:2": 45.0,
+    "5:0": 120.0,
+    "5:1": 80.0,
+    "5:2": 100.0,
+    "负其他": 75.0,
+    "平其他": 200.0,
+    "胜其他": 35.0
+   },
+   "ttg": {
+    "s0": 18.0,
+    "s1": 6.5,
+    "s2": 4.1,
+    "s3": 3.45,
+    "s4": 4.35,
+    "s5": 7.2,
+    "s6": 12.0,
+    "s7": 17.0
+   },
+   "hhad": {
+    "a": 1.69,
+    "d": 3.8,
+    "h": 3.65,
+    "goalLine": "-1"
+   },
+   "hafu": {
+    "aa": 5.2,
+    "ad": 13.0,
+    "ah": 20.0,
+    "da": 7.5,
+    "dd": 6.5,
+    "dh": 5.2,
+    "ha": 25.0,
+    "hd": 13.0,
+    "hh": 2.95
+   },
+   "devig": {
+    "had": {
+     "a": 0.282,
+     "d": 0.2494,
+     "h": 0.4685
+    },
+    "hhad": {
+     "a": 0.5242,
+     "d": 0.2331,
+     "h": 0.2427
+    },
+    "crs": {
+     "s00s00": 0.0396,
+     "s00s01": 0.0546,
+     "s00s02": 0.0352,
+     "s00s03": 0.0142,
+     "s00s04": 0.0048,
+     "s00s05": 0.0014,
+     "s01s00": 0.0809,
+     "s01s01": 0.1053,
+     "s01s02": 0.0859,
+     "s01s03": 0.0352,
+     "s01s04": 0.0094,
+     "s01s05": 0.0021,
+     "s02s00": 0.0687,
+     "s02s01": 0.1138,
+     "s02s02": 0.0687,
+     "s02s03": 0.0334,
+     "s02s04": 0.0087,
+     "s02s05": 0.0021,
+     "s03s00": 0.0396,
+     "s03s01": 0.0623,
+     "s03s02": 0.0422,
+     "s03s03": 0.0189,
+     "s04s00": 0.0162,
+     "s04s01": 0.0242,
+     "s04s02": 0.0142,
+     "s05s00": 0.0048,
+     "s05s01": 0.0075,
+     "s05s02": 0.0058
+    },
+    "ttg": {
+     "s0": 0.0443,
+     "s1": 0.1227,
+     "s2": 0.1945,
+     "s3": 0.2311,
+     "s4": 0.1833,
+     "s5": 0.1107,
+     "s6": 0.0664,
+     "s7": 0.0469
+    },
+    "hafu": {
+     "aa": 0.1533,
+     "ad": 0.0613,
+     "ah": 0.0399,
+     "da": 0.1063,
+     "dd": 0.1226,
+     "dh": 0.1533,
+     "ha": 0.0319,
+     "hd": 0.0613,
+     "hh": 0.2702
+    }
+   },
+   "drift": {
+    "status": "单调无对照(ticks=1)",
+    "snapshotsAt": [
+     "2026-10-20T16:45:05+08:00"
+    ]
+   },
+   "oddsUpdatedAt": "2026-10-20 09:50:49"
+  },
+  "intel": {
+   "status": "ok",
+   "injuries": {
+    "home": [],
+    "away": []
+   },
+   "form": {
+    "goalAvg": {
+     "awayGoalAvgCnt": "1.9",
+     "awayGoalAvgCntRatio": "34.5",
+     "homeGoalAvgCnt": "3.6",
+     "homeGoalAvgCntRatio": "65.5",
+     "totalLegCnt": 10
+    },
+    "last10": {
+     "awayDrawMatchCnt": 0,
+     "awayLossGoalMatchCnt": 1,
+     "awayScoreRatio": "90",
+     "awayWinGoalMatchCnt": 9,
+     "homeDrawMatchCnt": 3,
+     "homeLossGoalMatchCnt": 0,
+     "homeScoreRatio": "80",
+     "homeWinGoalMatchCnt": 7,
+     "totalLegCnt": 10
+    },
+    "last10HomeAway": {
+     "awayDrawMatchCnt": 1,
+     "awayLossGoalMatchCnt": 1,
+     "awayScoreRatio": "83",
+     "awayWinGoalMatchCnt": 8,
+     "homeDrawMatchCnt": 2,
+     "homeLossGoalMatchCnt": 0,
+     "homeScoreRatio": "87",
+     "homeWinGoalMatchCnt": 8,
+     "totalLegCnt": 10
+    }
+   },
+   "standing": {
+    "home": {
+     "ranking": "10",
+     "home": {
+      "W": "1",
+      "D": "0",
+      "L": "0"
+     },
+     "away": {
+      "W": null,
+      "D": null,
+      "L": null
+     }
+    },
+    "away": {
+     "ranking": "7",
+     "home": {
+      "W": null,
+      "D": null,
+      "L": null
+     },
+     "away": {
+      "W": "1",
+      "D": "0",
+      "L": "0"
+     }
+    }
+   },
+   "h2h": {
+    "statistics": {
+     "drawMatchCnt": 2,
+     "drawProbability": "22%",
+     "goalCnt": 0,
+     "lossGoalCnt": 0,
+     "lossGoalMatchCnt": 3,
+     "lossProbability": "33%",
+     "netGoal": 0,
+     "sportteryTeamId": 0,
+     "teamId": 0,
+     "teamShortName": "拜仁",
+     "totalLegCnt": 9,
+     "winGoalMatchCnt": 4,
+     "winProbability": "44%"
+    },
+    "matches": [
+     {
+      "date": "2025-11-27",
+      "home": "阿森纳",
+      "score": "3:1",
+      "ht": "1:1",
+      "away": "拜仁",
+      "winner": "away",
+      "season": "2526"
+     },
+     {
+      "date": "2024-04-18",
+      "home": "拜仁",
+      "score": "1:0",
+      "ht": "0:0",
+      "away": "阿森纳",
+      "winner": "home",
+      "season": "2324"
+     },
+     {
+      "date": "2024-04-10",
+      "home": "阿森纳",
+      "score": "2:2",
+      "ht": "1:2",
+      "away": "拜仁",
+      "winner": "draw",
+      "season": "2324"
+     },
+     {
+      "date": "2019-07-18",
+      "home": "阿森纳",
+      "score": "2:1",
+      "ht": "0:0",
+      "away": "拜仁",
+      "winner": "away",
+      "season": "1920"
+     },
+     {
+      "date": "2017-07-19",
+      "home": "拜仁",
+      "score": "1:1",
+      "ht": "1:0",
+      "away": "阿森纳",
+      "winner": "draw",
+      "season": "1718"
+     },
+     {
+      "date": "2017-03-08",
+      "home": "阿森纳",
+      "score": "1:5",
+      "ht": "1:0",
+      "away": "拜仁",
+      "winner": "home",
+      "season": "1617"
+     },
+     {
+      "date": "2017-02-16",
+      "home": "拜仁",
+      "score": "5:1",
+      "ht": "1:1",
+      "away": "阿森纳",
+      "winner": "home",
+      "season": "1617"
+     },
+     {
+      "date": "2015-11-05",
+      "home": "拜仁",
+      "score": "5:1",
+      "ht": "3:0",
+      "away": "阿森纳",
+      "winner": "home",
+      "season": "1516"
+     },
+     {
+      "date": "2015-10-21",
+      "home": "阿森纳",
+      "score": "2:0",
+      "ht": "0:0",
+      "away": "拜仁",
+      "winner": "away",
+      "season": "1516"
+     }
+    ],
+    "seasonAgg": "主队(拜仁)视角 2526(1) 负1 · 2324(2) 胜1平1 · 1920(1) 负1 · 1718(1) 平1 · 1617(2) 胜2 · 1516(2) 胜1负1",
+    "recent2": [
+     {
+      "date": "2025-11-27",
+      "home": "阿森纳",
+      "score": "3:1",
+      "ht": "1:1",
+      "away": "拜仁",
+      "winner": "away",
+      "season": "2526"
+     },
+     {
+      "date": "2024-04-18",
+      "home": "拜仁",
+      "score": "1:0",
+      "ht": "0:0",
+      "away": "阿森纳",
+      "winner": "home",
+      "season": "2324"
+     }
+    ]
+   },
+   "scorers": {
+    "away": {
+     "playerList": [
+      {
+       "appearanceCnt": 2,
+       "assistAvgCnt": "0.5",
+       "assistCnt": 1,
+       "assistProbability": "25%",
+       "goalAvgCnt": "0.5",
+       "goalCnt": 1,
+       "goalProbability": "25%",
+       "injuryFlag": 0,
+       "personId": 496730,
+       "personName": "B.萨卡",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 1,
+       "substituteMatchCnt": 1,
+       "suspensionFlag": 0,
+       "uniformNo": "7"
+      },
+      {
+       "appearanceCnt": 1,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "1.0",
+       "goalCnt": 1,
+       "goalProbability": "25%",
+       "injuryFlag": 0,
+       "personId": 473481,
+       "personName": "廷贝尔",
+       "playerPositionCode": "Defender",
+       "playerPositionDesc": "后卫",
+       "startedMatchCnt": 1,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "12"
+      },
+      {
+       "appearanceCnt": 2,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "0.5",
+       "goalCnt": 1,
+       "goalProbability": "25%",
+       "injuryFlag": 0,
+       "personId": 334861,
+       "personName": "M. Ødegaard",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 1,
+       "substituteMatchCnt": 1,
+       "suspensionFlag": 0,
+       "uniformNo": "8"
+      }
+     ],
+     "sportteryTeamId": 1,
+     "teamId": 660,
+     "teamShortName": "阿森纳",
+     "uniformTeamId": 1193,
+     "top5": [
+      {
+       "appearanceCnt": 2,
+       "assistAvgCnt": "0.5",
+       "assistCnt": 1,
+       "assistProbability": "25%",
+       "goalAvgCnt": "0.5",
+       "goalCnt": 1,
+       "goalProbability": "25%",
+       "injuryFlag": 0,
+       "personId": 496730,
+       "personName": "B.萨卡",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 1,
+       "substituteMatchCnt": 1,
+       "suspensionFlag": 0,
+       "uniformNo": "7"
+      },
+      {
+       "appearanceCnt": 1,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "1.0",
+       "goalCnt": 1,
+       "goalProbability": "25%",
+       "injuryFlag": 0,
+       "personId": 473481,
+       "personName": "廷贝尔",
+       "playerPositionCode": "Defender",
+       "playerPositionDesc": "后卫",
+       "startedMatchCnt": 1,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "12"
+      },
+      {
+       "appearanceCnt": 2,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "0.5",
+       "goalCnt": 1,
+       "goalProbability": "25%",
+       "injuryFlag": 0,
+       "personId": 334861,
+       "personName": "M. Ødegaard",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 1,
+       "substituteMatchCnt": 1,
+       "suspensionFlag": 0,
+       "uniformNo": "8"
+      }
+     ]
+    },
+    "home": {
+     "playerList": [
+      {
+       "appearanceCnt": 2,
+       "assistAvgCnt": "0.5",
+       "assistCnt": 1,
+       "assistProbability": "20%",
+       "goalAvgCnt": "1.5",
+       "goalCnt": 3,
+       "goalProbability": "38%",
+       "injuryFlag": 0,
+       "personId": 158575,
+       "personName": "凯恩",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 2,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "9"
+      },
+      {
+       "appearanceCnt": 2,
+       "assistAvgCnt": "0.5",
+       "assistCnt": 1,
+       "assistProbability": "20%",
+       "goalAvgCnt": "1.0",
+       "goalCnt": 2,
+       "goalProbability": "25%",
+       "injuryFlag": 0,
+       "personId": 532278,
+       "personName": "M.奥利塞",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 2,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "17"
+      },
+      {
+       "appearanceCnt": 1,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "1.0",
+       "goalCnt": 1,
+       "goalProbability": "13%",
+       "injuryFlag": 0,
+       "personId": 549753,
+       "personName": "穆西亚拉",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 1,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "10"
+      }
+     ],
+     "sportteryTeamId": 137,
+     "teamId": 961,
+     "teamShortName": "拜仁",
+     "uniformTeamId": 197,
+     "top5": [
+      {
+       "appearanceCnt": 2,
+       "assistAvgCnt": "0.5",
+       "assistCnt": 1,
+       "assistProbability": "20%",
+       "goalAvgCnt": "1.5",
+       "goalCnt": 3,
+       "goalProbability": "38%",
+       "injuryFlag": 0,
+       "personId": 158575,
+       "personName": "凯恩",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 2,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "9"
+      },
+      {
+       "appearanceCnt": 2,
+       "assistAvgCnt": "0.5",
+       "assistCnt": 1,
+       "assistProbability": "20%",
+       "goalAvgCnt": "1.0",
+       "goalCnt": 2,
+       "goalProbability": "25%",
+       "injuryFlag": 0,
+       "personId": 532278,
+       "personName": "M.奥利塞",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 2,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "17"
+      },
+      {
+       "appearanceCnt": 1,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "1.0",
+       "goalCnt": 1,
+       "goalProbability": "13%",
+       "injuryFlag": 0,
+       "personId": 549753,
+       "personName": "穆西亚拉",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 1,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "10"
+      }
+     ]
+    },
+    "seasonId": 15574,
+    "seasonName": "2026/2027",
+    "tournamentId": 1096,
+    "tournamentShortName": "欧冠",
+    "uniformLeagueId": 30,
+    "uniformMatchId": 2514159
+   },
+   "keyAbsences": {
+    "home": [],
+    "away": []
+   }
+  },
+  "profile": {
+   "status": "未获取",
+   "league": "欧冠",
+   "standings": {
+    "status": "未获取"
+   }
+  },
+  "lineup": {
+   "status": "未获取"
+  },
+  "context": {
+   "status": "pending",
+   "entries": []
+  },
+  "ourModels": {
+   "v3wChain": {
+    "status": "ok",
+    "src": "v3w_fallback",
+    "water": true,
+    "ttgBoom": null,
+    "leagueWarn": true,
+    "independentOfMarket": true,
+    "useNote": "src 非 market_crs → 含模型独立成分"
+   },
+   "v4b": {
+    "status": "该场未在 v4b"
+   },
+   "marketLambda": {
+    "status": "ok",
+    "role": "market-derived",
+    "lamH": 1.79,
+    "lamA": 1.4,
+    "lamSum": 3.19,
+    "rho": 0.0,
+    "note": "市场隐含主客期望进球（去水后反解）——进球带判断的市场参照,非独立意见"
+   },
+   "teamRecent": {
+    "horizon": "2026-10-22",
+    "windowDays": 90,
+    "poolMatches": 983,
+    "source": "每日回填库 + 体彩缓存 + 联赛库（espn history 刷新·ID 空间统一去重）",
+    "home": {
+     "recent": [
+      {
+       "date": "2026-10-16",
+       "season": "2627",
+       "opp": "莱红牛",
+       "ha": "主",
+       "score": "6-1",
+       "res": "胜",
+       "src": "daily",
+       "oppPos": null
+      },
+      {
+       "date": "2026-10-14",
+       "season": "2627",
+       "opp": "维京",
+       "ha": "客",
+       "score": "3-3",
+       "res": "平",
+       "src": "daily",
+       "oppPos": null
+      },
+      {
+       "date": "2026-10-10",
+       "season": "2627",
+       "opp": "奥格斯堡",
+       "ha": "客",
+       "score": "2-2",
+       "res": "平",
+       "src": "daily",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-19",
+       "season": "2627",
+       "opp": "柏林联合",
+       "ha": "主",
+       "score": "7-0",
+       "res": "胜",
+       "src": "daily",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-13",
+       "season": "2627",
+       "opp": "埃沃斯堡",
+       "ha": "客",
+       "score": "2-1",
+       "res": "胜",
+       "src": "cache",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-11",
+       "season": "2627",
+       "opp": "博德闪耀",
+       "ha": "主",
+       "score": "5-0",
+       "res": "胜",
+       "src": "daily",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-06",
+       "season": "2627",
+       "opp": "沙尔克04",
+       "ha": "客",
+       "score": "0-0",
+       "res": "平",
+       "src": "cache",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-01",
+       "season": "2627",
+       "opp": "奥斯纳",
+       "ha": "客",
+       "score": "4-1",
+       "res": "胜",
+       "src": "daily",
+       "oppPos": null
+      }
+     ],
+     "homeGfGa": [
+      6.0,
+      0.33,
+      3
+     ],
+     "awayGfGa": [
+      2.2,
+      1.4,
+      5
+     ],
+     "restDays": 6,
+     "matches14d": 3,
+     "elo": null
+    },
+    "away": {
+     "recent": [
+      {
+       "date": "2026-10-16",
+       "season": "2627",
+       "opp": "诺丁汉",
+       "ha": "客",
+       "score": "1-0",
+       "res": "胜",
+       "src": "daily",
+       "oppPos": null
+      },
+      {
+       "date": "2026-10-14",
+       "season": "2627",
+       "opp": "里尔",
+       "ha": "主",
+       "score": "3-0",
+       "res": "胜",
+       "src": "daily",
+       "oppPos": null
+      },
+      {
+       "date": "2026-10-10",
+       "season": "2627",
+       "opp": "利兹联",
+       "ha": "主",
+       "score": "2-1",
+       "res": "胜",
+       "src": "daily",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-16",
+       "season": "2627",
+       "opp": "伊普斯",
+       "ha": "客",
+       "score": "4-2",
+       "res": "胜",
+       "src": "daily",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-13",
+       "season": "2627",
+       "opp": "桑德兰",
+       "ha": "客",
+       "score": "2-0",
+       "res": "胜",
+       "src": "cache",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-10",
+       "season": "2627",
+       "opp": "那不勒斯",
+       "ha": "客",
+       "score": "1-0",
+       "res": "胜",
+       "src": "daily",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-06",
+       "season": "2627",
+       "opp": "切尔西",
+       "ha": "主",
+       "score": "2-1",
+       "res": "胜",
+       "src": "daily",
+       "oppPos": null
+      },
+      {
+       "date": "2026-09-01",
+       "season": "2627",
+       "opp": "维拉",
+       "ha": "客",
+       "score": "1-0",
+       "res": "胜",
+       "src": "cache",
+       "oppPos": null
+      }
+     ],
+     "homeGfGa": [
+      2.33,
+      0.67,
+      3
+     ],
+     "awayGfGa": [
+      1.8,
+      0.4,
+      5
+     ],
+     "restDays": 6,
+     "matches14d": 3,
+     "elo": 2005
+    }
+   },
+   "xg": {
+    "status": "no_data（fd 不覆盖或存档缺·odds_fetch 先跑）"
+   }
+  }
+ },
+ "createdAt": "2026-10-20T16:48:17",
+ "cardHash": "7d872caef6113906"
+}

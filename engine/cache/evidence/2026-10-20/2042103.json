@@ -5,10 +5,10 @@
  "steps": {
   "S1_odds": {
    "source": "code",
-   "recordedAt": "2026-10-19T20:00:29",
+   "recordedAt": "2026-10-20T16:45:06",
    "payload": {
-    "archive": "2026-10-19.json",
-    "fetchedAt": "2026-10-19",
+    "archive": "2026-10-20.json",
+    "fetchedAt": "2026-10-20",
     "code": "周二008",
     "pools": [
      "crs",
@@ -18,6 +18,62 @@
     ],
     "oddsUpdatedAt": "2026-10-19 13:59:17",
     "sellStatus": 1
+   }
+  },
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-20T16:45:57",
+   "payload": {
+    "src": "market_crs",
+    "lam": null,
+    "beta": null
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-20T16:45:57",
+   "payload": {
+    "method": "market_crs",
+    "boomGate": 0.05,
+    "water": true
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-20T16:45:57",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s03s00",
+      "p": 0.129
+     },
+     {
+      "pick": "s1sh",
+      "p": 0.1178
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.1128
+     },
+     {
+      "pick": "s04s00",
+      "p": 0.1039
+     },
+     {
+      "pick": "s03s01",
+      "p": 0.0812
+     }
+    ],
+    "src": "market_crs"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-20T16:45:57",
+   "payload": {
+    "hid": "man-city",
+    "aid": "aek-athens",
+    "hstRows": 1570
    }
   }
  }

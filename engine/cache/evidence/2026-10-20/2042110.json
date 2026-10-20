@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-20",
+ "matchKey": "2042110",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-20T16:45:59",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     2.009,
+     1.05
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-20T16:45:59",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": false
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-20T16:45:59",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s01s00",
+      "p": 0.1091
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0995
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.0947
+     },
+     {
+      "pick": "s01s01",
+      "p": 0.0841
+     },
+     {
+      "pick": "s03s01",
+      "p": 0.0666
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-20T16:45:59",
+   "payload": {
+    "hid": "lille",
+    "aid": "galatasaray",
+    "hstRows": 1343
+   }
+  }
+ }
+}
