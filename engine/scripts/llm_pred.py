@@ -154,11 +154,28 @@ def tot_of_key(k: str) -> float:
     return OTHER_TOT if k.startswith("other_") else sum(int(x) for x in k.split(":"))
 
 
-SHAPE_TEMPLATES: dict = {}        # Task 2 填表；空表=无调形（纯带内继承）
+SHAPE_TEMPLATES = {          # (加权格集|谓词, 加权倍率, 减权格集|谓词, 减权倍率)——设计 §4.2
+    "crush": ({"3:0", "4:0", "3:1", "4:1"}, 1.8, {"1:1", "0:0"}, 0.7),
+    "lock":  ({"0:0", "1:0", "0:1", "1:1"}, 1.5, "big", 0.5),    # big=总球≥4 全格
+    "leaky": ({"2:2", "3:2", "2:3", "3:3"}, 1.8, "cs", 0.6),     # cs=零封格（某方 0）
+    "open":  ({"1:2", "2:1", "2:2", "1:1"}, 1.3, {"0:0"}, 0.6),
+}
 
 
-def _apply_template(p: dict, st) -> dict:                    # Task 2 实现；先占位
-    return p
+def _pred_hit(k: str, spec) -> bool:
+    if isinstance(spec, str):                     # 谓词简写
+        if spec == "big":
+            return tot_of_key(k) >= 4
+        if spec == "cs":
+            return ":" in k and (int(k[0]) == 0 or int(k[2]) == 0)
+    return k in spec
+
+
+def _apply_template(p: dict, st) -> dict:
+    """格形指纹：四型各自加权/减权格集（设计 §4.2）。调形后由 generate_dist 归一。"""
+    up, uw, down, dw = st
+    return {k: v * (uw if _pred_hit(k, up) else dw if _pred_hit(k, down) else 1.0)
+            for k, v in p.items()}
 
 
 def _apply_xg(p: dict, shape: dict) -> dict:                 # Task 3 实现；先占位
@@ -180,10 +197,23 @@ def generate_dist(direction: dict, market: dict, shape: dict,
             p[k] = direction[d] * v / z
     st = SHAPE_TEMPLATES.get((shape or {}).get("type"))
     if st:
-        p = _apply_template(p, st)
-    p = _apply_xg(p, shape or {})
+        p = _renorm_bands(_apply_template(p, st), direction)
+    p = _renorm_bands(_apply_xg(p, shape or {}), direction)
     for k, v in (overrides or {}).items():
         if k in p:
             p[k] = float(v)
     z = sum(p.values())
     return {k: v / z for k, v in p.items()}
+
+
+def _renorm_bands(p: dict, direction: dict) -> dict:
+    """按三向带重归一：方向(direction)与形状(shape/xG)正交——调形只许带内换形,
+    不许跨带搬质量。模板格集天然跨带（crush 抬 3:0 压 1:1）,不归一则实测
+    5.8pt 从平局带漂进主胜带,direction 被模板悄悄改写且闸4 测不出。开发者 sszhang"""
+    out = {}
+    for d in ("h", "d", "a"):
+        band = {k: v for k, v in p.items() if dir_of_key(k) == d}
+        z = sum(band.values())
+        for k, v in band.items():
+            out[k] = direction[d] * v / z if z > 0 else 0.0
+    return out

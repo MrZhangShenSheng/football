@@ -37,3 +37,31 @@ def test_generate_dist_deterministic_and_banded():
 def test_generate_dist_inherits_band_shape():           # 003 反例的机制解
     d = generate_dist({"h": .20, "d": .30, "a": .50}, MKT, {})
     assert abs(d["0:3"] / d["1:2"] - MKT["0:3"] / MKT["1:2"]) < 1e-9  # 带内比例继承
+
+
+def test_template_preserves_direction_mass():
+    """方向与形状正交（终审 fix）：模板格集天然跨带（crush 抬 3:0 压 1:1），
+    不按带归一则 direction 被模板改写——实测 crush 把 5.8pt 从平局带搬进主胜带,
+    闸4 按入参 direction 算 shift 就测不出真实偏离。调形只许带内换形,不许跨带搬量。"""
+    tgt = {"h": .45, "d": .27, "a": .28}
+    mkt = dict(MKT, **{"3:0": 0.03, "3:1": 0.025, "2:2": 0.04, "0:4": 0.01})
+    for t in ("crush", "lock", "leaky", "open"):
+        d = generate_dist(tgt, mkt, {"type": t})
+        for x in "hda":
+            band = sum(v for k, v in d.items() if dir_of_key(k) == x)
+            assert abs(band - tgt[x]) < 1e-9, f"{t} {x} 带漂移 {band - tgt[x]:+.4f}"
+
+
+def test_shape_templates_diverge():
+    dirs = {"h": .45, "d": .27, "a": .28}
+    mkt = dict(MKT, **{"3:0": 0.03, "3:1": 0.025, "2:2": 0.04, "0:4": 0.01})
+    dists = {t: generate_dist(dirs, mkt, {"type": t})
+             for t in ("crush", "lock", "leaky", "open")}
+
+    def kl(p, q):
+        return sum(p[k] * math.log(p[k] / q[k]) for k in p)
+
+    for a, b in itertools.combinations(dists, 2):
+        assert kl(dists[a], dists[b]) > 0.02          # 四型两两分型（KL>0.02）
+    assert dists["crush"]["3:0"] > dists["open"]["3:0"]          # 碾压型大胜格更肥
+    assert dists["lock"]["0:0"] > dists["leaky"]["0:0"]          # 铁桶型 0:0 更肥
