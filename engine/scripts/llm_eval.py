@@ -190,7 +190,13 @@ def _load_day_rows(days: list[str]) -> list[dict]:
             pf = cand if cand.exists() else None
         if pf is None:
             continue
-        preds = json.loads(pf.read_text(encoding="utf-8")).get("preds") or []
+        doc = json.loads(pf.read_text(encoding="utf-8"))
+        preds = doc.get("preds") or []
+        # 生成口径（v3.6 2026-10-21）：卷顶层 genCohort 优先，无则按 chain 判 v3,
+        # 再无→freehand（10-21 前全部手填卷,无此字段=手填）。两代并存期混算会让
+        # 带内继承的改善被手填卷 003 型拖累掩盖,故分层报。
+        gen_cohort = doc.get("genCohort") or (
+            "v3-structured" if doc.get("chain") == "llm-31grid-v3" else "freehand")
         for pr in preds:
             card_f = CARDS_ROOT / d / f'{pr.get("code")}.json'
             if not card_f.exists():
@@ -213,7 +219,8 @@ def _load_day_rows(days: list[str]) -> list[dict]:
             n_kj = len(pr.get("keyJudgments") or [])
             rows.append({**pr, "_marketPool": pool, "_actual": ak,
                          "_closeProxy": proxy, "_score": sc, "_nKj": n_kj,
-                         "_kjCohort": "v1-compressed" if n_kj < 3 else "v2-split"})
+                         "_kjCohort": "v1-compressed" if n_kj < 3 else "v2-split",
+                         "_genCohort": gen_cohort})
     return rows
 
 
@@ -270,6 +277,7 @@ def evaluate(days: list[str]) -> dict:
     diffs_full, diffs_tail, desc = [], [], {"E1": [], "E2": [], "E3": []}
     proxy_split = {"cardTime": [], "lineupLast": []}
     kj_split: dict[str, list[float]] = {}        # 判断口径分层（v1 压缩卷 vs v2 拆分卷）
+    gen_split: dict[str, list[float]] = {}       # 生成口径分层（手填卷 vs v3 结构化卷）
     res_rows: list[dict] = []                    # 分布分辨率（下方 _resolution 聚合）
     skipped: list[dict] = []                     # 跳过账（禁静默·逐场留痕）
     for r in rows:
@@ -296,6 +304,7 @@ def evaluate(days: list[str]) -> dict:
         diffs_full.append(-math.log(max(mkt[a], LOGLLOSS_CLIP)) + math.log(max(llm.get(a, 0.0), LOGLLOSS_CLIP)))
         proxy_split.setdefault(r["_closeProxy"], []).append(diffs_full[-1])
         kj_split.setdefault(r.get("_kjCohort") or "unknown", []).append(diffs_full[-1])
+        gen_split.setdefault(r.get("_genCohort") or "freehand", []).append(diffs_full[-1])
         tk = tail_keys_of(r["_marketPool"])
         if tk:
             pl = sum(llm.get(k, 0.0) for k in tk)
@@ -340,6 +349,11 @@ def evaluate(days: list[str]) -> dict:
             # 不改写）/ v2-split=≥3 条拆分卷。非判据,只供"抬门槛是否改善"观察
             "kjCohortSplit": {k: {"n": len(v), "diffMean": round(float(np.mean(v)), 4)}
                               for k, v in kj_split.items() if v},
+            # 生成口径分层（descriptive·v3.6）：freehand=手填 31 格（含 10-21 前全部旧卷）
+            # / v3-structured=三参数机器生成。两代并存期须分开看,否则手填卷的 003 型
+            # 拖累会掩盖带内继承的改善。非判据
+            "genCohortSplit": {k: {"n": len(v), "diffMean": round(float(np.mean(v)), 4)}
+                               for k, v in gen_split.items() if v},
             # 分布分辨率（descriptive·v3.4）：填 0=断言"不可能"的自伤源头。按销售日分层
             # ——周三/周四 minPos 卡 0.01 带 13~16 零格 vs 周五 0.00054 零格 0,
             # 手法细化的幅度只有 minPos 看得出。非判据,不入 PASS/FAIL

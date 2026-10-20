@@ -1,5 +1,8 @@
 # engine/tests/test_llm_eval.py
 import sys, json, pathlib
+
+import pytest
+
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "scripts"))
 from llm_eval import (market_devig_on_keys, actual_key, evaluate,
                       TAIL_ODDS_FLOOR, LOGLLOSS_CLIP)
@@ -22,6 +25,35 @@ def _pool31():
     pool = {k: (8.0 if sum(map(int, k.split(":"))) <= 3 else 30.0) for k in _GRID_31}
     pool.update({"other_h": 60.0, "other_d": 60.0, "other_a": 60.0})
     return pool
+
+
+@pytest.fixture()
+def dirs_eval(tmp_path, monkeypatch):
+    """装载侧 fixture：卷/卡/赛果三件套都落 tmp（_load_day_rows 走真实路径）。"""
+    import llm_eval as le
+    monkeypatch.setattr(le, "PREDS_ROOT", tmp_path / "preds")
+    monkeypatch.setattr(le, "CARDS_ROOT", tmp_path / "cards")
+    monkeypatch.setattr(le, "close_pool", lambda d, code, card: (_pool31(), "lineupLast"))
+    monkeypatch.setattr(le, "_load_results", lambda days: {"周三009": "1:1"})
+    (tmp_path / "preds").mkdir(parents=True, exist_ok=True)
+    return tmp_path
+
+
+def _write_day_volume(root, day, head):
+    """写一份单场冻结卷（head 给 chain/genCohort），并备好同日数据卡。"""
+    p = {k: 1.0 / len(_pool31()) for k in _pool31()}
+    doc = {**head, "frozenAt": f"{day}T10:00:00",
+           "preds": [{"code": "周三009", "cardHash": "x" * 16, "p_crs": p,
+                      "pRawSum": 1.0, "rawSumWarn": False, "contextStatus": "ok",
+                      "keyJudgments": [], "confidence": "medium"}]}
+    (root / "preds" / f"{day}.json").write_text(
+        json.dumps(doc, ensure_ascii=False), encoding="utf-8")
+    cd = root / "cards" / day
+    cd.mkdir(parents=True, exist_ok=True)
+    (cd / "周三009.json").write_text(json.dumps(
+        {"code": "周三009", "cardHash": "x" * 16,
+         "layers": {"market": {"crs": _pool31()}, "context": {"status": "ok"}}},
+        ensure_ascii=False), encoding="utf-8")
 
 
 def test_actual_key_grid_and_other():
@@ -79,6 +111,42 @@ def test_kj_cohort_split(monkeypatch):
     for r in rows:
         r.pop("_kjCohort")
     assert evaluate(["2026-10-14"])["kjCohortSplit"]["unknown"]["n"] == 35
+
+
+def test_gen_cohort_split(monkeypatch):
+    """v3.6：生成口径分层——手填卷(freehand)与结构化生成卷(v3-structured)分开报。
+    两代同期并存时若混算,带内继承的改善会被手填卷的 003 型拖累掩盖。"""
+    import llm_eval as le
+    pool = _full_pool()
+    rows = []
+    for i in range(35):
+        p = {k: (0.05 if k != "1:1" else 0.2) for k in pool}
+        rows.append({"code": f"三{i:03d}", "cardHash": "x" * 16, "p_crs": p,
+                     "pRawSum": 1.0, "rawSumWarn": False, "contextStatus": "ok",
+                     "keyJudgments": [], "confidence": "medium",
+                     "_marketPool": pool, "_actual": "1:1", "_score": "1:1",
+                     "_closeProxy": "lineupLast",
+                     "_genCohort": "freehand" if i < 20 else "v3-structured"})
+    monkeypatch.setattr(le, "_load_day_rows", lambda days: rows)
+    gs = evaluate(["2026-10-14"])["genCohortSplit"]
+    assert gs["freehand"]["n"] == 20 and gs["v3-structured"]["n"] == 15
+    assert "diffMean" in gs["v3-structured"]
+    for r in rows:                                  # 行缺标 → freehand 兜底（旧卷默认）
+        r.pop("_genCohort")
+    assert evaluate(["2026-10-14"])["genCohortSplit"]["freehand"]["n"] == 35
+
+
+def test_gen_cohort_read_from_volume(dirs_eval):
+    """装载侧：卷顶层 genCohort 优先，无则按 chain 判 v3，再无→freehand。"""
+    import llm_eval as le
+    for name, doc, want in (
+            ("2026-11-01", {"chain": "llm-31grid-v3",
+                            "genCohort": "v3-structured"}, "v3-structured"),
+            ("2026-11-02", {"chain": "llm-31grid-v3"}, "v3-structured"),
+            ("2026-11-03", {"chain": "llm-31grid-v2"}, "freehand")):
+        _write_day_volume(dirs_eval, name, doc)
+        rows = le._load_day_rows([name])
+        assert rows and rows[0]["_genCohort"] == want, (name, rows[:1])
 
 
 def test_resolution_minpos_and_zerocells(monkeypatch):
