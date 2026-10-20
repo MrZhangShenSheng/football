@@ -15,3 +15,15 @@ def lambda_from_had(odds: list[float], lam_sum: float) -> tuple[float, float] | 
         return None
     lam_h = solve_lamh(lam_sum, p_h)
     return round(lam_h, 3), round(lam_sum - lam_h, 3)
+
+
+# attribution_dims.py 追加
+ELO_SCALE = 400.0  # Elo 差 400≈净胜 1 球（经验先验·待频次表校准·设计§二A1）
+
+def dim_elo(elo_h, elo_a) -> dict | None:
+    """A1 实力差→净胜偏移（对半分给 h/a）。缺 Elo 返回 None 进 missing。开发者 sszhang"""
+    if elo_h is None or elo_a is None:
+        return None
+    net = (elo_h - elo_a) / ELO_SCALE
+    return {"dim": "A1.elo", "h": round(net / 2, 3), "a": round(-net / 2, 3),
+            "evidence": f"elo_diff={round(elo_h - elo_a)}"}
