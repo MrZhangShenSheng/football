@@ -9,7 +9,8 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from llm_pred import dir_of_key, generate_dist, tot_of_key           # noqa: E402
+from llm_pred import (dir_of_key, generate_dist, tot_of_key,        # noqa: E402
+                      validate_structured)
 
 # 近似 31 格市场形状（和≈0.94，带内比例是真参照——生成器按带归一故不要求和为 1）
 MKT = {"1:0": 0.10, "2:0": 0.07, "2:1": 0.09, "1:1": 0.15, "0:0": 0.07,
@@ -84,3 +85,38 @@ def test_xg_params_lift_big_band():
     # 封顶 ×2：极端参数不失控
     hi3 = generate_dist(dirs, mkt, {"type": "open", "xgSum": 9.0, "xgDiff": 8.0})
     assert max(hi3.values()) < 0.5
+
+
+def _kj3():
+    """≥3 条独立判断（v3.4 门槛·与 test_llm_pred_v2 同口径）。"""
+    return [{"judgment": f"j{i}", "evidence": f"结构层#{i}"} for i in (1, 2, 3)]
+
+
+def test_validate_structured():
+    good = {"code": "周二006", "direction": {"h": .3, "d": .25, "a": .45},
+            "evidenceTier": "structural", "shape": {"type": "open"},
+            "cellOverrides": {"0:3": .045}, "keyJudgments": _kj3(),
+            "confidence": "medium"}
+    ok, issues = validate_structured(good, list(MKT))
+    assert ok and not issues
+    # 和≠1：容差 ±0.02（手填三向的舍入余量）——0.99 放过，0.95 拒收
+    assert validate_structured(dict(good, direction={"h": .3, "d": .25, "a": .44}),
+                               list(MKT))[0]
+    bad = dict(good, direction={"h": .3, "d": .25, "a": .40})            # 和 0.95 出容差
+    assert not validate_structured(bad, list(MKT))[0]
+    bad = dict(good, direction={"h": .4, "d": .6})                       # 缺 a 键
+    assert not validate_structured(bad, list(MKT))[0]
+    bad = dict(good, evidenceTier="gut")                                 # 等级枚举
+    assert not validate_structured(bad, list(MKT))[0]
+    bad = dict(good, shape={"type": "park_the_bus"})                     # 型枚举
+    assert not validate_structured(bad, list(MKT))[0]
+    bad = dict(good, cellOverrides={f"{i}:{j}": .01
+                                    for i in range(3) for j in range(2)})  # >5 格
+    assert not validate_structured(bad, list(MKT))[0]
+    assert any("≤5" in i for i in validate_structured(bad, list(MKT))[1])
+    bad = dict(good, cellOverrides={"9:9": .1})                          # 键∉市场
+    assert not validate_structured(bad, list(MKT))[0]
+    bad = dict(good, keyJudgments=_kj3()[:2])                            # kj<3 共用校验
+    assert not validate_structured(bad, list(MKT))[0]
+    bad = dict(good, confidence="很高")                                   # confidence 枚举
+    assert not validate_structured(bad, list(MKT))[0]

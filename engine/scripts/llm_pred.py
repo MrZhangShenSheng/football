@@ -48,6 +48,12 @@ def validate_pred(pred: dict, market_keys: list[str]) -> tuple[bool, list[str]]:
             issues.append(f'{pred.get("code")}: 键 {k} 不在市场键集')
         if not (isinstance(v, (int, float)) and 0.0 <= float(v) <= 1.0):
             issues.append(f'{pred.get("code")}: {k} 值非法 {v}')
+    _check_kj_conf(pred, issues)
+    return (not issues), issues
+
+
+def _check_kj_conf(pred: dict, issues: list[str]) -> None:
+    """keyJudgments 条数/完整性 + confidence 枚举（v2 手填与 v3 结构化两路共用）。"""
     kj = pred.get("keyJudgments") or []
     # 条数门槛 ≥3（v3.4 2026-10-19 补齐 SKILL.md §3 规格——原校验只判 ≥1,放过了
     # 10-14~16 三天 38 场「三条压成一条」的卷:形态+H2H+伤停挤在单个 evidence 字段,
@@ -59,7 +65,6 @@ def validate_pred(pred: dict, market_keys: list[str]) -> tuple[bool, list[str]]:
         issues.append(f'{pred.get("code")}: keyJudgments 条目不完整（judgment/evidence 缺）')
     if pred.get("confidence") not in CONF_LEVELS:
         issues.append(f'{pred.get("code")}: confidence 非法')
-    return (not issues), issues
 
 
 def normalize_to_keys(p_crs: dict, keys: list[str]) -> tuple[dict, float]:
@@ -176,6 +181,31 @@ def _apply_template(p: dict, st) -> dict:
     up, uw, down, dw = st
     return {k: v * (uw if _pred_hit(k, up) else dw if _pred_hit(k, down) else 1.0)
             for k, v in p.items()}
+
+
+EVIDENCE_TIERS = ("state", "structural", "info")
+OVERRIDE_MAX = 5                   # cellOverrides 上限（设计 §三：手动干预留口但封顶）
+
+
+def validate_structured(pred: dict, market_keys: list[str]) -> tuple[bool, list[str]]:
+    """结构化输入校验（设计 §三）。kj≥3 与 confidence 复用 _check_kj_conf。开发者 sszhang"""
+    issues: list[str] = []
+    d = pred.get("direction") or {}
+    if set(d) != {"h", "d", "a"} or abs(sum(d.values()) - 1.0) > 0.02:
+        issues.append(f'{pred.get("code")}: direction 须 h/d/a 且和≈1（现 {d}）')
+    if pred.get("evidenceTier") not in EVIDENCE_TIERS:
+        issues.append(f'{pred.get("code")}: evidenceTier ∈ {EVIDENCE_TIERS}'
+                      f'（现 {pred.get("evidenceTier")}）')
+    if (pred.get("shape") or {}).get("type") not in SHAPE_TEMPLATES:
+        issues.append(f'{pred.get("code")}: shape.type ∈ {tuple(SHAPE_TEMPLATES)}')
+    ov = pred.get("cellOverrides") or {}
+    if len(ov) > OVERRIDE_MAX:
+        issues.append(f'{pred.get("code")}: cellOverrides 须≤{OVERRIDE_MAX} 格（现 {len(ov)}）')
+    for k in ov:
+        if k not in market_keys:
+            issues.append(f'{pred.get("code")}: 覆盖格 {k} 不在市场键集')
+    _check_kj_conf(pred, issues)
+    return (not issues), issues
 
 
 def _apply_xg(p: dict, shape: dict) -> dict:
