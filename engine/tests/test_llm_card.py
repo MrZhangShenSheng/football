@@ -443,6 +443,10 @@ def test_v35_xg_layer_real_and_no_data():
         assert s and {"n", "xgf", "xga", "gf", "ga", "luckG", "luckA"} <= set(s)
     assert _xg_layer("瑞超", "代格福什", "卡尔马", "2026-10-20")["status"].startswith("no_data")
     assert "luckG" in xg["note"]                          # 折价提示随层携带
+    # 葡超键名断裂兜底（2026-10-20 沙箱重跑发现）：画像键 portugal-primeira,
+    # fd 存档叫 portugal-liga——沙箱重跑时 007 布拉加因此 no_data,兜底后通
+    pt = _xg_layer("葡超", "布拉加", "吉维森特", "2026-10-20")
+    assert pt["status"] == "ok" and pt["home"] and pt["away"]
 
 
 def test_v35_view_downgrade_and_summary(tmp_path, monkeypatch):

@@ -412,6 +412,10 @@ def _elo_of(team: str) -> float | None:
 
 # ── xG 层（v3.5 2026-10-20 动刀①·大哥拍板「先动刀」）──────────────────────
 XG_RECENT_N = 6
+# espn 库键 → fd 存档名的断裂兜底（2026-10-20 沙箱重跑发现：葡超画像键
+# portugal-primeira 而 fd 存档叫 portugal-liga——全量排查唯此一处断裂,
+# 其余无存档皆 fd 真不覆盖）。开发者 sszhang
+_FD_FILE_FALLBACK = {"portugal-primeira": "portugal-liga"}
 
 
 def _fd_name_index() -> dict[str, str]:
@@ -484,8 +488,9 @@ def _xg_layer(league_zh: str, home: str, away: str, horizon: str) -> dict:
     if not lg_key:
         return {"status": "联赛未映射"}
     matches: list[dict] = []
+    fd_key = _FD_FILE_FALLBACK.get(lg_key, lg_key)        # 葡超键名断裂兜底
     for season in ("2627", "2526"):                       # 当季优先,季初回捞上季
-        p = ROOT / "engine" / "cache" / f"odds_{lg_key}_{season}.json"
+        p = ROOT / "engine" / "cache" / f"odds_{fd_key}_{season}.json"
         if not p.exists():
             continue
         try:
