@@ -411,3 +411,53 @@ def test_context_frozen_when_all_filtered(tmp_path):
         write_context("2026-10-13", "周二001", [{"title": "ok piece", "url": "u",
                                                  "publishedAt": "2026-10-13T10:00:00", "excerpt": "x"}],
                       root=tmp_path)
+
+
+# ── v3.5 动刀三件（2026-10-20 大哥拍板「先动刀」）──────────────────────────
+def test_v35_xg_side_debt_alert():
+    """xG 欠账警报（002 教训的解毒剂）：零进球但 xG 不低 → 禁线性外推。"""
+    from llm_card import _xg_side
+    ms = []
+    # 卡尔马形态：近 4 场 0 进球但 xG 场均 ~1.2（产出欠账）
+    for i in range(4):
+        ms.append({"date": f"0{i+1}/09/2026", "home": "Opp", "away": "Kalmar",
+                   "hid": "opp", "aid": "kalmar-ff", "fthg": 1, "ftag": 0,
+                   "hxg": 1.5, "axg": 1.3})
+    s = _xg_side("kalmar-ff", ms, "2026-10-01")
+    assert s and s["n"] == 4 and s["gf"] == 0.0 and s["xgf"] >= 1.0
+    assert "欠账" in s["alert"] and "禁按" in s["alert"]
+    # 正常兑现（1 球/场 vs xG 1.0）→ 无警报
+    ok = [{"date": "01/09/2026", "home": "Kalmar", "away": "Opp",
+           "hid": "kalmar-ff", "aid": "opp", "fthg": 1, "ftag": 1, "hxg": 1.0, "axg": 1.1}] * 4
+    s2 = _xg_side("kalmar-ff", ok, "2026-10-01")
+    assert "alert" not in s2 and s2["luckG"] == 0.0
+
+
+def test_v35_xg_layer_real_and_no_data():
+    """xG 层真仓验证：意甲 fd 覆盖 → ok；瑞超 fd 不覆盖 → 诚实 no_data（禁伪造）。"""
+    from llm_card import _xg_layer
+    xg = _xg_layer("意甲", "蒙扎", "卡利亚里", "2026-10-20")
+    assert xg["status"] == "ok" and xg["source"] == "fd"
+    for side in ("home", "away"):
+        s = xg[side]
+        assert s and {"n", "xgf", "xga", "gf", "ga", "luckG", "luckA"} <= set(s)
+    assert _xg_layer("瑞超", "代格福什", "卡尔马", "2026-10-20")["status"].startswith("no_data")
+    assert "luckG" in xg["note"]                          # 折价提示随层携带
+
+
+def test_v35_view_downgrade_and_summary(tmp_path, monkeypatch):
+    """v3.5 渲染三处：⚠→△待核验（降视觉权重）+ 近况摘要行前置 + xG 行。"""
+    import llm_card as lc
+    monkeypatch.setattr(lc, "CARDS_ROOT", tmp_path)
+    card = _card007()
+    d = lc.card_paths("2026-10-16")
+    d.mkdir(parents=True, exist_ok=True)
+    (d / "周五007.json").write_text(json.dumps(card, ensure_ascii=False), encoding="utf-8")
+    txt = lc._view("2026-10-16", "周五007")
+    # 动刀②：⚠ 降级为 △待核验 + 禁单独叫板提示（001/005 教训：名单级推断方向两反）
+    assert "△" in txt and "待核验" in txt and "禁单独作叫板依据" in txt
+    assert not any(line.strip().startswith("⚠") for line in txt.splitlines())
+    # 动刀③：摘要行前置（近N场 W-D-L 进失 + 对手均位）+ 切片证据标注
+    assert "摘要 近" in txt and "切片证据·叫板须对 xG 折价" in txt
+    # 动刀①：xG 行（意甲 fd 覆盖场必有；缺层旧卡容错为 no_data 行亦算）
+    assert "xG[fd]" in txt

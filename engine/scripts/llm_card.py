@@ -410,6 +410,106 @@ def _elo_of(team: str) -> float | None:
         return None
 
 
+# ── xG 层（v3.5 2026-10-20 动刀①·大哥拍板「先动刀」）──────────────────────
+XG_RECENT_N = 6
+
+
+def _fd_name_index() -> dict[str, str]:
+    """fd 英文名 → 规范 id 倒排（fd 键优先,espn/clubelo/zh/variants 全兜）。
+    fd 存档队名如 'Inter'/'Monza',与别名行 fd 键同源（odds_fetch 维护）。开发者 sszhang"""
+    try:
+        import strength_loaders as sl
+        al = sl.load_aliases()
+    except Exception:                                      # noqa: BLE001
+        return {}
+    idx: dict[str, str] = {}
+    for tid, srcs in al.items():
+        for k in ("fd", "espn", "clubelo", "understat", "zh"):
+            v = srcs.get(k)
+            if v and v not in idx:                        # 先到先得=fd 键最优先
+                idx[v] = tid
+        for v in srcs.get("variants") or []:
+            if v and v not in idx:
+                idx[v] = tid
+    return idx
+
+
+def _xg_side(tid: str | None, matches: list[dict], horizon: str) -> dict | None:
+    """单队近 N 场 xG/实进对照（日期倒序·<horizon·排除本场两队行）。"""
+    if not tid:
+        return None
+    rows = []
+    for m in matches:
+        try:
+            d = datetime.strptime(str(m.get("date")), "%d/%m/%Y").date().isoformat()
+        except ValueError:
+            continue
+        if d >= horizon:
+            continue
+        if _isnum(m.get("hxg")) and _isnum(m.get("axg")):
+            rows.append((d, m))
+    rows.sort(key=lambda x: x[0], reverse=True)
+    xgf = xga = gf = ga = 0.0
+    n = 0
+    for _, m in rows:
+        if m["hid"] == tid:
+            xgf, xga = xgf + float(m["hxg"]), xga + float(m["axg"])
+            gf, ga = gf + float(m.get("fthg") or 0), ga + float(m.get("ftag") or 0)
+        elif m["aid"] == tid:
+            xgf, xga = xgf + float(m["axg"]), xga + float(m["hxg"])
+            gf, ga = gf + float(m.get("ftag") or 0), ga + float(m.get("fthg") or 0)
+        else:
+            continue
+        n += 1
+        if n >= XG_RECENT_N:
+            break
+    if n < 3:
+        return None                                       # 样本太薄不如不给
+    out = {"n": n,
+           "xgf": round(xgf / n, 2), "xga": round(xga / n, 2),
+           "gf": round(gf / n, 2), "ga": round(ga / n, 2),
+           "luckG": round((gf - xgf) / n, 2),             # 正=实进超xG(终结热),负=欠账
+           "luckA": round((ga - xga) / n, 2)}             # 正=实失超xGA(门将超水平/背运)
+    if gf / n < 0.5 and xgf / n >= 1.0:
+        out["alert"] = "实进远低于xG:产出欠账,回归在即——禁按『零进球』线性外推"
+    return out
+
+
+def _xg_layer(league_zh: str, home: str, away: str, horizon: str) -> dict:
+    """fd xG 层（v3.5·状态切片的解毒剂）：近 N 场 xG/xGA vs 实进/实失。
+    002 教训:「卡尔马近5场零进球」若有 xG 可见欠账（零进球但 xG 不低=运气,非能力）,
+    臣仍按进攻瘫痪压客 9pt 被反杀。fd 不覆盖联赛（瑞超/巴甲/欧冠等）诚实 no_data。
+    开发者 sszhang"""
+    lg_key = (TAIL_LEAGUE_MAP or {}).get(league_zh)
+    if not lg_key:
+        return {"status": "联赛未映射"}
+    matches: list[dict] = []
+    for season in ("2627", "2526"):                       # 当季优先,季初回捞上季
+        p = ROOT / "engine" / "cache" / f"odds_{lg_key}_{season}.json"
+        if not p.exists():
+            continue
+        try:
+            doc = json.loads(p.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        ms = doc.get("matches") or []
+        matches.extend(ms)
+    if not matches:
+        return {"status": "no_data（fd 不覆盖或存档缺·odds_fetch 先跑）"}
+    idx = _fd_name_index()
+    hid = idx.get(home) or _norm_to_id(home)
+    aid = idx.get(away) or _norm_to_id(away)
+    for m in matches:
+        m["hid"] = idx.get(str(m.get("home") or ""))
+        m["aid"] = idx.get(str(m.get("away") or ""))
+    hs, as_ = _xg_side(hid, matches, horizon), _xg_side(aid, matches, horizon)
+    if not hs and not as_:
+        return {"status": "no_data（队名对不上或样本<3）"}
+    return {"status": "ok", "source": "fd",
+            "home": hs, "away": as_,
+            "note": "luckG正=实进超xG(终结热),负=欠账待回归——状态切片须先对 xG 折价"}
+
+
 def _standings_layer(league_zh: str, home: str, away: str) -> dict:
     """联赛积分榜整表（espn·update 流水线刷新）+ 双队行——大哥点名的『当前联赛球队排名』。"""
     lg_key = (TAIL_LEAGUE_MAP or {}).get(league_zh)
@@ -666,7 +766,12 @@ def build_card(sale_date: str, match: dict, *, insight_path: Path | None,
                           "marketLambda": _market_lambda_layer(match),
                           "teamRecent": _team_deep_layer(
                               sale_date, match["matchNumStr"], match["league"],
-                              match["home"], match["away"], business_date)},
+                              match["home"], match["away"], business_date),
+                          # xG 层（v3.5 2026-10-20 动刀①）：状态切片的解毒剂——
+                          # 002 教训「零进球」未对 xG 折价即外推,压客 9pt 被反杀
+                          "xg": _xg_layer(match["league"], match["home"], match["away"],
+                                          str(_match_date_index().get(match["matchNumStr"])
+                                              or business_date or sale_date)[:10])},
         },
         "createdAt": now or datetime.now().isoformat(timespec="seconds"),
     }
@@ -944,9 +1049,13 @@ def _view(sale_date: str, code: str) -> str:
     L.append("── 判断材料 ────────────────")
     it = ly["intel"]
     if it.get("status") == "ok":
+        # △待核验（v3.5 动刀②·降视觉权重）：⚠→△+措辞。001/005 教训——名单级伤停
+        # 无伤位/对位上下文,单看名单两场推断方向皆反（防线残对哑火锋线≠破）。
+        # 降权非禁用:真伤停仍须陈述,但禁单独作叫板依据（须配对位分析）
         for side, zh in (("home", "主"), ("away", "客")):
             for a in (it.get("keyAbsences") or {}).get(side) or []:
-                L.append(f"  ⚠{zh}伤停×射手: {a['name']}(队内射手榜第{a['rank']}·{a['goals']}球)")
+                L.append(f"  △{zh}伤停×射手(待核验·名单级,伤位/对位未知,"
+                         f"禁单独作叫板依据): {a['name']}(射手榜第{a['rank']}·{a['goals']}球)")
         h = it.get("h2h") or {}
         L.append(f"  H2H: {h.get('seasonAgg')}")
         L.append("  近2: " + "；".join(
@@ -970,10 +1079,41 @@ def _view(sale_date: str, code: str) -> str:
             t = tr.get(side) or {}
             L.append(f"  {name} rest={t.get('restDays')} "
                      f"主均进失{t.get('homeGfGa')} 客均进失{t.get('awayGfGa')} elo={t.get('elo')}")
-            for r in t.get("recent") or []:
+            rec = t.get("recent") or []
+            # 摘要行前置（v3.5 动刀③·状态切片降版面）：001/002 教训——逐场 8 行占卡面
+            # 半壁,引用又最顺手,成了事实上的主材料（0/5 战绩）。摘要+对手均位前置,
+            # 逐场退为查证层。结构证据（主客分拆/rest/H2H同季）才是 4/5 的真金
+            if rec:
+                w = sum(1 for r in rec if r.get("res") == "胜")
+                d_ = sum(1 for r in rec if r.get("res") == "平")
+                l_ = sum(1 for r in rec if r.get("res") == "负")
+                opps = [r.get("oppPos") for r in rec if isinstance(r.get("oppPos"), int)]
+                gf_all = ga_all = 0
+                for r in rec:
+                    try:
+                        # score 即该队视角「进-失」（_team_recent 已折算）,勿再按 ha 翻转
+                        a_, b_ = (int(x) for x in str(r.get("score")).split("-"))
+                        gf_all, ga_all = gf_all + a_, ga_all + b_
+                    except ValueError:
+                        pass
+                opp_avg = f" 对手均位{round(sum(opps) / len(opps), 1)}" if opps else ""
+                L.append(f"    摘要 近{len(rec)}场 {w}胜{d_}平{l_}负 进{gf_all}失{ga_all}"
+                         f"{opp_avg}（切片证据·叫板须对 xG 折价）")
+            for r in rec:
                 pos = r.get("oppPos")
                 L.append(f"    {r['date']}({r.get('season')}) {r['ha']}vs {r['opp']}"
                          f"[第{pos if pos else '?'}名] {r['score']} {r['res']}")
+        # xG 层（v3.5 动刀①）：状态切片的解毒剂——零进球≠零能力,欠账会回归
+        xg = om.get("xg") or {}
+        if xg.get("status") == "ok":
+            for side, zh in (("home", "主"), ("away", "客")):
+                s = xg.get(side)
+                if s:
+                    alert = f" ← {s['alert']}" if s.get("alert") else ""
+                    L.append(f"  xG[fd]{zh} 近{s['n']}场 xG进{s['xgf']}/失{s['xga']}"
+                             f" 实进{s['gf']}/失{s['ga']} luckG{s['luckG']:+}{alert}")
+        else:
+            L.append(f"  xG[fd]: {xg.get('status')}")
     L.append("── 缺口（如实）────────────")
     L.append(f"  lineup={(ly.get('lineup') or {}).get('status')}  "
              f"context={(ly.get('context') or {}).get('status')}  "
