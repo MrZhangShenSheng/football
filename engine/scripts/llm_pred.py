@@ -78,9 +78,33 @@ def normalize_to_keys(p_crs: dict, keys: list[str]) -> tuple[dict, float]:
     return {k: v / z for k, v in sub.items()}, raw_sum
 
 
+def _load_card(sale_date: str, pred: dict) -> dict:
+    card_p = CARDS_ROOT / sale_date / f'{pred.get("code")}.json'
+    if not card_p.exists():
+        raise SystemExit(f'[llm_pred] 缺数据卡 {card_p}——先 gen 数据卡')
+    return json.loads(card_p.read_text(encoding="utf-8"))
+
+
+def _pick_pool(card: dict) -> dict:
+    """卡市场层 crs → {pick 键: 赔率}。体彩存档 sXXsYY/中文 other 三态归一
+    （与 llm_eval._pick_key 同口径）；已是 pick 键直通；无价键不收。"""
+    mk = {}
+    for k, v in (card["layers"]["market"]["crs"] or {}).items():
+        kk = k if (":" in k) else (
+            f"{int(k[1:3])}:{int(k[4:6])}" if k.startswith("s") and len(k) == 6 and k[3] == "s"
+            else ("other_h" if k in ("s1sh", "胜其他") else "other_d" if k in ("s1sd", "平其他")
+                  else "other_a" if k in ("s1sa", "负其他") else None))
+        if kk and isinstance(v, (int, float)) and float(v) > 1.0:
+            mk[kk] = float(v)
+    return mk
+
+
 def freeze(sale_date: str, preds: list[dict], revision: int | None = None,
            reason: str | None = None) -> Path:
     """逐场校验→归一→v2锚定→写冻结卷。主卷幂等只读（防事后改）。
+
+    v3.6（2026-10-21）按 preds[0] 有无 direction 键自动分发：有=结构化生成链
+    （三参数→generate_dist→四闸），无=v2 手填链（原代码零改动）。同日不混格。
 
     修正卷（rules-registry R008）：revision=N 写 {date}-r{N}.json，带 revisionOf+
     revisionReason，消费方（llm_eval/L族）按 -rN 优先读。修正卷不必先有主卷。"""
@@ -88,27 +112,17 @@ def freeze(sale_date: str, preds: list[dict], revision: int | None = None,
     out = PREDS_ROOT / f"{sale_date}{suffix}.json"
     if out.exists():
         return out
+    if preds and "direction" in preds[0]:
+        return _freeze_v3(sale_date, preds, out, revision, reason)
     frozen = {"frozenAt": datetime.now().isoformat(timespec="seconds"),
               "chain": CHAIN_VERSION, "preds": []}
     if revision:
         frozen["revisionOf"] = sale_date
         frozen["revisionReason"] = reason or ""
     for pred in preds:
-        card_p = CARDS_ROOT / sale_date / f'{pred.get("code")}.json'
-        if not card_p.exists():
-            raise SystemExit(f'[llm_pred] 缺数据卡 {card_p}——先 gen 数据卡')
-        card = json.loads(card_p.read_text(encoding="utf-8"))
+        card = _load_card(sale_date, pred)
         ctx = card["layers"]["context"]
-        market = card["layers"]["market"]["crs"] or {}
-        # 键转换：体彩存档 sXXsYY → pick 键（与 crs_key 反向）；已是 pick 键直通
-        mk = {}
-        for k, v in market.items():
-            kk = k if (":" in k) else (
-                f"{int(k[1:3])}:{int(k[4:6])}" if k.startswith("s") and len(k) == 6 and k[3] == "s"
-                else ("other_h" if k in ("s1sh", "胜其他") else "other_d" if k in ("s1sd", "平其他")
-                      else "other_a" if k in ("s1sa", "负其他") else None))
-            if kk and isinstance(v, (int, float)) and float(v) > 1.0:
-                mk[kk] = float(v)
+        mk = _pick_pool(card)
         keys = list(mk)
         good, issues = validate_pred(pred, keys)
         if not good:
@@ -225,7 +239,13 @@ def _apply_xg(p: dict, shape: dict) -> dict:
     return out
 
 
-BIG_BAND_TOL = 0.02                 # 大球带与市场偏差上限（P6/P20：治每场 −4pt 欠账）
+BIG_BAND_TOL = 0.02                 # 大球带相对「型基线」的偏差上限（P6/P20：治 −4pt 欠账）
+# 型基线（112 场真卡实测·2026-10-21）：模板格集跨总进球档,选型本身就推动大球带——
+# lock 中位 ×0.54、leaky ×1.29、crush ×1.12、open ×0.97。闸1 若按市场裸比,三型在
+# 零叫板下即拒冻（lock −20.5%/leaky +12.2%/crush +5.6%）=选型即违规,形状判断无处可放。
+# 故闸1 改双层：①型基线=市场大球带×该型实测中位倍率 ②只管叫板的附带漂移（实测 ±1.7%
+# 内，故 ±2% 预算仍是紧的）。超界说明方向判断在悄悄改大球预算,不是选了型。
+BIG_BAND_TYPE_MULT = {"crush": 1.12, "lock": 0.54, "leaky": 1.29, "open": 0.97}
 CELL_RATIO = (0.5, 2.5)             # 单格/市场比值闸（P10/P11；003 型 0.49 倍被拦）
 OTHER_CELL_RATIO = (0.3, 3.0)       # other_* 兜底格放宽
 ANCHOR_BAND = 1.5                   # 总球期望带宽（P9 松锚：±1.5 球内自由）
@@ -246,8 +266,12 @@ def check_generated(dist: dict, market: dict, evidence_tier: str, *,
     mkt = {k: v / mz for k, v in market.items()}        # 市场参照归一（比值/带质量同尺）
     big_l = sum(v for k, v in dist.items() if tot_of_key(k) >= 4)
     big_m = sum(v for k, v in mkt.items() if tot_of_key(k) >= 4)
-    if abs(big_l - big_m) > BIG_BAND_TOL:
-        issues.append(f"大球带质量 {big_l:.1%} 偏离市场 {big_m:.1%} 超 ±{BIG_BAND_TOL:.0%}")
+    mult = BIG_BAND_TYPE_MULT.get((shape or {}).get("type"), 1.0)
+    xg_on = isinstance((shape or {}).get("xgSum"), (int, float))
+    base = big_m * mult
+    if not xg_on and abs(big_l - base) > BIG_BAND_TOL:     # xgSum 在手=有证据抬带,豁免
+        issues.append(f"大球带质量 {big_l:.1%} 偏离型基线 {base:.1%}"
+                      f"（市场 {big_m:.1%}×{mult}）超 ±{BIG_BAND_TOL:.0%}")
     ov = overrides or {}
     for k in dist:
         if k in ov:
@@ -297,6 +321,84 @@ def generate_dist(direction: dict, market: dict, shape: dict,
             p[k] = float(v)
     z = sum(p.values())
     return {k: v / z for k, v in p.items()}
+
+
+CHAIN_VERSION_V3 = "llm-31grid-v3"
+GEN_COHORT_V3 = "v3-structured"
+VALUE_RATIO, VALUE_FLOOR = 1.5, 0.03      # valueCells：比值>1.5 且 p>3%（右尾选腿参考）
+
+
+def _market_ref(card: dict) -> dict:
+    """生成器的市场参照：卡内 crs 池（31 格 pick 键）现算 power devig → 归一分布。
+
+    为何不直接读 layers.market.devig.crs：那里只有 28 定格——crs_key() 不认中文
+    「胜其他」键,other_* 三格被静默丢弃,6+ 球质量凭空消失、28 格概率被整体抬高。
+    生成器须与 llm_eval 计分键集同源（31 格含 other_*）,故在此现算。开发者 sszhang"""
+    import market_lambda as mkl
+    # _pick_pool 输出已是 crs_key 认的形态（"1:1"/"other_h"）——勿再预映射成 s1sh,
+    # crs_key('s1sh') 返回空串会把 other 三格丢掉（devig 只剩 28 格的同一个坑）
+    s = mkl.crs_power_devig(_pick_pool(card))
+    if not s:
+        return {}
+    back = {}
+    for k, v in s.items():
+        kk = ("other_h" if k == "s1sh" else "other_d" if k == "s1sd"
+              else "other_a" if k == "s1sa" else f"{int(k[1:3])}:{int(k[4:6])}")
+        back[kk] = v
+    z = sum(back.values()) or 1.0
+    return {k: v / z for k, v in back.items()}
+
+
+def _freeze_v3(sale_date: str, preds: list[dict], out: Path,
+               revision: int | None, reason: str | None) -> Path:
+    """结构化冻结链（v3.6）：三参数输入→机器生成 31 格→四闸→落卷。
+
+    拒冻即整批拒（与 v2 同纪律）；issues 逐项打印禁静默。开发者 sszhang"""
+    frozen = {"frozenAt": datetime.now().isoformat(timespec="seconds"),
+              "chain": CHAIN_VERSION_V3, "genCohort": GEN_COHORT_V3, "preds": []}
+    if revision:
+        frozen["revisionOf"] = sale_date
+        frozen["revisionReason"] = reason or ""
+    for pred in preds:
+        card = _load_card(sale_date, pred)
+        mkt = _market_ref(card)
+        if not mkt:
+            raise SystemExit(f'[llm_pred] {pred.get("code")}: 市场 CRS 池不足'
+                             f'（<{20} 格有价）——结构化生成须市场参照,无参照拒冻')
+        good, issues = validate_structured(pred, list(mkt))
+        if not good:
+            for i in issues:
+                print(f'  [reject] {i}')
+            raise SystemExit(f'[llm_pred] 结构化输入校验失败拒冻结: {len(issues)} 项')
+        ov = pred.get("cellOverrides") or {}
+        dist = generate_dist(pred["direction"], mkt, pred.get("shape") or {}, ov)
+        ok, checks = check_generated(dist, mkt, pred["evidenceTier"],
+                                     direction=pred["direction"],
+                                     shape=pred.get("shape") or {}, overrides=ov)
+        for c in checks:                                # 逐项打印（含 warn·禁静默）
+            print(f'  [{"warn" if c.startswith("[warn]") else "gate"}] '
+                  f'{pred.get("code")} {c.removeprefix("[warn] ")}')
+        if not ok:
+            raise SystemExit(f'[llm_pred] {pred.get("code")} 生成结果未过闸拒冻结'
+                             f'（{sum(1 for c in checks if not c.startswith("[warn]"))} 项）')
+        value_cells = sorted(
+            ({"k": k, "p_llm": round(v, 5), "p_mkt": round(mkt[k], 5),
+              "ratio": round(v / mkt[k], 2)}
+             for k, v in dist.items()
+             if mkt.get(k) and v / mkt[k] > VALUE_RATIO and v > VALUE_FLOOR),
+            key=lambda x: -x["ratio"])
+        frozen["preds"].append({
+            "code": pred["code"], "cardHash": card["cardHash"],
+            "p_crs": {k: round(v, 6) for k, v in dist.items()},
+            "direction": pred["direction"], "shape": pred.get("shape") or {},
+            "evidenceTier": pred["evidenceTier"], "cellOverrides": ov,
+            "contextStatus": card["layers"]["context"].get("status"),
+            "checks": {"passed": ok, "issues": checks},
+            "valueCells": value_cells,
+            "keyJudgments": pred["keyJudgments"], "confidence": pred["confidence"]})
+    PREDS_ROOT.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(frozen, ensure_ascii=False, indent=1), encoding="utf-8")
+    return out
 
 
 def _renorm_bands(p: dict, direction: dict) -> dict:

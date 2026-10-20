@@ -4,13 +4,19 @@
 口径：market 参照=去水 pick 键分布（须含 other_* 三格·与 llm_eval 计分键集同源）。
 开发者 sszhang"""
 import itertools
+import json
 import math
 import sys
 from pathlib import Path
 
+import pytest
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+import llm_pred as lp                                              # noqa: E402
+import test_llm_pred_v2 as v2                                      # noqa: E402
 from llm_pred import (check_generated, dir_of_key, generate_dist,  # noqa: E402
                       tot_of_key, validate_structured)
+from test_llm_pred_v2 import dirs                                  # noqa: E402,F401
 
 # 近似 31 格市场形状（和≈0.94，带内比例是真参照——生成器按带归一故不要求和为 1）
 MKT = {"1:0": 0.10, "2:0": 0.07, "2:1": 0.09, "1:1": 0.15, "0:0": 0.07,
@@ -155,6 +161,25 @@ def test_gate1_big_band_budget():
     assert not ok and any("大球带" in i for i in issues)
 
 
+def test_gate1_type_baseline_lets_shape_through():
+    """闸1 按型基线而非市场裸比（112 场真卡标定）：选型本身推动大球带
+    （lock ×0.54/leaky ×1.29），按裸比则三型在零叫板下即拒冻=形状判断无处可放。
+    闸1 该管的是叫板对大球预算的附带改写（实测 ±1.7% 内）。"""
+    mdir = {x: sum(v for k, v in _MKT5.items() if dir_of_key(k) == x) for x in "hda"}
+    z = sum(mdir.values())
+    mdir = {k: v / z for k, v in mdir.items()}
+    for t in ("crush", "lock", "leaky", "open"):
+        d = generate_dist(mdir, _MKT5, {"type": t})
+        ok, issues = check_generated(d, _MKT5, "info", direction=mdir,
+                                     shape={"type": t}, overrides=None)
+        assert not any("大球带" in i for i in issues), (t, issues)
+    # xgSum 在手=有证据抬带，闸1 豁免（带宽锚闸同口径）
+    d = generate_dist(mdir, _MKT5, {"type": "open", "xgSum": 4.2})
+    ok, issues = check_generated(d, _MKT5, "info", direction=mdir,
+                                 shape={"type": "open", "xgSum": 4.2}, overrides=None)
+    assert not any("大球带" in i for i in issues), issues
+
+
 def test_gate2_cell_ratio_and_override_exemption():
     d = generate_dist(_D5, _MKT5, {})
     sq = _renorm({**d, "0:3": d["0:3"] * .3})          # 003 型：单格压到 0.3 倍
@@ -199,3 +224,115 @@ def test_warn_level_never_blocks():
                                  overrides=None)
     assert ok                                            # 有 warn 但不拒
     assert any(i.startswith("[warn]") and "方向偏离" in i for i in issues)
+
+
+# ── Task 6：freeze v3 端到端 ──────────────────────────────────────────
+# 真实 31 格池（28 定格 + 中文 other 三键·与体彩存档同形）。v2 fixture 只 11 格,
+# 过不了 market_lambda.MIN_CRS_CELLS=20 门槛——结构化链须市场参照,fixture 必须贴真。
+_GRID_28 = ["0:0", "0:1", "0:2", "0:3", "0:4", "0:5", "1:0", "1:1", "1:2", "1:3",
+            "1:4", "1:5", "2:0", "2:1", "2:2", "2:3", "2:4", "2:5", "3:0", "3:1",
+            "3:2", "3:3", "4:0", "4:1", "4:2", "5:0", "5:1", "5:2"]
+
+
+def _crs31():
+    """赔率按总进球递增（1.0 球档最肥）——粗拟真实池形状。"""
+    odds = {}
+    for k in _GRID_28:
+        t = sum(int(x) for x in k.split(":"))
+        odds[k] = {0: 22.0, 1: 8.5, 2: 9.0, 3: 13.0, 4: 26.0,
+                   5: 60.0, 6: 120.0, 7: 200.0}.get(t, 300.0)
+    odds.update({"胜其他": 60.0, "平其他": 150.0, "负其他": 80.0})
+    return odds
+
+
+@pytest.fixture()
+def dirs31(tmp_path, monkeypatch):
+    """31 格真池卡 fixture（v3 专用）。"""
+    import hashlib
+    monkeypatch.setattr(lp, "CARDS_ROOT", tmp_path / "cards")
+    monkeypatch.setattr(lp, "PREDS_ROOT", tmp_path / "preds")
+    card = {"code": "周三009", "match": "A vs B", "league": "欧冠",
+            "saleDate": "2026-10-15",
+            "layers": {"market": {"had": {}, "crs": _crs31(), "ttg": dict(v2.TTG)},
+                       "context": {"status": "ok", "entries": []}},
+            "createdAt": "2026-10-15T10:00:00"}
+    card["cardHash"] = hashlib.sha256(
+        json.dumps(card, ensure_ascii=False, sort_keys=True).encode()).hexdigest()[:16]
+    d = tmp_path / "cards" / "2026-10-15"
+    d.mkdir(parents=True, exist_ok=True)
+    (d / "周三009.json").write_text(json.dumps(card, ensure_ascii=False), encoding="utf-8")
+    return tmp_path
+
+
+def test_market_ref_includes_other_cells(dirs31):
+    """市场参照须含 other_* 三格（卡内 devig.crs 只 28 格,中文 other 键被
+    crs_key 静默丢弃——这是 _market_ref 现算而非直读 devig 的理由）。"""
+    card = json.loads((dirs31 / "cards" / "2026-10-15" / "周三009.json")
+                      .read_text(encoding="utf-8"))
+    mkt = lp._market_ref(card)
+    assert len(mkt) == 31
+    assert {"other_h", "other_d", "other_a"} <= set(mkt)
+    assert abs(sum(mkt.values()) - 1.0) < 1e-9
+    assert sum(v for k, v in mkt.items() if tot_of_key(k) >= 4) > 0.05   # 大球带非空
+
+
+def _mkt_dir_of(dirs31):
+    card = json.loads((dirs31 / "cards" / "2026-10-15" / "周三009.json")
+                      .read_text(encoding="utf-8"))
+    mkt = lp._market_ref(card)
+    raw = {x: sum(v for k, v in mkt.items() if dir_of_key(k) == x) for x in "hda"}
+    z = sum(raw.values())
+    return {k: v / z for k, v in raw.items()}
+
+
+def _structured(code="周三009", **kw):
+    """默认方向=市场三向 +3pt 主胜叫板（structural 上限 8pt 内·fixture 等赔池
+    平局带仅 ~21%，硬写 .30 会造出 +13.9pt 的假叫板）。"""
+    sp = {"code": code, "direction": kw.pop("direction", None) or
+          {"h": .38, "d": .24, "a": .38},
+          "evidenceTier": "structural", "shape": {"type": "open"},
+          "cellOverrides": {}, "keyJudgments": _kj3(), "confidence": "medium"}
+    sp.update(kw)
+    return sp
+
+
+def test_freeze_v3_structured(dirs31):
+    out = lp.freeze("2026-10-15", [_structured()])
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    assert doc["chain"] == "llm-31grid-v3"
+    assert doc["genCohort"] == "v3-structured"
+    e = doc["preds"][0]
+    assert len(e["p_crs"]) == 31
+    assert abs(sum(e["p_crs"].values()) - 1.0) < 1e-5    # 落卷 round(6) 的累积余量
+    assert "checks" in e and "valueCells" in e
+    assert e["direction"] and e["evidenceTier"] == "structural"
+    assert e["shape"]["type"] == "open"
+
+
+def test_freeze_v2_path_untouched(dirs):
+    """v2 手填路径零破坏（同日另号，避开幂等）。"""
+    out = lp.freeze("2026-10-15", [v2._pred()])
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    assert doc["chain"] == "llm-31grid-v2"
+    assert "genCohort" not in doc
+    assert "direction" not in doc["preds"][0]
+
+
+def test_freeze_v3_rejects_over_tier_cap(dirs31, capsys):
+    """state 级大幅叫板 → 拒冻且逐项打印（禁静默：异常消息给计数,细项进 stdout）。"""
+    hot = {"h": .10, "d": .20, "a": .70}
+    with pytest.raises(SystemExit, match="未过闸拒冻结"):
+        lp.freeze("2026-10-15", [_structured(direction=hot, evidenceTier="state")])
+    printed = capsys.readouterr().out
+    assert "幅度" in printed and "超等级上限" in printed
+    assert not (lp.PREDS_ROOT / "2026-10-15.json").exists()      # 拒冻不留半卷
+
+
+def test_freeze_v3_value_cells_and_checks(dirs31):
+    """valueCells=比值>1.5 且 p>3% 的格（右尾定位下的选腿参考）。"""
+    out = lp.freeze("2026-10-15", [_structured(shape={"type": "crush"})], revision=3)
+    e = json.loads(out.read_text(encoding="utf-8"))["preds"][0]
+    for vc in e["valueCells"]:
+        assert vc["ratio"] > 1.5 and vc["p_llm"] > 0.03
+        assert vc["k"] in e["p_crs"]
+    assert isinstance(e["checks"]["issues"], list) and e["checks"]["passed"] is True
