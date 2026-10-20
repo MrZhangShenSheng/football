@@ -49,3 +49,24 @@ class TestDimElo(unittest.TestCase):
 
     def test_elo_missing(self):
         self.assertIsNone(dim_elo(None, 1450.0))
+
+
+from attribution_dims import dim_stage
+
+class TestDimStage(unittest.TestCase):
+    def test_league_regular_default(self):
+        rec = {"league": "意甲", "date": "2026-10-19"}
+        sf = dim_stage(rec)
+        self.assertEqual(sf["dim"], "L0.stage")
+        self.assertEqual(sf["tail_scale"], 1.0)
+        self.assertEqual(sf["evidence"], "league_regular")
+
+    def test_unknown_league_neutral(self):
+        sf = dim_stage({"league": "某新联赛", "date": "2026-10-19"})
+        self.assertEqual(sf["tail_scale"], 1.0)
+        self.assertEqual(sf["evidence"], "no_format")
+
+    def test_fifa_virus_window(self):
+        # 10-20 窗口结束后 3 天内 → fifa_virus 命中（Task5 的 flag 也走档案日历）
+        sf = dim_stage({"league": "意甲", "date": "2026-10-22"})
+        self.assertIn("fifa_virus", sf["evidence"])
