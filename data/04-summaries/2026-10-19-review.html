@@ -1,0 +1,73 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>2026-10-19 周一轮复盘 · LLM 轨重点</title>
+<style>
+:root{--ink:#1a1a1a;--sub:#666;--line:#e2e2e2;--hot:#b33;--cold:#369;--ok:#3a3}
+body{font:14px/1.7 "Microsoft YaHei",sans-serif;color:var(--ink);max-width:1080px;margin:24px auto;padding:0 16px}
+h1{font-size:20px;margin:0 0 4px}h2{font-size:16px;margin:26px 0 8px;border-left:4px solid var(--cold);padding-left:8px}
+.meta{color:var(--sub);font-size:12px;margin-bottom:14px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid var(--line);padding:5px 8px;text-align:left}
+th{background:#f7f7f7}tr:nth-child(even) td{background:#fbfbfb}
+.win{color:var(--ok);font-weight:600}.lose{color:var(--hot);font-weight:600}
+.note{font-size:12px;color:var(--sub);margin-top:6px}
+.big{font-size:22px;font-weight:700;margin:10px 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.card{border:1px solid var(--line);border-radius:6px;padding:10px 14px}
+.card .k{font-size:12px;color:var(--sub)}
+.card .v{font-size:20px;font-weight:700}
+</style></head><body>
+<h1>2026-10-19 周一轮复盘 · LLM 预测准确率重点账</h1>
+<div class="meta">销售日 2026-10-19 · 8 场全完赛（008 巴甲 07:00 收 1:1）· 对拍对手盘=建卡时点市场价（凌晨轮 lineup 窗口未至·cardTime 口径）</div>
+
+<h2>一、主判据：31 格配对 log-loss（market−llm，正=臣赢）</h2>
+<div class="grid">
+<div class="card"><div class="k">新卷独立账（kj≥3 + 零格 0 双修首轮）</div><div class="v">−0.175 <span style="font-size:13px;color:var(--sub)">/场（8 场）</span></div></div>
+<div class="card"><div class="k">旧卷对照（v1 压缩 + 零格 13~16/场）</div><div class="v">−1.035 <span style="font-size:13px;color:var(--sub)">/场（38 场）</span></div></div>
+<div class="card"><div class="k">累计（prereg 主判据）</div><div class="v">−0.890 <span style="font-size:13px;color:var(--sub)">n=46 · INSUFFICIENT（&lt;100 不判定）</span></div></div>
+<div class="card"><div class="k">右尾通道 E_tail</div><div class="v">−0.038 <span style="font-size:13px;color:var(--sub)">n=46 · 距离转正门（CI下限&gt;0 且 n≥150）尚远</span></div></div>
+</div>
+<div class="note">结论一：<b>零格自伤消除后，真实差距首次显影为 −0.18/场</b>——比旧卷改善 5.9 倍，但仍输市场。上月立的「分辨率口径」（31 格全正值、minPos 0.001 档）今日 8 场全满格守住，kj≥3 硬校验首轮落地。</div>
+
+<h2>二、逐场对拍（单场差=−log市场[真相]+log臣[真相]）</h2>
+<table><tr><th>场</th><th>赛果</th><th>臣[真相格]</th><th>市场[真相格]</th><th>单场差</th><th>方向 臣/市场</th><th>比分top1 臣/市场</th></tr>
+<tr><td>001 蒙扎-卡利亚里</td><td>4:0</td><td>0.42%</td><td>0.68%</td><td class="lose">−0.49</td><td>客✗ / <b>主✓</b></td><td>1:1✗ / 1:1✗</td></tr>
+<tr><td>002 代格福什-卡尔马</td><td>1:2</td><td>7.49%</td><td>10.56%</td><td class="lose">−0.34</td><td>主✗ / <b>客✓</b></td><td>1:1✗ / 1:1✗</td></tr>
+<tr><td>003 帕尔马-都灵</td><td>0:3</td><td>1.42%</td><td>2.92%</td><td class="lose">−0.72</td><td>客✓ / 客✓</td><td>1:1✗ / 1:1✗</td></tr>
+<tr><td>004 罗德兹-蒙彼利埃</td><td>0:3</td><td>3.14%</td><td>3.05%</td><td class="win">+0.03</td><td>客✓ / 客✓</td><td>1:1✗ / 1:1✗</td></tr>
+<tr><td>005 热刺-考文垂</td><td>3:1</td><td>7.29%</td><td>7.85%</td><td class="lose">−0.07</td><td>主✓ / 主✓</td><td>2:1✗ / 2:1✗</td></tr>
+<tr><td>006 赫塔费-巴列卡诺</td><td>1:1</td><td>18.81%</td><td>16.50%</td><td class="win">+0.13</td><td><b>平✓</b> / 客✗</td><td><b>1:1✓</b> / 1:1✓</td></tr>
+<tr><td>007 布拉加-吉维森特</td><td>1:2</td><td>4.41%</td><td>4.53%</td><td class="lose">−0.03</td><td>主✗ / 主✗</td><td>1:0✗ / 1:0✗</td></tr>
+<tr><td>008 科林蒂安-维多利亚</td><td>1:1</td><td>11.97%</td><td>10.91%</td><td class="win">+0.09</td><td>主✗ / 主✗</td><td>1:0✗ / 1:0✗</td></tr>
+</table>
+<div class="note">
+方向命中：臣 4/8 vs 市场 5/8——臣叫板市场且赢的只有 006（平局上调 35→40，1:1 同步押中）。<br>
+比分 top1：臣 1/8 = 市场 1/8（同中 006 的 1:1，其余七场双方全押 1:1/2:1/1:0 全灭）——单点比分不可为凭，31 格全分布计分才是公道秤。<br>
+赢市场的 3 场（004/006/008）共性：<b>结构性因素</b>（阵容价值差、主场属性、客场虫）驱动；输最重的 2 场（001/002）共性：<b>近况切片外推</b>（"客场铁桶""近 5 场零进球"都是 5~8 场小样本）。
+</div>
+
+<h2>三、方案腿账（右尾纪律 · 2 元/注推演）</h2>
+<table><tr><th>档</th><th>腿</th><th>结果</th><th>账</th></tr>
+<tr><td>翻身</td><td>004 蒙彼利埃客胜 @1.97</td><td class="win">✓ 中</td><td>+1.94/注</td></tr>
+<tr><td>观察</td><td>007 吉维森特客胜 @6.95</td><td class="win">✓ 中</td><td class="win">+11.90/注（单腿撑账）</td></tr>
+<tr><td>翻身</td><td>006 TTG s1 @3.25</td><td class="lose">✗</td><td>1:1=2 球落 s2</td></tr>
+<tr><td>翻身</td><td>001 卡利亚里客胜 @2.76</td><td class="lose">✗</td><td>4:0 屠刀</td></tr>
+<tr><td>翻身</td><td>005 考文垂 平/客双选 @4.55/6.35</td><td class="lose">✗✗</td><td>3:1 主胜碾压双选</td></tr>
+<tr><td>观察</td><td>003 帕尔马 s1/s2 @3.3/3.1</td><td class="lose">✗</td><td>0:3=3 球落 s3</td></tr>
+<tr><td>保底</td><td>008 科林蒂安主胜 @1.45</td><td class="lose">✗</td><td>1:1——"客 15 客场 0 胜"托底被平局击穿</td></tr>
+</table>
+<div class="note">7 腿 2 中：2 元/注口径投 16 回 17.84，<b>净 +1.84</b>——全靠 007 一根 @6.95。这正是右尾博弈的形态：命中率 29%，账不亏。另：臣在 007 把客胜从市场 13% 抬到 19%（1:2 真相格臣 4.41% 略低于市场 4.53%——方向抬对了，格没抬够）。</div>
+
+<h2>四、教训入册（规则候选）</h2>
+<div class="note">
+① <b>状态切片禁作方向叫板主依据</b>——001/002 两场重伤皆因 5~8 场近况外推（"客场铁桶→37%客胜"被 4:0 粉碎；"近 5 场零进球→客降 9pt"被 1:2 反杀）。结构性因素（阵容价值/主场属性/赛制）才配 5pt 以上叫板。<br>
+② <b>方向对≠分布对</b>——003 臣方向对（客）仍单场输 0.72：客胜质量全押在 0:1/1:2，0:3 尾部给 1.42% vs 市场 2.92%。方向端的钱在 31 格计分里拿不到，格要肥。<br>
+③ <b>凌晨轮 lineup 轨结构缺位</b>——预测 20:01 跑 tick 时 inWindow=0（开赛前 180 分钟窗口 22:00 才开），8 场对手盘全退 cardTime。若凌晨轮常驻，考虑把 tick 窗口前移或接受 cardTime 为凌晨轮口径（上轮已证两口径单场差中位数无别）。<br>
+④ <b>上轮预测漏落 02-results 终审卷</b>——回填时才发现，本日手工补建（data/02-results/2026-10-19.json）。预测流程「归档」环节应含此步，候选入规则册。
+</div>
+
+<h2>五、累计账与下一步</h2>
+<div class="note">
+prereg 主判据累计 n=46（观察门 30 已过 · 正式门 100 未到 · 判定 INSUFFICIENT 不下结论）。kjCohort 分层：v1 压缩卷 38 场 −1.035 / v2 拆分卷 8 场 −0.200。<br>
+按当前产率（8 场/轮 × 每周 2~3 轮）约 4~5 周到正式判定门。<b>在 n=100 前唯一该做的：继续攒样本，不改判据，不加干预</b>（prereg 铁律）。周二欧冠 9 场今晚销售日跑全流程。
+</div>
+</body></html>

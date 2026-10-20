@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-19",
+  "generatedAt": "2026-10-20",
   "records": {
     "2026-08-23|周日015|HAD": {
       "primary": "F9",
@@ -84,7 +84,7 @@
         "pinSource": "fd",
         "oddsDrift": {
           "pickOdds": 1.62,
-          "laterOdds": 2.74
+          "laterOdds": 3.04
         }
       },
       "confidence": "high",
@@ -121,7 +121,7 @@
         "pinSource": "okooo",
         "oddsDrift": {
           "pickOdds": 2.13,
-          "laterOdds": 7.3
+          "laterOdds": 4.55
         }
       },
       "confidence": "high",
@@ -143,7 +143,7 @@
         "pinSource": "okooo",
         "oddsDrift": {
           "pickOdds": 2.18,
-          "laterOdds": 8.25
+          "laterOdds": 8.05
         }
       },
       "confidence": "high",
@@ -792,9 +792,7 @@
     },
     "2026-09-01|周二004|HAD": {
       "primary": "F9",
-      "secondary": [
-        "F10"
-      ],
+      "secondary": [],
       "evidence": {
         "pfinalPick": 0.456,
         "dcBest": 0,
@@ -802,11 +800,7 @@
         "pickIdx": 0,
         "resultIdx": 2,
         "result": "0-2",
-        "pinSource": "fd",
-        "oddsDrift": {
-          "pickOdds": 1.99,
-          "laterOdds": 2.27
-        }
+        "pinSource": "fd"
       },
       "confidence": "high",
       "source": "rule",
@@ -814,9 +808,7 @@
     },
     "2026-09-01|周二010|HAD": {
       "primary": "F1",
-      "secondary": [
-        "F10"
-      ],
+      "secondary": [],
       "evidence": {
         "pfinalPick": 0.495,
         "dcBest": 0,
@@ -825,11 +817,7 @@
         "resultIdx": 2,
         "result": "0-1",
         "pinSource": "okooo",
-        "lambdaGap": 3.84,
-        "oddsDrift": {
-          "pickOdds": 1.75,
-          "laterOdds": 7.7
-        }
+        "lambdaGap": 3.84
       },
       "confidence": "high",
       "source": "rule",
@@ -1148,9 +1136,7 @@
     },
     "2026-09-16|周二010|HAD": {
       "primary": "F9",
-      "secondary": [
-        "F10"
-      ],
+      "secondary": [],
       "evidence": {
         "pfinalPick": 0.6099,
         "dcBest": 0,
@@ -1158,11 +1144,7 @@
         "pickIdx": 0,
         "resultIdx": 1,
         "result": "2-2",
-        "pinSource": "fd",
-        "oddsDrift": {
-          "pickOdds": 1.44,
-          "laterOdds": 7.7
-        }
+        "pinSource": "fd"
       },
       "confidence": "high",
       "source": "rule",
@@ -1222,7 +1204,7 @@
         "pinSource": "okooo",
         "oddsDrift": {
           "pickOdds": 4.25,
-          "laterOdds": 5.3
+          "laterOdds": 5.6
         }
       },
       "confidence": "high",

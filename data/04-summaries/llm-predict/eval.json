@@ -2,31 +2,32 @@
   "days": [
     "2026-10-14",
     "2026-10-15",
-    "2026-10-16"
+    "2026-10-16",
+    "2026-10-19"
   ],
   "primary": {
-    "n": 38,
+    "n": 46,
     "verdict": "INSUFFICIENT",
-    "diffMean": -1.0352
+    "diffMean": -0.8899
   },
   "tailChannel": {
-    "n": 38,
+    "n": 46,
     "verdict": "INSUFFICIENT",
-    "diffMean": -0.0454,
+    "diffMean": -0.0384,
     "gate": "CI 下限>0 且 n≥150 才开影子专项"
   },
   "descriptive": {
     "E1": {
-      "n": 38,
-      "diffMean": -0.1392
+      "n": 46,
+      "diffMean": -0.1172
     },
     "E2": {
-      "n": 38,
-      "diffMean": -0.0459
+      "n": 46,
+      "diffMean": -0.0555
     },
     "E3": {
-      "n": 38,
-      "diffMean": 0.0006
+      "n": 46,
+      "diffMean": -0.0158
     }
   },
   "closeProxySplit": {
@@ -35,28 +36,44 @@
       "diffMean": -3.4704
     },
     "lineupLast": {
-      "n": 30,
-      "diffMean": -0.3858
+      "n": 38,
+      "diffMean": -0.3466
     }
   },
   "kjCohortSplit": {
     "v1-compressed": {
       "n": 38,
       "diffMean": -1.0352
+    },
+    "v2-split": {
+      "n": 8,
+      "diffMean": -0.1996
     }
   },
   "resolution": {
-    "n": 38,
-    "zeroCellsMean": 9.89,
+    "n": 46,
+    "zeroCellsMean": 8.17,
     "zeroCellsMax": 16,
-    "zeroFreeScenes": 11,
+    "zeroFreeScenes": 19,
     "minPosMedian": 0.01,
     "minPosWorst": 0.025659,
-    "zeroMktMassMean": 0.0813,
+    "zeroMktMassMean": 0.0672,
     "zeroMktMassMax": 0.1761,
     "missingKeysTotal": 0,
     "note": "主看 minPosMedian（分辨率尺）；zeroCells 为粗判。退化预警=minPos 抬向 0.01 或 zeroCells 均值>3",
     "byDay": {
+      "周一": {
+        "n": 8,
+        "zeroCellsMean": 0.0,
+        "zeroCellsMax": 0,
+        "zeroFreeScenes": 8,
+        "minPosMedian": 0.001097,
+        "minPosWorst": 0.001541,
+        "zeroMktMassMean": 0.0,
+        "zeroMktMassMax": 0,
+        "missingKeysTotal": 0,
+        "note": "主看 minPosMedian（分辨率尺）；zeroCells 为粗判。退化预警=minPos 抬向 0.01 或 zeroCells 均值>3"
+      },
       "周三": {
         "n": 14,
         "zeroCellsMean": 14.43,
