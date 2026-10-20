@@ -1,0 +1,347 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>批一实施计划 · LLM 分布结构化生成 v3.6</title>
+<style>
+:root{--ink:#1a1a1a;--sub:#666;--line:#e2e2e2;--cold:#369}
+body{font:14px/1.7 "Microsoft YaHei",sans-serif;color:var(--ink);max-width:1080px;margin:24px auto;padding:0 16px}
+h1{font-size:20px;margin:0 0 4px}h2{font-size:16px;margin:26px 0 8px;border-left:4px solid var(--cold);padding-left:8px}
+.meta{color:var(--sub);font-size:12px;margin-bottom:14px}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:8px 0}
+th,td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#f7f7f7}
+code,pre{font:12px/1.5 Consolas,monospace;background:#f6f6f6;border-radius:3px}
+code{padding:1px 4px}pre{padding:8px 10px;overflow-x:auto}
+.step{background:#f9fbfd;border:1px solid #dce6f2;padding:6px 12px;border-radius:4px;margin:6px 0}
+.note{font-size:12px;color:var(--sub)}
+</style></head><body>
+<h1>批一实施计划 · LLM 分布结构化生成 v3.6</h1>
+<div class="meta">执行者须知：零上下文假设，照单执行。设计依据 docs/plans/2026-10-20-llm-dist-structured-design.html（先读 §三~五）。TDD：每任务先测后码。开发者 sszhang</div>
+
+<pre>
+目标：LLM 轨预测从手填 31 格 → 三参数(direction/shape/evidenceTier)输入 + 机器生成 + 四道拒冻校验
+架构：llm_pred.py 增生成器与 v3 冻结路径（按 preds 内容自动分发 v2/v3，旧链原样保留）；llm_eval.py 增 genCohort 分层
+技术栈：Python 3.14 + pytest（unittest 风格直跑）；市场去水分布取自数据卡 layers.market.devig.crs（s 键，需转 pick 键——llm_pred 内已有同款转换，执行时先读该文件熟悉）
+铁律：旧冻结卷(engine/cache/llm_preds/*.json)是凭证禁改写；跳过/拒绝必须逐项打印禁静默；测试绿了才 commit
+</pre>
+
+<h2>前置：读懂现有代码（不改）</h2>
+<div class="step">Step 0.1 读 engine/scripts/llm_pred.py 全文（约 300 行）——重点：freeze 签名、validate_pred、normalize_to_keys、v2 TTG 锚(anchor)实现、键集提取与 s→pick 键转换函数名。</div>
+<div class="step">Step 0.2 读 engine/tests/test_llm_pred.py 与 test_llm_pred_v2.py——_kj3() helper、_mk_card fixture、现有断言口径。新测试全部沿用这两个文件的 fixture 风格。</div>
+<div class="step">Step 0.3 读 engine/cache/llm_cards/2026-10-19/周一001.json 的 layers.market.devig.crs 与 layers.market.crs——确认 devig 键是 sXXsYY 形态、market.crs 键混合三态。生成器的「市场参照」统一用 devig.crs 转换后的 pick 键分布。</div>
+
+<h2>Task 1：生成器核心——市场带内分摊（P5 带内继承）</h2>
+<pre><b>Files</b>: Modify engine/scripts/llm_pred.py（文件尾部新增节）; Test engine/tests/test_llm_pred_v3.py（新建）</pre>
+<div class="step">Step 1.1 写失败测试（新建 test_llm_pred_v3.py，fixture 从 test_llm_pred_v2.py 抄 _mk_card/_kj3）：</div>
+<pre>from llm_pred import generate_dist, dir_of_key
+
+MKT = {"1:0": 0.10, "2:0": 0.07, "2:1": 0.09, "1:1": 0.15, "0:0": 0.07,
+       "0:1": 0.10, "1:2": 0.09, "0:2": 0.06, "0:3": 0.029, "1:3": 0.02,
+       "other_h": 0.05, "other_d": 0.04, "other_a": 0.07}   # 归一近似
+
+def test_generate_dist_deterministic_and_banded():
+    d1 = generate_dist({"h": .30, "d": .25, "a": .45}, MKT, {})
+    d2 = generate_dist({"h": .30, "d": .25, "a": .45}, MKT, {})
+    assert d1 == d2                                    # 可复现（P26）
+    assert abs(sum(d1.values()) - 1.0) < 1e-9
+    for d in "hda":
+        band = sum(v for k, v in d1.items() if dir_of_key(k) == d)
+        assert abs(band - {"h": .30, "d": .25, "a": .45}[d]) < 1e-9   # 三向质量精确落带
+
+def test_generate_dist_inherits_band_shape():        # 003 反例的机制解
+    mkt_a_band = sum(MKT[k] for k in MKT if dir_of_key(k) == "a")
+    d = generate_dist({"h": .20, "d": .30, "a": .50}, MKT, {})
+    assert abs(d["0:3"] / d["1:2"] - MKT["0:3"] / MKT["1:2"]) < 1e-9  # 带内比例继承</pre>
+<div class="step">Step 1.2 跑 <code>py -3 -m pytest engine/tests/test_llm_pred_v3.py -q</code> → 预期 FAIL（ImportError）。</div>
+<div class="step">Step 1.3 在 llm_pred.py 新增（放文件尾部新注释节 <code># ── v3.6 结构化生成 ──</code> 下）：</div>
+<pre>OTHER_TOT = 5.5    # other_* 兜底格的总进球代表值（6+ 球质的折中，校准脚本同口径）
+
+def dir_of_key(k: str) -> str:
+    """pick 键 → 三向（h/d/a）。other_ 前缀取末字母；格键按比分。开发者 sszhang"""
+    if k.startswith("other_"):
+        return k[-1]
+    h, a = (int(x) for x in k.split(":"))
+    return "h" if h > a else ("d" if h == a else "a")
+
+def tot_of_key(k: str) -> float:
+    return OTHER_TOT if k.startswith("other_") else sum(int(x) for x in k.split(":"))
+
+def generate_dist(direction: dict, market: dict, shape: dict,
+                  overrides: dict | None = None) -> dict:
+    """五步确定性生成 31 格（设计 §4.1）。market=去水 pick 键分布（须含全部计分键）。
+    步序：①市场带内形状 ②三向分摊 ③模板调形 ④xG 双参 ⑤覆盖归一。同参同出（P26）。开发者 sszhang"""
+    bands: dict[str, dict] = {"h": {}, "d": {}, "a": {}}
+    for k, v in market.items():
+        bands[dir_of_key(k)][k] = v
+    p = {}
+    for d, band in bands.items():
+        z = sum(band.values()) or 1.0
+        for k, v in band.items():
+            p[k] = direction[d] * v / z
+    st = SHAPE_TEMPLATES.get((shape or {}).get("type"))     # Task 2 之前为空实现
+    if st:
+        p = _apply_template(p, st)
+    p = _apply_xg(p, shape or {})                            # Task 3 之前为空实现
+    for k, v in (overrides or {}).items():
+        if k in p:
+            p[k] = float(v)
+    z = sum(p.values())
+    return {k: v / z for k, v in p.items()}
+
+SHAPE_TEMPLATES: dict = {}        # Task 2 填表；空表=无调形（纯带内继承）
+
+def _apply_template(p: dict, st) -> dict:                    # Task 2 实现；先占位
+    return p
+
+def _apply_xg(p: dict, shape: dict) -> dict:                 # Task 3 实现；先占位
+    return p</pre>
+<div class="step">Step 1.4 跑测试 → PASS。Step 1.5 <code>git add -A; git commit -m "feat(llm-pred v3): 生成器核心——市场带内分摊+可复现基座"</code></div>
+
+<h2>Task 2：四型形状模板（P7）</h2>
+<pre><b>Files</b>: Modify llm_pred.py; Test test_llm_pred_v3.py 追加</pre>
+<div class="step">Step 2.1 失败测试：</div>
+<pre>def test_shape_templates_diverge():
+    dirs = {"h": .45, "d": .27, "a": .28}
+    dists = {t: generate_dist(dirs, MKT, {"type": t}) for t in ("crush","lock","leaky","open")}
+    import math
+    def kl(p, q):
+        return sum(p[k] * math.log(p[k] / q[k]) for k in p)
+    import itertools
+    for a, b in itertools.combinations(dists, 2):
+        assert kl(dists[a], dists[b]) > 0.02          # 四型两两分型（KL>0.02）
+    assert dists["crush"]["3:0"] > dists["open"]["3:0"]          # 碾压型大胜格更肥
+    assert dists["lock"]["0:0"] > dists["leaky"]["0:0"]          # 铁桶型 0:0 更肥</pre>
+<div class="step">Step 2.2 跑 → FAIL（模板空）。Step 2.3 实现：</div>
+<pre>SHAPE_TEMPLATES = {          # (加权格集|谓词, 加权倍率, 减权格集|谓词, 减权倍率)——设计 §4.2
+    "crush": ({"3:0", "4:0", "3:1", "4:1"}, 1.8, {"1:1", "0:0"}, 0.7),
+    "lock":  ({"0:0", "1:0", "0:1", "1:1"}, 1.5, "big", 0.5),    # big=总球≥4 全格
+    "leaky": ({"2:2", "3:2", "2:3", "3:3"}, 1.8, "cs", 0.6),     # cs=零封格（某方 0）
+    "open":  ({"1:2", "2:1", "2:2", "1:1"}, 1.3, {"0:0"}, 0.6),
+}
+
+def _pred_hit(k: str, spec) -> bool:
+    if isinstance(spec, str):                     # 谓词简写
+        if spec == "big":
+            return tot_of_key(k) >= 4
+        if spec == "cs":
+            return ":" in k and (int(k[0]) == 0 or int(k[2]) == 0)
+    return k in spec
+
+def _apply_template(p: dict, st) -> dict:
+    up, uw, down, dw = st
+    return {k: v * (uw if _pred_hit(k, up) else dw if _pred_hit(k, down) else 1.0)
+            for k, v in p.items()}</pre>
+<div class="step">Step 2.4 跑 → PASS。Step 2.5 commit <code>"feat(llm-pred v3): 四型形状模板——碾压/铁桶/互漏/对攻格形指纹"</code></div>
+
+<h2>Task 3：xG 双参数调整</h2>
+<pre><b>Files</b>: Modify llm_pred.py; Test 追加</pre>
+<div class="step">Step 3.1 失败测试：</div>
+<pre>def test_xg_params_lift_big_band():
+    base = generate_dist({"h": .5, "d": .25, "a": .25}, MKT, {})
+    hi = generate_dist({"h": .5, "d": .25, "a": .25}, MKT,
+                       {"type": "open", "xgSum": 3.8, "xgDiff": 0.0})
+    big_b = sum(v for k, v in base.items() if tot_of_key(k) >= 4)
+    big_h = sum(v for k, v in hi.items() if tot_of_key(k) >= 4)
+    assert big_h > big_b * 1.2                    # xgSum 高 → 大球带抬升
+    hi2 = generate_dist({"h": .5, "d": .25, "a": .25}, MKT,
+                        {"type": "open", "xgSum": 3.8, "xgDiff": 1.5})
+    assert hi2["3:0"] > hi["3:0"] * 1.1           # xgDiff 主向 → 大胜格再抬
+    # 封顶 ×2：极端参数不失控
+    hi3 = generate_dist({"h": .5, "d": .25, "a": .25}, MKT,
+                        {"type": "open", "xgSum": 9.0, "xgDiff": 8.0})
+    assert max(hi3.values()) < 0.5</pre>
+<div class="step">Step 3.2 FAIL → Step 3.3 实现：</div>
+<pre>def _apply_xg(p: dict, shape: dict) -> dict:
+    """xG 双参二阶调整（设计 §4.1④）：xgSum≥2.8 抬大球带；|xgDiff|≥0.8 抬对应向大胜格。
+    倍率封顶 ×2（防极端参数失控）。参数缺省/null=不调（消融口径）。开发者 sszhang"""
+    xs, xd = shape.get("xgSum"), shape.get("xgDiff")
+    out = dict(p)
+    if isinstance(xs, (int, float)) and xs >= 2.8:
+        f = min(1 + 0.3 * (xs - 2.8), 2.0)
+        out = {k: (v * f if tot_of_key(k) >= 4 else v) for k, v in out.items()}
+    if isinstance(xd, (int, float)) and abs(xd) >= 0.8:
+        f = min(1 + 0.4 * (abs(xd) - 0.8), 2.0)
+        side = "h" if xd > 0 else "a"
+        out = {k: (v * f if dir_of_key(k) == side and ":" in k
+                   and abs(int(k[0]) - int(k[2])) >= 3 else v)
+               for k, v in out.items()}
+    return out</pre>
+<div class="step">Step 3.4 PASS → Step 3.5 commit <code>"feat(llm-pred v3): xG 双参二阶调整——大球带/大胜格抬升封顶×2"</code></div>
+
+<h2>Task 4：结构化输入校验 validate_structured</h2>
+<pre><b>Files</b>: Modify llm_pred.py; Test 追加</pre>
+<div class="step">Step 4.1 失败测试：</div>
+<pre>def test_validate_structured():
+    good = {"code": "周二006", "direction": {"h": .3, "d": .25, "a": .45},
+            "evidenceTier": "structural", "shape": {"type": "open"},
+            "cellOverrides": {"0:3": .045}, "keyJudgments": _kj3(), "confidence": "medium"}
+    ok, issues = validate_structured(good, list(MKT))
+    assert ok and not issues
+    bad = dict(good, direction={"h": .3, "d": .25, "a": .44})            # 和≠1
+    assert not validate_structured(bad, list(MKT))[0]
+    bad = dict(good, evidenceTier="gut")                                   # 等级枚举
+    assert not validate_structured(bad, list(MKT))[0]
+    bad = dict(good, shape={"type": "park_the_bus"})                       # 型枚举
+    assert not validate_structured(bad, list(MKT))[0]
+    bad = dict(good, cellOverrides={f"{i}:{j}": .01 for i in range(3) for j in range(2)})  # >5 格
+    assert not validate_structured(bad, list(MKT))[0]
+    assert any("≤5" in i for i in validate_structured(bad, list(MKT))[1])
+    bad = dict(good, cellOverrides={"9:9": .1})                            # 键∉市场
+    assert not validate_structured(bad, list(MKT))[0]</pre>
+<div class="step">Step 4.2 FAIL → Step 4.3 实现（复用现有 KJ_MIN 校验与 confidence 枚举——直接调用 validate_pred 同源逻辑或把 kj/confidence 检查函数提出复用，DRY）：</div>
+<pre>EVIDENCE_TIERS = ("state", "structural", "info")
+
+def validate_structured(pred: dict, market_keys: list[str]) -> tuple[bool, list[str]]:
+    """结构化输入校验（设计 §三）。kj≥3 与 confidence 检查复用 validate_pred 的
+    对应子句（勿复制粘贴——把那段抽成 _check_kj_conf(pred, issues) 两处共用）。开发者 sszhang"""
+    issues: list[str] = []
+    d = pred.get("direction") or {}
+    if set(d) != {"h", "d", "a"} or abs(sum(d.values()) - 1.0) > 0.02:
+        issues.append(f'{pred.get("code")}: direction 须 h/d/a 且和≈1（现 {d}）')
+    if pred.get("evidenceTier") not in EVIDENCE_TIERS:
+        issues.append(f'{pred.get("code")}: evidenceTier ∈ {EVIDENCE_TIERS}（现 {pred.get("evidenceTier")}）')
+    if (pred.get("shape") or {}).get("type") not in SHAPE_TEMPLATES:
+        issues.append(f'{pred.get("code")}: shape.type ∈ {tuple(SHAPE_TEMPLATES)}')
+    ov = pred.get("cellOverrides") or {}
+    if len(ov) > 5:
+        issues.append(f'{pred.get("code")}: cellOverrides 须≤5 格（现 {len(ov)}）')
+    for k in ov:
+        if k not in market_keys:
+            issues.append(f'{pred.get("code")}: 覆盖格 {k} 不在市场键集')
+    _check_kj_conf(pred, issues)                     # 复用抽取的 kj≥3/confidence 校验
+    return (not issues), issues</pre>
+<div class="step">Step 4.4 PASS → Step 4.5 commit <code>"feat(llm-pred v3): 结构化输入校验——direction/tier/type/overrides≤5"</code></div>
+
+<h2>Task 5：生成结果校验器 check_generated（拒冻级四闸）</h2>
+<pre><b>Files</b>: Modify llm_pred.py; Test 追加</pre>
+<div class="step">Step 5.1 失败测试：</div>
+<pre>def test_check_generated_gates():
+    mkt = dict(MKT)
+    d = generate_dist({"h": .3, "d": .25, "a": .45}, mkt, {})
+    ok, issues = check_generated(d, mkt, "structural", direction={"h": .3, "d": .25, "a": .45},
+                                 shape={}, overrides=None)
+    assert ok, issues                                  # 纯带内继承必过四闸
+    # 闸1 大球预算：手工压扁大球带
+    flat = {k: (v * .5 if tot_of_key(k) >= 4 else v) for k, v in d.items()}
+    z = sum(flat.values()); flat = {k: v / z for k, v in flat.items()}
+    ok, issues = check_generated(flat, mkt, "info", direction={"h":.3,"d":.25,"a":.45}, shape={}, overrides=None)
+    assert not ok and any("大球带" in i for i in issues)
+    # 闸2 单格比值：某格压到 0.4 倍（003 型）
+    sq = dict(d); sq["0:3"] = sq["0:3"] * .3; z = sum(sq.values()); sq = {k: v/z for k, v in sq.items()}
+    ok, issues = check_generated(sq, mkt, "info", direction={"h":.3,"d":.25,"a":.45}, shape={}, overrides=None)
+    assert not ok and any("0:3" in i and "比值" in i for i in issues)
+    # 闸2 豁免：覆盖格（有 kj 证据）不触发比值闸
+    ok, issues = check_generated(sq, mkt, "info", direction={"h":.3,"d":.25,"a":.45},
+                                 shape={}, overrides={"0:3": sq["0:3"]})
+    assert ok, issues
+    # 闸3 带宽锚：TTG 期望差 2 球且无 xgSum → 拒
+    hi = generate_dist({"h": .5, "d": .5, "a": 0.0} if False else {"h": .34, "d": .33, "a": .33},
+                       {k: (v * 2 if tot_of_key(k) >= 5 else v) for k, v in mkt.items()},
+                       {"type": "leaky"})
+    ok, issues = check_generated(hi, mkt, "info", direction={"h":.34,"d":.33,"a":.33},
+                                 shape={"type": "leaky"}, overrides=None)
+    assert not ok and any("总球期望" in i for i in issues)
+    # 闸4 幅度挂钩：state 级 +5pt 叫板 → 拒；info 级 → 过
+    mkt_top = max(sum(v for k, v in mkt.items() if dir_of_key(k) == x) for x in "hda")
+    hot = {x: .44 if x == "a" else .28 for x in "hda"}
+    d4 = generate_dist(hot, mkt, {})
+    ok, issues = check_generated(d4, mkt, "state", direction=hot, shape={}, overrides=None)
+    assert not ok and any("幅度" in i for i in issues)
+    ok, _ = check_generated(d4, mkt, "info", direction=hot, shape={}, overrides=None)
+    assert ok</pre>
+<div class="step">Step 5.2 FAIL → Step 5.3 实现：</div>
+<pre>BIG_BAND_TOL = 0.02                 # 大球带与市场偏差上限（P6/P20：治每场 −4pt 欠账）
+CELL_RATIO = (0.5, 2.5)             # 单格/市场比值闸（P10/P11；003 型 0.49 倍被拦）
+OTHER_CELL_RATIO = (0.3, 3.0)       # other_* 兜底格放宽
+ANCHOR_BAND = 1.5                   # 总球期望带宽（P9 松锚：±1.5 球内自由）
+TIER_CAP = {"state": 0.02, "structural": 0.08, "info": None}   # P8 证据等级→幅度上限
+
+def _ttg_expect(dist: dict) -> float:
+    return sum(v * tot_of_key(k) for k, v in dist.items())
+
+def check_generated(dist: dict, market: dict, evidence_tier: str, *,
+                    direction: dict, shape: dict, overrides: dict | None) -> tuple[bool, list[str]]:
+    """生成结果四闸（设计 §5.1·拒冻级）+警告级留痕。违者逐项打印禁静默。开发者 sszhang"""
+    issues, warns = [], []
+    big_l = sum(v for k, v in dist.items() if tot_of_key(k) >= 4)
+    big_m = sum(v for k, v in market.items() if tot_of_key(k) >= 4)
+    if abs(big_l - big_m) > BIG_BAND_TOL:
+        issues.append(f"大球带质量 {big_l:.1%} 偏离市场 {big_m:.1%} 超 ±{BIG_BAND_TOL:.0%}")
+    ov = overrides or {}
+    for k in dist:
+        if k in ov:
+            continue                                  # 覆盖格豁免比值闸（kj 已证）
+        m = market.get(k)
+        if not m:
+            continue
+        lo, hi = OTHER_CELL_RATIO if k.startswith("other_") else CELL_RATIO
+        if not lo <= dist[k] / m <= hi:
+            issues.append(f"格 {k} 比值 {dist[k]/m:.2f} 出界 [{lo},{hi}]")
+    dl = _ttg_expect(dist); dm = _ttg_expect(market)
+    if abs(dl - dm) > ANCHOR_BAND and not isinstance((shape or {}).get("xgSum"), (int, float)):
+        issues.append(f"总球期望 {dl:.2f} 距市场 {dm:.2f} 超 ±{ANCHOR_BAND} 且无 xgSum 证据")
+    cap = TIER_CAP.get(evidence_tier)
+    mkt_dir = {x: sum(v for k, v in market.items() if dir_of_key(k) == x) for x in "hda"}
+    shift = max(direction[x] - mkt_dir[x] for x in "hda")
+    if cap is not None and shift > cap:
+        issues.append(f"幅度 {shift:+.1%} 超等级上限 {cap:+.0%}（{evidence_tier}）")
+    if shift > 0.12:
+        warns.append(f"方向偏离市场 {shift:+.1%}（>12pt 留痕）")
+    if len(ov) == 5:
+        warns.append("cellOverrides 用满 5 格")
+    if evidence_tier == "state":
+        warns.append("state 级证据（有 xG 数据时该用 structural）")
+    return (not issues), issues + [f"[warn] {w}" for w in warns]</pre>
+<div class="step">Step 5.4 PASS → Step 5.5 commit <code>"feat(llm-pred v3): 生成校验器四闸——大球预算/单格比值/带宽锚/幅度挂钩"</code></div>
+
+<h2>Task 6：freeze v3 端到端（自动分发 + chain v3 + checks/valueCells/genCohort 落卷）</h2>
+<pre><b>Files</b>: Modify llm_pred.py（freeze 入口改造）; Test 追加</pre>
+<div class="step">Step 6.1 失败测试（复用 v2 测试的 _mk_card 建真卡 fixture）：</div>
+<pre>def test_freeze_v3_structured(dirs):          # dirs fixture 同 test_llm_pred_v2
+    _mk_card(dirs / "cards")                   # 卡 market.crs 已含 CRS 11 键
+    sp = {"code": "周三009", "direction": {"h": .35, "d": .30, "a": .35},
+          "evidenceTier": "structural", "shape": {"type": "open"},
+          "cellOverrides": {}, "keyJudgments": _kj3(), "confidence": "medium"}
+    out = lp.freeze("2026-10-15", [sp])
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    assert doc["chain"] == "llm-31grid-v3"
+    assert doc["genCohort"] == "v3-structured"
+    e = doc["preds"][0]
+    assert "p_crs" in e and abs(sum(e["p_crs"].values()) - 1.0) < 1e-6   # 生成分布落卷
+    assert "checks" in e and "valueCells" in e
+    # v2 手填路径原样保留（同参旧格式）
+    out2 = lp.freeze("2026-10-15", [_pred()])   # _pred() 来自 v2 测试（p_crs 手填）
+    assert json.loads(out2.read_text(encoding="utf-8"))["chain"] == "llm-31grid-v2"
+    # 拒冻：state 级 +5pt → SystemExit/RuntimeError 且逐项打印
+    bad = {**sp, "direction": {"h": .10, "d": .20, "a": .70}, "evidenceTier": "state"}
+    with pytest.raises(Exception, match="幅度"):
+        lp.freeze("2026-10-15", [bad], revision=2)</pre>
+<div class="step">Step 6.2 FAIL → Step 6.3 实现：freeze 入口按 preds[0] 有无 <code>direction</code> 键分发；v3 分支=读卡 devig.crs（s 键→pick 键，复用现有转换）→ market 参照 → generate_dist → validate_structured → check_generated（不过则 raise，逐项打印）→ 落卷字段增量：<code>chain/genCohort/p_crs/checks/valueCells/direction/shape/evidenceTier</code>。valueCells=[{k,p_llm,p_mkt,ratio} | ratio&gt;1.5 且 p_llm&gt;3%]。v2 分支原代码零改动。幂等：同销售日同 revision 卷已存在→直接返回（沿用现逻辑，注意 v2/v3 卷名不区分——同日混格不允许，先到先冻结）。</div>
+<div class="step">Step 6.4 PASS → Step 6.5 commit <code>"feat(llm-pred v3): freeze 端到端——自动分发/四闸拒冻/checks+valueCells落卷"</code></div>
+
+<h2>Task 7：llm_eval 增 genCohort 分层</h2>
+<pre><b>Files</b>: Modify engine/scripts/llm_eval.py（_load_day_rows 行内加一字段+evaluate 聚合）; Test engine/tests/test_llm_eval.py 追加</pre>
+<div class="step">Step 7.1 失败测试：monkeypatch 装载 20 行 genCohort="freehand" + 15 行 "v3-structured"（fixture 抄 test_kj_cohort_split），断言 out["genCohortSplit"] 两组 n=20/15；行缺字段→"freehand" 兜底。</div>
+<div class="step">Step 7.2 FAIL → 7.3 实现：_load_day_rows 读卷顶层 <code>genCohort</code>（pr.get 无则按 chain=="llm-31grid-v3" 判，仍无→"freehand"）落 <code>_genCohort</code>;evaluate 增 <code>"genCohortSplit"</code>（与 kjCohortSplit 同构）。</div>
+<div class="step">Step 7.4 PASS → 7.5 commit <code>"feat(llm_eval): genCohort 分层——手填卷/结构化卷分开读"</code></div>
+
+<h2>Task 8：v2 旧链回归验证</h2>
+<div class="step">Step 8.1 <code>py -3 -m pytest engine/tests/test_llm_pred.py engine/tests/test_llm_pred_v2.py engine/tests/test_llm_pred_v3.py engine/tests/test_llm_eval.py -q</code> → 全绿（v2 手填路径零破坏）。</div>
+<div class="step">Step 8.2 commit（若有修补）<code>"test(llm-pred): v2/v3 双链回归绿"</code></div>
+
+<h2>Task 9：回放对账（10-19 八场机械回放）</h2>
+<pre><b>Files</b>: Create engine/scripts/scratch/replay_v3.py（一次性,跑完删）; 结果记 commit message</pre>
+<div class="step">Step 9.1 脚本：读 llm_preds/2026-10-19.json 每场 p_crs 三向和→direction；market=该场卡 devig.crs 转 pick；shape={}（纯带内继承，机械口径）；generate_dist → 用 llm_eval 计分函数对同赛果算 log-loss；与手填卷逐场对照。</div>
+<div class="step">Step 9.2 跑，产出对照表（手填 diffMean −0.175 为基线；预期带内继承版收窄 003 型）。预期落在 −0.02~−0.08 区间——若劣于手填卷即红旗：检查生成器 bug 而非调参凑数。</div>
+<div class="step">Step 9.3 删脚本，数字写入提交信息。commit <code>"test(llm-pred v3): 10-19 八场机械回放对账——diffMean X.XXX vs 手填 −0.175"</code></div>
+
+<h2>Task 10：全量回归 + SKILL.md 更新 + 终提交</h2>
+<div class="step">Step 10.1 <code>py -3 -m pytest engine/tests -q</code>（全仓，~13 分钟）→ 全绿。</div>
+<div class="step">Step 10.2 skill/SKILL.md §3-4 更新：预测输入改三参数 schema 说明+示例（示例即规范——旧 p_crs 手填示例标「v2 兜底格式」适用范围）；判断规矩补「evidenceTier 三级与幅度上限」。</div>
+<div class="step">Step 10.3 commit <code>"feat(llm-v3.6): 分布结构化生成全量落地——三参数/生成器/四闸/genCohort"</code></div>
+
+<h2>附：执行选择（write-plans 收尾问询）</h2>
+<table>
+<tr><th>方式</th><th>说明</th><th>适配本仓</th></tr>
+<tr><td>A 子代理驱动（本会话）</td><td>每任务派新子代理，任务间臣复核</td><td>✅ 单写会话纪律不破（同会话顺序写）</td></tr>
+<tr><td>B 并行会话（worktree）</td><td>另开会话跑 executing-plans</td><td>⚠ 须 worktree 隔离+避免与今晚周二轮预测写会话撞车</td></tr>
+</table>
+</body></html>
