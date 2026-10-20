@@ -24,3 +24,18 @@ class TestLoadMatchRecord(unittest.TestCase):
 
     def test_missing_match_returns_none(self):
         self.assertIsNone(load_match_record("2026-10-19", "不存在999"))
+
+
+from attribution_dims import lambda_from_had
+
+class TestBaseline(unittest.TestCase):
+    def test_lambda_reasonable(self):
+        lam = lambda_from_had([2.25, 3.10, 2.76], 2.4)  # 意甲场均总球≈2.4
+        self.assertIsNotNone(lam)
+        lh, la = lam
+        self.assertGreater(lh, la)          # 主赔更低→主λ更高
+        self.assertAlmostEqual(lh + la, 2.4, delta=0.01)
+        self.assertTrue(0.3 < lh < 2.2)
+
+    def test_lambda_bad_sum_none(self):
+        self.assertIsNone(lambda_from_had([2.25, 3.10, 2.76], 0.1))
