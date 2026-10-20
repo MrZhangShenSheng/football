@@ -1,0 +1,163 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>LLM 分布结构化生成设计 v3.6（批一动刀全案）</title>
+<style>
+:root{--ink:#1a1a1a;--sub:#666;--line:#e2e2e2;--hot:#b33;--cold:#369;--ok:#3a3}
+body{font:14px/1.7 "Microsoft YaHei",sans-serif;color:var(--ink);max-width:1080px;margin:24px auto;padding:0 16px}
+h1{font-size:21px;margin:0 0 4px}h2{font-size:17px;margin:28px 0 8px;border-left:4px solid var(--cold);padding-left:8px}
+h3{font-size:15px;margin:18px 0 6px}
+.meta{color:var(--sub);font-size:12px;margin-bottom:14px}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:8px 0}
+th,td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#f7f7f7}tr:nth-child(even) td{background:#fbfbfb}
+code,pre{font:12px/1.5 Consolas,monospace;background:#f6f6f6;border-radius:3px}
+code{padding:1px 4px}pre{padding:8px 10px;overflow-x:auto}
+.note{font-size:12px;color:var(--sub);margin:6px 0}
+.warn{background:#fff7e6;border:1px solid #f0d9a8;padding:8px 12px;border-radius:4px;margin:10px 0}
+</style></head><body>
+<h1>LLM 分布结构化生成设计 v3.6 —— 批一动刀全案</h1>
+<div class="meta">2026-10-20 · 开发者 sszhang · 依据：10-19 轮 8 场实证 + 46 场校准账 + 大哥拍板「先动刀」「按此生成设计文档」 · 上游：docs/plans/2026-10-19-llm-input-diet-design.html（v3.4 输入层）+ v3.5 动刀三件（ffa66c99/646a979c）</div>
+
+<h2>〇、一句话定位</h2>
+<p>把 LLM 轨的预测输出从「手填 31 格」（每场即兴作画、不可复现、无预算约束）改为<strong>结构化三参数输入 → 机器确定性生成分布 → 机器守预算与幅度</strong>（可复现、可消融、可归因）。臣的判断收缩到三个真正有信息量的决定：<strong>方向质量 · 比赛画面选型 · 证据等级</strong>。</p>
+
+<h2>一、问题清单（28 项 · 五层，实证挂账）</h2>
+<table>
+<tr><th>层</th><th>#</th><th>痛点</th><th>实证</th></tr>
+<tr><td rowspan=4>判断层</td><td>P1</td><td>状态切片外推作叫板主依据</td><td>001/002 皆此，状态证据 0/5、−1.55 全部来源</td></tr>
+<tr><td>P2</td><td>伤停名单级推断无对位分析</td><td>001/005 两场方向皆反（伤位置×对手强弱未问）</td></tr>
+<tr><td>P3</td><td>对手质量加权不执行</td><td>001「客场三战全胜」对手（乌迪/亚特兰大/帕尔马）未折价</td></tr>
+<tr><td>P4/P8</td><td>证据权重与战绩倒挂；幅度与证据脱钩</td><td>结构料 4/5 战绩却排在状态料后；007 有据没推够、001 无据敢推 5pt</td></tr>
+<tr><td rowspan=4>分布层</td><td>P5</td><td>叫板只搬方向不搬格形</td><td>003 抬客至 38% 但带内 0:3 占比 3.7%（市场 7%），单场 −0.72</td></tr>
+<tr><td>P6/P11</td><td>大球/大比分格系统性比市场瘦；尾格无预算</td><td>真相格 5/8 场臣瘦（003 瘦 51%/001 瘦 38%）</td></tr>
+<tr><td>P7</td><td>跨场分布一个模子</td><td>8 场 top1 全 1:1/1:0/2:1 系，无画面分型</td></tr>
+<tr><td>P20</td><td>大球带质量每场少押 4pt</td><td>46 场臣隐含 32.7% vs 市场 36.8%，实际大球率 34.8%（16/46）</td></tr>
+<tr><td rowspan=3>机制层</td><td>P9</td><td>TTG 锚锁死总球分歧</td><td>v2 冻结锚把总球期望拉回市场（anchor.k 100% 触发）</td></tr>
+<tr><td>P10</td><td>freeze 无格级校验</td><td>003 单格 0.49 倍于市场静默过审</td></tr>
+<tr><td>P26</td><td>分布生成不可复现</td><td>手填无确定性映射——「改了这么久看不出效果」的元凶</td></tr>
+<tr><td rowspan=2>校准层</td><td>P19/P28</td><td>市场中冷档低估未利用（2.5~5% 档校准比 1.92；方向端未算）</td><td>46 场档位账；Poisson 单侧 p≈0.001 但档间不独立，须 n≥100 续判</td></tr>
+<tr><td>P21/P24</td><td>校准锯齿未达判定门；样本不分层</td><td>46 场联赛构成未盘点</td></tr>
+<tr><td rowspan=3>闭环层</td><td>P22/P12</td><td>confidence 无校准；信息薄场仍 medium</td><td>007 无伤停明细仍 medium</td></tr>
+<tr><td>P23</td><td>kj 逐条对错无判定器</td><td>本轮 32 条对错靠会话手工评</td></tr>
+<tr><td>P25/P27</td><td>分布→选腿无映射；临场无重估</td><td>跨界/挂伤停轨门</td></tr>
+<tr><td>流程层</td><td>P13/P14/P15/P16/P17/P18</td><td>凌晨 lineup 窗口缺位 / 漏落终审卷 / 闯关票盲区 / 偏门无 xG / 葡超断裂（已修）/ 临场差按 prereg</td><td>—</td></tr>
+</table>
+
+<h2>二、总设计：四批推进</h2>
+<table>
+<tr><th>批</th><th>内容</th><th>状态</th></tr>
+<tr><td><strong>批一（本设计）</strong></td><td>分布机制：结构化输入+形状生成器+带内继承+预算校验+带宽锚+价值格清单（P5/P6/P7/P9/P10/P11/P20/P26）</td><td>本文档 · 一次动刀</td></tr>
+<tr><td>批二</td><td>判断纪律与闭环：证据分级表入 SKILL.md+伤停三问+对手折价+幅度挂钩+confidenceSplit+kj_settle（P1/P2/P3/P4/P8/P22/P23/P12）</td><td>随批一之后，另出小设计</td></tr>
+<tr><td>批三</td><td>校准续判：n≥100 重估比分档+方向端；2.5~5% 档若续立→右尾专项立项（P19/P21/P24/P28）</td><td>攒样本，不动生产</td></tr>
+<tr><td>批四</td><td>流程小件：终审卷入链/闯关票开赛日传参/偏门联赛 1pt 上限/价值格→出票参考/临场预警位（P14/P15/P16/P25/P27）</td><td>逐件挂账</td></tr>
+</table>
+
+<h2>三、批一核心：预测输入 v3.6 schema</h2>
+<pre>{
+  "code": "周二006",
+  "direction":  {"h": 0.30, "d": 0.25, "a": 0.45},   // 三向质量，和=1（唯一的方向决定权）
+  "evidenceTier": "structural",                        // state|structural|info → 叫板幅度上限 2/8/∞pt
+  "shape": {"type": "open",                            // crush|lock|leaky|open 四型选一（matchPlay.script 定型）
+             "xgSum": 3.1, "xgDiff": 1.2},             // xG 双参数（卡内 xg 层，no_data 可 null）
+  "cellOverrides": {"0:3": 0.045},                     // 显式格级覆盖，≤5 格（真格级信息差的唯一口子）
+  "keyJudgments": [ ... ],                             // ≥3 条不变；evidence 须标证据等级
+  "confidence": "medium"                               // 信息薄（无伤停明细且无 xG）强制 low
+}</pre>
+<div class="note">臣不再写 31 格。格由生成器算，预算由校验器守。cellOverrides 是留给「我有市场没有的格级情报」的显式通道，超出 5 格即拒绝——006 型（1:1 比市场肥）走此口。</div>
+
+<h2>四、形状生成器算法（确定性）</h2>
+<h3>4.1 五步生成</h3>
+<table>
+<tr><th>步</th><th>操作</th><th>公式/规则</th></tr>
+<tr><td>① 市场带内形状</td><td>市场 devig 分布按三向分组取带内比例</td><td><code>cond[d][k] = mkt[k] / Σ mkt[带d]</code></td></tr>
+<tr><td>② 三向分摊</td><td>臣三向质量 × 市场带内比例</td><td><code>p[k] = direction[d(k)] × cond[d(k)][k]</code></td></tr>
+<tr><td>③ 模板调形</td><td>四型模板对指定格乘权重</td><td>见 4.2 模板表</td></tr>
+<tr><td>④ xG 双参数</td><td>有 xG 数据时二阶调整</td><td><code>xgSum≥2.8 → 总球≥4 格 ×(1+0.3·(xgSum−2.8))；|xgDiff|≥0.8 → 净胜≥3 格 ×(1+0.4·(|xgDiff|−0.8))</code>（封顶 ×2，方向按 xgDiff 符号）</td></tr>
+<tr><td>⑤ 覆盖+归一</td><td>cellOverrides 直接赋值（后归一）</td><td>归一后得 31 格</td></tr>
+</table>
+
+<h3>4.2 四型模板（格形指纹）</h3>
+<table>
+<tr><th>型</th><th>画面</th><th>加权格（×权重）</th><th>减权格（×权重）</th></tr>
+<tr><td>crush 碾压</td><td>强队主场拆铁桶</td><td>3:0/4:0/3:1/4:1 ×1.8</td><td>1:1/0:0 ×0.7</td></tr>
+<tr><td>lock 铁桶</td><td>双低产出/一摆一磨</td><td>0:0/1:0/0:1/1:1 ×1.5</td><td>总球≥4 全格 ×0.5</td></tr>
+<tr><td>leaky 互漏</td><td>双方防线漏、门将差</td><td>2:2/3:2/2:3/3:3 ×1.8</td><td>零封格全 ×0.6</td></tr>
+<tr><td>open 对攻</td><td>开放互攻有来有回</td><td>1:2/2:1/2:2/1:1 ×1.3</td><td>0:0 ×0.6</td></tr>
+</table>
+<div class="note">模板权重从宽起步（±30% 级），每 30 场按校准账回调——防 8 场样本过拟合（风险表 R2）。</div>
+
+<h2>五、freeze 改造（llm_pred v3.6）</h2>
+<h3>5.1 校验器（拒冻级）</h3>
+<table>
+<tr><th>校验</th><th>规则</th><th>违者</th></tr>
+<tr><td>大球预算（P6/P20）</td><td>|臣(总球≥4 带质量) − 市场| ≤ 2pt</td><td rowspan=4>拒冻 + 逐格/逐项打印差异（禁静默）</td></tr>
+<tr><td>单格比值（P10/P11）</td><td>格概率/市场同格 ∈ [0.5, 2.5]（other_* ∈ [0.3, 3]）；cellOverrides 豁免但须 kj 引格级证据</td></tr>
+<tr><td>带宽锚（P9）</td><td>|臣 TTG 期望 − 市场| ≤ 1.5 球；越带须 shape.xgSum 支撑</td></tr>
+<tr><td>幅度挂钩（P8）</td><td>max(direction) − max(market 三向) ≤ 证据等级上限（state 2pt / structural 8pt / info 不限）</td></tr>
+</table>
+<h3>5.2 警告级（留痕不拒）</h3>
+<p>方向和偏离市场 &gt;12pt；cellOverrides 恰用满 5 格；evidenceTier=state 且有 xG 数据（该用 structural 却标低）。全部落 <code>checks</code> 块随卷存证。</p>
+<h3>5.3 价值格清单（P25 轻量版）</h3>
+<p>冻结时自动计算并附卷：<code>valueCells = [{k, p_llm, p_mkt, ratio} | ratio>1.5 且 p_llm>3%]</code>——供出票轨参考，不自动出票。</p>
+<h3>5.4 旧链保留</h3>
+<p>v2 手填冻结路径保留（<code>--format=v2</code>）作 fallback 与对照；structured 卷 <code>chain="llm-31grid-v3"</code>。</p>
+
+<h2>六、数据流</h2>
+<svg viewBox="0 0 1000 190" style="width:100%;color:#369">
+<defs><marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="currentColor"/></marker></defs>
+<g fill="none" stroke="currentColor" stroke-width="1.4">
+<rect x="10" y="60" width="150" height="52" rx="6"/><rect x="200" y="60" width="150" height="52" rx="6"/>
+<rect x="390" y="60" width="150" height="52" rx="6"/><rect x="580" y="60" width="160" height="52" rx="6"/>
+<rect x="780" y="60" width="200" height="52" rx="6"/>
+<line x1="160" y1="86" x2="198" y2="86" marker-end="url(#ar)"/><line x1="350" y1="86" x2="388" y2="86" marker-end="url(#ar)"/>
+<line x1="540" y1="86" x2="578" y2="86" marker-end="url(#ar)"/><line x1="740" y1="86" x2="778" y2="86" marker-end="url(#ar)"/>
+</g>
+<g font-size="12" fill="#1a1a1a" text-anchor="middle">
+<text x="85" y="80">v3.5 数据卡</text><text x="85" y="96">市场+xG+摘要</text>
+<text x="275" y="80">臣三参数</text><text x="275" y="96">方向/选型/等级</text>
+<text x="465" y="80">形状生成器</text><text x="465" y="96">五步确定性</text>
+<text x="660" y="80">校验器</text><text x="660" y="96">预算/比值/锚/幅度</text>
+<text x="880" y="80">冻结卷 v3</text><text x="880" y="96">31格+checks+价值格</text>
+</g>
+<g font-size="11" fill="#666" text-anchor="middle">
+<text x="465" y="140">可复现：同参数同分布</text><text x="660" y="140">可消融：关 xG 参数对照</text><text x="880" y="140">可归因：checks 留痕</text>
+</g>
+</svg>
+
+<h2>七、口径断代登记</h2>
+<table>
+<tr><th>genCohort</th><th>卷</th><th>口径</th></tr>
+<tr><td>v1-freehand</td><td>10-14 ~ 10-16</td><td>手填+kj 压缩（kjCohort=v1-compressed）</td></tr>
+<tr><td>v2-freehand-kj3</td><td>10-19</td><td>手填+kj≥3+零格 0</td></tr>
+<tr><td><strong>v3-structured</strong></td><td>本设计落地起</td><td>三参数+生成器+校验（llm_eval 增 genCohort 分层）</td></tr>
+</table>
+<div class="note">prereg 主判据不受影响（31 格 log-loss 对拍不分卷）；descriptive 加 genCohort 分层供读卷。</div>
+
+<h2>八、测试计划</h2>
+<table>
+<tr><th>测试</th><th>断言</th></tr>
+<tr><td>生成器确定性</td><td>同参数重跑 31 格逐位相同</td></tr>
+<tr><td>带内继承修 003</td><td>direction 客 38% 时 0:3 生成值 ≥2.6%（手填版曾 1.42%）</td></tr>
+<tr><td>大球预算拒冻</td><td>构造大球带偏离 4pt 卷 → 拒冻+打印</td></tr>
+<tr><td>单格比值拒冻</td><td>构造 0.4 倍格 → 拒冻（cellOverrides 带 kj 豁免路径）</td></tr>
+<tr><td>带宽锚</td><td>Δ=1.2 球过；Δ=2.0 无 xgSum 拒；Δ=2.5 有 xgSum 过并留痕</td></tr>
+<tr><td>幅度挂钩</td><td>state 级 +5pt → 拒；info 级 +15pt → 过</td></tr>
+<tr><td>四型分型</td><td>四型同市场参照下生成分布 KL 散度两两 &gt; 0.02</td></tr>
+<tr><td>回放对账</td><td>10-19 八场用新机制机械回放（direction 取手填卷三向和），diffMean 与手填卷对照</td></tr>
+</table>
+
+<h2>九、验收标准（当卷可见）</h2>
+<p>① 新卷大球带每场与市场差 ≤2pt；② 单格全落 [0.5,2.5]（覆盖格除外）；③ 校验零拒冻误伤（真判断不被错杀）；④ 回放对账 003 型损失收窄。累计目标（n=100 时判）：diffMean 从 −0.18 收向 −0.05~0——<strong>止亏+可度量，不承诺转正</strong>（转正取决于料，见影响交底）。</p>
+
+<h2>十、风险与回退</h2>
+<table>
+<tr><th>#</th><th>风险</th><th>缓解</th></tr>
+<tr><td>R1</td><td>判断空间收窄漏用真格级情报</td><td>cellOverrides ≤5 格口子+kj 证据豁免；校验报告显式提示「本场未用覆盖」</td></tr>
+<tr><td>R2</td><td>模板/阈值过拟合 8+46 场</td><td>权重从宽（±30% 级）；每 30 场按校准账回调；阈值改动留 commit 痕</td></tr>
+<tr><td>R3</td><td>工程量一日、今晚轮次冲突</td><td>周二轮用旧机制跑；周三起新机制首跑</td></tr>
+<tr><td>R4</td><td>结构化卷再断代致积累慢</td><td>genCohort 分层如实标注；判据不变，样本连续积累</td></tr>
+<tr><td>R5</td><td>生成器 bug 静默出错</td><td>测试八项+回放对账+checks 块全落盘（禁静默纪律全适用）</td></tr>
+</table>
+
+<h2>十一、批二~四摘要（另出小设计）</h2>
+<p><strong>批二</strong>：证据分级表（state≤2pt/structural 4~8pt/info 不限）+伤停三问+对手均位差&gt;5 位七折+llm_eval 增 confidenceSplit 与 genCohort 分层+kj_settle 判定器（方向/格级/TTG 三类规则化判对错→attribution 累计）。<strong>批三</strong>：n≥100 校准重估（比分档+方向端），2.5~5% 档若续立→右尾选腿专项 prereg。<strong>批四</strong>：预测链末尾自动写 02-results 终审卷；闯关票按开赛日传参（待拍板）；无 xG 联赛状态上限降 1pt；价值格清单接出票参考；临场预警位挂伤停轨门。</p>
+</body></html>
