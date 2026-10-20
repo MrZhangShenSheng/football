@@ -108,3 +108,12 @@ def load_match_record(date_str: str, code: str) -> dict | None:
         "rest_days_h": None, "rest_days_a": None,   # Task 5 填
         "result": {"hg": hg, "ag": ag, "ht_hg": ht_hg, "ht_ag": ht_ag},
     }
+
+def fill_rest_days(rec: dict) -> dict:
+    """R3 休息差：league 库查两队上一场日期→天数。查不到保持 None。开发者 sszhang"""
+    for side, team in (("h", rec["team_h"]), ("a", rec["team_a"])):
+        last = _last_match_date(team, rec["league_dir"], rec["date"])
+        if last:
+            d0 = datetime.fromisoformat(rec["date"]).date()
+            rec[f"rest_days_{side}"] = (d0 - datetime.fromisoformat(last).date()).days
+    return rec

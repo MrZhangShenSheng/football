@@ -59,3 +59,24 @@ def dim_stage(rec: dict) -> dict:
     if _in_fifa_window_tail(rec["date"]):
         ev += "+fifa_virus"
     return {"dim": "L0.stage", "tail_scale": 1.0, "evidence": ev}
+
+
+# attribution_dims.py 追加（Task 5：德比/宿敌标记维度）
+DERBY_TAIL = 1.4  # 德比尾格系数（先验·待频次表校准·设计§二A档3）
+# 同 Task4 FORMATS_PATH 层级约定：brief 原稿 parents[1] 指 engine/data（不存在），按仓库实际结构 parents[2]=repo 根
+DERBIES_PATH = Path(__file__).resolve().parents[2] / "data" / "00-leagues" / "_derbies.json"
+# _derbies.json 分组键=国家级（england/italy/spain/germany），调用方（Task7 账单/T5 测试）传中文联赛名
+# rec["league"]——brief 原稿 table.get(league) 对 "英超" 必落空（其自带测试与 JSON 键不一致），补归一映射兜住两种口径
+DERBY_LEAGUE_KEYS = {"英超": "england", "意甲": "italy", "西甲": "spain", "德甲": "germany"}
+
+def dim_derby(league: str, team_h: str, team_a: str) -> dict | None:
+    """德比/宿敌标记→形状系数。开发者 sszhang"""
+    if not team_h or not team_a:
+        return None
+    table = json.loads(DERBIES_PATH.read_text(encoding="utf-8"))
+    pairs = table.get(DERBY_LEAGUE_KEYS.get(league, league), [])
+    for a, b in pairs:
+        if {team_h, team_a} == {a, b}:
+            return {"dim": "derby", "tail_scale": DERBY_TAIL,
+                    "evidence": f"derby:{a}/{b}"}
+    return None

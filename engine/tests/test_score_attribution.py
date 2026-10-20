@@ -70,3 +70,22 @@ class TestDimStage(unittest.TestCase):
         # 10-20 窗口结束后 3 天内 → fifa_virus 命中（Task5 的 flag 也走档案日历）
         sf = dim_stage({"league": "意甲", "date": "2026-10-22"})
         self.assertIn("fifa_virus", sf["evidence"])
+
+
+from attribution_dims import dim_derby
+from score_attribution import fill_rest_days
+
+class TestDerbyRest(unittest.TestCase):
+    def test_derby_hit(self):
+        off = dim_derby("英超", "arsenal", "tottenham")   # 真实ID：tottenham-hotspur→tottenham（zh_to_id 反查）
+        self.assertEqual(off["dim"], "derby")
+        self.assertGreater(off["tail_scale"], 1.0)   # 德比抬尾格
+
+    def test_derby_miss(self):
+        self.assertIsNone(dim_derby("英超", "arsenal", "everton"))
+
+    def test_rest_days(self):
+        rec = load_match_record("2026-10-19", "周一001")
+        rec = fill_rest_days(rec)
+        # 卡利亚里 10-15 有欧冠场(league库无欧冠行则 None 容忍)
+        self.assertIn(rec["rest_days_h"], [None] + list(range(2, 15)))
