@@ -65,3 +65,22 @@ def test_shape_templates_diverge():
         assert kl(dists[a], dists[b]) > 0.02          # 四型两两分型（KL>0.02）
     assert dists["crush"]["3:0"] > dists["open"]["3:0"]          # 碾压型大胜格更肥
     assert dists["lock"]["0:0"] > dists["leaky"]["0:0"]          # 铁桶型 0:0 更肥
+
+
+def test_xg_params_lift_big_band():
+    """xG 参数净效应须与同型基线比（计划原稿拿无型基线对比 open+xG，把模板效应
+    混进来了：open 自身压 0:0 抬 2:1/1:2 使大球带先降 0.9pt，再被带内归一削掉跨带
+    抬升分量，合成只剩 1.17 倍）。隔离口径=只换 xG 参数,型不动。"""
+    dirs = {"h": .5, "d": .25, "a": .25}
+    mkt = dict(MKT, **{"3:0": 0.03, "3:1": 0.025, "2:2": 0.04, "0:4": 0.01,
+                       "4:0": 0.008, "4:1": 0.006, "2:3": 0.012})
+    base = generate_dist(dirs, mkt, {"type": "open"})
+    hi = generate_dist(dirs, mkt, {"type": "open", "xgSum": 3.8, "xgDiff": 0.0})
+    big_b = sum(v for k, v in base.items() if tot_of_key(k) >= 4)
+    big_h = sum(v for k, v in hi.items() if tot_of_key(k) >= 4)
+    assert big_h > big_b * 1.2                    # xgSum 高 → 大球带抬升
+    hi2 = generate_dist(dirs, mkt, {"type": "open", "xgSum": 3.8, "xgDiff": 1.5})
+    assert hi2["3:0"] > hi["3:0"] * 1.1           # xgDiff 主向 → 大胜格再抬
+    # 封顶 ×2：极端参数不失控
+    hi3 = generate_dist(dirs, mkt, {"type": "open", "xgSum": 9.0, "xgDiff": 8.0})
+    assert max(hi3.values()) < 0.5

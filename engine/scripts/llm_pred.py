@@ -178,8 +178,21 @@ def _apply_template(p: dict, st) -> dict:
             for k, v in p.items()}
 
 
-def _apply_xg(p: dict, shape: dict) -> dict:                 # Task 3 实现；先占位
-    return p
+def _apply_xg(p: dict, shape: dict) -> dict:
+    """xG 双参二阶调整（设计 §4.1④）：xgSum≥2.8 抬大球带；|xgDiff|≥0.8 抬对应向大胜格。
+    倍率封顶 ×2（防极端参数失控）。参数缺省/null=不调（消融口径）。开发者 sszhang"""
+    xs, xd = shape.get("xgSum"), shape.get("xgDiff")
+    out = dict(p)
+    if isinstance(xs, (int, float)) and xs >= 2.8:
+        f = min(1 + 0.3 * (xs - 2.8), 2.0)
+        out = {k: (v * f if tot_of_key(k) >= 4 else v) for k, v in out.items()}
+    if isinstance(xd, (int, float)) and abs(xd) >= 0.8:
+        f = min(1 + 0.4 * (abs(xd) - 0.8), 2.0)
+        side = "h" if xd > 0 else "a"
+        out = {k: (v * f if dir_of_key(k) == side and ":" in k
+                   and abs(int(k[0]) - int(k[2])) >= 3 else v)
+               for k, v in out.items()}
+    return out
 
 
 def generate_dist(direction: dict, market: dict, shape: dict,
