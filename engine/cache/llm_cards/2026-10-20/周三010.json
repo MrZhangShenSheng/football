@@ -596,8 +596,23 @@
    "status": "未获取"
   },
   "context": {
-   "status": "pending",
-   "entries": []
+   "status": "ok",
+   "entries": [
+    {
+     "title": "Bayern vs Arsenal: team news and predicted lineups (BuliNews)",
+     "url": "https://bulinews.com/bayern-munich-arsenal-preview-team-news-and-predicted-lineups-1",
+     "publishedAt": "2026-10-20T14:00:00",
+     "fetchedAt": "2026-10-20T19:45:15",
+     "excerpt": "拜仁两名重要缺阵:MichaelOlise两黄停赛、JamalMusiala伤缺。门将ManuelNeuer存疑,JonasUrbig预计继续把门。"
+    },
+    {
+     "title": "Bayern predicted lineup vs Arsenal (SportsMole)",
+     "url": "https://www.sportsmole.co.uk/football/bayern-munich/champions-league/predicted-lineups/who-replaces-suspended-olise-predicted-bayern-xi-vs-arsenal_607226.html",
+     "publishedAt": "2026-10-20T14:00:00",
+     "fetchedAt": "2026-10-20T19:45:15",
+     "excerpt": "Olise停赛需人替补,Kompany用4-2-3-1。上季小组赛阿森纳3-1胜拜仁。拜仁上轮欧冠3-3平维京后盼复胜。阿森纳各项赛事连胜,近8场全胜进16失4。"
+    }
+   ]
   },
   "ourModels": {
    "v3wChain": {
@@ -827,5 +842,5 @@
   }
  },
  "createdAt": "2026-10-20T16:48:17",
- "cardHash": "7d872caef6113906"
+ "cardHash": "175bcfa62a7a2fce"
 }

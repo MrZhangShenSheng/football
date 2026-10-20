@@ -162,6 +162,38 @@
    },
    "createdAt": "2026-10-16",
    "flags": []
+  },
+  {
+   "id": "R024",
+   "text": "校准新闸门必须拿同一批模板/样本过完每一道闸,不能只标定自己改的那道",
+   "why": "2026-10-20 实测:v3.6 四形态型用 112 场真卡标定了闸1(大球带型基线 lock×0.54/leaky×1.29),但没拿同一批模板测闸2(比值闸)。结果 lock 减权格 0.5÷归一和 1.084=0.461<0.5 下限=永久必拒,零方向叫板下 lock 0/13、leaky 0/13 过闸,可用型只剩 open/crush。闸1 修好了「选型即违规」的一半,另一半原封不动。",
+   "stage": "candidate",
+   "form": "checklist",
+   "trigger": "改动任一闸门常数或模板系数后核:其余各闸在零叫板基线下的过闸率是否仍为满分",
+   "record": {
+    "rounds": 0,
+    "blocked": 0,
+    "saved": 0,
+    "harmed": 0
+   },
+   "createdAt": "2026-10-20",
+   "flags": []
+  },
+  {
+   "id": "R025",
+   "text": "输入校验与执行链对同一字段的合法取值必须同口径;回放/试跑绕过校验则缺陷不会暴露",
+   "why": "2026-10-20 实测:validate_structured 要求 shape.type ∈ 四型,但 generate_dist 与 check_generated 都接受 shape={}(零型)。10-19 八场回放用的正是 shape={} 且直接调生成器未经 freeze,恰好绕过输入校验,两套口径不一致因此没响——直到 10-20 实战冻结才整批拒冻。",
+   "stage": "candidate",
+   "form": "checklist",
+   "trigger": "回放/试跑若绕过生产入口(freeze/校验层),核:被绕过的那层对同字段的取值域是否与执行链一致",
+   "record": {
+    "rounds": 0,
+    "blocked": 0,
+    "saved": 0,
+    "harmed": 0
+   },
+   "createdAt": "2026-10-20",
+   "flags": []
   }
  ],
  "active_shadow": [
