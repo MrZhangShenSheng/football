@@ -133,3 +133,57 @@ def freeze(sale_date: str, preds: list[dict], revision: int | None = None,
     PREDS_ROOT.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(frozen, ensure_ascii=False, indent=1), encoding="utf-8")
     return out
+
+
+# ── v3.6 结构化生成 ──────────────────────────────────────────────────────
+# 手填 31 格 → 三参数(direction/shape/evidenceTier)输入 + 机器生成 + 拒冻四闸。
+# 病根（10-19 轮实证）：手填格在"方向改了格不动"——003 判客胜却把 0:3 填到市场的
+# 0.49 倍，方向对了分布照输。机制解=带内继承：三向质量由判断定，带内形状继承市场。
+OTHER_TOT = 5.5    # other_* 兜底格的总进球代表值（6+ 球质的折中，校准脚本同口径）
+
+
+def dir_of_key(k: str) -> str:
+    """pick 键 → 三向（h/d/a）。other_ 前缀取末字母；格键按比分。开发者 sszhang"""
+    if k.startswith("other_"):
+        return k[-1]
+    h, a = (int(x) for x in k.split(":"))
+    return "h" if h > a else ("d" if h == a else "a")
+
+
+def tot_of_key(k: str) -> float:
+    return OTHER_TOT if k.startswith("other_") else sum(int(x) for x in k.split(":"))
+
+
+SHAPE_TEMPLATES: dict = {}        # Task 2 填表；空表=无调形（纯带内继承）
+
+
+def _apply_template(p: dict, st) -> dict:                    # Task 2 实现；先占位
+    return p
+
+
+def _apply_xg(p: dict, shape: dict) -> dict:                 # Task 3 实现；先占位
+    return p
+
+
+def generate_dist(direction: dict, market: dict, shape: dict,
+                  overrides: dict | None = None) -> dict:
+    """五步确定性生成 31 格（设计 §4.1）。market=去水 pick 键分布（须含全部计分键）。
+    步序：①市场带内形状 ②三向分摊 ③模板调形 ④xG 双参 ⑤覆盖归一。同参同出（P26）。
+    开发者 sszhang"""
+    bands: dict[str, dict] = {"h": {}, "d": {}, "a": {}}
+    for k, v in market.items():
+        bands[dir_of_key(k)][k] = v
+    p = {}
+    for d, band in bands.items():
+        z = sum(band.values()) or 1.0
+        for k, v in band.items():
+            p[k] = direction[d] * v / z
+    st = SHAPE_TEMPLATES.get((shape or {}).get("type"))
+    if st:
+        p = _apply_template(p, st)
+    p = _apply_xg(p, shape or {})
+    for k, v in (overrides or {}).items():
+        if k in p:
+            p[k] = float(v)
+    z = sum(p.values())
+    return {k: v / z for k, v in p.items()}
