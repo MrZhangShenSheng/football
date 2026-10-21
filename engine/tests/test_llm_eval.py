@@ -39,23 +39,6 @@ def dirs_eval(tmp_path, monkeypatch):
     return tmp_path
 
 
-def _write_day_volume(root, day, head):
-    """写一份单场冻结卷（head 给 chain/genCohort），并备好同日数据卡。"""
-    p = {k: 1.0 / len(_pool31()) for k in _pool31()}
-    doc = {**head, "frozenAt": f"{day}T10:00:00",
-           "preds": [{"code": "周三009", "cardHash": "x" * 16, "p_crs": p,
-                      "pRawSum": 1.0, "rawSumWarn": False, "contextStatus": "ok",
-                      "keyJudgments": [], "confidence": "medium"}]}
-    (root / "preds" / f"{day}.json").write_text(
-        json.dumps(doc, ensure_ascii=False), encoding="utf-8")
-    cd = root / "cards" / day
-    cd.mkdir(parents=True, exist_ok=True)
-    (cd / "周三009.json").write_text(json.dumps(
-        {"code": "周三009", "cardHash": "x" * 16,
-         "layers": {"market": {"crs": _pool31()}, "context": {"status": "ok"}}},
-        ensure_ascii=False), encoding="utf-8")
-
-
 def test_actual_key_grid_and_other():
     assert actual_key("2:1") == "2:1"
     assert actual_key("0:3") == "0:3"
@@ -137,16 +120,95 @@ def test_gen_cohort_split(monkeypatch):
 
 
 def test_gen_cohort_read_from_volume(dirs_eval):
-    """装载侧：卷顶层 genCohort 优先，无则按 chain 判 v3，再无→freehand。"""
+    """装载侧行级口径：direction 键在即 v3（卷级标记不参与,合卷不误涂）。"""
     import llm_eval as le
-    for name, doc, want in (
-            ("2026-11-01", {"chain": "llm-31grid-v3",
-                            "genCohort": "v3-structured"}, "v3-structured"),
-            ("2026-11-02", {"chain": "llm-31grid-v3"}, "v3-structured"),
-            ("2026-11-03", {"chain": "llm-31grid-v2"}, "freehand")):
-        _write_day_volume(dirs_eval, name, doc)
+    for name, want in (("2026-11-01", "v3-structured"), ("2026-11-02", "freehand")):
+        p = {k: 1.0 / len(_pool31()) for k in _pool31()}
+        row = {"code": "周三009", "cardHash": "x" * 16, "p_crs": p,
+               "pRawSum": 1.0, "rawSumWarn": False, "contextStatus": "ok",
+               "keyJudgments": [], "confidence": "medium"}
+        if want == "v3-structured":
+            row["direction"] = {"h": .3, "d": .3, "a": .4}
+        doc = {"chain": "llm-31grid-v3" if want == "v3-structured" else "llm-31grid-v2",
+               "genCohort": want, "frozenAt": f"{name}T10:00:00", "preds": [row]}
+        (le.PREDS_ROOT / f"{name}.json").write_text(
+            json.dumps(doc, ensure_ascii=False), encoding="utf-8")
+        cd = le.CARDS_ROOT / name
+        cd.mkdir(parents=True, exist_ok=True)
+        (cd / "周三009.json").write_text(json.dumps(
+            {"code": "周三009", "cardHash": "x" * 16,
+             "layers": {"market": {"crs": _pool31()}, "context": {"status": "ok"}}},
+            ensure_ascii=False), encoding="utf-8")
         rows = le._load_day_rows([name])
         assert rows and rows[0]["_genCohort"] == want, (name, rows[:1])
+
+
+def test_results_scoped_per_sale_day_and_per_row_cohort(tmp_path, monkeypatch):
+    """2026-10-21 双修复回归：
+    ①赛果按销售日分桶——「周三001」每周复用,10-20 合卷的周三场若拿 10-15 那周
+      的同编号赛果计分即毒化（实测 13 场假分,primary diffMean −0.885 全假）;
+    ②genCohort 按行判——合卷里 v2 行不得被卷级 v3 标记误涂。"""
+    import llm_eval as le
+    res_root = tmp_path / "results"
+    res_root.mkdir()
+    monkeypatch.setattr(le, "PREDS_ROOT", tmp_path / "preds")
+    monkeypatch.setattr(le, "CARDS_ROOT", tmp_path / "cards")
+    monkeypatch.setattr(le, "RESULTS_ROOT", res_root)
+    monkeypatch.setattr(le, "close_pool", lambda d, code, card: (_pool31(), "lineupLast"))
+    (tmp_path / "preds").mkdir()
+    (tmp_path / "cards").mkdir()
+
+    def put_results(day, matches):
+        (res_root / f"{day}.json").write_text(json.dumps(
+            {"matches": matches}, ensure_ascii=False), encoding="utf-8")
+
+    put_results("2026-10-15", [{"code": "周三001", "score": "3:3"}])      # 上周同编号
+    put_results("2026-10-20", [{"code": "周二001", "score": "2:2"},
+                               {"code": "周二002", "score": "1:2"}])
+    monkeypatch.setattr(le, "RESULTS_ROOT", res_root)
+
+    def put_card(day, code):
+        d = le.CARDS_ROOT / day
+        d.mkdir(parents=True, exist_ok=True)
+        (d / f"{code}.json").write_text(json.dumps(
+            {"code": code, "cardHash": "x" * 16,
+             "layers": {"market": {"crs": _pool31()}, "context": {"status": "ok"}}},
+            ensure_ascii=False), encoding="utf-8")
+
+    def put_pred(day, name, doc):
+        (le.PREDS_ROOT / name).write_text(json.dumps(doc, ensure_ascii=False),
+                                          encoding="utf-8")
+
+    def pred(code, v3):
+        p = {"code": code, "cardHash": "x" * 16, "pRawSum": 1.0, "rawSumWarn": False,
+             "contextStatus": "ok", "keyJudgments": [], "confidence": "medium",
+             "p_crs": {k: 1.0 / len(_pool31()) for k in _pool31()}}
+        if v3:
+            p["direction"] = {"h": .3, "d": .3, "a": .4}
+        return p
+
+    put_pred("2026-10-15", "2026-10-15.json",
+             {"chain": "llm-31grid-v2", "preds": [pred("周三001", False)]})
+    put_pred("2026-10-20", "2026-10-20-r1.json",
+             {"chain": "llm-31grid-v2+llm-31grid-v3", "genCohort": "v3-structured",
+              "preds": [pred("周二001", False), pred("周二002", True),
+                        pred("周三001", True)]})       # 本周周三场·无赛果
+    for day, codes in (("2026-10-15", ["周三001"]),
+                       ("2026-10-20", ["周二001", "周二002", "周三001"])):
+        for c in codes:
+            put_card(day, c)
+
+    rows = le._load_day_rows(["2026-10-15", "2026-10-20"])
+    # ①本周周三001 不得吃到上周 3:3：全表只许一行周三001,且是 10-15 那行（v2 手填）
+    wed = [r for r in rows if r["code"] == "周三001"]
+    assert len(wed) == 1 and wed[0]["_score"] == "3:3"
+    assert wed[0]["_genCohort"] == "freehand"
+    # ②合卷行级 cohort：无 direction 的 v2 行=freehand,有 direction 的=v3
+    r201 = next(r for r in rows if r["code"] == "周二001")
+    r202 = next(r for r in rows if r["code"] == "周二002")
+    assert r201["_genCohort"] == "freehand"
+    assert r202["_genCohort"] == "v3-structured"
+    assert r201["_score"] == "2:2" and r202["_score"] == "1:2"
 
 
 def test_resolution_minpos_and_zerocells(monkeypatch):

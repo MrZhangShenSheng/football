@@ -194,6 +194,38 @@
    },
    "createdAt": "2026-10-20",
    "flags": []
+  },
+  {
+   "id": "R026",
+   "text": "按 code 聚合前必问:索引键在跨日/跨周语境下唯一吗?体彩编号每周复用,不唯一就加日期维度",
+   "why": "2026-10-21 实测:llm_eval._load_results 把所有评估日的 d±1 赛果合成一张 {code: score} 全局表,「周三001」每周复用,致 10-20 合卷里未开赛的周三 13 场吃到两周前同编号赛果——n 从 56 虚涨到 69、primary diffMean 假报 −0.885、v3 群 n=23 全假。不报错不缺数,只静默给错分。",
+   "stage": "candidate",
+   "form": "checklist",
+   "trigger": "写/审任何按 code 建字典或做聚合的结算逻辑时核:该字典是否跨日共用一个命名空间",
+   "record": {
+    "rounds": 0,
+    "blocked": 0,
+    "saved": 0,
+    "harmed": 0
+   },
+   "createdAt": "2026-10-21",
+   "flags": []
+  },
+  {
+   "id": "R027",
+   "text": "读 primary diffMean 前先逐场拆:单场 |diff|>5 必是零格或极端薄尾,均值被它主导时须分开报",
+   "why": "2026-10-20 实测:全量 diffMean −1.083 看着像判断能力溃败,实际只是两场 4:3 (真相格 other_h,手填卷填字面 0,市场给 2.5%/4.1%,单场 −10.1/−10.6)。剔除这两场后 8 场均值 +0.13 = 臣跑赢市场。只看均值会把「一处填 0 自伤」误判为「判断能力不行」,结论方向完全相反。",
+   "stage": "candidate",
+   "form": "checklist",
+   "trigger": "每次 llm_eval 结算后核:逐场 diff 是否有 |diff|>5 的离群行,有则同时报剔除后的均值",
+   "record": {
+    "rounds": 0,
+    "blocked": 0,
+    "saved": 0,
+    "harmed": 0
+   },
+   "createdAt": "2026-10-21",
+   "flags": []
   }
  ],
  "active_shadow": [

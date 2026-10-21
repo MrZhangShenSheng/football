@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>2026-10-20 周二轮回填复盘</title>
+<style>
+:root{--ink:#1a1a1a;--sub:#666;--line:#e2e2e2;--hot:#b33;--cold:#369;--ok:#3a3}
+body{font:14px/1.65 "Microsoft YaHei",sans-serif;color:var(--ink);max-width:1080px;margin:24px auto;padding:0 16px}
+h1{font-size:20px;margin:0 0 4px}h2{font-size:16px;margin:24px 0 8px;border-left:4px solid var(--cold);padding-left:8px}
+.meta{color:var(--sub);font-size:12px;margin-bottom:14px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid var(--line);padding:5px 8px;text-align:left}th{background:#f7f7f7}
+.up{color:var(--hot);font-weight:600}.dn{color:var(--cold);font-weight:600}.ok{color:var(--ok);font-weight:600}
+.tag{display:inline-block;padding:0 6px;border-radius:3px;font-size:11px;background:#eee;margin-right:4px}
+.tag.r{background:#fde}.tag.o{background:#efe}
+.note{font-size:12px;color:var(--sub);margin-top:6px}
+.warn{background:#fff7e6;border:1px solid #f0d9a8;padding:8px 12px;border-radius:4px;margin:10px 0}
+code{font:12px Consolas,monospace;background:#f6f6f6;padding:1px 4px;border-radius:3px}
+</style></head><body>
+<h1>2026-10-20 周二轮 · 回填复盘（欧冠大分夜）</h1>
+<div class="meta">销售日 2026-10-20 · 开赛 10-21 凌晨 · 10 场全回填（体彩对票 10/10）· 回填于 10-21 09:55 · 周三轮 13 场今晚开赛不在本卷</div>
+
+<h2>赛果与方向对拍（臣 6/10 vs 市场 4/10）</h2>
+<table><tr><th>场</th><th>对阵</th><th>赛果（半场）</th><th>市场三向</th><th>臣三向</th><th>市场</th><th>臣</th></tr>
+<tr><td>001</td><td>费内巴切 vs 斯拉维亚</td><td>2:2（2:1）</td><td>主 64</td><td>主 61</td><td>✗</td><td>✗</td></tr>
+<tr><td>002</td><td>萨巴赫 vs 多特</td><td>1:2（1:1）</td><td>客 76</td><td class="dn">客 68↓</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+<tr><td>003</td><td>狼队 vs 朴次茅斯</td><td>1:1（0:0）</td><td>主 62</td><td>主 59</td><td>✗</td><td>✗</td></tr>
+<tr><td>004</td><td>那不勒斯 vs 博德闪耀</td><td class="up">4:3（2:1）</td><td>主 54</td><td>主 52</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+<tr><td>005</td><td>罗马 vs 布拉迪斯</td><td>4:0（2:0）</td><td>主</td><td>主 65</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+<tr><td>006</td><td><b>巴黎 vs 巴萨</b></td><td class="up">4:2（1:0）</td><td class="dn">客 42</td><td class="up">主 42↑</td><td>✗</td><td class="ok">✓</td></tr>
+<tr><td>007</td><td>利物浦 vs 比利亚雷</td><td class="up">4:3（2:2）</td><td>主 67</td><td>主 64</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+<tr><td>008</td><td>曼城 vs 雅典AEK</td><td class="up">5:1（2:0）</td><td>主</td><td>主 77</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+<tr><td>009</td><td><b>斯图加特 vs 马竞</b></td><td>1:1（1:0）</td><td class="dn">客 51</td><td class="up">主 32↑</td><td>✗</td><td>✗（平局通吃）</td></tr>
+<tr><td>010</td><td>波尔图 vs 埃因霍温</td><td class="up">0:1（0:0）</td><td>主 66</td><td>主 63</td><td>✗</td><td>✗</td></tr>
+</table>
+<div class="note">欧冠之夜市场四连冷：费内被斯拉维亚逼平、巴黎主胜（市场给客 42%）、斯图加特逼平马竞（市场客 51%）、波尔图主场 0:1 埃因霍温。臣 6/10 vs 市场 4/10；<b>006 巴黎主胜是唯一逆向叫板命中</b>（巴萨六伤防线判断兑现，4:2 总球 6）。009 双输于平局——但「马竞客弱」方向兑现（客没赢），翻身腿斯图加特主胜 @3.43 死于 1:1。</div>
+
+<h2>LLM 轨计分：两场 4:3 的零格处刑</h2>
+<div class="warn"><b>primary n=56 diffMean −1.08（INSUFFICIENT）——被两行毒杀，须拆开读。</b><br>
+周二004 那不勒斯 4:3 与 007 利物浦 4:3 的真相格都是 <code>other_h</code>（4:3 不在 31 定格内）。
+周二手填卷把 other 三格填成<b>字面 0</b>（断言不可能），市场给 other_h 2.5%/4.1%——单场 diff −10.1/−10.6，两场合计 −20.8，占全部 −60.6 的三分之二。<br>
+<b>剔除这两场：8 场均值 +0.13，臣跑赢市场</b>——006 巴黎 4:2（+0.73，逆向叫板兑现）、008 曼城 5:1（+0.48）为两大赚钱场。</div>
+<table><tr><th>口径</th><th>n</th><th>diffMean</th><th>读法</th></tr>
+<tr><td>全量 primary</td><td>56</td><td class="dn">−1.083</td><td>被 two 4:3 零格击穿（上表）</td></tr>
+<tr><td>周二 10 场逐场</td><td>10</td><td>−1.97</td><td>剔除 2 场零格案 → <b class="ok">+0.13</b></td></tr>
+<tr><td>tailChannel</td><td>56</td><td>−0.045</td><td>右尾通道近持平（OTHER 格薄尾被 4:3 双响吃掉）</td></tr>
+</table>
+<div class="note">这是「填 0 = 断言不可能」的最后一次现场处刑：周二卷是旧手填制的末卷。<b>周三卷（今晚开赛）已全 31 格正值</b>（v3.6 生成器机制性消灭零格）。resolution 周二行 zeroFreeScenes=0/10、周三（历史）13/27——新旧制度的分界清晰可见。</div>
+
+<h2>影子层结算（10-21 开赛日·12 结 3 挂）</h2>
+<table><tr><th>票</th><th>形状</th><th>成本</th><th>派彩</th><th>注</th></tr>
+<tr><td>P526</td><td>4串11</td><td>30</td><td class="ok">+3.09</td><td>容错族命中</td></tr>
+<tr><td>P528</td><td>全2关-6</td><td>—</td><td class="ok">+11.21</td><td>—</td></tr>
+<tr><td>P529</td><td>全2关-4</td><td>—</td><td class="ok">+6.18</td><td>—</td></tr>
+<tr><td>P532</td><td class="up">ttg-单关</td><td>30</td><td class="ok">+37.0</td><td><b>大球腿命中（本轮最佳）</b></td></tr>
+<tr><td>P535</td><td>crs-双选单关</td><td>28</td><td class="ok">+28.6</td><td>—</td></tr>
+<tr><td>其余 7 票</td><td>—</td><td>—</td><td>0</td><td>P525/P527/P530/P531/P533/P534/P536</td></tr>
+<tr><td colspan="5">挂起 3 票（P524/P537/P538 含周三001/002 今日 18:00 日职腿，合规 pending）</td></tr>
+</table>
+<div class="note">track A 累计 532 票回款 8251/14620 元。ttg-单关 +37 印证大分夜：市场 ttgBoom 信号在场（006/008 冻结时已标大球共识）。</div>
+
+<h2>评估器两 bug 修复（回填时发现）</h2>
+<table><tr><th>#</th><th>bug</th><th>处置</th></tr>
+<tr><td>1</td><td><b>跨周编号毒化</b>：_load_results 把全部评估日 ±1 窗口合成一张按编号索引的全局表，「周三001」每周复用 → 10-20 合卷的周三 13 场吃到两周前同编号赛果（假 diffMean −0.885、n 虚涨 56→69）</td><td>赛果改按销售日分桶逐日解析 + 回归测试</td></tr>
+<tr><td>2</td><td><b>合卷 cohort 误涂</b>：卷级 genCohort 统一标记把合卷里的 v2 行涂成 v3</td><td>改按行判（direction 键在即 v3）+ 回归测试</td></tr>
+<tr><td>3</td><td><b>-r1 卷名炸枚举</b>：llm_eval run 无参按 stem 当日期，"2026-10-20-r1" 非 isoformat 直接崩</td><td>_default_days 去 -rN 后缀 + 非日期过滤</td></tr>
+</table>
+
+<h2>待办挂账</h2>
+<div class="note">① pinClose 122 场待补（fd 英国下午更新，晚间重跑 verify 幂等救回）；② 周三轮今晚 18:00 日职 3 场起、凌晨欧冠 10 场，影子 3 票随赛自动结；③ 形态型两缺陷 + tier 边界两案待拍板（见昨日记录）；④ 46 场校准账 → 56 场：2.5~5% 档比 1.92 的续判攒样中。</div>
+<div class="note">数据来源：02-results/2026-10-20.json（v4.6 增量合并）· engine/cache/llm_preds/2026-10-20-r1.json · data/04-summaries/llm-predict/eval.json · engine/shadow/paper_tickets.json · sporttery_results_2026-10-21。</div>
+</body></html>
