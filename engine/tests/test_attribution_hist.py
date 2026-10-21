@@ -1,0 +1,34 @@
+# engine/tests/test_attribution_hist.py
+import sys, unittest
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+from attribution_hist import hist_match_record, fd_date
+
+ROW = {"Date": "11/08/2023", "HomeTeam": "Burnley", "AwayTeam": "Man City",
+       "FTHG": "0", "FTAG": "3", "HTHG": "0", "HTAG": "1",
+       "HS": "7", "AS": "16", "HST": "2", "AST": "7",
+       "HR": "0", "AR": "0", "B365H": "6.5", "B365D": "4.33", "B365A": "1.44",
+       "PSCH": "", "PSCD": "", "PSCA": "", "HxG": "", "AxG": ""}
+
+class TestHist(unittest.TestCase):
+    def test_fd_date(self):
+        self.assertEqual(fd_date("11/08/2023"), "2023-08-11")
+
+    def test_hist_record(self):
+        rec = hist_match_record(dict(ROW), "england-premier", "英超")
+        self.assertEqual(rec["date"], "2023-08-11")
+        self.assertEqual(rec["result"], {"hg": 0, "ag": 3, "ht_hg": 0, "ht_ag": 1})
+        self.assertEqual(rec["odds"], [6.5, 4.33, 1.44])       # PSCH 空→B365
+        self.assertEqual(rec["team_h"], "burnley")             # 三键匹配
+        self.assertEqual(rec["team_a"], "man-city")
+        self.assertEqual(rec["red_h"], 0); self.assertEqual(rec["red_a"], 0)
+        self.assertEqual(rec["hst"], 2); self.assertEqual(rec["ast"], 7)
+        self.assertIsNone(rec["xg_h"])                          # HxG 空→None
+
+    def test_unmatched_team_none(self):
+        bad = dict(ROW); bad["FTHG"] = "9"; bad["FTAG"] = "9"   # 假比分必不匹配
+        rec = hist_match_record(bad, "england-premier", "英超")
+        self.assertIsNone(rec["team_h"]); self.assertIsNone(rec["team_a"])
+
+if __name__ == "__main__":
+    unittest.main()
