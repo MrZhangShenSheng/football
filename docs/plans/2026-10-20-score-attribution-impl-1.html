@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>批一实施计划 · 比分归因引擎期1</title>
+<style>
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;max-width:980px;margin:24px auto;padding:0 16px;color:#1a1a1a;line-height:1.6;background:#fafafa}
+  h1{font-size:1.45em;border-bottom:3px solid #b91c1c;padding-bottom:8px}
+  h2{font-size:1.15em;margin-top:2em;border-left:4px solid #b91c1c;padding-left:8px}
+  h3{font-size:1.0em;margin-top:1.2em;color:#374151}
+  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:0.9em;background:#fff}
+  th,td{border:1px solid #d1d5db;padding:5px 8px;text-align:left;vertical-align:top}
+  th{background:#f3f4f6}
+  pre{font-family:ui-monospace,Menlo,monospace;font-size:0.85em;background:#fff;border:1px solid #e5e7eb;border-radius:6px;padding:10px;overflow-x:auto;line-height:1.45}
+  code{font-family:ui-monospace,Menlo,monospace;background:#f3f4f6;font-size:0.9em}
+  .step{background:#fff;border:1px solid #e5e7eb;border-radius:6px;padding:2px 14px;margin:10px 0}
+  .rule{background:#fff7ed;border:1px solid #fdba74;padding:8px 14px;border-radius:6px;margin:10px 0}
+</style>
+</head>
+<body>
+
+<h1>批一实施计划 · 比分归因引擎 期1（引擎核心+46 场试跑）</h1>
+<p>执行者须知：零上下文假设，照单执行。设计依据 docs/plans/2026-10-20-score-attribution-design.html（先读 §二§四§五）。TDD：每任务先测后码。开发者 sszhang</p>
+
+<p><b>目标</b>：体彩 forward 卷（02-results）驱动的比分归因引擎——六层维度中期1可得字段全部落地，产出双栏账单，46 场（2026-10-14~10-19）试跑出账给大哥验收。</p>
+<p><b>架构</b>：两文件拆分——<code>attribution_dims.py</code>（维度计算，纯函数）+ <code>score_attribution.py</code>（适配+账单组装+CLI）。静态表两份（赛制档案/德比表）。账本落 data/04-summaries/score-attribution/。</p>
+<p><b>技术栈</b>：Python 3.14 + pytest（unittest 风格直跑）。</p>
+<p><b>铁律</b>：同输入同输出（P26 可复现教训）；缺字段→missing 标注禁静默；残差超阈标"解释力不足"禁硬凑；旧卷禁改写；测试绿了才 commit。</p>
+
+<h2>全局约束（每任务隐含）</h2>
+<ul>
+<li>复用不重写：队名解析=<code>strength_loaders.load_aliases()/zh_to_id()</code>；HAD 去水=<code>market_lambda.had_devig()</code>；λh 反解=<code>market_lambda.solve_lamh()</code>（先读该文件熟悉签名）</li>
+<li>所有新公共函数带 docstring 尾注"开发者 sszhang"</li>
+<li>魔法值禁内联：先验系数全部 UPPER_SNAKE_CASE 常量并注释"待频次表校准"</li>
+<li>量纲纪律：offsets=球（加性）；shape_factors=系数（乘性）；禁止混加</li>
+</ul>
+
+<h2>前置：读懂现有代码（不改）</h2>
+<ul>
+<li>读 <code>engine/scripts/market_lambda.py</code>——had_devig(o_h,o_d,o_a)→[p_h,p_d,p_a]；solve_lamh(lam_sum,p_h)→λh</li>
+<li>读 <code>engine/scripts/strength_loaders.py</code> 38 行附近——zh_to_id()→{中文: 规范ID}</li>
+<li>读 <code>data/02-results/2026-10-19.json</code> 单场结构——odds(h/d/a)/market.had/result("4-0")/half("1:0")/pinClose/league/home/away(中文)/matchId</li>
+<li>读 <code>data/05-trends/2026-10-19-lineups.json</code>——matches{code: {injSnapshots:[{at,inj:{h:[...],a:[...]}}]}}</li>
+<li>读 <code>data/00-leagues/italy-serie-a.json</code>——standings[{pos,team,played,pts,gf,ga}] 与场均字段</li>
+</ul>
+
+<h2>账单 schema（任务 7 的产出契约·先冻结）</h2>
+<pre>{
+  "date": "2026-10-19", "code": "周一001", "league": "意甲",
+  "match": "蒙扎 vs 卡利亚里", "result": {"hg": 4, "ag": 0, "ht_hg": 1, "ht_ag": 0},
+  "depth": "deep",                    // deep|light：|实际-基线|总偏移 ≥1.5 球=deep（意外深挖档）
+  "baseline": {"lam_h": 1.31, "lam_a": 1.12, "source": "avg_league+had_devig"},
+  "offsets": [                        // 加性·单位=球·正=有利该队
+    {"dim": "A1.elo", "h": 0.10, "a": -0.10, "evidence": "elo_diff=-40"}],
+  "shape_factors": [                  // 乘性·tail_scale 作用于尾格带宽
+    {"dim": "L0.stage", "tail_scale": 1.0, "evidence": "league_regular"}],
+  "reconstructed": {"hg": 1.41, "ag": 1.02},
+  "residual": {"hg": 2.59, "ag": -1.02},
+  "explained_pct": 0.29,              // &lt;0.5 且 deep → explain_flag="insufficient"
+  "explain_flag": "insufficient",
+  "coverage": ["L1", "A1", "L0", "R3", "derby", "fifa_virus", "E2.htft", "R1.coarse"],
+  "missing": ["A2.xg", "A4", "E1.red", "E3", "E4.gk", "E5.finishing", "weather", "referee", "R2"],
+  "script": {"type": "early_crush", "reason": "净胜4且半场已领先"}   // L5 枚举见任务6
+}</pre>
+
+<!-- ══════════════ Task 1 ══════════════ -->
+<h2>Task 1：适配器 load_match_record（forward 卷→MatchRecord）</h2>
+<p><b>Files</b>：Create <code>engine/scripts/score_attribution.py</code>；Test <code>engine/tests/test_score_attribution.py</code>（新建）</p>
+<p><b>Interfaces</b>：Produces <code>load_match_record(date: str, code: str) -&gt; dict | None</code>——返回 MatchRecord（见测试断言字段），场不存在返回 None。</p>
+
+<div class="step"><b>Step 1.1 写失败测试</b>
+<pre># engine/tests/test_score_attribution.py 顶部
+import json, sys, unittest
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+
+from score_attribution import load_match_record
+
+
+class TestLoadMatchRecord(unittest.TestCase):
+    def test_load_1019_monza(self):
+        rec = load_match_record("2026-10-19", "周一001")
+        self.assertIsNotNone(rec)
+        # 02-results 原生字段
+        self.assertEqual(rec["league"], "意甲")
+        self.assertEqual(rec["result"], {"hg": 4, "ag": 0, "ht_hg": 1, "ht_ag": 0})
+        self.assertEqual(rec["odds"], [2.25, 3.10, 2.76])
+        # 画像补齐（蒙扎/卡利亚里在别名表内；elo 可能 None 但键必须在）
+        self.assertIn("team_h", rec); self.assertIn("elo_h", rec)
+        self.assertIn("rest_days_h", rec)
+        # 伤停粗档来源（画像 injuries 或 lineup 轨，均无则空列表）
+        self.assertEqual(rec["inj_n_h"], 0)  # 该场已知无伤停名单→0
+
+    def test_missing_match_returns_none(self):
+        self.assertIsNone(load_match_record("2026-10-19", "不存在999"))</pre>
+</div>
+
+<div class="step"><b>Step 1.2 跑确认 FAIL</b><br>
+Run: <code>python3 -m pytest engine/tests/test_score_attribution.py -q</code> → 预期 ImportError/ModuleNotFoundError</div>
+
+<div class="step"><b>Step 1.3 实现</b>
+<pre># engine/scripts/score_attribution.py
+"""比分归因引擎·期1：forward 卷适配 + 账单组装 + CLI。
+设计 docs/plans/2026-10-20-score-attribution-design.html。开发者 sszhang"""
+import json
+import sys
+from datetime import date, datetime
+from pathlib import Path
+
+SCRIPTS_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(SCRIPTS_DIR))
+
+import strength_loaders as sl  # load_aliases/zh_to_id 复用
+
+ROOT = SCRIPTS_DIR.parents[1]
+RESULTS_DIR = ROOT / "data" / "02-results"
+LINEUPS_DIR = ROOT / "data" / "05-trends"
+TEAMS_DIR = ROOT / "data" / "01-teams"
+
+
+def _parse_score(s: str | None) -> tuple[int, int] | None:
+    """'4-0' → (4,0)；'1:0'（半场）同构。失败返回 None。开发者 sszhang"""
+    if not s:
+        return None
+    for sep in ("-", ":"):
+        if sep in s:
+            a, b = s.split(sep)[:2]
+            return int(a), int(b)
+    return None
+
+
+def _find_in_results(date_str: str, code: str) -> dict | None:
+    """02-results/{date}.json 按 code 找 match 原始行。开发者 sszhang"""
+    path = RESULTS_DIR / f"{date_str}.json"
+    if not path.exists():
+        return None
+    data = json.loads(path.read_text(encoding="utf-8"))
+    for m in data.get("matches", []):
+        if m.get("code") == code:
+            return m
+    return None
+
+
+def _team_profile(team_id: str | None) -> dict:
+    """规范ID→画像 dict（elo/standing/form）；无档案返回 {}。开发者 sszhang"""
+    if not team_id:
+        return {}
+    hits = list(TEAMS_DIR.glob(f"*/{team_id}.json"))
+    if not hits:
+        return {}
+    return json.loads(hits[0].read_text(encoding="utf-8"))
+
+
+def _injury_count(date_str: str, code: str) -> tuple[int, int]:
+    """lineup 轨最后快照伤停人数 (h,a)；无轨返回 (0,0)。开发者 sszhang"""
+    path = LINEUPS_DIR / f"{date_str}-lineups.json"
+    if not path.exists():
+        return 0, 0
+    data = json.loads(path.read_text(encoding="utf-8"))
+    rec = (data.get("matches") or {}).get(code) or {}
+    snaps = rec.get("injSnapshots") or []
+    if not snaps:
+        return 0, 0
+    inj = snaps[-1].get("inj") or {}
+    return len(inj.get("h") or []), len(inj.get("a") or [])
+
+
+def _last_match_date(team_id: str, league_dir: str, before: str) -> str | None:
+    """league 库该队 before 前最近一场日期（算休息天数用）。开发者 sszhang"""
+    path = RESULTS_DIR / "league" / f"{league_dir}_matches.json"
+    if not path.exists() or not team_id:
+        return None
+    rows = json.loads(path.read_text(encoding="utf-8"))
+    rows = rows if isinstance(rows, list) else rows.get("matches", [])
+    cands = [r["date"] for r in rows
+             if r["date"] &lt; before and team_id in (r.get("home"), r.get("away"))]
+    return max(cands) if cands else None
+
+
+def load_match_record(date_str: str, code: str) -> dict | None:
+    """forward 卷单场 → MatchRecord（账单引擎唯一输入）。开发者 sszhang"""
+    m = _find_in_results(date_str, code)
+    if m is None:
+        return None
+    zh_map = sl.zh_to_id()
+    home_zh, away_zh = m["match"].split(" vs ")
+    team_h, team_a = zh_map.get(home_zh), zh_map.get(away_zh)
+    prof_h, prof_a = _team_profile(team_h), _team_profile(team_a)
+    hg, ag = _parse_score(m.get("result")) or (None, None)
+    ht_hg, ht_ag = _parse_score(m.get("half")) or (None, None)
+    inj_h, inj_a = _injury_count(date_str, code)
+    o = m.get("odds") or {}
+    league_dir = LEAGUE_DIR_MAP.get(m.get("league"), "")
+    return {
+        "date": date_str, "code": code, "league": m.get("league"),
+        "match": m["match"], "team_h": team_h, "team_a": team_a,
+        "league_dir": league_dir,
+        "odds": [float(o["h"]), float(o["d"]), float(o["a"])],
+        "pin_close": m.get("pinClose") or None,
+        "elo_h": prof_h.get("elo"), "elo_a": prof_a.get("elo"),
+        "inj_n_h": inj_h, "inj_n_a": inj_a,
+        "rest_days_h": None, "rest_days_a": None,   # Task 5 填
+        "result": {"hg": hg, "ag": ag, "ht_hg": ht_hg, "ht_ag": ht_ag},
+    }</pre>
+<p>同文件加常量（Task 4/5 会扩）：</p>
+<pre># 02-results 中文联赛名 → league 库目录名（ rested/stage 判定用；未映射联赛相应维度标缺）
+LEAGUE_DIR_MAP = {
+    "意甲": "italy-serie-a", "英超": "england-premier", "西甲": "spain-laliga",
+    "德甲": "germany-bundesliga", "法甲": "france-ligue1", "荷甲": "netherlands-eredivisie",
+    "葡超": "portugal-primeira", "美职": "usa", "欧冠": "", "亚冠": "",
+}</pre>
+</div>
+
+<div class="step"><b>Step 1.4 跑过</b> → <b>Step 1.5 Commit</b>：<code>git add engine/scripts/score_attribution.py engine/tests/test_score_attribution.py && git commit -m "feat(attribution): Task1 forward卷适配器 load_match_record"</code></div>
+
+<!-- ══════════════ Task 2 ══════════════ -->
+<h2>Task 2：L1 基线 lambda_from_had</h2>
+<p><b>Files</b>：Create <code>engine/scripts/attribution_dims.py</code>；Modify Test 同文件追加</p>
+<p><b>Interfaces</b>：Produces <code>lambda_from_had(odds: list[float], lam_sum: float) -&gt; tuple[float, float] | None</code>（去水+二分反解；lam_sum 异常≤0.5 返回 None）</p>
+
+<div class="step"><b>Step 2.1 失败测试</b>
+<pre># engine/tests/test_score_attribution.py 追加
+from attribution_dims import lambda_from_had, dim_elo
+
+class TestBaseline(unittest.TestCase):
+    def test_lambda_reasonable(self):
+        lam = lambda_from_had([2.25, 3.10, 2.76], 2.4)  # 意甲场均总球≈2.4
+        self.assertIsNotNone(lam)
+        lh, la = lam
+        self.assertGreater(lh, la)          # 主赔更低→主λ更高
+        self.assertAlmostEqual(lh + la, 2.4, delta=0.01)
+        self.assertTrue(0.3 &lt; lh &lt; 2.2)
+
+    def test_lambda_bad_sum_none(self):
+        self.assertIsNone(lambda_from_had([2.25, 3.10, 2.76], 0.1))</pre>
+</div>
+<div class="step"><b>Step 2.2 FAIL</b>：ImportError</div>
+<div class="step"><b>Step 2.3 实现</b>
+<pre># engine/scripts/attribution_dims.py
+"""比分归因维度计算器（纯函数·同输入同输出）。设计 §二。开发者 sszhang"""
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from market_lambda import had_devig, solve_lamh
+
+
+def lambda_from_had(odds: list[float], lam_sum: float) -&gt; tuple[float, float] | None:
+    """L1 基线：HAD 三向去水→p_h→solve_lamh 反解 (λh, λa)。开发者 sszhang"""
+    if lam_sum is None or lam_sum &lt;= 0.5:
+        return None
+    p_h, _, _ = had_devig(*odds)
+    if not 0.05 &lt; p_h &lt; 0.95:
+        return None
+    lam_h = solve_lamh(lam_sum, p_h)
+    return round(lam_h, 3), round(lam_sum - lam_h, 3)</pre>
+</div>
+<div class="step"><b>Step 2.4 过</b> → <b>Step 2.5 Commit</b>：<code>feat(attribution): Task2 L1基线 lambda_from_had</code></div>
+
+<!-- ══════════════ Task 3 ══════════════ -->
+<h2>Task 3：A1 Elo 维度</h2>
+<p><b>Interfaces</b>：Produces <code>dim_elo(elo_h, elo_a) -&gt; dict | None</code> → <code>{"dim":"A1.elo","h":+x,"a":-x,"evidence":...}</code>；elo 任一 None→None</p>
+<div class="step"><b>Step 3.1 失败测试</b>
+<pre>class TestDimElo(unittest.TestCase):
+    def test_elo_offset(self):
+        off = dim_elo(1490.0, 1450.0)   # 主强40
+        self.assertAlmostEqual(off["h"], 0.10, delta=0.01)
+        self.assertAlmostEqual(off["a"], -0.10, delta=0.01)
+
+    def test_elo_missing(self):
+        self.assertIsNone(dim_elo(None, 1450.0))</pre>
+</div>
+<div class="step"><b>Step 3.2 FAIL</b> → <b>Step 3.3 实现</b>
+<pre># attribution_dims.py 追加
+ELO_SCALE = 400.0  # Elo 差 400≈净胜 1 球（经验先验·待频次表校准·设计§二A1）
+
+def dim_elo(elo_h, elo_a) -&gt; dict | None:
+    """A1 实力差→净胜偏移（对半分给 h/a）。缺 Elo 返回 None 进 missing。开发者 sszhang"""
+    if elo_h is None or elo_a is None:
+        return None
+    net = (elo_h - elo_a) / ELO_SCALE
+    return {"dim": "A1.elo", "h": round(net / 2, 3), "a": round(-net / 2, 3),
+            "evidence": f"elo_diff={round(elo_h - elo_a)}"}</pre>
+</div>
+<div class="step"><b>Step 3.4 过</b> → <b>Step 3.5 Commit</b>：<code>feat(attribution): Task3 A1 Elo维度</code></div>
+
+<!-- ══════════════ Task 4 ══════════════ -->
+<h2>Task 4：L0 赛制档案 + dim_stage</h2>
+<p><b>Files</b>：Create <code>data/00-leagues/_formats.json</code>；Modify <code>attribution_dims.py</code></p>
+<p><b>Interfaces</b>：Produces <code>dim_stage(rec: dict) -&gt; dict</code> → <code>{"dim":"L0.stage","tail_scale":x,"evidence":...}</code>；档案缺该联赛→tail_scale=1.0 + evidence="no_format"</p>
+<div class="step"><b>Step 4.1 建 _formats.json</b>（期1 初始 9 赛事；字段=设计 §三）
+<pre>{
+  "意甲": {"type": "league", "relegation": {"count": 3}, "ucl_slots": 4,
+           "season": {"start": "2026-08", "end": "2027-05", "rounds": 38},
+           "timezone_span": 0, "notes": "冬歇约2周"},
+  "英超": {"type": "league", "relegation": {"count": 3}, "ucl_slots": 4,
+           "season": {"start": "2026-08", "end": "2027-05", "rounds": 38},
+           "timezone_span": 0, "notes": "无冬歇·节礼日快车"},
+  "西甲": {"type": "league", "relegation": {"count": 3}, "ucl_slots": 4,
+           "season": {"start": "2026-08", "end": "2027-05", "rounds": 38}, "timezone_span": 0},
+  "德甲": {"type": "league", "relegation": {"count": 2, "playoff": true}, "ucl_slots": 4,
+           "season": {"start": "2026-08", "end": "2027-05", "rounds": 34},
+           "timezone_span": 0, "notes": "冬歇4周·附加赛16名vs德乙3"},
+  "法甲": {"type": "league", "relegation": {"count": 2, "playoff": true}, "ucl_slots": 3,
+           "season": {"start": "2026-08", "end": "2027-05", "rounds": 34}, "timezone_span": 0},
+  "荷甲": {"type": "league", "relegation": {"count": 2, "playoff": true}, "ucl_slots": 2,
+           "season": {"start": "2026-08", "end": "2027-05", "rounds": 34}, "timezone_span": 0},
+  "葡超": {"type": "league", "relegation": {"count": 2}, "ucl_slots": 2,
+           "season": {"start": "2026-08", "end": "2027-05", "rounds": 34}, "timezone_span": 0},
+  "美职": {"type": "league_playoff", "relegation": {"count": 0}, "ucl_slots": 0,
+           "playoff": {"format": "bo3_then_ko", "home_seed": true},
+           "draft": true, "timezone_span": 3,
+           "season": {"start": "2026-02", "end": "2026-10", "rounds": 34},
+           "notes": "无升降级·摆烂争签·夏季密程·跨时区旅行"},
+  "欧冠": {"type": "cup_two_leg", "relegation": {"count": 0}, "ucl_slots": 0,
+           "league_phase_games": 8,
+           "notes": "Swiss 联赛阶段8场·末轮已晋级轮换动机带宽·淘汰赛两回合无客场进球"},
+  "_fifa_windows_2026": ["2026-03-23/2026-03-31", "2026-06-01/2026-06-09",
+                          "2026-09-07/2026-09-15", "2026-10-12/2026-10-20",
+                          "2026-11-16/2026-11-24"]
+}</pre>
+</div>
+<div class="step"><b>Step 4.2 失败测试</b>
+<pre>from attribution_dims import dim_stage
+
+class TestDimStage(unittest.TestCase):
+    def test_league_regular_default(self):
+        rec = {"league": "意甲", "date": "2026-10-19"}
+        sf = dim_stage(rec)
+        self.assertEqual(sf["dim"], "L0.stage")
+        self.assertEqual(sf["tail_scale"], 1.0)
+        self.assertEqual(sf["evidence"], "league_regular")
+
+    def test_unknown_league_neutral(self):
+        sf = dim_stage({"league": "某新联赛", "date": "2026-10-19"})
+        self.assertEqual(sf["tail_scale"], 1.0)
+        self.assertEqual(sf["evidence"], "no_format")
+
+    def test_fifa_virus_window(self):
+        # 10-20 窗口结束后 3 天内 → fifa_virus 命中（Task5 的 flag 也走档案日历）
+        sf = dim_stage({"league": "意甲", "date": "2026-10-22"})
+        self.assertIn("fifa_virus", sf["evidence"])</pre>
+</div>
+<div class="step"><b>Step 4.3 FAIL</b> → <b>Step 4.4 实现</b>
+<pre># attribution_dims.py 追加
+import json
+
+FORMATS_PATH = Path(__file__).resolve().parents[1] / "data" / "00-leagues" / "_formats.json"
+FIFA_VIRUS_DAYS = 5  # 窗口结束后 N 天内的联赛场算 FIFA 病毒（先验·待频次表校准）
+
+def _formats() -&gt; dict:
+    return json.loads(FORMATS_PATH.read_text(encoding="utf-8"))
+
+def _in_fifa_window_tail(date_str: str) -> bool:
+    for win in _formats().get("_fifa_windows_2026", []):
+        end = win.split("/")[1]
+        d0 = datetime.fromisoformat(date_str).date()
+        d1 = datetime.fromisoformat(end).date()
+        if 0 &lt; (d0 - d1).days &lt;= FIFA_VIRUS_DAYS:
+            return True
+    return False
+
+def dim_stage(rec: dict) -&gt; dict:
+    """L0 赛制情境→形状系数（期1只判 league_regular/fifa_virus；淘汰赛档期4接 C1 细分）。开发者 sszhang"""
+    fmt = _formats().get(rec.get("league"))
+    if fmt is None:
+        return {"dim": "L0.stage", "tail_scale": 1.0, "evidence": "no_format"}
+    ev = "league_regular" if fmt.get("type", "league").startswith("league") else fmt["type"]
+    if _in_fifa_window_tail(rec["date"]):
+        ev += "+fifa_virus"
+    return {"dim": "L0.stage", "tail_scale": 1.0, "evidence": ev}</pre>
+<p>文件头补 <code>from datetime import datetime</code>。</p>
+</div>
+<div class="step"><b>Step 4.5 过</b> → <b>Step 4.6 Commit</b>：<code>feat(attribution): Task4 赛制档案+L0维度</code></div>
+
+<!-- ══════════════ Task 5 ══════════════ -->
+<h2>Task 5：德比表 + R3 休息差</h2>
+<p><b>Files</b>：Create <code>data/00-leagues/_derbies.json</code>；Modify 两 py + 测试</p>
+<p><b>Interfaces</b>：Produces <code>dim_derby(league, team_h, team_a) -&gt; dict|None</code>；<code>fill_rest_days(rec: dict) -&gt; dict</code>（原地填 rest_days_h/a，算不出保持 None）</p>
+<div class="step"><b>Step 5.1 建 _derbies.json</b>（主流德比初始 14 对；键=规范ID 对）
+<pre>{
+  "england": [["arsenal", "tottenham-hotspur"], ["manchester-city", "manchester-united"],
+              ["liverpool", "everton"], ["chelsea", "arsenal"], ["liverpool", "manchester-united"]],
+  "italy": [["inter", "milan"], ["roma", "lazio"], ["juventus", "torino"],
+             ["inter", "juventus"], ["milan", "juventus"]],
+  "spain": [["real-madrid", "barcelona"], ["real-madrid", "atletico-madrid"],
+             ["barcelona", "espanyol"], ["sevilla", "real-betis"]],
+  "germany": [["bayern-munich", "borussia-dortmund"], ["schalke-04", "borussia-dortmund"],
+               ["bayern-munich", "nurnberg"]]
+}</pre>
+<p>注：键内 ID 以 <code>data/01-teams/_aliases.json</code> 实际存在为准——执行时用 zh_to_id 反查"阿森纳/热刺/国米/米兰/皇马/巴萨/拜仁/多特"确认拼写，不存在的改用实际 ID。</p>
+</div>
+<div class="step"><b>Step 5.2 失败测试</b>
+<pre>from attribution_dims import dim_derby
+from score_attribution import fill_rest_days
+
+class TestDerbyRest(unittest.TestCase):
+    def test_derby_hit(self):
+        off = dim_derby("英超", "arsenal", "tottenham-hotspur")
+        self.assertEqual(off["dim"], "derby")
+        self.assertGreater(off["tail_scale"], 1.0)   # 德比抬尾格
+
+    def test_derby_miss(self):
+        self.assertIsNone(dim_derby("英超", "arsenal", "everton"))
+
+    def test_rest_days(self):
+        rec = load_match_record("2026-10-19", "周一001")
+        rec = fill_rest_days(rec)
+        # 卡利亚里 10-15 有欧冠场(league库无欧冠行则 None 容忍)
+        self.assertIn(rec["rest_days_h"], [None] + list(range(2, 15)))</pre>
+</div>
+<div class="step"><b>Step 5.3 FAIL</b> → <b>Step 5.4 实现</b>
+<pre># attribution_dims.py 追加
+DERBY_TAIL = 1.4  # 德比尾格系数（先验·待频次表校准·设计§二A档3）
+DERBIES_PATH = Path(__file__).resolve().parents[1] / "data" / "00-leagues" / "_derbies.json"
+
+def dim_derby(league: str, team_h: str, team_a: str) -&gt; dict | None:
+    """德比/宿敌标记→形状系数。开发者 sszhang"""
+    if not team_h or not team_a:
+        return None
+    table = json.loads(DERBIES_PATH.read_text(encoding="utf-8"))
+    pairs = table.get(league, [])
+    for a, b in pairs:
+        if {team_h, team_a} == {a, b}:
+            return {"dim": "derby", "tail_scale": DERBY_TAIL,
+                    "evidence": f"derby:{a}/{b}"}
+    return None</pre>
+<pre># score_attribution.py 追加
+def fill_rest_days(rec: dict) -> dict:
+    """R3 休息差：league 库查两队上一场日期→天数。查不到保持 None。开发者 sszhang"""
+    for side, team in (("h", rec["team_h"]), ("a", rec["team_a"])):
+        last = _last_match_date(team, rec["league_dir"], rec["date"])
+        if last:
+            d0 = datetime.fromisoformat(rec["date"]).date()
+            rec[f"rest_days_{side}"] = (d0 - datetime.fromisoformat(last).date()).days
+    return rec</pre>
+<p>文件头已有 <code>from datetime import date, datetime</code>（Task1 若只导了 date 则补 datetime）。</p>
+</div>
+<div class="step"><b>Step 5.5 过</b> → <b>Step 5.6 Commit</b>：<code>feat(attribution): Task5 德比表+休息差</code></div>
+
+<!-- ══════════════ Task 6 ══════════════ -->
+<h2>Task 6：E2 半场结构 + R1 粗档 + L5 剧本</h2>
+<p><b>Interfaces</b>：Produces <code>dim_htft(rec) -&gt; dict|None</code>（E2）；<code>dim_injury_coarse(rec) -&gt; dict|None</code>（R1 期1只标记不贡献球数）；<code>classify_script(rec) -&gt; dict</code>（L5 枚举 8 剧本期1可判 6）</p>
+<div class="step"><b>Step 6.1 失败测试</b>
+<pre>from attribution_dims import dim_htft, dim_injury_coarse, classify_script
+
+class TestScript(unittest.TestCase):
+    def test_htft_second_half_surge(self):
+        # 半场1:0 全场4:0 → 主队下半场+3
+        rec = {"result": {"hg": 4, "ag": 0, "ht_hg": 1, "ht_ag": 0}}
+        off = dim_htft(rec)
+        self.assertEqual(off["dim"], "E2.htft")
+        self.assertGreater(off["h"], 0)
+
+    def test_htft_missing(self):
+        self.assertIsNone(dim_htft({"result": {"hg": 4, "ag": 0, "ht_hg": None, "ht_ag": None}}))
+
+    def test_script_early_crush(self):
+        rec = {"result": {"hg": 4, "ag": 0, "ht_hg": 1, "ht_ag": 0}}
+        s = classify_script(rec)
+        self.assertIn(s["type"], {"crush", "early_crush"})
+
+    def test_script_irongrid(self):
+        rec = {"result": {"hg": 0, "ag": 0, "ht_hg": 0, "ht_ag": 0}}
+        self.assertEqual(classify_script(rec)["type"], "iron_grid")
+
+    def test_injury_coarse_marks_only(self):
+        off = dim_injury_coarse({"inj_n_h": 0, "inj_n_a": 3})
+        self.assertEqual(off["dim"], "R1.coarse")
+        self.assertIsNone(off["h"])  # 期1不贡献球数
+        self.assertIn("3", off["evidence"])</pre>
+<p>测试里 <code>classify_script</code> 直接返回 dict 用 <code>["type"]</code>，<code>test_script_irongrid</code> 写 <code>classify_script(rec)["type"]</code>（不要引入 test helper）。</p>
+</div>
+<div class="step"><b>Step 6.2 FAIL</b> → <b>Step 6.3 实现</b>
+<pre># attribution_dims.py 追加
+HTFT_SURGE_PER_GOAL = 0.35  # 下半场净增每球的偏移贡献（先验·待频次表校准）
+
+def dim_htft(rec: dict) -&gt; dict | None:
+    """E2 半场→全场结构：下半场净增球的归属偏移。缺半场比分返回 None。开发者 sszhang"""
+    r = rec.get("result") or {}
+    if r.get("ht_hg") is None or r.get("hg") is None:
+        return None
+    s2_h = r["hg"] - r["ht_hg"]
+    s2_a = r["ag"] - r["ht_ag"]
+    net = s2_h - s2_a
+    half = net * HTFT_SURGE_PER_GOAL / 2
+    return {"dim": "E2.htft", "h": round(half, 3), "a": round(-half, 3),
+            "evidence": f"半场{r['ht_hg']}:{r['ht_ag']}→全场{r['hg']}:{r['ag']}"}
+
+def dim_injury_coarse(rec: dict) -&gt; dict | None:
+    """R1 粗档（期1标记不量化；LLM 轨量化在期3）。人数差≥2 才标记。开发者 sszhang"""
+    nh, na = rec.get("inj_n_h", 0), rec.get("inj_n_a", 0)
+    if abs(nh - na) &lt; 2:
+        return None
+    return {"dim": "R1.coarse", "h": None, "a": None,
+            "evidence": f"伤停人数差 h{nh}/a{na}(未量化)"}
+
+def classify_script(rec: dict) -&gt; dict:
+    """L5 剧本规则定档（期1可判6/8：红牌/门将/默契待期2画面数据）。开发者 sszhang"""
+    r = rec.get("result") or {}
+    hg, ag = r.get("hg"), r.get("ag")
+    if hg is None:
+        return {"type": "unclassified", "reason": "no_result"}
+    hth, hta = r.get("ht_hg"), r.get("ht_ag")
+    net, tot = hg - ag, hg + ag
+    if net &gt;= 3:
+        if hth is not None and (hth - hta) &gt;= 1:
+            return {"type": "crush", "reason": f"净胜{net}·半场已领先{hth}:{hta}"}
+        return {"type": "early_crush", "reason": f"净胜{net}·半场{hth}:{hta}"}
+    if net == 0 and tot &lt;= 1:
+        return {"type": "iron_grid", "reason": f"总球{tot}互磨"}
+    if tot &gt;= 5:
+        return {"type": "leaky", "reason": f"总球{tot}互漏"}
+    if hth is not None:
+        s2_net = (hg - hth) - (ag - hta)
+        if hth != hta and s2_net * (hth - hta) &gt; 0 and abs(s2_net) &gt;= 2:
+            return {"type": "press_counter", "reason": "半场领先方下半场继续扩大=压上反杀族"}
+        if abs(net) &lt;= 1 and s2_net != 0:
+            return {"type": "open_play", "reason": "开放对攻有来有回"}
+    if tot &lt;= 1:
+        return {"type": "early_goal_lock", "reason": f"总球{tot}"}
+    return {"type": "open_play", "reason": "默认开放"}</pre>
+</div>
+<div class="step"><b>Step 6.4 过</b> → <b>Step 6.5 Commit</b>：<code>feat(attribution): Task6 E2/R1粗档/L5剧本</code></div>
+
+<!-- ══════════════ Task 7 ══════════════ -->
+<h2>Task 7：账单组装 build_bill（双栏+残差+coverage）</h2>
+<p><b>Interfaces</b>：Produces <code>build_bill(rec: dict) -&gt; dict</code>——schema 见本文件顶部冻结版；<code>league_avg_total(league) -&gt; tuple[float, str]</code>（00-leagues 画像 standings 算场均总球；读不到返回 (2.6, "default") 兜底并在账单 source 标注）</p>
+<div class="step"><b>Step 7.1 失败测试</b>
+<pre>from score_attribution import build_bill
+
+class TestBuildBill(unittest.TestCase):
+    def test_bill_self_consistent(self):
+        rec = load_match_record("2026-10-19", "周一001")
+        rec = fill_rest_days(rec)
+        bill = build_bill(rec)
+        # 双栏量纲分离
+        self.assertIn("offsets", bill); self.assertIn("shape_factors", bill)
+        for off in bill["offsets"]:
+            self.assertIsInstance(off["h"], float)      # offsets 全为数值（R1粗档 None 不进 offsets）
+        # 自洽：reconstructed = baseline + Σoffsets
+        lam_h, lam_a = bill["baseline"]["lam_h"], bill["baseline"]["lam_a"]
+        sum_h = lam_h + sum(o["h"] for o in bill["offsets"])
+        self.assertAlmostEqual(bill["reconstructed"]["hg"], round(sum_h, 3), delta=0.01)
+        # 深挖档判定：4-0 vs 基线≈1.3:1.1 → 偏移 2.7+1.1>1.5
+        self.assertEqual(bill["depth"], "deep")
+        self.assertLess(bill["explained_pct"], 0.5)   # 期1缺画面维度，此场解释力必然不足
+        self.assertEqual(bill["explain_flag"], "insufficient")
+        self.assertIn("E5.finishing", bill["missing"])  # 缺项诚实标注
+        self.assertEqual(bill["script"]["type"], "crush")
+
+    def test_bill_light_when_market_nailed(self):
+        # 构造：实际 1:1 vs 基线 1.2:1.0 → 总偏移 0.2+0.1&lt;1.5 → light 档
+        rec = {"date": "2026-10-19", "code": "测试", "league": "意甲",
+               "match": "x vs y", "team_h": None, "team_a": None, "league_dir": "italy-serie-a",
+               "odds": [2.25, 3.10, 2.76], "pin_close": None,
+               "elo_h": None, "elo_a": None, "inj_n_h": 0, "inj_n_a": 0,
+               "rest_days_h": None, "rest_days_a": None,
+               "result": {"hg": 1, "ag": 1, "ht_hg": 0, "ht_ag": 0}}
+        bill = build_bill(rec)
+        self.assertEqual(bill["depth"], "light")</pre>
+</div>
+<div class="step"><b>Step 7.2 FAIL</b> → <b>Step 7.3 实现</b>
+<pre># score_attribution.py 追加（import 区补 from attribution_dims import ...）
+from attribution_dims import (lambda_from_had, dim_elo, dim_stage, dim_derby,
+                              dim_htft, dim_injury_coarse, classify_script)
+
+DEEP_THRESHOLD = 1.5   # |实际-基线|总偏移≥此值=深挖档（设计§一深度分档）
+EXPLAIN_FLOOR = 0.5    # explained_pct&lt;此值且 deep → insufficient（防谬误铁律3）
+LEAGUE_AVG_DEFAULT = 2.6  # 画像读不到时的兜底场均总球（evidence 标 default）
+
+def league_avg_total(league: str) -> tuple[float, str]:
+    """00-leagues 画像 standings 算场均总球（Σgf/Σplayed×2，两队合计口径）；读不到用默认。开发者 sszhang"""
+    path = ROOT / "data" / "00-leagues" / f"{LEAGUE_DIR_MAP.get(league, '')}.json"
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        gf = sum(s.get("gf", 0) for s in data.get("standings", []))
+        played = sum(s.get("played", 0) for s in data.get("standings", []))
+        if gf and played:
+            return round(2 * gf / played, 2), "league_profile"
+    except Exception:
+        pass
+    return LEAGUE_AVG_DEFAULT, "default"
+
+def build_bill(rec: dict) -> dict:
+    """双栏账单组装（schema 见 impl §账单冻结版）。开发者 sszhang"""
+    lam_sum, src = league_avg_total(rec["league"])
+    lam = lambda_from_had(rec["odds"], lam_sum)
+    r = rec["result"]
+    if lam is None or r["hg"] is None:
+        return {"code": rec["code"], "match": rec["match"], "error": "baseline_or_result_missing"}
+    lam_h, lam_a = lam
+
+    offs = [o for o in (dim_elo(rec["elo_h"], rec["elo_a"]),
+                        dim_htft(rec)) if o and o["h"] is not None]
+    shapes = [s for s in (dim_stage(rec), dim_derby(rec["league"], rec["team_h"], rec["team_a"]))
+              if s]
+    coarse = dim_injury_coarse(rec)  # 标记型：进 coverage 不进 offsets
+
+    sum_h = lam_h + sum(o["h"] for o in offs)
+    sum_a = lam_a + sum(o["a"] for o in offs)
+    resid_h, resid_a = r["hg"] - sum_h, r["ag"] - sum_a
+    dev = abs(r["hg"] - lam_h) + abs(r["ag"] - lam_a)
+    depth = "deep" if dev &gt;= DEEP_THRESHOLD else "light"
+    denom = max(dev, 0.01)
+    explained = 1.0 - min(abs(resid_h) + abs(resid_a), denom) / denom
+    flag = "insufficient" if (depth == "deep" and explained &lt; EXPLAIN_FLOOR) else "ok"
+
+    covered = ["L1"] + (["A1"] if rec["elo_h"] is not None else []) + \
+              ["L0", "E2.htft" if r["ht_hg"] is not None else None, "R3",
+               "derby" if any(s["dim"] == "derby" for s in shapes) else None] + \
+              (["R1.coarse"] if coarse else [])
+    return {
+        "date": rec["date"], "code": rec["code"], "league": rec["league"],
+        "match": rec["match"],
+        "result": r, "depth": depth,
+        "baseline": {"lam_h": lam_h, "lam_a": lam_a,
+                     "source": f"avg_{src}+had_devig"},
+        "offsets": offs, "shape_factors": shapes,
+        "reconstructed": {"hg": round(sum_h, 3), "ag": round(sum_a, 3)},
+        "residual": {"hg": round(resid_h, 3), "ag": round(resid_a, 3)},
+        "explained_pct": round(explained, 3), "explain_flag": flag,
+        "coverage": [c for c in covered if c],
+        "missing": ["A2.xg", "A4", "E1.red", "E3", "E4.gk", "E5.finishing",
+                    "weather", "referee", "R2"] +
+                   ([] if rec["elo_h"] is not None else ["A1"]) +
+                   ([] if r["ht_hg"] is not None else ["E2.htft"]),
+        "script": classify_script(rec),
+    }</pre>
+</div>
+<div class="step"><b>Step 7.4 过</b> → <b>Step 7.5 Commit</b>：<code>feat(attribution): Task7 双栏账单组装</code></div>
+
+<!-- ══════════════ Task 8 ══════════════ -->
+<h2>Task 8：CLI + 46 场试跑 + 金样本核对</h2>
+<p><b>Files</b>：Modify <code>score_attribution.py</code>（argparse）；Create 产出目录 <code>data/04-summaries/score-attribution/</code></p>
+<p><b>Interfaces</b>：CLI：<code>python engine/scripts/score_attribution.py single 2026-10-19 周一001</code> / <code>batch 2026-10-14 2026-10-19</code>（逐日逐场，落 <code>{date}-attribution.json</code>，幂等重写）</p>
+<div class="step"><b>Step 8.1 失败测试（CLI 冒烟）</b>
+<pre>class TestCLI(unittest.TestCase):
+    def test_main_single(self):
+        import subprocess
+        from score_attribution import ROOT
+        out = subprocess.run(
+            [sys.executable, "engine/scripts/score_attribution.py",
+             "single", "2026-10-19", "周一001"],
+            capture_output=True, text=True, cwd=str(ROOT))
+        self.assertEqual(out.returncode, 0, out.stderr)
+        bill = json.loads(out.stdout)
+        self.assertEqual(bill["code"], "周一001")</pre>
+</div>
+<div class="step"><b>Step 8.2 FAIL</b> → <b>Step 8.3 实现</b>
+<pre># score_attribution.py 追加
+def _all_codes(date_str: str) -&gt; list[str]:
+    path = RESULTS_DIR / f"{date_str}.json"
+    if not path.exists():
+        return []
+    return [m["code"] for m in json.loads(path.read_text(encoding="utf-8")).get("matches", [])]
+
+def main() -&gt; None:
+    """CLI：single/batch。开发者 sszhang"""
+    import argparse
+    ap = argparse.ArgumentParser()
+    sub = ap.add_subparsers(dest="cmd", required=True)
+    p1 = sub.add_parser("single"); p1.add_argument("date"); p1.add_argument("code")
+    p2 = sub.add_parser("batch");  p2.add_argument("from_date"); p2.add_argument("to_date")
+    args = ap.parse_args()
+
+    out_dir = ROOT / "data" / "04-summaries" / "score-attribution"
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    if args.cmd == "single":
+        rec = fill_rest_days(load_match_record(args.date, args.code))
+        print(json.dumps(build_bill(rec), ensure_ascii=False, indent=2))
+        return
+    d0, d1 = args.from_date, args.to_date
+    cur, bills = d0, []
+    from datetime import timedelta
+    while cur &lt;= d1:
+        for code in _all_codes(cur):
+            rec = load_match_record(cur, code)
+            if rec is None:
+                continue
+            bills.append(build_bill(fill_rest_days(rec)))
+        cur = (datetime.fromisoformat(cur) + timedelta(days=1)).date().isoformat()
+    path = out_dir / f"{d0}~{d1}-attribution.json"
+    path.write_text(json.dumps(bills, ensure_ascii=False, indent=2), encoding="utf-8")
+    deep = sum(1 for b in bills if b.get("depth") == "deep")
+    insuf = sum(1 for b in bills if b.get("explain_flag") == "insufficient")
+    print(f"账单 {len(bills)} 张落 {path}（deep {deep}·解释力不足 {insuf}·缺基线 {len(bills)-len([b for b in bills if 'baseline' in b])}）")
+
+if __name__ == "__main__":
+    main()</pre>
+</div>
+<div class="step"><b>Step 8.4 跑过+全量回归</b><br>
+<code>python3 -m pytest engine/tests/ -q</code> 全绿（含既有 685）</div>
+<div class="step"><b>Step 8.5 46 场试跑</b><br>
+<code>python3 engine/scripts/score_attribution.py batch 2026-10-14 2026-10-19</code> → 逐场打印；挑 deep 档 3 场金样本人工核对归因合理性（蒙扎 4:0 卡利亚里必选）</div>
+<div class="step"><b>Step 8.6 Commit</b>：<code>feat(attribution): Task8 CLI+46场试跑账本</code></div>
+
+<h2>验收（对大哥）</h2>
+<ul>
+<li>46 张账单落 <code>data/04-summaries/score-attribution/2026-10-14~2026-10-19-attribution.json</code></li>
+<li>deep/light 分档分布 + explained 分布 + 金样本 3 场人工核对意见</li>
+<li>期1已知边界（诚实声明）：无画面数据（红牌/xG/射门）→ deep 档解释力普遍 insufficient 属预期，期2 fd 回补后重估</li>
+</ul>
+
+</body>
+</html>
