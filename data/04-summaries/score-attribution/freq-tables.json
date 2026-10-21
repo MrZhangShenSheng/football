@@ -1,0 +1,89 @@
+{
+ "generatedAt": "2026-10-22",
+ "prereg": "freq-prereg.json",
+ "universe": {
+  "bills_with_baseline": 16398,
+  "e5_subset_n": 559
+ },
+ "gate": "diff_ci_lo > 0 且 n_on >= 150 → calibration_ready（可进 v3.6 校准通道）；否则 observational",
+ "tables": {
+  "t1_derby_vs_rest": {
+   "n_on": 85,
+   "n_off": 16313,
+   "rate_on": 0.3294,
+   "rate_off": 0.299,
+   "diff": 0.0304,
+   "ci_lo_on": 0.2388,
+   "diff_ci_lo": -0.0698,
+   "verdict": "observational",
+   "verdict_reason": "未过转正门：diff_ci_lo>0 且 n_on>=150 需同时成立（prereg gate）"
+  },
+  "t2_redcard_vs_none": {
+   "n_on": 2858,
+   "n_off": 13540,
+   "rate_on": 0.3051,
+   "rate_off": 0.2979,
+   "diff": 0.0073,
+   "ci_lo_on": 0.2885,
+   "diff_ci_lo": -0.0113,
+   "verdict": "observational",
+   "verdict_reason": "未过转正门：diff_ci_lo>0 且 n_on>=150 需同时成立（prereg gate）"
+  },
+  "t3_press_counter_family": {
+   "n_on": 1817,
+   "n_off": 14581,
+   "rate_on": 1.0,
+   "rate_off": 0.0411,
+   "diff": 0.9589,
+   "ci_lo_on": 0.9979,
+   "diff_ci_lo": 0.9557,
+   "verdict": "observational",
+   "verdict_reason": "verdictCap（prereg 冻结）：构造性表格：classify_script 净胜≥3 前置 ⟹ rate_on≡1.0，diff 无预测信息"
+  },
+  "t4_fifa_virus": {
+   "n_on": 49,
+   "n_off": 16349,
+   "rate_on": 0.3265,
+   "rate_off": 0.299,
+   "diff": 0.0275,
+   "ci_lo_on": 0.2121,
+   "diff_ci_lo": -0.104,
+   "verdict": "observational",
+   "verdict_reason": "未过转正门：diff_ci_lo>0 且 n_on>=150 需同时成立（prereg gate）"
+  },
+  "t5_xg_divergence_p75": {
+   "n_on": 140,
+   "n_off": 419,
+   "rate_on": 0.5786,
+   "rate_off": 0.3031,
+   "diff": 0.2755,
+   "ci_lo_on": 0.4957,
+   "diff_ci_lo": 0.1826,
+   "verdict": "observational",
+   "verdict_reason": "未过转正门：diff_ci_lo>0 且 n_on>=150 需同时成立（prereg gate）",
+   "subset_n": 559,
+   "p75_threshold": 0.7875
+  },
+  "t6_england_referee_red": {
+   "subset_n": 2895,
+   "red_rate_overall": 0.1057,
+   "by_league": {
+    "英冠": {
+     "n": 1725,
+     "red_n": 171,
+     "red_rate": 0.0991
+    },
+    "英超": {
+     "n": 1170,
+     "red_n": 135,
+     "red_rate": 0.1154
+    }
+   },
+   "by_referee_top5": null,
+   "by_referee_bottom5": null,
+   "by_referee_note": "no_data：hist 账单 referee 维度 100% in missing（prereg knownGap 冻结预期）——不编造，待 referee 源接入",
+   "verdict": "observational",
+   "verdict_reason": "prereg 预注册即观察表无门（verdictCap 冻结）"
+  }
+ }
+}
