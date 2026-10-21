@@ -30,13 +30,13 @@
    "verdict_reason": "未过转正门：diff_ci_lo>0 且 n_on>=150 需同时成立（prereg gate）"
   },
   "t3_press_counter_family": {
-   "n_on": 1817,
-   "n_off": 14581,
+   "n_on": 2417,
+   "n_off": 13981,
    "rate_on": 1.0,
-   "rate_off": 0.0411,
-   "diff": 0.9589,
-   "ci_lo_on": 0.9979,
-   "diff_ci_lo": 0.9557,
+   "rate_off": 0.0,
+   "diff": 1.0,
+   "ci_lo_on": 0.9984,
+   "diff_ci_lo": 1.0,
    "verdict": "observational",
    "verdict_reason": "verdictCap（prereg 冻结）：构造性表格：classify_script 净胜≥3 前置 ⟹ rate_on≡1.0，diff 无预测信息"
   },
