@@ -73,6 +73,12 @@ class TestScriptSymmetric(unittest.TestCase):
         self.assertEqual(s["type"], "crush")
         self.assertNotIn("away_win", s["reason"])
 
+    def test_comeback_not_press(self):
+        # 主队半场 1:0 领先被客队下半场 0:2 反超（1:2）＝逆转局非压上反杀；
+        # 守对称帧翻转（half_diff 与 s2_net 须同帧），防 press_counter 条件做反
+        s = classify_script({"result": {"hg": 1, "ag": 2, "ht_hg": 1, "ht_ag": 0}})
+        self.assertEqual(s["type"], "open_play")
+
 class TestLeagueDirMap(unittest.TestCase):
     def test_covers_fd_leagues(self):   # LEAGUE_DIR_MAP 以 FD_LEAGUES 16 键对齐补齐
         for code, (league_dir, zh) in FD_LEAGUES.items():

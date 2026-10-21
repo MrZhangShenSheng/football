@@ -127,8 +127,9 @@ def classify_script(rec: dict) -> dict:
         return {"type": "leaky", "reason": f"总球{tot}互漏{tag}"}
     if hth is not None:
         s2_net = (hg - hth) - (ag - hta)
-        half_diff = (hta - hth) if flip else (hth - hta)
-        if half_diff != 0 and s2_net * half_diff > 0 and abs(s2_net) >= 2:
+        win_s2 = -s2_net if flip else s2_net                # 胜方下半场净球（同帧翻转）
+        half_diff = (hta - hth) if flip else (hth - hta)     # 胜方半场净差（可为负=半场落后）
+        if half_diff != 0 and win_s2 * half_diff > 0 and abs(win_s2) >= 2:
             return {"type": "press_counter", "reason": f"半场领先方下半场继续扩大=压上反杀族{tag}"}
         if anet <= 1 and s2_net != 0:
             return {"type": "open_play", "reason": f"开放对攻有来有回{tag}"}
