@@ -127,3 +127,42 @@ def classify_script(rec: dict) -> dict:
     if tot <= 1:
         return {"type": "early_goal_lock", "reason": f"总球{tot}"}
     return {"type": "open_play", "reason": "默认开放"}
+
+
+# ── 期2 事件维度 ──
+RED_CARD_GOAL = 0.35   # 每张红牌给对方进球期望的偏移（先验·待频次表校准）
+SHOT_CONV_BASE = 0.30  # 射正→进球联赛基准转化率（先验·待频次表校准）
+FINISH_SCALE = 0.5     # xG 背离入账比例（先验·待频次表校准）
+
+def dim_red(rec: dict) -> dict | None:
+    """E1 红牌（fd 无分钟时点·张数近似）：得牌方对方 +RED_CARD_GOAL×张。开发者 sszhang"""
+    rh, ra = rec.get("red_h", 0), rec.get("red_a", 0)
+    if rh == 0 and ra == 0:
+        return None
+    return {"dim": "E1.red", "h": round(RED_CARD_GOAL * ra, 3), "a": round(RED_CARD_GOAL * rh, 3),
+            "evidence": f"红牌 h{rh}/a{ra}(无时点·张数近似)"}
+
+def dim_shots(rec: dict) -> dict | None:
+    """E4 射正背离：转化率差×射正数（正=转化超额侧加分）。缺射正返回 None。开发者 sszhang"""
+    hst, ast = rec.get("hst", 0), rec.get("ast", 0)
+    r = rec.get("result") or {}
+    if not hst and not ast:
+        return None
+    hg, ag = r.get("hg") or 0, r.get("ag") or 0
+    conv_h = hg / hst if hst else SHOT_CONV_BASE
+    conv_a = ag / ast if ast else SHOT_CONV_BASE
+    return {"dim": "E4.shots",
+            "h": round((conv_h - SHOT_CONV_BASE) * hst, 3),
+            "a": round((conv_a - SHOT_CONV_BASE) * ast, 3),
+            "evidence": f"射正转化 h{conv_h:.2f}/a{conv_a:.2f} vs 基准{SHOT_CONV_BASE}"}
+
+def dim_finishing(rec: dict) -> dict | None:
+    """E5 把握背离（xG 双侧齐）：实际进球−xG 按 FINISH_SCALE 入账。开发者 sszhang"""
+    xh, xa = rec.get("xg_h"), rec.get("xg_a")
+    if xh is None or xa is None:
+        return None
+    r = rec.get("result") or {}
+    return {"dim": "E5.finishing",
+            "h": round(((r.get("hg") or 0) - xh) * FINISH_SCALE, 3),
+            "a": round(((r.get("ag") or 0) - xa) * FINISH_SCALE, 3),
+            "evidence": f"xG {xh}:{xa} vs 实际 {r.get('hg')}:{r.get('ag')}"}
