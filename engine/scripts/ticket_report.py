@@ -283,8 +283,14 @@ def render(data: dict) -> str:
     # 但不进实票口径统计（曲线/玩法/一致率/KPI 均为 live）——分栏呈现保透明。
     tickets = [t for t in tickets_all if not t.get("testGroup")]
     test = [t for t in tickets_all if t.get("testGroup")]
-    live_stake = sum(t.get("stake", 0) for t in tickets)
-    live_net = sum((t.get("settled") or {}).get("net", 0) for t in tickets if t.get("settled"))
+    # pending 票 settled.net 为 None：本金/净利/ROI 只按已结票算，挂起票单列，
+    # 否则分子缺挂起票净额而分母含其本金，ROI 被系统性低估
+    live_done = [t for t in tickets
+                 if (t.get("settled") or {}).get("status") == "settled"]
+    live_pend = [t for t in tickets if t not in live_done]
+    live_stake = sum(t.get("stake", 0) for t in live_done)
+    live_net = sum((t.get("settled") or {}).get("net") or 0 for t in live_done)
+    pend_stake = sum(t.get("stake", 0) for t in live_pend)
     test_settled = [t for t in test if t.get("settled")]
     test_stake = sum(t.get("stake", 0) for t in test)
     test_pay = sum((t.get("settled") or {}).get("payout", 0) for t in test_settled)
@@ -371,7 +377,7 @@ th{{background:var(--bg);font-weight:600}}
 <div class="kpis">
 <div class="kpi"><span>实票</span><b>{len(tickets)}<i style="font-size:13px;font-style:normal"> 张</i></b></div>
 <div class="kpi"><span>已结算/待结算</span><b>{n_settled}<i style="font-size:13px;font-style:normal"> / {n_pending}</i></b></div>
-<div class="kpi"><span>累计本金(实票)</span><b>{live_stake:.0f}<i style="font-size:13px;font-style:normal"> 元</i></b></div>
+<div class="kpi"><span>累计本金(已结)</span><b>{live_stake:.0f}<i style="font-size:13px;font-style:normal"> 元</i>{f'<i style="font-size:11px;font-style:normal;color:#999"> +挂起{pend_stake:.0f}</i>' if pend_stake else ''}</b></div>
 <div class="kpi"><span>累计净利(实票)</span><b class="{"pos" if live_net >= 0 else "neg"}">{live_net:+.1f}<i style="font-size:13px;font-style:normal"> 元</i></b></div>
 <div class="kpi"><span>整体ROI(实票)</span><b>{(live_net / live_stake * 100) if live_stake else 0:+.1f}%</b></div>
 {new_kpi_html}

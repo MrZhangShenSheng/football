@@ -551,8 +551,23 @@
    "status": "未获取"
   },
   "context": {
-   "status": "pending",
-   "entries": []
+   "status": "ok",
+   "entries": [
+    {
+     "title": "Real Madrid vs RB Leipzig preview (Goal)",
+     "url": "https://www.goal.com/en/news/real-madrid-rb-leipzig-champions-league-preview/blt7ee234496dfbd851",
+     "publishedAt": "2026-10-20T14:00:00",
+     "fetchedAt": "2026-10-20T19:44:20",
+     "excerpt": "皇马缺RaulAsencio(腿)、FerlandMendy(髋)、Rodrygo(膝);莱红牛缺MarcGuiu(肌伤,距复出数周)与AssanOuedraogo。皇马各项赛事三连胜,欧冠两战全胜。"
+    },
+    {
+     "title": "Real Madrid predicted XI vs RB Leipzig (SportsMole)",
+     "url": "https://www.sportsmole.co.uk/football/real-madrid/champions-league/predicted-lineups/will-vinicius-start-how-real-madrid-could-line-up-against-leipzig_607257.html",
+     "publishedAt": "2026-10-20T14:00:00",
+     "fetchedAt": "2026-10-20T19:44:20",
+     "excerpt": "皇马除三人外阵容齐整,Mbappe预计首发(欧冠已2球)。预计4-2-3-1:Courtois;Alexander-Arnold,Konate,Rudiger,Cucurella;Valverde,Tchouameni;Diomande,Bellingham,Vinicius;Mbappe。"
+    }
+   ]
   },
   "ourModels": {
    "v3wChain": {
@@ -782,5 +797,5 @@
   }
  },
  "createdAt": "2026-10-20T16:48:14",
- "cardHash": "801acfff8509986a"
+ "cardHash": "a2a603c5222c9434"
 }

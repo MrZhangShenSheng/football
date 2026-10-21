@@ -705,8 +705,16 @@
    "status": "未获取"
   },
   "context": {
-   "status": "pending",
-   "entries": []
+   "status": "ok",
+   "entries": [
+    {
+     "title": "FC東京 vs 柏レイソル 試合前情報（FC東京公式）",
+     "url": "https://www.fctokyo.co.jp/match/schedule/info/20261021/",
+     "publishedAt": "2026-10-20T14:00:00",
+     "fetchedAt": "2026-10-20T19:44:20",
+     "excerpt": "J1第11節,19:00味の素スタジアム。柏レイソルはリーグ2位,リカルド・ロドリゲス監督下で全員日本人構成のスカッド。公式試合前情報に重大な欠場通報なし。"
+    }
+   ]
   },
   "ourModels": {
    "v3wChain": {
@@ -936,5 +944,5 @@
   }
  },
  "createdAt": "2026-10-20T16:47:26",
- "cardHash": "eca0b2f81b887f33"
+ "cardHash": "21e5a3e320ced70b"
 }

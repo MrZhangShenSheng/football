@@ -705,8 +705,23 @@
    "status": "未获取"
   },
   "context": {
-   "status": "pending",
-   "entries": []
+   "status": "ok",
+   "entries": [
+    {
+     "title": "J1 第11節 川崎フロンターレ vs ヴィッセル神戸 試合情報（スポーツナビ）",
+     "url": "https://soccer.yahoo.co.jp/jleague/category/j1/game/2026102109/info?gk=2",
+     "publishedAt": "2026-10-20T14:00:00",
+     "fetchedAt": "2026-10-20T19:46:31",
+     "excerpt": "10/21(水)19:00 Uvanceとどろきスタジアム。J1第11節。両クラブ公式に重大な欠場通報なし。"
+    },
+    {
+     "title": "ヴィッセル神戸 試合日程・結果（Jリーグ公式）",
+     "url": "https://www.jleague.jp/club/kobe/day/",
+     "publishedAt": "2026-10-20T14:00:00",
+     "fetchedAt": "2026-10-20T19:46:31",
+     "excerpt": "神戸は10/9柏(アウェー)→10/14 ACLエリート リーグステージMD2(ホーム)→10/18岡山→10/21川崎Fと中2~3日の三大会連戦。日程密度=ローテーション圧。"
+    }
+   ]
   },
   "ourModels": {
    "v3wChain": {
@@ -936,5 +951,5 @@
   }
  },
  "createdAt": "2026-10-20T16:47:28",
- "cardHash": "d3ed2e33da162273"
+ "cardHash": "5811f0b4b075b369"
 }

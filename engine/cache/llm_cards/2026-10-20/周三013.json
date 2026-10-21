@@ -605,8 +605,23 @@
    "status": "未获取"
   },
   "context": {
-   "status": "pending",
-   "entries": []
+   "status": "ok",
+   "entries": [
+    {
+     "title": "Palmeiras beat Fluminense 2-1 away in Libertadores semifinal first leg (AP via InfoNews)",
+     "url": "https://infonews.ca/news/7954500/palmeiras-beat-fluminense-2-1-away-in-copa-libertadores-semifinal/",
+     "publishedAt": "2026-10-20T14:00:00",
+     "fetchedAt": "2026-10-20T19:45:15",
+     "excerpt": "半决赛首回合(10-14马拉卡纳)帕梅拉斯客场2-1胜,JoseLopez与MarlonFreitas各入一球。本场为次回合,帕梅拉斯主场携一球优势,两回合总分制。"
+    },
+    {
+     "title": "Copa Libertadores semifinal schedule & lineups (SportsGambler)",
+     "url": "https://www.sportsgambler.com/lineups/football/conmebol-copa-libertadores/",
+     "publishedAt": "2026-10-20T14:00:00",
+     "fetchedAt": "2026-10-20T19:45:15",
+     "excerpt": "10-21 20:30 帕梅拉斯vs弗鲁米嫩塞(次回合);决赛11-28蒙得维的亚。弗鲁米嫩塞需净胜2球或追平后加时/点球。"
+    }
+   ]
   },
   "ourModels": {
    "v3wChain": {
@@ -816,5 +831,5 @@
   }
  },
  "createdAt": "2026-10-20T16:48:30",
- "cardHash": "d0c05d5acfdd5d9c"
+ "cardHash": "94bff7cfe8b9c9f5"
 }

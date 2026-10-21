@@ -551,8 +551,16 @@
    "status": "未获取"
   },
   "context": {
-   "status": "pending",
-   "entries": []
+   "status": "ok",
+   "entries": [
+    {
+     "title": "カターレ富山 試合日程（クラブ公式）",
+     "url": "https://www.kataller.co.jp/",
+     "publishedAt": "2026-10-20T14:00:00",
+     "fetchedAt": "2026-10-20T19:47:48",
+     "excerpt": "10/17(土)18:00ホーム第11節→10/21(水)19:00アウェー第12節 NACK5スタジアム大宮と中3日。富山は連戦かつ移動を伴うアウェー。両クラブ公式に欠場者の明示通報は見当たらず(情報薄)。"
+    }
+   ]
   },
   "ourModels": {
    "v3wChain": {
@@ -637,5 +645,5 @@
   }
  },
  "createdAt": "2026-10-20T16:47:37",
- "cardHash": "46c4b7ef3ede8651"
+ "cardHash": "05f55d791e50d300"
 }

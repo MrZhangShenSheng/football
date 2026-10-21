@@ -176,9 +176,14 @@ def _load_results(days: list[str]) -> dict[str, str]:
 
 def _load_day_rows(days: list[str]) -> list[dict]:
     """生产装载：llm_preds{d}.json + 数据卡市场层 + lineup 末帧 + 体彩赛果 → 逐场行。
-    无赛果场跳过（结算期未到）；缺卡跳过（无市场兜底池）。"""
-    rows, results = [], _load_results(days)
+    无赛果场跳过（结算期未到）；缺卡跳过（无市场兜底池）。
+
+    赛果按销售日分桶取（2026-10-21 修）：原实现把全部评估日 ±1 窗口合成一张按编号
+    索引的全局表——「周三001」这类编号每周复用,跨周卷（如 10-20 合卷含周三场）会拿
+    两周前的同编号赛果计分（实测 13 场被毒化,primary diffMean −0.885 全假）。"""
+    rows = []
     for d in days:
+        results = _load_results([d])               # 逐日独立取,编号只在 d±1 窗口内解析
         # 修正卷优先（rules-registry R008）：-rN 取最大 N，无则主卷
         pf = None
         revs = sorted(PREDS_ROOT.glob(f"{d}-r*.json"),
@@ -192,12 +197,11 @@ def _load_day_rows(days: list[str]) -> list[dict]:
             continue
         doc = json.loads(pf.read_text(encoding="utf-8"))
         preds = doc.get("preds") or []
-        # 生成口径（v3.6 2026-10-21）：卷顶层 genCohort 优先，无则按 chain 判 v3,
-        # 再无→freehand（10-21 前全部手填卷,无此字段=手填）。两代并存期混算会让
-        # 带内继承的改善被手填卷 003 型拖累掩盖,故分层报。
-        gen_cohort = doc.get("genCohort") or (
-            "v3-structured" if doc.get("chain") == "llm-31grid-v3" else "freehand")
+        # 生成口径（v3.6 2026-10-21）按行判：有 direction 键=v3 结构化行,否则 freehand。
+        # 不回退卷级标记——合卷（同日两代并存,R008 -rN）的卷级 genCohort 只能标一代,
+        # 回退它会把另一代整批误涂,分层就失去意义。v3 行必带 direction（freeze 构造保证）。
         for pr in preds:
+            gen_cohort = "v3-structured" if "direction" in pr else "freehand"
             card_f = CARDS_ROOT / d / f'{pr.get("code")}.json'
             if not card_f.exists():
                 continue
@@ -393,6 +397,13 @@ def check_prereg() -> dict:
     return pr
 
 
+def _default_days() -> list[str]:
+    """卷文件名 → 销售日（去 -rN 修正卷后缀并去重）。修正卷机制（R008）使 -rN 成为
+    常态文件名,裸 stem 直传 date.fromisoformat 会炸（2026-10-21 实证）。"""
+    out = sorted({re.sub(r"-r\d+$", "", p.stem) for p in PREDS_ROOT.glob("*.json")})
+    return [d for d in out if re.fullmatch(r"\d{4}-\d{2}-\d{2}", d)]
+
+
 def main() -> int:
     import argparse
     ap = argparse.ArgumentParser(description="LLM 预测对拍结算")
@@ -400,7 +411,7 @@ def main() -> int:
     ap.add_argument("days", nargs="*")
     args = ap.parse_args()
     check_prereg()
-    days = args.days or sorted(p.stem for p in PREDS_ROOT.glob("*.json"))
+    days = args.days or _default_days()
     result = evaluate(days)
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     (OUT_DIR / "eval.json").write_text(json.dumps(result, ensure_ascii=False, indent=2),
