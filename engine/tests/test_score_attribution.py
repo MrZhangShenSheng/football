@@ -89,3 +89,32 @@ class TestDerbyRest(unittest.TestCase):
         rec = fill_rest_days(rec)
         # 卡利亚里 10-15 有欧冠场(league库无欧冠行则 None 容忍)
         self.assertIn(rec["rest_days_h"], [None] + list(range(2, 15)))
+
+
+from attribution_dims import dim_htft, dim_injury_coarse, classify_script
+
+class TestScript(unittest.TestCase):
+    def test_htft_second_half_surge(self):
+        # 半场1:0 全场4:0 → 主队下半场+3
+        rec = {"result": {"hg": 4, "ag": 0, "ht_hg": 1, "ht_ag": 0}}
+        off = dim_htft(rec)
+        self.assertEqual(off["dim"], "E2.htft")
+        self.assertGreater(off["h"], 0)
+
+    def test_htft_missing(self):
+        self.assertIsNone(dim_htft({"result": {"hg": 4, "ag": 0, "ht_hg": None, "ht_ag": None}}))
+
+    def test_script_early_crush(self):
+        rec = {"result": {"hg": 4, "ag": 0, "ht_hg": 1, "ht_ag": 0}}
+        s = classify_script(rec)
+        self.assertIn(s["type"], {"crush", "early_crush"})
+
+    def test_script_irongrid(self):
+        rec = {"result": {"hg": 0, "ag": 0, "ht_hg": 0, "ht_ag": 0}}
+        self.assertEqual(classify_script(rec)["type"], "iron_grid")
+
+    def test_injury_coarse_marks_only(self):
+        off = dim_injury_coarse({"inj_n_h": 0, "inj_n_a": 3})
+        self.assertEqual(off["dim"], "R1.coarse")
+        self.assertIsNone(off["h"])  # 期1不贡献球数
+        self.assertIn("3", off["evidence"])

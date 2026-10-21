@@ -80,3 +80,53 @@ def dim_derby(league: str, team_h: str, team_a: str) -> dict | None:
             return {"dim": "derby", "tail_scale": DERBY_TAIL,
                     "evidence": f"derby:{a}/{b}"}
     return None
+
+
+# attribution_dims.py 追加（Task 6：E2 半场结构+R1 粗档+L5 剧本）
+HTFT_SURGE_PER_GOAL = 0.35  # 下半场净增每球的偏移贡献（先验·待频次表校准）
+
+def dim_htft(rec: dict) -> dict | None:
+    """E2 半场→全场结构：下半场净增球的归属偏移。缺半场比分返回 None。开发者 sszhang"""
+    r = rec.get("result") or {}
+    if r.get("ht_hg") is None or r.get("hg") is None:
+        return None
+    s2_h = r["hg"] - r["ht_hg"]
+    s2_a = r["ag"] - r["ht_ag"]
+    net = s2_h - s2_a
+    half = net * HTFT_SURGE_PER_GOAL / 2
+    return {"dim": "E2.htft", "h": round(half, 3), "a": round(-half, 3),
+            "evidence": f"半场{r['ht_hg']}:{r['ht_ag']}→全场{r['hg']}:{r['ag']}"}
+
+def dim_injury_coarse(rec: dict) -> dict | None:
+    """R1 粗档（期1标记不量化；LLM 轨量化在期3）。人数差≥2 才标记。开发者 sszhang"""
+    nh, na = rec.get("inj_n_h", 0), rec.get("inj_n_a", 0)
+    if abs(nh - na) < 2:
+        return None
+    return {"dim": "R1.coarse", "h": None, "a": None,
+            "evidence": f"伤停人数差 h{nh}/a{na}(未量化)"}
+
+def classify_script(rec: dict) -> dict:
+    """L5 剧本规则定档（期1可判6/8：红牌/门将/默契待期2画面数据）。开发者 sszhang"""
+    r = rec.get("result") or {}
+    hg, ag = r.get("hg"), r.get("ag")
+    if hg is None:
+        return {"type": "unclassified", "reason": "no_result"}
+    hth, hta = r.get("ht_hg"), r.get("ht_ag")
+    net, tot = hg - ag, hg + ag
+    if net >= 3:
+        if hth is not None and (hth - hta) >= 1:
+            return {"type": "crush", "reason": f"净胜{net}·半场已领先{hth}:{hta}"}
+        return {"type": "early_crush", "reason": f"净胜{net}·半场{hth}:{hta}"}
+    if net == 0 and tot <= 1:
+        return {"type": "iron_grid", "reason": f"总球{tot}互磨"}
+    if tot >= 5:
+        return {"type": "leaky", "reason": f"总球{tot}互漏"}
+    if hth is not None:
+        s2_net = (hg - hth) - (ag - hta)
+        if hth != hta and s2_net * (hth - hta) > 0 and abs(s2_net) >= 2:
+            return {"type": "press_counter", "reason": "半场领先方下半场继续扩大=压上反杀族"}
+        if abs(net) <= 1 and s2_net != 0:
+            return {"type": "open_play", "reason": "开放对攻有来有回"}
+    if tot <= 1:
+        return {"type": "early_goal_lock", "reason": f"总球{tot}"}
+    return {"type": "open_play", "reason": "默认开放"}
