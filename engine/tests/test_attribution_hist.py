@@ -1,4 +1,5 @@
 # engine/tests/test_attribution_hist.py
+import json
 import sys, unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
@@ -26,6 +27,11 @@ class TestHist(unittest.TestCase):
         self.assertEqual(rec["red_h"], 0); self.assertEqual(rec["red_a"], 0)
         self.assertEqual(rec["hst"], 2); self.assertEqual(rec["ast"], 7)
         self.assertIsNone(rec["xg_h"])                          # HxG 空→None
+
+    def test_odds_both_missing_none(self):   # T1 遗留：PSC+B365 双缺 → None
+        no_odds = dict(ROW)
+        no_odds["B365H"] = no_odds["B365D"] = no_odds["B365A"] = ""
+        self.assertIsNone(hist_match_record(no_odds, "england-premier", "英超")["odds"])
 
     def test_unmatched_team_none(self):
         bad = dict(ROW); bad["FTHG"] = "9"; bad["FTAG"] = "9"   # 假比分必不匹配
@@ -73,6 +79,23 @@ class TestHistBill(unittest.TestCase):
         self.assertIn("E5.finishing", bill["missing"])
         # 解释力应显著优于纯结构期1：伯恩利0:3场 E2+E1+E4 全上
         self.assertGreater(bill["explained_pct"], 0.3)
+
+class TestBatchHist(unittest.TestCase):
+    def test_cli_single_csv(self):
+        import subprocess
+        from score_attribution import ROOT
+        out = subprocess.run(
+            [sys.executable, "engine/scripts/attribution_hist.py", "batch-hist",
+             "--season", "2324", "--code", "E0"],
+            capture_output=True, text=True, cwd=str(ROOT))
+        self.assertEqual(out.returncode, 0, out.stderr)
+        p = ROOT / "data/04-summaries/score-attribution/hist/E0_2324-attribution.json"
+        self.assertTrue(p.exists())
+        bills = json.loads(p.read_text(encoding="utf-8"))
+        self.assertEqual(len(bills), 380)
+        dims_seen = {o["dim"] for b in bills for o in b.get("offsets", [])}
+        self.assertIn("E1.red", dims_seen)
+        self.assertIn("E4.shots", dims_seen)
 
 if __name__ == "__main__":
     unittest.main()

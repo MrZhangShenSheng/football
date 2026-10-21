@@ -77,3 +77,46 @@ def hist_match_record(row: dict, league_dir: str, league_zh: str) -> dict:
         "hst": int(_f(row.get("HST")) or 0), "ast": int(_f(row.get("AST")) or 0),
         "xg_h": _f(row.get("HxG")), "xg_a": _f(row.get("AxG")),
     }
+
+from score_attribution import build_bill
+
+def run_batch(season: str, codes: list[str]) -> None:
+    """60 CSV（或指定子集）→ hist/{code}_{season}-attribution.json。开发者 sszhang"""
+    out_dir = ROOT / "data" / "04-summaries" / "score-attribution" / "hist"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    for code in codes:
+        league_dir, league_zh = FD_LEAGUES[code]
+        path = FD_DIR_PATH / f"{code}_{season}.csv"
+        if not path.exists():
+            print(f"[跳过] {code}_{season} 无文件"); continue
+        rows = list(csv.DictReader(open(path, encoding="latin-1")))
+        bills, unmatched, no_odds = [], 0, 0
+        for row in rows:
+            if not (row.get("FTHG") or "").strip():
+                continue
+            rec = hist_match_record(row, league_dir, league_zh)
+            if rec["team_h"] is None:
+                unmatched += 1
+            if rec["odds"] is None:
+                no_odds += 1
+            bills.append(build_bill(rec))
+        out = out_dir / f"{code}_{season}-attribution.json"
+        out.write_text(json.dumps(bills, ensure_ascii=False), encoding="utf-8")
+        ok = len([b for b in bills if "baseline" in b])
+        print(f"{code}_{season}: {len(rows)}行 出账{ok} 队名未匹配{unmatched} odds缺{no_odds}")
+
+def main() -> None:
+    """batch-hist CLI。开发者 sszhang"""
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("cmd", choices=["batch-hist"])
+    ap.add_argument("--season", default="all")
+    ap.add_argument("--code", default="")
+    args = ap.parse_args()
+    seasons = ["2324", "2425", "2526", "2627"] if args.season == "all" else [args.season]
+    codes = args.code.split(",") if args.code else list(FD_LEAGUES)
+    for s in seasons:
+        run_batch(s, codes)
+
+if __name__ == "__main__":
+    main()
