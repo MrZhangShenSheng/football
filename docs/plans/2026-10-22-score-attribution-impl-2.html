@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>批二实施计划 · 比分归因引擎期2（历史回补+频次表）</title>
+<style>
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;max-width:980px;margin:24px auto;padding:0 16px;color:#1a1a1a;line-height:1.6;background:#fafafa}
+  h1{font-size:1.4em;border-bottom:3px solid #b91c1c;padding-bottom:8px}
+  h2{font-size:1.15em;margin-top:2em;border-left:4px solid #b91c1c;padding-left:8px}
+  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:0.9em;background:#fff}
+  th,td{border:1px solid #d1d5db;padding:5px 8px;text-align:left;vertical-align:top}
+  th{background:#f3f4f6}
+  pre{font-family:ui-monospace,Menlo,monospace;font-size:0.85em;background:#fff;border:1px solid #e5e7eb;border-radius:6px;padding:10px;overflow-x:auto;line-height:1.45}
+  .rule{background:#fff7ed;border:1px solid #fdba74;padding:8px 14px;border-radius:6px;margin:10px 0}
+</style>
+</head>
+<body>
+
+<h1>批二实施计划 · 比分归因引擎 期2（历史回补+第一批频次表）</h1>
+<p>执行者须知：零上下文假设，照单执行。设计依据 docs/plans/2026-10-20-score-attribution-design.html（§二§四§六§七）。期1已落地（83f516c..70cbbed：六维引擎+74 场 forward 账单）。TDD：先测后码。开发者 sszhang</p>
+
+<p><b>目标</b>：本地 fd 存档 60 CSV/16415 场（16 联赛×4 季，engine/cache/shape_backtest/）全量归因出账 → 预注册判据下聚合第一批"维度组合→格形偏移"频次表（带 n/CI）。</p>
+
+<p><b>实测事实（已验证，勿再猜测）</b>：</p>
+<table>
+<tr><th>事实</th><th>值</th></tr>
+<tr><td>fd Date 格式</td><td>dd/mm/YYYY 四位年（如 11/08/2023）</td></tr>
+<tr><td>队名映射</td><td>三键匹配（日期±1+比分）连 league 库 data/02-results/league/{dir}_matches.json（键 date/home/away/hg/ag，home/away=规范ID）拿规范 ID——E0_2324 实测 380/380=100% 命中</td></tr>
+<tr><td>列覆盖</td><td>HR/AR 红牌·HS/AS/HST/AST 射门射正·HTHG/HTAG 半场·B365H/D/A 开盘+PSCH/D/A 收盘：老三季（2324/2425/2526 ≈15856 场）全有；Pinnacle PSH/PSCH 仅部分（E0_2526 210/380）；HxG/AxG 仅 2627 本季（559 场）；Referee 仅 E0/E1 英格兰系</td></tr>
+<tr><td>网络</td><td>fd 在线拉取当前不可达——期2 全部离线（本地 CSV 够用）；天气/海拔（需网络+坐标库）砍掉延期4，登记</td></tr>
+</table>
+
+<p><b>架构</b>：新文件 <code>engine/scripts/attribution_hist.py</code>（历史卷适配器+batch-hist CLI）+ <code>attribution_dims.py</code> 追加事件维度（E1 红牌/E4 射正背离/E5 把握）+ <code>score_attribution.py</code> 的 build_bill 消费新维度（历史卷 rec 结构兼容）+ <code>freq_stats.py</code>（频次表聚合 CLI）。账本按联赛季分文件落 <code>data/04-summaries/score-attribution/hist/</code>。</p>
+
+<p><b>铁律</b>：判据预注册先于系数产出（铁律4）；每张频次表项带 n+CI；跳过/未匹配禁静默逐项打印；账本幂等；测试绿才 commit。</p>
+
+<h2>维度范围（期2收敛·YAGNI）</h2>
+<table>
+<tr><th>上</th><th>不上（missing 诚实标注）</th></tr>
+<tr><td>L1 基线（收盘 PSCH 优先，缺则 B365H——devig 同款）；E1 红牌（张数×系数，fd 无分钟时点→系数按"得牌方失分"方向）；E2 半场（复用期1 dim_htft）；E4 射正背离（HST/AST vs 实际进球的转化差）；E5 把握（HxG 有则真 xG 背离，无则缺）；L0 赛制阶段（复用 dim_stage，历史日期）；德比（规范 ID 匹配成功才判）；R3 休息差（fd 日期自算，同联赛内）</td><td>A1 Elo（clubelo 历史不可达）；A2 攻防画像（代理噪声大）；R1/R2 伤停轮换（历史不可回溯）；E3 定位球分解；天气/海拔（延4）；裁判个人库（仅英格兰子集出一张相关性表）</td></tr>
+</table>
+
+<!-- T1 -->
+<h2>Task 1：fd 历史适配器 hist_match_record</h2>
+<p><b>Files</b>：Create <code>engine/scripts/attribution_hist.py</code>；Test <code>engine/tests/test_attribution_hist.py</code>（新建）</p>
+<p><b>Interfaces</b>：Produces <code>hist_match_record(row: dict, league_dir: str, league_zh: str) -&gt; dict</code>（MatchRecord 历史口径，键与期1兼容：odds/elo_h=None/elo_a=None/inj_n_h=0/inj_n_a=0/rest_days_*/result{hg,ag,ht_hg,ht_ag}/league/league_dir/team_h/team_a/date/kickoff=同date/red_h/red_a/hst/ast/xg_h/xg_a）+ <code>fd_date(d: str) -&gt; str</code>（dd/mm/YYYY→ISO）+ 常量 <code>FD_DIR</code>（16 联赛 code→league_dir+中文名映射，含期1 LEAGUE_DIR_MAP 全集+补 G1 greece-super 希超/R1 俄罗斯/russia 等按 league 库实际目录名对齐）</p>
+<div class="step"><b>Step 1.1 失败测试</b>
+<pre># engine/tests/test_attribution_hist.py
+import sys, unittest
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+from attribution_hist import hist_match_record, fd_date
+
+ROW = {"Date": "11/08/2023", "HomeTeam": "Burnley", "AwayTeam": "Man City",
+       "FTHG": "0", "FTAG": "3", "HTHG": "0", "HTAG": "1",
+       "HS": "7", "AS": "16", "HST": "2", "AST": "7",
+       "HR": "0", "AR": "0", "B365H": "6.5", "B365D": "4.33", "B365A": "1.44",
+       "PSCH": "", "PSCD": "", "PSCA": "", "HxG": "", "AxG": ""}
+
+class TestHist(unittest.TestCase):
+    def test_fd_date(self):
+        self.assertEqual(fd_date("11/08/2023"), "2023-08-11")
+
+    def test_hist_record(self):
+        rec = hist_match_record(dict(ROW), "england-premier", "英超")
+        self.assertEqual(rec["date"], "2023-08-11")
+        self.assertEqual(rec["result"], {"hg": 0, "ag": 3, "ht_hg": 0, "ht_ag": 1})
+        self.assertEqual(rec["odds"], [6.5, 4.33, 1.44])       # PSCH 空→B365
+        self.assertEqual(rec["team_h"], "burnley")             # 三键匹配
+        self.assertEqual(rec["team_a"], "man-city")
+        self.assertEqual(rec["red_h"], 0); self.assertEqual(rec["red_a"], 0)
+        self.assertEqual(rec["hst"], 2); self.assertEqual(rec["ast"], 7)
+        self.assertIsNone(rec["xg_h"])                          # HxG 空→None
+
+    def test_unmatched_team_none(self):
+        bad = dict(ROW); bad["FTHG"] = "9"; bad["FTAG"] = "9"   # 假比分必不匹配
+        rec = hist_match_record(bad, "england-premier", "英超")
+        self.assertIsNone(rec["team_h"]); self.assertIsNone(rec["team_a"])</pre>
+</div>
+<div class="step"><b>Step 1.2 FAIL</b> → <b>Step 1.3 实现</b>
+<pre># engine/scripts/attribution_hist.py
+"""比分归因·历史卷适配器：fd CSV 行 → MatchRecord（三键匹配队名）。设计§四。开发者 sszhang"""
+import csv
+import json
+import sys
+from datetime import date
+from pathlib import Path
+
+SCRIPTS_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(SCRIPTS_DIR))
+ROOT = SCRIPTS_DIR.parents[1]
+FD_DIR_PATH = ROOT / "engine" / "cache" / "shape_backtest"
+LEAGUE_DIR = ROOT / "data" / "02-results" / "league"
+
+# fd code → (league 库目录, 中文联赛名)。目录名以 data/02-results/league/ 实际为准
+FD_LEAGUES = {
+    "E0": ("england-premier", "英超"), "E1": ("england-championship", "英冠"),
+    "SP1": ("spain-laliga", "西甲"), "SP2": ("spain-liga2", "西乙"),
+    "D1": ("germany-bundesliga", "德甲"), "D2": ("germany-bundesliga2", "德乙"),
+    "I1": ("italy-serie-a", "意甲"), "I2": ("italy-serie-b", "意乙"),
+    "F1": ("france-ligue1", "法甲"), "F2": ("france-ligue2", "法乙"),
+    "N1": ("netherlands-eredivisie", "荷甲"), "B1": ("belgium-first-a", "比甲"),
+    "P1": ("portugal-liga", "葡超"), "T1": ("turkey-super-lig", "土超"),
+    "G1": ("greece-super", "希超"), "R1": ("russia-premier", "俄超"),
+}
+
+_league_cache: dict[str, list[dict]] = {}
+
+def _league_rows(league_dir: str) -> list[dict]:
+    """league 库行（date/home/away/hg/ag）带缓存。开发者 sszhang"""
+    if league_dir not in _league_cache:
+        path = LEAGUE_DIR / f"{league_dir}_matches.json"
+        rows = json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
+        _league_cache[league_dir] = rows if isinstance(rows, list) else rows.get("matches", [])
+    return _league_cache[league_dir]
+
+def fd_date(d: str) -> str:
+    """fd dd/mm/YYYY → ISO。开发者 sszhang"""
+    dd, mm, yy = d.split("/")
+    return f"{yy}-{mm.zfill(2)}-{dd.zfill(2)}"
+
+def _match_teams(iso: str, hg: int, ag: int, league_dir: str) -> tuple[str | None, str | None]:
+    """三键匹配（日期±1+比分）→ 规范 ID (home, away)。多候选取日期最近。开发者 sszhang"""
+    d0 = date.fromisoformat(iso)
+    best = None
+    for r in _league_rows(league_dir):
+        if r["hg"] != hg or r["ag"] != ag:
+            continue
+        gap = abs((date.fromisoformat(r["date"][:10]) - d0).days)
+        if gap <= 1 and (best is None or gap < best[0]):
+            best = (gap, r["home"], r["away"])
+    return (best[1], best[2]) if best else (None, None)
+
+def _f(v: str) -> float | None:
+    v = (v or "").strip()
+    return float(v) if v else None
+
+def hist_match_record(row: dict, league_dir: str, league_zh: str) -> dict:
+    """fd CSV 行 → MatchRecord 历史口径。odds=收盘 PSCH 优先缺则 B365 开盘（evidence 标）。开发者 sszhang"""
+    iso = fd_date(row["Date"])
+    hg, ag = int(row["FTHG"]), int(row["FTAG"])
+    th, ta = _match_teams(iso, hg, ag, league_dir)
+    odds = None
+    if all(_f(row.get(f"PSC{k}")) for k in "HDA"):
+        odds = [_f(row[f"PSC{k}"]) for k in "HDA"]
+    elif all(_f(row.get(f"B365{k}")) for k in "HDA"):
+        odds = [_f(row[f"B365{k}"]) for k in "HDA"]
+    return {
+        "date": iso, "kickoff": iso, "code": f"hist:{iso}", "league": league_zh,
+        "match": f"{row['HomeTeam']} vs {row['AwayTeam']}",
+        "team_h": th, "team_a": ta, "league_dir": league_dir,
+        "odds": odds, "pin_close": None, "elo_h": None, "elo_a": None,
+        "inj_n_h": 0, "inj_n_a": 0, "rest_days_h": None, "rest_days_a": None,
+        "result": {"hg": hg, "ag": ag,
+                   "ht_hg": _f(row.get("HTHG")), "ht_ag": _f(row.get("HTAG"))},
+        "red_h": int(_f(row.get("HR")) or 0), "red_a": int(_f(row.get("AR")) or 0),
+        "hst": int(_f(row.get("HST")) or 0), "ast": int(_f(row.get("AST")) or 0),
+        "xg_h": _f(row.get("HxG")), "xg_a": _f(row.get("AxG")),
+    }</pre>
+<p>注：result 里 ht_hg/ht_ag 用 _f（float）——期1 消费方 dim_htft 判 None 与数值均兼容（数值比较无 int/float 歧义）。odds 三键不齐（罕见）→None→账单走 error 路径（期1 已有）。</p>
+</div>
+<div class="step"><b>Step 1.4 过</b> → <b>Step 1.5 Commit</b>：<code>feat(attribution-hist): Task1 fd历史适配器+三键匹配队名</code></div>
+
+<!-- T2 -->
+<h2>Task 2：事件维度 E1 红牌/E4 射正背离/E5 把握</h2>
+<p><b>Files</b>：Modify <code>engine/scripts/attribution_dims.py</code>；Test <code>engine/tests/test_attribution_hist.py</code> 追加</p>
+<p><b>Interfaces</b>：Produces <code>dim_red(rec) -&gt; dict|None</code>（红牌张数≥1 才返回：得牌方对方进球偏移 +0.35×张/侧，RED_CARD_GOAL=0.35）；<code>dim_shots(rec) -&gt; dict|None</code>（E4：两队射正→进球转化 vs 联赛基准 0.30（SHOT_CONV_BASE=0.30）的差，方向=转化高侧加分）；<code>dim_finishing(rec) -&gt; dict|None</code>（E5：xg 双侧齐才返回，实际进球−xG 对半分给 h/a 侧，FINISH_SCALE=0.5）</p>
+<div class="step"><b>Step 2.1 失败测试</b>
+<pre>from attribution_dims import dim_red, dim_shots, dim_finishing
+
+class TestEventDims(unittest.TestCase):
+    def test_dim_red(self):
+        off = dim_red({"red_h": 0, "red_a": 1})
+        self.assertEqual(off["dim"], "E1.red")
+        self.assertAlmostEqual(off["h"], 0.35, delta=0.001)   # 客队红牌→主队+
+        self.assertAlmostEqual(off["a"], 0.0, delta=0.001)
+        self.assertIsNone(dim_red({"red_h": 0, "red_a": 0}))
+
+    def test_dim_shots(self):
+        # 主 5 射正进 3（转化 0.6）客 7 射正进 0（0.0）→ 主超额 (0.6-0.3)*5=1.5 客亏 -2.1
+        off = dim_shots({"hst": 5, "ast": 7, "result": {"hg": 3, "ag": 0}})
+        self.assertEqual(off["dim"], "E4.shots")
+        self.assertAlmostEqual(off["h"], 1.5, delta=0.01)
+        self.assertAlmostEqual(off["a"], -2.1, delta=0.01)
+        self.assertIsNone(dim_shots({"hst": 0, "ast": 0, "result": {"hg": 1, "ag": 1}}))
+
+    def test_dim_finishing(self):
+        off = dim_finishing({"xg_h": 1.2, "xg_a": 0.8, "result": {"hg": 3, "ag": 0}})
+        self.assertEqual(off["dim"], "E5.finishing")
+        self.assertAlmostEqual(off["h"], (3-1.2)*0.5, delta=0.01)
+        self.assertAlmostEqual(off["a"], (0-0.8)*0.5, delta=0.01)
+        self.assertIsNone(dim_finishing({"xg_h": None, "xg_a": 1.0, "result": {"hg": 1, "ag": 1}}))</pre>
+</div>
+<div class="step"><b>Step 2.2 FAIL</b> → <b>Step 2.3 实现</b>
+<pre># attribution_dims.py 追加（新注释节 # ── 期2 事件维度 ── 下）
+RED_CARD_GOAL = 0.35   # 每张红牌给对方进球期望的偏移（先验·待频次表校准）
+SHOT_CONV_BASE = 0.30  # 射正→进球联赛基准转化率（先验·待频次表校准）
+FINISH_SCALE = 0.5     # xG 背离入账比例（先验·待频次表校准）
+
+def dim_red(rec: dict) -&gt; dict | None:
+    """E1 红牌（fd 无分钟时点·张数近似）：得牌方对方 +RED_CARD_GOAL×张。开发者 sszhang"""
+    rh, ra = rec.get("red_h", 0), rec.get("red_a", 0)
+    if rh == 0 and ra == 0:
+        return None
+    return {"dim": "E1.red", "h": round(RED_CARD_GOAL * ra, 3), "a": round(RED_CARD_GOAL * rh, 3),
+            "evidence": f"红牌 h{rh}/a{ra}(无时点·张数近似)"}
+
+def dim_shots(rec: dict) -&gt; dict | None:
+    """E4 射正背离：转化率差×射正数（正=转化超额侧加分）。缺射正返回 None。开发者 sszhang"""
+    hst, ast = rec.get("hst", 0), rec.get("ast", 0)
+    r = rec.get("result") or {}
+    if not hst and not ast:
+        return None
+    hg, ag = r.get("hg") or 0, r.get("ag") or 0
+    conv_h = hg / hst if hst else SHOT_CONV_BASE
+    conv_a = ag / ast if ast else SHOT_CONV_BASE
+    return {"dim": "E4.shots",
+            "h": round((conv_h - SHOT_CONV_BASE) * hst, 3),
+            "a": round((conv_a - SHOT_CONV_BASE) * ast, 3),
+            "evidence": f"射正转化 h{conv_h:.2f}/a{conv_a:.2f} vs 基准{SHOT_CONV_BASE}"}
+
+def dim_finishing(rec: dict) -&gt; dict | None:
+    """E5 把握背离（xG 双侧齐）：实际进球−xG 按 FINISH_SCALE 入账。开发者 sszhang"""
+    xh, xa = rec.get("xg_h"), rec.get("xg_a")
+    if xh is None or xa is None:
+        return None
+    r = rec.get("result") or {}
+    return {"dim": "E5.finishing",
+            "h": round(((r.get("hg") or 0) - xh) * FINISH_SCALE, 3),
+            "a": round(((r.get("ag") or 0) - xa) * FINISH_SCALE, 3),
+            "evidence": f"xG {xh}:{xa} vs 实际 {r.get('hg')}:{r.get('ag')}"}</pre>
+</div>
+<div class="step"><b>Step 2.4 过</b> → <b>Step 2.5 Commit</b>：<code>feat(attribution-hist): Task2 事件维度E1红牌/E4射正/E5把握</code></div>
+
+<!-- T3 -->
+<h2>Task 3：build_bill 接入新维度（历史卷 rec 兼容）</h2>
+<p><b>Files</b>：Modify <code>engine/scripts/score_attribution.py</code>（build_bill 的 offs 候选元组追加 dim_red/dim_shots/dim_finishing(rec)；missing 列表相应条件化：red 全零/射正缺/xg 缺时不列对应项）；Test <code>engine/tests/test_attribution_hist.py</code> 追加</p>
+<div class="step"><b>Step 3.1 失败测试</b>
+<pre>from score_attribution import build_bill
+
+HIST_REC = {"date": "2023-08-11", "kickoff": "2023-08-11", "code": "hist:t",
+    "league": "英超", "match": "x vs y", "team_h": None, "team_a": None,
+    "league_dir": "england-premier", "odds": [6.5, 4.33, 1.44], "pin_close": None,
+    "elo_h": None, "elo_a": None, "inj_n_h": 0, "inj_n_a": 0,
+    "rest_days_h": None, "rest_days_a": None,
+    "result": {"hg": 0, "ag": 3, "ht_hg": 0, "ht_ag": 1},
+    "red_h": 0, "red_a": 1, "hst": 2, "ast": 7, "xg_h": None, "xg_a": None}
+
+class TestHistBill(unittest.TestCase):
+    def test_bill_with_events(self):
+        bill = build_bill(HIST_REC)
+        dims = [o["dim"] for o in bill["offsets"]]
+        self.assertIn("E1.red", dims)      # 客红牌→主+0.35
+        self.assertIn("E4.shots", dims)
+        self.assertNotIn("E5.finishing", dims)   # xg 缺
+        self.assertIn("E5.finishing", bill["missing"])
+        # 解释力应显著优于纯结构期1：伯恩利0:3场 E2+E1+E4 全上
+        self.assertGreater(bill["explained_pct"], 0.3)</pre>
+</div>
+<div class="step"><b>Step 3.2 FAIL</b> → <b>Step 3.3 实现</b>：build_bill 的 offs 候选改为
+<pre>    offs = [o for o in (dim_elo(rec["elo_h"], rec["elo_a"]),
+                        dim_htft(rec), dim_red(rec),
+                        dim_shots(rec), dim_finishing(rec))
+            if o and o["h"] is not None]</pre>
+<p>missing 追加条件项（替换原固定 "E1.red"/"E4"/"E5.finishing" 三项）：E1.red 在 red 双零时列；E4.shots 在 hst/ast 双零时列；E5.finishing 在 xg 任一 None 时列（保持原有列序稳定性：missing 列表=固定前缀["A2.xg","A4","E3","weather","referee","R2"]+条件项）。coverage 追加 "E1.red"/"E4.shots"/"E5.finishing" 条件项（对应维度返回非 None 时）。</p>
+<p>注意：期1 74 场账单重跑后 E1/E4 将因 rec 无 red_h/hst 键（.get 默认 0）而全进 missing（red 双零+射正双零口径）——**行为正确**（forward 卷本无画面数据）。既有 test_bill_self_consistent 断言 missing 含 "E5.finishing" 仍成立。</p>
+</div>
+<div class="step"><b>Step 3.4 过+全量回归</b> → <b>Step 3.5 Commit</b>：<code>feat(attribution-hist): Task3 build_bill接入事件维度</code></div>
+
+<!-- T4 -->
+<h2>Task 4：batch-hist CLI（60 CSV 全量出账）</h2>
+<p><b>Files</b>：Modify <code>engine/scripts/attribution_hist.py</code>（main）；产出目录 <code>data/04-summaries/score-attribution/hist/</code></p>
+<p><b>Interfaces</b>：CLI：<code>python engine/scripts/attribution_hist.py batch-hist [--season 2324|2425|2526|2627|all] [--code E0,...]</code>；每 CSV → <code>hist/{code}_{season}-attribution.json</code>（账单数组，幂等重写）；逐 CSV 打印：总场/出账/队名未匹配/odds 缺（禁静默）</p>
+<div class="step"><b>Step 4.1 失败测试（CLI 冒烟·单 CSV）</b>
+<pre>class TestBatchHist(unittest.TestCase):
+    def test_cli_single_csv(self):
+        import subprocess
+        from score_attribution import ROOT
+        out = subprocess.run(
+            [sys.executable, "engine/scripts/attribution_hist.py", "batch-hist",
+             "--season", "2324", "--code", "E0"],
+            capture_output=True, text=True, cwd=str(ROOT))
+        self.assertEqual(out.returncode, 0, out.stderr)
+        p = ROOT / "data/04-summaries/score-attribution/hist/E0_2324-attribution.json"
+        self.assertTrue(p.exists())
+        bills = json.loads(p.read_text(encoding="utf-8"))
+        self.assertEqual(len(bills), 380)
+        dims_seen = {o["dim"] for b in bills for o in b.get("offsets", [])}
+        self.assertIn("E1.red", dims_seen)
+        self.assertIn("E4.shots", dims_seen)</pre>
+</div>
+<div class="step"><b>Step 4.2 FAIL</b> → <b>Step 4.3 实现</b>
+<pre># attribution_hist.py 追加
+import sys as _sys
+_sys.path.insert(0, str(SCRIPTS_DIR))
+from score_attribution import build_bill
+
+def run_batch(season: str, codes: list[str]) -> None:
+    """60 CSV（或指定子集）→ hist/{code}_{season}-attribution.json。开发者 sszhang"""
+    out_dir = ROOT / "data" / "04-summaries" / "score-attribution" / "hist"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    for code in codes:
+        league_dir, league_zh = FD_LEAGUES[code]
+        path = FD_DIR_PATH / f"{code}_{season}.csv"
+        if not path.exists():
+            print(f"[跳过] {code}_{season} 无文件"); continue
+        rows = list(csv.DictReader(open(path, encoding="latin-1")))
+        bills, unmatched, no_odds = [], 0, 0
+        for row in rows:
+            if not (row.get("FTHG") or "").strip():
+                continue
+            rec = hist_match_record(row, league_dir, league_zh)
+            if rec["team_h"] is None:
+                unmatched += 1
+            if rec["odds"] is None:
+                no_odds += 1
+            bills.append(build_bill(rec))
+        out = out_dir / f"{code}_{season}-attribution.json"
+        out.write_text(json.dumps(bills, ensure_ascii=False), encoding="utf-8")
+        ok = len([b for b in bills if "baseline" in b])
+        print(f"{code}_{season}: {len(rows)}行 出账{ok} 队名未匹配{unmatched} odds缺{no_odds}")
+
+def main() -> None:
+    """batch-hist CLI。开发者 sszhang"""
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("cmd", choices=["batch-hist"])
+    ap.add_argument("--season", default="all")
+    ap.add_argument("--code", default="")
+    args = ap.parse_args()
+    seasons = ["2324", "2425", "2526", "2627"] if args.season == "all" else [args.season]
+    codes = args.code.split(",") if args.code else list(FD_LEAGUES)
+    for s in seasons:
+        run_batch(s, codes)
+
+if __name__ == "__main__":
+    main()</pre>
+</div>
+<div class="step"><b>Step 4.4 过+全量回归</b> → <b>Step 4.5 全量跑</b>：<code>python3 engine/scripts/attribution_hist.py batch-hist</code>（60 CSV 全量，打印逐 CSV 三数）→ <b>Step 4.6 Commit</b>：<code>feat(attribution-hist): Task4 batch-hist全量16415场出账</code></div>
+
+<!-- T5 -->
+<h2>Task 5：频次表 stats（预注册判据先行）</h2>
+<p><b>Files</b>：Create <code>engine/scripts/freq_stats.py</code> + 判据文件 <code>data/04-summaries/score-attribution/freq-prereg.json</code>（先落盘）+ 产出 <code>freq-tables.json</code></p>
+<div class="rule"><b>铁律4 预注册（本任务第一动作，先于任何系数计算）</b>：freq-prereg.json 冻结以下判据——每张表定义：维度键/格形口径（总球≥4 带、净胜≥3 带、平局带）/对照口径（该维度 off 组 vs on 组的格概率差）/报告要求（n_on/n_off/diff/Wilson 95% CI 下限）/转正门（CI 下限&gt;0 且 n_on≥150 才可进 v3.6 校准通道；否则标 observational）。表清单：①德比 vs 非德比 ②红牌≥1 vs 无红牌 ③半场差≥1 且下半场扩大 vs 其余（press_counter 族）④FIFA 病毒窗后 vs 窗外 ⑤2627 子集 xG 背离 top 四分位 vs 其余（大球率）⑥英格兰裁判×红牌率分布（E0/E1 子集·观察性无门）。</div>
+<div class="step"><b>Step 5.1 落 freq-prereg.json</b>（上表清单逐项 JSON 化，含"冻结于 2026-10-22·判据不得中途改"声明）</div>
+<div class="step"><b>Step 5.2 失败测试</b>
+<pre># engine/tests/test_freq_stats.py
+import sys, unittest
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+from freq_stats import load_bills, freq_table
+
+class TestFreqStats(unittest.TestCase):
+    def test_freq_table_basic(self):
+        bills = [{"league": "英超", "date": "2023-08-11", "result": {"hg": 0, "ag": 3},
+                  "shape_factors": [], "offsets": [{"dim": "E1.red", "h": 0.35, "a": 0.0}],
+                  "coverage": ["E1.red"], "depth": "deep"}]
+        t = freq_table(bills, on=lambda b: any(o["dim"] == "E1.red" for o in b["offsets"]),
+                       band=lambda b: (b["result"]["hg"] + b["result"]["ag"]) >= 4)
+        self.assertEqual(t["n_on"], 1); self.assertEqual(t["n_off"], 0)
+        self.assertEqual(t["rate_on"], 1.0)
+
+    def test_load_bills_reads_hist_dir(self):
+        bills = load_bills()
+        self.assertGreater(len(bills), 10000)   # 16415 场出账后</pre>
+</div>
+<div class="step"><b>Step 5.3 FAIL</b> → <b>Step 5.4 实现</b>
+<pre># engine/scripts/freq_stats.py
+"""归因账本 → 维度组合→格形偏移频次表（判据预注册 freq-prereg.json·铁律4）。开发者 sszhang"""
+import json
+import math
+import sys
+from pathlib import Path
+
+SCRIPTS_DIR = Path(__file__).resolve().parent
+ROOT = SCRIPTS_DIR.parents[1]
+HIST_DIR = ROOT / "data" / "04-summaries" / "score-attribution" / "hist"
+PREREG_PATH = ROOT / "data" / "04-summaries" / "score-attribution" / "freq-prereg.json"
+
+def load_bills() -> list[dict]:
+    """hist/ 全部账本加载（forward 账本期3并入）。开发者 sszhang"""
+    bills = []
+    for p in sorted(HIST_DIR.glob("*-attribution.json")):
+        bills.extend(json.loads(p.read_text(encoding="utf-8")))
+    return [b for b in bills if "baseline" in b]
+
+def _wilson_lo(k: int, n: int) -> float:
+    """Wilson 95% 下限。开发者 sszhang"""
+    if n == 0:
+        return 0.0
+    z, p = 1.96, k / n
+    denom = 1 + z * z / n
+    center = p + z * z / (2 * n)
+    rad = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n))
+    return max(0.0, (center - rad) / denom)
+
+def freq_table(bills: list[dict], on, band) -> dict:
+    """单表：on 组 vs off 组的 band 命中率差（Wilson CI）。开发者 sszhang"""
+    on_b = [b for b in bills if on(b)]; off_b = [b for b in bills if not on(b)]
+    k_on = sum(1 for b in on_b if band(b)); k_off = sum(1 for b in off_b if band(b))
+    n_on, n_off = len(on_b), len(off_b)
+    return {"n_on": n_on, "n_off": n_off,
+            "rate_on": round(k_on / n_on, 4) if n_on else None,
+            "rate_off": round(k_off / n_off, 4) if n_off else None,
+            "diff": round((k_on / n_on - k_off / n_off), 4) if n_on and n_off else None,
+            "ci_lo_on": round(_wilson_lo(k_on, n_on), 4) if n_on else None}</pre>
+<p>main() 按 prereg 清单逐表计算（德比判据=shape_factors 含 dim=="derby"；红牌=offsets 含 E1.red；press=offsets E2.htft 存在且 half 差≥1 且方向扩大——直接用 script.type in {"press_counter","crush","early_crush"} 简化；FIFA=dim_stage evidence 含 fifa_virus；xG 背离=offsets E5.finishing h 或 a 绝对值 ≥ 该季 P75；裁判表=E0/E1 子集红牌率分布）落 freq-tables.json，每项带 verdict 字段（CI 下限&gt;0 且 n_on≥150 → "calibration_ready" 否则 "observational"）。德比判据注意：历史卷 team_h None 场 dim_derby 返回 None→off 组，正确。</p>
+</div>
+<div class="step"><b>Step 5.5 过+全量回归</b> → <b>Step 5.6 跑</b>：<code>python3 engine/scripts/freq_stats.py stats</code> → freq-tables.json 六表带 n/CI/verdict → <b>Step 5.7 Commit</b>：<code>feat(freq-stats): Task5 频次表v1六表+预注册判据</code></div>
+
+<!-- T6 -->
+<h2>Task 6：期2登记小批（剧本对称+LEAGUE_DIR_MAP 扩）</h2>
+<p><b>Files</b>：Modify <code>engine/scripts/attribution_dims.py</code>（classify_script 对称版）+ <code>score_attribution.py</code>（LEAGUE_DIR_MAP 扩 FD_LEAGUES 全集——直接 from attribution_hist import FD_LEAGUES 生成或复制对齐，选低耦合：score_attribution 里 LEAGUE_DIR_MAP 补 4 键：英冠/西乙/意乙/法乙已有部分，以 FD_LEAGUES 的 16 键为准补齐+德比表不变）</p>
+<p><b>剧本对称实现</b>：classify_script 开头把 net 翻转统一到"胜方视角"——<code>flip = (net &lt; 0)</code>，内部全部按 |net| 与胜方半场差判定，返回 type 不变（crush/early_crush/press_counter 语义对主客对称），reason 带 "away_win" 标记。既有测试三条断言不受影响（0:0/4:0 输入）；新增测试：ht0:1→ft0:3 断言 type=="crush" 且 reason 含 "away_win"（期1 此场走 leaky/press_counter——对称修正）。</p>
+<div class="step"><b>Step 6.1 失败测试</b>
+<pre>class TestScriptSymmetric(unittest.TestCase):
+    def test_away_crush(self):
+        rec = {"result": {"hg": 0, "ag": 3, "ht_hg": 0, "ht_ag": 1}}
+        s = classify_script(rec)
+        self.assertEqual(s["type"], "crush")
+        self.assertIn("away_win", s["reason"])</pre>
+</div>
+<div class="step"><b>Step 6.2 FAIL</b> → <b>Step 6.3 实现（对称重构）→ 过 → Commit</b>：<code>feat(attribution): Task6 剧本对称版+LEAGUE_DIR_MAP扩fd16联赛</code></div>
+<div class="step"><b>Step 6.4 重跑受影响账本</b>：batch-hist 全量重跑（剧本标签更新）+期1 forward 账本重跑 → <b>Step 6.5 Commit</b>：<code>chore(attribution): 剧本对称后账本重刷</code></div>
+
+<h2>验收（对大哥）</h2>
+<ul>
+<li>hist/ 60 文件 ≈16415 张账单（队名匹配率逐 CSV 打印汇总）</li>
+<li>freq-tables.json 六表全带 n/CI/verdict——calibration_ready 的表可直接进 v3.6 校准通道（期3接线）</li>
+<li>金样本：挑 3 场历史名局（如 2324 季大比分场）人工核对事件维度归因合理性</li>
+<li>诚实声明：A1/A2/R1/R2/天气/裁判（除英格兰子集）历史卷标缺；xG 系仅 2627 子集 559 场</li>
+</ul>
+
+</body>
+</html>
