@@ -55,20 +55,20 @@ from attribution_dims import dim_stage
 
 class TestDimStage(unittest.TestCase):
     def test_league_regular_default(self):
-        rec = {"league": "意甲", "date": "2026-10-19"}
+        rec = {"league": "意甲", "date": "2026-10-19", "kickoff": "2026-10-19"}
         sf = dim_stage(rec)
         self.assertEqual(sf["dim"], "L0.stage")
         self.assertEqual(sf["tail_scale"], 1.0)
         self.assertEqual(sf["evidence"], "league_regular")
 
     def test_unknown_league_neutral(self):
-        sf = dim_stage({"league": "某新联赛", "date": "2026-10-19"})
+        sf = dim_stage({"league": "某新联赛", "date": "2026-10-19", "kickoff": "2026-10-19"})
         self.assertEqual(sf["tail_scale"], 1.0)
         self.assertEqual(sf["evidence"], "no_format")
 
     def test_fifa_virus_window(self):
         # 10-20 窗口结束后 3 天内 → fifa_virus 命中（Task5 的 flag 也走档案日历）
-        sf = dim_stage({"league": "意甲", "date": "2026-10-22"})
+        sf = dim_stage({"league": "意甲", "date": "2026-10-22", "kickoff": "2026-10-22"})
         self.assertIn("fifa_virus", sf["evidence"])
 
 
@@ -87,8 +87,10 @@ class TestDerbyRest(unittest.TestCase):
     def test_rest_days(self):
         rec = load_match_record("2026-10-19", "周一001")
         rec = fill_rest_days(rec)
+        # 锚=行内开赛日 2026-10-20（销售日 10-19·跨日场），蒙扎 league 库上一场 10-11 → rest=9
+        self.assertEqual(rec["rest_days_h"], 9)
         # 卡利亚里 10-15 有欧冠场(league库无欧冠行则 None 容忍)
-        self.assertIn(rec["rest_days_h"], [None] + list(range(2, 15)))
+        self.assertIn(rec["rest_days_a"], [None] + list(range(2, 15)))
 
 
 from attribution_dims import dim_htft, dim_injury_coarse, classify_script
@@ -165,3 +167,16 @@ class TestCLI(unittest.TestCase):
         self.assertEqual(out.returncode, 0, out.stderr)
         bill = json.loads(out.stdout)
         self.assertEqual(bill["code"], "周一001")
+
+    def test_main_single_unknown_code(self):
+        # 未知码守卫：error bill JSON 落 stdout + exit 1，禁裸 traceback
+        import subprocess
+        from score_attribution import ROOT
+        out = subprocess.run(
+            [sys.executable, "engine/scripts/score_attribution.py",
+             "single", "2026-10-19", "不存在999"],
+            capture_output=True, text=True, cwd=str(ROOT))
+        self.assertEqual(out.returncode, 1)
+        bill = json.loads(out.stdout)
+        self.assertEqual(bill, {"code": "不存在999", "match": None,
+                                "error": "match_not_found"})

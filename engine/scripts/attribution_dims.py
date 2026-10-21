@@ -18,7 +18,6 @@ def lambda_from_had(odds: list[float], lam_sum: float) -> tuple[float, float] | 
     return round(lam_h, 3), round(lam_sum - lam_h, 3)
 
 
-# attribution_dims.py 追加
 ELO_SCALE = 400.0  # Elo 差 400≈净胜 1 球（经验先验·待频次表校准·设计§二A1）
 
 def dim_elo(elo_h, elo_a) -> dict | None:
@@ -30,7 +29,6 @@ def dim_elo(elo_h, elo_a) -> dict | None:
             "evidence": f"elo_diff={round(elo_h - elo_a)}"}
 
 
-# attribution_dims.py 追加（Task 4：L0 赛制档案+dim_stage）
 import json
 
 # brief 原稿 parents[1] 指向 engine/data/00-leagues（不存在）必落空，按仓库实际结构
@@ -56,12 +54,12 @@ def dim_stage(rec: dict) -> dict:
     if fmt is None:
         return {"dim": "L0.stage", "tail_scale": 1.0, "evidence": "no_format"}
     ev = "league_regular" if fmt.get("type", "league").startswith("league") else fmt["type"]
-    if _in_fifa_window_tail(rec["date"]):
+    # 锚=行内开赛日（kickoff），缺失回退销售日——与 fill_rest_days 同口径
+    if _in_fifa_window_tail(str(rec.get("kickoff") or rec["date"])[:10]):
         ev += "+fifa_virus"
     return {"dim": "L0.stage", "tail_scale": 1.0, "evidence": ev}
 
 
-# attribution_dims.py 追加（Task 5：德比/宿敌标记维度）
 DERBY_TAIL = 1.4  # 德比尾格系数（先验·待频次表校准·设计§二A档3）
 # 同 Task4 FORMATS_PATH 层级约定：brief 原稿 parents[1] 指 engine/data（不存在），按仓库实际结构 parents[2]=repo 根
 DERBIES_PATH = Path(__file__).resolve().parents[2] / "data" / "00-leagues" / "_derbies.json"
@@ -82,7 +80,6 @@ def dim_derby(league: str, team_h: str, team_a: str) -> dict | None:
     return None
 
 
-# attribution_dims.py 追加（Task 6：E2 半场结构+R1 粗档+L5 剧本）
 HTFT_SURGE_PER_GOAL = 0.35  # 下半场净增每球的偏移贡献（先验·待频次表校准）
 
 def dim_htft(rec: dict) -> dict | None:

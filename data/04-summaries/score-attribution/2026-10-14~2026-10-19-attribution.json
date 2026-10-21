@@ -1,40 +1,48 @@
 [
   {
+    "date": "2026-10-14",
     "code": "周二004",
     "match": "朗斯 vs 里斯本",
     "error": "baseline_or_result_missing"
   },
   {
+    "date": "2026-10-14",
     "code": "周二005",
     "match": "国际米兰 vs 布鲁日",
     "error": "baseline_or_result_missing"
   },
   {
+    "date": "2026-10-14",
     "code": "周二006",
     "match": "阿森纳 vs 里尔",
     "error": "baseline_or_result_missing"
   },
   {
+    "date": "2026-10-14",
     "code": "周二007",
     "match": "比利亚雷 vs 那不勒斯",
     "error": "baseline_or_result_missing"
   },
   {
+    "date": "2026-10-14",
     "code": "周二008",
     "match": "维京 vs 拜仁",
     "error": "baseline_or_result_missing"
   },
   {
+    "date": "2026-10-14",
     "code": "周二009",
     "match": "莱红牛 vs 埃因霍温",
     "error": "baseline_or_result_missing"
   },
   {
+    "date": "2026-10-14",
     "code": "周二010",
     "match": "加拉塔萨 vs 巴萨",
     "error": "baseline_or_result_missing"
   },
   {
+    "date": "2026-10-14",
     "code": "周二011",
     "match": "马竞 vs 曼联",
     "error": "baseline_or_result_missing"
@@ -84,8 +92,7 @@
     "coverage": [
       "L1",
       "L0",
-      "E2.htft",
-      "R3"
+      "E2.htft"
     ],
     "missing": [
       "A2.xg",
@@ -149,8 +156,7 @@
     "coverage": [
       "L1",
       "L0",
-      "E2.htft",
-      "R3"
+      "E2.htft"
     ],
     "missing": [
       "A2.xg",
@@ -214,8 +220,7 @@
     "coverage": [
       "L1",
       "L0",
-      "E2.htft",
-      "R3"
+      "E2.htft"
     ],
     "missing": [
       "A2.xg",
@@ -279,8 +284,7 @@
     "coverage": [
       "L1",
       "L0",
-      "E2.htft",
-      "R3"
+      "E2.htft"
     ],
     "missing": [
       "A2.xg",
@@ -343,10 +347,8 @@
     "explain_flag": "insufficient",
     "coverage": [
       "L1",
-      "A1",
       "L0",
-      "E2.htft",
-      "R3"
+      "E2.htft"
     ],
     "missing": [
       "A2.xg",
@@ -357,7 +359,8 @@
       "E5.finishing",
       "weather",
       "referee",
-      "R2"
+      "R2",
+      "A1"
     ],
     "script": {
       "type": "press_counter",
@@ -409,8 +412,7 @@
     "coverage": [
       "L1",
       "L0",
-      "E2.htft",
-      "R3"
+      "E2.htft"
     ],
     "missing": [
       "A2.xg",
@@ -474,8 +476,7 @@
     "coverage": [
       "L1",
       "L0",
-      "E2.htft",
-      "R3"
+      "E2.htft"
     ],
     "missing": [
       "A2.xg",
@@ -539,8 +540,7 @@
     "coverage": [
       "L1",
       "L0",
-      "E2.htft",
-      "R3"
+      "E2.htft"
     ],
     "missing": [
       "A2.xg",
@@ -603,10 +603,8 @@
     "explain_flag": "insufficient",
     "coverage": [
       "L1",
-      "A1",
       "L0",
-      "E2.htft",
-      "R3"
+      "E2.htft"
     ],
     "missing": [
       "A2.xg",
@@ -617,7 +615,8 @@
       "E5.finishing",
       "weather",
       "referee",
-      "R2"
+      "R2",
+      "A1"
     ],
     "script": {
       "type": "early_goal_lock",
@@ -625,6 +624,7 @@
     }
   },
   {
+    "date": "2026-10-15",
     "code": "周四011",
     "match": "伯恩茅斯 vs 格风暴",
     "error": "baseline_or_result_missing"
@@ -673,10 +673,8 @@
     "explain_flag": "insufficient",
     "coverage": [
       "L1",
-      "A1",
       "L0",
-      "E2.htft",
-      "R3"
+      "E2.htft"
     ],
     "missing": [
       "A2.xg",
@@ -687,7 +685,8 @@
       "E5.finishing",
       "weather",
       "referee",
-      "R2"
+      "R2",
+      "A1"
     ],
     "script": {
       "type": "crush",
@@ -739,8 +738,7 @@
     "coverage": [
       "L1",
       "L0",
-      "E2.htft",
-      "R3"
+      "E2.htft"
     ],
     "missing": [
       "A2.xg",
@@ -804,8 +802,7 @@
     "coverage": [
       "L1",
       "L0",
-      "E2.htft",
-      "R3"
+      "E2.htft"
     ],
     "missing": [
       "A2.xg",
@@ -870,7 +867,6 @@
       "L1",
       "L0",
       "E2.htft",
-      "R3",
       "R1.coarse"
     ],
     "missing": [
@@ -935,8 +931,7 @@
     "coverage": [
       "L1",
       "L0",
-      "E2.htft",
-      "R3"
+      "E2.htft"
     ],
     "missing": [
       "A2.xg",
@@ -1000,8 +995,7 @@
     "coverage": [
       "L1",
       "L0",
-      "E2.htft",
-      "R3"
+      "E2.htft"
     ],
     "missing": [
       "A2.xg",
@@ -1083,6 +1077,10 @@
     "script": {
       "type": "crush",
       "reason": "净胜4·半场已领先1:0"
+    },
+    "rest_evidence": {
+      "h": 28,
+      "a": 28
     }
   },
   {
@@ -1131,7 +1129,6 @@
       "L1",
       "L0",
       "E2.htft",
-      "R3",
       "R1.coarse"
     ],
     "missing": [
@@ -1215,6 +1212,10 @@
     "script": {
       "type": "open_play",
       "reason": "开放对攻有来有回"
+    },
+    "rest_evidence": {
+      "h": 28,
+      "a": 43
     }
   },
   {
@@ -1281,6 +1282,10 @@
     "script": {
       "type": "leaky",
       "reason": "总球6互漏"
+    },
+    "rest_evidence": {
+      "h": 1,
+      "a": 1
     }
   },
   {
@@ -1347,6 +1352,10 @@
     "script": {
       "type": "open_play",
       "reason": "默认开放"
+    },
+    "rest_evidence": {
+      "h": 28,
+      "a": 28
     }
   },
   {
@@ -1394,8 +1403,7 @@
     "coverage": [
       "L1",
       "L0",
-      "E2.htft",
-      "R3"
+      "E2.htft"
     ],
     "missing": [
       "A2.xg",
@@ -1477,6 +1485,10 @@
     "script": {
       "type": "open_play",
       "reason": "默认开放"
+    },
+    "rest_evidence": {
+      "h": 1,
+      "a": 1
     }
   },
   {
@@ -1524,8 +1536,7 @@
     "coverage": [
       "L1",
       "L0",
-      "E2.htft",
-      "R3"
+      "E2.htft"
     ],
     "missing": [
       "A2.xg",
@@ -1589,8 +1600,7 @@
     "coverage": [
       "L1",
       "L0",
-      "E2.htft",
-      "R3"
+      "E2.htft"
     ],
     "missing": [
       "A2.xg",
@@ -1654,8 +1664,7 @@
     "coverage": [
       "L1",
       "L0",
-      "E2.htft",
-      "R3"
+      "E2.htft"
     ],
     "missing": [
       "A2.xg",
@@ -1720,7 +1729,6 @@
       "L1",
       "L0",
       "E2.htft",
-      "R3",
       "R1.coarse"
     ],
     "missing": [
@@ -1785,8 +1793,7 @@
     "coverage": [
       "L1",
       "L0",
-      "E2.htft",
-      "R3"
+      "E2.htft"
     ],
     "missing": [
       "A2.xg",
@@ -1850,8 +1857,7 @@
     "coverage": [
       "L1",
       "L0",
-      "E2.htft",
-      "R3"
+      "E2.htft"
     ],
     "missing": [
       "A2.xg",
@@ -1915,8 +1921,7 @@
     "coverage": [
       "L1",
       "L0",
-      "E2.htft",
-      "R3"
+      "E2.htft"
     ],
     "missing": [
       "A2.xg",
@@ -1999,6 +2004,10 @@
     "script": {
       "type": "open_play",
       "reason": "默认开放"
+    },
+    "rest_evidence": {
+      "h": 6,
+      "a": 7
     }
   },
   {
@@ -2064,6 +2073,10 @@
     "script": {
       "type": "open_play",
       "reason": "开放对攻有来有回"
+    },
+    "rest_evidence": {
+      "h": 8,
+      "a": 7
     }
   },
   {
@@ -2129,6 +2142,10 @@
     "script": {
       "type": "open_play",
       "reason": "开放对攻有来有回"
+    },
+    "rest_evidence": {
+      "h": 5,
+      "a": 7
     }
   },
   {
@@ -2195,6 +2212,10 @@
     "script": {
       "type": "leaky",
       "reason": "总球7互漏"
+    },
+    "rest_evidence": {
+      "h": 27,
+      "a": 28
     }
   },
   {
@@ -2261,6 +2282,10 @@
     "script": {
       "type": "open_play",
       "reason": "开放对攻有来有回"
+    },
+    "rest_evidence": {
+      "h": 28,
+      "a": 27
     }
   },
   {
@@ -2326,6 +2351,10 @@
     "script": {
       "type": "early_goal_lock",
       "reason": "总球1"
+    },
+    "rest_evidence": {
+      "h": 27,
+      "a": 28
     }
   },
   {
@@ -2391,6 +2420,10 @@
     "script": {
       "type": "open_play",
       "reason": "开放对攻有来有回"
+    },
+    "rest_evidence": {
+      "h": 28,
+      "a": 28
     }
   },
   {
@@ -2457,6 +2490,10 @@
     "script": {
       "type": "iron_grid",
       "reason": "总球0互磨"
+    },
+    "rest_evidence": {
+      "h": 29,
+      "a": 28
     }
   },
   {
@@ -2523,6 +2560,10 @@
     "script": {
       "type": "open_play",
       "reason": "开放对攻有来有回"
+    },
+    "rest_evidence": {
+      "h": 7,
+      "a": 6
     }
   },
   {
@@ -2588,6 +2629,10 @@
     "script": {
       "type": "leaky",
       "reason": "总球5互漏"
+    },
+    "rest_evidence": {
+      "h": 6,
+      "a": 7
     }
   },
   {
@@ -2654,6 +2699,10 @@
     "script": {
       "type": "early_goal_lock",
       "reason": "总球1"
+    },
+    "rest_evidence": {
+      "h": 7,
+      "a": 6
     }
   },
   {
@@ -2719,6 +2768,10 @@
     "script": {
       "type": "iron_grid",
       "reason": "总球0互磨"
+    },
+    "rest_evidence": {
+      "h": 7,
+      "a": 6
     }
   },
   {
@@ -2765,7 +2818,6 @@
     "explain_flag": "ok",
     "coverage": [
       "L1",
-      "A1",
       "L0",
       "E2.htft",
       "R3",
@@ -2780,11 +2832,16 @@
       "E5.finishing",
       "weather",
       "referee",
-      "R2"
+      "R2",
+      "A1"
     ],
     "script": {
       "type": "open_play",
       "reason": "默认开放"
+    },
+    "rest_evidence": {
+      "h": 28,
+      "a": 27
     }
   },
   {
@@ -2851,6 +2908,10 @@
     "script": {
       "type": "open_play",
       "reason": "默认开放"
+    },
+    "rest_evidence": {
+      "h": 1,
+      "a": 1
     }
   },
   {
@@ -2916,9 +2977,14 @@
     "script": {
       "type": "early_goal_lock",
       "reason": "总球1"
+    },
+    "rest_evidence": {
+      "h": 1,
+      "a": 1
     }
   },
   {
+    "date": "2026-10-16",
     "code": "周六025",
     "match": "拜仁 vs 莱红牛",
     "error": "baseline_or_result_missing"
@@ -2967,7 +3033,6 @@
     "explain_flag": "insufficient",
     "coverage": [
       "L1",
-      "A1",
       "L0",
       "E2.htft",
       "R3"
@@ -2981,11 +3046,16 @@
       "E5.finishing",
       "weather",
       "referee",
-      "R2"
+      "R2",
+      "A1"
     ],
     "script": {
       "type": "leaky",
       "reason": "总球7互漏"
+    },
+    "rest_evidence": {
+      "h": 1,
+      "a": 1
     }
   },
   {
@@ -3052,6 +3122,10 @@
     "script": {
       "type": "leaky",
       "reason": "总球7互漏"
+    },
+    "rest_evidence": {
+      "h": 28,
+      "a": 28
     }
   },
   {
@@ -3118,6 +3192,10 @@
     "script": {
       "type": "open_play",
       "reason": "默认开放"
+    },
+    "rest_evidence": {
+      "h": 1,
+      "a": 1
     }
   },
   {
@@ -3184,6 +3262,10 @@
     "script": {
       "type": "iron_grid",
       "reason": "总球0互磨"
+    },
+    "rest_evidence": {
+      "h": 1,
+      "a": 1
     }
   },
   {
@@ -3231,8 +3313,7 @@
     "coverage": [
       "L1",
       "L0",
-      "E2.htft",
-      "R3"
+      "E2.htft"
     ],
     "missing": [
       "A2.xg",
@@ -3315,6 +3396,10 @@
     "script": {
       "type": "early_crush",
       "reason": "净胜3·半场0:1"
+    },
+    "rest_evidence": {
+      "h": 30,
+      "a": 28
     }
   },
   {
@@ -3381,6 +3466,10 @@
     "script": {
       "type": "open_play",
       "reason": "默认开放"
+    },
+    "rest_evidence": {
+      "h": 6,
+      "a": 7
     }
   },
   {
@@ -3446,6 +3535,10 @@
     "script": {
       "type": "open_play",
       "reason": "默认开放"
+    },
+    "rest_evidence": {
+      "h": 7,
+      "a": 7
     }
   },
   {
@@ -3512,6 +3605,10 @@
     "script": {
       "type": "open_play",
       "reason": "开放对攻有来有回"
+    },
+    "rest_evidence": {
+      "h": 8,
+      "a": 8
     }
   },
   {
@@ -3577,6 +3674,10 @@
     "script": {
       "type": "open_play",
       "reason": "默认开放"
+    },
+    "rest_evidence": {
+      "h": 8,
+      "a": 7
     }
   },
   {
@@ -3642,6 +3743,10 @@
     "script": {
       "type": "leaky",
       "reason": "总球7互漏"
+    },
+    "rest_evidence": {
+      "h": 30,
+      "a": 29
     }
   },
   {
@@ -3707,6 +3812,10 @@
     "script": {
       "type": "open_play",
       "reason": "开放对攻有来有回"
+    },
+    "rest_evidence": {
+      "h": 7,
+      "a": 8
     }
   },
   {
@@ -3773,6 +3882,10 @@
     "script": {
       "type": "crush",
       "reason": "净胜4·半场已领先1:0"
+    },
+    "rest_evidence": {
+      "h": 9,
+      "a": 9
     }
   },
   {
@@ -3820,8 +3933,7 @@
     "coverage": [
       "L1",
       "L0",
-      "E2.htft",
-      "R3"
+      "E2.htft"
     ],
     "missing": [
       "A2.xg",
@@ -3903,6 +4015,10 @@
     "script": {
       "type": "open_play",
       "reason": "默认开放"
+    },
+    "rest_evidence": {
+      "h": 10,
+      "a": 8
     }
   },
   {
@@ -3951,7 +4067,6 @@
       "L1",
       "L0",
       "E2.htft",
-      "R3",
       "R1.coarse"
     ],
     "missing": [
@@ -4035,6 +4150,10 @@
     "script": {
       "type": "open_play",
       "reason": "默认开放"
+    },
+    "rest_evidence": {
+      "h": 10,
+      "a": 8
     }
   },
   {
@@ -4101,6 +4220,10 @@
     "script": {
       "type": "open_play",
       "reason": "开放对攻有来有回"
+    },
+    "rest_evidence": {
+      "h": 1,
+      "a": 1
     }
   },
   {
@@ -4166,6 +4289,10 @@
     "script": {
       "type": "open_play",
       "reason": "开放对攻有来有回"
+    },
+    "rest_evidence": {
+      "h": 11,
+      "a": 11
     }
   },
   {
@@ -4205,8 +4332,7 @@
     "explain_flag": "ok",
     "coverage": [
       "L1",
-      "L0",
-      "R3"
+      "L0"
     ],
     "missing": [
       "A2.xg",

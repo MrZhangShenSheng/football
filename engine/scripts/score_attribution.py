@@ -103,7 +103,7 @@ def load_match_record(date_str: str, code: str) -> dict | None:
     # 由 build_bill 走 error bill（baseline_or_result_missing）降级路径，禁 KeyError 崩溃。
     had = [float(o[k]) for k in ("h", "d", "a") if k in o] if o else []
     return {
-        "date": date_str, "code": code, "league": m.get("league"),
+        "date": date_str, "kickoff": m.get("date"), "code": code, "league": m.get("league"),
         "match": m["match"], "team_h": team_h, "team_a": team_a,
         "league_dir": league_dir,
         "odds": had if len(had) == 3 else None,
@@ -116,10 +116,12 @@ def load_match_record(date_str: str, code: str) -> dict | None:
 
 def fill_rest_days(rec: dict) -> dict:
     """R3 休息差：league 库查两队上一场日期→天数。查不到保持 None。开发者 sszhang"""
+    # 锚=行内开赛日（kickoff），缺失回退销售日——多数日两值相同，跨日场以开赛日为准
+    anchor = str(rec.get("kickoff") or rec["date"])[:10]
     for side, team in (("h", rec["team_h"]), ("a", rec["team_a"])):
-        last = _last_match_date(team, rec["league_dir"], rec["date"])
+        last = _last_match_date(team, rec["league_dir"], anchor)
         if last:
-            d0 = datetime.fromisoformat(rec["date"]).date()
+            d0 = datetime.fromisoformat(anchor).date()
             rec[f"rest_days_{side}"] = (d0 - datetime.fromisoformat(last).date()).days
     return rec
 
@@ -148,7 +150,8 @@ def build_bill(rec: dict) -> dict:
     lam = lambda_from_had(rec["odds"], lam_sum) if rec.get("odds") else None
     r = rec["result"]
     if lam is None or r["hg"] is None:
-        return {"code": rec["code"], "match": rec["match"], "error": "baseline_or_result_missing"}
+        return {"date": rec["date"], "code": rec["code"], "match": rec["match"],
+                "error": "baseline_or_result_missing"}
     lam_h, lam_a = lam
 
     offs = [o for o in (dim_elo(rec["elo_h"], rec["elo_a"]),
@@ -166,11 +169,14 @@ def build_bill(rec: dict) -> dict:
     explained = 1.0 - min(abs(resid_h) + abs(resid_a), denom) / denom
     flag = "insufficient" if (depth == "deep" and explained < EXPLAIN_FLOOR) else "ok"
 
-    covered = ["L1"] + (["A1"] if rec["elo_h"] is not None else []) + \
-              ["L0", "E2.htft" if r["ht_hg"] is not None else None, "R3",
+    rest_filled = rec["rest_days_h"] is not None or rec["rest_days_a"] is not None
+    elo_both = rec["elo_h"] is not None and rec["elo_a"] is not None  # A1 双边门：单边缺即缺
+    covered = ["L1"] + (["A1"] if elo_both else []) + \
+              ["L0", "E2.htft" if r["ht_hg"] is not None else None,
+               "R3" if rest_filled else None,
                "derby" if any(s["dim"] == "derby" for s in shapes) else None] + \
               (["R1.coarse"] if coarse else [])
-    return {
+    bill = {
         "date": rec["date"], "code": rec["code"], "league": rec["league"],
         "match": rec["match"],
         "result": r, "depth": depth,
@@ -183,10 +189,13 @@ def build_bill(rec: dict) -> dict:
         "coverage": [c for c in covered if c],
         "missing": ["A2.xg", "A4", "E1.red", "E3", "E4.gk", "E5.finishing",
                     "weather", "referee", "R2"] +
-                   ([] if rec["elo_h"] is not None else ["A1"]) +
+                   ([] if elo_both else ["A1"]) +
                    ([] if r["ht_hg"] is not None else ["E2.htft"]),
         "script": classify_script(rec),
     }
+    if rest_filled:   # R3 证据随账：None 侧保留 None
+        bill["rest_evidence"] = {"h": rec["rest_days_h"], "a": rec["rest_days_a"]}
+    return bill
 
 
 def _all_codes(date_str: str) -> list[str]:
@@ -208,8 +217,12 @@ def main() -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
 
     if args.cmd == "single":
-        rec = fill_rest_days(load_match_record(args.date, args.code))
-        print(json.dumps(build_bill(rec), ensure_ascii=False, indent=2))
+        rec = load_match_record(args.date, args.code)
+        if rec is None:   # 未知码守卫：镜像 batch 降级口径，禁裸 traceback
+            print(json.dumps({"code": args.code, "match": None,
+                              "error": "match_not_found"}, ensure_ascii=False))
+            sys.exit(1)
+        print(json.dumps(build_bill(fill_rest_days(rec)), ensure_ascii=False, indent=2))
         return
     d0, d1 = args.from_date, args.to_date
     cur, bills = d0, []
