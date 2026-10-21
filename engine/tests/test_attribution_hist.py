@@ -4,6 +4,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from attribution_hist import hist_match_record, fd_date
 from attribution_dims import dim_red, dim_shots, dim_finishing
+from score_attribution import build_bill
 
 ROW = {"Date": "11/08/2023", "HomeTeam": "Burnley", "AwayTeam": "Man City",
        "FTHG": "0", "FTAG": "3", "HTHG": "0", "HTAG": "1",
@@ -53,6 +54,25 @@ class TestEventDims(unittest.TestCase):
         self.assertAlmostEqual(off["h"], (3-1.2)*0.5, delta=0.01)
         self.assertAlmostEqual(off["a"], (0-0.8)*0.5, delta=0.01)
         self.assertIsNone(dim_finishing({"xg_h": None, "xg_a": 1.0, "result": {"hg": 1, "ag": 1}}))
+
+HIST_REC = {"date": "2023-08-11", "kickoff": "2023-08-11", "code": "hist:t",
+    "league": "英超", "match": "x vs y", "team_h": None, "team_a": None,
+    "league_dir": "england-premier", "odds": [6.5, 4.33, 1.44], "pin_close": None,
+    "elo_h": None, "elo_a": None, "inj_n_h": 0, "inj_n_a": 0,
+    "rest_days_h": None, "rest_days_a": None,
+    "result": {"hg": 0, "ag": 3, "ht_hg": 0, "ht_ag": 1},
+    "red_h": 0, "red_a": 1, "hst": 2, "ast": 7, "xg_h": None, "xg_a": None}
+
+class TestHistBill(unittest.TestCase):
+    def test_bill_with_events(self):
+        bill = build_bill(HIST_REC)
+        dims = [o["dim"] for o in bill["offsets"]]
+        self.assertIn("E1.red", dims)      # 客红牌→主+0.35
+        self.assertIn("E4.shots", dims)
+        self.assertNotIn("E5.finishing", dims)   # xg 缺
+        self.assertIn("E5.finishing", bill["missing"])
+        # 解释力应显著优于纯结构期1：伯恩利0:3场 E2+E1+E4 全上
+        self.assertGreater(bill["explained_pct"], 0.3)
 
 if __name__ == "__main__":
     unittest.main()

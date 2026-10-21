@@ -11,7 +11,8 @@ sys.path.insert(0, str(SCRIPTS_DIR))
 
 import strength_loaders as sl  # load_aliases/zh_to_id 复用
 from attribution_dims import (lambda_from_had, dim_elo, dim_stage, dim_derby,
-                              dim_htft, dim_injury_coarse, classify_script)
+                              dim_htft, dim_injury_coarse, classify_script,
+                              dim_red, dim_shots, dim_finishing)
 
 ROOT = SCRIPTS_DIR.parents[1]
 RESULTS_DIR = ROOT / "data" / "02-results"
@@ -130,6 +131,8 @@ def fill_rest_days(rec: dict) -> dict:
 DEEP_THRESHOLD = 1.5   # |实际-基线|总偏移≥此值=深挖档（设计§一深度分档）
 EXPLAIN_FLOOR = 0.5    # explained_pct<此值且 deep → insufficient（防谬误铁律3）
 LEAGUE_AVG_DEFAULT = 2.6  # 画像读不到时的兜底场均总球（evidence 标 default）
+# 期2 事件维度条件项键序（coverage/missing 按维度在场与否条件列出·列序稳定）
+EVENT_DIM_KEYS = ("E1.red", "E4.shots", "E5.finishing")
 
 def league_avg_total(league: str) -> tuple[float, str]:
     """00-leagues 画像 standings 算场均总球（Σgf/Σplayed×2，两队合计口径）；读不到用默认。开发者 sszhang"""
@@ -155,7 +158,11 @@ def build_bill(rec: dict) -> dict:
     lam_h, lam_a = lam
 
     offs = [o for o in (dim_elo(rec["elo_h"], rec["elo_a"]),
-                        dim_htft(rec)) if o and o["h"] is not None]
+                        dim_htft(rec), dim_red(rec),
+                        dim_shots(rec), dim_finishing(rec))
+            if o and o["h"] is not None]
+    # 期2 事件维度在场集合：coverage/missing 条件化的判定源（维度返回非 None ⟺ 进 offs）
+    evt_dims = {o["dim"] for o in offs}
     shapes = [s for s in (dim_stage(rec), dim_derby(rec["league"], rec["team_h"], rec["team_a"]))
               if s]
     coarse = dim_injury_coarse(rec)  # 标记型：进 coverage 不进 offsets
@@ -175,7 +182,8 @@ def build_bill(rec: dict) -> dict:
               ["L0", "E2.htft" if r["ht_hg"] is not None else None,
                "R3" if rest_filled else None,
                "derby" if any(s["dim"] == "derby" for s in shapes) else None] + \
-              (["R1.coarse"] if coarse else [])
+              (["R1.coarse"] if coarse else []) + \
+              [d for d in EVENT_DIM_KEYS if d in evt_dims]
     bill = {
         "date": rec["date"], "code": rec["code"], "league": rec["league"],
         "match": rec["match"],
@@ -187,10 +195,10 @@ def build_bill(rec: dict) -> dict:
         "residual": {"hg": round(resid_h, 3), "ag": round(resid_a, 3)},
         "explained_pct": round(explained, 3), "explain_flag": flag,
         "coverage": [c for c in covered if c],
-        "missing": ["A2.xg", "A4", "E1.red", "E3", "E4.gk", "E5.finishing",
-                    "weather", "referee", "R2"] +
+        "missing": ["A2.xg", "A4", "E3", "weather", "referee", "R2"] +
                    ([] if elo_both else ["A1"]) +
-                   ([] if r["ht_hg"] is not None else ["E2.htft"]),
+                   ([] if r["ht_hg"] is not None else ["E2.htft"]) +
+                   [d for d in EVENT_DIM_KEYS if d not in evt_dims],
         "script": classify_script(rec),
     }
     if rest_filled:   # R3 证据随账：None 侧保留 None
