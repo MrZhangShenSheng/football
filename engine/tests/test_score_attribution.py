@@ -152,3 +152,16 @@ class TestBuildBill(unittest.TestCase):
                "result": {"hg": 1, "ag": 1, "ht_hg": 0, "ht_ag": 0}}
         bill = build_bill(rec)
         self.assertEqual(bill["depth"], "light")
+
+
+class TestCLI(unittest.TestCase):
+    def test_main_single(self):
+        import subprocess
+        from score_attribution import ROOT
+        out = subprocess.run(
+            [sys.executable, "engine/scripts/score_attribution.py",
+             "single", "2026-10-19", "周一001"],
+            capture_output=True, text=True, cwd=str(ROOT))
+        self.assertEqual(out.returncode, 0, out.stderr)
+        bill = json.loads(out.stdout)
+        self.assertEqual(bill["code"], "周一001")

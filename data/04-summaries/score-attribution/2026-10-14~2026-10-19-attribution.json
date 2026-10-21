@@ -1,0 +1,4229 @@
+[
+  {
+    "code": "周二004",
+    "match": "朗斯 vs 里斯本",
+    "error": "baseline_or_result_missing"
+  },
+  {
+    "code": "周二005",
+    "match": "国际米兰 vs 布鲁日",
+    "error": "baseline_or_result_missing"
+  },
+  {
+    "code": "周二006",
+    "match": "阿森纳 vs 里尔",
+    "error": "baseline_or_result_missing"
+  },
+  {
+    "code": "周二007",
+    "match": "比利亚雷 vs 那不勒斯",
+    "error": "baseline_or_result_missing"
+  },
+  {
+    "code": "周二008",
+    "match": "维京 vs 拜仁",
+    "error": "baseline_or_result_missing"
+  },
+  {
+    "code": "周二009",
+    "match": "莱红牛 vs 埃因霍温",
+    "error": "baseline_or_result_missing"
+  },
+  {
+    "code": "周二010",
+    "match": "加拉塔萨 vs 巴萨",
+    "error": "baseline_or_result_missing"
+  },
+  {
+    "code": "周二011",
+    "match": "马竞 vs 曼联",
+    "error": "baseline_or_result_missing"
+  },
+  {
+    "date": "2026-10-15",
+    "code": "周四001",
+    "league": "欧罗巴",
+    "match": "里昂 vs 水晶宫",
+    "result": {
+      "hg": 3,
+      "ag": 2,
+      "ht_hg": 2,
+      "ht_ag": 0
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 1.308,
+      "lam_a": 1.292,
+      "source": "avg_default+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": -0.175,
+        "a": 0.175,
+        "evidence": "半场2:0→全场3:2"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "no_format"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.133,
+      "ag": 1.467
+    },
+    "residual": {
+      "hg": 1.867,
+      "ag": 0.533
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "leaky",
+      "reason": "总球5互漏"
+    }
+  },
+  {
+    "date": "2026-10-15",
+    "code": "周四002",
+    "league": "欧罗巴",
+    "match": "托林斯 vs 桑德兰",
+    "result": {
+      "hg": 1,
+      "ag": 2,
+      "ht_hg": 1,
+      "ht_ag": 0
+    },
+    "depth": "light",
+    "baseline": {
+      "lam_h": 0.536,
+      "lam_a": 2.064,
+      "source": "avg_default+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": -0.35,
+        "a": 0.35,
+        "evidence": "半场1:0→全场1:2"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "no_format"
+      }
+    ],
+    "reconstructed": {
+      "hg": 0.186,
+      "ag": 2.414
+    },
+    "residual": {
+      "hg": 0.814,
+      "ag": -0.414
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "ok",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "开放对攻有来有回"
+    }
+  },
+  {
+    "date": "2026-10-15",
+    "code": "周四003",
+    "league": "欧罗巴",
+    "match": "波兹南 vs 勒沃库森",
+    "result": {
+      "hg": 0,
+      "ag": 4,
+      "ht_hg": 0,
+      "ht_ag": 3
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 0.784,
+      "lam_a": 1.816,
+      "source": "avg_default+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": -0.175,
+        "a": 0.175,
+        "evidence": "半场0:3→全场0:4"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "no_format"
+      }
+    ],
+    "reconstructed": {
+      "hg": 0.609,
+      "ag": 1.991
+    },
+    "residual": {
+      "hg": -0.609,
+      "ag": 2.009
+    },
+    "explained_pct": 0.118,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "默认开放"
+    }
+  },
+  {
+    "date": "2026-10-15",
+    "code": "周四004",
+    "league": "欧罗巴",
+    "match": "圣吉联合 vs 皇家社会",
+    "result": {
+      "hg": 1,
+      "ag": 1,
+      "ht_hg": 0,
+      "ht_ag": 0
+    },
+    "depth": "light",
+    "baseline": {
+      "lam_h": 1.31,
+      "lam_a": 1.29,
+      "source": "avg_default+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.0,
+        "a": -0.0,
+        "evidence": "半场0:0→全场1:1"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "no_format"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.31,
+      "ag": 1.29
+    },
+    "residual": {
+      "hg": -0.31,
+      "ag": -0.29
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "ok",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "默认开放"
+    }
+  },
+  {
+    "date": "2026-10-15",
+    "code": "周四005",
+    "league": "欧罗巴",
+    "match": "萨尔茨堡 vs AC米兰",
+    "result": {
+      "hg": 0,
+      "ag": 4,
+      "ht_hg": 0,
+      "ht_ag": 2
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 0.976,
+      "lam_a": 1.624,
+      "source": "avg_default+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": -0.35,
+        "a": 0.35,
+        "evidence": "半场0:2→全场0:4"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "no_format"
+      }
+    ],
+    "reconstructed": {
+      "hg": 0.626,
+      "ag": 1.974
+    },
+    "residual": {
+      "hg": -0.626,
+      "ag": 2.026
+    },
+    "explained_pct": 0.209,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "A1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2"
+    ],
+    "script": {
+      "type": "press_counter",
+      "reason": "半场领先方下半场继续扩大=压上反杀族"
+    }
+  },
+  {
+    "date": "2026-10-15",
+    "code": "周四006",
+    "league": "欧协联",
+    "match": "克拉约瓦 vs 赫塔费",
+    "result": {
+      "hg": 1,
+      "ag": 1,
+      "ht_hg": 0,
+      "ht_ag": 0
+    },
+    "depth": "light",
+    "baseline": {
+      "lam_h": 1.247,
+      "lam_a": 1.353,
+      "source": "avg_default+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.0,
+        "a": -0.0,
+        "evidence": "半场0:0→全场1:1"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "no_format"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.247,
+      "ag": 1.353
+    },
+    "residual": {
+      "hg": -0.247,
+      "ag": -0.353
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "ok",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "默认开放"
+    }
+  },
+  {
+    "date": "2026-10-15",
+    "code": "周四008",
+    "league": "欧罗巴",
+    "match": "塞尔塔 vs 尤文图斯",
+    "result": {
+      "hg": 1,
+      "ag": 2,
+      "ht_hg": 1,
+      "ht_ag": 0
+    },
+    "depth": "light",
+    "baseline": {
+      "lam_h": 1.062,
+      "lam_a": 1.538,
+      "source": "avg_default+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": -0.35,
+        "a": 0.35,
+        "evidence": "半场1:0→全场1:2"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "no_format"
+      }
+    ],
+    "reconstructed": {
+      "hg": 0.712,
+      "ag": 1.888
+    },
+    "residual": {
+      "hg": 0.288,
+      "ag": 0.112
+    },
+    "explained_pct": 0.237,
+    "explain_flag": "ok",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "开放对攻有来有回"
+    }
+  },
+  {
+    "date": "2026-10-15",
+    "code": "周四009",
+    "league": "欧罗巴",
+    "match": "霍芬海姆 vs 贝西克塔",
+    "result": {
+      "hg": 2,
+      "ag": 3,
+      "ht_hg": 0,
+      "ht_ag": 0
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 1.585,
+      "lam_a": 1.015,
+      "source": "avg_default+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": -0.175,
+        "a": 0.175,
+        "evidence": "半场0:0→全场2:3"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "no_format"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.41,
+      "ag": 1.19
+    },
+    "residual": {
+      "hg": 0.59,
+      "ag": 1.81
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "leaky",
+      "reason": "总球5互漏"
+    }
+  },
+  {
+    "date": "2026-10-15",
+    "code": "周四010",
+    "league": "欧罗巴",
+    "match": "马赛 vs 奥林匹亚",
+    "result": {
+      "hg": 0,
+      "ag": 1,
+      "ht_hg": 0,
+      "ht_ag": 1
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 1.447,
+      "lam_a": 1.153,
+      "source": "avg_default+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.0,
+        "a": -0.0,
+        "evidence": "半场0:1→全场0:1"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "no_format"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.447,
+      "ag": 1.153
+    },
+    "residual": {
+      "hg": -1.447,
+      "ag": -0.153
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "A1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2"
+    ],
+    "script": {
+      "type": "early_goal_lock",
+      "reason": "总球1"
+    }
+  },
+  {
+    "code": "周四011",
+    "match": "伯恩茅斯 vs 格风暴",
+    "error": "baseline_or_result_missing"
+  },
+  {
+    "date": "2026-10-15",
+    "code": "周四012",
+    "league": "欧罗巴",
+    "match": "本菲卡 vs 凯尔特人",
+    "result": {
+      "hg": 4,
+      "ag": 1,
+      "ht_hg": 3,
+      "ht_ag": 0
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 2.236,
+      "lam_a": 0.364,
+      "source": "avg_default+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.0,
+        "a": -0.0,
+        "evidence": "半场3:0→全场4:1"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "no_format"
+      }
+    ],
+    "reconstructed": {
+      "hg": 2.236,
+      "ag": 0.364
+    },
+    "residual": {
+      "hg": 1.764,
+      "ag": 0.636
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "A1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2"
+    ],
+    "script": {
+      "type": "crush",
+      "reason": "净胜3·半场已领先3:0"
+    }
+  },
+  {
+    "date": "2026-10-15",
+    "code": "周四013",
+    "league": "欧协联",
+    "match": "哥本哈根 vs 布拉加",
+    "result": {
+      "hg": 3,
+      "ag": 0,
+      "ht_hg": 0,
+      "ht_ag": 0
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 1.336,
+      "lam_a": 1.264,
+      "source": "avg_default+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.525,
+        "a": -0.525,
+        "evidence": "半场0:0→全场3:0"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "no_format"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.861,
+      "ag": 0.739
+    },
+    "residual": {
+      "hg": 1.139,
+      "ag": -0.739
+    },
+    "explained_pct": 0.359,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "early_crush",
+      "reason": "净胜3·半场0:0"
+    }
+  },
+  {
+    "date": "2026-10-15",
+    "code": "周四014",
+    "league": "解放者杯",
+    "match": "拉普大学 vs 弗拉门戈",
+    "result": {
+      "hg": 0,
+      "ag": 0,
+      "ht_hg": 0,
+      "ht_ag": 0
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 0.966,
+      "lam_a": 1.634,
+      "source": "avg_default+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.0,
+        "a": -0.0,
+        "evidence": "半场0:0→全场0:0"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "no_format"
+      }
+    ],
+    "reconstructed": {
+      "hg": 0.966,
+      "ag": 1.634
+    },
+    "residual": {
+      "hg": -0.966,
+      "ag": -1.634
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "iron_grid",
+      "reason": "总球0互磨"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周五001",
+    "league": "澳超",
+    "match": "悉尼FC vs 西悉尼",
+    "result": {
+      "hg": 0,
+      "ag": 0,
+      "ht_hg": 0,
+      "ht_ag": 0
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 1.417,
+      "lam_a": 1.183,
+      "source": "avg_default+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.0,
+        "a": -0.0,
+        "evidence": "半场0:0→全场0:0"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "no_format"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.417,
+      "ag": 1.183
+    },
+    "residual": {
+      "hg": -1.417,
+      "ag": -1.183
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3",
+      "R1.coarse"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "iron_grid",
+      "reason": "总球0互磨"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周五002",
+    "league": "德乙",
+    "match": "科特布斯 vs 纽伦堡",
+    "result": {
+      "hg": 1,
+      "ag": 1,
+      "ht_hg": 0,
+      "ht_ag": 0
+    },
+    "depth": "light",
+    "baseline": {
+      "lam_h": 1.133,
+      "lam_a": 1.467,
+      "source": "avg_default+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.0,
+        "a": -0.0,
+        "evidence": "半场0:0→全场1:1"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "no_format"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.133,
+      "ag": 1.467
+    },
+    "residual": {
+      "hg": -0.133,
+      "ag": -0.467
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "ok",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "默认开放"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周五003",
+    "league": "瑞超",
+    "match": "布鲁马波 vs 佐加顿斯",
+    "result": {
+      "hg": 0,
+      "ag": 2,
+      "ht_hg": 0,
+      "ht_ag": 1
+    },
+    "depth": "light",
+    "baseline": {
+      "lam_h": 0.764,
+      "lam_a": 1.836,
+      "source": "avg_default+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": -0.175,
+        "a": 0.175,
+        "evidence": "半场0:1→全场0:2"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "no_format"
+      }
+    ],
+    "reconstructed": {
+      "hg": 0.589,
+      "ag": 2.011
+    },
+    "residual": {
+      "hg": -0.589,
+      "ag": -0.011
+    },
+    "explained_pct": 0.353,
+    "explain_flag": "ok",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "默认开放"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周五004",
+    "league": "荷甲",
+    "match": "海伦芬 vs SBV精英",
+    "result": {
+      "hg": 4,
+      "ag": 0,
+      "ht_hg": 1,
+      "ht_ag": 0
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 2.055,
+      "lam_a": 1.115,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.525,
+        "a": -0.525,
+        "evidence": "半场1:0→全场4:0"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 2.58,
+      "ag": 0.59
+    },
+    "residual": {
+      "hg": 1.42,
+      "ag": -0.59
+    },
+    "explained_pct": 0.343,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "crush",
+      "reason": "净胜4·半场已领先1:0"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周五005",
+    "league": "荷乙",
+    "match": "登博思 vs 奥斯",
+    "result": {
+      "hg": 2,
+      "ag": 1,
+      "ht_hg": 2,
+      "ht_ag": 0
+    },
+    "depth": "light",
+    "baseline": {
+      "lam_h": 1.725,
+      "lam_a": 0.875,
+      "source": "avg_default+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": -0.175,
+        "a": 0.175,
+        "evidence": "半场2:0→全场2:1"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "no_format"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.55,
+      "ag": 1.05
+    },
+    "residual": {
+      "hg": 0.45,
+      "ag": -0.05
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "ok",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3",
+      "R1.coarse"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "开放对攻有来有回"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周五006",
+    "league": "德甲",
+    "match": "法兰克福 vs 科隆",
+    "result": {
+      "hg": 1,
+      "ag": 0,
+      "ht_hg": 0,
+      "ht_ag": 0
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 1.894,
+      "lam_a": 1.346,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.175,
+        "a": -0.175,
+        "evidence": "半场0:0→全场1:0"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 2.069,
+      "ag": 1.171
+    },
+    "residual": {
+      "hg": -1.069,
+      "ag": -1.171
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3",
+      "R1.coarse"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "开放对攻有来有回"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周五007",
+    "league": "意甲",
+    "match": "弗洛西诺 vs 萨索洛",
+    "result": {
+      "hg": 4,
+      "ag": 2,
+      "ht_hg": 3,
+      "ht_ag": 2
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 1.283,
+      "lam_a": 1.237,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.175,
+        "a": -0.175,
+        "evidence": "半场3:2→全场4:2"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.458,
+      "ag": 1.062
+    },
+    "residual": {
+      "hg": 2.542,
+      "ag": 0.938
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3",
+      "R1.coarse"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "leaky",
+      "reason": "总球6互漏"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周五008",
+    "league": "法甲",
+    "match": "勒芒 vs 图卢兹",
+    "result": {
+      "hg": 0,
+      "ag": 3,
+      "ht_hg": 0,
+      "ht_ag": 0
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 1.325,
+      "lam_a": 1.605,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": -0.525,
+        "a": 0.525,
+        "evidence": "半场0:0→全场0:3"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 0.8,
+      "ag": 2.13
+    },
+    "residual": {
+      "hg": -0.8,
+      "ag": 0.87
+    },
+    "explained_pct": 0.386,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3",
+      "R1.coarse"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "默认开放"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周五009",
+    "league": "英冠",
+    "match": "伯恩利 vs 伍尔弗",
+    "result": {
+      "hg": 1,
+      "ag": 2,
+      "ht_hg": 1,
+      "ht_ag": 1
+    },
+    "depth": "light",
+    "baseline": {
+      "lam_h": 1.19,
+      "lam_a": 1.41,
+      "source": "avg_default+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": -0.175,
+        "a": 0.175,
+        "evidence": "半场1:1→全场1:2"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "no_format"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.015,
+      "ag": 1.585
+    },
+    "residual": {
+      "hg": -0.015,
+      "ag": 0.415
+    },
+    "explained_pct": 0.449,
+    "explain_flag": "ok",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "开放对攻有来有回"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周五010",
+    "league": "西甲",
+    "match": "拉科 vs 莱万特",
+    "result": {
+      "hg": 1,
+      "ag": 1,
+      "ht_hg": 0,
+      "ht_ag": 0
+    },
+    "depth": "light",
+    "baseline": {
+      "lam_h": 1.671,
+      "lam_a": 1.399,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.0,
+        "a": -0.0,
+        "evidence": "半场0:0→全场1:1"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.671,
+      "ag": 1.399
+    },
+    "residual": {
+      "hg": -0.671,
+      "ag": -0.399
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "ok",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "默认开放"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周五011",
+    "league": "巴甲",
+    "match": "米拉索尔 vs 巴西国际",
+    "result": {
+      "hg": 2,
+      "ag": 0,
+      "ht_hg": 0,
+      "ht_ag": 0
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 1.435,
+      "lam_a": 1.165,
+      "source": "avg_default+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.35,
+        "a": -0.35,
+        "evidence": "半场0:0→全场2:0"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "no_format"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.785,
+      "ag": 0.815
+    },
+    "residual": {
+      "hg": 0.215,
+      "ag": -0.815
+    },
+    "explained_pct": 0.405,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "默认开放"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周六001",
+    "league": "澳超",
+    "match": "麦克阿瑟 vs 珀斯",
+    "result": {
+      "hg": 2,
+      "ag": 1,
+      "ht_hg": 0,
+      "ht_ag": 0
+    },
+    "depth": "light",
+    "baseline": {
+      "lam_h": 1.615,
+      "lam_a": 0.985,
+      "source": "avg_default+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.175,
+        "a": -0.175,
+        "evidence": "半场0:0→全场2:1"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "no_format"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.79,
+      "ag": 0.81
+    },
+    "residual": {
+      "hg": 0.21,
+      "ag": 0.19
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "ok",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "开放对攻有来有回"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周六002",
+    "league": "日职",
+    "match": "鹿岛鹿角 vs 长崎航海",
+    "result": {
+      "hg": 2,
+      "ag": 0,
+      "ht_hg": 2,
+      "ht_ag": 0
+    },
+    "depth": "light",
+    "baseline": {
+      "lam_h": 1.807,
+      "lam_a": 0.793,
+      "source": "avg_default+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.0,
+        "a": -0.0,
+        "evidence": "半场2:0→全场2:0"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "no_format"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.807,
+      "ag": 0.793
+    },
+    "residual": {
+      "hg": 0.193,
+      "ag": -0.793
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "ok",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "默认开放"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周六003",
+    "league": "韩职",
+    "match": "蔚山现代 vs 富川FC",
+    "result": {
+      "hg": 2,
+      "ag": 1,
+      "ht_hg": 0,
+      "ht_ag": 1
+    },
+    "depth": "light",
+    "baseline": {
+      "lam_h": 1.74,
+      "lam_a": 0.86,
+      "source": "avg_default+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.35,
+        "a": -0.35,
+        "evidence": "半场0:1→全场2:1"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "no_format"
+      }
+    ],
+    "reconstructed": {
+      "hg": 2.09,
+      "ag": 0.51
+    },
+    "residual": {
+      "hg": -0.09,
+      "ag": 0.49
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "ok",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3",
+      "R1.coarse"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "开放对攻有来有回"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周六004",
+    "league": "澳超",
+    "match": "中央海岸 vs 纽喷气机",
+    "result": {
+      "hg": 2,
+      "ag": 2,
+      "ht_hg": 1,
+      "ht_ag": 0
+    },
+    "depth": "light",
+    "baseline": {
+      "lam_h": 1.06,
+      "lam_a": 1.54,
+      "source": "avg_default+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": -0.175,
+        "a": 0.175,
+        "evidence": "半场1:0→全场2:2"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "no_format"
+      }
+    ],
+    "reconstructed": {
+      "hg": 0.885,
+      "ag": 1.715
+    },
+    "residual": {
+      "hg": 1.115,
+      "ag": 0.285
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "ok",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "开放对攻有来有回"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周六005",
+    "league": "日职",
+    "match": "柏太阳神 vs 名古屋鲸",
+    "result": {
+      "hg": 1,
+      "ag": 3,
+      "ht_hg": 1,
+      "ht_ag": 2
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 1.741,
+      "lam_a": 0.859,
+      "source": "avg_default+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": -0.175,
+        "a": 0.175,
+        "evidence": "半场1:2→全场1:3"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "no_format"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.566,
+      "ag": 1.034
+    },
+    "residual": {
+      "hg": -0.566,
+      "ag": 1.966
+    },
+    "explained_pct": 0.121,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "默认开放"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周六006",
+    "league": "日乙",
+    "match": "宫崎牛鸟 vs 磐田喜悦",
+    "result": {
+      "hg": 1,
+      "ag": 1,
+      "ht_hg": 1,
+      "ht_ag": 1
+    },
+    "depth": "light",
+    "baseline": {
+      "lam_h": 1.322,
+      "lam_a": 1.278,
+      "source": "avg_default+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.0,
+        "a": -0.0,
+        "evidence": "半场1:1→全场1:1"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "no_format"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.322,
+      "ag": 1.278
+    },
+    "residual": {
+      "hg": -0.322,
+      "ag": -0.278
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "ok",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "默认开放"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周六007",
+    "league": "英超",
+    "match": "埃弗顿 vs 切尔西",
+    "result": {
+      "hg": 0,
+      "ag": 2,
+      "ht_hg": 0,
+      "ht_ag": 0
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 1.246,
+      "lam_a": 1.644,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": -0.35,
+        "a": 0.35,
+        "evidence": "半场0:0→全场0:2"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 0.896,
+      "ag": 1.994
+    },
+    "residual": {
+      "hg": -0.896,
+      "ag": 0.006
+    },
+    "explained_pct": 0.437,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3",
+      "R1.coarse"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "默认开放"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周六009",
+    "league": "西甲",
+    "match": "西班牙人 vs 马竞",
+    "result": {
+      "hg": 0,
+      "ag": 1,
+      "ht_hg": 0,
+      "ht_ag": 0
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 1.068,
+      "lam_a": 2.002,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": -0.175,
+        "a": 0.175,
+        "evidence": "半场0:0→全场0:1"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 0.893,
+      "ag": 2.177
+    },
+    "residual": {
+      "hg": -0.893,
+      "ag": -1.177
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "开放对攻有来有回"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周六011",
+    "league": "意甲",
+    "match": "威尼斯 vs 那不勒斯",
+    "result": {
+      "hg": 1,
+      "ag": 0,
+      "ht_hg": 0,
+      "ht_ag": 0
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 0.905,
+      "lam_a": 1.615,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.175,
+        "a": -0.175,
+        "evidence": "半场0:0→全场1:0"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.08,
+      "ag": 1.44
+    },
+    "residual": {
+      "hg": -0.08,
+      "ag": -1.44
+    },
+    "explained_pct": 0.111,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "开放对攻有来有回"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周六013",
+    "league": "德甲",
+    "match": "埃沃斯堡 vs 奥格斯堡",
+    "result": {
+      "hg": 4,
+      "ag": 3,
+      "ht_hg": 3,
+      "ht_ag": 1
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 1.64,
+      "lam_a": 1.6,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": -0.175,
+        "a": 0.175,
+        "evidence": "半场3:1→全场4:3"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.465,
+      "ag": 1.775
+    },
+    "residual": {
+      "hg": 2.535,
+      "ag": 1.225
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3",
+      "R1.coarse"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "leaky",
+      "reason": "总球7互漏"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周六014",
+    "league": "德甲",
+    "match": "不来梅 vs 帕德博恩",
+    "result": {
+      "hg": 2,
+      "ag": 2,
+      "ht_hg": 0,
+      "ht_ag": 2
+    },
+    "depth": "light",
+    "baseline": {
+      "lam_h": 2.016,
+      "lam_a": 1.224,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.35,
+        "a": -0.35,
+        "evidence": "半场0:2→全场2:2"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 2.366,
+      "ag": 0.874
+    },
+    "residual": {
+      "hg": -0.366,
+      "ag": 1.126
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "ok",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3",
+      "R1.coarse"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "开放对攻有来有回"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周六015",
+    "league": "德甲",
+    "match": "沙尔克04 vs 美因茨",
+    "result": {
+      "hg": 0,
+      "ag": 1,
+      "ht_hg": 0,
+      "ht_ag": 1
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 1.444,
+      "lam_a": 1.796,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.0,
+        "a": -0.0,
+        "evidence": "半场0:1→全场0:1"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.444,
+      "ag": 1.796
+    },
+    "residual": {
+      "hg": -1.444,
+      "ag": -0.796
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "early_goal_lock",
+      "reason": "总球1"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周六016",
+    "league": "德甲",
+    "match": "汉堡 vs 斯图加特",
+    "result": {
+      "hg": 1,
+      "ag": 0,
+      "ht_hg": 0,
+      "ht_ag": 0
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 1.241,
+      "lam_a": 1.999,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.175,
+        "a": -0.175,
+        "evidence": "半场0:0→全场1:0"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.416,
+      "ag": 1.824
+    },
+    "residual": {
+      "hg": -0.416,
+      "ag": -1.824
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "开放对攻有来有回"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周六017",
+    "league": "德甲",
+    "match": "柏林联合 vs 多特蒙德",
+    "result": {
+      "hg": 0,
+      "ag": 0,
+      "ht_hg": 0,
+      "ht_ag": 0
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 1.076,
+      "lam_a": 2.164,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.0,
+        "a": -0.0,
+        "evidence": "半场0:0→全场0:0"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.076,
+      "ag": 2.164
+    },
+    "residual": {
+      "hg": -1.076,
+      "ag": -2.164
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3",
+      "R1.coarse"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "iron_grid",
+      "reason": "总球0互磨"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周六018",
+    "league": "英超",
+    "match": "布伦特 vs 利物浦",
+    "result": {
+      "hg": 1,
+      "ag": 2,
+      "ht_hg": 1,
+      "ht_ag": 0
+    },
+    "depth": "light",
+    "baseline": {
+      "lam_h": 1.509,
+      "lam_a": 1.381,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": -0.35,
+        "a": 0.35,
+        "evidence": "半场1:0→全场1:2"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.159,
+      "ag": 1.731
+    },
+    "residual": {
+      "hg": -0.159,
+      "ag": 0.269
+    },
+    "explained_pct": 0.621,
+    "explain_flag": "ok",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3",
+      "R1.coarse"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "开放对攻有来有回"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周六019",
+    "league": "英超",
+    "match": "曼城 vs 伊普斯",
+    "result": {
+      "hg": 3,
+      "ag": 2,
+      "ht_hg": 2,
+      "ht_ag": 1
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 2.379,
+      "lam_a": 0.511,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.0,
+        "a": -0.0,
+        "evidence": "半场2:1→全场3:2"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 2.379,
+      "ag": 0.511
+    },
+    "residual": {
+      "hg": 0.621,
+      "ag": 1.489
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "leaky",
+      "reason": "总球5互漏"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周六020",
+    "league": "英超",
+    "match": "富勒姆 vs 赫尔城",
+    "result": {
+      "hg": 1,
+      "ag": 0,
+      "ht_hg": 1,
+      "ht_ag": 0
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 1.943,
+      "lam_a": 0.947,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.0,
+        "a": -0.0,
+        "evidence": "半场1:0→全场1:0"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.943,
+      "ag": 0.947
+    },
+    "residual": {
+      "hg": -0.943,
+      "ag": -0.947
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3",
+      "R1.coarse"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "early_goal_lock",
+      "reason": "总球1"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周六021",
+    "league": "西甲",
+    "match": "比利亚雷 vs 埃尔切",
+    "result": {
+      "hg": 0,
+      "ag": 0,
+      "ht_hg": 0,
+      "ht_ag": 0
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 2.198,
+      "lam_a": 0.872,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.0,
+        "a": -0.0,
+        "evidence": "半场0:0→全场0:0"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 2.198,
+      "ag": 0.872
+    },
+    "residual": {
+      "hg": -2.198,
+      "ag": -0.872
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "iron_grid",
+      "reason": "总球0互磨"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周六022",
+    "league": "法甲",
+    "match": "斯特拉斯 vs 巴黎圣曼",
+    "result": {
+      "hg": 1,
+      "ag": 3,
+      "ht_hg": 1,
+      "ht_ag": 0
+    },
+    "depth": "light",
+    "baseline": {
+      "lam_h": 0.895,
+      "lam_a": 2.035,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": -0.525,
+        "a": 0.525,
+        "evidence": "半场1:0→全场1:3"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 0.37,
+      "ag": 2.56
+    },
+    "residual": {
+      "hg": 0.63,
+      "ag": 0.44
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "ok",
+    "coverage": [
+      "L1",
+      "A1",
+      "L0",
+      "E2.htft",
+      "R3",
+      "R1.coarse"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "默认开放"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周六023",
+    "league": "意甲",
+    "match": "博洛尼亚 vs 国际米兰",
+    "result": {
+      "hg": 1,
+      "ag": 3,
+      "ht_hg": 1,
+      "ht_ag": 1
+    },
+    "depth": "light",
+    "baseline": {
+      "lam_h": 0.806,
+      "lam_a": 1.714,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": -0.35,
+        "a": 0.35,
+        "evidence": "半场1:1→全场1:3"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 0.456,
+      "ag": 2.064
+    },
+    "residual": {
+      "hg": 0.544,
+      "ag": 0.936
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "ok",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3",
+      "R1.coarse"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "默认开放"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周六024",
+    "league": "英超",
+    "match": "纽卡斯尔 vs 维拉",
+    "result": {
+      "hg": 0,
+      "ag": 1,
+      "ht_hg": 0,
+      "ht_ag": 1
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 1.608,
+      "lam_a": 1.282,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.0,
+        "a": -0.0,
+        "evidence": "半场0:1→全场0:1"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.608,
+      "ag": 1.282
+    },
+    "residual": {
+      "hg": -1.608,
+      "ag": -0.282
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "early_goal_lock",
+      "reason": "总球1"
+    }
+  },
+  {
+    "code": "周六025",
+    "match": "拜仁 vs 莱红牛",
+    "error": "baseline_or_result_missing"
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周六026",
+    "league": "西甲",
+    "match": "贝蒂斯 vs 巴萨",
+    "result": {
+      "hg": 2,
+      "ag": 5,
+      "ht_hg": 1,
+      "ht_ag": 2
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 0.948,
+      "lam_a": 2.122,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": -0.35,
+        "a": 0.35,
+        "evidence": "半场1:2→全场2:5"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 0.598,
+      "ag": 2.472
+    },
+    "residual": {
+      "hg": 1.402,
+      "ag": 2.528
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "A1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2"
+    ],
+    "script": {
+      "type": "leaky",
+      "reason": "总球7互漏"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周六027",
+    "league": "荷甲",
+    "match": "特尔斯达 vs 费耶诺德",
+    "result": {
+      "hg": 3,
+      "ag": 4,
+      "ht_hg": 2,
+      "ht_ag": 3
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 0.812,
+      "lam_a": 2.358,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.0,
+        "a": -0.0,
+        "evidence": "半场2:3→全场3:4"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 0.812,
+      "ag": 2.358
+    },
+    "residual": {
+      "hg": 2.188,
+      "ag": 1.642
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3",
+      "R1.coarse"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "leaky",
+      "reason": "总球7互漏"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周六028",
+    "league": "意甲",
+    "match": "罗马 vs 热那亚",
+    "result": {
+      "hg": 2,
+      "ag": 0,
+      "ht_hg": 0,
+      "ht_ag": 0
+    },
+    "depth": "light",
+    "baseline": {
+      "lam_h": 1.903,
+      "lam_a": 0.617,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.35,
+        "a": -0.35,
+        "evidence": "半场0:0→全场2:0"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 2.253,
+      "ag": 0.267
+    },
+    "residual": {
+      "hg": -0.253,
+      "ag": -0.267
+    },
+    "explained_pct": 0.272,
+    "explain_flag": "ok",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3",
+      "R1.coarse"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "默认开放"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周六029",
+    "league": "西甲",
+    "match": "巴伦西亚 vs 毕尔巴鄂",
+    "result": {
+      "hg": 0,
+      "ag": 0,
+      "ht_hg": 0,
+      "ht_ag": 0
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 1.287,
+      "lam_a": 1.783,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.0,
+        "a": -0.0,
+        "evidence": "半场0:0→全场0:0"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.287,
+      "ag": 1.783
+    },
+    "residual": {
+      "hg": -1.287,
+      "ag": -1.783
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3",
+      "R1.coarse"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "iron_grid",
+      "reason": "总球0互磨"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周日003",
+    "league": "韩职",
+    "match": "首尔FC vs 金泉尚武",
+    "result": {
+      "hg": 2,
+      "ag": 2,
+      "ht_hg": 1,
+      "ht_ag": 1
+    },
+    "depth": "light",
+    "baseline": {
+      "lam_h": 1.914,
+      "lam_a": 0.686,
+      "source": "avg_default+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.0,
+        "a": -0.0,
+        "evidence": "半场1:1→全场2:2"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "no_format"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.914,
+      "ag": 0.686
+    },
+    "residual": {
+      "hg": 0.086,
+      "ag": 1.314
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "ok",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "默认开放"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周日004",
+    "league": "荷甲",
+    "match": "兹沃勒 vs 前进之鹰",
+    "result": {
+      "hg": 4,
+      "ag": 1,
+      "ht_hg": 0,
+      "ht_ag": 1
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 1.327,
+      "lam_a": 1.843,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.7,
+        "a": -0.7,
+        "evidence": "半场0:1→全场4:1"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 2.027,
+      "ag": 1.143
+    },
+    "residual": {
+      "hg": 1.973,
+      "ag": -0.143
+    },
+    "explained_pct": 0.398,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3",
+      "R1.coarse"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "early_crush",
+      "reason": "净胜3·半场0:1"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周日005",
+    "league": "意甲",
+    "match": "乌迪内斯 vs 莱切",
+    "result": {
+      "hg": 0,
+      "ag": 3,
+      "ht_hg": 0,
+      "ht_ag": 2
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 1.581,
+      "lam_a": 0.939,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": -0.175,
+        "a": 0.175,
+        "evidence": "半场0:2→全场0:3"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.406,
+      "ag": 1.114
+    },
+    "residual": {
+      "hg": -1.406,
+      "ag": 1.886
+    },
+    "explained_pct": 0.096,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3",
+      "R1.coarse"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "默认开放"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周日006",
+    "league": "西甲",
+    "match": "奥萨苏纳 vs 桑坦德",
+    "result": {
+      "hg": 2,
+      "ag": 0,
+      "ht_hg": 1,
+      "ht_ag": 0
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 1.718,
+      "lam_a": 1.352,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.175,
+        "a": -0.175,
+        "evidence": "半场1:0→全场2:0"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.893,
+      "ag": 1.177
+    },
+    "residual": {
+      "hg": 0.107,
+      "ag": -1.177
+    },
+    "explained_pct": 0.214,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "默认开放"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周日010",
+    "league": "英超",
+    "match": "利兹联 vs 曼联",
+    "result": {
+      "hg": 1,
+      "ag": 1,
+      "ht_hg": 0,
+      "ht_ag": 1
+    },
+    "depth": "light",
+    "baseline": {
+      "lam_h": 1.496,
+      "lam_a": 1.394,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.175,
+        "a": -0.175,
+        "evidence": "半场0:1→全场1:1"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.671,
+      "ag": 1.219
+    },
+    "residual": {
+      "hg": -0.671,
+      "ag": -0.219
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "ok",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3",
+      "R1.coarse"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "开放对攻有来有回"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周日012",
+    "league": "意甲",
+    "match": "佛罗伦萨 vs 科莫",
+    "result": {
+      "hg": 1,
+      "ag": 3,
+      "ht_hg": 1,
+      "ht_ag": 2
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 1.071,
+      "lam_a": 1.449,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": -0.175,
+        "a": 0.175,
+        "evidence": "半场1:2→全场1:3"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 0.896,
+      "ag": 1.624
+    },
+    "residual": {
+      "hg": 0.104,
+      "ag": 1.376
+    },
+    "explained_pct": 0.088,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "默认开放"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周日016",
+    "league": "荷甲",
+    "match": "格罗宁根 vs 阿贾克斯",
+    "result": {
+      "hg": 2,
+      "ag": 5,
+      "ht_hg": 0,
+      "ht_ag": 2
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 1.193,
+      "lam_a": 1.977,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": -0.175,
+        "a": 0.175,
+        "evidence": "半场0:2→全场2:5"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.018,
+      "ag": 2.152
+    },
+    "residual": {
+      "hg": 0.982,
+      "ag": 2.848
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "leaky",
+      "reason": "总球7互漏"
+    }
+  },
+  {
+    "date": "2026-10-16",
+    "code": "周日018",
+    "league": "英超",
+    "match": "诺丁汉 vs 阿森纳",
+    "result": {
+      "hg": 0,
+      "ag": 1,
+      "ht_hg": 0,
+      "ht_ag": 0
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 0.909,
+      "lam_a": 1.981,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": -0.175,
+        "a": 0.175,
+        "evidence": "半场0:0→全场0:1"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 0.734,
+      "ag": 2.156
+    },
+    "residual": {
+      "hg": -0.734,
+      "ag": -1.156
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "开放对攻有来有回"
+    }
+  },
+  {
+    "date": "2026-10-19",
+    "code": "周一001",
+    "league": "意甲",
+    "match": "蒙扎 vs 卡利亚里",
+    "result": {
+      "hg": 4,
+      "ag": 0,
+      "ht_hg": 1,
+      "ht_ag": 0
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 1.318,
+      "lam_a": 1.202,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.525,
+        "a": -0.525,
+        "evidence": "半场1:0→全场4:0"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.843,
+      "ag": 0.677
+    },
+    "residual": {
+      "hg": 2.157,
+      "ag": -0.677
+    },
+    "explained_pct": 0.27,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3",
+      "R1.coarse"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "crush",
+      "reason": "净胜4·半场已领先1:0"
+    }
+  },
+  {
+    "date": "2026-10-19",
+    "code": "周一002",
+    "league": "瑞超",
+    "match": "代格福什 vs 卡尔马",
+    "result": {
+      "hg": 1,
+      "ag": 2,
+      "ht_hg": 1,
+      "ht_ag": 2
+    },
+    "depth": "light",
+    "baseline": {
+      "lam_h": 1.187,
+      "lam_a": 1.413,
+      "source": "avg_default+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.0,
+        "a": -0.0,
+        "evidence": "半场1:2→全场1:2"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "no_format"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.187,
+      "ag": 1.413
+    },
+    "residual": {
+      "hg": -0.187,
+      "ag": 0.587
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "ok",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "默认开放"
+    }
+  },
+  {
+    "date": "2026-10-19",
+    "code": "周一003",
+    "league": "意甲",
+    "match": "帕尔马 vs 都灵",
+    "result": {
+      "hg": 0,
+      "ag": 3,
+      "ht_hg": 0,
+      "ht_ag": 2
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 1.047,
+      "lam_a": 1.473,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": -0.175,
+        "a": 0.175,
+        "evidence": "半场0:2→全场0:3"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 0.872,
+      "ag": 1.648
+    },
+    "residual": {
+      "hg": -0.872,
+      "ag": 1.352
+    },
+    "explained_pct": 0.136,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "默认开放"
+    }
+  },
+  {
+    "date": "2026-10-19",
+    "code": "周一004",
+    "league": "法乙",
+    "match": "罗德兹 vs 蒙彼利埃",
+    "result": {
+      "hg": 0,
+      "ag": 3,
+      "ht_hg": 0,
+      "ht_ag": 0
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 1.131,
+      "lam_a": 1.469,
+      "source": "avg_default+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": -0.525,
+        "a": 0.525,
+        "evidence": "半场0:0→全场0:3"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "no_format"
+      }
+    ],
+    "reconstructed": {
+      "hg": 0.606,
+      "ag": 1.994
+    },
+    "residual": {
+      "hg": -0.606,
+      "ag": 1.006
+    },
+    "explained_pct": 0.394,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3",
+      "R1.coarse"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "默认开放"
+    }
+  },
+  {
+    "date": "2026-10-19",
+    "code": "周一005",
+    "league": "英超",
+    "match": "热刺 vs 考文垂",
+    "result": {
+      "hg": 3,
+      "ag": 1,
+      "ht_hg": 1,
+      "ht_ag": 0
+    },
+    "depth": "light",
+    "baseline": {
+      "lam_h": 2.075,
+      "lam_a": 0.815,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.175,
+        "a": -0.175,
+        "evidence": "半场1:0→全场3:1"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 2.25,
+      "ag": 0.64
+    },
+    "residual": {
+      "hg": 0.75,
+      "ag": 0.36
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "ok",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3",
+      "R1.coarse"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "默认开放"
+    }
+  },
+  {
+    "date": "2026-10-19",
+    "code": "周一006",
+    "league": "西甲",
+    "match": "赫塔费 vs 巴列卡诺",
+    "result": {
+      "hg": 1,
+      "ag": 1,
+      "ht_hg": 0,
+      "ht_ag": 1
+    },
+    "depth": "light",
+    "baseline": {
+      "lam_h": 1.321,
+      "lam_a": 1.749,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": 0.175,
+        "a": -0.175,
+        "evidence": "半场0:1→全场1:1"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.496,
+      "ag": 1.574
+    },
+    "residual": {
+      "hg": -0.496,
+      "ag": -0.574
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "ok",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3",
+      "R1.coarse"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "开放对攻有来有回"
+    }
+  },
+  {
+    "date": "2026-10-19",
+    "code": "周一007",
+    "league": "葡超",
+    "match": "布拉加 vs 吉维森特",
+    "result": {
+      "hg": 1,
+      "ag": 2,
+      "ht_hg": 1,
+      "ht_ag": 0
+    },
+    "depth": "deep",
+    "baseline": {
+      "lam_h": 1.955,
+      "lam_a": 0.775,
+      "source": "avg_league_profile+had_devig"
+    },
+    "offsets": [
+      {
+        "dim": "E2.htft",
+        "h": -0.35,
+        "a": 0.35,
+        "evidence": "半场1:0→全场1:2"
+      }
+    ],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "league_regular"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.605,
+      "ag": 1.125
+    },
+    "residual": {
+      "hg": -0.605,
+      "ag": 0.875
+    },
+    "explained_pct": 0.321,
+    "explain_flag": "insufficient",
+    "coverage": [
+      "L1",
+      "L0",
+      "E2.htft",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "开放对攻有来有回"
+    }
+  },
+  {
+    "date": "2026-10-19",
+    "code": "周一008",
+    "league": "巴甲",
+    "match": "科林蒂安 vs 维多利亚",
+    "result": {
+      "hg": 1,
+      "ag": 1,
+      "ht_hg": null,
+      "ht_ag": null
+    },
+    "depth": "light",
+    "baseline": {
+      "lam_h": 1.799,
+      "lam_a": 0.801,
+      "source": "avg_default+had_devig"
+    },
+    "offsets": [],
+    "shape_factors": [
+      {
+        "dim": "L0.stage",
+        "tail_scale": 1.0,
+        "evidence": "no_format"
+      }
+    ],
+    "reconstructed": {
+      "hg": 1.799,
+      "ag": 0.801
+    },
+    "residual": {
+      "hg": -0.799,
+      "ag": 0.199
+    },
+    "explained_pct": 0.0,
+    "explain_flag": "ok",
+    "coverage": [
+      "L1",
+      "L0",
+      "R3"
+    ],
+    "missing": [
+      "A2.xg",
+      "A4",
+      "E1.red",
+      "E3",
+      "E4.gk",
+      "E5.finishing",
+      "weather",
+      "referee",
+      "R2",
+      "A1",
+      "E2.htft"
+    ],
+    "script": {
+      "type": "open_play",
+      "reason": "默认开放"
+    }
+  }
+]

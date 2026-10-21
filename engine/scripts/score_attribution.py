@@ -99,11 +99,14 @@ def load_match_record(date_str: str, code: str) -> dict | None:
     inj_h, inj_a = _injury_count(m)
     o = m.get("odds") or {}
     league_dir = LEAGUE_DIR_MAP.get(m.get("league"), "")
+    # 真实数据 10 场 odds 为空 {}（欧冠/欧罗巴杯赛+拜仁vs莱红牛）：缺三键记 None，
+    # 由 build_bill 走 error bill（baseline_or_result_missing）降级路径，禁 KeyError 崩溃。
+    had = [float(o[k]) for k in ("h", "d", "a") if k in o] if o else []
     return {
         "date": date_str, "code": code, "league": m.get("league"),
         "match": m["match"], "team_h": team_h, "team_a": team_a,
         "league_dir": league_dir,
-        "odds": [float(o["h"]), float(o["d"]), float(o["a"])],
+        "odds": had if len(had) == 3 else None,
         "pin_close": m.get("pinClose") or None,
         "elo_h": prof_h.get("elo"), "elo_a": prof_a.get("elo"),
         "inj_n_h": inj_h, "inj_n_a": inj_a,
@@ -142,7 +145,7 @@ def league_avg_total(league: str) -> tuple[float, str]:
 def build_bill(rec: dict) -> dict:
     """双栏账单组装（schema 见 impl §账单冻结版）。开发者 sszhang"""
     lam_sum, src = league_avg_total(rec["league"])
-    lam = lambda_from_had(rec["odds"], lam_sum)
+    lam = lambda_from_had(rec["odds"], lam_sum) if rec.get("odds") else None
     r = rec["result"]
     if lam is None or r["hg"] is None:
         return {"code": rec["code"], "match": rec["match"], "error": "baseline_or_result_missing"}
@@ -184,3 +187,48 @@ def build_bill(rec: dict) -> dict:
                    ([] if r["ht_hg"] is not None else ["E2.htft"]),
         "script": classify_script(rec),
     }
+
+
+def _all_codes(date_str: str) -> list[str]:
+    path = RESULTS_DIR / f"{date_str}.json"
+    if not path.exists():
+        return []
+    return [m["code"] for m in json.loads(path.read_text(encoding="utf-8")).get("matches", [])]
+
+def main() -> None:
+    """CLI：single/batch。开发者 sszhang"""
+    import argparse
+    ap = argparse.ArgumentParser()
+    sub = ap.add_subparsers(dest="cmd", required=True)
+    p1 = sub.add_parser("single"); p1.add_argument("date"); p1.add_argument("code")
+    p2 = sub.add_parser("batch");  p2.add_argument("from_date"); p2.add_argument("to_date")
+    args = ap.parse_args()
+
+    out_dir = ROOT / "data" / "04-summaries" / "score-attribution"
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    if args.cmd == "single":
+        rec = fill_rest_days(load_match_record(args.date, args.code))
+        print(json.dumps(build_bill(rec), ensure_ascii=False, indent=2))
+        return
+    d0, d1 = args.from_date, args.to_date
+    cur, bills = d0, []
+    from datetime import timedelta
+    while cur <= d1:
+        for code in _all_codes(cur):
+            rec = load_match_record(cur, code)
+            if rec is None:
+                continue
+            bill = build_bill(fill_rest_days(rec))
+            if "error" in bill:   # 缺基线场打印禁静默
+                print(f"[缺基线] {cur} {code} {rec.get('match', '')}: {bill['error']}")
+            bills.append(bill)
+        cur = (datetime.fromisoformat(cur) + timedelta(days=1)).date().isoformat()
+    path = out_dir / f"{d0}~{d1}-attribution.json"
+    path.write_text(json.dumps(bills, ensure_ascii=False, indent=2), encoding="utf-8")
+    deep = sum(1 for b in bills if b.get("depth") == "deep")
+    insuf = sum(1 for b in bills if b.get("explain_flag") == "insufficient")
+    print(f"账单 {len(bills)} 张落 {path}（deep {deep}·解释力不足 {insuf}·缺基线 {len(bills)-len([b for b in bills if 'baseline' in b])}）")
+
+if __name__ == "__main__":
+    main()
