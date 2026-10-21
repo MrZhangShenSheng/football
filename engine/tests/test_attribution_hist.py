@@ -3,9 +3,9 @@ import json
 import sys, unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from attribution_hist import hist_match_record, fd_date
-from attribution_dims import dim_red, dim_shots, dim_finishing
-from score_attribution import build_bill
+from attribution_hist import hist_match_record, fd_date, FD_LEAGUES
+from attribution_dims import dim_red, dim_shots, dim_finishing, classify_script
+from score_attribution import build_bill, LEAGUE_DIR_MAP
 
 ROW = {"Date": "11/08/2023", "HomeTeam": "Burnley", "AwayTeam": "Man City",
        "FTHG": "0", "FTAG": "3", "HTHG": "0", "HTAG": "1",
@@ -60,6 +60,23 @@ class TestEventDims(unittest.TestCase):
         self.assertAlmostEqual(off["h"], (3-1.2)*0.5, delta=0.01)
         self.assertAlmostEqual(off["a"], (0-0.8)*0.5, delta=0.01)
         self.assertIsNone(dim_finishing({"xg_h": None, "xg_a": 1.0, "result": {"hg": 1, "ag": 1}}))
+
+class TestScriptSymmetric(unittest.TestCase):
+    def test_away_crush(self):
+        rec = {"result": {"hg": 0, "ag": 3, "ht_hg": 0, "ht_ag": 1}}
+        s = classify_script(rec)
+        self.assertEqual(s["type"], "crush")          # 期1 此场走 press_counter——对称修正
+        self.assertIn("away_win", s["reason"])
+
+    def test_home_crush_no_tag(self):   # 主胜 reason 保持期1 兼容（不加 away_win）
+        s = classify_script({"result": {"hg": 4, "ag": 0, "ht_hg": 1, "ht_ag": 0}})
+        self.assertEqual(s["type"], "crush")
+        self.assertNotIn("away_win", s["reason"])
+
+class TestLeagueDirMap(unittest.TestCase):
+    def test_covers_fd_leagues(self):   # LEAGUE_DIR_MAP 以 FD_LEAGUES 16 键对齐补齐
+        for code, (league_dir, zh) in FD_LEAGUES.items():
+            self.assertEqual(LEAGUE_DIR_MAP.get(zh), league_dir, f"{code} {zh} 未对齐")
 
 HIST_REC = {"date": "2023-08-11", "kickoff": "2023-08-11", "code": "hist:t",
     "league": "英超", "match": "x vs y", "team_h": None, "team_a": None,

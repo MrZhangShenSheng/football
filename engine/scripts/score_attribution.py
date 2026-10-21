@@ -20,10 +20,14 @@ LINEUPS_DIR = ROOT / "data" / "05-trends"
 TEAMS_DIR = ROOT / "data" / "01-teams"
 
 # 02-results 中文联赛名 → league 库目录名（ rested/stage 判定用；未映射联赛相应维度标缺）
+# 期2以 attribution_hist.FD_LEAGUES 16 键对齐补齐（复制非 import·低耦合）；德比表（attribution_dims.DERBY_LEAGUE_KEYS）不动
 LEAGUE_DIR_MAP = {
     "意甲": "italy-serie-a", "英超": "england-premier", "西甲": "spain-laliga",
     "德甲": "germany-bundesliga", "法甲": "france-ligue1", "荷甲": "netherlands-eredivisie",
     "葡超": "portugal-primeira", "美职": "usa", "欧冠": "", "亚冠": "",
+    "英冠": "england-championship", "西乙": "spain-liga2", "德乙": "germany-bundesliga2",
+    "意乙": "italy-serie-b", "法乙": "france-ligue2", "比甲": "belgium-first-a",
+    "土超": "turkey-super-lig", "希超": "greece-super", "俄超": "russia-premier",
 }
 
 def _parse_score(s: str | None) -> tuple[int, int] | None:

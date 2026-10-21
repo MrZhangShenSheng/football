@@ -103,30 +103,38 @@ def dim_injury_coarse(rec: dict) -> dict | None:
             "evidence": f"伤停人数差 h{nh}/a{na}(未量化)"}
 
 def classify_script(rec: dict) -> dict:
-    """L5 剧本规则定档（期1可判6/8：红牌/门将/默契待期2画面数据）。开发者 sszhang"""
+    """L5 剧本规则定档（期1可判6/8：红牌/门将/默契待期2画面数据）。
+    期2对称版：flip=(net<0) 统一到胜方视角判定（|net| 与胜方半场差），
+    type 语义对主客对称；客胜 reason 带 away_win 标记（主胜/平局保持期1原文兼容）。
+    开发者 sszhang"""
     r = rec.get("result") or {}
     hg, ag = r.get("hg"), r.get("ag")
     if hg is None:
         return {"type": "unclassified", "reason": "no_result"}
     hth, hta = r.get("ht_hg"), r.get("ht_ag")
     net, tot = hg - ag, hg + ag
-    if net >= 3:
-        if hth is not None and (hth - hta) >= 1:
-            return {"type": "crush", "reason": f"净胜{net}·半场已领先{hth}:{hta}"}
-        return {"type": "early_crush", "reason": f"净胜{net}·半场{hth}:{hta}"}
+    flip = net < 0                        # 客胜→胜方视角翻转
+    anet, tag = abs(net), ("·away_win" if flip else "")
+    if anet >= 3:
+        if hth is not None:
+            half_lead = (hta - hth) if flip else (hth - hta)   # 胜方半场净差
+            if half_lead >= 1:
+                return {"type": "crush", "reason": f"净胜{anet}·半场已领先{hth}:{hta}{tag}"}
+        return {"type": "early_crush", "reason": f"净胜{anet}·半场{hth}:{hta}{tag}"}
     if net == 0 and tot <= 1:
         return {"type": "iron_grid", "reason": f"总球{tot}互磨"}
     if tot >= 5:
-        return {"type": "leaky", "reason": f"总球{tot}互漏"}
+        return {"type": "leaky", "reason": f"总球{tot}互漏{tag}"}
     if hth is not None:
         s2_net = (hg - hth) - (ag - hta)
-        if hth != hta and s2_net * (hth - hta) > 0 and abs(s2_net) >= 2:
-            return {"type": "press_counter", "reason": "半场领先方下半场继续扩大=压上反杀族"}
-        if abs(net) <= 1 and s2_net != 0:
-            return {"type": "open_play", "reason": "开放对攻有来有回"}
+        half_diff = (hta - hth) if flip else (hth - hta)
+        if half_diff != 0 and s2_net * half_diff > 0 and abs(s2_net) >= 2:
+            return {"type": "press_counter", "reason": f"半场领先方下半场继续扩大=压上反杀族{tag}"}
+        if anet <= 1 and s2_net != 0:
+            return {"type": "open_play", "reason": f"开放对攻有来有回{tag}"}
     if tot <= 1:
-        return {"type": "early_goal_lock", "reason": f"总球{tot}"}
-    return {"type": "open_play", "reason": "默认开放"}
+        return {"type": "early_goal_lock", "reason": f"总球{tot}{tag}"}
+    return {"type": "open_play", "reason": f"默认开放{tag}"}
 
 
 # ── 期2 事件维度 ──
