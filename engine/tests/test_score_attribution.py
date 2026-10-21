@@ -118,3 +118,37 @@ class TestScript(unittest.TestCase):
         self.assertEqual(off["dim"], "R1.coarse")
         self.assertIsNone(off["h"])  # 期1不贡献球数
         self.assertIn("3", off["evidence"])
+
+
+from score_attribution import build_bill
+
+class TestBuildBill(unittest.TestCase):
+    def test_bill_self_consistent(self):
+        rec = load_match_record("2026-10-19", "周一001")
+        rec = fill_rest_days(rec)
+        bill = build_bill(rec)
+        # 双栏量纲分离
+        self.assertIn("offsets", bill); self.assertIn("shape_factors", bill)
+        for off in bill["offsets"]:
+            self.assertIsInstance(off["h"], float)      # offsets 全为数值（R1粗档 None 不进 offsets）
+        # 自洽：reconstructed = baseline + Σoffsets
+        lam_h, lam_a = bill["baseline"]["lam_h"], bill["baseline"]["lam_a"]
+        sum_h = lam_h + sum(o["h"] for o in bill["offsets"])
+        self.assertAlmostEqual(bill["reconstructed"]["hg"], round(sum_h, 3), delta=0.01)
+        # 深挖档判定：4-0 vs 基线≈1.3:1.1 → 偏移 2.7+1.1>1.5
+        self.assertEqual(bill["depth"], "deep")
+        self.assertLess(bill["explained_pct"], 0.5)   # 期1缺画面维度，此场解释力必然不足
+        self.assertEqual(bill["explain_flag"], "insufficient")
+        self.assertIn("E5.finishing", bill["missing"])  # 缺项诚实标注
+        self.assertEqual(bill["script"]["type"], "crush")
+
+    def test_bill_light_when_market_nailed(self):
+        # 构造：实际 1:1 vs 基线 1.2:1.0 → 总偏移 0.2+0.1<1.5 → light 档
+        rec = {"date": "2026-10-19", "code": "测试", "league": "意甲",
+               "match": "x vs y", "team_h": None, "team_a": None, "league_dir": "italy-serie-a",
+               "odds": [2.25, 3.10, 2.76], "pin_close": None,
+               "elo_h": None, "elo_a": None, "inj_n_h": 0, "inj_n_a": 0,
+               "rest_days_h": None, "rest_days_a": None,
+               "result": {"hg": 1, "ag": 1, "ht_hg": 0, "ht_ag": 0}}
+        bill = build_bill(rec)
+        self.assertEqual(bill["depth"], "light")

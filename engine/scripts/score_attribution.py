@@ -10,6 +10,8 @@ SCRIPTS_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPTS_DIR))
 
 import strength_loaders as sl  # load_aliases/zh_to_id 复用
+from attribution_dims import (lambda_from_had, dim_elo, dim_stage, dim_derby,
+                              dim_htft, dim_injury_coarse, classify_script)
 
 ROOT = SCRIPTS_DIR.parents[1]
 RESULTS_DIR = ROOT / "data" / "02-results"
@@ -117,3 +119,68 @@ def fill_rest_days(rec: dict) -> dict:
             d0 = datetime.fromisoformat(rec["date"]).date()
             rec[f"rest_days_{side}"] = (d0 - datetime.fromisoformat(last).date()).days
     return rec
+
+
+# 账单组装（Task 7）：常量+league_avg_total+build_bill
+DEEP_THRESHOLD = 1.5   # |实际-基线|总偏移≥此值=深挖档（设计§一深度分档）
+EXPLAIN_FLOOR = 0.5    # explained_pct<此值且 deep → insufficient（防谬误铁律3）
+LEAGUE_AVG_DEFAULT = 2.6  # 画像读不到时的兜底场均总球（evidence 标 default）
+
+def league_avg_total(league: str) -> tuple[float, str]:
+    """00-leagues 画像 standings 算场均总球（Σgf/Σplayed×2，两队合计口径）；读不到用默认。开发者 sszhang"""
+    path = ROOT / "data" / "00-leagues" / f"{LEAGUE_DIR_MAP.get(league, '')}.json"
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        gf = sum(s.get("gf", 0) for s in data.get("standings", []))
+        played = sum(s.get("played", 0) for s in data.get("standings", []))
+        if gf and played:
+            return round(2 * gf / played, 2), "league_profile"
+    except Exception:
+        pass
+    return LEAGUE_AVG_DEFAULT, "default"
+
+def build_bill(rec: dict) -> dict:
+    """双栏账单组装（schema 见 impl §账单冻结版）。开发者 sszhang"""
+    lam_sum, src = league_avg_total(rec["league"])
+    lam = lambda_from_had(rec["odds"], lam_sum)
+    r = rec["result"]
+    if lam is None or r["hg"] is None:
+        return {"code": rec["code"], "match": rec["match"], "error": "baseline_or_result_missing"}
+    lam_h, lam_a = lam
+
+    offs = [o for o in (dim_elo(rec["elo_h"], rec["elo_a"]),
+                        dim_htft(rec)) if o and o["h"] is not None]
+    shapes = [s for s in (dim_stage(rec), dim_derby(rec["league"], rec["team_h"], rec["team_a"]))
+              if s]
+    coarse = dim_injury_coarse(rec)  # 标记型：进 coverage 不进 offsets
+
+    sum_h = lam_h + sum(o["h"] for o in offs)
+    sum_a = lam_a + sum(o["a"] for o in offs)
+    resid_h, resid_a = r["hg"] - sum_h, r["ag"] - sum_a
+    dev = abs(r["hg"] - lam_h) + abs(r["ag"] - lam_a)
+    depth = "deep" if dev >= DEEP_THRESHOLD else "light"
+    denom = max(dev, 0.01)
+    explained = 1.0 - min(abs(resid_h) + abs(resid_a), denom) / denom
+    flag = "insufficient" if (depth == "deep" and explained < EXPLAIN_FLOOR) else "ok"
+
+    covered = ["L1"] + (["A1"] if rec["elo_h"] is not None else []) + \
+              ["L0", "E2.htft" if r["ht_hg"] is not None else None, "R3",
+               "derby" if any(s["dim"] == "derby" for s in shapes) else None] + \
+              (["R1.coarse"] if coarse else [])
+    return {
+        "date": rec["date"], "code": rec["code"], "league": rec["league"],
+        "match": rec["match"],
+        "result": r, "depth": depth,
+        "baseline": {"lam_h": lam_h, "lam_a": lam_a,
+                     "source": f"avg_{src}+had_devig"},
+        "offsets": offs, "shape_factors": shapes,
+        "reconstructed": {"hg": round(sum_h, 3), "ag": round(sum_a, 3)},
+        "residual": {"hg": round(resid_h, 3), "ag": round(resid_a, 3)},
+        "explained_pct": round(explained, 3), "explain_flag": flag,
+        "coverage": [c for c in covered if c],
+        "missing": ["A2.xg", "A4", "E1.red", "E3", "E4.gk", "E5.finishing",
+                    "weather", "referee", "R2"] +
+                   ([] if rec["elo_h"] is not None else ["A1"]) +
+                   ([] if r["ht_hg"] is not None else ["E2.htft"]),
+        "script": classify_script(rec),
+    }
