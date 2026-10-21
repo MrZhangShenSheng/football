@@ -1,0 +1,80 @@
+{
+  "task": "Task5 频次表 v1 判据预注册（铁律4：判据先于任何统计代码落盘）",
+  "frozenAt": "2026-10-22",
+  "declaration": "冻结于 2026-10-22·判据不得中途改。band 定义/转正门槛/P75 分位口径/verdict 规则一旦冻结，改动=断代出 v2 新文件，非原地修订。",
+  "universe": {
+    "source": "data/04-summaries/score-attribution/hist/*-attribution.json（60 文件）",
+    "filter": "含 baseline 键的账单（error bill 剔除）",
+    "expectedN": 16398
+  },
+  "reportRequirements": {
+    "perTable": ["n_on", "n_off", "rate_on", "rate_off", "diff", "ci_lo_on", "diff_ci_lo"],
+    "ci_lo_on": "on 组 band 命中率的 Wilson 95% 下限（z=1.96）",
+    "diff": "rate_on - rate_off（on 组 vs off 组同 band 格概率差）",
+    "diff_ci_lo": "两比例差不合并标准误正态近似 95% CI 下限：diff - 1.96*sqrt(p_on(1-p_on)/n_on + p_off(1-p_off)/n_off)",
+    "noDataRule": "n_on=0 时 rate/diff/CI 全置 null、verdict=no_data，禁止编造（历史窗缺口如实标注原因）"
+  },
+  "gate": {
+    "rule": "diff_ci_lo > 0 且 n_on >= 150 → calibration_ready（可进 v3.6 校准通道）；否则 observational",
+    "rationale": "转正门取 diff 的 CI 下限（非 on 组单侧 Wilson 下限）：单侧下限>0 仅证命中率非零，无区分力；对照口径的存在意义=on 相对 off 的格概率抬升显著为正。两个 CI 均落盘，任何人可按另一口径复核。"
+  },
+  "tables": [
+    {
+      "id": "t1_derby_vs_rest",
+      "name": "德比 vs 非德比",
+      "dimKey": "shape_factors[].dim == 'derby'",
+      "onRule": "账单 shape_factors 含 dim=='derby' 条目（历史卷 team_h None 场 dim_derby 返回 None → 归 off 组）",
+      "band": "总球>=4（result.hg + result.ag >= 4）",
+      "comparison": "on=德比 vs off=非德比 的总球≥4 格概率差",
+      "verdictCap": null
+    },
+    {
+      "id": "t2_redcard_vs_none",
+      "name": "红牌≥1 vs 无红牌",
+      "dimKey": "offsets[].dim == 'E1.red'",
+      "onRule": "账单 offsets 含 dim=='E1.red' 条目（含张数近似口径 h1/a0 等）",
+      "band": "总球>=4",
+      "comparison": "on=有红牌 vs off=无红牌 的总球≥4 格概率差",
+      "verdictCap": null
+    },
+    {
+      "id": "t3_press_counter_family",
+      "name": "压上反杀族 vs 其余",
+      "dimKey": "script.type in {press_counter, crush, early_crush}",
+      "onRule": "账单 script.type 属三族（计划文档'半场差≥1 且下半场扩大'简化为剧本类型直判）",
+      "band": "净胜>=3（|result.hg - result.ag| >= 3）",
+      "comparison": "on=反杀族 vs off=其余 的净胜≥3 格概率差",
+      "verdictCap": "observational（构造性表格：classify_script 以净胜≥3 为 crush/early_crush 前置、press_counter=半场领先+下半场扩大≥2 ⟹ on 组 margin≥3 必然成立 rate_on≡1.0，diff CI 通过只反映定义不含预测信息——恒 observational 不进校准门，本表价值=族规模 n_on 与 off 组基线率）"
+    },
+    {
+      "id": "t4_fifa_virus",
+      "name": "FIFA 病毒窗后 vs 窗外",
+      "dimKey": "shape_factors[].dim == 'L0.stage' 且 evidence 含 'fifa_virus'（计划文档写作 dim_stage，账本实际字段=L0.stage，同一维度）",
+      "onRule": "L0.stage 形状因子 evidence 字符串含 fifa_virus",
+      "band": "总球>=4",
+      "comparison": "on=病毒窗场 vs off=窗外场 的总球≥4 格概率差",
+      "knownGap": "历史卷 _formats 的 FIFA 窗口只录了 2026 的——历史季（2324/2425/2526）窗口不在档案 → evidence 不含 fifa_virus → n_on 预期仅 2026 卷数十场，不足 150 必 observational；历史窗日历待补后断代重跑",
+      "verdictCap": null
+    },
+    {
+      "id": "t5_xg_divergence_p75",
+      "name": "xG 背离 top 四分位 vs 其余（2627 子集）",
+      "dimKey": "offsets[].dim == 'E5.finishing' 在场子集（fd HxG/AxG 覆盖场）",
+      "onRule": "子集内按背离度=max(|E5.h|,|E5.a|) 升序，P75=statistics.quantiles(n=4, method='inclusive') 第三四分位；on=背离度>=P75",
+      "band": "总球>=4",
+      "comparison": "on=top 四分位 vs off=其余（子集内部对照，非全量）",
+      "verdictCap": null
+    },
+    {
+      "id": "t6_england_referee_red",
+      "name": "英格兰裁判红牌分布（观察表·无转正门）",
+      "dimKey": "账单 league in {英超, 英冠}（fd 代码 E0/E1）",
+      "onRule": "无 on/off 对照——观察表：红牌率（offsets 含 E1.red 场次占比）总分布 + by referee top/bottom 各 5",
+      "band": null,
+      "comparison": "无门无 band，纯分布观察",
+      "knownGap": "hist 账单 referee 维度 100% in missing（无裁判字段）——by referee 部分预期 no_data 如实输出，不编造；总分布（E0/E1 整体+分联赛红牌率）照常输出",
+      "verdictCap": "observational（预注册即定为观察表，无论数值恒不进校准门）"
+    }
+  ],
+  "developersNote": "开发者 sszhang"
+}
