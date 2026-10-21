@@ -1,5 +1,5 @@
 {
- "ranAt": "2026-10-20T17:03:38",
+ "ranAt": "2026-10-21T14:13:37",
  "overall": "yellow",
  "results": {
   "ledgerFreshness": {
@@ -12,7 +12,7 @@
   },
   "fdSymptom": {
    "level": "yellow",
-   "msg": "近 14 天回填 203 场·无 pinClose 126（62%）——fd 断粮期已知挂账"
+   "msg": "近 14 天回填 213 场·无 pinClose 136（64%）——fd 断粮期已知挂账"
   },
   "dataCheckProbe": {
    "level": "green",
@@ -23,8 +23,8 @@
    "msg": "0 个 corrupt 转存"
   },
   "stalePending": {
-   "level": "green",
-   "msg": "0 张久挂无note"
+   "level": "yellow",
+   "msg": "15 张久挂无note: ['P448', 'P449', 'P450', 'P451']"
   },
   "s8Reason": {
    "level": "green",

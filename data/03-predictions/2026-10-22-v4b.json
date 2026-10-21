@@ -1,0 +1,240 @@
+{
+ "date": "2026-10-22",
+ "model": "predictor_v4b",
+ "nCalc": 10,
+ "nSkip": 0,
+ "skips": [],
+ "status": "样本内回测未过盲测——对照源非生产概率源（docs/predictor_v4b.md 收编标注）",
+ "matches": [
+  {
+   "code": "周三004",
+   "league": "欧冠",
+   "match": "科莫 vs 曼联",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.19,
+     "odds": 7.0
+    },
+    {
+     "pick": "0:0",
+     "signal": 0.1128,
+     "odds": 20.0
+    }
+   ],
+   "marketHot": {
+    "pick": "1:1",
+    "odds": 7.0
+   },
+   "fusionTop": null,
+   "agreeWithMarket": true
+  },
+  {
+   "code": "周三005",
+   "league": "欧冠",
+   "match": "里尔 vs 加拉塔萨",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.215,
+     "odds": 7.0
+    },
+    {
+     "pick": "0:0",
+     "signal": 0.17,
+     "odds": 17.0
+    }
+   ],
+   "marketHot": {
+    "pick": "1:1",
+    "odds": 7.0
+   },
+   "fusionTop": null,
+   "agreeWithMarket": true
+  },
+  {
+   "code": "周三006",
+   "league": "西甲",
+   "match": "莱万特 vs 毕尔巴鄂",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.215,
+     "odds": 5.55
+    },
+    {
+     "pick": "0:0",
+     "signal": 0.17,
+     "odds": 10.5
+    }
+   ],
+   "marketHot": {
+    "pick": "1:1",
+    "odds": 5.55
+   },
+   "fusionTop": null,
+   "agreeWithMarket": true
+  },
+  {
+   "code": "周三007",
+   "league": "欧冠",
+   "match": "皇马 vs 莱红牛",
+   "v4bTop2": [
+    {
+     "pick": "1:0",
+     "signal": 0.2306,
+     "odds": 17.0
+    },
+    {
+     "pick": "2:1",
+     "signal": 0.2194,
+     "odds": 9.0
+    }
+   ],
+   "marketHot": {
+    "pick": "s1sh",
+    "odds": 6.0
+   },
+   "fusionTop": null,
+   "agreeWithMarket": false
+  },
+  {
+   "code": "周三008",
+   "league": "欧冠",
+   "match": "维拉 vs 维京",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.2,
+     "odds": 12.5
+    },
+    {
+     "pick": "2:2",
+     "signal": 0.1562,
+     "odds": 17.0
+    }
+   ],
+   "marketHot": {
+    "pick": "2:1",
+    "odds": 7.5
+   },
+   "fusionTop": null,
+   "agreeWithMarket": false
+  },
+  {
+   "code": "周三009",
+   "league": "欧冠",
+   "match": "贝蒂斯 vs 费耶诺德",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.205,
+     "odds": 9.0
+    },
+    {
+     "pick": "2:2",
+     "signal": 0.095,
+     "odds": 12.0
+    }
+   ],
+   "marketHot": {
+    "pick": "2:1",
+    "odds": 7.0
+   },
+   "fusionTop": null,
+   "agreeWithMarket": false
+  },
+  {
+   "code": "周三010",
+   "league": "欧冠",
+   "match": "拜仁 vs 阿森纳",
+   "v4bTop2": [
+    {
+     "pick": "1:1",
+     "signal": 0.11,
+     "odds": 7.5
+    },
+    {
+     "pick": "2:2",
+     "signal": 0.105,
+     "odds": 11.0
+    }
+   ],
+   "marketHot": {
+    "pick": "2:1",
+    "odds": 7.0
+   },
+   "fusionTop": null,
+   "agreeWithMarket": false
+  },
+  {
+   "code": "周三011",
+   "league": "欧冠",
+   "match": "里斯本 vs LASK林茨",
+   "v4bTop2": [
+    {
+     "pick": "1:0",
+     "signal": 0.3384,
+     "odds": 12.0
+    },
+    {
+     "pick": "2:0",
+     "signal": 0.2791,
+     "odds": 8.5
+    }
+   ],
+   "marketHot": {
+    "pick": "s1sh",
+    "odds": 7.5
+   },
+   "fusionTop": null,
+   "agreeWithMarket": false
+  },
+  {
+   "code": "周三012",
+   "league": "欧冠",
+   "match": "布鲁日 vs 朗斯",
+   "v4bTop2": [
+    {
+     "pick": "1:0",
+     "signal": 0.1562,
+     "odds": 11.5
+    },
+    {
+     "pick": "2:1",
+     "signal": 0.1313,
+     "odds": 7.0
+    }
+   ],
+   "marketHot": {
+    "pick": "2:1",
+    "odds": 7.0
+   },
+   "fusionTop": null,
+   "agreeWithMarket": false
+  },
+  {
+   "code": "周三013",
+   "league": "解放者杯",
+   "match": "帕梅拉斯 vs 弗鲁米嫩",
+   "v4bTop2": [
+    {
+     "pick": "1:0",
+     "signal": 0.1406,
+     "odds": 5.7
+    },
+    {
+     "pick": "2:1",
+     "signal": 0.1181,
+     "odds": 6.8
+    }
+   ],
+   "marketHot": {
+    "pick": "1:0",
+    "odds": 5.7
+   },
+   "fusionTop": null,
+   "agreeWithMarket": true
+  }
+ ]
+}
