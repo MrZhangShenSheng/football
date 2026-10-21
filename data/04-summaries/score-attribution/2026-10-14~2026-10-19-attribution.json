@@ -97,14 +97,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "leaky",
@@ -161,18 +161,18 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
-      "reason": "开放对攻有来有回"
+      "reason": "开放对攻有来有回·away_win"
     }
   },
   {
@@ -225,18 +225,18 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
-      "type": "open_play",
-      "reason": "默认开放"
+      "type": "crush",
+      "reason": "净胜4·半场已领先0:3·away_win"
     }
   },
   {
@@ -289,14 +289,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
@@ -353,18 +353,18 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
-      "type": "press_counter",
-      "reason": "半场领先方下半场继续扩大=压上反杀族"
+      "type": "crush",
+      "reason": "净胜4·半场已领先0:2·away_win"
     }
   },
   {
@@ -417,14 +417,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
@@ -481,18 +481,18 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
-      "reason": "开放对攻有来有回"
+      "reason": "开放对攻有来有回·away_win"
     }
   },
   {
@@ -545,18 +545,18 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "leaky",
-      "reason": "总球5互漏"
+      "reason": "总球5互漏·away_win"
     }
   },
   {
@@ -609,18 +609,18 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "early_goal_lock",
-      "reason": "总球1"
+      "reason": "总球1·away_win"
     }
   },
   {
@@ -679,14 +679,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "crush",
@@ -743,14 +743,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "early_crush",
@@ -807,14 +807,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "iron_grid",
@@ -872,14 +872,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "iron_grid",
@@ -899,9 +899,9 @@
     },
     "depth": "light",
     "baseline": {
-      "lam_h": 1.133,
-      "lam_a": 1.467,
-      "source": "avg_default+had_devig"
+      "lam_h": 1.305,
+      "lam_a": 1.715,
+      "source": "avg_league_profile+had_devig"
     },
     "offsets": [
       {
@@ -919,35 +919,40 @@
       }
     ],
     "reconstructed": {
-      "hg": 1.133,
-      "ag": 1.467
+      "hg": 1.305,
+      "ag": 1.715
     },
     "residual": {
-      "hg": -0.133,
-      "ag": -0.467
+      "hg": -0.305,
+      "ag": -0.715
     },
     "explained_pct": 0.0,
     "explain_flag": "ok",
     "coverage": [
       "L1",
       "L0",
-      "E2.htft"
+      "E2.htft",
+      "R3"
     ],
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
       "reason": "默认开放"
+    },
+    "rest_evidence": {
+      "h": null,
+      "a": 28
     }
   },
   {
@@ -1000,18 +1005,18 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
-      "reason": "默认开放"
+      "reason": "默认开放·away_win"
     }
   },
   {
@@ -1065,14 +1070,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "crush",
@@ -1134,14 +1139,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
@@ -1200,14 +1205,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
@@ -1270,14 +1275,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "leaky",
@@ -1340,18 +1345,18 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
-      "type": "open_play",
-      "reason": "默认开放"
+      "type": "early_crush",
+      "reason": "净胜3·半场0:0·away_win"
     },
     "rest_evidence": {
       "h": 28,
@@ -1371,9 +1376,9 @@
     },
     "depth": "light",
     "baseline": {
-      "lam_h": 1.19,
-      "lam_a": 1.41,
-      "source": "avg_default+had_devig"
+      "lam_h": 1.169,
+      "lam_a": 1.381,
+      "source": "avg_league_profile+had_devig"
     },
     "offsets": [
       {
@@ -1391,35 +1396,40 @@
       }
     ],
     "reconstructed": {
-      "hg": 1.015,
-      "ag": 1.585
+      "hg": 0.994,
+      "ag": 1.556
     },
     "residual": {
-      "hg": -0.015,
-      "ag": 0.415
+      "hg": 0.006,
+      "ag": 0.444
     },
-    "explained_pct": 0.449,
+    "explained_pct": 0.429,
     "explain_flag": "ok",
     "coverage": [
       "L1",
       "L0",
-      "E2.htft"
+      "E2.htft",
+      "R3"
     ],
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
-      "reason": "开放对攻有来有回"
+      "reason": "开放对攻有来有回·away_win"
+    },
+    "rest_evidence": {
+      "h": 28,
+      "a": 27
     }
   },
   {
@@ -1473,14 +1483,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
@@ -1541,14 +1551,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
@@ -1605,14 +1615,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
@@ -1669,14 +1679,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
@@ -1734,14 +1744,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
@@ -1798,14 +1808,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
@@ -1862,18 +1872,18 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
-      "reason": "默认开放"
+      "reason": "默认开放·away_win"
     }
   },
   {
@@ -1926,14 +1936,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
@@ -1992,18 +2002,18 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
-      "reason": "默认开放"
+      "reason": "默认开放·away_win"
     },
     "rest_evidence": {
       "h": 6,
@@ -2061,18 +2071,18 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
-      "reason": "开放对攻有来有回"
+      "reason": "开放对攻有来有回·away_win"
     },
     "rest_evidence": {
       "h": 8,
@@ -2130,14 +2140,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
@@ -2200,14 +2210,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "leaky",
@@ -2270,14 +2280,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
@@ -2339,18 +2349,18 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "early_goal_lock",
-      "reason": "总球1"
+      "reason": "总球1·away_win"
     },
     "rest_evidence": {
       "h": 27,
@@ -2408,14 +2418,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
@@ -2478,14 +2488,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "iron_grid",
@@ -2548,18 +2558,18 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
-      "reason": "开放对攻有来有回"
+      "reason": "开放对攻有来有回·away_win"
     },
     "rest_evidence": {
       "h": 7,
@@ -2617,14 +2627,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "leaky",
@@ -2687,14 +2697,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "early_goal_lock",
@@ -2756,14 +2766,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "iron_grid",
@@ -2826,18 +2836,18 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
-      "reason": "默认开放"
+      "reason": "默认开放·away_win"
     },
     "rest_evidence": {
       "h": 28,
@@ -2896,18 +2906,18 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
-      "reason": "默认开放"
+      "reason": "默认开放·away_win"
     },
     "rest_evidence": {
       "h": 1,
@@ -2965,18 +2975,18 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "early_goal_lock",
-      "reason": "总球1"
+      "reason": "总球1·away_win"
     },
     "rest_evidence": {
       "h": 1,
@@ -3040,18 +3050,18 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
-      "type": "leaky",
-      "reason": "总球7互漏"
+      "type": "crush",
+      "reason": "净胜3·半场已领先1:2·away_win"
     },
     "rest_evidence": {
       "h": 1,
@@ -3110,18 +3120,18 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "leaky",
-      "reason": "总球7互漏"
+      "reason": "总球7互漏·away_win"
     },
     "rest_evidence": {
       "h": 28,
@@ -3180,14 +3190,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
@@ -3250,14 +3260,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "iron_grid",
@@ -3318,14 +3328,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
@@ -3384,14 +3394,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "early_crush",
@@ -3454,18 +3464,18 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
-      "type": "open_play",
-      "reason": "默认开放"
+      "type": "crush",
+      "reason": "净胜3·半场已领先0:2·away_win"
     },
     "rest_evidence": {
       "h": 6,
@@ -3523,14 +3533,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
@@ -3593,14 +3603,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
@@ -3662,18 +3672,18 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
-      "reason": "默认开放"
+      "reason": "默认开放·away_win"
     },
     "rest_evidence": {
       "h": 8,
@@ -3731,18 +3741,18 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
-      "type": "leaky",
-      "reason": "总球7互漏"
+      "type": "crush",
+      "reason": "净胜3·半场已领先0:2·away_win"
     },
     "rest_evidence": {
       "h": 30,
@@ -3800,18 +3810,18 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
-      "reason": "开放对攻有来有回"
+      "reason": "开放对攻有来有回·away_win"
     },
     "rest_evidence": {
       "h": 7,
@@ -3870,14 +3880,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "crush",
@@ -3938,18 +3948,18 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
-      "reason": "默认开放"
+      "reason": "默认开放·away_win"
     }
   },
   {
@@ -4003,18 +4013,18 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
-      "type": "open_play",
-      "reason": "默认开放"
+      "type": "crush",
+      "reason": "净胜3·半场已领先0:2·away_win"
     },
     "rest_evidence": {
       "h": 10,
@@ -4034,9 +4044,9 @@
     },
     "depth": "deep",
     "baseline": {
-      "lam_h": 1.131,
-      "lam_a": 1.469,
-      "source": "avg_default+had_devig"
+      "lam_h": 1.119,
+      "lam_a": 1.451,
+      "source": "avg_league_profile+had_devig"
     },
     "offsets": [
       {
@@ -4054,12 +4064,12 @@
       }
     ],
     "reconstructed": {
-      "hg": 0.606,
-      "ag": 1.994
+      "hg": 0.594,
+      "ag": 1.976
     },
     "residual": {
-      "hg": -0.606,
-      "ag": 1.006
+      "hg": -0.594,
+      "ag": 1.024
     },
     "explained_pct": 0.394,
     "explain_flag": "insufficient",
@@ -4067,23 +4077,28 @@
       "L1",
       "L0",
       "E2.htft",
+      "R3",
       "R1.coarse"
     ],
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
-      "type": "open_play",
-      "reason": "默认开放"
+      "type": "early_crush",
+      "reason": "净胜3·半场0:0·away_win"
+    },
+    "rest_evidence": {
+      "h": 32,
+      "a": 31
     }
   },
   {
@@ -4138,14 +4153,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
@@ -4208,14 +4223,14 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
@@ -4277,18 +4292,18 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
-      "A1"
+      "A1",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
-      "reason": "开放对攻有来有回"
+      "reason": "开放对攻有来有回·away_win"
     },
     "rest_evidence": {
       "h": 11,
@@ -4337,15 +4352,15 @@
     "missing": [
       "A2.xg",
       "A4",
-      "E1.red",
       "E3",
-      "E4.gk",
-      "E5.finishing",
       "weather",
       "referee",
       "R2",
       "A1",
-      "E2.htft"
+      "E2.htft",
+      "E1.red",
+      "E4.shots",
+      "E5.finishing"
     ],
     "script": {
       "type": "open_play",
