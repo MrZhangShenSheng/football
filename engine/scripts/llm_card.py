@@ -1041,6 +1041,8 @@ def _attribution_block(card: dict) -> list[str]:
     if rd.get("ok"):
         d = rd["data"]
         L.append(f"  德比: {'是·尾格系数' + str(d.get('tailScale')) if d.get('isDerby') else '否'}")
+    else:
+        L.append("  德比: 队名解析失败（非德比表四国联赛常见）")
     for nm in (home_nm, away_nm):
         rs = aq.run_query(["script", nm, "10"])
         if rs.get("ok"):
@@ -1051,8 +1053,7 @@ def _attribution_block(card: dict) -> list[str]:
         else:
             L.append(f"  剧本指纹: {nm} 无账本覆盖（fd 外联赛或缺档）")
     L.append("  ─ 可查（判断中需要时让会话代查）────")
-    L.append("  formats <联赛> | derby <A> <B> | freq <t1-t6> |")
-    L.append("  script <队> [N] | h2h-dist <A> <B> | bill <日期> <码> | dim <E1..E5>")
+    L.append("  " + " | ".join(v.get("usage") or k for k, v in aq.load_registry().items()))
     return L
 
 

@@ -32,7 +32,6 @@ def run_query(argv: list[str]) -> dict:
     """总线入口：argv[0]=命令名，注册表路由到实现。命令实现在 Task 2 挂入。开发者 sszhang"""
     if not argv:
         return {"ok": False, "error": "空查询"}
-    cmd = argv[0].replace("-", "_").replace("h2h_dist", "h2h_dist")
     reg = load_registry()
     # 命令名归一：h2h-dist → h2h_dist
     canon = {"h2h-dist": "h2h_dist"}
@@ -46,8 +45,6 @@ def run_query(argv: list[str]) -> dict:
 
 HANDLERS: dict[str, object] = {}   # Task 2 逐命令挂入
 
-# attribution_query.py 追加
-import glob as _glob
 from collections import Counter
 
 HIST_DIR = ROOT / "data" / "04-summaries" / "score-attribution" / "hist"
@@ -95,13 +92,16 @@ def _cmd_formats(args):
     doc = json.loads((ROOT / "data" / "00-leagues" / "_formats.json").read_text(encoding="utf-8"))
     entry = doc.get(args[0])
     if not entry:
-        return {"ok": False, "error": f"档案无 {args[0]}（有: 意甲 英超 西甲 德甲 法甲 荷甲 葡超 美职 欧冠）"}
+        have = " ".join(k for k in doc if not k.startswith("_"))
+        return {"ok": False, "error": f"档案无 {args[0]}（有: {have}）"}
     return {"ok": True, "data": entry}
 
 def _cmd_derby(args):
     if len(args) != 2:
         return {"ok": False, "error": "用法: derby <队A> <队B>"}
     tid_a = _zh_id(args[0]); tid_b = _zh_id(args[1])
+    if tid_a is None or tid_b is None:
+        return {"ok": False, "error": "队名解析失败（derby 仅中文队名·fd 英文用 script/h2h-dist）"}
     # 直接读表（dim_derby 需要联赛中文名——这里按全部联赛组扫）
     table = json.loads((ROOT / "data" / "00-leagues" / "_derbies.json").read_text(encoding="utf-8"))
     hit = None
@@ -137,9 +137,14 @@ def _cmd_script(args):
     fd_name = _resolve_fd_name(args[0])
     if not fd_name:
         return {"ok": False, "error": f"队名 {args[0]} 解析不到 fd 名（别名表无 fd 键或中文不识别）"}
-    n = int(args[1]) if len(args) > 1 else 10
+    try:
+        n = int(args[1]) if len(args) > 1 else 10
+    except ValueError:
+        return {"ok": False, "error": "N 须为整数"}
     rows = [b for b in _load_hist_bills()
-            if fd_name in (b.get("match") or "") and b.get("script", {}).get("type")]
+            # I1 子串碰撞修正：match 串按 " vs " 切 token 后等值比对（Celta 不得计入 Celta B 场）
+            if fd_name in (b.get("match") or "").split(" vs ")
+            and b.get("script", {}).get("type")]
     rows.sort(key=lambda b: b["date"], reverse=True)
     rows = rows[:n]
     dist = Counter(b["script"]["type"] for b in rows)
@@ -170,8 +175,9 @@ def _cmd_h2h_dist(args):
         return {"ok": False, "error": "队名解析失败（至少一队无 fd 名）"}
     dist = Counter()
     for b in _load_hist_bills():
-        m = b.get("match") or ""
-        if fa in m and fb in m and b.get("result"):
+        # I1 子串碰撞修正：两侧集合相等比对（Cadiz vs Celta B 不算 Cadiz~Celta 交手）
+        sides = set((b.get("match") or "").split(" vs "))
+        if {fa, fb} == sides and b.get("result"):
             dist[f"{b['result']['hg']}:{b['result']['ag']}"] += 1
     return {"ok": True, "data": {"teams": f"{fa} vs {fb}", "n": sum(dist.values()),
             "dist": dict(dist.most_common(10)),

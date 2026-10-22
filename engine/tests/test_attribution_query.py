@@ -21,7 +21,21 @@ class TestBus(unittest.TestCase):
         reg = load_registry()
         self.assertEqual(reg["bill"]["status"], "active")
 
-# test_attribution_query.py 追加
+    def test_retired_cmd_really_unrouted(self):   # M3① retired 路由真测（tmp 注册表）
+        import json, os, tempfile
+        from unittest import mock
+        import attribution_query as aq
+        with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as f:
+            json.dump({"bill": {"cmd": "bill", "status": "retired"}}, f)
+            tmp = f.name
+        try:
+            with mock.patch.object(aq, "REGISTRY_PATH", Path(tmp)):
+                r = aq.run_query(["bill", "2026-01-01", "周一001"])
+            self.assertFalse(r["ok"])
+            self.assertIn("未知命令", r["error"])
+        finally:
+            os.remove(tmp)
+
 class TestSevenCmds(unittest.TestCase):
     def test_cmd_formats(self):
         r = run_query(["formats", "意甲"])
@@ -54,6 +68,44 @@ class TestSevenCmds(unittest.TestCase):
         self.assertEqual(sum(d["dist"].values()), d["n"])
         self.assertGreater(d["n"], 0)
 
+    def test_script_no_substring_collision(self):   # I1：Celta 不得计入 Celta B 场
+        import attribution_query as aq
+        for name in ("Celta", "Celta B"):
+            expect = sum(1 for b in aq._load_hist_bills()
+                         if name in (b.get("match") or "").split(" vs ")
+                         and b.get("script", {}).get("type"))
+            r = run_query(["script", name, "999"])
+            self.assertTrue(r["ok"])
+            self.assertEqual(r["data"]["n"], expect)
+
+    def test_script_int_guard(self):   # M1：N 非整数禁 traceback
+        r = run_query(["script", "阿森纳", "abc"])
+        self.assertFalse(r["ok"])
+        self.assertIn("N 须为整数", r["error"])
+
+    def test_h2h_no_substring_collision(self):   # I1：Sociedad B 场不算 Sociedad~Celta 交手
+        from unittest import mock
+        import attribution_query as aq
+        fake = [{"match": "Sociedad B vs Celta", "result": {"hg": 1, "ag": 1}},
+                {"match": "Celta vs Sociedad", "result": {"hg": 2, "ag": 0}}]
+        with mock.patch.object(aq, "_load_hist_bills", return_value=fake):
+            r = aq.run_query(["h2h-dist", "Celta", "Sociedad"])
+        self.assertTrue(r["ok"])
+        self.assertEqual(r["data"]["n"], 1)
+        self.assertEqual(r["data"]["dist"], {"2:0": 1})
+
+    def test_cmd_derby_unresolvable_error(self):   # M5：fd 英文名解析不到 tid → error 非 false
+        r = run_query(["derby", "Arsenal", "Tottenham"])
+        self.assertFalse(r["ok"])
+        self.assertIn("队名解析失败", r["error"])
+
+    def test_cmd_freq_t5_source_consistency(self):   # M3③：freq 出数=源表原值
+        import json
+        src = json.loads((ROOT / "data" / "04-summaries" / "score-attribution"
+                          / "freq-tables.json").read_text(encoding="utf-8"))
+        r = run_query(["freq", "t5"])
+        self.assertEqual(r["data"]["n_on"], src["tables"]["t5_xg_divergence_p75"]["n_on"])
+
     def test_cmd_bill_leak_gate(self):
         r = run_query(["bill", "2099-01-01", "周一001"])
         self.assertFalse(r["ok"])
@@ -74,7 +126,6 @@ class TestSevenCmds(unittest.TestCase):
         self.assertTrue(r["ok"])
         self.assertIn("红牌", r["data"]["desc"])
 
-# test_attribution_query.py 追加（Task 3·view 渲染）
 class TestViewBlock(unittest.TestCase):
     def test_attribution_block(self):
         from llm_card import _attribution_block
@@ -89,6 +140,21 @@ class TestViewBlock(unittest.TestCase):
         self.assertIn("可查", joined)          # 菜单行
         self.assertIn("freq", joined)
 
+    def test_attribution_block_derby_fail_render(self):   # M5：解析失败渲染失败行禁渲染"否"
+        from llm_card import _attribution_block
+        lines = _attribution_block({"league": "欧冠", "match": "Celta vs Osasuna",
+                                    "layers": {}})
+        line = next(l for l in lines if l.strip().startswith("德比"))
+        self.assertIn("队名解析失败", line)
+
+    def test_attribution_block_menu_registry_driven(self):   # M2：菜单=注册表键序渲染
+        from llm_card import _attribution_block
+        lines = _attribution_block({"league": "欧冠", "match": "Celta vs Osasuna",
+                                    "layers": {}})
+        menu = next(l for l in lines if l.strip().startswith("formats"))
+        reg = load_registry()
+        self.assertEqual(menu.strip().split(" | "), [reg[k]["usage"] for k in reg])
+
     def test_view_contains_block(self):
         # view 冒烟：真实 10-20 卡渲染含归因数据节
         import subprocess
@@ -99,6 +165,7 @@ class TestViewBlock(unittest.TestCase):
         # 卡可能不存在→跳过（CI 数据依赖）；存在则必须含节
         if out.returncode == 0:
             self.assertIn("归因数据", out.stdout)
+            self.assertLess(out.stdout.index("归因数据"), out.stdout.index("缺口"))   # M3② 位置：菜单在缺口节前
         else:
             self.skipTest("10-20 周二001 卡不存在")
 
