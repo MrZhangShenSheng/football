@@ -13,6 +13,7 @@ import strength_loaders as sl  # load_aliases/zh_to_id 复用
 from attribution_dims import (lambda_from_had, dim_elo, dim_stage, dim_derby,
                               dim_htft, dim_injury_coarse, classify_script,
                               dim_red, dim_shots, dim_finishing)
+from attribution_rolling import dim_style, dim_discipline, dim_xg_form
 
 ROOT = SCRIPTS_DIR.parents[1]
 RESULTS_DIR = ROOT / "data" / "02-results"
@@ -137,6 +138,10 @@ EXPLAIN_FLOOR = 0.5    # explained_pct<此值且 deep → insufficient（防谬�
 LEAGUE_AVG_DEFAULT = 2.6  # 画像读不到时的兜底场均总球（evidence 标 default）
 # 期2 事件维度条件项键序（coverage/missing 按维度在场与否条件列出·列序稳定）
 EVENT_DIM_KEYS = ("E1.red", "E4.shots", "E5.finishing")
+# 期3 赛前滚动维度键序：A2.xg/A4.style 入 offsets，A4.discipline 入 shape_factors。
+# 与 EVENT_DIM_KEYS 的区别=赛前可观测（见 research/dim_expansion_feasibility.py 双筛），
+# 只有这组补进频次表才可能解锁系数校准。
+PREMATCH_DIM_KEYS = ("A2.xg", "A4.style", "A4.discipline")
 
 def league_avg_total(league: str) -> tuple[float, str]:
     """00-leagues 画像 standings 算场均总球（Σgf/Σplayed×2，两队合计口径）；读不到用默认。开发者 sszhang"""
@@ -161,15 +166,20 @@ def build_bill(rec: dict) -> dict:
                 "error": "baseline_or_result_missing"}
     lam_h, lam_a = lam
 
+    rh, ra = rec.get("roll_h"), rec.get("roll_a")   # 期3 赛前滚动画像（无则各维度返 None）
     offs = [o for o in (dim_elo(rec["elo_h"], rec["elo_a"]),
                         dim_htft(rec), dim_red(rec),
-                        dim_shots(rec), dim_finishing(rec))
+                        dim_shots(rec), dim_finishing(rec),
+                        dim_xg_form(rh, ra), dim_style(rh, ra))
             if o and o["h"] is not None]
     # 期2 事件维度在场集合：coverage/missing 条件化的判定源（维度返回非 None ⟺ 进 offs）
     evt_dims = {o["dim"] for o in offs}
-    shapes = [s for s in (dim_stage(rec), dim_derby(rec["league"], rec["team_h"], rec["team_a"]))
+    shapes = [s for s in (dim_stage(rec), dim_derby(rec["league"], rec["team_h"], rec["team_a"]),
+                          dim_discipline(rh, ra))
               if s]
     coarse = dim_injury_coarse(rec)  # 标记型：进 coverage 不进 offsets
+    # A4.discipline 是形状型（进 shapes 不进 offs），故在场集合要并两边
+    all_dims = evt_dims | {s["dim"] for s in shapes}
 
     sum_h = lam_h + sum(o["h"] for o in offs)
     sum_a = lam_a + sum(o["a"] for o in offs)
@@ -187,7 +197,8 @@ def build_bill(rec: dict) -> dict:
                "R3" if rest_filled else None,
                "derby" if any(s["dim"] == "derby" for s in shapes) else None] + \
               (["R1.coarse"] if coarse else []) + \
-              [d for d in EVENT_DIM_KEYS if d in evt_dims]
+              [d for d in EVENT_DIM_KEYS if d in evt_dims] + \
+              [d for d in PREMATCH_DIM_KEYS if d in all_dims]
     bill = {
         "date": rec["date"], "code": rec["code"], "league": rec["league"],
         "match": rec["match"],
@@ -199,14 +210,26 @@ def build_bill(rec: dict) -> dict:
         "residual": {"hg": round(resid_h, 3), "ag": round(resid_a, 3)},
         "explained_pct": round(explained, 3), "explain_flag": flag,
         "coverage": [c for c in covered if c],
-        "missing": ["A2.xg", "A4", "E3", "weather", "referee", "R2"] +
+        # A2.xg/A4.* 从固定 missing 移出，改按在场条件列（期3 接入滚动画像）
+        "missing": ["E3", "weather", "referee", "R2"] +
                    ([] if elo_both else ["A1"]) +
                    ([] if r["ht_hg"] is not None else ["E2.htft"]) +
-                   [d for d in EVENT_DIM_KEYS if d not in evt_dims],
+                   [d for d in EVENT_DIM_KEYS if d not in evt_dims] +
+                   [d for d in PREMATCH_DIM_KEYS if d not in all_dims],
         "script": classify_script(rec),
     }
     if rest_filled:   # R3 证据随账：None 侧保留 None
         bill["rest_evidence"] = {"h": rec["rest_days_h"], "a": rec["rest_days_a"]}
+    if rh and ra:   # 期3 滚动窗口随账：频次表按此分组（赛前可观测条件变量）
+        bill["rolling_evidence"] = {
+            "window_h": rh["n"], "window_a": ra["n"],
+            "st_h": round(rh["st"], 2) if rh.get("st") is not None else None,
+            "st_a": round(ra["st"], 2) if ra.get("st") is not None else None,
+            "fouls_h": round(rh["fouls"], 2) if rh.get("fouls") is not None else None,
+            "fouls_a": round(ra["fouls"], 2) if ra.get("fouls") is not None else None,
+            "xg_h": round(rh["xg"], 2) if rh.get("xg") is not None else None,
+            "xg_a": round(ra["xg"], 2) if ra.get("xg") is not None else None,
+        }
     return bill
 
 

@@ -80,17 +80,29 @@ def hist_match_record(row: dict, league_dir: str, league_zh: str) -> dict:
 
 from score_attribution import build_bill
 
+import attribution_rolling as ar
+
+_hist_cache: dict | None = None
+
+def _team_history() -> dict:
+    """fd 全量滚动历史（全联赛共用一份·跨联赛队名不冲突）。开发者 sszhang"""
+    global _hist_cache
+    if _hist_cache is None:
+        _hist_cache = ar.build_team_history()
+    return _hist_cache
+
 def run_batch(season: str, codes: list[str]) -> None:
     """60 CSV（或指定子集）→ hist/{code}_{season}-attribution.json。开发者 sszhang"""
     out_dir = ROOT / "data" / "04-summaries" / "score-attribution" / "hist"
     out_dir.mkdir(parents=True, exist_ok=True)
+    hist = _team_history()
     for code in codes:
         league_dir, league_zh = FD_LEAGUES[code]
         path = FD_DIR_PATH / f"{code}_{season}.csv"
         if not path.exists():
             print(f"[跳过] {code}_{season} 无文件"); continue
         rows = list(csv.DictReader(open(path, encoding="latin-1")))
-        bills, unmatched, no_odds = [], 0, 0
+        bills, unmatched, no_odds, n_roll = [], 0, 0, 0
         for row in rows:
             if not (row.get("FTHG") or "").strip():
                 continue
@@ -99,11 +111,17 @@ def run_batch(season: str, codes: list[str]) -> None:
                 unmatched += 1
             if rec["odds"] is None:
                 no_odds += 1
+            # 赛前滚动画像：锚=本场日期，窗口严格早于本场（见 attribution_rolling 时间线纪律）
+            rec["roll_h"] = ar.rolling_profile(hist, row["HomeTeam"], rec["date"])
+            rec["roll_a"] = ar.rolling_profile(hist, row["AwayTeam"], rec["date"])
+            if rec["roll_h"] and rec["roll_a"]:
+                n_roll += 1
             bills.append(build_bill(rec))
         out = out_dir / f"{code}_{season}-attribution.json"
         out.write_text(json.dumps(bills, ensure_ascii=False), encoding="utf-8")
         ok = len([b for b in bills if "baseline" in b])
-        print(f"{code}_{season}: {len(rows)}行 出账{ok} 队名未匹配{unmatched} odds缺{no_odds}")
+        print(f"{code}_{season}: {len(rows)}行 出账{ok} 队名未匹配{unmatched}"
+              f" odds缺{no_odds} 滚动画像双边齐{n_roll}")
 
 def main() -> None:
     """batch-hist CLI。开发者 sszhang"""

@@ -1,0 +1,175 @@
+{
+ "generatedAt": "2026-10-22",
+ "prereg": "freq-prereg-r2.json",
+ "universe": {
+  "bills": 16398,
+  "style_pool": 15343,
+  "disc_pool": 15343,
+  "xg_pool": 349
+ },
+ "thresholds": {
+  "style_gap_p75": 1.7,
+  "st_median": 4.2,
+  "st_p75": 5.0,
+  "st_p25": 3.6,
+  "fouls_p25": 11.05,
+  "fouls_p75": 13.45,
+  "xg_sum_p75": 3.58
+ },
+ "gate": "三闸同时成立 → calibration_ready：(1) diff_ci_lo > 0；(2) n_on >= 150；(3) 条件变量赛前可观测。否则 observational / blocked_from_calibration。",
+ "circularityNote": "on 条件全部来自本场之前滚动均值，band 全部来自本场 result，无共用输入 ⟹ 设计上免疫 r1 的 t3/t5 循环缺陷",
+ "tables": {
+  "r2t1_style_gap_p75": {
+   "n_on": 3799,
+   "n_off": 11544,
+   "rate_on": 0.4109,
+   "rate_off": 0.3284,
+   "diff": 0.0825,
+   "diff_ci_lo": 0.0647,
+   "preObservable": true,
+   "verdict": "observational",
+   "verdict_reason": "前三闸过（diff_ci_lo>0 且 n_on>=150 且赛前可观测），但未过第四闸：样本外对市场概率增量 <0.5%（r2 实测 0.01%）⟹ 不发校准授权。若后续换条件变量重跑，须同步重跑 research/r2_market_increment.py。",
+   "gate_status": {
+    "ci_lo": true,
+    "n_on": true,
+    "pre_observable": true,
+    "oos_increment": false,
+    "note": "第四闸·样本外概率增量：频次 diff 显著只说明分组与格形相关，不说明条件变量带来市场之外的信息。须跑 research/r2_market_increment.py 口径（时间切分 70/30·对照『仅市场』基准），样本外 log-loss 相对改善 >= 0.5% 才放行。r2 实测 0.01% ⟹ 五表降级。"
+   },
+   "pool_n": 15343
+  },
+  "r2t2_style_both_high": {
+   "n_on": 4451,
+   "n_off": 10892,
+   "rate_on": 0.3565,
+   "rate_off": 0.2737,
+   "diff": 0.0829,
+   "diff_ci_lo": 0.0665,
+   "preObservable": true,
+   "verdict": "observational",
+   "verdict_reason": "前三闸过（diff_ci_lo>0 且 n_on>=150 且赛前可观测），但未过第四闸：样本外对市场概率增量 <0.5%（r2 实测 0.01%）⟹ 不发校准授权。若后续换条件变量重跑，须同步重跑 research/r2_market_increment.py。",
+   "gate_status": {
+    "ci_lo": true,
+    "n_on": true,
+    "pre_observable": true,
+    "oos_increment": false,
+    "note": "第四闸·样本外概率增量：频次 diff 显著只说明分组与格形相关，不说明条件变量带来市场之外的信息。须跑 research/r2_market_increment.py 口径（时间切分 70/30·对照『仅市场』基准），样本外 log-loss 相对改善 >= 0.5% 才放行。r2 实测 0.01% ⟹ 五表降级。"
+   },
+   "pool_n": 15343
+  },
+  "r2t3_discipline_low_fouls": {
+   "n_on": 3935,
+   "n_off": 11408,
+   "rate_on": 0.351,
+   "rate_off": 0.2794,
+   "diff": 0.0716,
+   "diff_ci_lo": 0.0546,
+   "preObservable": true,
+   "verdict": "observational",
+   "verdict_reason": "前三闸过（diff_ci_lo>0 且 n_on>=150 且赛前可观测），但未过第四闸：样本外对市场概率增量 <0.5%（r2 实测 0.01%）⟹ 不发校准授权。若后续换条件变量重跑，须同步重跑 research/r2_market_increment.py。",
+   "gate_status": {
+    "ci_lo": true,
+    "n_on": true,
+    "pre_observable": true,
+    "oos_increment": false,
+    "note": "第四闸·样本外概率增量：频次 diff 显著只说明分组与格形相关，不说明条件变量带来市场之外的信息。须跑 research/r2_market_increment.py 口径（时间切分 70/30·对照『仅市场』基准），样本外 log-loss 相对改善 >= 0.5% 才放行。r2 实测 0.01% ⟹ 五表降级。"
+   },
+   "pool_n": 15343
+  },
+  "r2t4_discipline_high_fouls": {
+   "n_on": 3920,
+   "n_off": 11423,
+   "rate_on": 0.2827,
+   "rate_off": 0.2256,
+   "diff": 0.0571,
+   "diff_ci_lo": 0.041,
+   "preObservable": true,
+   "verdict": "observational",
+   "verdict_reason": "前三闸过（diff_ci_lo>0 且 n_on>=150 且赛前可观测），但未过第四闸：样本外对市场概率增量 <0.5%（r2 实测 0.01%）⟹ 不发校准授权。若后续换条件变量重跑，须同步重跑 research/r2_market_increment.py。",
+   "gate_status": {
+    "ci_lo": true,
+    "n_on": true,
+    "pre_observable": true,
+    "oos_increment": false,
+    "note": "第四闸·样本外概率增量：频次 diff 显著只说明分组与格形相关，不说明条件变量带来市场之外的信息。须跑 research/r2_market_increment.py 口径（时间切分 70/30·对照『仅市场』基准），样本外 log-loss 相对改善 >= 0.5% 才放行。r2 实测 0.01% ⟹ 五表降级。"
+   },
+   "pool_n": 15343
+  },
+  "r2t5_xgform_high": {
+   "n_on": 88,
+   "n_off": 261,
+   "rate_on": 0.5114,
+   "rate_off": 0.3525,
+   "diff": 0.1589,
+   "diff_ci_lo": 0.0394,
+   "preObservable": true,
+   "verdict": "observational",
+   "verdict_reason": "未过转正门：n_on=88<150",
+   "pool_n": 349
+  },
+  "r2t6_style_mismatch": {
+   "n_on": 1931,
+   "n_off": 13412,
+   "rate_on": 0.3941,
+   "rate_off": 0.3423,
+   "diff": 0.0518,
+   "diff_ci_lo": 0.0286,
+   "preObservable": true,
+   "verdict": "observational",
+   "verdict_reason": "前三闸过（diff_ci_lo>0 且 n_on>=150 且赛前可观测），但未过第四闸：样本外对市场概率增量 <0.5%（r2 实测 0.01%）⟹ 不发校准授权。若后续换条件变量重跑，须同步重跑 research/r2_market_increment.py。",
+   "gate_status": {
+    "ci_lo": true,
+    "n_on": true,
+    "pre_observable": true,
+    "oos_increment": false,
+    "note": "第四闸·样本外概率增量：频次 diff 显著只说明分组与格形相关，不说明条件变量带来市场之外的信息。须跑 research/r2_market_increment.py 口径（时间切分 70/30·对照『仅市场』基准），样本外 log-loss 相对改善 >= 0.5% 才放行。r2 实测 0.01% ⟹ 五表降级。"
+   },
+   "pool_n": 15343
+  }
+ },
+ "selfCheck": {
+  "trigger": "5/6 表前三闸全过,与 prereg 先验预期相反 ⟹ 按 feedback_backtest_discipline 第3条强制自证伪",
+  "scripts": [
+   "research/r2_selfcheck.py(S1-S4)",
+   "research/r2_market_increment.py(M1-M3)"
+  ],
+  "S1_random_baseline": {
+   "pass_rate": 0.04,
+   "trials": 200,
+   "verdict": "判正:随机分组仅4%过门"
+  },
+  "S2_market_strata": {
+   "layers_significant": "3/4",
+   "verdict": "判正:λ_sum四分档内3档CI仍>0"
+  },
+  "S3_proxy": {
+   "corr_gap_vs_lamgap": 0.4455,
+   "verdict": "判正但擦线:未达0.5代理阈值"
+  },
+  "S4_timeline": {
+   "window_range": [
+    5,
+    10
+   ],
+   "verdict": "判正:窗口在约定范围"
+  },
+  "M1_in_sample": {
+   "delta_logloss": 0.0003,
+   "rel_pct": 0.05,
+   "verdict": "判负:<0.001"
+  },
+  "M2_out_of_sample": {
+   "delta_logloss": 9e-05,
+   "rel_pct": 0.01,
+   "train_n": 10740,
+   "test_n": 4603,
+   "verdict": "实质为零(0.01%<<0.5%)"
+  },
+  "M3_continuous_control": {
+   "t_gap": 3.41,
+   "t_lamgap": 19.16,
+   "verdict": "判正但t由样本量驱动,lamgap的t=19.16才是真解释变量"
+  },
+  "conclusion": "六表全 observational。频次差显著(diff+0.05~0.08·CI全离0·n数千)且过 S1-S4 四项自证伪,但 M1/M2 显示对市场概率增量实质为零:样本外 log-loss 仅改善 0.01%。t=3.41 来自 n=15343 的样本量而非效应量。与 memory/feedback_odds_no_alpha 和 model-vs-market-baseline 一致:频次差≠概率增量,统计显著≠可用。已据此在 freq_stats_r2 加第四闸 GATE_MIN_OOS_LOGLOSS_GAIN_PCT=0.5。"
+ }
+}

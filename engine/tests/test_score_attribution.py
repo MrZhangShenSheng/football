@@ -157,25 +157,30 @@ class TestBuildBill(unittest.TestCase):
 
 
 class TestCLI(unittest.TestCase):
-    def test_main_single(self):
+    # Windows 默认 locale 为 GBK，subprocess text=True 会用 GBK 解子进程 stdout；
+    # 账单 evidence 含中文维度说明，命中 GBK 不可解字节即抛 UnicodeDecodeError。
+    # 显式 encoding="utf-8" + PYTHONIOENCODING 固定两端口径。
+    @staticmethod
+    def _run(code: str):
+        import os
         import subprocess
         from score_attribution import ROOT
-        out = subprocess.run(
+        env = {**os.environ, "PYTHONIOENCODING": "utf-8"}
+        return subprocess.run(
             [sys.executable, "engine/scripts/score_attribution.py",
-             "single", "2026-10-19", "周一001"],
-            capture_output=True, text=True, cwd=str(ROOT))
+             "single", "2026-10-19", code],
+            capture_output=True, text=True, encoding="utf-8",
+            cwd=str(ROOT), env=env)
+
+    def test_main_single(self):
+        out = self._run("周一001")
         self.assertEqual(out.returncode, 0, out.stderr)
         bill = json.loads(out.stdout)
         self.assertEqual(bill["code"], "周一001")
 
     def test_main_single_unknown_code(self):
         # 未知码守卫：error bill JSON 落 stdout + exit 1，禁裸 traceback
-        import subprocess
-        from score_attribution import ROOT
-        out = subprocess.run(
-            [sys.executable, "engine/scripts/score_attribution.py",
-             "single", "2026-10-19", "不存在999"],
-            capture_output=True, text=True, cwd=str(ROOT))
+        out = self._run("不存在999")
         self.assertEqual(out.returncode, 1)
         bill = json.loads(out.stdout)
         self.assertEqual(bill, {"code": "不存在999", "match": None,
