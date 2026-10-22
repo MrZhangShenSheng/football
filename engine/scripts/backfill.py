@@ -442,10 +442,17 @@ def backfill(day_limit: str | None = None) -> dict:
                         if rec.get("pinClose") and rec.get("clv") is None and rec.get("odds"):
                             oi = pick_outcome_idx(rec)
                             if oi is not None and str(rec.get("pick") or "").startswith("HAD "):
-                                rec["clv"] = round(
-                                    float(rec["odds"]) * rec["pinClose"][oi] - 1, 4)
-                                rec["clv_note"] = "pinClose精确口径(v2四键)"
-                                data["_dirty"] = True
+                                # odds 可能是按选项分价的 dict（方案卡 matches 口径，
+                                # 见 721 行同构处理）——HAD 取 pick 对应那一向，取不到则跳过
+                                raw = rec["odds"]
+                                if isinstance(raw, dict):
+                                    key = str(rec.get("pick") or "").split(" ", 1)[-1].strip()
+                                    raw = raw.get(key) or raw.get(("h", "d", "a")[oi])
+                                if isinstance(raw, (int, float, str)) and str(raw).strip():
+                                    rec["clv"] = round(
+                                        float(raw) * rec["pinClose"][oi] - 1, 4)
+                                    rec["clv_note"] = "pinClose精确口径(v2四键)"
+                                    data["_dirty"] = True
                 # 已回填但无 preSnapshots → 历史轮本地补挂桥（时序库晚于该轮回填时补指针，幂等）
                 if not rec.get("preSnapshots") and rec.get("code"):
                     dd = rec.get("date") or data.get("date")
