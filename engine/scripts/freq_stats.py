@@ -17,6 +17,16 @@ ENGLAND_LEAGUES = {"英超", "英冠"}                          # t6 子集（pr
 GATE_CI_LO = 0.0        # 转正门：diff_ci_lo > 0
 GATE_MIN_N_ON = 150     # 转正门：n_on >= 150
 
+# 转正门第三闸：条件变量赛前可观测性。原 gate 只查显著性+样本量，blocked 表补足样本
+# 即可拿到 calibration_ready，但 v3.6 生成器预测时取不到赛后变量 ⟹ 永不可用。
+# 普查见 research/freq_table_observability_audit.py（4/6 表赛后才有）。
+POSTMATCH_CONDITION_TABLES = {
+    "t2_redcard_vs_none": "fd HR/AR 红牌张数赛后才有",
+    "t3_press_counter_family": "classify_script 依赖 result 全场/半场比分",
+    "t5_xg_divergence_p75": "实际进球与比赛 xG 皆赛后才有（非赛前预测 xG）",
+    "t6_england_referee_red": "fd HR/AR 红牌赛后才有·referee 源未接入",
+}
+
 def load_bills() -> list[dict]:
     """hist/ 全部账本加载（forward 账本期3并入）。开发者 sszhang"""
     bills = []
@@ -53,10 +63,16 @@ def _diff_ci_lo(t: dict) -> float | None:
     se = math.sqrt(p_on * (1 - p_on) / t["n_on"] + p_off * (1 - p_off) / t["n_off"])
     return round(t["diff"] - 1.96 * se, 4)
 
-def _verdict(t: dict, cap: str | None) -> tuple[str, str]:
-    """转正门判定（prereg gate 冻结）：no_data / calibration_ready / observational。开发者 sszhang"""
+def _verdict(t: dict, cap: str | None, tid: str = "") -> tuple[str, str]:
+    """转正门判定（prereg gate 冻结 + 可观测性第三闸）：
+    no_data / blocked_from_calibration / calibration_ready / observational。开发者 sszhang"""
     if t["n_on"] == 0:
         return "no_data", "on 组 0 场（历史窗缺口）——prereg noDataRule：不编造"
+    why = POSTMATCH_CONDITION_TABLES.get(tid)
+    if why:   # 硬闸：与显著性和样本量无关，补足样本亦不解封
+        return "blocked_from_calibration", (
+            f"条件变量赛后才有（{why}）——生成器预测时取不到，"
+            f"补足 n_on>=150 亦不得进校准通道")
     if cap:
         return "observational", f"verdictCap（prereg 冻结）：{cap}"
     if t["diff_ci_lo"] is not None and t["diff_ci_lo"] > GATE_CI_LO and t["n_on"] >= GATE_MIN_N_ON:
@@ -112,7 +128,7 @@ def main() -> None:
     ):
         t = freq_table(bills if tid != "t5_xg_divergence_p75" else e5_subset, on, band)
         t["diff_ci_lo"] = _diff_ci_lo(t)
-        verdict, reason = _verdict(t, cap)
+        verdict, reason = _verdict(t, cap, tid)
         t.update({"verdict": verdict, "verdict_reason": reason})
         tables[tid] = t
     tables["t5_xg_divergence_p75"]["subset_n"] = len(e5_subset)
@@ -131,8 +147,9 @@ def main() -> None:
                       for lg in sorted(ENGLAND_LEAGUES)},
         "by_referee_top5": None, "by_referee_bottom5": None,
         "by_referee_note": "no_data：hist 账单 referee 维度 100% in missing（prereg knownGap 冻结预期）——不编造，待 referee 源接入",
-        "verdict": "observational",
-        "verdict_reason": "prereg 预注册即观察表无门（verdictCap 冻结）",
+        "verdict": "blocked_from_calibration",
+        "verdict_reason": ("prereg 预注册即观察表无门（verdictCap 冻结）‖ 追加第三闸："
+                           f"条件变量赛后才有（{POSTMATCH_CONDITION_TABLES['t6_england_referee_red']}）"),
     }
 
     out = {"generatedAt": prereg["frozenAt"], "prereg": PREREG_PATH.name,

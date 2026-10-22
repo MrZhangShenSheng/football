@@ -26,8 +26,8 @@
    "diff": 0.0073,
    "ci_lo_on": 0.2885,
    "diff_ci_lo": -0.0113,
-   "verdict": "observational",
-   "verdict_reason": "未过转正门：diff_ci_lo>0 且 n_on>=150 需同时成立（prereg gate）"
+   "verdict": "blocked_from_calibration",
+   "verdict_reason": "条件变量赛后才有（fd HR/AR 红牌张数赛后才有）——生成器预测时取不到，补足 n_on>=150 亦不得进校准通道"
   },
   "t3_press_counter_family": {
    "n_on": 2417,
@@ -37,8 +37,8 @@
    "diff": 1.0,
    "ci_lo_on": 0.9984,
    "diff_ci_lo": 1.0,
-   "verdict": "observational",
-   "verdict_reason": "verdictCap（prereg 冻结）：构造性表格：classify_script 净胜≥3 前置 ⟹ rate_on≡1.0，diff 无预测信息"
+   "verdict": "blocked_from_calibration",
+   "verdict_reason": "条件变量赛后才有（classify_script 依赖 result 全场/半场比分）——生成器预测时取不到，补足 n_on>=150 亦不得进校准通道"
   },
   "t4_fifa_virus": {
    "n_on": 49,
@@ -59,10 +59,30 @@
    "diff": 0.2755,
    "ci_lo_on": 0.4957,
    "diff_ci_lo": 0.1826,
-   "verdict": "observational",
-   "verdict_reason": "未过转正门：diff_ci_lo>0 且 n_on>=150 需同时成立（prereg gate）",
+   "verdict": "blocked_from_calibration",
+   "verdict_reason": "条件变量赛后才有（实际进球与比赛 xG 皆赛后才有（非赛前预测 xG））——生成器预测时取不到，补足 n_on>=150 亦不得进校准通道",
    "subset_n": 559,
-   "p75_threshold": 0.7875
+   "p75_threshold": 0.7875,
+   "circularity_diag": {
+    "corr_div_vs_scoredev": 0.757,
+    "corr_div_vs_tot": 0.275,
+    "two_sided_enrichment": {
+     "tot0": 0.333,
+     "tot2": 0.114,
+     "tot6": 0.667,
+     "pool_base": 0.25
+    },
+    "hi_group_split": {
+     "n": 140,
+     "tot_le_1": 31,
+     "tot_ge_4": 81
+    },
+    "note": "背离是双侧度量(实际与xG的绝对差),band=总球>=4 只取单侧:hi组140场里31场 tot<=1(背离同样大但必不中)·81场 tot>=4(必中)。diff=+0.2755 系双侧度量配单侧 band 的产物,非预测力。首轮判据A/C 自身即循环(分层变量与band同量·控住xg_tot后背离大⟺实际总球离2.6远),已记为设计缺陷。",
+    "scripts": [
+     "research/xg_divergence_circularity.py(首轮·判据有缺陷)",
+     "research/xg_divergence_retrospective.py(判据D/E/F·定论)"
+    ]
+   }
   },
   "t6_england_referee_red": {
    "subset_n": 2895,
@@ -82,8 +102,22 @@
    "by_referee_top5": null,
    "by_referee_bottom5": null,
    "by_referee_note": "no_data：hist 账单 referee 维度 100% in missing（prereg knownGap 冻结预期）——不编造，待 referee 源接入",
-   "verdict": "observational",
-   "verdict_reason": "prereg 预注册即观察表无门（verdictCap 冻结）"
+   "verdict": "blocked_from_calibration",
+   "verdict_reason": "prereg 预注册即观察表无门（verdictCap 冻结）‖ 追加第三闸：条件变量赛后才有（fd HR/AR 红牌赛后才有·referee 源未接入）"
   }
+ },
+ "observability_audit": {
+  "script": "research/freq_table_observability_audit.py",
+  "blocked": [
+   "t2_redcard_vs_none",
+   "t3_press_counter_family",
+   "t5_xg_divergence_p75",
+   "t6_england_referee_red"
+  ],
+  "observable": [
+   "t1_derby_vs_rest",
+   "t4_fifa_virus"
+  ],
+  "note": "原转正门只查 diff_ci_lo>0 + n_on>=150,未查条件变量赛前可观测性。4/6 表条件变量赛后才有,补足样本亦不可进校准通道(生成器预测时取不到)。已在 freq_stats.POSTMATCH_CONDITION_TABLES 加第三闸。"
  }
 }
