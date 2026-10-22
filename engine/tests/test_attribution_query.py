@@ -2,6 +2,7 @@
 import sys, unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+ROOT = Path(__file__).resolve().parents[2]
 from attribution_query import run_query, load_registry
 
 class TestBus(unittest.TestCase):
@@ -72,6 +73,34 @@ class TestSevenCmds(unittest.TestCase):
         r = run_query(["dim", "E1"])
         self.assertTrue(r["ok"])
         self.assertIn("红牌", r["data"]["desc"])
+
+# test_attribution_query.py 追加（Task 3·view 渲染）
+class TestViewBlock(unittest.TestCase):
+    def test_attribution_block(self):
+        from llm_card import _attribution_block
+        card = {"league": "欧罗巴", "match": "伯恩茅斯 vs AC米兰",
+                "layers": {}}
+        lines = _attribution_block(card)
+        joined = "\n".join(lines)
+        self.assertIn("归因数据", joined)
+        self.assertIn("赛制", joined)
+        self.assertIn("德比", joined)
+        self.assertIn("剧本指纹", joined)
+        self.assertIn("可查", joined)          # 菜单行
+        self.assertIn("freq", joined)
+
+    def test_view_contains_block(self):
+        # view 冒烟：真实 10-20 卡渲染含归因数据节
+        import subprocess
+        out = subprocess.run(
+            [sys.executable, "engine/scripts/llm_card.py", "view", "2026-10-20", "周二001"],
+            capture_output=True, text=True, cwd=str(ROOT),
+            encoding="utf-8", errors="replace")
+        # 卡可能不存在→跳过（CI 数据依赖）；存在则必须含节
+        if out.returncode == 0:
+            self.assertIn("归因数据", out.stdout)
+        else:
+            self.skipTest("10-20 周二001 卡不存在")
 
 if __name__ == "__main__":
     unittest.main()

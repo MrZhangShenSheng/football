@@ -1022,6 +1022,40 @@ def context_status(sale_date: str, *, root: Path | None = None) -> dict:
     }
 
 
+def _attribution_block(card: dict) -> list[str]:
+    """归因数据节（v3.7·设计§四）：自动注入三样+按需菜单。只读查询·卡零写入。开发者 sszhang"""
+    import attribution_query as aq
+    L = ["── 归因数据（自动注入 + 按需菜单）──────"]
+    league = card.get("league") or ""
+    r = aq.run_query(["formats", league])
+    if r.get("ok"):
+        f = r["data"]
+        notes = f.get("notes") or ""
+        seg = (f"  赛制: {league}={f.get('type', '?')}·"
+               f"{'有升降级' if (f.get('relegation') or {}).get('count') else '无升降级'}")
+        L.append(seg + f"·{notes}" if notes else seg)
+    else:
+        L.append(f"  赛制: {league} 档案缺（可查 formats 确认）")
+    home_nm, away_nm = (card.get("match") or " vs ").split(" vs ")[:2]
+    rd = aq.run_query(["derby", home_nm, away_nm])
+    if rd.get("ok"):
+        d = rd["data"]
+        L.append(f"  德比: {'是·尾格系数' + str(d.get('tailScale')) if d.get('isDerby') else '否'}")
+    for nm in (home_nm, away_nm):
+        rs = aq.run_query(["script", nm, "10"])
+        if rs.get("ok"):
+            s = rs["data"]
+            dist = " ".join(f"{k}×{v}" for k, v in
+                            sorted(s["dist"].items(), key=lambda kv: -kv[1])[:4])
+            L.append(f"  剧本指纹: {nm}近{s['n']}: {dist}")
+        else:
+            L.append(f"  剧本指纹: {nm} 无账本覆盖（fd 外联赛或缺档）")
+    L.append("  ─ 可查（判断中需要时让会话代查）────")
+    L.append("  formats <联赛> | derby <A> <B> | freq <t1-t6> |")
+    L.append("  script <队> [N] | h2h-dist <A> <B> | bill <日期> <码> | dim <E1..E5>")
+    return L
+
+
 def _view(sale_date: str, code: str) -> str:
     """阅读版渲染（v3.4 评审修正❹·卡面定序落地）：市场正身→判断材料→缺口置尾。"""
     p = card_paths(sale_date) / f"{code}.json"
@@ -1119,6 +1153,7 @@ def _view(sale_date: str, code: str) -> str:
                              f" 实进{s['gf']}/失{s['ga']} luckG{s['luckG']:+}{alert}")
         else:
             L.append(f"  xG[fd]: {xg.get('status')}")
+    L.extend(_attribution_block(card))
     L.append("── 缺口（如实）────────────")
     L.append(f"  lineup={(ly.get('lineup') or {}).get('status')}  "
              f"context={(ly.get('context') or {}).get('status')}  "
