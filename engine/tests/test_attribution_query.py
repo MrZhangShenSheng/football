@@ -20,5 +20,58 @@ class TestBus(unittest.TestCase):
         reg = load_registry()
         self.assertEqual(reg["bill"]["status"], "active")
 
+# test_attribution_query.py 追加
+class TestSevenCmds(unittest.TestCase):
+    def test_cmd_formats(self):
+        r = run_query(["formats", "意甲"])
+        self.assertTrue(r["ok"])
+        self.assertEqual(r["data"]["type"], "league")
+        r2 = run_query(["formats", "不存在的联赛"])
+        self.assertFalse(r2["ok"])
+
+    def test_cmd_derby(self):
+        r = run_query(["derby", "阿森纳", "热刺"])
+        self.assertTrue(r["ok"])
+        self.assertTrue(r["data"]["isDerby"])
+        r2 = run_query(["derby", "阿森纳", "埃弗顿"])
+        self.assertFalse(r2["data"]["isDerby"])
+
+    def test_cmd_freq_verdict_gate(self):
+        r = run_query(["freq", "t5"])
+        self.assertTrue(r["ok"])
+        d = r["data"]
+        self.assertIn("verdict", d)
+        self.assertIn("n_on", d)
+        # observational 强制叙事线索标注（verdictGate=true 生效）
+        if d["verdict"] != "calibration_ready":
+            self.assertIn("叙事线索", d["usage"])
+
+    def test_cmd_script(self):
+        r = run_query(["script", "阿森纳", "20"])
+        self.assertTrue(r["ok"])
+        d = r["data"]
+        self.assertEqual(sum(d["dist"].values()), d["n"])
+        self.assertGreater(d["n"], 0)
+
+    def test_cmd_bill_leak_gate(self):
+        r = run_query(["bill", "2099-01-01", "周一001"])
+        self.assertFalse(r["ok"])
+        self.assertIn("postmatch", r["error"])
+
+    def test_cmd_bill_real(self):
+        r = run_query(["bill", "2026-10-19", "周一001"])
+        self.assertTrue(r["ok"])
+        self.assertEqual(r["data"]["code"], "周一001")
+
+    def test_cmd_h2h_dist(self):
+        r = run_query(["h2h-dist", "阿森纳", "热刺"])
+        self.assertTrue(r["ok"])
+        self.assertIn("dist", r["data"])
+
+    def test_cmd_dim(self):
+        r = run_query(["dim", "E1"])
+        self.assertTrue(r["ok"])
+        self.assertIn("红牌", r["data"]["desc"])
+
 if __name__ == "__main__":
     unittest.main()
