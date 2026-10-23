@@ -1,0 +1,72 @@
+{
+  "formats": {
+    "cmd": "formats",
+    "desc": "联赛赛制档案(升降级/席位/密度/杯赛制/国际窗)",
+    "path": "data/00-leagues/_formats.json",
+    "leakRisk": "none",
+    "verdictGate": false,
+    "autoInject": true,
+    "status": "active",
+    "usage": "formats <联赛>"
+  },
+  "derby": {
+    "cmd": "derby",
+    "desc": "德比标记+系数+样本n",
+    "path": "data/00-leagues/_derbies.json",
+    "leakRisk": "none",
+    "verdictGate": false,
+    "autoInject": true,
+    "status": "active",
+    "usage": "derby <A> <B>"
+  },
+  "freq": {
+    "cmd": "freq",
+    "desc": "频次表六表(n/diff/CI/verdict)",
+    "path": "data/04-summaries/score-attribution/freq-tables.json",
+    "leakRisk": "none",
+    "verdictGate": true,
+    "autoInject": false,
+    "status": "active",
+    "usage": "freq <t1-t6>"
+  },
+  "script": {
+    "cmd": "script",
+    "desc": "球队近N场剧本分布(画面指纹)",
+    "path": "data/04-summaries/score-attribution/hist/",
+    "leakRisk": "postmatch",
+    "verdictGate": false,
+    "autoInject": false,
+    "status": "active",
+    "usage": "script <队> [N]"
+  },
+  "h2h_dist": {
+    "cmd": "h2h-dist",
+    "desc": "两队历史交手比分分布",
+    "path": "data/04-summaries/score-attribution/hist/",
+    "leakRisk": "postmatch",
+    "verdictGate": false,
+    "autoInject": false,
+    "status": "active",
+    "usage": "h2h-dist <A> <B>"
+  },
+  "bill": {
+    "cmd": "bill",
+    "desc": "单场归因账单(已完场)",
+    "path": "data/04-summaries/score-attribution/",
+    "leakRisk": "postmatch",
+    "verdictGate": false,
+    "autoInject": false,
+    "status": "active",
+    "usage": "bill <日期> <码>"
+  },
+  "dim": {
+    "cmd": "dim",
+    "desc": "归因维度定义说明",
+    "path": "builtin",
+    "leakRisk": "none",
+    "verdictGate": false,
+    "autoInject": false,
+    "status": "active",
+    "usage": "dim <E1..E5>"
+  }
+}

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>批一实施计划 · LLM 数据通道 v3.7（期3）</title>
+<style>
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;max-width:980px;margin:24px auto;padding:0 16px;color:#1a1a1a;line-height:1.6;background:#fafafa}
+  h1{font-size:1.45em;border-bottom:3px solid #b91c1c;padding-bottom:8px}
+  h2{font-size:1.15em;margin-top:2em;border-left:4px solid #b91c1c;padding-left:8px}
+  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:0.9em;background:#fff}
+  th,td{border:1px solid #d1d5db;padding:5px 8px;text-align:left;vertical-align:top}
+  th{background:#f3f4f6}
+  pre{font-family:ui-monospace,Menlo,monospace;font-size:0.85em;background:#fff;border:1px solid #e5e7eb;border-radius:6px;padding:10px;overflow-x:auto;line-height:1.45}
+  .rule{background:#fff7ed;border:1px solid #fdba74;padding:8px 14px;border-radius:6px;margin:10px 0}
+</style>
+</head>
+<body>
+
+<h1>批一实施计划 · LLM 数据通道 v3.7（期3·数据喂预测线）</h1>
+<p>执行者须知：零上下文假设，照单执行。设计依据 docs/plans/2026-10-22-llm-data-channel-design.html（先读 §二§三§四§五）。TDD：每任务先测后码。开发者 sszhang</p>
+
+<p><b>目标</b>：attribution_query.py 查询总线（注册表驱动）+ 七命令 + llm_card view 归因数据节（自动注入三样+菜单）+ SKILL.md v3.7 协议。</p>
+<p><b>架构</b>：新文件 engine/scripts/attribution_query.py（查询总线+命令实现，注册表路由）；data/00-leagues/_data_registry.json（注册表）；llm_card.py view 函数追加渲染（卡零改动）；SKILL.md 协议段追加 v3.7 增量。</p>
+<p><b>技术栈</b>：Python 3.14 + pytest。</p>
+
+<h2>全局约束（每任务隐含）</h2>
+<ul>
+<li>docstring 尾注"开发者 sszhang"；同输入同输出</li>
+<li>防泄漏：bill/script/h2h-dist 拒未完场日期（对照日期=today，账本文件内已有的场天然已完场——闸在**查询日期参数**上：date ≥ today 拒）</li>
+<li>freq 命令返回体 verdict 语义：calibration_ready 才给结论性 wording，observational 强制附"未过转正门·只可作叙事线索"</li>
+<li>注册表驱动：命令实现按 registry 路由，新增注册条目不改总线代码（T1 验证）</li>
+<li>卡文件（engine/cache/llm_cards/*.json）零写入——attributionPrior 是 view 渲染层的产物非卡层</li>
+<li>测试：真实数据断言（hist 账本/freq-tables 实数）；llm_card/llm_pred 既有测试零破坏</li>
+</ul>
+
+<h2>前置：读懂现有代码（不改）</h2>
+<ul>
+<li>engine/scripts/llm_card.py 1026-1110 行（view 函数结构与 L 列表渲染模式·菜单插"缺口"节之前）</li>
+<li>engine/scripts/strength_loaders.py load_aliases/zh_to_id；llm_card._fd_name_index（421 行·fd 名↔id 倒排）</li>
+<li>data/04-summaries/score-attribution/freq-tables.json 顶层结构（generatedAt/prereg/universe/gate/tables；表键 t1_derby_vs_rest…t6_referee）</li>
+<li>data/04-summaries/score-attribution/hist/ 账单结构（15 键；match=fd 英文名 'Burnley vs Man City'；script.type 8 枚举；date=ISO）</li>
+<li>data/00-leagues/_formats.json / _derbies.json 结构（期1 已建）</li>
+</ul>
+
+<!-- T1 -->
+<h2>Task 1：注册表 + 查询总线框架</h2>
+<p><b>Files</b>：Create <code>engine/scripts/attribution_query.py</code> + <code>data/00-leagues/_data_registry.json</code>；Test <code>engine/tests/test_attribution_query.py</code>（新建）</p>
+<p><b>Interfaces</b>：Produces <code>run_query(argv: list[str]) -&gt; dict</code>（总线入口·返回 {"ok": bool, "data"|"error": ...}）；<code>load_registry() -&gt; dict</code>；注册表七条目（formats/derby/freq/script/h2h_dist/bill/dim——字段 cmd/desc/path/leakRisk/verdictGate/autoInject/status）</p>
+<div class="step"><b>Step 1.1 建 _data_registry.json</b>
+<pre>{
+  "formats":  {"cmd": "formats",  "desc": "联赛赛制档案(升降级/席位/密度/杯赛制/国际窗)",
+               "path": "data/00-leagues/_formats.json", "leakRisk": "none",
+               "verdictGate": false, "autoInject": true, "status": "active"},
+  "derby":    {"cmd": "derby",    "desc": "德比标记+系数+样本n",
+               "path": "data/00-leagues/_derbies.json", "leakRisk": "none",
+               "verdictGate": false, "autoInject": true, "status": "active"},
+  "freq":     {"cmd": "freq",     "desc": "频次表六表(n/diff/CI/verdict)",
+               "path": "data/04-summaries/score-attribution/freq-tables.json",
+               "leakRisk": "none", "verdictGate": true, "autoInject": false, "status": "active"},
+  "script":   {"cmd": "script",   "desc": "球队近N场剧本分布(画面指纹)",
+               "path": "data/04-summaries/score-attribution/hist/",
+               "leakRisk": "postmatch", "verdictGate": false, "autoInject": false, "status": "active"},
+  "h2h_dist": {"cmd": "h2h-dist", "desc": "两队历史交手比分分布",
+               "path": "data/04-summaries/score-attribution/hist/",
+               "leakRisk": "postmatch", "verdictGate": false, "autoInject": false, "status": "active"},
+  "bill":     {"cmd": "bill",     "desc": "单场归因账单(已完场)",
+               "path": "data/04-summaries/score-attribution/",
+               "leakRisk": "postmatch", "verdictGate": false, "autoInject": false, "status": "active"},
+  "dim":      {"cmd": "dim",      "desc": "归因维度定义说明",
+               "path": "builtin", "leakRisk": "none",
+               "verdictGate": false, "autoInject": false, "status": "active"}
+}</pre>
+</div>
+<div class="step"><b>Step 1.2 失败测试</b>
+<pre># engine/tests/test_attribution_query.py
+import sys, unittest
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+from attribution_query import run_query, load_registry
+
+class TestBus(unittest.TestCase):
+    def test_registry_seven_entries(self):
+        reg = load_registry()
+        self.assertEqual(len(reg), 7)
+        self.assertEqual(reg["freq"]["verdictGate"], True)
+        self.assertEqual(reg["script"]["leakRisk"], "postmatch")
+
+    def test_unknown_command_error(self):
+        r = run_query(["nope", "x"])
+        self.assertFalse(r["ok"])
+        self.assertIn("未知命令", r["error"])
+
+    def test_status_retired_not_routed(self):   # 注册表驱动验证（设计§五）
+        reg = load_registry()
+        self.assertEqual(reg["bill"]["status"], "active")
+
+if __name__ == "__main__":
+    unittest.main()</pre>
+</div>
+<div class="step"><b>Step 1.3 FAIL</b> → <b>Step 1.4 实现</b>
+<pre># engine/scripts/attribution_query.py
+"""LLM 数据通道查询总线 v3.7：注册表路由 + 七命令。设计 docs/plans/2026-10-22-llm-data-channel-design.html。
+防泄漏：leakRisk=postmatch 的命令拒未完场日期参数。开发者 sszhang"""
+import json
+import sys
+from datetime import date
+from pathlib import Path
+
+SCRIPTS_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(SCRIPTS_DIR))
+ROOT = SCRIPTS_DIR.parents[1]
+REGISTRY_PATH = ROOT / "data" / "00-leagues" / "_data_registry.json"
+
+
+def load_registry() -> dict:
+    """注册表加载（active 条目=可路由）。开发者 sszhang"""
+    reg = json.loads(REGISTRY_PATH.read_text(encoding="utf-8"))
+    return {k: v for k, v in reg.items() if v.get("status") == "active"}
+
+
+def _today() -> str:
+    return date.today().isoformat()
+
+
+def _leak_check(cmd: str, date_arg: str | None) -> str | None:
+    """postmatch 命令的日期闸：date ≥ today 拒（未来/今日未完场禁查）。开发者 sszhang"""
+    reg = load_registry()
+    if reg.get(cmd, {}).get("leakRisk") != "postmatch" or not date_arg:
+        return None
+    if date_arg[:10] >= _today():
+        return f"拒查：{date_arg} 未完场（postmatch 闸）"
+    return None
+
+
+def run_query(argv: list[str]) -> dict:
+    """总线入口：argv[0]=命令名，注册表路由到实现。命令实现在 Task 2 挂入。开发者 sszhang"""
+    if not argv:
+        return {"ok": False, "error": "空查询"}
+    cmd = argv[0].replace("-", "_").replace("h2h_dist", "h2h_dist")
+    reg = load_registry()
+    # 命令名归一：h2h-dist → h2h_dist
+    canon = {"h2h-dist": "h2h_dist"}
+    cmd = canon.get(argv[0], argv[0])
+    if cmd not in reg:
+        return {"ok": False, "error": f"未知命令 {argv[0]}（可查: {' '.join(sorted(reg))}）"}
+    impl = HANDLERS.get(cmd)
+    if impl is None:
+        return {"ok": False, "error": f"命令 {cmd} 未实现"}
+    return impl(argv[1:])
+
+
+HANDLERS: dict[str, object] = {}   # Task 2 逐命令挂入
+
+
+def main() -> None:
+    """CLI：python engine/scripts/attribution_query.py <命令> [参数]。开发者 sszhang"""
+    r = run_query(sys.argv[1:])
+    print(json.dumps(r, ensure_ascii=False, indent=1))
+    sys.exit(0 if r.get("ok") else 1)
+
+
+if __name__ == "__main__":
+    main()</pre>
+</div>
+<div class="step"><b>Step 1.5 过+commit</b>：<code>feat(query): Task1 数据源注册表+查询总线框架</code></div>
+
+<!-- T2 -->
+<h2>Task 2：七命令实现</h2>
+<p><b>Files</b>：Modify <code>engine/scripts/attribution_query.py</code>；Test 追加</p>
+<p><b>Interfaces</b>：Consumes T1 run_query/HANDLERS；Produces 七个 handler 函数挂入 HANDLERS。队名解析链：<code>_resolve_fd_name(name: str) -&gt; str | None</code>（中文→id（zh_to_id）→fd 名（load_aliases 行 fd 键）；name 已是 fd 英文名时直接用）</p>
+<div class="step"><b>Step 2.1 失败测试</b>
+<pre># test_attribution_query.py 追加
+class TestSevenCmds(unittest.TestCase):
+    def test_cmd_formats(self):
+        r = run_query(["formats", "意甲"])
+        self.assertTrue(r["ok"])
+        self.assertEqual(r["data"]["type"], "league")
+        r2 = run_query(["formats", "不存在的联赛"])
+        self.assertFalse(r2["ok"])
+
+    def test_cmd_derby(self):
+        r = run_query(["derby", "阿森纳", "热刺"])
+        self.assertTrue(r["ok"])
+        self.assertTrue(r["data"]["isDerby"])
+        r2 = run_query(["derby", "阿森纳", "埃弗顿"])
+        self.assertFalse(r2["data"]["isDerby"])
+
+    def test_cmd_freq_verdict_gate(self):
+        r = run_query(["freq", "t5"])
+        self.assertTrue(r["ok"])
+        d = r["data"]
+        self.assertIn("verdict", d)
+        self.assertIn("n_on", d)
+        # observational 强制叙事线索标注（verdictGate=true 生效）
+        if d["verdict"] != "calibration_ready":
+            self.assertIn("叙事线索", d["usage"])
+
+    def test_cmd_script(self):
+        r = run_query(["script", "阿森纳", "20"])
+        self.assertTrue(r["ok"])
+        d = r["data"]
+        self.assertEqual(sum(d["dist"].values()), d["n"])
+        self.assertGreater(d["n"], 0)
+
+    def test_cmd_script_leak_gate(self):
+        # script 无日期参数·天然历史数据——闸不适用，但 bill 有（见下）
+
+    def test_cmd_bill_leak_gate(self):
+        r = run_query(["bill", "2099-01-01", "周一001"])
+        self.assertFalse(r["ok"])
+        self.assertIn("postmatch", r["error"])
+
+    def test_cmd_bill_real(self):
+        r = run_query(["bill", "2026-10-19", "周一001"])
+        self.assertTrue(r["ok"])
+        self.assertEqual(r["data"]["code"], "周一001")
+
+    def test_cmd_h2h_dist(self):
+        r = run_query(["h2h-dist", "阿森纳", "热刺"])
+        self.assertTrue(r["ok"])
+        self.assertIn("dist", r["data"])
+
+    def test_cmd_dim(self):
+        r = run_query(["dim", "E1"])
+        self.assertTrue(r["ok"])
+        self.assertIn("红牌", r["data"]["desc"])</pre>
+</div>
+<div class="step"><b>Step 2.2 FAIL</b> → <b>Step 2.3 实现</b>
+<pre># attribution_query.py 追加
+import glob as _glob
+from collections import Counter
+
+HIST_DIR = ROOT / "data" / "04-summaries" / "score-attribution" / "hist"
+FWD_BILL = ROOT / "data" / "04-summaries" / "score-attribution"
+
+DIM_DICT = {   # dim 命令字典（设计 §二维度表口径）
+    "E1": "红牌改写：张数×时点→局面重构项（fd 无分钟时点·张数近似）",
+    "E2": "进球时序结构：半场→全场差值（早球开放/锁死分岔·压上反杀族）",
+    "E4": "射正背离：两队射正→进球转化 vs 0.30 基准的差",
+    "E5": "把握率背离：实际进球−xG（赛后还原维度·勿作事前信号）",
+    "A1": "实力差：Elo 差→期望净胜映射（÷400）",
+    "L0": "赛制情境：阶段/晋级形势/赛制类型→离散度系数",
+}
+
+def _resolve_fd_name(name: str) -> str | None:
+    """中文或 fd 英文名 → fd 英文名（账本 match 串口径）。开发者 sszhang"""
+    import strength_loaders as sl
+    al = sl.load_aliases()
+    # 直接是 fd 名？
+    for tid, srcs in al.items():
+        if srcs.get("fd") == name:
+            return name
+    # 中文 → id → fd
+    tid = sl.zh_to_id().get(name)
+    if tid:
+        return al.get(tid, {}).get("fd")
+    return None
+
+def _load_hist_bills() -> list[dict]:
+    """hist 全账本（一次性载入·模块级缓存）。开发者 sszhang"""
+    global _HIST_CACHE
+    if _HIST_CACHE is None:
+        bills = []
+        for p in sorted(HIST_DIR.glob("*-attribution.json")):
+            bills.extend(b for b in json.loads(p.read_text(encoding="utf-8"))
+                         if "baseline" in b)
+        _HIST_CACHE = bills
+    return _HIST_CACHE
+
+_HIST_CACHE: list[dict] | None = None
+
+def _cmd_formats(args):
+    if not args:
+        return {"ok": False, "error": "用法: formats <联赛中文名>"}
+    doc = json.loads((ROOT / "data" / "00-leagues" / "_formats.json").read_text(encoding="utf-8"))
+    entry = doc.get(args[0])
+    if not entry:
+        return {"ok": False, "error": f"档案无 {args[0]}（有: 意甲 英超 西甲 德甲 法甲 荷甲 葡超 美职 欧冠）"}
+    return {"ok": True, "data": entry}
+
+def _cmd_derby(args):
+    if len(args) != 2:
+        return {"ok": False, "error": "用法: derby <队A> <队B>"}
+    import attribution_dims as ad
+    tid_a = _zh_id(args[0]); tid_b = _zh_id(args[1])
+    sf = ad.dim_derby("占位联赛", tid_a, tid_b) if False else None
+    # 直接读表（dim_derby 需要联赛中文名——这里按全部联赛组扫）
+    table = json.loads((ROOT / "data" / "00-leagues" / "_derbies.json").read_text(encoding="utf-8"))
+    hit = None
+    for lg, pairs in table.items():
+        for a, b in pairs:
+            if {tid_a, tid_b} == {a, b}:
+                hit = (lg, a, b); break
+    if hit:
+        return {"ok": True, "data": {"isDerby": True, "league": hit[0],
+                "tailScale": 1.4, "note": "先验系数·待频次表校准"}}
+    return {"ok": True, "data": {"isDerby": False}}
+
+def _zh_id(name: str) -> str | None:
+    import strength_loaders as sl
+    return sl.zh_to_id().get(name)
+
+def _cmd_freq(args):
+    if not args:
+        return {"ok": False, "error": "用法: freq <t1..t6>"}
+    doc = json.loads((ROOT / "data" / "04-summaries" / "score-attribution" / "freq-tables.json").read_text(encoding="utf-8"))
+    tables = doc.get("tables") or {}
+    key = args[0] if args[0] in tables else next((k for k in tables if k.startswith(args[0])), None)
+    if not key:
+        return {"ok": False, "error": f"无表 {args[0]}（有: {' '.join(tables)}）"}
+    t = dict(tables[key])
+    t["usage"] = ("可作量化依据" if t.get("verdict") == "calibration_ready"
+                  else "未过转正门·只可作叙事线索（禁作 direction/goalBand 量化依据）")
+    return {"ok": True, "data": t}
+
+def _cmd_script(args):
+    if not args:
+        return {"ok": False, "error": "用法: script <队名> [N场·默认10]"}
+    fd_name = _resolve_fd_name(args[0])
+    if not fd_name:
+        return {"ok": False, "error": f"队名 {args[0]} 解析不到 fd 名（别名表无 fd 键或中文不识别）"}
+    n = int(args[1]) if len(args) > 1 else 10
+    rows = [b for b in _load_hist_bills()
+            if fd_name in (b.get("match") or "") and b.get("script", {}).get("type")]
+    rows.sort(key=lambda b: b["date"], reverse=True)
+    rows = rows[:n]
+    dist = Counter(b["script"]["type"] for b in rows)
+    return {"ok": True, "data": {
+        "team": fd_name, "n": len(rows),
+        "window": f"{rows[-1]['date']}~{rows[0]['date']}" if rows else None,
+        "dist": dict(dist),
+        "note": "剧本指纹（crush碾压/leaky互漏/iron_grid铁桶/open_play对攻等8类）·shape.type 选择参考"}}
+
+def _cmd_bill(args):
+    if len(args) != 2:
+        return {"ok": False, "error": "用法: bill <日期> <场次码>"}
+    err = _leak_check("bill", args[0])
+    if err:
+        return {"ok": False, "error": err}
+    for p in sorted(FWD_BILL.glob("*~*-attribution.json")):
+        bills = json.loads(p.read_text(encoding="utf-8"))
+        for b in bills:
+            if b.get("date") == args[0] and b.get("code") == args[1]:
+                return {"ok": True, "data": b}
+    return {"ok": False, "error": f"账本无 {args[0]} {args[1]}（已回填场次才有账单）"}
+
+def _cmd_h2h_dist(args):
+    if len(args) != 2:
+        return {"ok": False, "error": "用法: h2h-dist <队A> <队B>"}
+    fa, fb = _resolve_fd_name(args[0]), _resolve_fd_name(args[1])
+    if not fa or not fb:
+        return {"ok": False, "error": "队名解析失败（至少一队无 fd 名）"}
+    dist = Counter()
+    for b in _load_hist_bills():
+        m = b.get("match") or ""
+        if fa in m and fb in m and b.get("result"):
+            dist[f"{b['result']['hg']}:{b['result']['ag']}"] += 1
+    return {"ok": True, "data": {"teams": f"{fa} vs {fb}", "n": sum(dist.values()),
+            "dist": dict(dist.most_common(10)),
+            "note": "fd 四季窗内交手·主客按账本主队口径（读取时注意方向）"}}
+
+def _cmd_dim(args):
+    if not args or args[0] not in DIM_DICT:
+        return {"ok": False, "error": f"用法: dim <{'/'.join(DIM_DICT)}>"}
+    return {"ok": True, "data": {"dim": args[0], "desc": DIM_DICT[args[0]]}}
+
+for _name, _fn in (("formats", _cmd_formats), ("derby", _cmd_derby),
+                   ("freq", _cmd_freq), ("script", _cmd_script),
+                   ("h2h_dist", _cmd_h2h_dist), ("bill", _cmd_bill),
+                   ("dim", _cmd_dim)):
+    HANDLERS[_name] = _fn</pre>
+<p>注：_cmd_derby 中删除示例性死代码行（`sf = ... if False else None` 那两行是撰写残留——实现时直接从 `table = ...` 开始）。test_cmd_script_leak_gate 空测试删除（闸不适用注释保留在 bill 测试里）。</p>
+</div>
+<div class="step"><b>Step 2.4 过</b>（注意 script 阿森纳 20 场：hist 覆盖 2324-2627 四季英超，阿森纳近 20 场必在账本）→ <b>Step 2.5 commit</b>：<code>feat(query): Task2 七命令实现+队名链+泄漏闸</code></div>
+
+<!-- T3 -->
+<h2>Task 3：view 渲染改造（归因数据节+自动注入三样+菜单）</h2>
+<p><b>Files</b>：Modify <code>engine/scripts/llm_card.py</code>（view 函数·1110 行附近的缺口节之前插入）；Test <code>engine/tests/test_attribution_query.py</code> 追加 view 冒烟</p>
+<p><b>Interfaces</b>：Consumes T2 的 run_query；Produces <code>_attribution_block(card: dict) -&gt; list[str]</code>（llm_card 内新函数·返回渲染行列表）</p>
+<div class="step"><b>Step 3.1 失败测试</b>
+<pre># test_attribution_query.py 追加
+class TestViewBlock(unittest.TestCase):
+    def test_attribution_block(self):
+        from llm_card import _attribution_block
+        card = {"league": "欧罗巴", "match": "伯恩茅斯 vs AC米兰",
+                "layers": {}}
+        lines = _attribution_block(card)
+        joined = "\n".join(lines)
+        self.assertIn("归因数据", joined)
+        self.assertIn("赛制", joined)
+        self.assertIn("德比", joined)
+        self.assertIn("剧本指纹", joined)
+        self.assertIn("可查", joined)          # 菜单行
+        self.assertIn("freq", joined)
+
+    def test_view_contains_block(self):
+        # view 冒烟：真实 10-20 卡渲染含归因数据节
+        import subprocess
+        out = subprocess.run(
+            [sys.executable, "engine/scripts/llm_card.py", "view", "2026-10-20", "周二001"],
+            capture_output=True, text=True, cwd=str(ROOT),
+            encoding="utf-8", errors="replace")
+        # 卡可能不存在→跳过（CI 数据依赖）；存在则必须含节
+        if out.returncode == 0:
+            self.assertIn("归因数据", out.stdout)
+        else:
+            self.skipTest("10-20 周二001 卡不存在")</pre>
+</div>
+<div class="step"><b>Step 3.2 FAIL</b> → <b>Step 3.3 实现</b>（llm_card.py·view 函数"缺口"节定位行之前插入；新函数放 view 前）
+<pre># llm_card.py 追加（view 函数上方）
+def _attribution_block(card: dict) -> list[str]:
+    """归因数据节（v3.7·设计§四）：自动注入三样+按需菜单。只读查询·卡零写入。开发者 sszhang"""
+    import attribution_query as aq
+    L = ["── 归因数据（自动注入 + 按需菜单）──────"]
+    league = card.get("league") or ""
+    r = aq.run_query(["formats", league])
+    if r.get("ok"):
+        f = r["data"]
+        notes = f.get("notes") or ""
+        L.append(f"  赛制: {league}={f.get('type','?')}·"
+                 f"{'有升降级' if (f.get('relegation') or {}).get('count') else '无升降级'}"
+                 f"·{notes}" if notes else
+                 f"  赛制: {league}={f.get('type','?')}·"
+                 f"{'有升降级' if (f.get('relegation') or {}).get('count') else '无升降级'}")
+    else:
+        L.append(f"  赛制: {league} 档案缺（可查 formats 确认）")
+    home_nm, away_nm = (card.get("match") or " vs ").split(" vs ")[:2]
+    rd = aq.run_query(["derby", home_nm, away_nm])
+    if rd.get("ok"):
+        d = rd["data"]
+        L.append(f"  德比: {'是·尾格系数' + str(d.get('tailScale')) if d.get('isDerby') else '否'}")
+    for nm in (home_nm, away_nm):
+        rs = aq.run_query(["script", nm, "10"])
+        if rs.get("ok"):
+            s = rs["data"]
+            dist = " ".join(f"{k}×{v}" for k, v in
+                            sorted(s["dist"].items(), key=lambda kv: -kv[1])[:4])
+            L.append(f"  剧本指纹: {nm}近{s['n']}: {dist}")
+        else:
+            L.append(f"  剧本指纹: {nm} 无账本覆盖（fd 外联赛或缺档）")
+    L.append("  ─ 可查（判断中需要时让会话代查）────")
+    L.append("  formats <联赛> | derby <A> <B> | freq <t1-t6> |")
+    L.append("  script <队> [N] | h2h-dist <A> <B> | bill <日期> <码> | dim <E1..E5>")
+    return L</pre>
+<p>view 函数内：找到渲染"缺口"节的行（grep "缺口"定位），在其 append 之前插入 <code>L.extend(_attribution_block(card))</code>。</p>
+</div>
+<div class="step"><b>Step 3.4 过+全量回归</b>（llm_card 既有测试零破坏——view 无既有直测则跑全部 llm 族）→ <b>Step 3.5 commit</b>：<code>feat(query): Task3 view归因数据节+自动注入三样+菜单</code></div>
+
+<!-- T4 -->
+<h2>Task 4：SKILL.md v3.7 协议更新</h2>
+<p><b>Files</b>：Modify <code>skill/SKILL.md</code>（91-102 行三参数协议段后追加）</p>
+<div class="step"><b>Step 4.1 追加协议段</b>（插在 v3.6 三参数说明之后）
+<pre>**v3.7 归因数据通道（2026-10-22 起）**：view 阅读版新增"归因数据"节——自动注入赛制档案/德比标记/两队剧本指纹三样，另有七命令按需查询（会话代跑 `python engine/scripts/attribution_query.py <命令> [参数]`）：
+- **剧本指纹优先看**：`shape.type` 四型选择时，两队近 10 场剧本分布（crush/leaky/iron_grid/open_play…）是画面类型的直接证据——米兰近10场4次crush→压 crush 型有据
+- **keyJudgments 引用须带命令名+关键数字**（如 "script 查询：AC米兰近10场 crush×4→支持0:2/0:3格"）
+- **verdict 纪律**：freq 表 observational 的只能作叙事线索，禁作 direction/goalBand 移动的量化依据；calibration_ready 才可量化（当前零张过门）
+- **新数据源接入走注册表**（data/00-leagues/_data_registry.json）：落位→登记→L1 可查→攒证据→升层（autoInject/参数直改须过门）——禁再改卡层代码接线</pre>
+</div>
+<div class="step"><b>Step 4.2 验证</b>：grep SKILL.md "v3.7" 命中；无测试（纯文档）</div>
+<div class="step"><b>Step 4.3 commit</b>：<code>docs(skill): Task4 SKILL v3.7 归因数据通道协议</code></div>
+<div class="step"><b>Step 4.4 端到端冒烟</b>：`python3 engine/scripts/llm_card.py view 2026-10-20 周二001`（有卡则人眼看归因数据节渲染效果）+ `python3 engine/scripts/attribution_query.py script AC米兰 10` + `freq t5`——三发输出贴报告</div>
+
+<h2>验收（对大哥）</h2>
+<ul>
+<li>七命令全通（真实数据断言）；bill 拒未来日期；freq verdictGate 生效</li>
+<li>view 渲染含归因数据节（自动三样+菜单）；llm 既有测试零破坏</li>
+<li>SKILL.md v3.7 段落进位；端到端冒烟三发输出</li>
+</ul>
+
+</body>
+</html>

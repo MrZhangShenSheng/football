@@ -100,6 +100,14 @@ description: |
 ```
 
    `evidenceTier` 三级与幅度上限挂钩（**叫板幅度要用证据兑**）：`state`=阵容/伤停实据仅 ±2pt、`structural`=xG/结构证据 ±8pt、`info`=消息面无上限但只配小幅。`shape.type` 四型按型基线计入大球预算（lock ×0.54 / leaky ×1.29 / crush ×1.12 / open ×0.97），给 `xgSum` 则带宽锚与大球预算两闸豁免（有证据抬带）。**每场仍须 ≥3 条独立 keyJudgments**（judgment+evidence 引用语境层编号）+ confidence 枚举。**一条一个独立论点，禁把形态+H2H+伤停压进单条 evidence**（压扁后无法逐条评判对错=归因失效；2026-10-19 起 freeze 硬校验条数，10-14~16 遗留压缩卷按 `kjCohortSplit=v1-compressed` 分层留痕不改写）。**evidence 须引市场以外材料并显式陈述与市场的偏离方向**（偏离可为零但须明说；只复述市场数字按未做功课拒收——marketLambda/v3wChain(src=market_crs) 均属市场衍生物不算第二意见）
+
+   **v3.7 归因数据通道（2026-10-22 起）**：view 阅读版新增"归因数据"节——自动注入赛制档案/德比标记/两队剧本指纹三样，另有七命令按需查询（会话代跑 `python engine/scripts/attribution_query.py <命令> [参数]`）：
+   - **剧本指纹优先看**：`shape.type` 四型选择时，两队近 10 场剧本分布（crush/leaky/iron_grid/open_play…）是画面类型的直接证据——米兰近10场4次crush→压 crush 型有据
+   - **keyJudgments 引用须带命令名+关键数字**（如 "script 查询：AC米兰近10场 crush×4→支持0:2/0:3格"）
+   - **verdict 纪律**：freq 表 observational 的只能作叙事线索，禁作 direction/goalBand 移动的量化依据；calibration_ready 才可量化（当前零张过门）
+   - **新数据源接入走注册表**（data/00-leagues/_data_registry.json）：落位→登记→L1 可查→攒证据→升层（autoInject/参数直改须过门）——禁再改卡层代码接线
+   - **命令口径注记**：`derby` 命令目前仅接受中文队名（`script`/`h2h-dist` 兼容中文与 fd 英文名）
+
 4. 会话调用 `llm_pred.freeze(销售日, preds)` —— 按 `preds[0]` 有无 `direction` 键**自动分发 v3/v2**：
    - **v3 结构化链**（有 direction）：输入校验 → `generate_dist` 生成 31 格 → **四道拒冻闸**（大球带预算 ±2% / 单格比值 [0.5,2.5] / 总球期望带宽 ±1.5 球 / 幅度≤等级上限）→ 冻结，卷带 `chain=llm-31grid-v3`、`genCohort=v3-structured`、`checks`、`valueCells`（比值>1.5 且 p>3% 的格·选腿参考）。**不过闸=整批拒冻并逐项打印**，改判断或补证据等级，别改闸。
    - **v2 兜底格式**（手填 `p_crs` 31 格）：原链保留，仅用于生成器不适用的特例（如市场 CRS 池不足 20 格）。

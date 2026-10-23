@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>LLM 预测数据通道设计 v3.7（期3·归因数据按需获取制）</title>
+<style>
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;max-width:980px;margin:24px auto;padding:0 16px;color:#1a1a1a;line-height:1.65;background:#fafafa}
+  h1{font-size:1.5em;border-bottom:3px solid #b91c1c;padding-bottom:8px}
+  h2{font-size:1.2em;margin-top:1.8em;border-left:4px solid #b91c1c;padding-left:8px}
+  h3{font-size:1.05em;margin-top:1.4em;color:#374151}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:0.92em;background:#fff}
+  th,td{border:1px solid #d1d5db;padding:6px 9px;text-align:left;vertical-align:top}
+  th{background:#f3f4f6}
+  pre{font-family:ui-monospace,Menlo,monospace;font-size:0.88em;background:#fff;border:1px solid #e5e7eb;border-radius:6px;padding:10px;overflow-x:auto}
+  .tag{display:inline-block;background:#b91c1c;color:#fff;font-size:0.78em;padding:1px 8px;border-radius:10px;margin-left:6px}
+  .warn{background:#fff7ed;border:1px solid #fdba74;padding:10px 14px;border-radius:6px}
+  svg{color:#b91c1c}
+</style>
+</head>
+<body>
+
+<h1>LLM 预测数据通道设计 v3.7 <span class="tag">定稿</span></h1>
+<p>2026-10-22 · 开发者 sszhang · 依据：大哥三节拍板（按需获取制·自主查询/自动注入三样/数据源注册表扩展机制）· 上游：期1/期2 归因引擎（83f516c..f2241ea）+ v3.6 分布结构化生成（088bbdc）</p>
+
+<h2>〇、一句话定位</h2>
+<p><b>把期1/期2 的归因数据资产做成查询服务接进 LLM 预测上下文——不塞结论，给模型开数据接口让它按需取；同时建立数据源注册表，未来任何新数据走"落位→登记→可查→攒证据→升层"同一条路，不再改码接线。</b>归因链自身闭环（回填自动归因/t5 置换重判/LLM 叙事轨）本期不做，押后期。</p>
+
+<h2>一、需求拍板全录（2026-10-22 会话）</h2>
+<table>
+<tr><th>决策点</th><th>大哥拍板</th></tr>
+<tr><td>期3 重心</td><td><b>数据喂 LLM 预测这条线先做</b>——归因链预测闭环做完再说（推翻 controller 原四件全做方案）</td></tr>
+<tr><td>接入形态</td><td>预测上下文增加期1 的点（当前比赛相关的自动给）+ <b>给模型自主获取的方式、模型选择性获取</b></td></tr>
+<tr><td>扩展机制</td><td>未来必定增加更多有效信息——须设计合理融入预测链的机制，防"每次新数据改码接线"腐化</td></tr>
+</table>
+
+<h2>二、架构：按需获取制（节1 定稿）</h2>
+<svg viewBox="0 0 860 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;color:#b91c1c">
+  <defs><marker id="a3" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs>
+  <rect x="20" y="20" width="200" height="70" rx="6" fill="none" stroke="currentColor" stroke-width="2"/>
+  <text x="120" y="45" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1a1a">attribution_query.py</text>
+  <text x="120" y="68" text-anchor="middle" font-size="12" fill="#374151">查询总线（读注册表路由）</text>
+  <rect x="300" y="10" width="180" height="40" rx="5" fill="none" stroke="currentColor"/><text x="390" y="35" text-anchor="middle" font-size="12" fill="#1a1a1a">_formats.json 赛制档案</text>
+  <rect x="300" y="60" width="180" height="40" rx="5" fill="none" stroke="currentColor"/><text x="390" y="85" text-anchor="middle" font-size="12" fill="#1a1a1a">_derbies.json 德比表</text>
+  <rect x="300" y="110" width="180" height="40" rx="5" fill="none" stroke="currentColor"/><text x="390" y="135" text-anchor="middle" font-size="12" fill="#1a1a1a">freq-tables.json 六表</text>
+  <rect x="300" y="160" width="180" height="40" rx="5" fill="none" stroke="currentColor"/><text x="390" y="185" text-anchor="middle" font-size="12" fill="#1a1a1a">hist 账本 16398 张</text>
+  <rect x="300" y="210" width="180" height="40" rx="5" fill="none" stroke="currentColor" stroke-dasharray="4 3"/><text x="390" y="235" text-anchor="middle" font-size="12" fill="#1a1a1a">未来新源（注册即达）</text>
+  <rect x="560" y="10" width="280" height="90" rx="6" fill="none" stroke="currentColor"/>
+  <text x="700" y="35" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a1a1a">llm_card view 阅读版</text>
+  <text x="700" y="58" text-anchor="middle" font-size="12" fill="#374151">基础七层照旧（市场正身→判断材料）</text>
+  <text x="700" y="78" text-anchor="middle" font-size="12" fill="#374151">+ 归因数据节（自动注入三样）</text>
+  <text x="700" y="98" text-anchor="middle" font-size="12" fill="#374151">+ 可查菜单（按需获取）</text>
+  <rect x="560" y="130" width="280" height="70" rx="6" fill="#fef2f2" stroke="currentColor"/>
+  <text x="700" y="155" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a1a1a">LLM 判断（会话）</text>
+  <text x="700" y="178" text-anchor="middle" font-size="12" fill="#374151">判断中需要证据 → 发查询 → 代跑回贴</text>
+  <line x1="220" y1="55" x2="300" y2="30" stroke="currentColor" marker-end="url(#a3)"/>
+  <line x1="220" y1="55" x2="300" y2="80" stroke="currentColor" marker-end="url(#a3)"/>
+  <line x1="220" y1="55" x2="300" y2="130" stroke="currentColor" marker-end="url(#a3)"/>
+  <line x1="220" y1="55" x2="300" y2="180" stroke="currentColor" marker-end="url(#a3)"/>
+  <line x1="220" y1="55" x2="300" y2="230" stroke="currentColor" stroke-dasharray="4 3" marker-end="url(#a3)"/>
+  <line x1="480" y1="55" x2="560" y2="55" stroke="currentColor" marker-end="url(#a3)"/>
+  <line x1="840" y1="55" x2="840" y2="130" stroke="currentColor" marker-end="url(#a3)"/>
+  <line x1="700" y1="200" x2="700" y2="100" stroke="currentColor" stroke-dasharray="3 3" marker-end="url(#a3)"/>
+  <text x="712" y="160" font-size="11" fill="#374151">查询请求（菜单驱动）</text>
+</svg>
+
+<h3>核心原则</h3>
+<ul>
+<li><b>不塞结论，开接口</b>——与 v3.6 哲学同源：判断权在模型，数据通道机器供。卡层不预埋归因结论</li>
+<li><b>自动注入仅三样</b>（当前比赛强相关+零争议+零泄漏）：赛制档案摘要/德比标记/两队剧本指纹（各近 10 场）</li>
+<li><b>频次表结论性内容不自动注入</b>（t5 未过门）——模型想要自己查，查到也带 verdict 标注</li>
+</ul>
+
+<h2>三、七个查询命令（attribution_query.py）</h2>
+<table>
+<tr><th>命令</th><th>数据源</th><th>返回</th><th>泄漏闸</th></tr>
+<tr><td><code>formats &lt;联赛&gt;</code></td><td>_formats.json</td><td>该联赛赛制全档案</td><td>无（静态）</td></tr>
+<tr><td><code>derby &lt;队A&gt; &lt;队B&gt;</code></td><td>_derbies.json</td><td>是否德比+系数+样本 n</td><td>无</td></tr>
+<tr><td><code>freq &lt;t1..t6&gt;</code></td><td>freq-tables.json</td><td>n/diff/CI/verdict——<b>仅 calibration_ready 给结论性措辞</b></td><td>无</td></tr>
+<tr><td><code>script &lt;队&gt; [N]</code></td><td>hist 账本</td><td>该队近 N 场剧本分布（画面指纹）</td><td>仅已完场</td></tr>
+<tr><td><code>h2h-dist &lt;队A&gt; &lt;队B&gt;</code></td><td>hist 账本</td><td>历史交手比分分布</td><td>仅已完场</td></tr>
+<tr><td><code>bill &lt;日期&gt; &lt;码&gt;</code></td><td>forward 账本</td><td>单场归因账单</td><td><b>拒查未来/未完场日期</b></td></tr>
+<tr><td><code>dim &lt;E1..E5&gt;</code></td><td>设计文档字典</td><td>维度定义说明</td><td>无</td></tr>
+</table>
+<p>调用方式：会话内模型发起 → Claude 代跑 CLI → 回贴 JSON。返回体自动带 n/样本期/verdict 标注——防小样本当规律、防 observational 当转正信号。</p>
+
+<h2>四、view 渲染协议（节2 定稿）</h2>
+<pre>◆ 周四006 伯恩茅斯 vs AC米兰 欧罗巴 开赛2026-10-23 03:00 [cup]
+── 市场正身（基线,非答案）────────   ← 现有不动
+── 判断材料 ────────────────        ← 现有不动
+── 归因数据（自动注入 + 按需菜单）──────   ← 新增节
+  赛制: 欧罗巴=欧战次级杯赛·两回合淘汰制·轮换文化重（_formats 摘要）
+  德比: 否
+  剧本指纹: 伯恩茅斯近10: leaky×4 open×3 crush×2 …
+            AC米兰近10:  crush×4 leaky×3 …
+  ─ 可查（判断中需要时让会话代查）────
+  formats <联赛> | derby <A> <B> | freq <t1-t6> |
+  script <队> [N] | h2h-dist <A> <B> | bill <日期> <码> | dim <E1..E5>
+── 缺口 ────────────────            ← 现有不动（菜单固定在缺口节之前）</pre>
+
+<h3>判断协议更新（SKILL.md v3.7 增量）</h3>
+<ol>
+<li>keyJudgments 的 evidence 允许引用归因查询结果，引用须带<b>命令名+关键数字</b>（如 "script 查询：米兰近10场4次crush→支持0:2/0:3格"）</li>
+<li><b>verdict 纪律</b>：observational 表只能作叙事线索，禁止作 direction/goalBand 移动的量化依据；calibration_ready 才可量化（当前零张——全部只能当叙事线索）</li>
+<li><b>shape.type 选择优先看剧本指纹</b>——两队近 10 场剧本分布直接提示画面类型，归因数据进 v3.6 参数的最短路径</li>
+</ol>
+
+<h3>防泄漏边界</h3>
+<div class="warn">
+<ul>
+<li>七命令数据源全部赛前可观测或历史数据；bill/script/h2h-dist 查<b>已完场</b>场次，查询服务拒绝未来日期（查未踢场直接拒）</li>
+<li>freq 表 verdict 随查询返回——模型无法拿 observational 当转正信号</li>
+<li>菜单位置固定在"缺口"节之前——数据获取不算判断，判断仍在市场正身之后做</li>
+</ul>
+</div>
+
+<h2>五、数据源注册表（节3 定稿·扩展机制）</h2>
+<p><code>data/00-leagues/_data_registry.json</code>——新数据源进预测链的唯一通路：</p>
+<pre>{
+  "weather": {
+    "cmd": "weather",                    ← 自动成为查询命令
+    "desc": "球场天气/海拔(历史)",
+    "path": "data/04-summaries/weather/",
+    "leakRisk": "none",                  ← none|postmatch|conditional（查询闸依据）
+    "verdictGate": false,                ← true=返回强制附 verdict+n/CI
+    "autoInject": false,                 ← true=进 attributionPrior 自动注入
+    "status": "active"                   ← retired 即下架（git 历史=准入凭证）
+  }
+}</pre>
+
+<h3>三层接入位（由数据验证等级决定，不由代码决定）</h3>
+<table>
+<tr><th>层</th><th>条件</th><th>接入方式</th></tr>
+<tr><td><b>L1 查询可及</b></td><td>注册表登记即达</td><td>view 菜单+查询命令（默认层·模型按需取）</td></tr>
+<tr><td><b>L2 自动注入</b></td><td>零争议确定性数据（如赛制档案）或 verdict=calibration_ready</td><td>attributionPrior 层自动带出（注册表 autoInject=true）</td></tr>
+<tr><td><b>L3 参数直改</b></td><td>calibration_ready <b>且</b>过组件准入审计（幸存链注册表）</td><td>喂 v3.6 四闸系数/模板权重（当前零数据达此层）</td></tr>
+</table>
+<p>未来新源（天气/裁判库/换帅事件/资金面…）同一条路：<b>落位→登记→L1 可查→攒证据→升层</b>。新源接入=加一条 JSON，不改卡层/查询代码；回滚=status: retired。</p>
+
+<h2>六、测试策略</h2>
+<ul>
+<li>七命令各一条确定性单测（真实数据断言：script 拜仁分布加总=N·freq t5 数字与 freq-tables.json 一致）</li>
+<li>view 渲染快照断言（归因数据节+菜单行存在+位置在缺口节前）</li>
+<li>防泄漏：bill 查未来日期拒答/script 查未完场拒答</li>
+<li>注册表路由：新增一条假源（weather）注册即 query weather 可达（注册表驱动验证）</li>
+<li>llm_card/llm_pred 既有测试零破坏</li>
+</ul>
+
+<h2>七、交付</h2>
+<p>单批四任务 SDD：①注册表+查询总线框架 ②七命令实现 ③view 改造+自动注入三样 ④SKILL.md v3.7 协议更新。当晚可用（10-22 欧罗巴轮即吃上）。</p>
+
+<h2>八、与现有系统边界</h2>
+<table>
+<tr><th>系统</th><th>关系</th></tr>
+<tr><td>llm_card 七层卡</td><td>零改动（attributionPrior 是 view 渲染层的自动注入，不是卡内新层——卡保持凭证纪律幂等只读）</td></tr>
+<tr><td>write_context 三道过滤</td><td>零交集（查询服务是本地数据，不进语境层）</td></tr>
+<tr><td>llm_pred v3.6 四闸</td><td>零改动（L3 参数直改等表过门后另立项）</td></tr>
+<tr><td>归因链闭环（回填自动/t5 置换/叙事轨）</td><td>本期不做·押后（大哥 2026-10-22 拍板：数据喂预测线先做）</td></tr>
+</table>
+
+</body>
+</html>
