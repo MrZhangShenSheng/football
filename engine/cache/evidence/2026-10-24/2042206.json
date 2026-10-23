@@ -5,7 +5,7 @@
  "steps": {
   "S1_odds": {
    "source": "code",
-   "recordedAt": "2026-10-23T11:49:37",
+   "recordedAt": "2026-10-23T15:43:18",
    "payload": {
     "archive": "2026-10-23.json",
     "fetchedAt": "2026-10-23",
@@ -19,6 +19,62 @@
     ],
     "oddsUpdatedAt": "2026-10-23 09:40:08",
     "sellStatus": 1
+   }
+  },
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-23T15:49:54",
+   "payload": {
+    "src": "market_crs",
+    "lam": null,
+    "beta": null
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-23T15:49:54",
+   "payload": {
+    "method": "market_crs",
+    "boomGate": 0.05,
+    "water": true
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-23T15:49:54",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s02s01",
+      "p": 0.1117
+     },
+     {
+      "pick": "s03s01",
+      "p": 0.0869
+     },
+     {
+      "pick": "s02s00",
+      "p": 0.0792
+     },
+     {
+      "pick": "s01s01",
+      "p": 0.0748
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.0609
+     }
+    ],
+    "src": "market_crs"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-23T15:49:54",
+   "payload": {
+    "hid": "dortmund",
+    "aid": "frankfurt",
+    "hstRows": 1259
    }
   }
  }

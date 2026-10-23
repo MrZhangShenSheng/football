@@ -1,0 +1,752 @@
+{
+ "code": "周五005",
+ "match": "布雷达 vs 赫拉克勒",
+ "league": "荷乙",
+ "kickoff": "02:00:00",
+ "saleDate": "2026-10-23",
+ "competitionType": {
+  "type": "cup",
+  "roundsPlayed": null,
+  "note": "杯赛/未映射轮——轮换高风险（英锦标赛教训:小组赛大轮换曾零覆盖）"
+ },
+ "kickoffAt": "2026-10-24 02:00:00",
+ "businessDate": "2026-10-23",
+ "kickoffSrc": "sporttery",
+ "layers": {
+  "market": {
+   "had": {
+    "a": 2.3,
+    "d": 3.65,
+    "h": 2.38
+   },
+   "crs": {
+    "0:0": 23.0,
+    "0:1": 13.5,
+    "0:2": 15.5,
+    "0:3": 25.0,
+    "0:4": 50.0,
+    "0:5": 110.0,
+    "1:0": 14.0,
+    "1:1": 7.75,
+    "1:2": 8.25,
+    "1:3": 16.0,
+    "1:4": 31.0,
+    "1:5": 85.0,
+    "2:0": 16.0,
+    "2:1": 8.5,
+    "2:2": 10.5,
+    "2:3": 18.0,
+    "2:4": 40.0,
+    "2:5": 90.0,
+    "3:0": 26.0,
+    "3:1": 17.0,
+    "3:2": 18.5,
+    "3:3": 28.0,
+    "4:0": 55.0,
+    "4:1": 33.0,
+    "4:2": 45.0,
+    "5:0": 120.0,
+    "5:1": 90.0,
+    "5:2": 100.0,
+    "负其他": 30.0,
+    "平其他": 100.0,
+    "胜其他": 31.0
+   },
+   "ttg": {
+    "s0": 23.0,
+    "s1": 8.0,
+    "s2": 4.55,
+    "s3": 3.4,
+    "s4": 4.3,
+    "s5": 6.25,
+    "s6": 10.0,
+    "s7": 12.5
+   },
+   "hhad": {
+    "a": 1.44,
+    "d": 4.35,
+    "h": 4.88,
+    "goalLine": "-1"
+   },
+   "hafu": {
+    "aa": 3.8,
+    "ad": 13.0,
+    "ah": 22.0,
+    "da": 6.0,
+    "dd": 6.5,
+    "dh": 6.15,
+    "ha": 19.0,
+    "hd": 13.0,
+    "hh": 3.9
+   },
+   "devig": {
+    "had": {
+     "a": 0.3851,
+     "d": 0.2427,
+     "h": 0.3722
+    },
+    "hhad": {
+     "a": 0.615,
+     "d": 0.2036,
+     "h": 0.1815
+    },
+    "crs": {
+     "s00s00": 0.0314,
+     "s00s01": 0.0565,
+     "s00s02": 0.0485,
+     "s00s03": 0.0286,
+     "s00s04": 0.0133,
+     "s00s05": 0.0056,
+     "s01s00": 0.0543,
+     "s01s01": 0.1043,
+     "s01s02": 0.0973,
+     "s01s03": 0.0468,
+     "s01s04": 0.0226,
+     "s01s05": 0.0074,
+     "s02s00": 0.0468,
+     "s02s01": 0.0942,
+     "s02s02": 0.0746,
+     "s02s03": 0.0411,
+     "s02s04": 0.017,
+     "s02s05": 0.007,
+     "s03s00": 0.0274,
+     "s03s01": 0.0438,
+     "s03s02": 0.0399,
+     "s03s03": 0.0253,
+     "s04s00": 0.012,
+     "s04s01": 0.0211,
+     "s04s02": 0.015,
+     "s05s00": 0.0051,
+     "s05s01": 0.007,
+     "s05s02": 0.0062
+    },
+    "ttg": {
+     "s0": 0.0346,
+     "s1": 0.0996,
+     "s2": 0.1751,
+     "s3": 0.2344,
+     "s4": 0.1853,
+     "s5": 0.1275,
+     "s6": 0.0797,
+     "s7": 0.0637
+    },
+    "hafu": {
+     "aa": 0.2098,
+     "ad": 0.0613,
+     "ah": 0.0362,
+     "da": 0.1328,
+     "dd": 0.1226,
+     "dh": 0.1296,
+     "ha": 0.042,
+     "hd": 0.0613,
+     "hh": 0.2044
+    }
+   },
+   "drift": {
+    "status": "单调无对照(ticks=1)",
+    "snapshotsAt": [
+     "2026-10-23T11:33:27+08:00",
+     "2026-10-23T11:49:36+08:00",
+     "2026-10-23T15:43:17+08:00"
+    ]
+   },
+   "oddsUpdatedAt": "2026-10-23 14:29:37"
+  },
+  "intel": {
+   "status": "ok",
+   "injuries": {
+    "home": [
+     {
+      "name": "P. Gladon",
+      "pos": "前锋",
+      "no": "19",
+      "injury": 1,
+      "suspension": 0,
+      "apps": 8,
+      "starts": 3
+     },
+     {
+      "name": "L. Greiml",
+      "pos": "后卫",
+      "no": "4",
+      "injury": 1,
+      "suspension": 0,
+      "apps": 10,
+      "starts": 10
+     }
+    ],
+    "away": [
+     {
+      "name": "F. de Keijzer",
+      "pos": "守门员",
+      "no": "1",
+      "injury": 1,
+      "suspension": 0,
+      "apps": 11,
+      "starts": 11
+     },
+     {
+      "name": "F. Fofana",
+      "pos": "前锋",
+      "no": "80",
+      "injury": 1,
+      "suspension": 0,
+      "apps": 1,
+      "starts": 0
+     }
+    ]
+   },
+   "form": {
+    "goalAvg": {
+     "awayGoalAvgCnt": "3.2",
+     "awayGoalAvgCntRatio": "61.5",
+     "homeGoalAvgCnt": "2.0",
+     "homeGoalAvgCntRatio": "38.5",
+     "totalLegCnt": 10
+    },
+    "last10": {
+     "awayDrawMatchCnt": 1,
+     "awayLossGoalMatchCnt": 1,
+     "awayScoreRatio": "83",
+     "awayWinGoalMatchCnt": 8,
+     "homeDrawMatchCnt": 2,
+     "homeLossGoalMatchCnt": 3,
+     "homeScoreRatio": "57",
+     "homeWinGoalMatchCnt": 5,
+     "totalLegCnt": 10
+    },
+    "last10HomeAway": {
+     "awayDrawMatchCnt": 1,
+     "awayLossGoalMatchCnt": 5,
+     "awayScoreRatio": "43",
+     "awayWinGoalMatchCnt": 4,
+     "homeDrawMatchCnt": 0,
+     "homeLossGoalMatchCnt": 5,
+     "homeScoreRatio": "50",
+     "homeWinGoalMatchCnt": 5,
+     "totalLegCnt": 10
+    }
+   },
+   "standing": {
+    "home": {
+     "ranking": "5",
+     "home": {
+      "W": "3",
+      "D": "0",
+      "L": "2"
+     },
+     "away": {
+      "W": null,
+      "D": null,
+      "L": null
+     }
+    },
+    "away": {
+     "ranking": "1",
+     "home": {
+      "W": null,
+      "D": null,
+      "L": null
+     },
+     "away": {
+      "W": "4",
+      "D": "1",
+      "L": "1"
+     }
+    }
+   },
+   "h2h": {
+    "statistics": {
+     "drawMatchCnt": 1,
+     "drawProbability": "10%",
+     "goalCnt": 0,
+     "lossGoalCnt": 0,
+     "lossGoalMatchCnt": 5,
+     "lossProbability": "50%",
+     "netGoal": 0,
+     "sportteryTeamId": 0,
+     "teamId": 0,
+     "teamShortName": "布雷达",
+     "totalLegCnt": 10,
+     "winGoalMatchCnt": 4,
+     "winProbability": "40%"
+    },
+    "matches": [
+     {
+      "date": "2026-02-14",
+      "home": "赫拉克勒",
+      "score": "0:1",
+      "ht": "0:0",
+      "away": "布雷达",
+      "winner": "home",
+      "season": "2526"
+     },
+     {
+      "date": "2025-10-30",
+      "home": "布雷达",
+      "score": "1:4",
+      "ht": "0:2",
+      "away": "赫拉克勒",
+      "winner": "away",
+      "season": "2526"
+     },
+     {
+      "date": "2025-09-21",
+      "home": "布雷达",
+      "score": "2:1",
+      "ht": "0:1",
+      "away": "赫拉克勒",
+      "winner": "home",
+      "season": "2526"
+     },
+     {
+      "date": "2025-02-01",
+      "home": "布雷达",
+      "score": "1:1",
+      "ht": "1:0",
+      "away": "赫拉克勒",
+      "winner": "draw",
+      "season": "2425"
+     },
+     {
+      "date": "2024-11-03",
+      "home": "赫拉克勒",
+      "score": "2:0",
+      "ht": "1:0",
+      "away": "布雷达",
+      "winner": "away",
+      "season": "2425"
+     },
+     {
+      "date": "2023-05-13",
+      "home": "布雷达",
+      "score": "0:3",
+      "ht": "0:0",
+      "away": "赫拉克勒",
+      "winner": "away",
+      "season": "2223"
+     },
+     {
+      "date": "2022-11-12",
+      "home": "赫拉克勒",
+      "score": "5:1",
+      "ht": "3:1",
+      "away": "布雷达",
+      "winner": "away",
+      "season": "2223"
+     },
+     {
+      "date": "2019-04-07",
+      "home": "赫拉克勒",
+      "score": "1:0",
+      "ht": "0:0",
+      "away": "布雷达",
+      "winner": "away",
+      "season": "1819"
+     },
+     {
+      "date": "2018-11-04",
+      "home": "布雷达",
+      "score": "2:1",
+      "ht": "1:0",
+      "away": "赫拉克勒",
+      "winner": "home",
+      "season": "1819"
+     },
+     {
+      "date": "2018-02-08",
+      "home": "布雷达",
+      "score": "6:1",
+      "ht": "2:1",
+      "away": "赫拉克勒",
+      "winner": "home",
+      "season": "1718"
+     }
+    ],
+    "seasonAgg": "主队(布雷达)视角 2526(3) 胜2负1 · 2425(2) 平1负1 · 2223(2) 负2 · 1819(2) 胜1负1 · 1718(1) 胜1",
+    "recent2": [
+     {
+      "date": "2026-02-14",
+      "home": "赫拉克勒",
+      "score": "0:1",
+      "ht": "0:0",
+      "away": "布雷达",
+      "winner": "home",
+      "season": "2526"
+     },
+     {
+      "date": "2025-10-30",
+      "home": "布雷达",
+      "score": "1:4",
+      "ht": "0:2",
+      "away": "赫拉克勒",
+      "winner": "away",
+      "season": "2526"
+     }
+    ]
+   },
+   "scorers": {
+    "away": {
+     "playerList": [
+      {
+       "appearanceCnt": 11,
+       "assistAvgCnt": "0.2",
+       "assistCnt": 2,
+       "assistProbability": "9%",
+       "goalAvgCnt": "1.1",
+       "goalCnt": 12,
+       "goalProbability": "35%",
+       "injuryFlag": 0,
+       "personId": 597520,
+       "personName": "J. N'djoli",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 11,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "27"
+      },
+      {
+       "appearanceCnt": 11,
+       "assistAvgCnt": "0.2",
+       "assistCnt": 2,
+       "assistProbability": "9%",
+       "goalAvgCnt": "0.6",
+       "goalCnt": 7,
+       "goalProbability": "21%",
+       "injuryFlag": 0,
+       "personId": 689954,
+       "personName": "T. van Gilst",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 10,
+       "substituteMatchCnt": 1,
+       "suspensionFlag": 0,
+       "uniformNo": "17"
+      },
+      {
+       "appearanceCnt": 11,
+       "assistAvgCnt": "0.2",
+       "assistCnt": 2,
+       "assistProbability": "9%",
+       "goalAvgCnt": "0.3",
+       "goalCnt": 3,
+       "goalProbability": "9%",
+       "injuryFlag": 0,
+       "personId": 641190,
+       "personName": "S. Scheperman",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 11,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "32"
+      }
+     ],
+     "sportteryTeamId": 686,
+     "teamId": 1536,
+     "teamShortName": "赫拉克勒",
+     "uniformTeamId": 733,
+     "top5": [
+      {
+       "appearanceCnt": 11,
+       "assistAvgCnt": "0.2",
+       "assistCnt": 2,
+       "assistProbability": "9%",
+       "goalAvgCnt": "1.1",
+       "goalCnt": 12,
+       "goalProbability": "35%",
+       "injuryFlag": 0,
+       "personId": 597520,
+       "personName": "J. N'djoli",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 11,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "27"
+      },
+      {
+       "appearanceCnt": 11,
+       "assistAvgCnt": "0.2",
+       "assistCnt": 2,
+       "assistProbability": "9%",
+       "goalAvgCnt": "0.6",
+       "goalCnt": 7,
+       "goalProbability": "21%",
+       "injuryFlag": 0,
+       "personId": 689954,
+       "personName": "T. van Gilst",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 10,
+       "substituteMatchCnt": 1,
+       "suspensionFlag": 0,
+       "uniformNo": "17"
+      },
+      {
+       "appearanceCnt": 11,
+       "assistAvgCnt": "0.2",
+       "assistCnt": 2,
+       "assistProbability": "9%",
+       "goalAvgCnt": "0.3",
+       "goalCnt": 3,
+       "goalProbability": "9%",
+       "injuryFlag": 0,
+       "personId": 641190,
+       "personName": "S. Scheperman",
+       "playerPositionCode": "Midfielder",
+       "playerPositionDesc": "中场",
+       "startedMatchCnt": 11,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "32"
+      }
+     ]
+    },
+    "home": {
+     "playerList": [
+      {
+       "appearanceCnt": 9,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "0.7",
+       "goalCnt": 6,
+       "goalProbability": "29%",
+       "injuryFlag": 0,
+       "personId": 538704,
+       "personName": "C.布莱姆",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 9,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "28"
+      },
+      {
+       "appearanceCnt": 10,
+       "assistAvgCnt": "0.2",
+       "assistCnt": 2,
+       "assistProbability": "15%",
+       "goalAvgCnt": "0.4",
+       "goalCnt": 4,
+       "goalProbability": "19%",
+       "injuryFlag": 0,
+       "personId": 728669,
+       "personName": "M. Soumano",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 8,
+       "substituteMatchCnt": 2,
+       "suspensionFlag": 0,
+       "uniformNo": "9"
+      },
+      {
+       "appearanceCnt": 8,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "0.5",
+       "goalCnt": 4,
+       "goalProbability": "19%",
+       "injuryFlag": 1,
+       "personId": 180145,
+       "personName": "P. Gladon",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 3,
+       "substituteMatchCnt": 5,
+       "suspensionFlag": 0,
+       "uniformNo": "19"
+      }
+     ],
+     "sportteryTeamId": 248,
+     "teamId": 1524,
+     "teamShortName": "布雷达",
+     "uniformTeamId": 500,
+     "top5": [
+      {
+       "appearanceCnt": 9,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "0.7",
+       "goalCnt": 6,
+       "goalProbability": "29%",
+       "injuryFlag": 0,
+       "personId": 538704,
+       "personName": "C.布莱姆",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 9,
+       "substituteMatchCnt": 0,
+       "suspensionFlag": 0,
+       "uniformNo": "28"
+      },
+      {
+       "appearanceCnt": 10,
+       "assistAvgCnt": "0.2",
+       "assistCnt": 2,
+       "assistProbability": "15%",
+       "goalAvgCnt": "0.4",
+       "goalCnt": 4,
+       "goalProbability": "19%",
+       "injuryFlag": 0,
+       "personId": 728669,
+       "personName": "M. Soumano",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 8,
+       "substituteMatchCnt": 2,
+       "suspensionFlag": 0,
+       "uniformNo": "9"
+      },
+      {
+       "appearanceCnt": 8,
+       "assistAvgCnt": "0",
+       "assistCnt": 0,
+       "assistProbability": "0%",
+       "goalAvgCnt": "0.5",
+       "goalCnt": 4,
+       "goalProbability": "19%",
+       "injuryFlag": 1,
+       "personId": 180145,
+       "personName": "P. Gladon",
+       "playerPositionCode": "Forward",
+       "playerPositionDesc": "前锋",
+       "startedMatchCnt": 3,
+       "substituteMatchCnt": 5,
+       "suspensionFlag": 0,
+       "uniformNo": "19"
+      }
+     ]
+    },
+    "seasonId": 15046,
+    "seasonName": "2026/2027",
+    "tournamentId": 246,
+    "tournamentShortName": "荷乙",
+    "uniformLeagueId": 1051,
+    "uniformMatchId": 2514703
+   },
+   "keyAbsences": {
+    "home": [
+     {
+      "rank": 3,
+      "name": "P. Gladon",
+      "goals": 4
+     }
+    ],
+    "away": []
+   }
+  },
+  "profile": {
+   "status": "未映射",
+   "league": "荷乙",
+   "standings": {
+    "status": "联赛未映射"
+   }
+  },
+  "lineup": {
+   "status": "未获取"
+  },
+  "context": {
+   "status": "ok",
+   "entries": [
+    {
+     "title": "NAC Breda vs Heracles Almelo live score, H2H and lineups (sofascore)",
+     "url": "https://www.sofascore.com/football/match/heracles-almelo-nac-breda/XibsCjb",
+     "publishedAt": "2026-10-22 14:00:00",
+     "fetchedAt": "2026-10-23T16:25:29",
+     "excerpt": "NAC Breda rank 5th while Heracles Almelo hold 1st position in the Eerste Divisie."
+    }
+   ]
+  },
+  "ourModels": {
+   "v3wChain": {
+    "status": "未获取"
+   },
+   "v4b": {
+    "status": "未获取"
+   },
+   "marketLambda": {
+    "status": "ok",
+    "role": "market-derived",
+    "lamH": 1.68,
+    "lamA": 1.76,
+    "lamSum": 3.44,
+    "rho": 0.0,
+    "note": "市场隐含主客期望进球（去水后反解）——进球带判断的市场参照,非独立意见"
+   },
+   "teamRecent": {
+    "horizon": "2026-10-24",
+    "windowDays": 90,
+    "poolMatches": 989,
+    "source": "每日回填库 + 体彩缓存 + 联赛库（espn history 刷新·ID 空间统一去重）",
+    "home": {
+     "recent": [
+      {
+       "date": "2026-08-29",
+       "season": "2627",
+       "opp": "罗达JC",
+       "ha": "客",
+       "score": "2-2",
+       "res": "平",
+       "src": "cache",
+       "oppPos": null
+      }
+     ],
+     "homeGfGa": null,
+     "awayGfGa": [
+      2.0,
+      2.0,
+      1
+     ],
+     "restDays": 56,
+     "matches14d": 0,
+     "sparseNote": "三源窗口内该队场次<3,restDays 为上界",
+     "elo": null
+    },
+    "away": {
+     "recent": [
+      {
+       "date": "2026-10-08",
+       "season": "2627",
+       "opp": "瓦尔韦克",
+       "ha": "主",
+       "score": "3-0",
+       "res": "胜",
+       "src": "daily",
+       "oppPos": null
+      },
+      {
+       "date": "2026-08-15",
+       "season": "2627",
+       "opp": "登博思",
+       "ha": "主",
+       "score": "3-2",
+       "res": "胜",
+       "src": "cache",
+       "oppPos": null
+      }
+     ],
+     "homeGfGa": [
+      3.0,
+      1.0,
+      2
+     ],
+     "awayGfGa": null,
+     "restDays": 16,
+     "matches14d": 0,
+     "sparseNote": "三源窗口内该队场次<3,restDays 为上界",
+     "elo": null
+    }
+   },
+   "xg": {
+    "status": "联赛未映射"
+   }
+  }
+ },
+ "createdAt": "2026-10-23T15:54:31",
+ "cardHash": "19ec852f4072156a"
+}

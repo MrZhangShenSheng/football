@@ -5,7 +5,7 @@
  "steps": {
   "S1_odds": {
    "source": "code",
-   "recordedAt": "2026-10-23T11:49:37",
+   "recordedAt": "2026-10-23T15:43:18",
    "payload": {
     "archive": "2026-10-23.json",
     "fetchedAt": "2026-10-23",
@@ -19,6 +19,62 @@
     ],
     "oddsUpdatedAt": "2026-10-23 09:40:08",
     "sellStatus": 1
+   }
+  },
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-23T15:49:55",
+   "payload": {
+    "src": "market_crs",
+    "lam": null,
+    "beta": null
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-23T15:49:55",
+   "payload": {
+    "method": "market_crs",
+    "boomGate": 0.05,
+    "water": true
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-23T15:49:55",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1292
+     },
+     {
+      "pick": "s01s02",
+      "p": 0.1063
+     },
+     {
+      "pick": "s00s01",
+      "p": 0.0888
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0832
+     },
+     {
+      "pick": "s00s02",
+      "p": 0.0699
+     }
+    ],
+    "src": "market_crs"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-23T15:49:55",
+   "payload": {
+    "hid": "valencia",
+    "aid": "villarreal",
+    "hstRows": 1589
    }
   }
  }

@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-24",
+ "matchKey": "2042217",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-23T15:49:59",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     1.969,
+     1.675
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-23T15:49:59",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": false
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-23T15:49:59",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.0932
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0849
+     },
+     {
+      "pick": "s01s02",
+      "p": 0.0722
+     },
+     {
+      "pick": "s02s02",
+      "p": 0.0711
+     },
+     {
+      "pick": "s03s01",
+      "p": 0.0557
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-23T15:49:59",
+   "payload": {
+    "hid": "fortuna-sittard",
+    "aid": "excelsior-rotterdam",
+    "hstRows": 1087
+   }
+  }
+ }
+}

@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-24",
+ "matchKey": "2042227",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-23T15:50:02",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     1.145,
+     1.31
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-23T15:50:02",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": false
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-23T15:50:02",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s01s01",
+      "p": 0.1262
+     },
+     {
+      "pick": "s00s01",
+      "p": 0.1151
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.1009
+     },
+     {
+      "pick": "s01s02",
+      "p": 0.0843
+     },
+     {
+      "pick": "s00s00",
+      "p": 0.0833
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-23T15:50:02",
+   "payload": {
+    "hid": "genoa",
+    "aid": "venezia",
+    "hstRows": 1570
+   }
+  }
+ }
+}

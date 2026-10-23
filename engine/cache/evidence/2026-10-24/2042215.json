@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "day": "2026-10-24",
+ "matchKey": "2042215",
+ "steps": {
+  "S4_lambda": {
+   "source": "code",
+   "recordedAt": "2026-10-23T15:49:58",
+   "payload": {
+    "src": "v3w_fallback",
+    "lam": [
+     2.175,
+     0.542
+    ],
+    "beta": 0.05
+   }
+  },
+  "S5_devig": {
+   "source": "code",
+   "recordedAt": "2026-10-23T15:49:58",
+   "payload": {
+    "method": "v3w_fallback",
+    "boomGate": 0.05,
+    "water": false
+   }
+  },
+  "S7_matrix": {
+   "source": "code",
+   "recordedAt": "2026-10-23T15:49:58",
+   "payload": {
+    "top5": [
+     {
+      "pick": "s02s00",
+      "p": 0.1563
+     },
+     {
+      "pick": "s01s00",
+      "p": 0.1546
+     },
+     {
+      "pick": "s03s00",
+      "p": 0.1133
+     },
+     {
+      "pick": "s02s01",
+      "p": 0.0847
+     },
+     {
+      "pick": "s01s01",
+      "p": 0.067
+     }
+    ],
+    "src": "v3w_fallback"
+   }
+  },
+  "S2_profiles": {
+   "source": "code",
+   "recordedAt": "2026-10-23T15:49:58",
+   "payload": {
+    "hid": "fc-tokyo",
+    "aid": "mito-hollyhock",
+    "hstRows": 0
+   }
+  }
+ }
+}

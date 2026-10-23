@@ -1,0 +1,73 @@
+{
+ "date": "2026-10-23",
+ "version": "v4.7-lite",
+ "note": "轮档补建:仅含 T050 实票两场(本轮 49 场全量卡层=engine/cache/llm_cards/2026-10-23/,冻结件=llm_preds/2026-10-23.json);result 留空交 backfill 落盘",
+ "matches": [
+  {
+   "idx": 1,
+   "code": "周五006",
+   "league": "德甲",
+   "match": "斯图加特 vs 门兴",
+   "kickoff": "2026-10-24 02:30:00",
+   "pick": "2×2混串(见T050)",
+   "odds": null,
+   "star": 3,
+   "grade": "A",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": [
+    "LLM结构化v3·crush"
+   ],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": "T050",
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "hypothesis": {
+    "assumption": "门兴客场防线崩坏程度被低估：3 个客场失 10 球、全季场均失 3.33，6 轮从未零封任何对手",
+    "verdict": "survived"
+   },
+   "llmPredRef": "engine/cache/llm_preds/2026-10-23.json#周五006"
+  },
+  {
+   "idx": 2,
+   "code": "周六009",
+   "league": "意甲",
+   "match": "科莫 vs 萨索洛",
+   "kickoff": "2026-10-24 21:00:00",
+   "pick": "2×2混串(见T050)",
+   "odds": null,
+   "star": 3,
+   "grade": "A",
+   "dc": null,
+   "fused": null,
+   "final": null,
+   "chain": [
+    "LLM结构化v3·crush"
+   ],
+   "lambdaHome": null,
+   "lambdaAway": null,
+   "fusedPre": null,
+   "chainSteps": [],
+   "ev": null,
+   "inPlan": "T050",
+   "result": null,
+   "directionHit": null,
+   "scoreHit": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "hypothesis": {
+    "assumption": "萨索洛客场失球失控且本季客场从未零封，科莫主场防守扎实——净胜 2 球以上的结构基础成立",
+    "verdict": "survived"
+   },
+   "llmPredRef": "engine/cache/llm_preds/2026-10-23.json#周六009"
+  }
+ ]
+}
