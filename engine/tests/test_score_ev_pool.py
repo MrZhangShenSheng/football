@@ -20,32 +20,45 @@ def _pool_expect(blob):
 
 
 def test_uefa_champions_enters_pool(table):
-    """欧冠 1043 场须独立进池，期望 ~3.22（此前被 '杯赛不进池' 排除）。"""
+    """欧冠须独立进池，期望 ~3.20（此前被 '杯赛不进池' 排除）。
+
+    2026-10-23 口径修正：原断言写 1043 场/>=1000，那是跨时区日双记的膨胀值
+    （同一场按两个日期各记一行）。去重后真实 706 场，期望 3.197 几乎不变——
+    重复行是整场复制，不改变分布，只虚增样本量。"""
     assert "uefa-champions" in table, "欧冠库未进频率池"
     blob = table["uefa-champions"]
-    assert blob["__n"] >= 1000, f"欧冠样本 {blob['__n']} 不足"
+    assert blob["__n"] >= 700, f"欧冠样本 {blob['__n']} 不足"
     assert 3.0 <= _pool_expect(blob) <= 3.45
 
 
 def test_large_excluded_leagues_enter_pool(table):
-    """8 个样本>=800 的被排除库全部进池。"""
+    """8 个样本>=POOL_MIN_N 的被排除库全部进池。
+
+    2026-10-23：门槛由 800 降至 600（见 score_ev.POOL_MIN_N 注释）。去重后
+    欧冠 706/欧联 653/苏超 734 的真实样本介于 600~800，按旧门槛会回退全局池，
+    欧冠将吃 −0.46 球偏差——正是 10-14 低分偏置修正要消除的缺陷。"""
+    from score_ev import POOL_MIN_N
     for key in ("spain-liga2", "germany-bundesliga2", "belgium-first-a",
                 "turkey-super-lig", "greece-super", "SC0",
                 "uefa-champions", "uefa-europa"):
         assert key in table, f"{key} 未进池"
-        assert table[key]["__n"] >= 800, f"{key} 样本不足 800"
+        assert table[key]["__n"] >= POOL_MIN_N, f"{key} 样本不足 {POOL_MIN_N}"
 
 
 def test_tiny_cup_libraries_still_excluded(table):
-    """样本<800 的小库仍不进池（libertadores 9 场 / coppa-italia 32 场）。"""
+    """样本<POOL_MIN_N 的小库仍不进池（libertadores 9 场 / coppa-italia 32 场）。"""
     for key in ("libertadores", "coppa-italia", "dfb-pokal", "asian-u23"):
         assert key not in table, f"{key} 样本不足却进池"
 
 
 def test_total_pool_size_grew(table):
-    """池总量须从 28438 增至约 41667（+13229）。"""
+    """池总量须显著高于改造前的 28438。
+
+    2026-10-23 口径修正：原断言 >=40000 对标 41667，而那个数含 league 库 8214 行
+    重复（fd 八库整库双导 + 四库跨时区日双记）。去重后真实总量约 36600，仍远高于
+    改造前基线——该测试守的是"被排除的大库进来了"，不是守具体膨胀值。"""
     total = sum(b.get("__n", 0) for b in table.values())
-    assert total >= 40000, f"池总量 {total} 未达预期"
+    assert total >= 35000, f"池总量 {total} 未达预期"
 
 
 def test_uefa_champions_mapped():
