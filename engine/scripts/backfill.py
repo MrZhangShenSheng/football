@@ -192,6 +192,9 @@ def strip_play(pick: str) -> str:
     body = parts[1].strip() if parts[0].upper() in PLAY_PREFIXES and len(parts) == 2 else pick
     body = re.sub(r"[（(][^（）()]*[)）]", " ", body)
     body = re.sub(r"@\d+(?:\.\d+)?\s*$", "", body)  # 尾部@赔率注释：'主胜@1.31' → '主胜'（10-08轮新格式）
+    # 顿号状态后缀：'主胜·候选待终审' → '主胜'（10-23 实证：周三014 残留后缀致三向判定
+    # 器认不出"主胜"→ directionHit=None 漏判；同轮周三007 走 HHAD 分支侥幸判出掩盖了它）
+    body = re.sub(r"[·・]\S*$", "", body)
     return body.replace("维持", "").replace("存续", "").strip()
 
 
