@@ -27,6 +27,9 @@ EUROPE_SLOTS = 4
 UPSET_ODDS_THRESHOLD = 2.5  # 收盘赔率高于此的球队获胜 = 冷门
 
 
+LOCAL_RESULTS_DIR = ROOT / "data" / "02-results" / "league"
+
+
 def load_season_matches(league: str, seasons: list[str]) -> list[dict]:
     matches = []
     for season in seasons:
@@ -41,14 +44,30 @@ def load_season_matches(league: str, seasons: list[str]) -> list[dict]:
     return matches
 
 
-def build(league: str, seasons: list[str]) -> dict:
-    matches = load_season_matches(league, seasons)
-    if not matches:
-        return {}
-    season_label = f"{seasons[0][:2]}{seasons[0][2:]}-{int(seasons[0][:2]) + 1}{(int(seasons[0][:2]) + 1) % 100:02d}"
-    latest_season = seasons[-1]
+def load_local_results(league: str) -> list[dict]:
+    """本地赛果库 → fd 行形状（fthg/ftag/home/away·无赔率列）。
 
-    # —— 积分榜推导（fd 兜底版）——
+    2026-10-23 新增：无 fd 覆盖的联赛（澳超等）此前只能手工写画像，口径散落。
+    赔率列缺失 → 下游 upsetRate 自然为 None（冷门判定需 pin_h/pin_a），其余统计照算。
+    """
+    p = LOCAL_RESULTS_DIR / f"{league}_matches.json"
+    if not p.exists():
+        return []
+    data = json.loads(p.read_text(encoding="utf-8"))
+    out = []
+    for m in data.get("matches") or []:
+        if m.get("hg") is None or m.get("ag") is None:
+            continue
+        out.append({"home": m["home"], "away": m["away"],
+                    "fthg": m["hg"], "ftag": m["ag"], "date": m.get("date")})
+    return out
+
+
+def accumulate(matches: list[dict]) -> tuple[dict, dict]:
+    """一遍扫出每队积分榜累计 + 联赛级汇总。(perTeam, aggregates)
+
+    2026-10-23 从 build 内联循环提出，供"全部场次算统计、单季算积分榜"两次调用复用。
+    """
     stats = defaultdict(lambda: {"played": 0, "won": 0, "drawn": 0, "lost": 0,
                                  "gf": 0, "ga": 0, "pts": 0,
                                  "home": {"w": 0, "d": 0, "l": 0}, "away": {"w": 0, "d": 0, "l": 0},
@@ -83,7 +102,7 @@ def build(league: str, seasons: list[str]) -> dict:
             s["played"] += 1
             s["gf"] += gf
             s["ga"] += ga
-            if (gf > ga and side == "home") or (gf > ga and side == "away"):
+            if gf > ga:
                 s["won"] += 1
                 s["pts"] += 3
                 s[side]["w"] += 1
@@ -97,16 +116,61 @@ def build(league: str, seasons: list[str]) -> dict:
                 s["lost"] += 1
                 s[side]["l"] += 1
                 s["form"].append("L")
+    return stats, {"totalGoals": total_goals, "homeWins": home_wins, "draws": draws,
+                   "awayWins": away_wins, "upsets": upsets, "rated": rated,
+                   "scoreCounter": score_counter}
+
+
+def build(league: str, seasons: list[str]) -> dict:
+    matches = load_season_matches(league, seasons)
+    source = "fd"
+    if not matches:                      # fd 无覆盖 → 本地赛果库自推
+        matches = load_local_results(league)
+        source = "local-league-results"
+    if not matches:
+        return {}
+    if not seasons:                      # 本地库路径下调用方可能没给赛季
+        seasons = ["2526", "2627"]
+    season_label = f"{seasons[0][:2]}{seasons[0][2:]}-{int(seasons[0][:2]) + 1}{(int(seasons[0][:2]) + 1) % 100:02d}"
+    latest_season = seasons[-1]
+
+    # —— 积分榜推导（fd 兜底版）——
+    stats, aggr = accumulate(matches)
+    total_goals = aggr["totalGoals"]
+    home_wins, draws = aggr["homeWins"], aggr["draws"]
+    upsets, rated = aggr["upsets"], aggr["rated"]
+    score_counter = aggr["scoreCounter"]
     n = len(matches)
-    standings = []
-    for i, (team, s) in enumerate(sorted(stats.items(), key=lambda kv: (-kv[1]["pts"], -(kv[1]["gf"] - kv[1]["ga"]))), 1):
-        standings.append({
-            "pos": i, "team": team,
-            "played": s["played"], "won": s["won"], "drawn": s["drawn"], "lost": s["lost"],
-            "gf": s["gf"], "ga": s["ga"], "gd": s["gf"] - s["ga"], "pts": s["pts"],
-            "form": "".join(s["form"][-5:]),
-            "homeRecord": s["home"], "awayRecord": s["away"],
-        })
+
+    def to_table(acc: dict) -> list[dict]:
+        rows = []
+        for i, (team, s) in enumerate(
+                sorted(acc.items(), key=lambda kv: (-kv[1]["pts"], -(kv[1]["gf"] - kv[1]["ga"]))), 1):
+            rows.append({
+                "pos": i, "team": team,
+                "played": s["played"], "won": s["won"], "drawn": s["drawn"], "lost": s["lost"],
+                "gf": s["gf"], "ga": s["ga"], "gd": s["gf"] - s["ga"], "pts": s["pts"],
+                "form": "".join(s["form"][-5:]),
+                "homeRecord": s["home"], "awayRecord": s["away"],
+            })
+        return rows
+
+    standings = to_table(stats)
+    standings_scope = {"basis": "all-loaded", "matchesUsed": n}
+    # 2026-10-23：跨季合并的榜语义不对（分数是两季累计）。本地库路径下按赛季边界
+    # 重算，取"场次最多的那一季"——新季刚开几轮时该季样本无实力信息，上季终榜才有。
+    # ESPN standings 可用的联赛由预测时实时榜覆盖，不受此影响。
+    if source == "local-league-results":
+        by_season = defaultdict(list)
+        for m in matches:
+            d = m.get("date") or ""
+            if d:
+                by_season["2526" if d < "2026-07-01" else "2627"].append(m)
+        if len(by_season) > 1:
+            lbl, subset = max(by_season.items(), key=lambda kv: len(kv[1]))
+            standings = to_table(accumulate(subset)[0])
+            standings_scope = {"basis": f"season-{lbl}", "matchesUsed": len(subset),
+                              "note": "跨季合并榜语义不符，取场次最多赛季；联赛统计仍用全部场次"}
     top_scores = sorted(score_counter.items(), key=lambda kv: -kv[1])[:3]
     rel_slots = RELEGATION_SLOTS.get(league, 3)
 
@@ -123,13 +187,14 @@ def build(league: str, seasons: list[str]) -> dict:
         "generatedAt": date.today().isoformat(),
         "roundsPlayed": max((s["played"] for s in standings), default=0),
         "standings": standings,
+        "standingsScope": standings_scope,
         "leagueStats": {
             "avgGoals": round(total_goals / n, 3),
             "homeWinRate": round(home_wins / n, 3),
             "drawRate": round(draws / n, 3),
             "upsetRate": round(upsets / rated, 3) if rated else None,
             "topScores": [{"score": s, "count": c} for s, c in top_scores],
-            "computedFrom": "fd", "matchesUsed": n, "seasonsMerged": seasons,
+            "computedFrom": source, "matchesUsed": n, "seasonsMerged": seasons,
         },
         "context": {
             "titleRace": ({"leader": standings[0]["team"], "gap": standings[0]["pts"] - standings[1]["pts"]}
@@ -138,7 +203,7 @@ def build(league: str, seasons: list[str]) -> dict:
             "europeZone": list(range(1, EUROPE_SLOTS + 1)),
         },
         "dcParams": dc_params,
-        "freshness": {"standingsSource": "fd-derived", "stale": False,
+        "freshness": {"standingsSource": f"{source}-derived", "stale": False,
                       "note": "Claude 预测时 WebFetch ESPN 实时积分榜覆盖 standings 并改 standingsSource=espn"},
     }
 
@@ -152,6 +217,10 @@ def main() -> None:
             parts = p.stem.split("_")  # odds_{league}_{season}
             if len(parts) == 3:
                 by_league[parts[1]].append(parts[2])
+        # 本地赛果库联赛（无 fd 覆盖者）一并纳入——否则 --all 永远漏掉它们，
+        # 画像只能手工写（韩职那份即是，口径散落无法复算）。
+        for p in LOCAL_RESULTS_DIR.glob("*_matches.json"):
+            by_league.setdefault(p.stem[:-len("_matches")], [])
         targets = [(lg, sorted(ss)) for lg, ss in sorted(by_league.items())]
     else:
         league = args[0]

@@ -20,7 +20,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from common import log, ROOT, TEAMS_DIR
-from score_ev import map_league   # P2-9：体彩中文名→英文ID 单一映射源（修 10 联赛 missing 误报）
+from score_ev import map_league, POOL_ALIAS   # P2-9：体彩中文名→英文ID 单一映射源（修 10 联赛 missing 误报）
 
 LEAGUES_DIR = ROOT / "data" / "00-leagues"
 TEAM_STALE_DAYS = 7
@@ -58,7 +58,11 @@ def league_status(league: str) -> dict:
     # P2-9（2026-09-04 拍板）：体彩中文名（英超）→ 英文 ID（england-premier）经 map_league
     # 解析后再查画像文件——此前中文名直查致 fd 联赛全量 missing 误报，淹没真缺口；
     # 无映射联赛（日职/韩职等）维持原名直查（有画像即 ready，无则真 missing）。
+    # 2026-10-23：再经 POOL_ALIAS 消解"映射 ID vs 画像文件名"不一致——map_league("德乙")
+    # 给 germany-2-bundesliga 而画像是 germany-bundesliga2.json（西乙同型），
+    # 致两个有画像有赛果库的联赛被报 missing，与丹超/欧冠的真缺口混在一张清单里。
     lg_id = map_league(league) or league
+    lg_id = POOL_ALIAS.get(lg_id, lg_id)
     p = LEAGUES_DIR / f"{lg_id}.json"
     if not p.exists():
         return {"status": "missing"}

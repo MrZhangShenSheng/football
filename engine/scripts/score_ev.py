@@ -16,6 +16,7 @@ LEAGUE_MAP = {          # 体彩中文缩写 → fd 英文 id（2026-08-24 存�
     "荷乙": "netherlands-eerste", "西乙": "spain-laliga2", "意乙": "italy-serie-b",
     # 09-08 补本地库四联赛（体彩裸名实测自 02-results league 字段；无 fd 对应）
     "巴甲": "brazil", "丹超": "denmark", "挪超": "norway", "美职": "usa",
+    "澳超": "australia",          # 2026-10-23 接入（ESPN aus.1·见 backfill.LEAGUE_ESPN）
     # 10-14 低分偏置修正：杯赛映射（此前返回 None → 全局池 2.738，欧冠实测 3.221 差 0.48）
     "欧冠": "uefa-champions", "欧联": "uefa-europa", "欧罗巴": "uefa-europa",
 }                       # 无对应 → None → 调用方 resolve_pool_key 回退近似池
@@ -74,7 +75,8 @@ def norm_score(hg, ag) -> str:
 # 2.738 正是 −0.49 球主犯（见 docs/plans/2026-10-14-crs-low-score-bias-design.md）。
 # 样本>=800 即独立成池；不足者由调用方回退地域近似池，不落全局平均。
 POOL_MIN_N = 800
-LOCAL_POOL = ("japan", "korea", "sweden", "saudi", "brazil", "denmark", "norway", "usa")
+LOCAL_POOL = ("japan", "korea", "sweden", "saudi", "brazil", "denmark", "norway", "usa",
+              "australia")   # australia: 168 场 < POOL_MIN_N，实际走调用方地域近似回退
 FD_BACKED = frozenset(DIVS.values())   # fd 覆盖联赛键集（镜像库仅 fd 断粮时导入防双算）
 
 
