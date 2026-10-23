@@ -1,18 +1,18 @@
 {
- "ranAt": "2026-10-21T14:13:37",
+ "ranAt": "2026-10-23T10:21:49",
  "overall": "yellow",
  "results": {
   "ledgerFreshness": {
    "level": "green",
-   "msg": "generatedAt 距今 0 天"
+   "msg": "generatedAt 距今 2 天"
   },
   "espnBlacklist": {
    "level": "green",
    "msg": "黑名单 7 项无交集·别名表无有害重复"
   },
   "fdSymptom": {
-   "level": "yellow",
-   "msg": "近 14 天回填 213 场·无 pinClose 136（64%）——fd 断粮期已知挂账"
+   "level": "green",
+   "msg": "近 14 天回填 196 场·无 pinClose 86（44%）"
   },
   "dataCheckProbe": {
    "level": "green",
@@ -23,8 +23,8 @@
    "msg": "0 个 corrupt 转存"
   },
   "stalePending": {
-   "level": "yellow",
-   "msg": "15 张久挂无note: ['P448', 'P449', 'P450', 'P451']"
+   "level": "green",
+   "msg": "0 张久挂无note"
   },
   "s8Reason": {
    "level": "green",
@@ -32,7 +32,7 @@
   },
   "noneRatio": {
    "level": "yellow",
-   "msg": "近 7 文件非排除回填 13 场·命中全None 7（54%）"
+   "msg": "近 7 文件非排除回填 9 场·命中全None 6（67%）"
   }
  }
 }

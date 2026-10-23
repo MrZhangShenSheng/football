@@ -1,0 +1,625 @@
+{
+ "date": "2026-10-21",
+ "version": "v4.6",
+ "saleDay": "2026-10-20",
+ "roundNote": "周三轮13场(日职2+日乙1+欧冠9+西甲1+解放者杯1·开赛10-21 18:00~10-22 08:30)·LLM轨v3.6结构化生成首战(合卷-r1后13场)·轮档补建2026-10-23(预测会话83daafa6漏建·赛前冻结件frozenAt 2026-10-20T20:13:30先于首场开赛)",
+ "plans": [],
+ "matches": [
+  {
+   "idx": 1,
+   "code": "周三001",
+   "matchId": 2042106,
+   "league": "日职",
+   "match": "东京FC vs 柏太阳神",
+   "date": "2026-10-21",
+   "kickoff": "18:00:00",
+   "pick": null,
+   "odds": {
+    "h": "2.09",
+    "d": "3.45",
+    "a": "2.78"
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": "2.09",
+     "d": "3.45",
+     "a": "2.78"
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": "4.40",
+     "d": "3.85",
+     "a": "1.56"
+    },
+    "poolSingleHAD": null
+   },
+   "dcUsed": false,
+   "anchorMode": "market_crs",
+   "llmTop1": "1:1",
+   "llmConf": "low",
+   "note": null,
+   "result": "0-0",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042106,
+    "lastOddsAt": "2026-10-21T14:06:59+08:00",
+    "lastIntelAt": "2026-10-20T16:47:13+08:00"
+   }
+  },
+  {
+   "idx": 2,
+   "code": "周三002",
+   "matchId": 2042107,
+   "league": "日职",
+   "match": "川崎前锋 vs 神户胜利",
+   "date": "2026-10-21",
+   "kickoff": "18:00:00",
+   "pick": null,
+   "odds": {
+    "h": "2.34",
+    "d": "3.40",
+    "a": "2.45"
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": "2.34",
+     "d": "3.40",
+     "a": "2.45"
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": "5.05",
+     "d": "4.15",
+     "a": "1.45"
+    },
+    "poolSingleHAD": null
+   },
+   "dcUsed": false,
+   "anchorMode": "market_crs",
+   "llmTop1": "1:1",
+   "llmConf": "low",
+   "note": null,
+   "result": "2-1",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042107,
+    "lastOddsAt": "2026-10-21T14:06:59+08:00",
+    "lastIntelAt": "2026-10-20T16:47:28+08:00"
+   }
+  },
+  {
+   "idx": 3,
+   "code": "周三003",
+   "matchId": 2042108,
+   "league": "日乙",
+   "match": "大宫松鼠 vs 富山胜利",
+   "date": "2026-10-21",
+   "kickoff": "18:00:00",
+   "pick": null,
+   "odds": {
+    "h": "2.15",
+    "d": "3.67",
+    "a": "2.55"
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": "2.15",
+     "d": "3.67",
+     "a": "2.55"
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": "4.25",
+     "d": "4.15",
+     "a": "1.53"
+    },
+    "poolSingleHAD": null
+   },
+   "dcUsed": false,
+   "anchorMode": "market_crs",
+   "llmTop1": "1:1",
+   "llmConf": "low",
+   "note": null,
+   "result": "0-3",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042108,
+    "lastOddsAt": "2026-10-21T14:06:59+08:00",
+    "lastIntelAt": "2026-10-20T16:47:29+08:00"
+   }
+  },
+  {
+   "idx": 4,
+   "code": "周三004",
+   "matchId": 2042109,
+   "league": "欧冠",
+   "match": "科莫 vs 曼联",
+   "date": "2026-10-22",
+   "kickoff": "00:45:00",
+   "pick": null,
+   "odds": {
+    "h": "2.15",
+    "d": "3.45",
+    "a": "2.67"
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": "2.15",
+     "d": "3.45",
+     "a": "2.67"
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": "4.45",
+     "d": "4.00",
+     "a": "1.53"
+    },
+    "poolSingleHAD": null
+   },
+   "dcUsed": false,
+   "anchorMode": "market_crs",
+   "llmTop1": "2:1",
+   "llmConf": "medium",
+   "note": null,
+   "result": "4-1",
+   "half": "1:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042109,
+    "lastOddsAt": "2026-10-21T19:20:32+08:00",
+    "lastIntelAt": null
+   }
+  },
+  {
+   "idx": 5,
+   "code": "周三005",
+   "matchId": 2042110,
+   "league": "欧冠",
+   "match": "里尔 vs 加拉塔萨",
+   "date": "2026-10-22",
+   "kickoff": "00:45:00",
+   "pick": null,
+   "odds": {
+    "h": "1.90",
+    "d": "3.50",
+    "a": "3.15"
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": "1.90",
+     "d": "3.50",
+     "a": "3.15"
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": "3.70",
+     "d": "3.80",
+     "a": "1.68"
+    },
+    "poolSingleHAD": null
+   },
+   "dcUsed": false,
+   "anchorMode": "market_crs",
+   "llmTop1": "1:1",
+   "llmConf": "medium",
+   "note": null,
+   "result": "2-4",
+   "half": "2:2",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042110,
+    "lastOddsAt": "2026-10-21T19:20:32+08:00",
+    "lastIntelAt": null
+   }
+  },
+  {
+   "idx": 6,
+   "code": "周三006",
+   "matchId": 2042111,
+   "league": "西甲",
+   "match": "莱万特 vs 毕尔巴鄂",
+   "date": "2026-10-22",
+   "kickoff": "02:00:00",
+   "pick": null,
+   "odds": {
+    "h": "3.32",
+    "d": "3.10",
+    "a": "1.98"
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": "3.32",
+     "d": "3.10",
+     "a": "1.98"
+    },
+    "hhad": {
+     "goalLine": "+1",
+     "h": "1.64",
+     "d": "3.60",
+     "a": "4.15"
+    },
+    "poolSingleHAD": null
+   },
+   "dcUsed": false,
+   "anchorMode": "market_crs",
+   "llmTop1": "1:1",
+   "llmConf": "medium",
+   "note": null,
+   "result": "3-1",
+   "half": "2:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042111,
+    "lastOddsAt": "2026-10-21T19:20:32+08:00",
+    "lastIntelAt": null
+   }
+  },
+  {
+   "idx": 7,
+   "code": "周三007",
+   "matchId": 2042112,
+   "league": "欧冠",
+   "match": "皇马 vs 莱红牛",
+   "date": "2026-10-22",
+   "kickoff": "03:00:00",
+   "pick": null,
+   "odds": {
+    "h": "1.16",
+    "d": "6.50",
+    "a": "8.80"
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": "1.16",
+     "d": "6.50",
+     "a": "8.80"
+    },
+    "hhad": {
+     "goalLine": "-2",
+     "h": "2.15",
+     "d": "4.35",
+     "a": "2.30"
+    },
+    "poolSingleHAD": null
+   },
+   "dcUsed": false,
+   "anchorMode": "market_crs",
+   "llmTop1": "other_h",
+   "llmConf": "medium",
+   "note": null,
+   "result": "4-1",
+   "half": "1:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042112,
+    "lastOddsAt": "2026-10-21T19:20:32+08:00",
+    "lastIntelAt": null
+   }
+  },
+  {
+   "idx": 8,
+   "code": "周三008",
+   "matchId": 2042113,
+   "league": "欧冠",
+   "match": "维拉 vs 维京",
+   "date": "2026-10-22",
+   "kickoff": "03:00:00",
+   "pick": null,
+   "odds": {
+    "h": "1.15",
+    "d": "6.50",
+    "a": "9.40"
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": "1.15",
+     "d": "6.50",
+     "a": "9.40"
+    },
+    "hhad": {
+     "goalLine": "-2",
+     "h": "2.42",
+     "d": "4.10",
+     "a": "2.12"
+    },
+    "poolSingleHAD": null
+   },
+   "dcUsed": false,
+   "anchorMode": "market_crs",
+   "llmTop1": "2:1",
+   "llmConf": "low",
+   "note": null,
+   "result": "3-1",
+   "half": "2:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042113,
+    "lastOddsAt": "2026-10-21T19:20:32+08:00",
+    "lastIntelAt": null
+   }
+  },
+  {
+   "idx": 9,
+   "code": "周三009",
+   "matchId": 2042114,
+   "league": "欧冠",
+   "match": "贝蒂斯 vs 费耶诺德",
+   "date": "2026-10-22",
+   "kickoff": "03:00:00",
+   "pick": null,
+   "odds": {
+    "h": "1.43",
+    "d": "4.50",
+    "a": "4.80"
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": "1.43",
+     "d": "4.50",
+     "a": "4.80"
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": "2.26",
+     "d": "3.80",
+     "a": "2.36"
+    },
+    "poolSingleHAD": null
+   },
+   "dcUsed": false,
+   "anchorMode": "market_crs",
+   "llmTop1": "2:1",
+   "llmConf": "medium",
+   "note": null,
+   "result": "1-0",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042114,
+    "lastOddsAt": "2026-10-21T19:20:32+08:00",
+    "lastIntelAt": null
+   }
+  },
+  {
+   "idx": 10,
+   "code": "周三010",
+   "matchId": 2042115,
+   "league": "欧冠",
+   "match": "拜仁 vs 阿森纳",
+   "date": "2026-10-22",
+   "kickoff": "03:00:00",
+   "pick": null,
+   "odds": {
+    "h": "1.89",
+    "d": "3.55",
+    "a": "3.14"
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": "1.89",
+     "d": "3.55",
+     "a": "3.14"
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": "3.65",
+     "d": "3.80",
+     "a": "1.69"
+    },
+    "poolSingleHAD": null
+   },
+   "dcUsed": false,
+   "anchorMode": "market_crs",
+   "llmTop1": "1:1",
+   "llmConf": "medium",
+   "note": null,
+   "result": "2-2",
+   "half": "1:1",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042115,
+    "lastOddsAt": "2026-10-21T19:20:32+08:00",
+    "lastIntelAt": null
+   }
+  },
+  {
+   "idx": 11,
+   "code": "周三011",
+   "matchId": 2042116,
+   "league": "欧冠",
+   "match": "里斯本 vs LASK林茨",
+   "date": "2026-10-22",
+   "kickoff": "03:00:00",
+   "pick": null,
+   "odds": {},
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {},
+    "hhad": {
+     "goalLine": "-2",
+     "h": "2.18",
+     "d": "4.10",
+     "a": "2.35"
+    },
+    "poolSingleHAD": null
+   },
+   "dcUsed": false,
+   "anchorMode": "market_crs",
+   "llmTop1": "2:1",
+   "llmConf": "medium",
+   "note": null,
+   "result": "2-3",
+   "half": "1:1",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042116,
+    "lastOddsAt": "2026-10-21T19:20:32+08:00",
+    "lastIntelAt": null
+   }
+  },
+  {
+   "idx": 12,
+   "code": "周三012",
+   "matchId": 2042117,
+   "league": "欧冠",
+   "match": "布鲁日 vs 朗斯",
+   "date": "2026-10-22",
+   "kickoff": "03:00:00",
+   "pick": null,
+   "odds": {
+    "h": "1.90",
+    "d": "3.70",
+    "a": "3.00"
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": "1.90",
+     "d": "3.70",
+     "a": "3.00"
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": "3.60",
+     "d": "3.90",
+     "a": "1.68"
+    },
+    "poolSingleHAD": null
+   },
+   "dcUsed": false,
+   "anchorMode": "market_crs",
+   "llmTop1": "2:1",
+   "llmConf": "low",
+   "note": null,
+   "result": "3-0",
+   "half": "1:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042117,
+    "lastOddsAt": "2026-10-21T19:20:32+08:00",
+    "lastIntelAt": null
+   }
+  },
+  {
+   "idx": 13,
+   "code": "周三013",
+   "matchId": 2042118,
+   "league": "解放者杯",
+   "match": "帕梅拉斯 vs 弗鲁米嫩",
+   "date": "2026-10-22",
+   "kickoff": "08:30:00",
+   "pick": null,
+   "odds": {
+    "h": "1.67",
+    "d": "3.30",
+    "a": "4.40"
+   },
+   "star": null,
+   "grade": null,
+   "inPlan": null,
+   "market": {
+    "had": {
+     "h": "1.67",
+     "d": "3.30",
+     "a": "4.40"
+    },
+    "hhad": {
+     "goalLine": "-1",
+     "h": "3.38",
+     "d": "3.20",
+     "a": "1.92"
+    },
+    "poolSingleHAD": null
+   },
+   "dcUsed": false,
+   "anchorMode": "market_crs",
+   "llmTop1": "1:1",
+   "llmConf": "medium",
+   "note": null,
+   "result": "0-1",
+   "half": "0:0",
+   "directionHit": null,
+   "scoreHit": null,
+   "optionHit": null,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042118,
+    "lastOddsAt": "2026-10-21T19:20:32+08:00",
+    "lastIntelAt": null
+   }
+  }
+ ]
+}

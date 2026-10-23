@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>2026-10-21 周三轮回填复盘</title>
+<style>
+:root{--ink:#1a1a1a;--sub:#666;--line:#e2e2e2;--hot:#b33;--cold:#369;--ok:#3a3}
+body{font:14px/1.65 "Microsoft YaHei",sans-serif;color:var(--ink);max-width:1080px;margin:24px auto;padding:0 16px}
+h1{font-size:20px;margin:0 0 4px}h2{font-size:16px;margin:24px 0 8px;border-left:4px solid var(--cold);padding-left:8px}
+.meta{color:var(--sub);font-size:12px;margin-bottom:14px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid var(--line);padding:5px 8px;text-align:left}th{background:#f7f7f7}
+.up{color:var(--hot);font-weight:600}.dn{color:var(--cold);font-weight:600}.ok{color:var(--ok);font-weight:600}
+.tag{display:inline-block;padding:0 6px;border-radius:3px;font-size:11px;background:#eee;margin-right:4px}
+.tag.r{background:#fde}.tag.o{background:#efe}
+.note{font-size:12px;color:var(--sub);margin-top:6px}
+.warn{background:#fff7e6;border:1px solid #f0d9a8;padding:8px 12px;border-radius:4px;margin:10px 0}
+code{font:12px Consolas,monospace;background:#f6f6f6;padding:1px 4px;border-radius:3px}
+</style></head><body>
+<h1>2026-10-21 周三轮 · 回填复盘（v3.6 生成链首战）</h1>
+<div class="meta">销售日 2026-10-20 · 开赛 10-21 18:00（日职/日乙 3）~ 10-22 08:30（解放者杯）· 13 场全回填（体彩对票 13/13）· <b>轮档补建于 10-23</b>（预测会话 83daafa6 漏建 02-results 卷，赛果齐备但从未入账）</div>
+
+<div class="warn"><b>本轮是补建轮档后首次入账。</b>赛前冻结件 <code>llm_preds/2026-10-20-r1.json</code> frozenAt=2026-10-20T20:13:30，先于首场开赛（10-21 18:00）<b>21 小时 47 分</b>，git 提交 2dd2237a 于 10-20 21:00 —— 赛前冻结成立，非事后编造。赛果交 backfill 体彩编号对票链路落盘，未手填。</div>
+
+<h2>赛果与方向对拍（臣 6/13 vs 市场 6/12）</h2>
+<table><tr><th>场</th><th>对阵</th><th>赛果（半场）</th><th>市场三向</th><th>臣三向</th><th>市场</th><th>臣</th></tr>
+<tr><td>001</td><td>东京FC vs 柏太阳神</td><td>0:0（0:0）</td><td>主 42</td><td>主 40</td><td>✗</td><td>✗</td></tr>
+<tr><td>002</td><td>川崎前锋 vs 神户胜利</td><td>2:1（0:0）</td><td>主 38</td><td class="up">主 42↑</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+<tr><td>003</td><td>大宫松鼠 vs 富山胜利</td><td class="up">0:3（0:0）</td><td>主 41</td><td>主 44</td><td>✗</td><td>✗</td></tr>
+<tr><td>004</td><td><b>科莫 vs 曼联</b></td><td class="up">4:1（1:0）</td><td>主 41</td><td class="up">主 46↑</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+<tr><td>005</td><td>里尔 vs 加拉塔萨</td><td class="up">2:4（2:2）</td><td>主 47</td><td class="dn">主 43↓</td><td>✗</td><td>✗</td></tr>
+<tr><td>006</td><td>莱万特 vs 毕尔巴鄂</td><td class="up">3:1（2:0）</td><td>客 45</td><td>客 41</td><td>✗</td><td>✗</td></tr>
+<tr><td>007</td><td>皇马 vs 莱红牛</td><td>4:1（1:0）</td><td>主 76</td><td>主 80</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+<tr><td>008</td><td>维拉 vs 维京</td><td>3:1（2:0）</td><td>主 77</td><td>主 76</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+<tr><td>009</td><td>贝蒂斯 vs 费耶诺德</td><td>1:0（0:0）</td><td>主 62</td><td class="up">主 66↑</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+<tr><td>010</td><td><b>拜仁 vs 阿森纳</b></td><td>2:2（1:1）</td><td>主 47</td><td class="dn">主 43↓</td><td>✗</td><td>✗</td></tr>
+<tr><td>011</td><td><b>里斯本 vs LASK林茨</b></td><td class="up">2:3（1:1）</td><td>无 HAD 盘</td><td class="dn">主 81</td><td>—</td><td>✗</td></tr>
+<tr><td>012</td><td>布鲁日 vs 朗斯</td><td>3:0（1:0）</td><td>主 47</td><td>主 50</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+<tr><td>013</td><td>帕梅拉斯 vs 弗鲁米嫩</td><td class="up">0:1（0:0）</td><td>主 53</td><td class="dn">主 55</td><td>✗</td><td>✗</td></tr>
+</table>
+<div class="note">方向打平（有盘 12 场市场 6、臣 13 场 6），四次逆向叫板里 <b>002/004/009 三次兑现</b>（川崎主胜、科莫 4:1 屠曼联、贝蒂斯主胜），005/010 两次压低主胜方向反而双输。<b>011 是本轮最大误判</b>：臣给里斯本主胜 81%（无 HAD 盘无市场对照），实则 2:3 被 LASK 林茨翻盘——「LASK 混乱属性（上轮 3-6）」的判断只用到了买大球，没反推到「混乱=可能性双向」。006 莱万特市场与臣同判客胜（45/41），3:1 主胜双杀。</div>
+
+<h2>LLM 轨计分：v3.6 结构化生成链首战</h2>
+<div class="warn"><b>v3.6 生成卷 13 场 diffMean −0.0436，手填卷 56 场 −1.0827 —— 收窄一个数量级，但未转正。</b><br>
+逐场拆查无单场毒化（最差 −0.485，远低于 |diff|&gt;5 的零格处刑门槛），13 场分布紧凑：正向 4/13。
+这是干净样本——<b>生成器机制性消灭零格</b>的效果被实战确认：周二手填末卷两场 4:3 靠 other 填 0 单场吃 −10，本轮无一场落入该形态。</div>
+<table><tr><th>口径</th><th>n</th><th>diffMean</th><th>读法</th></tr>
+<tr><td>primary 全量</td><td>69</td><td class="dn">−0.887</td><td>INSUFFICIENT（含历史手填卷）</td></tr>
+<tr><td class="ok">genCohort v3-structured</td><td>13</td><td class="ok">−0.0436</td><td><b>本轮首战·正向 4/13</b></td></tr>
+<tr><td>genCohort freehand</td><td>56</td><td class="dn">−1.0827</td><td>手填制历史卷（含 4:3 零格双响）</td></tr>
+<tr><td>tailChannel</td><td>69</td><td>−0.0427</td><td>n 69/150 未达闸</td></tr>
+</table>
+<div class="note">逐场 diff：002 +0.303、010 +0.185、004 +0.022、006 +0.021 为四个正向场；001 −0.485（0:0 冷门·臣给 2.5% vs 市场 4.1%）、003 −0.224、013 −0.143 为三个最差场。回放基线（手填 −0.175 → 生成 +0.013）方向一致但实战未转正，<b>须续攒样本，勿据 13 场下结论</b>。</div>
+<div class="note">分辨率账：minPosMedian 0.001906、zeroCellsMean 5.88、zeroFreeScenes 32/69 —— 周三（本轮）桶 zeroFree 13/13 全零格自由，周二手填桶 0/10，新旧制度分界延续昨日观察。</div>
+
+<h2>影子层结算（10-22 开赛日 15 票 + 10-21 残 3 票）</h2>
+<table><tr><th>票</th><th>形状</th><th>成本</th><th>派彩</th><th>注</th></tr>
+<tr><td>P540</td><td class="up">4串1</td><td>30</td><td class="ok">+90.64</td><td><b>本轮最佳</b></td></tr>
+<tr><td>P541</td><td>4串11</td><td>22</td><td class="ok">+45.96</td><td>容错族命中</td></tr>
+<tr><td>P544</td><td>全2关-4</td><td>24</td><td class="ok">+42.60</td><td>—</td></tr>
+<tr><td>P547</td><td>ttg-单关</td><td>30</td><td class="ok">+40.00</td><td>大球腿连续两轮命中</td></tr>
+<tr><td>P543</td><td>全2关-6</td><td>30</td><td class="ok">+21.30</td><td>—</td></tr>
+<tr><td>P542</td><td>4串1+2双选</td><td>24</td><td class="ok">+18.13</td><td>—</td></tr>
+<tr><td>其余 9 票</td><td>—</td><td>—</td><td>0</td><td>P539/P545/P546/P548~P553</td></tr>
+<tr><td colspan="5">10-22 小计：成本 404 · 派彩 258.63 · 净 −145.37 · <b>回款率 64.0%</b>（近期最佳）</td></tr>
+<tr><td colspan="5">10-21 残 3 票（P524/P537/P538 含周三 001/002 日职腿）已结：该日 15 票合计成本 404 · 派彩 86.08 · 回款率 21.3%</td></tr>
+</table>
+<div class="note">五个零命中方案（8串1/ttg-4串1/crs-4串1/g-tail/ev-8串1）本轮继续全空——<b>关灯提请仍待拍板</b>。crs 族四票（P548~P551）本轮全灭，连同前轮累计需复核。</div>
+
+<h2>实票 T049（已于 10-22 单独结算）</h2>
+<table><tr><th>腿</th><th>玩法</th><th>选</th><th>赔率</th><th>赛果</th><th>判</th></tr>
+<tr><td>周三010 拜仁 vs 阿森纳</td><td>HAD</td><td>客胜</td><td>2.92</td><td>2:2</td><td>✗</td></tr>
+<tr><td>周三004 科莫 vs 曼联</td><td>HAD</td><td>主胜</td><td>2.15</td><td class="up">4:1</td><td class="ok">✓</td></tr>
+<tr><td>周三012 布鲁日 vs 朗斯</td><td>TTG</td><td>总进球4</td><td>4.00</td><td>3:0</td><td>✗</td></tr>
+<tr><td>周三011 里斯本 vs LASK</td><td>CRS</td><td>主胜 3:0</td><td>8.50</td><td>2:3</td><td>✗</td></tr>
+</table>
+<div class="note">四腿混串 4串11（22 元）中 1 腿，11 注全空，净 −22（ROI −100%）。翻身腿 010 阿森纳客胜死于 2:2 平局——方向判断「拜仁三缺口」兑现（拜仁没赢），但平局通吃，与昨日 009 斯图加特同一死法：<b>连续两轮逆向叫板被平局吃掉</b>，值得记一笔。</div>
+
+<h2>回填时修复：strip_play 顿号后缀漏判</h2>
+<table><tr><th>#</th><th>bug</th><th>处置</th></tr>
+<tr><td>1</td><td><b>pick 顿号状态后缀未清</b>：<code>strip_play</code> 只清括号注释/@赔率/「维持」「存续」，剥不掉 <code>·候选待终审</code> → 残留使 <code>pick_outcome_idx</code> 认不出「主胜」→ directionHit=None 静默漏判。实证 10-14-r1 周三014（0:0 主胜应判 False）；同轮周三007 走 HHAD 分支侥幸判出，<b>掩盖了这个缺口</b></td><td>清理器加顿号后缀规则 + 新建 <code>test_strip_play.py</code> 5 项回归（钉住历轮全部注释形态 + 指针式 pick 分流）· backfill 补算救回 2 条</td></tr>
+</table>
+<div class="note">noneRatio 健康项 78%→67%。剩 6 场全是指针式 pick（4×<code>T048腿</code> + 2×<code>闯关票腿(自动车道)·主链排除</code>），命中记在票账本，非漏判——探测器口径可考虑把指针式 pick 一并移出分母。</div>
+
+<h2>待办挂账</h2>
+<div class="note">① 本轮 pinClose 13 场全缺：11 场系 fd 不覆盖赛事（欧冠9/日职2/日乙1/解放者杯1），仅西甲 006 应有 fd 行但缓存止于 10-17，晚间重跑 verify 幂等救回；② 证据链 13 场 S1 已落 + S8 已登记，S2~S7/S9 缺（本轮走纯市场锚无 DC 无画像，预期形态，按铁律标注不补造）；③ 影子层余 P349 一张久挂（胜负彩无赛果源，已知挂账）；④ 011 无 HAD 盘场的「无市场对照时臣单边高置信」风险——本轮 81% 误判，建议为无盘场加置信上限闸；⑤ attribute 消融候选 F9（主因 61 场·avgGap 0.3455）达 nPrimary≥20 门槛待人审。</div>
+<div class="note">数据来源：data/02-results/2026-10-21.json（本次补建）· engine/cache/llm_preds/2026-10-20-r1.json · engine/cache/llm_cards/2026-10-20/ · data/04-summaries/llm-predict/eval.json · engine/shadow/paper_tickets.json · engine/cache/sporttery_results_2026-10-21_2026-10-22.json · data/06-tickets/tickets.json。</div>
+</body></html>
