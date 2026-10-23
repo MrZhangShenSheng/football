@@ -6065,64 +6065,62 @@
      "league": "德甲",
      "match": "斯图加特 vs 门兴",
      "market": "CRS",
-     "pick": "3:0",
-     "pickZh": "主胜3:0",
-     "odds": 10.0,
-     "q": 0.1079,
+     "pick": [
+      "3:0",
+      "3:1"
+     ],
+     "pickZh": "主胜3:0/3:1 双选",
+     "odds": {
+      "3:0": 10.0,
+      "3:1": 8.25
+     },
+     "q": {
+      "3:0": 0.1079,
+      "3:1": 0.1285
+     },
      "result": null,
      "actual": null,
+     "hitPick": null,
      "agreement": "agree",
-     "priceNote": "按 17:44 临场复扫价冻结;预测时点 @11.5 → @10.0(-13%·市场同向进场,CLV 已负);主公核对实体票确认此腿"
-    },
-    {
-     "code": "周五006",
-     "league": "德甲",
-     "match": "斯图加特 vs 门兴",
-     "market": "CRS",
-     "pick": "3:1",
-     "pickZh": "主胜3:1",
-     "odds": 8.25,
-     "q": 0.1285,
-     "result": null,
-     "actual": null,
-     "agreement": "agree",
-     "priceNote": "复扫 @8.25(预测时点 @8.2,+0.6%);我方分布本场最高概率格"
+     "priceNote": "按 17:44 临场复扫价冻结;3:0 预测时点 @11.5→@10.0(-13%·市场同向进场,CLV 已负),3:1 @8.2→@8.25(+0.6%);主公核对实体票确认"
     },
     {
      "code": "周六009",
      "league": "意甲",
      "match": "科莫 vs 萨索洛",
      "market": "CRS",
-     "pick": "3:0",
-     "pickZh": "主胜3:0",
-     "odds": 11.0,
-     "q": 0.1124,
+     "pick": [
+      "3:0",
+      "3:1"
+     ],
+     "pickZh": "主胜3:0/3:1 双选",
+     "odds": {
+      "3:0": 11.0,
+      "3:1": 9.5
+     },
+     "q": {
+      "3:0": 0.1124,
+      "3:1": 0.1095
+     },
      "result": null,
      "actual": null,
+     "hitPick": null,
      "agreement": "agree",
-     "priceNote": "复扫价未动 @11.0"
-    },
-    {
-     "code": "周六009",
-     "league": "意甲",
-     "match": "科莫 vs 萨索洛",
-     "market": "CRS",
-     "pick": "3:1",
-     "pickZh": "主胜3:1",
-     "odds": 9.5,
-     "q": 0.1095,
-     "result": null,
-     "actual": null,
-     "agreement": "agree",
-     "priceNote": "复扫价未动 @9.50"
+     "priceNote": "复扫价未动(3:0 @11.0 / 3:1 @9.50)"
     }
    ],
    "bets": [
     {
      "n": 2,
      "legs": [
-      0,
-      2
+      [
+       0,
+       "3:0"
+      ],
+      [
+       1,
+       "3:0"
+      ]
      ],
      "legCodes": [
       "周五006",
@@ -6132,14 +6130,20 @@
      "multiplier": 1,
      "combOdds": 110.0,
      "payout": null,
-     "q": 0.01213,
-     "hit": null
+     "hit": null,
+     "q": 0.01213
     },
     {
      "n": 2,
      "legs": [
-      0,
-      3
+      [
+       0,
+       "3:0"
+      ],
+      [
+       1,
+       "3:1"
+      ]
      ],
      "legCodes": [
       "周五006",
@@ -6149,14 +6153,20 @@
      "multiplier": 1,
      "combOdds": 95.0,
      "payout": null,
-     "q": 0.01182,
-     "hit": null
+     "hit": null,
+     "q": 0.01182
     },
     {
      "n": 2,
      "legs": [
-      1,
-      2
+      [
+       0,
+       "3:1"
+      ],
+      [
+       1,
+       "3:0"
+      ]
      ],
      "legCodes": [
       "周五006",
@@ -6166,14 +6176,20 @@
      "multiplier": 1,
      "combOdds": 90.75,
      "payout": null,
-     "q": 0.01444,
-     "hit": null
+     "hit": null,
+     "q": 0.01444
     },
     {
      "n": 2,
      "legs": [
-      1,
-      3
+      [
+       0,
+       "3:1"
+      ],
+      [
+       1,
+       "3:1"
+      ]
      ],
      "legCodes": [
       "周五006",
@@ -6183,8 +6199,8 @@
      "multiplier": 1,
      "combOdds": 78.38,
      "payout": null,
-     "q": 0.01407,
-     "hit": null
+     "hit": null,
+     "q": 0.01407
     }
    ],
    "meta": {
@@ -6193,7 +6209,8 @@
     "shapeNote": "🟡 档案外形状警示:preference shapes[1] 记 CRS 禁串(影子实证串关零变现),但 09-18 大哥纠偏 CRS 2串1 合法+v5.13 点名可组串——本次主公点名买串,警示释出不予拦截",
     "oddsDrift": "周五006 3:0 预测时点@11.5→出票@10.0(-13%·负CLV);周五006 3:1 @8.2→@8.25(+0.6%);周六009 两腿零漂移",
     "context": "语境层 49/49 ok;斯图加特近况含科隆双键双记一格(另案清单)",
-    "correction": "2026-10-23 首版误记为 CRS×TTG 网格B;主公核对实体票更正为纯比分双选 3:0/3:1——按票面事实改写(铁律:实体票为准),改写前后两版均可由 git 考"
+    "correction": "2026-10-23 首版误记为 CRS×TTG 网格B;主公核对实体票更正为纯比分双选 3:0/3:1——按票面事实改写(铁律:实体票为准),改写前后两版均可由 git 考",
+    "schemaNote": "双选腿按 T032 范式登记(pick 列表+odds dict+bets.legs 索引对)——首版曾用 4 单选腿+整数索引,防 leg_hit 卡 pending 改范式"
    }
   }
  ],
