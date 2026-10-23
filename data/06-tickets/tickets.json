@@ -6054,7 +6054,7 @@
    "matchDays": [
     "2026-10-24"
    ],
-   "shape": "2×2混串网格 2串1复式(两场各2选:CRS 3:0 + TTG 4球·同场限一玩法自动拆注)",
+   "shape": "2×2比分混串 2串1复式(两场各双选 CRS 3:0+3:1·同场限一玩法自动拆注)",
    "shapeDetail": "4注×2元×1倍=8元",
    "stake": 8,
    "unitStake": 2,
@@ -6072,21 +6072,21 @@
      "result": null,
      "actual": null,
      "agreement": "agree",
-     "priceNote": "按 17:44 临场复扫价冻结;预测时点 @11.5 → 出票 @10.0(-13%·市场同向进场,CLV 已负);若实体票面不同,以票面为准报我修正"
+     "priceNote": "按 17:44 临场复扫价冻结;预测时点 @11.5 → @10.0(-13%·市场同向进场,CLV 已负);主公核对实体票确认此腿"
     },
     {
      "code": "周五006",
      "league": "德甲",
      "match": "斯图加特 vs 门兴",
-     "market": "TTG",
-     "pick": "s4",
-     "pickZh": "总进球4",
-     "odds": 3.9,
-     "q": 0.2782,
+     "market": "CRS",
+     "pick": "3:1",
+     "pickZh": "主胜3:1",
+     "odds": 8.25,
+     "q": 0.1285,
      "result": null,
      "actual": null,
      "agreement": "agree",
-     "priceNote": "复扫价未动 @3.90"
+     "priceNote": "复扫 @8.25(预测时点 @8.2,+0.6%);我方分布本场最高概率格"
     },
     {
      "code": "周六009",
@@ -6106,15 +6106,15 @@
      "code": "周六009",
      "league": "意甲",
      "match": "科莫 vs 萨索洛",
-     "market": "TTG",
-     "pick": "s4",
-     "pickZh": "总进球4",
-     "odds": 4.4,
-     "q": 0.2656,
+     "market": "CRS",
+     "pick": "3:1",
+     "pickZh": "主胜3:1",
+     "odds": 9.5,
+     "q": 0.1095,
      "result": null,
      "actual": null,
      "agreement": "agree",
-     "priceNote": "复扫价未动 @4.40"
+     "priceNote": "复扫价未动 @9.50"
     }
    ],
    "bets": [
@@ -6147,9 +6147,9 @@
      ],
      "drop": [],
      "multiplier": 1,
-     "combOdds": 44.0,
+     "combOdds": 95.0,
      "payout": null,
-     "q": 0.02866,
+     "q": 0.01182,
      "hit": null
     },
     {
@@ -6164,9 +6164,9 @@
      ],
      "drop": [],
      "multiplier": 1,
-     "combOdds": 42.9,
+     "combOdds": 90.75,
      "payout": null,
-     "q": 0.03127,
+     "q": 0.01444,
      "hit": null
     },
     {
@@ -6181,9 +6181,9 @@
      ],
      "drop": [],
      "multiplier": 1,
-     "combOdds": 17.16,
+     "combOdds": 78.38,
      "payout": null,
-     "q": 0.07389,
+     "q": 0.01407,
      "hit": null
     }
    ],
@@ -6191,8 +6191,9 @@
     "hypothesisRef": "engine/cache/llm_preds/2026-10-23.json(周五006/周六009·structural tier·checks passed)",
     "gateRule": "高抽水池腿系统同推核验:CRS 3:0=本轮 valueCells 首选格;TTG 4球=同一冻结分布聚合(+EV 档)——4 腿全 agree",
     "shapeNote": "🟡 档案外形状警示:preference shapes[1] 记 CRS 禁串(影子实证串关零变现),但 09-18 大哥纠偏 CRS 2串1 合法+v5.13 点名可组串——本次主公点名买串,警示释出不予拦截",
-    "oddsDrift": "周五006 CRS3:0 预测时点@11.5 → 出票复扫@10.0(-13%·负CLV);其余三腿零漂移",
-    "context": "语境层 49/49 ok;斯图加特近况含科隆双键双记一格(另案清单)"
+    "oddsDrift": "周五006 3:0 预测时点@11.5→出票@10.0(-13%·负CLV);周五006 3:1 @8.2→@8.25(+0.6%);周六009 两腿零漂移",
+    "context": "语境层 49/49 ok;斯图加特近况含科隆双键双记一格(另案清单)",
+    "correction": "2026-10-23 首版误记为 CRS×TTG 网格B;主公核对实体票更正为纯比分双选 3:0/3:1——按票面事实改写(铁律:实体票为准),改写前后两版均可由 git 考"
    }
   }
  ],
