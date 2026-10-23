@@ -15,7 +15,7 @@ th,td{border:1px solid var(--line);padding:5px 8px;text-align:left}th{background
 code{font:12px Consolas,monospace;background:#f6f6f6;padding:1px 4px;border-radius:3px}
 </style></head><body>
 <h1>2026-10-21 周三轮 · 回填复盘（v3.6 生成链首战）</h1>
-<div class="meta">销售日 2026-10-20 · 开赛 10-21 18:00（日职/日乙 3）~ 10-22 08:30（解放者杯）· 13 场全回填（体彩对票 13/13）· <b>轮档补建于 10-23</b>（预测会话 83daafa6 漏建 02-results 卷，赛果齐备但从未入账）</div>
+<div class="meta">销售日 2026-10-20 · 开赛 10-21 18:00（日职/日乙 3）~ 10-22 08:30（解放者杯）· 13 场全回填（体彩对票 13/13）· <b>轮档补建于 10-23</b>（预测会话 83daafa6 漏建 02-results 卷，赛果齐备但从未入账）· 档 <code>data/02-results/2026-10-20-r1.json</code>（档名按销售日惯例，周二轮已占 10-20 主名故走 -r1）</div>
 
 <div class="warn"><b>本轮是补建轮档后首次入账。</b>赛前冻结件 <code>llm_preds/2026-10-20-r1.json</code> frozenAt=2026-10-20T20:13:30，先于首场开赛（10-21 18:00）<b>21 小时 47 分</b>，git 提交 2dd2237a 于 10-20 21:00 —— 赛前冻结成立，非事后编造。赛果交 backfill 体彩编号对票链路落盘，未手填。</div>
 
@@ -81,5 +81,5 @@ code{font:12px Consolas,monospace;background:#f6f6f6;padding:1px 4px;border-radi
 
 <h2>待办挂账</h2>
 <div class="note">① 本轮 pinClose 13 场全缺：11 场系 fd 不覆盖赛事（欧冠9/日职2/日乙1/解放者杯1），仅西甲 006 应有 fd 行但缓存止于 10-17，晚间重跑 verify 幂等救回；② 证据链 13 场 S1 已落 + S8 已登记，S2~S7/S9 缺（本轮走纯市场锚无 DC 无画像，预期形态，按铁律标注不补造）；③ 影子层余 P349 一张久挂（胜负彩无赛果源，已知挂账）；④ 011 无 HAD 盘场的「无市场对照时臣单边高置信」风险——本轮 81% 误判，建议为无盘场加置信上限闸；⑤ attribute 消融候选 F9（主因 61 场·avgGap 0.3455）达 nPrimary≥20 门槛待人审。</div>
-<div class="note">数据来源：data/02-results/2026-10-21.json（本次补建）· engine/cache/llm_preds/2026-10-20-r1.json · engine/cache/llm_cards/2026-10-20/ · data/04-summaries/llm-predict/eval.json · engine/shadow/paper_tickets.json · engine/cache/sporttery_results_2026-10-21_2026-10-22.json · data/06-tickets/tickets.json。</div>
+<div class="note">数据来源：data/02-results/2026-10-20-r1.json（本次补建·销售日档名 -r1）· engine/cache/llm_preds/2026-10-20-r1.json · engine/cache/llm_cards/2026-10-20/ · data/04-summaries/llm-predict/eval.json · engine/shadow/paper_tickets.json · engine/cache/sporttery_results_2026-10-21_2026-10-22.json · data/06-tickets/tickets.json。</div>
 </body></html>
