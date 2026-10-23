@@ -80,15 +80,32 @@ def _injury_count(m: dict) -> tuple[int, int]:
     inj = snaps[-1].get("inj") or {}
     return len(inj.get("h") or []), len(inj.get("a") or [])
 
-def _last_match_date(team_id: str, league_dir: str, before: str) -> str | None:
-    """league 库该队 before 前最近一场日期（算休息天数用）。开发者 sszhang"""
+def _last_match_date(team_id: str, league_dir: str, before: str,
+                     opponent: str | None = None) -> str | None:
+    """league 库该队 before 前最近一场日期（算休息天数用）。开发者 sszhang
+
+    2026-10-23：须排除「本场自己」。forward 按销售日/北京日归档（蒙扎vs卡利亚里
+    记 10-20），league 库按当地开赛日（记 10-19），跨日场两者差一天 → 本场行
+    date < anchor 成立，赛果回填后本场成了自己的上一场，rest 恒为 1。
+    故同队对 + 恰好差 1 天的行判为本场剔除。窗口取 1 天而非 2：全库扫出同队对
+    紧邻行 8217 处，8215 处是同比分同主客的跨日重复归档（本场自己），仅 2 处是
+    真实背靠背（亚美尼亚/格鲁吉亚、迈阿密/夏洛特，均相隔 2 天）——放宽到 2 天
+    会把那 2 处的真实上一场误剔。
+    """
     path = RESULTS_DIR / "league" / f"{league_dir}_matches.json"
     if not path.exists() or not team_id:
         return None
     rows = json.loads(path.read_text(encoding="utf-8"))
     rows = rows if isinstance(rows, list) else rows.get("matches", [])
-    cands = [r["date"] for r in rows
-             if r["date"] < before and team_id in (r.get("home"), r.get("away"))]
+    anchor = datetime.fromisoformat(before).date()
+    cands = []
+    for r in rows:
+        if r["date"] >= before or team_id not in (r.get("home"), r.get("away")):
+            continue
+        if opponent and opponent in (r.get("home"), r.get("away")) \
+                and (anchor - datetime.fromisoformat(r["date"]).date()).days <= 1:
+            continue                      # 本场自己（跨日归档差）
+        cands.append(r["date"])
     return max(cands) if cands else None
 
 def load_match_record(date_str: str, code: str) -> dict | None:
@@ -124,8 +141,9 @@ def fill_rest_days(rec: dict) -> dict:
     """R3 休息差：league 库查两队上一场日期→天数。查不到保持 None。开发者 sszhang"""
     # 锚=行内开赛日（kickoff），缺失回退销售日——多数日两值相同，跨日场以开赛日为准
     anchor = str(rec.get("kickoff") or rec["date"])[:10]
-    for side, team in (("h", rec["team_h"]), ("a", rec["team_a"])):
-        last = _last_match_date(team, rec["league_dir"], anchor)
+    for side, team, foe in (("h", rec["team_h"], rec["team_a"]),
+                            ("a", rec["team_a"], rec["team_h"])):
+        last = _last_match_date(team, rec["league_dir"], anchor, foe)
         if last:
             d0 = datetime.fromisoformat(anchor).date()
             rec[f"rest_days_{side}"] = (d0 - datetime.fromisoformat(last).date()).days
