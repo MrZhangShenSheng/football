@@ -1,6 +1,13 @@
 {
  "league": "france-ligue1",
- "source": "fd CSV FTHG/FTAG",
+ "source": "espn-history",
+ "seasons": [
+  "2026",
+  "2026"
+ ],
+ "fetchedAt": "2026-10-23",
+ "cup": false,
+ "droppedUnmapped": 0,
  "matches": [
   {
    "date": "2022-02-01",
@@ -11357,6 +11364,13 @@
    "ag": 0
   },
   {
+   "date": "2026-09-12",
+   "home": "strasbourg-abbr",
+   "away": "monaco",
+   "hg": 1,
+   "ag": 1
+  },
+  {
    "date": "2026-09-13",
    "home": "lille",
    "away": "troyes",
@@ -11420,6 +11434,13 @@
    "ag": 2
   },
   {
+   "date": "2026-09-19",
+   "home": "paris-fc",
+   "away": "strasbourg-abbr",
+   "hg": 2,
+   "ag": 1
+  },
+  {
    "date": "2026-09-20",
    "home": "auxerre",
    "away": "brest",
@@ -11439,6 +11460,132 @@
    "away": "paris-saint-germain",
    "hg": 1,
    "ag": 2
+  },
+  {
+   "date": "2026-10-09",
+   "home": "lens",
+   "away": "lyon",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-10-10",
+   "home": "lille",
+   "away": "le-havre",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2026-10-10",
+   "home": "monaco",
+   "away": "toulouse",
+   "hg": 2,
+   "ag": 2
+  },
+  {
+   "date": "2026-10-10",
+   "home": "brest",
+   "away": "angers",
+   "hg": 5,
+   "ag": 1
+  },
+  {
+   "date": "2026-10-10",
+   "home": "lorient",
+   "away": "paris-fc",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2026-10-10",
+   "home": "paris-saint-germain",
+   "away": "le-mans",
+   "hg": 3,
+   "ag": 1
+  },
+  {
+   "date": "2026-10-11",
+   "home": "nice",
+   "away": "strasbourg-abbr",
+   "hg": 2,
+   "ag": 1
+  },
+  {
+   "date": "2026-10-11",
+   "home": "stade-rennais",
+   "away": "auxerre",
+   "hg": 4,
+   "ag": 1
+  },
+  {
+   "date": "2026-10-11",
+   "home": "troyes",
+   "away": "marseille",
+   "hg": 0,
+   "ag": 2
+  },
+  {
+   "date": "2026-10-16",
+   "home": "le-mans",
+   "away": "toulouse",
+   "hg": 0,
+   "ag": 3
+  },
+  {
+   "date": "2026-10-17",
+   "home": "strasbourg-abbr",
+   "away": "paris-saint-germain",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2026-10-17",
+   "home": "lille",
+   "away": "brest",
+   "hg": 1,
+   "ag": 1
+  },
+  {
+   "date": "2026-10-17",
+   "home": "troyes",
+   "away": "lens",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2026-10-18",
+   "home": "angers",
+   "away": "marseille",
+   "hg": 2,
+   "ag": 5
+  },
+  {
+   "date": "2026-10-18",
+   "home": "le-havre",
+   "away": "auxerre",
+   "hg": 1,
+   "ag": 3
+  },
+  {
+   "date": "2026-10-18",
+   "home": "lorient",
+   "away": "monaco",
+   "hg": 1,
+   "ag": 0
+  },
+  {
+   "date": "2026-10-18",
+   "home": "paris-fc",
+   "away": "stade-rennais",
+   "hg": 4,
+   "ag": 3
+  },
+  {
+   "date": "2026-10-18",
+   "home": "lyon",
+   "away": "nice",
+   "hg": 2,
+   "ag": 1
   }
  ]
 }
