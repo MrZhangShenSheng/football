@@ -1,5 +1,7 @@
 # engine/tests/test_attribution_hist.py
 import json
+import os
+import subprocess
 import sys, unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
@@ -107,10 +109,14 @@ class TestBatchHist(unittest.TestCase):
     def test_cli_single_csv(self):
         import subprocess
         from score_attribution import ROOT
+        # encoding/stdin/timeout 三项同 test_score_attribution._run 的理由：
+        # Windows GBK locale 解中文 evidence 会炸，无头环境继承坏 stdin 会挂死。
         out = subprocess.run(
             [sys.executable, "engine/scripts/attribution_hist.py", "batch-hist",
              "--season", "2324", "--code", "E0"],
-            capture_output=True, text=True, cwd=str(ROOT))
+            capture_output=True, text=True, encoding="utf-8",
+            stdin=subprocess.DEVNULL, timeout=600,
+            cwd=str(ROOT), env={**os.environ, "PYTHONIOENCODING": "utf-8"})
         self.assertEqual(out.returncode, 0, out.stderr)
         p = ROOT / "data/04-summaries/score-attribution/hist/E0_2324-attribution.json"
         self.assertTrue(p.exists())

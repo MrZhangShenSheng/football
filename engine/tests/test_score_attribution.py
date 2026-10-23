@@ -166,10 +166,14 @@ class TestCLI(unittest.TestCase):
         import subprocess
         from score_attribution import ROOT
         env = {**os.environ, "PYTHONIOENCODING": "utf-8"}
+        # stdin=DEVNULL：无头环境（CI / Start-Process -NoNewWindow）下父进程可能
+        # 没有可用 stdin，子进程继承坏句柄会永久阻塞，整套件挂死且 CPU 为 0。
+        # timeout 兜底，卡住时报错而非静默悬挂。
         return subprocess.run(
             [sys.executable, "engine/scripts/score_attribution.py",
              "single", "2026-10-19", code],
             capture_output=True, text=True, encoding="utf-8",
+            stdin=subprocess.DEVNULL, timeout=180,
             cwd=str(ROOT), env=env)
 
     def test_main_single(self):
