@@ -1,9 +1,9 @@
 {
- "generatedAt": "2026-10-23",
- "n_total": 1027,
- "n_rounds": 59,
+ "generatedAt": "2026-10-27",
+ "n_total": 1029,
+ "n_rounds": 60,
  "readiness": {
-  "n_result": 1025,
+  "n_result": 1027,
   "n_clv": 132,
   "n_pfinal": 642,
   "n_dedup_merged": 66,
@@ -13,10 +13,10 @@
   "ablateReady": true,
   "by_league": {
    "西甲": 117,
-   "意甲": 102,
+   "意甲": 103,
    "欧冠": 79,
    "英超": 78,
-   "德甲": 66,
+   "德甲": 67,
    "法甲": 47,
    "荷甲": 46,
    "葡超": 44,
@@ -58,7 +58,7 @@
   "by_star": {
    "1": 110,
    "2": 311,
-   "3": 195,
+   "3": 197,
    "4": 65
   }
  },
@@ -40992,8 +40992,17 @@
    "clv": null,
    "clv_approx_dk": null,
    "clv_note": null,
-   "pinClose": null,
-   "pinSource": "none",
+   "pinClose": [
+    0.2805,
+    0.2986,
+    0.4208
+   ],
+   "pinSource": "fd",
+   "p_pinnacle": [
+    0.2805,
+    0.2986,
+    0.4208
+   ],
    "round": "2026-10-20-r1"
   },
   {
@@ -41348,8 +41357,17 @@
    "clv": null,
    "clv_approx_dk": null,
    "clv_note": null,
-   "pinClose": null,
-   "pinSource": "none",
+   "pinClose": [
+    0.6069,
+    0.2276,
+    0.1655
+   ],
+   "pinSource": "fd",
+   "p_pinnacle": [
+    0.6069,
+    0.2276,
+    0.1655
+   ],
    "round": "2026-10-20"
   },
   {
@@ -41595,6 +41613,74 @@
    "pinClose": null,
    "pinSource": "none",
    "round": "2026-10-20"
+  },
+  {
+   "date": "2026-10-23",
+   "code": "周五006",
+   "league": "德甲",
+   "match": "斯图加特 vs 门兴",
+   "stars": 3,
+   "grade": 4,
+   "pick": "2×2比分混串(见T050)",
+   "play": null,
+   "odds": null,
+   "p_final": null,
+   "p_dc": null,
+   "ev": null,
+   "in_plan": "T050",
+   "chain": [
+    "LLM结构化v3·crush"
+   ],
+   "pools": null,
+   "result": "2-3",
+   "directionHit": false,
+   "scoreHit": false,
+   "optionHit": false,
+   "familyHit": null,
+   "familyName": null,
+   "familyProb": null,
+   "crsTailProb": null,
+   "crsTailSource": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "pinClose": null,
+   "pinSource": "none",
+   "round": "2026-10-23"
+  },
+  {
+   "date": "2026-10-23",
+   "code": "周六009",
+   "league": "意甲",
+   "match": "科莫 vs 萨索洛",
+   "stars": 3,
+   "grade": 4,
+   "pick": "2×2比分混串(见T050)",
+   "play": null,
+   "odds": null,
+   "p_final": null,
+   "p_dc": null,
+   "ev": null,
+   "in_plan": "T050",
+   "chain": [
+    "LLM结构化v3·crush"
+   ],
+   "pools": null,
+   "result": "2-0",
+   "directionHit": true,
+   "scoreHit": false,
+   "optionHit": false,
+   "familyHit": null,
+   "familyName": null,
+   "familyProb": null,
+   "crsTailProb": null,
+   "crsTailSource": null,
+   "clv": null,
+   "clv_approx_dk": null,
+   "clv_note": null,
+   "pinClose": null,
+   "pinSource": "none",
+   "round": "2026-10-23"
   },
   {
    "seq": 10,

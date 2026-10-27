@@ -25,16 +25,25 @@
    "chainSteps": [],
    "ev": null,
    "inPlan": "T050",
-   "result": null,
-   "directionHit": null,
-   "scoreHit": null,
+   "result": "2-3",
+   "directionHit": false,
+   "scoreHit": false,
    "clv": null,
    "clv_approx_dk": null,
    "hypothesis": {
     "assumption": "门兴客场防线崩坏程度被低估：3 个客场失 10 球、全季场均失 3.33，6 轮从未零封任何对手",
     "verdict": "survived"
    },
-   "llmPredRef": "engine/cache/llm_preds/2026-10-23.json#周五006"
+   "llmPredRef": "engine/cache/llm_preds/2026-10-23.json#周五006",
+   "half": "1:1",
+   "optionHit": false,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042160,
+    "lastOddsAt": "2026-10-23T18:07:19+08:00",
+    "lastIntelAt": "2026-10-23T15:54:32+08:00"
+   },
+   "note": "指针式pick致backfill方向解析None,按冻结件direction(h)补录回填字段;score按T050双选{3:0,3:1}"
   },
   {
    "idx": 2,
@@ -58,16 +67,25 @@
    "chainSteps": [],
    "ev": null,
    "inPlan": "T050",
-   "result": null,
-   "directionHit": null,
-   "scoreHit": null,
+   "result": "2-0",
+   "directionHit": true,
+   "scoreHit": false,
    "clv": null,
    "clv_approx_dk": null,
    "hypothesis": {
     "assumption": "萨索洛客场失球失控且本季客场从未零封，科莫主场防守扎实——净胜 2 球以上的结构基础成立",
     "verdict": "survived"
    },
-   "llmPredRef": "engine/cache/llm_preds/2026-10-23.json#周六009"
+   "llmPredRef": "engine/cache/llm_preds/2026-10-23.json#周六009",
+   "half": "0:0",
+   "optionHit": false,
+   "pinSource": "none",
+   "preSnapshots": {
+    "matchId": 2042191,
+    "lastOddsAt": "2026-10-23T18:07:19+08:00",
+    "lastIntelAt": "2026-10-23T16:04:14+08:00"
+   },
+   "note": "指针式pick致backfill方向解析None,按冻结件direction(h)补录回填字段;score按T050双选{3:0,3:1}"
   }
  ]
 }
